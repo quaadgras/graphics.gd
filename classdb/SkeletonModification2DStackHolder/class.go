@@ -59,14 +59,14 @@ type Any interface {
 Sets the [SkeletonModificationStack2D] that this modification is holding. This modification stack will then be executed when this modification is executed.
 */
 func (self Instance) SetHeldModificationStack(held_modification_stack [1]gdclass.SkeletonModificationStack2D) { //gd:SkeletonModification2DStackHolder.set_held_modification_stack
-	class(self).SetHeldModificationStack(held_modification_stack)
+	Advanced(self).SetHeldModificationStack(held_modification_stack)
 }
 
 /*
 Returns the [SkeletonModificationStack2D] that this modification is holding.
 */
 func (self Instance) GetHeldModificationStack() [1]gdclass.SkeletonModificationStack2D { //gd:SkeletonModification2DStackHolder.get_held_modification_stack
-	return [1]gdclass.SkeletonModificationStack2D(class(self).GetHeldModificationStack())
+	return [1]gdclass.SkeletonModificationStack2D(Advanced(self).GetHeldModificationStack())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

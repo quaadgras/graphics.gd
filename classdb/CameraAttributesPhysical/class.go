@@ -61,7 +61,7 @@ type Any interface {
 Returns the vertical field of view that corresponds to the [member frustum_focal_length]. This value is calculated internally whenever [member frustum_focal_length] is changed.
 */
 func (self Instance) GetFov() Float.X { //gd:CameraAttributesPhysical.get_fov
-	return Float.X(Float.X(class(self).GetFov()))
+	return Float.X(Float.X(Advanced(self).GetFov()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -470,56 +470,56 @@ func (Instance) _get_line_diff(impl func(ptr unsafe.Pointer, file_path string, t
 Helper function to create a [Dictionary] for storing a line diff. [param new_line_no] is the line number in the new file (can be [code]-1[/code] if the line is deleted). [param old_line_no] is the line number in the old file (can be [code]-1[/code] if the line is added). [param content] is the diff text. [param status] is a single character string which stores the line origin.
 */
 func (self Instance) CreateDiffLine(new_line_no int, old_line_no int, content string, status string) DiffLine { //gd:EditorVCSInterface.create_diff_line
-	return DiffLine(gd.DictionaryAs[DiffLine](class(self).CreateDiffLine(int64(new_line_no), int64(old_line_no), String.New(content), String.New(status))))
+	return DiffLine(gd.DictionaryAs[DiffLine](Advanced(self).CreateDiffLine(int64(new_line_no), int64(old_line_no), String.New(content), String.New(status))))
 }
 
 /*
 Helper function to create a [Dictionary] for storing diff hunk data. [param old_start] is the starting line number in old file. [param new_start] is the starting line number in new file. [param old_lines] is the number of lines in the old file. [param new_lines] is the number of lines in the new file.
 */
 func (self Instance) CreateDiffHunk(old_start int, new_start int, old_lines int, new_lines int) DiffHunk { //gd:EditorVCSInterface.create_diff_hunk
-	return DiffHunk(gd.DictionaryAs[DiffHunk](class(self).CreateDiffHunk(int64(old_start), int64(new_start), int64(old_lines), int64(new_lines))))
+	return DiffHunk(gd.DictionaryAs[DiffHunk](Advanced(self).CreateDiffHunk(int64(old_start), int64(new_start), int64(old_lines), int64(new_lines))))
 }
 
 /*
 Helper function to create a [Dictionary] for storing old and new diff file paths.
 */
 func (self Instance) CreateDiffFile(new_file string, old_file string) DiffFile { //gd:EditorVCSInterface.create_diff_file
-	return DiffFile(gd.DictionaryAs[DiffFile](class(self).CreateDiffFile(String.New(new_file), String.New(old_file))))
+	return DiffFile(gd.DictionaryAs[DiffFile](Advanced(self).CreateDiffFile(String.New(new_file), String.New(old_file))))
 }
 
 /*
 Helper function to create a commit [Dictionary] item. [param msg] is the commit message of the commit. [param author] is a single human-readable string containing all the author's details, e.g. the email and name configured in the VCS. [param id] is the identifier of the commit, in whichever format your VCS may provide an identifier to commits. [param unix_timestamp] is the UTC Unix timestamp of when the commit was created. [param offset_minutes] is the timezone offset in minutes, recorded from the system timezone where the commit was created.
 */
 func (self Instance) CreateCommit(msg string, author string, id string, unix_timestamp int, offset_minutes int) Commit { //gd:EditorVCSInterface.create_commit
-	return Commit(gd.DictionaryAs[Commit](class(self).CreateCommit(String.New(msg), String.New(author), String.New(id), int64(unix_timestamp), int64(offset_minutes))))
+	return Commit(gd.DictionaryAs[Commit](Advanced(self).CreateCommit(String.New(msg), String.New(author), String.New(id), int64(unix_timestamp), int64(offset_minutes))))
 }
 
 /*
 Helper function to create a [Dictionary] used by editor to read the status of a file.
 */
 func (self Instance) CreateStatusFile(file_path string, change_type gdclass.EditorVCSInterfaceChangeType, area gdclass.EditorVCSInterfaceTreeArea) StatusFile { //gd:EditorVCSInterface.create_status_file
-	return StatusFile(gd.DictionaryAs[StatusFile](class(self).CreateStatusFile(String.New(file_path), change_type, area)))
+	return StatusFile(gd.DictionaryAs[StatusFile](Advanced(self).CreateStatusFile(String.New(file_path), change_type, area)))
 }
 
 /*
 Helper function to add an array of [param diff_hunks] into a [param diff_file].
 */
 func (self Instance) AddDiffHunksIntoDiffFile(diff_file DiffFile, diff_hunks []DiffHunk) DiffFile { //gd:EditorVCSInterface.add_diff_hunks_into_diff_file
-	return DiffFile(gd.DictionaryAs[DiffFile](class(self).AddDiffHunksIntoDiffFile(gd.DictionaryFromMap(diff_file), gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](diff_hunks))))
+	return DiffFile(gd.DictionaryAs[DiffFile](Advanced(self).AddDiffHunksIntoDiffFile(gd.DictionaryFromMap(diff_file), gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](diff_hunks))))
 }
 
 /*
 Helper function to add an array of [param line_diffs] into a [param diff_hunk].
 */
 func (self Instance) AddLineDiffsIntoDiffHunk(diff_hunk DiffHunk, line_diffs []DiffLine) DiffHunk { //gd:EditorVCSInterface.add_line_diffs_into_diff_hunk
-	return DiffHunk(gd.DictionaryAs[DiffHunk](class(self).AddLineDiffsIntoDiffHunk(gd.DictionaryFromMap(diff_hunk), gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](line_diffs))))
+	return DiffHunk(gd.DictionaryAs[DiffHunk](Advanced(self).AddLineDiffsIntoDiffHunk(gd.DictionaryFromMap(diff_hunk), gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](line_diffs))))
 }
 
 /*
 Pops up an error message in the editor which is shown as coming from the underlying VCS. Use this to show VCS specific error messages.
 */
 func (self Instance) PopupError(msg string) { //gd:EditorVCSInterface.popup_error
-	class(self).PopupError(String.New(msg))
+	Advanced(self).PopupError(String.New(msg))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -66,28 +66,28 @@ type Any interface {
 Sets the [Transform3D] for a specific instance.
 */
 func (self Instance) SetInstanceTransform(instance int, transform Transform3D.BasisOrigin) { //gd:MultiMesh.set_instance_transform
-	class(self).SetInstanceTransform(int64(instance), Transform3D.BasisOrigin(transform))
+	Advanced(self).SetInstanceTransform(int64(instance), Transform3D.BasisOrigin(transform))
 }
 
 /*
 Sets the [Transform2D] for a specific instance.
 */
 func (self Instance) SetInstanceTransform2d(instance int, transform Transform2D.OriginXY) { //gd:MultiMesh.set_instance_transform_2d
-	class(self).SetInstanceTransform2d(int64(instance), Transform2D.OriginXY(transform))
+	Advanced(self).SetInstanceTransform2d(int64(instance), Transform2D.OriginXY(transform))
 }
 
 /*
 Returns the [Transform3D] of a specific instance.
 */
 func (self Instance) GetInstanceTransform(instance int) Transform3D.BasisOrigin { //gd:MultiMesh.get_instance_transform
-	return Transform3D.BasisOrigin(class(self).GetInstanceTransform(int64(instance)))
+	return Transform3D.BasisOrigin(Advanced(self).GetInstanceTransform(int64(instance)))
 }
 
 /*
 Returns the [Transform2D] of a specific instance.
 */
 func (self Instance) GetInstanceTransform2d(instance int) Transform2D.OriginXY { //gd:MultiMesh.get_instance_transform_2d
-	return Transform2D.OriginXY(class(self).GetInstanceTransform2d(int64(instance)))
+	return Transform2D.OriginXY(Advanced(self).GetInstanceTransform2d(int64(instance)))
 }
 
 /*
@@ -96,14 +96,14 @@ Sets the color of a specific instance by [i]multiplying[/i] the mesh's existing 
 For the color to take effect, ensure that [member use_colors] is [code]true[/code] on the [MultiMesh] and [member BaseMaterial3D.vertex_color_use_as_albedo] is [code]true[/code] on the material. If you intend to set an absolute color instead of tinting, make sure the material's albedo color is set to pure white ([code]Color(1, 1, 1)[/code]).
 */
 func (self Instance) SetInstanceColor(instance int, color Color.RGBA) { //gd:MultiMesh.set_instance_color
-	class(self).SetInstanceColor(int64(instance), Color.RGBA(color))
+	Advanced(self).SetInstanceColor(int64(instance), Color.RGBA(color))
 }
 
 /*
 Gets a specific instance's color multiplier.
 */
 func (self Instance) GetInstanceColor(instance int) Color.RGBA { //gd:MultiMesh.get_instance_color
-	return Color.RGBA(class(self).GetInstanceColor(int64(instance)))
+	return Color.RGBA(Advanced(self).GetInstanceColor(int64(instance)))
 }
 
 /*
@@ -113,14 +113,14 @@ For the custom data to be used, ensure that [member use_custom_data] is [code]tr
 This custom instance data has to be manually accessed in your custom shader using [code]INSTANCE_CUSTOM[/code].
 */
 func (self Instance) SetInstanceCustomData(instance int, custom_data Color.RGBA) { //gd:MultiMesh.set_instance_custom_data
-	class(self).SetInstanceCustomData(int64(instance), Color.RGBA(custom_data))
+	Advanced(self).SetInstanceCustomData(int64(instance), Color.RGBA(custom_data))
 }
 
 /*
 Returns the custom data that has been set for a specific instance.
 */
 func (self Instance) GetInstanceCustomData(instance int) Color.RGBA { //gd:MultiMesh.get_instance_custom_data
-	return Color.RGBA(class(self).GetInstanceCustomData(int64(instance)))
+	return Color.RGBA(Advanced(self).GetInstanceCustomData(int64(instance)))
 }
 
 /*
@@ -128,14 +128,14 @@ When using [i]physics interpolation[/i], this function allows you to prevent int
 This allows you to move instances instantaneously, and should usually be used when initially placing an instance such as a bullet to prevent graphical glitches.
 */
 func (self Instance) ResetInstancePhysicsInterpolation(instance int) { //gd:MultiMesh.reset_instance_physics_interpolation
-	class(self).ResetInstancePhysicsInterpolation(int64(instance))
+	Advanced(self).ResetInstancePhysicsInterpolation(int64(instance))
 }
 
 /*
 Returns the visibility axis-aligned bounding box in local space.
 */
 func (self Instance) GetAabb() AABB.PositionSize { //gd:MultiMesh.get_aabb
-	return AABB.PositionSize(class(self).GetAabb())
+	return AABB.PositionSize(Advanced(self).GetAabb())
 }
 
 /*
@@ -144,7 +144,7 @@ This is useful for situations where the order of instances may change from physi
 When the order of instances is coherent, the simpler alternative of setting [member buffer] can still be used with interpolation.
 */
 func (self Instance) SetBufferInterpolated(buffer_curr []float32, buffer_prev []float32) { //gd:MultiMesh.set_buffer_interpolated
-	class(self).SetBufferInterpolated(Packed.New(buffer_curr...), Packed.New(buffer_prev...))
+	Advanced(self).SetBufferInterpolated(Packed.New(buffer_curr...), Packed.New(buffer_prev...))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

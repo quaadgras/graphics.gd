@@ -56,6 +56,7 @@ Note that properties like transform, modulation, and visibility are only propaga
 %!(EXTRA string=CanvasItem)
 */
 type Instance [1]gdclass.CanvasItem
+type Expanded [1]gdclass.CanvasItem
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -92,7 +93,7 @@ func (Instance) _draw(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVi
 Returns the canvas item RID used by [RenderingServer] for this item.
 */
 func (self Instance) GetCanvasItem() RID.CanvasItem { //gd:CanvasItem.get_canvas_item
-	return RID.CanvasItem(class(self).GetCanvasItem())
+	return RID.CanvasItem(Advanced(self).GetCanvasItem())
 }
 
 /*
@@ -101,28 +102,28 @@ Visibility is checked only in parent nodes that inherit from [CanvasItem], [Canv
 [b]Note:[/b] This method does not take [member visibility_layer] into account, so even if this method returns [code]true[/code], the node might end up not being rendered.
 */
 func (self Instance) IsVisibleInTree() bool { //gd:CanvasItem.is_visible_in_tree
-	return bool(class(self).IsVisibleInTree())
+	return bool(Advanced(self).IsVisibleInTree())
 }
 
 /*
 Show the [CanvasItem] if it's currently hidden. This is equivalent to setting [member visible] to [code]true[/code]. For controls that inherit [Popup], the correct way to make them visible is to call one of the multiple [code]popup*()[/code] functions instead.
 */
 func (self Instance) Show() { //gd:CanvasItem.show
-	class(self).Show()
+	Advanced(self).Show()
 }
 
 /*
 Hide the [CanvasItem] if it's currently visible. This is equivalent to setting [member visible] to [code]false[/code].
 */
 func (self Instance) Hide() { //gd:CanvasItem.hide
-	class(self).Hide()
+	Advanced(self).Hide()
 }
 
 /*
 Queues the [CanvasItem] to redraw. During idle time, if [CanvasItem] is visible, [constant NOTIFICATION_DRAW] is sent and [method _draw] is called. This only occurs [b]once[/b] per frame, even if this method has been called multiple times.
 */
 func (self Instance) QueueRedraw() { //gd:CanvasItem.queue_redraw
-	class(self).QueueRedraw()
+	Advanced(self).QueueRedraw()
 }
 
 /*
@@ -130,7 +131,7 @@ Moves this node to display on top of its siblings.
 Internally, the node is moved to the bottom of parent's child list. The method has no effect on nodes without a parent.
 */
 func (self Instance) MoveToFront() { //gd:CanvasItem.move_to_front
-	class(self).MoveToFront()
+	Advanced(self).MoveToFront()
 }
 
 /*
@@ -138,7 +139,15 @@ Draws a line from a 2D point to another, with a given color and width. It can be
 If [param width] is negative, then a two-point primitive will be drawn instead of a four-point one. This means that when the CanvasItem is scaled, the line will remain thin. If this behavior is not desired, then pass a positive [param width] like [code]1.0[/code].
 */
 func (self Instance) DrawLine(from Vector2.XY, to Vector2.XY, color Color.RGBA) { //gd:CanvasItem.draw_line
-	class(self).DrawLine(Vector2.XY(from), Vector2.XY(to), Color.RGBA(color), float64(-1.0), false)
+	Advanced(self).DrawLine(Vector2.XY(from), Vector2.XY(to), Color.RGBA(color), float64(-1.0), false)
+}
+
+/*
+Draws a line from a 2D point to another, with a given color and width. It can be optionally antialiased. See also [method draw_dashed_line], [method draw_multiline], and [method draw_polyline].
+If [param width] is negative, then a two-point primitive will be drawn instead of a four-point one. This means that when the CanvasItem is scaled, the line will remain thin. If this behavior is not desired, then pass a positive [param width] like [code]1.0[/code].
+*/
+func (self Expanded) DrawLine(from Vector2.XY, to Vector2.XY, color Color.RGBA, width Float.X, antialiased bool) { //gd:CanvasItem.draw_line
+	Advanced(self).DrawLine(Vector2.XY(from), Vector2.XY(to), Color.RGBA(color), float64(width), antialiased)
 }
 
 /*
@@ -149,7 +158,18 @@ If [param antialiased] is [code]true[/code], half transparent "feathers" will be
 [b]Note:[/b] [param antialiased] is only effective if [param width] is greater than [code]0.0[/code].
 */
 func (self Instance) DrawDashedLine(from Vector2.XY, to Vector2.XY, color Color.RGBA) { //gd:CanvasItem.draw_dashed_line
-	class(self).DrawDashedLine(Vector2.XY(from), Vector2.XY(to), Color.RGBA(color), float64(-1.0), float64(2.0), true, false)
+	Advanced(self).DrawDashedLine(Vector2.XY(from), Vector2.XY(to), Color.RGBA(color), float64(-1.0), float64(2.0), true, false)
+}
+
+/*
+Draws a dashed line from a 2D point to another, with a given color and width. See also [method draw_line], [method draw_multiline], and [method draw_polyline].
+If [param width] is negative, then a two-point primitives will be drawn instead of a four-point ones. This means that when the CanvasItem is scaled, the line parts will remain thin. If this behavior is not desired, then pass a positive [param width] like [code]1.0[/code].
+[param dash] is the length of each dash in pixels, with the gap between each dash being the same length. If [param aligned] is [code]true[/code], the length of the first and last dashes may be shortened or lengthened to allow the line to begin and end at the precise points defined by [param from] and [param to]. Both ends are always symmetrical when [param aligned] is [code]true[/code]. If [param aligned] is [code]false[/code], all dashes will have the same length, but the line may appear incomplete at the end due to the dash length not dividing evenly into the line length. Only full dashes are drawn when [param aligned] is [code]false[/code].
+If [param antialiased] is [code]true[/code], half transparent "feathers" will be attached to the boundary, making outlines smooth.
+[b]Note:[/b] [param antialiased] is only effective if [param width] is greater than [code]0.0[/code].
+*/
+func (self Expanded) DrawDashedLine(from Vector2.XY, to Vector2.XY, color Color.RGBA, width Float.X, dash Float.X, aligned bool, antialiased bool) { //gd:CanvasItem.draw_dashed_line
+	Advanced(self).DrawDashedLine(Vector2.XY(from), Vector2.XY(to), Color.RGBA(color), float64(width), float64(dash), aligned, antialiased)
 }
 
 /*
@@ -157,7 +177,15 @@ Draws interconnected line segments with a uniform [param color] and [param width
 If [param width] is negative, it will be ignored and the polyline will be drawn using [constant RenderingServer.PRIMITIVE_LINE_STRIP]. This means that when the CanvasItem is scaled, the polyline will remain thin. If this behavior is not desired, then pass a positive [param width] like [code]1.0[/code].
 */
 func (self Instance) DrawPolyline(points []Vector2.XY, color Color.RGBA) { //gd:CanvasItem.draw_polyline
-	class(self).DrawPolyline(Packed.New(points...), Color.RGBA(color), float64(-1.0), false)
+	Advanced(self).DrawPolyline(Packed.New(points...), Color.RGBA(color), float64(-1.0), false)
+}
+
+/*
+Draws interconnected line segments with a uniform [param color] and [param width] and optional antialiasing (supported only for positive [param width]). When drawing large amounts of lines, this is faster than using individual [method draw_line] calls. To draw disconnected lines, use [method draw_multiline] instead. See also [method draw_polygon].
+If [param width] is negative, it will be ignored and the polyline will be drawn using [constant RenderingServer.PRIMITIVE_LINE_STRIP]. This means that when the CanvasItem is scaled, the polyline will remain thin. If this behavior is not desired, then pass a positive [param width] like [code]1.0[/code].
+*/
+func (self Expanded) DrawPolyline(points []Vector2.XY, color Color.RGBA, width Float.X, antialiased bool) { //gd:CanvasItem.draw_polyline
+	Advanced(self).DrawPolyline(Packed.New(points...), Color.RGBA(color), float64(width), antialiased)
 }
 
 /*
@@ -165,7 +193,15 @@ Draws interconnected line segments with a uniform [param width], point-by-point 
 If [param width] is negative, it will be ignored and the polyline will be drawn using [constant RenderingServer.PRIMITIVE_LINE_STRIP]. This means that when the CanvasItem is scaled, the polyline will remain thin. If this behavior is not desired, then pass a positive [param width] like [code]1.0[/code].
 */
 func (self Instance) DrawPolylineColors(points []Vector2.XY, colors []Color.RGBA) { //gd:CanvasItem.draw_polyline_colors
-	class(self).DrawPolylineColors(Packed.New(points...), Packed.New(colors...), float64(-1.0), false)
+	Advanced(self).DrawPolylineColors(Packed.New(points...), Packed.New(colors...), float64(-1.0), false)
+}
+
+/*
+Draws interconnected line segments with a uniform [param width], point-by-point coloring, and optional antialiasing (supported only for positive [param width]). Colors assigned to line points match by index between [param points] and [param colors], i.e. each line segment is filled with a gradient between the colors of the endpoints. When drawing large amounts of lines, this is faster than using individual [method draw_line] calls. To draw disconnected lines, use [method draw_multiline_colors] instead. See also [method draw_polygon].
+If [param width] is negative, it will be ignored and the polyline will be drawn using [constant RenderingServer.PRIMITIVE_LINE_STRIP]. This means that when the CanvasItem is scaled, the polyline will remain thin. If this behavior is not desired, then pass a positive [param width] like [code]1.0[/code].
+*/
+func (self Expanded) DrawPolylineColors(points []Vector2.XY, colors []Color.RGBA, width Float.X, antialiased bool) { //gd:CanvasItem.draw_polyline_colors
+	Advanced(self).DrawPolylineColors(Packed.New(points...), Packed.New(colors...), float64(width), antialiased)
 }
 
 /*
@@ -174,7 +210,16 @@ If [param width] is negative, it will be ignored and the arc will be drawn using
 The arc is drawn from [param start_angle] towards the value of [param end_angle] so in clockwise direction if [code]start_angle < end_angle[/code] and counter-clockwise otherwise. Passing the same angles but in reversed order will produce the same arc. If absolute difference of [param start_angle] and [param end_angle] is greater than [constant @GDScript.TAU] radians, then a full circle arc is drawn (i.e. arc will not overlap itself).
 */
 func (self Instance) DrawArc(center Vector2.XY, radius Float.X, start_angle Float.X, end_angle Float.X, point_count int, color Color.RGBA) { //gd:CanvasItem.draw_arc
-	class(self).DrawArc(Vector2.XY(center), float64(radius), float64(start_angle), float64(end_angle), int64(point_count), Color.RGBA(color), float64(-1.0), false)
+	Advanced(self).DrawArc(Vector2.XY(center), float64(radius), float64(start_angle), float64(end_angle), int64(point_count), Color.RGBA(color), float64(-1.0), false)
+}
+
+/*
+Draws an unfilled arc between the given angles with a uniform [param color] and [param width] and optional antialiasing (supported only for positive [param width]). The larger the value of [param point_count], the smoother the curve. See also [method draw_circle].
+If [param width] is negative, it will be ignored and the arc will be drawn using [constant RenderingServer.PRIMITIVE_LINE_STRIP]. This means that when the CanvasItem is scaled, the arc will remain thin. If this behavior is not desired, then pass a positive [param width] like [code]1.0[/code].
+The arc is drawn from [param start_angle] towards the value of [param end_angle] so in clockwise direction if [code]start_angle < end_angle[/code] and counter-clockwise otherwise. Passing the same angles but in reversed order will produce the same arc. If absolute difference of [param start_angle] and [param end_angle] is greater than [constant @GDScript.TAU] radians, then a full circle arc is drawn (i.e. arc will not overlap itself).
+*/
+func (self Expanded) DrawArc(center Vector2.XY, radius Float.X, start_angle Float.X, end_angle Float.X, point_count int, color Color.RGBA, width Float.X, antialiased bool) { //gd:CanvasItem.draw_arc
+	Advanced(self).DrawArc(Vector2.XY(center), float64(radius), float64(start_angle), float64(end_angle), int64(point_count), Color.RGBA(color), float64(width), antialiased)
 }
 
 /*
@@ -183,7 +228,16 @@ If [param width] is negative, then two-point primitives will be drawn instead of
 [b]Note:[/b] [param antialiased] is only effective if [param width] is greater than [code]0.0[/code].
 */
 func (self Instance) DrawMultiline(points []Vector2.XY, color Color.RGBA) { //gd:CanvasItem.draw_multiline
-	class(self).DrawMultiline(Packed.New(points...), Color.RGBA(color), float64(-1.0), false)
+	Advanced(self).DrawMultiline(Packed.New(points...), Color.RGBA(color), float64(-1.0), false)
+}
+
+/*
+Draws multiple disconnected lines with a uniform [param width] and [param color]. Each line is defined by two consecutive points from [param points] array, i.e. i-th segment consists of [code]points[2 * i][/code], [code]points[2 * i + 1][/code] endpoints. When drawing large amounts of lines, this is faster than using individual [method draw_line] calls. To draw interconnected lines, use [method draw_polyline] instead.
+If [param width] is negative, then two-point primitives will be drawn instead of a four-point ones. This means that when the CanvasItem is scaled, the lines will remain thin. If this behavior is not desired, then pass a positive [param width] like [code]1.0[/code].
+[b]Note:[/b] [param antialiased] is only effective if [param width] is greater than [code]0.0[/code].
+*/
+func (self Expanded) DrawMultiline(points []Vector2.XY, color Color.RGBA, width Float.X, antialiased bool) { //gd:CanvasItem.draw_multiline
+	Advanced(self).DrawMultiline(Packed.New(points...), Color.RGBA(color), float64(width), antialiased)
 }
 
 /*
@@ -192,7 +246,16 @@ If [param width] is negative, then two-point primitives will be drawn instead of
 [b]Note:[/b] [param antialiased] is only effective if [param width] is greater than [code]0.0[/code].
 */
 func (self Instance) DrawMultilineColors(points []Vector2.XY, colors []Color.RGBA) { //gd:CanvasItem.draw_multiline_colors
-	class(self).DrawMultilineColors(Packed.New(points...), Packed.New(colors...), float64(-1.0), false)
+	Advanced(self).DrawMultilineColors(Packed.New(points...), Packed.New(colors...), float64(-1.0), false)
+}
+
+/*
+Draws multiple disconnected lines with a uniform [param width] and segment-by-segment coloring. Each segment is defined by two consecutive points from [param points] array and a corresponding color from [param colors] array, i.e. i-th segment consists of [code]points[2 * i][/code], [code]points[2 * i + 1][/code] endpoints and has [code]colors[i][/code] color. When drawing large amounts of lines, this is faster than using individual [method draw_line] calls. To draw interconnected lines, use [method draw_polyline_colors] instead.
+If [param width] is negative, then two-point primitives will be drawn instead of a four-point ones. This means that when the CanvasItem is scaled, the lines will remain thin. If this behavior is not desired, then pass a positive [param width] like [code]1.0[/code].
+[b]Note:[/b] [param antialiased] is only effective if [param width] is greater than [code]0.0[/code].
+*/
+func (self Expanded) DrawMultilineColors(points []Vector2.XY, colors []Color.RGBA, width Float.X, antialiased bool) { //gd:CanvasItem.draw_multiline_colors
+	Advanced(self).DrawMultilineColors(Packed.New(points...), Packed.New(colors...), float64(width), antialiased)
 }
 
 /*
@@ -203,7 +266,18 @@ If [param antialiased] is [code]true[/code], half transparent "feathers" will be
 [b]Note:[/b] Unfilled rectangles drawn with a negative [param width] may not display perfectly. For example, corners may be missing or brighter due to overlapping lines (for a translucent [param color]).
 */
 func (self Instance) DrawRect(rect Rect2.PositionSize, color Color.RGBA) { //gd:CanvasItem.draw_rect
-	class(self).DrawRect(Rect2.PositionSize(rect), Color.RGBA(color), true, float64(-1.0), false)
+	Advanced(self).DrawRect(Rect2.PositionSize(rect), Color.RGBA(color), true, float64(-1.0), false)
+}
+
+/*
+Draws a rectangle. If [param filled] is [code]true[/code], the rectangle will be filled with the [param color] specified. If [param filled] is [code]false[/code], the rectangle will be drawn as a stroke with the [param color] and [param width] specified. See also [method draw_texture_rect].
+If [param width] is negative, then two-point primitives will be drawn instead of a four-point ones. This means that when the CanvasItem is scaled, the lines will remain thin. If this behavior is not desired, then pass a positive [param width] like [code]1.0[/code].
+If [param antialiased] is [code]true[/code], half transparent "feathers" will be attached to the boundary, making outlines smooth.
+[b]Note:[/b] [param width] is only effective if [param filled] is [code]false[/code].
+[b]Note:[/b] Unfilled rectangles drawn with a negative [param width] may not display perfectly. For example, corners may be missing or brighter due to overlapping lines (for a translucent [param color]).
+*/
+func (self Expanded) DrawRect(rect Rect2.PositionSize, color Color.RGBA, filled bool, width Float.X, antialiased bool) { //gd:CanvasItem.draw_rect
+	Advanced(self).DrawRect(Rect2.PositionSize(rect), Color.RGBA(color), filled, float64(width), antialiased)
 }
 
 /*
@@ -214,28 +288,60 @@ If [param antialiased] is [code]true[/code], half transparent "feathers" will be
 [b]Note:[/b] [param width] is only effective if [param filled] is [code]false[/code].
 */
 func (self Instance) DrawCircle(position Vector2.XY, radius Float.X, color Color.RGBA) { //gd:CanvasItem.draw_circle
-	class(self).DrawCircle(Vector2.XY(position), float64(radius), Color.RGBA(color), true, float64(-1.0), false)
+	Advanced(self).DrawCircle(Vector2.XY(position), float64(radius), Color.RGBA(color), true, float64(-1.0), false)
+}
+
+/*
+Draws a circle. See also [method draw_arc], [method draw_polyline], and [method draw_polygon].
+If [param filled] is [code]true[/code], the circle will be filled with the [param color] specified. If [param filled] is [code]false[/code], the circle will be drawn as a stroke with the [param color] and [param width] specified.
+If [param width] is negative, then two-point primitives will be drawn instead of a four-point ones. This means that when the CanvasItem is scaled, the lines will remain thin. If this behavior is not desired, then pass a positive [param width] like [code]1.0[/code].
+If [param antialiased] is [code]true[/code], half transparent "feathers" will be attached to the boundary, making outlines smooth.
+[b]Note:[/b] [param width] is only effective if [param filled] is [code]false[/code].
+*/
+func (self Expanded) DrawCircle(position Vector2.XY, radius Float.X, color Color.RGBA, filled bool, width Float.X, antialiased bool) { //gd:CanvasItem.draw_circle
+	Advanced(self).DrawCircle(Vector2.XY(position), float64(radius), Color.RGBA(color), filled, float64(width), antialiased)
 }
 
 /*
 Draws a texture at a given position.
 */
 func (self Instance) DrawTexture(texture [1]gdclass.Texture2D, position Vector2.XY) { //gd:CanvasItem.draw_texture
-	class(self).DrawTexture(texture, Vector2.XY(position), Color.RGBA(gd.Color{1, 1, 1, 1}))
+	Advanced(self).DrawTexture(texture, Vector2.XY(position), Color.RGBA(gd.Color{1, 1, 1, 1}))
+}
+
+/*
+Draws a texture at a given position.
+*/
+func (self Expanded) DrawTexture(texture [1]gdclass.Texture2D, position Vector2.XY, modulate Color.RGBA) { //gd:CanvasItem.draw_texture
+	Advanced(self).DrawTexture(texture, Vector2.XY(position), Color.RGBA(modulate))
 }
 
 /*
 Draws a textured rectangle at a given position, optionally modulated by a color. If [param transpose] is [code]true[/code], the texture will have its X and Y coordinates swapped. See also [method draw_rect] and [method draw_texture_rect_region].
 */
 func (self Instance) DrawTextureRect(texture [1]gdclass.Texture2D, rect Rect2.PositionSize, tile bool) { //gd:CanvasItem.draw_texture_rect
-	class(self).DrawTextureRect(texture, Rect2.PositionSize(rect), tile, Color.RGBA(gd.Color{1, 1, 1, 1}), false)
+	Advanced(self).DrawTextureRect(texture, Rect2.PositionSize(rect), tile, Color.RGBA(gd.Color{1, 1, 1, 1}), false)
+}
+
+/*
+Draws a textured rectangle at a given position, optionally modulated by a color. If [param transpose] is [code]true[/code], the texture will have its X and Y coordinates swapped. See also [method draw_rect] and [method draw_texture_rect_region].
+*/
+func (self Expanded) DrawTextureRect(texture [1]gdclass.Texture2D, rect Rect2.PositionSize, tile bool, modulate Color.RGBA, transpose bool) { //gd:CanvasItem.draw_texture_rect
+	Advanced(self).DrawTextureRect(texture, Rect2.PositionSize(rect), tile, Color.RGBA(modulate), transpose)
 }
 
 /*
 Draws a textured rectangle from a texture's region (specified by [param src_rect]) at a given position, optionally modulated by a color. If [param transpose] is [code]true[/code], the texture will have its X and Y coordinates swapped. See also [method draw_texture_rect].
 */
 func (self Instance) DrawTextureRectRegion(texture [1]gdclass.Texture2D, rect Rect2.PositionSize, src_rect Rect2.PositionSize) { //gd:CanvasItem.draw_texture_rect_region
-	class(self).DrawTextureRectRegion(texture, Rect2.PositionSize(rect), Rect2.PositionSize(src_rect), Color.RGBA(gd.Color{1, 1, 1, 1}), false, true)
+	Advanced(self).DrawTextureRectRegion(texture, Rect2.PositionSize(rect), Rect2.PositionSize(src_rect), Color.RGBA(gd.Color{1, 1, 1, 1}), false, true)
+}
+
+/*
+Draws a textured rectangle from a texture's region (specified by [param src_rect]) at a given position, optionally modulated by a color. If [param transpose] is [code]true[/code], the texture will have its X and Y coordinates swapped. See also [method draw_texture_rect].
+*/
+func (self Expanded) DrawTextureRectRegion(texture [1]gdclass.Texture2D, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool) { //gd:CanvasItem.draw_texture_rect_region
+	Advanced(self).DrawTextureRectRegion(texture, Rect2.PositionSize(rect), Rect2.PositionSize(src_rect), Color.RGBA(modulate), transpose, clip_uv)
 }
 
 /*
@@ -244,7 +350,16 @@ If [param outline] is positive, each alpha channel value of pixel in region is s
 Value of the [param pixel_range] should the same that was used during distance field texture generation.
 */
 func (self Instance) DrawMsdfTextureRectRegion(texture [1]gdclass.Texture2D, rect Rect2.PositionSize, src_rect Rect2.PositionSize) { //gd:CanvasItem.draw_msdf_texture_rect_region
-	class(self).DrawMsdfTextureRectRegion(texture, Rect2.PositionSize(rect), Rect2.PositionSize(src_rect), Color.RGBA(gd.Color{1, 1, 1, 1}), float64(0.0), float64(4.0), float64(1.0))
+	Advanced(self).DrawMsdfTextureRectRegion(texture, Rect2.PositionSize(rect), Rect2.PositionSize(src_rect), Color.RGBA(gd.Color{1, 1, 1, 1}), float64(0.0), float64(4.0), float64(1.0))
+}
+
+/*
+Draws a textured rectangle region of the multi-channel signed distance field texture at a given position, optionally modulated by a color. See [member FontFile.multichannel_signed_distance_field] for more information and caveats about MSDF font rendering.
+If [param outline] is positive, each alpha channel value of pixel in region is set to maximum value of true distance in the [param outline] radius.
+Value of the [param pixel_range] should the same that was used during distance field texture generation.
+*/
+func (self Expanded) DrawMsdfTextureRectRegion(texture [1]gdclass.Texture2D, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, outline Float.X, pixel_range Float.X, scale Float.X) { //gd:CanvasItem.draw_msdf_texture_rect_region
+	Advanced(self).DrawMsdfTextureRectRegion(texture, Rect2.PositionSize(rect), Rect2.PositionSize(src_rect), Color.RGBA(modulate), float64(outline), float64(pixel_range), float64(scale))
 }
 
 /*
@@ -258,21 +373,42 @@ dst.a = modulate.a + dst.a * (1.0 - modulate.a);
 [/codeblock]
 */
 func (self Instance) DrawLcdTextureRectRegion(texture [1]gdclass.Texture2D, rect Rect2.PositionSize, src_rect Rect2.PositionSize) { //gd:CanvasItem.draw_lcd_texture_rect_region
-	class(self).DrawLcdTextureRectRegion(texture, Rect2.PositionSize(rect), Rect2.PositionSize(src_rect), Color.RGBA(gd.Color{1, 1, 1, 1}))
+	Advanced(self).DrawLcdTextureRectRegion(texture, Rect2.PositionSize(rect), Rect2.PositionSize(src_rect), Color.RGBA(gd.Color{1, 1, 1, 1}))
+}
+
+/*
+Draws a textured rectangle region of the font texture with LCD subpixel anti-aliasing at a given position, optionally modulated by a color.
+Texture is drawn using the following blend operation, blend mode of the [CanvasItemMaterial] is ignored:
+[codeblock]
+dst.r = texture.r * modulate.r * modulate.a + dst.r * (1.0 - texture.r * modulate.a);
+dst.g = texture.g * modulate.g * modulate.a + dst.g * (1.0 - texture.g * modulate.a);
+dst.b = texture.b * modulate.b * modulate.a + dst.b * (1.0 - texture.b * modulate.a);
+dst.a = modulate.a + dst.a * (1.0 - modulate.a);
+[/codeblock]
+*/
+func (self Expanded) DrawLcdTextureRectRegion(texture [1]gdclass.Texture2D, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA) { //gd:CanvasItem.draw_lcd_texture_rect_region
+	Advanced(self).DrawLcdTextureRectRegion(texture, Rect2.PositionSize(rect), Rect2.PositionSize(src_rect), Color.RGBA(modulate))
 }
 
 /*
 Draws a styled rectangle.
 */
 func (self Instance) DrawStyleBox(style_box [1]gdclass.StyleBox, rect Rect2.PositionSize) { //gd:CanvasItem.draw_style_box
-	class(self).DrawStyleBox(style_box, Rect2.PositionSize(rect))
+	Advanced(self).DrawStyleBox(style_box, Rect2.PositionSize(rect))
 }
 
 /*
 Draws a custom primitive. 1 point for a point, 2 points for a line, 3 points for a triangle, and 4 points for a quad. If 0 points or more than 4 points are specified, nothing will be drawn and an error message will be printed. See also [method draw_line], [method draw_polyline], [method draw_polygon], and [method draw_rect].
 */
 func (self Instance) DrawPrimitive(points []Vector2.XY, colors []Color.RGBA, uvs []Vector2.XY) { //gd:CanvasItem.draw_primitive
-	class(self).DrawPrimitive(Packed.New(points...), Packed.New(colors...), Packed.New(uvs...), [1][1]gdclass.Texture2D{}[0])
+	Advanced(self).DrawPrimitive(Packed.New(points...), Packed.New(colors...), Packed.New(uvs...), [1][1]gdclass.Texture2D{}[0])
+}
+
+/*
+Draws a custom primitive. 1 point for a point, 2 points for a line, 3 points for a triangle, and 4 points for a quad. If 0 points or more than 4 points are specified, nothing will be drawn and an error message will be printed. See also [method draw_line], [method draw_polyline], [method draw_polygon], and [method draw_rect].
+*/
+func (self Expanded) DrawPrimitive(points []Vector2.XY, colors []Color.RGBA, uvs []Vector2.XY, texture [1]gdclass.Texture2D) { //gd:CanvasItem.draw_primitive
+	Advanced(self).DrawPrimitive(Packed.New(points...), Packed.New(colors...), Packed.New(uvs...), texture)
 }
 
 /*
@@ -280,7 +416,15 @@ Draws a solid polygon of any number of points, convex or concave. Unlike [method
 [b]Note:[/b] If you frequently redraw the same polygon with a large number of vertices, consider pre-calculating the triangulation with [method Geometry2D.triangulate_polygon] and using [method draw_mesh], [method draw_multimesh], or [method RenderingServer.canvas_item_add_triangle_array].
 */
 func (self Instance) DrawPolygon(points []Vector2.XY, colors []Color.RGBA) { //gd:CanvasItem.draw_polygon
-	class(self).DrawPolygon(Packed.New(points...), Packed.New(colors...), Packed.New[Vector2.XY](), [1][1]gdclass.Texture2D{}[0])
+	Advanced(self).DrawPolygon(Packed.New(points...), Packed.New(colors...), Packed.New[Vector2.XY](), [1][1]gdclass.Texture2D{}[0])
+}
+
+/*
+Draws a solid polygon of any number of points, convex or concave. Unlike [method draw_colored_polygon], each point's color can be changed individually. See also [method draw_polyline] and [method draw_polyline_colors]. If you need more flexibility (such as being able to use bones), use [method RenderingServer.canvas_item_add_triangle_array] instead.
+[b]Note:[/b] If you frequently redraw the same polygon with a large number of vertices, consider pre-calculating the triangulation with [method Geometry2D.triangulate_polygon] and using [method draw_mesh], [method draw_multimesh], or [method RenderingServer.canvas_item_add_triangle_array].
+*/
+func (self Expanded) DrawPolygon(points []Vector2.XY, colors []Color.RGBA, uvs []Vector2.XY, texture [1]gdclass.Texture2D) { //gd:CanvasItem.draw_polygon
+	Advanced(self).DrawPolygon(Packed.New(points...), Packed.New(colors...), Packed.New(uvs...), texture)
 }
 
 /*
@@ -288,7 +432,15 @@ Draws a colored polygon of any number of points, convex or concave. Unlike [meth
 [b]Note:[/b] If you frequently redraw the same polygon with a large number of vertices, consider pre-calculating the triangulation with [method Geometry2D.triangulate_polygon] and using [method draw_mesh], [method draw_multimesh], or [method RenderingServer.canvas_item_add_triangle_array].
 */
 func (self Instance) DrawColoredPolygon(points []Vector2.XY, color Color.RGBA) { //gd:CanvasItem.draw_colored_polygon
-	class(self).DrawColoredPolygon(Packed.New(points...), Color.RGBA(color), Packed.New[Vector2.XY](), [1][1]gdclass.Texture2D{}[0])
+	Advanced(self).DrawColoredPolygon(Packed.New(points...), Color.RGBA(color), Packed.New[Vector2.XY](), [1][1]gdclass.Texture2D{}[0])
+}
+
+/*
+Draws a colored polygon of any number of points, convex or concave. Unlike [method draw_polygon], a single color must be specified for the whole polygon.
+[b]Note:[/b] If you frequently redraw the same polygon with a large number of vertices, consider pre-calculating the triangulation with [method Geometry2D.triangulate_polygon] and using [method draw_mesh], [method draw_multimesh], or [method RenderingServer.canvas_item_add_triangle_array].
+*/
+func (self Expanded) DrawColoredPolygon(points []Vector2.XY, color Color.RGBA, uvs []Vector2.XY, texture [1]gdclass.Texture2D) { //gd:CanvasItem.draw_colored_polygon
+	Advanced(self).DrawColoredPolygon(Packed.New(points...), Color.RGBA(color), Packed.New(uvs...), texture)
 }
 
 /*
@@ -315,56 +467,125 @@ DrawString(defaultFont, new Vector2(64, 64), "Hello world", HORIZONTAL_ALIGNMENT
 See also [method Font.draw_string].
 */
 func (self Instance) DrawString(font [1]gdclass.Font, pos Vector2.XY, text string) { //gd:CanvasItem.draw_string
-	class(self).DrawString(font, Vector2.XY(pos), String.New(text), 0, float64(-1), int64(16), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 0, 0)
+	Advanced(self).DrawString(font, Vector2.XY(pos), String.New(text), 0, float64(-1), int64(16), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 0, 0)
+}
+
+/*
+Draws [param text] using the specified [param font] at the [param pos] (bottom-left corner using the baseline of the font). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
+[b]Example:[/b] Draw "Hello world", using the project's default font:
+[codeblocks]
+[gdscript]
+# If using this method in a script that redraws constantly, move the
+# `default_font` declaration to a member variable assigned in `_ready()`
+# so the Control is only created once.
+var default_font = ThemeDB.fallback_font
+var default_font_size = ThemeDB.fallback_font_size
+draw_string(default_font, Vector2(64, 64), "Hello world", HORIZONTAL_ALIGNMENT_LEFT, -1, default_font_size)
+[/gdscript]
+[csharp]
+// If using this method in a script that redraws constantly, move the
+// `default_font` declaration to a member variable assigned in `_Ready()`
+// so the Control is only created once.
+Font defaultFont = ThemeDB.FallbackFont;
+int defaultFontSize = ThemeDB.FallbackFontSize;
+DrawString(defaultFont, new Vector2(64, 64), "Hello world", HORIZONTAL_ALIGNMENT_LEFT, -1, defaultFontSize);
+[/csharp]
+[/codeblocks]
+See also [method Font.draw_string].
+*/
+func (self Expanded) DrawString(font [1]gdclass.Font, pos Vector2.XY, text string, alignment HorizontalAlignment, width Float.X, font_size int, modulate Color.RGBA, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:CanvasItem.draw_string
+	Advanced(self).DrawString(font, Vector2.XY(pos), String.New(text), alignment, float64(width), int64(font_size), Color.RGBA(modulate), justification_flags, direction, orientation)
 }
 
 /*
 Breaks [param text] into lines and draws it using the specified [param font] at the [param pos] (top-left corner). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
 */
 func (self Instance) DrawMultilineString(font [1]gdclass.Font, pos Vector2.XY, text string) { //gd:CanvasItem.draw_multiline_string
-	class(self).DrawMultilineString(font, Vector2.XY(pos), String.New(text), 0, float64(-1), int64(16), int64(-1), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 3, 0, 0)
+	Advanced(self).DrawMultilineString(font, Vector2.XY(pos), String.New(text), 0, float64(-1), int64(16), int64(-1), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 3, 0, 0)
+}
+
+/*
+Breaks [param text] into lines and draws it using the specified [param font] at the [param pos] (top-left corner). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
+*/
+func (self Expanded) DrawMultilineString(font [1]gdclass.Font, pos Vector2.XY, text string, alignment HorizontalAlignment, width Float.X, font_size int, max_lines int, modulate Color.RGBA, brk_flags gdclass.TextServerLineBreakFlag, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:CanvasItem.draw_multiline_string
+	Advanced(self).DrawMultilineString(font, Vector2.XY(pos), String.New(text), alignment, float64(width), int64(font_size), int64(max_lines), Color.RGBA(modulate), brk_flags, justification_flags, direction, orientation)
 }
 
 /*
 Draws [param text] outline using the specified [param font] at the [param pos] (bottom-left corner using the baseline of the font). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
 */
 func (self Instance) DrawStringOutline(font [1]gdclass.Font, pos Vector2.XY, text string) { //gd:CanvasItem.draw_string_outline
-	class(self).DrawStringOutline(font, Vector2.XY(pos), String.New(text), 0, float64(-1), int64(16), int64(1), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 0, 0)
+	Advanced(self).DrawStringOutline(font, Vector2.XY(pos), String.New(text), 0, float64(-1), int64(16), int64(1), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 0, 0)
+}
+
+/*
+Draws [param text] outline using the specified [param font] at the [param pos] (bottom-left corner using the baseline of the font). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
+*/
+func (self Expanded) DrawStringOutline(font [1]gdclass.Font, pos Vector2.XY, text string, alignment HorizontalAlignment, width Float.X, font_size int, size int, modulate Color.RGBA, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:CanvasItem.draw_string_outline
+	Advanced(self).DrawStringOutline(font, Vector2.XY(pos), String.New(text), alignment, float64(width), int64(font_size), int64(size), Color.RGBA(modulate), justification_flags, direction, orientation)
 }
 
 /*
 Breaks [param text] to the lines and draws text outline using the specified [param font] at the [param pos] (top-left corner). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
 */
 func (self Instance) DrawMultilineStringOutline(font [1]gdclass.Font, pos Vector2.XY, text string) { //gd:CanvasItem.draw_multiline_string_outline
-	class(self).DrawMultilineStringOutline(font, Vector2.XY(pos), String.New(text), 0, float64(-1), int64(16), int64(-1), int64(1), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 3, 0, 0)
+	Advanced(self).DrawMultilineStringOutline(font, Vector2.XY(pos), String.New(text), 0, float64(-1), int64(16), int64(-1), int64(1), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 3, 0, 0)
+}
+
+/*
+Breaks [param text] to the lines and draws text outline using the specified [param font] at the [param pos] (top-left corner). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
+*/
+func (self Expanded) DrawMultilineStringOutline(font [1]gdclass.Font, pos Vector2.XY, text string, alignment HorizontalAlignment, width Float.X, font_size int, max_lines int, size int, modulate Color.RGBA, brk_flags gdclass.TextServerLineBreakFlag, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:CanvasItem.draw_multiline_string_outline
+	Advanced(self).DrawMultilineStringOutline(font, Vector2.XY(pos), String.New(text), alignment, float64(width), int64(font_size), int64(max_lines), int64(size), Color.RGBA(modulate), brk_flags, justification_flags, direction, orientation)
 }
 
 /*
 Draws a string first character using a custom font.
 */
 func (self Instance) DrawChar(font [1]gdclass.Font, pos Vector2.XY, char string) { //gd:CanvasItem.draw_char
-	class(self).DrawChar(font, Vector2.XY(pos), String.New(char), int64(16), Color.RGBA(gd.Color{1, 1, 1, 1}))
+	Advanced(self).DrawChar(font, Vector2.XY(pos), String.New(char), int64(16), Color.RGBA(gd.Color{1, 1, 1, 1}))
+}
+
+/*
+Draws a string first character using a custom font.
+*/
+func (self Expanded) DrawChar(font [1]gdclass.Font, pos Vector2.XY, char string, font_size int, modulate Color.RGBA) { //gd:CanvasItem.draw_char
+	Advanced(self).DrawChar(font, Vector2.XY(pos), String.New(char), int64(font_size), Color.RGBA(modulate))
 }
 
 /*
 Draws a string first character outline using a custom font.
 */
 func (self Instance) DrawCharOutline(font [1]gdclass.Font, pos Vector2.XY, char string) { //gd:CanvasItem.draw_char_outline
-	class(self).DrawCharOutline(font, Vector2.XY(pos), String.New(char), int64(16), int64(-1), Color.RGBA(gd.Color{1, 1, 1, 1}))
+	Advanced(self).DrawCharOutline(font, Vector2.XY(pos), String.New(char), int64(16), int64(-1), Color.RGBA(gd.Color{1, 1, 1, 1}))
+}
+
+/*
+Draws a string first character outline using a custom font.
+*/
+func (self Expanded) DrawCharOutline(font [1]gdclass.Font, pos Vector2.XY, char string, font_size int, size int, modulate Color.RGBA) { //gd:CanvasItem.draw_char_outline
+	Advanced(self).DrawCharOutline(font, Vector2.XY(pos), String.New(char), int64(font_size), int64(size), Color.RGBA(modulate))
 }
 
 /*
 Draws a [Mesh] in 2D, using the provided texture. See [MeshInstance2D] for related documentation.
 */
 func (self Instance) DrawMesh(mesh [1]gdclass.Mesh, texture [1]gdclass.Texture2D) { //gd:CanvasItem.draw_mesh
-	class(self).DrawMesh(mesh, texture, Transform2D.OriginXY(gd.NewTransform2D(1, 0, 0, 1, 0, 0)), Color.RGBA(gd.Color{1, 1, 1, 1}))
+	Advanced(self).DrawMesh(mesh, texture, Transform2D.OriginXY(gd.NewTransform2D(1, 0, 0, 1, 0, 0)), Color.RGBA(gd.Color{1, 1, 1, 1}))
+}
+
+/*
+Draws a [Mesh] in 2D, using the provided texture. See [MeshInstance2D] for related documentation.
+*/
+func (self Expanded) DrawMesh(mesh [1]gdclass.Mesh, texture [1]gdclass.Texture2D, transform Transform2D.OriginXY, modulate Color.RGBA) { //gd:CanvasItem.draw_mesh
+	Advanced(self).DrawMesh(mesh, texture, Transform2D.OriginXY(transform), Color.RGBA(modulate))
 }
 
 /*
 Draws a [MultiMesh] in 2D with the provided texture. See [MultiMeshInstance2D] for related documentation.
 */
 func (self Instance) DrawMultimesh(multimesh [1]gdclass.MultiMesh, texture [1]gdclass.Texture2D) { //gd:CanvasItem.draw_multimesh
-	class(self).DrawMultimesh(multimesh, texture)
+	Advanced(self).DrawMultimesh(multimesh, texture)
 }
 
 /*
@@ -372,70 +593,85 @@ Sets a custom transform for drawing via components. Anything drawn afterwards wi
 [b]Note:[/b] [member FontFile.oversampling] does [i]not[/i] take [param scale] into account. This means that scaling up/down will cause bitmap fonts and rasterized (non-MSDF) dynamic fonts to appear blurry or pixelated. To ensure text remains crisp regardless of scale, you can enable MSDF font rendering by enabling [member ProjectSettings.gui/theme/default_font_multichannel_signed_distance_field] (applies to the default project font only), or enabling [b]Multichannel Signed Distance Field[/b] in the import options of a DynamicFont for custom fonts. On system fonts, [member SystemFont.multichannel_signed_distance_field] can be enabled in the inspector.
 */
 func (self Instance) DrawSetTransform(position Vector2.XY) { //gd:CanvasItem.draw_set_transform
-	class(self).DrawSetTransform(Vector2.XY(position), float64(0.0), Vector2.XY(gd.Vector2{1, 1}))
+	Advanced(self).DrawSetTransform(Vector2.XY(position), float64(0.0), Vector2.XY(gd.Vector2{1, 1}))
+}
+
+/*
+Sets a custom transform for drawing via components. Anything drawn afterwards will be transformed by this.
+[b]Note:[/b] [member FontFile.oversampling] does [i]not[/i] take [param scale] into account. This means that scaling up/down will cause bitmap fonts and rasterized (non-MSDF) dynamic fonts to appear blurry or pixelated. To ensure text remains crisp regardless of scale, you can enable MSDF font rendering by enabling [member ProjectSettings.gui/theme/default_font_multichannel_signed_distance_field] (applies to the default project font only), or enabling [b]Multichannel Signed Distance Field[/b] in the import options of a DynamicFont for custom fonts. On system fonts, [member SystemFont.multichannel_signed_distance_field] can be enabled in the inspector.
+*/
+func (self Expanded) DrawSetTransform(position Vector2.XY, rotation Float.X, scale Vector2.XY) { //gd:CanvasItem.draw_set_transform
+	Advanced(self).DrawSetTransform(Vector2.XY(position), float64(rotation), Vector2.XY(scale))
 }
 
 /*
 Sets a custom transform for drawing via matrix. Anything drawn afterwards will be transformed by this.
 */
 func (self Instance) DrawSetTransformMatrix(xform Transform2D.OriginXY) { //gd:CanvasItem.draw_set_transform_matrix
-	class(self).DrawSetTransformMatrix(Transform2D.OriginXY(xform))
+	Advanced(self).DrawSetTransformMatrix(Transform2D.OriginXY(xform))
 }
 
 /*
 Subsequent drawing commands will be ignored unless they fall within the specified animation slice. This is a faster way to implement animations that loop on background rather than redrawing constantly.
 */
 func (self Instance) DrawAnimationSlice(animation_length Float.X, slice_begin Float.X, slice_end Float.X) { //gd:CanvasItem.draw_animation_slice
-	class(self).DrawAnimationSlice(float64(animation_length), float64(slice_begin), float64(slice_end), float64(0.0))
+	Advanced(self).DrawAnimationSlice(float64(animation_length), float64(slice_begin), float64(slice_end), float64(0.0))
+}
+
+/*
+Subsequent drawing commands will be ignored unless they fall within the specified animation slice. This is a faster way to implement animations that loop on background rather than redrawing constantly.
+*/
+func (self Expanded) DrawAnimationSlice(animation_length Float.X, slice_begin Float.X, slice_end Float.X, offset Float.X) { //gd:CanvasItem.draw_animation_slice
+	Advanced(self).DrawAnimationSlice(float64(animation_length), float64(slice_begin), float64(slice_end), float64(offset))
 }
 
 /*
 After submitting all animations slices via [method draw_animation_slice], this function can be used to revert drawing to its default state (all subsequent drawing commands will be visible). If you don't care about this particular use case, usage of this function after submitting the slices is not required.
 */
 func (self Instance) DrawEndAnimation() { //gd:CanvasItem.draw_end_animation
-	class(self).DrawEndAnimation()
+	Advanced(self).DrawEndAnimation()
 }
 
 /*
 Returns the transform matrix of this item.
 */
 func (self Instance) GetTransform() Transform2D.OriginXY { //gd:CanvasItem.get_transform
-	return Transform2D.OriginXY(class(self).GetTransform())
+	return Transform2D.OriginXY(Advanced(self).GetTransform())
 }
 
 /*
 Returns the global transform matrix of this item, i.e. the combined transform up to the topmost [CanvasItem] node. The topmost item is a [CanvasItem] that either has no parent, has non-[CanvasItem] parent or it has [member top_level] enabled.
 */
 func (self Instance) GetGlobalTransform() Transform2D.OriginXY { //gd:CanvasItem.get_global_transform
-	return Transform2D.OriginXY(class(self).GetGlobalTransform())
+	return Transform2D.OriginXY(Advanced(self).GetGlobalTransform())
 }
 
 /*
 Returns the transform from the local coordinate system of this [CanvasItem] to the [Viewport]s coordinate system.
 */
 func (self Instance) GetGlobalTransformWithCanvas() Transform2D.OriginXY { //gd:CanvasItem.get_global_transform_with_canvas
-	return Transform2D.OriginXY(class(self).GetGlobalTransformWithCanvas())
+	return Transform2D.OriginXY(Advanced(self).GetGlobalTransformWithCanvas())
 }
 
 /*
 Returns the transform from the coordinate system of the canvas, this item is in, to the [Viewport]s embedders coordinate system.
 */
 func (self Instance) GetViewportTransform() Transform2D.OriginXY { //gd:CanvasItem.get_viewport_transform
-	return Transform2D.OriginXY(class(self).GetViewportTransform())
+	return Transform2D.OriginXY(Advanced(self).GetViewportTransform())
 }
 
 /*
 Returns the viewport's boundaries as a [Rect2].
 */
 func (self Instance) GetViewportRect() Rect2.PositionSize { //gd:CanvasItem.get_viewport_rect
-	return Rect2.PositionSize(class(self).GetViewportRect())
+	return Rect2.PositionSize(Advanced(self).GetViewportRect())
 }
 
 /*
 Returns the transform from the coordinate system of the canvas, this item is in, to the [Viewport]s coordinate system.
 */
 func (self Instance) GetCanvasTransform() Transform2D.OriginXY { //gd:CanvasItem.get_canvas_transform
-	return Transform2D.OriginXY(class(self).GetCanvasTransform())
+	return Transform2D.OriginXY(Advanced(self).GetCanvasTransform())
 }
 
 /*
@@ -443,14 +679,14 @@ Returns the transform of this [CanvasItem] in global screen coordinates (i.e. ta
 Equals to [method get_global_transform] if the window is embedded (see [member Viewport.gui_embed_subwindows]).
 */
 func (self Instance) GetScreenTransform() Transform2D.OriginXY { //gd:CanvasItem.get_screen_transform
-	return Transform2D.OriginXY(class(self).GetScreenTransform())
+	return Transform2D.OriginXY(Advanced(self).GetScreenTransform())
 }
 
 /*
 Returns the mouse's position in this [CanvasItem] using the local coordinate system of this [CanvasItem].
 */
 func (self Instance) GetLocalMousePosition() Vector2.XY { //gd:CanvasItem.get_local_mouse_position
-	return Vector2.XY(class(self).GetLocalMousePosition())
+	return Vector2.XY(Advanced(self).GetLocalMousePosition())
 }
 
 /*
@@ -458,28 +694,28 @@ Returns the mouse's position in the [CanvasLayer] that this [CanvasItem] is in u
 [b]Note:[/b] For screen-space coordinates (e.g. when using a non-embedded [Popup]), you can use [method DisplayServer.mouse_get_position].
 */
 func (self Instance) GetGlobalMousePosition() Vector2.XY { //gd:CanvasItem.get_global_mouse_position
-	return Vector2.XY(class(self).GetGlobalMousePosition())
+	return Vector2.XY(Advanced(self).GetGlobalMousePosition())
 }
 
 /*
 Returns the [RID] of the [World2D] canvas where this item is in.
 */
 func (self Instance) GetCanvas() RID.Canvas { //gd:CanvasItem.get_canvas
-	return RID.Canvas(class(self).GetCanvas())
+	return RID.Canvas(Advanced(self).GetCanvas())
 }
 
 /*
 Returns the [CanvasLayer] that contains this node, or [code]null[/code] if the node is not in any [CanvasLayer].
 */
 func (self Instance) GetCanvasLayerNode() [1]gdclass.CanvasLayer { //gd:CanvasItem.get_canvas_layer_node
-	return [1]gdclass.CanvasLayer(class(self).GetCanvasLayerNode())
+	return [1]gdclass.CanvasLayer(Advanced(self).GetCanvasLayerNode())
 }
 
 /*
 Returns the [World2D] where this item is in.
 */
 func (self Instance) GetWorld2d() [1]gdclass.World2D { //gd:CanvasItem.get_world_2d
-	return [1]gdclass.World2D(class(self).GetWorld2d())
+	return [1]gdclass.World2D(Advanced(self).GetWorld2d())
 }
 
 /*
@@ -488,49 +724,49 @@ Set the value of a shader uniform for this instance only ([url=$DOCS_URL/tutoria
 [b]Note:[/b] [param name] is case-sensitive and must match the name of the uniform in the code exactly (not the capitalized name in the inspector).
 */
 func (self Instance) SetInstanceShaderParameter(name string, value any) { //gd:CanvasItem.set_instance_shader_parameter
-	class(self).SetInstanceShaderParameter(String.Name(String.New(name)), variant.New(value))
+	Advanced(self).SetInstanceShaderParameter(String.Name(String.New(name)), variant.New(value))
 }
 
 /*
 Get the value of a shader parameter as set on this instance.
 */
 func (self Instance) GetInstanceShaderParameter(name string) any { //gd:CanvasItem.get_instance_shader_parameter
-	return any(class(self).GetInstanceShaderParameter(String.Name(String.New(name))).Interface())
+	return any(Advanced(self).GetInstanceShaderParameter(String.Name(String.New(name))).Interface())
 }
 
 /*
 If [param enable] is [code]true[/code], this node will receive [constant NOTIFICATION_LOCAL_TRANSFORM_CHANGED] when its local transform changes.
 */
 func (self Instance) SetNotifyLocalTransform(enable bool) { //gd:CanvasItem.set_notify_local_transform
-	class(self).SetNotifyLocalTransform(enable)
+	Advanced(self).SetNotifyLocalTransform(enable)
 }
 
 /*
 Returns [code]true[/code] if local transform notifications are communicated to children.
 */
 func (self Instance) IsLocalTransformNotificationEnabled() bool { //gd:CanvasItem.is_local_transform_notification_enabled
-	return bool(class(self).IsLocalTransformNotificationEnabled())
+	return bool(Advanced(self).IsLocalTransformNotificationEnabled())
 }
 
 /*
 If [param enable] is [code]true[/code], this node will receive [constant NOTIFICATION_TRANSFORM_CHANGED] when its global transform changes.
 */
 func (self Instance) SetNotifyTransform(enable bool) { //gd:CanvasItem.set_notify_transform
-	class(self).SetNotifyTransform(enable)
+	Advanced(self).SetNotifyTransform(enable)
 }
 
 /*
 Returns [code]true[/code] if global transform notifications are communicated to children.
 */
 func (self Instance) IsTransformNotificationEnabled() bool { //gd:CanvasItem.is_transform_notification_enabled
-	return bool(class(self).IsTransformNotificationEnabled())
+	return bool(Advanced(self).IsTransformNotificationEnabled())
 }
 
 /*
 Forces the transform to update. Transform changes in physics are not instant for performance reasons. Transforms are accumulated and then set. Use this if you need an up-to-date transform when doing physics operations.
 */
 func (self Instance) ForceUpdateTransform() { //gd:CanvasItem.force_update_transform
-	class(self).ForceUpdateTransform()
+	Advanced(self).ForceUpdateTransform()
 }
 
 /*
@@ -541,28 +777,28 @@ var viewport_point = get_global_transform_with_canvas() * local_point
 [/codeblock]
 */
 func (self Instance) MakeCanvasPositionLocal(viewport_point Vector2.XY) Vector2.XY { //gd:CanvasItem.make_canvas_position_local
-	return Vector2.XY(class(self).MakeCanvasPositionLocal(Vector2.XY(viewport_point)))
+	return Vector2.XY(Advanced(self).MakeCanvasPositionLocal(Vector2.XY(viewport_point)))
 }
 
 /*
 Transformations issued by [param event]'s inputs are applied in local space instead of global space.
 */
 func (self Instance) MakeInputLocal(event [1]gdclass.InputEvent) [1]gdclass.InputEvent { //gd:CanvasItem.make_input_local
-	return [1]gdclass.InputEvent(class(self).MakeInputLocal(event))
+	return [1]gdclass.InputEvent(Advanced(self).MakeInputLocal(event))
 }
 
 /*
 Set/clear individual bits on the rendering visibility layer. This simplifies editing this [CanvasItem]'s visibility layer.
 */
 func (self Instance) SetVisibilityLayerBit(layer int, enabled bool) { //gd:CanvasItem.set_visibility_layer_bit
-	class(self).SetVisibilityLayerBit(int64(layer), enabled)
+	Advanced(self).SetVisibilityLayerBit(int64(layer), enabled)
 }
 
 /*
 Returns an individual bit on the rendering visibility layer.
 */
 func (self Instance) GetVisibilityLayerBit(layer int) bool { //gd:CanvasItem.get_visibility_layer_bit
-	return bool(class(self).GetVisibilityLayerBit(int64(layer)))
+	return bool(Advanced(self).GetVisibilityLayerBit(int64(layer)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

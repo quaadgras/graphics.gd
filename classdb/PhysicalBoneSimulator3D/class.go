@@ -46,6 +46,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 Node that can be the parent of [PhysicalBone3D] and can apply the simulation results to [Skeleton3D].
 */
 type Instance [1]gdclass.PhysicalBoneSimulator3D
+type Expanded [1]gdclass.PhysicalBoneSimulator3D
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -59,14 +60,14 @@ type Any interface {
 Returns a boolean that indicates whether the [PhysicalBoneSimulator3D] is running and simulating.
 */
 func (self Instance) IsSimulatingPhysics() bool { //gd:PhysicalBoneSimulator3D.is_simulating_physics
-	return bool(class(self).IsSimulatingPhysics())
+	return bool(Advanced(self).IsSimulatingPhysics())
 }
 
 /*
 Tells the [PhysicalBone3D] nodes in the Skeleton to stop simulating.
 */
 func (self Instance) PhysicalBonesStopSimulation() { //gd:PhysicalBoneSimulator3D.physical_bones_stop_simulation
-	class(self).PhysicalBonesStopSimulation()
+	Advanced(self).PhysicalBonesStopSimulation()
 }
 
 /*
@@ -74,7 +75,15 @@ Tells the [PhysicalBone3D] nodes in the Skeleton to start simulating and reactin
 Optionally, a list of bone names can be passed-in, allowing only the passed-in bones to be simulated.
 */
 func (self Instance) PhysicalBonesStartSimulation() { //gd:PhysicalBoneSimulator3D.physical_bones_start_simulation
-	class(self).PhysicalBonesStartSimulation(gd.ArrayFromSlice[Array.Contains[String.Name]]([1][]string{}[0]))
+	Advanced(self).PhysicalBonesStartSimulation(gd.ArrayFromSlice[Array.Contains[String.Name]]([1][]string{}[0]))
+}
+
+/*
+Tells the [PhysicalBone3D] nodes in the Skeleton to start simulating and reacting to the physics world.
+Optionally, a list of bone names can be passed-in, allowing only the passed-in bones to be simulated.
+*/
+func (self Expanded) PhysicalBonesStartSimulation(bones []string) { //gd:PhysicalBoneSimulator3D.physical_bones_start_simulation
+	Advanced(self).PhysicalBonesStartSimulation(gd.ArrayFromSlice[Array.Contains[String.Name]](bones))
 }
 
 /*
@@ -82,7 +91,7 @@ Adds a collision exception to the physical bone.
 Works just like the [RigidBody3D] node.
 */
 func (self Instance) PhysicalBonesAddCollisionException(exception RID.Body3D) { //gd:PhysicalBoneSimulator3D.physical_bones_add_collision_exception
-	class(self).PhysicalBonesAddCollisionException(RID.Any(exception))
+	Advanced(self).PhysicalBonesAddCollisionException(RID.Any(exception))
 }
 
 /*
@@ -90,7 +99,7 @@ Removes a collision exception to the physical bone.
 Works just like the [RigidBody3D] node.
 */
 func (self Instance) PhysicalBonesRemoveCollisionException(exception RID.Body3D) { //gd:PhysicalBoneSimulator3D.physical_bones_remove_collision_exception
-	class(self).PhysicalBonesRemoveCollisionException(RID.Any(exception))
+	Advanced(self).PhysicalBonesRemoveCollisionException(RID.Any(exception))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

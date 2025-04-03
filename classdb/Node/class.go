@@ -58,6 +58,7 @@ Finally, when a node is freed with [method Object.free] or [method queue_free], 
 %!(EXTRA string=Node)
 */
 type Instance [1]gdclass.Node
+type Expanded [1]gdclass.Node
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -328,7 +329,7 @@ Prints all orphan nodes (nodes outside the [SceneTree]). Useful for debugging.
 */
 func PrintOrphanNodes() { //gd:Node.print_orphan_nodes
 	self := Instance{}
-	class(self).PrintOrphanNodes()
+	Advanced(self).PrintOrphanNodes()
 }
 
 /*
@@ -338,7 +339,17 @@ Use [method add_child] instead of this method if you don't need the child node t
 [b]Note:[/b] If this node is internal, the added sibling will be internal too (see [method add_child]'s [code]internal[/code] parameter).
 */
 func (self Instance) AddSibling(sibling [1]gdclass.Node) { //gd:Node.add_sibling
-	class(self).AddSibling(sibling, false)
+	Advanced(self).AddSibling(sibling, false)
+}
+
+/*
+Adds a [param sibling] node to this node's parent, and moves the added sibling right below this node.
+If [param force_readable_name] is [code]true[/code], improves the readability of the added [param sibling]. If not named, the [param sibling] is renamed to its type, and if it shares [member name] with a sibling, a number is suffixed more appropriately. This operation is very slow. As such, it is recommended leaving this to [code]false[/code], which assigns a dummy name featuring [code]@[/code] in both situations.
+Use [method add_child] instead of this method if you don't need the child node to be added below a specific node in the list of children.
+[b]Note:[/b] If this node is internal, the added sibling will be internal too (see [method add_child]'s [code]internal[/code] parameter).
+*/
+func (self Expanded) AddSibling(sibling [1]gdclass.Node, force_readable_name bool) { //gd:Node.add_sibling
+	Advanced(self).AddSibling(sibling, force_readable_name)
 }
 
 /*
@@ -370,7 +381,39 @@ If you need the child node to be added below a specific node in the list of chil
 [b]Note:[/b] If you want a child to be persisted to a [PackedScene], you must set [member owner] in addition to calling [method add_child]. This is typically relevant for [url=$DOCS_URL/tutorials/plugins/running_code_in_the_editor.html]tool scripts[/url] and [url=$DOCS_URL/tutorials/plugins/editor/index.html]editor plugins[/url]. If [method add_child] is called without setting [member owner], the newly added [Node] will not be visible in the scene tree, though it will be visible in the 2D/3D view.
 */
 func (self Instance) AddChild(node [1]gdclass.Node) { //gd:Node.add_child
-	class(self).AddChild(node, false, 0)
+	Advanced(self).AddChild(node, false, 0)
+}
+
+/*
+Adds a child [param node]. Nodes can have any number of children, but every child must have a unique name. Child nodes are automatically deleted when the parent node is deleted, so an entire scene can be removed by deleting its topmost node.
+If [param force_readable_name] is [code]true[/code], improves the readability of the added [param node]. If not named, the [param node] is renamed to its type, and if it shares [member name] with a sibling, a number is suffixed more appropriately. This operation is very slow. As such, it is recommended leaving this to [code]false[/code], which assigns a dummy name featuring [code]@[/code] in both situations.
+If [param internal] is different than [constant INTERNAL_MODE_DISABLED], the child will be added as internal node. These nodes are ignored by methods like [method get_children], unless their parameter [code]include_internal[/code] is [code]true[/code]. The intended usage is to hide the internal nodes from the user, so the user won't accidentally delete or modify them. Used by some GUI nodes, e.g. [ColorPicker]. See [enum InternalMode] for available modes.
+[b]Note:[/b] If [param node] already has a parent, this method will fail. Use [method remove_child] first to remove [param node] from its current parent. For example:
+[codeblocks]
+[gdscript]
+var child_node = get_child(0)
+if child_node.get_parent():
+
+	child_node.get_parent().remove_child(child_node)
+
+add_child(child_node)
+[/gdscript]
+[csharp]
+Node childNode = GetChild(0);
+if (childNode.GetParent() != null)
+
+	{
+	    childNode.GetParent().RemoveChild(childNode);
+	}
+
+AddChild(childNode);
+[/csharp]
+[/codeblocks]
+If you need the child node to be added below a specific node in the list of children, use [method add_sibling] instead of this method.
+[b]Note:[/b] If you want a child to be persisted to a [PackedScene], you must set [member owner] in addition to calling [method add_child]. This is typically relevant for [url=$DOCS_URL/tutorials/plugins/running_code_in_the_editor.html]tool scripts[/url] and [url=$DOCS_URL/tutorials/plugins/editor/index.html]editor plugins[/url]. If [method add_child] is called without setting [member owner], the newly added [Node] will not be visible in the scene tree, though it will be visible in the 2D/3D view.
+*/
+func (self Expanded) AddChild(node [1]gdclass.Node, force_readable_name bool, internal_ gdclass.NodeInternalMode) { //gd:Node.add_child
+	Advanced(self).AddChild(node, force_readable_name, internal_)
 }
 
 /*
@@ -378,7 +421,7 @@ Removes a child [param node]. The [param node], along with its children, are [b]
 [b]Note:[/b] When this node is inside the tree, this method sets the [member owner] of the removed [param node] (or its descendants) to [code]null[/code], if their [member owner] is no longer an ancestor (see [method is_ancestor_of]).
 */
 func (self Instance) RemoveChild(node [1]gdclass.Node) { //gd:Node.remove_child
-	class(self).RemoveChild(node)
+	Advanced(self).RemoveChild(node)
 }
 
 /*
@@ -386,7 +429,15 @@ Changes the parent of this [Node] to the [param new_parent]. The node needs to a
 If [param keep_global_transform] is [code]true[/code], the node's global transform will be preserved if supported. [Node2D], [Node3D] and [Control] support this argument (but [Control] keeps only position).
 */
 func (self Instance) Reparent(new_parent [1]gdclass.Node) { //gd:Node.reparent
-	class(self).Reparent(new_parent, true)
+	Advanced(self).Reparent(new_parent, true)
+}
+
+/*
+Changes the parent of this [Node] to the [param new_parent]. The node needs to already have a parent. The node's [member owner] is preserved if its owner is still reachable from the new location (i.e., the node is still a descendant of the new parent after the operation).
+If [param keep_global_transform] is [code]true[/code], the node's global transform will be preserved if supported. [Node2D], [Node3D] and [Control] support this argument (but [Control] keeps only position).
+*/
+func (self Expanded) Reparent(new_parent [1]gdclass.Node, keep_global_transform bool) { //gd:Node.reparent
+	Advanced(self).Reparent(new_parent, keep_global_transform)
 }
 
 /*
@@ -394,7 +445,15 @@ Returns the number of children of this node.
 If [param include_internal] is [code]false[/code], internal children are not counted (see [method add_child]'s [code]internal[/code] parameter).
 */
 func (self Instance) GetChildCount() int { //gd:Node.get_child_count
-	return int(int(class(self).GetChildCount(false)))
+	return int(int(Advanced(self).GetChildCount(false)))
+}
+
+/*
+Returns the number of children of this node.
+If [param include_internal] is [code]false[/code], internal children are not counted (see [method add_child]'s [code]internal[/code] parameter).
+*/
+func (self Expanded) GetChildCount(include_internal bool) int { //gd:Node.get_child_count
+	return int(int(Advanced(self).GetChildCount(include_internal)))
 }
 
 /*
@@ -402,7 +461,15 @@ Returns all children of this node inside an [Array].
 If [param include_internal] is [code]false[/code], excludes internal children from the returned array (see [method add_child]'s [code]internal[/code] parameter).
 */
 func (self Instance) GetChildren() [][1]gdclass.Node { //gd:Node.get_children
-	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](gd.InternalArray(class(self).GetChildren(false))))
+	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](gd.InternalArray(Advanced(self).GetChildren(false))))
+}
+
+/*
+Returns all children of this node inside an [Array].
+If [param include_internal] is [code]false[/code], excludes internal children from the returned array (see [method add_child]'s [code]internal[/code] parameter).
+*/
+func (self Expanded) GetChildren(include_internal bool) [][1]gdclass.Node { //gd:Node.get_children
+	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](gd.InternalArray(Advanced(self).GetChildren(include_internal))))
 }
 
 /*
@@ -420,14 +487,32 @@ var c = get_child(-1).name # c is "Last"
 [b]Note:[/b] To fetch a node by [NodePath], use [method get_node].
 */
 func (self Instance) GetChild(idx int) [1]gdclass.Node { //gd:Node.get_child
-	return [1]gdclass.Node(class(self).GetChild(int64(idx), false))
+	return [1]gdclass.Node(Advanced(self).GetChild(int64(idx), false))
+}
+
+/*
+Fetches a child node by its index. Each child node has an index relative its siblings (see [method get_index]). The first child is at index 0. Negative values can also be used to start from the end of the list. This method can be used in combination with [method get_child_count] to iterate over this node's children. If no child exists at the given index, this method returns [code]null[/code] and an error is generated.
+If [param include_internal] is [code]false[/code], internal children are ignored (see [method add_child]'s [code]internal[/code] parameter).
+[codeblock]
+# Assuming the following are children of this node, in order:
+# First, Middle, Last.
+
+var a = get_child(0).name  # a is "First"
+var b = get_child(1).name  # b is "Middle"
+var b = get_child(2).name  # b is "Last"
+var c = get_child(-1).name # c is "Last"
+[/codeblock]
+[b]Note:[/b] To fetch a node by [NodePath], use [method get_node].
+*/
+func (self Expanded) GetChild(idx int, include_internal bool) [1]gdclass.Node { //gd:Node.get_child
+	return [1]gdclass.Node(Advanced(self).GetChild(int64(idx), include_internal))
 }
 
 /*
 Returns [code]true[/code] if the [param path] points to a valid node. See also [method get_node].
 */
 func (self Instance) HasNode(path string) bool { //gd:Node.has_node
-	return bool(class(self).HasNode(Path.ToNode(String.New(path))))
+	return bool(Advanced(self).HasNode(Path.ToNode(String.New(path))))
 }
 
 /*
@@ -465,21 +550,21 @@ GetNode("/root/MyGame");
 [/codeblocks]
 */
 func (self Instance) GetNode(path string) [1]gdclass.Node { //gd:Node.get_node
-	return [1]gdclass.Node(class(self).GetNode(Path.ToNode(String.New(path))))
+	return [1]gdclass.Node(Advanced(self).GetNode(Path.ToNode(String.New(path))))
 }
 
 /*
 Fetches a node by [NodePath]. Similar to [method get_node], but does not generate an error if [param path] does not point to a valid node.
 */
 func (self Instance) GetNodeOrNull(path string) [1]gdclass.Node { //gd:Node.get_node_or_null
-	return [1]gdclass.Node(class(self).GetNodeOrNull(Path.ToNode(String.New(path))))
+	return [1]gdclass.Node(Advanced(self).GetNodeOrNull(Path.ToNode(String.New(path))))
 }
 
 /*
 Returns this node's parent node, or [code]null[/code] if the node doesn't have a parent.
 */
 func (self Instance) GetParent() [1]gdclass.Node { //gd:Node.get_parent
-	return [1]gdclass.Node(class(self).GetParent())
+	return [1]gdclass.Node(Advanced(self).GetParent())
 }
 
 /*
@@ -490,7 +575,18 @@ If [param owned] is [code]true[/code], only descendants with a valid [member own
 [b]Note:[/b] To find all descendant nodes matching a pattern or a class type, see [method find_children].
 */
 func (self Instance) FindChild(pattern string) [1]gdclass.Node { //gd:Node.find_child
-	return [1]gdclass.Node(class(self).FindChild(String.New(pattern), true, true))
+	return [1]gdclass.Node(Advanced(self).FindChild(String.New(pattern), true, true))
+}
+
+/*
+Finds the first descendant of this node whose [member name] matches [param pattern], returning [code]null[/code] if no match is found. The matching is done against node names, [i]not[/i] their paths, through [method String.match]. As such, it is case-sensitive, [code]"*"[/code] matches zero or more characters, and [code]"?"[/code] matches any single character.
+If [param recursive] is [code]false[/code], only this node's direct children are checked. Nodes are checked in tree order, so this node's first direct child is checked first, then its own direct children, etc., before moving to the second direct child, and so on. Internal children are also included in the search (see [code]internal[/code] parameter in [method add_child]).
+If [param owned] is [code]true[/code], only descendants with a valid [member owner] node are checked.
+[b]Note:[/b] This method can be very slow. Consider storing a reference to the found node in a variable. Alternatively, use [method get_node] with unique names (see [member unique_name_in_owner]).
+[b]Note:[/b] To find all descendant nodes matching a pattern or a class type, see [method find_children].
+*/
+func (self Expanded) FindChild(pattern string, recursive bool, owned bool) [1]gdclass.Node { //gd:Node.find_child
+	return [1]gdclass.Node(Advanced(self).FindChild(String.New(pattern), recursive, owned))
 }
 
 /*
@@ -502,7 +598,19 @@ If [param owned] is [code]true[/code], only descendants with a valid [member own
 [b]Note:[/b] To find a single descendant node matching a pattern, see [method find_child].
 */
 func (self Instance) FindChildren(pattern string) [][1]gdclass.Node { //gd:Node.find_children
-	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](gd.InternalArray(class(self).FindChildren(String.New(pattern), String.New(""), true, true))))
+	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](gd.InternalArray(Advanced(self).FindChildren(String.New(pattern), String.New(""), true, true))))
+}
+
+/*
+Finds all descendants of this node whose names match [param pattern], returning an empty [Array] if no match is found. The matching is done against node names, [i]not[/i] their paths, through [method String.match]. As such, it is case-sensitive, [code]"*"[/code] matches zero or more characters, and [code]"?"[/code] matches any single character.
+If [param type] is not empty, only ancestors inheriting from [param type] are included (see [method Object.is_class]).
+If [param recursive] is [code]false[/code], only this node's direct children are checked. Nodes are checked in tree order, so this node's first direct child is checked first, then its own direct children, etc., before moving to the second direct child, and so on. Internal children are also included in the search (see [code]internal[/code] parameter in [method add_child]).
+If [param owned] is [code]true[/code], only descendants with a valid [member owner] node are checked.
+[b]Note:[/b] This method can be very slow. Consider storing references to the found nodes in a variable.
+[b]Note:[/b] To find a single descendant node matching a pattern, see [method find_child].
+*/
+func (self Expanded) FindChildren(pattern string, atype string, recursive bool, owned bool) [][1]gdclass.Node { //gd:Node.find_children
+	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](gd.InternalArray(Advanced(self).FindChildren(String.New(pattern), String.New(atype), recursive, owned))))
 }
 
 /*
@@ -510,14 +618,14 @@ Finds the first ancestor of this node whose [member name] matches [param pattern
 [b]Note:[/b] As this method walks upwards in the scene tree, it can be slow in large, deeply nested nodes. Consider storing a reference to the found node in a variable. Alternatively, use [method get_node] with unique names (see [member unique_name_in_owner]).
 */
 func (self Instance) FindParent(pattern string) [1]gdclass.Node { //gd:Node.find_parent
-	return [1]gdclass.Node(class(self).FindParent(String.New(pattern)))
+	return [1]gdclass.Node(Advanced(self).FindParent(String.New(pattern)))
 }
 
 /*
 Returns [code]true[/code] if [param path] points to a valid node and its subnames point to a valid [Resource], e.g. [code]Area2D/CollisionShape2D:shape[/code]. Properties that are not [Resource] types (such as nodes or other [Variant] types) are not considered. See also [method get_node_and_resource].
 */
 func (self Instance) HasNodeAndResource(path string) bool { //gd:Node.has_node_and_resource
-	return bool(class(self).HasNodeAndResource(Path.ToNode(String.New(path))))
+	return bool(Advanced(self).HasNodeAndResource(Path.ToNode(String.New(path))))
 }
 
 /*
@@ -562,42 +670,42 @@ GD.Print(c[2]);             // Prints ^":region"
 [/codeblocks]
 */
 func (self Instance) GetNodeAndResource(path string) []any { //gd:Node.get_node_and_resource
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetNodeAndResource(Path.ToNode(String.New(path))))))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetNodeAndResource(Path.ToNode(String.New(path))))))
 }
 
 /*
 Returns [code]true[/code] if this node is currently inside a [SceneTree]. See also [method get_tree].
 */
 func (self Instance) IsInsideTree() bool { //gd:Node.is_inside_tree
-	return bool(class(self).IsInsideTree())
+	return bool(Advanced(self).IsInsideTree())
 }
 
 /*
 Returns [code]true[/code] if the node is part of the scene currently opened in the editor.
 */
 func (self Instance) IsPartOfEditedScene() bool { //gd:Node.is_part_of_edited_scene
-	return bool(class(self).IsPartOfEditedScene())
+	return bool(Advanced(self).IsPartOfEditedScene())
 }
 
 /*
 Returns [code]true[/code] if the given [param node] is a direct or indirect child of this node.
 */
 func (self Instance) IsAncestorOf(node [1]gdclass.Node) bool { //gd:Node.is_ancestor_of
-	return bool(class(self).IsAncestorOf(node))
+	return bool(Advanced(self).IsAncestorOf(node))
 }
 
 /*
 Returns [code]true[/code] if the given [param node] occurs later in the scene hierarchy than this node. A node occurring later is usually processed last.
 */
 func (self Instance) IsGreaterThan(node [1]gdclass.Node) bool { //gd:Node.is_greater_than
-	return bool(class(self).IsGreaterThan(node))
+	return bool(Advanced(self).IsGreaterThan(node))
 }
 
 /*
 Returns the node's absolute path, relative to the [member SceneTree.root]. If the node is not inside the scene tree, this method fails and returns an empty [NodePath].
 */
 func (self Instance) GetPath() string { //gd:Node.get_path
-	return string(class(self).GetPath().String())
+	return string(Advanced(self).GetPath().String())
 }
 
 /*
@@ -606,7 +714,16 @@ If [param use_unique_path] is [code]true[/code], returns the shortest path accou
 [b]Note:[/b] If you get a relative path which starts from a unique node, the path may be longer than a normal relative path, due to the addition of the unique node's name.
 */
 func (self Instance) GetPathTo(node [1]gdclass.Node) string { //gd:Node.get_path_to
-	return string(class(self).GetPathTo(node, false).String())
+	return string(Advanced(self).GetPathTo(node, false).String())
+}
+
+/*
+Returns the relative [NodePath] from this node to the specified [param node]. Both nodes must be in the same [SceneTree] or scene hierarchy, otherwise this method fails and returns an empty [NodePath].
+If [param use_unique_path] is [code]true[/code], returns the shortest path accounting for this node's unique name (see [member unique_name_in_owner]).
+[b]Note:[/b] If you get a relative path which starts from a unique node, the path may be longer than a normal relative path, due to the addition of the unique node's name.
+*/
+func (self Expanded) GetPathTo(node [1]gdclass.Node, use_unique_path bool) string { //gd:Node.get_path_to
+	return string(Advanced(self).GetPathTo(node, use_unique_path).String())
 }
 
 /*
@@ -616,21 +733,31 @@ If [param persistent] is [code]true[/code], the group will be stored when saved 
 [b]Note:[/b] [SceneTree]'s group methods will [i]not[/i] work on this node if not inside the tree (see [method is_inside_tree]).
 */
 func (self Instance) AddToGroup(group string) { //gd:Node.add_to_group
-	class(self).AddToGroup(String.Name(String.New(group)), false)
+	Advanced(self).AddToGroup(String.Name(String.New(group)), false)
+}
+
+/*
+Adds the node to the [param group]. Groups can be helpful to organize a subset of nodes, for example [code]"enemies"[/code] or [code]"collectables"[/code]. See notes in the description, and the group methods in [SceneTree].
+If [param persistent] is [code]true[/code], the group will be stored when saved inside a [PackedScene]. All groups created and displayed in the Node dock are persistent.
+[b]Note:[/b] To improve performance, the order of group names is [i]not[/i] guaranteed and may vary between project runs. Therefore, do not rely on the group order.
+[b]Note:[/b] [SceneTree]'s group methods will [i]not[/i] work on this node if not inside the tree (see [method is_inside_tree]).
+*/
+func (self Expanded) AddToGroup(group string, persistent bool) { //gd:Node.add_to_group
+	Advanced(self).AddToGroup(String.Name(String.New(group)), persistent)
 }
 
 /*
 Removes the node from the given [param group]. Does nothing if the node is not in the [param group]. See also notes in the description, and the [SceneTree]'s group methods.
 */
 func (self Instance) RemoveFromGroup(group string) { //gd:Node.remove_from_group
-	class(self).RemoveFromGroup(String.Name(String.New(group)))
+	Advanced(self).RemoveFromGroup(String.Name(String.New(group)))
 }
 
 /*
 Returns [code]true[/code] if this node has been added to the given [param group]. See [method add_to_group] and [method remove_from_group]. See also notes in the description, and the [SceneTree]'s group methods.
 */
 func (self Instance) IsInGroup(group string) bool { //gd:Node.is_in_group
-	return bool(class(self).IsInGroup(String.Name(String.New(group))))
+	return bool(Advanced(self).IsInGroup(String.Name(String.New(group))))
 }
 
 /*
@@ -638,7 +765,7 @@ Moves [param child_node] to the given index. A node's index is the order among i
 [b]Note:[/b] The processing order of several engine callbacks ([method _ready], [method _process], etc.) and notifications sent through [method propagate_notification] is affected by tree order. [CanvasItem] nodes are also rendered in tree order. See also [member process_priority].
 */
 func (self Instance) MoveChild(child_node [1]gdclass.Node, to_index int) { //gd:Node.move_child
-	class(self).MoveChild(child_node, int64(to_index))
+	Advanced(self).MoveChild(child_node, int64(to_index))
 }
 
 /*
@@ -669,7 +796,7 @@ foreach (string group in GetGroups())
 [/codeblocks]
 */
 func (self Instance) GetGroups() []string { //gd:Node.get_groups
-	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetGroups())))
+	return []string(gd.ArrayAs[[]string](gd.InternalArray(Advanced(self).GetGroups())))
 }
 
 /*
@@ -677,7 +804,15 @@ Returns this node's order among its siblings. The first node's index is [code]0[
 If [param include_internal] is [code]false[/code], returns the index ignoring internal children. The first, non-internal child will have an index of [code]0[/code] (see [method add_child]'s [code]internal[/code] parameter).
 */
 func (self Instance) GetIndex() int { //gd:Node.get_index
-	return int(int(class(self).GetIndex(false)))
+	return int(int(Advanced(self).GetIndex(false)))
+}
+
+/*
+Returns this node's order among its siblings. The first node's index is [code]0[/code]. See also [method get_child].
+If [param include_internal] is [code]false[/code], returns the index ignoring internal children. The first, non-internal child will have an index of [code]0[/code] (see [method add_child]'s [code]internal[/code] parameter).
+*/
+func (self Expanded) GetIndex(include_internal bool) int { //gd:Node.get_index
+	return int(int(Advanced(self).GetIndex(include_internal)))
 }
 
 /*
@@ -693,7 +828,7 @@ SplashScreen/Camera2D
 [/codeblock]
 */
 func (self Instance) PrintTree() { //gd:Node.print_tree
-	class(self).PrintTree()
+	Advanced(self).PrintTree()
 }
 
 /*
@@ -711,7 +846,7 @@ May print, for example:
 [/codeblock]
 */
 func (self Instance) PrintTreePretty() { //gd:Node.print_tree_pretty
-	class(self).PrintTreePretty()
+	Advanced(self).PrintTreePretty()
 }
 
 /*
@@ -727,7 +862,7 @@ TheGame/SplashScreen/Camera2D
 [/codeblock]
 */
 func (self Instance) GetTreeString() string { //gd:Node.get_tree_string
-	return string(class(self).GetTreeString().String())
+	return string(Advanced(self).GetTreeString().String())
 }
 
 /*
@@ -745,14 +880,14 @@ May print, for example:
 [/codeblock]
 */
 func (self Instance) GetTreeStringPretty() string { //gd:Node.get_tree_string_pretty
-	return string(class(self).GetTreeStringPretty().String())
+	return string(Advanced(self).GetTreeStringPretty().String())
 }
 
 /*
 Calls [method Object.notification] with [param what] on this node and all of its children, recursively.
 */
 func (self Instance) PropagateNotification(what int) { //gd:Node.propagate_notification
-	class(self).PropagateNotification(int64(what))
+	Advanced(self).PropagateNotification(int64(what))
 }
 
 /*
@@ -760,7 +895,15 @@ Calls the given [param method] name, passing [param args] as arguments, on this 
 If [param parent_first] is [code]true[/code], the method is called on this node first, then on all of its children. If [code]false[/code], the children's methods are called first.
 */
 func (self Instance) PropagateCall(method string) { //gd:Node.propagate_call
-	class(self).PropagateCall(String.Name(String.New(method)), Array.Nil, false)
+	Advanced(self).PropagateCall(String.Name(String.New(method)), Array.Nil, false)
+}
+
+/*
+Calls the given [param method] name, passing [param args] as arguments, on this node and all of its children, recursively.
+If [param parent_first] is [code]true[/code], the method is called on this node first, then on all of its children. If [code]false[/code], the children's methods are called first.
+*/
+func (self Expanded) PropagateCall(method string, args []any, parent_first bool) { //gd:Node.propagate_call
+	Advanced(self).PropagateCall(String.Name(String.New(method)), gd.EngineArrayFromSlice(args), parent_first)
 }
 
 /*
@@ -768,7 +911,7 @@ If set to [code]true[/code], enables physics (fixed framerate) processing. When 
 [b]Note:[/b] If [method _physics_process] is overridden, this will be automatically enabled before [method _ready] is called.
 */
 func (self Instance) SetPhysicsProcess(enable bool) { //gd:Node.set_physics_process
-	class(self).SetPhysicsProcess(enable)
+	Advanced(self).SetPhysicsProcess(enable)
 }
 
 /*
@@ -776,14 +919,14 @@ Returns the time elapsed (in seconds) since the last physics callback. This valu
 [b]Note:[/b] The returned value will be larger than expected if running at a framerate lower than [member Engine.physics_ticks_per_second] / [member Engine.max_physics_steps_per_frame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [method _process] and [method _physics_process]. As a result, avoid using [code]delta[/code] for time measurements in real-world seconds. Use the [Time] singleton's methods for this purpose instead, such as [method Time.get_ticks_usec].
 */
 func (self Instance) GetPhysicsProcessDeltaTime() Float.X { //gd:Node.get_physics_process_delta_time
-	return Float.X(Float.X(class(self).GetPhysicsProcessDeltaTime()))
+	return Float.X(Float.X(Advanced(self).GetPhysicsProcessDeltaTime()))
 }
 
 /*
 Returns [code]true[/code] if physics processing is enabled (see [method set_physics_process]).
 */
 func (self Instance) IsPhysicsProcessing() bool { //gd:Node.is_physics_processing
-	return bool(class(self).IsPhysicsProcessing())
+	return bool(Advanced(self).IsPhysicsProcessing())
 }
 
 /*
@@ -791,7 +934,7 @@ Returns the time elapsed (in seconds) since the last process callback. This valu
 [b]Note:[/b] The returned value will be larger than expected if running at a framerate lower than [member Engine.physics_ticks_per_second] / [member Engine.max_physics_steps_per_frame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [method _process] and [method _physics_process]. As a result, avoid using [code]delta[/code] for time measurements in real-world seconds. Use the [Time] singleton's methods for this purpose instead, such as [method Time.get_ticks_usec].
 */
 func (self Instance) GetProcessDeltaTime() Float.X { //gd:Node.get_process_delta_time
-	return Float.X(Float.X(class(self).GetProcessDeltaTime()))
+	return Float.X(Float.X(Advanced(self).GetProcessDeltaTime()))
 }
 
 /*
@@ -800,14 +943,14 @@ If set to [code]true[/code], enables processing. When a node is being processed,
 [b]Note:[/b] This method only affects the [method _process] callback, i.e. it has no effect on other callbacks like [method _physics_process]. If you want to disable all processing for the node, set [member process_mode] to [constant PROCESS_MODE_DISABLED].
 */
 func (self Instance) SetProcess(enable bool) { //gd:Node.set_process
-	class(self).SetProcess(enable)
+	Advanced(self).SetProcess(enable)
 }
 
 /*
 Returns [code]true[/code] if processing is enabled (see [method set_process]).
 */
 func (self Instance) IsProcessing() bool { //gd:Node.is_processing
-	return bool(class(self).IsProcessing())
+	return bool(Advanced(self).IsProcessing())
 }
 
 /*
@@ -815,14 +958,14 @@ If set to [code]true[/code], enables input processing.
 [b]Note:[/b] If [method _input] is overridden, this will be automatically enabled before [method _ready] is called. Input processing is also already enabled for GUI controls, such as [Button] and [TextEdit].
 */
 func (self Instance) SetProcessInput(enable bool) { //gd:Node.set_process_input
-	class(self).SetProcessInput(enable)
+	Advanced(self).SetProcessInput(enable)
 }
 
 /*
 Returns [code]true[/code] if the node is processing input (see [method set_process_input]).
 */
 func (self Instance) IsProcessingInput() bool { //gd:Node.is_processing_input
-	return bool(class(self).IsProcessingInput())
+	return bool(Advanced(self).IsProcessingInput())
 }
 
 /*
@@ -830,14 +973,14 @@ If set to [code]true[/code], enables shortcut processing for this node.
 [b]Note:[/b] If [method _shortcut_input] is overridden, this will be automatically enabled before [method _ready] is called.
 */
 func (self Instance) SetProcessShortcutInput(enable bool) { //gd:Node.set_process_shortcut_input
-	class(self).SetProcessShortcutInput(enable)
+	Advanced(self).SetProcessShortcutInput(enable)
 }
 
 /*
 Returns [code]true[/code] if the node is processing shortcuts (see [method set_process_shortcut_input]).
 */
 func (self Instance) IsProcessingShortcutInput() bool { //gd:Node.is_processing_shortcut_input
-	return bool(class(self).IsProcessingShortcutInput())
+	return bool(Advanced(self).IsProcessingShortcutInput())
 }
 
 /*
@@ -845,14 +988,14 @@ If set to [code]true[/code], enables unhandled input processing. It enables the 
 [b]Note:[/b] If [method _unhandled_input] is overridden, this will be automatically enabled before [method _ready] is called. Unhandled input processing is also already enabled for GUI controls, such as [Button] and [TextEdit].
 */
 func (self Instance) SetProcessUnhandledInput(enable bool) { //gd:Node.set_process_unhandled_input
-	class(self).SetProcessUnhandledInput(enable)
+	Advanced(self).SetProcessUnhandledInput(enable)
 }
 
 /*
 Returns [code]true[/code] if the node is processing unhandled input (see [method set_process_unhandled_input]).
 */
 func (self Instance) IsProcessingUnhandledInput() bool { //gd:Node.is_processing_unhandled_input
-	return bool(class(self).IsProcessingUnhandledInput())
+	return bool(Advanced(self).IsProcessingUnhandledInput())
 }
 
 /*
@@ -860,14 +1003,14 @@ If set to [code]true[/code], enables unhandled key input processing.
 [b]Note:[/b] If [method _unhandled_key_input] is overridden, this will be automatically enabled before [method _ready] is called.
 */
 func (self Instance) SetProcessUnhandledKeyInput(enable bool) { //gd:Node.set_process_unhandled_key_input
-	class(self).SetProcessUnhandledKeyInput(enable)
+	Advanced(self).SetProcessUnhandledKeyInput(enable)
 }
 
 /*
 Returns [code]true[/code] if the node is processing unhandled key input (see [method set_process_unhandled_key_input]).
 */
 func (self Instance) IsProcessingUnhandledKeyInput() bool { //gd:Node.is_processing_unhandled_key_input
-	return bool(class(self).IsProcessingUnhandledKeyInput())
+	return bool(Advanced(self).IsProcessingUnhandledKeyInput())
 }
 
 /*
@@ -880,21 +1023,21 @@ Returns [code]true[/code] if the node can receive processing notifications and i
 If the node is not inside the tree, returns [code]false[/code] no matter the value of [member process_mode].
 */
 func (self Instance) CanProcess() bool { //gd:Node.can_process
-	return bool(class(self).CanProcess())
+	return bool(Advanced(self).CanProcess())
 }
 
 /*
 If set to [code]true[/code], the node appears folded in the Scene dock. As a result, all of its children are hidden. This method is intended to be used in editor plugins and tools, but it also works in release builds. See also [method is_displayed_folded].
 */
 func (self Instance) SetDisplayFolded(fold bool) { //gd:Node.set_display_folded
-	class(self).SetDisplayFolded(fold)
+	Advanced(self).SetDisplayFolded(fold)
 }
 
 /*
 Returns [code]true[/code] if the node is folded (collapsed) in the Scene dock. This method is intended to be used in editor plugins and tools. See also [method set_display_folded].
 */
 func (self Instance) IsDisplayedFolded() bool { //gd:Node.is_displayed_folded
-	return bool(class(self).IsDisplayedFolded())
+	return bool(Advanced(self).IsDisplayedFolded())
 }
 
 /*
@@ -902,14 +1045,14 @@ If set to [code]true[/code], enables internal processing for this node. Internal
 [b]Warning:[/b] Built-in nodes rely on internal processing for their internal logic. Disabling it is unsafe and may lead to unexpected behavior. Use this method if you know what you are doing.
 */
 func (self Instance) SetProcessInternal(enable bool) { //gd:Node.set_process_internal
-	class(self).SetProcessInternal(enable)
+	Advanced(self).SetProcessInternal(enable)
 }
 
 /*
 Returns [code]true[/code] if internal processing is enabled (see [method set_process_internal]).
 */
 func (self Instance) IsProcessingInternal() bool { //gd:Node.is_processing_internal
-	return bool(class(self).IsProcessingInternal())
+	return bool(Advanced(self).IsProcessingInternal())
 }
 
 /*
@@ -917,14 +1060,14 @@ If set to [code]true[/code], enables internal physics for this node. Internal ph
 [b]Warning:[/b] Built-in nodes rely on internal processing for their internal logic. Disabling it is unsafe and may lead to unexpected behavior. Use this method if you know what you are doing.
 */
 func (self Instance) SetPhysicsProcessInternal(enable bool) { //gd:Node.set_physics_process_internal
-	class(self).SetPhysicsProcessInternal(enable)
+	Advanced(self).SetPhysicsProcessInternal(enable)
 }
 
 /*
 Returns [code]true[/code] if internal physics processing is enabled (see [method set_physics_process_internal]).
 */
 func (self Instance) IsPhysicsProcessingInternal() bool { //gd:Node.is_physics_processing_internal
-	return bool(class(self).IsPhysicsProcessingInternal())
+	return bool(Advanced(self).IsPhysicsProcessingInternal())
 }
 
 /*
@@ -932,7 +1075,7 @@ Returns [code]true[/code] if physics interpolation is enabled for this node (see
 [b]Note:[/b] Interpolation will only be active if both the flag is set [b]and[/b] physics interpolation is enabled within the [SceneTree]. This can be tested using [method is_physics_interpolated_and_enabled].
 */
 func (self Instance) IsPhysicsInterpolated() bool { //gd:Node.is_physics_interpolated
-	return bool(class(self).IsPhysicsInterpolated())
+	return bool(Advanced(self).IsPhysicsInterpolated())
 }
 
 /*
@@ -941,7 +1084,7 @@ This is a convenience version of [method is_physics_interpolated] that also chec
 See [member SceneTree.physics_interpolation] and [member ProjectSettings.physics/common/physics_interpolation].
 */
 func (self Instance) IsPhysicsInterpolatedAndEnabled() bool { //gd:Node.is_physics_interpolated_and_enabled
-	return bool(class(self).IsPhysicsInterpolatedAndEnabled())
+	return bool(Advanced(self).IsPhysicsInterpolatedAndEnabled())
 }
 
 /*
@@ -951,7 +1094,7 @@ The notification [constant NOTIFICATION_RESET_PHYSICS_INTERPOLATION] will be rec
 [b]Note:[/b] This function should be called [b]after[/b] moving the node, rather than before.
 */
 func (self Instance) ResetPhysicsInterpolation() { //gd:Node.reset_physics_interpolation
-	class(self).ResetPhysicsInterpolation()
+	Advanced(self).ResetPhysicsInterpolation()
 }
 
 /*
@@ -959,28 +1102,28 @@ Makes this node inherit the translation domain from its parent node. If this nod
 This is the default behavior for all nodes. Calling [method Object.set_translation_domain] disables this behavior.
 */
 func (self Instance) SetTranslationDomainInherited() { //gd:Node.set_translation_domain_inherited
-	class(self).SetTranslationDomainInherited()
+	Advanced(self).SetTranslationDomainInherited()
 }
 
 /*
 Returns the [Window] that contains this node. If the node is in the main window, this is equivalent to getting the root node ([code]get_tree().get_root()[/code]).
 */
 func (self Instance) GetWindow() [1]gdclass.Window { //gd:Node.get_window
-	return [1]gdclass.Window(class(self).GetWindow())
+	return [1]gdclass.Window(Advanced(self).GetWindow())
 }
 
 /*
 Returns the [Window] that contains this node, or the last exclusive child in a chain of windows starting with the one that contains this node.
 */
 func (self Instance) GetLastExclusiveWindow() [1]gdclass.Window { //gd:Node.get_last_exclusive_window
-	return [1]gdclass.Window(class(self).GetLastExclusiveWindow())
+	return [1]gdclass.Window(Advanced(self).GetLastExclusiveWindow())
 }
 
 /*
 Returns the [SceneTree] that contains this node. If this node is not inside the tree, generates an error and returns [code]null[/code]. See also [method is_inside_tree].
 */
 func (self Instance) GetTree() [1]gdclass.SceneTree { //gd:Node.get_tree
-	return [1]gdclass.SceneTree(class(self).GetTree())
+	return [1]gdclass.SceneTree(Advanced(self).GetTree())
 }
 
 /*
@@ -998,7 +1141,7 @@ The Tween will start automatically on the next process frame or physics frame (d
 [b]Note:[/b] The method can still be used when the node is not inside [SceneTree]. It can fail in an unlikely case of using a custom [MainLoop].
 */
 func (self Instance) CreateTween() [1]gdclass.Tween { //gd:Node.create_tween
-	return [1]gdclass.Tween(class(self).CreateTween())
+	return [1]gdclass.Tween(Advanced(self).CreateTween())
 }
 
 /*
@@ -1006,7 +1149,15 @@ Duplicates the node, returning a new node with all of its properties, signals, g
 [b]Note:[/b] For nodes with a [Script] attached, if [method Object._init] has been defined with required parameters, the duplicated node will not have a [Script].
 */
 func (self Instance) Duplicate() [1]gdclass.Node { //gd:Node.duplicate
-	return [1]gdclass.Node(class(self).Duplicate(int64(15)))
+	return [1]gdclass.Node(Advanced(self).Duplicate(int64(15)))
+}
+
+/*
+Duplicates the node, returning a new node with all of its properties, signals, groups, and children copied from the original. The behavior can be tweaked through the [param flags] (see [enum DuplicateFlags]).
+[b]Note:[/b] For nodes with a [Script] attached, if [method Object._init] has been defined with required parameters, the duplicated node will not have a [Script].
+*/
+func (self Expanded) Duplicate(flags int) [1]gdclass.Node { //gd:Node.duplicate
+	return [1]gdclass.Node(Advanced(self).Duplicate(int64(flags)))
 }
 
 /*
@@ -1015,42 +1166,51 @@ If [param keep_groups] is [code]true[/code], the [param node] is added to the sa
 [b]Warning:[/b] The replaced node is removed from the tree, but it is [b]not[/b] deleted. To prevent memory leaks, store a reference to the node in a variable, or use [method Object.free].
 */
 func (self Instance) ReplaceBy(node [1]gdclass.Node) { //gd:Node.replace_by
-	class(self).ReplaceBy(node, false)
+	Advanced(self).ReplaceBy(node, false)
+}
+
+/*
+Replaces this node by the given [param node]. All children of this node are moved to [param node].
+If [param keep_groups] is [code]true[/code], the [param node] is added to the same groups that the replaced node is in (see [method add_to_group]).
+[b]Warning:[/b] The replaced node is removed from the tree, but it is [b]not[/b] deleted. To prevent memory leaks, store a reference to the node in a variable, or use [method Object.free].
+*/
+func (self Expanded) ReplaceBy(node [1]gdclass.Node, keep_groups bool) { //gd:Node.replace_by
+	Advanced(self).ReplaceBy(node, keep_groups)
 }
 
 /*
 If set to [code]true[/code], the node becomes a [InstancePlaceholder] when packed and instantiated from a [PackedScene]. See also [method get_scene_instance_load_placeholder].
 */
 func (self Instance) SetSceneInstanceLoadPlaceholder(load_placeholder bool) { //gd:Node.set_scene_instance_load_placeholder
-	class(self).SetSceneInstanceLoadPlaceholder(load_placeholder)
+	Advanced(self).SetSceneInstanceLoadPlaceholder(load_placeholder)
 }
 
 /*
 Returns [code]true[/code] if this node is an instance load placeholder. See [InstancePlaceholder] and [method set_scene_instance_load_placeholder].
 */
 func (self Instance) GetSceneInstanceLoadPlaceholder() bool { //gd:Node.get_scene_instance_load_placeholder
-	return bool(class(self).GetSceneInstanceLoadPlaceholder())
+	return bool(Advanced(self).GetSceneInstanceLoadPlaceholder())
 }
 
 /*
 Set to [code]true[/code] to allow all nodes owned by [param node] to be available, and editable, in the Scene dock, even if their [member owner] is not the scene root. This method is intended to be used in editor plugins and tools, but it also works in release builds. See also [method is_editable_instance].
 */
 func (self Instance) SetEditableInstance(node [1]gdclass.Node, is_editable bool) { //gd:Node.set_editable_instance
-	class(self).SetEditableInstance(node, is_editable)
+	Advanced(self).SetEditableInstance(node, is_editable)
 }
 
 /*
 Returns [code]true[/code] if [param node] has editable children enabled relative to this node. This method is intended to be used in editor plugins and tools. See also [method set_editable_instance].
 */
 func (self Instance) IsEditableInstance(node [1]gdclass.Node) bool { //gd:Node.is_editable_instance
-	return bool(class(self).IsEditableInstance(node))
+	return bool(Advanced(self).IsEditableInstance(node))
 }
 
 /*
 Returns the node's closest [Viewport] ancestor, if the node is inside the tree. Otherwise, returns [code]null[/code].
 */
 func (self Instance) GetViewport() [1]gdclass.Viewport { //gd:Node.get_viewport
-	return [1]gdclass.Viewport(class(self).GetViewport())
+	return [1]gdclass.Viewport(Advanced(self).GetViewport())
 }
 
 /*
@@ -1059,7 +1219,7 @@ Unlike with [method Object.free], the node is not deleted instantly, and it can 
 [b]Note:[/b] The node will only be freed after all other deferred calls are finished. Using this method is not always the same as calling [method Object.free] through [method Object.call_deferred].
 */
 func (self Instance) QueueFree() { //gd:Node.queue_free
-	class(self).QueueFree()
+	Advanced(self).QueueFree()
 }
 
 /*
@@ -1067,7 +1227,7 @@ Requests [method _ready] to be called again the next time the node enters the tr
 [b]Note:[/b] This method only affects the current node. If the node's children also need to request ready, this method needs to be called for each one of them. When the node and its children enter the tree again, the order of [method _ready] callbacks will be the same as normal.
 */
 func (self Instance) RequestReady() { //gd:Node.request_ready
-	class(self).RequestReady()
+	Advanced(self).RequestReady()
 }
 
 /*
@@ -1075,7 +1235,7 @@ Returns [code]true[/code] if the node is ready, i.e. it's inside scene tree and 
 [method request_ready] resets it back to [code]false[/code].
 */
 func (self Instance) IsNodeReady() bool { //gd:Node.is_node_ready
-	return bool(class(self).IsNodeReady())
+	return bool(Advanced(self).IsNodeReady())
 }
 
 /*
@@ -1084,21 +1244,30 @@ If [param recursive] is [code]true[/code], the given peer is recursively set as 
 [b]Warning:[/b] This does [b]not[/b] automatically replicate the new authority to other peers. It is the developer's responsibility to do so. You may replicate the new authority's information using [member MultiplayerSpawner.spawn_function], an RPC, or a [MultiplayerSynchronizer]. Furthermore, the parent's authority does [b]not[/b] propagate to newly added children.
 */
 func (self Instance) SetMultiplayerAuthority(id int) { //gd:Node.set_multiplayer_authority
-	class(self).SetMultiplayerAuthority(int64(id), true)
+	Advanced(self).SetMultiplayerAuthority(int64(id), true)
+}
+
+/*
+Sets the node's multiplayer authority to the peer with the given peer [param id]. The multiplayer authority is the peer that has authority over the node on the network. Defaults to peer ID 1 (the server). Useful in conjunction with [method rpc_config] and the [MultiplayerAPI].
+If [param recursive] is [code]true[/code], the given peer is recursively set as the authority for all children of this node.
+[b]Warning:[/b] This does [b]not[/b] automatically replicate the new authority to other peers. It is the developer's responsibility to do so. You may replicate the new authority's information using [member MultiplayerSpawner.spawn_function], an RPC, or a [MultiplayerSynchronizer]. Furthermore, the parent's authority does [b]not[/b] propagate to newly added children.
+*/
+func (self Expanded) SetMultiplayerAuthority(id int, recursive bool) { //gd:Node.set_multiplayer_authority
+	Advanced(self).SetMultiplayerAuthority(int64(id), recursive)
 }
 
 /*
 Returns the peer ID of the multiplayer authority for this node. See [method set_multiplayer_authority].
 */
 func (self Instance) GetMultiplayerAuthority() int { //gd:Node.get_multiplayer_authority
-	return int(int(class(self).GetMultiplayerAuthority()))
+	return int(int(Advanced(self).GetMultiplayerAuthority()))
 }
 
 /*
 Returns [code]true[/code] if the local system is the multiplayer authority of this node.
 */
 func (self Instance) IsMultiplayerAuthority() bool { //gd:Node.is_multiplayer_authority
-	return bool(class(self).IsMultiplayerAuthority())
+	return bool(Advanced(self).IsMultiplayerAuthority())
 }
 
 /*
@@ -1110,14 +1279,14 @@ Changes the RPC configuration for the given [param method]. [param config] shoul
 [b]Note:[/b] In GDScript, this method corresponds to the [annotation @GDScript.@rpc] annotation, with various parameters passed ([code]@rpc(any)[/code], [code]@rpc(authority)[/code]...). See also the [url=$DOCS_URL/tutorials/networking/high_level_multiplayer.html]high-level multiplayer[/url] tutorial.
 */
 func (self Instance) RpcConfig(method string, config any) { //gd:Node.rpc_config
-	class(self).RpcConfig(String.Name(String.New(method)), variant.New(config))
+	Advanced(self).RpcConfig(String.Name(String.New(method)), variant.New(config))
 }
 
 /*
 Returns a [Dictionary] mapping method names to their RPC configuration defined for this node using [method rpc_config].
 */
 func (self Instance) GetRpcConfig() any { //gd:Node.get_rpc_config
-	return any(class(self).GetRpcConfig().Interface())
+	return any(Advanced(self).GetRpcConfig().Interface())
 }
 
 /*
@@ -1127,7 +1296,17 @@ If [method Object.can_translate_messages] is [code]false[/code], or no translati
 For detailed examples, see [url=$DOCS_URL/tutorials/i18n/internationalizing_games.html]Internationalizing games[/url].
 */
 func (self Instance) Atr(message string) string { //gd:Node.atr
-	return string(class(self).Atr(String.New(message), String.Name(String.New(""))).String())
+	return string(Advanced(self).Atr(String.New(message), String.Name(String.New(""))).String())
+}
+
+/*
+Translates a [param message], using the translation catalogs configured in the Project Settings. Further [param context] can be specified to help with the translation. Note that most [Control] nodes automatically translate their strings, so this method is mostly useful for formatted strings or custom drawn text.
+This method works the same as [method Object.tr], with the addition of respecting the [member auto_translate_mode] state.
+If [method Object.can_translate_messages] is [code]false[/code], or no translation is available, this method returns the [param message] without changes. See [method Object.set_message_translation].
+For detailed examples, see [url=$DOCS_URL/tutorials/i18n/internationalizing_games.html]Internationalizing games[/url].
+*/
+func (self Expanded) Atr(message string, context string) string { //gd:Node.atr
+	return string(Advanced(self).Atr(String.New(message), String.Name(String.New(context))).String())
 }
 
 /*
@@ -1139,42 +1318,54 @@ For detailed examples, see [url=$DOCS_URL/tutorials/i18n/localization_using_gett
 [b]Note:[/b] Negative and [float] numbers may not properly apply to some countable subjects. It's recommended to handle these cases with [method atr].
 */
 func (self Instance) AtrN(message string, plural_message string, n int) string { //gd:Node.atr_n
-	return string(class(self).AtrN(String.New(message), String.Name(String.New(plural_message)), int64(n), String.Name(String.New(""))).String())
+	return string(Advanced(self).AtrN(String.New(message), String.Name(String.New(plural_message)), int64(n), String.Name(String.New(""))).String())
+}
+
+/*
+Translates a [param message] or [param plural_message], using the translation catalogs configured in the Project Settings. Further [param context] can be specified to help with the translation.
+This method works the same as [method Object.tr_n], with the addition of respecting the [member auto_translate_mode] state.
+If [method Object.can_translate_messages] is [code]false[/code], or no translation is available, this method returns [param message] or [param plural_message], without changes. See [method Object.set_message_translation].
+The [param n] is the number, or amount, of the message's subject. It is used by the translation system to fetch the correct plural form for the current language.
+For detailed examples, see [url=$DOCS_URL/tutorials/i18n/localization_using_gettext.html]Localization using gettext[/url].
+[b]Note:[/b] Negative and [float] numbers may not properly apply to some countable subjects. It's recommended to handle these cases with [method atr].
+*/
+func (self Expanded) AtrN(message string, plural_message string, n int, context string) string { //gd:Node.atr_n
+	return string(Advanced(self).AtrN(String.New(message), String.Name(String.New(plural_message)), int64(n), String.Name(String.New(context))).String())
 }
 
 /*
 Refreshes the warnings displayed for this node in the Scene dock. Use [method _get_configuration_warnings] to customize the warning messages to display.
 */
 func (self Instance) UpdateConfigurationWarnings() { //gd:Node.update_configuration_warnings
-	class(self).UpdateConfigurationWarnings()
+	Advanced(self).UpdateConfigurationWarnings()
 }
 
 /*
 Similar to [method call_deferred_thread_group], but for setting properties.
 */
 func (self Instance) SetDeferredThreadGroup(property string, value any) { //gd:Node.set_deferred_thread_group
-	class(self).SetDeferredThreadGroup(String.Name(String.New(property)), variant.New(value))
+	Advanced(self).SetDeferredThreadGroup(String.Name(String.New(property)), variant.New(value))
 }
 
 /*
 Similar to [method call_deferred_thread_group], but for notifications.
 */
 func (self Instance) NotifyDeferredThreadGroup(what int) { //gd:Node.notify_deferred_thread_group
-	class(self).NotifyDeferredThreadGroup(int64(what))
+	Advanced(self).NotifyDeferredThreadGroup(int64(what))
 }
 
 /*
 Similar to [method call_thread_safe], but for setting properties.
 */
 func (self Instance) SetThreadSafe(property string, value any) { //gd:Node.set_thread_safe
-	class(self).SetThreadSafe(String.Name(String.New(property)), variant.New(value))
+	Advanced(self).SetThreadSafe(String.Name(String.New(property)), variant.New(value))
 }
 
 /*
 Similar to [method call_thread_safe], but for notifications.
 */
 func (self Instance) NotifyThreadSafe(what int) { //gd:Node.notify_thread_safe
-	class(self).NotifyThreadSafe(int64(what))
+	Advanced(self).NotifyThreadSafe(int64(what))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

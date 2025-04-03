@@ -53,6 +53,7 @@ Gizmo that is used for providing custom visualization and editing (handles and s
 %!(EXTRA string=EditorNode3DGizmo)
 */
 type Instance [1]gdclass.EditorNode3DGizmo
+type Expanded [1]gdclass.EditorNode3DGizmo
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -323,35 +324,56 @@ func (Instance) _commit_subgizmos(impl func(ptr unsafe.Pointer, ids []int32, res
 Adds lines to the gizmo (as sets of 2 points), with a given material. The lines are used for visualizing the gizmo. Call this method during [method _redraw].
 */
 func (self Instance) AddLines(lines []Vector3.XYZ, material [1]gdclass.Material) { //gd:EditorNode3DGizmo.add_lines
-	class(self).AddLines(Packed.New(lines...), material, false, Color.RGBA(gd.Color{1, 1, 1, 1}))
+	Advanced(self).AddLines(Packed.New(lines...), material, false, Color.RGBA(gd.Color{1, 1, 1, 1}))
+}
+
+/*
+Adds lines to the gizmo (as sets of 2 points), with a given material. The lines are used for visualizing the gizmo. Call this method during [method _redraw].
+*/
+func (self Expanded) AddLines(lines []Vector3.XYZ, material [1]gdclass.Material, billboard bool, modulate Color.RGBA) { //gd:EditorNode3DGizmo.add_lines
+	Advanced(self).AddLines(Packed.New(lines...), material, billboard, Color.RGBA(modulate))
 }
 
 /*
 Adds a mesh to the gizmo with the specified [param material], local [param transform] and [param skeleton]. Call this method during [method _redraw].
 */
 func (self Instance) AddMesh(mesh [1]gdclass.Mesh) { //gd:EditorNode3DGizmo.add_mesh
-	class(self).AddMesh(mesh, [1][1]gdclass.Material{}[0], Transform3D.BasisOrigin(gd.NewTransform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)), [1][1]gdclass.SkinReference{}[0])
+	Advanced(self).AddMesh(mesh, [1][1]gdclass.Material{}[0], Transform3D.BasisOrigin(gd.NewTransform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)), [1][1]gdclass.SkinReference{}[0])
+}
+
+/*
+Adds a mesh to the gizmo with the specified [param material], local [param transform] and [param skeleton]. Call this method during [method _redraw].
+*/
+func (self Expanded) AddMesh(mesh [1]gdclass.Mesh, material [1]gdclass.Material, transform Transform3D.BasisOrigin, skeleton [1]gdclass.SkinReference) { //gd:EditorNode3DGizmo.add_mesh
+	Advanced(self).AddMesh(mesh, material, Transform3D.BasisOrigin(transform), skeleton)
 }
 
 /*
 Adds the specified [param segments] to the gizmo's collision shape for picking. Call this method during [method _redraw].
 */
 func (self Instance) AddCollisionSegments(segments []Vector3.XYZ) { //gd:EditorNode3DGizmo.add_collision_segments
-	class(self).AddCollisionSegments(Packed.New(segments...))
+	Advanced(self).AddCollisionSegments(Packed.New(segments...))
 }
 
 /*
 Adds collision triangles to the gizmo for picking. A [TriangleMesh] can be generated from a regular [Mesh] too. Call this method during [method _redraw].
 */
 func (self Instance) AddCollisionTriangles(triangles [1]gdclass.TriangleMesh) { //gd:EditorNode3DGizmo.add_collision_triangles
-	class(self).AddCollisionTriangles(triangles)
+	Advanced(self).AddCollisionTriangles(triangles)
 }
 
 /*
 Adds an unscaled billboard for visualization and selection. Call this method during [method _redraw].
 */
 func (self Instance) AddUnscaledBillboard(material [1]gdclass.Material) { //gd:EditorNode3DGizmo.add_unscaled_billboard
-	class(self).AddUnscaledBillboard(material, float64(1), Color.RGBA(gd.Color{1, 1, 1, 1}))
+	Advanced(self).AddUnscaledBillboard(material, float64(1), Color.RGBA(gd.Color{1, 1, 1, 1}))
+}
+
+/*
+Adds an unscaled billboard for visualization and selection. Call this method during [method _redraw].
+*/
+func (self Expanded) AddUnscaledBillboard(material [1]gdclass.Material, default_scale Float.X, modulate Color.RGBA) { //gd:EditorNode3DGizmo.add_unscaled_billboard
+	Advanced(self).AddUnscaledBillboard(material, float64(default_scale), Color.RGBA(modulate))
 }
 
 /*
@@ -360,56 +382,65 @@ The [param secondary] argument marks the added handles as secondary, meaning the
 There are virtual methods which will be called upon editing of these handles. Call this method during [method _redraw].
 */
 func (self Instance) AddHandles(handles []Vector3.XYZ, material [1]gdclass.Material, ids []int32) { //gd:EditorNode3DGizmo.add_handles
-	class(self).AddHandles(Packed.New(handles...), material, Packed.New(ids...), false, false)
+	Advanced(self).AddHandles(Packed.New(handles...), material, Packed.New(ids...), false, false)
+}
+
+/*
+Adds a list of handles (points) which can be used to edit the properties of the gizmo's [Node3D]. The [param ids] argument can be used to specify a custom identifier for each handle, if an empty array is passed, the ids will be assigned automatically from the [param handles] argument order.
+The [param secondary] argument marks the added handles as secondary, meaning they will normally have lower selection priority than regular handles. When the user is holding the shift key secondary handles will switch to have higher priority than regular handles. This change in priority can be used to place multiple handles at the same point while still giving the user control on their selection.
+There are virtual methods which will be called upon editing of these handles. Call this method during [method _redraw].
+*/
+func (self Expanded) AddHandles(handles []Vector3.XYZ, material [1]gdclass.Material, ids []int32, billboard bool, secondary bool) { //gd:EditorNode3DGizmo.add_handles
+	Advanced(self).AddHandles(Packed.New(handles...), material, Packed.New(ids...), billboard, secondary)
 }
 
 /*
 Sets the reference [Node3D] node for the gizmo. [param node] must inherit from [Node3D].
 */
 func (self Instance) SetNode3d(node [1]gdclass.Node) { //gd:EditorNode3DGizmo.set_node_3d
-	class(self).SetNode3d(node)
+	Advanced(self).SetNode3d(node)
 }
 
 /*
 Returns the [Node3D] node associated with this gizmo.
 */
 func (self Instance) GetNode3d() [1]gdclass.Node3D { //gd:EditorNode3DGizmo.get_node_3d
-	return [1]gdclass.Node3D(class(self).GetNode3d())
+	return [1]gdclass.Node3D(Advanced(self).GetNode3d())
 }
 
 /*
 Returns the [EditorNode3DGizmoPlugin] that owns this gizmo. It's useful to retrieve materials using [method EditorNode3DGizmoPlugin.get_material].
 */
 func (self Instance) GetPlugin() [1]gdclass.EditorNode3DGizmoPlugin { //gd:EditorNode3DGizmo.get_plugin
-	return [1]gdclass.EditorNode3DGizmoPlugin(class(self).GetPlugin())
+	return [1]gdclass.EditorNode3DGizmoPlugin(Advanced(self).GetPlugin())
 }
 
 /*
 Removes everything in the gizmo including meshes, collisions and handles.
 */
 func (self Instance) Clear() { //gd:EditorNode3DGizmo.clear
-	class(self).Clear()
+	Advanced(self).Clear()
 }
 
 /*
 Sets the gizmo's hidden state. If [code]true[/code], the gizmo will be hidden. If [code]false[/code], it will be shown.
 */
 func (self Instance) SetHidden(hidden bool) { //gd:EditorNode3DGizmo.set_hidden
-	class(self).SetHidden(hidden)
+	Advanced(self).SetHidden(hidden)
 }
 
 /*
 Returns [code]true[/code] if the given subgizmo is currently selected. Can be used to highlight selected elements during [method _redraw].
 */
 func (self Instance) IsSubgizmoSelected(id int) bool { //gd:EditorNode3DGizmo.is_subgizmo_selected
-	return bool(class(self).IsSubgizmoSelected(int64(id)))
+	return bool(Advanced(self).IsSubgizmoSelected(int64(id)))
 }
 
 /*
 Returns a list of the currently selected subgizmos. Can be used to highlight selected elements during [method _redraw].
 */
 func (self Instance) GetSubgizmoSelection() []int32 { //gd:EditorNode3DGizmo.get_subgizmo_selection
-	return []int32(slices.Collect(class(self).GetSubgizmoSelection().Values()))
+	return []int32(slices.Collect(Advanced(self).GetSubgizmoSelection().Values()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

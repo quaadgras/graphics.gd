@@ -51,6 +51,7 @@ A custom control for editing properties that can be added to the [EditorInspecto
 %!(EXTRA string=EditorProperty)
 */
 type Instance [1]gdclass.EditorProperty
+type Expanded [1]gdclass.EditorProperty
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -100,77 +101,91 @@ func (Instance) _set_read_only(impl func(ptr unsafe.Pointer, read_only bool)) (c
 Gets the edited property. If your editor is for a single property (added via [method EditorInspectorPlugin._parse_property]), then this will return the property.
 */
 func (self Instance) GetEditedProperty() string { //gd:EditorProperty.get_edited_property
-	return string(class(self).GetEditedProperty().String())
+	return string(Advanced(self).GetEditedProperty().String())
 }
 
 /*
 Gets the edited object.
 */
 func (self Instance) GetEditedObject() Object.Instance { //gd:EditorProperty.get_edited_object
-	return Object.Instance(class(self).GetEditedObject())
+	return Object.Instance(Advanced(self).GetEditedObject())
 }
 
 /*
 Forces refresh of the property display.
 */
 func (self Instance) UpdateProperty() { //gd:EditorProperty.update_property
-	class(self).UpdateProperty()
+	Advanced(self).UpdateProperty()
 }
 
 /*
 If any of the controls added can gain keyboard focus, add it here. This ensures that focus will be restored if the inspector is refreshed.
 */
 func (self Instance) AddFocusable(control [1]gdclass.Control) { //gd:EditorProperty.add_focusable
-	class(self).AddFocusable(control)
+	Advanced(self).AddFocusable(control)
 }
 
 /*
 Puts the [param editor] control below the property label. The control must be previously added using [method Node.add_child].
 */
 func (self Instance) SetBottomEditor(editor [1]gdclass.Control) { //gd:EditorProperty.set_bottom_editor
-	class(self).SetBottomEditor(editor)
+	Advanced(self).SetBottomEditor(editor)
 }
 
 /*
 Draw property as not selected. Used by the inspector.
 */
 func (self Instance) Deselect() { //gd:EditorProperty.deselect
-	class(self).Deselect()
+	Advanced(self).Deselect()
 }
 
 /*
 Returns [code]true[/code] if property is drawn as selected. Used by the inspector.
 */
 func (self Instance) IsSelected() bool { //gd:EditorProperty.is_selected
-	return bool(class(self).IsSelected())
+	return bool(Advanced(self).IsSelected())
 }
 
 /*
 Draw property as selected. Used by the inspector.
 */
 func (self Instance) Select() { //gd:EditorProperty.select
-	class(self).Select(int64(-1))
+	Advanced(self).Select(int64(-1))
+}
+
+/*
+Draw property as selected. Used by the inspector.
+*/
+func (self Expanded) Select(focusable int) { //gd:EditorProperty.select
+	Advanced(self).Select(int64(focusable))
 }
 
 /*
 Assigns object and property to edit.
 */
 func (self Instance) SetObjectAndProperty(obj Object.Instance, property string) { //gd:EditorProperty.set_object_and_property
-	class(self).SetObjectAndProperty(obj, String.Name(String.New(property)))
+	Advanced(self).SetObjectAndProperty(obj, String.Name(String.New(property)))
 }
 
 /*
 Used by the inspector, set to a control that will be used as a reference to calculate the size of the label.
 */
 func (self Instance) SetLabelReference(control [1]gdclass.Control) { //gd:EditorProperty.set_label_reference
-	class(self).SetLabelReference(control)
+	Advanced(self).SetLabelReference(control)
 }
 
 /*
 If one or several properties have changed, this must be called. [param field] is used in case your editor can modify fields separately (as an example, Vector3.x). The [param changing] argument avoids the editor requesting this property to be refreshed (leave as [code]false[/code] if unsure).
 */
 func (self Instance) EmitChanged(property string, value any) { //gd:EditorProperty.emit_changed
-	class(self).EmitChanged(String.Name(String.New(property)), variant.New(value), String.Name(String.New("")), false)
+	Advanced(self).EmitChanged(String.Name(String.New(property)), variant.New(value), String.Name(String.New("")), false)
+}
+
+/*
+If one or several properties have changed, this must be called. [param field] is used in case your editor can modify fields separately (as an example, Vector3.x). The [param changing] argument avoids the editor requesting this property to be refreshed (leave as [code]false[/code] if unsure).
+*/
+func (self Expanded) EmitChanged(property string, value any, field string, changing bool) { //gd:EditorProperty.emit_changed
+	Advanced(self).EmitChanged(String.Name(String.New(property)), variant.New(value), String.Name(String.New(field)), changing)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

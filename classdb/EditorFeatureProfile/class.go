@@ -57,63 +57,63 @@ type Any interface {
 If [param disable] is [code]true[/code], disables the class specified by [param class_name]. When disabled, the class won't appear in the Create New Node dialog.
 */
 func (self Instance) SetDisableClass(class_name string, disable bool) { //gd:EditorFeatureProfile.set_disable_class
-	class(self).SetDisableClass(String.Name(String.New(class_name)), disable)
+	Advanced(self).SetDisableClass(String.Name(String.New(class_name)), disable)
 }
 
 /*
 Returns [code]true[/code] if the class specified by [param class_name] is disabled. When disabled, the class won't appear in the Create New Node dialog.
 */
 func (self Instance) IsClassDisabled(class_name string) bool { //gd:EditorFeatureProfile.is_class_disabled
-	return bool(class(self).IsClassDisabled(String.Name(String.New(class_name))))
+	return bool(Advanced(self).IsClassDisabled(String.Name(String.New(class_name))))
 }
 
 /*
 If [param disable] is [code]true[/code], disables editing for the class specified by [param class_name]. When disabled, the class will still appear in the Create New Node dialog but the Inspector will be read-only when selecting a node that extends the class.
 */
 func (self Instance) SetDisableClassEditor(class_name string, disable bool) { //gd:EditorFeatureProfile.set_disable_class_editor
-	class(self).SetDisableClassEditor(String.Name(String.New(class_name)), disable)
+	Advanced(self).SetDisableClassEditor(String.Name(String.New(class_name)), disable)
 }
 
 /*
 Returns [code]true[/code] if editing for the class specified by [param class_name] is disabled. When disabled, the class will still appear in the Create New Node dialog but the Inspector will be read-only when selecting a node that extends the class.
 */
 func (self Instance) IsClassEditorDisabled(class_name string) bool { //gd:EditorFeatureProfile.is_class_editor_disabled
-	return bool(class(self).IsClassEditorDisabled(String.Name(String.New(class_name))))
+	return bool(Advanced(self).IsClassEditorDisabled(String.Name(String.New(class_name))))
 }
 
 /*
 If [param disable] is [code]true[/code], disables editing for [param property] in the class specified by [param class_name]. When a property is disabled, it won't appear in the Inspector when selecting a node that extends the class specified by [param class_name].
 */
 func (self Instance) SetDisableClassProperty(class_name string, property string, disable bool) { //gd:EditorFeatureProfile.set_disable_class_property
-	class(self).SetDisableClassProperty(String.Name(String.New(class_name)), String.Name(String.New(property)), disable)
+	Advanced(self).SetDisableClassProperty(String.Name(String.New(class_name)), String.Name(String.New(property)), disable)
 }
 
 /*
 Returns [code]true[/code] if [param property] is disabled in the class specified by [param class_name]. When a property is disabled, it won't appear in the Inspector when selecting a node that extends the class specified by [param class_name].
 */
 func (self Instance) IsClassPropertyDisabled(class_name string, property string) bool { //gd:EditorFeatureProfile.is_class_property_disabled
-	return bool(class(self).IsClassPropertyDisabled(String.Name(String.New(class_name)), String.Name(String.New(property))))
+	return bool(Advanced(self).IsClassPropertyDisabled(String.Name(String.New(class_name)), String.Name(String.New(property))))
 }
 
 /*
 If [param disable] is [code]true[/code], disables the editor feature specified in [param feature]. When a feature is disabled, it will disappear from the editor entirely.
 */
 func (self Instance) SetDisableFeature(feature gdclass.EditorFeatureProfileFeature, disable bool) { //gd:EditorFeatureProfile.set_disable_feature
-	class(self).SetDisableFeature(feature, disable)
+	Advanced(self).SetDisableFeature(feature, disable)
 }
 
 /*
 Returns [code]true[/code] if the [param feature] is disabled. When a feature is disabled, it will disappear from the editor entirely.
 */
 func (self Instance) IsFeatureDisabled(feature gdclass.EditorFeatureProfileFeature) bool { //gd:EditorFeatureProfile.is_feature_disabled
-	return bool(class(self).IsFeatureDisabled(feature))
+	return bool(Advanced(self).IsFeatureDisabled(feature))
 }
 
 /*
 Returns the specified [param feature]'s human-readable name.
 */
 func (self Instance) GetFeatureName(feature gdclass.EditorFeatureProfileFeature) string { //gd:EditorFeatureProfile.get_feature_name
-	return string(class(self).GetFeatureName(feature).String())
+	return string(Advanced(self).GetFeatureName(feature).String())
 }
 
 /*
@@ -121,7 +121,7 @@ Saves the editor feature profile to a file in JSON format. It can then be import
 [b]Note:[/b] Feature profiles created via the user interface are saved in the [code]feature_profiles[/code] directory, as a file with the [code].profile[/code] extension. The editor configuration folder can be found by using [method EditorPaths.get_config_dir].
 */
 func (self Instance) SaveToFile(path string) error { //gd:EditorFeatureProfile.save_to_file
-	return error(gd.ToError(class(self).SaveToFile(String.New(path))))
+	return error(gd.ToError(Advanced(self).SaveToFile(String.New(path))))
 }
 
 /*
@@ -129,7 +129,7 @@ Loads an editor feature profile from a file. The file must follow the JSON forma
 [b]Note:[/b] Feature profiles created via the user interface are loaded from the [code]feature_profiles[/code] directory, as a file with the [code].profile[/code] extension. The editor configuration folder can be found by using [method EditorPaths.get_config_dir].
 */
 func (self Instance) LoadFromFile(path string) error { //gd:EditorFeatureProfile.load_from_file
-	return error(gd.ToError(class(self).LoadFromFile(String.New(path))))
+	return error(gd.ToError(Advanced(self).LoadFromFile(String.New(path))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -103,6 +103,7 @@ public void DirContents(string path)
 Keep in mind that file names may change or be remapped after export. If you want to see the actual resource file list as it appears in the editor, use [method ResourceLoader.list_directory] instead.
 */
 type Instance [1]gdclass.DirAccess
+type Expanded [1]gdclass.DirAccess
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -118,7 +119,7 @@ Returns [code]null[/code] if opening the directory failed. You can use [method g
 */
 func Open(path string) [1]gdclass.DirAccess { //gd:DirAccess.open
 	self := Instance{}
-	return [1]gdclass.DirAccess(class(self).Open(String.New(path)))
+	return [1]gdclass.DirAccess(Advanced(self).Open(String.New(path)))
 }
 
 /*
@@ -126,7 +127,7 @@ Returns the result of the last [method open] call in the current thread.
 */
 func GetOpenError() error { //gd:DirAccess.get_open_error
 	self := Instance{}
-	return error(gd.ToError(class(self).GetOpenError()))
+	return error(gd.ToError(Advanced(self).GetOpenError()))
 }
 
 /*
@@ -135,9 +136,20 @@ If [param prefix] is not empty, it will be prefixed to the directory name, separ
 If [param keep] is [code]true[/code], the directory is not deleted when the returned [DirAccess] is freed.
 Returns [code]null[/code] if opening the directory failed. You can use [method get_open_error] to check the error that occurred.
 */
-func CreateTemp() [1]gdclass.DirAccess { //gd:DirAccess.create_temp
+func CreateTemp(prefix string, keep bool) [1]gdclass.DirAccess { //gd:DirAccess.create_temp
 	self := Instance{}
-	return [1]gdclass.DirAccess(class(self).CreateTemp(String.New(""), false))
+	return [1]gdclass.DirAccess(Advanced(self).CreateTemp(String.New(prefix), keep))
+}
+
+/*
+Creates a temporary directory. This directory will be freed when the returned [DirAccess] is freed.
+If [param prefix] is not empty, it will be prefixed to the directory name, separated by a [code]-[/code].
+If [param keep] is [code]true[/code], the directory is not deleted when the returned [DirAccess] is freed.
+Returns [code]null[/code] if opening the directory failed. You can use [method get_open_error] to check the error that occurred.
+*/
+func CreateTempExpanded(prefix string, keep bool) [1]gdclass.DirAccess { //gd:DirAccess.create_temp
+	self := Instance{}
+	return [1]gdclass.DirAccess(Advanced(self).CreateTemp(String.New(prefix), keep))
 }
 
 /*
@@ -146,7 +158,7 @@ Affected by [member include_hidden] and [member include_navigational].
 [b]Note:[/b] The order of files and directories returned by this method is not deterministic, and can vary between operating systems. If you want a list of all files or folders sorted alphabetically, use [method get_files] or [method get_directories].
 */
 func (self Instance) ListDirBegin() error { //gd:DirAccess.list_dir_begin
-	return error(gd.ToError(class(self).ListDirBegin()))
+	return error(gd.ToError(Advanced(self).ListDirBegin()))
 }
 
 /*
@@ -154,21 +166,21 @@ Returns the next element (file or directory) in the current directory.
 The name of the file or directory is returned (and not its full path). Once the stream has been fully processed, the method returns an empty [String] and closes the stream automatically (i.e. [method list_dir_end] would not be mandatory in such a case).
 */
 func (self Instance) GetNext() string { //gd:DirAccess.get_next
-	return string(class(self).GetNext().String())
+	return string(Advanced(self).GetNext().String())
 }
 
 /*
 Returns whether the current item processed with the last [method get_next] call is a directory ([code].[/code] and [code]..[/code] are considered directories).
 */
 func (self Instance) CurrentIsDir() bool { //gd:DirAccess.current_is_dir
-	return bool(class(self).CurrentIsDir())
+	return bool(Advanced(self).CurrentIsDir())
 }
 
 /*
 Closes the current stream opened with [method list_dir_begin] (whether it has been fully processed with [method get_next] does not matter).
 */
 func (self Instance) ListDirEnd() { //gd:DirAccess.list_dir_end
-	class(self).ListDirEnd()
+	Advanced(self).ListDirEnd()
 }
 
 /*
@@ -177,7 +189,7 @@ Affected by [member include_hidden].
 [b]Note:[/b] When used on a [code]res://[/code] path in an exported project, only the files actually included in the PCK at the given folder level are returned. In practice, this means that since imported resources are stored in a top-level [code].godot/[/code] folder, only paths to [code]*.gd[/code] and [code]*.import[/code] files are returned (plus a few files such as [code]project.godot[/code] or [code]project.binary[/code] and the project icon). In an exported project, the list of returned files will also vary depending on whether [member ProjectSettings.editor/export/convert_text_resources_to_binary] is [code]true[/code].
 */
 func (self Instance) GetFiles() []string { //gd:DirAccess.get_files
-	return []string(class(self).GetFiles().Strings())
+	return []string(Advanced(self).GetFiles().Strings())
 }
 
 /*
@@ -187,7 +199,7 @@ Use [method get_files] if you want more control of what gets included.
 */
 func GetFilesAt(path string) []string { //gd:DirAccess.get_files_at
 	self := Instance{}
-	return []string(class(self).GetFilesAt(String.New(path)).Strings())
+	return []string(Advanced(self).GetFilesAt(String.New(path)).Strings())
 }
 
 /*
@@ -196,7 +208,7 @@ Affected by [member include_hidden] and [member include_navigational].
 [b]Note:[/b] The returned directories in the editor and after exporting in the [code]res://[/code] directory may differ as some files are converted to engine-specific formats when exported.
 */
 func (self Instance) GetDirectories() []string { //gd:DirAccess.get_directories
-	return []string(class(self).GetDirectories().Strings())
+	return []string(Advanced(self).GetDirectories().Strings())
 }
 
 /*
@@ -206,7 +218,7 @@ Use [method get_directories] if you want more control of what gets included.
 */
 func GetDirectoriesAt(path string) []string { //gd:DirAccess.get_directories_at
 	self := Instance{}
-	return []string(class(self).GetDirectoriesAt(String.New(path)).Strings())
+	return []string(Advanced(self).GetDirectoriesAt(String.New(path)).Strings())
 }
 
 /*
@@ -217,7 +229,7 @@ On other platforms, the method returns 0.
 */
 func GetDriveCount() int { //gd:DirAccess.get_drive_count
 	self := Instance{}
-	return int(int(class(self).GetDriveCount()))
+	return int(int(Advanced(self).GetDriveCount()))
 }
 
 /*
@@ -228,14 +240,14 @@ On other platforms, or if the requested drive does not exist, the method returns
 */
 func GetDriveName(idx int) string { //gd:DirAccess.get_drive_name
 	self := Instance{}
-	return string(class(self).GetDriveName(int64(idx)).String())
+	return string(Advanced(self).GetDriveName(int64(idx)).String())
 }
 
 /*
 Returns the currently opened directory's drive index. See [method get_drive_name] to convert returned index to the name of the drive.
 */
 func (self Instance) GetCurrentDrive() int { //gd:DirAccess.get_current_drive
-	return int(int(class(self).GetCurrentDrive()))
+	return int(int(Advanced(self).GetCurrentDrive()))
 }
 
 /*
@@ -244,14 +256,21 @@ Returns one of the [enum Error] code constants ([constant OK] on success).
 [b]Note:[/b] The new directory must be within the same scope, e.g. when you had opened a directory inside [code]res://[/code], you can't change it to [code]user://[/code] directory. If you need to open a directory in another access scope, use [method open] to create a new instance instead.
 */
 func (self Instance) ChangeDir(to_dir string) error { //gd:DirAccess.change_dir
-	return error(gd.ToError(class(self).ChangeDir(String.New(to_dir))))
+	return error(gd.ToError(Advanced(self).ChangeDir(String.New(to_dir))))
 }
 
 /*
 Returns the absolute path to the currently opened directory (e.g. [code]res://folder[/code] or [code]C:\tmp\folder[/code]).
 */
 func (self Instance) GetCurrentDir() string { //gd:DirAccess.get_current_dir
-	return string(class(self).GetCurrentDir(true).String())
+	return string(Advanced(self).GetCurrentDir(true).String())
+}
+
+/*
+Returns the absolute path to the currently opened directory (e.g. [code]res://folder[/code] or [code]C:\tmp\folder[/code]).
+*/
+func (self Expanded) GetCurrentDir(include_drive bool) string { //gd:DirAccess.get_current_dir
+	return string(Advanced(self).GetCurrentDir(include_drive).String())
 }
 
 /*
@@ -259,7 +278,7 @@ Creates a directory. The argument can be relative to the current directory, or a
 Returns one of the [enum Error] code constants ([constant OK] on success).
 */
 func (self Instance) MakeDir(path string) error { //gd:DirAccess.make_dir
-	return error(gd.ToError(class(self).MakeDir(String.New(path))))
+	return error(gd.ToError(Advanced(self).MakeDir(String.New(path))))
 }
 
 /*
@@ -267,7 +286,7 @@ Static version of [method make_dir]. Supports only absolute paths.
 */
 func MakeDirAbsolute(path string) error { //gd:DirAccess.make_dir_absolute
 	self := Instance{}
-	return error(gd.ToError(class(self).MakeDirAbsolute(String.New(path))))
+	return error(gd.ToError(Advanced(self).MakeDirAbsolute(String.New(path))))
 }
 
 /*
@@ -275,7 +294,7 @@ Creates a target directory and all necessary intermediate directories in its pat
 Returns one of the [enum Error] code constants ([constant OK] on success).
 */
 func (self Instance) MakeDirRecursive(path string) error { //gd:DirAccess.make_dir_recursive
-	return error(gd.ToError(class(self).MakeDirRecursive(String.New(path))))
+	return error(gd.ToError(Advanced(self).MakeDirRecursive(String.New(path))))
 }
 
 /*
@@ -283,7 +302,7 @@ Static version of [method make_dir_recursive]. Supports only absolute paths.
 */
 func MakeDirRecursiveAbsolute(path string) error { //gd:DirAccess.make_dir_recursive_absolute
 	self := Instance{}
-	return error(gd.ToError(class(self).MakeDirRecursiveAbsolute(String.New(path))))
+	return error(gd.ToError(Advanced(self).MakeDirRecursiveAbsolute(String.New(path))))
 }
 
 /*
@@ -292,7 +311,7 @@ For a static equivalent, use [method FileAccess.file_exists].
 [b]Note:[/b] Many resources types are imported (e.g. textures or sound files), and their source asset will not be included in the exported game, as only the imported version is used. See [method ResourceLoader.exists] for an alternative approach that takes resource remapping into account.
 */
 func (self Instance) FileExists(path string) bool { //gd:DirAccess.file_exists
-	return bool(class(self).FileExists(String.New(path)))
+	return bool(Advanced(self).FileExists(String.New(path)))
 }
 
 /*
@@ -300,7 +319,7 @@ Returns whether the target directory exists. The argument can be relative to the
 [b]Note:[/b] The returned [bool] in the editor and after exporting when used on a path in the [code]res://[/code] directory may be different. Some files are converted to engine-specific formats when exported, potentially changing the directory structure.
 */
 func (self Instance) DirExists(path string) bool { //gd:DirAccess.dir_exists
-	return bool(class(self).DirExists(String.New(path)))
+	return bool(Advanced(self).DirExists(String.New(path)))
 }
 
 /*
@@ -309,14 +328,14 @@ Static version of [method dir_exists]. Supports only absolute paths.
 */
 func DirExistsAbsolute(path string) bool { //gd:DirAccess.dir_exists_absolute
 	self := Instance{}
-	return bool(class(self).DirExistsAbsolute(String.New(path)))
+	return bool(Advanced(self).DirExistsAbsolute(String.New(path)))
 }
 
 /*
 Returns the available space on the current directory's disk, in bytes. Returns [code]0[/code] if the platform-specific method to query the available space fails.
 */
 func (self Instance) GetSpaceLeft() int { //gd:DirAccess.get_space_left
-	return int(int(class(self).GetSpaceLeft()))
+	return int(int(Advanced(self).GetSpaceLeft()))
 }
 
 /*
@@ -325,7 +344,16 @@ If [param chmod_flags] is different than [code]-1[/code], the Unix permissions f
 Returns one of the [enum Error] code constants ([constant OK] on success).
 */
 func (self Instance) Copy(from string, to string) error { //gd:DirAccess.copy
-	return error(gd.ToError(class(self).Copy(String.New(from), String.New(to), int64(-1))))
+	return error(gd.ToError(Advanced(self).Copy(String.New(from), String.New(to), int64(-1))))
+}
+
+/*
+Copies the [param from] file to the [param to] destination. Both arguments should be paths to files, either relative or absolute. If the destination file exists and is not access-protected, it will be overwritten.
+If [param chmod_flags] is different than [code]-1[/code], the Unix permissions for the destination path will be set to the provided value, if available on the current operating system.
+Returns one of the [enum Error] code constants ([constant OK] on success).
+*/
+func (self Expanded) Copy(from string, to string, chmod_flags int) error { //gd:DirAccess.copy
+	return error(gd.ToError(Advanced(self).Copy(String.New(from), String.New(to), int64(chmod_flags))))
 }
 
 /*
@@ -333,7 +361,15 @@ Static version of [method copy]. Supports only absolute paths.
 */
 func CopyAbsolute(from string, to string) error { //gd:DirAccess.copy_absolute
 	self := Instance{}
-	return error(gd.ToError(class(self).CopyAbsolute(String.New(from), String.New(to), int64(-1))))
+	return error(gd.ToError(Advanced(self).CopyAbsolute(String.New(from), String.New(to), int64(-1))))
+}
+
+/*
+Static version of [method copy]. Supports only absolute paths.
+*/
+func CopyAbsoluteExpanded(from string, to string, chmod_flags int) error { //gd:DirAccess.copy_absolute
+	self := Instance{}
+	return error(gd.ToError(Advanced(self).CopyAbsolute(String.New(from), String.New(to), int64(chmod_flags))))
 }
 
 /*
@@ -341,7 +377,7 @@ Renames (move) the [param from] file or directory to the [param to] destination.
 Returns one of the [enum Error] code constants ([constant OK] on success).
 */
 func (self Instance) Rename(from string, to string) error { //gd:DirAccess.rename
-	return error(gd.ToError(class(self).Rename(String.New(from), String.New(to))))
+	return error(gd.ToError(Advanced(self).Rename(String.New(from), String.New(to))))
 }
 
 /*
@@ -349,7 +385,7 @@ Static version of [method rename]. Supports only absolute paths.
 */
 func RenameAbsolute(from string, to string) error { //gd:DirAccess.rename_absolute
 	self := Instance{}
-	return error(gd.ToError(class(self).RenameAbsolute(String.New(from), String.New(to))))
+	return error(gd.ToError(Advanced(self).RenameAbsolute(String.New(from), String.New(to))))
 }
 
 /*
@@ -358,7 +394,7 @@ If you don't want to delete the file/directory permanently, use [method OS.move_
 Returns one of the [enum Error] code constants ([constant OK] on success).
 */
 func (self Instance) Remove(path string) error { //gd:DirAccess.remove
-	return error(gd.ToError(class(self).Remove(String.New(path))))
+	return error(gd.ToError(Advanced(self).Remove(String.New(path))))
 }
 
 /*
@@ -366,7 +402,7 @@ Static version of [method remove]. Supports only absolute paths.
 */
 func RemoveAbsolute(path string) error { //gd:DirAccess.remove_absolute
 	self := Instance{}
-	return error(gd.ToError(class(self).RemoveAbsolute(String.New(path))))
+	return error(gd.ToError(Advanced(self).RemoveAbsolute(String.New(path))))
 }
 
 /*
@@ -374,7 +410,7 @@ Returns [code]true[/code] if the file or directory is a symbolic link, directory
 [b]Note:[/b] This method is implemented on macOS, Linux, and Windows.
 */
 func (self Instance) IsLink(path string) bool { //gd:DirAccess.is_link
-	return bool(class(self).IsLink(String.New(path)))
+	return bool(Advanced(self).IsLink(String.New(path)))
 }
 
 /*
@@ -382,7 +418,7 @@ Returns target of the symbolic link.
 [b]Note:[/b] This method is implemented on macOS, Linux, and Windows.
 */
 func (self Instance) ReadLink(path string) string { //gd:DirAccess.read_link
-	return string(class(self).ReadLink(String.New(path)).String())
+	return string(Advanced(self).ReadLink(String.New(path)).String())
 }
 
 /*
@@ -391,7 +427,7 @@ Creates symbolic link between files or folders.
 [b]Note:[/b] This method is implemented on macOS, Linux, and Windows.
 */
 func (self Instance) CreateLink(source string, target string) error { //gd:DirAccess.create_link
-	return error(gd.ToError(class(self).CreateLink(String.New(source), String.New(target))))
+	return error(gd.ToError(Advanced(self).CreateLink(String.New(source), String.New(target))))
 }
 
 /*
@@ -399,7 +435,7 @@ Returns [code]true[/code] if the directory is a macOS bundle.
 [b]Note:[/b] This method is implemented on macOS.
 */
 func (self Instance) IsBundle(path string) bool { //gd:DirAccess.is_bundle
-	return bool(class(self).IsBundle(String.New(path)))
+	return bool(Advanced(self).IsBundle(String.New(path)))
 }
 
 /*
@@ -407,7 +443,7 @@ Returns [code]true[/code] if the file system or directory use case sensitive fil
 [b]Note:[/b] This method is implemented on macOS, Linux (for EXT4 and F2FS filesystems only) and Windows. On other platforms, it always returns [code]true[/code].
 */
 func (self Instance) IsCaseSensitive(path string) bool { //gd:DirAccess.is_case_sensitive
-	return bool(class(self).IsCaseSensitive(String.New(path)))
+	return bool(Advanced(self).IsCaseSensitive(String.New(path)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

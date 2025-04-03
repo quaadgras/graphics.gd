@@ -45,6 +45,7 @@ Holds collision data from the movement of a [PhysicsBody2D], usually from [metho
 The collision data includes the colliding object, the remaining motion, and the collision position. This data can be used to determine a custom response to the collision.
 */
 type Instance [1]gdclass.KinematicCollision2D
+type Expanded [1]gdclass.KinematicCollision2D
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -58,91 +59,98 @@ type Any interface {
 Returns the point of collision in global coordinates.
 */
 func (self Instance) GetPosition() Vector2.XY { //gd:KinematicCollision2D.get_position
-	return Vector2.XY(class(self).GetPosition())
+	return Vector2.XY(Advanced(self).GetPosition())
 }
 
 /*
 Returns the colliding body's shape's normal at the point of collision.
 */
 func (self Instance) GetNormal() Vector2.XY { //gd:KinematicCollision2D.get_normal
-	return Vector2.XY(class(self).GetNormal())
+	return Vector2.XY(Advanced(self).GetNormal())
 }
 
 /*
 Returns the moving object's travel before collision.
 */
 func (self Instance) GetTravel() Vector2.XY { //gd:KinematicCollision2D.get_travel
-	return Vector2.XY(class(self).GetTravel())
+	return Vector2.XY(Advanced(self).GetTravel())
 }
 
 /*
 Returns the moving object's remaining movement vector.
 */
 func (self Instance) GetRemainder() Vector2.XY { //gd:KinematicCollision2D.get_remainder
-	return Vector2.XY(class(self).GetRemainder())
+	return Vector2.XY(Advanced(self).GetRemainder())
 }
 
 /*
 Returns the collision angle according to [param up_direction], which is [constant Vector2.UP] by default. This value is always positive.
 */
 func (self Instance) GetAngle() Float.X { //gd:KinematicCollision2D.get_angle
-	return Float.X(Float.X(class(self).GetAngle(Vector2.XY(gd.Vector2{0, -1}))))
+	return Float.X(Float.X(Advanced(self).GetAngle(Vector2.XY(gd.Vector2{0, -1}))))
+}
+
+/*
+Returns the collision angle according to [param up_direction], which is [constant Vector2.UP] by default. This value is always positive.
+*/
+func (self Expanded) GetAngle(up_direction Vector2.XY) Float.X { //gd:KinematicCollision2D.get_angle
+	return Float.X(Float.X(Advanced(self).GetAngle(Vector2.XY(up_direction))))
 }
 
 /*
 Returns the colliding body's length of overlap along the collision normal.
 */
 func (self Instance) GetDepth() Float.X { //gd:KinematicCollision2D.get_depth
-	return Float.X(Float.X(class(self).GetDepth()))
+	return Float.X(Float.X(Advanced(self).GetDepth()))
 }
 
 /*
 Returns the moving object's colliding shape.
 */
 func (self Instance) GetLocalShape() Object.Instance { //gd:KinematicCollision2D.get_local_shape
-	return Object.Instance(class(self).GetLocalShape())
+	return Object.Instance(Advanced(self).GetLocalShape())
 }
 
 /*
 Returns the colliding body's attached [Object].
 */
 func (self Instance) GetCollider() Object.Instance { //gd:KinematicCollision2D.get_collider
-	return Object.Instance(class(self).GetCollider())
+	return Object.Instance(Advanced(self).GetCollider())
 }
 
 /*
 Returns the unique instance ID of the colliding body's attached [Object]. See [method Object.get_instance_id].
 */
 func (self Instance) GetColliderId() int { //gd:KinematicCollision2D.get_collider_id
-	return int(int(class(self).GetColliderId()))
+	return int(int(Advanced(self).GetColliderId()))
 }
 
 /*
 Returns the colliding body's [RID] used by the [PhysicsServer2D].
 */
 func (self Instance) GetColliderRid() RID.Body2D { //gd:KinematicCollision2D.get_collider_rid
-	return RID.Body2D(class(self).GetColliderRid())
+	return RID.Body2D(Advanced(self).GetColliderRid())
 }
 
 /*
 Returns the colliding body's shape.
 */
 func (self Instance) GetColliderShape() Object.Instance { //gd:KinematicCollision2D.get_collider_shape
-	return Object.Instance(class(self).GetColliderShape())
+	return Object.Instance(Advanced(self).GetColliderShape())
 }
 
 /*
 Returns the colliding body's shape index. See [CollisionObject2D].
 */
 func (self Instance) GetColliderShapeIndex() int { //gd:KinematicCollision2D.get_collider_shape_index
-	return int(int(class(self).GetColliderShapeIndex()))
+	return int(int(Advanced(self).GetColliderShapeIndex()))
 }
 
 /*
 Returns the colliding body's velocity.
 */
 func (self Instance) GetColliderVelocity() Vector2.XY { //gd:KinematicCollision2D.get_collider_velocity
-	return Vector2.XY(class(self).GetColliderVelocity())
+	return Vector2.XY(Advanced(self).GetColliderVelocity())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

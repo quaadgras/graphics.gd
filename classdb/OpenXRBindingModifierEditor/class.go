@@ -61,14 +61,14 @@ type Any interface {
 Returns the [OpenXRBindingModifier] currently being edited.
 */
 func (self Instance) GetBindingModifier() [1]gdclass.OpenXRBindingModifier { //gd:OpenXRBindingModifierEditor.get_binding_modifier
-	return [1]gdclass.OpenXRBindingModifier(class(self).GetBindingModifier())
+	return [1]gdclass.OpenXRBindingModifier(Advanced(self).GetBindingModifier())
 }
 
 /*
 Setup this editor for the provided [param action_map] and [param binding_modifier].
 */
 func (self Instance) Setup(action_map [1]gdclass.OpenXRActionMap, binding_modifier [1]gdclass.OpenXRBindingModifier) { //gd:OpenXRBindingModifierEditor.setup
-	class(self).Setup(action_map, binding_modifier)
+	Advanced(self).Setup(action_map, binding_modifier)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

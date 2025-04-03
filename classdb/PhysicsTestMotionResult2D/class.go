@@ -57,91 +57,91 @@ type Any interface {
 Returns the moving object's travel before collision.
 */
 func (self Instance) GetTravel() Vector2.XY { //gd:PhysicsTestMotionResult2D.get_travel
-	return Vector2.XY(class(self).GetTravel())
+	return Vector2.XY(Advanced(self).GetTravel())
 }
 
 /*
 Returns the moving object's remaining movement vector.
 */
 func (self Instance) GetRemainder() Vector2.XY { //gd:PhysicsTestMotionResult2D.get_remainder
-	return Vector2.XY(class(self).GetRemainder())
+	return Vector2.XY(Advanced(self).GetRemainder())
 }
 
 /*
 Returns the point of collision in global coordinates, if a collision occurred.
 */
 func (self Instance) GetCollisionPoint() Vector2.XY { //gd:PhysicsTestMotionResult2D.get_collision_point
-	return Vector2.XY(class(self).GetCollisionPoint())
+	return Vector2.XY(Advanced(self).GetCollisionPoint())
 }
 
 /*
 Returns the colliding body's shape's normal at the point of collision, if a collision occurred.
 */
 func (self Instance) GetCollisionNormal() Vector2.XY { //gd:PhysicsTestMotionResult2D.get_collision_normal
-	return Vector2.XY(class(self).GetCollisionNormal())
+	return Vector2.XY(Advanced(self).GetCollisionNormal())
 }
 
 /*
 Returns the colliding body's velocity, if a collision occurred.
 */
 func (self Instance) GetColliderVelocity() Vector2.XY { //gd:PhysicsTestMotionResult2D.get_collider_velocity
-	return Vector2.XY(class(self).GetColliderVelocity())
+	return Vector2.XY(Advanced(self).GetColliderVelocity())
 }
 
 /*
 Returns the unique instance ID of the colliding body's attached [Object], if a collision occurred. See [method Object.get_instance_id].
 */
 func (self Instance) GetColliderId() int { //gd:PhysicsTestMotionResult2D.get_collider_id
-	return int(int(class(self).GetColliderId()))
+	return int(int(Advanced(self).GetColliderId()))
 }
 
 /*
 Returns the colliding body's [RID] used by the [PhysicsServer2D], if a collision occurred.
 */
 func (self Instance) GetColliderRid() RID.Body2D { //gd:PhysicsTestMotionResult2D.get_collider_rid
-	return RID.Body2D(class(self).GetColliderRid())
+	return RID.Body2D(Advanced(self).GetColliderRid())
 }
 
 /*
 Returns the colliding body's attached [Object], if a collision occurred.
 */
 func (self Instance) GetCollider() Object.Instance { //gd:PhysicsTestMotionResult2D.get_collider
-	return Object.Instance(class(self).GetCollider())
+	return Object.Instance(Advanced(self).GetCollider())
 }
 
 /*
 Returns the colliding body's shape index, if a collision occurred. See [CollisionObject2D].
 */
 func (self Instance) GetColliderShape() int { //gd:PhysicsTestMotionResult2D.get_collider_shape
-	return int(int(class(self).GetColliderShape()))
+	return int(int(Advanced(self).GetColliderShape()))
 }
 
 /*
 Returns the moving object's colliding shape, if a collision occurred.
 */
 func (self Instance) GetCollisionLocalShape() int { //gd:PhysicsTestMotionResult2D.get_collision_local_shape
-	return int(int(class(self).GetCollisionLocalShape()))
+	return int(int(Advanced(self).GetCollisionLocalShape()))
 }
 
 /*
 Returns the length of overlap along the collision normal, if a collision occurred.
 */
 func (self Instance) GetCollisionDepth() Float.X { //gd:PhysicsTestMotionResult2D.get_collision_depth
-	return Float.X(Float.X(class(self).GetCollisionDepth()))
+	return Float.X(Float.X(Advanced(self).GetCollisionDepth()))
 }
 
 /*
 Returns the maximum fraction of the motion that can occur without a collision, between [code]0[/code] and [code]1[/code].
 */
 func (self Instance) GetCollisionSafeFraction() Float.X { //gd:PhysicsTestMotionResult2D.get_collision_safe_fraction
-	return Float.X(Float.X(class(self).GetCollisionSafeFraction()))
+	return Float.X(Float.X(Advanced(self).GetCollisionSafeFraction()))
 }
 
 /*
 Returns the minimum fraction of the motion needed to collide, if a collision occurred, between [code]0[/code] and [code]1[/code].
 */
 func (self Instance) GetCollisionUnsafeFraction() Float.X { //gd:PhysicsTestMotionResult2D.get_collision_unsafe_fraction
-	return Float.X(Float.X(class(self).GetCollisionUnsafeFraction()))
+	return Float.X(Float.X(Advanced(self).GetCollisionUnsafeFraction()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

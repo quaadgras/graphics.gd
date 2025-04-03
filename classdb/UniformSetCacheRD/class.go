@@ -57,7 +57,7 @@ Creates/returns a cached uniform set based on the provided uniforms for a given 
 */
 func GetCache(shader RID.Shader, set int, uniforms [][1]gdclass.RDUniform) RID.UniformSet { //gd:UniformSetCacheRD.get_cache
 	self := Instance{}
-	return RID.UniformSet(class(self).GetCache(RID.Any(shader), int64(set), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDUniform]](uniforms)))
+	return RID.UniformSet(Advanced(self).GetCache(RID.Any(shader), int64(set), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDUniform]](uniforms)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

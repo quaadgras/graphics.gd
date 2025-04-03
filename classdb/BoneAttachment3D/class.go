@@ -58,42 +58,42 @@ type Any interface {
 Get parent or external [Skeleton3D] node if found.
 */
 func (self Instance) GetSkeleton() [1]gdclass.Skeleton3D { //gd:BoneAttachment3D.get_skeleton
-	return [1]gdclass.Skeleton3D(class(self).GetSkeleton())
+	return [1]gdclass.Skeleton3D(Advanced(self).GetSkeleton())
 }
 
 /*
 A function that is called automatically when the [Skeleton3D] is updated. This function is where the [BoneAttachment3D] node updates its position so it is correctly bound when it is [i]not[/i] set to override the bone pose.
 */
 func (self Instance) OnSkeletonUpdate() { //gd:BoneAttachment3D.on_skeleton_update
-	class(self).OnSkeletonUpdate()
+	Advanced(self).OnSkeletonUpdate()
 }
 
 /*
 Sets whether the BoneAttachment3D node will use an external [Skeleton3D] node rather than attempting to use its parent node as the [Skeleton3D]. When set to [code]true[/code], the BoneAttachment3D node will use the external [Skeleton3D] node set in [method set_external_skeleton].
 */
 func (self Instance) SetUseExternalSkeleton(use_external_skeleton bool) { //gd:BoneAttachment3D.set_use_external_skeleton
-	class(self).SetUseExternalSkeleton(use_external_skeleton)
+	Advanced(self).SetUseExternalSkeleton(use_external_skeleton)
 }
 
 /*
 Returns whether the BoneAttachment3D node is using an external [Skeleton3D] rather than attempting to use its parent node as the [Skeleton3D].
 */
 func (self Instance) GetUseExternalSkeleton() bool { //gd:BoneAttachment3D.get_use_external_skeleton
-	return bool(class(self).GetUseExternalSkeleton())
+	return bool(Advanced(self).GetUseExternalSkeleton())
 }
 
 /*
 Sets the [NodePath] to the external skeleton that the BoneAttachment3D node should use. See [method set_use_external_skeleton] to enable the external [Skeleton3D] node.
 */
 func (self Instance) SetExternalSkeleton(external_skeleton string) { //gd:BoneAttachment3D.set_external_skeleton
-	class(self).SetExternalSkeleton(Path.ToNode(String.New(external_skeleton)))
+	Advanced(self).SetExternalSkeleton(Path.ToNode(String.New(external_skeleton)))
 }
 
 /*
 Returns the [NodePath] to the external [Skeleton3D] node, if one has been set.
 */
 func (self Instance) GetExternalSkeleton() string { //gd:BoneAttachment3D.get_external_skeleton
-	return string(class(self).GetExternalSkeleton().String())
+	return string(Advanced(self).GetExternalSkeleton().String())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

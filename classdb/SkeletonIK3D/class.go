@@ -67,6 +67,7 @@ skeleton_ik_node.set_influence(0.0)
 [/codeblock]
 */
 type Instance [1]gdclass.SkeletonIK3D
+type Expanded [1]gdclass.SkeletonIK3D
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -80,28 +81,35 @@ type Any interface {
 Returns the parent [Skeleton3D] node that was present when SkeletonIK entered the scene tree. Returns [code]null[/code] if the parent node was not a [Skeleton3D] node when SkeletonIK3D entered the scene tree.
 */
 func (self Instance) GetParentSkeleton() [1]gdclass.Skeleton3D { //gd:SkeletonIK3D.get_parent_skeleton
-	return [1]gdclass.Skeleton3D(class(self).GetParentSkeleton())
+	return [1]gdclass.Skeleton3D(Advanced(self).GetParentSkeleton())
 }
 
 /*
 Returns [code]true[/code] if SkeletonIK is applying IK effects on continues frames to the [Skeleton3D] bones. Returns [code]false[/code] if SkeletonIK is stopped or [method start] was used with the [code]one_time[/code] parameter set to [code]true[/code].
 */
 func (self Instance) IsRunning() bool { //gd:SkeletonIK3D.is_running
-	return bool(class(self).IsRunning())
+	return bool(Advanced(self).IsRunning())
 }
 
 /*
 Starts applying IK effects on each frame to the [Skeleton3D] bones but will only take effect starting on the next frame. If [param one_time] is [code]true[/code], this will take effect immediately but also reset on the next frame.
 */
 func (self Instance) Start() { //gd:SkeletonIK3D.start
-	class(self).Start(false)
+	Advanced(self).Start(false)
+}
+
+/*
+Starts applying IK effects on each frame to the [Skeleton3D] bones but will only take effect starting on the next frame. If [param one_time] is [code]true[/code], this will take effect immediately but also reset on the next frame.
+*/
+func (self Expanded) Start(one_time bool) { //gd:SkeletonIK3D.start
+	Advanced(self).Start(one_time)
 }
 
 /*
 Stops applying IK effects on each frame to the [Skeleton3D] bones and also calls [method Skeleton3D.clear_bones_global_pose_override] to remove existing overrides on all bones.
 */
 func (self Instance) Stop() { //gd:SkeletonIK3D.stop
-	class(self).Stop()
+	Advanced(self).Stop()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

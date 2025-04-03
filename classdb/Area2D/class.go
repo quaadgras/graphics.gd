@@ -64,7 +64,7 @@ Returns a list of intersecting [PhysicsBody2D]s and [TileMap]s. The overlapping 
 For performance reasons (collisions are all processed at the same time) this list is modified once during the physics step, not immediately after objects are moved. Consider using signals instead.
 */
 func (self Instance) GetOverlappingBodies() [][1]gdclass.Node2D { //gd:Area2D.get_overlapping_bodies
-	return [][1]gdclass.Node2D(gd.ArrayAs[[][1]gdclass.Node2D](gd.InternalArray(class(self).GetOverlappingBodies())))
+	return [][1]gdclass.Node2D(gd.ArrayAs[[][1]gdclass.Node2D](gd.InternalArray(Advanced(self).GetOverlappingBodies())))
 }
 
 /*
@@ -72,7 +72,7 @@ Returns a list of intersecting [Area2D]s. The overlapping area's [member Collisi
 For performance reasons (collisions are all processed at the same time) this list is modified once during the physics step, not immediately after objects are moved. Consider using signals instead.
 */
 func (self Instance) GetOverlappingAreas() [][1]gdclass.Area2D { //gd:Area2D.get_overlapping_areas
-	return [][1]gdclass.Area2D(gd.ArrayAs[[][1]gdclass.Area2D](gd.InternalArray(class(self).GetOverlappingAreas())))
+	return [][1]gdclass.Area2D(gd.ArrayAs[[][1]gdclass.Area2D](gd.InternalArray(Advanced(self).GetOverlappingAreas())))
 }
 
 /*
@@ -80,7 +80,7 @@ Returns [code]true[/code] if intersecting any [PhysicsBody2D]s or [TileMap]s, ot
 For performance reasons (collisions are all processed at the same time) the list of overlapping bodies is modified once during the physics step, not immediately after objects are moved. Consider using signals instead.
 */
 func (self Instance) HasOverlappingBodies() bool { //gd:Area2D.has_overlapping_bodies
-	return bool(class(self).HasOverlappingBodies())
+	return bool(Advanced(self).HasOverlappingBodies())
 }
 
 /*
@@ -88,7 +88,7 @@ Returns [code]true[/code] if intersecting any [Area2D]s, otherwise returns [code
 For performance reasons (collisions are all processed at the same time) the list of overlapping areas is modified once during the physics step, not immediately after objects are moved. Consider using signals instead.
 */
 func (self Instance) HasOverlappingAreas() bool { //gd:Area2D.has_overlapping_areas
-	return bool(class(self).HasOverlappingAreas())
+	return bool(Advanced(self).HasOverlappingAreas())
 }
 
 /*
@@ -97,7 +97,7 @@ Returns [code]true[/code] if the given physics body intersects or overlaps this 
 The [param body] argument can either be a [PhysicsBody2D] or a [TileMap] instance. While TileMaps are not physics bodies themselves, they register their tiles with collision shapes as a virtual physics body.
 */
 func (self Instance) OverlapsBody(body [1]gdclass.Node) bool { //gd:Area2D.overlaps_body
-	return bool(class(self).OverlapsBody(body))
+	return bool(Advanced(self).OverlapsBody(body))
 }
 
 /*
@@ -105,7 +105,7 @@ Returns [code]true[/code] if the given [Area2D] intersects or overlaps this [Are
 [b]Note:[/b] The result of this test is not immediate after moving objects. For performance, the list of overlaps is updated once per frame and before the physics step. Consider using signals instead.
 */
 func (self Instance) OverlapsArea(area [1]gdclass.Node) bool { //gd:Area2D.overlaps_area
-	return bool(class(self).OverlapsArea(area))
+	return bool(Advanced(self).OverlapsArea(area))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

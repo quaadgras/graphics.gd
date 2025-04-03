@@ -59,7 +59,7 @@ Queue a resource file located at [param path] for preview. Once the preview is r
 [b]Note:[/b] If it was not possible to create the preview the [param receiver_func] will still be called, but the preview will be [code]null[/code].
 */
 func (self Instance) QueueResourcePreview(path string, receiver Object.Instance, receiver_func string, userdata any) { //gd:EditorResourcePreview.queue_resource_preview
-	class(self).QueueResourcePreview(String.New(path), receiver, String.Name(String.New(receiver_func)), variant.New(userdata))
+	Advanced(self).QueueResourcePreview(String.New(path), receiver, String.Name(String.New(receiver_func)), variant.New(userdata))
 }
 
 /*
@@ -67,28 +67,28 @@ Queue the [param resource] being edited for preview. Once the preview is ready, 
 [b]Note:[/b] If it was not possible to create the preview the [param receiver_func] will still be called, but the preview will be [code]null[/code].
 */
 func (self Instance) QueueEditedResourcePreview(resource [1]gdclass.Resource, receiver Object.Instance, receiver_func string, userdata any) { //gd:EditorResourcePreview.queue_edited_resource_preview
-	class(self).QueueEditedResourcePreview(resource, receiver, String.Name(String.New(receiver_func)), variant.New(userdata))
+	Advanced(self).QueueEditedResourcePreview(resource, receiver, String.Name(String.New(receiver_func)), variant.New(userdata))
 }
 
 /*
 Create an own, custom preview generator.
 */
 func (self Instance) AddPreviewGenerator(generator [1]gdclass.EditorResourcePreviewGenerator) { //gd:EditorResourcePreview.add_preview_generator
-	class(self).AddPreviewGenerator(generator)
+	Advanced(self).AddPreviewGenerator(generator)
 }
 
 /*
 Removes a custom preview generator.
 */
 func (self Instance) RemovePreviewGenerator(generator [1]gdclass.EditorResourcePreviewGenerator) { //gd:EditorResourcePreview.remove_preview_generator
-	class(self).RemovePreviewGenerator(generator)
+	Advanced(self).RemovePreviewGenerator(generator)
 }
 
 /*
 Check if the resource changed, if so, it will be invalidated and the corresponding signal emitted.
 */
 func (self Instance) CheckForInvalidation(path string) { //gd:EditorResourcePreview.check_for_invalidation
-	class(self).CheckForInvalidation(String.New(path))
+	Advanced(self).CheckForInvalidation(String.New(path))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

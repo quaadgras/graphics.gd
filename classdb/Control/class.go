@@ -63,6 +63,7 @@ Sets [member mouse_filter] to [constant MOUSE_FILTER_IGNORE] to tell a [Control]
 %!(EXTRA string=Control)
 */
 type Instance [1]gdclass.Control
+type Expanded [1]gdclass.Control
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -532,21 +533,21 @@ Marks an input event as handled. Once you accept an input event, it stops propag
 [b]Note:[/b] This does not affect the methods in [Input], only the way events are propagated.
 */
 func (self Instance) AcceptEvent() { //gd:Control.accept_event
-	class(self).AcceptEvent()
+	Advanced(self).AcceptEvent()
 }
 
 /*
 Returns the minimum size for this control. See [member custom_minimum_size].
 */
 func (self Instance) GetMinimumSize() Vector2.XY { //gd:Control.get_minimum_size
-	return Vector2.XY(class(self).GetMinimumSize())
+	return Vector2.XY(Advanced(self).GetMinimumSize())
 }
 
 /*
 Returns combined minimum size from [member custom_minimum_size] and [method get_minimum_size].
 */
 func (self Instance) GetCombinedMinimumSize() Vector2.XY { //gd:Control.get_combined_minimum_size
-	return Vector2.XY(class(self).GetCombinedMinimumSize())
+	return Vector2.XY(Advanced(self).GetCombinedMinimumSize())
 }
 
 /*
@@ -554,7 +555,15 @@ Sets the anchors to a [param preset] from [enum Control.LayoutPreset] enum. This
 If [param keep_offsets] is [code]true[/code], control's position will also be updated.
 */
 func (self Instance) SetAnchorsPreset(preset gdclass.ControlLayoutPreset) { //gd:Control.set_anchors_preset
-	class(self).SetAnchorsPreset(preset, false)
+	Advanced(self).SetAnchorsPreset(preset, false)
+}
+
+/*
+Sets the anchors to a [param preset] from [enum Control.LayoutPreset] enum. This is the code equivalent to using the Layout menu in the 2D editor.
+If [param keep_offsets] is [code]true[/code], control's position will also be updated.
+*/
+func (self Expanded) SetAnchorsPreset(preset gdclass.ControlLayoutPreset, keep_offsets bool) { //gd:Control.set_anchors_preset
+	Advanced(self).SetAnchorsPreset(preset, keep_offsets)
 }
 
 /*
@@ -563,14 +572,30 @@ Use parameter [param resize_mode] with constants from [enum Control.LayoutPreset
 Use parameter [param margin] to determine the gap between the [Control] and the edges.
 */
 func (self Instance) SetOffsetsPreset(preset gdclass.ControlLayoutPreset) { //gd:Control.set_offsets_preset
-	class(self).SetOffsetsPreset(preset, 0, int64(0))
+	Advanced(self).SetOffsetsPreset(preset, 0, int64(0))
+}
+
+/*
+Sets the offsets to a [param preset] from [enum Control.LayoutPreset] enum. This is the code equivalent to using the Layout menu in the 2D editor.
+Use parameter [param resize_mode] with constants from [enum Control.LayoutPresetMode] to better determine the resulting size of the [Control]. Constant size will be ignored if used with presets that change size, e.g. [constant PRESET_LEFT_WIDE].
+Use parameter [param margin] to determine the gap between the [Control] and the edges.
+*/
+func (self Expanded) SetOffsetsPreset(preset gdclass.ControlLayoutPreset, resize_mode gdclass.ControlLayoutPresetMode, margin int) { //gd:Control.set_offsets_preset
+	Advanced(self).SetOffsetsPreset(preset, resize_mode, int64(margin))
 }
 
 /*
 Sets both anchor preset and offset preset. See [method set_anchors_preset] and [method set_offsets_preset].
 */
 func (self Instance) SetAnchorsAndOffsetsPreset(preset gdclass.ControlLayoutPreset) { //gd:Control.set_anchors_and_offsets_preset
-	class(self).SetAnchorsAndOffsetsPreset(preset, 0, int64(0))
+	Advanced(self).SetAnchorsAndOffsetsPreset(preset, 0, int64(0))
+}
+
+/*
+Sets both anchor preset and offset preset. See [method set_anchors_preset] and [method set_offsets_preset].
+*/
+func (self Expanded) SetAnchorsAndOffsetsPreset(preset gdclass.ControlLayoutPreset, resize_mode gdclass.ControlLayoutPresetMode, margin int) { //gd:Control.set_anchors_and_offsets_preset
+	Advanced(self).SetAnchorsAndOffsetsPreset(preset, resize_mode, int64(margin))
 }
 
 /*
@@ -579,28 +604,44 @@ If [param keep_offset] is [code]true[/code], offsets aren't updated after this o
 If [param push_opposite_anchor] is [code]true[/code] and the opposite anchor overlaps this anchor, the opposite one will have its value overridden. For example, when setting left anchor to 1 and the right anchor has value of 0.5, the right anchor will also get value of 1. If [param push_opposite_anchor] was [code]false[/code], the left anchor would get value 0.5.
 */
 func (self Instance) SetAnchor(side Side, anchor Float.X) { //gd:Control.set_anchor
-	class(self).SetAnchor(side, float64(anchor), false, true)
+	Advanced(self).SetAnchor(side, float64(anchor), false, true)
+}
+
+/*
+Sets the anchor for the specified [enum Side] to [param anchor]. A setter method for [member anchor_bottom], [member anchor_left], [member anchor_right] and [member anchor_top].
+If [param keep_offset] is [code]true[/code], offsets aren't updated after this operation.
+If [param push_opposite_anchor] is [code]true[/code] and the opposite anchor overlaps this anchor, the opposite one will have its value overridden. For example, when setting left anchor to 1 and the right anchor has value of 0.5, the right anchor will also get value of 1. If [param push_opposite_anchor] was [code]false[/code], the left anchor would get value 0.5.
+*/
+func (self Expanded) SetAnchor(side Side, anchor Float.X, keep_offset bool, push_opposite_anchor bool) { //gd:Control.set_anchor
+	Advanced(self).SetAnchor(side, float64(anchor), keep_offset, push_opposite_anchor)
 }
 
 /*
 Works the same as [method set_anchor], but instead of [code]keep_offset[/code] argument and automatic update of offset, it allows to set the offset yourself (see [method set_offset]).
 */
 func (self Instance) SetAnchorAndOffset(side Side, anchor Float.X, offset Float.X) { //gd:Control.set_anchor_and_offset
-	class(self).SetAnchorAndOffset(side, float64(anchor), float64(offset), false)
+	Advanced(self).SetAnchorAndOffset(side, float64(anchor), float64(offset), false)
+}
+
+/*
+Works the same as [method set_anchor], but instead of [code]keep_offset[/code] argument and automatic update of offset, it allows to set the offset yourself (see [method set_offset]).
+*/
+func (self Expanded) SetAnchorAndOffset(side Side, anchor Float.X, offset Float.X, push_opposite_anchor bool) { //gd:Control.set_anchor_and_offset
+	Advanced(self).SetAnchorAndOffset(side, float64(anchor), float64(offset), push_opposite_anchor)
 }
 
 /*
 Sets [member offset_left] and [member offset_top] at the same time. Equivalent of changing [member position].
 */
 func (self Instance) SetBegin(position Vector2.XY) { //gd:Control.set_begin
-	class(self).SetBegin(Vector2.XY(position))
+	Advanced(self).SetBegin(Vector2.XY(position))
 }
 
 /*
 Sets [member offset_right] and [member offset_bottom] at the same time.
 */
 func (self Instance) SetEnd(position Vector2.XY) { //gd:Control.set_end
-	class(self).SetEnd(Vector2.XY(position))
+	Advanced(self).SetEnd(Vector2.XY(position))
 }
 
 /*
@@ -608,7 +649,15 @@ Sets the [member position] to given [param position].
 If [param keep_offsets] is [code]true[/code], control's anchors will be updated instead of offsets.
 */
 func (self Instance) SetPosition(position Vector2.XY) { //gd:Control.set_position
-	class(self).SetPosition(Vector2.XY(position), false)
+	Advanced(self).SetPosition(Vector2.XY(position), false)
+}
+
+/*
+Sets the [member position] to given [param position].
+If [param keep_offsets] is [code]true[/code], control's anchors will be updated instead of offsets.
+*/
+func (self Expanded) SetPosition(position Vector2.XY, keep_offsets bool) { //gd:Control.set_position
+	Advanced(self).SetPosition(Vector2.XY(position), keep_offsets)
 }
 
 /*
@@ -616,14 +665,22 @@ Sets the size (see [member size]).
 If [param keep_offsets] is [code]true[/code], control's anchors will be updated instead of offsets.
 */
 func (self Instance) SetSize(size Vector2.XY) { //gd:Control.set_size
-	class(self).SetSize(Vector2.XY(size), false)
+	Advanced(self).SetSize(Vector2.XY(size), false)
+}
+
+/*
+Sets the size (see [member size]).
+If [param keep_offsets] is [code]true[/code], control's anchors will be updated instead of offsets.
+*/
+func (self Expanded) SetSize(size Vector2.XY, keep_offsets bool) { //gd:Control.set_size
+	Advanced(self).SetSize(Vector2.XY(size), keep_offsets)
 }
 
 /*
 Resets the size to [method get_combined_minimum_size]. This is equivalent to calling [code]set_size(Vector2())[/code] (or any size below the minimum).
 */
 func (self Instance) ResetSize() { //gd:Control.reset_size
-	class(self).ResetSize()
+	Advanced(self).ResetSize()
 }
 
 /*
@@ -631,28 +688,36 @@ Sets the [member global_position] to given [param position].
 If [param keep_offsets] is [code]true[/code], control's anchors will be updated instead of offsets.
 */
 func (self Instance) SetGlobalPosition(position Vector2.XY) { //gd:Control.set_global_position
-	class(self).SetGlobalPosition(Vector2.XY(position), false)
+	Advanced(self).SetGlobalPosition(Vector2.XY(position), false)
+}
+
+/*
+Sets the [member global_position] to given [param position].
+If [param keep_offsets] is [code]true[/code], control's anchors will be updated instead of offsets.
+*/
+func (self Expanded) SetGlobalPosition(position Vector2.XY, keep_offsets bool) { //gd:Control.set_global_position
+	Advanced(self).SetGlobalPosition(Vector2.XY(position), keep_offsets)
 }
 
 /*
 Returns [member offset_left] and [member offset_top]. See also [member position].
 */
 func (self Instance) GetBegin() Vector2.XY { //gd:Control.get_begin
-	return Vector2.XY(class(self).GetBegin())
+	return Vector2.XY(Advanced(self).GetBegin())
 }
 
 /*
 Returns [member offset_right] and [member offset_bottom].
 */
 func (self Instance) GetEnd() Vector2.XY { //gd:Control.get_end
-	return Vector2.XY(class(self).GetEnd())
+	return Vector2.XY(Advanced(self).GetEnd())
 }
 
 /*
 Returns the width/height occupied in the parent control.
 */
 func (self Instance) GetParentAreaSize() Vector2.XY { //gd:Control.get_parent_area_size
-	return Vector2.XY(class(self).GetParentAreaSize())
+	return Vector2.XY(Advanced(self).GetParentAreaSize())
 }
 
 /*
@@ -666,7 +731,7 @@ popup_menu.popup()
 [/codeblock]
 */
 func (self Instance) GetScreenPosition() Vector2.XY { //gd:Control.get_screen_position
-	return Vector2.XY(class(self).GetScreenPosition())
+	return Vector2.XY(Advanced(self).GetScreenPosition())
 }
 
 /*
@@ -675,7 +740,7 @@ Returns the position and size of the control in the coordinate system of the con
 [b]Note:[/b] Setting [member Viewport.gui_snap_controls_to_pixels] to [code]true[/code] can lead to rounding inaccuracies between the displayed control and the returned [Rect2].
 */
 func (self Instance) GetRect() Rect2.PositionSize { //gd:Control.get_rect
-	return Rect2.PositionSize(class(self).GetRect())
+	return Rect2.PositionSize(Advanced(self).GetRect())
 }
 
 /*
@@ -684,14 +749,14 @@ Returns the position and size of the control relative to the containing canvas. 
 [b]Note:[/b] Setting [member Viewport.gui_snap_controls_to_pixels] to [code]true[/code] can lead to rounding inaccuracies between the displayed control and the returned [Rect2].
 */
 func (self Instance) GetGlobalRect() Rect2.PositionSize { //gd:Control.get_global_rect
-	return Rect2.PositionSize(class(self).GetGlobalRect())
+	return Rect2.PositionSize(Advanced(self).GetGlobalRect())
 }
 
 /*
 Returns [code]true[/code] if this is the current focused control. See [member focus_mode].
 */
 func (self Instance) HasFocus() bool { //gd:Control.has_focus
-	return bool(class(self).HasFocus())
+	return bool(Advanced(self).HasFocus())
 }
 
 /*
@@ -699,28 +764,28 @@ Steal the focus from another control and become the focused control (see [member
 [b]Note:[/b] Using this method together with [method Callable.call_deferred] makes it more reliable, especially when called inside [method Node._ready].
 */
 func (self Instance) GrabFocus() { //gd:Control.grab_focus
-	class(self).GrabFocus()
+	Advanced(self).GrabFocus()
 }
 
 /*
 Give up the focus. No other control will be able to receive input.
 */
 func (self Instance) ReleaseFocus() { //gd:Control.release_focus
-	class(self).ReleaseFocus()
+	Advanced(self).ReleaseFocus()
 }
 
 /*
 Finds the previous (above in the tree) [Control] that can receive the focus.
 */
 func (self Instance) FindPrevValidFocus() [1]gdclass.Control { //gd:Control.find_prev_valid_focus
-	return [1]gdclass.Control(class(self).FindPrevValidFocus())
+	return [1]gdclass.Control(Advanced(self).FindPrevValidFocus())
 }
 
 /*
 Finds the next (below in the tree) [Control] that can receive the focus.
 */
 func (self Instance) FindNextValidFocus() [1]gdclass.Control { //gd:Control.find_next_valid_focus
-	return [1]gdclass.Control(class(self).FindNextValidFocus())
+	return [1]gdclass.Control(Advanced(self).FindNextValidFocus())
 }
 
 /*
@@ -728,21 +793,21 @@ Finds the next [Control] that can receive the focus on the specified [enum Side]
 [b]Note:[/b] This is different from [method get_focus_neighbor], which returns the path of a specified focus neighbor.
 */
 func (self Instance) FindValidFocusNeighbor(side Side) [1]gdclass.Control { //gd:Control.find_valid_focus_neighbor
-	return [1]gdclass.Control(class(self).FindValidFocusNeighbor(side))
+	return [1]gdclass.Control(Advanced(self).FindValidFocusNeighbor(side))
 }
 
 /*
 Prevents [code]*_theme_*_override[/code] methods from emitting [constant NOTIFICATION_THEME_CHANGED] until [method end_bulk_theme_override] is called.
 */
 func (self Instance) BeginBulkThemeOverride() { //gd:Control.begin_bulk_theme_override
-	class(self).BeginBulkThemeOverride()
+	Advanced(self).BeginBulkThemeOverride()
 }
 
 /*
 Ends a bulk theme override update. See [method begin_bulk_theme_override].
 */
 func (self Instance) EndBulkThemeOverride() { //gd:Control.end_bulk_theme_override
-	class(self).EndBulkThemeOverride()
+	Advanced(self).EndBulkThemeOverride()
 }
 
 /*
@@ -750,7 +815,7 @@ Creates a local override for a theme icon with the specified [param name]. Local
 See also [method get_theme_icon].
 */
 func (self Instance) AddThemeIconOverride(name string, texture [1]gdclass.Texture2D) { //gd:Control.add_theme_icon_override
-	class(self).AddThemeIconOverride(String.Name(String.New(name)), texture)
+	Advanced(self).AddThemeIconOverride(String.Name(String.New(name)), texture)
 }
 
 /*
@@ -783,7 +848,7 @@ GetNode<Button>("MyButton").RemoveThemeStyleboxOverride("normal");
 [/codeblocks]
 */
 func (self Instance) AddThemeStyleboxOverride(name string, stylebox [1]gdclass.StyleBox) { //gd:Control.add_theme_stylebox_override
-	class(self).AddThemeStyleboxOverride(String.Name(String.New(name)), stylebox)
+	Advanced(self).AddThemeStyleboxOverride(String.Name(String.New(name)), stylebox)
 }
 
 /*
@@ -791,7 +856,7 @@ Creates a local override for a theme [Font] with the specified [param name]. Loc
 See also [method get_theme_font].
 */
 func (self Instance) AddThemeFontOverride(name string, font [1]gdclass.Font) { //gd:Control.add_theme_font_override
-	class(self).AddThemeFontOverride(String.Name(String.New(name)), font)
+	Advanced(self).AddThemeFontOverride(String.Name(String.New(name)), font)
 }
 
 /*
@@ -799,7 +864,7 @@ Creates a local override for a theme font size with the specified [param name]. 
 See also [method get_theme_font_size].
 */
 func (self Instance) AddThemeFontSizeOverride(name string, font_size int) { //gd:Control.add_theme_font_size_override
-	class(self).AddThemeFontSizeOverride(String.Name(String.New(name)), int64(font_size))
+	Advanced(self).AddThemeFontSizeOverride(String.Name(String.New(name)), int64(font_size))
 }
 
 /*
@@ -826,7 +891,7 @@ GetNode<Label>("MyLabel").AddThemeColorOverride("font_color", GetThemeColor("fon
 [/codeblocks]
 */
 func (self Instance) AddThemeColorOverride(name string, color Color.RGBA) { //gd:Control.add_theme_color_override
-	class(self).AddThemeColorOverride(String.Name(String.New(name)), Color.RGBA(color))
+	Advanced(self).AddThemeColorOverride(String.Name(String.New(name)), Color.RGBA(color))
 }
 
 /*
@@ -834,49 +899,49 @@ Creates a local override for a theme constant with the specified [param name]. L
 See also [method get_theme_constant].
 */
 func (self Instance) AddThemeConstantOverride(name string, constant int) { //gd:Control.add_theme_constant_override
-	class(self).AddThemeConstantOverride(String.Name(String.New(name)), int64(constant))
+	Advanced(self).AddThemeConstantOverride(String.Name(String.New(name)), int64(constant))
 }
 
 /*
 Removes a local override for a theme icon with the specified [param name] previously added by [method add_theme_icon_override] or via the Inspector dock.
 */
 func (self Instance) RemoveThemeIconOverride(name string) { //gd:Control.remove_theme_icon_override
-	class(self).RemoveThemeIconOverride(String.Name(String.New(name)))
+	Advanced(self).RemoveThemeIconOverride(String.Name(String.New(name)))
 }
 
 /*
 Removes a local override for a theme [StyleBox] with the specified [param name] previously added by [method add_theme_stylebox_override] or via the Inspector dock.
 */
 func (self Instance) RemoveThemeStyleboxOverride(name string) { //gd:Control.remove_theme_stylebox_override
-	class(self).RemoveThemeStyleboxOverride(String.Name(String.New(name)))
+	Advanced(self).RemoveThemeStyleboxOverride(String.Name(String.New(name)))
 }
 
 /*
 Removes a local override for a theme [Font] with the specified [param name] previously added by [method add_theme_font_override] or via the Inspector dock.
 */
 func (self Instance) RemoveThemeFontOverride(name string) { //gd:Control.remove_theme_font_override
-	class(self).RemoveThemeFontOverride(String.Name(String.New(name)))
+	Advanced(self).RemoveThemeFontOverride(String.Name(String.New(name)))
 }
 
 /*
 Removes a local override for a theme font size with the specified [param name] previously added by [method add_theme_font_size_override] or via the Inspector dock.
 */
 func (self Instance) RemoveThemeFontSizeOverride(name string) { //gd:Control.remove_theme_font_size_override
-	class(self).RemoveThemeFontSizeOverride(String.Name(String.New(name)))
+	Advanced(self).RemoveThemeFontSizeOverride(String.Name(String.New(name)))
 }
 
 /*
 Removes a local override for a theme [Color] with the specified [param name] previously added by [method add_theme_color_override] or via the Inspector dock.
 */
 func (self Instance) RemoveThemeColorOverride(name string) { //gd:Control.remove_theme_color_override
-	class(self).RemoveThemeColorOverride(String.Name(String.New(name)))
+	Advanced(self).RemoveThemeColorOverride(String.Name(String.New(name)))
 }
 
 /*
 Removes a local override for a theme constant with the specified [param name] previously added by [method add_theme_constant_override] or via the Inspector dock.
 */
 func (self Instance) RemoveThemeConstantOverride(name string) { //gd:Control.remove_theme_constant_override
-	class(self).RemoveThemeConstantOverride(String.Name(String.New(name)))
+	Advanced(self).RemoveThemeConstantOverride(String.Name(String.New(name)))
 }
 
 /*
@@ -884,7 +949,15 @@ Returns an icon from the first matching [Theme] in the tree if that [Theme] has 
 See [method get_theme_color] for details.
 */
 func (self Instance) GetThemeIcon(name string) [1]gdclass.Texture2D { //gd:Control.get_theme_icon
-	return [1]gdclass.Texture2D(class(self).GetThemeIcon(String.Name(String.New(name)), String.Name(String.New(""))))
+	return [1]gdclass.Texture2D(Advanced(self).GetThemeIcon(String.Name(String.New(name)), String.Name(String.New(""))))
+}
+
+/*
+Returns an icon from the first matching [Theme] in the tree if that [Theme] has an icon item with the specified [param name] and [param theme_type].
+See [method get_theme_color] for details.
+*/
+func (self Expanded) GetThemeIcon(name string, theme_type string) [1]gdclass.Texture2D { //gd:Control.get_theme_icon
+	return [1]gdclass.Texture2D(Advanced(self).GetThemeIcon(String.Name(String.New(name)), String.Name(String.New(theme_type))))
 }
 
 /*
@@ -892,7 +965,15 @@ Returns a [StyleBox] from the first matching [Theme] in the tree if that [Theme]
 See [method get_theme_color] for details.
 */
 func (self Instance) GetThemeStylebox(name string) [1]gdclass.StyleBox { //gd:Control.get_theme_stylebox
-	return [1]gdclass.StyleBox(class(self).GetThemeStylebox(String.Name(String.New(name)), String.Name(String.New(""))))
+	return [1]gdclass.StyleBox(Advanced(self).GetThemeStylebox(String.Name(String.New(name)), String.Name(String.New(""))))
+}
+
+/*
+Returns a [StyleBox] from the first matching [Theme] in the tree if that [Theme] has a stylebox item with the specified [param name] and [param theme_type].
+See [method get_theme_color] for details.
+*/
+func (self Expanded) GetThemeStylebox(name string, theme_type string) [1]gdclass.StyleBox { //gd:Control.get_theme_stylebox
+	return [1]gdclass.StyleBox(Advanced(self).GetThemeStylebox(String.Name(String.New(name)), String.Name(String.New(theme_type))))
 }
 
 /*
@@ -900,7 +981,15 @@ Returns a [Font] from the first matching [Theme] in the tree if that [Theme] has
 See [method get_theme_color] for details.
 */
 func (self Instance) GetThemeFont(name string) [1]gdclass.Font { //gd:Control.get_theme_font
-	return [1]gdclass.Font(class(self).GetThemeFont(String.Name(String.New(name)), String.Name(String.New(""))))
+	return [1]gdclass.Font(Advanced(self).GetThemeFont(String.Name(String.New(name)), String.Name(String.New(""))))
+}
+
+/*
+Returns a [Font] from the first matching [Theme] in the tree if that [Theme] has a font item with the specified [param name] and [param theme_type].
+See [method get_theme_color] for details.
+*/
+func (self Expanded) GetThemeFont(name string, theme_type string) [1]gdclass.Font { //gd:Control.get_theme_font
+	return [1]gdclass.Font(Advanced(self).GetThemeFont(String.Name(String.New(name)), String.Name(String.New(theme_type))))
 }
 
 /*
@@ -908,7 +997,15 @@ Returns a font size from the first matching [Theme] in the tree if that [Theme] 
 See [method get_theme_color] for details.
 */
 func (self Instance) GetThemeFontSize(name string) int { //gd:Control.get_theme_font_size
-	return int(int(class(self).GetThemeFontSize(String.Name(String.New(name)), String.Name(String.New("")))))
+	return int(int(Advanced(self).GetThemeFontSize(String.Name(String.New(name)), String.Name(String.New("")))))
+}
+
+/*
+Returns a font size from the first matching [Theme] in the tree if that [Theme] has a font size item with the specified [param name] and [param theme_type].
+See [method get_theme_color] for details.
+*/
+func (self Expanded) GetThemeFontSize(name string, theme_type string) int { //gd:Control.get_theme_font_size
+	return int(int(Advanced(self).GetThemeFontSize(String.Name(String.New(name)), String.Name(String.New(theme_type)))))
 }
 
 /*
@@ -938,7 +1035,37 @@ public override void _Ready()
 [/codeblocks]
 */
 func (self Instance) GetThemeColor(name string) Color.RGBA { //gd:Control.get_theme_color
-	return Color.RGBA(class(self).GetThemeColor(String.Name(String.New(name)), String.Name(String.New(""))))
+	return Color.RGBA(Advanced(self).GetThemeColor(String.Name(String.New(name)), String.Name(String.New(""))))
+}
+
+/*
+Returns a [Color] from the first matching [Theme] in the tree if that [Theme] has a color item with the specified [param name] and [param theme_type]. If [param theme_type] is omitted the class name of the current control is used as the type, or [member theme_type_variation] if it is defined. If the type is a class name its parent classes are also checked, in order of inheritance. If the type is a variation its base types are checked, in order of dependency, then the control's class name and its parent classes are checked.
+For the current control its local overrides are considered first (see [method add_theme_color_override]), then its assigned [member theme]. After the current control, each parent control and its assigned [member theme] are considered; controls without a [member theme] assigned are skipped. If no matching [Theme] is found in the tree, the custom project [Theme] (see [member ProjectSettings.gui/theme/custom]) and the default [Theme] are used (see [ThemeDB]).
+[codeblocks]
+[gdscript]
+func _ready():
+
+	# Get the font color defined for the current Control's class, if it exists.
+	modulate = get_theme_color("font_color")
+	# Get the font color defined for the Button class.
+	modulate = get_theme_color("font_color", "Button")
+
+[/gdscript]
+[csharp]
+public override void _Ready()
+
+	{
+	    // Get the font color defined for the current Control's class, if it exists.
+	    Modulate = GetThemeColor("font_color");
+	    // Get the font color defined for the Button class.
+	    Modulate = GetThemeColor("font_color", "Button");
+	}
+
+[/csharp]
+[/codeblocks]
+*/
+func (self Expanded) GetThemeColor(name string, theme_type string) Color.RGBA { //gd:Control.get_theme_color
+	return Color.RGBA(Advanced(self).GetThemeColor(String.Name(String.New(name)), String.Name(String.New(theme_type))))
 }
 
 /*
@@ -946,7 +1073,15 @@ Returns a constant from the first matching [Theme] in the tree if that [Theme] h
 See [method get_theme_color] for details.
 */
 func (self Instance) GetThemeConstant(name string) int { //gd:Control.get_theme_constant
-	return int(int(class(self).GetThemeConstant(String.Name(String.New(name)), String.Name(String.New("")))))
+	return int(int(Advanced(self).GetThemeConstant(String.Name(String.New(name)), String.Name(String.New("")))))
+}
+
+/*
+Returns a constant from the first matching [Theme] in the tree if that [Theme] has a constant item with the specified [param name] and [param theme_type].
+See [method get_theme_color] for details.
+*/
+func (self Expanded) GetThemeConstant(name string, theme_type string) int { //gd:Control.get_theme_constant
+	return int(int(Advanced(self).GetThemeConstant(String.Name(String.New(name)), String.Name(String.New(theme_type)))))
 }
 
 /*
@@ -954,7 +1089,7 @@ Returns [code]true[/code] if there is a local override for a theme icon with the
 See [method add_theme_icon_override].
 */
 func (self Instance) HasThemeIconOverride(name string) bool { //gd:Control.has_theme_icon_override
-	return bool(class(self).HasThemeIconOverride(String.Name(String.New(name))))
+	return bool(Advanced(self).HasThemeIconOverride(String.Name(String.New(name))))
 }
 
 /*
@@ -962,7 +1097,7 @@ Returns [code]true[/code] if there is a local override for a theme [StyleBox] wi
 See [method add_theme_stylebox_override].
 */
 func (self Instance) HasThemeStyleboxOverride(name string) bool { //gd:Control.has_theme_stylebox_override
-	return bool(class(self).HasThemeStyleboxOverride(String.Name(String.New(name))))
+	return bool(Advanced(self).HasThemeStyleboxOverride(String.Name(String.New(name))))
 }
 
 /*
@@ -970,7 +1105,7 @@ Returns [code]true[/code] if there is a local override for a theme [Font] with t
 See [method add_theme_font_override].
 */
 func (self Instance) HasThemeFontOverride(name string) bool { //gd:Control.has_theme_font_override
-	return bool(class(self).HasThemeFontOverride(String.Name(String.New(name))))
+	return bool(Advanced(self).HasThemeFontOverride(String.Name(String.New(name))))
 }
 
 /*
@@ -978,7 +1113,7 @@ Returns [code]true[/code] if there is a local override for a theme font size wit
 See [method add_theme_font_size_override].
 */
 func (self Instance) HasThemeFontSizeOverride(name string) bool { //gd:Control.has_theme_font_size_override
-	return bool(class(self).HasThemeFontSizeOverride(String.Name(String.New(name))))
+	return bool(Advanced(self).HasThemeFontSizeOverride(String.Name(String.New(name))))
 }
 
 /*
@@ -986,7 +1121,7 @@ Returns [code]true[/code] if there is a local override for a theme [Color] with 
 See [method add_theme_color_override].
 */
 func (self Instance) HasThemeColorOverride(name string) bool { //gd:Control.has_theme_color_override
-	return bool(class(self).HasThemeColorOverride(String.Name(String.New(name))))
+	return bool(Advanced(self).HasThemeColorOverride(String.Name(String.New(name))))
 }
 
 /*
@@ -994,7 +1129,7 @@ Returns [code]true[/code] if there is a local override for a theme constant with
 See [method add_theme_constant_override].
 */
 func (self Instance) HasThemeConstantOverride(name string) bool { //gd:Control.has_theme_constant_override
-	return bool(class(self).HasThemeConstantOverride(String.Name(String.New(name))))
+	return bool(Advanced(self).HasThemeConstantOverride(String.Name(String.New(name))))
 }
 
 /*
@@ -1002,7 +1137,15 @@ Returns [code]true[/code] if there is a matching [Theme] in the tree that has an
 See [method get_theme_color] for details.
 */
 func (self Instance) HasThemeIcon(name string) bool { //gd:Control.has_theme_icon
-	return bool(class(self).HasThemeIcon(String.Name(String.New(name)), String.Name(String.New(""))))
+	return bool(Advanced(self).HasThemeIcon(String.Name(String.New(name)), String.Name(String.New(""))))
+}
+
+/*
+Returns [code]true[/code] if there is a matching [Theme] in the tree that has an icon item with the specified [param name] and [param theme_type].
+See [method get_theme_color] for details.
+*/
+func (self Expanded) HasThemeIcon(name string, theme_type string) bool { //gd:Control.has_theme_icon
+	return bool(Advanced(self).HasThemeIcon(String.Name(String.New(name)), String.Name(String.New(theme_type))))
 }
 
 /*
@@ -1010,7 +1153,15 @@ Returns [code]true[/code] if there is a matching [Theme] in the tree that has a 
 See [method get_theme_color] for details.
 */
 func (self Instance) HasThemeStylebox(name string) bool { //gd:Control.has_theme_stylebox
-	return bool(class(self).HasThemeStylebox(String.Name(String.New(name)), String.Name(String.New(""))))
+	return bool(Advanced(self).HasThemeStylebox(String.Name(String.New(name)), String.Name(String.New(""))))
+}
+
+/*
+Returns [code]true[/code] if there is a matching [Theme] in the tree that has a stylebox item with the specified [param name] and [param theme_type].
+See [method get_theme_color] for details.
+*/
+func (self Expanded) HasThemeStylebox(name string, theme_type string) bool { //gd:Control.has_theme_stylebox
+	return bool(Advanced(self).HasThemeStylebox(String.Name(String.New(name)), String.Name(String.New(theme_type))))
 }
 
 /*
@@ -1018,7 +1169,15 @@ Returns [code]true[/code] if there is a matching [Theme] in the tree that has a 
 See [method get_theme_color] for details.
 */
 func (self Instance) HasThemeFont(name string) bool { //gd:Control.has_theme_font
-	return bool(class(self).HasThemeFont(String.Name(String.New(name)), String.Name(String.New(""))))
+	return bool(Advanced(self).HasThemeFont(String.Name(String.New(name)), String.Name(String.New(""))))
+}
+
+/*
+Returns [code]true[/code] if there is a matching [Theme] in the tree that has a font item with the specified [param name] and [param theme_type].
+See [method get_theme_color] for details.
+*/
+func (self Expanded) HasThemeFont(name string, theme_type string) bool { //gd:Control.has_theme_font
+	return bool(Advanced(self).HasThemeFont(String.Name(String.New(name)), String.Name(String.New(theme_type))))
 }
 
 /*
@@ -1026,7 +1185,15 @@ Returns [code]true[/code] if there is a matching [Theme] in the tree that has a 
 See [method get_theme_color] for details.
 */
 func (self Instance) HasThemeFontSize(name string) bool { //gd:Control.has_theme_font_size
-	return bool(class(self).HasThemeFontSize(String.Name(String.New(name)), String.Name(String.New(""))))
+	return bool(Advanced(self).HasThemeFontSize(String.Name(String.New(name)), String.Name(String.New(""))))
+}
+
+/*
+Returns [code]true[/code] if there is a matching [Theme] in the tree that has a font size item with the specified [param name] and [param theme_type].
+See [method get_theme_color] for details.
+*/
+func (self Expanded) HasThemeFontSize(name string, theme_type string) bool { //gd:Control.has_theme_font_size
+	return bool(Advanced(self).HasThemeFontSize(String.Name(String.New(name)), String.Name(String.New(theme_type))))
 }
 
 /*
@@ -1034,7 +1201,15 @@ Returns [code]true[/code] if there is a matching [Theme] in the tree that has a 
 See [method get_theme_color] for details.
 */
 func (self Instance) HasThemeColor(name string) bool { //gd:Control.has_theme_color
-	return bool(class(self).HasThemeColor(String.Name(String.New(name)), String.Name(String.New(""))))
+	return bool(Advanced(self).HasThemeColor(String.Name(String.New(name)), String.Name(String.New(""))))
+}
+
+/*
+Returns [code]true[/code] if there is a matching [Theme] in the tree that has a color item with the specified [param name] and [param theme_type].
+See [method get_theme_color] for details.
+*/
+func (self Expanded) HasThemeColor(name string, theme_type string) bool { //gd:Control.has_theme_color
+	return bool(Advanced(self).HasThemeColor(String.Name(String.New(name)), String.Name(String.New(theme_type))))
 }
 
 /*
@@ -1042,7 +1217,15 @@ Returns [code]true[/code] if there is a matching [Theme] in the tree that has a 
 See [method get_theme_color] for details.
 */
 func (self Instance) HasThemeConstant(name string) bool { //gd:Control.has_theme_constant
-	return bool(class(self).HasThemeConstant(String.Name(String.New(name)), String.Name(String.New(""))))
+	return bool(Advanced(self).HasThemeConstant(String.Name(String.New(name)), String.Name(String.New(""))))
+}
+
+/*
+Returns [code]true[/code] if there is a matching [Theme] in the tree that has a constant item with the specified [param name] and [param theme_type].
+See [method get_theme_color] for details.
+*/
+func (self Expanded) HasThemeConstant(name string, theme_type string) bool { //gd:Control.has_theme_constant
+	return bool(Advanced(self).HasThemeConstant(String.Name(String.New(name)), String.Name(String.New(theme_type))))
 }
 
 /*
@@ -1050,7 +1233,7 @@ Returns the default base scale value from the first matching [Theme] in the tree
 See [method get_theme_color] for details.
 */
 func (self Instance) GetThemeDefaultBaseScale() Float.X { //gd:Control.get_theme_default_base_scale
-	return Float.X(Float.X(class(self).GetThemeDefaultBaseScale()))
+	return Float.X(Float.X(Advanced(self).GetThemeDefaultBaseScale()))
 }
 
 /*
@@ -1058,7 +1241,7 @@ Returns the default font from the first matching [Theme] in the tree if that [Th
 See [method get_theme_color] for details.
 */
 func (self Instance) GetThemeDefaultFont() [1]gdclass.Font { //gd:Control.get_theme_default_font
-	return [1]gdclass.Font(class(self).GetThemeDefaultFont())
+	return [1]gdclass.Font(Advanced(self).GetThemeDefaultFont())
 }
 
 /*
@@ -1066,14 +1249,14 @@ Returns the default font size value from the first matching [Theme] in the tree 
 See [method get_theme_color] for details.
 */
 func (self Instance) GetThemeDefaultFontSize() int { //gd:Control.get_theme_default_font_size
-	return int(int(class(self).GetThemeDefaultFontSize()))
+	return int(int(Advanced(self).GetThemeDefaultFontSize()))
 }
 
 /*
 Returns the parent control node.
 */
 func (self Instance) GetParentControl() [1]gdclass.Control { //gd:Control.get_parent_control
-	return [1]gdclass.Control(class(self).GetParentControl())
+	return [1]gdclass.Control(Advanced(self).GetParentControl())
 }
 
 /*
@@ -1082,14 +1265,30 @@ This method can be overridden to customize its behavior. See [method _get_toolti
 [b]Note:[/b] If this method returns an empty [String] and [method _make_custom_tooltip] is not overridden, no tooltip is displayed.
 */
 func (self Instance) GetTooltip() string { //gd:Control.get_tooltip
-	return string(class(self).GetTooltip(Vector2.XY(gd.Vector2{0, 0})).String())
+	return string(Advanced(self).GetTooltip(Vector2.XY(gd.Vector2{0, 0})).String())
+}
+
+/*
+Returns the tooltip text for the position [param at_position] in control's local coordinates, which will typically appear when the cursor is resting over this control. By default, it returns [member tooltip_text].
+This method can be overridden to customize its behavior. See [method _get_tooltip].
+[b]Note:[/b] If this method returns an empty [String] and [method _make_custom_tooltip] is not overridden, no tooltip is displayed.
+*/
+func (self Expanded) GetTooltip(at_position Vector2.XY) string { //gd:Control.get_tooltip
+	return string(Advanced(self).GetTooltip(Vector2.XY(at_position)).String())
 }
 
 /*
 Returns the mouse cursor shape the control displays on mouse hover. See [enum CursorShape].
 */
 func (self Instance) GetCursorShape() gdclass.ControlCursorShape { //gd:Control.get_cursor_shape
-	return gdclass.ControlCursorShape(class(self).GetCursorShape(Vector2.XY(gd.Vector2{0, 0})))
+	return gdclass.ControlCursorShape(Advanced(self).GetCursorShape(Vector2.XY(gd.Vector2{0, 0})))
+}
+
+/*
+Returns the mouse cursor shape the control displays on mouse hover. See [enum CursorShape].
+*/
+func (self Expanded) GetCursorShape(position Vector2.XY) gdclass.ControlCursorShape { //gd:Control.get_cursor_shape
+	return gdclass.ControlCursorShape(Advanced(self).GetCursorShape(Vector2.XY(position)))
 }
 
 /*
@@ -1097,7 +1296,7 @@ Forces drag and bypasses [method _get_drag_data] and [method set_drag_preview] b
 The methods [method _can_drop_data] and [method _drop_data] must be implemented on controls that want to receive drop data.
 */
 func (self Instance) ForceDrag(data any, preview [1]gdclass.Control) { //gd:Control.force_drag
-	class(self).ForceDrag(variant.New(data), preview)
+	Advanced(self).ForceDrag(variant.New(data), preview)
 }
 
 /*
@@ -1120,7 +1319,7 @@ public override void _Process(double delta)
 [/codeblocks]
 */
 func (self Instance) GrabClickFocus() { //gd:Control.grab_click_focus
-	class(self).GrabClickFocus()
+	Advanced(self).GrabClickFocus()
 }
 
 /*
@@ -1131,7 +1330,7 @@ The arguments for each callable should be exactly the same as their respective v
 - [param drop_func] corresponds to [method _drop_data] and requires both a [Vector2] and a [Variant].
 */
 func (self Instance) SetDragForwarding(drag_func func(at_position Vector2.XY) any, can_drop_func func(at_position Vector2.XY, data any) bool, drop_func func(at_position Vector2.XY, data any)) { //gd:Control.set_drag_forwarding
-	class(self).SetDragForwarding(Callable.New(drag_func), Callable.New(can_drop_func), Callable.New(drop_func))
+	Advanced(self).SetDragForwarding(Callable.New(drag_func), Callable.New(can_drop_func), Callable.New(drop_func))
 }
 
 /*
@@ -1169,7 +1368,7 @@ public override Variant _GetDragData(Vector2 atPosition)
 [/codeblocks]
 */
 func (self Instance) SetDragPreview(control [1]gdclass.Control) { //gd:Control.set_drag_preview
-	class(self).SetDragPreview(control)
+	Advanced(self).SetDragPreview(control)
 }
 
 /*
@@ -1177,7 +1376,7 @@ Returns [code]true[/code] if a drag operation is successful. Alternative to [met
 Best used with [constant Node.NOTIFICATION_DRAG_END].
 */
 func (self Instance) IsDragSuccessful() bool { //gd:Control.is_drag_successful
-	return bool(class(self).IsDragSuccessful())
+	return bool(Advanced(self).IsDragSuccessful())
 }
 
 /*
@@ -1185,21 +1384,21 @@ Moves the mouse cursor to [param position], relative to [member position] of thi
 [b]Note:[/b] [method warp_mouse] is only supported on Windows, macOS and Linux. It has no effect on Android, iOS and Web.
 */
 func (self Instance) WarpMouse(position Vector2.XY) { //gd:Control.warp_mouse
-	class(self).WarpMouse(Vector2.XY(position))
+	Advanced(self).WarpMouse(Vector2.XY(position))
 }
 
 /*
 Invalidates the size cache in this node and in parent nodes up to top level. Intended to be used with [method get_minimum_size] when the return value is changed. Setting [member custom_minimum_size] directly calls this method automatically.
 */
 func (self Instance) UpdateMinimumSize() { //gd:Control.update_minimum_size
-	class(self).UpdateMinimumSize()
+	Advanced(self).UpdateMinimumSize()
 }
 
 /*
 Returns [code]true[/code] if layout is right-to-left. See also [member layout_direction].
 */
 func (self Instance) IsLayoutRtl() bool { //gd:Control.is_layout_rtl
-	return bool(class(self).IsLayoutRtl())
+	return bool(Advanced(self).IsLayoutRtl())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

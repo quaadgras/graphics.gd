@@ -65,21 +65,21 @@ Adds the given color to a list of color presets. The presets are displayed in th
 [b]Note:[/b] The presets list is only for [i]this[/i] color picker.
 */
 func (self Instance) AddPreset(color Color.RGBA) { //gd:ColorPicker.add_preset
-	class(self).AddPreset(Color.RGBA(color))
+	Advanced(self).AddPreset(Color.RGBA(color))
 }
 
 /*
 Removes the given color from the list of color presets of this color picker.
 */
 func (self Instance) ErasePreset(color Color.RGBA) { //gd:ColorPicker.erase_preset
-	class(self).ErasePreset(Color.RGBA(color))
+	Advanced(self).ErasePreset(Color.RGBA(color))
 }
 
 /*
 Returns the list of colors in the presets of the color picker.
 */
 func (self Instance) GetPresets() []Color.RGBA { //gd:ColorPicker.get_presets
-	return []Color.RGBA(slices.Collect(class(self).GetPresets().Values()))
+	return []Color.RGBA(slices.Collect(Advanced(self).GetPresets().Values()))
 }
 
 /*
@@ -87,21 +87,21 @@ Adds the given color to a list of color recent presets so that it can be picked 
 [b]Note:[/b] The recent presets list is only for [i]this[/i] color picker.
 */
 func (self Instance) AddRecentPreset(color Color.RGBA) { //gd:ColorPicker.add_recent_preset
-	class(self).AddRecentPreset(Color.RGBA(color))
+	Advanced(self).AddRecentPreset(Color.RGBA(color))
 }
 
 /*
 Removes the given color from the list of color recent presets of this color picker.
 */
 func (self Instance) EraseRecentPreset(color Color.RGBA) { //gd:ColorPicker.erase_recent_preset
-	class(self).EraseRecentPreset(Color.RGBA(color))
+	Advanced(self).EraseRecentPreset(Color.RGBA(color))
 }
 
 /*
 Returns the list of colors in the recent presets of the color picker.
 */
 func (self Instance) GetRecentPresets() []Color.RGBA { //gd:ColorPicker.get_recent_presets
-	return []Color.RGBA(slices.Collect(class(self).GetRecentPresets().Values()))
+	return []Color.RGBA(slices.Collect(Advanced(self).GetRecentPresets().Values()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

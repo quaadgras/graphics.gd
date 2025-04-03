@@ -57,7 +57,7 @@ type Any interface {
 The length of this stream, in seconds.
 */
 func (self Instance) GetLength() Float.X { //gd:OggPacketSequence.get_length
-	return Float.X(Float.X(class(self).GetLength()))
+	return Float.X(Float.X(Advanced(self).GetLength()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

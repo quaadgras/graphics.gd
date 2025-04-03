@@ -58,28 +58,28 @@ type Any interface {
 Set one of the synchronized streams, by index.
 */
 func (self Instance) SetSyncStream(stream_index int, audio_stream [1]gdclass.AudioStream) { //gd:AudioStreamSynchronized.set_sync_stream
-	class(self).SetSyncStream(int64(stream_index), audio_stream)
+	Advanced(self).SetSyncStream(int64(stream_index), audio_stream)
 }
 
 /*
 Get one of the synchronized streams, by index.
 */
 func (self Instance) GetSyncStream(stream_index int) [1]gdclass.AudioStream { //gd:AudioStreamSynchronized.get_sync_stream
-	return [1]gdclass.AudioStream(class(self).GetSyncStream(int64(stream_index)))
+	return [1]gdclass.AudioStream(Advanced(self).GetSyncStream(int64(stream_index)))
 }
 
 /*
 Set the volume of one of the synchronized streams, by index.
 */
 func (self Instance) SetSyncStreamVolume(stream_index int, volume_db Float.X) { //gd:AudioStreamSynchronized.set_sync_stream_volume
-	class(self).SetSyncStreamVolume(int64(stream_index), float64(volume_db))
+	Advanced(self).SetSyncStreamVolume(int64(stream_index), float64(volume_db))
 }
 
 /*
 Get the volume of one of the synchronized streams, by index.
 */
 func (self Instance) GetSyncStreamVolume(stream_index int) Float.X { //gd:AudioStreamSynchronized.get_sync_stream_volume
-	return Float.X(Float.X(class(self).GetSyncStreamVolume(int64(stream_index))))
+	return Float.X(Float.X(Advanced(self).GetSyncStreamVolume(int64(stream_index))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

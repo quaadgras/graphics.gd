@@ -57,7 +57,7 @@ type Any interface {
 Clear the selection.
 */
 func (self Instance) Clear() { //gd:EditorSelection.clear
-	class(self).Clear()
+	Advanced(self).Clear()
 }
 
 /*
@@ -65,28 +65,28 @@ Adds a node to the selection.
 [b]Note:[/b] The newly selected node will not be automatically edited in the inspector. If you want to edit a node, use [method EditorInterface.edit_node].
 */
 func (self Instance) AddNode(node [1]gdclass.Node) { //gd:EditorSelection.add_node
-	class(self).AddNode(node)
+	Advanced(self).AddNode(node)
 }
 
 /*
 Removes a node from the selection.
 */
 func (self Instance) RemoveNode(node [1]gdclass.Node) { //gd:EditorSelection.remove_node
-	class(self).RemoveNode(node)
+	Advanced(self).RemoveNode(node)
 }
 
 /*
 Returns the list of selected nodes.
 */
 func (self Instance) GetSelectedNodes() [][1]gdclass.Node { //gd:EditorSelection.get_selected_nodes
-	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](gd.InternalArray(class(self).GetSelectedNodes())))
+	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](gd.InternalArray(Advanced(self).GetSelectedNodes())))
 }
 
 /*
 Returns the list of selected nodes, optimized for transform operations (i.e. moving them, rotating, etc.). This list can be used to avoid situations where a node is selected and is also a child/grandchild.
 */
 func (self Instance) GetTransformableSelectedNodes() [][1]gdclass.Node { //gd:EditorSelection.get_transformable_selected_nodes
-	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](gd.InternalArray(class(self).GetTransformableSelectedNodes())))
+	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](gd.InternalArray(Advanced(self).GetTransformableSelectedNodes())))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

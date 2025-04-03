@@ -54,6 +54,7 @@ func _on_timer_timeout():
 [b]Note:[/b] Timers are affected by [member Engine.time_scale]. The higher the time scale, the sooner timers will end. How often a timer processes may depend on the framerate or [member Engine.physics_ticks_per_second].
 */
 type Instance [1]gdclass.Timer
+type Expanded [1]gdclass.Timer
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -68,21 +69,29 @@ Starts the timer, or resets the timer if it was started already. Fails if the ti
 [b]Note:[/b] This method does not resume a paused timer. See [member paused].
 */
 func (self Instance) Start() { //gd:Timer.start
-	class(self).Start(float64(-1))
+	Advanced(self).Start(float64(-1))
+}
+
+/*
+Starts the timer, or resets the timer if it was started already. Fails if the timer is not inside the tree. If [param time_sec] is greater than [code]0[/code], this value is used for the [member wait_time].
+[b]Note:[/b] This method does not resume a paused timer. See [member paused].
+*/
+func (self Expanded) Start(time_sec Float.X) { //gd:Timer.start
+	Advanced(self).Start(float64(time_sec))
 }
 
 /*
 Stops the timer.
 */
 func (self Instance) Stop() { //gd:Timer.stop
-	class(self).Stop()
+	Advanced(self).Stop()
 }
 
 /*
 Returns [code]true[/code] if the timer is stopped or has not started.
 */
 func (self Instance) IsStopped() bool { //gd:Timer.is_stopped
-	return bool(class(self).IsStopped())
+	return bool(Advanced(self).IsStopped())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

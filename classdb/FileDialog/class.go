@@ -48,6 +48,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 [FileDialog] is a preset dialog used to choose files and directories in the filesystem. It supports filter masks. [FileDialog] automatically sets its window title according to the [member file_mode]. If you want to use a custom title, disable this by setting [member mode_overrides_title] to [code]false[/code].
 */
 type Instance [1]gdclass.FileDialog
+type Expanded [1]gdclass.FileDialog
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -61,7 +62,7 @@ type Any interface {
 Clear all the added filters in the dialog.
 */
 func (self Instance) ClearFilters() { //gd:FileDialog.clear_filters
-	class(self).ClearFilters()
+	Advanced(self).ClearFilters()
 }
 
 /*
@@ -70,56 +71,65 @@ A [param filter] should be of the form [code]"filename.extension"[/code], where 
 For example, a [param filter] of [code]"*.png, *.jpg"[/code] and a [param description] of [code]"Images"[/code] results in filter text "Images (*.png, *.jpg)".
 */
 func (self Instance) AddFilter(filter string) { //gd:FileDialog.add_filter
-	class(self).AddFilter(String.New(filter), String.New(""))
+	Advanced(self).AddFilter(String.New(filter), String.New(""))
+}
+
+/*
+Adds a comma-delimited file name [param filter] option to the [FileDialog] with an optional [param description], which restricts what files can be picked.
+A [param filter] should be of the form [code]"filename.extension"[/code], where filename and extension can be [code]*[/code] to match any string. Filters starting with [code].[/code] (i.e. empty filenames) are not allowed.
+For example, a [param filter] of [code]"*.png, *.jpg"[/code] and a [param description] of [code]"Images"[/code] results in filter text "Images (*.png, *.jpg)".
+*/
+func (self Expanded) AddFilter(filter string, description string) { //gd:FileDialog.add_filter
+	Advanced(self).AddFilter(String.New(filter), String.New(description))
 }
 
 /*
 Clear the filter for file names.
 */
 func (self Instance) ClearFilenameFilter() { //gd:FileDialog.clear_filename_filter
-	class(self).ClearFilenameFilter()
+	Advanced(self).ClearFilenameFilter()
 }
 
 /*
 Returns the name of the [OptionButton] or [CheckBox] with index [param option].
 */
 func (self Instance) GetOptionName(option int) string { //gd:FileDialog.get_option_name
-	return string(class(self).GetOptionName(int64(option)).String())
+	return string(Advanced(self).GetOptionName(int64(option)).String())
 }
 
 /*
 Returns an array of values of the [OptionButton] with index [param option].
 */
 func (self Instance) GetOptionValues(option int) []string { //gd:FileDialog.get_option_values
-	return []string(class(self).GetOptionValues(int64(option)).Strings())
+	return []string(Advanced(self).GetOptionValues(int64(option)).Strings())
 }
 
 /*
 Returns the default value index of the [OptionButton] or [CheckBox] with index [param option].
 */
 func (self Instance) GetOptionDefault(option int) int { //gd:FileDialog.get_option_default
-	return int(int(class(self).GetOptionDefault(int64(option))))
+	return int(int(Advanced(self).GetOptionDefault(int64(option))))
 }
 
 /*
 Sets the name of the [OptionButton] or [CheckBox] with index [param option].
 */
 func (self Instance) SetOptionName(option int, name string) { //gd:FileDialog.set_option_name
-	class(self).SetOptionName(int64(option), String.New(name))
+	Advanced(self).SetOptionName(int64(option), String.New(name))
 }
 
 /*
 Sets the option values of the [OptionButton] with index [param option].
 */
 func (self Instance) SetOptionValues(option int, values []string) { //gd:FileDialog.set_option_values
-	class(self).SetOptionValues(int64(option), Packed.MakeStrings(values...))
+	Advanced(self).SetOptionValues(int64(option), Packed.MakeStrings(values...))
 }
 
 /*
 Sets the default value index of the [OptionButton] or [CheckBox] with index [param option].
 */
 func (self Instance) SetOptionDefault(option int, default_value_index int) { //gd:FileDialog.set_option_default
-	class(self).SetOptionDefault(int64(option), int64(default_value_index))
+	Advanced(self).SetOptionDefault(int64(option), int64(default_value_index))
 }
 
 /*
@@ -127,14 +137,14 @@ Adds an additional [OptionButton] to the file dialog. If [param values] is empty
 [param default_value_index] should be an index of the value in the [param values]. If [param values] is empty it should be either [code]1[/code] (checked), or [code]0[/code] (unchecked).
 */
 func (self Instance) AddOption(name string, values []string, default_value_index int) { //gd:FileDialog.add_option
-	class(self).AddOption(String.New(name), Packed.MakeStrings(values...), int64(default_value_index))
+	Advanced(self).AddOption(String.New(name), Packed.MakeStrings(values...), int64(default_value_index))
 }
 
 /*
 Returns a [Dictionary] with the selected values of the additional [OptionButton]s and/or [CheckBox]es. [Dictionary] keys are names and values are selected value indices.
 */
 func (self Instance) GetSelectedOptions() map[string]int { //gd:FileDialog.get_selected_options
-	return map[string]int(gd.DictionaryAs[map[string]int](class(self).GetSelectedOptions()))
+	return map[string]int(gd.DictionaryAs[map[string]int](Advanced(self).GetSelectedOptions()))
 }
 
 /*
@@ -143,7 +153,7 @@ Returns the vertical box container of the dialog, custom controls can be added t
 [b]Note:[/b] Changes to this node are ignored by native file dialogs, use [method add_option] to add custom elements to the dialog instead.
 */
 func (self Instance) GetVbox() [1]gdclass.VBoxContainer { //gd:FileDialog.get_vbox
-	return [1]gdclass.VBoxContainer(class(self).GetVbox())
+	return [1]gdclass.VBoxContainer(Advanced(self).GetVbox())
 }
 
 /*
@@ -151,14 +161,14 @@ Returns the LineEdit for the selected file.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
 func (self Instance) GetLineEdit() [1]gdclass.LineEdit { //gd:FileDialog.get_line_edit
-	return [1]gdclass.LineEdit(class(self).GetLineEdit())
+	return [1]gdclass.LineEdit(Advanced(self).GetLineEdit())
 }
 
 /*
 Clear all currently selected items in the dialog.
 */
 func (self Instance) DeselectAll() { //gd:FileDialog.deselect_all
-	class(self).DeselectAll()
+	Advanced(self).DeselectAll()
 }
 
 /*
@@ -166,7 +176,7 @@ Invalidate and update the current dialog content list.
 [b]Note:[/b] This method does nothing on native file dialogs.
 */
 func (self Instance) Invalidate() { //gd:FileDialog.invalidate
-	class(self).Invalidate()
+	Advanced(self).Invalidate()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

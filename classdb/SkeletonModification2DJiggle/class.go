@@ -61,140 +61,140 @@ type Any interface {
 If [code]true[/code], the Jiggle modifier will take colliders into account, keeping them from entering into these collision objects.
 */
 func (self Instance) SetUseColliders(use_colliders bool) { //gd:SkeletonModification2DJiggle.set_use_colliders
-	class(self).SetUseColliders(use_colliders)
+	Advanced(self).SetUseColliders(use_colliders)
 }
 
 /*
 Returns whether the jiggle modifier is taking physics colliders into account when solving.
 */
 func (self Instance) GetUseColliders() bool { //gd:SkeletonModification2DJiggle.get_use_colliders
-	return bool(class(self).GetUseColliders())
+	return bool(Advanced(self).GetUseColliders())
 }
 
 /*
 Sets the collision mask that the Jiggle modifier will use when reacting to colliders, if the Jiggle modifier is set to take colliders into account.
 */
 func (self Instance) SetCollisionMask(collision_mask int) { //gd:SkeletonModification2DJiggle.set_collision_mask
-	class(self).SetCollisionMask(int64(collision_mask))
+	Advanced(self).SetCollisionMask(int64(collision_mask))
 }
 
 /*
 Returns the collision mask used by the Jiggle modifier when collisions are enabled.
 */
 func (self Instance) GetCollisionMask() int { //gd:SkeletonModification2DJiggle.get_collision_mask
-	return int(int(class(self).GetCollisionMask()))
+	return int(int(Advanced(self).GetCollisionMask()))
 }
 
 /*
 Sets the [Bone2D] node assigned to the Jiggle joint at [param joint_idx].
 */
 func (self Instance) SetJiggleJointBone2dNode(joint_idx int, bone2d_node string) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_bone2d_node
-	class(self).SetJiggleJointBone2dNode(int64(joint_idx), Path.ToNode(String.New(bone2d_node)))
+	Advanced(self).SetJiggleJointBone2dNode(int64(joint_idx), Path.ToNode(String.New(bone2d_node)))
 }
 
 /*
 Returns the [Bone2D] node assigned to the Jiggle joint at [param joint_idx].
 */
 func (self Instance) GetJiggleJointBone2dNode(joint_idx int) string { //gd:SkeletonModification2DJiggle.get_jiggle_joint_bone2d_node
-	return string(class(self).GetJiggleJointBone2dNode(int64(joint_idx)).String())
+	return string(Advanced(self).GetJiggleJointBone2dNode(int64(joint_idx)).String())
 }
 
 /*
 Sets the bone index, [param bone_idx], of the Jiggle joint at [param joint_idx]. When possible, this will also update the [code]bone2d_node[/code] of the Jiggle joint based on data provided by the linked skeleton.
 */
 func (self Instance) SetJiggleJointBoneIndex(joint_idx int, bone_idx int) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_bone_index
-	class(self).SetJiggleJointBoneIndex(int64(joint_idx), int64(bone_idx))
+	Advanced(self).SetJiggleJointBoneIndex(int64(joint_idx), int64(bone_idx))
 }
 
 /*
 Returns the index of the [Bone2D] node assigned to the Jiggle joint at [param joint_idx].
 */
 func (self Instance) GetJiggleJointBoneIndex(joint_idx int) int { //gd:SkeletonModification2DJiggle.get_jiggle_joint_bone_index
-	return int(int(class(self).GetJiggleJointBoneIndex(int64(joint_idx))))
+	return int(int(Advanced(self).GetJiggleJointBoneIndex(int64(joint_idx))))
 }
 
 /*
 Sets whether the Jiggle joint at [param joint_idx] should override the default Jiggle joint settings. Setting this to [code]true[/code] will make the joint use its own settings rather than the default ones attached to the modification.
 */
 func (self Instance) SetJiggleJointOverride(joint_idx int, override bool) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_override
-	class(self).SetJiggleJointOverride(int64(joint_idx), override)
+	Advanced(self).SetJiggleJointOverride(int64(joint_idx), override)
 }
 
 /*
 Returns a boolean that indicates whether the joint at [param joint_idx] is overriding the default Jiggle joint data defined in the modification.
 */
 func (self Instance) GetJiggleJointOverride(joint_idx int) bool { //gd:SkeletonModification2DJiggle.get_jiggle_joint_override
-	return bool(class(self).GetJiggleJointOverride(int64(joint_idx)))
+	return bool(Advanced(self).GetJiggleJointOverride(int64(joint_idx)))
 }
 
 /*
 Sets the of stiffness of the Jiggle joint at [param joint_idx].
 */
 func (self Instance) SetJiggleJointStiffness(joint_idx int, stiffness Float.X) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_stiffness
-	class(self).SetJiggleJointStiffness(int64(joint_idx), float64(stiffness))
+	Advanced(self).SetJiggleJointStiffness(int64(joint_idx), float64(stiffness))
 }
 
 /*
 Returns the stiffness of the Jiggle joint at [param joint_idx].
 */
 func (self Instance) GetJiggleJointStiffness(joint_idx int) Float.X { //gd:SkeletonModification2DJiggle.get_jiggle_joint_stiffness
-	return Float.X(Float.X(class(self).GetJiggleJointStiffness(int64(joint_idx))))
+	return Float.X(Float.X(Advanced(self).GetJiggleJointStiffness(int64(joint_idx))))
 }
 
 /*
 Sets the of mass of the Jiggle joint at [param joint_idx].
 */
 func (self Instance) SetJiggleJointMass(joint_idx int, mass Float.X) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_mass
-	class(self).SetJiggleJointMass(int64(joint_idx), float64(mass))
+	Advanced(self).SetJiggleJointMass(int64(joint_idx), float64(mass))
 }
 
 /*
 Returns the amount of mass of the jiggle joint at [param joint_idx].
 */
 func (self Instance) GetJiggleJointMass(joint_idx int) Float.X { //gd:SkeletonModification2DJiggle.get_jiggle_joint_mass
-	return Float.X(Float.X(class(self).GetJiggleJointMass(int64(joint_idx))))
+	return Float.X(Float.X(Advanced(self).GetJiggleJointMass(int64(joint_idx))))
 }
 
 /*
 Sets the amount of damping of the Jiggle joint at [param joint_idx].
 */
 func (self Instance) SetJiggleJointDamping(joint_idx int, damping Float.X) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_damping
-	class(self).SetJiggleJointDamping(int64(joint_idx), float64(damping))
+	Advanced(self).SetJiggleJointDamping(int64(joint_idx), float64(damping))
 }
 
 /*
 Returns the amount of damping of the Jiggle joint at [param joint_idx].
 */
 func (self Instance) GetJiggleJointDamping(joint_idx int) Float.X { //gd:SkeletonModification2DJiggle.get_jiggle_joint_damping
-	return Float.X(Float.X(class(self).GetJiggleJointDamping(int64(joint_idx))))
+	return Float.X(Float.X(Advanced(self).GetJiggleJointDamping(int64(joint_idx))))
 }
 
 /*
 Sets whether the Jiggle joint at [param joint_idx] should use gravity.
 */
 func (self Instance) SetJiggleJointUseGravity(joint_idx int, use_gravity bool) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_use_gravity
-	class(self).SetJiggleJointUseGravity(int64(joint_idx), use_gravity)
+	Advanced(self).SetJiggleJointUseGravity(int64(joint_idx), use_gravity)
 }
 
 /*
 Returns a boolean that indicates whether the joint at [param joint_idx] is using gravity or not.
 */
 func (self Instance) GetJiggleJointUseGravity(joint_idx int) bool { //gd:SkeletonModification2DJiggle.get_jiggle_joint_use_gravity
-	return bool(class(self).GetJiggleJointUseGravity(int64(joint_idx)))
+	return bool(Advanced(self).GetJiggleJointUseGravity(int64(joint_idx)))
 }
 
 /*
 Sets the gravity vector of the Jiggle joint at [param joint_idx].
 */
 func (self Instance) SetJiggleJointGravity(joint_idx int, gravity Vector2.XY) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_gravity
-	class(self).SetJiggleJointGravity(int64(joint_idx), Vector2.XY(gravity))
+	Advanced(self).SetJiggleJointGravity(int64(joint_idx), Vector2.XY(gravity))
 }
 
 /*
 Returns a [Vector2] representing the amount of gravity the Jiggle joint at [param joint_idx] is influenced by.
 */
 func (self Instance) GetJiggleJointGravity(joint_idx int) Vector2.XY { //gd:SkeletonModification2DJiggle.get_jiggle_joint_gravity
-	return Vector2.XY(class(self).GetJiggleJointGravity(int64(joint_idx)))
+	return Vector2.XY(Advanced(self).GetJiggleJointGravity(int64(joint_idx)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

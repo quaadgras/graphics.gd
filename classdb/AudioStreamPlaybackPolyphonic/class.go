@@ -44,6 +44,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 Playback instance for [AudioStreamPolyphonic]. After setting the [code]stream[/code] property of [AudioStreamPlayer], [AudioStreamPlayer2D], or [AudioStreamPlayer3D], the playback instance can be obtained by calling [method AudioStreamPlayer.get_stream_playback], [method AudioStreamPlayer2D.get_stream_playback] or [method AudioStreamPlayer3D.get_stream_playback] methods.
 */
 type Instance [1]gdclass.AudioStreamPlaybackPolyphonic
+type Expanded [1]gdclass.AudioStreamPlaybackPolyphonic
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -60,35 +61,45 @@ This ID becomes invalid when the stream ends (if it does not loop), when the [Au
 This function returns [constant INVALID_ID] if the amount of streams currently playing equals [member AudioStreamPolyphonic.polyphony]. If you need a higher amount of maximum polyphony, raise this value.
 */
 func (self Instance) PlayStream(stream [1]gdclass.AudioStream) int { //gd:AudioStreamPlaybackPolyphonic.play_stream
-	return int(int(class(self).PlayStream(stream, float64(0), float64(0), float64(1.0), 0, String.Name(String.New("Master")))))
+	return int(int(Advanced(self).PlayStream(stream, float64(0), float64(0), float64(1.0), 0, String.Name(String.New("Master")))))
+}
+
+/*
+Play an [AudioStream] at a given offset, volume, pitch scale, playback type, and bus. Playback starts immediately.
+The return value is a unique integer ID that is associated to this playback stream and which can be used to control it.
+This ID becomes invalid when the stream ends (if it does not loop), when the [AudioStreamPlaybackPolyphonic] is stopped, or when [method stop_stream] is called.
+This function returns [constant INVALID_ID] if the amount of streams currently playing equals [member AudioStreamPolyphonic.polyphony]. If you need a higher amount of maximum polyphony, raise this value.
+*/
+func (self Expanded) PlayStream(stream [1]gdclass.AudioStream, from_offset Float.X, volume_db Float.X, pitch_scale Float.X, playback_type gdclass.AudioServerPlaybackType, bus string) int { //gd:AudioStreamPlaybackPolyphonic.play_stream
+	return int(int(Advanced(self).PlayStream(stream, float64(from_offset), float64(volume_db), float64(pitch_scale), playback_type, String.Name(String.New(bus)))))
 }
 
 /*
 Change the stream volume (in db). The [param stream] argument is an integer ID returned by [method play_stream].
 */
 func (self Instance) SetStreamVolume(stream int, volume_db Float.X) { //gd:AudioStreamPlaybackPolyphonic.set_stream_volume
-	class(self).SetStreamVolume(int64(stream), float64(volume_db))
+	Advanced(self).SetStreamVolume(int64(stream), float64(volume_db))
 }
 
 /*
 Change the stream pitch scale. The [param stream] argument is an integer ID returned by [method play_stream].
 */
 func (self Instance) SetStreamPitchScale(stream int, pitch_scale Float.X) { //gd:AudioStreamPlaybackPolyphonic.set_stream_pitch_scale
-	class(self).SetStreamPitchScale(int64(stream), float64(pitch_scale))
+	Advanced(self).SetStreamPitchScale(int64(stream), float64(pitch_scale))
 }
 
 /*
 Returns [code]true[/code] if the stream associated with the given integer ID is still playing. Check [method play_stream] for information on when this ID becomes invalid.
 */
 func (self Instance) IsStreamPlaying(stream int) bool { //gd:AudioStreamPlaybackPolyphonic.is_stream_playing
-	return bool(class(self).IsStreamPlaying(int64(stream)))
+	return bool(Advanced(self).IsStreamPlaying(int64(stream)))
 }
 
 /*
 Stop a stream. The [param stream] argument is an integer ID returned by [method play_stream], which becomes invalid after calling this function.
 */
 func (self Instance) StopStream(stream int) { //gd:AudioStreamPlaybackPolyphonic.stop_stream
-	class(self).StopStream(int64(stream))
+	Advanced(self).StopStream(int64(stream))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -60,7 +60,7 @@ type Any interface {
 Returns the [Color] of an idealized blackbody at the given [member light_temperature]. This value is calculated internally based on the [member light_temperature]. This [Color] is multiplied by [member light_color] before being sent to the [RenderingServer].
 */
 func (self Instance) GetCorrelatedColor() Color.RGBA { //gd:Light3D.get_correlated_color
-	return Color.RGBA(class(self).GetCorrelatedColor())
+	return Color.RGBA(Advanced(self).GetCorrelatedColor())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

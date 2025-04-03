@@ -59,14 +59,14 @@ type Any interface {
 Enables the listener. This will override the current camera's listener.
 */
 func (self Instance) MakeCurrent() { //gd:AudioListener3D.make_current
-	class(self).MakeCurrent()
+	Advanced(self).MakeCurrent()
 }
 
 /*
 Disables the listener to use the current camera's listener instead.
 */
 func (self Instance) ClearCurrent() { //gd:AudioListener3D.clear_current
-	class(self).ClearCurrent()
+	Advanced(self).ClearCurrent()
 }
 
 /*
@@ -74,14 +74,14 @@ Returns [code]true[/code] if the listener was made current using [method make_cu
 [b]Note:[/b] There may be more than one AudioListener3D marked as "current" in the scene tree, but only the one that was made current last will be used.
 */
 func (self Instance) IsCurrent() bool { //gd:AudioListener3D.is_current
-	return bool(class(self).IsCurrent())
+	return bool(Advanced(self).IsCurrent())
 }
 
 /*
 Returns the listener's global orthonormalized [Transform3D].
 */
 func (self Instance) GetListenerTransform() Transform3D.BasisOrigin { //gd:AudioListener3D.get_listener_transform
-	return Transform3D.BasisOrigin(class(self).GetListenerTransform())
+	return Transform3D.BasisOrigin(Advanced(self).GetListenerTransform())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

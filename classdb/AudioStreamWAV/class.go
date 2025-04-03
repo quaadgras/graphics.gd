@@ -59,9 +59,18 @@ type Any interface {
 Creates a new [AudioStreamWAV] instance from the given buffer. The buffer must contain WAV data.
 The keys and values of [param options] match the properties of [ResourceImporterWAV]. The usage of [param options] is identical to [method AudioStreamWAV.load_from_file].
 */
-func LoadFromBuffer(stream_data []byte) [1]gdclass.AudioStreamWAV { //gd:AudioStreamWAV.load_from_buffer
+func LoadFromBuffer(stream_data []byte, options Options) [1]gdclass.AudioStreamWAV { //gd:AudioStreamWAV.load_from_buffer
 	self := Instance{}
-	return [1]gdclass.AudioStreamWAV(class(self).LoadFromBuffer(Packed.Bytes(Packed.New(stream_data...)), Dictionary.Nil))
+	return [1]gdclass.AudioStreamWAV(Advanced(self).LoadFromBuffer(Packed.Bytes(Packed.New(stream_data...)), gd.DictionaryFromMap(options)))
+}
+
+/*
+Creates a new [AudioStreamWAV] instance from the given buffer. The buffer must contain WAV data.
+The keys and values of [param options] match the properties of [ResourceImporterWAV]. The usage of [param options] is identical to [method AudioStreamWAV.load_from_file].
+*/
+func LoadFromBufferExpanded(stream_data []byte, options Options) [1]gdclass.AudioStreamWAV { //gd:AudioStreamWAV.load_from_buffer
+	self := Instance{}
+	return [1]gdclass.AudioStreamWAV(Advanced(self).LoadFromBuffer(Packed.Bytes(Packed.New(stream_data...)), gd.DictionaryFromMap(options)))
 }
 
 /*
@@ -86,9 +95,36 @@ func _on_files_dropped(files):
 
 [/codeblock]
 */
-func LoadFromFile(path string) [1]gdclass.AudioStreamWAV { //gd:AudioStreamWAV.load_from_file
+func LoadFromFile(path string, options Options) [1]gdclass.AudioStreamWAV { //gd:AudioStreamWAV.load_from_file
 	self := Instance{}
-	return [1]gdclass.AudioStreamWAV(class(self).LoadFromFile(String.New(path), Dictionary.Nil))
+	return [1]gdclass.AudioStreamWAV(Advanced(self).LoadFromFile(String.New(path), gd.DictionaryFromMap(options)))
+}
+
+/*
+Creates a new [AudioStreamWAV] instance from the given file path. The file must be in WAV format.
+The keys and values of [param options] match the properties of [ResourceImporterWAV].
+[b]Example:[/b] Load the first file dropped as a WAV and play it:
+[codeblock]
+@onready var audio_player = $AudioStreamPlayer
+
+func _ready():
+
+	get_window().files_dropped.connect(_on_files_dropped)
+
+func _on_files_dropped(files):
+
+	if files[0].get_extension() == "wav":
+	    audio_player.stream = AudioStreamWAV.load_from_file(files[0], {
+	            "force/max_rate": true,
+	            "force/max_rate_hz": 11025
+	        })
+	    audio_player.play()
+
+[/codeblock]
+*/
+func LoadFromFileExpanded(path string, options Options) [1]gdclass.AudioStreamWAV { //gd:AudioStreamWAV.load_from_file
+	self := Instance{}
+	return [1]gdclass.AudioStreamWAV(Advanced(self).LoadFromFile(String.New(path), gd.DictionaryFromMap(options)))
 }
 
 /*
@@ -96,7 +132,7 @@ Saves the AudioStreamWAV as a WAV file to [param path]. Samples with IMA ADPCM o
 [b]Note:[/b] A [code].wav[/code] extension is automatically appended to [param path] if it is missing.
 */
 func (self Instance) SaveToWav(path string) error { //gd:AudioStreamWAV.save_to_wav
-	return error(gd.ToError(class(self).SaveToWav(String.New(path))))
+	return error(gd.ToError(Advanced(self).SaveToWav(String.New(path))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -433,3 +469,16 @@ const (
 	/*Audio loops the data between [member loop_begin] and [member loop_end], playing backward only.*/
 	LoopBackward LoopMode = 3
 )
+
+type Options struct {
+	CompressionMode int     `gd:"compress/mode"`
+	LoopBegin       int     `gd:"edit/loop_begin"`
+	LoopEnd         int     `gd:"edit/loop_end"`
+	LoopMode        int     `gd:"edit/loop_mode"`
+	Normalize       int     `gd:"edit/normalize"`
+	Trim            bool    `gd:"edit/trim"`
+	ForceMinRate    bool    `gd:"force/8_bit"`
+	ForceMaxRate    bool    `gd:"force/max_rate"`
+	ForceMaxRateHz  float32 `gd:"force/max_rate_hz"`
+	ForceMono       bool    `gd:"force/mono"`
+}

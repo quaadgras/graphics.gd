@@ -62,7 +62,7 @@ type Any interface {
 Returns a [TriangleMesh] with the label's vertices following its current configuration (such as its [member pixel_size]).
 */
 func (self Instance) GenerateTriangleMesh() [1]gdclass.TriangleMesh { //gd:Label3D.generate_triangle_mesh
-	return [1]gdclass.TriangleMesh(class(self).GenerateTriangleMesh())
+	return [1]gdclass.TriangleMesh(Advanced(self).GenerateTriangleMesh())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

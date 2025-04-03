@@ -56,7 +56,7 @@ Returns [code]true[/code] if the debugger is active otherwise [code]false[/code]
 */
 func IsActive() bool { //gd:EngineDebugger.is_active
 	once.Do(singleton)
-	return bool(class(self).IsActive())
+	return bool(Advanced().IsActive())
 }
 
 /*
@@ -64,7 +64,7 @@ Registers a profiler with the given [param name]. See [EngineProfiler] for more 
 */
 func RegisterProfiler(name string, profiler [1]gdclass.EngineProfiler) { //gd:EngineDebugger.register_profiler
 	once.Do(singleton)
-	class(self).RegisterProfiler(String.Name(String.New(name)), profiler)
+	Advanced().RegisterProfiler(String.Name(String.New(name)), profiler)
 }
 
 /*
@@ -72,7 +72,7 @@ Unregisters a profiler with given [param name].
 */
 func UnregisterProfiler(name string) { //gd:EngineDebugger.unregister_profiler
 	once.Do(singleton)
-	class(self).UnregisterProfiler(String.Name(String.New(name)))
+	Advanced().UnregisterProfiler(String.Name(String.New(name)))
 }
 
 /*
@@ -80,7 +80,7 @@ Returns [code]true[/code] if a profiler with the given name is present and activ
 */
 func IsProfiling(name string) bool { //gd:EngineDebugger.is_profiling
 	once.Do(singleton)
-	return bool(class(self).IsProfiling(String.Name(String.New(name))))
+	return bool(Advanced().IsProfiling(String.Name(String.New(name))))
 }
 
 /*
@@ -88,7 +88,7 @@ Returns [code]true[/code] if a profiler with the given name is present otherwise
 */
 func HasProfiler(name string) bool { //gd:EngineDebugger.has_profiler
 	once.Do(singleton)
-	return bool(class(self).HasProfiler(String.Name(String.New(name))))
+	return bool(Advanced().HasProfiler(String.Name(String.New(name))))
 }
 
 /*
@@ -96,15 +96,23 @@ Calls the [code]add[/code] callable of the profiler with given [param name] and 
 */
 func ProfilerAddFrameData(name string, data []any) { //gd:EngineDebugger.profiler_add_frame_data
 	once.Do(singleton)
-	class(self).ProfilerAddFrameData(String.Name(String.New(name)), gd.EngineArrayFromSlice(data))
+	Advanced().ProfilerAddFrameData(String.Name(String.New(name)), gd.EngineArrayFromSlice(data))
 }
 
 /*
 Calls the [code]toggle[/code] callable of the profiler with given [param name] and [param arguments]. Enables/Disables the same profiler depending on [param enable] argument.
 */
-func ProfilerEnable(name string, enable bool) { //gd:EngineDebugger.profiler_enable
+func ProfilerEnable(name string, enable bool, arguments []any) { //gd:EngineDebugger.profiler_enable
 	once.Do(singleton)
-	class(self).ProfilerEnable(String.Name(String.New(name)), enable, Array.Nil)
+	Advanced().ProfilerEnable(String.Name(String.New(name)), enable, gd.EngineArrayFromSlice(arguments))
+}
+
+/*
+Calls the [code]toggle[/code] callable of the profiler with given [param name] and [param arguments]. Enables/Disables the same profiler depending on [param enable] argument.
+*/
+func ProfilerEnableExpanded(name string, enable bool, arguments []any) { //gd:EngineDebugger.profiler_enable
+	once.Do(singleton)
+	Advanced().ProfilerEnable(String.Name(String.New(name)), enable, gd.EngineArrayFromSlice(arguments))
 }
 
 /*
@@ -114,7 +122,7 @@ The callable must accept a message string and a data array as argument. The call
 */
 func RegisterMessageCapture(name string, callable func(message string, data []any)) { //gd:EngineDebugger.register_message_capture
 	once.Do(singleton)
-	class(self).RegisterMessageCapture(String.Name(String.New(name)), Callable.New(callable))
+	Advanced().RegisterMessageCapture(String.Name(String.New(name)), Callable.New(callable))
 }
 
 /*
@@ -122,7 +130,7 @@ Unregisters the message capture with given [param name].
 */
 func UnregisterMessageCapture(name string) { //gd:EngineDebugger.unregister_message_capture
 	once.Do(singleton)
-	class(self).UnregisterMessageCapture(String.Name(String.New(name)))
+	Advanced().UnregisterMessageCapture(String.Name(String.New(name)))
 }
 
 /*
@@ -130,7 +138,7 @@ Returns [code]true[/code] if a capture with the given name is present otherwise 
 */
 func HasCapture(name string) bool { //gd:EngineDebugger.has_capture
 	once.Do(singleton)
-	return bool(class(self).HasCapture(String.Name(String.New(name))))
+	return bool(Advanced().HasCapture(String.Name(String.New(name))))
 }
 
 /*
@@ -138,7 +146,7 @@ Forces a processing loop of debugger events. The purpose of this method is just 
 */
 func LinePoll() { //gd:EngineDebugger.line_poll
 	once.Do(singleton)
-	class(self).LinePoll()
+	Advanced().LinePoll()
 }
 
 /*
@@ -146,23 +154,39 @@ Sends a message with given [param message] and [param data] array.
 */
 func SendMessage(message string, data []any) { //gd:EngineDebugger.send_message
 	once.Do(singleton)
-	class(self).SendMessage(String.New(message), gd.EngineArrayFromSlice(data))
+	Advanced().SendMessage(String.New(message), gd.EngineArrayFromSlice(data))
 }
 
 /*
 Starts a debug break in script execution, optionally specifying whether the program can continue based on [param can_continue] and whether the break was due to a breakpoint.
 */
-func Debug() { //gd:EngineDebugger.debug
+func Debug(is_error_breakpoint bool) { //gd:EngineDebugger.debug
 	once.Do(singleton)
-	class(self).Debug(true, false)
+	Advanced().Debug(true, is_error_breakpoint)
 }
 
 /*
 Starts a debug break in script execution, optionally specifying whether the program can continue based on [param can_continue] and whether the break was due to a breakpoint.
 */
-func ScriptDebug(language [1]gdclass.ScriptLanguage) { //gd:EngineDebugger.script_debug
+func DebugExpanded(can_continue bool, is_error_breakpoint bool) { //gd:EngineDebugger.debug
 	once.Do(singleton)
-	class(self).ScriptDebug(language, true, false)
+	Advanced().Debug(can_continue, is_error_breakpoint)
+}
+
+/*
+Starts a debug break in script execution, optionally specifying whether the program can continue based on [param can_continue] and whether the break was due to a breakpoint.
+*/
+func ScriptDebug(language [1]gdclass.ScriptLanguage, is_error_breakpoint bool) { //gd:EngineDebugger.script_debug
+	once.Do(singleton)
+	Advanced().ScriptDebug(language, true, is_error_breakpoint)
+}
+
+/*
+Starts a debug break in script execution, optionally specifying whether the program can continue based on [param can_continue] and whether the break was due to a breakpoint.
+*/
+func ScriptDebugExpanded(language [1]gdclass.ScriptLanguage, can_continue bool, is_error_breakpoint bool) { //gd:EngineDebugger.script_debug
+	once.Do(singleton)
+	Advanced().ScriptDebug(language, can_continue, is_error_breakpoint)
 }
 
 /*
@@ -170,7 +194,7 @@ Sets the current debugging lines that remain.
 */
 func SetLinesLeft(lines int) { //gd:EngineDebugger.set_lines_left
 	once.Do(singleton)
-	class(self).SetLinesLeft(int64(lines))
+	Advanced().SetLinesLeft(int64(lines))
 }
 
 /*
@@ -178,7 +202,7 @@ Returns the number of lines that remain.
 */
 func GetLinesLeft() int { //gd:EngineDebugger.get_lines_left
 	once.Do(singleton)
-	return int(int(class(self).GetLinesLeft()))
+	return int(int(Advanced().GetLinesLeft()))
 }
 
 /*
@@ -186,7 +210,7 @@ Sets the current debugging depth.
 */
 func SetDepth(depth int) { //gd:EngineDebugger.set_depth
 	once.Do(singleton)
-	class(self).SetDepth(int64(depth))
+	Advanced().SetDepth(int64(depth))
 }
 
 /*
@@ -194,7 +218,7 @@ Returns the current debug depth.
 */
 func GetDepth() int { //gd:EngineDebugger.get_depth
 	once.Do(singleton)
-	return int(int(class(self).GetDepth()))
+	return int(int(Advanced().GetDepth()))
 }
 
 /*
@@ -202,7 +226,7 @@ Returns [code]true[/code] if the given [param source] and [param line] represent
 */
 func IsBreakpoint(line int, source string) bool { //gd:EngineDebugger.is_breakpoint
 	once.Do(singleton)
-	return bool(class(self).IsBreakpoint(int64(line), String.Name(String.New(source))))
+	return bool(Advanced().IsBreakpoint(int64(line), String.Name(String.New(source))))
 }
 
 /*
@@ -210,7 +234,7 @@ Returns [code]true[/code] if the debugger is skipping breakpoints otherwise [cod
 */
 func IsSkippingBreakpoints() bool { //gd:EngineDebugger.is_skipping_breakpoints
 	once.Do(singleton)
-	return bool(class(self).IsSkippingBreakpoints())
+	return bool(Advanced().IsSkippingBreakpoints())
 }
 
 /*
@@ -218,7 +242,7 @@ Inserts a new breakpoint with the given [param source] and [param line].
 */
 func InsertBreakpoint(line int, source string) { //gd:EngineDebugger.insert_breakpoint
 	once.Do(singleton)
-	class(self).InsertBreakpoint(int64(line), String.Name(String.New(source)))
+	Advanced().InsertBreakpoint(int64(line), String.Name(String.New(source)))
 }
 
 /*
@@ -226,7 +250,7 @@ Removes a breakpoint with the given [param source] and [param line].
 */
 func RemoveBreakpoint(line int, source string) { //gd:EngineDebugger.remove_breakpoint
 	once.Do(singleton)
-	class(self).RemoveBreakpoint(int64(line), String.Name(String.New(source)))
+	Advanced().RemoveBreakpoint(int64(line), String.Name(String.New(source)))
 }
 
 /*
@@ -234,7 +258,7 @@ Clears all breakpoints.
 */
 func ClearBreakpoints() { //gd:EngineDebugger.clear_breakpoints
 	once.Do(singleton)
-	class(self).ClearBreakpoints()
+	Advanced().ClearBreakpoints()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

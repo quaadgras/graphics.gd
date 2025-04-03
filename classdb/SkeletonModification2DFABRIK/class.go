@@ -63,42 +63,42 @@ type Any interface {
 Sets the [Bone2D] node assigned to the FABRIK joint at [param joint_idx].
 */
 func (self Instance) SetFabrikJointBone2dNode(joint_idx int, bone2d_nodepath string) { //gd:SkeletonModification2DFABRIK.set_fabrik_joint_bone2d_node
-	class(self).SetFabrikJointBone2dNode(int64(joint_idx), Path.ToNode(String.New(bone2d_nodepath)))
+	Advanced(self).SetFabrikJointBone2dNode(int64(joint_idx), Path.ToNode(String.New(bone2d_nodepath)))
 }
 
 /*
 Returns the [Bone2D] node assigned to the FABRIK joint at [param joint_idx].
 */
 func (self Instance) GetFabrikJointBone2dNode(joint_idx int) string { //gd:SkeletonModification2DFABRIK.get_fabrik_joint_bone2d_node
-	return string(class(self).GetFabrikJointBone2dNode(int64(joint_idx)).String())
+	return string(Advanced(self).GetFabrikJointBone2dNode(int64(joint_idx)).String())
 }
 
 /*
 Sets the bone index, [param bone_idx], of the FABRIK joint at [param joint_idx]. When possible, this will also update the [code]bone2d_node[/code] of the FABRIK joint based on data provided by the linked skeleton.
 */
 func (self Instance) SetFabrikJointBoneIndex(joint_idx int, bone_idx int) { //gd:SkeletonModification2DFABRIK.set_fabrik_joint_bone_index
-	class(self).SetFabrikJointBoneIndex(int64(joint_idx), int64(bone_idx))
+	Advanced(self).SetFabrikJointBoneIndex(int64(joint_idx), int64(bone_idx))
 }
 
 /*
 Returns the index of the [Bone2D] node assigned to the FABRIK joint at [param joint_idx].
 */
 func (self Instance) GetFabrikJointBoneIndex(joint_idx int) int { //gd:SkeletonModification2DFABRIK.get_fabrik_joint_bone_index
-	return int(int(class(self).GetFabrikJointBoneIndex(int64(joint_idx))))
+	return int(int(Advanced(self).GetFabrikJointBoneIndex(int64(joint_idx))))
 }
 
 /*
 Sets the magnet position vector for the joint at [param joint_idx].
 */
 func (self Instance) SetFabrikJointMagnetPosition(joint_idx int, magnet_position Vector2.XY) { //gd:SkeletonModification2DFABRIK.set_fabrik_joint_magnet_position
-	class(self).SetFabrikJointMagnetPosition(int64(joint_idx), Vector2.XY(magnet_position))
+	Advanced(self).SetFabrikJointMagnetPosition(int64(joint_idx), Vector2.XY(magnet_position))
 }
 
 /*
 Returns the magnet position vector for the joint at [param joint_idx].
 */
 func (self Instance) GetFabrikJointMagnetPosition(joint_idx int) Vector2.XY { //gd:SkeletonModification2DFABRIK.get_fabrik_joint_magnet_position
-	return Vector2.XY(class(self).GetFabrikJointMagnetPosition(int64(joint_idx)))
+	return Vector2.XY(Advanced(self).GetFabrikJointMagnetPosition(int64(joint_idx)))
 }
 
 /*
@@ -106,14 +106,14 @@ Sets whether the joint at [param joint_idx] will use the target node's rotation 
 [b]Note:[/b] This option only works for the tip/final joint in the chain. For all other nodes, this option will be ignored.
 */
 func (self Instance) SetFabrikJointUseTargetRotation(joint_idx int, use_target_rotation bool) { //gd:SkeletonModification2DFABRIK.set_fabrik_joint_use_target_rotation
-	class(self).SetFabrikJointUseTargetRotation(int64(joint_idx), use_target_rotation)
+	Advanced(self).SetFabrikJointUseTargetRotation(int64(joint_idx), use_target_rotation)
 }
 
 /*
 Returns whether the joint is using the target's rotation rather than allowing FABRIK to rotate the joint. This option only applies to the tip/final joint in the chain.
 */
 func (self Instance) GetFabrikJointUseTargetRotation(joint_idx int) bool { //gd:SkeletonModification2DFABRIK.get_fabrik_joint_use_target_rotation
-	return bool(class(self).GetFabrikJointUseTargetRotation(int64(joint_idx)))
+	return bool(Advanced(self).GetFabrikJointUseTargetRotation(int64(joint_idx)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

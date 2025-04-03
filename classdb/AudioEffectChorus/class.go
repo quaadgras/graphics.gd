@@ -55,40 +55,40 @@ type Any interface {
 }
 
 func (self Instance) SetVoiceDelayMs(voice_idx int, delay_ms Float.X) { //gd:AudioEffectChorus.set_voice_delay_ms
-	class(self).SetVoiceDelayMs(int64(voice_idx), float64(delay_ms))
+	Advanced(self).SetVoiceDelayMs(int64(voice_idx), float64(delay_ms))
 }
 func (self Instance) GetVoiceDelayMs(voice_idx int) Float.X { //gd:AudioEffectChorus.get_voice_delay_ms
-	return Float.X(Float.X(class(self).GetVoiceDelayMs(int64(voice_idx))))
+	return Float.X(Float.X(Advanced(self).GetVoiceDelayMs(int64(voice_idx))))
 }
 func (self Instance) SetVoiceRateHz(voice_idx int, rate_hz Float.X) { //gd:AudioEffectChorus.set_voice_rate_hz
-	class(self).SetVoiceRateHz(int64(voice_idx), float64(rate_hz))
+	Advanced(self).SetVoiceRateHz(int64(voice_idx), float64(rate_hz))
 }
 func (self Instance) GetVoiceRateHz(voice_idx int) Float.X { //gd:AudioEffectChorus.get_voice_rate_hz
-	return Float.X(Float.X(class(self).GetVoiceRateHz(int64(voice_idx))))
+	return Float.X(Float.X(Advanced(self).GetVoiceRateHz(int64(voice_idx))))
 }
 func (self Instance) SetVoiceDepthMs(voice_idx int, depth_ms Float.X) { //gd:AudioEffectChorus.set_voice_depth_ms
-	class(self).SetVoiceDepthMs(int64(voice_idx), float64(depth_ms))
+	Advanced(self).SetVoiceDepthMs(int64(voice_idx), float64(depth_ms))
 }
 func (self Instance) GetVoiceDepthMs(voice_idx int) Float.X { //gd:AudioEffectChorus.get_voice_depth_ms
-	return Float.X(Float.X(class(self).GetVoiceDepthMs(int64(voice_idx))))
+	return Float.X(Float.X(Advanced(self).GetVoiceDepthMs(int64(voice_idx))))
 }
 func (self Instance) SetVoiceLevelDb(voice_idx int, level_db Float.X) { //gd:AudioEffectChorus.set_voice_level_db
-	class(self).SetVoiceLevelDb(int64(voice_idx), float64(level_db))
+	Advanced(self).SetVoiceLevelDb(int64(voice_idx), float64(level_db))
 }
 func (self Instance) GetVoiceLevelDb(voice_idx int) Float.X { //gd:AudioEffectChorus.get_voice_level_db
-	return Float.X(Float.X(class(self).GetVoiceLevelDb(int64(voice_idx))))
+	return Float.X(Float.X(Advanced(self).GetVoiceLevelDb(int64(voice_idx))))
 }
 func (self Instance) SetVoiceCutoffHz(voice_idx int, cutoff_hz Float.X) { //gd:AudioEffectChorus.set_voice_cutoff_hz
-	class(self).SetVoiceCutoffHz(int64(voice_idx), float64(cutoff_hz))
+	Advanced(self).SetVoiceCutoffHz(int64(voice_idx), float64(cutoff_hz))
 }
 func (self Instance) GetVoiceCutoffHz(voice_idx int) Float.X { //gd:AudioEffectChorus.get_voice_cutoff_hz
-	return Float.X(Float.X(class(self).GetVoiceCutoffHz(int64(voice_idx))))
+	return Float.X(Float.X(Advanced(self).GetVoiceCutoffHz(int64(voice_idx))))
 }
 func (self Instance) SetVoicePan(voice_idx int, pan Float.X) { //gd:AudioEffectChorus.set_voice_pan
-	class(self).SetVoicePan(int64(voice_idx), float64(pan))
+	Advanced(self).SetVoicePan(int64(voice_idx), float64(pan))
 }
 func (self Instance) GetVoicePan(voice_idx int) Float.X { //gd:AudioEffectChorus.get_voice_pan
-	return Float.X(Float.X(class(self).GetVoicePan(int64(voice_idx))))
+	return Float.X(Float.X(Advanced(self).GetVoicePan(int64(voice_idx))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

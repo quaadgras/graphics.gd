@@ -58,21 +58,21 @@ type Any interface {
 Returns [code]true[/code] if the [member tracker] has been registered and the [member pose] is being tracked.
 */
 func (self Instance) GetIsActive() bool { //gd:XRNode3D.get_is_active
-	return bool(class(self).GetIsActive())
+	return bool(Advanced(self).GetIsActive())
 }
 
 /*
 Returns [code]true[/code] if the [member tracker] has current tracking data for the [member pose] being tracked.
 */
 func (self Instance) GetHasTrackingData() bool { //gd:XRNode3D.get_has_tracking_data
-	return bool(class(self).GetHasTrackingData())
+	return bool(Advanced(self).GetHasTrackingData())
 }
 
 /*
 Returns the [XRPose] containing the current state of the pose being tracked. This gives access to additional properties of this pose.
 */
 func (self Instance) GetPose() [1]gdclass.XRPose { //gd:XRNode3D.get_pose
-	return [1]gdclass.XRPose(class(self).GetPose())
+	return [1]gdclass.XRPose(Advanced(self).GetPose())
 }
 
 /*
@@ -84,7 +84,7 @@ Triggers a haptic pulse on a device associated with this interface.
 [param delay_sec] is a delay in seconds before the pulse is given.
 */
 func (self Instance) TriggerHapticPulse(action_name string, frequency Float.X, amplitude Float.X, duration_sec Float.X, delay_sec Float.X) { //gd:XRNode3D.trigger_haptic_pulse
-	class(self).TriggerHapticPulse(String.New(action_name), float64(frequency), float64(amplitude), float64(duration_sec), float64(delay_sec))
+	Advanced(self).TriggerHapticPulse(String.New(action_name), float64(frequency), float64(amplitude), float64(duration_sec), float64(delay_sec))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

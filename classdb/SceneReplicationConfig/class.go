@@ -41,6 +41,7 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 type Instance [1]gdclass.SceneReplicationConfig
+type Expanded [1]gdclass.SceneReplicationConfig
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -54,7 +55,7 @@ type Any interface {
 Returns a list of synchronized property [NodePath]s.
 */
 func (self Instance) GetProperties() []string { //gd:SceneReplicationConfig.get_properties
-	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetProperties())))
+	return []string(gd.ArrayAs[[]string](gd.InternalArray(Advanced(self).GetProperties())))
 }
 
 /*
@@ -62,84 +63,92 @@ Adds the property identified by the given [param path] to the list of the proper
 [b]Note:[/b] For details on restrictions and limitations on property synchronization, see [MultiplayerSynchronizer].
 */
 func (self Instance) AddProperty(path string) { //gd:SceneReplicationConfig.add_property
-	class(self).AddProperty(Path.ToNode(String.New(path)), int64(-1))
+	Advanced(self).AddProperty(Path.ToNode(String.New(path)), int64(-1))
+}
+
+/*
+Adds the property identified by the given [param path] to the list of the properties being synchronized, optionally passing an [param index].
+[b]Note:[/b] For details on restrictions and limitations on property synchronization, see [MultiplayerSynchronizer].
+*/
+func (self Expanded) AddProperty(path string, index int) { //gd:SceneReplicationConfig.add_property
+	Advanced(self).AddProperty(Path.ToNode(String.New(path)), int64(index))
 }
 
 /*
 Returns [code]true[/code] if the given [param path] is configured for synchronization.
 */
 func (self Instance) HasProperty(path string) bool { //gd:SceneReplicationConfig.has_property
-	return bool(class(self).HasProperty(Path.ToNode(String.New(path))))
+	return bool(Advanced(self).HasProperty(Path.ToNode(String.New(path))))
 }
 
 /*
 Removes the property identified by the given [param path] from the configuration.
 */
 func (self Instance) RemoveProperty(path string) { //gd:SceneReplicationConfig.remove_property
-	class(self).RemoveProperty(Path.ToNode(String.New(path)))
+	Advanced(self).RemoveProperty(Path.ToNode(String.New(path)))
 }
 
 /*
 Finds the index of the given [param path].
 */
 func (self Instance) PropertyGetIndex(path string) int { //gd:SceneReplicationConfig.property_get_index
-	return int(int(class(self).PropertyGetIndex(Path.ToNode(String.New(path)))))
+	return int(int(Advanced(self).PropertyGetIndex(Path.ToNode(String.New(path)))))
 }
 
 /*
 Returns [code]true[/code] if the property identified by the given [param path] is configured to be synchronized on spawn.
 */
 func (self Instance) PropertyGetSpawn(path string) bool { //gd:SceneReplicationConfig.property_get_spawn
-	return bool(class(self).PropertyGetSpawn(Path.ToNode(String.New(path))))
+	return bool(Advanced(self).PropertyGetSpawn(Path.ToNode(String.New(path))))
 }
 
 /*
 Sets whether the property identified by the given [param path] is configured to be synchronized on spawn.
 */
 func (self Instance) PropertySetSpawn(path string, enabled bool) { //gd:SceneReplicationConfig.property_set_spawn
-	class(self).PropertySetSpawn(Path.ToNode(String.New(path)), enabled)
+	Advanced(self).PropertySetSpawn(Path.ToNode(String.New(path)), enabled)
 }
 
 /*
 Returns the replication mode for the property identified by the given [param path]. See [enum ReplicationMode].
 */
 func (self Instance) PropertyGetReplicationMode(path string) gdclass.SceneReplicationConfigReplicationMode { //gd:SceneReplicationConfig.property_get_replication_mode
-	return gdclass.SceneReplicationConfigReplicationMode(class(self).PropertyGetReplicationMode(Path.ToNode(String.New(path))))
+	return gdclass.SceneReplicationConfigReplicationMode(Advanced(self).PropertyGetReplicationMode(Path.ToNode(String.New(path))))
 }
 
 /*
 Sets the synchronization mode for the property identified by the given [param path]. See [enum ReplicationMode].
 */
 func (self Instance) PropertySetReplicationMode(path string, mode gdclass.SceneReplicationConfigReplicationMode) { //gd:SceneReplicationConfig.property_set_replication_mode
-	class(self).PropertySetReplicationMode(Path.ToNode(String.New(path)), mode)
+	Advanced(self).PropertySetReplicationMode(Path.ToNode(String.New(path)), mode)
 }
 
 /*
 Returns [code]true[/code] if the property identified by the given [param path] is configured to be synchronized on process.
 */
 func (self Instance) PropertyGetSync(path string) bool { //gd:SceneReplicationConfig.property_get_sync
-	return bool(class(self).PropertyGetSync(Path.ToNode(String.New(path))))
+	return bool(Advanced(self).PropertyGetSync(Path.ToNode(String.New(path))))
 }
 
 /*
 Sets whether the property identified by the given [param path] is configured to be synchronized on process.
 */
 func (self Instance) PropertySetSync(path string, enabled bool) { //gd:SceneReplicationConfig.property_set_sync
-	class(self).PropertySetSync(Path.ToNode(String.New(path)), enabled)
+	Advanced(self).PropertySetSync(Path.ToNode(String.New(path)), enabled)
 }
 
 /*
 Returns [code]true[/code] if the property identified by the given [param path] is configured to be reliably synchronized when changes are detected on process.
 */
 func (self Instance) PropertyGetWatch(path string) bool { //gd:SceneReplicationConfig.property_get_watch
-	return bool(class(self).PropertyGetWatch(Path.ToNode(String.New(path))))
+	return bool(Advanced(self).PropertyGetWatch(Path.ToNode(String.New(path))))
 }
 
 /*
 Sets whether the property identified by the given [param path] is configured to be reliably synchronized when changes are detected on process.
 */
 func (self Instance) PropertySetWatch(path string, enabled bool) { //gd:SceneReplicationConfig.property_set_watch
-	class(self).PropertySetWatch(Path.ToNode(String.New(path)), enabled)
+	Advanced(self).PropertySetWatch(Path.ToNode(String.New(path)), enabled)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

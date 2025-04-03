@@ -68,7 +68,7 @@ Wraps a class defined in Java, and returns it as a [JavaClass] [Object] type tha
 */
 func Wrap(name string) [1]gdclass.JavaClass { //gd:JavaClassWrapper.wrap
 	once.Do(singleton)
-	return [1]gdclass.JavaClass(class(self).Wrap(String.New(name)))
+	return [1]gdclass.JavaClass(Advanced().Wrap(String.New(name)))
 }
 
 /*
@@ -77,7 +77,7 @@ Returns the Java exception from the last call into a Java class. If there was no
 */
 func GetException() [1]gdclass.JavaObject { //gd:JavaClassWrapper.get_exception
 	once.Do(singleton)
-	return [1]gdclass.JavaObject(class(self).GetException())
+	return [1]gdclass.JavaObject(Advanced().GetException())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

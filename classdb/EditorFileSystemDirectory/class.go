@@ -56,98 +56,98 @@ type Any interface {
 Returns the number of subdirectories in this directory.
 */
 func (self Instance) GetSubdirCount() int { //gd:EditorFileSystemDirectory.get_subdir_count
-	return int(int(class(self).GetSubdirCount()))
+	return int(int(Advanced(self).GetSubdirCount()))
 }
 
 /*
 Returns the subdirectory at index [param idx].
 */
 func (self Instance) GetSubdir(idx int) [1]gdclass.EditorFileSystemDirectory { //gd:EditorFileSystemDirectory.get_subdir
-	return [1]gdclass.EditorFileSystemDirectory(class(self).GetSubdir(int64(idx)))
+	return [1]gdclass.EditorFileSystemDirectory(Advanced(self).GetSubdir(int64(idx)))
 }
 
 /*
 Returns the number of files in this directory.
 */
 func (self Instance) GetFileCount() int { //gd:EditorFileSystemDirectory.get_file_count
-	return int(int(class(self).GetFileCount()))
+	return int(int(Advanced(self).GetFileCount()))
 }
 
 /*
 Returns the name of the file at index [param idx].
 */
 func (self Instance) GetFile(idx int) string { //gd:EditorFileSystemDirectory.get_file
-	return string(class(self).GetFile(int64(idx)).String())
+	return string(Advanced(self).GetFile(int64(idx)).String())
 }
 
 /*
 Returns the path to the file at index [param idx].
 */
 func (self Instance) GetFilePath(idx int) string { //gd:EditorFileSystemDirectory.get_file_path
-	return string(class(self).GetFilePath(int64(idx)).String())
+	return string(Advanced(self).GetFilePath(int64(idx)).String())
 }
 
 /*
 Returns the resource type of the file at index [param idx]. This returns a string such as [code]"Resource"[/code] or [code]"GDScript"[/code], [i]not[/i] a file extension such as [code]".gd"[/code].
 */
 func (self Instance) GetFileType(idx int) string { //gd:EditorFileSystemDirectory.get_file_type
-	return string(class(self).GetFileType(int64(idx)).String())
+	return string(Advanced(self).GetFileType(int64(idx)).String())
 }
 
 /*
 Returns the name of the script class defined in the file at index [param idx]. If the file doesn't define a script class using the [code]class_name[/code] syntax, this will return an empty string.
 */
 func (self Instance) GetFileScriptClassName(idx int) string { //gd:EditorFileSystemDirectory.get_file_script_class_name
-	return string(class(self).GetFileScriptClassName(int64(idx)).String())
+	return string(Advanced(self).GetFileScriptClassName(int64(idx)).String())
 }
 
 /*
 Returns the base class of the script class defined in the file at index [param idx]. If the file doesn't define a script class using the [code]class_name[/code] syntax, this will return an empty string.
 */
 func (self Instance) GetFileScriptClassExtends(idx int) string { //gd:EditorFileSystemDirectory.get_file_script_class_extends
-	return string(class(self).GetFileScriptClassExtends(int64(idx)).String())
+	return string(Advanced(self).GetFileScriptClassExtends(int64(idx)).String())
 }
 
 /*
 Returns [code]true[/code] if the file at index [param idx] imported properly.
 */
 func (self Instance) GetFileImportIsValid(idx int) bool { //gd:EditorFileSystemDirectory.get_file_import_is_valid
-	return bool(class(self).GetFileImportIsValid(int64(idx)))
+	return bool(Advanced(self).GetFileImportIsValid(int64(idx)))
 }
 
 /*
 Returns the name of this directory.
 */
 func (self Instance) GetName() string { //gd:EditorFileSystemDirectory.get_name
-	return string(class(self).GetName().String())
+	return string(Advanced(self).GetName().String())
 }
 
 /*
 Returns the path to this directory.
 */
 func (self Instance) GetPath() string { //gd:EditorFileSystemDirectory.get_path
-	return string(class(self).GetPath().String())
+	return string(Advanced(self).GetPath().String())
 }
 
 /*
 Returns the parent directory for this directory or [code]null[/code] if called on a directory at [code]res://[/code] or [code]user://[/code].
 */
 func (self Instance) GetParent() [1]gdclass.EditorFileSystemDirectory { //gd:EditorFileSystemDirectory.get_parent
-	return [1]gdclass.EditorFileSystemDirectory(class(self).GetParent())
+	return [1]gdclass.EditorFileSystemDirectory(Advanced(self).GetParent())
 }
 
 /*
 Returns the index of the file with name [param name] or [code]-1[/code] if not found.
 */
 func (self Instance) FindFileIndex(name string) int { //gd:EditorFileSystemDirectory.find_file_index
-	return int(int(class(self).FindFileIndex(String.New(name))))
+	return int(int(Advanced(self).FindFileIndex(String.New(name))))
 }
 
 /*
 Returns the index of the directory with name [param name] or [code]-1[/code] if not found.
 */
 func (self Instance) FindDirIndex(name string) int { //gd:EditorFileSystemDirectory.find_dir_index
-	return int(int(class(self).FindDirIndex(String.New(name))))
+	return int(int(Advanced(self).FindDirIndex(String.New(name))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

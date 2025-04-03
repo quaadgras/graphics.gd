@@ -46,6 +46,7 @@ This class represents a DTLS peer connection. It can be used to connect to a DTL
 [b]Warning:[/b] TLS certificate revocation and certificate pinning are currently not supported. Revoked certificates are accepted as long as they are otherwise valid. If this is a concern, you may want to use automatically managed certificates with a short validity period.
 */
 type Instance [1]gdclass.PacketPeerDTLS
+type Expanded [1]gdclass.PacketPeerDTLS
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -59,28 +60,35 @@ type Any interface {
 Poll the connection to check for incoming packets. Call this frequently to update the status and keep the connection working.
 */
 func (self Instance) Poll() { //gd:PacketPeerDTLS.poll
-	class(self).Poll()
+	Advanced(self).Poll()
 }
 
 /*
 Connects a [param packet_peer] beginning the DTLS handshake using the underlying [PacketPeerUDP] which must be connected (see [method PacketPeerUDP.connect_to_host]). You can optionally specify the [param client_options] to be used while verifying the TLS connections. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
 func (self Instance) ConnectToPeer(packet_peer [1]gdclass.PacketPeerUDP, hostname string) error { //gd:PacketPeerDTLS.connect_to_peer
-	return error(gd.ToError(class(self).ConnectToPeer(packet_peer, String.New(hostname), [1][1]gdclass.TLSOptions{}[0])))
+	return error(gd.ToError(Advanced(self).ConnectToPeer(packet_peer, String.New(hostname), [1][1]gdclass.TLSOptions{}[0])))
+}
+
+/*
+Connects a [param packet_peer] beginning the DTLS handshake using the underlying [PacketPeerUDP] which must be connected (see [method PacketPeerUDP.connect_to_host]). You can optionally specify the [param client_options] to be used while verifying the TLS connections. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
+*/
+func (self Expanded) ConnectToPeer(packet_peer [1]gdclass.PacketPeerUDP, hostname string, client_options [1]gdclass.TLSOptions) error { //gd:PacketPeerDTLS.connect_to_peer
+	return error(gd.ToError(Advanced(self).ConnectToPeer(packet_peer, String.New(hostname), client_options)))
 }
 
 /*
 Returns the status of the connection. See [enum Status] for values.
 */
 func (self Instance) GetStatus() gdclass.PacketPeerDTLSStatus { //gd:PacketPeerDTLS.get_status
-	return gdclass.PacketPeerDTLSStatus(class(self).GetStatus())
+	return gdclass.PacketPeerDTLSStatus(Advanced(self).GetStatus())
 }
 
 /*
 Disconnects this peer, terminating the DTLS session.
 */
 func (self Instance) DisconnectFromPeer() { //gd:PacketPeerDTLS.disconnect_from_peer
-	class(self).DisconnectFromPeer()
+	Advanced(self).DisconnectFromPeer()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -525,7 +525,7 @@ func (Instance) _is_available(impl func(ptr unsafe.Pointer, mode gdclass.ShaderM
 Returns the selected index of the drop-down list option within a graph. You may use this function to define the specific behavior in the [method _get_code] or [method _get_global_code].
 */
 func (self Instance) GetOptionIndex(option int) int { //gd:VisualShaderNodeCustom.get_option_index
-	return int(int(class(self).GetOptionIndex(int64(option))))
+	return int(int(Advanced(self).GetOptionIndex(int64(option))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

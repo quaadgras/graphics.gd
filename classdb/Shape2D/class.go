@@ -63,7 +63,7 @@ Returns [code]true[/code] if this shape is colliding with another.
 This method needs the transformation matrix for this shape ([param local_xform]), the shape to check collisions with ([param with_shape]), and the transformation matrix of that shape ([param shape_xform]).
 */
 func (self Instance) Collide(local_xform Transform2D.OriginXY, with_shape [1]gdclass.Shape2D, shape_xform Transform2D.OriginXY) bool { //gd:Shape2D.collide
-	return bool(class(self).Collide(Transform2D.OriginXY(local_xform), with_shape, Transform2D.OriginXY(shape_xform)))
+	return bool(Advanced(self).Collide(Transform2D.OriginXY(local_xform), with_shape, Transform2D.OriginXY(shape_xform)))
 }
 
 /*
@@ -71,7 +71,7 @@ Returns whether this shape would collide with another, if a given movement was a
 This method needs the transformation matrix for this shape ([param local_xform]), the movement to test on this shape ([param local_motion]), the shape to check collisions with ([param with_shape]), the transformation matrix of that shape ([param shape_xform]), and the movement to test onto the other object ([param shape_motion]).
 */
 func (self Instance) CollideWithMotion(local_xform Transform2D.OriginXY, local_motion Vector2.XY, with_shape [1]gdclass.Shape2D, shape_xform Transform2D.OriginXY, shape_motion Vector2.XY) bool { //gd:Shape2D.collide_with_motion
-	return bool(class(self).CollideWithMotion(Transform2D.OriginXY(local_xform), Vector2.XY(local_motion), with_shape, Transform2D.OriginXY(shape_xform), Vector2.XY(shape_motion)))
+	return bool(Advanced(self).CollideWithMotion(Transform2D.OriginXY(local_xform), Vector2.XY(local_motion), with_shape, Transform2D.OriginXY(shape_xform), Vector2.XY(shape_motion)))
 }
 
 /*
@@ -81,7 +81,7 @@ A collision pair A, B can be used to calculate the collision normal with [code](
 This method needs the transformation matrix for this shape ([param local_xform]), the shape to check collisions with ([param with_shape]), and the transformation matrix of that shape ([param shape_xform]).
 */
 func (self Instance) CollideAndGetContacts(local_xform Transform2D.OriginXY, with_shape [1]gdclass.Shape2D, shape_xform Transform2D.OriginXY) []Vector2.XY { //gd:Shape2D.collide_and_get_contacts
-	return []Vector2.XY(slices.Collect(class(self).CollideAndGetContacts(Transform2D.OriginXY(local_xform), with_shape, Transform2D.OriginXY(shape_xform)).Values()))
+	return []Vector2.XY(slices.Collect(Advanced(self).CollideAndGetContacts(Transform2D.OriginXY(local_xform), with_shape, Transform2D.OriginXY(shape_xform)).Values()))
 }
 
 /*
@@ -91,21 +91,21 @@ A collision pair A, B can be used to calculate the collision normal with [code](
 This method needs the transformation matrix for this shape ([param local_xform]), the movement to test on this shape ([param local_motion]), the shape to check collisions with ([param with_shape]), the transformation matrix of that shape ([param shape_xform]), and the movement to test onto the other object ([param shape_motion]).
 */
 func (self Instance) CollideWithMotionAndGetContacts(local_xform Transform2D.OriginXY, local_motion Vector2.XY, with_shape [1]gdclass.Shape2D, shape_xform Transform2D.OriginXY, shape_motion Vector2.XY) []Vector2.XY { //gd:Shape2D.collide_with_motion_and_get_contacts
-	return []Vector2.XY(slices.Collect(class(self).CollideWithMotionAndGetContacts(Transform2D.OriginXY(local_xform), Vector2.XY(local_motion), with_shape, Transform2D.OriginXY(shape_xform), Vector2.XY(shape_motion)).Values()))
+	return []Vector2.XY(slices.Collect(Advanced(self).CollideWithMotionAndGetContacts(Transform2D.OriginXY(local_xform), Vector2.XY(local_motion), with_shape, Transform2D.OriginXY(shape_xform), Vector2.XY(shape_motion)).Values()))
 }
 
 /*
 Draws a solid shape onto a [CanvasItem] with the [RenderingServer] API filled with the specified [param color]. The exact drawing method is specific for each shape and cannot be configured.
 */
 func (self Instance) Draw(canvas_item RID.CanvasItem, color Color.RGBA) { //gd:Shape2D.draw
-	class(self).Draw(RID.Any(canvas_item), Color.RGBA(color))
+	Advanced(self).Draw(RID.Any(canvas_item), Color.RGBA(color))
 }
 
 /*
 Returns a [Rect2] representing the shapes boundary.
 */
 func (self Instance) GetRect() Rect2.PositionSize { //gd:Shape2D.get_rect
-	return Rect2.PositionSize(class(self).GetRect())
+	return Rect2.PositionSize(Advanced(self).GetRect())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -75,6 +75,7 @@ func _process(delta):
 To use the peer as part of a WebSocket server refer to [method accept_stream] and the online tutorial.
 */
 type Instance [1]gdclass.WebSocketPeer
+type Expanded [1]gdclass.WebSocketPeer
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -90,7 +91,16 @@ Connects to the given URL. TLS certificates will be verified against the hostnam
 [b]Note:[/b] To avoid mixed content warnings or errors in Web, you may have to use a [param url] that starts with [code]wss://[/code] (secure) instead of [code]ws://[/code]. When doing so, make sure to use the fully qualified domain name that matches the one defined in the server's TLS certificate. Do not connect directly via the IP address for [code]wss://[/code] connections, as it won't match with the TLS certificate.
 */
 func (self Instance) ConnectToUrl(url string) error { //gd:WebSocketPeer.connect_to_url
-	return error(gd.ToError(class(self).ConnectToUrl(String.New(url), [1][1]gdclass.TLSOptions{}[0])))
+	return error(gd.ToError(Advanced(self).ConnectToUrl(String.New(url), [1][1]gdclass.TLSOptions{}[0])))
+}
+
+/*
+Connects to the given URL. TLS certificates will be verified against the hostname when connecting using the [code]wss://[/code] protocol. You can pass the optional [param tls_client_options] parameter to customize the trusted certification authorities, or disable the common name verification. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
+[b]Note:[/b] This method is non-blocking, and will return [constant OK] before the connection is established as long as the provided parameters are valid and the peer is not in an invalid state (e.g. already connected). Regularly call [method poll] (e.g. during [Node] process) and check the result of [method get_ready_state] to know whether the connection succeeds or fails.
+[b]Note:[/b] To avoid mixed content warnings or errors in Web, you may have to use a [param url] that starts with [code]wss://[/code] (secure) instead of [code]ws://[/code]. When doing so, make sure to use the fully qualified domain name that matches the one defined in the server's TLS certificate. Do not connect directly via the IP address for [code]wss://[/code] connections, as it won't match with the TLS certificate.
+*/
+func (self Expanded) ConnectToUrl(url string, tls_client_options [1]gdclass.TLSOptions) error { //gd:WebSocketPeer.connect_to_url
+	return error(gd.ToError(Advanced(self).ConnectToUrl(String.New(url), tls_client_options)))
 }
 
 /*
@@ -98,35 +108,42 @@ Accepts a peer connection performing the HTTP handshake as a WebSocket server. T
 [b]Note:[/b] Not supported in Web exports due to browsers' restrictions.
 */
 func (self Instance) AcceptStream(stream [1]gdclass.StreamPeer) error { //gd:WebSocketPeer.accept_stream
-	return error(gd.ToError(class(self).AcceptStream(stream)))
+	return error(gd.ToError(Advanced(self).AcceptStream(stream)))
 }
 
 /*
 Sends the given [param message] using the desired [param write_mode]. When sending a [String], prefer using [method send_text].
 */
 func (self Instance) Send(message []byte) error { //gd:WebSocketPeer.send
-	return error(gd.ToError(class(self).Send(Packed.Bytes(Packed.New(message...)), 1)))
+	return error(gd.ToError(Advanced(self).Send(Packed.Bytes(Packed.New(message...)), 1)))
+}
+
+/*
+Sends the given [param message] using the desired [param write_mode]. When sending a [String], prefer using [method send_text].
+*/
+func (self Expanded) Send(message []byte, write_mode gdclass.WebSocketPeerWriteMode) error { //gd:WebSocketPeer.send
+	return error(gd.ToError(Advanced(self).Send(Packed.Bytes(Packed.New(message...)), write_mode)))
 }
 
 /*
 Sends the given [param message] using WebSocket text mode. Prefer this method over [method PacketPeer.put_packet] when interacting with third-party text-based API (e.g. when using [JSON] formatted messages).
 */
 func (self Instance) SendText(message string) error { //gd:WebSocketPeer.send_text
-	return error(gd.ToError(class(self).SendText(String.New(message))))
+	return error(gd.ToError(Advanced(self).SendText(String.New(message))))
 }
 
 /*
 Returns [code]true[/code] if the last received packet was sent as a text payload. See [enum WriteMode].
 */
 func (self Instance) WasStringPacket() bool { //gd:WebSocketPeer.was_string_packet
-	return bool(class(self).WasStringPacket())
+	return bool(Advanced(self).WasStringPacket())
 }
 
 /*
 Updates the connection state and receive incoming packets. Call this function regularly to keep it in a clean state.
 */
 func (self Instance) Poll() { //gd:WebSocketPeer.poll
-	class(self).Poll()
+	Advanced(self).Poll()
 }
 
 /*
@@ -135,7 +152,16 @@ Closes this WebSocket connection. [param code] is the status code for the closur
 [b]Note:[/b] The Web export might not support all status codes. Please refer to browser-specific documentation for more details.
 */
 func (self Instance) Close() { //gd:WebSocketPeer.close
-	class(self).Close(int64(1000), String.New(""))
+	Advanced(self).Close(int64(1000), String.New(""))
+}
+
+/*
+Closes this WebSocket connection. [param code] is the status code for the closure (see RFC 6455 section 7.4 for a list of valid status codes). [param reason] is the human readable reason for closing the connection (can be any UTF-8 string that's smaller than 123 bytes). If [param code] is negative, the connection will be closed immediately without notifying the remote peer.
+[b]Note:[/b] To achieve a clean close, you will need to keep polling until [constant STATE_CLOSED] is reached.
+[b]Note:[/b] The Web export might not support all status codes. Please refer to browser-specific documentation for more details.
+*/
+func (self Expanded) Close(code int, reason string) { //gd:WebSocketPeer.close
+	Advanced(self).Close(int64(code), String.New(reason))
 }
 
 /*
@@ -143,7 +169,7 @@ Returns the IP address of the connected peer.
 [b]Note:[/b] Not available in the Web export.
 */
 func (self Instance) GetConnectedHost() string { //gd:WebSocketPeer.get_connected_host
-	return string(class(self).GetConnectedHost().String())
+	return string(Advanced(self).GetConnectedHost().String())
 }
 
 /*
@@ -151,21 +177,21 @@ Returns the remote port of the connected peer.
 [b]Note:[/b] Not available in the Web export.
 */
 func (self Instance) GetConnectedPort() int { //gd:WebSocketPeer.get_connected_port
-	return int(int(class(self).GetConnectedPort()))
+	return int(int(Advanced(self).GetConnectedPort()))
 }
 
 /*
 Returns the selected WebSocket sub-protocol for this connection or an empty string if the sub-protocol has not been selected yet.
 */
 func (self Instance) GetSelectedProtocol() string { //gd:WebSocketPeer.get_selected_protocol
-	return string(class(self).GetSelectedProtocol().String())
+	return string(Advanced(self).GetSelectedProtocol().String())
 }
 
 /*
 Returns the URL requested by this peer. The URL is derived from the [code]url[/code] passed to [method connect_to_url] or from the HTTP headers when acting as server (i.e. when using [method accept_stream]).
 */
 func (self Instance) GetRequestedUrl() string { //gd:WebSocketPeer.get_requested_url
-	return string(class(self).GetRequestedUrl().String())
+	return string(Advanced(self).GetRequestedUrl().String())
 }
 
 /*
@@ -173,35 +199,35 @@ Disable Nagle's algorithm on the underlying TCP socket (default). See [method St
 [b]Note:[/b] Not available in the Web export.
 */
 func (self Instance) SetNoDelay(enabled bool) { //gd:WebSocketPeer.set_no_delay
-	class(self).SetNoDelay(enabled)
+	Advanced(self).SetNoDelay(enabled)
 }
 
 /*
 Returns the current amount of data in the outbound websocket buffer. [b]Note:[/b] Web exports use WebSocket.bufferedAmount, while other platforms use an internal buffer.
 */
 func (self Instance) GetCurrentOutboundBufferedAmount() int { //gd:WebSocketPeer.get_current_outbound_buffered_amount
-	return int(int(class(self).GetCurrentOutboundBufferedAmount()))
+	return int(int(Advanced(self).GetCurrentOutboundBufferedAmount()))
 }
 
 /*
 Returns the ready state of the connection. See [enum State].
 */
 func (self Instance) GetReadyState() gdclass.WebSocketPeerState { //gd:WebSocketPeer.get_ready_state
-	return gdclass.WebSocketPeerState(class(self).GetReadyState())
+	return gdclass.WebSocketPeerState(Advanced(self).GetReadyState())
 }
 
 /*
 Returns the received WebSocket close frame status code, or [code]-1[/code] when the connection was not cleanly closed. Only call this method when [method get_ready_state] returns [constant STATE_CLOSED].
 */
 func (self Instance) GetCloseCode() int { //gd:WebSocketPeer.get_close_code
-	return int(int(class(self).GetCloseCode()))
+	return int(int(Advanced(self).GetCloseCode()))
 }
 
 /*
 Returns the received WebSocket close frame status reason string. Only call this method when [method get_ready_state] returns [constant STATE_CLOSED].
 */
 func (self Instance) GetCloseReason() string { //gd:WebSocketPeer.get_close_reason
-	return string(class(self).GetCloseReason().String())
+	return string(Advanced(self).GetCloseReason().String())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

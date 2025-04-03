@@ -57,6 +57,7 @@ A multiline text editor. It also has limited facilities for editing code, such a
 %!(EXTRA string=TextEdit)
 */
 type Instance [1]gdclass.TextEdit
+type Expanded [1]gdclass.TextEdit
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -172,63 +173,63 @@ func (Instance) _paste_primary_clipboard(impl func(ptr unsafe.Pointer, caret_ind
 Returns [code]true[/code] if the user has text in the [url=https://en.wikipedia.org/wiki/Input_method]Input Method Editor[/url] (IME).
 */
 func (self Instance) HasImeText() bool { //gd:TextEdit.has_ime_text
-	return bool(class(self).HasImeText())
+	return bool(Advanced(self).HasImeText())
 }
 
 /*
 Closes the [url=https://en.wikipedia.org/wiki/Input_method]Input Method Editor[/url] (IME) if it is open. Any text in the IME will be lost.
 */
 func (self Instance) CancelIme() { //gd:TextEdit.cancel_ime
-	class(self).CancelIme()
+	Advanced(self).CancelIme()
 }
 
 /*
 Applies text from the [url=https://en.wikipedia.org/wiki/Input_method]Input Method Editor[/url] (IME) to each caret and closes the IME if it is open.
 */
 func (self Instance) ApplyIme() { //gd:TextEdit.apply_ime
-	class(self).ApplyIme()
+	Advanced(self).ApplyIme()
 }
 
 /*
 Sets the tab size for the [TextEdit] to use.
 */
 func (self Instance) SetTabSize(size int) { //gd:TextEdit.set_tab_size
-	class(self).SetTabSize(int64(size))
+	Advanced(self).SetTabSize(int64(size))
 }
 
 /*
 Returns the [TextEdit]'s' tab size.
 */
 func (self Instance) GetTabSize() int { //gd:TextEdit.get_tab_size
-	return int(int(class(self).GetTabSize()))
+	return int(int(Advanced(self).GetTabSize()))
 }
 
 /*
 If [code]true[/code], enables overtype mode. In this mode, typing overrides existing text instead of inserting text. The [member ProjectSettings.input/ui_text_toggle_insert_mode] action toggles overtype mode. See [method is_overtype_mode_enabled].
 */
 func (self Instance) SetOvertypeModeEnabled(enabled bool) { //gd:TextEdit.set_overtype_mode_enabled
-	class(self).SetOvertypeModeEnabled(enabled)
+	Advanced(self).SetOvertypeModeEnabled(enabled)
 }
 
 /*
 Returns [code]true[/code] if overtype mode is enabled. See [method set_overtype_mode_enabled].
 */
 func (self Instance) IsOvertypeModeEnabled() bool { //gd:TextEdit.is_overtype_mode_enabled
-	return bool(class(self).IsOvertypeModeEnabled())
+	return bool(Advanced(self).IsOvertypeModeEnabled())
 }
 
 /*
 Performs a full reset of [TextEdit], including undo history.
 */
 func (self Instance) Clear() { //gd:TextEdit.clear
-	class(self).Clear()
+	Advanced(self).Clear()
 }
 
 /*
 Returns the number of lines in the text.
 */
 func (self Instance) GetLineCount() int { //gd:TextEdit.get_line_count
-	return int(int(class(self).GetLineCount()))
+	return int(int(Advanced(self).GetLineCount()))
 }
 
 /*
@@ -236,28 +237,35 @@ Sets the text for a specific [param line].
 Carets on the line will attempt to keep their visual x position.
 */
 func (self Instance) SetLine(line int, new_text string) { //gd:TextEdit.set_line
-	class(self).SetLine(int64(line), String.New(new_text))
+	Advanced(self).SetLine(int64(line), String.New(new_text))
 }
 
 /*
 Returns the text of a specific line.
 */
 func (self Instance) GetLine(line int) string { //gd:TextEdit.get_line
-	return string(class(self).GetLine(int64(line)).String())
+	return string(Advanced(self).GetLine(int64(line)).String())
 }
 
 /*
 Returns line text as it is currently displayed, including IME composition string.
 */
 func (self Instance) GetLineWithIme(line int) string { //gd:TextEdit.get_line_with_ime
-	return string(class(self).GetLineWithIme(int64(line)).String())
+	return string(Advanced(self).GetLineWithIme(int64(line)).String())
 }
 
 /*
 Returns the width in pixels of the [param wrap_index] on [param line].
 */
 func (self Instance) GetLineWidth(line int) int { //gd:TextEdit.get_line_width
-	return int(int(class(self).GetLineWidth(int64(line), int64(-1))))
+	return int(int(Advanced(self).GetLineWidth(int64(line), int64(-1))))
+}
+
+/*
+Returns the width in pixels of the [param wrap_index] on [param line].
+*/
+func (self Expanded) GetLineWidth(line int, wrap_index int) int { //gd:TextEdit.get_line_width
+	return int(int(Advanced(self).GetLineWidth(int64(line), int64(wrap_index))))
 }
 
 /*
@@ -265,35 +273,35 @@ Returns the maximum value of the line height among all lines.
 [b]Note:[/b] The return value is influenced by [theme_item line_spacing] and [theme_item font_size]. And it will not be less than [code]1[/code].
 */
 func (self Instance) GetLineHeight() int { //gd:TextEdit.get_line_height
-	return int(int(class(self).GetLineHeight()))
+	return int(int(Advanced(self).GetLineHeight()))
 }
 
 /*
 Returns the indent level of the given line. This is the number of spaces and tabs at the beginning of the line, with the tabs taking the tab size into account (see [method get_tab_size]).
 */
 func (self Instance) GetIndentLevel(line int) int { //gd:TextEdit.get_indent_level
-	return int(int(class(self).GetIndentLevel(int64(line))))
+	return int(int(Advanced(self).GetIndentLevel(int64(line))))
 }
 
 /*
 Returns the first column containing a non-whitespace character on the given line. If there is only whitespace, returns the number of characters.
 */
 func (self Instance) GetFirstNonWhitespaceColumn(line int) int { //gd:TextEdit.get_first_non_whitespace_column
-	return int(int(class(self).GetFirstNonWhitespaceColumn(int64(line))))
+	return int(int(Advanced(self).GetFirstNonWhitespaceColumn(int64(line))))
 }
 
 /*
 Swaps the two lines. Carets will be swapped with the lines.
 */
 func (self Instance) SwapLines(from_line int, to_line int) { //gd:TextEdit.swap_lines
-	class(self).SwapLines(int64(from_line), int64(to_line))
+	Advanced(self).SwapLines(int64(from_line), int64(to_line))
 }
 
 /*
 Inserts a new line with [param text] at [param line].
 */
 func (self Instance) InsertLineAt(line int, text string) { //gd:TextEdit.insert_line_at
-	class(self).InsertLineAt(int64(line), String.New(text))
+	Advanced(self).InsertLineAt(int64(line), String.New(text))
 }
 
 /*
@@ -301,14 +309,29 @@ Removes the line of text at [param line]. Carets on this line will attempt to ma
 If [param move_carets_down] is [code]true[/code] carets will move to the next line down, otherwise carets will move up.
 */
 func (self Instance) RemoveLineAt(line int) { //gd:TextEdit.remove_line_at
-	class(self).RemoveLineAt(int64(line), true)
+	Advanced(self).RemoveLineAt(int64(line), true)
+}
+
+/*
+Removes the line of text at [param line]. Carets on this line will attempt to match their previous visual x position.
+If [param move_carets_down] is [code]true[/code] carets will move to the next line down, otherwise carets will move up.
+*/
+func (self Expanded) RemoveLineAt(line int, move_carets_down bool) { //gd:TextEdit.remove_line_at
+	Advanced(self).RemoveLineAt(int64(line), move_carets_down)
 }
 
 /*
 Insert the specified text at the caret position.
 */
 func (self Instance) InsertTextAtCaret(text string) { //gd:TextEdit.insert_text_at_caret
-	class(self).InsertTextAtCaret(String.New(text), int64(-1))
+	Advanced(self).InsertTextAtCaret(String.New(text), int64(-1))
+}
+
+/*
+Insert the specified text at the caret position.
+*/
+func (self Expanded) InsertTextAtCaret(text string, caret_index int) { //gd:TextEdit.insert_text_at_caret
+	Advanced(self).InsertTextAtCaret(String.New(text), int64(caret_index))
 }
 
 /*
@@ -317,70 +340,114 @@ If [param before_selection_begin] is [code]true[/code], carets and selections th
 If [param before_selection_end] is [code]true[/code], selections that end at [param line] and [param column] will be extended to the end of the inserted text. These parameters can be used to insert text inside of or outside of selections.
 */
 func (self Instance) InsertText(text string, line int, column int) { //gd:TextEdit.insert_text
-	class(self).InsertText(String.New(text), int64(line), int64(column), true, false)
+	Advanced(self).InsertText(String.New(text), int64(line), int64(column), true, false)
+}
+
+/*
+Inserts the [param text] at [param line] and [param column].
+If [param before_selection_begin] is [code]true[/code], carets and selections that begin at [param line] and [param column] will moved to the end of the inserted text, along with all carets after it.
+If [param before_selection_end] is [code]true[/code], selections that end at [param line] and [param column] will be extended to the end of the inserted text. These parameters can be used to insert text inside of or outside of selections.
+*/
+func (self Expanded) InsertText(text string, line int, column int, before_selection_begin bool, before_selection_end bool) { //gd:TextEdit.insert_text
+	Advanced(self).InsertText(String.New(text), int64(line), int64(column), before_selection_begin, before_selection_end)
 }
 
 /*
 Removes text between the given positions.
 */
 func (self Instance) RemoveText(from_line int, from_column int, to_line int, to_column int) { //gd:TextEdit.remove_text
-	class(self).RemoveText(int64(from_line), int64(from_column), int64(to_line), int64(to_column))
+	Advanced(self).RemoveText(int64(from_line), int64(from_column), int64(to_line), int64(to_column))
 }
 
 /*
 Returns the last unhidden line in the entire [TextEdit].
 */
 func (self Instance) GetLastUnhiddenLine() int { //gd:TextEdit.get_last_unhidden_line
-	return int(int(class(self).GetLastUnhiddenLine()))
+	return int(int(Advanced(self).GetLastUnhiddenLine()))
 }
 
 /*
 Returns the count to the next visible line from [param line] to [code]line + visible_amount[/code]. Can also count backwards. For example if a [TextEdit] has 5 lines with lines 2 and 3 hidden, calling this with [code]line = 1, visible_amount = 1[/code] would return 3.
 */
 func (self Instance) GetNextVisibleLineOffsetFrom(line int, visible_amount int) int { //gd:TextEdit.get_next_visible_line_offset_from
-	return int(int(class(self).GetNextVisibleLineOffsetFrom(int64(line), int64(visible_amount))))
+	return int(int(Advanced(self).GetNextVisibleLineOffsetFrom(int64(line), int64(visible_amount))))
 }
 
 /*
 Similar to [method get_next_visible_line_offset_from], but takes into account the line wrap indexes. In the returned vector, [code]x[/code] is the line, [code]y[/code] is the wrap index.
 */
 func (self Instance) GetNextVisibleLineIndexOffsetFrom(line int, wrap_index int, visible_amount int) Vector2i.XY { //gd:TextEdit.get_next_visible_line_index_offset_from
-	return Vector2i.XY(class(self).GetNextVisibleLineIndexOffsetFrom(int64(line), int64(wrap_index), int64(visible_amount)))
+	return Vector2i.XY(Advanced(self).GetNextVisibleLineIndexOffsetFrom(int64(line), int64(wrap_index), int64(visible_amount)))
 }
 
 /*
 Called when the user presses the backspace key. Can be overridden with [method _backspace].
 */
 func (self Instance) Backspace() { //gd:TextEdit.backspace
-	class(self).Backspace(int64(-1))
+	Advanced(self).Backspace(int64(-1))
+}
+
+/*
+Called when the user presses the backspace key. Can be overridden with [method _backspace].
+*/
+func (self Expanded) Backspace(caret_index int) { //gd:TextEdit.backspace
+	Advanced(self).Backspace(int64(caret_index))
 }
 
 /*
 Cut's the current selection. Can be overridden with [method _cut].
 */
 func (self Instance) Cut() { //gd:TextEdit.cut
-	class(self).Cut(int64(-1))
+	Advanced(self).Cut(int64(-1))
+}
+
+/*
+Cut's the current selection. Can be overridden with [method _cut].
+*/
+func (self Expanded) Cut(caret_index int) { //gd:TextEdit.cut
+	Advanced(self).Cut(int64(caret_index))
 }
 
 /*
 Copies the current text selection. Can be overridden with [method _copy].
 */
 func (self Instance) Copy() { //gd:TextEdit.copy
-	class(self).Copy(int64(-1))
+	Advanced(self).Copy(int64(-1))
+}
+
+/*
+Copies the current text selection. Can be overridden with [method _copy].
+*/
+func (self Expanded) Copy(caret_index int) { //gd:TextEdit.copy
+	Advanced(self).Copy(int64(caret_index))
 }
 
 /*
 Paste at the current location. Can be overridden with [method _paste].
 */
 func (self Instance) Paste() { //gd:TextEdit.paste
-	class(self).Paste(int64(-1))
+	Advanced(self).Paste(int64(-1))
+}
+
+/*
+Paste at the current location. Can be overridden with [method _paste].
+*/
+func (self Expanded) Paste(caret_index int) { //gd:TextEdit.paste
+	Advanced(self).Paste(int64(caret_index))
 }
 
 /*
 Pastes the primary clipboard.
 */
 func (self Instance) PastePrimaryClipboard() { //gd:TextEdit.paste_primary_clipboard
-	class(self).PastePrimaryClipboard(int64(-1))
+	Advanced(self).PastePrimaryClipboard(int64(-1))
+}
+
+/*
+Pastes the primary clipboard.
+*/
+func (self Expanded) PastePrimaryClipboard(caret_index int) { //gd:TextEdit.paste_primary_clipboard
+	Advanced(self).PastePrimaryClipboard(int64(caret_index))
 }
 
 /*
@@ -388,98 +455,98 @@ Starts an action, will end the current action if [param action] is different.
 An action will also end after a call to [method end_action], after [member ProjectSettings.gui/timers/text_edit_idle_detect_sec] is triggered or a new undoable step outside the [method start_action] and [method end_action] calls.
 */
 func (self Instance) StartAction(action gdclass.TextEditEditAction) { //gd:TextEdit.start_action
-	class(self).StartAction(action)
+	Advanced(self).StartAction(action)
 }
 
 /*
 Marks the end of steps in the current action started with [method start_action].
 */
 func (self Instance) EndAction() { //gd:TextEdit.end_action
-	class(self).EndAction()
+	Advanced(self).EndAction()
 }
 
 /*
 Starts a multipart edit. All edits will be treated as one action until [method end_complex_operation] is called.
 */
 func (self Instance) BeginComplexOperation() { //gd:TextEdit.begin_complex_operation
-	class(self).BeginComplexOperation()
+	Advanced(self).BeginComplexOperation()
 }
 
 /*
 Ends a multipart edit, started with [method begin_complex_operation]. If called outside a complex operation, the current operation is pushed onto the undo/redo stack.
 */
 func (self Instance) EndComplexOperation() { //gd:TextEdit.end_complex_operation
-	class(self).EndComplexOperation()
+	Advanced(self).EndComplexOperation()
 }
 
 /*
 Returns [code]true[/code] if an "undo" action is available.
 */
 func (self Instance) HasUndo() bool { //gd:TextEdit.has_undo
-	return bool(class(self).HasUndo())
+	return bool(Advanced(self).HasUndo())
 }
 
 /*
 Returns [code]true[/code] if a "redo" action is available.
 */
 func (self Instance) HasRedo() bool { //gd:TextEdit.has_redo
-	return bool(class(self).HasRedo())
+	return bool(Advanced(self).HasRedo())
 }
 
 /*
 Perform undo operation.
 */
 func (self Instance) Undo() { //gd:TextEdit.undo
-	class(self).Undo()
+	Advanced(self).Undo()
 }
 
 /*
 Perform redo operation.
 */
 func (self Instance) Redo() { //gd:TextEdit.redo
-	class(self).Redo()
+	Advanced(self).Redo()
 }
 
 /*
 Clears the undo history.
 */
 func (self Instance) ClearUndoHistory() { //gd:TextEdit.clear_undo_history
-	class(self).ClearUndoHistory()
+	Advanced(self).ClearUndoHistory()
 }
 
 /*
 Tag the current version as saved.
 */
 func (self Instance) TagSavedVersion() { //gd:TextEdit.tag_saved_version
-	class(self).TagSavedVersion()
+	Advanced(self).TagSavedVersion()
 }
 
 /*
 Returns the current version of the [TextEdit]. The version is a count of recorded operations by the undo/redo history.
 */
 func (self Instance) GetVersion() int { //gd:TextEdit.get_version
-	return int(int(class(self).GetVersion()))
+	return int(int(Advanced(self).GetVersion()))
 }
 
 /*
 Returns the last tagged saved version from [method tag_saved_version].
 */
 func (self Instance) GetSavedVersion() int { //gd:TextEdit.get_saved_version
-	return int(int(class(self).GetSavedVersion()))
+	return int(int(Advanced(self).GetSavedVersion()))
 }
 
 /*
 Sets the search text. See [method set_search_flags].
 */
 func (self Instance) SetSearchText(search_text string) { //gd:TextEdit.set_search_text
-	class(self).SetSearchText(String.New(search_text))
+	Advanced(self).SetSearchText(String.New(search_text))
 }
 
 /*
 Sets the search [param flags]. This is used with [method set_search_text] to highlight occurrences of the searched text. Search flags can be specified from the [enum SearchFlags] enum.
 */
 func (self Instance) SetSearchFlags(flags int) { //gd:TextEdit.set_search_flags
-	class(self).SetSearchFlags(int64(flags))
+	Advanced(self).SetSearchFlags(int64(flags))
 }
 
 /*
@@ -509,28 +576,28 @@ if (result.X != -1)
 [/codeblocks]
 */
 func (self Instance) Search(text string, flags int, from_line int, from_column int) Vector2i.XY { //gd:TextEdit.search
-	return Vector2i.XY(class(self).Search(String.New(text), int64(flags), int64(from_line), int64(from_column)))
+	return Vector2i.XY(Advanced(self).Search(String.New(text), int64(flags), int64(from_line), int64(from_column)))
 }
 
 /*
 Provide custom tooltip text. The callback method must take the following args: [code]hovered_word: String[/code].
 */
 func (self Instance) SetTooltipRequestFunc(callback func(hovered_word string) string) { //gd:TextEdit.set_tooltip_request_func
-	class(self).SetTooltipRequestFunc(Callable.New(callback))
+	Advanced(self).SetTooltipRequestFunc(Callable.New(callback))
 }
 
 /*
 Returns the local mouse position adjusted for the text direction.
 */
 func (self Instance) GetLocalMousePos() Vector2.XY { //gd:TextEdit.get_local_mouse_pos
-	return Vector2.XY(class(self).GetLocalMousePos())
+	return Vector2.XY(Advanced(self).GetLocalMousePos())
 }
 
 /*
 Returns the word at [param position].
 */
 func (self Instance) GetWordAtPos(position Vector2.XY) string { //gd:TextEdit.get_word_at_pos
-	return string(class(self).GetWordAtPos(Vector2.XY(position)).String())
+	return string(Advanced(self).GetWordAtPos(Vector2.XY(position)).String())
 }
 
 /*
@@ -539,7 +606,16 @@ If [param clamp_line] is [code]false[/code] and [param position] is below the la
 If [param clamp_column] is [code]false[/code] and [param position] is outside the column range of the line, [code]Vector2i(-1, -1)[/code] is returned.
 */
 func (self Instance) GetLineColumnAtPos(position Vector2i.XY) Vector2i.XY { //gd:TextEdit.get_line_column_at_pos
-	return Vector2i.XY(class(self).GetLineColumnAtPos(Vector2i.XY(position), true, true))
+	return Vector2i.XY(Advanced(self).GetLineColumnAtPos(Vector2i.XY(position), true, true))
+}
+
+/*
+Returns the line and column at the given position. In the returned vector, [code]x[/code] is the column and [code]y[/code] is the line.
+If [param clamp_line] is [code]false[/code] and [param position] is below the last line, [code]Vector2i(-1, -1)[/code] is returned.
+If [param clamp_column] is [code]false[/code] and [param position] is outside the column range of the line, [code]Vector2i(-1, -1)[/code] is returned.
+*/
+func (self Expanded) GetLineColumnAtPos(position Vector2i.XY, clamp_line bool, clamp_column bool) Vector2i.XY { //gd:TextEdit.get_line_column_at_pos
+	return Vector2i.XY(Advanced(self).GetLineColumnAtPos(Vector2i.XY(position), clamp_line, clamp_column))
 }
 
 /*
@@ -547,7 +623,7 @@ Returns the local position for the given [param line] and [param column]. If [co
 [b]Note:[/b] The Y position corresponds to the bottom side of the line. Use [method get_rect_at_line_column] to get the top side position.
 */
 func (self Instance) GetPosAtLineColumn(line int, column int) Vector2i.XY { //gd:TextEdit.get_pos_at_line_column
-	return Vector2i.XY(class(self).GetPosAtLineColumn(int64(line), int64(column)))
+	return Vector2i.XY(Advanced(self).GetPosAtLineColumn(int64(line), int64(column)))
 }
 
 /*
@@ -555,35 +631,42 @@ Returns the local position and size for the grapheme at the given [param line] a
 [b]Note:[/b] The Y position of the returned rect corresponds to the top side of the line, unlike [method get_pos_at_line_column] which returns the bottom side.
 */
 func (self Instance) GetRectAtLineColumn(line int, column int) Rect2i.PositionSize { //gd:TextEdit.get_rect_at_line_column
-	return Rect2i.PositionSize(class(self).GetRectAtLineColumn(int64(line), int64(column)))
+	return Rect2i.PositionSize(Advanced(self).GetRectAtLineColumn(int64(line), int64(column)))
 }
 
 /*
 Returns the equivalent minimap line at [param position].
 */
 func (self Instance) GetMinimapLineAtPos(position Vector2i.XY) int { //gd:TextEdit.get_minimap_line_at_pos
-	return int(int(class(self).GetMinimapLineAtPos(Vector2i.XY(position))))
+	return int(int(Advanced(self).GetMinimapLineAtPos(Vector2i.XY(position))))
 }
 
 /*
 Returns [code]true[/code] if the user is dragging their mouse for scrolling, selecting, or text dragging.
 */
 func (self Instance) IsDraggingCursor() bool { //gd:TextEdit.is_dragging_cursor
-	return bool(class(self).IsDraggingCursor())
+	return bool(Advanced(self).IsDraggingCursor())
 }
 
 /*
 Returns [code]true[/code] if the mouse is over a selection. If [param edges] is [code]true[/code], the edges are considered part of the selection.
 */
 func (self Instance) IsMouseOverSelection(edges bool) bool { //gd:TextEdit.is_mouse_over_selection
-	return bool(class(self).IsMouseOverSelection(edges, int64(-1)))
+	return bool(Advanced(self).IsMouseOverSelection(edges, int64(-1)))
+}
+
+/*
+Returns [code]true[/code] if the mouse is over a selection. If [param edges] is [code]true[/code], the edges are considered part of the selection.
+*/
+func (self Expanded) IsMouseOverSelection(edges bool, caret_index int) bool { //gd:TextEdit.is_mouse_over_selection
+	return bool(Advanced(self).IsMouseOverSelection(edges, int64(caret_index)))
 }
 
 /*
 Adds a new caret at the given location. Returns the index of the new caret, or [code]-1[/code] if the location is invalid.
 */
 func (self Instance) AddCaret(line int, column int) int { //gd:TextEdit.add_caret
-	return int(int(class(self).AddCaret(int64(line), int64(column))))
+	return int(int(Advanced(self).AddCaret(int64(line), int64(column))))
 }
 
 /*
@@ -591,28 +674,28 @@ Removes the given caret index.
 [b]Note:[/b] This can result in adjustment of all other caret indices.
 */
 func (self Instance) RemoveCaret(caret int) { //gd:TextEdit.remove_caret
-	class(self).RemoveCaret(int64(caret))
+	Advanced(self).RemoveCaret(int64(caret))
 }
 
 /*
 Removes all additional carets.
 */
 func (self Instance) RemoveSecondaryCarets() { //gd:TextEdit.remove_secondary_carets
-	class(self).RemoveSecondaryCarets()
+	Advanced(self).RemoveSecondaryCarets()
 }
 
 /*
 Returns the number of carets in this [TextEdit].
 */
 func (self Instance) GetCaretCount() int { //gd:TextEdit.get_caret_count
-	return int(int(class(self).GetCaretCount()))
+	return int(int(Advanced(self).GetCaretCount()))
 }
 
 /*
 Adds an additional caret above or below every caret. If [param below] is [code]true[/code] the new caret will be added below and above otherwise.
 */
 func (self Instance) AddCaretAtCarets(below bool) { //gd:TextEdit.add_caret_at_carets
-	class(self).AddCaretAtCarets(below)
+	Advanced(self).AddCaretAtCarets(below)
 }
 
 /*
@@ -620,7 +703,15 @@ Returns the carets sorted by selection beginning from lowest line and column to 
 If [param include_ignored_carets] is [code]false[/code], carets from [method multicaret_edit_ignore_caret] will be ignored.
 */
 func (self Instance) GetSortedCarets() []int32 { //gd:TextEdit.get_sorted_carets
-	return []int32(slices.Collect(class(self).GetSortedCarets(false).Values()))
+	return []int32(slices.Collect(Advanced(self).GetSortedCarets(false).Values()))
+}
+
+/*
+Returns the carets sorted by selection beginning from lowest line and column to highest (from top to bottom of text).
+If [param include_ignored_carets] is [code]false[/code], carets from [method multicaret_edit_ignore_caret] will be ignored.
+*/
+func (self Expanded) GetSortedCarets(include_ignored_carets bool) []int32 { //gd:TextEdit.get_sorted_carets
+	return []int32(slices.Collect(Advanced(self).GetSortedCarets(include_ignored_carets).Values()))
 }
 
 /*
@@ -630,7 +721,17 @@ If [method is_in_mulitcaret_edit] is [code]true[/code], carets that are collapse
 [method merge_overlapping_carets] will be called if any carets were collapsed.
 */
 func (self Instance) CollapseCarets(from_line int, from_column int, to_line int, to_column int) { //gd:TextEdit.collapse_carets
-	class(self).CollapseCarets(int64(from_line), int64(from_column), int64(to_line), int64(to_column), false)
+	Advanced(self).CollapseCarets(int64(from_line), int64(from_column), int64(to_line), int64(to_column), false)
+}
+
+/*
+Collapse all carets in the given range to the [param from_line] and [param from_column] position.
+[param inclusive] applies to both ends.
+If [method is_in_mulitcaret_edit] is [code]true[/code], carets that are collapsed will be [code]true[/code] for [method multicaret_edit_ignore_caret].
+[method merge_overlapping_carets] will be called if any carets were collapsed.
+*/
+func (self Expanded) CollapseCarets(from_line int, from_column int, to_line int, to_column int, inclusive bool) { //gd:TextEdit.collapse_carets
+	Advanced(self).CollapseCarets(int64(from_line), int64(from_column), int64(to_line), int64(to_column), inclusive)
 }
 
 /*
@@ -639,7 +740,7 @@ If [method is_in_mulitcaret_edit] is [code]true[/code], the merge will be queued
 [b]Note:[/b] This is not called when a caret changes position but after certain actions, so it is possible to get into a state where carets overlap.
 */
 func (self Instance) MergeOverlappingCarets() { //gd:TextEdit.merge_overlapping_carets
-	class(self).MergeOverlappingCarets()
+	Advanced(self).MergeOverlappingCarets()
 }
 
 /*
@@ -658,21 +759,21 @@ end_complex_operation()
 [/codeblock]
 */
 func (self Instance) BeginMulticaretEdit() { //gd:TextEdit.begin_multicaret_edit
-	class(self).BeginMulticaretEdit()
+	Advanced(self).BeginMulticaretEdit()
 }
 
 /*
 Ends an edit for multiple carets, that was started with [method begin_multicaret_edit]. If this was the last [method end_multicaret_edit] and [method merge_overlapping_carets] was called, carets will be merged.
 */
 func (self Instance) EndMulticaretEdit() { //gd:TextEdit.end_multicaret_edit
-	class(self).EndMulticaretEdit()
+	Advanced(self).EndMulticaretEdit()
 }
 
 /*
 Returns [code]true[/code] if a [method begin_multicaret_edit] has been called and [method end_multicaret_edit] has not yet been called.
 */
 func (self Instance) IsInMulitcaretEdit() bool { //gd:TextEdit.is_in_mulitcaret_edit
-	return bool(class(self).IsInMulitcaretEdit())
+	return bool(Advanced(self).IsInMulitcaretEdit())
 }
 
 /*
@@ -680,7 +781,7 @@ Returns [code]true[/code] if the given [param caret_index] should be ignored as 
 It is recommended to [code]continue[/code] within a loop iterating on multiple carets if a caret should be ignored.
 */
 func (self Instance) MulticaretEditIgnoreCaret(caret_index int) bool { //gd:TextEdit.multicaret_edit_ignore_caret
-	return bool(class(self).MulticaretEditIgnoreCaret(int64(caret_index)))
+	return bool(Advanced(self).MulticaretEditIgnoreCaret(int64(caret_index)))
 }
 
 /*
@@ -688,14 +789,29 @@ Returns [code]true[/code] if the caret is visible, [code]false[/code] otherwise.
 [b]Note:[/b] [method is_caret_visible] does not account for a caret being off-screen if it is still within the scrollable area. It will return [code]true[/code] even if the caret is off-screen as long as it meets [TextEdit]'s own conditions for being visible. This includes uses of [member scroll_fit_content_width] and [member scroll_fit_content_height] that cause the [TextEdit] to expand beyond the viewport's bounds.
 */
 func (self Instance) IsCaretVisible() bool { //gd:TextEdit.is_caret_visible
-	return bool(class(self).IsCaretVisible(int64(0)))
+	return bool(Advanced(self).IsCaretVisible(int64(0)))
+}
+
+/*
+Returns [code]true[/code] if the caret is visible, [code]false[/code] otherwise. A caret will be considered hidden if it is outside the scrollable area when scrolling is enabled.
+[b]Note:[/b] [method is_caret_visible] does not account for a caret being off-screen if it is still within the scrollable area. It will return [code]true[/code] even if the caret is off-screen as long as it meets [TextEdit]'s own conditions for being visible. This includes uses of [member scroll_fit_content_width] and [member scroll_fit_content_height] that cause the [TextEdit] to expand beyond the viewport's bounds.
+*/
+func (self Expanded) IsCaretVisible(caret_index int) bool { //gd:TextEdit.is_caret_visible
+	return bool(Advanced(self).IsCaretVisible(int64(caret_index)))
 }
 
 /*
 Returns the caret pixel draw position.
 */
 func (self Instance) GetCaretDrawPos() Vector2.XY { //gd:TextEdit.get_caret_draw_pos
-	return Vector2.XY(class(self).GetCaretDrawPos(int64(0)))
+	return Vector2.XY(Advanced(self).GetCaretDrawPos(int64(0)))
+}
+
+/*
+Returns the caret pixel draw position.
+*/
+func (self Expanded) GetCaretDrawPos(caret_index int) Vector2.XY { //gd:TextEdit.get_caret_draw_pos
+	return Vector2.XY(Advanced(self).GetCaretDrawPos(int64(caret_index)))
 }
 
 /*
@@ -706,14 +822,32 @@ If [param wrap_index] is [code]-1[/code], the caret column will be clamped to th
 [b]Note:[/b] If supporting multiple carets this will not check for any overlap. See [method merge_overlapping_carets].
 */
 func (self Instance) SetCaretLine(line int) { //gd:TextEdit.set_caret_line
-	class(self).SetCaretLine(int64(line), true, true, int64(0), int64(0))
+	Advanced(self).SetCaretLine(int64(line), true, true, int64(0), int64(0))
+}
+
+/*
+Moves the caret to the specified [param line] index. The caret column will be moved to the same visual position it was at the last time [method set_caret_column] was called, or clamped to the end of the line.
+If [param adjust_viewport] is [code]true[/code], the viewport will center at the caret position after the move occurs.
+If [param can_be_hidden] is [code]true[/code], the specified [param line] can be hidden.
+If [param wrap_index] is [code]-1[/code], the caret column will be clamped to the [param line]'s length. If [param wrap_index] is greater than [code]-1[/code], the column will be moved to attempt to match the visual x position on the line's [param wrap_index] to the position from the last time [method set_caret_column] was called.
+[b]Note:[/b] If supporting multiple carets this will not check for any overlap. See [method merge_overlapping_carets].
+*/
+func (self Expanded) SetCaretLine(line int, adjust_viewport bool, can_be_hidden bool, wrap_index int, caret_index int) { //gd:TextEdit.set_caret_line
+	Advanced(self).SetCaretLine(int64(line), adjust_viewport, can_be_hidden, int64(wrap_index), int64(caret_index))
 }
 
 /*
 Returns the line the editing caret is on.
 */
 func (self Instance) GetCaretLine() int { //gd:TextEdit.get_caret_line
-	return int(int(class(self).GetCaretLine(int64(0))))
+	return int(int(Advanced(self).GetCaretLine(int64(0))))
+}
+
+/*
+Returns the line the editing caret is on.
+*/
+func (self Expanded) GetCaretLine(caret_index int) int { //gd:TextEdit.get_caret_line
+	return int(int(Advanced(self).GetCaretLine(int64(caret_index))))
 }
 
 /*
@@ -722,42 +856,72 @@ If [param adjust_viewport] is [code]true[/code], the viewport will center at the
 [b]Note:[/b] If supporting multiple carets this will not check for any overlap. See [method merge_overlapping_carets].
 */
 func (self Instance) SetCaretColumn(column int) { //gd:TextEdit.set_caret_column
-	class(self).SetCaretColumn(int64(column), true, int64(0))
+	Advanced(self).SetCaretColumn(int64(column), true, int64(0))
+}
+
+/*
+Moves the caret to the specified [param column] index.
+If [param adjust_viewport] is [code]true[/code], the viewport will center at the caret position after the move occurs.
+[b]Note:[/b] If supporting multiple carets this will not check for any overlap. See [method merge_overlapping_carets].
+*/
+func (self Expanded) SetCaretColumn(column int, adjust_viewport bool, caret_index int) { //gd:TextEdit.set_caret_column
+	Advanced(self).SetCaretColumn(int64(column), adjust_viewport, int64(caret_index))
 }
 
 /*
 Returns the column the editing caret is at.
 */
 func (self Instance) GetCaretColumn() int { //gd:TextEdit.get_caret_column
-	return int(int(class(self).GetCaretColumn(int64(0))))
+	return int(int(Advanced(self).GetCaretColumn(int64(0))))
+}
+
+/*
+Returns the column the editing caret is at.
+*/
+func (self Expanded) GetCaretColumn(caret_index int) int { //gd:TextEdit.get_caret_column
+	return int(int(Advanced(self).GetCaretColumn(int64(caret_index))))
 }
 
 /*
 Returns the wrap index the editing caret is on.
 */
 func (self Instance) GetCaretWrapIndex() int { //gd:TextEdit.get_caret_wrap_index
-	return int(int(class(self).GetCaretWrapIndex(int64(0))))
+	return int(int(Advanced(self).GetCaretWrapIndex(int64(0))))
+}
+
+/*
+Returns the wrap index the editing caret is on.
+*/
+func (self Expanded) GetCaretWrapIndex(caret_index int) int { //gd:TextEdit.get_caret_wrap_index
+	return int(int(Advanced(self).GetCaretWrapIndex(int64(caret_index))))
 }
 
 /*
 Returns a [String] text with the word under the caret's location.
 */
 func (self Instance) GetWordUnderCaret() string { //gd:TextEdit.get_word_under_caret
-	return string(class(self).GetWordUnderCaret(int64(-1)).String())
+	return string(Advanced(self).GetWordUnderCaret(int64(-1)).String())
+}
+
+/*
+Returns a [String] text with the word under the caret's location.
+*/
+func (self Expanded) GetWordUnderCaret(caret_index int) string { //gd:TextEdit.get_word_under_caret
+	return string(Advanced(self).GetWordUnderCaret(int64(caret_index)).String())
 }
 
 /*
 Sets the current selection mode.
 */
 func (self Instance) SetSelectionMode(mode gdclass.TextEditSelectionMode) { //gd:TextEdit.set_selection_mode
-	class(self).SetSelectionMode(mode)
+	Advanced(self).SetSelectionMode(mode)
 }
 
 /*
 Returns the current selection mode.
 */
 func (self Instance) GetSelectionMode() gdclass.TextEditSelectionMode { //gd:TextEdit.get_selection_mode
-	return gdclass.TextEditSelectionMode(class(self).GetSelectionMode())
+	return gdclass.TextEditSelectionMode(Advanced(self).GetSelectionMode())
 }
 
 /*
@@ -765,28 +929,35 @@ Select all the text.
 If [member selecting_enabled] is [code]false[/code], no selection will occur.
 */
 func (self Instance) SelectAll() { //gd:TextEdit.select_all
-	class(self).SelectAll()
+	Advanced(self).SelectAll()
 }
 
 /*
 Selects the word under the caret.
 */
 func (self Instance) SelectWordUnderCaret() { //gd:TextEdit.select_word_under_caret
-	class(self).SelectWordUnderCaret(int64(-1))
+	Advanced(self).SelectWordUnderCaret(int64(-1))
+}
+
+/*
+Selects the word under the caret.
+*/
+func (self Expanded) SelectWordUnderCaret(caret_index int) { //gd:TextEdit.select_word_under_caret
+	Advanced(self).SelectWordUnderCaret(int64(caret_index))
 }
 
 /*
 Adds a selection and a caret for the next occurrence of the current selection. If there is no active selection, selects word under caret.
 */
 func (self Instance) AddSelectionForNextOccurrence() { //gd:TextEdit.add_selection_for_next_occurrence
-	class(self).AddSelectionForNextOccurrence()
+	Advanced(self).AddSelectionForNextOccurrence()
 }
 
 /*
 Moves a selection and a caret for the next occurrence of the current selection. If there is no active selection, moves to the next occurrence of the word under caret.
 */
 func (self Instance) SkipSelectionForNextOccurrence() { //gd:TextEdit.skip_selection_for_next_occurrence
-	class(self).SkipSelectionForNextOccurrence()
+	Advanced(self).SkipSelectionForNextOccurrence()
 }
 
 /*
@@ -795,21 +966,44 @@ If [member selecting_enabled] is [code]false[/code], no selection will occur.
 [b]Note:[/b] If supporting multiple carets this will not check for any overlap. See [method merge_overlapping_carets].
 */
 func (self Instance) Select(origin_line int, origin_column int, caret_line int, caret_column int) { //gd:TextEdit.select
-	class(self).Select(int64(origin_line), int64(origin_column), int64(caret_line), int64(caret_column), int64(0))
+	Advanced(self).Select(int64(origin_line), int64(origin_column), int64(caret_line), int64(caret_column), int64(0))
+}
+
+/*
+Selects text from [param origin_line] and [param origin_column] to [param caret_line] and [param caret_column] for the given [param caret_index]. This moves the selection origin and the caret. If the positions are the same, the selection will be deselected.
+If [member selecting_enabled] is [code]false[/code], no selection will occur.
+[b]Note:[/b] If supporting multiple carets this will not check for any overlap. See [method merge_overlapping_carets].
+*/
+func (self Expanded) Select(origin_line int, origin_column int, caret_line int, caret_column int, caret_index int) { //gd:TextEdit.select
+	Advanced(self).Select(int64(origin_line), int64(origin_column), int64(caret_line), int64(caret_column), int64(caret_index))
 }
 
 /*
 Returns [code]true[/code] if the user has selected text.
 */
 func (self Instance) HasSelection() bool { //gd:TextEdit.has_selection
-	return bool(class(self).HasSelection(int64(-1)))
+	return bool(Advanced(self).HasSelection(int64(-1)))
+}
+
+/*
+Returns [code]true[/code] if the user has selected text.
+*/
+func (self Expanded) HasSelection(caret_index int) bool { //gd:TextEdit.has_selection
+	return bool(Advanced(self).HasSelection(int64(caret_index)))
 }
 
 /*
 Returns the text inside the selection of a caret, or all the carets if [param caret_index] is its default value [code]-1[/code].
 */
 func (self Instance) GetSelectedText() string { //gd:TextEdit.get_selected_text
-	return string(class(self).GetSelectedText(int64(-1)).String())
+	return string(Advanced(self).GetSelectedText(int64(-1)).String())
+}
+
+/*
+Returns the text inside the selection of a caret, or all the carets if [param caret_index] is its default value [code]-1[/code].
+*/
+func (self Expanded) GetSelectedText(caret_index int) string { //gd:TextEdit.get_selected_text
+	return string(Advanced(self).GetSelectedText(int64(caret_index)).String())
 }
 
 /*
@@ -817,7 +1011,15 @@ Returns the caret index of the selection at the given [param line] and [param co
 If [param include_edges] is [code]false[/code], the position must be inside the selection and not at either end. If [param only_selections] is [code]false[/code], carets without a selection will also be considered.
 */
 func (self Instance) GetSelectionAtLineColumn(line int, column int) int { //gd:TextEdit.get_selection_at_line_column
-	return int(int(class(self).GetSelectionAtLineColumn(int64(line), int64(column), true, true)))
+	return int(int(Advanced(self).GetSelectionAtLineColumn(int64(line), int64(column), true, true)))
+}
+
+/*
+Returns the caret index of the selection at the given [param line] and [param column], or [code]-1[/code] if there is none.
+If [param include_edges] is [code]false[/code], the position must be inside the selection and not at either end. If [param only_selections] is [code]false[/code], carets without a selection will also be considered.
+*/
+func (self Expanded) GetSelectionAtLineColumn(line int, column int, include_edges bool, only_selections bool) int { //gd:TextEdit.get_selection_at_line_column
+	return int(int(Advanced(self).GetSelectionAtLineColumn(int64(line), int64(column), include_edges, only_selections)))
 }
 
 /*
@@ -825,21 +1027,43 @@ Returns an [Array] of line ranges where [code]x[/code] is the first line and [co
 If a selection's end column ([method get_selection_to_column]) is at column [code]0[/code], that line will not be included. If a selection begins on the line after another selection ends and [param merge_adjacent] is [code]true[/code], or they begin and end on the same line, one line range will include both selections.
 */
 func (self Instance) GetLineRangesFromCarets() []Vector2i.XY { //gd:TextEdit.get_line_ranges_from_carets
-	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](gd.InternalArray(class(self).GetLineRangesFromCarets(false, true))))
+	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](gd.InternalArray(Advanced(self).GetLineRangesFromCarets(false, true))))
+}
+
+/*
+Returns an [Array] of line ranges where [code]x[/code] is the first line and [code]y[/code] is the last line. All lines within these ranges will have a caret on them or be part of a selection. Each line will only be part of one line range, even if it has multiple carets on it.
+If a selection's end column ([method get_selection_to_column]) is at column [code]0[/code], that line will not be included. If a selection begins on the line after another selection ends and [param merge_adjacent] is [code]true[/code], or they begin and end on the same line, one line range will include both selections.
+*/
+func (self Expanded) GetLineRangesFromCarets(only_selections bool, merge_adjacent bool) []Vector2i.XY { //gd:TextEdit.get_line_ranges_from_carets
+	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](gd.InternalArray(Advanced(self).GetLineRangesFromCarets(only_selections, merge_adjacent))))
 }
 
 /*
 Returns the origin line of the selection. This is the opposite end from the caret.
 */
 func (self Instance) GetSelectionOriginLine() int { //gd:TextEdit.get_selection_origin_line
-	return int(int(class(self).GetSelectionOriginLine(int64(0))))
+	return int(int(Advanced(self).GetSelectionOriginLine(int64(0))))
+}
+
+/*
+Returns the origin line of the selection. This is the opposite end from the caret.
+*/
+func (self Expanded) GetSelectionOriginLine(caret_index int) int { //gd:TextEdit.get_selection_origin_line
+	return int(int(Advanced(self).GetSelectionOriginLine(int64(caret_index))))
 }
 
 /*
 Returns the origin column of the selection. This is the opposite end from the caret.
 */
 func (self Instance) GetSelectionOriginColumn() int { //gd:TextEdit.get_selection_origin_column
-	return int(int(class(self).GetSelectionOriginColumn(int64(0))))
+	return int(int(Advanced(self).GetSelectionOriginColumn(int64(0))))
+}
+
+/*
+Returns the origin column of the selection. This is the opposite end from the caret.
+*/
+func (self Expanded) GetSelectionOriginColumn(caret_index int) int { //gd:TextEdit.get_selection_origin_column
+	return int(int(Advanced(self).GetSelectionOriginColumn(int64(caret_index))))
 }
 
 /*
@@ -848,406 +1072,520 @@ If [param can_be_hidden] is [code]false[/code], The line will be set to the near
 If [param wrap_index] is [code]-1[/code], the selection origin column will be clamped to the [param line]'s length. If [param wrap_index] is greater than [code]-1[/code], the column will be moved to attempt to match the visual x position on the line's [param wrap_index] to the position from the last time [method set_selection_origin_column] or [method select] was called.
 */
 func (self Instance) SetSelectionOriginLine(line int) { //gd:TextEdit.set_selection_origin_line
-	class(self).SetSelectionOriginLine(int64(line), true, int64(-1), int64(0))
+	Advanced(self).SetSelectionOriginLine(int64(line), true, int64(-1), int64(0))
+}
+
+/*
+Sets the selection origin line to the [param line] for the given [param caret_index]. If the selection origin is moved to the caret position, the selection will deselect.
+If [param can_be_hidden] is [code]false[/code], The line will be set to the nearest unhidden line below or above.
+If [param wrap_index] is [code]-1[/code], the selection origin column will be clamped to the [param line]'s length. If [param wrap_index] is greater than [code]-1[/code], the column will be moved to attempt to match the visual x position on the line's [param wrap_index] to the position from the last time [method set_selection_origin_column] or [method select] was called.
+*/
+func (self Expanded) SetSelectionOriginLine(line int, can_be_hidden bool, wrap_index int, caret_index int) { //gd:TextEdit.set_selection_origin_line
+	Advanced(self).SetSelectionOriginLine(int64(line), can_be_hidden, int64(wrap_index), int64(caret_index))
 }
 
 /*
 Sets the selection origin column to the [param column] for the given [param caret_index]. If the selection origin is moved to the caret position, the selection will deselect.
 */
 func (self Instance) SetSelectionOriginColumn(column int) { //gd:TextEdit.set_selection_origin_column
-	class(self).SetSelectionOriginColumn(int64(column), int64(0))
+	Advanced(self).SetSelectionOriginColumn(int64(column), int64(0))
+}
+
+/*
+Sets the selection origin column to the [param column] for the given [param caret_index]. If the selection origin is moved to the caret position, the selection will deselect.
+*/
+func (self Expanded) SetSelectionOriginColumn(column int, caret_index int) { //gd:TextEdit.set_selection_origin_column
+	Advanced(self).SetSelectionOriginColumn(int64(column), int64(caret_index))
 }
 
 /*
 Returns the selection begin line. Returns the caret line if there is no selection.
 */
 func (self Instance) GetSelectionFromLine() int { //gd:TextEdit.get_selection_from_line
-	return int(int(class(self).GetSelectionFromLine(int64(0))))
+	return int(int(Advanced(self).GetSelectionFromLine(int64(0))))
+}
+
+/*
+Returns the selection begin line. Returns the caret line if there is no selection.
+*/
+func (self Expanded) GetSelectionFromLine(caret_index int) int { //gd:TextEdit.get_selection_from_line
+	return int(int(Advanced(self).GetSelectionFromLine(int64(caret_index))))
 }
 
 /*
 Returns the selection begin column. Returns the caret column if there is no selection.
 */
 func (self Instance) GetSelectionFromColumn() int { //gd:TextEdit.get_selection_from_column
-	return int(int(class(self).GetSelectionFromColumn(int64(0))))
+	return int(int(Advanced(self).GetSelectionFromColumn(int64(0))))
+}
+
+/*
+Returns the selection begin column. Returns the caret column if there is no selection.
+*/
+func (self Expanded) GetSelectionFromColumn(caret_index int) int { //gd:TextEdit.get_selection_from_column
+	return int(int(Advanced(self).GetSelectionFromColumn(int64(caret_index))))
 }
 
 /*
 Returns the selection end line. Returns the caret line if there is no selection.
 */
 func (self Instance) GetSelectionToLine() int { //gd:TextEdit.get_selection_to_line
-	return int(int(class(self).GetSelectionToLine(int64(0))))
+	return int(int(Advanced(self).GetSelectionToLine(int64(0))))
+}
+
+/*
+Returns the selection end line. Returns the caret line if there is no selection.
+*/
+func (self Expanded) GetSelectionToLine(caret_index int) int { //gd:TextEdit.get_selection_to_line
+	return int(int(Advanced(self).GetSelectionToLine(int64(caret_index))))
 }
 
 /*
 Returns the selection end column. Returns the caret column if there is no selection.
 */
 func (self Instance) GetSelectionToColumn() int { //gd:TextEdit.get_selection_to_column
-	return int(int(class(self).GetSelectionToColumn(int64(0))))
+	return int(int(Advanced(self).GetSelectionToColumn(int64(0))))
+}
+
+/*
+Returns the selection end column. Returns the caret column if there is no selection.
+*/
+func (self Expanded) GetSelectionToColumn(caret_index int) int { //gd:TextEdit.get_selection_to_column
+	return int(int(Advanced(self).GetSelectionToColumn(int64(caret_index))))
 }
 
 /*
 Returns [code]true[/code] if the caret of the selection is after the selection origin. This can be used to determine the direction of the selection.
 */
 func (self Instance) IsCaretAfterSelectionOrigin() bool { //gd:TextEdit.is_caret_after_selection_origin
-	return bool(class(self).IsCaretAfterSelectionOrigin(int64(0)))
+	return bool(Advanced(self).IsCaretAfterSelectionOrigin(int64(0)))
+}
+
+/*
+Returns [code]true[/code] if the caret of the selection is after the selection origin. This can be used to determine the direction of the selection.
+*/
+func (self Expanded) IsCaretAfterSelectionOrigin(caret_index int) bool { //gd:TextEdit.is_caret_after_selection_origin
+	return bool(Advanced(self).IsCaretAfterSelectionOrigin(int64(caret_index)))
 }
 
 /*
 Deselects the current selection.
 */
 func (self Instance) Deselect() { //gd:TextEdit.deselect
-	class(self).Deselect(int64(-1))
+	Advanced(self).Deselect(int64(-1))
+}
+
+/*
+Deselects the current selection.
+*/
+func (self Expanded) Deselect(caret_index int) { //gd:TextEdit.deselect
+	Advanced(self).Deselect(int64(caret_index))
 }
 
 /*
 Deletes the selected text.
 */
 func (self Instance) DeleteSelection() { //gd:TextEdit.delete_selection
-	class(self).DeleteSelection(int64(-1))
+	Advanced(self).DeleteSelection(int64(-1))
+}
+
+/*
+Deletes the selected text.
+*/
+func (self Expanded) DeleteSelection(caret_index int) { //gd:TextEdit.delete_selection
+	Advanced(self).DeleteSelection(int64(caret_index))
 }
 
 /*
 Returns if the given line is wrapped.
 */
 func (self Instance) IsLineWrapped(line int) bool { //gd:TextEdit.is_line_wrapped
-	return bool(class(self).IsLineWrapped(int64(line)))
+	return bool(Advanced(self).IsLineWrapped(int64(line)))
 }
 
 /*
 Returns the number of times the given line is wrapped.
 */
 func (self Instance) GetLineWrapCount(line int) int { //gd:TextEdit.get_line_wrap_count
-	return int(int(class(self).GetLineWrapCount(int64(line))))
+	return int(int(Advanced(self).GetLineWrapCount(int64(line))))
 }
 
 /*
 Returns the wrap index of the given column on the given line. This ranges from [code]0[/code] to [method get_line_wrap_count].
 */
 func (self Instance) GetLineWrapIndexAtColumn(line int, column int) int { //gd:TextEdit.get_line_wrap_index_at_column
-	return int(int(class(self).GetLineWrapIndexAtColumn(int64(line), int64(column))))
+	return int(int(Advanced(self).GetLineWrapIndexAtColumn(int64(line), int64(column))))
 }
 
 /*
 Returns an array of [String]s representing each wrapped index.
 */
 func (self Instance) GetLineWrappedText(line int) []string { //gd:TextEdit.get_line_wrapped_text
-	return []string(class(self).GetLineWrappedText(int64(line)).Strings())
+	return []string(Advanced(self).GetLineWrappedText(int64(line)).Strings())
 }
 
 /*
 Returns the [VScrollBar] of the [TextEdit].
 */
 func (self Instance) GetVScrollBar() [1]gdclass.VScrollBar { //gd:TextEdit.get_v_scroll_bar
-	return [1]gdclass.VScrollBar(class(self).GetVScrollBar())
+	return [1]gdclass.VScrollBar(Advanced(self).GetVScrollBar())
 }
 
 /*
 Returns the [HScrollBar] used by [TextEdit].
 */
 func (self Instance) GetHScrollBar() [1]gdclass.HScrollBar { //gd:TextEdit.get_h_scroll_bar
-	return [1]gdclass.HScrollBar(class(self).GetHScrollBar())
+	return [1]gdclass.HScrollBar(Advanced(self).GetHScrollBar())
 }
 
 /*
 Returns the scroll position for [param wrap_index] of [param line].
 */
 func (self Instance) GetScrollPosForLine(line int) Float.X { //gd:TextEdit.get_scroll_pos_for_line
-	return Float.X(Float.X(class(self).GetScrollPosForLine(int64(line), int64(0))))
+	return Float.X(Float.X(Advanced(self).GetScrollPosForLine(int64(line), int64(0))))
+}
+
+/*
+Returns the scroll position for [param wrap_index] of [param line].
+*/
+func (self Expanded) GetScrollPosForLine(line int, wrap_index int) Float.X { //gd:TextEdit.get_scroll_pos_for_line
+	return Float.X(Float.X(Advanced(self).GetScrollPosForLine(int64(line), int64(wrap_index))))
 }
 
 /*
 Positions the [param wrap_index] of [param line] at the top of the viewport.
 */
 func (self Instance) SetLineAsFirstVisible(line int) { //gd:TextEdit.set_line_as_first_visible
-	class(self).SetLineAsFirstVisible(int64(line), int64(0))
+	Advanced(self).SetLineAsFirstVisible(int64(line), int64(0))
+}
+
+/*
+Positions the [param wrap_index] of [param line] at the top of the viewport.
+*/
+func (self Expanded) SetLineAsFirstVisible(line int, wrap_index int) { //gd:TextEdit.set_line_as_first_visible
+	Advanced(self).SetLineAsFirstVisible(int64(line), int64(wrap_index))
 }
 
 /*
 Returns the first visible line.
 */
 func (self Instance) GetFirstVisibleLine() int { //gd:TextEdit.get_first_visible_line
-	return int(int(class(self).GetFirstVisibleLine()))
+	return int(int(Advanced(self).GetFirstVisibleLine()))
 }
 
 /*
 Positions the [param wrap_index] of [param line] at the center of the viewport.
 */
 func (self Instance) SetLineAsCenterVisible(line int) { //gd:TextEdit.set_line_as_center_visible
-	class(self).SetLineAsCenterVisible(int64(line), int64(0))
+	Advanced(self).SetLineAsCenterVisible(int64(line), int64(0))
+}
+
+/*
+Positions the [param wrap_index] of [param line] at the center of the viewport.
+*/
+func (self Expanded) SetLineAsCenterVisible(line int, wrap_index int) { //gd:TextEdit.set_line_as_center_visible
+	Advanced(self).SetLineAsCenterVisible(int64(line), int64(wrap_index))
 }
 
 /*
 Positions the [param wrap_index] of [param line] at the bottom of the viewport.
 */
 func (self Instance) SetLineAsLastVisible(line int) { //gd:TextEdit.set_line_as_last_visible
-	class(self).SetLineAsLastVisible(int64(line), int64(0))
+	Advanced(self).SetLineAsLastVisible(int64(line), int64(0))
+}
+
+/*
+Positions the [param wrap_index] of [param line] at the bottom of the viewport.
+*/
+func (self Expanded) SetLineAsLastVisible(line int, wrap_index int) { //gd:TextEdit.set_line_as_last_visible
+	Advanced(self).SetLineAsLastVisible(int64(line), int64(wrap_index))
 }
 
 /*
 Returns the last visible line. Use [method get_last_full_visible_line_wrap_index] for the wrap index.
 */
 func (self Instance) GetLastFullVisibleLine() int { //gd:TextEdit.get_last_full_visible_line
-	return int(int(class(self).GetLastFullVisibleLine()))
+	return int(int(Advanced(self).GetLastFullVisibleLine()))
 }
 
 /*
 Returns the last visible wrap index of the last visible line.
 */
 func (self Instance) GetLastFullVisibleLineWrapIndex() int { //gd:TextEdit.get_last_full_visible_line_wrap_index
-	return int(int(class(self).GetLastFullVisibleLineWrapIndex()))
+	return int(int(Advanced(self).GetLastFullVisibleLineWrapIndex()))
 }
 
 /*
 Returns the number of lines that can visually fit, rounded down, based on this control's height.
 */
 func (self Instance) GetVisibleLineCount() int { //gd:TextEdit.get_visible_line_count
-	return int(int(class(self).GetVisibleLineCount()))
+	return int(int(Advanced(self).GetVisibleLineCount()))
 }
 
 /*
 Returns the total number of lines between [param from_line] and [param to_line] (inclusive) in the text. This includes wrapped lines and excludes folded lines. If the range covers all lines it is equivalent to [method get_total_visible_line_count].
 */
 func (self Instance) GetVisibleLineCountInRange(from_line int, to_line int) int { //gd:TextEdit.get_visible_line_count_in_range
-	return int(int(class(self).GetVisibleLineCountInRange(int64(from_line), int64(to_line))))
+	return int(int(Advanced(self).GetVisibleLineCountInRange(int64(from_line), int64(to_line))))
 }
 
 /*
 Returns the total number of lines in the text. This includes wrapped lines and excludes folded lines. If [member wrap_mode] is set to [constant LINE_WRAPPING_NONE] and no lines are folded (see [method CodeEdit.is_line_folded]) then this is equivalent to [method get_line_count]. See [method get_visible_line_count_in_range] for a limited range of lines.
 */
 func (self Instance) GetTotalVisibleLineCount() int { //gd:TextEdit.get_total_visible_line_count
-	return int(int(class(self).GetTotalVisibleLineCount()))
+	return int(int(Advanced(self).GetTotalVisibleLineCount()))
 }
 
 /*
 Adjust the viewport so the caret is visible.
 */
 func (self Instance) AdjustViewportToCaret() { //gd:TextEdit.adjust_viewport_to_caret
-	class(self).AdjustViewportToCaret(int64(0))
+	Advanced(self).AdjustViewportToCaret(int64(0))
+}
+
+/*
+Adjust the viewport so the caret is visible.
+*/
+func (self Expanded) AdjustViewportToCaret(caret_index int) { //gd:TextEdit.adjust_viewport_to_caret
+	Advanced(self).AdjustViewportToCaret(int64(caret_index))
 }
 
 /*
 Centers the viewport on the line the editing caret is at. This also resets the [member scroll_horizontal] value to [code]0[/code].
 */
 func (self Instance) CenterViewportToCaret() { //gd:TextEdit.center_viewport_to_caret
-	class(self).CenterViewportToCaret(int64(0))
+	Advanced(self).CenterViewportToCaret(int64(0))
+}
+
+/*
+Centers the viewport on the line the editing caret is at. This also resets the [member scroll_horizontal] value to [code]0[/code].
+*/
+func (self Expanded) CenterViewportToCaret(caret_index int) { //gd:TextEdit.center_viewport_to_caret
+	Advanced(self).CenterViewportToCaret(int64(caret_index))
 }
 
 /*
 Returns the number of lines that may be drawn on the minimap.
 */
 func (self Instance) GetMinimapVisibleLines() int { //gd:TextEdit.get_minimap_visible_lines
-	return int(int(class(self).GetMinimapVisibleLines()))
+	return int(int(Advanced(self).GetMinimapVisibleLines()))
 }
 
 /*
 Register a new gutter to this [TextEdit]. Use [param at] to have a specific gutter order. A value of [code]-1[/code] appends the gutter to the right.
 */
 func (self Instance) AddGutter() { //gd:TextEdit.add_gutter
-	class(self).AddGutter(int64(-1))
+	Advanced(self).AddGutter(int64(-1))
+}
+
+/*
+Register a new gutter to this [TextEdit]. Use [param at] to have a specific gutter order. A value of [code]-1[/code] appends the gutter to the right.
+*/
+func (self Expanded) AddGutter(at int) { //gd:TextEdit.add_gutter
+	Advanced(self).AddGutter(int64(at))
 }
 
 /*
 Removes the gutter at the given index.
 */
 func (self Instance) RemoveGutter(gutter int) { //gd:TextEdit.remove_gutter
-	class(self).RemoveGutter(int64(gutter))
+	Advanced(self).RemoveGutter(int64(gutter))
 }
 
 /*
 Returns the number of gutters registered.
 */
 func (self Instance) GetGutterCount() int { //gd:TextEdit.get_gutter_count
-	return int(int(class(self).GetGutterCount()))
+	return int(int(Advanced(self).GetGutterCount()))
 }
 
 /*
 Sets the name of the gutter at the given index.
 */
 func (self Instance) SetGutterName(gutter int, name string) { //gd:TextEdit.set_gutter_name
-	class(self).SetGutterName(int64(gutter), String.New(name))
+	Advanced(self).SetGutterName(int64(gutter), String.New(name))
 }
 
 /*
 Returns the name of the gutter at the given index.
 */
 func (self Instance) GetGutterName(gutter int) string { //gd:TextEdit.get_gutter_name
-	return string(class(self).GetGutterName(int64(gutter)).String())
+	return string(Advanced(self).GetGutterName(int64(gutter)).String())
 }
 
 /*
 Sets the type of gutter at the given index. Gutters can contain icons, text, or custom visuals. See [enum TextEdit.GutterType] for options.
 */
 func (self Instance) SetGutterType(gutter int, atype gdclass.TextEditGutterType) { //gd:TextEdit.set_gutter_type
-	class(self).SetGutterType(int64(gutter), atype)
+	Advanced(self).SetGutterType(int64(gutter), atype)
 }
 
 /*
 Returns the type of the gutter at the given index. Gutters can contain icons, text, or custom visuals. See [enum TextEdit.GutterType] for options.
 */
 func (self Instance) GetGutterType(gutter int) gdclass.TextEditGutterType { //gd:TextEdit.get_gutter_type
-	return gdclass.TextEditGutterType(class(self).GetGutterType(int64(gutter)))
+	return gdclass.TextEditGutterType(Advanced(self).GetGutterType(int64(gutter)))
 }
 
 /*
 Set the width of the gutter at the given index.
 */
 func (self Instance) SetGutterWidth(gutter int, width int) { //gd:TextEdit.set_gutter_width
-	class(self).SetGutterWidth(int64(gutter), int64(width))
+	Advanced(self).SetGutterWidth(int64(gutter), int64(width))
 }
 
 /*
 Returns the width of the gutter at the given index.
 */
 func (self Instance) GetGutterWidth(gutter int) int { //gd:TextEdit.get_gutter_width
-	return int(int(class(self).GetGutterWidth(int64(gutter))))
+	return int(int(Advanced(self).GetGutterWidth(int64(gutter))))
 }
 
 /*
 If [code]true[/code], the gutter at the given index is drawn. The gutter type ([method set_gutter_type]) determines how it is drawn. See [method is_gutter_drawn].
 */
 func (self Instance) SetGutterDraw(gutter int, draw bool) { //gd:TextEdit.set_gutter_draw
-	class(self).SetGutterDraw(int64(gutter), draw)
+	Advanced(self).SetGutterDraw(int64(gutter), draw)
 }
 
 /*
 Returns [code]true[/code] if the gutter at the given index is currently drawn. See [method set_gutter_draw].
 */
 func (self Instance) IsGutterDrawn(gutter int) bool { //gd:TextEdit.is_gutter_drawn
-	return bool(class(self).IsGutterDrawn(int64(gutter)))
+	return bool(Advanced(self).IsGutterDrawn(int64(gutter)))
 }
 
 /*
 If [code]true[/code], the mouse cursor will change to a pointing hand ([constant Control.CURSOR_POINTING_HAND]) when hovering over the gutter at the given index. See [method is_gutter_clickable] and [method set_line_gutter_clickable].
 */
 func (self Instance) SetGutterClickable(gutter int, clickable bool) { //gd:TextEdit.set_gutter_clickable
-	class(self).SetGutterClickable(int64(gutter), clickable)
+	Advanced(self).SetGutterClickable(int64(gutter), clickable)
 }
 
 /*
 Returns [code]true[/code] if the gutter at the given index is clickable. See [method set_gutter_clickable].
 */
 func (self Instance) IsGutterClickable(gutter int) bool { //gd:TextEdit.is_gutter_clickable
-	return bool(class(self).IsGutterClickable(int64(gutter)))
+	return bool(Advanced(self).IsGutterClickable(int64(gutter)))
 }
 
 /*
 If [code]true[/code], the line data of the gutter at the given index can be overridden when using [method merge_gutters]. See [method is_gutter_overwritable].
 */
 func (self Instance) SetGutterOverwritable(gutter int, overwritable bool) { //gd:TextEdit.set_gutter_overwritable
-	class(self).SetGutterOverwritable(int64(gutter), overwritable)
+	Advanced(self).SetGutterOverwritable(int64(gutter), overwritable)
 }
 
 /*
 Returns [code]true[/code] if the gutter at the given index is overwritable. See [method set_gutter_overwritable].
 */
 func (self Instance) IsGutterOverwritable(gutter int) bool { //gd:TextEdit.is_gutter_overwritable
-	return bool(class(self).IsGutterOverwritable(int64(gutter)))
+	return bool(Advanced(self).IsGutterOverwritable(int64(gutter)))
 }
 
 /*
 Merge the gutters from [param from_line] into [param to_line]. Only overwritable gutters will be copied. See [method set_gutter_overwritable].
 */
 func (self Instance) MergeGutters(from_line int, to_line int) { //gd:TextEdit.merge_gutters
-	class(self).MergeGutters(int64(from_line), int64(to_line))
+	Advanced(self).MergeGutters(int64(from_line), int64(to_line))
 }
 
 /*
 Set a custom draw callback for the gutter at the given index. [param draw_callback] must take the following arguments: A line index [int], a gutter index [int], and an area [Rect2]. This callback only works when the gutter type is [constant GUTTER_TYPE_CUSTOM] (see [method set_gutter_type]).
 */
 func (self Instance) SetGutterCustomDraw(column int, draw_callback func(line int, gutter int, area Rect2.PositionSize)) { //gd:TextEdit.set_gutter_custom_draw
-	class(self).SetGutterCustomDraw(int64(column), Callable.New(draw_callback))
+	Advanced(self).SetGutterCustomDraw(int64(column), Callable.New(draw_callback))
 }
 
 /*
 Returns the total width of all gutters and internal padding.
 */
 func (self Instance) GetTotalGutterWidth() int { //gd:TextEdit.get_total_gutter_width
-	return int(int(class(self).GetTotalGutterWidth()))
+	return int(int(Advanced(self).GetTotalGutterWidth()))
 }
 
 /*
 Sets the metadata for [param gutter] on [param line] to [param metadata].
 */
 func (self Instance) SetLineGutterMetadata(line int, gutter int, metadata any) { //gd:TextEdit.set_line_gutter_metadata
-	class(self).SetLineGutterMetadata(int64(line), int64(gutter), variant.New(metadata))
+	Advanced(self).SetLineGutterMetadata(int64(line), int64(gutter), variant.New(metadata))
 }
 
 /*
 Returns the metadata currently in [param gutter] at [param line].
 */
 func (self Instance) GetLineGutterMetadata(line int, gutter int) any { //gd:TextEdit.get_line_gutter_metadata
-	return any(class(self).GetLineGutterMetadata(int64(line), int64(gutter)).Interface())
+	return any(Advanced(self).GetLineGutterMetadata(int64(line), int64(gutter)).Interface())
 }
 
 /*
 Sets the text for [param gutter] on [param line] to [param text]. This only works when the gutter type is [constant GUTTER_TYPE_STRING] (see [method set_gutter_type]).
 */
 func (self Instance) SetLineGutterText(line int, gutter int, text string) { //gd:TextEdit.set_line_gutter_text
-	class(self).SetLineGutterText(int64(line), int64(gutter), String.New(text))
+	Advanced(self).SetLineGutterText(int64(line), int64(gutter), String.New(text))
 }
 
 /*
 Returns the text currently in [param gutter] at [param line]. This only works when the gutter type is [constant GUTTER_TYPE_STRING] (see [method set_gutter_type]).
 */
 func (self Instance) GetLineGutterText(line int, gutter int) string { //gd:TextEdit.get_line_gutter_text
-	return string(class(self).GetLineGutterText(int64(line), int64(gutter)).String())
+	return string(Advanced(self).GetLineGutterText(int64(line), int64(gutter)).String())
 }
 
 /*
 Sets the icon for [param gutter] on [param line] to [param icon]. This only works when the gutter type is [constant GUTTER_TYPE_ICON] (see [method set_gutter_type]).
 */
 func (self Instance) SetLineGutterIcon(line int, gutter int, icon [1]gdclass.Texture2D) { //gd:TextEdit.set_line_gutter_icon
-	class(self).SetLineGutterIcon(int64(line), int64(gutter), icon)
+	Advanced(self).SetLineGutterIcon(int64(line), int64(gutter), icon)
 }
 
 /*
 Returns the icon currently in [param gutter] at [param line]. This only works when the gutter type is [constant GUTTER_TYPE_ICON] (see [method set_gutter_type]).
 */
 func (self Instance) GetLineGutterIcon(line int, gutter int) [1]gdclass.Texture2D { //gd:TextEdit.get_line_gutter_icon
-	return [1]gdclass.Texture2D(class(self).GetLineGutterIcon(int64(line), int64(gutter)))
+	return [1]gdclass.Texture2D(Advanced(self).GetLineGutterIcon(int64(line), int64(gutter)))
 }
 
 /*
 Sets the color for [param gutter] on [param line] to [param color].
 */
 func (self Instance) SetLineGutterItemColor(line int, gutter int, color Color.RGBA) { //gd:TextEdit.set_line_gutter_item_color
-	class(self).SetLineGutterItemColor(int64(line), int64(gutter), Color.RGBA(color))
+	Advanced(self).SetLineGutterItemColor(int64(line), int64(gutter), Color.RGBA(color))
 }
 
 /*
 Returns the color currently in [param gutter] at [param line].
 */
 func (self Instance) GetLineGutterItemColor(line int, gutter int) Color.RGBA { //gd:TextEdit.get_line_gutter_item_color
-	return Color.RGBA(class(self).GetLineGutterItemColor(int64(line), int64(gutter)))
+	return Color.RGBA(Advanced(self).GetLineGutterItemColor(int64(line), int64(gutter)))
 }
 
 /*
 If [param clickable] is [code]true[/code], makes the [param gutter] on the given [param line] clickable. This is like [method set_gutter_clickable], but for a single line. If [method is_gutter_clickable] is [code]true[/code], this will not have any effect. See [method is_line_gutter_clickable] and [signal gutter_clicked].
 */
 func (self Instance) SetLineGutterClickable(line int, gutter int, clickable bool) { //gd:TextEdit.set_line_gutter_clickable
-	class(self).SetLineGutterClickable(int64(line), int64(gutter), clickable)
+	Advanced(self).SetLineGutterClickable(int64(line), int64(gutter), clickable)
 }
 
 /*
 Returns [code]true[/code] if the gutter at the given index on the given line is clickable. See [method set_line_gutter_clickable].
 */
 func (self Instance) IsLineGutterClickable(line int, gutter int) bool { //gd:TextEdit.is_line_gutter_clickable
-	return bool(class(self).IsLineGutterClickable(int64(line), int64(gutter)))
+	return bool(Advanced(self).IsLineGutterClickable(int64(line), int64(gutter)))
 }
 
 /*
 Sets the custom background color of the given line. If transparent, this color is applied on top of the default background color (See [theme_item background_color]). If set to [code]Color(0, 0, 0, 0)[/code], no additional color is applied.
 */
 func (self Instance) SetLineBackgroundColor(line int, color Color.RGBA) { //gd:TextEdit.set_line_background_color
-	class(self).SetLineBackgroundColor(int64(line), Color.RGBA(color))
+	Advanced(self).SetLineBackgroundColor(int64(line), Color.RGBA(color))
 }
 
 /*
 Returns the custom background color of the given line. If no color is set, returns [code]Color(0, 0, 0, 0)[/code].
 */
 func (self Instance) GetLineBackgroundColor(line int) Color.RGBA { //gd:TextEdit.get_line_background_color
-	return Color.RGBA(class(self).GetLineBackgroundColor(int64(line)))
+	return Color.RGBA(Advanced(self).GetLineBackgroundColor(int64(line)))
 }
 
 /*
@@ -1300,49 +1638,63 @@ public void OnItemPressed(int id)
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member Window.visible] property.
 */
 func (self Instance) GetMenu() [1]gdclass.PopupMenu { //gd:TextEdit.get_menu
-	return [1]gdclass.PopupMenu(class(self).GetMenu())
+	return [1]gdclass.PopupMenu(Advanced(self).GetMenu())
 }
 
 /*
 Returns [code]true[/code] if the menu is visible. Use this instead of [code]get_menu().visible[/code] to improve performance (so the creation of the menu is avoided). See [method get_menu].
 */
 func (self Instance) IsMenuVisible() bool { //gd:TextEdit.is_menu_visible
-	return bool(class(self).IsMenuVisible())
+	return bool(Advanced(self).IsMenuVisible())
 }
 
 /*
 Executes a given action as defined in the [enum MenuItems] enum.
 */
 func (self Instance) MenuOption(option int) { //gd:TextEdit.menu_option
-	class(self).MenuOption(int64(option))
+	Advanced(self).MenuOption(int64(option))
 }
 
 /*
 This method does nothing.
 */
 func (self Instance) AdjustCaretsAfterEdit(caret int, from_line int, from_col int, to_line int, to_col int) { //gd:TextEdit.adjust_carets_after_edit
-	class(self).AdjustCaretsAfterEdit(int64(caret), int64(from_line), int64(from_col), int64(to_line), int64(to_col))
+	Advanced(self).AdjustCaretsAfterEdit(int64(caret), int64(from_line), int64(from_col), int64(to_line), int64(to_col))
 }
 
 /*
 Returns a list of caret indexes in their edit order, this done from bottom to top. Edit order refers to the way actions such as [method insert_text_at_caret] are applied.
 */
 func (self Instance) GetCaretIndexEditOrder() []int32 { //gd:TextEdit.get_caret_index_edit_order
-	return []int32(slices.Collect(class(self).GetCaretIndexEditOrder().Values()))
+	return []int32(slices.Collect(Advanced(self).GetCaretIndexEditOrder().Values()))
 }
 
 /*
 Returns the original start line of the selection.
 */
 func (self Instance) GetSelectionLine() int { //gd:TextEdit.get_selection_line
-	return int(int(class(self).GetSelectionLine(int64(0))))
+	return int(int(Advanced(self).GetSelectionLine(int64(0))))
+}
+
+/*
+Returns the original start line of the selection.
+*/
+func (self Expanded) GetSelectionLine(caret_index int) int { //gd:TextEdit.get_selection_line
+	return int(int(Advanced(self).GetSelectionLine(int64(caret_index))))
 }
 
 /*
 Returns the original start column of the selection.
 */
 func (self Instance) GetSelectionColumn() int { //gd:TextEdit.get_selection_column
-	return int(int(class(self).GetSelectionColumn(int64(0))))
+	return int(int(Advanced(self).GetSelectionColumn(int64(0))))
+}
+
+/*
+Returns the original start column of the selection.
+*/
+func (self Expanded) GetSelectionColumn(caret_index int) int { //gd:TextEdit.get_selection_column
+	return int(int(Advanced(self).GetSelectionColumn(int64(caret_index))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

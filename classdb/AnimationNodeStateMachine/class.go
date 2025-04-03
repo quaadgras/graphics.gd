@@ -57,6 +57,7 @@ stateMachine.Travel("some_state");
 [/codeblocks]
 */
 type Instance [1]gdclass.AnimationNodeStateMachine
+type Expanded [1]gdclass.AnimationNodeStateMachine
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -70,133 +71,140 @@ type Any interface {
 Adds a new animation node to the graph. The [param position] is used for display in the editor.
 */
 func (self Instance) AddNode(name string, node [1]gdclass.AnimationNode) { //gd:AnimationNodeStateMachine.add_node
-	class(self).AddNode(String.Name(String.New(name)), node, Vector2.XY(gd.Vector2{0, 0}))
+	Advanced(self).AddNode(String.Name(String.New(name)), node, Vector2.XY(gd.Vector2{0, 0}))
+}
+
+/*
+Adds a new animation node to the graph. The [param position] is used for display in the editor.
+*/
+func (self Expanded) AddNode(name string, node [1]gdclass.AnimationNode, position Vector2.XY) { //gd:AnimationNodeStateMachine.add_node
+	Advanced(self).AddNode(String.Name(String.New(name)), node, Vector2.XY(position))
 }
 
 /*
 Replaces the given animation node with a new animation node.
 */
 func (self Instance) ReplaceNode(name string, node [1]gdclass.AnimationNode) { //gd:AnimationNodeStateMachine.replace_node
-	class(self).ReplaceNode(String.Name(String.New(name)), node)
+	Advanced(self).ReplaceNode(String.Name(String.New(name)), node)
 }
 
 /*
 Returns the animation node with the given name.
 */
 func (self Instance) GetNode(name string) [1]gdclass.AnimationNode { //gd:AnimationNodeStateMachine.get_node
-	return [1]gdclass.AnimationNode(class(self).GetNode(String.Name(String.New(name))))
+	return [1]gdclass.AnimationNode(Advanced(self).GetNode(String.Name(String.New(name))))
 }
 
 /*
 Deletes the given animation node from the graph.
 */
 func (self Instance) RemoveNode(name string) { //gd:AnimationNodeStateMachine.remove_node
-	class(self).RemoveNode(String.Name(String.New(name)))
+	Advanced(self).RemoveNode(String.Name(String.New(name)))
 }
 
 /*
 Renames the given animation node.
 */
 func (self Instance) RenameNode(name string, new_name string) { //gd:AnimationNodeStateMachine.rename_node
-	class(self).RenameNode(String.Name(String.New(name)), String.Name(String.New(new_name)))
+	Advanced(self).RenameNode(String.Name(String.New(name)), String.Name(String.New(new_name)))
 }
 
 /*
 Returns [code]true[/code] if the graph contains the given animation node.
 */
 func (self Instance) HasNode(name string) bool { //gd:AnimationNodeStateMachine.has_node
-	return bool(class(self).HasNode(String.Name(String.New(name))))
+	return bool(Advanced(self).HasNode(String.Name(String.New(name))))
 }
 
 /*
 Returns the given animation node's name.
 */
 func (self Instance) GetNodeName(node [1]gdclass.AnimationNode) string { //gd:AnimationNodeStateMachine.get_node_name
-	return string(class(self).GetNodeName(node).String())
+	return string(Advanced(self).GetNodeName(node).String())
 }
 
 /*
 Sets the animation node's coordinates. Used for display in the editor.
 */
 func (self Instance) SetNodePosition(name string, position Vector2.XY) { //gd:AnimationNodeStateMachine.set_node_position
-	class(self).SetNodePosition(String.Name(String.New(name)), Vector2.XY(position))
+	Advanced(self).SetNodePosition(String.Name(String.New(name)), Vector2.XY(position))
 }
 
 /*
 Returns the given animation node's coordinates. Used for display in the editor.
 */
 func (self Instance) GetNodePosition(name string) Vector2.XY { //gd:AnimationNodeStateMachine.get_node_position
-	return Vector2.XY(class(self).GetNodePosition(String.Name(String.New(name))))
+	return Vector2.XY(Advanced(self).GetNodePosition(String.Name(String.New(name))))
 }
 
 /*
 Returns [code]true[/code] if there is a transition between the given animation nodes.
 */
 func (self Instance) HasTransition(from string, to string) bool { //gd:AnimationNodeStateMachine.has_transition
-	return bool(class(self).HasTransition(String.Name(String.New(from)), String.Name(String.New(to))))
+	return bool(Advanced(self).HasTransition(String.Name(String.New(from)), String.Name(String.New(to))))
 }
 
 /*
 Adds a transition between the given animation nodes.
 */
 func (self Instance) AddTransition(from string, to string, transition [1]gdclass.AnimationNodeStateMachineTransition) { //gd:AnimationNodeStateMachine.add_transition
-	class(self).AddTransition(String.Name(String.New(from)), String.Name(String.New(to)), transition)
+	Advanced(self).AddTransition(String.Name(String.New(from)), String.Name(String.New(to)), transition)
 }
 
 /*
 Returns the given transition.
 */
 func (self Instance) GetTransition(idx int) [1]gdclass.AnimationNodeStateMachineTransition { //gd:AnimationNodeStateMachine.get_transition
-	return [1]gdclass.AnimationNodeStateMachineTransition(class(self).GetTransition(int64(idx)))
+	return [1]gdclass.AnimationNodeStateMachineTransition(Advanced(self).GetTransition(int64(idx)))
 }
 
 /*
 Returns the given transition's start node.
 */
 func (self Instance) GetTransitionFrom(idx int) string { //gd:AnimationNodeStateMachine.get_transition_from
-	return string(class(self).GetTransitionFrom(int64(idx)).String())
+	return string(Advanced(self).GetTransitionFrom(int64(idx)).String())
 }
 
 /*
 Returns the given transition's end node.
 */
 func (self Instance) GetTransitionTo(idx int) string { //gd:AnimationNodeStateMachine.get_transition_to
-	return string(class(self).GetTransitionTo(int64(idx)).String())
+	return string(Advanced(self).GetTransitionTo(int64(idx)).String())
 }
 
 /*
 Returns the number of connections in the graph.
 */
 func (self Instance) GetTransitionCount() int { //gd:AnimationNodeStateMachine.get_transition_count
-	return int(int(class(self).GetTransitionCount()))
+	return int(int(Advanced(self).GetTransitionCount()))
 }
 
 /*
 Deletes the given transition by index.
 */
 func (self Instance) RemoveTransitionByIndex(idx int) { //gd:AnimationNodeStateMachine.remove_transition_by_index
-	class(self).RemoveTransitionByIndex(int64(idx))
+	Advanced(self).RemoveTransitionByIndex(int64(idx))
 }
 
 /*
 Deletes the transition between the two specified animation nodes.
 */
 func (self Instance) RemoveTransition(from string, to string) { //gd:AnimationNodeStateMachine.remove_transition
-	class(self).RemoveTransition(String.Name(String.New(from)), String.Name(String.New(to)))
+	Advanced(self).RemoveTransition(String.Name(String.New(from)), String.Name(String.New(to)))
 }
 
 /*
 Sets the draw offset of the graph. Used for display in the editor.
 */
 func (self Instance) SetGraphOffset(offset Vector2.XY) { //gd:AnimationNodeStateMachine.set_graph_offset
-	class(self).SetGraphOffset(Vector2.XY(offset))
+	Advanced(self).SetGraphOffset(Vector2.XY(offset))
 }
 
 /*
 Returns the draw offset of the graph. Used for display in the editor.
 */
 func (self Instance) GetGraphOffset() Vector2.XY { //gd:AnimationNodeStateMachine.get_graph_offset
-	return Vector2.XY(class(self).GetGraphOffset())
+	return Vector2.XY(Advanced(self).GetGraphOffset())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

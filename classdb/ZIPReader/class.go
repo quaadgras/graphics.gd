@@ -83,6 +83,7 @@ func extract_all_from_zip():
 [/codeblock]
 */
 type Instance [1]gdclass.ZIPReader
+type Expanded [1]gdclass.ZIPReader
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -96,14 +97,14 @@ type Any interface {
 Opens the zip archive at the given [param path] and reads its file index.
 */
 func (self Instance) Open(path string) error { //gd:ZIPReader.open
-	return error(gd.ToError(class(self).Open(String.New(path))))
+	return error(gd.ToError(Advanced(self).Open(String.New(path))))
 }
 
 /*
 Closes the underlying resources used by this instance.
 */
 func (self Instance) Close() error { //gd:ZIPReader.close
-	return error(gd.ToError(class(self).Close()))
+	return error(gd.ToError(Advanced(self).Close()))
 }
 
 /*
@@ -111,7 +112,7 @@ Returns the list of names of all files in the loaded archive.
 Must be called after [method open].
 */
 func (self Instance) GetFiles() []string { //gd:ZIPReader.get_files
-	return []string(class(self).GetFiles().Strings())
+	return []string(Advanced(self).GetFiles().Strings())
 }
 
 /*
@@ -119,7 +120,15 @@ Loads the whole content of a file in the loaded zip archive into memory and retu
 Must be called after [method open].
 */
 func (self Instance) ReadFile(path string) []byte { //gd:ZIPReader.read_file
-	return []byte(class(self).ReadFile(String.New(path), true).Bytes())
+	return []byte(Advanced(self).ReadFile(String.New(path), true).Bytes())
+}
+
+/*
+Loads the whole content of a file in the loaded zip archive into memory and returns it.
+Must be called after [method open].
+*/
+func (self Expanded) ReadFile(path string, case_sensitive bool) []byte { //gd:ZIPReader.read_file
+	return []byte(Advanced(self).ReadFile(String.New(path), case_sensitive).Bytes())
 }
 
 /*
@@ -127,7 +136,15 @@ Returns [code]true[/code] if the file exists in the loaded zip archive.
 Must be called after [method open].
 */
 func (self Instance) FileExists(path string) bool { //gd:ZIPReader.file_exists
-	return bool(class(self).FileExists(String.New(path), true))
+	return bool(Advanced(self).FileExists(String.New(path), true))
+}
+
+/*
+Returns [code]true[/code] if the file exists in the loaded zip archive.
+Must be called after [method open].
+*/
+func (self Expanded) FileExists(path string, case_sensitive bool) bool { //gd:ZIPReader.file_exists
+	return bool(Advanced(self).FileExists(String.New(path), case_sensitive))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

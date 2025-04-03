@@ -46,6 +46,7 @@ This class cannot be instantiated directly but can be retrieved during [method E
 [b]Note:[/b] When exporting to Android, make sure to enable the [code]INTERNET[/code] permission in the Android export preset before exporting the project or using one-click deploy. Otherwise, network communication of any kind will be blocked by Android.
 */
 type Instance [1]gdclass.ENetPacketPeer
+type Expanded [1]gdclass.ENetPacketPeer
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -59,49 +60,70 @@ type Any interface {
 Request a disconnection from a peer. An [constant ENetConnection.EVENT_DISCONNECT] will be generated during [method ENetConnection.service] once the disconnection is complete.
 */
 func (self Instance) PeerDisconnect() { //gd:ENetPacketPeer.peer_disconnect
-	class(self).PeerDisconnect(int64(0))
+	Advanced(self).PeerDisconnect(int64(0))
+}
+
+/*
+Request a disconnection from a peer. An [constant ENetConnection.EVENT_DISCONNECT] will be generated during [method ENetConnection.service] once the disconnection is complete.
+*/
+func (self Expanded) PeerDisconnect(data int) { //gd:ENetPacketPeer.peer_disconnect
+	Advanced(self).PeerDisconnect(int64(data))
 }
 
 /*
 Request a disconnection from a peer, but only after all queued outgoing packets are sent. An [constant ENetConnection.EVENT_DISCONNECT] will be generated during [method ENetConnection.service] once the disconnection is complete.
 */
 func (self Instance) PeerDisconnectLater() { //gd:ENetPacketPeer.peer_disconnect_later
-	class(self).PeerDisconnectLater(int64(0))
+	Advanced(self).PeerDisconnectLater(int64(0))
+}
+
+/*
+Request a disconnection from a peer, but only after all queued outgoing packets are sent. An [constant ENetConnection.EVENT_DISCONNECT] will be generated during [method ENetConnection.service] once the disconnection is complete.
+*/
+func (self Expanded) PeerDisconnectLater(data int) { //gd:ENetPacketPeer.peer_disconnect_later
+	Advanced(self).PeerDisconnectLater(int64(data))
 }
 
 /*
 Force an immediate disconnection from a peer. No [constant ENetConnection.EVENT_DISCONNECT] will be generated. The foreign peer is not guaranteed to receive the disconnect notification, and is reset immediately upon return from this function.
 */
 func (self Instance) PeerDisconnectNow() { //gd:ENetPacketPeer.peer_disconnect_now
-	class(self).PeerDisconnectNow(int64(0))
+	Advanced(self).PeerDisconnectNow(int64(0))
+}
+
+/*
+Force an immediate disconnection from a peer. No [constant ENetConnection.EVENT_DISCONNECT] will be generated. The foreign peer is not guaranteed to receive the disconnect notification, and is reset immediately upon return from this function.
+*/
+func (self Expanded) PeerDisconnectNow(data int) { //gd:ENetPacketPeer.peer_disconnect_now
+	Advanced(self).PeerDisconnectNow(int64(data))
 }
 
 /*
 Sends a ping request to a peer. ENet automatically pings all connected peers at regular intervals, however, this function may be called to ensure more frequent ping requests.
 */
 func (self Instance) Ping() { //gd:ENetPacketPeer.ping
-	class(self).Ping()
+	Advanced(self).Ping()
 }
 
 /*
 Sets the [param ping_interval] in milliseconds at which pings will be sent to a peer. Pings are used both to monitor the liveness of the connection and also to dynamically adjust the throttle during periods of low traffic so that the throttle has reasonable responsiveness during traffic spikes. The default ping interval is [code]500[/code] milliseconds.
 */
 func (self Instance) PingInterval(ping_interval int) { //gd:ENetPacketPeer.ping_interval
-	class(self).PingInterval(int64(ping_interval))
+	Advanced(self).PingInterval(int64(ping_interval))
 }
 
 /*
 Forcefully disconnects a peer. The foreign host represented by the peer is not notified of the disconnection and will timeout on its connection to the local host.
 */
 func (self Instance) Reset() { //gd:ENetPacketPeer.reset
-	class(self).Reset()
+	Advanced(self).Reset()
 }
 
 /*
 Queues a [param packet] to be sent over the specified [param channel]. See [code]FLAG_*[/code] constants for available packet flags.
 */
 func (self Instance) Send(channel int, packet []byte, flags int) error { //gd:ENetPacketPeer.send
-	return error(gd.ToError(class(self).Send(int64(channel), Packed.Bytes(Packed.New(packet...)), int64(flags))))
+	return error(gd.ToError(Advanced(self).Send(int64(channel), Packed.Bytes(Packed.New(packet...)), int64(flags))))
 }
 
 /*
@@ -112,7 +134,7 @@ When the throttle has a value of [code]0[/code], all unreliable packets are drop
 Intermediate values for the throttle represent intermediate probabilities between 0% and 100% of unreliable packets being sent. The bandwidth limits of the local and foreign hosts are taken into account to determine a sensible limit for the throttle probability above which it should not raise even in the best of conditions.
 */
 func (self Instance) ThrottleConfigure(interval int, acceleration int, deceleration int) { //gd:ENetPacketPeer.throttle_configure
-	class(self).ThrottleConfigure(int64(interval), int64(acceleration), int64(deceleration))
+	Advanced(self).ThrottleConfigure(int64(interval), int64(acceleration), int64(deceleration))
 }
 
 /*
@@ -120,56 +142,56 @@ Sets the timeout parameters for a peer. The timeout parameters control how and w
 The [param timeout] is a factor that, multiplied by a value based on the average round trip time, will determine the timeout limit for a reliable packet. When that limit is reached, the timeout will be doubled, and the peer will be disconnected if that limit has reached [param timeout_min]. The [param timeout_max] parameter, on the other hand, defines a fixed timeout for which any packet must be acknowledged or the peer will be dropped.
 */
 func (self Instance) SetTimeout(timeout int, timeout_min int, timeout_max int) { //gd:ENetPacketPeer.set_timeout
-	class(self).SetTimeout(int64(timeout), int64(timeout_min), int64(timeout_max))
+	Advanced(self).SetTimeout(int64(timeout), int64(timeout_min), int64(timeout_max))
 }
 
 /*
 Returns the ENet flags of the next packet in the received queue. See [code]FLAG_*[/code] constants for available packet flags. Note that not all flags are replicated from the sending peer to the receiving peer.
 */
 func (self Instance) GetPacketFlags() int { //gd:ENetPacketPeer.get_packet_flags
-	return int(int(class(self).GetPacketFlags()))
+	return int(int(Advanced(self).GetPacketFlags()))
 }
 
 /*
 Returns the IP address of this peer.
 */
 func (self Instance) GetRemoteAddress() string { //gd:ENetPacketPeer.get_remote_address
-	return string(class(self).GetRemoteAddress().String())
+	return string(Advanced(self).GetRemoteAddress().String())
 }
 
 /*
 Returns the remote port of this peer.
 */
 func (self Instance) GetRemotePort() int { //gd:ENetPacketPeer.get_remote_port
-	return int(int(class(self).GetRemotePort()))
+	return int(int(Advanced(self).GetRemotePort()))
 }
 
 /*
 Returns the requested [param statistic] for this peer. See [enum PeerStatistic].
 */
 func (self Instance) GetStatistic(statistic gdclass.ENetPacketPeerPeerStatistic) Float.X { //gd:ENetPacketPeer.get_statistic
-	return Float.X(Float.X(class(self).GetStatistic(statistic)))
+	return Float.X(Float.X(Advanced(self).GetStatistic(statistic)))
 }
 
 /*
 Returns the current peer state. See [enum PeerState].
 */
 func (self Instance) GetState() gdclass.ENetPacketPeerPeerState { //gd:ENetPacketPeer.get_state
-	return gdclass.ENetPacketPeerPeerState(class(self).GetState())
+	return gdclass.ENetPacketPeerPeerState(Advanced(self).GetState())
 }
 
 /*
 Returns the number of channels allocated for communication with peer.
 */
 func (self Instance) GetChannels() int { //gd:ENetPacketPeer.get_channels
-	return int(int(class(self).GetChannels()))
+	return int(int(Advanced(self).GetChannels()))
 }
 
 /*
 Returns [code]true[/code] if the peer is currently active (i.e. the associated [ENetConnection] is still valid).
 */
 func (self Instance) IsActive() bool { //gd:ENetPacketPeer.is_active
-	return bool(class(self).IsActive())
+	return bool(Advanced(self).IsActive())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

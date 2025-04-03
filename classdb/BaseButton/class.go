@@ -100,21 +100,21 @@ Changes the [member button_pressed] state of the button, without emitting [signa
 [b]Note:[/b] This method doesn't unpress other buttons in [member button_group].
 */
 func (self Instance) SetPressedNoSignal(pressed bool) { //gd:BaseButton.set_pressed_no_signal
-	class(self).SetPressedNoSignal(pressed)
+	Advanced(self).SetPressedNoSignal(pressed)
 }
 
 /*
 Returns [code]true[/code] if the mouse has entered the button and has not left it yet.
 */
 func (self Instance) IsHovered() bool { //gd:BaseButton.is_hovered
-	return bool(class(self).IsHovered())
+	return bool(Advanced(self).IsHovered())
 }
 
 /*
 Returns the visual state used to draw the button. This is useful mainly when implementing your own draw code by either overriding _draw() or connecting to "draw" signal. The visual state of the button is defined by the [enum DrawMode] enum.
 */
 func (self Instance) GetDrawMode() gdclass.BaseButtonDrawMode { //gd:BaseButton.get_draw_mode
-	return gdclass.BaseButtonDrawMode(class(self).GetDrawMode())
+	return gdclass.BaseButtonDrawMode(Advanced(self).GetDrawMode())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

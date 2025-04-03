@@ -59,77 +59,77 @@ type Any interface {
 Retrieve the number of actions sets in our action map.
 */
 func (self Instance) GetActionSetCount() int { //gd:OpenXRActionMap.get_action_set_count
-	return int(int(class(self).GetActionSetCount()))
+	return int(int(Advanced(self).GetActionSetCount()))
 }
 
 /*
 Retrieve an action set by name.
 */
 func (self Instance) FindActionSet(name string) [1]gdclass.OpenXRActionSet { //gd:OpenXRActionMap.find_action_set
-	return [1]gdclass.OpenXRActionSet(class(self).FindActionSet(String.New(name)))
+	return [1]gdclass.OpenXRActionSet(Advanced(self).FindActionSet(String.New(name)))
 }
 
 /*
 Retrieve the action set at this index.
 */
 func (self Instance) GetActionSet(idx int) [1]gdclass.OpenXRActionSet { //gd:OpenXRActionMap.get_action_set
-	return [1]gdclass.OpenXRActionSet(class(self).GetActionSet(int64(idx)))
+	return [1]gdclass.OpenXRActionSet(Advanced(self).GetActionSet(int64(idx)))
 }
 
 /*
 Add an action set.
 */
 func (self Instance) AddActionSet(action_set [1]gdclass.OpenXRActionSet) { //gd:OpenXRActionMap.add_action_set
-	class(self).AddActionSet(action_set)
+	Advanced(self).AddActionSet(action_set)
 }
 
 /*
 Remove an action set.
 */
 func (self Instance) RemoveActionSet(action_set [1]gdclass.OpenXRActionSet) { //gd:OpenXRActionMap.remove_action_set
-	class(self).RemoveActionSet(action_set)
+	Advanced(self).RemoveActionSet(action_set)
 }
 
 /*
 Retrieve the number of interaction profiles in our action map.
 */
 func (self Instance) GetInteractionProfileCount() int { //gd:OpenXRActionMap.get_interaction_profile_count
-	return int(int(class(self).GetInteractionProfileCount()))
+	return int(int(Advanced(self).GetInteractionProfileCount()))
 }
 
 /*
 Find an interaction profile by its name (path).
 */
 func (self Instance) FindInteractionProfile(name string) [1]gdclass.OpenXRInteractionProfile { //gd:OpenXRActionMap.find_interaction_profile
-	return [1]gdclass.OpenXRInteractionProfile(class(self).FindInteractionProfile(String.New(name)))
+	return [1]gdclass.OpenXRInteractionProfile(Advanced(self).FindInteractionProfile(String.New(name)))
 }
 
 /*
 Get the interaction profile at this index.
 */
 func (self Instance) GetInteractionProfile(idx int) [1]gdclass.OpenXRInteractionProfile { //gd:OpenXRActionMap.get_interaction_profile
-	return [1]gdclass.OpenXRInteractionProfile(class(self).GetInteractionProfile(int64(idx)))
+	return [1]gdclass.OpenXRInteractionProfile(Advanced(self).GetInteractionProfile(int64(idx)))
 }
 
 /*
 Add an interaction profile.
 */
 func (self Instance) AddInteractionProfile(interaction_profile [1]gdclass.OpenXRInteractionProfile) { //gd:OpenXRActionMap.add_interaction_profile
-	class(self).AddInteractionProfile(interaction_profile)
+	Advanced(self).AddInteractionProfile(interaction_profile)
 }
 
 /*
 Remove an interaction profile.
 */
 func (self Instance) RemoveInteractionProfile(interaction_profile [1]gdclass.OpenXRInteractionProfile) { //gd:OpenXRActionMap.remove_interaction_profile
-	class(self).RemoveInteractionProfile(interaction_profile)
+	Advanced(self).RemoveInteractionProfile(interaction_profile)
 }
 
 /*
 Setup this action set with our default actions.
 */
 func (self Instance) CreateDefaultActionSets() { //gd:OpenXRActionMap.create_default_action_sets
-	class(self).CreateDefaultActionSets()
+	Advanced(self).CreateDefaultActionSets()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

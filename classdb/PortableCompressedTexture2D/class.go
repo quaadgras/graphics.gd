@@ -51,6 +51,7 @@ For portable, self contained 3D textures that work on both desktop and mobile, B
 This resource is intended to be created from code.
 */
 type Instance [1]gdclass.PortableCompressedTexture2D
+type Expanded [1]gdclass.PortableCompressedTexture2D
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -66,21 +67,30 @@ Initializes the compressed texture from a base image. The compression mode must 
 If lossy compression is requested, the quality setting can optionally be provided. This maps to Lossy WebP compression quality.
 */
 func (self Instance) CreateFromImage(image [1]gdclass.Image, compression_mode gdclass.PortableCompressedTexture2DCompressionMode) { //gd:PortableCompressedTexture2D.create_from_image
-	class(self).CreateFromImage(image, compression_mode, false, float64(0.8))
+	Advanced(self).CreateFromImage(image, compression_mode, false, float64(0.8))
+}
+
+/*
+Initializes the compressed texture from a base image. The compression mode must be provided.
+[param normal_map] is recommended to ensure optimum quality if this image will be used as a normal map.
+If lossy compression is requested, the quality setting can optionally be provided. This maps to Lossy WebP compression quality.
+*/
+func (self Expanded) CreateFromImage(image [1]gdclass.Image, compression_mode gdclass.PortableCompressedTexture2DCompressionMode, normal_map bool, lossy_quality Float.X) { //gd:PortableCompressedTexture2D.create_from_image
+	Advanced(self).CreateFromImage(image, compression_mode, normal_map, float64(lossy_quality))
 }
 
 /*
 Return the image format used (valid after initialized).
 */
 func (self Instance) GetFormat() gdclass.ImageFormat { //gd:PortableCompressedTexture2D.get_format
-	return gdclass.ImageFormat(class(self).GetFormat())
+	return gdclass.ImageFormat(Advanced(self).GetFormat())
 }
 
 /*
 Return the compression mode used (valid after initialized).
 */
 func (self Instance) GetCompressionMode() gdclass.PortableCompressedTexture2DCompressionMode { //gd:PortableCompressedTexture2D.get_compression_mode
-	return gdclass.PortableCompressedTexture2DCompressionMode(class(self).GetCompressionMode())
+	return gdclass.PortableCompressedTexture2DCompressionMode(Advanced(self).GetCompressionMode())
 }
 
 /*
@@ -88,7 +98,7 @@ Overrides the flag globally for all textures of this type. This is used primaril
 */
 func SetKeepAllCompressedBuffers(keep bool) { //gd:PortableCompressedTexture2D.set_keep_all_compressed_buffers
 	self := Instance{}
-	class(self).SetKeepAllCompressedBuffers(keep)
+	Advanced(self).SetKeepAllCompressedBuffers(keep)
 }
 
 /*
@@ -96,7 +106,7 @@ Return whether the flag is overridden for all textures of this type.
 */
 func IsKeepingAllCompressedBuffers() bool { //gd:PortableCompressedTexture2D.is_keeping_all_compressed_buffers
 	self := Instance{}
-	return bool(class(self).IsKeepingAllCompressedBuffers())
+	return bool(Advanced(self).IsKeepingAllCompressedBuffers())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

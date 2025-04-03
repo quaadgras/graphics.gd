@@ -100,7 +100,7 @@ Returns [code]true[/code] if the animation for the given [param node_info] is lo
 */
 func IsLooping(node_info []float32) bool { //gd:AnimationNodeExtension.is_looping
 	self := Instance{}
-	return bool(class(self).IsLooping(Packed.New(node_info...)))
+	return bool(Advanced(self).IsLooping(Packed.New(node_info...)))
 }
 
 /*
@@ -108,7 +108,7 @@ Returns the animation's remaining time for the given node info. For looping anim
 */
 func GetRemainingTime(node_info []float32, break_loop bool) Float.X { //gd:AnimationNodeExtension.get_remaining_time
 	self := Instance{}
-	return Float.X(Float.X(class(self).GetRemainingTime(Packed.New(node_info...), break_loop)))
+	return Float.X(Float.X(Advanced(self).GetRemainingTime(Packed.New(node_info...), break_loop)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

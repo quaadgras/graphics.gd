@@ -118,42 +118,42 @@ func (Instance) _draw_editor_gizmo(impl func(ptr unsafe.Pointer)) (cb gd.Extensi
 Returns the [SkeletonModificationStack2D] that this modification is bound to. Through the modification stack, you can access the Skeleton2D the modification is operating on.
 */
 func (self Instance) GetModificationStack() [1]gdclass.SkeletonModificationStack2D { //gd:SkeletonModification2D.get_modification_stack
-	return [1]gdclass.SkeletonModificationStack2D(class(self).GetModificationStack())
+	return [1]gdclass.SkeletonModificationStack2D(Advanced(self).GetModificationStack())
 }
 
 /*
 Manually allows you to set the setup state of the modification. This function should only rarely be used, as the [SkeletonModificationStack2D] the modification is bound to should handle setting the modification up.
 */
 func (self Instance) SetIsSetup(is_setup bool) { //gd:SkeletonModification2D.set_is_setup
-	class(self).SetIsSetup(is_setup)
+	Advanced(self).SetIsSetup(is_setup)
 }
 
 /*
 Returns whether this modification has been successfully setup or not.
 */
 func (self Instance) GetIsSetup() bool { //gd:SkeletonModification2D.get_is_setup
-	return bool(class(self).GetIsSetup())
+	return bool(Advanced(self).GetIsSetup())
 }
 
 /*
 Takes an angle and clamps it so it is within the passed-in [param min] and [param max] range. [param invert] will inversely clamp the angle, clamping it to the range outside of the given bounds.
 */
 func (self Instance) ClampAngle(angle Float.X, min Float.X, max Float.X, invert bool) Float.X { //gd:SkeletonModification2D.clamp_angle
-	return Float.X(Float.X(class(self).ClampAngle(float64(angle), float64(min), float64(max), invert)))
+	return Float.X(Float.X(Advanced(self).ClampAngle(float64(angle), float64(min), float64(max), invert)))
 }
 
 /*
 Sets whether this modification will call [method _draw_editor_gizmo] in the Godot editor to draw modification-specific gizmos.
 */
 func (self Instance) SetEditorDrawGizmo(draw_gizmo bool) { //gd:SkeletonModification2D.set_editor_draw_gizmo
-	class(self).SetEditorDrawGizmo(draw_gizmo)
+	Advanced(self).SetEditorDrawGizmo(draw_gizmo)
 }
 
 /*
 Returns whether this modification will call [method _draw_editor_gizmo] in the Godot editor to draw modification-specific gizmos.
 */
 func (self Instance) GetEditorDrawGizmo() bool { //gd:SkeletonModification2D.get_editor_draw_gizmo
-	return bool(class(self).GetEditorDrawGizmo())
+	return bool(Advanced(self).GetEditorDrawGizmo())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

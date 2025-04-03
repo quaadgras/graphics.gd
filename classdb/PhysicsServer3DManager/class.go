@@ -57,7 +57,7 @@ Register a [PhysicsServer3D] implementation by passing a [param name] and a [Cal
 */
 func RegisterServer(name string, create_callback func() [1]gdclass.PhysicsServer3D) { //gd:PhysicsServer3DManager.register_server
 	once.Do(singleton)
-	class(self).RegisterServer(String.New(name), Callable.New(create_callback))
+	Advanced().RegisterServer(String.New(name), Callable.New(create_callback))
 }
 
 /*
@@ -65,7 +65,7 @@ Set the default [PhysicsServer3D] implementation to the one identified by [param
 */
 func SetDefaultServer(name string, priority int) { //gd:PhysicsServer3DManager.set_default_server
 	once.Do(singleton)
-	class(self).SetDefaultServer(String.New(name), int64(priority))
+	Advanced().SetDefaultServer(String.New(name), int64(priority))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

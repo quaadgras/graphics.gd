@@ -45,6 +45,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 Represents a physics shape as defined by the [code]OMI_physics_shape[/code] or [code]OMI_collider[/code] glTF extensions. This class is an intermediary between the glTF data and Godot's nodes, and it's abstracted in a way that allows adding support for different glTF physics extensions in the future.
 */
 type Instance [1]gdclass.GLTFPhysicsShape
+type Expanded [1]gdclass.GLTFPhysicsShape
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -59,14 +60,21 @@ Creates a new GLTFPhysicsShape instance from the given Godot [CollisionShape3D] 
 */
 func FromNode(shape_node [1]gdclass.CollisionShape3D) [1]gdclass.GLTFPhysicsShape { //gd:GLTFPhysicsShape.from_node
 	self := Instance{}
-	return [1]gdclass.GLTFPhysicsShape(class(self).FromNode(shape_node))
+	return [1]gdclass.GLTFPhysicsShape(Advanced(self).FromNode(shape_node))
 }
 
 /*
 Converts this GLTFPhysicsShape instance into a Godot [CollisionShape3D] node.
 */
 func (self Instance) ToNode() [1]gdclass.CollisionShape3D { //gd:GLTFPhysicsShape.to_node
-	return [1]gdclass.CollisionShape3D(class(self).ToNode(false))
+	return [1]gdclass.CollisionShape3D(Advanced(self).ToNode(false))
+}
+
+/*
+Converts this GLTFPhysicsShape instance into a Godot [CollisionShape3D] node.
+*/
+func (self Expanded) ToNode(cache_shapes bool) [1]gdclass.CollisionShape3D { //gd:GLTFPhysicsShape.to_node
+	return [1]gdclass.CollisionShape3D(Advanced(self).ToNode(cache_shapes))
 }
 
 /*
@@ -74,14 +82,21 @@ Creates a new GLTFPhysicsShape instance from the given Godot [Shape3D] resource.
 */
 func FromResource(shape_resource [1]gdclass.Shape3D) [1]gdclass.GLTFPhysicsShape { //gd:GLTFPhysicsShape.from_resource
 	self := Instance{}
-	return [1]gdclass.GLTFPhysicsShape(class(self).FromResource(shape_resource))
+	return [1]gdclass.GLTFPhysicsShape(Advanced(self).FromResource(shape_resource))
 }
 
 /*
 Converts this GLTFPhysicsShape instance into a Godot [Shape3D] resource.
 */
 func (self Instance) ToResource() [1]gdclass.Shape3D { //gd:GLTFPhysicsShape.to_resource
-	return [1]gdclass.Shape3D(class(self).ToResource(false))
+	return [1]gdclass.Shape3D(Advanced(self).ToResource(false))
+}
+
+/*
+Converts this GLTFPhysicsShape instance into a Godot [Shape3D] resource.
+*/
+func (self Expanded) ToResource(cache_shapes bool) [1]gdclass.Shape3D { //gd:GLTFPhysicsShape.to_resource
+	return [1]gdclass.Shape3D(Advanced(self).ToResource(cache_shapes))
 }
 
 /*
@@ -89,14 +104,14 @@ Creates a new GLTFPhysicsShape instance by parsing the given [Dictionary].
 */
 func FromDictionary(dictionary Structure) [1]gdclass.GLTFPhysicsShape { //gd:GLTFPhysicsShape.from_dictionary
 	self := Instance{}
-	return [1]gdclass.GLTFPhysicsShape(class(self).FromDictionary(gd.DictionaryFromMap(dictionary)))
+	return [1]gdclass.GLTFPhysicsShape(Advanced(self).FromDictionary(gd.DictionaryFromMap(dictionary)))
 }
 
 /*
 Serializes this GLTFPhysicsShape instance into a [Dictionary] in the format defined by [code]OMI_physics_shape[/code].
 */
 func (self Instance) ToDictionary() Structure { //gd:GLTFPhysicsShape.to_dictionary
-	return Structure(gd.DictionaryAs[Structure](class(self).ToDictionary()))
+	return Structure(gd.DictionaryAs[Structure](Advanced(self).ToDictionary()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

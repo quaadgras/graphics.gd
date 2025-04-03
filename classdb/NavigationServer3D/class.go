@@ -66,7 +66,7 @@ Returns all created navigation map [RID]s on the NavigationServer. This returns 
 */
 func GetMaps() [][]RID.NavigationMap3D { //gd:NavigationServer3D.get_maps
 	once.Do(singleton)
-	return [][]RID.NavigationMap3D(gd.ArrayAs[[][]RID.NavigationMap3D](gd.InternalArray(class(self).GetMaps())))
+	return [][]RID.NavigationMap3D(gd.ArrayAs[[][]RID.NavigationMap3D](gd.InternalArray(Advanced().GetMaps())))
 }
 
 /*
@@ -74,7 +74,7 @@ Create a new map.
 */
 func MapCreate() RID.NavigationMap3D { //gd:NavigationServer3D.map_create
 	once.Do(singleton)
-	return RID.NavigationMap3D(class(self).MapCreate())
+	return RID.NavigationMap3D(Advanced().MapCreate())
 }
 
 /*
@@ -82,7 +82,7 @@ Sets the map active.
 */
 func MapSetActive(mapping RID.NavigationMap3D, active bool) { //gd:NavigationServer3D.map_set_active
 	once.Do(singleton)
-	class(self).MapSetActive(RID.Any(mapping), active)
+	Advanced().MapSetActive(RID.Any(mapping), active)
 }
 
 /*
@@ -90,7 +90,7 @@ Returns [code]true[/code] if the map is active.
 */
 func MapIsActive(mapping RID.NavigationMap3D) bool { //gd:NavigationServer3D.map_is_active
 	once.Do(singleton)
-	return bool(class(self).MapIsActive(RID.Any(mapping)))
+	return bool(Advanced().MapIsActive(RID.Any(mapping)))
 }
 
 /*
@@ -98,7 +98,7 @@ Sets the map up direction.
 */
 func MapSetUp(mapping RID.NavigationMap3D, up Vector3.XYZ) { //gd:NavigationServer3D.map_set_up
 	once.Do(singleton)
-	class(self).MapSetUp(RID.Any(mapping), Vector3.XYZ(up))
+	Advanced().MapSetUp(RID.Any(mapping), Vector3.XYZ(up))
 }
 
 /*
@@ -106,7 +106,7 @@ Returns the map's up direction.
 */
 func MapGetUp(mapping RID.NavigationMap3D) Vector3.XYZ { //gd:NavigationServer3D.map_get_up
 	once.Do(singleton)
-	return Vector3.XYZ(class(self).MapGetUp(RID.Any(mapping)))
+	return Vector3.XYZ(Advanced().MapGetUp(RID.Any(mapping)))
 }
 
 /*
@@ -114,7 +114,7 @@ Sets the map cell size used to rasterize the navigation mesh vertices on the XZ 
 */
 func MapSetCellSize(mapping RID.NavigationMap3D, cell_size Float.X) { //gd:NavigationServer3D.map_set_cell_size
 	once.Do(singleton)
-	class(self).MapSetCellSize(RID.Any(mapping), float64(cell_size))
+	Advanced().MapSetCellSize(RID.Any(mapping), float64(cell_size))
 }
 
 /*
@@ -122,7 +122,7 @@ Returns the map cell size used to rasterize the navigation mesh vertices on the 
 */
 func MapGetCellSize(mapping RID.NavigationMap3D) Float.X { //gd:NavigationServer3D.map_get_cell_size
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).MapGetCellSize(RID.Any(mapping))))
+	return Float.X(Float.X(Advanced().MapGetCellSize(RID.Any(mapping))))
 }
 
 /*
@@ -130,7 +130,7 @@ Sets the map cell height used to rasterize the navigation mesh vertices on the Y
 */
 func MapSetCellHeight(mapping RID.NavigationMap3D, cell_height Float.X) { //gd:NavigationServer3D.map_set_cell_height
 	once.Do(singleton)
-	class(self).MapSetCellHeight(RID.Any(mapping), float64(cell_height))
+	Advanced().MapSetCellHeight(RID.Any(mapping), float64(cell_height))
 }
 
 /*
@@ -138,7 +138,7 @@ Returns the map cell height used to rasterize the navigation mesh vertices on th
 */
 func MapGetCellHeight(mapping RID.NavigationMap3D) Float.X { //gd:NavigationServer3D.map_get_cell_height
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).MapGetCellHeight(RID.Any(mapping))))
+	return Float.X(Float.X(Advanced().MapGetCellHeight(RID.Any(mapping))))
 }
 
 /*
@@ -146,7 +146,7 @@ Set the map's internal merge rasterizer cell scale used to control merging sensi
 */
 func MapSetMergeRasterizerCellScale(mapping RID.NavigationMap3D, scale Float.X) { //gd:NavigationServer3D.map_set_merge_rasterizer_cell_scale
 	once.Do(singleton)
-	class(self).MapSetMergeRasterizerCellScale(RID.Any(mapping), float64(scale))
+	Advanced().MapSetMergeRasterizerCellScale(RID.Any(mapping), float64(scale))
 }
 
 /*
@@ -154,7 +154,7 @@ Returns map's internal merge rasterizer cell scale.
 */
 func MapGetMergeRasterizerCellScale(mapping RID.NavigationMap3D) Float.X { //gd:NavigationServer3D.map_get_merge_rasterizer_cell_scale
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).MapGetMergeRasterizerCellScale(RID.Any(mapping))))
+	return Float.X(Float.X(Advanced().MapGetMergeRasterizerCellScale(RID.Any(mapping))))
 }
 
 /*
@@ -162,7 +162,7 @@ Set the navigation [param map] edge connection use. If [param enabled] is [code]
 */
 func MapSetUseEdgeConnections(mapping RID.NavigationMap3D, enabled bool) { //gd:NavigationServer3D.map_set_use_edge_connections
 	once.Do(singleton)
-	class(self).MapSetUseEdgeConnections(RID.Any(mapping), enabled)
+	Advanced().MapSetUseEdgeConnections(RID.Any(mapping), enabled)
 }
 
 /*
@@ -170,7 +170,7 @@ Returns [code]true[/code] if the navigation [param map] allows navigation region
 */
 func MapGetUseEdgeConnections(mapping RID.NavigationMap3D) bool { //gd:NavigationServer3D.map_get_use_edge_connections
 	once.Do(singleton)
-	return bool(class(self).MapGetUseEdgeConnections(RID.Any(mapping)))
+	return bool(Advanced().MapGetUseEdgeConnections(RID.Any(mapping)))
 }
 
 /*
@@ -178,7 +178,7 @@ Set the map edge connection margin used to weld the compatible region edges.
 */
 func MapSetEdgeConnectionMargin(mapping RID.NavigationMap3D, margin Float.X) { //gd:NavigationServer3D.map_set_edge_connection_margin
 	once.Do(singleton)
-	class(self).MapSetEdgeConnectionMargin(RID.Any(mapping), float64(margin))
+	Advanced().MapSetEdgeConnectionMargin(RID.Any(mapping), float64(margin))
 }
 
 /*
@@ -186,7 +186,7 @@ Returns the edge connection margin of the map. This distance is the minimum vert
 */
 func MapGetEdgeConnectionMargin(mapping RID.NavigationMap3D) Float.X { //gd:NavigationServer3D.map_get_edge_connection_margin
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).MapGetEdgeConnectionMargin(RID.Any(mapping))))
+	return Float.X(Float.X(Advanced().MapGetEdgeConnectionMargin(RID.Any(mapping))))
 }
 
 /*
@@ -194,7 +194,7 @@ Set the map's link connection radius used to connect links to navigation polygon
 */
 func MapSetLinkConnectionRadius(mapping RID.NavigationMap3D, radius Float.X) { //gd:NavigationServer3D.map_set_link_connection_radius
 	once.Do(singleton)
-	class(self).MapSetLinkConnectionRadius(RID.Any(mapping), float64(radius))
+	Advanced().MapSetLinkConnectionRadius(RID.Any(mapping), float64(radius))
 }
 
 /*
@@ -202,7 +202,7 @@ Returns the link connection radius of the map. This distance is the maximum rang
 */
 func MapGetLinkConnectionRadius(mapping RID.NavigationMap3D) Float.X { //gd:NavigationServer3D.map_get_link_connection_radius
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).MapGetLinkConnectionRadius(RID.Any(mapping))))
+	return Float.X(Float.X(Advanced().MapGetLinkConnectionRadius(RID.Any(mapping))))
 }
 
 /*
@@ -210,16 +210,33 @@ Returns the navigation path to reach the destination from the origin. [param nav
 */
 func MapGetPath(mapping RID.NavigationMap3D, origin Vector3.XYZ, destination Vector3.XYZ, optimize bool) []Vector3.XYZ { //gd:NavigationServer3D.map_get_path
 	once.Do(singleton)
-	return []Vector3.XYZ(slices.Collect(class(self).MapGetPath(RID.Any(mapping), Vector3.XYZ(origin), Vector3.XYZ(destination), optimize, int64(1)).Values()))
+	return []Vector3.XYZ(slices.Collect(Advanced().MapGetPath(RID.Any(mapping), Vector3.XYZ(origin), Vector3.XYZ(destination), optimize, int64(1)).Values()))
+}
+
+/*
+Returns the navigation path to reach the destination from the origin. [param navigation_layers] is a bitmask of all region navigation layers that are allowed to be in the path.
+*/
+func MapGetPathExpanded(mapping RID.NavigationMap3D, origin Vector3.XYZ, destination Vector3.XYZ, optimize bool, navigation_layers int) []Vector3.XYZ { //gd:NavigationServer3D.map_get_path
+	once.Do(singleton)
+	return []Vector3.XYZ(slices.Collect(Advanced().MapGetPath(RID.Any(mapping), Vector3.XYZ(origin), Vector3.XYZ(destination), optimize, int64(navigation_layers)).Values()))
 }
 
 /*
 Returns the navigation mesh surface point closest to the provided [param start] and [param end] segment on the navigation [param map].
 If [param use_collision] is [code]true[/code], a closest point test is only done when the segment intersects with the navigation mesh surface.
 */
-func MapGetClosestPointToSegment(mapping RID.NavigationMap3D, start Vector3.XYZ, end Vector3.XYZ) Vector3.XYZ { //gd:NavigationServer3D.map_get_closest_point_to_segment
+func MapGetClosestPointToSegment(mapping RID.NavigationMap3D, start Vector3.XYZ, end Vector3.XYZ, use_collision bool) Vector3.XYZ { //gd:NavigationServer3D.map_get_closest_point_to_segment
 	once.Do(singleton)
-	return Vector3.XYZ(class(self).MapGetClosestPointToSegment(RID.Any(mapping), Vector3.XYZ(start), Vector3.XYZ(end), false))
+	return Vector3.XYZ(Advanced().MapGetClosestPointToSegment(RID.Any(mapping), Vector3.XYZ(start), Vector3.XYZ(end), use_collision))
+}
+
+/*
+Returns the navigation mesh surface point closest to the provided [param start] and [param end] segment on the navigation [param map].
+If [param use_collision] is [code]true[/code], a closest point test is only done when the segment intersects with the navigation mesh surface.
+*/
+func MapGetClosestPointToSegmentExpanded(mapping RID.NavigationMap3D, start Vector3.XYZ, end Vector3.XYZ, use_collision bool) Vector3.XYZ { //gd:NavigationServer3D.map_get_closest_point_to_segment
+	once.Do(singleton)
+	return Vector3.XYZ(Advanced().MapGetClosestPointToSegment(RID.Any(mapping), Vector3.XYZ(start), Vector3.XYZ(end), use_collision))
 }
 
 /*
@@ -227,7 +244,7 @@ Returns the navigation mesh surface point closest to the provided [param to_poin
 */
 func MapGetClosestPoint(mapping RID.NavigationMap3D, to_point Vector3.XYZ) Vector3.XYZ { //gd:NavigationServer3D.map_get_closest_point
 	once.Do(singleton)
-	return Vector3.XYZ(class(self).MapGetClosestPoint(RID.Any(mapping), Vector3.XYZ(to_point)))
+	return Vector3.XYZ(Advanced().MapGetClosestPoint(RID.Any(mapping), Vector3.XYZ(to_point)))
 }
 
 /*
@@ -235,7 +252,7 @@ Returns the navigation mesh surface normal closest to the provided [param to_poi
 */
 func MapGetClosestPointNormal(mapping RID.NavigationMap3D, to_point Vector3.XYZ) Vector3.XYZ { //gd:NavigationServer3D.map_get_closest_point_normal
 	once.Do(singleton)
-	return Vector3.XYZ(class(self).MapGetClosestPointNormal(RID.Any(mapping), Vector3.XYZ(to_point)))
+	return Vector3.XYZ(Advanced().MapGetClosestPointNormal(RID.Any(mapping), Vector3.XYZ(to_point)))
 }
 
 /*
@@ -243,7 +260,7 @@ Returns the owner region RID for the navigation mesh surface point closest to th
 */
 func MapGetClosestPointOwner(mapping RID.NavigationMap3D, to_point Vector3.XYZ) RID.NavigationRegion3D { //gd:NavigationServer3D.map_get_closest_point_owner
 	once.Do(singleton)
-	return RID.NavigationRegion3D(class(self).MapGetClosestPointOwner(RID.Any(mapping), Vector3.XYZ(to_point)))
+	return RID.NavigationRegion3D(Advanced().MapGetClosestPointOwner(RID.Any(mapping), Vector3.XYZ(to_point)))
 }
 
 /*
@@ -251,7 +268,7 @@ Returns all navigation link [RID]s that are currently assigned to the requested 
 */
 func MapGetLinks(mapping RID.NavigationMap3D) [][]RID.NavigationLink3D { //gd:NavigationServer3D.map_get_links
 	once.Do(singleton)
-	return [][]RID.NavigationLink3D(gd.ArrayAs[[][]RID.NavigationLink3D](gd.InternalArray(class(self).MapGetLinks(RID.Any(mapping)))))
+	return [][]RID.NavigationLink3D(gd.ArrayAs[[][]RID.NavigationLink3D](gd.InternalArray(Advanced().MapGetLinks(RID.Any(mapping)))))
 }
 
 /*
@@ -259,7 +276,7 @@ Returns all navigation regions [RID]s that are currently assigned to the request
 */
 func MapGetRegions(mapping RID.NavigationMap3D) [][]RID.NavigationRegion3D { //gd:NavigationServer3D.map_get_regions
 	once.Do(singleton)
-	return [][]RID.NavigationRegion3D(gd.ArrayAs[[][]RID.NavigationRegion3D](gd.InternalArray(class(self).MapGetRegions(RID.Any(mapping)))))
+	return [][]RID.NavigationRegion3D(gd.ArrayAs[[][]RID.NavigationRegion3D](gd.InternalArray(Advanced().MapGetRegions(RID.Any(mapping)))))
 }
 
 /*
@@ -267,7 +284,7 @@ Returns all navigation agents [RID]s that are currently assigned to the requeste
 */
 func MapGetAgents(mapping RID.NavigationMap3D) [][]RID.NavigationAgent3D { //gd:NavigationServer3D.map_get_agents
 	once.Do(singleton)
-	return [][]RID.NavigationAgent3D(gd.ArrayAs[[][]RID.NavigationAgent3D](gd.InternalArray(class(self).MapGetAgents(RID.Any(mapping)))))
+	return [][]RID.NavigationAgent3D(gd.ArrayAs[[][]RID.NavigationAgent3D](gd.InternalArray(Advanced().MapGetAgents(RID.Any(mapping)))))
 }
 
 /*
@@ -275,7 +292,7 @@ Returns all navigation obstacle [RID]s that are currently assigned to the reques
 */
 func MapGetObstacles(mapping RID.NavigationMap3D) [][]RID.NavigationObstacle3D { //gd:NavigationServer3D.map_get_obstacles
 	once.Do(singleton)
-	return [][]RID.NavigationObstacle3D(gd.ArrayAs[[][]RID.NavigationObstacle3D](gd.InternalArray(class(self).MapGetObstacles(RID.Any(mapping)))))
+	return [][]RID.NavigationObstacle3D(gd.ArrayAs[[][]RID.NavigationObstacle3D](gd.InternalArray(Advanced().MapGetObstacles(RID.Any(mapping)))))
 }
 
 /*
@@ -286,7 +303,7 @@ Avoidance processing and dispatch of the [code]safe_velocity[/code] signals is u
 */
 func MapForceUpdate(mapping RID.NavigationMap3D) { //gd:NavigationServer3D.map_force_update
 	once.Do(singleton)
-	class(self).MapForceUpdate(RID.Any(mapping))
+	Advanced().MapForceUpdate(RID.Any(mapping))
 }
 
 /*
@@ -295,7 +312,7 @@ Returns the current iteration id of the navigation map. Every time the navigatio
 */
 func MapGetIterationId(mapping RID.NavigationMap3D) int { //gd:NavigationServer3D.map_get_iteration_id
 	once.Do(singleton)
-	return int(int(class(self).MapGetIterationId(RID.Any(mapping))))
+	return int(int(Advanced().MapGetIterationId(RID.Any(mapping))))
 }
 
 /*
@@ -303,7 +320,7 @@ If [param enabled] is [code]true[/code] the [param map] synchronization uses an 
 */
 func MapSetUseAsyncIterations(mapping RID.NavigationMap3D, enabled bool) { //gd:NavigationServer3D.map_set_use_async_iterations
 	once.Do(singleton)
-	class(self).MapSetUseAsyncIterations(RID.Any(mapping), enabled)
+	Advanced().MapSetUseAsyncIterations(RID.Any(mapping), enabled)
 }
 
 /*
@@ -311,7 +328,7 @@ Returns [code]true[/code] if the [param map] synchronization uses an async proce
 */
 func MapGetUseAsyncIterations(mapping RID.NavigationMap3D) bool { //gd:NavigationServer3D.map_get_use_async_iterations
 	once.Do(singleton)
-	return bool(class(self).MapGetUseAsyncIterations(RID.Any(mapping)))
+	return bool(Advanced().MapGetUseAsyncIterations(RID.Any(mapping)))
 }
 
 /*
@@ -321,15 +338,23 @@ If [param uniformly] is [code]false[/code], just a random region and a random po
 */
 func MapGetRandomPoint(mapping RID.NavigationMap3D, navigation_layers int, uniformly bool) Vector3.XYZ { //gd:NavigationServer3D.map_get_random_point
 	once.Do(singleton)
-	return Vector3.XYZ(class(self).MapGetRandomPoint(RID.Any(mapping), int64(navigation_layers), uniformly))
+	return Vector3.XYZ(Advanced().MapGetRandomPoint(RID.Any(mapping), int64(navigation_layers), uniformly))
 }
 
 /*
 Queries a path in a given navigation map. Start and target position and other parameters are defined through [NavigationPathQueryParameters3D]. Updates the provided [NavigationPathQueryResult3D] result object with the path among other results requested by the query. After the process is finished the optional [param callback] will be called.
 */
-func QueryPath(parameters [1]gdclass.NavigationPathQueryParameters3D, result [1]gdclass.NavigationPathQueryResult3D) { //gd:NavigationServer3D.query_path
+func QueryPath(parameters [1]gdclass.NavigationPathQueryParameters3D, result [1]gdclass.NavigationPathQueryResult3D, callback func()) { //gd:NavigationServer3D.query_path
 	once.Do(singleton)
-	class(self).QueryPath(parameters, result, Callable.New(Callable.Nil))
+	Advanced().QueryPath(parameters, result, Callable.New(callback))
+}
+
+/*
+Queries a path in a given navigation map. Start and target position and other parameters are defined through [NavigationPathQueryParameters3D]. Updates the provided [NavigationPathQueryResult3D] result object with the path among other results requested by the query. After the process is finished the optional [param callback] will be called.
+*/
+func QueryPathExpanded(parameters [1]gdclass.NavigationPathQueryParameters3D, result [1]gdclass.NavigationPathQueryResult3D, callback func()) { //gd:NavigationServer3D.query_path
+	once.Do(singleton)
+	Advanced().QueryPath(parameters, result, Callable.New(callback))
 }
 
 /*
@@ -337,7 +362,7 @@ Creates a new region.
 */
 func RegionCreate() RID.NavigationRegion3D { //gd:NavigationServer3D.region_create
 	once.Do(singleton)
-	return RID.NavigationRegion3D(class(self).RegionCreate())
+	return RID.NavigationRegion3D(Advanced().RegionCreate())
 }
 
 /*
@@ -345,7 +370,7 @@ If [param enabled] is [code]true[/code], the specified [param region] will contr
 */
 func RegionSetEnabled(region RID.NavigationRegion3D, enabled bool) { //gd:NavigationServer3D.region_set_enabled
 	once.Do(singleton)
-	class(self).RegionSetEnabled(RID.Any(region), enabled)
+	Advanced().RegionSetEnabled(RID.Any(region), enabled)
 }
 
 /*
@@ -353,7 +378,7 @@ Returns [code]true[/code] if the specified [param region] is enabled.
 */
 func RegionGetEnabled(region RID.NavigationRegion3D) bool { //gd:NavigationServer3D.region_get_enabled
 	once.Do(singleton)
-	return bool(class(self).RegionGetEnabled(RID.Any(region)))
+	return bool(Advanced().RegionGetEnabled(RID.Any(region)))
 }
 
 /*
@@ -361,7 +386,7 @@ If [param enabled] is [code]true[/code], the navigation [param region] will use 
 */
 func RegionSetUseEdgeConnections(region RID.NavigationRegion3D, enabled bool) { //gd:NavigationServer3D.region_set_use_edge_connections
 	once.Do(singleton)
-	class(self).RegionSetUseEdgeConnections(RID.Any(region), enabled)
+	Advanced().RegionSetUseEdgeConnections(RID.Any(region), enabled)
 }
 
 /*
@@ -369,7 +394,7 @@ Returns [code]true[/code] if the navigation [param region] is set to use edge co
 */
 func RegionGetUseEdgeConnections(region RID.NavigationRegion3D) bool { //gd:NavigationServer3D.region_get_use_edge_connections
 	once.Do(singleton)
-	return bool(class(self).RegionGetUseEdgeConnections(RID.Any(region)))
+	return bool(Advanced().RegionGetUseEdgeConnections(RID.Any(region)))
 }
 
 /*
@@ -377,7 +402,7 @@ Sets the [param enter_cost] for this [param region].
 */
 func RegionSetEnterCost(region RID.NavigationRegion3D, enter_cost Float.X) { //gd:NavigationServer3D.region_set_enter_cost
 	once.Do(singleton)
-	class(self).RegionSetEnterCost(RID.Any(region), float64(enter_cost))
+	Advanced().RegionSetEnterCost(RID.Any(region), float64(enter_cost))
 }
 
 /*
@@ -385,7 +410,7 @@ Returns the enter cost of this [param region].
 */
 func RegionGetEnterCost(region RID.NavigationRegion3D) Float.X { //gd:NavigationServer3D.region_get_enter_cost
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).RegionGetEnterCost(RID.Any(region))))
+	return Float.X(Float.X(Advanced().RegionGetEnterCost(RID.Any(region))))
 }
 
 /*
@@ -393,7 +418,7 @@ Sets the [param travel_cost] for this [param region].
 */
 func RegionSetTravelCost(region RID.NavigationRegion3D, travel_cost Float.X) { //gd:NavigationServer3D.region_set_travel_cost
 	once.Do(singleton)
-	class(self).RegionSetTravelCost(RID.Any(region), float64(travel_cost))
+	Advanced().RegionSetTravelCost(RID.Any(region), float64(travel_cost))
 }
 
 /*
@@ -401,7 +426,7 @@ Returns the travel cost of this [param region].
 */
 func RegionGetTravelCost(region RID.NavigationRegion3D) Float.X { //gd:NavigationServer3D.region_get_travel_cost
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).RegionGetTravelCost(RID.Any(region))))
+	return Float.X(Float.X(Advanced().RegionGetTravelCost(RID.Any(region))))
 }
 
 /*
@@ -409,7 +434,7 @@ Set the [code]ObjectID[/code] of the object which manages this region.
 */
 func RegionSetOwnerId(region RID.NavigationRegion3D, owner_id int) { //gd:NavigationServer3D.region_set_owner_id
 	once.Do(singleton)
-	class(self).RegionSetOwnerId(RID.Any(region), int64(owner_id))
+	Advanced().RegionSetOwnerId(RID.Any(region), int64(owner_id))
 }
 
 /*
@@ -417,7 +442,7 @@ Returns the [code]ObjectID[/code] of the object which manages this region.
 */
 func RegionGetOwnerId(region RID.NavigationRegion3D) int { //gd:NavigationServer3D.region_get_owner_id
 	once.Do(singleton)
-	return int(int(class(self).RegionGetOwnerId(RID.Any(region))))
+	return int(int(Advanced().RegionGetOwnerId(RID.Any(region))))
 }
 
 /*
@@ -427,7 +452,7 @@ If multiple navigation meshes have positions at equal distance the navigation re
 */
 func RegionOwnsPoint(region RID.NavigationRegion3D, point Vector3.XYZ) bool { //gd:NavigationServer3D.region_owns_point
 	once.Do(singleton)
-	return bool(class(self).RegionOwnsPoint(RID.Any(region), Vector3.XYZ(point)))
+	return bool(Advanced().RegionOwnsPoint(RID.Any(region), Vector3.XYZ(point)))
 }
 
 /*
@@ -435,7 +460,7 @@ Sets the map for the region.
 */
 func RegionSetMap(region RID.NavigationRegion3D, mapping RID.NavigationMap3D) { //gd:NavigationServer3D.region_set_map
 	once.Do(singleton)
-	class(self).RegionSetMap(RID.Any(region), RID.Any(mapping))
+	Advanced().RegionSetMap(RID.Any(region), RID.Any(mapping))
 }
 
 /*
@@ -443,7 +468,7 @@ Returns the navigation map [RID] the requested [param region] is currently assig
 */
 func RegionGetMap(region RID.NavigationRegion3D) RID.NavigationMap3D { //gd:NavigationServer3D.region_get_map
 	once.Do(singleton)
-	return RID.NavigationMap3D(class(self).RegionGetMap(RID.Any(region)))
+	return RID.NavigationMap3D(Advanced().RegionGetMap(RID.Any(region)))
 }
 
 /*
@@ -451,7 +476,7 @@ Set the region's navigation layers. This allows selecting regions from a path re
 */
 func RegionSetNavigationLayers(region RID.NavigationRegion3D, navigation_layers int) { //gd:NavigationServer3D.region_set_navigation_layers
 	once.Do(singleton)
-	class(self).RegionSetNavigationLayers(RID.Any(region), int64(navigation_layers))
+	Advanced().RegionSetNavigationLayers(RID.Any(region), int64(navigation_layers))
 }
 
 /*
@@ -459,7 +484,7 @@ Returns the region's navigation layers.
 */
 func RegionGetNavigationLayers(region RID.NavigationRegion3D) int { //gd:NavigationServer3D.region_get_navigation_layers
 	once.Do(singleton)
-	return int(int(class(self).RegionGetNavigationLayers(RID.Any(region))))
+	return int(int(Advanced().RegionGetNavigationLayers(RID.Any(region))))
 }
 
 /*
@@ -467,7 +492,7 @@ Sets the global transformation for the region.
 */
 func RegionSetTransform(region RID.NavigationRegion3D, transform Transform3D.BasisOrigin) { //gd:NavigationServer3D.region_set_transform
 	once.Do(singleton)
-	class(self).RegionSetTransform(RID.Any(region), Transform3D.BasisOrigin(transform))
+	Advanced().RegionSetTransform(RID.Any(region), Transform3D.BasisOrigin(transform))
 }
 
 /*
@@ -475,7 +500,7 @@ Returns the global transformation of this [param region].
 */
 func RegionGetTransform(region RID.NavigationRegion3D) Transform3D.BasisOrigin { //gd:NavigationServer3D.region_get_transform
 	once.Do(singleton)
-	return Transform3D.BasisOrigin(class(self).RegionGetTransform(RID.Any(region)))
+	return Transform3D.BasisOrigin(Advanced().RegionGetTransform(RID.Any(region)))
 }
 
 /*
@@ -483,7 +508,7 @@ Sets the navigation mesh for the region.
 */
 func RegionSetNavigationMesh(region RID.NavigationRegion3D, navigation_mesh [1]gdclass.NavigationMesh) { //gd:NavigationServer3D.region_set_navigation_mesh
 	once.Do(singleton)
-	class(self).RegionSetNavigationMesh(RID.Any(region), navigation_mesh)
+	Advanced().RegionSetNavigationMesh(RID.Any(region), navigation_mesh)
 }
 
 /*
@@ -491,7 +516,7 @@ Bakes the [param navigation_mesh] with bake source geometry collected starting f
 */
 func RegionBakeNavigationMesh(navigation_mesh [1]gdclass.NavigationMesh, root_node [1]gdclass.Node) { //gd:NavigationServer3D.region_bake_navigation_mesh
 	once.Do(singleton)
-	class(self).RegionBakeNavigationMesh(navigation_mesh, root_node)
+	Advanced().RegionBakeNavigationMesh(navigation_mesh, root_node)
 }
 
 /*
@@ -499,7 +524,7 @@ Returns how many connections this [param region] has with other regions in the m
 */
 func RegionGetConnectionsCount(region RID.NavigationRegion3D) int { //gd:NavigationServer3D.region_get_connections_count
 	once.Do(singleton)
-	return int(int(class(self).RegionGetConnectionsCount(RID.Any(region))))
+	return int(int(Advanced().RegionGetConnectionsCount(RID.Any(region))))
 }
 
 /*
@@ -507,7 +532,7 @@ Returns the starting point of a connection door. [param connection] is an index 
 */
 func RegionGetConnectionPathwayStart(region RID.NavigationRegion3D, connection int) Vector3.XYZ { //gd:NavigationServer3D.region_get_connection_pathway_start
 	once.Do(singleton)
-	return Vector3.XYZ(class(self).RegionGetConnectionPathwayStart(RID.Any(region), int64(connection)))
+	return Vector3.XYZ(Advanced().RegionGetConnectionPathwayStart(RID.Any(region), int64(connection)))
 }
 
 /*
@@ -515,16 +540,25 @@ Returns the ending point of a connection door. [param connection] is an index be
 */
 func RegionGetConnectionPathwayEnd(region RID.NavigationRegion3D, connection int) Vector3.XYZ { //gd:NavigationServer3D.region_get_connection_pathway_end
 	once.Do(singleton)
-	return Vector3.XYZ(class(self).RegionGetConnectionPathwayEnd(RID.Any(region), int64(connection)))
+	return Vector3.XYZ(Advanced().RegionGetConnectionPathwayEnd(RID.Any(region), int64(connection)))
 }
 
 /*
 Returns the navigation mesh surface point closest to the provided [param start] and [param end] segment on the navigation [param region].
 If [param use_collision] is [code]true[/code], a closest point test is only done when the segment intersects with the navigation mesh surface.
 */
-func RegionGetClosestPointToSegment(region RID.NavigationRegion3D, start Vector3.XYZ, end Vector3.XYZ) Vector3.XYZ { //gd:NavigationServer3D.region_get_closest_point_to_segment
+func RegionGetClosestPointToSegment(region RID.NavigationRegion3D, start Vector3.XYZ, end Vector3.XYZ, use_collision bool) Vector3.XYZ { //gd:NavigationServer3D.region_get_closest_point_to_segment
 	once.Do(singleton)
-	return Vector3.XYZ(class(self).RegionGetClosestPointToSegment(RID.Any(region), Vector3.XYZ(start), Vector3.XYZ(end), false))
+	return Vector3.XYZ(Advanced().RegionGetClosestPointToSegment(RID.Any(region), Vector3.XYZ(start), Vector3.XYZ(end), use_collision))
+}
+
+/*
+Returns the navigation mesh surface point closest to the provided [param start] and [param end] segment on the navigation [param region].
+If [param use_collision] is [code]true[/code], a closest point test is only done when the segment intersects with the navigation mesh surface.
+*/
+func RegionGetClosestPointToSegmentExpanded(region RID.NavigationRegion3D, start Vector3.XYZ, end Vector3.XYZ, use_collision bool) Vector3.XYZ { //gd:NavigationServer3D.region_get_closest_point_to_segment
+	once.Do(singleton)
+	return Vector3.XYZ(Advanced().RegionGetClosestPointToSegment(RID.Any(region), Vector3.XYZ(start), Vector3.XYZ(end), use_collision))
 }
 
 /*
@@ -532,7 +566,7 @@ Returns the navigation mesh surface point closest to the provided [param to_poin
 */
 func RegionGetClosestPoint(region RID.NavigationRegion3D, to_point Vector3.XYZ) Vector3.XYZ { //gd:NavigationServer3D.region_get_closest_point
 	once.Do(singleton)
-	return Vector3.XYZ(class(self).RegionGetClosestPoint(RID.Any(region), Vector3.XYZ(to_point)))
+	return Vector3.XYZ(Advanced().RegionGetClosestPoint(RID.Any(region), Vector3.XYZ(to_point)))
 }
 
 /*
@@ -540,7 +574,7 @@ Returns the navigation mesh surface normal closest to the provided [param to_poi
 */
 func RegionGetClosestPointNormal(region RID.NavigationRegion3D, to_point Vector3.XYZ) Vector3.XYZ { //gd:NavigationServer3D.region_get_closest_point_normal
 	once.Do(singleton)
-	return Vector3.XYZ(class(self).RegionGetClosestPointNormal(RID.Any(region), Vector3.XYZ(to_point)))
+	return Vector3.XYZ(Advanced().RegionGetClosestPointNormal(RID.Any(region), Vector3.XYZ(to_point)))
 }
 
 /*
@@ -550,7 +584,7 @@ If [param uniformly] is [code]false[/code], just a random polygon and face is pi
 */
 func RegionGetRandomPoint(region RID.NavigationRegion3D, navigation_layers int, uniformly bool) Vector3.XYZ { //gd:NavigationServer3D.region_get_random_point
 	once.Do(singleton)
-	return Vector3.XYZ(class(self).RegionGetRandomPoint(RID.Any(region), int64(navigation_layers), uniformly))
+	return Vector3.XYZ(Advanced().RegionGetRandomPoint(RID.Any(region), int64(navigation_layers), uniformly))
 }
 
 /*
@@ -558,7 +592,7 @@ Returns the axis-aligned bounding box for the [param region]'s transformed navig
 */
 func RegionGetBounds(region RID.NavigationRegion3D) AABB.PositionSize { //gd:NavigationServer3D.region_get_bounds
 	once.Do(singleton)
-	return AABB.PositionSize(class(self).RegionGetBounds(RID.Any(region)))
+	return AABB.PositionSize(Advanced().RegionGetBounds(RID.Any(region)))
 }
 
 /*
@@ -566,7 +600,7 @@ Create a new link between two positions on a map.
 */
 func LinkCreate() RID.NavigationLink3D { //gd:NavigationServer3D.link_create
 	once.Do(singleton)
-	return RID.NavigationLink3D(class(self).LinkCreate())
+	return RID.NavigationLink3D(Advanced().LinkCreate())
 }
 
 /*
@@ -574,7 +608,7 @@ Sets the navigation map [RID] for the link.
 */
 func LinkSetMap(link RID.NavigationLink3D, mapping RID.NavigationMap3D) { //gd:NavigationServer3D.link_set_map
 	once.Do(singleton)
-	class(self).LinkSetMap(RID.Any(link), RID.Any(mapping))
+	Advanced().LinkSetMap(RID.Any(link), RID.Any(mapping))
 }
 
 /*
@@ -582,7 +616,7 @@ Returns the navigation map [RID] the requested [param link] is currently assigne
 */
 func LinkGetMap(link RID.NavigationLink3D) RID.NavigationMap3D { //gd:NavigationServer3D.link_get_map
 	once.Do(singleton)
-	return RID.NavigationMap3D(class(self).LinkGetMap(RID.Any(link)))
+	return RID.NavigationMap3D(Advanced().LinkGetMap(RID.Any(link)))
 }
 
 /*
@@ -590,7 +624,7 @@ If [param enabled] is [code]true[/code], the specified [param link] will contrib
 */
 func LinkSetEnabled(link RID.NavigationLink3D, enabled bool) { //gd:NavigationServer3D.link_set_enabled
 	once.Do(singleton)
-	class(self).LinkSetEnabled(RID.Any(link), enabled)
+	Advanced().LinkSetEnabled(RID.Any(link), enabled)
 }
 
 /*
@@ -598,7 +632,7 @@ Returns [code]true[/code] if the specified [param link] is enabled.
 */
 func LinkGetEnabled(link RID.NavigationLink3D) bool { //gd:NavigationServer3D.link_get_enabled
 	once.Do(singleton)
-	return bool(class(self).LinkGetEnabled(RID.Any(link)))
+	return bool(Advanced().LinkGetEnabled(RID.Any(link)))
 }
 
 /*
@@ -606,7 +640,7 @@ Sets whether this [param link] can be travelled in both directions.
 */
 func LinkSetBidirectional(link RID.NavigationLink3D, bidirectional bool) { //gd:NavigationServer3D.link_set_bidirectional
 	once.Do(singleton)
-	class(self).LinkSetBidirectional(RID.Any(link), bidirectional)
+	Advanced().LinkSetBidirectional(RID.Any(link), bidirectional)
 }
 
 /*
@@ -614,7 +648,7 @@ Returns whether this [param link] can be travelled in both directions.
 */
 func LinkIsBidirectional(link RID.NavigationLink3D) bool { //gd:NavigationServer3D.link_is_bidirectional
 	once.Do(singleton)
-	return bool(class(self).LinkIsBidirectional(RID.Any(link)))
+	return bool(Advanced().LinkIsBidirectional(RID.Any(link)))
 }
 
 /*
@@ -622,7 +656,7 @@ Set the links's navigation layers. This allows selecting links from a path reque
 */
 func LinkSetNavigationLayers(link RID.NavigationLink3D, navigation_layers int) { //gd:NavigationServer3D.link_set_navigation_layers
 	once.Do(singleton)
-	class(self).LinkSetNavigationLayers(RID.Any(link), int64(navigation_layers))
+	Advanced().LinkSetNavigationLayers(RID.Any(link), int64(navigation_layers))
 }
 
 /*
@@ -630,7 +664,7 @@ Returns the navigation layers for this [param link].
 */
 func LinkGetNavigationLayers(link RID.NavigationLink3D) int { //gd:NavigationServer3D.link_get_navigation_layers
 	once.Do(singleton)
-	return int(int(class(self).LinkGetNavigationLayers(RID.Any(link))))
+	return int(int(Advanced().LinkGetNavigationLayers(RID.Any(link))))
 }
 
 /*
@@ -638,7 +672,7 @@ Sets the entry position for this [param link].
 */
 func LinkSetStartPosition(link RID.NavigationLink3D, position Vector3.XYZ) { //gd:NavigationServer3D.link_set_start_position
 	once.Do(singleton)
-	class(self).LinkSetStartPosition(RID.Any(link), Vector3.XYZ(position))
+	Advanced().LinkSetStartPosition(RID.Any(link), Vector3.XYZ(position))
 }
 
 /*
@@ -646,7 +680,7 @@ Returns the starting position of this [param link].
 */
 func LinkGetStartPosition(link RID.NavigationLink3D) Vector3.XYZ { //gd:NavigationServer3D.link_get_start_position
 	once.Do(singleton)
-	return Vector3.XYZ(class(self).LinkGetStartPosition(RID.Any(link)))
+	return Vector3.XYZ(Advanced().LinkGetStartPosition(RID.Any(link)))
 }
 
 /*
@@ -654,7 +688,7 @@ Sets the exit position for the [param link].
 */
 func LinkSetEndPosition(link RID.NavigationLink3D, position Vector3.XYZ) { //gd:NavigationServer3D.link_set_end_position
 	once.Do(singleton)
-	class(self).LinkSetEndPosition(RID.Any(link), Vector3.XYZ(position))
+	Advanced().LinkSetEndPosition(RID.Any(link), Vector3.XYZ(position))
 }
 
 /*
@@ -662,7 +696,7 @@ Returns the ending position of this [param link].
 */
 func LinkGetEndPosition(link RID.NavigationLink3D) Vector3.XYZ { //gd:NavigationServer3D.link_get_end_position
 	once.Do(singleton)
-	return Vector3.XYZ(class(self).LinkGetEndPosition(RID.Any(link)))
+	return Vector3.XYZ(Advanced().LinkGetEndPosition(RID.Any(link)))
 }
 
 /*
@@ -670,7 +704,7 @@ Sets the [param enter_cost] for this [param link].
 */
 func LinkSetEnterCost(link RID.NavigationLink3D, enter_cost Float.X) { //gd:NavigationServer3D.link_set_enter_cost
 	once.Do(singleton)
-	class(self).LinkSetEnterCost(RID.Any(link), float64(enter_cost))
+	Advanced().LinkSetEnterCost(RID.Any(link), float64(enter_cost))
 }
 
 /*
@@ -678,7 +712,7 @@ Returns the enter cost of this [param link].
 */
 func LinkGetEnterCost(link RID.NavigationLink3D) Float.X { //gd:NavigationServer3D.link_get_enter_cost
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).LinkGetEnterCost(RID.Any(link))))
+	return Float.X(Float.X(Advanced().LinkGetEnterCost(RID.Any(link))))
 }
 
 /*
@@ -686,7 +720,7 @@ Sets the [param travel_cost] for this [param link].
 */
 func LinkSetTravelCost(link RID.NavigationLink3D, travel_cost Float.X) { //gd:NavigationServer3D.link_set_travel_cost
 	once.Do(singleton)
-	class(self).LinkSetTravelCost(RID.Any(link), float64(travel_cost))
+	Advanced().LinkSetTravelCost(RID.Any(link), float64(travel_cost))
 }
 
 /*
@@ -694,7 +728,7 @@ Returns the travel cost of this [param link].
 */
 func LinkGetTravelCost(link RID.NavigationLink3D) Float.X { //gd:NavigationServer3D.link_get_travel_cost
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).LinkGetTravelCost(RID.Any(link))))
+	return Float.X(Float.X(Advanced().LinkGetTravelCost(RID.Any(link))))
 }
 
 /*
@@ -702,7 +736,7 @@ Set the [code]ObjectID[/code] of the object which manages this link.
 */
 func LinkSetOwnerId(link RID.NavigationLink3D, owner_id int) { //gd:NavigationServer3D.link_set_owner_id
 	once.Do(singleton)
-	class(self).LinkSetOwnerId(RID.Any(link), int64(owner_id))
+	Advanced().LinkSetOwnerId(RID.Any(link), int64(owner_id))
 }
 
 /*
@@ -710,7 +744,7 @@ Returns the [code]ObjectID[/code] of the object which manages this link.
 */
 func LinkGetOwnerId(link RID.NavigationLink3D) int { //gd:NavigationServer3D.link_get_owner_id
 	once.Do(singleton)
-	return int(int(class(self).LinkGetOwnerId(RID.Any(link))))
+	return int(int(Advanced().LinkGetOwnerId(RID.Any(link))))
 }
 
 /*
@@ -718,7 +752,7 @@ Creates the agent.
 */
 func AgentCreate() RID.NavigationAgent3D { //gd:NavigationServer3D.agent_create
 	once.Do(singleton)
-	return RID.NavigationAgent3D(class(self).AgentCreate())
+	return RID.NavigationAgent3D(Advanced().AgentCreate())
 }
 
 /*
@@ -726,7 +760,7 @@ If [param enabled] is [code]true[/code], the provided [param agent] calculates a
 */
 func AgentSetAvoidanceEnabled(agent RID.NavigationAgent3D, enabled bool) { //gd:NavigationServer3D.agent_set_avoidance_enabled
 	once.Do(singleton)
-	class(self).AgentSetAvoidanceEnabled(RID.Any(agent), enabled)
+	Advanced().AgentSetAvoidanceEnabled(RID.Any(agent), enabled)
 }
 
 /*
@@ -734,7 +768,7 @@ Returns [code]true[/code] if the provided [param agent] has avoidance enabled.
 */
 func AgentGetAvoidanceEnabled(agent RID.NavigationAgent3D) bool { //gd:NavigationServer3D.agent_get_avoidance_enabled
 	once.Do(singleton)
-	return bool(class(self).AgentGetAvoidanceEnabled(RID.Any(agent)))
+	return bool(Advanced().AgentGetAvoidanceEnabled(RID.Any(agent)))
 }
 
 /*
@@ -744,7 +778,7 @@ If [code]false[/code] the agent calculates avoidance velocities in 2D along the 
 */
 func AgentSetUse3dAvoidance(agent RID.NavigationAgent3D, enabled bool) { //gd:NavigationServer3D.agent_set_use_3d_avoidance
 	once.Do(singleton)
-	class(self).AgentSetUse3dAvoidance(RID.Any(agent), enabled)
+	Advanced().AgentSetUse3dAvoidance(RID.Any(agent), enabled)
 }
 
 /*
@@ -752,7 +786,7 @@ Returns [code]true[/code] if the provided [param agent] uses avoidance in 3D spa
 */
 func AgentGetUse3dAvoidance(agent RID.NavigationAgent3D) bool { //gd:NavigationServer3D.agent_get_use_3d_avoidance
 	once.Do(singleton)
-	return bool(class(self).AgentGetUse3dAvoidance(RID.Any(agent)))
+	return bool(Advanced().AgentGetUse3dAvoidance(RID.Any(agent)))
 }
 
 /*
@@ -760,7 +794,7 @@ Puts the agent in the map.
 */
 func AgentSetMap(agent RID.NavigationAgent3D, mapping RID.NavigationMap3D) { //gd:NavigationServer3D.agent_set_map
 	once.Do(singleton)
-	class(self).AgentSetMap(RID.Any(agent), RID.Any(mapping))
+	Advanced().AgentSetMap(RID.Any(agent), RID.Any(mapping))
 }
 
 /*
@@ -768,7 +802,7 @@ Returns the navigation map [RID] the requested [param agent] is currently assign
 */
 func AgentGetMap(agent RID.NavigationAgent3D) RID.NavigationMap3D { //gd:NavigationServer3D.agent_get_map
 	once.Do(singleton)
-	return RID.NavigationMap3D(class(self).AgentGetMap(RID.Any(agent)))
+	return RID.NavigationMap3D(Advanced().AgentGetMap(RID.Any(agent)))
 }
 
 /*
@@ -776,7 +810,7 @@ If [param paused] is [code]true[/code] the specified [param agent] will not be p
 */
 func AgentSetPaused(agent RID.NavigationAgent3D, paused bool) { //gd:NavigationServer3D.agent_set_paused
 	once.Do(singleton)
-	class(self).AgentSetPaused(RID.Any(agent), paused)
+	Advanced().AgentSetPaused(RID.Any(agent), paused)
 }
 
 /*
@@ -784,7 +818,7 @@ Returns [code]true[/code] if the specified [param agent] is paused.
 */
 func AgentGetPaused(agent RID.NavigationAgent3D) bool { //gd:NavigationServer3D.agent_get_paused
 	once.Do(singleton)
-	return bool(class(self).AgentGetPaused(RID.Any(agent)))
+	return bool(Advanced().AgentGetPaused(RID.Any(agent)))
 }
 
 /*
@@ -792,7 +826,7 @@ Sets the maximum distance to other agents this agent takes into account in the n
 */
 func AgentSetNeighborDistance(agent RID.NavigationAgent3D, distance Float.X) { //gd:NavigationServer3D.agent_set_neighbor_distance
 	once.Do(singleton)
-	class(self).AgentSetNeighborDistance(RID.Any(agent), float64(distance))
+	Advanced().AgentSetNeighborDistance(RID.Any(agent), float64(distance))
 }
 
 /*
@@ -800,7 +834,7 @@ Returns the maximum distance to other agents the specified [param agent] takes i
 */
 func AgentGetNeighborDistance(agent RID.NavigationAgent3D) Float.X { //gd:NavigationServer3D.agent_get_neighbor_distance
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).AgentGetNeighborDistance(RID.Any(agent))))
+	return Float.X(Float.X(Advanced().AgentGetNeighborDistance(RID.Any(agent))))
 }
 
 /*
@@ -808,7 +842,7 @@ Sets the maximum number of other agents the agent takes into account in the navi
 */
 func AgentSetMaxNeighbors(agent RID.NavigationAgent3D, count int) { //gd:NavigationServer3D.agent_set_max_neighbors
 	once.Do(singleton)
-	class(self).AgentSetMaxNeighbors(RID.Any(agent), int64(count))
+	Advanced().AgentSetMaxNeighbors(RID.Any(agent), int64(count))
 }
 
 /*
@@ -816,7 +850,7 @@ Returns the maximum number of other agents the specified [param agent] takes int
 */
 func AgentGetMaxNeighbors(agent RID.NavigationAgent3D) int { //gd:NavigationServer3D.agent_get_max_neighbors
 	once.Do(singleton)
-	return int(int(class(self).AgentGetMaxNeighbors(RID.Any(agent))))
+	return int(int(Advanced().AgentGetMaxNeighbors(RID.Any(agent))))
 }
 
 /*
@@ -824,7 +858,7 @@ The minimal amount of time for which the agent's velocities that are computed by
 */
 func AgentSetTimeHorizonAgents(agent RID.NavigationAgent3D, time_horizon Float.X) { //gd:NavigationServer3D.agent_set_time_horizon_agents
 	once.Do(singleton)
-	class(self).AgentSetTimeHorizonAgents(RID.Any(agent), float64(time_horizon))
+	Advanced().AgentSetTimeHorizonAgents(RID.Any(agent), float64(time_horizon))
 }
 
 /*
@@ -832,7 +866,7 @@ Returns the minimal amount of time for which the specified [param agent]'s veloc
 */
 func AgentGetTimeHorizonAgents(agent RID.NavigationAgent3D) Float.X { //gd:NavigationServer3D.agent_get_time_horizon_agents
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).AgentGetTimeHorizonAgents(RID.Any(agent))))
+	return Float.X(Float.X(Advanced().AgentGetTimeHorizonAgents(RID.Any(agent))))
 }
 
 /*
@@ -840,7 +874,7 @@ The minimal amount of time for which the agent's velocities that are computed by
 */
 func AgentSetTimeHorizonObstacles(agent RID.NavigationAgent3D, time_horizon Float.X) { //gd:NavigationServer3D.agent_set_time_horizon_obstacles
 	once.Do(singleton)
-	class(self).AgentSetTimeHorizonObstacles(RID.Any(agent), float64(time_horizon))
+	Advanced().AgentSetTimeHorizonObstacles(RID.Any(agent), float64(time_horizon))
 }
 
 /*
@@ -848,7 +882,7 @@ Returns the minimal amount of time for which the specified [param agent]'s veloc
 */
 func AgentGetTimeHorizonObstacles(agent RID.NavigationAgent3D) Float.X { //gd:NavigationServer3D.agent_get_time_horizon_obstacles
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).AgentGetTimeHorizonObstacles(RID.Any(agent))))
+	return Float.X(Float.X(Advanced().AgentGetTimeHorizonObstacles(RID.Any(agent))))
 }
 
 /*
@@ -856,7 +890,7 @@ Sets the radius of the agent.
 */
 func AgentSetRadius(agent RID.NavigationAgent3D, radius Float.X) { //gd:NavigationServer3D.agent_set_radius
 	once.Do(singleton)
-	class(self).AgentSetRadius(RID.Any(agent), float64(radius))
+	Advanced().AgentSetRadius(RID.Any(agent), float64(radius))
 }
 
 /*
@@ -864,7 +898,7 @@ Returns the radius of the specified [param agent].
 */
 func AgentGetRadius(agent RID.NavigationAgent3D) Float.X { //gd:NavigationServer3D.agent_get_radius
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).AgentGetRadius(RID.Any(agent))))
+	return Float.X(Float.X(Advanced().AgentGetRadius(RID.Any(agent))))
 }
 
 /*
@@ -872,7 +906,7 @@ Updates the provided [param agent] [param height].
 */
 func AgentSetHeight(agent RID.NavigationAgent3D, height Float.X) { //gd:NavigationServer3D.agent_set_height
 	once.Do(singleton)
-	class(self).AgentSetHeight(RID.Any(agent), float64(height))
+	Advanced().AgentSetHeight(RID.Any(agent), float64(height))
 }
 
 /*
@@ -880,7 +914,7 @@ Returns the [code]height[/code] of the specified [param agent].
 */
 func AgentGetHeight(agent RID.NavigationAgent3D) Float.X { //gd:NavigationServer3D.agent_get_height
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).AgentGetHeight(RID.Any(agent))))
+	return Float.X(Float.X(Advanced().AgentGetHeight(RID.Any(agent))))
 }
 
 /*
@@ -888,7 +922,7 @@ Sets the maximum speed of the agent. Must be positive.
 */
 func AgentSetMaxSpeed(agent RID.NavigationAgent3D, max_speed Float.X) { //gd:NavigationServer3D.agent_set_max_speed
 	once.Do(singleton)
-	class(self).AgentSetMaxSpeed(RID.Any(agent), float64(max_speed))
+	Advanced().AgentSetMaxSpeed(RID.Any(agent), float64(max_speed))
 }
 
 /*
@@ -896,7 +930,7 @@ Returns the maximum speed of the specified [param agent].
 */
 func AgentGetMaxSpeed(agent RID.NavigationAgent3D) Float.X { //gd:NavigationServer3D.agent_get_max_speed
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).AgentGetMaxSpeed(RID.Any(agent))))
+	return Float.X(Float.X(Advanced().AgentGetMaxSpeed(RID.Any(agent))))
 }
 
 /*
@@ -904,7 +938,7 @@ Replaces the internal velocity in the collision avoidance simulation with [param
 */
 func AgentSetVelocityForced(agent RID.NavigationAgent3D, velocity Vector3.XYZ) { //gd:NavigationServer3D.agent_set_velocity_forced
 	once.Do(singleton)
-	class(self).AgentSetVelocityForced(RID.Any(agent), Vector3.XYZ(velocity))
+	Advanced().AgentSetVelocityForced(RID.Any(agent), Vector3.XYZ(velocity))
 }
 
 /*
@@ -912,7 +946,7 @@ Sets [param velocity] as the new wanted velocity for the specified [param agent]
 */
 func AgentSetVelocity(agent RID.NavigationAgent3D, velocity Vector3.XYZ) { //gd:NavigationServer3D.agent_set_velocity
 	once.Do(singleton)
-	class(self).AgentSetVelocity(RID.Any(agent), Vector3.XYZ(velocity))
+	Advanced().AgentSetVelocity(RID.Any(agent), Vector3.XYZ(velocity))
 }
 
 /*
@@ -920,7 +954,7 @@ Returns the velocity of the specified [param agent].
 */
 func AgentGetVelocity(agent RID.NavigationAgent3D) Vector3.XYZ { //gd:NavigationServer3D.agent_get_velocity
 	once.Do(singleton)
-	return Vector3.XYZ(class(self).AgentGetVelocity(RID.Any(agent)))
+	return Vector3.XYZ(Advanced().AgentGetVelocity(RID.Any(agent)))
 }
 
 /*
@@ -928,7 +962,7 @@ Sets the position of the agent in world space.
 */
 func AgentSetPosition(agent RID.NavigationAgent3D, position Vector3.XYZ) { //gd:NavigationServer3D.agent_set_position
 	once.Do(singleton)
-	class(self).AgentSetPosition(RID.Any(agent), Vector3.XYZ(position))
+	Advanced().AgentSetPosition(RID.Any(agent), Vector3.XYZ(position))
 }
 
 /*
@@ -936,7 +970,7 @@ Returns the position of the specified [param agent] in world space.
 */
 func AgentGetPosition(agent RID.NavigationAgent3D) Vector3.XYZ { //gd:NavigationServer3D.agent_get_position
 	once.Do(singleton)
-	return Vector3.XYZ(class(self).AgentGetPosition(RID.Any(agent)))
+	return Vector3.XYZ(Advanced().AgentGetPosition(RID.Any(agent)))
 }
 
 /*
@@ -944,7 +978,7 @@ Returns [code]true[/code] if the map got changed the previous frame.
 */
 func AgentIsMapChanged(agent RID.NavigationAgent3D) bool { //gd:NavigationServer3D.agent_is_map_changed
 	once.Do(singleton)
-	return bool(class(self).AgentIsMapChanged(RID.Any(agent)))
+	return bool(Advanced().AgentIsMapChanged(RID.Any(agent)))
 }
 
 /*
@@ -953,7 +987,7 @@ Sets the callback [Callable] that gets called after each avoidance processing st
 */
 func AgentSetAvoidanceCallback(agent RID.NavigationAgent3D, callback func(velocity Vector3.XYZ)) { //gd:NavigationServer3D.agent_set_avoidance_callback
 	once.Do(singleton)
-	class(self).AgentSetAvoidanceCallback(RID.Any(agent), Callable.New(callback))
+	Advanced().AgentSetAvoidanceCallback(RID.Any(agent), Callable.New(callback))
 }
 
 /*
@@ -961,7 +995,7 @@ Return [code]true[/code] if the specified [param agent] has an avoidance callbac
 */
 func AgentHasAvoidanceCallback(agent RID.NavigationAgent3D) bool { //gd:NavigationServer3D.agent_has_avoidance_callback
 	once.Do(singleton)
-	return bool(class(self).AgentHasAvoidanceCallback(RID.Any(agent)))
+	return bool(Advanced().AgentHasAvoidanceCallback(RID.Any(agent)))
 }
 
 /*
@@ -969,7 +1003,7 @@ Set the agent's [code]avoidance_layers[/code] bitmask.
 */
 func AgentSetAvoidanceLayers(agent RID.NavigationAgent3D, layers int) { //gd:NavigationServer3D.agent_set_avoidance_layers
 	once.Do(singleton)
-	class(self).AgentSetAvoidanceLayers(RID.Any(agent), int64(layers))
+	Advanced().AgentSetAvoidanceLayers(RID.Any(agent), int64(layers))
 }
 
 /*
@@ -977,7 +1011,7 @@ Returns the [code]avoidance_layers[/code] bitmask of the specified [param agent]
 */
 func AgentGetAvoidanceLayers(agent RID.NavigationAgent3D) int { //gd:NavigationServer3D.agent_get_avoidance_layers
 	once.Do(singleton)
-	return int(int(class(self).AgentGetAvoidanceLayers(RID.Any(agent))))
+	return int(int(Advanced().AgentGetAvoidanceLayers(RID.Any(agent))))
 }
 
 /*
@@ -985,7 +1019,7 @@ Set the agent's [code]avoidance_mask[/code] bitmask.
 */
 func AgentSetAvoidanceMask(agent RID.NavigationAgent3D, mask int) { //gd:NavigationServer3D.agent_set_avoidance_mask
 	once.Do(singleton)
-	class(self).AgentSetAvoidanceMask(RID.Any(agent), int64(mask))
+	Advanced().AgentSetAvoidanceMask(RID.Any(agent), int64(mask))
 }
 
 /*
@@ -993,7 +1027,7 @@ Returns the [code]avoidance_mask[/code] bitmask of the specified [param agent].
 */
 func AgentGetAvoidanceMask(agent RID.NavigationAgent3D) int { //gd:NavigationServer3D.agent_get_avoidance_mask
 	once.Do(singleton)
-	return int(int(class(self).AgentGetAvoidanceMask(RID.Any(agent))))
+	return int(int(Advanced().AgentGetAvoidanceMask(RID.Any(agent))))
 }
 
 /*
@@ -1002,7 +1036,7 @@ The specified [param agent] does not adjust the velocity for other agents that w
 */
 func AgentSetAvoidancePriority(agent RID.NavigationAgent3D, priority Float.X) { //gd:NavigationServer3D.agent_set_avoidance_priority
 	once.Do(singleton)
-	class(self).AgentSetAvoidancePriority(RID.Any(agent), float64(priority))
+	Advanced().AgentSetAvoidancePriority(RID.Any(agent), float64(priority))
 }
 
 /*
@@ -1010,7 +1044,7 @@ Returns the [code]avoidance_priority[/code] of the specified [param agent].
 */
 func AgentGetAvoidancePriority(agent RID.NavigationAgent3D) Float.X { //gd:NavigationServer3D.agent_get_avoidance_priority
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).AgentGetAvoidancePriority(RID.Any(agent))))
+	return Float.X(Float.X(Advanced().AgentGetAvoidancePriority(RID.Any(agent))))
 }
 
 /*
@@ -1018,7 +1052,7 @@ Creates a new obstacle.
 */
 func ObstacleCreate() RID.NavigationObstacle3D { //gd:NavigationServer3D.obstacle_create
 	once.Do(singleton)
-	return RID.NavigationObstacle3D(class(self).ObstacleCreate())
+	return RID.NavigationObstacle3D(Advanced().ObstacleCreate())
 }
 
 /*
@@ -1026,7 +1060,7 @@ If [param enabled] is [code]true[/code], the provided [param obstacle] affects a
 */
 func ObstacleSetAvoidanceEnabled(obstacle RID.NavigationObstacle3D, enabled bool) { //gd:NavigationServer3D.obstacle_set_avoidance_enabled
 	once.Do(singleton)
-	class(self).ObstacleSetAvoidanceEnabled(RID.Any(obstacle), enabled)
+	Advanced().ObstacleSetAvoidanceEnabled(RID.Any(obstacle), enabled)
 }
 
 /*
@@ -1034,7 +1068,7 @@ Returns [code]true[/code] if the provided [param obstacle] has avoidance enabled
 */
 func ObstacleGetAvoidanceEnabled(obstacle RID.NavigationObstacle3D) bool { //gd:NavigationServer3D.obstacle_get_avoidance_enabled
 	once.Do(singleton)
-	return bool(class(self).ObstacleGetAvoidanceEnabled(RID.Any(obstacle)))
+	return bool(Advanced().ObstacleGetAvoidanceEnabled(RID.Any(obstacle)))
 }
 
 /*
@@ -1042,7 +1076,7 @@ Sets if the [param obstacle] uses the 2D avoidance or the 3D avoidance while avo
 */
 func ObstacleSetUse3dAvoidance(obstacle RID.NavigationObstacle3D, enabled bool) { //gd:NavigationServer3D.obstacle_set_use_3d_avoidance
 	once.Do(singleton)
-	class(self).ObstacleSetUse3dAvoidance(RID.Any(obstacle), enabled)
+	Advanced().ObstacleSetUse3dAvoidance(RID.Any(obstacle), enabled)
 }
 
 /*
@@ -1050,7 +1084,7 @@ Returns [code]true[/code] if the provided [param obstacle] uses avoidance in 3D 
 */
 func ObstacleGetUse3dAvoidance(obstacle RID.NavigationObstacle3D) bool { //gd:NavigationServer3D.obstacle_get_use_3d_avoidance
 	once.Do(singleton)
-	return bool(class(self).ObstacleGetUse3dAvoidance(RID.Any(obstacle)))
+	return bool(Advanced().ObstacleGetUse3dAvoidance(RID.Any(obstacle)))
 }
 
 /*
@@ -1058,7 +1092,7 @@ Assigns the [param obstacle] to a navigation map.
 */
 func ObstacleSetMap(obstacle RID.NavigationObstacle3D, mapping RID.NavigationMap3D) { //gd:NavigationServer3D.obstacle_set_map
 	once.Do(singleton)
-	class(self).ObstacleSetMap(RID.Any(obstacle), RID.Any(mapping))
+	Advanced().ObstacleSetMap(RID.Any(obstacle), RID.Any(mapping))
 }
 
 /*
@@ -1066,7 +1100,7 @@ Returns the navigation map [RID] the requested [param obstacle] is currently ass
 */
 func ObstacleGetMap(obstacle RID.NavigationObstacle3D) RID.NavigationMap3D { //gd:NavigationServer3D.obstacle_get_map
 	once.Do(singleton)
-	return RID.NavigationMap3D(class(self).ObstacleGetMap(RID.Any(obstacle)))
+	return RID.NavigationMap3D(Advanced().ObstacleGetMap(RID.Any(obstacle)))
 }
 
 /*
@@ -1074,7 +1108,7 @@ If [param paused] is [code]true[/code] the specified [param obstacle] will not b
 */
 func ObstacleSetPaused(obstacle RID.NavigationObstacle3D, paused bool) { //gd:NavigationServer3D.obstacle_set_paused
 	once.Do(singleton)
-	class(self).ObstacleSetPaused(RID.Any(obstacle), paused)
+	Advanced().ObstacleSetPaused(RID.Any(obstacle), paused)
 }
 
 /*
@@ -1082,7 +1116,7 @@ Returns [code]true[/code] if the specified [param obstacle] is paused.
 */
 func ObstacleGetPaused(obstacle RID.NavigationObstacle3D) bool { //gd:NavigationServer3D.obstacle_get_paused
 	once.Do(singleton)
-	return bool(class(self).ObstacleGetPaused(RID.Any(obstacle)))
+	return bool(Advanced().ObstacleGetPaused(RID.Any(obstacle)))
 }
 
 /*
@@ -1090,7 +1124,7 @@ Sets the radius of the dynamic obstacle.
 */
 func ObstacleSetRadius(obstacle RID.NavigationObstacle3D, radius Float.X) { //gd:NavigationServer3D.obstacle_set_radius
 	once.Do(singleton)
-	class(self).ObstacleSetRadius(RID.Any(obstacle), float64(radius))
+	Advanced().ObstacleSetRadius(RID.Any(obstacle), float64(radius))
 }
 
 /*
@@ -1098,7 +1132,7 @@ Returns the radius of the specified dynamic [param obstacle].
 */
 func ObstacleGetRadius(obstacle RID.NavigationObstacle3D) Float.X { //gd:NavigationServer3D.obstacle_get_radius
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).ObstacleGetRadius(RID.Any(obstacle))))
+	return Float.X(Float.X(Advanced().ObstacleGetRadius(RID.Any(obstacle))))
 }
 
 /*
@@ -1106,7 +1140,7 @@ Sets the [param height] for the [param obstacle]. In 3D agents will ignore obsta
 */
 func ObstacleSetHeight(obstacle RID.NavigationObstacle3D, height Float.X) { //gd:NavigationServer3D.obstacle_set_height
 	once.Do(singleton)
-	class(self).ObstacleSetHeight(RID.Any(obstacle), float64(height))
+	Advanced().ObstacleSetHeight(RID.Any(obstacle), float64(height))
 }
 
 /*
@@ -1114,7 +1148,7 @@ Returns the [code]height[/code] of the specified [param obstacle].
 */
 func ObstacleGetHeight(obstacle RID.NavigationObstacle3D) Float.X { //gd:NavigationServer3D.obstacle_get_height
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).ObstacleGetHeight(RID.Any(obstacle))))
+	return Float.X(Float.X(Advanced().ObstacleGetHeight(RID.Any(obstacle))))
 }
 
 /*
@@ -1122,7 +1156,7 @@ Sets [param velocity] of the dynamic [param obstacle]. Allows other agents to be
 */
 func ObstacleSetVelocity(obstacle RID.NavigationObstacle3D, velocity Vector3.XYZ) { //gd:NavigationServer3D.obstacle_set_velocity
 	once.Do(singleton)
-	class(self).ObstacleSetVelocity(RID.Any(obstacle), Vector3.XYZ(velocity))
+	Advanced().ObstacleSetVelocity(RID.Any(obstacle), Vector3.XYZ(velocity))
 }
 
 /*
@@ -1130,7 +1164,7 @@ Returns the velocity of the specified dynamic [param obstacle].
 */
 func ObstacleGetVelocity(obstacle RID.NavigationObstacle3D) Vector3.XYZ { //gd:NavigationServer3D.obstacle_get_velocity
 	once.Do(singleton)
-	return Vector3.XYZ(class(self).ObstacleGetVelocity(RID.Any(obstacle)))
+	return Vector3.XYZ(Advanced().ObstacleGetVelocity(RID.Any(obstacle)))
 }
 
 /*
@@ -1138,7 +1172,7 @@ Updates the [param position] in world space for the [param obstacle].
 */
 func ObstacleSetPosition(obstacle RID.NavigationObstacle3D, position Vector3.XYZ) { //gd:NavigationServer3D.obstacle_set_position
 	once.Do(singleton)
-	class(self).ObstacleSetPosition(RID.Any(obstacle), Vector3.XYZ(position))
+	Advanced().ObstacleSetPosition(RID.Any(obstacle), Vector3.XYZ(position))
 }
 
 /*
@@ -1146,7 +1180,7 @@ Returns the position of the specified [param obstacle] in world space.
 */
 func ObstacleGetPosition(obstacle RID.NavigationObstacle3D) Vector3.XYZ { //gd:NavigationServer3D.obstacle_get_position
 	once.Do(singleton)
-	return Vector3.XYZ(class(self).ObstacleGetPosition(RID.Any(obstacle)))
+	return Vector3.XYZ(Advanced().ObstacleGetPosition(RID.Any(obstacle)))
 }
 
 /*
@@ -1154,7 +1188,7 @@ Sets the outline vertices for the obstacle. If the vertices are winded in clockw
 */
 func ObstacleSetVertices(obstacle RID.NavigationObstacle3D, vertices []Vector3.XYZ) { //gd:NavigationServer3D.obstacle_set_vertices
 	once.Do(singleton)
-	class(self).ObstacleSetVertices(RID.Any(obstacle), Packed.New(vertices...))
+	Advanced().ObstacleSetVertices(RID.Any(obstacle), Packed.New(vertices...))
 }
 
 /*
@@ -1162,7 +1196,7 @@ Returns the outline vertices for the specified [param obstacle].
 */
 func ObstacleGetVertices(obstacle RID.NavigationObstacle3D) []Vector3.XYZ { //gd:NavigationServer3D.obstacle_get_vertices
 	once.Do(singleton)
-	return []Vector3.XYZ(slices.Collect(class(self).ObstacleGetVertices(RID.Any(obstacle)).Values()))
+	return []Vector3.XYZ(slices.Collect(Advanced().ObstacleGetVertices(RID.Any(obstacle)).Values()))
 }
 
 /*
@@ -1170,7 +1204,7 @@ Set the obstacles's [code]avoidance_layers[/code] bitmask.
 */
 func ObstacleSetAvoidanceLayers(obstacle RID.NavigationObstacle3D, layers int) { //gd:NavigationServer3D.obstacle_set_avoidance_layers
 	once.Do(singleton)
-	class(self).ObstacleSetAvoidanceLayers(RID.Any(obstacle), int64(layers))
+	Advanced().ObstacleSetAvoidanceLayers(RID.Any(obstacle), int64(layers))
 }
 
 /*
@@ -1178,7 +1212,7 @@ Returns the [code]avoidance_layers[/code] bitmask of the specified [param obstac
 */
 func ObstacleGetAvoidanceLayers(obstacle RID.NavigationObstacle3D) int { //gd:NavigationServer3D.obstacle_get_avoidance_layers
 	once.Do(singleton)
-	return int(int(class(self).ObstacleGetAvoidanceLayers(RID.Any(obstacle))))
+	return int(int(Advanced().ObstacleGetAvoidanceLayers(RID.Any(obstacle))))
 }
 
 /*
@@ -1186,25 +1220,51 @@ Parses the [SceneTree] for source geometry according to the properties of [param
 [b]Note:[/b] This function needs to run on the main thread or with a deferred call as the SceneTree is not thread-safe.
 [b]Performance:[/b] While convenient, reading data arrays from [Mesh] resources can affect the frame rate negatively. The data needs to be received from the GPU, stalling the [RenderingServer] in the process. For performance prefer the use of e.g. collision shapes or creating the data arrays entirely in code.
 */
-func ParseSourceGeometryData(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, root_node [1]gdclass.Node) { //gd:NavigationServer3D.parse_source_geometry_data
+func ParseSourceGeometryData(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, root_node [1]gdclass.Node, callback func()) { //gd:NavigationServer3D.parse_source_geometry_data
 	once.Do(singleton)
-	class(self).ParseSourceGeometryData(navigation_mesh, source_geometry_data, root_node, Callable.New(Callable.Nil))
+	Advanced().ParseSourceGeometryData(navigation_mesh, source_geometry_data, root_node, Callable.New(callback))
+}
+
+/*
+Parses the [SceneTree] for source geometry according to the properties of [param navigation_mesh]. Updates the provided [param source_geometry_data] resource with the resulting data. The resource can then be used to bake a navigation mesh with [method bake_from_source_geometry_data]. After the process is finished the optional [param callback] will be called.
+[b]Note:[/b] This function needs to run on the main thread or with a deferred call as the SceneTree is not thread-safe.
+[b]Performance:[/b] While convenient, reading data arrays from [Mesh] resources can affect the frame rate negatively. The data needs to be received from the GPU, stalling the [RenderingServer] in the process. For performance prefer the use of e.g. collision shapes or creating the data arrays entirely in code.
+*/
+func ParseSourceGeometryDataExpanded(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, root_node [1]gdclass.Node, callback func()) { //gd:NavigationServer3D.parse_source_geometry_data
+	once.Do(singleton)
+	Advanced().ParseSourceGeometryData(navigation_mesh, source_geometry_data, root_node, Callable.New(callback))
 }
 
 /*
 Bakes the provided [param navigation_mesh] with the data from the provided [param source_geometry_data]. After the process is finished the optional [param callback] will be called.
 */
-func BakeFromSourceGeometryData(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D) { //gd:NavigationServer3D.bake_from_source_geometry_data
+func BakeFromSourceGeometryData(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, callback func()) { //gd:NavigationServer3D.bake_from_source_geometry_data
 	once.Do(singleton)
-	class(self).BakeFromSourceGeometryData(navigation_mesh, source_geometry_data, Callable.New(Callable.Nil))
+	Advanced().BakeFromSourceGeometryData(navigation_mesh, source_geometry_data, Callable.New(callback))
+}
+
+/*
+Bakes the provided [param navigation_mesh] with the data from the provided [param source_geometry_data]. After the process is finished the optional [param callback] will be called.
+*/
+func BakeFromSourceGeometryDataExpanded(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, callback func()) { //gd:NavigationServer3D.bake_from_source_geometry_data
+	once.Do(singleton)
+	Advanced().BakeFromSourceGeometryData(navigation_mesh, source_geometry_data, Callable.New(callback))
 }
 
 /*
 Bakes the provided [param navigation_mesh] with the data from the provided [param source_geometry_data] as an async task running on a background thread. After the process is finished the optional [param callback] will be called.
 */
-func BakeFromSourceGeometryDataAsync(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D) { //gd:NavigationServer3D.bake_from_source_geometry_data_async
+func BakeFromSourceGeometryDataAsync(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, callback func()) { //gd:NavigationServer3D.bake_from_source_geometry_data_async
 	once.Do(singleton)
-	class(self).BakeFromSourceGeometryDataAsync(navigation_mesh, source_geometry_data, Callable.New(Callable.Nil))
+	Advanced().BakeFromSourceGeometryDataAsync(navigation_mesh, source_geometry_data, Callable.New(callback))
+}
+
+/*
+Bakes the provided [param navigation_mesh] with the data from the provided [param source_geometry_data] as an async task running on a background thread. After the process is finished the optional [param callback] will be called.
+*/
+func BakeFromSourceGeometryDataAsyncExpanded(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, callback func()) { //gd:NavigationServer3D.bake_from_source_geometry_data_async
+	once.Do(singleton)
+	Advanced().BakeFromSourceGeometryDataAsync(navigation_mesh, source_geometry_data, Callable.New(callback))
 }
 
 /*
@@ -1212,7 +1272,7 @@ Returns [code]true[/code] when the provided navigation mesh is being baked on a 
 */
 func IsBakingNavigationMesh(navigation_mesh [1]gdclass.NavigationMesh) bool { //gd:NavigationServer3D.is_baking_navigation_mesh
 	once.Do(singleton)
-	return bool(class(self).IsBakingNavigationMesh(navigation_mesh))
+	return bool(Advanced().IsBakingNavigationMesh(navigation_mesh))
 }
 
 /*
@@ -1220,7 +1280,7 @@ Creates a new source geometry parser. If a [Callable] is set for the parser with
 */
 func SourceGeometryParserCreate() RID.NavigationSourceGeometryParser3D { //gd:NavigationServer3D.source_geometry_parser_create
 	once.Do(singleton)
-	return RID.NavigationSourceGeometryParser3D(class(self).SourceGeometryParserCreate())
+	return RID.NavigationSourceGeometryParser3D(Advanced().SourceGeometryParserCreate())
 }
 
 /*
@@ -1231,7 +1291,7 @@ Sets the [param callback] [Callable] for the specific source geometry [param par
 */
 func SourceGeometryParserSetCallback(parser RID.NavigationSourceGeometryParser3D, callback func(navigation_mesh [1]gdclass.NavigationPolygon, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, node [1]gdclass.Node)) { //gd:NavigationServer3D.source_geometry_parser_set_callback
 	once.Do(singleton)
-	class(self).SourceGeometryParserSetCallback(RID.Any(parser), Callable.New(callback))
+	Advanced().SourceGeometryParserSetCallback(RID.Any(parser), Callable.New(callback))
 }
 
 /*
@@ -1240,7 +1300,7 @@ Path simplification can be helpful to mitigate various path following issues tha
 */
 func SimplifyPath(path []Vector3.XYZ, epsilon Float.X) []Vector3.XYZ { //gd:NavigationServer3D.simplify_path
 	once.Do(singleton)
-	return []Vector3.XYZ(slices.Collect(class(self).SimplifyPath(Packed.New(path...), float64(epsilon)).Values()))
+	return []Vector3.XYZ(slices.Collect(Advanced().SimplifyPath(Packed.New(path...), float64(epsilon)).Values()))
 }
 
 /*
@@ -1248,7 +1308,7 @@ Destroys the given RID.
 */
 func FreeRid(rid RID.Any) { //gd:NavigationServer3D.free_rid
 	once.Do(singleton)
-	class(self).FreeRid(RID.Any(rid))
+	Advanced().FreeRid(RID.Any(rid))
 }
 
 /*
@@ -1256,7 +1316,7 @@ Control activation of this server.
 */
 func SetActive(active bool) { //gd:NavigationServer3D.set_active
 	once.Do(singleton)
-	class(self).SetActive(active)
+	Advanced().SetActive(active)
 }
 
 /*
@@ -1264,7 +1324,7 @@ If [code]true[/code] enables debug mode on the NavigationServer.
 */
 func SetDebugEnabled(enabled bool) { //gd:NavigationServer3D.set_debug_enabled
 	once.Do(singleton)
-	class(self).SetDebugEnabled(enabled)
+	Advanced().SetDebugEnabled(enabled)
 }
 
 /*
@@ -1272,7 +1332,7 @@ Returns [code]true[/code] when the NavigationServer has debug enabled.
 */
 func GetDebugEnabled() bool { //gd:NavigationServer3D.get_debug_enabled
 	once.Do(singleton)
-	return bool(class(self).GetDebugEnabled())
+	return bool(Advanced().GetDebugEnabled())
 }
 
 /*
@@ -1280,7 +1340,7 @@ Returns information about the current state of the NavigationServer. See [enum P
 */
 func GetProcessInfo(process_info gdclass.NavigationServer3DProcessInfo) int { //gd:NavigationServer3D.get_process_info
 	once.Do(singleton)
-	return int(int(class(self).GetProcessInfo(process_info)))
+	return int(int(Advanced().GetProcessInfo(process_info)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

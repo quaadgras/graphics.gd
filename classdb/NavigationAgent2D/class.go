@@ -61,91 +61,91 @@ type Any interface {
 Returns the [RID] of this agent on the [NavigationServer2D].
 */
 func (self Instance) GetRid() RID.NavigationAgent2D { //gd:NavigationAgent2D.get_rid
-	return RID.NavigationAgent2D(class(self).GetRid())
+	return RID.NavigationAgent2D(Advanced(self).GetRid())
 }
 
 /*
 Based on [param value], enables or disables the specified layer in the [member navigation_layers] bitmask, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) SetNavigationLayerValue(layer_number int, value bool) { //gd:NavigationAgent2D.set_navigation_layer_value
-	class(self).SetNavigationLayerValue(int64(layer_number), value)
+	Advanced(self).SetNavigationLayerValue(int64(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member navigation_layers] bitmask is enabled, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) GetNavigationLayerValue(layer_number int) bool { //gd:NavigationAgent2D.get_navigation_layer_value
-	return bool(class(self).GetNavigationLayerValue(int64(layer_number)))
+	return bool(Advanced(self).GetNavigationLayerValue(int64(layer_number)))
 }
 
 /*
 Sets the [RID] of the navigation map this NavigationAgent node should use and also updates the [code]agent[/code] on the NavigationServer.
 */
 func (self Instance) SetNavigationMap(navigation_map RID.NavigationMap2D) { //gd:NavigationAgent2D.set_navigation_map
-	class(self).SetNavigationMap(RID.Any(navigation_map))
+	Advanced(self).SetNavigationMap(RID.Any(navigation_map))
 }
 
 /*
 Returns the [RID] of the navigation map for this NavigationAgent node. This function returns always the map set on the NavigationAgent node and not the map of the abstract agent on the NavigationServer. If the agent map is changed directly with the NavigationServer API the NavigationAgent node will not be aware of the map change. Use [method set_navigation_map] to change the navigation map for the NavigationAgent and also update the agent on the NavigationServer.
 */
 func (self Instance) GetNavigationMap() RID.NavigationMap2D { //gd:NavigationAgent2D.get_navigation_map
-	return RID.NavigationMap2D(class(self).GetNavigationMap())
+	return RID.NavigationMap2D(Advanced(self).GetNavigationMap())
 }
 
 /*
 Returns the next position in global coordinates that can be moved to, making sure that there are no static objects in the way. If the agent does not have a navigation path, it will return the position of the agent's parent. The use of this function once every physics frame is required to update the internal path logic of the NavigationAgent.
 */
 func (self Instance) GetNextPathPosition() Vector2.XY { //gd:NavigationAgent2D.get_next_path_position
-	return Vector2.XY(class(self).GetNextPathPosition())
+	return Vector2.XY(Advanced(self).GetNextPathPosition())
 }
 
 /*
 Replaces the internal velocity in the collision avoidance simulation with [param velocity]. When an agent is teleported to a new position this function should be used in the same frame. If called frequently this function can get agents stuck.
 */
 func (self Instance) SetVelocityForced(velocity Vector2.XY) { //gd:NavigationAgent2D.set_velocity_forced
-	class(self).SetVelocityForced(Vector2.XY(velocity))
+	Advanced(self).SetVelocityForced(Vector2.XY(velocity))
 }
 
 /*
 Returns the distance to the target position, using the agent's global position. The user must set [member target_position] in order for this to be accurate.
 */
 func (self Instance) DistanceToTarget() Float.X { //gd:NavigationAgent2D.distance_to_target
-	return Float.X(Float.X(class(self).DistanceToTarget()))
+	return Float.X(Float.X(Advanced(self).DistanceToTarget()))
 }
 
 /*
 Returns the path query result for the path the agent is currently following.
 */
 func (self Instance) GetCurrentNavigationResult() [1]gdclass.NavigationPathQueryResult2D { //gd:NavigationAgent2D.get_current_navigation_result
-	return [1]gdclass.NavigationPathQueryResult2D(class(self).GetCurrentNavigationResult())
+	return [1]gdclass.NavigationPathQueryResult2D(Advanced(self).GetCurrentNavigationResult())
 }
 
 /*
 Returns this agent's current path from start to finish in global coordinates. The path only updates when the target position is changed or the agent requires a repath. The path array is not intended to be used in direct path movement as the agent has its own internal path logic that would get corrupted by changing the path array manually. Use the intended [method get_next_path_position] once every physics frame to receive the next path point for the agents movement as this function also updates the internal path logic.
 */
 func (self Instance) GetCurrentNavigationPath() []Vector2.XY { //gd:NavigationAgent2D.get_current_navigation_path
-	return []Vector2.XY(slices.Collect(class(self).GetCurrentNavigationPath().Values()))
+	return []Vector2.XY(slices.Collect(Advanced(self).GetCurrentNavigationPath().Values()))
 }
 
 /*
 Returns which index the agent is currently on in the navigation path's [PackedVector2Array].
 */
 func (self Instance) GetCurrentNavigationPathIndex() int { //gd:NavigationAgent2D.get_current_navigation_path_index
-	return int(int(class(self).GetCurrentNavigationPathIndex()))
+	return int(int(Advanced(self).GetCurrentNavigationPathIndex()))
 }
 
 /*
 Returns [code]true[/code] if the agent reached the target, i.e. the agent moved within [member target_desired_distance] of the [member target_position]. It may not always be possible to reach the target but it should always be possible to reach the final position. See [method get_final_position].
 */
 func (self Instance) IsTargetReached() bool { //gd:NavigationAgent2D.is_target_reached
-	return bool(class(self).IsTargetReached())
+	return bool(Advanced(self).IsTargetReached())
 }
 
 /*
 Returns [code]true[/code] if [method get_final_position] is within [member target_desired_distance] of the [member target_position].
 */
 func (self Instance) IsTargetReachable() bool { //gd:NavigationAgent2D.is_target_reachable
-	return bool(class(self).IsTargetReachable())
+	return bool(Advanced(self).IsTargetReachable())
 }
 
 /*
@@ -153,42 +153,42 @@ Returns [code]true[/code] if the agent's navigation has finished. If the target 
 [b]Note:[/b] While [code]true[/code] prefer to stop calling update functions like [method get_next_path_position]. This avoids jittering the standing agent due to calling repeated path updates.
 */
 func (self Instance) IsNavigationFinished() bool { //gd:NavigationAgent2D.is_navigation_finished
-	return bool(class(self).IsNavigationFinished())
+	return bool(Advanced(self).IsNavigationFinished())
 }
 
 /*
 Returns the reachable final position of the current navigation path in global coordinates. This position can change if the agent needs to update the navigation path which makes the agent emit the [signal path_changed] signal.
 */
 func (self Instance) GetFinalPosition() Vector2.XY { //gd:NavigationAgent2D.get_final_position
-	return Vector2.XY(class(self).GetFinalPosition())
+	return Vector2.XY(Advanced(self).GetFinalPosition())
 }
 
 /*
 Based on [param value], enables or disables the specified layer in the [member avoidance_layers] bitmask, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) SetAvoidanceLayerValue(layer_number int, value bool) { //gd:NavigationAgent2D.set_avoidance_layer_value
-	class(self).SetAvoidanceLayerValue(int64(layer_number), value)
+	Advanced(self).SetAvoidanceLayerValue(int64(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member avoidance_layers] bitmask is enabled, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) GetAvoidanceLayerValue(layer_number int) bool { //gd:NavigationAgent2D.get_avoidance_layer_value
-	return bool(class(self).GetAvoidanceLayerValue(int64(layer_number)))
+	return bool(Advanced(self).GetAvoidanceLayerValue(int64(layer_number)))
 }
 
 /*
 Based on [param value], enables or disables the specified mask in the [member avoidance_mask] bitmask, given a [param mask_number] between 1 and 32.
 */
 func (self Instance) SetAvoidanceMaskValue(mask_number int, value bool) { //gd:NavigationAgent2D.set_avoidance_mask_value
-	class(self).SetAvoidanceMaskValue(int64(mask_number), value)
+	Advanced(self).SetAvoidanceMaskValue(int64(mask_number), value)
 }
 
 /*
 Returns whether or not the specified mask of the [member avoidance_mask] bitmask is enabled, given a [param mask_number] between 1 and 32.
 */
 func (self Instance) GetAvoidanceMaskValue(mask_number int) bool { //gd:NavigationAgent2D.get_avoidance_mask_value
-	return bool(class(self).GetAvoidanceMaskValue(int64(mask_number)))
+	return bool(Advanced(self).GetAvoidanceMaskValue(int64(mask_number)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

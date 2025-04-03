@@ -64,7 +64,7 @@ Returns the [HBoxContainer] used for the title bar, only containing a [Label] fo
 This can be used to add custom controls to the title bar such as option or close buttons.
 */
 func (self Instance) GetTitlebarHbox() [1]gdclass.HBoxContainer { //gd:GraphFrame.get_titlebar_hbox
-	return [1]gdclass.HBoxContainer(class(self).GetTitlebarHbox())
+	return [1]gdclass.HBoxContainer(Advanced(self).GetTitlebarHbox())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

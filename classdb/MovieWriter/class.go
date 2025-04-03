@@ -203,7 +203,7 @@ Adds a writer to be usable by the engine. The supported file extensions can be s
 */
 func AddWriter(writer [1]gdclass.MovieWriter) { //gd:MovieWriter.add_writer
 	self := Instance{}
-	class(self).AddWriter(writer)
+	Advanced(self).AddWriter(writer)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

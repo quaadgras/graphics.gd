@@ -55,6 +55,7 @@ Textures are often created by loading them from a file. See [method @GDScript.lo
 %!(EXTRA string=Texture2D)
 */
 type Instance [1]gdclass.Texture2D
+type Expanded [1]gdclass.Texture2D
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -217,49 +218,70 @@ func (Instance) _draw_rect_region(impl func(ptr unsafe.Pointer, to_canvas_item R
 Returns the texture width in pixels.
 */
 func (self Instance) GetWidth() int { //gd:Texture2D.get_width
-	return int(int(class(self).GetWidth()))
+	return int(int(Advanced(self).GetWidth()))
 }
 
 /*
 Returns the texture height in pixels.
 */
 func (self Instance) GetHeight() int { //gd:Texture2D.get_height
-	return int(int(class(self).GetHeight()))
+	return int(int(Advanced(self).GetHeight()))
 }
 
 /*
 Returns the texture size in pixels.
 */
 func (self Instance) GetSize() Vector2.XY { //gd:Texture2D.get_size
-	return Vector2.XY(class(self).GetSize())
+	return Vector2.XY(Advanced(self).GetSize())
 }
 
 /*
 Returns [code]true[/code] if this [Texture2D] has an alpha channel.
 */
 func (self Instance) HasAlpha() bool { //gd:Texture2D.has_alpha
-	return bool(class(self).HasAlpha())
+	return bool(Advanced(self).HasAlpha())
 }
 
 /*
 Draws the texture using a [CanvasItem] with the [RenderingServer] API at the specified [param position].
 */
 func (self Instance) Draw(canvas_item RID.CanvasItem, position Vector2.XY) { //gd:Texture2D.draw
-	class(self).Draw(RID.Any(canvas_item), Vector2.XY(position), Color.RGBA(gd.Color{1, 1, 1, 1}), false)
+	Advanced(self).Draw(RID.Any(canvas_item), Vector2.XY(position), Color.RGBA(gd.Color{1, 1, 1, 1}), false)
+}
+
+/*
+Draws the texture using a [CanvasItem] with the [RenderingServer] API at the specified [param position].
+*/
+func (self Expanded) Draw(canvas_item RID.CanvasItem, position Vector2.XY, modulate Color.RGBA, transpose bool) { //gd:Texture2D.draw
+	Advanced(self).Draw(RID.Any(canvas_item), Vector2.XY(position), Color.RGBA(modulate), transpose)
 }
 
 /*
 Draws the texture using a [CanvasItem] with the [RenderingServer] API.
 */
 func (self Instance) DrawRect(canvas_item RID.CanvasItem, rect Rect2.PositionSize, tile bool) { //gd:Texture2D.draw_rect
-	class(self).DrawRect(RID.Any(canvas_item), Rect2.PositionSize(rect), tile, Color.RGBA(gd.Color{1, 1, 1, 1}), false)
+	Advanced(self).DrawRect(RID.Any(canvas_item), Rect2.PositionSize(rect), tile, Color.RGBA(gd.Color{1, 1, 1, 1}), false)
+}
+
+/*
+Draws the texture using a [CanvasItem] with the [RenderingServer] API.
+*/
+func (self Expanded) DrawRect(canvas_item RID.CanvasItem, rect Rect2.PositionSize, tile bool, modulate Color.RGBA, transpose bool) { //gd:Texture2D.draw_rect
+	Advanced(self).DrawRect(RID.Any(canvas_item), Rect2.PositionSize(rect), tile, Color.RGBA(modulate), transpose)
 }
 
 /*
 Draws a part of the texture using a [CanvasItem] with the [RenderingServer] API.
 */
 func (self Instance) DrawRectRegion(canvas_item RID.CanvasItem, rect Rect2.PositionSize, src_rect Rect2.PositionSize) { //gd:Texture2D.draw_rect_region
-	class(self).DrawRectRegion(RID.Any(canvas_item), Rect2.PositionSize(rect), Rect2.PositionSize(src_rect), Color.RGBA(gd.Color{1, 1, 1, 1}), false, true)
+	Advanced(self).DrawRectRegion(RID.Any(canvas_item), Rect2.PositionSize(rect), Rect2.PositionSize(src_rect), Color.RGBA(gd.Color{1, 1, 1, 1}), false, true)
+}
+
+/*
+Draws a part of the texture using a [CanvasItem] with the [RenderingServer] API.
+*/
+func (self Expanded) DrawRectRegion(canvas_item RID.CanvasItem, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool) { //gd:Texture2D.draw_rect_region
+	Advanced(self).DrawRectRegion(RID.Any(canvas_item), Rect2.PositionSize(rect), Rect2.PositionSize(src_rect), Color.RGBA(modulate), transpose, clip_uv)
 }
 
 /*
@@ -268,14 +290,14 @@ Returns an [Image] that is a copy of data from this [Texture2D] (a new [Image] i
 [b]Note:[/b] This will fetch the texture data from the GPU, which might cause performance problems when overused. Avoid calling [method get_image] every frame, especially on large textures.
 */
 func (self Instance) GetImage() [1]gdclass.Image { //gd:Texture2D.get_image
-	return [1]gdclass.Image(class(self).GetImage())
+	return [1]gdclass.Image(Advanced(self).GetImage())
 }
 
 /*
 Creates a placeholder version of this resource ([PlaceholderTexture2D]).
 */
 func (self Instance) CreatePlaceholder() [1]gdclass.Resource { //gd:Texture2D.create_placeholder
-	return [1]gdclass.Resource(class(self).CreatePlaceholder())
+	return [1]gdclass.Resource(Advanced(self).CreatePlaceholder())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

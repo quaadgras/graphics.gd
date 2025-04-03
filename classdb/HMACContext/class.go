@@ -103,21 +103,21 @@ type Any interface {
 Initializes the HMACContext. This method cannot be called again on the same HMACContext until [method finish] has been called.
 */
 func (self Instance) Start(hash_type gdclass.HashingContextHashType, key []byte) error { //gd:HMACContext.start
-	return error(gd.ToError(class(self).Start(hash_type, Packed.Bytes(Packed.New(key...)))))
+	return error(gd.ToError(Advanced(self).Start(hash_type, Packed.Bytes(Packed.New(key...)))))
 }
 
 /*
 Updates the message to be HMACed. This can be called multiple times before [method finish] is called to append [param data] to the message, but cannot be called until [method start] has been called.
 */
 func (self Instance) Update(data []byte) error { //gd:HMACContext.update
-	return error(gd.ToError(class(self).Update(Packed.Bytes(Packed.New(data...)))))
+	return error(gd.ToError(Advanced(self).Update(Packed.Bytes(Packed.New(data...)))))
 }
 
 /*
 Returns the resulting HMAC. If the HMAC failed, an empty [PackedByteArray] is returned.
 */
 func (self Instance) Finish() []byte { //gd:HMACContext.finish
-	return []byte(class(self).Finish().Bytes())
+	return []byte(Advanced(self).Finish().Bytes())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

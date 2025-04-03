@@ -202,6 +202,17 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		fmt.Fprintf(file, "}\n")
 	} else {
 		fmt.Fprintf(file, "type Instance [1]gdclass.%s\n", class.Name)
+		var hasDefaults bool
+		for _, method := range class.Methods {
+			for _, argument := range method.Arguments {
+				if argument.DefaultValue != nil && !singleton && !method.IsStatic {
+					hasDefaults = true
+				}
+			}
+		}
+		if hasDefaults {
+			fmt.Fprintf(file, "type Expanded [1]gdclass.%s\n", class.Name)
+		}
 		fmt.Fprintf(file, "// Nil is a nil/null instance of the class. Equivalent to the zero value.\n")
 		fmt.Fprintf(file, "var Nil Instance\n")
 		fmt.Fprintf(file, "type Any interface {\n")
@@ -266,7 +277,16 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		if getter_setters[method.Name] {
 			continue
 		}
-		classDB.simpleCall(file, class, method, singleton)
+		classDB.simpleCall(file, class, method, singleton, true)
+		var hasDefault bool
+		for _, argument := range method.Arguments {
+			if argument.DefaultValue != nil {
+				hasDefault = true
+			}
+		}
+		if hasDefault {
+			classDB.simpleCall(file, class, method, singleton, false)
+		}
 	}
 	fmt.Fprintf(file, `// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.`)
 	if singleton {

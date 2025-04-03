@@ -63,14 +63,14 @@ type Any interface {
 Forces this [Camera2D] to become the current active one. [member enabled] must be [code]true[/code].
 */
 func (self Instance) MakeCurrent() { //gd:Camera2D.make_current
-	class(self).MakeCurrent()
+	Advanced(self).MakeCurrent()
 }
 
 /*
 Returns [code]true[/code] if this [Camera2D] is the active camera (see [method Viewport.get_camera_2d]).
 */
 func (self Instance) IsCurrent() bool { //gd:Camera2D.is_current
-	return bool(class(self).IsCurrent())
+	return bool(Advanced(self).IsCurrent())
 }
 
 /*
@@ -78,7 +78,7 @@ Returns this camera's target position, in global coordinates.
 [b]Note:[/b] The returned value is not the same as [member Node2D.global_position], as it is affected by the drag properties. It is also not the same as the current position if [member position_smoothing_enabled] is [code]true[/code] (see [method get_screen_center_position]).
 */
 func (self Instance) GetTargetPosition() Vector2.XY { //gd:Camera2D.get_target_position
-	return Vector2.XY(class(self).GetTargetPosition())
+	return Vector2.XY(Advanced(self).GetTargetPosition())
 }
 
 /*
@@ -86,14 +86,14 @@ Returns the center of the screen from this camera's point of view, in global coo
 [b]Note:[/b] The exact targeted position of the camera may be different. See [method get_target_position].
 */
 func (self Instance) GetScreenCenterPosition() Vector2.XY { //gd:Camera2D.get_screen_center_position
-	return Vector2.XY(class(self).GetScreenCenterPosition())
+	return Vector2.XY(Advanced(self).GetScreenCenterPosition())
 }
 
 /*
 Forces the camera to update scroll immediately.
 */
 func (self Instance) ForceUpdateScroll() { //gd:Camera2D.force_update_scroll
-	class(self).ForceUpdateScroll()
+	Advanced(self).ForceUpdateScroll()
 }
 
 /*
@@ -101,14 +101,14 @@ Sets the camera's position immediately to its current smoothing destination.
 This method has no effect if [member position_smoothing_enabled] is [code]false[/code].
 */
 func (self Instance) ResetSmoothing() { //gd:Camera2D.reset_smoothing
-	class(self).ResetSmoothing()
+	Advanced(self).ResetSmoothing()
 }
 
 /*
 Aligns the camera to the tracked node.
 */
 func (self Instance) Align() { //gd:Camera2D.align
-	class(self).Align()
+	Advanced(self).Align()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

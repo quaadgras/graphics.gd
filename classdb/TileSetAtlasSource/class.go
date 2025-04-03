@@ -52,6 +52,7 @@ Each tile alternate has a set of properties that is defined by the source's [Til
 As TileData properties are stored directly in the TileSetAtlasSource resource, their properties might also be set using [code]TileSetAtlasSource.set("<coords_x>:<coords_y>/<alternative_id>/<tile_data_property>")[/code].
 */
 type Instance [1]gdclass.TileSetAtlasSource
+type Expanded [1]gdclass.TileSetAtlasSource
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -65,14 +66,21 @@ type Any interface {
 Creates a new tile at coordinates [param atlas_coords] with the given [param size].
 */
 func (self Instance) CreateTile(atlas_coords Vector2i.XY) { //gd:TileSetAtlasSource.create_tile
-	class(self).CreateTile(Vector2i.XY(atlas_coords), Vector2i.XY(gd.Vector2i{1, 1}))
+	Advanced(self).CreateTile(Vector2i.XY(atlas_coords), Vector2i.XY(gd.Vector2i{1, 1}))
+}
+
+/*
+Creates a new tile at coordinates [param atlas_coords] with the given [param size].
+*/
+func (self Expanded) CreateTile(atlas_coords Vector2i.XY, size Vector2i.XY) { //gd:TileSetAtlasSource.create_tile
+	Advanced(self).CreateTile(Vector2i.XY(atlas_coords), Vector2i.XY(size))
 }
 
 /*
 Remove a tile and its alternative at coordinates [param atlas_coords].
 */
 func (self Instance) RemoveTile(atlas_coords Vector2i.XY) { //gd:TileSetAtlasSource.remove_tile
-	class(self).RemoveTile(Vector2i.XY(atlas_coords))
+	Advanced(self).RemoveTile(Vector2i.XY(atlas_coords))
 }
 
 /*
@@ -81,140 +89,156 @@ If [param new_atlas_coords] is [code]Vector2i(-1, -1)[/code], keeps the tile's c
 To avoid an error, first check if a move is possible using [method has_room_for_tile].
 */
 func (self Instance) MoveTileInAtlas(atlas_coords Vector2i.XY) { //gd:TileSetAtlasSource.move_tile_in_atlas
-	class(self).MoveTileInAtlas(Vector2i.XY(atlas_coords), Vector2i.XY(gd.Vector2i{-1, -1}), Vector2i.XY(gd.Vector2i{-1, -1}))
+	Advanced(self).MoveTileInAtlas(Vector2i.XY(atlas_coords), Vector2i.XY(gd.Vector2i{-1, -1}), Vector2i.XY(gd.Vector2i{-1, -1}))
+}
+
+/*
+Move the tile and its alternatives at the [param atlas_coords] coordinates to the [param new_atlas_coords] coordinates with the [param new_size] size. This functions will fail if a tile is already present in the given area.
+If [param new_atlas_coords] is [code]Vector2i(-1, -1)[/code], keeps the tile's coordinates. If [param new_size] is [code]Vector2i(-1, -1)[/code], keeps the tile's size.
+To avoid an error, first check if a move is possible using [method has_room_for_tile].
+*/
+func (self Expanded) MoveTileInAtlas(atlas_coords Vector2i.XY, new_atlas_coords Vector2i.XY, new_size Vector2i.XY) { //gd:TileSetAtlasSource.move_tile_in_atlas
+	Advanced(self).MoveTileInAtlas(Vector2i.XY(atlas_coords), Vector2i.XY(new_atlas_coords), Vector2i.XY(new_size))
 }
 
 /*
 Returns the size of the tile (in the grid coordinates system) at coordinates [param atlas_coords].
 */
 func (self Instance) GetTileSizeInAtlas(atlas_coords Vector2i.XY) Vector2i.XY { //gd:TileSetAtlasSource.get_tile_size_in_atlas
-	return Vector2i.XY(class(self).GetTileSizeInAtlas(Vector2i.XY(atlas_coords)))
+	return Vector2i.XY(Advanced(self).GetTileSizeInAtlas(Vector2i.XY(atlas_coords)))
 }
 
 /*
 Returns whether there is enough room in an atlas to create/modify a tile with the given properties. If [param ignored_tile] is provided, act as is the given tile was not present in the atlas. This may be used when you want to modify a tile's properties.
 */
 func (self Instance) HasRoomForTile(atlas_coords Vector2i.XY, size Vector2i.XY, animation_columns int, animation_separation Vector2i.XY, frames_count int) bool { //gd:TileSetAtlasSource.has_room_for_tile
-	return bool(class(self).HasRoomForTile(Vector2i.XY(atlas_coords), Vector2i.XY(size), int64(animation_columns), Vector2i.XY(animation_separation), int64(frames_count), Vector2i.XY(gd.Vector2i{-1, -1})))
+	return bool(Advanced(self).HasRoomForTile(Vector2i.XY(atlas_coords), Vector2i.XY(size), int64(animation_columns), Vector2i.XY(animation_separation), int64(frames_count), Vector2i.XY(gd.Vector2i{-1, -1})))
+}
+
+/*
+Returns whether there is enough room in an atlas to create/modify a tile with the given properties. If [param ignored_tile] is provided, act as is the given tile was not present in the atlas. This may be used when you want to modify a tile's properties.
+*/
+func (self Expanded) HasRoomForTile(atlas_coords Vector2i.XY, size Vector2i.XY, animation_columns int, animation_separation Vector2i.XY, frames_count int, ignored_tile Vector2i.XY) bool { //gd:TileSetAtlasSource.has_room_for_tile
+	return bool(Advanced(self).HasRoomForTile(Vector2i.XY(atlas_coords), Vector2i.XY(size), int64(animation_columns), Vector2i.XY(animation_separation), int64(frames_count), Vector2i.XY(ignored_tile)))
 }
 
 /*
 Returns an array of tiles coordinates ID that will be automatically removed when modifying one or several of those properties: [param texture], [param margins], [param separation] or [param texture_region_size]. This can be used to undo changes that would have caused tiles data loss.
 */
 func (self Instance) GetTilesToBeRemovedOnChange(texture [1]gdclass.Texture2D, margins Vector2i.XY, separation Vector2i.XY, texture_region_size Vector2i.XY) []Vector2.XY { //gd:TileSetAtlasSource.get_tiles_to_be_removed_on_change
-	return []Vector2.XY(slices.Collect(class(self).GetTilesToBeRemovedOnChange(texture, Vector2i.XY(margins), Vector2i.XY(separation), Vector2i.XY(texture_region_size)).Values()))
+	return []Vector2.XY(slices.Collect(Advanced(self).GetTilesToBeRemovedOnChange(texture, Vector2i.XY(margins), Vector2i.XY(separation), Vector2i.XY(texture_region_size)).Values()))
 }
 
 /*
 If there is a tile covering the [param atlas_coords] coordinates, returns the top-left coordinates of the tile (thus its coordinate ID). Returns [code]Vector2i(-1, -1)[/code] otherwise.
 */
 func (self Instance) GetTileAtCoords(atlas_coords Vector2i.XY) Vector2i.XY { //gd:TileSetAtlasSource.get_tile_at_coords
-	return Vector2i.XY(class(self).GetTileAtCoords(Vector2i.XY(atlas_coords)))
+	return Vector2i.XY(Advanced(self).GetTileAtCoords(Vector2i.XY(atlas_coords)))
 }
 
 /*
 Checks if the source has any tiles that don't fit the texture area (either partially or completely).
 */
 func (self Instance) HasTilesOutsideTexture() bool { //gd:TileSetAtlasSource.has_tiles_outside_texture
-	return bool(class(self).HasTilesOutsideTexture())
+	return bool(Advanced(self).HasTilesOutsideTexture())
 }
 
 /*
 Removes all tiles that don't fit the available texture area. This method iterates over all the source's tiles, so it's advised to use [method has_tiles_outside_texture] beforehand.
 */
 func (self Instance) ClearTilesOutsideTexture() { //gd:TileSetAtlasSource.clear_tiles_outside_texture
-	class(self).ClearTilesOutsideTexture()
+	Advanced(self).ClearTilesOutsideTexture()
 }
 
 /*
 Sets the number of columns in the animation layout of the tile at coordinates [param atlas_coords]. If set to 0, then the different frames of the animation are laid out as a single horizontal line in the atlas.
 */
 func (self Instance) SetTileAnimationColumns(atlas_coords Vector2i.XY, frame_columns int) { //gd:TileSetAtlasSource.set_tile_animation_columns
-	class(self).SetTileAnimationColumns(Vector2i.XY(atlas_coords), int64(frame_columns))
+	Advanced(self).SetTileAnimationColumns(Vector2i.XY(atlas_coords), int64(frame_columns))
 }
 
 /*
 Returns how many columns the tile at [param atlas_coords] has in its animation layout.
 */
 func (self Instance) GetTileAnimationColumns(atlas_coords Vector2i.XY) int { //gd:TileSetAtlasSource.get_tile_animation_columns
-	return int(int(class(self).GetTileAnimationColumns(Vector2i.XY(atlas_coords))))
+	return int(int(Advanced(self).GetTileAnimationColumns(Vector2i.XY(atlas_coords))))
 }
 
 /*
 Sets the margin (in grid tiles) between each tile in the animation layout of the tile at coordinates [param atlas_coords] has.
 */
 func (self Instance) SetTileAnimationSeparation(atlas_coords Vector2i.XY, separation Vector2i.XY) { //gd:TileSetAtlasSource.set_tile_animation_separation
-	class(self).SetTileAnimationSeparation(Vector2i.XY(atlas_coords), Vector2i.XY(separation))
+	Advanced(self).SetTileAnimationSeparation(Vector2i.XY(atlas_coords), Vector2i.XY(separation))
 }
 
 /*
 Returns the separation (as in the atlas grid) between each frame of an animated tile at coordinates [param atlas_coords].
 */
 func (self Instance) GetTileAnimationSeparation(atlas_coords Vector2i.XY) Vector2i.XY { //gd:TileSetAtlasSource.get_tile_animation_separation
-	return Vector2i.XY(class(self).GetTileAnimationSeparation(Vector2i.XY(atlas_coords)))
+	return Vector2i.XY(Advanced(self).GetTileAnimationSeparation(Vector2i.XY(atlas_coords)))
 }
 
 /*
 Sets the animation speed of the tile at coordinates [param atlas_coords] has.
 */
 func (self Instance) SetTileAnimationSpeed(atlas_coords Vector2i.XY, speed Float.X) { //gd:TileSetAtlasSource.set_tile_animation_speed
-	class(self).SetTileAnimationSpeed(Vector2i.XY(atlas_coords), float64(speed))
+	Advanced(self).SetTileAnimationSpeed(Vector2i.XY(atlas_coords), float64(speed))
 }
 
 /*
 Returns the animation speed of the tile at coordinates [param atlas_coords].
 */
 func (self Instance) GetTileAnimationSpeed(atlas_coords Vector2i.XY) Float.X { //gd:TileSetAtlasSource.get_tile_animation_speed
-	return Float.X(Float.X(class(self).GetTileAnimationSpeed(Vector2i.XY(atlas_coords))))
+	return Float.X(Float.X(Advanced(self).GetTileAnimationSpeed(Vector2i.XY(atlas_coords))))
 }
 
 /*
 Sets the tile animation mode of the tile at [param atlas_coords] to [param mode]. See also [method get_tile_animation_mode].
 */
 func (self Instance) SetTileAnimationMode(atlas_coords Vector2i.XY, mode gdclass.TileSetAtlasSourceTileAnimationMode) { //gd:TileSetAtlasSource.set_tile_animation_mode
-	class(self).SetTileAnimationMode(Vector2i.XY(atlas_coords), mode)
+	Advanced(self).SetTileAnimationMode(Vector2i.XY(atlas_coords), mode)
 }
 
 /*
 Returns the tile animation mode of the tile at [param atlas_coords]. See also [method set_tile_animation_mode].
 */
 func (self Instance) GetTileAnimationMode(atlas_coords Vector2i.XY) gdclass.TileSetAtlasSourceTileAnimationMode { //gd:TileSetAtlasSource.get_tile_animation_mode
-	return gdclass.TileSetAtlasSourceTileAnimationMode(class(self).GetTileAnimationMode(Vector2i.XY(atlas_coords)))
+	return gdclass.TileSetAtlasSourceTileAnimationMode(Advanced(self).GetTileAnimationMode(Vector2i.XY(atlas_coords)))
 }
 
 /*
 Sets how many animation frames the tile at coordinates [param atlas_coords] has.
 */
 func (self Instance) SetTileAnimationFramesCount(atlas_coords Vector2i.XY, frames_count int) { //gd:TileSetAtlasSource.set_tile_animation_frames_count
-	class(self).SetTileAnimationFramesCount(Vector2i.XY(atlas_coords), int64(frames_count))
+	Advanced(self).SetTileAnimationFramesCount(Vector2i.XY(atlas_coords), int64(frames_count))
 }
 
 /*
 Returns how many animation frames has the tile at coordinates [param atlas_coords].
 */
 func (self Instance) GetTileAnimationFramesCount(atlas_coords Vector2i.XY) int { //gd:TileSetAtlasSource.get_tile_animation_frames_count
-	return int(int(class(self).GetTileAnimationFramesCount(Vector2i.XY(atlas_coords))))
+	return int(int(Advanced(self).GetTileAnimationFramesCount(Vector2i.XY(atlas_coords))))
 }
 
 /*
 Sets the animation frame [param duration] of frame [param frame_index] for the tile at coordinates [param atlas_coords].
 */
 func (self Instance) SetTileAnimationFrameDuration(atlas_coords Vector2i.XY, frame_index int, duration Float.X) { //gd:TileSetAtlasSource.set_tile_animation_frame_duration
-	class(self).SetTileAnimationFrameDuration(Vector2i.XY(atlas_coords), int64(frame_index), float64(duration))
+	Advanced(self).SetTileAnimationFrameDuration(Vector2i.XY(atlas_coords), int64(frame_index), float64(duration))
 }
 
 /*
 Returns the animation frame duration of frame [param frame_index] for the tile at coordinates [param atlas_coords].
 */
 func (self Instance) GetTileAnimationFrameDuration(atlas_coords Vector2i.XY, frame_index int) Float.X { //gd:TileSetAtlasSource.get_tile_animation_frame_duration
-	return Float.X(Float.X(class(self).GetTileAnimationFrameDuration(Vector2i.XY(atlas_coords), int64(frame_index))))
+	return Float.X(Float.X(Advanced(self).GetTileAnimationFrameDuration(Vector2i.XY(atlas_coords), int64(frame_index))))
 }
 
 /*
 Returns the sum of the sum of the frame durations of the tile at coordinates [param atlas_coords]. This value needs to be divided by the animation speed to get the actual animation loop duration.
 */
 func (self Instance) GetTileAnimationTotalDuration(atlas_coords Vector2i.XY) Float.X { //gd:TileSetAtlasSource.get_tile_animation_total_duration
-	return Float.X(Float.X(class(self).GetTileAnimationTotalDuration(Vector2i.XY(atlas_coords))))
+	return Float.X(Float.X(Advanced(self).GetTileAnimationTotalDuration(Vector2i.XY(atlas_coords))))
 }
 
 /*
@@ -222,7 +246,15 @@ Creates an alternative tile for the tile at coordinates [param atlas_coords]. If
 Returns the new alternative identifier, or -1 if the alternative could not be created with a provided [param alternative_id_override].
 */
 func (self Instance) CreateAlternativeTile(atlas_coords Vector2i.XY) int { //gd:TileSetAtlasSource.create_alternative_tile
-	return int(int(class(self).CreateAlternativeTile(Vector2i.XY(atlas_coords), int64(-1))))
+	return int(int(Advanced(self).CreateAlternativeTile(Vector2i.XY(atlas_coords), int64(-1))))
+}
+
+/*
+Creates an alternative tile for the tile at coordinates [param atlas_coords]. If [param alternative_id_override] is -1, give it an automatically generated unique ID, or assigns it the given ID otherwise.
+Returns the new alternative identifier, or -1 if the alternative could not be created with a provided [param alternative_id_override].
+*/
+func (self Expanded) CreateAlternativeTile(atlas_coords Vector2i.XY, alternative_id_override int) int { //gd:TileSetAtlasSource.create_alternative_tile
+	return int(int(Advanced(self).CreateAlternativeTile(Vector2i.XY(atlas_coords), int64(alternative_id_override))))
 }
 
 /*
@@ -230,7 +262,7 @@ Remove a tile's alternative with alternative ID [param alternative_tile].
 Calling this function with [param alternative_tile] equals to 0 will fail, as the base tile alternative cannot be removed.
 */
 func (self Instance) RemoveAlternativeTile(atlas_coords Vector2i.XY, alternative_tile int) { //gd:TileSetAtlasSource.remove_alternative_tile
-	class(self).RemoveAlternativeTile(Vector2i.XY(atlas_coords), int64(alternative_tile))
+	Advanced(self).RemoveAlternativeTile(Vector2i.XY(atlas_coords), int64(alternative_tile))
 }
 
 /*
@@ -238,42 +270,49 @@ Change a tile's alternative ID from [param alternative_tile] to [param new_id].
 Calling this function with [param new_id] of 0 will fail, as the base tile alternative cannot be moved.
 */
 func (self Instance) SetAlternativeTileId(atlas_coords Vector2i.XY, alternative_tile int, new_id int) { //gd:TileSetAtlasSource.set_alternative_tile_id
-	class(self).SetAlternativeTileId(Vector2i.XY(atlas_coords), int64(alternative_tile), int64(new_id))
+	Advanced(self).SetAlternativeTileId(Vector2i.XY(atlas_coords), int64(alternative_tile), int64(new_id))
 }
 
 /*
 Returns the alternative ID a following call to [method create_alternative_tile] would return.
 */
 func (self Instance) GetNextAlternativeTileId(atlas_coords Vector2i.XY) int { //gd:TileSetAtlasSource.get_next_alternative_tile_id
-	return int(int(class(self).GetNextAlternativeTileId(Vector2i.XY(atlas_coords))))
+	return int(int(Advanced(self).GetNextAlternativeTileId(Vector2i.XY(atlas_coords))))
 }
 
 /*
 Returns the [TileData] object for the given atlas coordinates and alternative ID.
 */
 func (self Instance) GetTileData(atlas_coords Vector2i.XY, alternative_tile int) [1]gdclass.TileData { //gd:TileSetAtlasSource.get_tile_data
-	return [1]gdclass.TileData(class(self).GetTileData(Vector2i.XY(atlas_coords), int64(alternative_tile)))
+	return [1]gdclass.TileData(Advanced(self).GetTileData(Vector2i.XY(atlas_coords), int64(alternative_tile)))
 }
 
 /*
 Returns the atlas grid size, which depends on how many tiles can fit in the texture. It thus depends on the [member texture]'s size, the atlas [member margins], and the tiles' [member texture_region_size].
 */
 func (self Instance) GetAtlasGridSize() Vector2i.XY { //gd:TileSetAtlasSource.get_atlas_grid_size
-	return Vector2i.XY(class(self).GetAtlasGridSize())
+	return Vector2i.XY(Advanced(self).GetAtlasGridSize())
 }
 
 /*
 Returns a tile's texture region in the atlas texture. For animated tiles, a [param frame] argument might be provided for the different frames of the animation.
 */
 func (self Instance) GetTileTextureRegion(atlas_coords Vector2i.XY) Rect2i.PositionSize { //gd:TileSetAtlasSource.get_tile_texture_region
-	return Rect2i.PositionSize(class(self).GetTileTextureRegion(Vector2i.XY(atlas_coords), int64(0)))
+	return Rect2i.PositionSize(Advanced(self).GetTileTextureRegion(Vector2i.XY(atlas_coords), int64(0)))
+}
+
+/*
+Returns a tile's texture region in the atlas texture. For animated tiles, a [param frame] argument might be provided for the different frames of the animation.
+*/
+func (self Expanded) GetTileTextureRegion(atlas_coords Vector2i.XY, frame_ int) Rect2i.PositionSize { //gd:TileSetAtlasSource.get_tile_texture_region
+	return Rect2i.PositionSize(Advanced(self).GetTileTextureRegion(Vector2i.XY(atlas_coords), int64(frame_)))
 }
 
 /*
 If [member use_texture_padding] is [code]false[/code], returns [member texture]. Otherwise, returns and internal [ImageTexture] created that includes the padding.
 */
 func (self Instance) GetRuntimeTexture() [1]gdclass.Texture2D { //gd:TileSetAtlasSource.get_runtime_texture
-	return [1]gdclass.Texture2D(class(self).GetRuntimeTexture())
+	return [1]gdclass.Texture2D(Advanced(self).GetRuntimeTexture())
 }
 
 /*
@@ -281,7 +320,7 @@ Returns the region of the tile at coordinates [param atlas_coords] for the given
 [b]Note:[/b] If [member use_texture_padding] is [code]false[/code], returns the same as [method get_tile_texture_region].
 */
 func (self Instance) GetRuntimeTileTextureRegion(atlas_coords Vector2i.XY, frame_ int) Rect2i.PositionSize { //gd:TileSetAtlasSource.get_runtime_tile_texture_region
-	return Rect2i.PositionSize(class(self).GetRuntimeTileTextureRegion(Vector2i.XY(atlas_coords), int64(frame_)))
+	return Rect2i.PositionSize(Advanced(self).GetRuntimeTileTextureRegion(Vector2i.XY(atlas_coords), int64(frame_)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

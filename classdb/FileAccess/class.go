@@ -80,6 +80,7 @@ In the example above, the file will be saved in the user data folder as specifie
 [b]Note:[/b] Files are automatically closed only if the process exits "normally" (such as by clicking the window manager's close button or pressing [b]Alt + F4[/b]). If you stop the project execution by pressing [b]F8[/b] while the project is running, the file won't be closed as the game process will be killed. You can work around this by calling [method flush] at regular intervals.
 */
 type Instance [1]gdclass.FileAccess
+type Expanded [1]gdclass.FileAccess
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -95,7 +96,7 @@ Returns [code]null[/code] if opening the file failed. You can use [method get_op
 */
 func Open(path string, flags gdclass.FileAccessModeFlags) [1]gdclass.FileAccess { //gd:FileAccess.open
 	self := Instance{}
-	return [1]gdclass.FileAccess(class(self).Open(String.New(path), flags))
+	return [1]gdclass.FileAccess(Advanced(self).Open(String.New(path), flags))
 }
 
 /*
@@ -103,9 +104,19 @@ Creates a new [FileAccess] object and opens an encrypted file in write or read m
 [b]Note:[/b] The provided key must be 32 bytes long.
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
-func OpenEncrypted(path string, mode_flags gdclass.FileAccessModeFlags, key []byte) [1]gdclass.FileAccess { //gd:FileAccess.open_encrypted
+func OpenEncrypted(path string, mode_flags gdclass.FileAccessModeFlags, key []byte, iv []byte) [1]gdclass.FileAccess { //gd:FileAccess.open_encrypted
 	self := Instance{}
-	return [1]gdclass.FileAccess(class(self).OpenEncrypted(String.New(path), mode_flags, Packed.Bytes(Packed.New(key...)), Packed.Bytes(Packed.New([1][]byte{}[0]...))))
+	return [1]gdclass.FileAccess(Advanced(self).OpenEncrypted(String.New(path), mode_flags, Packed.Bytes(Packed.New(key...)), Packed.Bytes(Packed.New(iv...))))
+}
+
+/*
+Creates a new [FileAccess] object and opens an encrypted file in write or read mode. You need to pass a binary key to encrypt/decrypt it.
+[b]Note:[/b] The provided key must be 32 bytes long.
+Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
+*/
+func OpenEncryptedExpanded(path string, mode_flags gdclass.FileAccessModeFlags, key []byte, iv []byte) [1]gdclass.FileAccess { //gd:FileAccess.open_encrypted
+	self := Instance{}
+	return [1]gdclass.FileAccess(Advanced(self).OpenEncrypted(String.New(path), mode_flags, Packed.Bytes(Packed.New(key...)), Packed.Bytes(Packed.New(iv...))))
 }
 
 /*
@@ -114,7 +125,7 @@ Returns [code]null[/code] if opening the file failed. You can use [method get_op
 */
 func OpenEncryptedWithPass(path string, mode_flags gdclass.FileAccessModeFlags, pass string) [1]gdclass.FileAccess { //gd:FileAccess.open_encrypted_with_pass
 	self := Instance{}
-	return [1]gdclass.FileAccess(class(self).OpenEncryptedWithPass(String.New(path), mode_flags, String.New(pass)))
+	return [1]gdclass.FileAccess(Advanced(self).OpenEncryptedWithPass(String.New(path), mode_flags, String.New(pass)))
 }
 
 /*
@@ -122,9 +133,19 @@ Creates a new [FileAccess] object and opens a compressed file for reading or wri
 [b]Note:[/b] [method open_compressed] can only read files that were saved by Godot, not third-party compression formats. See [url=https://github.com/godotengine/godot/issues/28999]GitHub issue #28999[/url] for a workaround.
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
-func OpenCompressed(path string, mode_flags gdclass.FileAccessModeFlags) [1]gdclass.FileAccess { //gd:FileAccess.open_compressed
+func OpenCompressed(path string, mode_flags gdclass.FileAccessModeFlags, compression_mode gdclass.FileAccessCompressionMode) [1]gdclass.FileAccess { //gd:FileAccess.open_compressed
 	self := Instance{}
-	return [1]gdclass.FileAccess(class(self).OpenCompressed(String.New(path), mode_flags, 0))
+	return [1]gdclass.FileAccess(Advanced(self).OpenCompressed(String.New(path), mode_flags, compression_mode))
+}
+
+/*
+Creates a new [FileAccess] object and opens a compressed file for reading or writing.
+[b]Note:[/b] [method open_compressed] can only read files that were saved by Godot, not third-party compression formats. See [url=https://github.com/godotengine/godot/issues/28999]GitHub issue #28999[/url] for a workaround.
+Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
+*/
+func OpenCompressedExpanded(path string, mode_flags gdclass.FileAccessModeFlags, compression_mode gdclass.FileAccessCompressionMode) [1]gdclass.FileAccess { //gd:FileAccess.open_compressed
+	self := Instance{}
+	return [1]gdclass.FileAccess(Advanced(self).OpenCompressed(String.New(path), mode_flags, compression_mode))
 }
 
 /*
@@ -132,7 +153,7 @@ Returns the result of the last [method open] call in the current thread.
 */
 func GetOpenError() error { //gd:FileAccess.get_open_error
 	self := Instance{}
-	return error(gd.ToError(class(self).GetOpenError()))
+	return error(gd.ToError(Advanced(self).GetOpenError()))
 }
 
 /*
@@ -142,9 +163,21 @@ If [param extension] is not empty, it will be appended to the temporary file nam
 If [param keep] is [code]true[/code], the file is not deleted when the returned [FileAccess] is freed.
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
-func CreateTemp(mode_flags int) [1]gdclass.FileAccess { //gd:FileAccess.create_temp
+func CreateTemp(mode_flags int, prefix string, extension string, keep bool) [1]gdclass.FileAccess { //gd:FileAccess.create_temp
 	self := Instance{}
-	return [1]gdclass.FileAccess(class(self).CreateTemp(int64(mode_flags), String.New(""), String.New(""), false))
+	return [1]gdclass.FileAccess(Advanced(self).CreateTemp(int64(mode_flags), String.New(prefix), String.New(extension), keep))
+}
+
+/*
+Creates a temporary file. This file will be freed when the returned [FileAccess] is freed.
+If [param prefix] is not empty, it will be prefixed to the file name, separated by a [code]-[/code].
+If [param extension] is not empty, it will be appended to the temporary file name.
+If [param keep] is [code]true[/code], the file is not deleted when the returned [FileAccess] is freed.
+Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
+*/
+func CreateTempExpanded(mode_flags int, prefix string, extension string, keep bool) [1]gdclass.FileAccess { //gd:FileAccess.create_temp
+	self := Instance{}
+	return [1]gdclass.FileAccess(Advanced(self).CreateTemp(int64(mode_flags), String.New(prefix), String.New(extension), keep))
 }
 
 /*
@@ -153,7 +186,7 @@ Returns an empty [PackedByteArray] if an error occurred while opening the file. 
 */
 func GetFileAsBytes(path string) []byte { //gd:FileAccess.get_file_as_bytes
 	self := Instance{}
-	return []byte(class(self).GetFileAsBytes(String.New(path)).Bytes())
+	return []byte(Advanced(self).GetFileAsBytes(String.New(path)).Bytes())
 }
 
 /*
@@ -162,14 +195,14 @@ Returns an empty [String] if an error occurred while opening the file. You can u
 */
 func GetFileAsString(path string) string { //gd:FileAccess.get_file_as_string
 	self := Instance{}
-	return string(class(self).GetFileAsString(String.New(path)).String())
+	return string(Advanced(self).GetFileAsString(String.New(path)).String())
 }
 
 /*
 Resizes the file to a specified length. The file must be open in a mode that permits writing. If the file is extended, NUL characters are appended. If the file is truncated, all data from the end file to the original length of the file is lost.
 */
 func (self Instance) Resize(length int) error { //gd:FileAccess.resize
-	return error(gd.ToError(class(self).Resize(int64(length))))
+	return error(gd.ToError(Advanced(self).Resize(int64(length))))
 }
 
 /*
@@ -177,35 +210,35 @@ Writes the file's buffer to disk. Flushing is automatically performed when the f
 [b]Note:[/b] Only call [method flush] when you actually need it. Otherwise, it will decrease performance due to constant disk writes.
 */
 func (self Instance) Flush() { //gd:FileAccess.flush
-	class(self).Flush()
+	Advanced(self).Flush()
 }
 
 /*
 Returns the path as a [String] for the current open file.
 */
 func (self Instance) GetPath() string { //gd:FileAccess.get_path
-	return string(class(self).GetPath().String())
+	return string(Advanced(self).GetPath().String())
 }
 
 /*
 Returns the absolute path as a [String] for the current open file.
 */
 func (self Instance) GetPathAbsolute() string { //gd:FileAccess.get_path_absolute
-	return string(class(self).GetPathAbsolute().String())
+	return string(Advanced(self).GetPathAbsolute().String())
 }
 
 /*
 Returns [code]true[/code] if the file is currently opened.
 */
 func (self Instance) IsOpen() bool { //gd:FileAccess.is_open
-	return bool(class(self).IsOpen())
+	return bool(Advanced(self).IsOpen())
 }
 
 /*
 Changes the file reading/writing cursor to the specified position (in bytes from the beginning of the file).
 */
 func (self Instance) SeekTo(position int) { //gd:FileAccess.seek
-	class(self).SeekTo(int64(position))
+	Advanced(self).SeekTo(int64(position))
 }
 
 /*
@@ -213,21 +246,29 @@ Changes the file reading/writing cursor to the specified position (in bytes from
 [b]Note:[/b] This is an offset, so you should use negative numbers or the cursor will be at the end of the file.
 */
 func (self Instance) SeekEnd() { //gd:FileAccess.seek_end
-	class(self).SeekEnd(int64(0))
+	Advanced(self).SeekEnd(int64(0))
+}
+
+/*
+Changes the file reading/writing cursor to the specified position (in bytes from the end of the file).
+[b]Note:[/b] This is an offset, so you should use negative numbers or the cursor will be at the end of the file.
+*/
+func (self Expanded) SeekEnd(position int) { //gd:FileAccess.seek_end
+	Advanced(self).SeekEnd(int64(position))
 }
 
 /*
 Returns the file cursor's position.
 */
 func (self Instance) GetPosition() int { //gd:FileAccess.get_position
-	return int(int(class(self).GetPosition()))
+	return int(int(Advanced(self).GetPosition()))
 }
 
 /*
 Returns the size of the file in bytes. For a pipe, returns the number of bytes available for reading from the pipe.
 */
 func (self Instance) GetLength() int { //gd:FileAccess.get_length
-	return int(int(class(self).GetLength()))
+	return int(int(Advanced(self).GetLength()))
 }
 
 /*
@@ -251,70 +292,70 @@ while (file.GetPosition() < file.GetLength())
 [/codeblocks]
 */
 func (self Instance) EofReached() bool { //gd:FileAccess.eof_reached
-	return bool(class(self).EofReached())
+	return bool(Advanced(self).EofReached())
 }
 
 /*
 Returns the next 8 bits from the file as an integer. See [method store_8] for details on what values can be stored and retrieved this way.
 */
 func (self Instance) Get8() int { //gd:FileAccess.get_8
-	return int(int(class(self).Get8()))
+	return int(int(Advanced(self).Get8()))
 }
 
 /*
 Returns the next 16 bits from the file as an integer. See [method store_16] for details on what values can be stored and retrieved this way.
 */
 func (self Instance) Get16() int { //gd:FileAccess.get_16
-	return int(int(class(self).Get16()))
+	return int(int(Advanced(self).Get16()))
 }
 
 /*
 Returns the next 32 bits from the file as an integer. See [method store_32] for details on what values can be stored and retrieved this way.
 */
 func (self Instance) Get32() int { //gd:FileAccess.get_32
-	return int(int(class(self).Get32()))
+	return int(int(Advanced(self).Get32()))
 }
 
 /*
 Returns the next 64 bits from the file as an integer. See [method store_64] for details on what values can be stored and retrieved this way.
 */
 func (self Instance) Get64() int { //gd:FileAccess.get_64
-	return int(int(class(self).Get64()))
+	return int(int(Advanced(self).Get64()))
 }
 
 /*
 Returns the next 16 bits from the file as a half-precision floating-point number.
 */
 func (self Instance) GetHalf() Float.X { //gd:FileAccess.get_half
-	return Float.X(Float.X(class(self).GetHalf()))
+	return Float.X(Float.X(Advanced(self).GetHalf()))
 }
 
 /*
 Returns the next 32 bits from the file as a floating-point number.
 */
 func (self Instance) GetFloat() Float.X { //gd:FileAccess.get_float
-	return Float.X(Float.X(class(self).GetFloat()))
+	return Float.X(Float.X(Advanced(self).GetFloat()))
 }
 
 /*
 Returns the next 64 bits from the file as a floating-point number.
 */
 func (self Instance) GetDouble() Float.X { //gd:FileAccess.get_double
-	return Float.X(Float.X(class(self).GetDouble()))
+	return Float.X(Float.X(Advanced(self).GetDouble()))
 }
 
 /*
 Returns the next bits from the file as a floating-point number.
 */
 func (self Instance) GetReal() Float.X { //gd:FileAccess.get_real
-	return Float.X(Float.X(class(self).GetReal()))
+	return Float.X(Float.X(Advanced(self).GetReal()))
 }
 
 /*
 Returns next [param length] bytes of the file as a [PackedByteArray].
 */
 func (self Instance) GetBuffer(length int) []byte { //gd:FileAccess.get_buffer
-	return []byte(class(self).GetBuffer(int64(length)).Bytes())
+	return []byte(Advanced(self).GetBuffer(int64(length)).Bytes())
 }
 
 /*
@@ -322,7 +363,7 @@ Returns the next line of the file as a [String]. The returned string doesn't inc
 Text is interpreted as being UTF-8 encoded.
 */
 func (self Instance) GetLine() string { //gd:FileAccess.get_line
-	return string(class(self).GetLine().String())
+	return string(Advanced(self).GetLine().String())
 }
 
 /*
@@ -337,7 +378,22 @@ Alice,"I thought you'd reply with ""Hello, world""."
 Note how the second line can omit the enclosing quotes as it does not include the delimiter. However it [i]could[/i] very well use quotes, it was only written without for demonstration purposes. The third line must use [code]""[/code] for each quotation mark that needs to be interpreted as such instead of the end of a text value.
 */
 func (self Instance) GetCsvLine() []string { //gd:FileAccess.get_csv_line
-	return []string(class(self).GetCsvLine(String.New(",")).Strings())
+	return []string(Advanced(self).GetCsvLine(String.New(",")).Strings())
+}
+
+/*
+Returns the next value of the file in CSV (Comma-Separated Values) format. You can pass a different delimiter [param delim] to use other than the default [code]","[/code] (comma). This delimiter must be one-character long, and cannot be a double quotation mark.
+Text is interpreted as being UTF-8 encoded. Text values must be enclosed in double quotes if they include the delimiter character. Double quotes within a text value can be escaped by doubling their occurrence.
+For example, the following CSV lines are valid and will be properly parsed as two strings each:
+[codeblock lang=text]
+Alice,"Hello, Bob!"
+Bob,Alice! What a surprise!
+Alice,"I thought you'd reply with ""Hello, world""."
+[/codeblock]
+Note how the second line can omit the enclosing quotes as it does not include the delimiter. However it [i]could[/i] very well use quotes, it was only written without for demonstration purposes. The third line must use [code]""[/code] for each quotation mark that needs to be interpreted as such instead of the end of a text value.
+*/
+func (self Expanded) GetCsvLine(delim string) []string { //gd:FileAccess.get_csv_line
+	return []string(Advanced(self).GetCsvLine(String.New(delim)).Strings())
 }
 
 /*
@@ -345,7 +401,15 @@ Returns the whole file as a [String]. Text is interpreted as being UTF-8 encoded
 If [param skip_cr] is [code]true[/code], carriage return characters ([code]\r[/code], CR) will be ignored when parsing the UTF-8, so that only line feed characters ([code]\n[/code], LF) represent a new line (Unix convention).
 */
 func (self Instance) GetAsText() string { //gd:FileAccess.get_as_text
-	return string(class(self).GetAsText(false).String())
+	return string(Advanced(self).GetAsText(false).String())
+}
+
+/*
+Returns the whole file as a [String]. Text is interpreted as being UTF-8 encoded.
+If [param skip_cr] is [code]true[/code], carriage return characters ([code]\r[/code], CR) will be ignored when parsing the UTF-8, so that only line feed characters ([code]\n[/code], LF) represent a new line (Unix convention).
+*/
+func (self Expanded) GetAsText(skip_cr bool) string { //gd:FileAccess.get_as_text
+	return string(Advanced(self).GetAsText(skip_cr).String())
 }
 
 /*
@@ -353,7 +417,7 @@ Returns an MD5 String representing the file at the given path or an empty [Strin
 */
 func GetMd5(path string) string { //gd:FileAccess.get_md5
 	self := Instance{}
-	return string(class(self).GetMd5(String.New(path)).String())
+	return string(Advanced(self).GetMd5(String.New(path)).String())
 }
 
 /*
@@ -361,14 +425,14 @@ Returns an SHA-256 [String] representing the file at the given path or an empty 
 */
 func GetSha256(path string) string { //gd:FileAccess.get_sha256
 	self := Instance{}
-	return string(class(self).GetSha256(String.New(path)).String())
+	return string(Advanced(self).GetSha256(String.New(path)).String())
 }
 
 /*
 Returns the last error that happened when trying to perform operations. Compare with the [code]ERR_FILE_*[/code] constants from [enum Error].
 */
 func (self Instance) GetError() error { //gd:FileAccess.get_error
-	return error(gd.ToError(class(self).GetError()))
+	return error(gd.ToError(Advanced(self).GetError()))
 }
 
 /*
@@ -377,7 +441,16 @@ Internally, this uses the same decoding mechanism as the [method @GlobalScope.by
 [b]Warning:[/b] Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
 */
 func (self Instance) GetVar() any { //gd:FileAccess.get_var
-	return any(class(self).GetVar(false).Interface())
+	return any(Advanced(self).GetVar(false).Interface())
+}
+
+/*
+Returns the next [Variant] value from the file. If [param allow_objects] is [code]true[/code], decoding objects is allowed.
+Internally, this uses the same decoding mechanism as the [method @GlobalScope.bytes_to_var] method.
+[b]Warning:[/b] Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
+*/
+func (self Expanded) GetVar(allow_objects bool) any { //gd:FileAccess.get_var
+	return any(Advanced(self).GetVar(allow_objects).Interface())
 }
 
 /*
@@ -387,7 +460,7 @@ Stores an integer as 8 bits in the file.
 To store a signed integer, use [method store_64], or convert it manually (see [method store_16] for an example).
 */
 func (self Instance) Store8(value int) bool { //gd:FileAccess.store_8
-	return bool(class(self).Store8(int64(value)))
+	return bool(Advanced(self).Store8(int64(value)))
 }
 
 /*
@@ -434,7 +507,7 @@ public override void _Ready()
 [/codeblocks]
 */
 func (self Instance) Store16(value int) bool { //gd:FileAccess.store_16
-	return bool(class(self).Store16(int64(value)))
+	return bool(Advanced(self).Store16(int64(value)))
 }
 
 /*
@@ -444,7 +517,7 @@ Stores an integer as 32 bits in the file.
 To store a signed integer, use [method store_64], or convert it manually (see [method store_16] for an example).
 */
 func (self Instance) Store32(value int) bool { //gd:FileAccess.store_32
-	return bool(class(self).Store32(int64(value)))
+	return bool(Advanced(self).Store32(int64(value)))
 }
 
 /*
@@ -453,14 +526,14 @@ Stores an integer as 64 bits in the file.
 [b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 func (self Instance) Store64(value int) bool { //gd:FileAccess.store_64
-	return bool(class(self).Store64(int64(value)))
+	return bool(Advanced(self).Store64(int64(value)))
 }
 
 /*
 Stores a half-precision floating-point number as 16 bits in the file.
 */
 func (self Instance) StoreHalf(value Float.X) bool { //gd:FileAccess.store_half
-	return bool(class(self).StoreHalf(float64(value)))
+	return bool(Advanced(self).StoreHalf(float64(value)))
 }
 
 /*
@@ -468,7 +541,7 @@ Stores a floating-point number as 32 bits in the file.
 [b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 func (self Instance) StoreFloat(value Float.X) bool { //gd:FileAccess.store_float
-	return bool(class(self).StoreFloat(float64(value)))
+	return bool(Advanced(self).StoreFloat(float64(value)))
 }
 
 /*
@@ -476,7 +549,7 @@ Stores a floating-point number as 64 bits in the file.
 [b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 func (self Instance) StoreDouble(value Float.X) bool { //gd:FileAccess.store_double
-	return bool(class(self).StoreDouble(float64(value)))
+	return bool(Advanced(self).StoreDouble(float64(value)))
 }
 
 /*
@@ -484,7 +557,7 @@ Stores a floating-point number in the file.
 [b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 func (self Instance) StoreReal(value Float.X) bool { //gd:FileAccess.store_real
-	return bool(class(self).StoreReal(float64(value)))
+	return bool(Advanced(self).StoreReal(float64(value)))
 }
 
 /*
@@ -492,7 +565,7 @@ Stores the given array of bytes in the file.
 [b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 func (self Instance) StoreBuffer(buffer []byte) bool { //gd:FileAccess.store_buffer
-	return bool(class(self).StoreBuffer(Packed.Bytes(Packed.New(buffer...))))
+	return bool(Advanced(self).StoreBuffer(Packed.Bytes(Packed.New(buffer...))))
 }
 
 /*
@@ -500,7 +573,7 @@ Stores [param line] in the file followed by a newline character ([code]\n[/code]
 [b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 func (self Instance) StoreLine(line string) bool { //gd:FileAccess.store_line
-	return bool(class(self).StoreLine(String.New(line)))
+	return bool(Advanced(self).StoreLine(String.New(line)))
 }
 
 /*
@@ -509,7 +582,16 @@ Text will be encoded as UTF-8.
 [b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 func (self Instance) StoreCsvLine(values []string) bool { //gd:FileAccess.store_csv_line
-	return bool(class(self).StoreCsvLine(Packed.MakeStrings(values...), String.New(",")))
+	return bool(Advanced(self).StoreCsvLine(Packed.MakeStrings(values...), String.New(",")))
+}
+
+/*
+Store the given [PackedStringArray] in the file as a line formatted in the CSV (Comma-Separated Values) format. You can pass a different delimiter [param delim] to use other than the default [code]","[/code] (comma). This delimiter must be one-character long.
+Text will be encoded as UTF-8.
+[b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
+*/
+func (self Expanded) StoreCsvLine(values []string, delim string) bool { //gd:FileAccess.store_csv_line
+	return bool(Advanced(self).StoreCsvLine(Packed.MakeStrings(values...), String.New(delim)))
 }
 
 /*
@@ -518,7 +600,7 @@ Stores [param string] in the file without a newline character ([code]\n[/code]),
 [b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 func (self Instance) StoreString(s string) bool { //gd:FileAccess.store_string
-	return bool(class(self).StoreString(String.New(s)))
+	return bool(Advanced(self).StoreString(String.New(s)))
 }
 
 /*
@@ -528,7 +610,17 @@ Internally, this uses the same encoding mechanism as the [method @GlobalScope.va
 [b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 func (self Instance) StoreVar(value any) bool { //gd:FileAccess.store_var
-	return bool(class(self).StoreVar(variant.New(value), false))
+	return bool(Advanced(self).StoreVar(variant.New(value), false))
+}
+
+/*
+Stores any Variant value in the file. If [param full_objects] is [code]true[/code], encoding objects is allowed (and can potentially include code).
+Internally, this uses the same encoding mechanism as the [method @GlobalScope.var_to_bytes] method.
+[b]Note:[/b] Not all properties are included. Only properties that are configured with the [constant PROPERTY_USAGE_STORAGE] flag set will be serialized. You can add a new usage flag to a property by overriding the [method Object._get_property_list] method in your class. You can also check how property usage is configured by calling [method Object._get_property_list]. See [enum PropertyUsageFlags] for the possible usage flags.
+[b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
+*/
+func (self Expanded) StoreVar(value any, full_objects bool) bool { //gd:FileAccess.store_var
+	return bool(Advanced(self).StoreVar(variant.New(value), full_objects))
 }
 
 /*
@@ -537,7 +629,7 @@ Text will be encoded as UTF-8.
 [b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 func (self Instance) StorePascalString(s string) bool { //gd:FileAccess.store_pascal_string
-	return bool(class(self).StorePascalString(String.New(s)))
+	return bool(Advanced(self).StorePascalString(String.New(s)))
 }
 
 /*
@@ -545,7 +637,7 @@ Returns a [String] saved in Pascal format from the file.
 Text is interpreted as being UTF-8 encoded.
 */
 func (self Instance) GetPascalString() string { //gd:FileAccess.get_pascal_string
-	return string(class(self).GetPascalString().String())
+	return string(Advanced(self).GetPascalString().String())
 }
 
 /*
@@ -553,7 +645,7 @@ Closes the currently opened file and prevents subsequent read/write operations. 
 [b]Note:[/b] [FileAccess] will automatically close when it's freed, which happens when it goes out of scope or when it gets assigned with [code]null[/code]. In C# the reference must be disposed after we are done using it, this can be done with the [code]using[/code] statement or calling the [code]Dispose[/code] method directly.
 */
 func (self Instance) Close() { //gd:FileAccess.close
-	class(self).Close()
+	Advanced(self).Close()
 }
 
 /*
@@ -563,7 +655,7 @@ For a non-static, relative equivalent, use [method DirAccess.file_exists].
 */
 func FileExists(path string) bool { //gd:FileAccess.file_exists
 	self := Instance{}
-	return bool(class(self).FileExists(String.New(path)))
+	return bool(Advanced(self).FileExists(String.New(path)))
 }
 
 /*
@@ -571,7 +663,7 @@ Returns the last time the [param file] was modified in Unix timestamp format, or
 */
 func GetModifiedTime(file string) int { //gd:FileAccess.get_modified_time
 	self := Instance{}
-	return int(int(class(self).GetModifiedTime(String.New(file))))
+	return int(int(Advanced(self).GetModifiedTime(String.New(file))))
 }
 
 /*
@@ -580,7 +672,7 @@ Returns file UNIX permissions.
 */
 func GetUnixPermissions(file string) gdclass.FileAccessUnixPermissionFlags { //gd:FileAccess.get_unix_permissions
 	self := Instance{}
-	return gdclass.FileAccessUnixPermissionFlags(class(self).GetUnixPermissions(String.New(file)))
+	return gdclass.FileAccessUnixPermissionFlags(Advanced(self).GetUnixPermissions(String.New(file)))
 }
 
 /*
@@ -589,7 +681,7 @@ Sets file UNIX permissions.
 */
 func SetUnixPermissions(file string, permissions gdclass.FileAccessUnixPermissionFlags) error { //gd:FileAccess.set_unix_permissions
 	self := Instance{}
-	return error(gd.ToError(class(self).SetUnixPermissions(String.New(file), permissions)))
+	return error(gd.ToError(Advanced(self).SetUnixPermissions(String.New(file), permissions)))
 }
 
 /*
@@ -598,7 +690,7 @@ Returns [code]true[/code], if file [code]hidden[/code] attribute is set.
 */
 func GetHiddenAttribute(file string) bool { //gd:FileAccess.get_hidden_attribute
 	self := Instance{}
-	return bool(class(self).GetHiddenAttribute(String.New(file)))
+	return bool(Advanced(self).GetHiddenAttribute(String.New(file)))
 }
 
 /*
@@ -607,7 +699,7 @@ Sets file [b]hidden[/b] attribute.
 */
 func SetHiddenAttribute(file string, hidden bool) error { //gd:FileAccess.set_hidden_attribute
 	self := Instance{}
-	return error(gd.ToError(class(self).SetHiddenAttribute(String.New(file), hidden)))
+	return error(gd.ToError(Advanced(self).SetHiddenAttribute(String.New(file), hidden)))
 }
 
 /*
@@ -616,7 +708,7 @@ Sets file [b]read only[/b] attribute.
 */
 func SetReadOnlyAttribute(file string, ro bool) error { //gd:FileAccess.set_read_only_attribute
 	self := Instance{}
-	return error(gd.ToError(class(self).SetReadOnlyAttribute(String.New(file), ro)))
+	return error(gd.ToError(Advanced(self).SetReadOnlyAttribute(String.New(file), ro)))
 }
 
 /*
@@ -625,7 +717,7 @@ Returns [code]true[/code], if file [code]read only[/code] attribute is set.
 */
 func GetReadOnlyAttribute(file string) bool { //gd:FileAccess.get_read_only_attribute
 	self := Instance{}
-	return bool(class(self).GetReadOnlyAttribute(String.New(file)))
+	return bool(Advanced(self).GetReadOnlyAttribute(String.New(file)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

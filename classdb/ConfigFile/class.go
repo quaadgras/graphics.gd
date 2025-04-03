@@ -132,6 +132,7 @@ ConfigFiles can also contain manually written comment lines starting with a semi
 [b]Note:[/b] The file extension given to a ConfigFile does not have any impact on its formatting or behavior. By convention, the [code].cfg[/code] extension is used here, but any other extension such as [code].ini[/code] is also valid. Since neither [code].cfg[/code] nor [code].ini[/code] are standardized, Godot's ConfigFile formatting may differ from files written by other programs.
 */
 type Instance [1]gdclass.ConfigFile
+type Expanded [1]gdclass.ConfigFile
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -145,56 +146,63 @@ type Any interface {
 Assigns a value to the specified key of the specified section. If either the section or the key do not exist, they are created. Passing a [code]null[/code] value deletes the specified key if it exists, and deletes the section if it ends up empty once the key has been removed.
 */
 func (self Instance) SetValue(section string, key string, value any) { //gd:ConfigFile.set_value
-	class(self).SetValue(String.New(section), String.New(key), variant.New(value))
+	Advanced(self).SetValue(String.New(section), String.New(key), variant.New(value))
 }
 
 /*
 Returns the current value for the specified section and key. If either the section or the key do not exist, the method returns the fallback [param default] value. If [param default] is not specified or set to [code]null[/code], an error is also raised.
 */
 func (self Instance) GetValue(section string, key string) any { //gd:ConfigFile.get_value
-	return any(class(self).GetValue(String.New(section), String.New(key), variant.New([1]any{}[0])).Interface())
+	return any(Advanced(self).GetValue(String.New(section), String.New(key), variant.New([1]any{}[0])).Interface())
+}
+
+/*
+Returns the current value for the specified section and key. If either the section or the key do not exist, the method returns the fallback [param default] value. If [param default] is not specified or set to [code]null[/code], an error is also raised.
+*/
+func (self Expanded) GetValue(section string, key string, def any) any { //gd:ConfigFile.get_value
+	return any(Advanced(self).GetValue(String.New(section), String.New(key), variant.New(def)).Interface())
 }
 
 /*
 Returns [code]true[/code] if the specified section exists.
 */
 func (self Instance) HasSection(section string) bool { //gd:ConfigFile.has_section
-	return bool(class(self).HasSection(String.New(section)))
+	return bool(Advanced(self).HasSection(String.New(section)))
 }
 
 /*
 Returns [code]true[/code] if the specified section-key pair exists.
 */
 func (self Instance) HasSectionKey(section string, key string) bool { //gd:ConfigFile.has_section_key
-	return bool(class(self).HasSectionKey(String.New(section), String.New(key)))
+	return bool(Advanced(self).HasSectionKey(String.New(section), String.New(key)))
 }
 
 /*
 Returns an array of all defined section identifiers.
 */
 func (self Instance) GetSections() []string { //gd:ConfigFile.get_sections
-	return []string(class(self).GetSections().Strings())
+	return []string(Advanced(self).GetSections().Strings())
 }
 
 /*
 Returns an array of all defined key identifiers in the specified section. Raises an error and returns an empty array if the section does not exist.
 */
 func (self Instance) GetSectionKeys(section string) []string { //gd:ConfigFile.get_section_keys
-	return []string(class(self).GetSectionKeys(String.New(section)).Strings())
+	return []string(Advanced(self).GetSectionKeys(String.New(section)).Strings())
 }
 
 /*
 Deletes the specified section along with all the key-value pairs inside. Raises an error if the section does not exist.
 */
 func (self Instance) EraseSection(section string) { //gd:ConfigFile.erase_section
-	class(self).EraseSection(String.New(section))
+	Advanced(self).EraseSection(String.New(section))
 }
 
 /*
 Deletes the specified key in a section. Raises an error if either the section or the key do not exist.
 */
 func (self Instance) EraseSectionKey(section string, key string) { //gd:ConfigFile.erase_section_key
-	class(self).EraseSectionKey(String.New(section), String.New(key))
+	Advanced(self).EraseSectionKey(String.New(section), String.New(key))
 }
 
 /*
@@ -202,7 +210,7 @@ Loads the config file specified as a parameter. The file's contents are parsed a
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 func (self Instance) Load(path string) error { //gd:ConfigFile.load
-	return error(gd.ToError(class(self).Load(String.New(path))))
+	return error(gd.ToError(Advanced(self).Load(String.New(path))))
 }
 
 /*
@@ -210,7 +218,7 @@ Parses the passed string as the contents of a config file. The string is parsed 
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 func (self Instance) Parse(data string) error { //gd:ConfigFile.parse
-	return error(gd.ToError(class(self).Parse(String.New(data))))
+	return error(gd.ToError(Advanced(self).Parse(String.New(data))))
 }
 
 /*
@@ -218,14 +226,14 @@ Saves the contents of the [ConfigFile] object to the file specified as a paramet
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 func (self Instance) Save(path string) error { //gd:ConfigFile.save
-	return error(gd.ToError(class(self).Save(String.New(path))))
+	return error(gd.ToError(Advanced(self).Save(String.New(path))))
 }
 
 /*
 Obtain the text version of this config file (the same text that would be written to a file).
 */
 func (self Instance) EncodeToText() string { //gd:ConfigFile.encode_to_text
-	return string(class(self).EncodeToText().String())
+	return string(Advanced(self).EncodeToText().String())
 }
 
 /*
@@ -233,7 +241,7 @@ Loads the encrypted config file specified as a parameter, using the provided [pa
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 func (self Instance) LoadEncrypted(path string, key []byte) error { //gd:ConfigFile.load_encrypted
-	return error(gd.ToError(class(self).LoadEncrypted(String.New(path), Packed.Bytes(Packed.New(key...)))))
+	return error(gd.ToError(Advanced(self).LoadEncrypted(String.New(path), Packed.Bytes(Packed.New(key...)))))
 }
 
 /*
@@ -241,7 +249,7 @@ Loads the encrypted config file specified as a parameter, using the provided [pa
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 func (self Instance) LoadEncryptedPass(path string, password string) error { //gd:ConfigFile.load_encrypted_pass
-	return error(gd.ToError(class(self).LoadEncryptedPass(String.New(path), String.New(password))))
+	return error(gd.ToError(Advanced(self).LoadEncryptedPass(String.New(path), String.New(password))))
 }
 
 /*
@@ -249,7 +257,7 @@ Saves the contents of the [ConfigFile] object to the AES-256 encrypted file spec
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 func (self Instance) SaveEncrypted(path string, key []byte) error { //gd:ConfigFile.save_encrypted
-	return error(gd.ToError(class(self).SaveEncrypted(String.New(path), Packed.Bytes(Packed.New(key...)))))
+	return error(gd.ToError(Advanced(self).SaveEncrypted(String.New(path), Packed.Bytes(Packed.New(key...)))))
 }
 
 /*
@@ -257,14 +265,14 @@ Saves the contents of the [ConfigFile] object to the AES-256 encrypted file spec
 Returns [constant OK] on success, or one of the other [enum Error] values if the operation failed.
 */
 func (self Instance) SaveEncryptedPass(path string, password string) error { //gd:ConfigFile.save_encrypted_pass
-	return error(gd.ToError(class(self).SaveEncryptedPass(String.New(path), String.New(password))))
+	return error(gd.ToError(Advanced(self).SaveEncryptedPass(String.New(path), String.New(password))))
 }
 
 /*
 Removes the entire contents of the config.
 */
 func (self Instance) Clear() { //gd:ConfigFile.clear
-	class(self).Clear()
+	Advanced(self).Clear()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

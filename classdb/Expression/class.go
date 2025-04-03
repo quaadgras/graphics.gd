@@ -91,6 +91,7 @@ private void OnTextEntered(string command)
 [/codeblocks]
 */
 type Instance [1]gdclass.Expression
+type Expanded [1]gdclass.Expression
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -105,7 +106,15 @@ Parses the expression and returns an [enum Error] code.
 You can optionally specify names of variables that may appear in the expression with [param input_names], so that you can bind them when it gets executed.
 */
 func (self Instance) Parse(expression string) error { //gd:Expression.parse
-	return error(gd.ToError(class(self).Parse(String.New(expression), Packed.MakeStrings([1][]string{}[0]...))))
+	return error(gd.ToError(Advanced(self).Parse(String.New(expression), Packed.MakeStrings([1][]string{}[0]...))))
+}
+
+/*
+Parses the expression and returns an [enum Error] code.
+You can optionally specify names of variables that may appear in the expression with [param input_names], so that you can bind them when it gets executed.
+*/
+func (self Expanded) Parse(expression string, input_names []string) error { //gd:Expression.parse
+	return error(gd.ToError(Advanced(self).Parse(String.New(expression), Packed.MakeStrings(input_names...))))
 }
 
 /*
@@ -113,21 +122,29 @@ Executes the expression that was previously parsed by [method parse] and returns
 If you defined input variables in [method parse], you can specify their values in the inputs array, in the same order.
 */
 func (self Instance) Execute() any { //gd:Expression.execute
-	return any(class(self).Execute(Array.Nil, [1]Object.Instance{}[0], true, false).Interface())
+	return any(Advanced(self).Execute(Array.Nil, [1]Object.Instance{}[0], true, false).Interface())
+}
+
+/*
+Executes the expression that was previously parsed by [method parse] and returns the result. Before you use the returned object, you should check if the method failed by calling [method has_execute_failed].
+If you defined input variables in [method parse], you can specify their values in the inputs array, in the same order.
+*/
+func (self Expanded) Execute(inputs []any, base_instance Object.Instance, show_error bool, const_calls_only bool) any { //gd:Expression.execute
+	return any(Advanced(self).Execute(gd.EngineArrayFromSlice(inputs), base_instance, show_error, const_calls_only).Interface())
 }
 
 /*
 Returns [code]true[/code] if [method execute] has failed.
 */
 func (self Instance) HasExecuteFailed() bool { //gd:Expression.has_execute_failed
-	return bool(class(self).HasExecuteFailed())
+	return bool(Advanced(self).HasExecuteFailed())
 }
 
 /*
 Returns the error text if [method parse] or [method execute] has failed.
 */
 func (self Instance) GetErrorText() string { //gd:Expression.get_error_text
-	return string(class(self).GetErrorText().String())
+	return string(Advanced(self).GetErrorText().String())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

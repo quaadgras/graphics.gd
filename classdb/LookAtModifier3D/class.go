@@ -61,7 +61,7 @@ type Any interface {
 Returns the remaining seconds of the time-based interpolation.
 */
 func (self Instance) GetInterpolationRemaining() Float.X { //gd:LookAtModifier3D.get_interpolation_remaining
-	return Float.X(Float.X(class(self).GetInterpolationRemaining()))
+	return Float.X(Float.X(Advanced(self).GetInterpolationRemaining()))
 }
 
 /*
@@ -69,7 +69,7 @@ Returns whether the time-based interpolation is running or not. If [code]true[/c
 This is useful to determine whether a [LookAtModifier3D] can be removed safely.
 */
 func (self Instance) IsInterpolating() bool { //gd:LookAtModifier3D.is_interpolating
-	return bool(class(self).IsInterpolating())
+	return bool(Advanced(self).IsInterpolating())
 }
 
 /*
@@ -77,7 +77,7 @@ Returns whether the target is within the angle limitations. It is useful for uns
 [b]Note:[/b] The value is updated after [method SkeletonModifier3D._process_modification]. To retrieve this value correctly, we recommend using the signal [signal SkeletonModifier3D.modification_processed].
 */
 func (self Instance) IsTargetWithinLimitation() bool { //gd:LookAtModifier3D.is_target_within_limitation
-	return bool(class(self).IsTargetWithinLimitation())
+	return bool(Advanced(self).IsTargetWithinLimitation())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

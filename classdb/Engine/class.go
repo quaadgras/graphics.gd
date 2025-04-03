@@ -56,7 +56,7 @@ Returns the fraction through the current physics tick we are at the time of rend
 */
 func GetPhysicsInterpolationFraction() Float.X { //gd:Engine.get_physics_interpolation_fraction
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).GetPhysicsInterpolationFraction()))
+	return Float.X(Float.X(Advanced().GetPhysicsInterpolationFraction()))
 }
 
 /*
@@ -65,7 +65,7 @@ Returns the total number of frames drawn since the engine started.
 */
 func GetFramesDrawn() int { //gd:Engine.get_frames_drawn
 	once.Do(singleton)
-	return int(int(class(self).GetFramesDrawn()))
+	return int(int(Advanced().GetFramesDrawn()))
 }
 
 /*
@@ -73,7 +73,7 @@ Returns the average frames rendered every second (FPS), also known as the framer
 */
 func GetFramesPerSecond() Float.X { //gd:Engine.get_frames_per_second
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).GetFramesPerSecond()))
+	return Float.X(Float.X(Advanced().GetFramesPerSecond()))
 }
 
 /*
@@ -104,7 +104,7 @@ public override void _PhysicsProcess(double delta)
 */
 func GetPhysicsFrames() int { //gd:Engine.get_physics_frames
 	once.Do(singleton)
-	return int(int(class(self).GetPhysicsFrames()))
+	return int(int(Advanced().GetPhysicsFrames()))
 }
 
 /*
@@ -135,7 +135,7 @@ public override void _Process(double delta)
 */
 func GetProcessFrames() int { //gd:Engine.get_process_frames
 	once.Do(singleton)
-	return int(int(class(self).GetProcessFrames()))
+	return int(int(Advanced().GetProcessFrames()))
 }
 
 /*
@@ -144,7 +144,7 @@ Returns the instance of the [MainLoop]. This is usually the main [SceneTree] and
 */
 func GetMainLoop() [1]gdclass.MainLoop { //gd:Engine.get_main_loop
 	once.Do(singleton)
-	return [1]gdclass.MainLoop(class(self).GetMainLoop())
+	return [1]gdclass.MainLoop(Advanced().GetMainLoop())
 }
 
 /*
@@ -189,7 +189,7 @@ else
 */
 func GetVersionInfo() VersionInfo { //gd:Engine.get_version_info
 	once.Do(singleton)
-	return VersionInfo(gd.DictionaryAs[VersionInfo](class(self).GetVersionInfo()))
+	return VersionInfo(gd.DictionaryAs[VersionInfo](Advanced().GetVersionInfo()))
 }
 
 /*
@@ -197,7 +197,7 @@ Returns the engine author information as a [Dictionary], where each entry is an 
 */
 func GetAuthorInfo() AuthorInfo { //gd:Engine.get_author_info
 	once.Do(singleton)
-	return AuthorInfo(gd.DictionaryAs[AuthorInfo](class(self).GetAuthorInfo()))
+	return AuthorInfo(gd.DictionaryAs[AuthorInfo](Advanced().GetAuthorInfo()))
 }
 
 /*
@@ -209,7 +209,7 @@ Every [Dictionary] contains a [code]name[/code] identifier, and a [code]parts[/c
 */
 func GetCopyrightInfo() []Copyright { //gd:Engine.get_copyright_info
 	once.Do(singleton)
-	return []Copyright(gd.ArrayAs[[]Copyright](gd.InternalArray(class(self).GetCopyrightInfo())))
+	return []Copyright(gd.ArrayAs[[]Copyright](gd.InternalArray(Advanced().GetCopyrightInfo())))
 }
 
 /*
@@ -218,7 +218,7 @@ Returns a [Dictionary] of categorized donor names. Each entry is an [Array] of s
 */
 func GetDonorInfo() DonorInfo { //gd:Engine.get_donor_info
 	once.Do(singleton)
-	return DonorInfo(gd.DictionaryAs[DonorInfo](class(self).GetDonorInfo()))
+	return DonorInfo(gd.DictionaryAs[DonorInfo](Advanced().GetDonorInfo()))
 }
 
 /*
@@ -226,7 +226,7 @@ Returns a [Dictionary] of licenses used by Godot and included third party compon
 */
 func GetLicenseInfo() map[string]string { //gd:Engine.get_license_info
 	once.Do(singleton)
-	return map[string]string(gd.DictionaryAs[map[string]string](class(self).GetLicenseInfo()))
+	return map[string]string(gd.DictionaryAs[map[string]string](Advanced().GetLicenseInfo()))
 }
 
 /*
@@ -234,7 +234,7 @@ Returns the full Godot license text.
 */
 func GetLicenseText() string { //gd:Engine.get_license_text
 	once.Do(singleton)
-	return string(class(self).GetLicenseText().String())
+	return string(Advanced().GetLicenseText().String())
 }
 
 /*
@@ -244,7 +244,7 @@ To detect whether the current build is 64-bit, or the type of architecture, don'
 */
 func GetArchitectureName() string { //gd:Engine.get_architecture_name
 	once.Do(singleton)
-	return string(class(self).GetArchitectureName().String())
+	return string(Advanced().GetArchitectureName().String())
 }
 
 /*
@@ -268,7 +268,7 @@ func _physics_process(delta):
 */
 func IsInPhysicsFrame() bool { //gd:Engine.is_in_physics_frame
 	once.Do(singleton)
-	return bool(class(self).IsInPhysicsFrame())
+	return bool(Advanced().IsInPhysicsFrame())
 }
 
 /*
@@ -291,7 +291,7 @@ GD.Print(Engine.HasSingleton("Unknown"));     // Prints False
 */
 func HasSingleton(name string) bool { //gd:Engine.has_singleton
 	once.Do(singleton)
-	return bool(class(self).HasSingleton(String.Name(String.New(name))))
+	return bool(Advanced().HasSingleton(String.Name(String.New(name))))
 }
 
 /*
@@ -300,7 +300,7 @@ Returns the global singleton with the given [param name], or [code]null[/code] i
 */
 func GetSingleton(name string) Object.Instance { //gd:Engine.get_singleton
 	once.Do(singleton)
-	return Object.Instance(class(self).GetSingleton(String.Name(String.New(name))))
+	return Object.Instance(Advanced().GetSingleton(String.Name(String.New(name))))
 }
 
 /*
@@ -308,7 +308,7 @@ Registers the given [Object] [param instance] as a singleton, available globally
 */
 func RegisterSingleton(name string, instance Object.Instance) { //gd:Engine.register_singleton
 	once.Do(singleton)
-	class(self).RegisterSingleton(String.Name(String.New(name)), instance)
+	Advanced().RegisterSingleton(String.Name(String.New(name)), instance)
 }
 
 /*
@@ -316,7 +316,7 @@ Removes the singleton registered under [param name]. The singleton object is [i]
 */
 func UnregisterSingleton(name string) { //gd:Engine.unregister_singleton
 	once.Do(singleton)
-	class(self).UnregisterSingleton(String.Name(String.New(name)))
+	Advanced().UnregisterSingleton(String.Name(String.New(name)))
 }
 
 /*
@@ -324,7 +324,7 @@ Returns a list of names of all available global singletons. See also [method get
 */
 func GetSingletonList() []string { //gd:Engine.get_singleton_list
 	once.Do(singleton)
-	return []string(class(self).GetSingletonList().Strings())
+	return []string(Advanced().GetSingletonList().Strings())
 }
 
 /*
@@ -336,7 +336,7 @@ Returns:
 */
 func RegisterScriptLanguage(language [1]gdclass.ScriptLanguage) error { //gd:Engine.register_script_language
 	once.Do(singleton)
-	return error(gd.ToError(class(self).RegisterScriptLanguage(language)))
+	return error(gd.ToError(Advanced().RegisterScriptLanguage(language)))
 }
 
 /*
@@ -347,7 +347,7 @@ Returns:
 */
 func UnregisterScriptLanguage(language [1]gdclass.ScriptLanguage) error { //gd:Engine.unregister_script_language
 	once.Do(singleton)
-	return error(gd.ToError(class(self).UnregisterScriptLanguage(language)))
+	return error(gd.ToError(Advanced().UnregisterScriptLanguage(language)))
 }
 
 /*
@@ -355,7 +355,7 @@ Returns the number of available script languages. Use with [method get_script_la
 */
 func GetScriptLanguageCount() int { //gd:Engine.get_script_language_count
 	once.Do(singleton)
-	return int(int(class(self).GetScriptLanguageCount()))
+	return int(int(Advanced().GetScriptLanguageCount()))
 }
 
 /*
@@ -363,7 +363,7 @@ Returns an instance of a [ScriptLanguage] with the given [param index].
 */
 func GetScriptLanguage(index int) [1]gdclass.ScriptLanguage { //gd:Engine.get_script_language
 	once.Do(singleton)
-	return [1]gdclass.ScriptLanguage(class(self).GetScriptLanguage(int64(index)))
+	return [1]gdclass.ScriptLanguage(Advanced().GetScriptLanguage(int64(index)))
 }
 
 /*
@@ -395,7 +395,7 @@ See [url=$DOCS_URL/tutorials/plugins/running_code_in_the_editor.html]Running cod
 */
 func IsEditorHint() bool { //gd:Engine.is_editor_hint
 	once.Do(singleton)
-	return bool(class(self).IsEditorHint())
+	return bool(Advanced().IsEditorHint())
 }
 
 /*
@@ -403,7 +403,7 @@ Returns [code]true[/code] if the engine is running embedded in the editor. This 
 */
 func IsEmbeddedInEditor() bool { //gd:Engine.is_embedded_in_editor
 	once.Do(singleton)
-	return bool(class(self).IsEmbeddedInEditor())
+	return bool(Advanced().IsEmbeddedInEditor())
 }
 
 /*
@@ -411,7 +411,7 @@ Returns the path to the [MovieWriter]'s output file, or an empty string if the e
 */
 func GetWriteMoviePath() string { //gd:Engine.get_write_movie_path
 	once.Do(singleton)
-	return string(class(self).GetWriteMoviePath().String())
+	return string(Advanced().GetWriteMoviePath().String())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

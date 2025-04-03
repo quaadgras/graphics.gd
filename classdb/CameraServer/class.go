@@ -58,7 +58,7 @@ Returns the [CameraFeed] corresponding to the camera with the given [param index
 */
 func GetFeed(index int) [1]gdclass.CameraFeed { //gd:CameraServer.get_feed
 	once.Do(singleton)
-	return [1]gdclass.CameraFeed(class(self).GetFeed(int64(index)))
+	return [1]gdclass.CameraFeed(Advanced().GetFeed(int64(index)))
 }
 
 /*
@@ -66,7 +66,7 @@ Returns the number of [CameraFeed]s registered.
 */
 func GetFeedCount() int { //gd:CameraServer.get_feed_count
 	once.Do(singleton)
-	return int(int(class(self).GetFeedCount()))
+	return int(int(Advanced().GetFeedCount()))
 }
 
 /*
@@ -74,7 +74,7 @@ Returns an array of [CameraFeed]s.
 */
 func Feeds() [][1]gdclass.CameraFeed { //gd:CameraServer.feeds
 	once.Do(singleton)
-	return [][1]gdclass.CameraFeed(gd.ArrayAs[[][1]gdclass.CameraFeed](gd.InternalArray(class(self).Feeds())))
+	return [][1]gdclass.CameraFeed(gd.ArrayAs[[][1]gdclass.CameraFeed](gd.InternalArray(Advanced().Feeds())))
 }
 
 /*
@@ -82,7 +82,7 @@ Adds the camera [param feed] to the camera server.
 */
 func AddFeed(feed [1]gdclass.CameraFeed) { //gd:CameraServer.add_feed
 	once.Do(singleton)
-	class(self).AddFeed(feed)
+	Advanced().AddFeed(feed)
 }
 
 /*
@@ -90,7 +90,7 @@ Removes the specified camera [param feed].
 */
 func RemoveFeed(feed [1]gdclass.CameraFeed) { //gd:CameraServer.remove_feed
 	once.Do(singleton)
-	class(self).RemoveFeed(feed)
+	Advanced().RemoveFeed(feed)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

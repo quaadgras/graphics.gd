@@ -5,6 +5,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strings"
 )
 
 type Enum struct {
@@ -184,5 +185,43 @@ func LoadSpecification() (*Specification, error) {
 	if err := json.NewDecoder(file).Decode(&spec); err != nil {
 		return nil, err
 	}
+	var singletons = make(map[string]bool)
+	for _, class := range spec.Singletons {
+		singletons[class.Name] = true
+	}
+	for i := range spec.Classes {
+		class := &spec.Classes[i]
+		class.IsSingleton = singletons[class.Name]
+	}
 	return &spec, nil
+}
+
+func ConvertName(fnName string) string {
+	if fnName == "seek" {
+		return "SeekTo"
+	}
+	if fnName == "type_string" {
+		return "TypeToString"
+	}
+
+	fnName = strings.ToLower(fnName)
+
+	joins := []string{}
+	split := strings.Split(fnName, "_")
+	for _, word := range split {
+		joins = append(joins, strings.Title(word))
+	}
+	/*if joins[0] == "Get" {
+		backup := joins
+		joins = joins[1:]
+
+		if len(joins) == 0 {
+			joins = backup
+		} else {
+			if _, err := strconv.Atoi(joins[0]); err == nil {
+				joins = backup
+			}
+		}
+	}*/
+	return strings.Join(joins, "")
 }

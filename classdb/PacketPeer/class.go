@@ -44,6 +44,7 @@ PacketPeer is an abstraction and base class for packet-based protocols (such as 
 [b]Note:[/b] When exporting to Android, make sure to enable the [code]INTERNET[/code] permission in the Android export preset before exporting the project or using one-click deploy. Otherwise, network communication of any kind will be blocked by Android.
 */
 type Instance [1]gdclass.PacketPeer
+type Expanded [1]gdclass.PacketPeer
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -59,7 +60,16 @@ Internally, this uses the same decoding mechanism as the [method @GlobalScope.by
 [b]Warning:[/b] Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
 */
 func (self Instance) GetVar() any { //gd:PacketPeer.get_var
-	return any(class(self).GetVar(false).Interface())
+	return any(Advanced(self).GetVar(false).Interface())
+}
+
+/*
+Gets a Variant. If [param allow_objects] is [code]true[/code], decoding objects is allowed.
+Internally, this uses the same decoding mechanism as the [method @GlobalScope.bytes_to_var] method.
+[b]Warning:[/b] Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
+*/
+func (self Expanded) GetVar(allow_objects bool) any { //gd:PacketPeer.get_var
+	return any(Advanced(self).GetVar(allow_objects).Interface())
 }
 
 /*
@@ -67,35 +77,43 @@ Sends a [Variant] as a packet. If [param full_objects] is [code]true[/code], enc
 Internally, this uses the same encoding mechanism as the [method @GlobalScope.var_to_bytes] method.
 */
 func (self Instance) PutVar(v any) error { //gd:PacketPeer.put_var
-	return error(gd.ToError(class(self).PutVar(variant.New(v), false)))
+	return error(gd.ToError(Advanced(self).PutVar(variant.New(v), false)))
+}
+
+/*
+Sends a [Variant] as a packet. If [param full_objects] is [code]true[/code], encoding objects is allowed (and can potentially include code).
+Internally, this uses the same encoding mechanism as the [method @GlobalScope.var_to_bytes] method.
+*/
+func (self Expanded) PutVar(v any, full_objects bool) error { //gd:PacketPeer.put_var
+	return error(gd.ToError(Advanced(self).PutVar(variant.New(v), full_objects)))
 }
 
 /*
 Gets a raw packet.
 */
 func (self Instance) GetPacket() []byte { //gd:PacketPeer.get_packet
-	return []byte(class(self).GetPacket().Bytes())
+	return []byte(Advanced(self).GetPacket().Bytes())
 }
 
 /*
 Sends a raw packet.
 */
 func (self Instance) PutPacket(buffer []byte) error { //gd:PacketPeer.put_packet
-	return error(gd.ToError(class(self).PutPacket(Packed.Bytes(Packed.New(buffer...)))))
+	return error(gd.ToError(Advanced(self).PutPacket(Packed.Bytes(Packed.New(buffer...)))))
 }
 
 /*
 Returns the error state of the last packet received (via [method get_packet] and [method get_var]).
 */
 func (self Instance) GetPacketError() error { //gd:PacketPeer.get_packet_error
-	return error(gd.ToError(class(self).GetPacketError()))
+	return error(gd.ToError(Advanced(self).GetPacketError()))
 }
 
 /*
 Returns the number of packets currently available in the ring-buffer.
 */
 func (self Instance) GetAvailablePacketCount() int { //gd:PacketPeer.get_available_packet_count
-	return int(int(class(self).GetAvailablePacketCount()))
+	return int(int(Advanced(self).GetAvailablePacketCount()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

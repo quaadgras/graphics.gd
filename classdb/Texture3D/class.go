@@ -161,49 +161,49 @@ func (Instance) _get_data(impl func(ptr unsafe.Pointer) [][1]gdclass.Image) (cb 
 Returns the current format being used by this texture. See [enum Image.Format] for details.
 */
 func (self Instance) GetFormat() gdclass.ImageFormat { //gd:Texture3D.get_format
-	return gdclass.ImageFormat(class(self).GetFormat())
+	return gdclass.ImageFormat(Advanced(self).GetFormat())
 }
 
 /*
 Returns the [Texture3D]'s width in pixels. Width is typically represented by the X axis.
 */
 func (self Instance) GetWidth() int { //gd:Texture3D.get_width
-	return int(int(class(self).GetWidth()))
+	return int(int(Advanced(self).GetWidth()))
 }
 
 /*
 Returns the [Texture3D]'s height in pixels. Width is typically represented by the Y axis.
 */
 func (self Instance) GetHeight() int { //gd:Texture3D.get_height
-	return int(int(class(self).GetHeight()))
+	return int(int(Advanced(self).GetHeight()))
 }
 
 /*
 Returns the [Texture3D]'s depth in pixels. Depth is typically represented by the Z axis (a dimension not present in [Texture2D]).
 */
 func (self Instance) GetDepth() int { //gd:Texture3D.get_depth
-	return int(int(class(self).GetDepth()))
+	return int(int(Advanced(self).GetDepth()))
 }
 
 /*
 Returns [code]true[/code] if the [Texture3D] has generated mipmaps.
 */
 func (self Instance) HasMipmaps() bool { //gd:Texture3D.has_mipmaps
-	return bool(class(self).HasMipmaps())
+	return bool(Advanced(self).HasMipmaps())
 }
 
 /*
 Returns the [Texture3D]'s data as an array of [Image]s. Each [Image] represents a [i]slice[/i] of the [Texture3D], with different slices mapping to different depth (Z axis) levels.
 */
 func (self Instance) GetData() [][1]gdclass.Image { //gd:Texture3D.get_data
-	return [][1]gdclass.Image(gd.ArrayAs[[][1]gdclass.Image](gd.InternalArray(class(self).GetData())))
+	return [][1]gdclass.Image(gd.ArrayAs[[][1]gdclass.Image](gd.InternalArray(Advanced(self).GetData())))
 }
 
 /*
 Creates a placeholder version of this resource ([PlaceholderTexture3D]).
 */
 func (self Instance) CreatePlaceholder() [1]gdclass.Resource { //gd:Texture3D.create_placeholder
-	return [1]gdclass.Resource(class(self).CreatePlaceholder())
+	return [1]gdclass.Resource(Advanced(self).CreatePlaceholder())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

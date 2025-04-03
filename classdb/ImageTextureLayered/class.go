@@ -94,7 +94,7 @@ ResourceSaver.save(cubemap_array, "res://cubemap_array.res", ResourceSaver.FLAG_
 [/codeblock]
 */
 func (self Instance) CreateFromImages(images [][1]gdclass.Image) error { //gd:ImageTextureLayered.create_from_images
-	return error(gd.ToError(class(self).CreateFromImages(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Image]](images))))
+	return error(gd.ToError(Advanced(self).CreateFromImages(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Image]](images))))
 }
 
 /*
@@ -104,7 +104,7 @@ If the image format is unsupported, it will be decompressed and converted to a s
 The update is immediate: it's synchronized with drawing.
 */
 func (self Instance) UpdateLayer(image [1]gdclass.Image, layer int) { //gd:ImageTextureLayered.update_layer
-	class(self).UpdateLayer(image, int64(layer))
+	Advanced(self).UpdateLayer(image, int64(layer))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

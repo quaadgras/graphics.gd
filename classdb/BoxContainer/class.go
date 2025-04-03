@@ -60,7 +60,7 @@ type Any interface {
 Adds a [Control] node to the box as a spacer. If [param begin] is [code]true[/code], it will insert the [Control] node in front of all other children.
 */
 func (self Instance) AddSpacer(begin bool) [1]gdclass.Control { //gd:BoxContainer.add_spacer
-	return [1]gdclass.Control(class(self).AddSpacer(begin))
+	return [1]gdclass.Control(Advanced(self).AddSpacer(begin))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

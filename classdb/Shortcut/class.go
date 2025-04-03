@@ -58,21 +58,21 @@ type Any interface {
 Returns whether [member events] contains an [InputEvent] which is valid.
 */
 func (self Instance) HasValidEvent() bool { //gd:Shortcut.has_valid_event
-	return bool(class(self).HasValidEvent())
+	return bool(Advanced(self).HasValidEvent())
 }
 
 /*
 Returns whether any [InputEvent] in [member events] equals [param event]. This uses [method InputEvent.is_match] to compare events.
 */
 func (self Instance) MatchesEvent(event [1]gdclass.InputEvent) bool { //gd:Shortcut.matches_event
-	return bool(class(self).MatchesEvent(event))
+	return bool(Advanced(self).MatchesEvent(event))
 }
 
 /*
 Returns the shortcut's first valid [InputEvent] as a [String].
 */
 func (self Instance) GetAsText() string { //gd:Shortcut.get_as_text
-	return string(class(self).GetAsText().String())
+	return string(Advanced(self).GetAsText().String())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

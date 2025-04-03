@@ -59,140 +59,140 @@ type Any interface {
 Sets the mode of this shader.
 */
 func (self Instance) SetMode(mode gdclass.ShaderMode) { //gd:VisualShader.set_mode
-	class(self).SetMode(mode)
+	Advanced(self).SetMode(mode)
 }
 
 /*
 Adds the specified [param node] to the shader.
 */
 func (self Instance) AddNode(atype gdclass.VisualShaderType, node [1]gdclass.VisualShaderNode, position Vector2.XY, id int) { //gd:VisualShader.add_node
-	class(self).AddNode(atype, node, Vector2.XY(position), int64(id))
+	Advanced(self).AddNode(atype, node, Vector2.XY(position), int64(id))
 }
 
 /*
 Returns the shader node instance with specified [param type] and [param id].
 */
 func (self Instance) GetNode(atype gdclass.VisualShaderType, id int) [1]gdclass.VisualShaderNode { //gd:VisualShader.get_node
-	return [1]gdclass.VisualShaderNode(class(self).GetNode(atype, int64(id)))
+	return [1]gdclass.VisualShaderNode(Advanced(self).GetNode(atype, int64(id)))
 }
 
 /*
 Sets the position of the specified node.
 */
 func (self Instance) SetNodePosition(atype gdclass.VisualShaderType, id int, position Vector2.XY) { //gd:VisualShader.set_node_position
-	class(self).SetNodePosition(atype, int64(id), Vector2.XY(position))
+	Advanced(self).SetNodePosition(atype, int64(id), Vector2.XY(position))
 }
 
 /*
 Returns the position of the specified node within the shader graph.
 */
 func (self Instance) GetNodePosition(atype gdclass.VisualShaderType, id int) Vector2.XY { //gd:VisualShader.get_node_position
-	return Vector2.XY(class(self).GetNodePosition(atype, int64(id)))
+	return Vector2.XY(Advanced(self).GetNodePosition(atype, int64(id)))
 }
 
 /*
 Returns the list of all nodes in the shader with the specified type.
 */
 func (self Instance) GetNodeList(atype gdclass.VisualShaderType) []int32 { //gd:VisualShader.get_node_list
-	return []int32(slices.Collect(class(self).GetNodeList(atype).Values()))
+	return []int32(slices.Collect(Advanced(self).GetNodeList(atype).Values()))
 }
 
 /*
 Returns next valid node ID that can be added to the shader graph.
 */
 func (self Instance) GetValidNodeId(atype gdclass.VisualShaderType) int { //gd:VisualShader.get_valid_node_id
-	return int(int(class(self).GetValidNodeId(atype)))
+	return int(int(Advanced(self).GetValidNodeId(atype)))
 }
 
 /*
 Removes the specified node from the shader.
 */
 func (self Instance) RemoveNode(atype gdclass.VisualShaderType, id int) { //gd:VisualShader.remove_node
-	class(self).RemoveNode(atype, int64(id))
+	Advanced(self).RemoveNode(atype, int64(id))
 }
 
 /*
 Replaces the specified node with a node of new class type.
 */
 func (self Instance) ReplaceNode(atype gdclass.VisualShaderType, id int, new_class string) { //gd:VisualShader.replace_node
-	class(self).ReplaceNode(atype, int64(id), String.Name(String.New(new_class)))
+	Advanced(self).ReplaceNode(atype, int64(id), String.Name(String.New(new_class)))
 }
 
 /*
 Returns [code]true[/code] if the specified node and port connection exist.
 */
 func (self Instance) IsNodeConnection(atype gdclass.VisualShaderType, from_node int, from_port int, to_node int, to_port int) bool { //gd:VisualShader.is_node_connection
-	return bool(class(self).IsNodeConnection(atype, int64(from_node), int64(from_port), int64(to_node), int64(to_port)))
+	return bool(Advanced(self).IsNodeConnection(atype, int64(from_node), int64(from_port), int64(to_node), int64(to_port)))
 }
 
 /*
 Returns [code]true[/code] if the specified nodes and ports can be connected together.
 */
 func (self Instance) CanConnectNodes(atype gdclass.VisualShaderType, from_node int, from_port int, to_node int, to_port int) bool { //gd:VisualShader.can_connect_nodes
-	return bool(class(self).CanConnectNodes(atype, int64(from_node), int64(from_port), int64(to_node), int64(to_port)))
+	return bool(Advanced(self).CanConnectNodes(atype, int64(from_node), int64(from_port), int64(to_node), int64(to_port)))
 }
 
 /*
 Connects the specified nodes and ports.
 */
 func (self Instance) ConnectNodes(atype gdclass.VisualShaderType, from_node int, from_port int, to_node int, to_port int) error { //gd:VisualShader.connect_nodes
-	return error(gd.ToError(class(self).ConnectNodes(atype, int64(from_node), int64(from_port), int64(to_node), int64(to_port))))
+	return error(gd.ToError(Advanced(self).ConnectNodes(atype, int64(from_node), int64(from_port), int64(to_node), int64(to_port))))
 }
 
 /*
 Connects the specified nodes and ports.
 */
 func (self Instance) DisconnectNodes(atype gdclass.VisualShaderType, from_node int, from_port int, to_node int, to_port int) { //gd:VisualShader.disconnect_nodes
-	class(self).DisconnectNodes(atype, int64(from_node), int64(from_port), int64(to_node), int64(to_port))
+	Advanced(self).DisconnectNodes(atype, int64(from_node), int64(from_port), int64(to_node), int64(to_port))
 }
 
 /*
 Connects the specified nodes and ports, even if they can't be connected. Such connection is invalid and will not function properly.
 */
 func (self Instance) ConnectNodesForced(atype gdclass.VisualShaderType, from_node int, from_port int, to_node int, to_port int) { //gd:VisualShader.connect_nodes_forced
-	class(self).ConnectNodesForced(atype, int64(from_node), int64(from_port), int64(to_node), int64(to_port))
+	Advanced(self).ConnectNodesForced(atype, int64(from_node), int64(from_port), int64(to_node), int64(to_port))
 }
 
 /*
 Returns the list of connected nodes with the specified type.
 */
 func (self Instance) GetNodeConnections(atype gdclass.VisualShaderType) []map[string]interface{} { //gd:VisualShader.get_node_connections
-	return []map[string]interface{}(gd.ArrayAs[[]map[string]interface{}](gd.InternalArray(class(self).GetNodeConnections(atype))))
+	return []map[string]interface{}(gd.ArrayAs[[]map[string]interface{}](gd.InternalArray(Advanced(self).GetNodeConnections(atype))))
 }
 
 /*
 Attaches the given node to the given frame.
 */
 func (self Instance) AttachNodeToFrame(atype gdclass.VisualShaderType, id int, frame_ int) { //gd:VisualShader.attach_node_to_frame
-	class(self).AttachNodeToFrame(atype, int64(id), int64(frame_))
+	Advanced(self).AttachNodeToFrame(atype, int64(id), int64(frame_))
 }
 
 /*
 Detaches the given node from the frame it is attached to.
 */
 func (self Instance) DetachNodeFromFrame(atype gdclass.VisualShaderType, id int) { //gd:VisualShader.detach_node_from_frame
-	class(self).DetachNodeFromFrame(atype, int64(id))
+	Advanced(self).DetachNodeFromFrame(atype, int64(id))
 }
 
 /*
 Adds a new varying value node to the shader.
 */
 func (self Instance) AddVarying(name string, mode gdclass.VisualShaderVaryingMode, atype gdclass.VisualShaderVaryingType) { //gd:VisualShader.add_varying
-	class(self).AddVarying(String.New(name), mode, atype)
+	Advanced(self).AddVarying(String.New(name), mode, atype)
 }
 
 /*
 Removes a varying value node with the given [param name]. Prints an error if a node with this name is not found.
 */
 func (self Instance) RemoveVarying(name string) { //gd:VisualShader.remove_varying
-	class(self).RemoveVarying(String.New(name))
+	Advanced(self).RemoveVarying(String.New(name))
 }
 
 /*
 Returns [code]true[/code] if the shader has a varying with the given [param name].
 */
 func (self Instance) HasVarying(name string) bool { //gd:VisualShader.has_varying
-	return bool(class(self).HasVarying(String.New(name)))
+	return bool(Advanced(self).HasVarying(String.New(name)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

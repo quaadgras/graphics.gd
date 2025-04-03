@@ -170,6 +170,7 @@ To use [EditorImportPlugin], register it using the [method EditorPlugin.add_impo
 %!(EXTRA string=EditorImportPlugin)
 */
 type Instance [1]gdclass.EditorImportPlugin
+type Expanded [1]gdclass.EditorImportPlugin
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -509,7 +510,14 @@ func (Instance) _can_import_threaded(impl func(ptr unsafe.Pointer) bool) (cb gd.
 This function can only be called during the [method _import] callback and it allows manually importing resources from it. This is useful when the imported file generates external resources that require importing (as example, images). Custom parameters for the ".import" file can be passed via the [param custom_options]. Additionally, in cases where multiple importers can handle a file, the [param custom_importer] can be specified to force a specific one. This function performs a resource import and returns immediately with a success or error code. [param generator_parameters] defines optional extra metadata which will be stored as [code skip-lint]generator_parameters[/code] in the [code]remap[/code] section of the [code].import[/code] file, for example to store a md5 hash of the source data.
 */
 func (self Instance) AppendImportExternalResource(path string) error { //gd:EditorImportPlugin.append_import_external_resource
-	return error(gd.ToError(class(self).AppendImportExternalResource(String.New(path), Dictionary.Nil, String.New(""), variant.New([1]any{}[0]))))
+	return error(gd.ToError(Advanced(self).AppendImportExternalResource(String.New(path), Dictionary.Nil, String.New(""), variant.New([1]any{}[0]))))
+}
+
+/*
+This function can only be called during the [method _import] callback and it allows manually importing resources from it. This is useful when the imported file generates external resources that require importing (as example, images). Custom parameters for the ".import" file can be passed via the [param custom_options]. Additionally, in cases where multiple importers can handle a file, the [param custom_importer] can be specified to force a specific one. This function performs a resource import and returns immediately with a success or error code. [param generator_parameters] defines optional extra metadata which will be stored as [code skip-lint]generator_parameters[/code] in the [code]remap[/code] section of the [code].import[/code] file, for example to store a md5 hash of the source data.
+*/
+func (self Expanded) AppendImportExternalResource(path string, custom_options map[string]interface{}, custom_importer string, generator_parameters any) error { //gd:EditorImportPlugin.append_import_external_resource
+	return error(gd.ToError(Advanced(self).AppendImportExternalResource(String.New(path), gd.DictionaryFromMap(custom_options), String.New(custom_importer), variant.New(generator_parameters))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

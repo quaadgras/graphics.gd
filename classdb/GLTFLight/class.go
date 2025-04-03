@@ -59,14 +59,14 @@ Create a new GLTFLight instance from the given Godot [Light3D] node.
 */
 func FromNode(light_node [1]gdclass.Light3D) [1]gdclass.GLTFLight { //gd:GLTFLight.from_node
 	self := Instance{}
-	return [1]gdclass.GLTFLight(class(self).FromNode(light_node))
+	return [1]gdclass.GLTFLight(Advanced(self).FromNode(light_node))
 }
 
 /*
 Converts this GLTFLight instance into a Godot [Light3D] node.
 */
 func (self Instance) ToNode() [1]gdclass.Light3D { //gd:GLTFLight.to_node
-	return [1]gdclass.Light3D(class(self).ToNode())
+	return [1]gdclass.Light3D(Advanced(self).ToNode())
 }
 
 /*
@@ -74,20 +74,20 @@ Creates a new GLTFLight instance by parsing the given [Dictionary].
 */
 func FromDictionary(dictionary Structure) [1]gdclass.GLTFLight { //gd:GLTFLight.from_dictionary
 	self := Instance{}
-	return [1]gdclass.GLTFLight(class(self).FromDictionary(gd.DictionaryFromMap(dictionary)))
+	return [1]gdclass.GLTFLight(Advanced(self).FromDictionary(gd.DictionaryFromMap(dictionary)))
 }
 
 /*
 Serializes this GLTFLight instance into a [Dictionary].
 */
 func (self Instance) ToDictionary() Structure { //gd:GLTFLight.to_dictionary
-	return Structure(gd.DictionaryAs[Structure](class(self).ToDictionary()))
+	return Structure(gd.DictionaryAs[Structure](Advanced(self).ToDictionary()))
 }
 func (self Instance) GetAdditionalData(extension_name string) any { //gd:GLTFLight.get_additional_data
-	return any(class(self).GetAdditionalData(String.Name(String.New(extension_name))).Interface())
+	return any(Advanced(self).GetAdditionalData(String.Name(String.New(extension_name))).Interface())
 }
 func (self Instance) SetAdditionalData(extension_name string, additional_data any) { //gd:GLTFLight.set_additional_data
-	class(self).SetAdditionalData(String.Name(String.New(extension_name)), variant.New(additional_data))
+	Advanced(self).SetAdditionalData(String.Name(String.New(extension_name)), variant.New(additional_data))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

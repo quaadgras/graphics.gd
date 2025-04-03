@@ -57,6 +57,7 @@ If you need to override the default physics behavior, you can write a custom for
 %!(EXTRA string=RigidBody2D)
 */
 type Instance [1]gdclass.RigidBody2D
+type Expanded [1]gdclass.RigidBody2D
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -95,14 +96,14 @@ Returns the number of contacts this body has with other bodies. By default, this
 [b]Note:[/b] To retrieve the colliding bodies, use [method get_colliding_bodies].
 */
 func (self Instance) GetContactCount() int { //gd:RigidBody2D.get_contact_count
-	return int(int(class(self).GetContactCount()))
+	return int(int(Advanced(self).GetContactCount()))
 }
 
 /*
 Sets the body's velocity on the given axis. The velocity in the given vector axis will be set as the given vector length. This is useful for jumping behavior.
 */
 func (self Instance) SetAxisVelocity(axis_velocity Vector2.XY) { //gd:RigidBody2D.set_axis_velocity
-	class(self).SetAxisVelocity(Vector2.XY(axis_velocity))
+	Advanced(self).SetAxisVelocity(Vector2.XY(axis_velocity))
 }
 
 /*
@@ -111,7 +112,16 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 This is equivalent to using [method apply_impulse] at the body's center of mass.
 */
 func (self Instance) ApplyCentralImpulse() { //gd:RigidBody2D.apply_central_impulse
-	class(self).ApplyCentralImpulse(Vector2.XY(gd.Vector2{0, 0}))
+	Advanced(self).ApplyCentralImpulse(Vector2.XY(gd.Vector2{0, 0}))
+}
+
+/*
+Applies a directional impulse without affecting rotation.
+An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
+This is equivalent to using [method apply_impulse] at the body's center of mass.
+*/
+func (self Expanded) ApplyCentralImpulse(impulse Vector2.XY) { //gd:RigidBody2D.apply_central_impulse
+	Advanced(self).ApplyCentralImpulse(Vector2.XY(impulse))
 }
 
 /*
@@ -120,7 +130,16 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 [param position] is the offset from the body origin in global coordinates.
 */
 func (self Instance) ApplyImpulse(impulse Vector2.XY) { //gd:RigidBody2D.apply_impulse
-	class(self).ApplyImpulse(Vector2.XY(impulse), Vector2.XY(gd.Vector2{0, 0}))
+	Advanced(self).ApplyImpulse(Vector2.XY(impulse), Vector2.XY(gd.Vector2{0, 0}))
+}
+
+/*
+Applies a positioned impulse to the body.
+An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
+[param position] is the offset from the body origin in global coordinates.
+*/
+func (self Expanded) ApplyImpulse(impulse Vector2.XY, position Vector2.XY) { //gd:RigidBody2D.apply_impulse
+	Advanced(self).ApplyImpulse(Vector2.XY(impulse), Vector2.XY(position))
 }
 
 /*
@@ -129,7 +148,7 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 [b]Note:[/b] [member inertia] is required for this to work. To have [member inertia], an active [CollisionShape2D] must be a child of the node, or you can manually set [member inertia].
 */
 func (self Instance) ApplyTorqueImpulse(torque Float.X) { //gd:RigidBody2D.apply_torque_impulse
-	class(self).ApplyTorqueImpulse(float64(torque))
+	Advanced(self).ApplyTorqueImpulse(float64(torque))
 }
 
 /*
@@ -137,7 +156,7 @@ Applies a directional force without affecting rotation. A force is time dependen
 This is equivalent to using [method apply_force] at the body's center of mass.
 */
 func (self Instance) ApplyCentralForce(force Vector2.XY) { //gd:RigidBody2D.apply_central_force
-	class(self).ApplyCentralForce(Vector2.XY(force))
+	Advanced(self).ApplyCentralForce(Vector2.XY(force))
 }
 
 /*
@@ -145,7 +164,15 @@ Applies a positioned force to the body. A force is time dependent and meant to b
 [param position] is the offset from the body origin in global coordinates.
 */
 func (self Instance) ApplyForce(force Vector2.XY) { //gd:RigidBody2D.apply_force
-	class(self).ApplyForce(Vector2.XY(force), Vector2.XY(gd.Vector2{0, 0}))
+	Advanced(self).ApplyForce(Vector2.XY(force), Vector2.XY(gd.Vector2{0, 0}))
+}
+
+/*
+Applies a positioned force to the body. A force is time dependent and meant to be applied every physics update.
+[param position] is the offset from the body origin in global coordinates.
+*/
+func (self Expanded) ApplyForce(force Vector2.XY, position Vector2.XY) { //gd:RigidBody2D.apply_force
+	Advanced(self).ApplyForce(Vector2.XY(force), Vector2.XY(position))
 }
 
 /*
@@ -153,7 +180,7 @@ Applies a rotational force without affecting position. A force is time dependent
 [b]Note:[/b] [member inertia] is required for this to work. To have [member inertia], an active [CollisionShape2D] must be a child of the node, or you can manually set [member inertia].
 */
 func (self Instance) ApplyTorque(torque Float.X) { //gd:RigidBody2D.apply_torque
-	class(self).ApplyTorque(float64(torque))
+	Advanced(self).ApplyTorque(float64(torque))
 }
 
 /*
@@ -161,7 +188,7 @@ Adds a constant directional force without affecting rotation that keeps being ap
 This is equivalent to using [method add_constant_force] at the body's center of mass.
 */
 func (self Instance) AddConstantCentralForce(force Vector2.XY) { //gd:RigidBody2D.add_constant_central_force
-	class(self).AddConstantCentralForce(Vector2.XY(force))
+	Advanced(self).AddConstantCentralForce(Vector2.XY(force))
 }
 
 /*
@@ -169,14 +196,22 @@ Adds a constant positioned force to the body that keeps being applied over time 
 [param position] is the offset from the body origin in global coordinates.
 */
 func (self Instance) AddConstantForce(force Vector2.XY) { //gd:RigidBody2D.add_constant_force
-	class(self).AddConstantForce(Vector2.XY(force), Vector2.XY(gd.Vector2{0, 0}))
+	Advanced(self).AddConstantForce(Vector2.XY(force), Vector2.XY(gd.Vector2{0, 0}))
+}
+
+/*
+Adds a constant positioned force to the body that keeps being applied over time until cleared with [code]constant_force = Vector2(0, 0)[/code].
+[param position] is the offset from the body origin in global coordinates.
+*/
+func (self Expanded) AddConstantForce(force Vector2.XY, position Vector2.XY) { //gd:RigidBody2D.add_constant_force
+	Advanced(self).AddConstantForce(Vector2.XY(force), Vector2.XY(position))
 }
 
 /*
 Adds a constant rotational force without affecting position that keeps being applied over time until cleared with [code]constant_torque = 0[/code].
 */
 func (self Instance) AddConstantTorque(torque Float.X) { //gd:RigidBody2D.add_constant_torque
-	class(self).AddConstantTorque(float64(torque))
+	Advanced(self).AddConstantTorque(float64(torque))
 }
 
 /*
@@ -184,7 +219,7 @@ Returns a list of the bodies colliding with this one. Requires [member contact_m
 [b]Note:[/b] The result of this test is not immediate after moving objects. For performance, list of collisions is updated once per frame and before the physics step. Consider using signals instead.
 */
 func (self Instance) GetCollidingBodies() [][1]gdclass.Node2D { //gd:RigidBody2D.get_colliding_bodies
-	return [][1]gdclass.Node2D(gd.ArrayAs[[][1]gdclass.Node2D](gd.InternalArray(class(self).GetCollidingBodies())))
+	return [][1]gdclass.Node2D(gd.ArrayAs[[][1]gdclass.Node2D](gd.InternalArray(Advanced(self).GetCollidingBodies())))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -143,7 +143,7 @@ func (Instance) _post_import(impl func(ptr unsafe.Pointer, scene [1]gdclass.Node
 Returns the source file path which got imported (e.g. [code]res://scene.dae[/code]).
 */
 func (self Instance) GetSourceFile() string { //gd:EditorScenePostImport.get_source_file
-	return string(class(self).GetSourceFile().String())
+	return string(Advanced(self).GetSourceFile().String())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -49,6 +49,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 [PhysicsBody2D] is an abstract base class for 2D game objects affected by physics. All 2D physics bodies inherit from it.
 */
 type Instance [1]gdclass.PhysicsBody2D
+type Expanded [1]gdclass.PhysicsBody2D
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -66,7 +67,18 @@ If [param test_only] is [code]true[/code], the body does not move but the would-
 If [param recovery_as_collision] is [code]true[/code], any depenetration from the recovery phase is also reported as a collision; this is used e.g. by [CharacterBody2D] for improving floor detection during floor snapping.
 */
 func (self Instance) MoveAndCollide(motion Vector2.XY) [1]gdclass.KinematicCollision2D { //gd:PhysicsBody2D.move_and_collide
-	return [1]gdclass.KinematicCollision2D(class(self).MoveAndCollide(Vector2.XY(motion), false, float64(0.08), false))
+	return [1]gdclass.KinematicCollision2D(Advanced(self).MoveAndCollide(Vector2.XY(motion), false, float64(0.08), false))
+}
+
+/*
+Moves the body along the vector [param motion]. In order to be frame rate independent in [method Node._physics_process] or [method Node._process], [param motion] should be computed using [code]delta[/code].
+Returns a [KinematicCollision2D], which contains information about the collision when stopped, or when touching another body along the motion.
+If [param test_only] is [code]true[/code], the body does not move but the would-be collision information is given.
+[param safe_margin] is the extra margin used for collision recovery (see [member CharacterBody2D.safe_margin] for more details).
+If [param recovery_as_collision] is [code]true[/code], any depenetration from the recovery phase is also reported as a collision; this is used e.g. by [CharacterBody2D] for improving floor detection during floor snapping.
+*/
+func (self Expanded) MoveAndCollide(motion Vector2.XY, test_only bool, safe_margin Float.X, recovery_as_collision bool) [1]gdclass.KinematicCollision2D { //gd:PhysicsBody2D.move_and_collide
+	return [1]gdclass.KinematicCollision2D(Advanced(self).MoveAndCollide(Vector2.XY(motion), test_only, float64(safe_margin), recovery_as_collision))
 }
 
 /*
@@ -77,35 +89,46 @@ Virtually sets the node's position, scale and rotation to that of the given [Tra
 If [param recovery_as_collision] is [code]true[/code], any depenetration from the recovery phase is also reported as a collision; this is useful for checking whether the body would [i]touch[/i] any other bodies.
 */
 func (self Instance) TestMove(from Transform2D.OriginXY, motion Vector2.XY) bool { //gd:PhysicsBody2D.test_move
-	return bool(class(self).TestMove(Transform2D.OriginXY(from), Vector2.XY(motion), [1][1]gdclass.KinematicCollision2D{}[0], float64(0.08), false))
+	return bool(Advanced(self).TestMove(Transform2D.OriginXY(from), Vector2.XY(motion), [1][1]gdclass.KinematicCollision2D{}[0], float64(0.08), false))
+}
+
+/*
+Checks for collisions without moving the body. In order to be frame rate independent in [method Node._physics_process] or [method Node._process], [param motion] should be computed using [code]delta[/code].
+Virtually sets the node's position, scale and rotation to that of the given [Transform2D], then tries to move the body along the vector [param motion]. Returns [code]true[/code] if a collision would stop the body from moving along the whole path.
+[param collision] is an optional object of type [KinematicCollision2D], which contains additional information about the collision when stopped, or when touching another body along the motion.
+[param safe_margin] is the extra margin used for collision recovery (see [member CharacterBody2D.safe_margin] for more details).
+If [param recovery_as_collision] is [code]true[/code], any depenetration from the recovery phase is also reported as a collision; this is useful for checking whether the body would [i]touch[/i] any other bodies.
+*/
+func (self Expanded) TestMove(from Transform2D.OriginXY, motion Vector2.XY, collision [1]gdclass.KinematicCollision2D, safe_margin Float.X, recovery_as_collision bool) bool { //gd:PhysicsBody2D.test_move
+	return bool(Advanced(self).TestMove(Transform2D.OriginXY(from), Vector2.XY(motion), collision, float64(safe_margin), recovery_as_collision))
 }
 
 /*
 Returns the gravity vector computed from all sources that can affect the body, including all gravity overrides from [Area2D] nodes and the global world gravity.
 */
 func (self Instance) GetGravity() Vector2.XY { //gd:PhysicsBody2D.get_gravity
-	return Vector2.XY(class(self).GetGravity())
+	return Vector2.XY(Advanced(self).GetGravity())
 }
 
 /*
 Returns an array of nodes that were added as collision exceptions for this body.
 */
 func (self Instance) GetCollisionExceptions() [][1]gdclass.PhysicsBody2D { //gd:PhysicsBody2D.get_collision_exceptions
-	return [][1]gdclass.PhysicsBody2D(gd.ArrayAs[[][1]gdclass.PhysicsBody2D](gd.InternalArray(class(self).GetCollisionExceptions())))
+	return [][1]gdclass.PhysicsBody2D(gd.ArrayAs[[][1]gdclass.PhysicsBody2D](gd.InternalArray(Advanced(self).GetCollisionExceptions())))
 }
 
 /*
 Adds a body to the list of bodies that this body can't collide with.
 */
 func (self Instance) AddCollisionExceptionWith(body [1]gdclass.Node) { //gd:PhysicsBody2D.add_collision_exception_with
-	class(self).AddCollisionExceptionWith(body)
+	Advanced(self).AddCollisionExceptionWith(body)
 }
 
 /*
 Removes a body from the list of bodies that this body can't collide with.
 */
 func (self Instance) RemoveCollisionExceptionWith(body [1]gdclass.Node) { //gd:PhysicsBody2D.remove_collision_exception_with
-	class(self).RemoveCollisionExceptionWith(body)
+	Advanced(self).RemoveCollisionExceptionWith(body)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

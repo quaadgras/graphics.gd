@@ -45,6 +45,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 Picks a random AudioStream from the pool, depending on the playback mode, and applies random pitch shifting and volume shifting during playback.
 */
 type Instance [1]gdclass.AudioStreamRandomizer
+type Expanded [1]gdclass.AudioStreamRandomizer
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -58,49 +59,56 @@ type Any interface {
 Insert a stream at the specified index. If the index is less than zero, the insertion occurs at the end of the underlying pool.
 */
 func (self Instance) AddStream(index int, stream [1]gdclass.AudioStream) { //gd:AudioStreamRandomizer.add_stream
-	class(self).AddStream(int64(index), stream, float64(1.0))
+	Advanced(self).AddStream(int64(index), stream, float64(1.0))
+}
+
+/*
+Insert a stream at the specified index. If the index is less than zero, the insertion occurs at the end of the underlying pool.
+*/
+func (self Expanded) AddStream(index int, stream [1]gdclass.AudioStream, weight Float.X) { //gd:AudioStreamRandomizer.add_stream
+	Advanced(self).AddStream(int64(index), stream, float64(weight))
 }
 
 /*
 Move a stream from one index to another.
 */
 func (self Instance) MoveStream(index_from int, index_to int) { //gd:AudioStreamRandomizer.move_stream
-	class(self).MoveStream(int64(index_from), int64(index_to))
+	Advanced(self).MoveStream(int64(index_from), int64(index_to))
 }
 
 /*
 Remove the stream at the specified index.
 */
 func (self Instance) RemoveStream(index int) { //gd:AudioStreamRandomizer.remove_stream
-	class(self).RemoveStream(int64(index))
+	Advanced(self).RemoveStream(int64(index))
 }
 
 /*
 Set the AudioStream at the specified index.
 */
 func (self Instance) SetStream(index int, stream [1]gdclass.AudioStream) { //gd:AudioStreamRandomizer.set_stream
-	class(self).SetStream(int64(index), stream)
+	Advanced(self).SetStream(int64(index), stream)
 }
 
 /*
 Returns the stream at the specified index.
 */
 func (self Instance) GetStream(index int) [1]gdclass.AudioStream { //gd:AudioStreamRandomizer.get_stream
-	return [1]gdclass.AudioStream(class(self).GetStream(int64(index)))
+	return [1]gdclass.AudioStream(Advanced(self).GetStream(int64(index)))
 }
 
 /*
 Set the probability weight of the stream at the specified index. The higher this value, the more likely that the randomizer will choose this stream during random playback modes.
 */
 func (self Instance) SetStreamProbabilityWeight(index int, weight Float.X) { //gd:AudioStreamRandomizer.set_stream_probability_weight
-	class(self).SetStreamProbabilityWeight(int64(index), float64(weight))
+	Advanced(self).SetStreamProbabilityWeight(int64(index), float64(weight))
 }
 
 /*
 Returns the probability weight associated with the stream at the given index.
 */
 func (self Instance) GetStreamProbabilityWeight(index int) Float.X { //gd:AudioStreamRandomizer.get_stream_probability_weight
-	return Float.X(Float.X(class(self).GetStreamProbabilityWeight(int64(index))))
+	return Float.X(Float.X(Advanced(self).GetStreamProbabilityWeight(int64(index))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

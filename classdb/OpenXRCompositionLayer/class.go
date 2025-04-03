@@ -63,7 +63,7 @@ Returns a [JavaObject] representing an [code]android.view.Surface[/code] if [mem
 [b]Note:[/b] The surface can only be created during an active OpenXR session. So, if [member use_android_surface] is enabled outside of an OpenXR session, it won't be created until a new session fully starts.
 */
 func (self Instance) GetAndroidSurface() [1]gdclass.JavaObject { //gd:OpenXRCompositionLayer.get_android_surface
-	return [1]gdclass.JavaObject(class(self).GetAndroidSurface())
+	return [1]gdclass.JavaObject(Advanced(self).GetAndroidSurface())
 }
 
 /*
@@ -71,7 +71,7 @@ Returns [code]true[/code] if the OpenXR runtime natively supports this compositi
 [b]Note:[/b] This will only return an accurate result after the OpenXR session has started.
 */
 func (self Instance) IsNativelySupported() bool { //gd:OpenXRCompositionLayer.is_natively_supported
-	return bool(class(self).IsNativelySupported())
+	return bool(Advanced(self).IsNativelySupported())
 }
 
 /*
@@ -79,7 +79,7 @@ Returns UV coordinates where the given ray intersects with the composition layer
 Returns [code]Vector2(-1.0, -1.0)[/code] if the ray doesn't intersect.
 */
 func (self Instance) IntersectsRay(origin Vector3.XYZ, direction Vector3.XYZ) Vector2.XY { //gd:OpenXRCompositionLayer.intersects_ray
-	return Vector2.XY(class(self).IntersectsRay(Vector3.XYZ(origin), Vector3.XYZ(direction)))
+	return Vector2.XY(Advanced(self).IntersectsRay(Vector3.XYZ(origin), Vector3.XYZ(direction)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

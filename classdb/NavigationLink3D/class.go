@@ -59,63 +59,63 @@ type Any interface {
 Returns the [RID] of this link on the [NavigationServer3D].
 */
 func (self Instance) GetRid() RID.NavigationLink3D { //gd:NavigationLink3D.get_rid
-	return RID.NavigationLink3D(class(self).GetRid())
+	return RID.NavigationLink3D(Advanced(self).GetRid())
 }
 
 /*
 Sets the [RID] of the navigation map this link should use. By default the link will automatically join the [World3D] default navigation map so this function is only required to override the default map.
 */
 func (self Instance) SetNavigationMap(navigation_map RID.NavigationMap3D) { //gd:NavigationLink3D.set_navigation_map
-	class(self).SetNavigationMap(RID.Any(navigation_map))
+	Advanced(self).SetNavigationMap(RID.Any(navigation_map))
 }
 
 /*
 Returns the current navigation map [RID] used by this link.
 */
 func (self Instance) GetNavigationMap() RID.NavigationMap3D { //gd:NavigationLink3D.get_navigation_map
-	return RID.NavigationMap3D(class(self).GetNavigationMap())
+	return RID.NavigationMap3D(Advanced(self).GetNavigationMap())
 }
 
 /*
 Based on [param value], enables or disables the specified layer in the [member navigation_layers] bitmask, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) SetNavigationLayerValue(layer_number int, value bool) { //gd:NavigationLink3D.set_navigation_layer_value
-	class(self).SetNavigationLayerValue(int64(layer_number), value)
+	Advanced(self).SetNavigationLayerValue(int64(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member navigation_layers] bitmask is enabled, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) GetNavigationLayerValue(layer_number int) bool { //gd:NavigationLink3D.get_navigation_layer_value
-	return bool(class(self).GetNavigationLayerValue(int64(layer_number)))
+	return bool(Advanced(self).GetNavigationLayerValue(int64(layer_number)))
 }
 
 /*
 Sets the [member start_position] that is relative to the link from a global [param position].
 */
 func (self Instance) SetGlobalStartPosition(position Vector3.XYZ) { //gd:NavigationLink3D.set_global_start_position
-	class(self).SetGlobalStartPosition(Vector3.XYZ(position))
+	Advanced(self).SetGlobalStartPosition(Vector3.XYZ(position))
 }
 
 /*
 Returns the [member start_position] that is relative to the link as a global position.
 */
 func (self Instance) GetGlobalStartPosition() Vector3.XYZ { //gd:NavigationLink3D.get_global_start_position
-	return Vector3.XYZ(class(self).GetGlobalStartPosition())
+	return Vector3.XYZ(Advanced(self).GetGlobalStartPosition())
 }
 
 /*
 Sets the [member end_position] that is relative to the link from a global [param position].
 */
 func (self Instance) SetGlobalEndPosition(position Vector3.XYZ) { //gd:NavigationLink3D.set_global_end_position
-	class(self).SetGlobalEndPosition(Vector3.XYZ(position))
+	Advanced(self).SetGlobalEndPosition(Vector3.XYZ(position))
 }
 
 /*
 Returns the [member end_position] that is relative to the link as a global position.
 */
 func (self Instance) GetGlobalEndPosition() Vector3.XYZ { //gd:NavigationLink3D.get_global_end_position
-	return Vector3.XYZ(class(self).GetGlobalEndPosition())
+	return Vector3.XYZ(Advanced(self).GetGlobalEndPosition())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

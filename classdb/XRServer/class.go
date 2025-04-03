@@ -57,7 +57,7 @@ Returns the reference frame transform. Mostly used internally and exposed for GD
 */
 func GetReferenceFrame() Transform3D.BasisOrigin { //gd:XRServer.get_reference_frame
 	once.Do(singleton)
-	return Transform3D.BasisOrigin(class(self).GetReferenceFrame())
+	return Transform3D.BasisOrigin(Advanced().GetReferenceFrame())
 }
 
 /*
@@ -65,7 +65,7 @@ Clears the reference frame that was set by previous calls to [method center_on_h
 */
 func ClearReferenceFrame() { //gd:XRServer.clear_reference_frame
 	once.Do(singleton)
-	class(self).ClearReferenceFrame()
+	Advanced().ClearReferenceFrame()
 }
 
 /*
@@ -78,7 +78,7 @@ You should call this method after a few seconds have passed. For example, when t
 */
 func CenterOnHmd(rotation_mode gdclass.XRServerRotationMode, keep_height bool) { //gd:XRServer.center_on_hmd
 	once.Do(singleton)
-	class(self).CenterOnHmd(rotation_mode, keep_height)
+	Advanced().CenterOnHmd(rotation_mode, keep_height)
 }
 
 /*
@@ -86,7 +86,7 @@ Returns the primary interface's transformation.
 */
 func GetHmdTransform() Transform3D.BasisOrigin { //gd:XRServer.get_hmd_transform
 	once.Do(singleton)
-	return Transform3D.BasisOrigin(class(self).GetHmdTransform())
+	return Transform3D.BasisOrigin(Advanced().GetHmdTransform())
 }
 
 /*
@@ -94,7 +94,7 @@ Registers an [XRInterface] object.
 */
 func AddInterface(intf [1]gdclass.XRInterface) { //gd:XRServer.add_interface
 	once.Do(singleton)
-	class(self).AddInterface(intf)
+	Advanced().AddInterface(intf)
 }
 
 /*
@@ -102,7 +102,7 @@ Returns the number of interfaces currently registered with the AR/VR server. If 
 */
 func GetInterfaceCount() int { //gd:XRServer.get_interface_count
 	once.Do(singleton)
-	return int(int(class(self).GetInterfaceCount()))
+	return int(int(Advanced().GetInterfaceCount()))
 }
 
 /*
@@ -110,7 +110,7 @@ Removes this [param interface].
 */
 func RemoveInterface(intf [1]gdclass.XRInterface) { //gd:XRServer.remove_interface
 	once.Do(singleton)
-	class(self).RemoveInterface(intf)
+	Advanced().RemoveInterface(intf)
 }
 
 /*
@@ -118,7 +118,7 @@ Returns the interface registered at the given [param idx] index in the list of i
 */
 func GetInterface(idx int) [1]gdclass.XRInterface { //gd:XRServer.get_interface
 	once.Do(singleton)
-	return [1]gdclass.XRInterface(class(self).GetInterface(int64(idx)))
+	return [1]gdclass.XRInterface(Advanced().GetInterface(int64(idx)))
 }
 
 /*
@@ -126,7 +126,7 @@ Returns a list of available interfaces the ID and name of each interface.
 */
 func GetInterfaces() []map[int]string { //gd:XRServer.get_interfaces
 	once.Do(singleton)
-	return []map[int]string(gd.ArrayAs[[]map[int]string](gd.InternalArray(class(self).GetInterfaces())))
+	return []map[int]string(gd.ArrayAs[[]map[int]string](gd.InternalArray(Advanced().GetInterfaces())))
 }
 
 /*
@@ -134,7 +134,7 @@ Finds an interface by its [param name]. For example, if your project uses capabi
 */
 func FindInterface(name string) [1]gdclass.XRInterface { //gd:XRServer.find_interface
 	once.Do(singleton)
-	return [1]gdclass.XRInterface(class(self).FindInterface(String.New(name)))
+	return [1]gdclass.XRInterface(Advanced().FindInterface(String.New(name)))
 }
 
 /*
@@ -142,7 +142,7 @@ Registers a new [XRTracker] that tracks a physical object.
 */
 func AddTracker(tracker [1]gdclass.XRTracker) { //gd:XRServer.add_tracker
 	once.Do(singleton)
-	class(self).AddTracker(tracker)
+	Advanced().AddTracker(tracker)
 }
 
 /*
@@ -150,7 +150,7 @@ Removes this [param tracker].
 */
 func RemoveTracker(tracker [1]gdclass.XRTracker) { //gd:XRServer.remove_tracker
 	once.Do(singleton)
-	class(self).RemoveTracker(tracker)
+	Advanced().RemoveTracker(tracker)
 }
 
 /*
@@ -158,7 +158,7 @@ Returns a dictionary of trackers for [param tracker_types].
 */
 func GetTrackers(tracker_types int) map[interface{}]interface{} { //gd:XRServer.get_trackers
 	once.Do(singleton)
-	return map[interface{}]interface{}(gd.DictionaryAs[map[interface{}]interface{}](class(self).GetTrackers(int64(tracker_types))))
+	return map[interface{}]interface{}(gd.DictionaryAs[map[interface{}]interface{}](Advanced().GetTrackers(int64(tracker_types))))
 }
 
 /*
@@ -166,7 +166,7 @@ Returns the positional tracker with the given [param tracker_name].
 */
 func GetTracker(tracker_name string) [1]gdclass.XRTracker { //gd:XRServer.get_tracker
 	once.Do(singleton)
-	return [1]gdclass.XRTracker(class(self).GetTracker(String.Name(String.New(tracker_name))))
+	return [1]gdclass.XRTracker(Advanced().GetTracker(String.Name(String.New(tracker_name))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

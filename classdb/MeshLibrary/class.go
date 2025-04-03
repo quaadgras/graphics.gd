@@ -59,7 +59,7 @@ Creates a new item in the library with the given ID.
 You can get an unused ID from [method get_last_unused_item_id].
 */
 func (self Instance) CreateItem(id int) { //gd:MeshLibrary.create_item
-	class(self).CreateItem(int64(id))
+	Advanced(self).CreateItem(int64(id))
 }
 
 /*
@@ -67,49 +67,49 @@ Sets the item's name.
 This name is shown in the editor. It can also be used to look up the item later using [method find_item_by_name].
 */
 func (self Instance) SetItemName(id int, name string) { //gd:MeshLibrary.set_item_name
-	class(self).SetItemName(int64(id), String.New(name))
+	Advanced(self).SetItemName(int64(id), String.New(name))
 }
 
 /*
 Sets the item's mesh.
 */
 func (self Instance) SetItemMesh(id int, mesh [1]gdclass.Mesh) { //gd:MeshLibrary.set_item_mesh
-	class(self).SetItemMesh(int64(id), mesh)
+	Advanced(self).SetItemMesh(int64(id), mesh)
 }
 
 /*
 Sets the transform to apply to the item's mesh.
 */
 func (self Instance) SetItemMeshTransform(id int, mesh_transform Transform3D.BasisOrigin) { //gd:MeshLibrary.set_item_mesh_transform
-	class(self).SetItemMeshTransform(int64(id), Transform3D.BasisOrigin(mesh_transform))
+	Advanced(self).SetItemMeshTransform(int64(id), Transform3D.BasisOrigin(mesh_transform))
 }
 
 /*
 Sets the item's shadow casting mode. See [enum RenderingServer.ShadowCastingSetting] for possible values.
 */
 func (self Instance) SetItemMeshCastShadow(id int, shadow_casting_setting gdclass.RenderingServerShadowCastingSetting) { //gd:MeshLibrary.set_item_mesh_cast_shadow
-	class(self).SetItemMeshCastShadow(int64(id), shadow_casting_setting)
+	Advanced(self).SetItemMeshCastShadow(int64(id), shadow_casting_setting)
 }
 
 /*
 Sets the item's navigation mesh.
 */
 func (self Instance) SetItemNavigationMesh(id int, navigation_mesh [1]gdclass.NavigationMesh) { //gd:MeshLibrary.set_item_navigation_mesh
-	class(self).SetItemNavigationMesh(int64(id), navigation_mesh)
+	Advanced(self).SetItemNavigationMesh(int64(id), navigation_mesh)
 }
 
 /*
 Sets the transform to apply to the item's navigation mesh.
 */
 func (self Instance) SetItemNavigationMeshTransform(id int, navigation_mesh Transform3D.BasisOrigin) { //gd:MeshLibrary.set_item_navigation_mesh_transform
-	class(self).SetItemNavigationMeshTransform(int64(id), Transform3D.BasisOrigin(navigation_mesh))
+	Advanced(self).SetItemNavigationMeshTransform(int64(id), Transform3D.BasisOrigin(navigation_mesh))
 }
 
 /*
 Sets the item's navigation layers bitmask.
 */
 func (self Instance) SetItemNavigationLayers(id int, navigation_layers int) { //gd:MeshLibrary.set_item_navigation_layers
-	class(self).SetItemNavigationLayers(int64(id), int64(navigation_layers))
+	Advanced(self).SetItemNavigationLayers(int64(id), int64(navigation_layers))
 }
 
 /*
@@ -117,63 +117,63 @@ Sets an item's collision shapes.
 The array should consist of [Shape3D] objects, each followed by a [Transform3D] that will be applied to it. For shapes that should not have a transform, use [constant Transform3D.IDENTITY].
 */
 func (self Instance) SetItemShapes(id int, shapes []any) { //gd:MeshLibrary.set_item_shapes
-	class(self).SetItemShapes(int64(id), gd.EngineArrayFromSlice(shapes))
+	Advanced(self).SetItemShapes(int64(id), gd.EngineArrayFromSlice(shapes))
 }
 
 /*
 Sets a texture to use as the item's preview icon in the editor.
 */
 func (self Instance) SetItemPreview(id int, texture [1]gdclass.Texture2D) { //gd:MeshLibrary.set_item_preview
-	class(self).SetItemPreview(int64(id), texture)
+	Advanced(self).SetItemPreview(int64(id), texture)
 }
 
 /*
 Returns the item's name.
 */
 func (self Instance) GetItemName(id int) string { //gd:MeshLibrary.get_item_name
-	return string(class(self).GetItemName(int64(id)).String())
+	return string(Advanced(self).GetItemName(int64(id)).String())
 }
 
 /*
 Returns the item's mesh.
 */
 func (self Instance) GetItemMesh(id int) [1]gdclass.Mesh { //gd:MeshLibrary.get_item_mesh
-	return [1]gdclass.Mesh(class(self).GetItemMesh(int64(id)))
+	return [1]gdclass.Mesh(Advanced(self).GetItemMesh(int64(id)))
 }
 
 /*
 Returns the transform applied to the item's mesh.
 */
 func (self Instance) GetItemMeshTransform(id int) Transform3D.BasisOrigin { //gd:MeshLibrary.get_item_mesh_transform
-	return Transform3D.BasisOrigin(class(self).GetItemMeshTransform(int64(id)))
+	return Transform3D.BasisOrigin(Advanced(self).GetItemMeshTransform(int64(id)))
 }
 
 /*
 Returns the item's shadow casting mode. See [enum RenderingServer.ShadowCastingSetting] for possible values.
 */
 func (self Instance) GetItemMeshCastShadow(id int) gdclass.RenderingServerShadowCastingSetting { //gd:MeshLibrary.get_item_mesh_cast_shadow
-	return gdclass.RenderingServerShadowCastingSetting(class(self).GetItemMeshCastShadow(int64(id)))
+	return gdclass.RenderingServerShadowCastingSetting(Advanced(self).GetItemMeshCastShadow(int64(id)))
 }
 
 /*
 Returns the item's navigation mesh.
 */
 func (self Instance) GetItemNavigationMesh(id int) [1]gdclass.NavigationMesh { //gd:MeshLibrary.get_item_navigation_mesh
-	return [1]gdclass.NavigationMesh(class(self).GetItemNavigationMesh(int64(id)))
+	return [1]gdclass.NavigationMesh(Advanced(self).GetItemNavigationMesh(int64(id)))
 }
 
 /*
 Returns the transform applied to the item's navigation mesh.
 */
 func (self Instance) GetItemNavigationMeshTransform(id int) Transform3D.BasisOrigin { //gd:MeshLibrary.get_item_navigation_mesh_transform
-	return Transform3D.BasisOrigin(class(self).GetItemNavigationMeshTransform(int64(id)))
+	return Transform3D.BasisOrigin(Advanced(self).GetItemNavigationMeshTransform(int64(id)))
 }
 
 /*
 Returns the item's navigation layers bitmask.
 */
 func (self Instance) GetItemNavigationLayers(id int) int { //gd:MeshLibrary.get_item_navigation_layers
-	return int(int(class(self).GetItemNavigationLayers(int64(id))))
+	return int(int(Advanced(self).GetItemNavigationLayers(int64(id))))
 }
 
 /*
@@ -181,49 +181,49 @@ Returns an item's collision shapes.
 The array consists of each [Shape3D] followed by its [Transform3D].
 */
 func (self Instance) GetItemShapes(id int) []any { //gd:MeshLibrary.get_item_shapes
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetItemShapes(int64(id)))))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetItemShapes(int64(id)))))
 }
 
 /*
 When running in the editor, returns a generated item preview (a 3D rendering in isometric perspective). When used in a running project, returns the manually-defined item preview which can be set using [method set_item_preview]. Returns an empty [Texture2D] if no preview was manually set in a running project.
 */
 func (self Instance) GetItemPreview(id int) [1]gdclass.Texture2D { //gd:MeshLibrary.get_item_preview
-	return [1]gdclass.Texture2D(class(self).GetItemPreview(int64(id)))
+	return [1]gdclass.Texture2D(Advanced(self).GetItemPreview(int64(id)))
 }
 
 /*
 Removes the item.
 */
 func (self Instance) RemoveItem(id int) { //gd:MeshLibrary.remove_item
-	class(self).RemoveItem(int64(id))
+	Advanced(self).RemoveItem(int64(id))
 }
 
 /*
 Returns the first item with the given name, or [code]-1[/code] if no item is found.
 */
 func (self Instance) FindItemByName(name string) int { //gd:MeshLibrary.find_item_by_name
-	return int(int(class(self).FindItemByName(String.New(name))))
+	return int(int(Advanced(self).FindItemByName(String.New(name))))
 }
 
 /*
 Clears the library.
 */
 func (self Instance) Clear() { //gd:MeshLibrary.clear
-	class(self).Clear()
+	Advanced(self).Clear()
 }
 
 /*
 Returns the list of item IDs in use.
 */
 func (self Instance) GetItemList() []int32 { //gd:MeshLibrary.get_item_list
-	return []int32(slices.Collect(class(self).GetItemList().Values()))
+	return []int32(slices.Collect(Advanced(self).GetItemList().Values()))
 }
 
 /*
 Gets an unused ID for a new item.
 */
 func (self Instance) GetLastUnusedItemId() int { //gd:MeshLibrary.get_last_unused_item_id
-	return int(int(class(self).GetLastUnusedItemId()))
+	return int(int(Advanced(self).GetLastUnusedItemId()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

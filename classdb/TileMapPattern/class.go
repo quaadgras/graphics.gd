@@ -46,6 +46,7 @@ This resource holds a set of cells to help bulk manipulations of [TileMap].
 A pattern always start at the [code](0,0)[/code] coordinates and cannot have cells with negative coordinates.
 */
 type Instance [1]gdclass.TileMapPattern
+type Expanded [1]gdclass.TileMapPattern
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -59,70 +60,77 @@ type Any interface {
 Sets the tile identifiers for the cell at coordinates [param coords]. See [method TileMap.set_cell].
 */
 func (self Instance) SetCell(coords Vector2i.XY) { //gd:TileMapPattern.set_cell
-	class(self).SetCell(Vector2i.XY(coords), int64(-1), Vector2i.XY(gd.Vector2i{-1, -1}), int64(-1))
+	Advanced(self).SetCell(Vector2i.XY(coords), int64(-1), Vector2i.XY(gd.Vector2i{-1, -1}), int64(-1))
+}
+
+/*
+Sets the tile identifiers for the cell at coordinates [param coords]. See [method TileMap.set_cell].
+*/
+func (self Expanded) SetCell(coords Vector2i.XY, source_id int, atlas_coords Vector2i.XY, alternative_tile int) { //gd:TileMapPattern.set_cell
+	Advanced(self).SetCell(Vector2i.XY(coords), int64(source_id), Vector2i.XY(atlas_coords), int64(alternative_tile))
 }
 
 /*
 Returns whether the pattern has a tile at the given coordinates.
 */
 func (self Instance) HasCell(coords Vector2i.XY) bool { //gd:TileMapPattern.has_cell
-	return bool(class(self).HasCell(Vector2i.XY(coords)))
+	return bool(Advanced(self).HasCell(Vector2i.XY(coords)))
 }
 
 /*
 Remove the cell at the given coordinates.
 */
 func (self Instance) RemoveCell(coords Vector2i.XY, update_size bool) { //gd:TileMapPattern.remove_cell
-	class(self).RemoveCell(Vector2i.XY(coords), update_size)
+	Advanced(self).RemoveCell(Vector2i.XY(coords), update_size)
 }
 
 /*
 Returns the tile source ID of the cell at [param coords].
 */
 func (self Instance) GetCellSourceId(coords Vector2i.XY) int { //gd:TileMapPattern.get_cell_source_id
-	return int(int(class(self).GetCellSourceId(Vector2i.XY(coords))))
+	return int(int(Advanced(self).GetCellSourceId(Vector2i.XY(coords))))
 }
 
 /*
 Returns the tile atlas coordinates ID of the cell at [param coords].
 */
 func (self Instance) GetCellAtlasCoords(coords Vector2i.XY) Vector2i.XY { //gd:TileMapPattern.get_cell_atlas_coords
-	return Vector2i.XY(class(self).GetCellAtlasCoords(Vector2i.XY(coords)))
+	return Vector2i.XY(Advanced(self).GetCellAtlasCoords(Vector2i.XY(coords)))
 }
 
 /*
 Returns the tile alternative ID of the cell at [param coords].
 */
 func (self Instance) GetCellAlternativeTile(coords Vector2i.XY) int { //gd:TileMapPattern.get_cell_alternative_tile
-	return int(int(class(self).GetCellAlternativeTile(Vector2i.XY(coords))))
+	return int(int(Advanced(self).GetCellAlternativeTile(Vector2i.XY(coords))))
 }
 
 /*
 Returns the list of used cell coordinates in the pattern.
 */
 func (self Instance) GetUsedCells() []Vector2i.XY { //gd:TileMapPattern.get_used_cells
-	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](gd.InternalArray(class(self).GetUsedCells())))
+	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](gd.InternalArray(Advanced(self).GetUsedCells())))
 }
 
 /*
 Returns the size, in cells, of the pattern.
 */
 func (self Instance) GetSize() Vector2i.XY { //gd:TileMapPattern.get_size
-	return Vector2i.XY(class(self).GetSize())
+	return Vector2i.XY(Advanced(self).GetSize())
 }
 
 /*
 Sets the size of the pattern.
 */
 func (self Instance) SetSize(size Vector2i.XY) { //gd:TileMapPattern.set_size
-	class(self).SetSize(Vector2i.XY(size))
+	Advanced(self).SetSize(Vector2i.XY(size))
 }
 
 /*
 Returns whether the pattern is empty or not.
 */
 func (self Instance) IsEmpty() bool { //gd:TileMapPattern.is_empty
-	return bool(class(self).IsEmpty())
+	return bool(Advanced(self).IsEmpty())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

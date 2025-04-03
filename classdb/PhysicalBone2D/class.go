@@ -64,14 +64,14 @@ type Any interface {
 Returns the first [Joint2D] child node, if one exists. This is mainly a helper function to make it easier to get the [Joint2D] that the [PhysicalBone2D] is autoconfiguring.
 */
 func (self Instance) GetJoint() [1]gdclass.Joint2D { //gd:PhysicalBone2D.get_joint
-	return [1]gdclass.Joint2D(class(self).GetJoint())
+	return [1]gdclass.Joint2D(Advanced(self).GetJoint())
 }
 
 /*
 Returns a boolean that indicates whether the [PhysicalBone2D] is running and simulating using the Godot 2D physics engine. When [code]true[/code], the PhysicalBone2D node is using physics.
 */
 func (self Instance) IsSimulatingPhysics() bool { //gd:PhysicalBone2D.is_simulating_physics
-	return bool(class(self).IsSimulatingPhysics())
+	return bool(Advanced(self).IsSimulatingPhysics())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

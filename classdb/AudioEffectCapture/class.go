@@ -61,7 +61,7 @@ type Any interface {
 Returns [code]true[/code] if at least [param frames] audio frames are available to read in the internal ring buffer.
 */
 func (self Instance) CanGetBuffer(frames int) bool { //gd:AudioEffectCapture.can_get_buffer
-	return bool(class(self).CanGetBuffer(int64(frames)))
+	return bool(Advanced(self).CanGetBuffer(int64(frames)))
 }
 
 /*
@@ -70,7 +70,7 @@ Returns a [PackedVector2Array] containing exactly [param frames] audio samples i
 The samples are signed floating-point PCM between [code]-1[/code] and [code]1[/code]. You will have to scale them if you want to use them as 8 or 16-bit integer samples. ([code]v = 0x7fff * samples[0].x[/code])
 */
 func (self Instance) GetBuffer(frames int) []Vector2.XY { //gd:AudioEffectCapture.get_buffer
-	return []Vector2.XY(slices.Collect(class(self).GetBuffer(int64(frames)).Values()))
+	return []Vector2.XY(slices.Collect(Advanced(self).GetBuffer(int64(frames)).Values()))
 }
 
 /*
@@ -78,35 +78,35 @@ Clears the internal ring buffer.
 [b]Note:[/b] Calling this during a capture can cause the loss of samples which causes popping in the playback.
 */
 func (self Instance) ClearBuffer() { //gd:AudioEffectCapture.clear_buffer
-	class(self).ClearBuffer()
+	Advanced(self).ClearBuffer()
 }
 
 /*
 Returns the number of frames available to read using [method get_buffer].
 */
 func (self Instance) GetFramesAvailable() int { //gd:AudioEffectCapture.get_frames_available
-	return int(int(class(self).GetFramesAvailable()))
+	return int(int(Advanced(self).GetFramesAvailable()))
 }
 
 /*
 Returns the number of audio frames discarded from the audio bus due to full buffer.
 */
 func (self Instance) GetDiscardedFrames() int { //gd:AudioEffectCapture.get_discarded_frames
-	return int(int(class(self).GetDiscardedFrames()))
+	return int(int(Advanced(self).GetDiscardedFrames()))
 }
 
 /*
 Returns the total size of the internal ring buffer in frames.
 */
 func (self Instance) GetBufferLengthFrames() int { //gd:AudioEffectCapture.get_buffer_length_frames
-	return int(int(class(self).GetBufferLengthFrames()))
+	return int(int(Advanced(self).GetBufferLengthFrames()))
 }
 
 /*
 Returns the number of audio frames inserted from the audio bus.
 */
 func (self Instance) GetPushedFrames() int { //gd:AudioEffectCapture.get_pushed_frames
-	return int(int(class(self).GetPushedFrames()))
+	return int(int(Advanced(self).GetPushedFrames()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

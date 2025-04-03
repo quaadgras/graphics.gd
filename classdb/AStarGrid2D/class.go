@@ -70,6 +70,7 @@ To remove a point from the pathfinding grid, it must be set as "solid" with [met
 %!(EXTRA string=AStarGrid2D)
 */
 type Instance [1]gdclass.AStarGrid2D
+type Expanded [1]gdclass.AStarGrid2D
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -131,21 +132,21 @@ func (Instance) _compute_cost(impl func(ptr unsafe.Pointer, from_id Vector2i.XY,
 Returns [code]true[/code] if the [param x] and [param y] is a valid grid coordinate (id), i.e. if it is inside [member region]. Equivalent to [code]region.has_point(Vector2i(x, y))[/code].
 */
 func (self Instance) IsInBounds(x int, y int) bool { //gd:AStarGrid2D.is_in_bounds
-	return bool(class(self).IsInBounds(int64(x), int64(y)))
+	return bool(Advanced(self).IsInBounds(int64(x), int64(y)))
 }
 
 /*
 Returns [code]true[/code] if the [param id] vector is a valid grid coordinate, i.e. if it is inside [member region]. Equivalent to [code]region.has_point(id)[/code].
 */
 func (self Instance) IsInBoundsv(id Vector2i.XY) bool { //gd:AStarGrid2D.is_in_boundsv
-	return bool(class(self).IsInBoundsv(Vector2i.XY(id)))
+	return bool(Advanced(self).IsInBoundsv(Vector2i.XY(id)))
 }
 
 /*
 Indicates that the grid parameters were changed and [method update] needs to be called.
 */
 func (self Instance) IsDirty() bool { //gd:AStarGrid2D.is_dirty
-	return bool(class(self).IsDirty())
+	return bool(Advanced(self).IsDirty())
 }
 
 /*
@@ -153,7 +154,7 @@ Updates the internal state of the grid according to the parameters to prepare it
 [b]Note:[/b] All point data (solidity and weight scale) will be cleared.
 */
 func (self Instance) Update() { //gd:AStarGrid2D.update
-	class(self).Update()
+	Advanced(self).Update()
 }
 
 /*
@@ -161,14 +162,22 @@ Disables or enables the specified point for pathfinding. Useful for making an ob
 [b]Note:[/b] Calling [method update] is not needed after the call of this function.
 */
 func (self Instance) SetPointSolid(id Vector2i.XY) { //gd:AStarGrid2D.set_point_solid
-	class(self).SetPointSolid(Vector2i.XY(id), true)
+	Advanced(self).SetPointSolid(Vector2i.XY(id), true)
+}
+
+/*
+Disables or enables the specified point for pathfinding. Useful for making an obstacle. By default, all points are enabled.
+[b]Note:[/b] Calling [method update] is not needed after the call of this function.
+*/
+func (self Expanded) SetPointSolid(id Vector2i.XY, solid bool) { //gd:AStarGrid2D.set_point_solid
+	Advanced(self).SetPointSolid(Vector2i.XY(id), solid)
 }
 
 /*
 Returns [code]true[/code] if a point is disabled for pathfinding. By default, all points are enabled.
 */
 func (self Instance) IsPointSolid(id Vector2i.XY) bool { //gd:AStarGrid2D.is_point_solid
-	return bool(class(self).IsPointSolid(Vector2i.XY(id)))
+	return bool(Advanced(self).IsPointSolid(Vector2i.XY(id)))
 }
 
 /*
@@ -176,14 +185,14 @@ Sets the [param weight_scale] for the point with the given [param id]. The [para
 [b]Note:[/b] Calling [method update] is not needed after the call of this function.
 */
 func (self Instance) SetPointWeightScale(id Vector2i.XY, weight_scale Float.X) { //gd:AStarGrid2D.set_point_weight_scale
-	class(self).SetPointWeightScale(Vector2i.XY(id), float64(weight_scale))
+	Advanced(self).SetPointWeightScale(Vector2i.XY(id), float64(weight_scale))
 }
 
 /*
 Returns the weight scale of the point associated with the given [param id].
 */
 func (self Instance) GetPointWeightScale(id Vector2i.XY) Float.X { //gd:AStarGrid2D.get_point_weight_scale
-	return Float.X(Float.X(class(self).GetPointWeightScale(Vector2i.XY(id))))
+	return Float.X(Float.X(Advanced(self).GetPointWeightScale(Vector2i.XY(id))))
 }
 
 /*
@@ -191,7 +200,15 @@ Fills the given [param region] on the grid with the specified value for the soli
 [b]Note:[/b] Calling [method update] is not needed after the call of this function.
 */
 func (self Instance) FillSolidRegion(region Rect2i.PositionSize) { //gd:AStarGrid2D.fill_solid_region
-	class(self).FillSolidRegion(Rect2i.PositionSize(region), true)
+	Advanced(self).FillSolidRegion(Rect2i.PositionSize(region), true)
+}
+
+/*
+Fills the given [param region] on the grid with the specified value for the solid flag.
+[b]Note:[/b] Calling [method update] is not needed after the call of this function.
+*/
+func (self Expanded) FillSolidRegion(region Rect2i.PositionSize, solid bool) { //gd:AStarGrid2D.fill_solid_region
+	Advanced(self).FillSolidRegion(Rect2i.PositionSize(region), solid)
 }
 
 /*
@@ -199,28 +216,28 @@ Fills the given [param region] on the grid with the specified value for the weig
 [b]Note:[/b] Calling [method update] is not needed after the call of this function.
 */
 func (self Instance) FillWeightScaleRegion(region Rect2i.PositionSize, weight_scale Float.X) { //gd:AStarGrid2D.fill_weight_scale_region
-	class(self).FillWeightScaleRegion(Rect2i.PositionSize(region), float64(weight_scale))
+	Advanced(self).FillWeightScaleRegion(Rect2i.PositionSize(region), float64(weight_scale))
 }
 
 /*
 Clears the grid and sets the [member region] to [code]Rect2i(0, 0, 0, 0)[/code].
 */
 func (self Instance) Clear() { //gd:AStarGrid2D.clear
-	class(self).Clear()
+	Advanced(self).Clear()
 }
 
 /*
 Returns the position of the point associated with the given [param id].
 */
 func (self Instance) GetPointPosition(id Vector2i.XY) Vector2.XY { //gd:AStarGrid2D.get_point_position
-	return Vector2.XY(class(self).GetPointPosition(Vector2i.XY(id)))
+	return Vector2.XY(Advanced(self).GetPointPosition(Vector2i.XY(id)))
 }
 
 /*
 Returns an array of dictionaries with point data ([code]id[/code]: [Vector2i], [code]position[/code]: [Vector2], [code]solid[/code]: [bool], [code]weight_scale[/code]: [float]) within a [param region].
 */
 func (self Instance) GetPointDataInRegion(region Rect2i.PositionSize) []PointData { //gd:AStarGrid2D.get_point_data_in_region
-	return []PointData(gd.ArrayAs[[]PointData](gd.InternalArray(class(self).GetPointDataInRegion(Rect2i.PositionSize(region)))))
+	return []PointData(gd.ArrayAs[[]PointData](gd.InternalArray(Advanced(self).GetPointDataInRegion(Rect2i.PositionSize(region)))))
 }
 
 /*
@@ -230,7 +247,17 @@ If there is no valid path to the target, and [param allow_partial_path] is [code
 Additionally, when [param allow_partial_path] is [code]true[/code] and [param to_id] is solid the search may take an unusually long time to finish.
 */
 func (self Instance) GetPointPath(from_id Vector2i.XY, to_id Vector2i.XY) []Vector2.XY { //gd:AStarGrid2D.get_point_path
-	return []Vector2.XY(slices.Collect(class(self).GetPointPath(Vector2i.XY(from_id), Vector2i.XY(to_id), false).Values()))
+	return []Vector2.XY(slices.Collect(Advanced(self).GetPointPath(Vector2i.XY(from_id), Vector2i.XY(to_id), false).Values()))
+}
+
+/*
+Returns an array with the points that are in the path found by [AStarGrid2D] between the given points. The array is ordered from the starting point to the ending point of the path.
+If there is no valid path to the target, and [param allow_partial_path] is [code]true[/code], returns a path to the point closest to the target that can be reached.
+[b]Note:[/b] This method is not thread-safe. If called from a [Thread], it will return an empty array and will print an error message.
+Additionally, when [param allow_partial_path] is [code]true[/code] and [param to_id] is solid the search may take an unusually long time to finish.
+*/
+func (self Expanded) GetPointPath(from_id Vector2i.XY, to_id Vector2i.XY, allow_partial_path bool) []Vector2.XY { //gd:AStarGrid2D.get_point_path
+	return []Vector2.XY(slices.Collect(Advanced(self).GetPointPath(Vector2i.XY(from_id), Vector2i.XY(to_id), allow_partial_path).Values()))
 }
 
 /*
@@ -239,7 +266,16 @@ If there is no valid path to the target, and [param allow_partial_path] is [code
 [b]Note:[/b] When [param allow_partial_path] is [code]true[/code] and [param to_id] is solid the search may take an unusually long time to finish.
 */
 func (self Instance) GetIdPath(from_id Vector2i.XY, to_id Vector2i.XY) []Vector2i.XY { //gd:AStarGrid2D.get_id_path
-	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](gd.InternalArray(class(self).GetIdPath(Vector2i.XY(from_id), Vector2i.XY(to_id), false))))
+	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](gd.InternalArray(Advanced(self).GetIdPath(Vector2i.XY(from_id), Vector2i.XY(to_id), false))))
+}
+
+/*
+Returns an array with the IDs of the points that form the path found by AStar2D between the given points. The array is ordered from the starting point to the ending point of the path.
+If there is no valid path to the target, and [param allow_partial_path] is [code]true[/code], returns a path to the point closest to the target that can be reached.
+[b]Note:[/b] When [param allow_partial_path] is [code]true[/code] and [param to_id] is solid the search may take an unusually long time to finish.
+*/
+func (self Expanded) GetIdPath(from_id Vector2i.XY, to_id Vector2i.XY, allow_partial_path bool) []Vector2i.XY { //gd:AStarGrid2D.get_id_path
+	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](gd.InternalArray(Advanced(self).GetIdPath(Vector2i.XY(from_id), Vector2i.XY(to_id), allow_partial_path))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

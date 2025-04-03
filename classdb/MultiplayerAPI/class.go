@@ -46,6 +46,7 @@ It is possible to override the MultiplayerAPI instance used by specific tree bra
 It is also possible to extend or replace the default implementation via scripting or native extensions. See [MultiplayerAPIExtension] for details about extensions, [SceneMultiplayer] for the details about the default implementation.
 */
 type Instance [1]gdclass.MultiplayerAPI
+type Expanded [1]gdclass.MultiplayerAPI
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -59,21 +60,21 @@ type Any interface {
 Returns [code]true[/code] if there is a [member multiplayer_peer] set.
 */
 func (self Instance) HasMultiplayerPeer() bool { //gd:MultiplayerAPI.has_multiplayer_peer
-	return bool(class(self).HasMultiplayerPeer())
+	return bool(Advanced(self).HasMultiplayerPeer())
 }
 
 /*
 Returns the unique peer ID of this MultiplayerAPI's [member multiplayer_peer].
 */
 func (self Instance) GetUniqueId() int { //gd:MultiplayerAPI.get_unique_id
-	return int(int(class(self).GetUniqueId()))
+	return int(int(Advanced(self).GetUniqueId()))
 }
 
 /*
 Returns [code]true[/code] if this MultiplayerAPI's [member multiplayer_peer] is valid and in server mode (listening for connections).
 */
 func (self Instance) IsServer() bool { //gd:MultiplayerAPI.is_server
-	return bool(class(self).IsServer())
+	return bool(Advanced(self).IsServer())
 }
 
 /*
@@ -81,7 +82,7 @@ Returns the sender's peer ID for the RPC currently being executed.
 [b]Note:[/b] This method returns [code]0[/code] when called outside of an RPC. As such, the original peer ID may be lost when code execution is delayed (such as with GDScript's [code]await[/code] keyword).
 */
 func (self Instance) GetRemoteSenderId() int { //gd:MultiplayerAPI.get_remote_sender_id
-	return int(int(class(self).GetRemoteSenderId()))
+	return int(int(Advanced(self).GetRemoteSenderId()))
 }
 
 /*
@@ -89,7 +90,7 @@ Method used for polling the MultiplayerAPI. You only need to worry about this if
 [b]Note:[/b] This method results in RPCs being called, so they will be executed in the same context of this function (e.g. [code]_process[/code], [code]physics[/code], [Thread]).
 */
 func (self Instance) Poll() error { //gd:MultiplayerAPI.poll
-	return error(gd.ToError(class(self).Poll()))
+	return error(gd.ToError(Advanced(self).Poll()))
 }
 
 /*
@@ -97,7 +98,15 @@ Sends an RPC to the target [param peer]. The given [param method] will be called
 [b]Note:[/b] Prefer using [method Node.rpc], [method Node.rpc_id], or [code]my_method.rpc(peer, arg1, arg2, ...)[/code] (in GDScript), since they are faster. This method is mostly useful in conjunction with [MultiplayerAPIExtension] when extending or replacing the multiplayer capabilities.
 */
 func (self Instance) Rpc(peer int, obj Object.Instance, method string) error { //gd:MultiplayerAPI.rpc
-	return error(gd.ToError(class(self).Rpc(int64(peer), obj, String.Name(String.New(method)), Array.Nil)))
+	return error(gd.ToError(Advanced(self).Rpc(int64(peer), obj, String.Name(String.New(method)), Array.Nil)))
+}
+
+/*
+Sends an RPC to the target [param peer]. The given [param method] will be called on the remote [param object] with the provided [param arguments]. The RPC may also be called locally depending on the implementation and RPC configuration. See [method Node.rpc] and [method Node.rpc_config].
+[b]Note:[/b] Prefer using [method Node.rpc], [method Node.rpc_id], or [code]my_method.rpc(peer, arg1, arg2, ...)[/code] (in GDScript), since they are faster. This method is mostly useful in conjunction with [MultiplayerAPIExtension] when extending or replacing the multiplayer capabilities.
+*/
+func (self Expanded) Rpc(peer int, obj Object.Instance, method string, arguments []any) error { //gd:MultiplayerAPI.rpc
+	return error(gd.ToError(Advanced(self).Rpc(int64(peer), obj, String.Name(String.New(method)), gd.EngineArrayFromSlice(arguments))))
 }
 
 /*
@@ -105,7 +114,7 @@ Notifies the MultiplayerAPI of a new [param configuration] for the given [param 
 [b]Note:[/b] This method is mostly relevant when extending or overriding the MultiplayerAPI behavior via [MultiplayerAPIExtension].
 */
 func (self Instance) ObjectConfigurationAdd(obj Object.Instance, configuration any) error { //gd:MultiplayerAPI.object_configuration_add
-	return error(gd.ToError(class(self).ObjectConfigurationAdd(obj, variant.New(configuration))))
+	return error(gd.ToError(Advanced(self).ObjectConfigurationAdd(obj, variant.New(configuration))))
 }
 
 /*
@@ -113,14 +122,14 @@ Notifies the MultiplayerAPI to remove a [param configuration] for the given [par
 [b]Note:[/b] This method is mostly relevant when extending or overriding the MultiplayerAPI behavior via [MultiplayerAPIExtension].
 */
 func (self Instance) ObjectConfigurationRemove(obj Object.Instance, configuration any) error { //gd:MultiplayerAPI.object_configuration_remove
-	return error(gd.ToError(class(self).ObjectConfigurationRemove(obj, variant.New(configuration))))
+	return error(gd.ToError(Advanced(self).ObjectConfigurationRemove(obj, variant.New(configuration))))
 }
 
 /*
 Returns the peer IDs of all connected peers of this MultiplayerAPI's [member multiplayer_peer].
 */
 func (self Instance) GetPeers() []int32 { //gd:MultiplayerAPI.get_peers
-	return []int32(slices.Collect(class(self).GetPeers().Values()))
+	return []int32(slices.Collect(Advanced(self).GetPeers().Values()))
 }
 
 /*
@@ -128,7 +137,7 @@ Sets the default MultiplayerAPI implementation class. This method can be used by
 */
 func SetDefaultInterface(interface_name string) { //gd:MultiplayerAPI.set_default_interface
 	self := Instance{}
-	class(self).SetDefaultInterface(String.Name(String.New(interface_name)))
+	Advanced(self).SetDefaultInterface(String.Name(String.New(interface_name)))
 }
 
 /*
@@ -136,7 +145,7 @@ Returns the default MultiplayerAPI implementation class name. This is usually [c
 */
 func GetDefaultInterface() string { //gd:MultiplayerAPI.get_default_interface
 	self := Instance{}
-	return string(class(self).GetDefaultInterface().String())
+	return string(Advanced(self).GetDefaultInterface().String())
 }
 
 /*
@@ -144,7 +153,7 @@ Returns a new instance of the default MultiplayerAPI.
 */
 func CreateDefaultInterface() [1]gdclass.MultiplayerAPI { //gd:MultiplayerAPI.create_default_interface
 	self := Instance{}
-	return [1]gdclass.MultiplayerAPI(class(self).CreateDefaultInterface())
+	return [1]gdclass.MultiplayerAPI(Advanced(self).CreateDefaultInterface())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

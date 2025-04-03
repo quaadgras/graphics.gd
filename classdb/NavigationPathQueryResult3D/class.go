@@ -57,7 +57,7 @@ type Any interface {
 Reset the result object to its initial state. This is useful to reuse the object across multiple queries.
 */
 func (self Instance) Reset() { //gd:NavigationPathQueryResult3D.reset
-	class(self).Reset()
+	Advanced(self).Reset()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

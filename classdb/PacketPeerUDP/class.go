@@ -72,6 +72,7 @@ func _process(_delta):
 [b]Note:[/b] When exporting to Android, make sure to enable the [code]INTERNET[/code] permission in the Android export preset before exporting the project or using one-click deploy. Otherwise, network communication of any kind will be blocked by Android.
 */
 type Instance [1]gdclass.PacketPeerUDP
+type Expanded [1]gdclass.PacketPeerUDP
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -88,14 +89,24 @@ If [param bind_address] is set to [code]"0.0.0.0"[/code] (for IPv4) or [code]"::
 If [param bind_address] is set to any valid address (e.g. [code]"192.168.1.101"[/code], [code]"::1"[/code], etc.), the peer will only be bound to the interface with that address (or fail if no interface with the given address exists).
 */
 func (self Instance) Bind(port int) error { //gd:PacketPeerUDP.bind
-	return error(gd.ToError(class(self).Bind(int64(port), String.New("*"), int64(65536))))
+	return error(gd.ToError(Advanced(self).Bind(int64(port), String.New("*"), int64(65536))))
+}
+
+/*
+Binds this [PacketPeerUDP] to the specified [param port] and [param bind_address] with a buffer size [param recv_buf_size], allowing it to receive incoming packets.
+If [param bind_address] is set to [code]"*"[/code] (default), the peer will be bound on all available addresses (both IPv4 and IPv6).
+If [param bind_address] is set to [code]"0.0.0.0"[/code] (for IPv4) or [code]"::"[/code] (for IPv6), the peer will be bound to all available addresses matching that IP type.
+If [param bind_address] is set to any valid address (e.g. [code]"192.168.1.101"[/code], [code]"::1"[/code], etc.), the peer will only be bound to the interface with that address (or fail if no interface with the given address exists).
+*/
+func (self Expanded) Bind(port int, bind_address string, recv_buf_size int) error { //gd:PacketPeerUDP.bind
+	return error(gd.ToError(Advanced(self).Bind(int64(port), String.New(bind_address), int64(recv_buf_size))))
 }
 
 /*
 Closes the [PacketPeerUDP]'s underlying UDP socket.
 */
 func (self Instance) Close() { //gd:PacketPeerUDP.close
-	class(self).Close()
+	Advanced(self).Close()
 }
 
 /*
@@ -137,14 +148,14 @@ while (socket.Wait() == OK)
 [/codeblocks]
 */
 func (self Instance) Wait() error { //gd:PacketPeerUDP.wait
-	return error(gd.ToError(class(self).Wait()))
+	return error(gd.ToError(Advanced(self).Wait()))
 }
 
 /*
 Returns whether this [PacketPeerUDP] is bound to an address and can receive packets.
 */
 func (self Instance) IsBound() bool { //gd:PacketPeerUDP.is_bound
-	return bool(class(self).IsBound())
+	return bool(Advanced(self).IsBound())
 }
 
 /*
@@ -152,35 +163,35 @@ Calling this method connects this UDP peer to the given [param host]/[param port
 [b]Note:[/b] Connecting to the remote peer does not help to protect from malicious attacks like IP spoofing, etc. Think about using an encryption technique like TLS or DTLS if you feel like your application is transferring sensitive information.
 */
 func (self Instance) ConnectToHost(host string, port int) error { //gd:PacketPeerUDP.connect_to_host
-	return error(gd.ToError(class(self).ConnectToHost(String.New(host), int64(port))))
+	return error(gd.ToError(Advanced(self).ConnectToHost(String.New(host), int64(port))))
 }
 
 /*
 Returns [code]true[/code] if the UDP socket is open and has been connected to a remote address. See [method connect_to_host].
 */
 func (self Instance) IsSocketConnected() bool { //gd:PacketPeerUDP.is_socket_connected
-	return bool(class(self).IsSocketConnected())
+	return bool(Advanced(self).IsSocketConnected())
 }
 
 /*
 Returns the IP of the remote peer that sent the last packet(that was received with [method PacketPeer.get_packet] or [method PacketPeer.get_var]).
 */
 func (self Instance) GetPacketIp() string { //gd:PacketPeerUDP.get_packet_ip
-	return string(class(self).GetPacketIp().String())
+	return string(Advanced(self).GetPacketIp().String())
 }
 
 /*
 Returns the port of the remote peer that sent the last packet(that was received with [method PacketPeer.get_packet] or [method PacketPeer.get_var]).
 */
 func (self Instance) GetPacketPort() int { //gd:PacketPeerUDP.get_packet_port
-	return int(int(class(self).GetPacketPort()))
+	return int(int(Advanced(self).GetPacketPort()))
 }
 
 /*
 Returns the local port to which this peer is bound.
 */
 func (self Instance) GetLocalPort() int { //gd:PacketPeerUDP.get_local_port
-	return int(int(class(self).GetLocalPort()))
+	return int(int(Advanced(self).GetLocalPort()))
 }
 
 /*
@@ -188,7 +199,7 @@ Sets the destination address and port for sending packets and variables. A hostn
 [b]Note:[/b] [method set_broadcast_enabled] must be enabled before sending packets to a broadcast address (e.g. [code]255.255.255.255[/code]).
 */
 func (self Instance) SetDestAddress(host string, port int) error { //gd:PacketPeerUDP.set_dest_address
-	return error(gd.ToError(class(self).SetDestAddress(String.New(host), int64(port))))
+	return error(gd.ToError(Advanced(self).SetDestAddress(String.New(host), int64(port))))
 }
 
 /*
@@ -196,7 +207,7 @@ Enable or disable sending of broadcast packets (e.g. [code]set_dest_address("255
 [b]Note:[/b] Some Android devices might require the [code]CHANGE_WIFI_MULTICAST_STATE[/code] permission and this option to be enabled to receive broadcast packets too.
 */
 func (self Instance) SetBroadcastEnabled(enabled bool) { //gd:PacketPeerUDP.set_broadcast_enabled
-	class(self).SetBroadcastEnabled(enabled)
+	Advanced(self).SetBroadcastEnabled(enabled)
 }
 
 /*
@@ -205,14 +216,14 @@ You can join the same multicast group with multiple interfaces. Use [method IP.g
 [b]Note:[/b] Some Android devices might require the [code]CHANGE_WIFI_MULTICAST_STATE[/code] permission for multicast to work.
 */
 func (self Instance) JoinMulticastGroup(multicast_address string, interface_name string) error { //gd:PacketPeerUDP.join_multicast_group
-	return error(gd.ToError(class(self).JoinMulticastGroup(String.New(multicast_address), String.New(interface_name))))
+	return error(gd.ToError(Advanced(self).JoinMulticastGroup(String.New(multicast_address), String.New(interface_name))))
 }
 
 /*
 Removes the interface identified by [param interface_name] from the multicast group specified by [param multicast_address].
 */
 func (self Instance) LeaveMulticastGroup(multicast_address string, interface_name string) error { //gd:PacketPeerUDP.leave_multicast_group
-	return error(gd.ToError(class(self).LeaveMulticastGroup(String.New(multicast_address), String.New(interface_name))))
+	return error(gd.ToError(Advanced(self).LeaveMulticastGroup(String.New(multicast_address), String.New(interface_name))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

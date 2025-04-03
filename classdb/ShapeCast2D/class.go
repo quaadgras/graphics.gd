@@ -62,14 +62,14 @@ type Any interface {
 Returns whether any object is intersecting with the shape's vector (considering the vector length).
 */
 func (self Instance) IsColliding() bool { //gd:ShapeCast2D.is_colliding
-	return bool(class(self).IsColliding())
+	return bool(Advanced(self).IsColliding())
 }
 
 /*
 The number of collisions detected at the point of impact. Use this to iterate over multiple collisions as provided by [method get_collider], [method get_collider_shape], [method get_collision_point], and [method get_collision_normal] methods.
 */
 func (self Instance) GetCollisionCount() int { //gd:ShapeCast2D.get_collision_count
-	return int(int(class(self).GetCollisionCount()))
+	return int(int(Advanced(self).GetCollisionCount()))
 }
 
 /*
@@ -77,28 +77,28 @@ Updates the collision information for the shape immediately, without waiting for
 [b]Note:[/b] Setting [member enabled] to [code]true[/code] is not required for this to work.
 */
 func (self Instance) ForceShapecastUpdate() { //gd:ShapeCast2D.force_shapecast_update
-	class(self).ForceShapecastUpdate()
+	Advanced(self).ForceShapecastUpdate()
 }
 
 /*
 Returns the collided [Object] of one of the multiple collisions at [param index], or [code]null[/code] if no object is intersecting the shape (i.e. [method is_colliding] returns [code]false[/code]).
 */
 func (self Instance) GetCollider(index int) Object.Instance { //gd:ShapeCast2D.get_collider
-	return Object.Instance(class(self).GetCollider(int64(index)))
+	return Object.Instance(Advanced(self).GetCollider(int64(index)))
 }
 
 /*
 Returns the [RID] of the collided object of one of the multiple collisions at [param index].
 */
 func (self Instance) GetColliderRid(index int) RID.Body2D { //gd:ShapeCast2D.get_collider_rid
-	return RID.Body2D(class(self).GetColliderRid(int64(index)))
+	return RID.Body2D(Advanced(self).GetColliderRid(int64(index)))
 }
 
 /*
 Returns the shape ID of the colliding shape of one of the multiple collisions at [param index], or [code]0[/code] if no object is intersecting the shape (i.e. [method is_colliding] returns [code]false[/code]).
 */
 func (self Instance) GetColliderShape(index int) int { //gd:ShapeCast2D.get_collider_shape
-	return int(int(class(self).GetColliderShape(int64(index))))
+	return int(int(Advanced(self).GetColliderShape(int64(index))))
 }
 
 /*
@@ -106,21 +106,21 @@ Returns the collision point of one of the multiple collisions at [param index] w
 [b]Note:[/b] This point is in the [b]global[/b] coordinate system.
 */
 func (self Instance) GetCollisionPoint(index int) Vector2.XY { //gd:ShapeCast2D.get_collision_point
-	return Vector2.XY(class(self).GetCollisionPoint(int64(index)))
+	return Vector2.XY(Advanced(self).GetCollisionPoint(int64(index)))
 }
 
 /*
 Returns the normal of one of the multiple collisions at [param index] of the intersecting object.
 */
 func (self Instance) GetCollisionNormal(index int) Vector2.XY { //gd:ShapeCast2D.get_collision_normal
-	return Vector2.XY(class(self).GetCollisionNormal(int64(index)))
+	return Vector2.XY(Advanced(self).GetCollisionNormal(int64(index)))
 }
 
 /*
 Returns the fraction from this cast's origin to its [member target_position] of how far the shape can move without triggering a collision, as a value between [code]0.0[/code] and [code]1.0[/code].
 */
 func (self Instance) GetClosestCollisionSafeFraction() Float.X { //gd:ShapeCast2D.get_closest_collision_safe_fraction
-	return Float.X(Float.X(class(self).GetClosestCollisionSafeFraction()))
+	return Float.X(Float.X(Advanced(self).GetClosestCollisionSafeFraction()))
 }
 
 /*
@@ -128,56 +128,56 @@ Returns the fraction from this cast's origin to its [member target_position] of 
 In ideal conditions this would be the same as [method get_closest_collision_safe_fraction], however shape casting is calculated in discrete steps, so the precise point of collision can occur between two calculated positions.
 */
 func (self Instance) GetClosestCollisionUnsafeFraction() Float.X { //gd:ShapeCast2D.get_closest_collision_unsafe_fraction
-	return Float.X(Float.X(class(self).GetClosestCollisionUnsafeFraction()))
+	return Float.X(Float.X(Advanced(self).GetClosestCollisionUnsafeFraction()))
 }
 
 /*
 Adds a collision exception so the shape does not report collisions with the specified [RID].
 */
 func (self Instance) AddExceptionRid(rid RID.Body2D) { //gd:ShapeCast2D.add_exception_rid
-	class(self).AddExceptionRid(RID.Any(rid))
+	Advanced(self).AddExceptionRid(RID.Any(rid))
 }
 
 /*
 Adds a collision exception so the shape does not report collisions with the specified node.
 */
 func (self Instance) AddException(node [1]gdclass.CollisionObject2D) { //gd:ShapeCast2D.add_exception
-	class(self).AddException(node)
+	Advanced(self).AddException(node)
 }
 
 /*
 Removes a collision exception so the shape does report collisions with the specified [RID].
 */
 func (self Instance) RemoveExceptionRid(rid RID.Body2D) { //gd:ShapeCast2D.remove_exception_rid
-	class(self).RemoveExceptionRid(RID.Any(rid))
+	Advanced(self).RemoveExceptionRid(RID.Any(rid))
 }
 
 /*
 Removes a collision exception so the shape does report collisions with the specified node.
 */
 func (self Instance) RemoveException(node [1]gdclass.CollisionObject2D) { //gd:ShapeCast2D.remove_exception
-	class(self).RemoveException(node)
+	Advanced(self).RemoveException(node)
 }
 
 /*
 Removes all collision exceptions for this shape.
 */
 func (self Instance) ClearExceptions() { //gd:ShapeCast2D.clear_exceptions
-	class(self).ClearExceptions()
+	Advanced(self).ClearExceptions()
 }
 
 /*
 Based on [param value], enables or disables the specified layer in the [member collision_mask], given a [param layer_number] between 1 and 32.
 */
 func (self Instance) SetCollisionMaskValue(layer_number int, value bool) { //gd:ShapeCast2D.set_collision_mask_value
-	class(self).SetCollisionMaskValue(int64(layer_number), value)
+	Advanced(self).SetCollisionMaskValue(int64(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member collision_mask] is enabled, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) GetCollisionMaskValue(layer_number int) bool { //gd:ShapeCast2D.get_collision_mask_value
-	return bool(class(self).GetCollisionMaskValue(int64(layer_number)))
+	return bool(Advanced(self).GetCollisionMaskValue(int64(layer_number)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

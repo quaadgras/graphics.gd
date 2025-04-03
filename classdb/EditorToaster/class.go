@@ -50,6 +50,7 @@ This object manages the functionality and display of toast notifications within 
 [b]Note:[/b] This class shouldn't be instantiated directly. Instead, access the singleton using [method EditorInterface.get_editor_toaster].
 */
 type Instance [1]gdclass.EditorToaster
+type Expanded [1]gdclass.EditorToaster
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -63,7 +64,14 @@ type Any interface {
 Pushes a toast notification to the editor for display.
 */
 func (self Instance) PushToast(message string) { //gd:EditorToaster.push_toast
-	class(self).PushToast(String.New(message), 0, String.New(""))
+	Advanced(self).PushToast(String.New(message), 0, String.New(""))
+}
+
+/*
+Pushes a toast notification to the editor for display.
+*/
+func (self Expanded) PushToast(message string, severity gdclass.EditorToasterSeverity, tooltip string) { //gd:EditorToaster.push_toast
+	Advanced(self).PushToast(String.New(message), severity, String.New(tooltip))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

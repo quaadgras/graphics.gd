@@ -80,7 +80,7 @@ func (Instance) _get_stream_sampling_rate(impl func(ptr unsafe.Pointer) Float.X)
 	}
 }
 func (self Instance) BeginResample() { //gd:AudioStreamPlaybackResampled.begin_resample
-	class(self).BeginResample()
+	Advanced(self).BeginResample()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

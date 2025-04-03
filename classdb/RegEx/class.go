@@ -91,6 +91,7 @@ for result in regex.search_all("One  Two \n\tThree"):
 [b]Tip:[/b] You can use [url=https://regexr.com/]Regexr[/url] to test regular expressions online.
 */
 type Instance [1]gdclass.RegEx
+type Expanded [1]gdclass.RegEx
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -105,21 +106,36 @@ Creates and compiles a new [RegEx] object. See also [method compile].
 */
 func CreateFromString(pattern string) [1]gdclass.RegEx { //gd:RegEx.create_from_string
 	self := Instance{}
-	return [1]gdclass.RegEx(class(self).CreateFromString(String.New(pattern), true))
+	return [1]gdclass.RegEx(Advanced(self).CreateFromString(String.New(pattern), true))
+}
+
+/*
+Creates and compiles a new [RegEx] object. See also [method compile].
+*/
+func CreateFromStringExpanded(pattern string, show_error bool) [1]gdclass.RegEx { //gd:RegEx.create_from_string
+	self := Instance{}
+	return [1]gdclass.RegEx(Advanced(self).CreateFromString(String.New(pattern), show_error))
 }
 
 /*
 This method resets the state of the object, as if it was freshly created. Namely, it unassigns the regular expression of this object.
 */
 func (self Instance) Clear() { //gd:RegEx.clear
-	class(self).Clear()
+	Advanced(self).Clear()
 }
 
 /*
 Compiles and assign the search pattern to use. Returns [constant OK] if the compilation is successful. If compilation fails, returns [constant FAILED] and when [param show_error] is [code]true[/code], details are printed to standard output.
 */
 func (self Instance) Compile(pattern string) error { //gd:RegEx.compile
-	return error(gd.ToError(class(self).Compile(String.New(pattern), true)))
+	return error(gd.ToError(Advanced(self).Compile(String.New(pattern), true)))
+}
+
+/*
+Compiles and assign the search pattern to use. Returns [constant OK] if the compilation is successful. If compilation fails, returns [constant FAILED] and when [param show_error] is [code]true[/code], details are printed to standard output.
+*/
+func (self Expanded) Compile(pattern string, show_error bool) error { //gd:RegEx.compile
+	return error(gd.ToError(Advanced(self).Compile(String.New(pattern), show_error)))
 }
 
 /*
@@ -127,7 +143,15 @@ Searches the text for the compiled pattern. Returns a [RegExMatch] container of 
 The region to search within can be specified with [param offset] and [param end]. This is useful when searching for another match in the same [param subject] by calling this method again after a previous success. Note that setting these parameters differs from passing over a shortened string. For example, the start anchor [code]^[/code] is not affected by [param offset], and the character before [param offset] will be checked for the word boundary [code]\b[/code].
 */
 func (self Instance) Search(subject string) [1]gdclass.RegExMatch { //gd:RegEx.search
-	return [1]gdclass.RegExMatch(class(self).Search(String.New(subject), int64(0), int64(-1)))
+	return [1]gdclass.RegExMatch(Advanced(self).Search(String.New(subject), int64(0), int64(-1)))
+}
+
+/*
+Searches the text for the compiled pattern. Returns a [RegExMatch] container of the first matching result if found, otherwise [code]null[/code].
+The region to search within can be specified with [param offset] and [param end]. This is useful when searching for another match in the same [param subject] by calling this method again after a previous success. Note that setting these parameters differs from passing over a shortened string. For example, the start anchor [code]^[/code] is not affected by [param offset], and the character before [param offset] will be checked for the word boundary [code]\b[/code].
+*/
+func (self Expanded) Search(subject string, offset int, end int) [1]gdclass.RegExMatch { //gd:RegEx.search
+	return [1]gdclass.RegExMatch(Advanced(self).Search(String.New(subject), int64(offset), int64(end)))
 }
 
 /*
@@ -135,7 +159,15 @@ Searches the text for the compiled pattern. Returns an array of [RegExMatch] con
 The region to search within can be specified with [param offset] and [param end]. This is useful when searching for another match in the same [param subject] by calling this method again after a previous success. Note that setting these parameters differs from passing over a shortened string. For example, the start anchor [code]^[/code] is not affected by [param offset], and the character before [param offset] will be checked for the word boundary [code]\b[/code].
 */
 func (self Instance) SearchAll(subject string) [][1]gdclass.RegExMatch { //gd:RegEx.search_all
-	return [][1]gdclass.RegExMatch(gd.ArrayAs[[][1]gdclass.RegExMatch](gd.InternalArray(class(self).SearchAll(String.New(subject), int64(0), int64(-1)))))
+	return [][1]gdclass.RegExMatch(gd.ArrayAs[[][1]gdclass.RegExMatch](gd.InternalArray(Advanced(self).SearchAll(String.New(subject), int64(0), int64(-1)))))
+}
+
+/*
+Searches the text for the compiled pattern. Returns an array of [RegExMatch] containers for each non-overlapping result. If no results were found, an empty array is returned instead.
+The region to search within can be specified with [param offset] and [param end]. This is useful when searching for another match in the same [param subject] by calling this method again after a previous success. Note that setting these parameters differs from passing over a shortened string. For example, the start anchor [code]^[/code] is not affected by [param offset], and the character before [param offset] will be checked for the word boundary [code]\b[/code].
+*/
+func (self Expanded) SearchAll(subject string, offset int, end int) [][1]gdclass.RegExMatch { //gd:RegEx.search_all
+	return [][1]gdclass.RegExMatch(gd.ArrayAs[[][1]gdclass.RegExMatch](gd.InternalArray(Advanced(self).SearchAll(String.New(subject), int64(offset), int64(end)))))
 }
 
 /*
@@ -143,35 +175,43 @@ Searches the text for the compiled pattern and replaces it with the specified st
 The region to search within can be specified with [param offset] and [param end]. This is useful when searching for another match in the same [param subject] by calling this method again after a previous success. Note that setting these parameters differs from passing over a shortened string. For example, the start anchor [code]^[/code] is not affected by [param offset], and the character before [param offset] will be checked for the word boundary [code]\b[/code].
 */
 func (self Instance) Sub(subject string, replacement string) string { //gd:RegEx.sub
-	return string(class(self).Sub(String.New(subject), String.New(replacement), false, int64(0), int64(-1)).String())
+	return string(Advanced(self).Sub(String.New(subject), String.New(replacement), false, int64(0), int64(-1)).String())
+}
+
+/*
+Searches the text for the compiled pattern and replaces it with the specified string. Escapes and backreferences such as [code]$1[/code] and [code]$name[/code] are expanded and resolved. By default, only the first instance is replaced, but it can be changed for all instances (global replacement).
+The region to search within can be specified with [param offset] and [param end]. This is useful when searching for another match in the same [param subject] by calling this method again after a previous success. Note that setting these parameters differs from passing over a shortened string. For example, the start anchor [code]^[/code] is not affected by [param offset], and the character before [param offset] will be checked for the word boundary [code]\b[/code].
+*/
+func (self Expanded) Sub(subject string, replacement string, all bool, offset int, end int) string { //gd:RegEx.sub
+	return string(Advanced(self).Sub(String.New(subject), String.New(replacement), all, int64(offset), int64(end)).String())
 }
 
 /*
 Returns whether this object has a valid search pattern assigned.
 */
 func (self Instance) IsValid() bool { //gd:RegEx.is_valid
-	return bool(class(self).IsValid())
+	return bool(Advanced(self).IsValid())
 }
 
 /*
 Returns the original search pattern that was compiled.
 */
 func (self Instance) GetPattern() string { //gd:RegEx.get_pattern
-	return string(class(self).GetPattern().String())
+	return string(Advanced(self).GetPattern().String())
 }
 
 /*
 Returns the number of capturing groups in compiled pattern.
 */
 func (self Instance) GetGroupCount() int { //gd:RegEx.get_group_count
-	return int(int(class(self).GetGroupCount()))
+	return int(int(Advanced(self).GetGroupCount()))
 }
 
 /*
 Returns an array of names of named capturing groups in the compiled pattern. They are ordered by appearance.
 */
 func (self Instance) GetNames() []string { //gd:RegEx.get_names
-	return []string(class(self).GetNames().Strings())
+	return []string(Advanced(self).GetNames().Strings())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

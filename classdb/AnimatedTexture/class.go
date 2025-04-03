@@ -64,28 +64,28 @@ Assigns a [Texture2D] to the given frame. Frame IDs start at 0, so the first fra
 You can define any number of textures up to [constant MAX_FRAMES], but keep in mind that only frames from 0 to [member frames] - 1 will be part of the animation.
 */
 func (self Instance) SetFrameTexture(frame_ int, texture [1]gdclass.Texture2D) { //gd:AnimatedTexture.set_frame_texture
-	class(self).SetFrameTexture(int64(frame_), texture)
+	Advanced(self).SetFrameTexture(int64(frame_), texture)
 }
 
 /*
 Returns the given frame's [Texture2D].
 */
 func (self Instance) GetFrameTexture(frame_ int) [1]gdclass.Texture2D { //gd:AnimatedTexture.get_frame_texture
-	return [1]gdclass.Texture2D(class(self).GetFrameTexture(int64(frame_)))
+	return [1]gdclass.Texture2D(Advanced(self).GetFrameTexture(int64(frame_)))
 }
 
 /*
 Sets the duration of any given [param frame]. The final duration is affected by the [member speed_scale]. If set to [code]0[/code], the frame is skipped during playback.
 */
 func (self Instance) SetFrameDuration(frame_ int, duration Float.X) { //gd:AnimatedTexture.set_frame_duration
-	class(self).SetFrameDuration(int64(frame_), float64(duration))
+	Advanced(self).SetFrameDuration(int64(frame_), float64(duration))
 }
 
 /*
 Returns the given [param frame]'s duration, in seconds.
 */
 func (self Instance) GetFrameDuration(frame_ int) Float.X { //gd:AnimatedTexture.get_frame_duration
-	return Float.X(Float.X(class(self).GetFrameDuration(int64(frame_))))
+	return Float.X(Float.X(Advanced(self).GetFrameDuration(int64(frame_))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

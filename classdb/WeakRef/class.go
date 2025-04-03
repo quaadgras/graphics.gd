@@ -56,7 +56,7 @@ type Any interface {
 Returns the [Object] this weakref is referring to. Returns [code]null[/code] if that object no longer exists.
 */
 func (self Instance) GetRef() any { //gd:WeakRef.get_ref
-	return any(class(self).GetRef().Interface())
+	return any(Advanced(self).GetRef().Interface())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

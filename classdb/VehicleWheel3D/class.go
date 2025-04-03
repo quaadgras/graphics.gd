@@ -60,7 +60,7 @@ type Any interface {
 Returns [code]true[/code] if this wheel is in contact with a surface.
 */
 func (self Instance) IsInContact() bool { //gd:VehicleWheel3D.is_in_contact
-	return bool(class(self).IsInContact())
+	return bool(Advanced(self).IsInContact())
 }
 
 /*
@@ -68,35 +68,35 @@ Returns the contacting body node if valid in the tree, as [Node3D]. At the momen
 Returns [code]null[/code] if the wheel is not in contact with a surface, or the contact body is not a [PhysicsBody3D].
 */
 func (self Instance) GetContactBody() [1]gdclass.Node3D { //gd:VehicleWheel3D.get_contact_body
-	return [1]gdclass.Node3D(class(self).GetContactBody())
+	return [1]gdclass.Node3D(Advanced(self).GetContactBody())
 }
 
 /*
 Returns the point of the suspension's collision in world space if the wheel is in contact. If the wheel isn't in contact with anything, returns the maximum point of the wheel's ray cast in world space, which is defined by [code]wheel_rest_length + wheel_radius[/code].
 */
 func (self Instance) GetContactPoint() Vector3.XYZ { //gd:VehicleWheel3D.get_contact_point
-	return Vector3.XYZ(class(self).GetContactPoint())
+	return Vector3.XYZ(Advanced(self).GetContactPoint())
 }
 
 /*
 Returns the normal of the suspension's collision in world space if the wheel is in contact. If the wheel isn't in contact with anything, returns a vector pointing directly along the suspension axis toward the vehicle in world space.
 */
 func (self Instance) GetContactNormal() Vector3.XYZ { //gd:VehicleWheel3D.get_contact_normal
-	return Vector3.XYZ(class(self).GetContactNormal())
+	return Vector3.XYZ(Advanced(self).GetContactNormal())
 }
 
 /*
 Returns a value between 0.0 and 1.0 that indicates whether this wheel is skidding. 0.0 is skidding (the wheel has lost grip, e.g. icy terrain), 1.0 means not skidding (the wheel has full grip, e.g. dry asphalt road).
 */
 func (self Instance) GetSkidinfo() Float.X { //gd:VehicleWheel3D.get_skidinfo
-	return Float.X(Float.X(class(self).GetSkidinfo()))
+	return Float.X(Float.X(Advanced(self).GetSkidinfo()))
 }
 
 /*
 Returns the rotational speed of the wheel in revolutions per minute.
 */
 func (self Instance) GetRpm() Float.X { //gd:VehicleWheel3D.get_rpm
-	return Float.X(Float.X(class(self).GetRpm()))
+	return Float.X(Float.X(Advanced(self).GetRpm()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

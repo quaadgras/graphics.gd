@@ -2494,10 +2494,10 @@ func (Instance) _get_process_info(impl func(ptr unsafe.Pointer, process_info gdc
 	}
 }
 func (self Instance) BodyTestMotionIsExcludingBody(body RID.Body3D) bool { //gd:PhysicsServer3DExtension.body_test_motion_is_excluding_body
-	return bool(class(self).BodyTestMotionIsExcludingBody(RID.Any(body)))
+	return bool(Advanced(self).BodyTestMotionIsExcludingBody(RID.Any(body)))
 }
 func (self Instance) BodyTestMotionIsExcludingObject(obj int) bool { //gd:PhysicsServer3DExtension.body_test_motion_is_excluding_object
-	return bool(class(self).BodyTestMotionIsExcludingObject(int64(obj)))
+	return bool(Advanced(self).BodyTestMotionIsExcludingObject(int64(obj)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

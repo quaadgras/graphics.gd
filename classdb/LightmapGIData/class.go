@@ -58,28 +58,28 @@ type Any interface {
 Adds an object that is considered baked within this [LightmapGIData].
 */
 func (self Instance) AddUser(path string, uv_scale Rect2.PositionSize, slice_index int, sub_instance int) { //gd:LightmapGIData.add_user
-	class(self).AddUser(Path.ToNode(String.New(path)), Rect2.PositionSize(uv_scale), int64(slice_index), int64(sub_instance))
+	Advanced(self).AddUser(Path.ToNode(String.New(path)), Rect2.PositionSize(uv_scale), int64(slice_index), int64(sub_instance))
 }
 
 /*
 Returns the number of objects that are considered baked within this [LightmapGIData].
 */
 func (self Instance) GetUserCount() int { //gd:LightmapGIData.get_user_count
-	return int(int(class(self).GetUserCount()))
+	return int(int(Advanced(self).GetUserCount()))
 }
 
 /*
 Returns the [NodePath] of the baked object at index [param user_idx].
 */
 func (self Instance) GetUserPath(user_idx int) string { //gd:LightmapGIData.get_user_path
-	return string(class(self).GetUserPath(int64(user_idx)).String())
+	return string(Advanced(self).GetUserPath(int64(user_idx)).String())
 }
 
 /*
 Clear all objects that are considered baked within this [LightmapGIData].
 */
 func (self Instance) ClearUsers() { //gd:LightmapGIData.clear_users
-	class(self).ClearUsers()
+	Advanced(self).ClearUsers()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

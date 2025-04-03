@@ -60,14 +60,14 @@ type Any interface {
 Sets the margin to [param size] pixels for all sides.
 */
 func (self Instance) SetTextureMarginAll(size Float.X) { //gd:StyleBoxTexture.set_texture_margin_all
-	class(self).SetTextureMarginAll(float64(size))
+	Advanced(self).SetTextureMarginAll(float64(size))
 }
 
 /*
 Sets the expand margin to [param size] pixels for all sides.
 */
 func (self Instance) SetExpandMarginAll(size Float.X) { //gd:StyleBoxTexture.set_expand_margin_all
-	class(self).SetExpandMarginAll(float64(size))
+	Advanced(self).SetExpandMarginAll(float64(size))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

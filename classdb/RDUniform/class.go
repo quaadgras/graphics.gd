@@ -56,21 +56,21 @@ type Any interface {
 Binds the given id to the uniform. The data associated with the id is then used when the uniform is passed to a shader.
 */
 func (self Instance) AddId(id RID.Any) { //gd:RDUniform.add_id
-	class(self).AddId(RID.Any(id))
+	Advanced(self).AddId(RID.Any(id))
 }
 
 /*
 Unbinds all ids currently bound to the uniform.
 */
 func (self Instance) ClearIds() { //gd:RDUniform.clear_ids
-	class(self).ClearIds()
+	Advanced(self).ClearIds()
 }
 
 /*
 Returns an array of all ids currently bound to the uniform.
 */
 func (self Instance) GetIds() [][]RID.Any { //gd:RDUniform.get_ids
-	return [][]RID.Any(gd.ArrayAs[[][]RID.Any](gd.InternalArray(class(self).GetIds())))
+	return [][]RID.Any(gd.ArrayAs[[][]RID.Any](gd.InternalArray(Advanced(self).GetIds())))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

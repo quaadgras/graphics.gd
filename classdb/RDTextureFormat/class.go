@@ -56,14 +56,14 @@ type Any interface {
 Adds [param format] as a valid format for the corresponding [RDTextureView]'s [member RDTextureView.format_override] property. If any format is added as shareable, then the main [member format] must also be added.
 */
 func (self Instance) AddShareableFormat(format gdclass.RenderingDeviceDataFormat) { //gd:RDTextureFormat.add_shareable_format
-	class(self).AddShareableFormat(format)
+	Advanced(self).AddShareableFormat(format)
 }
 
 /*
 Removes [param format] from the list of valid formats that the corresponding [RDTextureView]'s [member RDTextureView.format_override] property can be set to.
 */
 func (self Instance) RemoveShareableFormat(format gdclass.RenderingDeviceDataFormat) { //gd:RDTextureFormat.remove_shareable_format
-	class(self).RemoveShareableFormat(format)
+	Advanced(self).RemoveShareableFormat(format)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -89,42 +89,42 @@ type Any interface {
 Enables or disables auto-advance for the given [param input] index. If enabled, state changes to the next input after playing the animation once. If enabled for the last input state, it loops to the first.
 */
 func (self Instance) SetInputAsAutoAdvance(input int, enable bool) { //gd:AnimationNodeTransition.set_input_as_auto_advance
-	class(self).SetInputAsAutoAdvance(int64(input), enable)
+	Advanced(self).SetInputAsAutoAdvance(int64(input), enable)
 }
 
 /*
 Returns [code]true[/code] if auto-advance is enabled for the given [param input] index.
 */
 func (self Instance) IsInputSetAsAutoAdvance(input int) bool { //gd:AnimationNodeTransition.is_input_set_as_auto_advance
-	return bool(class(self).IsInputSetAsAutoAdvance(int64(input)))
+	return bool(Advanced(self).IsInputSetAsAutoAdvance(int64(input)))
 }
 
 /*
 If [code]true[/code], breaks the loop at the end of the loop cycle for transition, even if the animation is looping.
 */
 func (self Instance) SetInputBreakLoopAtEnd(input int, enable bool) { //gd:AnimationNodeTransition.set_input_break_loop_at_end
-	class(self).SetInputBreakLoopAtEnd(int64(input), enable)
+	Advanced(self).SetInputBreakLoopAtEnd(int64(input), enable)
 }
 
 /*
 Returns whether the animation breaks the loop at the end of the loop cycle for transition.
 */
 func (self Instance) IsInputLoopBrokenAtEnd(input int) bool { //gd:AnimationNodeTransition.is_input_loop_broken_at_end
-	return bool(class(self).IsInputLoopBrokenAtEnd(int64(input)))
+	return bool(Advanced(self).IsInputLoopBrokenAtEnd(int64(input)))
 }
 
 /*
 If [code]true[/code], the destination animation is restarted when the animation transitions.
 */
 func (self Instance) SetInputReset(input int, enable bool) { //gd:AnimationNodeTransition.set_input_reset
-	class(self).SetInputReset(int64(input), enable)
+	Advanced(self).SetInputReset(int64(input), enable)
 }
 
 /*
 Returns whether the animation restarts when the animation transitions from the other animation.
 */
 func (self Instance) IsInputReset(input int) bool { //gd:AnimationNodeTransition.is_input_reset
-	return bool(class(self).IsInputReset(int64(input)))
+	return bool(Advanced(self).IsInputReset(int64(input)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

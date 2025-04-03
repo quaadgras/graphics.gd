@@ -61,21 +61,21 @@ type Any interface {
 Returns the name of this interface ([code]"OpenXR"[/code], [code]"OpenVR"[/code], [code]"OpenHMD"[/code], [code]"ARKit"[/code], etc.).
 */
 func (self Instance) GetName() string { //gd:XRInterface.get_name
-	return string(class(self).GetName().String())
+	return string(Advanced(self).GetName().String())
 }
 
 /*
 Returns a combination of [enum Capabilities] flags providing information about the capabilities of this interface.
 */
 func (self Instance) GetCapabilities() int { //gd:XRInterface.get_capabilities
-	return int(int(class(self).GetCapabilities()))
+	return int(int(Advanced(self).GetCapabilities()))
 }
 
 /*
 Returns [code]true[/code] if this interface has been initialized.
 */
 func (self Instance) IsInitialized() bool { //gd:XRInterface.is_initialized
-	return bool(class(self).IsInitialized())
+	return bool(Advanced(self).IsInitialized())
 }
 
 /*
@@ -86,14 +86,14 @@ If you do this for a platform that handles its own output (such as OpenVR) Godot
 While currently not used, you can activate additional interfaces. You may wish to do this if you want to track controllers from other platforms. However, at this point in time only one interface can render to an HMD.
 */
 func (self Instance) Initialize() bool { //gd:XRInterface.initialize
-	return bool(class(self).Initialize())
+	return bool(Advanced(self).Initialize())
 }
 
 /*
 Turns the interface off.
 */
 func (self Instance) Uninitialize() { //gd:XRInterface.uninitialize
-	class(self).Uninitialize()
+	Advanced(self).Uninitialize()
 }
 
 /*
@@ -101,28 +101,28 @@ Returns a [Dictionary] with extra system info. Interfaces are expected to return
 [b]Note:[/b]This information may only be available after [method initialize] was successfully called.
 */
 func (self Instance) GetSystemInfo() map[string]interface{} { //gd:XRInterface.get_system_info
-	return map[string]interface{}(gd.DictionaryAs[map[string]interface{}](class(self).GetSystemInfo()))
+	return map[string]interface{}(gd.DictionaryAs[map[string]interface{}](Advanced(self).GetSystemInfo()))
 }
 
 /*
 If supported, returns the status of our tracking. This will allow you to provide feedback to the user whether there are issues with positional tracking.
 */
 func (self Instance) GetTrackingStatus() gdclass.XRInterfaceTrackingStatus { //gd:XRInterface.get_tracking_status
-	return gdclass.XRInterfaceTrackingStatus(class(self).GetTrackingStatus())
+	return gdclass.XRInterfaceTrackingStatus(Advanced(self).GetTrackingStatus())
 }
 
 /*
 Returns the resolution at which we should render our intermediate results before things like lens distortion are applied by the VR platform.
 */
 func (self Instance) GetRenderTargetSize() Vector2.XY { //gd:XRInterface.get_render_target_size
-	return Vector2.XY(class(self).GetRenderTargetSize())
+	return Vector2.XY(Advanced(self).GetRenderTargetSize())
 }
 
 /*
 Returns the number of views that need to be rendered for this device. 1 for Monoscopic, 2 for Stereoscopic.
 */
 func (self Instance) GetViewCount() int { //gd:XRInterface.get_view_count
-	return int(int(class(self).GetViewCount()))
+	return int(int(Advanced(self).GetViewCount()))
 }
 
 /*
@@ -135,42 +135,42 @@ Triggers a haptic pulse on a device associated with this interface.
 [param delay_sec] is a delay in seconds before the pulse is given.
 */
 func (self Instance) TriggerHapticPulse(action_name string, tracker_name string, frequency Float.X, amplitude Float.X, duration_sec Float.X, delay_sec Float.X) { //gd:XRInterface.trigger_haptic_pulse
-	class(self).TriggerHapticPulse(String.New(action_name), String.Name(String.New(tracker_name)), float64(frequency), float64(amplitude), float64(duration_sec), float64(delay_sec))
+	Advanced(self).TriggerHapticPulse(String.New(action_name), String.Name(String.New(tracker_name)), float64(frequency), float64(amplitude), float64(duration_sec), float64(delay_sec))
 }
 
 /*
 Call this to find out if a given play area mode is supported by this interface.
 */
 func (self Instance) SupportsPlayAreaMode(mode gdclass.XRInterfacePlayAreaMode) bool { //gd:XRInterface.supports_play_area_mode
-	return bool(class(self).SupportsPlayAreaMode(mode))
+	return bool(Advanced(self).SupportsPlayAreaMode(mode))
 }
 
 /*
 Returns an array of vectors that represent the physical play area mapped to the virtual space around the [XROrigin3D] point. The points form a convex polygon that can be used to react to or visualize the play area. This returns an empty array if this feature is not supported or if the information is not yet available.
 */
 func (self Instance) GetPlayArea() []Vector3.XYZ { //gd:XRInterface.get_play_area
-	return []Vector3.XYZ(slices.Collect(class(self).GetPlayArea().Values()))
+	return []Vector3.XYZ(slices.Collect(Advanced(self).GetPlayArea().Values()))
 }
 
 /*
 If this is an AR interface that requires displaying a camera feed as the background, this method returns the feed ID in the [CameraServer] for this interface.
 */
 func (self Instance) GetCameraFeedId() int { //gd:XRInterface.get_camera_feed_id
-	return int(int(class(self).GetCameraFeedId()))
+	return int(int(Advanced(self).GetCameraFeedId()))
 }
 
 /*
 Returns [code]true[/code] if this interface supports passthrough.
 */
 func (self Instance) IsPassthroughSupported() bool { //gd:XRInterface.is_passthrough_supported
-	return bool(class(self).IsPassthroughSupported())
+	return bool(Advanced(self).IsPassthroughSupported())
 }
 
 /*
 Returns [code]true[/code] if passthrough is enabled.
 */
 func (self Instance) IsPassthroughEnabled() bool { //gd:XRInterface.is_passthrough_enabled
-	return bool(class(self).IsPassthroughEnabled())
+	return bool(Advanced(self).IsPassthroughEnabled())
 }
 
 /*
@@ -178,14 +178,14 @@ Starts passthrough, will return [code]false[/code] if passthrough couldn't be st
 [b]Note:[/b] The viewport used for XR must have a transparent background, otherwise passthrough may not properly render.
 */
 func (self Instance) StartPassthrough() bool { //gd:XRInterface.start_passthrough
-	return bool(class(self).StartPassthrough())
+	return bool(Advanced(self).StartPassthrough())
 }
 
 /*
 Stops passthrough.
 */
 func (self Instance) StopPassthrough() { //gd:XRInterface.stop_passthrough
-	class(self).StopPassthrough()
+	Advanced(self).StopPassthrough()
 }
 
 /*
@@ -194,21 +194,21 @@ Returns the transform for a view/eye.
 [param cam_transform] is the transform that maps device coordinates to scene coordinates, typically the [member Node3D.global_transform] of the current XROrigin3D.
 */
 func (self Instance) GetTransformForView(view int, cam_transform Transform3D.BasisOrigin) Transform3D.BasisOrigin { //gd:XRInterface.get_transform_for_view
-	return Transform3D.BasisOrigin(class(self).GetTransformForView(int64(view), Transform3D.BasisOrigin(cam_transform)))
+	return Transform3D.BasisOrigin(Advanced(self).GetTransformForView(int64(view), Transform3D.BasisOrigin(cam_transform)))
 }
 
 /*
 Returns the projection matrix for a view/eye.
 */
 func (self Instance) GetProjectionForView(view int, aspect Float.X, near Float.X, far Float.X) Projection.XYZW { //gd:XRInterface.get_projection_for_view
-	return Projection.XYZW(class(self).GetProjectionForView(int64(view), float64(aspect), float64(near), float64(far)))
+	return Projection.XYZW(Advanced(self).GetProjectionForView(int64(view), float64(aspect), float64(near), float64(far)))
 }
 
 /*
 Returns the an array of supported environment blend modes, see [enum XRInterface.EnvironmentBlendMode].
 */
 func (self Instance) GetSupportedEnvironmentBlendModes() []any { //gd:XRInterface.get_supported_environment_blend_modes
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetSupportedEnvironmentBlendModes())))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetSupportedEnvironmentBlendModes())))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

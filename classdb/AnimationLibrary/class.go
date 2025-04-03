@@ -57,49 +57,49 @@ type Any interface {
 Adds the [param animation] to the library, accessible by the key [param name].
 */
 func (self Instance) AddAnimation(name string, animation [1]gdclass.Animation) error { //gd:AnimationLibrary.add_animation
-	return error(gd.ToError(class(self).AddAnimation(String.Name(String.New(name)), animation)))
+	return error(gd.ToError(Advanced(self).AddAnimation(String.Name(String.New(name)), animation)))
 }
 
 /*
 Removes the [Animation] with the key [param name].
 */
 func (self Instance) RemoveAnimation(name string) { //gd:AnimationLibrary.remove_animation
-	class(self).RemoveAnimation(String.Name(String.New(name)))
+	Advanced(self).RemoveAnimation(String.Name(String.New(name)))
 }
 
 /*
 Changes the key of the [Animation] associated with the key [param name] to [param newname].
 */
 func (self Instance) RenameAnimation(name string, newname string) { //gd:AnimationLibrary.rename_animation
-	class(self).RenameAnimation(String.Name(String.New(name)), String.Name(String.New(newname)))
+	Advanced(self).RenameAnimation(String.Name(String.New(name)), String.Name(String.New(newname)))
 }
 
 /*
 Returns [code]true[/code] if the library stores an [Animation] with [param name] as the key.
 */
 func (self Instance) HasAnimation(name string) bool { //gd:AnimationLibrary.has_animation
-	return bool(class(self).HasAnimation(String.Name(String.New(name))))
+	return bool(Advanced(self).HasAnimation(String.Name(String.New(name))))
 }
 
 /*
 Returns the [Animation] with the key [param name]. If the animation does not exist, [code]null[/code] is returned and an error is logged.
 */
 func (self Instance) GetAnimation(name string) [1]gdclass.Animation { //gd:AnimationLibrary.get_animation
-	return [1]gdclass.Animation(class(self).GetAnimation(String.Name(String.New(name))))
+	return [1]gdclass.Animation(Advanced(self).GetAnimation(String.Name(String.New(name))))
 }
 
 /*
 Returns the keys for the [Animation]s stored in the library.
 */
 func (self Instance) GetAnimationList() []string { //gd:AnimationLibrary.get_animation_list
-	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetAnimationList())))
+	return []string(gd.ArrayAs[[]string](gd.InternalArray(Advanced(self).GetAnimationList())))
 }
 
 /*
 Returns the key count for the [Animation]s stored in the library.
 */
 func (self Instance) GetAnimationListSize() int { //gd:AnimationLibrary.get_animation_list_size
-	return int(int(class(self).GetAnimationListSize()))
+	return int(int(Advanced(self).GetAnimationListSize()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

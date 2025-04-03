@@ -52,6 +52,7 @@ The cost of traveling distances inside this region can be controlled with the [m
 [b]Note:[/b] This node caches changes to its properties, so if you make changes to the underlying region [RID] in [NavigationServer3D], they will not be reflected in this node's properties.
 */
 type Instance [1]gdclass.NavigationRegion3D
+type Expanded [1]gdclass.NavigationRegion3D
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -65,63 +66,70 @@ type Any interface {
 Returns the [RID] of this region on the [NavigationServer3D]. Combined with [method NavigationServer3D.map_get_closest_point_owner] can be used to identify the [NavigationRegion3D] closest to a point on the merged navigation map.
 */
 func (self Instance) GetRid() RID.NavigationRegion3D { //gd:NavigationRegion3D.get_rid
-	return RID.NavigationRegion3D(class(self).GetRid())
+	return RID.NavigationRegion3D(Advanced(self).GetRid())
 }
 
 /*
 Sets the [RID] of the navigation map this region should use. By default the region will automatically join the [World3D] default navigation map so this function is only required to override the default map.
 */
 func (self Instance) SetNavigationMap(navigation_map RID.NavigationMap3D) { //gd:NavigationRegion3D.set_navigation_map
-	class(self).SetNavigationMap(RID.Any(navigation_map))
+	Advanced(self).SetNavigationMap(RID.Any(navigation_map))
 }
 
 /*
 Returns the current navigation map [RID] used by this region.
 */
 func (self Instance) GetNavigationMap() RID.NavigationMap3D { //gd:NavigationRegion3D.get_navigation_map
-	return RID.NavigationMap3D(class(self).GetNavigationMap())
+	return RID.NavigationMap3D(Advanced(self).GetNavigationMap())
 }
 
 /*
 Based on [param value], enables or disables the specified layer in the [member navigation_layers] bitmask, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) SetNavigationLayerValue(layer_number int, value bool) { //gd:NavigationRegion3D.set_navigation_layer_value
-	class(self).SetNavigationLayerValue(int64(layer_number), value)
+	Advanced(self).SetNavigationLayerValue(int64(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member navigation_layers] bitmask is enabled, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) GetNavigationLayerValue(layer_number int) bool { //gd:NavigationRegion3D.get_navigation_layer_value
-	return bool(class(self).GetNavigationLayerValue(int64(layer_number)))
+	return bool(Advanced(self).GetNavigationLayerValue(int64(layer_number)))
 }
 
 /*
 Returns the [RID] of this region on the [NavigationServer3D].
 */
 func (self Instance) GetRegionRid() RID.NavigationRegion3D { //gd:NavigationRegion3D.get_region_rid
-	return RID.NavigationRegion3D(class(self).GetRegionRid())
+	return RID.NavigationRegion3D(Advanced(self).GetRegionRid())
 }
 
 /*
 Bakes the [NavigationMesh]. If [param on_thread] is set to [code]true[/code] (default), the baking is done on a separate thread. Baking on separate thread is useful because navigation baking is not a cheap operation. When it is completed, it automatically sets the new [NavigationMesh]. Please note that baking on separate thread may be very slow if geometry is parsed from meshes as async access to each mesh involves heavy synchronization. Also, please note that baking on a separate thread is automatically disabled on operating systems that cannot use threads (such as Web with threads disabled).
 */
 func (self Instance) BakeNavigationMesh() { //gd:NavigationRegion3D.bake_navigation_mesh
-	class(self).BakeNavigationMesh(true)
+	Advanced(self).BakeNavigationMesh(true)
+}
+
+/*
+Bakes the [NavigationMesh]. If [param on_thread] is set to [code]true[/code] (default), the baking is done on a separate thread. Baking on separate thread is useful because navigation baking is not a cheap operation. When it is completed, it automatically sets the new [NavigationMesh]. Please note that baking on separate thread may be very slow if geometry is parsed from meshes as async access to each mesh involves heavy synchronization. Also, please note that baking on a separate thread is automatically disabled on operating systems that cannot use threads (such as Web with threads disabled).
+*/
+func (self Expanded) BakeNavigationMesh(on_thread bool) { //gd:NavigationRegion3D.bake_navigation_mesh
+	Advanced(self).BakeNavigationMesh(on_thread)
 }
 
 /*
 Returns [code]true[/code] when the [NavigationMesh] is being baked on a background thread.
 */
 func (self Instance) IsBaking() bool { //gd:NavigationRegion3D.is_baking
-	return bool(class(self).IsBaking())
+	return bool(Advanced(self).IsBaking())
 }
 
 /*
 Returns the axis-aligned bounding box for the region's transformed navigation mesh.
 */
 func (self Instance) GetBounds() AABB.PositionSize { //gd:NavigationRegion3D.get_bounds
-	return AABB.PositionSize(class(self).GetBounds())
+	return AABB.PositionSize(Advanced(self).GetBounds())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

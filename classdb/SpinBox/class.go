@@ -81,7 +81,7 @@ type Any interface {
 Applies the current value of this [SpinBox].
 */
 func (self Instance) Apply() { //gd:SpinBox.apply
-	class(self).Apply()
+	Advanced(self).Apply()
 }
 
 /*
@@ -89,7 +89,7 @@ Returns the [LineEdit] instance from this [SpinBox]. You can use it to access pr
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
 func (self Instance) GetLineEdit() [1]gdclass.LineEdit { //gd:SpinBox.get_line_edit
-	return [1]gdclass.LineEdit(class(self).GetLineEdit())
+	return [1]gdclass.LineEdit(Advanced(self).GetLineEdit())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

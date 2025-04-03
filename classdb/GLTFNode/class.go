@@ -48,6 +48,7 @@ Represents a glTF node. glTF nodes may have names, transforms, children (other g
 glTF nodes generally exist inside of [GLTFState] which represents all data of a glTF file. Most of GLTFNode's properties are indices of other data in the glTF file. You can extend a glTF node with additional properties by using [method get_additional_data] and [method set_additional_data].
 */
 type Instance [1]gdclass.GLTFNode
+type Expanded [1]gdclass.GLTFNode
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -61,7 +62,7 @@ type Any interface {
 Appends the given child node index to the [member children] array.
 */
 func (self Instance) AppendChildIndex(child_index int) { //gd:GLTFNode.append_child_index
-	class(self).AppendChildIndex(int64(child_index))
+	Advanced(self).AppendChildIndex(int64(child_index))
 }
 
 /*
@@ -69,7 +70,7 @@ Gets additional arbitrary data in this [GLTFNode] instance. This can be used to 
 The argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the glTF file), and the return value can be anything you set. If nothing was set, the return value is [code]null[/code].
 */
 func (self Instance) GetAdditionalData(extension_name string) any { //gd:GLTFNode.get_additional_data
-	return any(class(self).GetAdditionalData(String.Name(String.New(extension_name))).Interface())
+	return any(Advanced(self).GetAdditionalData(String.Name(String.New(extension_name))).Interface())
 }
 
 /*
@@ -77,7 +78,7 @@ Sets additional arbitrary data in this [GLTFNode] instance. This can be used to 
 The first argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the glTF file), and the second argument can be anything you want.
 */
 func (self Instance) SetAdditionalData(extension_name string, additional_data any) { //gd:GLTFNode.set_additional_data
-	class(self).SetAdditionalData(String.Name(String.New(extension_name)), variant.New(additional_data))
+	Advanced(self).SetAdditionalData(String.Name(String.New(extension_name)), variant.New(additional_data))
 }
 
 /*
@@ -85,7 +86,15 @@ Returns the [NodePath] that this GLTF node will have in the Godot scene tree aft
 If [param handle_skeletons] is [code]true[/code], paths to skeleton bone glTF nodes will be resolved properly. For example, a path that would be [code]^"A/B/C/Bone1/Bone2/Bone3"[/code] if [code]false[/code] will become [code]^"A/B/C/Skeleton3D:Bone3"[/code].
 */
 func (self Instance) GetSceneNodePath(gltf_state [1]gdclass.GLTFState) string { //gd:GLTFNode.get_scene_node_path
-	return string(class(self).GetSceneNodePath(gltf_state, true).String())
+	return string(Advanced(self).GetSceneNodePath(gltf_state, true).String())
+}
+
+/*
+Returns the [NodePath] that this GLTF node will have in the Godot scene tree after being imported. This is useful when importing glTF object model pointers with [GLTFObjectModelProperty], for handling extensions such as [code]KHR_animation_pointer[/code] or [code]KHR_interactivity[/code].
+If [param handle_skeletons] is [code]true[/code], paths to skeleton bone glTF nodes will be resolved properly. For example, a path that would be [code]^"A/B/C/Bone1/Bone2/Bone3"[/code] if [code]false[/code] will become [code]^"A/B/C/Skeleton3D:Bone3"[/code].
+*/
+func (self Expanded) GetSceneNodePath(gltf_state [1]gdclass.GLTFState, handle_skeletons bool) string { //gd:GLTFNode.get_scene_node_path
+	return string(Advanced(self).GetSceneNodePath(gltf_state, handle_skeletons).String())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

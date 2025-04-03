@@ -55,7 +55,7 @@ type Any interface {
 Returns the BPM of the playlist, which can vary depending on the clip being played.
 */
 func (self Instance) GetBpm() Float.X { //gd:AudioStreamPlaylist.get_bpm
-	return Float.X(Float.X(class(self).GetBpm()))
+	return Float.X(Float.X(Advanced(self).GetBpm()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

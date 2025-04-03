@@ -58,56 +58,56 @@ type Any interface {
 Sets the amount of additional rotation that is to be applied after executing the modification. This allows for offsetting the results by the inputted rotation amount.
 */
 func (self Instance) SetAdditionalRotation(rotation Float.X) { //gd:SkeletonModification2DLookAt.set_additional_rotation
-	class(self).SetAdditionalRotation(float64(rotation))
+	Advanced(self).SetAdditionalRotation(float64(rotation))
 }
 
 /*
 Returns the amount of additional rotation that is applied after the LookAt modification executes.
 */
 func (self Instance) GetAdditionalRotation() Float.X { //gd:SkeletonModification2DLookAt.get_additional_rotation
-	return Float.X(Float.X(class(self).GetAdditionalRotation()))
+	return Float.X(Float.X(Advanced(self).GetAdditionalRotation()))
 }
 
 /*
 Sets whether this modification will use constraints or not. When [code]true[/code], constraints will be applied when solving the LookAt modification.
 */
 func (self Instance) SetEnableConstraint(enable_constraint bool) { //gd:SkeletonModification2DLookAt.set_enable_constraint
-	class(self).SetEnableConstraint(enable_constraint)
+	Advanced(self).SetEnableConstraint(enable_constraint)
 }
 
 /*
 Returns [code]true[/code] if the LookAt modification is using constraints.
 */
 func (self Instance) GetEnableConstraint() bool { //gd:SkeletonModification2DLookAt.get_enable_constraint
-	return bool(class(self).GetEnableConstraint())
+	return bool(Advanced(self).GetEnableConstraint())
 }
 
 /*
 Sets the constraint's minimum allowed angle.
 */
 func (self Instance) SetConstraintAngleMin(angle_min Float.X) { //gd:SkeletonModification2DLookAt.set_constraint_angle_min
-	class(self).SetConstraintAngleMin(float64(angle_min))
+	Advanced(self).SetConstraintAngleMin(float64(angle_min))
 }
 
 /*
 Returns the constraint's minimum allowed angle.
 */
 func (self Instance) GetConstraintAngleMin() Float.X { //gd:SkeletonModification2DLookAt.get_constraint_angle_min
-	return Float.X(Float.X(class(self).GetConstraintAngleMin()))
+	return Float.X(Float.X(Advanced(self).GetConstraintAngleMin()))
 }
 
 /*
 Sets the constraint's maximum allowed angle.
 */
 func (self Instance) SetConstraintAngleMax(angle_max Float.X) { //gd:SkeletonModification2DLookAt.set_constraint_angle_max
-	class(self).SetConstraintAngleMax(float64(angle_max))
+	Advanced(self).SetConstraintAngleMax(float64(angle_max))
 }
 
 /*
 Returns the constraint's maximum allowed angle.
 */
 func (self Instance) GetConstraintAngleMax() Float.X { //gd:SkeletonModification2DLookAt.get_constraint_angle_max
-	return Float.X(Float.X(class(self).GetConstraintAngleMax()))
+	return Float.X(Float.X(Advanced(self).GetConstraintAngleMax()))
 }
 
 /*
@@ -115,14 +115,14 @@ When [code]true[/code], the modification will use an inverted joint constraint.
 An inverted joint constraint only constraints the [Bone2D] to the angles [i]outside of[/i] the inputted minimum and maximum angles. For this reason, it is referred to as an inverted joint constraint, as it constraints the joint to the outside of the inputted values.
 */
 func (self Instance) SetConstraintAngleInvert(invert bool) { //gd:SkeletonModification2DLookAt.set_constraint_angle_invert
-	class(self).SetConstraintAngleInvert(invert)
+	Advanced(self).SetConstraintAngleInvert(invert)
 }
 
 /*
 Returns whether the constraints to this modification are inverted or not.
 */
 func (self Instance) GetConstraintAngleInvert() bool { //gd:SkeletonModification2DLookAt.get_constraint_angle_invert
-	return bool(class(self).GetConstraintAngleInvert())
+	return bool(Advanced(self).GetConstraintAngleInvert())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

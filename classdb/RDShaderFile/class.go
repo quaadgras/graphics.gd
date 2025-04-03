@@ -45,6 +45,7 @@ Compiled shader file in SPIR-V form.
 See also [RDShaderSource]. [RDShaderFile] is only meant to be used with the [RenderingDevice] API. It should not be confused with Godot's own [Shader] resource, which is what Godot's various nodes use for high-level shader programming.
 */
 type Instance [1]gdclass.RDShaderFile
+type Expanded [1]gdclass.RDShaderFile
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -58,21 +59,35 @@ type Any interface {
 Sets the SPIR-V [param bytecode] that will be compiled for the specified [param version].
 */
 func (self Instance) SetBytecode(bytecode [1]gdclass.RDShaderSPIRV) { //gd:RDShaderFile.set_bytecode
-	class(self).SetBytecode(bytecode, String.Name(String.New("")))
+	Advanced(self).SetBytecode(bytecode, String.Name(String.New("")))
+}
+
+/*
+Sets the SPIR-V [param bytecode] that will be compiled for the specified [param version].
+*/
+func (self Expanded) SetBytecode(bytecode [1]gdclass.RDShaderSPIRV, version string) { //gd:RDShaderFile.set_bytecode
+	Advanced(self).SetBytecode(bytecode, String.Name(String.New(version)))
 }
 
 /*
 Returns the SPIR-V intermediate representation for the specified shader [param version].
 */
 func (self Instance) GetSpirv() [1]gdclass.RDShaderSPIRV { //gd:RDShaderFile.get_spirv
-	return [1]gdclass.RDShaderSPIRV(class(self).GetSpirv(String.Name(String.New(""))))
+	return [1]gdclass.RDShaderSPIRV(Advanced(self).GetSpirv(String.Name(String.New(""))))
+}
+
+/*
+Returns the SPIR-V intermediate representation for the specified shader [param version].
+*/
+func (self Expanded) GetSpirv(version string) [1]gdclass.RDShaderSPIRV { //gd:RDShaderFile.get_spirv
+	return [1]gdclass.RDShaderSPIRV(Advanced(self).GetSpirv(String.Name(String.New(version))))
 }
 
 /*
 Returns the list of compiled versions for this shader.
 */
 func (self Instance) GetVersionList() []string { //gd:RDShaderFile.get_version_list
-	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetVersionList())))
+	return []string(gd.ArrayAs[[]string](gd.InternalArray(Advanced(self).GetVersionList())))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

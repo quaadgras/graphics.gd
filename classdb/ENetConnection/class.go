@@ -43,6 +43,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 ENet's purpose is to provide a relatively thin, simple and robust network communication layer on top of UDP (User Datagram Protocol).
 */
 type Instance [1]gdclass.ENetConnection
+type Expanded [1]gdclass.ENetConnection
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -57,7 +58,15 @@ Creates an ENetHost bound to the given [param bind_address] and [param bind_port
 [b]Note:[/b] It is necessary to create a host in both client and server in order to establish a connection.
 */
 func (self Instance) CreateHostBound(bind_address string, bind_port int) error { //gd:ENetConnection.create_host_bound
-	return error(gd.ToError(class(self).CreateHostBound(String.New(bind_address), int64(bind_port), int64(32), int64(0), int64(0), int64(0))))
+	return error(gd.ToError(Advanced(self).CreateHostBound(String.New(bind_address), int64(bind_port), int64(32), int64(0), int64(0), int64(0))))
+}
+
+/*
+Creates an ENetHost bound to the given [param bind_address] and [param bind_port] that allows up to [param max_peers] connected peers, each allocating up to [param max_channels] channels, optionally limiting bandwidth to [param in_bandwidth] and [param out_bandwidth] (if greater than zero).
+[b]Note:[/b] It is necessary to create a host in both client and server in order to establish a connection.
+*/
+func (self Expanded) CreateHostBound(bind_address string, bind_port int, max_peers int, max_channels int, in_bandwidth int, out_bandwidth int) error { //gd:ENetConnection.create_host_bound
+	return error(gd.ToError(Advanced(self).CreateHostBound(String.New(bind_address), int64(bind_port), int64(max_peers), int64(max_channels), int64(in_bandwidth), int64(out_bandwidth))))
 }
 
 /*
@@ -66,14 +75,23 @@ This method binds a random available dynamic UDP port on the host machine at the
 [b]Note:[/b] It is necessary to create a host in both client and server in order to establish a connection.
 */
 func (self Instance) CreateHost() error { //gd:ENetConnection.create_host
-	return error(gd.ToError(class(self).CreateHost(int64(32), int64(0), int64(0), int64(0))))
+	return error(gd.ToError(Advanced(self).CreateHost(int64(32), int64(0), int64(0), int64(0))))
+}
+
+/*
+Creates an ENetHost that allows up to [param max_peers] connected peers, each allocating up to [param max_channels] channels, optionally limiting bandwidth to [param in_bandwidth] and [param out_bandwidth] (if greater than zero).
+This method binds a random available dynamic UDP port on the host machine at the [i]unspecified[/i] address. Use [method create_host_bound] to specify the address and port.
+[b]Note:[/b] It is necessary to create a host in both client and server in order to establish a connection.
+*/
+func (self Expanded) CreateHost(max_peers int, max_channels int, in_bandwidth int, out_bandwidth int) error { //gd:ENetConnection.create_host
+	return error(gd.ToError(Advanced(self).CreateHost(int64(max_peers), int64(max_channels), int64(in_bandwidth), int64(out_bandwidth))))
 }
 
 /*
 Destroys the host and all resources associated with it.
 */
 func (self Instance) Destroy() { //gd:ENetConnection.destroy
-	class(self).Destroy()
+	Advanced(self).Destroy()
 }
 
 /*
@@ -81,7 +99,15 @@ Initiates a connection to a foreign [param address] using the specified [param p
 [b]Note:[/b] You must call either [method create_host] or [method create_host_bound] on both ends before calling this method.
 */
 func (self Instance) ConnectToHost(address string, port int) [1]gdclass.ENetPacketPeer { //gd:ENetConnection.connect_to_host
-	return [1]gdclass.ENetPacketPeer(class(self).ConnectToHost(String.New(address), int64(port), int64(0), int64(0)))
+	return [1]gdclass.ENetPacketPeer(Advanced(self).ConnectToHost(String.New(address), int64(port), int64(0), int64(0)))
+}
+
+/*
+Initiates a connection to a foreign [param address] using the specified [param port] and allocating the requested [param channels]. Optional [param data] can be passed during connection in the form of a 32 bit integer.
+[b]Note:[/b] You must call either [method create_host] or [method create_host_bound] on both ends before calling this method.
+*/
+func (self Expanded) ConnectToHost(address string, port int, channels int, data int) [1]gdclass.ENetPacketPeer { //gd:ENetConnection.connect_to_host
+	return [1]gdclass.ENetPacketPeer(Advanced(self).ConnectToHost(String.New(address), int64(port), int64(channels), int64(data)))
 }
 
 /*
@@ -90,35 +116,51 @@ Call this function regularly to handle connections, disconnections, and to recei
 [b]Note:[/b] This method must be called on both ends involved in the event (sending and receiving hosts).
 */
 func (self Instance) Service() []any { //gd:ENetConnection.service
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).Service(int64(0)))))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).Service(int64(0)))))
+}
+
+/*
+Waits for events on this connection and shuttles packets between the host and its peers, with the given [param timeout] (in milliseconds). The returned [Array] will have 4 elements. An [enum EventType], the [ENetPacketPeer] which generated the event, the event associated data (if any), the event associated channel (if any). If the generated event is [constant EVENT_RECEIVE], the received packet will be queued to the associated [ENetPacketPeer].
+Call this function regularly to handle connections, disconnections, and to receive new packets.
+[b]Note:[/b] This method must be called on both ends involved in the event (sending and receiving hosts).
+*/
+func (self Expanded) Service(timeout int) []any { //gd:ENetConnection.service
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).Service(int64(timeout)))))
 }
 
 /*
 Sends any queued packets on the host specified to its designated peers.
 */
 func (self Instance) Flush() { //gd:ENetConnection.flush
-	class(self).Flush()
+	Advanced(self).Flush()
 }
 
 /*
 Adjusts the bandwidth limits of a host.
 */
 func (self Instance) BandwidthLimit() { //gd:ENetConnection.bandwidth_limit
-	class(self).BandwidthLimit(int64(0), int64(0))
+	Advanced(self).BandwidthLimit(int64(0), int64(0))
+}
+
+/*
+Adjusts the bandwidth limits of a host.
+*/
+func (self Expanded) BandwidthLimit(in_bandwidth int, out_bandwidth int) { //gd:ENetConnection.bandwidth_limit
+	Advanced(self).BandwidthLimit(int64(in_bandwidth), int64(out_bandwidth))
 }
 
 /*
 Limits the maximum allowed channels of future incoming connections.
 */
 func (self Instance) ChannelLimit(limit int) { //gd:ENetConnection.channel_limit
-	class(self).ChannelLimit(int64(limit))
+	Advanced(self).ChannelLimit(int64(limit))
 }
 
 /*
 Queues a [param packet] to be sent to all peers associated with the host over the specified [param channel]. See [ENetPacketPeer] [code]FLAG_*[/code] constants for available packet flags.
 */
 func (self Instance) Broadcast(channel int, packet []byte, flags int) { //gd:ENetConnection.broadcast
-	class(self).Broadcast(int64(channel), Packed.Bytes(Packed.New(packet...)), int64(flags))
+	Advanced(self).Broadcast(int64(channel), Packed.Bytes(Packed.New(packet...)), int64(flags))
 }
 
 /*
@@ -127,21 +169,28 @@ Sets the compression method used for network packets. These have different trade
 [b]Note:[/b] The compression mode must be set to the same value on both the server and all its clients. Clients will fail to connect if the compression mode set on the client differs from the one set on the server.
 */
 func (self Instance) Compress(mode gdclass.ENetConnectionCompressionMode) { //gd:ENetConnection.compress
-	class(self).Compress(mode)
+	Advanced(self).Compress(mode)
 }
 
 /*
 Configure this ENetHost to use the custom Godot extension allowing DTLS encryption for ENet servers. Call this right after [method create_host_bound] to have ENet expect peers to connect using DTLS. See [method TLSOptions.server].
 */
 func (self Instance) DtlsServerSetup(server_options [1]gdclass.TLSOptions) error { //gd:ENetConnection.dtls_server_setup
-	return error(gd.ToError(class(self).DtlsServerSetup(server_options)))
+	return error(gd.ToError(Advanced(self).DtlsServerSetup(server_options)))
 }
 
 /*
 Configure this ENetHost to use the custom Godot extension allowing DTLS encryption for ENet clients. Call this before [method connect_to_host] to have ENet connect using DTLS validating the server certificate against [param hostname]. You can pass the optional [param client_options] parameter to customize the trusted certification authorities, or disable the common name verification. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
 func (self Instance) DtlsClientSetup(hostname string) error { //gd:ENetConnection.dtls_client_setup
-	return error(gd.ToError(class(self).DtlsClientSetup(String.New(hostname), [1][1]gdclass.TLSOptions{}[0])))
+	return error(gd.ToError(Advanced(self).DtlsClientSetup(String.New(hostname), [1][1]gdclass.TLSOptions{}[0])))
+}
+
+/*
+Configure this ENetHost to use the custom Godot extension allowing DTLS encryption for ENet clients. Call this before [method connect_to_host] to have ENet connect using DTLS validating the server certificate against [param hostname]. You can pass the optional [param client_options] parameter to customize the trusted certification authorities, or disable the common name verification. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
+*/
+func (self Expanded) DtlsClientSetup(hostname string, client_options [1]gdclass.TLSOptions) error { //gd:ENetConnection.dtls_client_setup
+	return error(gd.ToError(Advanced(self).DtlsClientSetup(String.New(hostname), client_options)))
 }
 
 /*
@@ -149,28 +198,28 @@ Configures the DTLS server to automatically drop new connections.
 [b]Note:[/b] This method is only relevant after calling [method dtls_server_setup].
 */
 func (self Instance) RefuseNewConnections(refuse bool) { //gd:ENetConnection.refuse_new_connections
-	class(self).RefuseNewConnections(refuse)
+	Advanced(self).RefuseNewConnections(refuse)
 }
 
 /*
 Returns and resets host statistics. See [enum HostStatistic] for more info.
 */
 func (self Instance) PopStatistic(statistic gdclass.ENetConnectionHostStatistic) Float.X { //gd:ENetConnection.pop_statistic
-	return Float.X(Float.X(class(self).PopStatistic(statistic)))
+	return Float.X(Float.X(Advanced(self).PopStatistic(statistic)))
 }
 
 /*
 Returns the maximum number of channels allowed for connected peers.
 */
 func (self Instance) GetMaxChannels() int { //gd:ENetConnection.get_max_channels
-	return int(int(class(self).GetMaxChannels()))
+	return int(int(Advanced(self).GetMaxChannels()))
 }
 
 /*
 Returns the local port to which this peer is bound.
 */
 func (self Instance) GetLocalPort() int { //gd:ENetConnection.get_local_port
-	return int(int(class(self).GetLocalPort()))
+	return int(int(Advanced(self).GetLocalPort()))
 }
 
 /*
@@ -178,7 +227,7 @@ Returns the list of peers associated with this host.
 [b]Note:[/b] This list might include some peers that are not fully connected or are still being disconnected.
 */
 func (self Instance) GetPeers() [][1]gdclass.ENetPacketPeer { //gd:ENetConnection.get_peers
-	return [][1]gdclass.ENetPacketPeer(gd.ArrayAs[[][1]gdclass.ENetPacketPeer](gd.InternalArray(class(self).GetPeers())))
+	return [][1]gdclass.ENetPacketPeer(gd.ArrayAs[[][1]gdclass.ENetPacketPeer](gd.InternalArray(Advanced(self).GetPeers())))
 }
 
 /*
@@ -187,7 +236,7 @@ This is useful as it serves to establish entries in NAT routing tables on all de
 This requires forward knowledge of a prospective client's address and communication port as seen by the public internet - after any NAT devices have handled their connection request. This information can be obtained by a [url=https://en.wikipedia.org/wiki/STUN]STUN[/url] service, and must be handed off to your host by an entity that is not the prospective client. This will never work for a client behind a Symmetric NAT due to the nature of the Symmetric NAT routing algorithm, as their IP and Port cannot be known beforehand.
 */
 func (self Instance) SocketSend(destination_address string, destination_port int, packet []byte) { //gd:ENetConnection.socket_send
-	class(self).SocketSend(String.New(destination_address), int64(destination_port), Packed.Bytes(Packed.New(packet...)))
+	Advanced(self).SocketSend(String.New(destination_address), int64(destination_port), Packed.Bytes(Packed.New(packet...)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

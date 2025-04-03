@@ -44,6 +44,7 @@ StreamPeer is an abstract base class mostly used for stream-based protocols (suc
 [b]Note:[/b] When exporting to Android, make sure to enable the [code]INTERNET[/code] permission in the Android export preset before exporting the project or using one-click deploy. Otherwise, network communication of any kind will be blocked by Android.
 */
 type Instance [1]gdclass.StreamPeer
+type Expanded [1]gdclass.StreamPeer
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -57,112 +58,112 @@ type Any interface {
 Sends a chunk of data through the connection, blocking if necessary until the data is done sending. This function returns an [enum Error] code.
 */
 func (self Instance) PutData(data []byte) error { //gd:StreamPeer.put_data
-	return error(gd.ToError(class(self).PutData(Packed.Bytes(Packed.New(data...)))))
+	return error(gd.ToError(Advanced(self).PutData(Packed.Bytes(Packed.New(data...)))))
 }
 
 /*
 Sends a chunk of data through the connection. If all the data could not be sent at once, only part of it will. This function returns two values, an [enum Error] code and an integer, describing how much data was actually sent.
 */
 func (self Instance) PutPartialData(data []byte) []any { //gd:StreamPeer.put_partial_data
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).PutPartialData(Packed.Bytes(Packed.New(data...))))))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).PutPartialData(Packed.Bytes(Packed.New(data...))))))
 }
 
 /*
 Returns a chunk data with the received bytes. The number of bytes to be received can be requested in the [param bytes] argument. If not enough bytes are available, the function will block until the desired amount is received. This function returns two values, an [enum Error] code and a data array.
 */
 func (self Instance) GetData(bytes int) []any { //gd:StreamPeer.get_data
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetData(int64(bytes)))))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetData(int64(bytes)))))
 }
 
 /*
 Returns a chunk data with the received bytes. The number of bytes to be received can be requested in the "bytes" argument. If not enough bytes are available, the function will return how many were actually received. This function returns two values, an [enum Error] code, and a data array.
 */
 func (self Instance) GetPartialData(bytes int) []any { //gd:StreamPeer.get_partial_data
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetPartialData(int64(bytes)))))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetPartialData(int64(bytes)))))
 }
 
 /*
 Returns the number of bytes this [StreamPeer] has available.
 */
 func (self Instance) GetAvailableBytes() int { //gd:StreamPeer.get_available_bytes
-	return int(int(class(self).GetAvailableBytes()))
+	return int(int(Advanced(self).GetAvailableBytes()))
 }
 
 /*
 Puts a signed byte into the stream.
 */
 func (self Instance) Put8(value int) { //gd:StreamPeer.put_8
-	class(self).Put8(int64(value))
+	Advanced(self).Put8(int64(value))
 }
 
 /*
 Puts an unsigned byte into the stream.
 */
 func (self Instance) PutU8(value int) { //gd:StreamPeer.put_u8
-	class(self).PutU8(int64(value))
+	Advanced(self).PutU8(int64(value))
 }
 
 /*
 Puts a signed 16-bit value into the stream.
 */
 func (self Instance) Put16(value int) { //gd:StreamPeer.put_16
-	class(self).Put16(int64(value))
+	Advanced(self).Put16(int64(value))
 }
 
 /*
 Puts an unsigned 16-bit value into the stream.
 */
 func (self Instance) PutU16(value int) { //gd:StreamPeer.put_u16
-	class(self).PutU16(int64(value))
+	Advanced(self).PutU16(int64(value))
 }
 
 /*
 Puts a signed 32-bit value into the stream.
 */
 func (self Instance) Put32(value int) { //gd:StreamPeer.put_32
-	class(self).Put32(int64(value))
+	Advanced(self).Put32(int64(value))
 }
 
 /*
 Puts an unsigned 32-bit value into the stream.
 */
 func (self Instance) PutU32(value int) { //gd:StreamPeer.put_u32
-	class(self).PutU32(int64(value))
+	Advanced(self).PutU32(int64(value))
 }
 
 /*
 Puts a signed 64-bit value into the stream.
 */
 func (self Instance) Put64(value int) { //gd:StreamPeer.put_64
-	class(self).Put64(int64(value))
+	Advanced(self).Put64(int64(value))
 }
 
 /*
 Puts an unsigned 64-bit value into the stream.
 */
 func (self Instance) PutU64(value int) { //gd:StreamPeer.put_u64
-	class(self).PutU64(int64(value))
+	Advanced(self).PutU64(int64(value))
 }
 
 /*
 Puts a half-precision float into the stream.
 */
 func (self Instance) PutHalf(value Float.X) { //gd:StreamPeer.put_half
-	class(self).PutHalf(float64(value))
+	Advanced(self).PutHalf(float64(value))
 }
 
 /*
 Puts a single-precision float into the stream.
 */
 func (self Instance) PutFloat(value Float.X) { //gd:StreamPeer.put_float
-	class(self).PutFloat(float64(value))
+	Advanced(self).PutFloat(float64(value))
 }
 
 /*
 Puts a double-precision float into the stream.
 */
 func (self Instance) PutDouble(value Float.X) { //gd:StreamPeer.put_double
-	class(self).PutDouble(float64(value))
+	Advanced(self).PutDouble(float64(value))
 }
 
 /*
@@ -178,7 +179,7 @@ PutData("Hello World".ToAsciiBuffer());
 [/codeblocks]
 */
 func (self Instance) PutString(value string) { //gd:StreamPeer.put_string
-	class(self).PutString(String.New(value))
+	Advanced(self).PutString(String.New(value))
 }
 
 /*
@@ -194,7 +195,7 @@ PutData("Hello World".ToUtf8Buffer());
 [/codeblocks]
 */
 func (self Instance) PutUtf8String(value string) { //gd:StreamPeer.put_utf8_string
-	class(self).PutUtf8String(String.New(value))
+	Advanced(self).PutUtf8String(String.New(value))
 }
 
 /*
@@ -202,98 +203,120 @@ Puts a Variant into the stream. If [param full_objects] is [code]true[/code] enc
 Internally, this uses the same encoding mechanism as the [method @GlobalScope.var_to_bytes] method.
 */
 func (self Instance) PutVar(value any) { //gd:StreamPeer.put_var
-	class(self).PutVar(variant.New(value), false)
+	Advanced(self).PutVar(variant.New(value), false)
+}
+
+/*
+Puts a Variant into the stream. If [param full_objects] is [code]true[/code] encoding objects is allowed (and can potentially include code).
+Internally, this uses the same encoding mechanism as the [method @GlobalScope.var_to_bytes] method.
+*/
+func (self Expanded) PutVar(value any, full_objects bool) { //gd:StreamPeer.put_var
+	Advanced(self).PutVar(variant.New(value), full_objects)
 }
 
 /*
 Gets a signed byte from the stream.
 */
 func (self Instance) Get8() int { //gd:StreamPeer.get_8
-	return int(int(class(self).Get8()))
+	return int(int(Advanced(self).Get8()))
 }
 
 /*
 Gets an unsigned byte from the stream.
 */
 func (self Instance) GetU8() int { //gd:StreamPeer.get_u8
-	return int(int(class(self).GetU8()))
+	return int(int(Advanced(self).GetU8()))
 }
 
 /*
 Gets a signed 16-bit value from the stream.
 */
 func (self Instance) Get16() int { //gd:StreamPeer.get_16
-	return int(int(class(self).Get16()))
+	return int(int(Advanced(self).Get16()))
 }
 
 /*
 Gets an unsigned 16-bit value from the stream.
 */
 func (self Instance) GetU16() int { //gd:StreamPeer.get_u16
-	return int(int(class(self).GetU16()))
+	return int(int(Advanced(self).GetU16()))
 }
 
 /*
 Gets a signed 32-bit value from the stream.
 */
 func (self Instance) Get32() int { //gd:StreamPeer.get_32
-	return int(int(class(self).Get32()))
+	return int(int(Advanced(self).Get32()))
 }
 
 /*
 Gets an unsigned 32-bit value from the stream.
 */
 func (self Instance) GetU32() int { //gd:StreamPeer.get_u32
-	return int(int(class(self).GetU32()))
+	return int(int(Advanced(self).GetU32()))
 }
 
 /*
 Gets a signed 64-bit value from the stream.
 */
 func (self Instance) Get64() int { //gd:StreamPeer.get_64
-	return int(int(class(self).Get64()))
+	return int(int(Advanced(self).Get64()))
 }
 
 /*
 Gets an unsigned 64-bit value from the stream.
 */
 func (self Instance) GetU64() int { //gd:StreamPeer.get_u64
-	return int(int(class(self).GetU64()))
+	return int(int(Advanced(self).GetU64()))
 }
 
 /*
 Gets a half-precision float from the stream.
 */
 func (self Instance) GetHalf() Float.X { //gd:StreamPeer.get_half
-	return Float.X(Float.X(class(self).GetHalf()))
+	return Float.X(Float.X(Advanced(self).GetHalf()))
 }
 
 /*
 Gets a single-precision float from the stream.
 */
 func (self Instance) GetFloat() Float.X { //gd:StreamPeer.get_float
-	return Float.X(Float.X(class(self).GetFloat()))
+	return Float.X(Float.X(Advanced(self).GetFloat()))
 }
 
 /*
 Gets a double-precision float from the stream.
 */
 func (self Instance) GetDouble() Float.X { //gd:StreamPeer.get_double
-	return Float.X(Float.X(class(self).GetDouble()))
+	return Float.X(Float.X(Advanced(self).GetDouble()))
 }
 
 /*
 Gets an ASCII string with byte-length [param bytes] from the stream. If [param bytes] is negative (default) the length will be read from the stream using the reverse process of [method put_string].
 */
 func (self Instance) GetString() string { //gd:StreamPeer.get_string
-	return string(class(self).GetString(int64(-1)).String())
+	return string(Advanced(self).GetString(int64(-1)).String())
+}
+
+/*
+Gets an ASCII string with byte-length [param bytes] from the stream. If [param bytes] is negative (default) the length will be read from the stream using the reverse process of [method put_string].
+*/
+func (self Expanded) GetString(bytes int) string { //gd:StreamPeer.get_string
+	return string(Advanced(self).GetString(int64(bytes)).String())
 }
 
 /*
 Gets a UTF-8 string with byte-length [param bytes] from the stream (this decodes the string sent as UTF-8). If [param bytes] is negative (default) the length will be read from the stream using the reverse process of [method put_utf8_string].
 */
 func (self Instance) GetUtf8String() string { //gd:StreamPeer.get_utf8_string
-	return string(class(self).GetUtf8String(int64(-1)).String())
+	return string(Advanced(self).GetUtf8String(int64(-1)).String())
+}
+
+/*
+Gets a UTF-8 string with byte-length [param bytes] from the stream (this decodes the string sent as UTF-8). If [param bytes] is negative (default) the length will be read from the stream using the reverse process of [method put_utf8_string].
+*/
+func (self Expanded) GetUtf8String(bytes int) string { //gd:StreamPeer.get_utf8_string
+	return string(Advanced(self).GetUtf8String(int64(bytes)).String())
 }
 
 /*
@@ -302,7 +325,16 @@ Internally, this uses the same decoding mechanism as the [method @GlobalScope.by
 [b]Warning:[/b] Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
 */
 func (self Instance) GetVar() any { //gd:StreamPeer.get_var
-	return any(class(self).GetVar(false).Interface())
+	return any(Advanced(self).GetVar(false).Interface())
+}
+
+/*
+Gets a Variant from the stream. If [param allow_objects] is [code]true[/code], decoding objects is allowed.
+Internally, this uses the same decoding mechanism as the [method @GlobalScope.bytes_to_var] method.
+[b]Warning:[/b] Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
+*/
+func (self Expanded) GetVar(allow_objects bool) any { //gd:StreamPeer.get_var
+	return any(Advanced(self).GetVar(allow_objects).Interface())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

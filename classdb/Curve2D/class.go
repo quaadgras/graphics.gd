@@ -47,6 +47,7 @@ This class describes a Bézier curve in 2D space. It is mainly used to give a sh
 It keeps a cache of precalculated points along the curve, to speed up further calculations.
 */
 type Instance [1]gdclass.Curve2D
+type Expanded [1]gdclass.Curve2D
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -61,63 +62,71 @@ Adds a point with the specified [param position] relative to the curve's own pos
 If [param index] is given, the new point is inserted before the existing point identified by index [param index]. Every existing point starting from [param index] is shifted further down the list of points. The index must be greater than or equal to [code]0[/code] and must not exceed the number of existing points in the line. See [member point_count].
 */
 func (self Instance) AddPoint(position Vector2.XY) { //gd:Curve2D.add_point
-	class(self).AddPoint(Vector2.XY(position), Vector2.XY(gd.Vector2{0, 0}), Vector2.XY(gd.Vector2{0, 0}), int64(-1))
+	Advanced(self).AddPoint(Vector2.XY(position), Vector2.XY(gd.Vector2{0, 0}), Vector2.XY(gd.Vector2{0, 0}), int64(-1))
+}
+
+/*
+Adds a point with the specified [param position] relative to the curve's own position, with control points [param in] and [param out]. Appends the new point at the end of the point list.
+If [param index] is given, the new point is inserted before the existing point identified by index [param index]. Every existing point starting from [param index] is shifted further down the list of points. The index must be greater than or equal to [code]0[/code] and must not exceed the number of existing points in the line. See [member point_count].
+*/
+func (self Expanded) AddPoint(position Vector2.XY, in Vector2.XY, out Vector2.XY, index int) { //gd:Curve2D.add_point
+	Advanced(self).AddPoint(Vector2.XY(position), Vector2.XY(in), Vector2.XY(out), int64(index))
 }
 
 /*
 Sets the position for the vertex [param idx]. If the index is out of bounds, the function sends an error to the console.
 */
 func (self Instance) SetPointPosition(idx int, position Vector2.XY) { //gd:Curve2D.set_point_position
-	class(self).SetPointPosition(int64(idx), Vector2.XY(position))
+	Advanced(self).SetPointPosition(int64(idx), Vector2.XY(position))
 }
 
 /*
 Returns the position of the vertex [param idx]. If the index is out of bounds, the function sends an error to the console, and returns [code](0, 0)[/code].
 */
 func (self Instance) GetPointPosition(idx int) Vector2.XY { //gd:Curve2D.get_point_position
-	return Vector2.XY(class(self).GetPointPosition(int64(idx)))
+	return Vector2.XY(Advanced(self).GetPointPosition(int64(idx)))
 }
 
 /*
 Sets the position of the control point leading to the vertex [param idx]. If the index is out of bounds, the function sends an error to the console. The position is relative to the vertex.
 */
 func (self Instance) SetPointIn(idx int, position Vector2.XY) { //gd:Curve2D.set_point_in
-	class(self).SetPointIn(int64(idx), Vector2.XY(position))
+	Advanced(self).SetPointIn(int64(idx), Vector2.XY(position))
 }
 
 /*
 Returns the position of the control point leading to the vertex [param idx]. The returned position is relative to the vertex [param idx]. If the index is out of bounds, the function sends an error to the console, and returns [code](0, 0)[/code].
 */
 func (self Instance) GetPointIn(idx int) Vector2.XY { //gd:Curve2D.get_point_in
-	return Vector2.XY(class(self).GetPointIn(int64(idx)))
+	return Vector2.XY(Advanced(self).GetPointIn(int64(idx)))
 }
 
 /*
 Sets the position of the control point leading out of the vertex [param idx]. If the index is out of bounds, the function sends an error to the console. The position is relative to the vertex.
 */
 func (self Instance) SetPointOut(idx int, position Vector2.XY) { //gd:Curve2D.set_point_out
-	class(self).SetPointOut(int64(idx), Vector2.XY(position))
+	Advanced(self).SetPointOut(int64(idx), Vector2.XY(position))
 }
 
 /*
 Returns the position of the control point leading out of the vertex [param idx]. The returned position is relative to the vertex [param idx]. If the index is out of bounds, the function sends an error to the console, and returns [code](0, 0)[/code].
 */
 func (self Instance) GetPointOut(idx int) Vector2.XY { //gd:Curve2D.get_point_out
-	return Vector2.XY(class(self).GetPointOut(int64(idx)))
+	return Vector2.XY(Advanced(self).GetPointOut(int64(idx)))
 }
 
 /*
 Deletes the point [param idx] from the curve. Sends an error to the console if [param idx] is out of bounds.
 */
 func (self Instance) RemovePoint(idx int) { //gd:Curve2D.remove_point
-	class(self).RemovePoint(int64(idx))
+	Advanced(self).RemovePoint(int64(idx))
 }
 
 /*
 Removes all points from the curve.
 */
 func (self Instance) ClearPoints() { //gd:Curve2D.clear_points
-	class(self).ClearPoints()
+	Advanced(self).ClearPoints()
 }
 
 /*
@@ -125,21 +134,21 @@ Returns the position between the vertex [param idx] and the vertex [code]idx + 1
 If [param idx] is out of bounds it is truncated to the first or last vertex, and [param t] is ignored. If the curve has no points, the function sends an error to the console, and returns [code](0, 0)[/code].
 */
 func (self Instance) Sample(idx int, t Float.X) Vector2.XY { //gd:Curve2D.sample
-	return Vector2.XY(class(self).Sample(int64(idx), float64(t)))
+	return Vector2.XY(Advanced(self).Sample(int64(idx), float64(t)))
 }
 
 /*
 Returns the position at the vertex [param fofs]. It calls [method sample] using the integer part of [param fofs] as [code]idx[/code], and its fractional part as [code]t[/code].
 */
 func (self Instance) Samplef(fofs Float.X) Vector2.XY { //gd:Curve2D.samplef
-	return Vector2.XY(class(self).Samplef(float64(fofs)))
+	return Vector2.XY(Advanced(self).Samplef(float64(fofs)))
 }
 
 /*
 Returns the total length of the curve, based on the cached points. Given enough density (see [member bake_interval]), it should be approximate enough.
 */
 func (self Instance) GetBakedLength() Float.X { //gd:Curve2D.get_baked_length
-	return Float.X(Float.X(class(self).GetBakedLength()))
+	return Float.X(Float.X(Advanced(self).GetBakedLength()))
 }
 
 /*
@@ -148,7 +157,16 @@ To do that, it finds the two cached points where the [param offset] lies between
 Cubic interpolation tends to follow the curves better, but linear is faster (and often, precise enough).
 */
 func (self Instance) SampleBaked() Vector2.XY { //gd:Curve2D.sample_baked
-	return Vector2.XY(class(self).SampleBaked(float64(0.0), false))
+	return Vector2.XY(Advanced(self).SampleBaked(float64(0.0), false))
+}
+
+/*
+Returns a point within the curve at position [param offset], where [param offset] is measured as a pixel distance along the curve.
+To do that, it finds the two cached points where the [param offset] lies between, then interpolates the values. This interpolation is cubic if [param cubic] is set to [code]true[/code], or linear if set to [code]false[/code].
+Cubic interpolation tends to follow the curves better, but linear is faster (and often, precise enough).
+*/
+func (self Expanded) SampleBaked(offset Float.X, cubic bool) Vector2.XY { //gd:Curve2D.sample_baked
+	return Vector2.XY(Advanced(self).SampleBaked(float64(offset), cubic))
 }
 
 /*
@@ -163,14 +181,29 @@ rotation = baked.get_rotation()
 [/codeblock]
 */
 func (self Instance) SampleBakedWithRotation() Transform2D.OriginXY { //gd:Curve2D.sample_baked_with_rotation
-	return Transform2D.OriginXY(class(self).SampleBakedWithRotation(float64(0.0), false))
+	return Transform2D.OriginXY(Advanced(self).SampleBakedWithRotation(float64(0.0), false))
+}
+
+/*
+Similar to [method sample_baked], but returns [Transform2D] that includes a rotation along the curve, with [member Transform2D.origin] as the point position and the [member Transform2D.x] vector pointing in the direction of the path at that point. Returns an empty transform if the length of the curve is [code]0[/code].
+[codeblock]
+var baked = curve.sample_baked_with_rotation(offset)
+# The returned Transform2D can be set directly.
+transform = baked
+# You can also read the origin and rotation separately from the returned Transform2D.
+position = baked.get_origin()
+rotation = baked.get_rotation()
+[/codeblock]
+*/
+func (self Expanded) SampleBakedWithRotation(offset Float.X, cubic bool) Transform2D.OriginXY { //gd:Curve2D.sample_baked_with_rotation
+	return Transform2D.OriginXY(Advanced(self).SampleBakedWithRotation(float64(offset), cubic))
 }
 
 /*
 Returns the cache of points as a [PackedVector2Array].
 */
 func (self Instance) GetBakedPoints() []Vector2.XY { //gd:Curve2D.get_baked_points
-	return []Vector2.XY(slices.Collect(class(self).GetBakedPoints().Values()))
+	return []Vector2.XY(slices.Collect(Advanced(self).GetBakedPoints().Values()))
 }
 
 /*
@@ -178,7 +211,7 @@ Returns the closest point on baked segments (in curve's local space) to [param t
 [param to_point] must be in this curve's local space.
 */
 func (self Instance) GetClosestPoint(to_point Vector2.XY) Vector2.XY { //gd:Curve2D.get_closest_point
-	return Vector2.XY(class(self).GetClosestPoint(Vector2.XY(to_point)))
+	return Vector2.XY(Advanced(self).GetClosestPoint(Vector2.XY(to_point)))
 }
 
 /*
@@ -186,7 +219,7 @@ Returns the closest offset to [param to_point]. This offset is meant to be used 
 [param to_point] must be in this curve's local space.
 */
 func (self Instance) GetClosestOffset(to_point Vector2.XY) Float.X { //gd:Curve2D.get_closest_offset
-	return Float.X(Float.X(class(self).GetClosestOffset(Vector2.XY(to_point))))
+	return Float.X(Float.X(Advanced(self).GetClosestOffset(Vector2.XY(to_point))))
 }
 
 /*
@@ -196,7 +229,17 @@ This approximation makes straight segments between each point, then subdivides t
 [param tolerance_degrees] controls how many degrees the midpoint of a segment may deviate from the real curve, before the segment has to be subdivided.
 */
 func (self Instance) Tessellate() []Vector2.XY { //gd:Curve2D.tessellate
-	return []Vector2.XY(slices.Collect(class(self).Tessellate(int64(5), float64(4)).Values()))
+	return []Vector2.XY(slices.Collect(Advanced(self).Tessellate(int64(5), float64(4)).Values()))
+}
+
+/*
+Returns a list of points along the curve, with a curvature controlled point density. That is, the curvier parts will have more points than the straighter parts.
+This approximation makes straight segments between each point, then subdivides those segments until the resulting shape is similar enough.
+[param max_stages] controls how many subdivisions a curve segment may face before it is considered approximate enough. Each subdivision splits the segment in half, so the default 5 stages may mean up to 32 subdivisions per curve segment. Increase with care!
+[param tolerance_degrees] controls how many degrees the midpoint of a segment may deviate from the real curve, before the segment has to be subdivided.
+*/
+func (self Expanded) Tessellate(max_stages int, tolerance_degrees Float.X) []Vector2.XY { //gd:Curve2D.tessellate
+	return []Vector2.XY(slices.Collect(Advanced(self).Tessellate(int64(max_stages), float64(tolerance_degrees)).Values()))
 }
 
 /*
@@ -204,7 +247,15 @@ Returns a list of points along the curve, with almost uniform density. [param ma
 [param tolerance_length] controls the maximal distance between two neighboring points, before the segment has to be subdivided.
 */
 func (self Instance) TessellateEvenLength() []Vector2.XY { //gd:Curve2D.tessellate_even_length
-	return []Vector2.XY(slices.Collect(class(self).TessellateEvenLength(int64(5), float64(20.0)).Values()))
+	return []Vector2.XY(slices.Collect(Advanced(self).TessellateEvenLength(int64(5), float64(20.0)).Values()))
+}
+
+/*
+Returns a list of points along the curve, with almost uniform density. [param max_stages] controls how many subdivisions a curve segment may face before it is considered approximate enough. Each subdivision splits the segment in half, so the default 5 stages may mean up to 32 subdivisions per curve segment. Increase with care!
+[param tolerance_length] controls the maximal distance between two neighboring points, before the segment has to be subdivided.
+*/
+func (self Expanded) TessellateEvenLength(max_stages int, tolerance_length Float.X) []Vector2.XY { //gd:Curve2D.tessellate_even_length
+	return []Vector2.XY(slices.Collect(Advanced(self).TessellateEvenLength(int64(max_stages), float64(tolerance_length)).Values()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

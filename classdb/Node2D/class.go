@@ -48,6 +48,7 @@ A 2D game object, with a transform (position, rotation, and scale). All 2D nodes
 [b]Note:[/b] Since both [Node2D] and [Control] inherit from [CanvasItem], they share several concepts from the class such as the [member CanvasItem.z_index] and [member CanvasItem.visible] properties.
 */
 type Instance [1]gdclass.Node2D
+type Expanded [1]gdclass.Node2D
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -61,42 +62,56 @@ type Any interface {
 Applies a rotation to the node, in radians, starting from its current rotation.
 */
 func (self Instance) Rotate(radians Float.X) { //gd:Node2D.rotate
-	class(self).Rotate(float64(radians))
+	Advanced(self).Rotate(float64(radians))
 }
 
 /*
 Applies a local translation on the node's X axis based on the [method Node._process]'s [param delta]. If [param scaled] is [code]false[/code], normalizes the movement.
 */
 func (self Instance) MoveLocalX(delta Float.X) { //gd:Node2D.move_local_x
-	class(self).MoveLocalX(float64(delta), false)
+	Advanced(self).MoveLocalX(float64(delta), false)
+}
+
+/*
+Applies a local translation on the node's X axis based on the [method Node._process]'s [param delta]. If [param scaled] is [code]false[/code], normalizes the movement.
+*/
+func (self Expanded) MoveLocalX(delta Float.X, scaled bool) { //gd:Node2D.move_local_x
+	Advanced(self).MoveLocalX(float64(delta), scaled)
 }
 
 /*
 Applies a local translation on the node's Y axis based on the [method Node._process]'s [param delta]. If [param scaled] is [code]false[/code], normalizes the movement.
 */
 func (self Instance) MoveLocalY(delta Float.X) { //gd:Node2D.move_local_y
-	class(self).MoveLocalY(float64(delta), false)
+	Advanced(self).MoveLocalY(float64(delta), false)
+}
+
+/*
+Applies a local translation on the node's Y axis based on the [method Node._process]'s [param delta]. If [param scaled] is [code]false[/code], normalizes the movement.
+*/
+func (self Expanded) MoveLocalY(delta Float.X, scaled bool) { //gd:Node2D.move_local_y
+	Advanced(self).MoveLocalY(float64(delta), scaled)
 }
 
 /*
 Translates the node by the given [param offset] in local coordinates.
 */
 func (self Instance) Translate(offset Vector2.XY) { //gd:Node2D.translate
-	class(self).Translate(Vector2.XY(offset))
+	Advanced(self).Translate(Vector2.XY(offset))
 }
 
 /*
 Adds the [param offset] vector to the node's global position.
 */
 func (self Instance) GlobalTranslate(offset Vector2.XY) { //gd:Node2D.global_translate
-	class(self).GlobalTranslate(Vector2.XY(offset))
+	Advanced(self).GlobalTranslate(Vector2.XY(offset))
 }
 
 /*
 Multiplies the current scale by the [param ratio] vector.
 */
 func (self Instance) ApplyScale(ratio Vector2.XY) { //gd:Node2D.apply_scale
-	class(self).ApplyScale(Vector2.XY(ratio))
+	Advanced(self).ApplyScale(Vector2.XY(ratio))
 }
 
 /*
@@ -104,7 +119,7 @@ Rotates the node so that its local +X axis points towards the [param point], whi
 [param point] should not be the same as the node's position, otherwise the node always looks to the right.
 */
 func (self Instance) LookAt(point Vector2.XY) { //gd:Node2D.look_at
-	class(self).LookAt(Vector2.XY(point))
+	Advanced(self).LookAt(Vector2.XY(point))
 }
 
 /*
@@ -112,28 +127,28 @@ Returns the angle between the node and the [param point] in radians.
 [url=https://raw.githubusercontent.com/godotengine/godot-docs/master/img/node2d_get_angle_to.png]Illustration of the returned angle.[/url]
 */
 func (self Instance) GetAngleTo(point Vector2.XY) Float.X { //gd:Node2D.get_angle_to
-	return Float.X(Float.X(class(self).GetAngleTo(Vector2.XY(point))))
+	return Float.X(Float.X(Advanced(self).GetAngleTo(Vector2.XY(point))))
 }
 
 /*
 Transforms the provided global position into a position in local coordinate space. The output will be local relative to the [Node2D] it is called on. e.g. It is appropriate for determining the positions of child nodes, but it is not appropriate for determining its own position relative to its parent.
 */
 func (self Instance) ToLocal(global_point Vector2.XY) Vector2.XY { //gd:Node2D.to_local
-	return Vector2.XY(class(self).ToLocal(Vector2.XY(global_point)))
+	return Vector2.XY(Advanced(self).ToLocal(Vector2.XY(global_point)))
 }
 
 /*
 Transforms the provided local position into a position in global coordinate space. The input is expected to be local relative to the [Node2D] it is called on. e.g. Applying this method to the positions of child nodes will correctly transform their positions into the global coordinate space, but applying it to a node's own position will give an incorrect result, as it will incorporate the node's own transformation into its global position.
 */
 func (self Instance) ToGlobal(local_point Vector2.XY) Vector2.XY { //gd:Node2D.to_global
-	return Vector2.XY(class(self).ToGlobal(Vector2.XY(local_point)))
+	return Vector2.XY(Advanced(self).ToGlobal(Vector2.XY(local_point)))
 }
 
 /*
 Returns the [Transform2D] relative to this node's parent.
 */
 func (self Instance) GetRelativeTransformToParent(parent [1]gdclass.Node) Transform2D.OriginXY { //gd:Node2D.get_relative_transform_to_parent
-	return Transform2D.OriginXY(class(self).GetRelativeTransformToParent(parent))
+	return Transform2D.OriginXY(Advanced(self).GetRelativeTransformToParent(parent))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

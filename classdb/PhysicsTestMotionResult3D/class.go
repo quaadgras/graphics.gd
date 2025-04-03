@@ -44,6 +44,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 Describes the motion and collision result from [method PhysicsServer3D.body_test_motion].
 */
 type Instance [1]gdclass.PhysicsTestMotionResult3D
+type Expanded [1]gdclass.PhysicsTestMotionResult3D
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -57,98 +58,161 @@ type Any interface {
 Returns the moving object's travel before collision.
 */
 func (self Instance) GetTravel() Vector3.XYZ { //gd:PhysicsTestMotionResult3D.get_travel
-	return Vector3.XYZ(class(self).GetTravel())
+	return Vector3.XYZ(Advanced(self).GetTravel())
 }
 
 /*
 Returns the moving object's remaining movement vector.
 */
 func (self Instance) GetRemainder() Vector3.XYZ { //gd:PhysicsTestMotionResult3D.get_remainder
-	return Vector3.XYZ(class(self).GetRemainder())
+	return Vector3.XYZ(Advanced(self).GetRemainder())
 }
 
 /*
 Returns the maximum fraction of the motion that can occur without a collision, between [code]0[/code] and [code]1[/code].
 */
 func (self Instance) GetCollisionSafeFraction() Float.X { //gd:PhysicsTestMotionResult3D.get_collision_safe_fraction
-	return Float.X(Float.X(class(self).GetCollisionSafeFraction()))
+	return Float.X(Float.X(Advanced(self).GetCollisionSafeFraction()))
 }
 
 /*
 Returns the minimum fraction of the motion needed to collide, if a collision occurred, between [code]0[/code] and [code]1[/code].
 */
 func (self Instance) GetCollisionUnsafeFraction() Float.X { //gd:PhysicsTestMotionResult3D.get_collision_unsafe_fraction
-	return Float.X(Float.X(class(self).GetCollisionUnsafeFraction()))
+	return Float.X(Float.X(Advanced(self).GetCollisionUnsafeFraction()))
 }
 
 /*
 Returns the number of detected collisions.
 */
 func (self Instance) GetCollisionCount() int { //gd:PhysicsTestMotionResult3D.get_collision_count
-	return int(int(class(self).GetCollisionCount()))
+	return int(int(Advanced(self).GetCollisionCount()))
 }
 
 /*
 Returns the point of collision in global coordinates given a collision index (the deepest collision by default), if a collision occurred.
 */
 func (self Instance) GetCollisionPoint() Vector3.XYZ { //gd:PhysicsTestMotionResult3D.get_collision_point
-	return Vector3.XYZ(class(self).GetCollisionPoint(int64(0)))
+	return Vector3.XYZ(Advanced(self).GetCollisionPoint(int64(0)))
+}
+
+/*
+Returns the point of collision in global coordinates given a collision index (the deepest collision by default), if a collision occurred.
+*/
+func (self Expanded) GetCollisionPoint(collision_index int) Vector3.XYZ { //gd:PhysicsTestMotionResult3D.get_collision_point
+	return Vector3.XYZ(Advanced(self).GetCollisionPoint(int64(collision_index)))
 }
 
 /*
 Returns the colliding body's shape's normal at the point of collision given a collision index (the deepest collision by default), if a collision occurred.
 */
 func (self Instance) GetCollisionNormal() Vector3.XYZ { //gd:PhysicsTestMotionResult3D.get_collision_normal
-	return Vector3.XYZ(class(self).GetCollisionNormal(int64(0)))
+	return Vector3.XYZ(Advanced(self).GetCollisionNormal(int64(0)))
+}
+
+/*
+Returns the colliding body's shape's normal at the point of collision given a collision index (the deepest collision by default), if a collision occurred.
+*/
+func (self Expanded) GetCollisionNormal(collision_index int) Vector3.XYZ { //gd:PhysicsTestMotionResult3D.get_collision_normal
+	return Vector3.XYZ(Advanced(self).GetCollisionNormal(int64(collision_index)))
 }
 
 /*
 Returns the colliding body's velocity given a collision index (the deepest collision by default), if a collision occurred.
 */
 func (self Instance) GetColliderVelocity() Vector3.XYZ { //gd:PhysicsTestMotionResult3D.get_collider_velocity
-	return Vector3.XYZ(class(self).GetColliderVelocity(int64(0)))
+	return Vector3.XYZ(Advanced(self).GetColliderVelocity(int64(0)))
+}
+
+/*
+Returns the colliding body's velocity given a collision index (the deepest collision by default), if a collision occurred.
+*/
+func (self Expanded) GetColliderVelocity(collision_index int) Vector3.XYZ { //gd:PhysicsTestMotionResult3D.get_collider_velocity
+	return Vector3.XYZ(Advanced(self).GetColliderVelocity(int64(collision_index)))
 }
 
 /*
 Returns the unique instance ID of the colliding body's attached [Object] given a collision index (the deepest collision by default), if a collision occurred. See [method Object.get_instance_id].
 */
 func (self Instance) GetColliderId() int { //gd:PhysicsTestMotionResult3D.get_collider_id
-	return int(int(class(self).GetColliderId(int64(0))))
+	return int(int(Advanced(self).GetColliderId(int64(0))))
+}
+
+/*
+Returns the unique instance ID of the colliding body's attached [Object] given a collision index (the deepest collision by default), if a collision occurred. See [method Object.get_instance_id].
+*/
+func (self Expanded) GetColliderId(collision_index int) int { //gd:PhysicsTestMotionResult3D.get_collider_id
+	return int(int(Advanced(self).GetColliderId(int64(collision_index))))
 }
 
 /*
 Returns the colliding body's [RID] used by the [PhysicsServer3D] given a collision index (the deepest collision by default), if a collision occurred.
 */
 func (self Instance) GetColliderRid() RID.Body3D { //gd:PhysicsTestMotionResult3D.get_collider_rid
-	return RID.Body3D(class(self).GetColliderRid(int64(0)))
+	return RID.Body3D(Advanced(self).GetColliderRid(int64(0)))
+}
+
+/*
+Returns the colliding body's [RID] used by the [PhysicsServer3D] given a collision index (the deepest collision by default), if a collision occurred.
+*/
+func (self Expanded) GetColliderRid(collision_index int) RID.Body3D { //gd:PhysicsTestMotionResult3D.get_collider_rid
+	return RID.Body3D(Advanced(self).GetColliderRid(int64(collision_index)))
 }
 
 /*
 Returns the colliding body's attached [Object] given a collision index (the deepest collision by default), if a collision occurred.
 */
 func (self Instance) GetCollider() Object.Instance { //gd:PhysicsTestMotionResult3D.get_collider
-	return Object.Instance(class(self).GetCollider(int64(0)))
+	return Object.Instance(Advanced(self).GetCollider(int64(0)))
+}
+
+/*
+Returns the colliding body's attached [Object] given a collision index (the deepest collision by default), if a collision occurred.
+*/
+func (self Expanded) GetCollider(collision_index int) Object.Instance { //gd:PhysicsTestMotionResult3D.get_collider
+	return Object.Instance(Advanced(self).GetCollider(int64(collision_index)))
 }
 
 /*
 Returns the colliding body's shape index given a collision index (the deepest collision by default), if a collision occurred. See [CollisionObject3D].
 */
 func (self Instance) GetColliderShape() int { //gd:PhysicsTestMotionResult3D.get_collider_shape
-	return int(int(class(self).GetColliderShape(int64(0))))
+	return int(int(Advanced(self).GetColliderShape(int64(0))))
+}
+
+/*
+Returns the colliding body's shape index given a collision index (the deepest collision by default), if a collision occurred. See [CollisionObject3D].
+*/
+func (self Expanded) GetColliderShape(collision_index int) int { //gd:PhysicsTestMotionResult3D.get_collider_shape
+	return int(int(Advanced(self).GetColliderShape(int64(collision_index))))
 }
 
 /*
 Returns the moving object's colliding shape given a collision index (the deepest collision by default), if a collision occurred.
 */
 func (self Instance) GetCollisionLocalShape() int { //gd:PhysicsTestMotionResult3D.get_collision_local_shape
-	return int(int(class(self).GetCollisionLocalShape(int64(0))))
+	return int(int(Advanced(self).GetCollisionLocalShape(int64(0))))
+}
+
+/*
+Returns the moving object's colliding shape given a collision index (the deepest collision by default), if a collision occurred.
+*/
+func (self Expanded) GetCollisionLocalShape(collision_index int) int { //gd:PhysicsTestMotionResult3D.get_collision_local_shape
+	return int(int(Advanced(self).GetCollisionLocalShape(int64(collision_index))))
 }
 
 /*
 Returns the length of overlap along the collision normal given a collision index (the deepest collision by default), if a collision occurred.
 */
 func (self Instance) GetCollisionDepth() Float.X { //gd:PhysicsTestMotionResult3D.get_collision_depth
-	return Float.X(Float.X(class(self).GetCollisionDepth(int64(0))))
+	return Float.X(Float.X(Advanced(self).GetCollisionDepth(int64(0))))
+}
+
+/*
+Returns the length of overlap along the collision normal given a collision index (the deepest collision by default), if a collision occurred.
+*/
+func (self Expanded) GetCollisionDepth(collision_index int) Float.X { //gd:PhysicsTestMotionResult3D.get_collision_depth
+	return Float.X(Float.X(Advanced(self).GetCollisionDepth(int64(collision_index))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

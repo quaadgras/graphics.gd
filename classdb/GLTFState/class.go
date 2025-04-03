@@ -58,14 +58,14 @@ type Any interface {
 Appends an extension to the list of extensions used by this glTF file during serialization. If [param required] is [code]true[/code], the extension will also be added to the list of required extensions. Do not run this in [method GLTFDocumentExtension._export_post], as that stage is too late to add extensions. The final list is sorted alphabetically.
 */
 func (self Instance) AddUsedExtension(extension_name string, required bool) { //gd:GLTFState.add_used_extension
-	class(self).AddUsedExtension(String.New(extension_name), required)
+	Advanced(self).AddUsedExtension(String.New(extension_name), required)
 }
 
 /*
 Appends the given byte array data to the buffers and creates a [GLTFBufferView] for it. The index of the destination [GLTFBufferView] is returned. If [param deduplication] is [code]true[/code], the buffers will first be searched for duplicate data, otherwise new bytes will always be appended.
 */
 func (self Instance) AppendDataToBuffers(data []byte, deduplication bool) int { //gd:GLTFState.append_data_to_buffers
-	return int(int(class(self).AppendDataToBuffers(Packed.Bytes(Packed.New(data...)), deduplication)))
+	return int(int(Advanced(self).AppendDataToBuffers(Packed.Bytes(Packed.New(data...)), deduplication)))
 }
 
 /*
@@ -74,21 +74,21 @@ The [param godot_scene_node] parameter is the Godot scene node that corresponds 
 The [param parent_node_index] parameter is the index of the parent [GLTFNode] in the state. If [code]-1[/code], the node will be a root node, otherwise the new node will be added to the parent's list of children. The index will also be written to the [member GLTFNode.parent] property of the new node.
 */
 func (self Instance) AppendGltfNode(gltf_node [1]gdclass.GLTFNode, godot_scene_node [1]gdclass.Node, parent_node_index int) int { //gd:GLTFState.append_gltf_node
-	return int(int(class(self).AppendGltfNode(gltf_node, godot_scene_node, int64(parent_node_index))))
+	return int(int(Advanced(self).AppendGltfNode(gltf_node, godot_scene_node, int64(parent_node_index))))
 }
 
 /*
 Returns the number of [AnimationPlayer] nodes in this [GLTFState]. These nodes are only used during the export process when converting Godot [AnimationPlayer] nodes to glTF animations.
 */
 func (self Instance) GetAnimationPlayersCount(idx int) int { //gd:GLTFState.get_animation_players_count
-	return int(int(class(self).GetAnimationPlayersCount(int64(idx))))
+	return int(int(Advanced(self).GetAnimationPlayersCount(int64(idx))))
 }
 
 /*
 Returns the [AnimationPlayer] node with the given index. These nodes are only used during the export process when converting Godot [AnimationPlayer] nodes to glTF animations.
 */
 func (self Instance) GetAnimationPlayer(idx int) [1]gdclass.AnimationPlayer { //gd:GLTFState.get_animation_player
-	return [1]gdclass.AnimationPlayer(class(self).GetAnimationPlayer(int64(idx)))
+	return [1]gdclass.AnimationPlayer(Advanced(self).GetAnimationPlayer(int64(idx)))
 }
 
 /*
@@ -96,7 +96,7 @@ Returns the Godot scene node that corresponds to the same index as the [GLTFNode
 [b]Note:[/b] Not every [GLTFNode] will have a scene node generated, and not every generated scene node will have a corresponding [GLTFNode]. If there is no scene node for this [GLTFNode] index, [code]null[/code] is returned.
 */
 func (self Instance) GetSceneNode(idx int) [1]gdclass.Node { //gd:GLTFState.get_scene_node
-	return [1]gdclass.Node(class(self).GetSceneNode(int64(idx)))
+	return [1]gdclass.Node(Advanced(self).GetSceneNode(int64(idx)))
 }
 
 /*
@@ -104,7 +104,7 @@ Returns the index of the [GLTFNode] corresponding to this Godot scene node. This
 [b]Note:[/b] Not every Godot scene node will have a corresponding [GLTFNode], and not every [GLTFNode] will have a scene node generated. If there is no [GLTFNode] index for this scene node, [code]-1[/code] is returned.
 */
 func (self Instance) GetNodeIndex(scene_node [1]gdclass.Node) int { //gd:GLTFState.get_node_index
-	return int(int(class(self).GetNodeIndex(scene_node)))
+	return int(int(Advanced(self).GetNodeIndex(scene_node)))
 }
 
 /*
@@ -112,7 +112,7 @@ Gets additional arbitrary data in this [GLTFState] instance. This can be used to
 The argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the glTF file), and the return value can be anything you set. If nothing was set, the return value is [code]null[/code].
 */
 func (self Instance) GetAdditionalData(extension_name string) any { //gd:GLTFState.get_additional_data
-	return any(class(self).GetAdditionalData(String.Name(String.New(extension_name))).Interface())
+	return any(Advanced(self).GetAdditionalData(String.Name(String.New(extension_name))).Interface())
 }
 
 /*
@@ -120,7 +120,7 @@ Sets additional arbitrary data in this [GLTFState] instance. This can be used to
 The first argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the glTF file), and the second argument can be anything you want.
 */
 func (self Instance) SetAdditionalData(extension_name string, additional_data any) { //gd:GLTFState.set_additional_data
-	class(self).SetAdditionalData(String.Name(String.New(extension_name)), variant.New(additional_data))
+	Advanced(self).SetAdditionalData(String.Name(String.New(extension_name)), variant.New(additional_data))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

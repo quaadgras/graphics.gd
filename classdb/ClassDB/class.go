@@ -56,7 +56,7 @@ Returns the names of all the classes available.
 */
 func GetClassList() []string { //gd:ClassDB.get_class_list
 	once.Do(singleton)
-	return []string(class(self).GetClassList().Strings())
+	return []string(Advanced().GetClassList().Strings())
 }
 
 /*
@@ -64,7 +64,7 @@ Returns the names of all the classes that directly or indirectly inherit from [p
 */
 func GetInheritersFromClass(class_ string) []string { //gd:ClassDB.get_inheriters_from_class
 	once.Do(singleton)
-	return []string(class(self).GetInheritersFromClass(String.Name(String.New(class_))).Strings())
+	return []string(Advanced().GetInheritersFromClass(String.Name(String.New(class_))).Strings())
 }
 
 /*
@@ -72,7 +72,7 @@ Returns the parent class of [param class].
 */
 func GetParentClass(class_ string) string { //gd:ClassDB.get_parent_class
 	once.Do(singleton)
-	return string(class(self).GetParentClass(String.Name(String.New(class_))).String())
+	return string(Advanced().GetParentClass(String.Name(String.New(class_))).String())
 }
 
 /*
@@ -80,7 +80,7 @@ Returns whether the specified [param class] is available or not.
 */
 func ClassExists(class_ string) bool { //gd:ClassDB.class_exists
 	once.Do(singleton)
-	return bool(class(self).ClassExists(String.Name(String.New(class_))))
+	return bool(Advanced().ClassExists(String.Name(String.New(class_))))
 }
 
 /*
@@ -88,7 +88,7 @@ Returns whether [param inherits] is an ancestor of [param class] or not.
 */
 func IsParentClass(class_ string, inherits string) bool { //gd:ClassDB.is_parent_class
 	once.Do(singleton)
-	return bool(class(self).IsParentClass(String.Name(String.New(class_)), String.Name(String.New(inherits))))
+	return bool(Advanced().IsParentClass(String.Name(String.New(class_)), String.Name(String.New(inherits))))
 }
 
 /*
@@ -96,7 +96,7 @@ Returns [code]true[/code] if objects can be instantiated from the specified [par
 */
 func CanInstantiate(class_ string) bool { //gd:ClassDB.can_instantiate
 	once.Do(singleton)
-	return bool(class(self).CanInstantiate(String.Name(String.New(class_))))
+	return bool(Advanced().CanInstantiate(String.Name(String.New(class_))))
 }
 
 /*
@@ -104,7 +104,7 @@ Creates an instance of [param class].
 */
 func Instantiate(class_ string) any { //gd:ClassDB.instantiate
 	once.Do(singleton)
-	return any(class(self).Instantiate(String.Name(String.New(class_))).Interface())
+	return any(Advanced().Instantiate(String.Name(String.New(class_))).Interface())
 }
 
 /*
@@ -112,7 +112,7 @@ Returns the API type of [param class]. See [enum APIType].
 */
 func ClassGetApiType(class_ string) gdclass.ClassDBAPIType { //gd:ClassDB.class_get_api_type
 	once.Do(singleton)
-	return gdclass.ClassDBAPIType(class(self).ClassGetApiType(String.Name(String.New(class_))))
+	return gdclass.ClassDBAPIType(Advanced().ClassGetApiType(String.Name(String.New(class_))))
 }
 
 /*
@@ -120,7 +120,7 @@ Returns whether [param class] or its ancestry has a signal called [param signal]
 */
 func ClassHasSignal(class_ string, signal string) bool { //gd:ClassDB.class_has_signal
 	once.Do(singleton)
-	return bool(class(self).ClassHasSignal(String.Name(String.New(class_)), String.Name(String.New(signal))))
+	return bool(Advanced().ClassHasSignal(String.Name(String.New(class_)), String.Name(String.New(signal))))
 }
 
 /*
@@ -128,23 +128,39 @@ Returns the [param signal] data of [param class] or its ancestry. The returned v
 */
 func ClassGetSignal(class_ string, signal string) SignalInfo { //gd:ClassDB.class_get_signal
 	once.Do(singleton)
-	return SignalInfo(gd.DictionaryAs[SignalInfo](class(self).ClassGetSignal(String.Name(String.New(class_)), String.Name(String.New(signal)))))
+	return SignalInfo(gd.DictionaryAs[SignalInfo](Advanced().ClassGetSignal(String.Name(String.New(class_)), String.Name(String.New(signal)))))
 }
 
 /*
 Returns an array with all the signals of [param class] or its ancestry if [param no_inheritance] is [code]false[/code]. Every element of the array is a [Dictionary] as described in [method class_get_signal].
 */
-func ClassGetSignalList(class_ string) []SignalInfo { //gd:ClassDB.class_get_signal_list
+func ClassGetSignalList(class_ string, no_inheritance bool) []SignalInfo { //gd:ClassDB.class_get_signal_list
 	once.Do(singleton)
-	return []SignalInfo(gd.ArrayAs[[]SignalInfo](gd.InternalArray(class(self).ClassGetSignalList(String.Name(String.New(class_)), false))))
+	return []SignalInfo(gd.ArrayAs[[]SignalInfo](gd.InternalArray(Advanced().ClassGetSignalList(String.Name(String.New(class_)), no_inheritance))))
+}
+
+/*
+Returns an array with all the signals of [param class] or its ancestry if [param no_inheritance] is [code]false[/code]. Every element of the array is a [Dictionary] as described in [method class_get_signal].
+*/
+func ClassGetSignalListExpanded(class_ string, no_inheritance bool) []SignalInfo { //gd:ClassDB.class_get_signal_list
+	once.Do(singleton)
+	return []SignalInfo(gd.ArrayAs[[]SignalInfo](gd.InternalArray(Advanced().ClassGetSignalList(String.Name(String.New(class_)), no_inheritance))))
 }
 
 /*
 Returns an array with all the properties of [param class] or its ancestry if [param no_inheritance] is [code]false[/code].
 */
-func ClassGetPropertyList(class_ string) []PropertyInfo { //gd:ClassDB.class_get_property_list
+func ClassGetPropertyList(class_ string, no_inheritance bool) []PropertyInfo { //gd:ClassDB.class_get_property_list
 	once.Do(singleton)
-	return []PropertyInfo(gd.ArrayAs[[]PropertyInfo](gd.InternalArray(class(self).ClassGetPropertyList(String.Name(String.New(class_)), false))))
+	return []PropertyInfo(gd.ArrayAs[[]PropertyInfo](gd.InternalArray(Advanced().ClassGetPropertyList(String.Name(String.New(class_)), no_inheritance))))
+}
+
+/*
+Returns an array with all the properties of [param class] or its ancestry if [param no_inheritance] is [code]false[/code].
+*/
+func ClassGetPropertyListExpanded(class_ string, no_inheritance bool) []PropertyInfo { //gd:ClassDB.class_get_property_list
+	once.Do(singleton)
+	return []PropertyInfo(gd.ArrayAs[[]PropertyInfo](gd.InternalArray(Advanced().ClassGetPropertyList(String.Name(String.New(class_)), no_inheritance))))
 }
 
 /*
@@ -152,7 +168,7 @@ Returns the getter method name of [param property] of [param class].
 */
 func ClassGetPropertyGetter(class_ string, property string) string { //gd:ClassDB.class_get_property_getter
 	once.Do(singleton)
-	return string(class(self).ClassGetPropertyGetter(String.Name(String.New(class_)), String.Name(String.New(property))).String())
+	return string(Advanced().ClassGetPropertyGetter(String.Name(String.New(class_)), String.Name(String.New(property))).String())
 }
 
 /*
@@ -160,7 +176,7 @@ Returns the setter method name of [param property] of [param class].
 */
 func ClassGetPropertySetter(class_ string, property string) string { //gd:ClassDB.class_get_property_setter
 	once.Do(singleton)
-	return string(class(self).ClassGetPropertySetter(String.Name(String.New(class_)), String.Name(String.New(property))).String())
+	return string(Advanced().ClassGetPropertySetter(String.Name(String.New(class_)), String.Name(String.New(property))).String())
 }
 
 /*
@@ -168,7 +184,7 @@ Returns the value of [param property] of [param object] or its ancestry.
 */
 func ClassGetProperty(obj Object.Instance, property string) any { //gd:ClassDB.class_get_property
 	once.Do(singleton)
-	return any(class(self).ClassGetProperty(obj, String.Name(String.New(property))).Interface())
+	return any(Advanced().ClassGetProperty(obj, String.Name(String.New(property))).Interface())
 }
 
 /*
@@ -176,7 +192,7 @@ Sets [param property] value of [param object] to [param value].
 */
 func ClassSetProperty(obj Object.Instance, property string, value any) error { //gd:ClassDB.class_set_property
 	once.Do(singleton)
-	return error(gd.ToError(class(self).ClassSetProperty(obj, String.Name(String.New(property)), variant.New(value))))
+	return error(gd.ToError(Advanced().ClassSetProperty(obj, String.Name(String.New(property)), variant.New(value))))
 }
 
 /*
@@ -184,40 +200,73 @@ Returns the default value of [param property] of [param class] or its ancestor c
 */
 func ClassGetPropertyDefaultValue(class_ string, property string) any { //gd:ClassDB.class_get_property_default_value
 	once.Do(singleton)
-	return any(class(self).ClassGetPropertyDefaultValue(String.Name(String.New(class_)), String.Name(String.New(property))).Interface())
+	return any(Advanced().ClassGetPropertyDefaultValue(String.Name(String.New(class_)), String.Name(String.New(property))).Interface())
 }
 
 /*
 Returns whether [param class] (or its ancestry if [param no_inheritance] is [code]false[/code]) has a method called [param method] or not.
 */
-func ClassHasMethod(class_ string, method string) bool { //gd:ClassDB.class_has_method
+func ClassHasMethod(class_ string, method string, no_inheritance bool) bool { //gd:ClassDB.class_has_method
 	once.Do(singleton)
-	return bool(class(self).ClassHasMethod(String.Name(String.New(class_)), String.Name(String.New(method)), false))
+	return bool(Advanced().ClassHasMethod(String.Name(String.New(class_)), String.Name(String.New(method)), no_inheritance))
+}
+
+/*
+Returns whether [param class] (or its ancestry if [param no_inheritance] is [code]false[/code]) has a method called [param method] or not.
+*/
+func ClassHasMethodExpanded(class_ string, method string, no_inheritance bool) bool { //gd:ClassDB.class_has_method
+	once.Do(singleton)
+	return bool(Advanced().ClassHasMethod(String.Name(String.New(class_)), String.Name(String.New(method)), no_inheritance))
 }
 
 /*
 Returns the number of arguments of the method [param method] of [param class] or its ancestry if [param no_inheritance] is [code]false[/code].
 */
-func ClassGetMethodArgumentCount(class_ string, method string) int { //gd:ClassDB.class_get_method_argument_count
+func ClassGetMethodArgumentCount(class_ string, method string, no_inheritance bool) int { //gd:ClassDB.class_get_method_argument_count
 	once.Do(singleton)
-	return int(int(class(self).ClassGetMethodArgumentCount(String.Name(String.New(class_)), String.Name(String.New(method)), false)))
+	return int(int(Advanced().ClassGetMethodArgumentCount(String.Name(String.New(class_)), String.Name(String.New(method)), no_inheritance)))
+}
+
+/*
+Returns the number of arguments of the method [param method] of [param class] or its ancestry if [param no_inheritance] is [code]false[/code].
+*/
+func ClassGetMethodArgumentCountExpanded(class_ string, method string, no_inheritance bool) int { //gd:ClassDB.class_get_method_argument_count
+	once.Do(singleton)
+	return int(int(Advanced().ClassGetMethodArgumentCount(String.Name(String.New(class_)), String.Name(String.New(method)), no_inheritance)))
 }
 
 /*
 Returns an array with all the methods of [param class] or its ancestry if [param no_inheritance] is [code]false[/code]. Every element of the array is a [Dictionary] with the following keys: [code]args[/code], [code]default_args[/code], [code]flags[/code], [code]id[/code], [code]name[/code], [code]return: (class_name, hint, hint_string, name, type, usage)[/code].
 [b]Note:[/b] In exported release builds the debug info is not available, so the returned dictionaries will contain only method names.
 */
-func ClassGetMethodList(class_ string) []PropertyInfo { //gd:ClassDB.class_get_method_list
+func ClassGetMethodList(class_ string, no_inheritance bool) []PropertyInfo { //gd:ClassDB.class_get_method_list
 	once.Do(singleton)
-	return []PropertyInfo(gd.ArrayAs[[]PropertyInfo](gd.InternalArray(class(self).ClassGetMethodList(String.Name(String.New(class_)), false))))
+	return []PropertyInfo(gd.ArrayAs[[]PropertyInfo](gd.InternalArray(Advanced().ClassGetMethodList(String.Name(String.New(class_)), no_inheritance))))
+}
+
+/*
+Returns an array with all the methods of [param class] or its ancestry if [param no_inheritance] is [code]false[/code]. Every element of the array is a [Dictionary] with the following keys: [code]args[/code], [code]default_args[/code], [code]flags[/code], [code]id[/code], [code]name[/code], [code]return: (class_name, hint, hint_string, name, type, usage)[/code].
+[b]Note:[/b] In exported release builds the debug info is not available, so the returned dictionaries will contain only method names.
+*/
+func ClassGetMethodListExpanded(class_ string, no_inheritance bool) []PropertyInfo { //gd:ClassDB.class_get_method_list
+	once.Do(singleton)
+	return []PropertyInfo(gd.ArrayAs[[]PropertyInfo](gd.InternalArray(Advanced().ClassGetMethodList(String.Name(String.New(class_)), no_inheritance))))
 }
 
 /*
 Returns an array with the names all the integer constants of [param class] or its ancestry.
 */
-func ClassGetIntegerConstantList(class_ string) []string { //gd:ClassDB.class_get_integer_constant_list
+func ClassGetIntegerConstantList(class_ string, no_inheritance bool) []string { //gd:ClassDB.class_get_integer_constant_list
 	once.Do(singleton)
-	return []string(class(self).ClassGetIntegerConstantList(String.Name(String.New(class_)), false).Strings())
+	return []string(Advanced().ClassGetIntegerConstantList(String.Name(String.New(class_)), no_inheritance).Strings())
+}
+
+/*
+Returns an array with the names all the integer constants of [param class] or its ancestry.
+*/
+func ClassGetIntegerConstantListExpanded(class_ string, no_inheritance bool) []string { //gd:ClassDB.class_get_integer_constant_list
+	once.Do(singleton)
+	return []string(Advanced().ClassGetIntegerConstantList(String.Name(String.New(class_)), no_inheritance).Strings())
 }
 
 /*
@@ -225,7 +274,7 @@ Returns whether [param class] or its ancestry has an integer constant called [pa
 */
 func ClassHasIntegerConstant(class_ string, name string) bool { //gd:ClassDB.class_has_integer_constant
 	once.Do(singleton)
-	return bool(class(self).ClassHasIntegerConstant(String.Name(String.New(class_)), String.Name(String.New(name))))
+	return bool(Advanced().ClassHasIntegerConstant(String.Name(String.New(class_)), String.Name(String.New(name))))
 }
 
 /*
@@ -233,47 +282,87 @@ Returns the value of the integer constant [param name] of [param class] or its a
 */
 func ClassGetIntegerConstant(class_ string, name string) int { //gd:ClassDB.class_get_integer_constant
 	once.Do(singleton)
-	return int(int(class(self).ClassGetIntegerConstant(String.Name(String.New(class_)), String.Name(String.New(name)))))
+	return int(int(Advanced().ClassGetIntegerConstant(String.Name(String.New(class_)), String.Name(String.New(name)))))
 }
 
 /*
 Returns whether [param class] or its ancestry has an enum called [param name] or not.
 */
-func ClassHasEnum(class_ string, name string) bool { //gd:ClassDB.class_has_enum
+func ClassHasEnum(class_ string, name string, no_inheritance bool) bool { //gd:ClassDB.class_has_enum
 	once.Do(singleton)
-	return bool(class(self).ClassHasEnum(String.Name(String.New(class_)), String.Name(String.New(name)), false))
+	return bool(Advanced().ClassHasEnum(String.Name(String.New(class_)), String.Name(String.New(name)), no_inheritance))
+}
+
+/*
+Returns whether [param class] or its ancestry has an enum called [param name] or not.
+*/
+func ClassHasEnumExpanded(class_ string, name string, no_inheritance bool) bool { //gd:ClassDB.class_has_enum
+	once.Do(singleton)
+	return bool(Advanced().ClassHasEnum(String.Name(String.New(class_)), String.Name(String.New(name)), no_inheritance))
 }
 
 /*
 Returns an array with all the enums of [param class] or its ancestry.
 */
-func ClassGetEnumList(class_ string) []string { //gd:ClassDB.class_get_enum_list
+func ClassGetEnumList(class_ string, no_inheritance bool) []string { //gd:ClassDB.class_get_enum_list
 	once.Do(singleton)
-	return []string(class(self).ClassGetEnumList(String.Name(String.New(class_)), false).Strings())
+	return []string(Advanced().ClassGetEnumList(String.Name(String.New(class_)), no_inheritance).Strings())
+}
+
+/*
+Returns an array with all the enums of [param class] or its ancestry.
+*/
+func ClassGetEnumListExpanded(class_ string, no_inheritance bool) []string { //gd:ClassDB.class_get_enum_list
+	once.Do(singleton)
+	return []string(Advanced().ClassGetEnumList(String.Name(String.New(class_)), no_inheritance).Strings())
 }
 
 /*
 Returns an array with all the keys in [param enum] of [param class] or its ancestry.
 */
-func ClassGetEnumConstants(class_ string, enum string) []string { //gd:ClassDB.class_get_enum_constants
+func ClassGetEnumConstants(class_ string, enum string, no_inheritance bool) []string { //gd:ClassDB.class_get_enum_constants
 	once.Do(singleton)
-	return []string(class(self).ClassGetEnumConstants(String.Name(String.New(class_)), String.Name(String.New(enum)), false).Strings())
+	return []string(Advanced().ClassGetEnumConstants(String.Name(String.New(class_)), String.Name(String.New(enum)), no_inheritance).Strings())
+}
+
+/*
+Returns an array with all the keys in [param enum] of [param class] or its ancestry.
+*/
+func ClassGetEnumConstantsExpanded(class_ string, enum string, no_inheritance bool) []string { //gd:ClassDB.class_get_enum_constants
+	once.Do(singleton)
+	return []string(Advanced().ClassGetEnumConstants(String.Name(String.New(class_)), String.Name(String.New(enum)), no_inheritance).Strings())
 }
 
 /*
 Returns which enum the integer constant [param name] of [param class] or its ancestry belongs to.
 */
-func ClassGetIntegerConstantEnum(class_ string, name string) string { //gd:ClassDB.class_get_integer_constant_enum
+func ClassGetIntegerConstantEnum(class_ string, name string, no_inheritance bool) string { //gd:ClassDB.class_get_integer_constant_enum
 	once.Do(singleton)
-	return string(class(self).ClassGetIntegerConstantEnum(String.Name(String.New(class_)), String.Name(String.New(name)), false).String())
+	return string(Advanced().ClassGetIntegerConstantEnum(String.Name(String.New(class_)), String.Name(String.New(name)), no_inheritance).String())
+}
+
+/*
+Returns which enum the integer constant [param name] of [param class] or its ancestry belongs to.
+*/
+func ClassGetIntegerConstantEnumExpanded(class_ string, name string, no_inheritance bool) string { //gd:ClassDB.class_get_integer_constant_enum
+	once.Do(singleton)
+	return string(Advanced().ClassGetIntegerConstantEnum(String.Name(String.New(class_)), String.Name(String.New(name)), no_inheritance).String())
 }
 
 /*
 Returns whether [param class] (or its ancestor classes if [param no_inheritance] is [code]false[/code]) has an enum called [param enum] that is a bitfield.
 */
-func IsClassEnumBitfield(class_ string, enum string) bool { //gd:ClassDB.is_class_enum_bitfield
+func IsClassEnumBitfield(class_ string, enum string, no_inheritance bool) bool { //gd:ClassDB.is_class_enum_bitfield
 	once.Do(singleton)
-	return bool(class(self).IsClassEnumBitfield(String.Name(String.New(class_)), String.Name(String.New(enum)), false))
+	return bool(Advanced().IsClassEnumBitfield(String.Name(String.New(class_)), String.Name(String.New(enum)), no_inheritance))
+}
+
+/*
+Returns whether [param class] (or its ancestor classes if [param no_inheritance] is [code]false[/code]) has an enum called [param enum] that is a bitfield.
+*/
+func IsClassEnumBitfieldExpanded(class_ string, enum string, no_inheritance bool) bool { //gd:ClassDB.is_class_enum_bitfield
+	once.Do(singleton)
+	return bool(Advanced().IsClassEnumBitfield(String.Name(String.New(class_)), String.Name(String.New(enum)), no_inheritance))
 }
 
 /*
@@ -281,7 +370,7 @@ Returns whether this [param class] is enabled or not.
 */
 func IsClassEnabled(class_ string) bool { //gd:ClassDB.is_class_enabled
 	once.Do(singleton)
-	return bool(class(self).IsClassEnabled(String.Name(String.New(class_))))
+	return bool(Advanced().IsClassEnabled(String.Name(String.New(class_))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

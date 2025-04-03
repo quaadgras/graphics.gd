@@ -60,14 +60,14 @@ type Any interface {
 Sets the light's height, which is used in 2D normal mapping. See [member PointLight2D.height] and [member DirectionalLight2D.height].
 */
 func (self Instance) SetHeight(height Float.X) { //gd:Light2D.set_height
-	class(self).SetHeight(float64(height))
+	Advanced(self).SetHeight(float64(height))
 }
 
 /*
 Returns the light's height, which is used in 2D normal mapping. See [member PointLight2D.height] and [member DirectionalLight2D.height].
 */
 func (self Instance) GetHeight() Float.X { //gd:Light2D.get_height
-	return Float.X(Float.X(class(self).GetHeight()))
+	return Float.X(Float.X(Advanced(self).GetHeight()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

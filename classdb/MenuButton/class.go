@@ -63,21 +63,21 @@ Returns the [PopupMenu] contained in this button.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member Window.visible] property.
 */
 func (self Instance) GetPopup() [1]gdclass.PopupMenu { //gd:MenuButton.get_popup
-	return [1]gdclass.PopupMenu(class(self).GetPopup())
+	return [1]gdclass.PopupMenu(Advanced(self).GetPopup())
 }
 
 /*
 Adjusts popup position and sizing for the [MenuButton], then shows the [PopupMenu]. Prefer this over using [code]get_popup().popup()[/code].
 */
 func (self Instance) ShowPopup() { //gd:MenuButton.show_popup
-	class(self).ShowPopup()
+	Advanced(self).ShowPopup()
 }
 
 /*
 If [code]true[/code], shortcuts are disabled and cannot be used to trigger the button.
 */
 func (self Instance) SetDisableShortcuts(disabled bool) { //gd:MenuButton.set_disable_shortcuts
-	class(self).SetDisableShortcuts(disabled)
+	Advanced(self).SetDisableShortcuts(disabled)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

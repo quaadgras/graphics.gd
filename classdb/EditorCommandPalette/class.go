@@ -64,6 +64,7 @@ commandPalette.AddCommand("command", "test/command", commandCallable)
 [b]Note:[/b] This class shouldn't be instantiated directly. Instead, access the singleton using [method EditorInterface.get_command_palette].
 */
 type Instance [1]gdclass.EditorCommandPalette
+type Expanded [1]gdclass.EditorCommandPalette
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -81,7 +82,18 @@ Adds a custom command to EditorCommandPalette.
 - [param shortcut_text]: [String] (Shortcut text of the [b]Command[/b] if available.)
 */
 func (self Instance) AddCommand(command_name string, key_name string, binded_callable func()) { //gd:EditorCommandPalette.add_command
-	class(self).AddCommand(String.New(command_name), String.New(key_name), Callable.New(binded_callable), String.New("None"))
+	Advanced(self).AddCommand(String.New(command_name), String.New(key_name), Callable.New(binded_callable), String.New("None"))
+}
+
+/*
+Adds a custom command to EditorCommandPalette.
+- [param command_name]: [String] (Name of the [b]Command[/b]. This is displayed to the user.)
+- [param key_name]: [String] (Name of the key for a particular [b]Command[/b]. This is used to uniquely identify the [b]Command[/b].)
+- [param binded_callable]: [Callable] (Callable of the [b]Command[/b]. This will be executed when the [b]Command[/b] is selected.)
+- [param shortcut_text]: [String] (Shortcut text of the [b]Command[/b] if available.)
+*/
+func (self Expanded) AddCommand(command_name string, key_name string, binded_callable func(), shortcut_text string) { //gd:EditorCommandPalette.add_command
+	Advanced(self).AddCommand(String.New(command_name), String.New(key_name), Callable.New(binded_callable), String.New(shortcut_text))
 }
 
 /*
@@ -89,7 +101,7 @@ Removes the custom command from EditorCommandPalette.
 - [param key_name]: [String] (Name of the key for a particular [b]Command[/b].)
 */
 func (self Instance) RemoveCommand(key_name string) { //gd:EditorCommandPalette.remove_command
-	class(self).RemoveCommand(String.New(key_name))
+	Advanced(self).RemoveCommand(String.New(key_name))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

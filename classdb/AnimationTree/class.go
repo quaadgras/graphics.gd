@@ -59,14 +59,14 @@ type Any interface {
 Sets the process notification in which to update animations.
 */
 func (self Instance) SetProcessCallback(mode gdclass.AnimationTreeAnimationProcessCallback) { //gd:AnimationTree.set_process_callback
-	class(self).SetProcessCallback(mode)
+	Advanced(self).SetProcessCallback(mode)
 }
 
 /*
 Returns the process notification in which to update animations.
 */
 func (self Instance) GetProcessCallback() gdclass.AnimationTreeAnimationProcessCallback { //gd:AnimationTree.get_process_callback
-	return gdclass.AnimationTreeAnimationProcessCallback(class(self).GetProcessCallback())
+	return gdclass.AnimationTreeAnimationProcessCallback(Advanced(self).GetProcessCallback())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

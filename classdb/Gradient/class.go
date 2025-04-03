@@ -59,28 +59,28 @@ type Any interface {
 Adds the specified color to the gradient, with the specified offset.
 */
 func (self Instance) AddPoint(offset Float.X, color Color.RGBA) { //gd:Gradient.add_point
-	class(self).AddPoint(float64(offset), Color.RGBA(color))
+	Advanced(self).AddPoint(float64(offset), Color.RGBA(color))
 }
 
 /*
 Removes the color at index [param point].
 */
 func (self Instance) RemovePoint(point int) { //gd:Gradient.remove_point
-	class(self).RemovePoint(int64(point))
+	Advanced(self).RemovePoint(int64(point))
 }
 
 /*
 Sets the offset for the gradient color at index [param point].
 */
 func (self Instance) SetOffset(point int, offset Float.X) { //gd:Gradient.set_offset
-	class(self).SetOffset(int64(point), float64(offset))
+	Advanced(self).SetOffset(int64(point), float64(offset))
 }
 
 /*
 Returns the offset of the gradient color at index [param point].
 */
 func (self Instance) GetOffset(point int) Float.X { //gd:Gradient.get_offset
-	return Float.X(Float.X(class(self).GetOffset(int64(point))))
+	return Float.X(Float.X(Advanced(self).GetOffset(int64(point))))
 }
 
 /*
@@ -88,35 +88,35 @@ Reverses/mirrors the gradient.
 [b]Note:[/b] This method mirrors all points around the middle of the gradient, which may produce unexpected results when [member interpolation_mode] is set to [constant GRADIENT_INTERPOLATE_CONSTANT].
 */
 func (self Instance) Reverse() { //gd:Gradient.reverse
-	class(self).Reverse()
+	Advanced(self).Reverse()
 }
 
 /*
 Sets the color of the gradient color at index [param point].
 */
 func (self Instance) SetColor(point int, color Color.RGBA) { //gd:Gradient.set_color
-	class(self).SetColor(int64(point), Color.RGBA(color))
+	Advanced(self).SetColor(int64(point), Color.RGBA(color))
 }
 
 /*
 Returns the color of the gradient color at index [param point].
 */
 func (self Instance) GetColor(point int) Color.RGBA { //gd:Gradient.get_color
-	return Color.RGBA(class(self).GetColor(int64(point)))
+	return Color.RGBA(Advanced(self).GetColor(int64(point)))
 }
 
 /*
 Returns the interpolated color specified by [param offset].
 */
 func (self Instance) Sample(offset Float.X) Color.RGBA { //gd:Gradient.sample
-	return Color.RGBA(class(self).Sample(float64(offset)))
+	return Color.RGBA(Advanced(self).Sample(float64(offset)))
 }
 
 /*
 Returns the number of colors in the gradient.
 */
 func (self Instance) GetPointCount() int { //gd:Gradient.get_point_count
-	return int(int(class(self).GetPointCount()))
+	return int(int(Advanced(self).GetPointCount()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

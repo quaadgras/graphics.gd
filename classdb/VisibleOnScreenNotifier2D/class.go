@@ -63,7 +63,7 @@ If [code]true[/code], the bounding rectangle is on the screen.
 [b]Note:[/b] It takes one frame for the [VisibleOnScreenNotifier2D]'s visibility to be determined once added to the scene tree, so this method will always return [code]false[/code] right after it is instantiated, before the draw pass.
 */
 func (self Instance) IsOnScreen() bool { //gd:VisibleOnScreenNotifier2D.is_on_screen
-	return bool(class(self).IsOnScreen())
+	return bool(Advanced(self).IsOnScreen())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -153,14 +153,14 @@ Possible values come from [url=https://developer.mozilla.org/en-US/docs/Web/API/
 This method returns nothing, instead it emits the [signal session_supported] signal with the result.
 */
 func (self Instance) IsSessionSupported(session_mode string) { //gd:WebXRInterface.is_session_supported
-	class(self).IsSessionSupported(String.New(session_mode))
+	Advanced(self).IsSessionSupported(String.New(session_mode))
 }
 
 /*
 Returns [code]true[/code] if there is an active input source with the given [param input_source_id].
 */
 func (self Instance) IsInputSourceActive(input_source_id int) bool { //gd:WebXRInterface.is_input_source_active
-	return bool(class(self).IsInputSourceActive(int64(input_source_id)))
+	return bool(Advanced(self).IsInputSourceActive(int64(input_source_id)))
 }
 
 /*
@@ -175,7 +175,7 @@ Use this method to get information about the input source that triggered one of 
 - [signal squeezestart]
 */
 func (self Instance) GetInputSourceTracker(input_source_id int) [1]gdclass.XRControllerTracker { //gd:WebXRInterface.get_input_source_tracker
-	return [1]gdclass.XRControllerTracker(class(self).GetInputSourceTracker(int64(input_source_id)))
+	return [1]gdclass.XRControllerTracker(Advanced(self).GetInputSourceTracker(int64(input_source_id)))
 }
 
 /*
@@ -183,28 +183,28 @@ Returns the target ray mode for the given [param input_source_id].
 This can help interpret the input coming from that input source. See [url=https://developer.mozilla.org/en-US/docs/Web/API/XRInputSource/targetRayMode]XRInputSource.targetRayMode[/url] for more information.
 */
 func (self Instance) GetInputSourceTargetRayMode(input_source_id int) gdclass.WebXRInterfaceTargetRayMode { //gd:WebXRInterface.get_input_source_target_ray_mode
-	return gdclass.WebXRInterfaceTargetRayMode(class(self).GetInputSourceTargetRayMode(int64(input_source_id)))
+	return gdclass.WebXRInterfaceTargetRayMode(Advanced(self).GetInputSourceTargetRayMode(int64(input_source_id)))
 }
 
 /*
 Returns the display refresh rate for the current HMD. Not supported on all HMDs and browsers. It may not report an accurate value until after using [method set_display_refresh_rate].
 */
 func (self Instance) GetDisplayRefreshRate() Float.X { //gd:WebXRInterface.get_display_refresh_rate
-	return Float.X(Float.X(class(self).GetDisplayRefreshRate()))
+	return Float.X(Float.X(Advanced(self).GetDisplayRefreshRate()))
 }
 
 /*
 Sets the display refresh rate for the current HMD. Not supported on all HMDs and browsers. It won't take effect right away until after [signal display_refresh_rate_changed] is emitted.
 */
 func (self Instance) SetDisplayRefreshRate(refresh_rate Float.X) { //gd:WebXRInterface.set_display_refresh_rate
-	class(self).SetDisplayRefreshRate(float64(refresh_rate))
+	Advanced(self).SetDisplayRefreshRate(float64(refresh_rate))
 }
 
 /*
 Returns display refresh rates supported by the current HMD. Only returned if this feature is supported by the web browser and after the interface has been initialized.
 */
 func (self Instance) GetAvailableDisplayRefreshRates() []any { //gd:WebXRInterface.get_available_display_refresh_rates
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetAvailableDisplayRefreshRates())))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetAvailableDisplayRefreshRates())))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

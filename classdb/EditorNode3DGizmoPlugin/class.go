@@ -53,6 +53,7 @@ To use [EditorNode3DGizmoPlugin], register it using the [method EditorPlugin.add
 %!(EXTRA string=EditorNode3DGizmoPlugin)
 */
 type Instance [1]gdclass.EditorNode3DGizmoPlugin
+type Expanded [1]gdclass.EditorNode3DGizmoPlugin
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -479,14 +480,28 @@ func (Instance) _commit_subgizmos(impl func(ptr unsafe.Pointer, gizmo [1]gdclass
 Creates an unshaded material with its variants (selected and/or editable) and adds them to the internal material list. They can then be accessed with [method get_material] and used in [method EditorNode3DGizmo.add_mesh] and [method EditorNode3DGizmo.add_lines]. Should not be overridden.
 */
 func (self Instance) CreateMaterial(name string, color Color.RGBA) { //gd:EditorNode3DGizmoPlugin.create_material
-	class(self).CreateMaterial(String.New(name), Color.RGBA(color), false, false, false)
+	Advanced(self).CreateMaterial(String.New(name), Color.RGBA(color), false, false, false)
+}
+
+/*
+Creates an unshaded material with its variants (selected and/or editable) and adds them to the internal material list. They can then be accessed with [method get_material] and used in [method EditorNode3DGizmo.add_mesh] and [method EditorNode3DGizmo.add_lines]. Should not be overridden.
+*/
+func (self Expanded) CreateMaterial(name string, color Color.RGBA, billboard bool, on_top bool, use_vertex_color bool) { //gd:EditorNode3DGizmoPlugin.create_material
+	Advanced(self).CreateMaterial(String.New(name), Color.RGBA(color), billboard, on_top, use_vertex_color)
 }
 
 /*
 Creates an icon material with its variants (selected and/or editable) and adds them to the internal material list. They can then be accessed with [method get_material] and used in [method EditorNode3DGizmo.add_unscaled_billboard]. Should not be overridden.
 */
 func (self Instance) CreateIconMaterial(name string, texture [1]gdclass.Texture2D) { //gd:EditorNode3DGizmoPlugin.create_icon_material
-	class(self).CreateIconMaterial(String.New(name), texture, false, Color.RGBA(gd.Color{1, 1, 1, 1}))
+	Advanced(self).CreateIconMaterial(String.New(name), texture, false, Color.RGBA(gd.Color{1, 1, 1, 1}))
+}
+
+/*
+Creates an icon material with its variants (selected and/or editable) and adds them to the internal material list. They can then be accessed with [method get_material] and used in [method EditorNode3DGizmo.add_unscaled_billboard]. Should not be overridden.
+*/
+func (self Expanded) CreateIconMaterial(name string, texture [1]gdclass.Texture2D, on_top bool, color Color.RGBA) { //gd:EditorNode3DGizmoPlugin.create_icon_material
+	Advanced(self).CreateIconMaterial(String.New(name), texture, on_top, Color.RGBA(color))
 }
 
 /*
@@ -494,21 +509,36 @@ Creates a handle material with its variants (selected and/or editable) and adds 
 You can optionally provide a texture to use instead of the default icon.
 */
 func (self Instance) CreateHandleMaterial(name string) { //gd:EditorNode3DGizmoPlugin.create_handle_material
-	class(self).CreateHandleMaterial(String.New(name), false, [1][1]gdclass.Texture2D{}[0])
+	Advanced(self).CreateHandleMaterial(String.New(name), false, [1][1]gdclass.Texture2D{}[0])
+}
+
+/*
+Creates a handle material with its variants (selected and/or editable) and adds them to the internal material list. They can then be accessed with [method get_material] and used in [method EditorNode3DGizmo.add_handles]. Should not be overridden.
+You can optionally provide a texture to use instead of the default icon.
+*/
+func (self Expanded) CreateHandleMaterial(name string, billboard bool, texture [1]gdclass.Texture2D) { //gd:EditorNode3DGizmoPlugin.create_handle_material
+	Advanced(self).CreateHandleMaterial(String.New(name), billboard, texture)
 }
 
 /*
 Adds a new material to the internal material list for the plugin. It can then be accessed with [method get_material]. Should not be overridden.
 */
 func (self Instance) AddMaterial(name string, material [1]gdclass.StandardMaterial3D) { //gd:EditorNode3DGizmoPlugin.add_material
-	class(self).AddMaterial(String.New(name), material)
+	Advanced(self).AddMaterial(String.New(name), material)
 }
 
 /*
 Gets material from the internal list of materials. If an [EditorNode3DGizmo] is provided, it will try to get the corresponding variant (selected and/or editable).
 */
 func (self Instance) GetMaterial(name string) [1]gdclass.StandardMaterial3D { //gd:EditorNode3DGizmoPlugin.get_material
-	return [1]gdclass.StandardMaterial3D(class(self).GetMaterial(String.New(name), [1][1]gdclass.EditorNode3DGizmo{}[0]))
+	return [1]gdclass.StandardMaterial3D(Advanced(self).GetMaterial(String.New(name), [1][1]gdclass.EditorNode3DGizmo{}[0]))
+}
+
+/*
+Gets material from the internal list of materials. If an [EditorNode3DGizmo] is provided, it will try to get the corresponding variant (selected and/or editable).
+*/
+func (self Expanded) GetMaterial(name string, gizmo [1]gdclass.EditorNode3DGizmo) [1]gdclass.StandardMaterial3D { //gd:EditorNode3DGizmoPlugin.get_material
+	return [1]gdclass.StandardMaterial3D(Advanced(self).GetMaterial(String.New(name), gizmo))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -43,6 +43,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 Contains the results of a single [RegEx] match returned by [method RegEx.search] and [method RegEx.search_all]. It can be used to find the position and range of the match and its capturing groups, and it can extract its substring for you.
 */
 type Instance [1]gdclass.RegExMatch
+type Expanded [1]gdclass.RegExMatch
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -56,7 +57,7 @@ type Any interface {
 Returns the number of capturing groups.
 */
 func (self Instance) GetGroupCount() int { //gd:RegExMatch.get_group_count
-	return int(int(class(self).GetGroupCount()))
+	return int(int(Advanced(self).GetGroupCount()))
 }
 
 /*
@@ -64,7 +65,15 @@ Returns the substring of the match from the source string. Capturing groups can 
 Returns an empty string if the group did not match or doesn't exist.
 */
 func (self Instance) GetString() string { //gd:RegExMatch.get_string
-	return string(class(self).GetString(variant.New(0)).String())
+	return string(Advanced(self).GetString(variant.New(0)).String())
+}
+
+/*
+Returns the substring of the match from the source string. Capturing groups can be retrieved by providing its group number as an integer or its string name (if it's a named group). The default value of 0 refers to the whole pattern.
+Returns an empty string if the group did not match or doesn't exist.
+*/
+func (self Expanded) GetString(name any) string { //gd:RegExMatch.get_string
+	return string(Advanced(self).GetString(variant.New(name)).String())
 }
 
 /*
@@ -72,7 +81,15 @@ Returns the starting position of the match within the source string. The startin
 Returns -1 if the group did not match or doesn't exist.
 */
 func (self Instance) GetStart() int { //gd:RegExMatch.get_start
-	return int(int(class(self).GetStart(variant.New(0))))
+	return int(int(Advanced(self).GetStart(variant.New(0))))
+}
+
+/*
+Returns the starting position of the match within the source string. The starting position of capturing groups can be retrieved by providing its group number as an integer or its string name (if it's a named group). The default value of 0 refers to the whole pattern.
+Returns -1 if the group did not match or doesn't exist.
+*/
+func (self Expanded) GetStart(name any) int { //gd:RegExMatch.get_start
+	return int(int(Advanced(self).GetStart(variant.New(name))))
 }
 
 /*
@@ -80,7 +97,15 @@ Returns the end position of the match within the source string. The end position
 Returns -1 if the group did not match or doesn't exist.
 */
 func (self Instance) GetEnd() int { //gd:RegExMatch.get_end
-	return int(int(class(self).GetEnd(variant.New(0))))
+	return int(int(Advanced(self).GetEnd(variant.New(0))))
+}
+
+/*
+Returns the end position of the match within the source string. The end position of capturing groups can be retrieved by providing its group number as an integer or its string name (if it's a named group). The default value of 0 refers to the whole pattern.
+Returns -1 if the group did not match or doesn't exist.
+*/
+func (self Expanded) GetEnd(name any) int { //gd:RegExMatch.get_end
+	return int(int(Advanced(self).GetEnd(variant.New(name))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

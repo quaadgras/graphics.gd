@@ -58,28 +58,28 @@ type Any interface {
 Get the number of bindings in this interaction profile.
 */
 func (self Instance) GetBindingCount() int { //gd:OpenXRInteractionProfile.get_binding_count
-	return int(int(class(self).GetBindingCount()))
+	return int(int(Advanced(self).GetBindingCount()))
 }
 
 /*
 Retrieve the binding at this index.
 */
 func (self Instance) GetBinding(index int) [1]gdclass.OpenXRIPBinding { //gd:OpenXRInteractionProfile.get_binding
-	return [1]gdclass.OpenXRIPBinding(class(self).GetBinding(int64(index)))
+	return [1]gdclass.OpenXRIPBinding(Advanced(self).GetBinding(int64(index)))
 }
 
 /*
 Get the number of binding modifiers in this interaction profile.
 */
 func (self Instance) GetBindingModifierCount() int { //gd:OpenXRInteractionProfile.get_binding_modifier_count
-	return int(int(class(self).GetBindingModifierCount()))
+	return int(int(Advanced(self).GetBindingModifierCount()))
 }
 
 /*
 Get the [OpenXRBindingModifier] at this index.
 */
 func (self Instance) GetBindingModifier(index int) [1]gdclass.OpenXRIPBindingModifier { //gd:OpenXRInteractionProfile.get_binding_modifier
-	return [1]gdclass.OpenXRIPBindingModifier(class(self).GetBindingModifier(int64(index)))
+	return [1]gdclass.OpenXRIPBindingModifier(Advanced(self).GetBindingModifier(int64(index)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

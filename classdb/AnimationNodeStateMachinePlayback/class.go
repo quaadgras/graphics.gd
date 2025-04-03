@@ -54,6 +54,7 @@ stateMachine.Travel("some_state");
 [/codeblocks]
 */
 type Instance [1]gdclass.AnimationNodeStateMachinePlayback
+type Expanded [1]gdclass.AnimationNodeStateMachinePlayback
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -69,7 +70,16 @@ If the path does not connect from the current state, the animation will play aft
 If [param reset_on_teleport] is [code]true[/code], the animation is played from the beginning when the travel cause a teleportation.
 */
 func (self Instance) Travel(to_node string) { //gd:AnimationNodeStateMachinePlayback.travel
-	class(self).Travel(String.Name(String.New(to_node)), true)
+	Advanced(self).Travel(String.Name(String.New(to_node)), true)
+}
+
+/*
+Transitions from the current state to another one, following the shortest path.
+If the path does not connect from the current state, the animation will play after the state teleports.
+If [param reset_on_teleport] is [code]true[/code], the animation is played from the beginning when the travel cause a teleportation.
+*/
+func (self Expanded) Travel(to_node string, reset_on_teleport bool) { //gd:AnimationNodeStateMachinePlayback.travel
+	Advanced(self).Travel(String.Name(String.New(to_node)), reset_on_teleport)
 }
 
 /*
@@ -77,28 +87,36 @@ Starts playing the given animation.
 If [param reset] is [code]true[/code], the animation is played from the beginning.
 */
 func (self Instance) Start(node string) { //gd:AnimationNodeStateMachinePlayback.start
-	class(self).Start(String.Name(String.New(node)), true)
+	Advanced(self).Start(String.Name(String.New(node)), true)
+}
+
+/*
+Starts playing the given animation.
+If [param reset] is [code]true[/code], the animation is played from the beginning.
+*/
+func (self Expanded) Start(node string, reset bool) { //gd:AnimationNodeStateMachinePlayback.start
+	Advanced(self).Start(String.Name(String.New(node)), reset)
 }
 
 /*
 If there is a next path by travel or auto advance, immediately transitions from the current state to the next state.
 */
 func (self Instance) Next() { //gd:AnimationNodeStateMachinePlayback.next
-	class(self).Next()
+	Advanced(self).Next()
 }
 
 /*
 Stops the currently playing animation.
 */
 func (self Instance) Stop() { //gd:AnimationNodeStateMachinePlayback.stop
-	class(self).Stop()
+	Advanced(self).Stop()
 }
 
 /*
 Returns [code]true[/code] if an animation is playing.
 */
 func (self Instance) IsPlaying() bool { //gd:AnimationNodeStateMachinePlayback.is_playing
-	return bool(class(self).IsPlaying())
+	return bool(Advanced(self).IsPlaying())
 }
 
 /*
@@ -106,14 +124,14 @@ Returns the currently playing animation state.
 [b]Note:[/b] When using a cross-fade, the current state changes to the next state immediately after the cross-fade begins.
 */
 func (self Instance) GetCurrentNode() string { //gd:AnimationNodeStateMachinePlayback.get_current_node
-	return string(class(self).GetCurrentNode().String())
+	return string(Advanced(self).GetCurrentNode().String())
 }
 
 /*
 Returns the playback position within the current animation state.
 */
 func (self Instance) GetCurrentPlayPosition() Float.X { //gd:AnimationNodeStateMachinePlayback.get_current_play_position
-	return Float.X(Float.X(class(self).GetCurrentPlayPosition()))
+	return Float.X(Float.X(Advanced(self).GetCurrentPlayPosition()))
 }
 
 /*
@@ -121,21 +139,21 @@ Returns the current state length.
 [b]Note:[/b] It is possible that any [AnimationRootNode] can be nodes as well as animations. This means that there can be multiple animations within a single state. Which animation length has priority depends on the nodes connected inside it. Also, if a transition does not reset, the remaining length at that point will be returned.
 */
 func (self Instance) GetCurrentLength() Float.X { //gd:AnimationNodeStateMachinePlayback.get_current_length
-	return Float.X(Float.X(class(self).GetCurrentLength()))
+	return Float.X(Float.X(Advanced(self).GetCurrentLength()))
 }
 
 /*
 Returns the starting state of currently fading animation.
 */
 func (self Instance) GetFadingFromNode() string { //gd:AnimationNodeStateMachinePlayback.get_fading_from_node
-	return string(class(self).GetFadingFromNode().String())
+	return string(Advanced(self).GetFadingFromNode().String())
 }
 
 /*
 Returns the current travel path as computed internally by the A* algorithm.
 */
 func (self Instance) GetTravelPath() []string { //gd:AnimationNodeStateMachinePlayback.get_travel_path
-	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetTravelPath())))
+	return []string(gd.ArrayAs[[]string](gd.InternalArray(Advanced(self).GetTravelPath())))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

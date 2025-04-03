@@ -169,6 +169,7 @@ public partial class ClientNode : Node
 [/codeblocks]
 */
 type Instance [1]gdclass.UDPServer
+type Expanded [1]gdclass.UDPServer
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -182,49 +183,56 @@ type Any interface {
 Starts the server by opening a UDP socket listening on the given [param port]. You can optionally specify a [param bind_address] to only listen for packets sent to that address. See also [method PacketPeerUDP.bind].
 */
 func (self Instance) Listen(port int) error { //gd:UDPServer.listen
-	return error(gd.ToError(class(self).Listen(int64(port), String.New("*"))))
+	return error(gd.ToError(Advanced(self).Listen(int64(port), String.New("*"))))
+}
+
+/*
+Starts the server by opening a UDP socket listening on the given [param port]. You can optionally specify a [param bind_address] to only listen for packets sent to that address. See also [method PacketPeerUDP.bind].
+*/
+func (self Expanded) Listen(port int, bind_address string) error { //gd:UDPServer.listen
+	return error(gd.ToError(Advanced(self).Listen(int64(port), String.New(bind_address))))
 }
 
 /*
 Call this method at regular intervals (e.g. inside [method Node._process]) to process new packets. And packet from known address/port pair will be delivered to the appropriate [PacketPeerUDP], any packet received from an unknown address/port pair will be added as a pending connection (see [method is_connection_available], [method take_connection]). The maximum number of pending connection is defined via [member max_pending_connections].
 */
 func (self Instance) Poll() error { //gd:UDPServer.poll
-	return error(gd.ToError(class(self).Poll()))
+	return error(gd.ToError(Advanced(self).Poll()))
 }
 
 /*
 Returns [code]true[/code] if a packet with a new address/port combination was received on the socket.
 */
 func (self Instance) IsConnectionAvailable() bool { //gd:UDPServer.is_connection_available
-	return bool(class(self).IsConnectionAvailable())
+	return bool(Advanced(self).IsConnectionAvailable())
 }
 
 /*
 Returns the local port this server is listening to.
 */
 func (self Instance) GetLocalPort() int { //gd:UDPServer.get_local_port
-	return int(int(class(self).GetLocalPort()))
+	return int(int(Advanced(self).GetLocalPort()))
 }
 
 /*
 Returns [code]true[/code] if the socket is open and listening on a port.
 */
 func (self Instance) IsListening() bool { //gd:UDPServer.is_listening
-	return bool(class(self).IsListening())
+	return bool(Advanced(self).IsListening())
 }
 
 /*
 Returns the first pending connection (connected to the appropriate address/port). Will return [code]null[/code] if no new connection is available. See also [method is_connection_available], [method PacketPeerUDP.connect_to_host].
 */
 func (self Instance) TakeConnection() [1]gdclass.PacketPeerUDP { //gd:UDPServer.take_connection
-	return [1]gdclass.PacketPeerUDP(class(self).TakeConnection())
+	return [1]gdclass.PacketPeerUDP(Advanced(self).TakeConnection())
 }
 
 /*
 Stops the server, closing the UDP socket if open. Will close all connected [PacketPeerUDP] accepted via [method take_connection] (remote peers will not be notified).
 */
 func (self Instance) Stop() { //gd:UDPServer.stop
-	class(self).Stop()
+	Advanced(self).Stop()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

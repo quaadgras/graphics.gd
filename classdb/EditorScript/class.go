@@ -110,21 +110,21 @@ func (Instance) _run(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVir
 Makes [param node] root of the currently opened scene. Only works if the scene is empty. If the [param node] is a scene instance, an inheriting scene will be created.
 */
 func (self Instance) AddRootNode(node [1]gdclass.Node) { //gd:EditorScript.add_root_node
-	class(self).AddRootNode(node)
+	Advanced(self).AddRootNode(node)
 }
 
 /*
 Returns the edited (current) scene's root [Node]. Equivalent of [method EditorInterface.get_edited_scene_root].
 */
 func (self Instance) GetScene() [1]gdclass.Node { //gd:EditorScript.get_scene
-	return [1]gdclass.Node(class(self).GetScene())
+	return [1]gdclass.Node(Advanced(self).GetScene())
 }
 
 /*
 Returns the [EditorInterface] singleton instance.
 */
 func (self Instance) GetEditorInterface() [1]gdclass.EditorInterface { //gd:EditorScript.get_editor_interface
-	return [1]gdclass.EditorInterface(class(self).GetEditorInterface())
+	return [1]gdclass.EditorInterface(Advanced(self).GetEditorInterface())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

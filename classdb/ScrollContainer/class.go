@@ -61,7 +61,7 @@ Returns the horizontal scrollbar [HScrollBar] of this [ScrollContainer].
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to disable or hide a scrollbar, you can use [member horizontal_scroll_mode].
 */
 func (self Instance) GetHScrollBar() [1]gdclass.HScrollBar { //gd:ScrollContainer.get_h_scroll_bar
-	return [1]gdclass.HScrollBar(class(self).GetHScrollBar())
+	return [1]gdclass.HScrollBar(Advanced(self).GetHScrollBar())
 }
 
 /*
@@ -69,7 +69,7 @@ Returns the vertical scrollbar [VScrollBar] of this [ScrollContainer].
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to disable or hide a scrollbar, you can use [member vertical_scroll_mode].
 */
 func (self Instance) GetVScrollBar() [1]gdclass.VScrollBar { //gd:ScrollContainer.get_v_scroll_bar
-	return [1]gdclass.VScrollBar(class(self).GetVScrollBar())
+	return [1]gdclass.VScrollBar(Advanced(self).GetVScrollBar())
 }
 
 /*
@@ -82,7 +82,7 @@ ensure_control_visible(child_node)
 [/codeblock]
 */
 func (self Instance) EnsureControlVisible(control [1]gdclass.Control) { //gd:ScrollContainer.ensure_control_visible
-	class(self).EnsureControlVisible(control)
+	Advanced(self).EnsureControlVisible(control)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

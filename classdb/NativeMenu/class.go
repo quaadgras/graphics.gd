@@ -93,7 +93,7 @@ Returns [code]true[/code] if the specified [param feature] is supported by the c
 */
 func HasFeature(feature gdclass.NativeMenuFeature) bool { //gd:NativeMenu.has_feature
 	once.Do(singleton)
-	return bool(class(self).HasFeature(feature))
+	return bool(Advanced().HasFeature(feature))
 }
 
 /*
@@ -102,7 +102,7 @@ Returns [code]true[/code] if a special system menu is supported.
 */
 func HasSystemMenu(menu_id gdclass.NativeMenuSystemMenus) bool { //gd:NativeMenu.has_system_menu
 	once.Do(singleton)
-	return bool(class(self).HasSystemMenu(menu_id))
+	return bool(Advanced().HasSystemMenu(menu_id))
 }
 
 /*
@@ -111,7 +111,7 @@ Returns RID of a special system menu.
 */
 func GetSystemMenu(menu_id gdclass.NativeMenuSystemMenus) RID.NativeMenu { //gd:NativeMenu.get_system_menu
 	once.Do(singleton)
-	return RID.NativeMenu(class(self).GetSystemMenu(menu_id))
+	return RID.NativeMenu(Advanced().GetSystemMenu(menu_id))
 }
 
 /*
@@ -120,7 +120,7 @@ Returns readable name of a special system menu.
 */
 func GetSystemMenuName(menu_id gdclass.NativeMenuSystemMenus) string { //gd:NativeMenu.get_system_menu_name
 	once.Do(singleton)
-	return string(class(self).GetSystemMenuName(menu_id).String())
+	return string(Advanced().GetSystemMenuName(menu_id).String())
 }
 
 /*
@@ -129,7 +129,7 @@ Creates a new global menu object.
 */
 func CreateMenu() RID.NativeMenu { //gd:NativeMenu.create_menu
 	once.Do(singleton)
-	return RID.NativeMenu(class(self).CreateMenu())
+	return RID.NativeMenu(Advanced().CreateMenu())
 }
 
 /*
@@ -138,7 +138,7 @@ Returns [code]true[/code] if [param rid] is valid global menu.
 */
 func HasMenu(rid RID.NativeMenu) bool { //gd:NativeMenu.has_menu
 	once.Do(singleton)
-	return bool(class(self).HasMenu(RID.Any(rid)))
+	return bool(Advanced().HasMenu(RID.Any(rid)))
 }
 
 /*
@@ -147,7 +147,7 @@ Frees a global menu object created by this [NativeMenu].
 */
 func FreeMenu(rid RID.NativeMenu) { //gd:NativeMenu.free_menu
 	once.Do(singleton)
-	class(self).FreeMenu(RID.Any(rid))
+	Advanced().FreeMenu(RID.Any(rid))
 }
 
 /*
@@ -156,7 +156,7 @@ Returns global menu size.
 */
 func GetSize(rid RID.NativeMenu) Vector2.XY { //gd:NativeMenu.get_size
 	once.Do(singleton)
-	return Vector2.XY(class(self).GetSize(RID.Any(rid)))
+	return Vector2.XY(Advanced().GetSize(RID.Any(rid)))
 }
 
 /*
@@ -165,7 +165,7 @@ Shows the global menu at [param position] in the screen coordinates.
 */
 func Popup(rid RID.NativeMenu, position Vector2i.XY) { //gd:NativeMenu.popup
 	once.Do(singleton)
-	class(self).Popup(RID.Any(rid), Vector2i.XY(position))
+	Advanced().Popup(RID.Any(rid), Vector2i.XY(position))
 }
 
 /*
@@ -174,7 +174,7 @@ Sets the menu text layout direction from right-to-left if [param is_rtl] is [cod
 */
 func SetInterfaceDirection(rid RID.NativeMenu, is_rtl bool) { //gd:NativeMenu.set_interface_direction
 	once.Do(singleton)
-	class(self).SetInterfaceDirection(RID.Any(rid), is_rtl)
+	Advanced().SetInterfaceDirection(RID.Any(rid), is_rtl)
 }
 
 /*
@@ -183,7 +183,7 @@ Registers callable to emit after the menu is closed.
 */
 func SetPopupOpenCallback(rid RID.NativeMenu, callback func()) { //gd:NativeMenu.set_popup_open_callback
 	once.Do(singleton)
-	class(self).SetPopupOpenCallback(RID.Any(rid), Callable.New(callback))
+	Advanced().SetPopupOpenCallback(RID.Any(rid), Callable.New(callback))
 }
 
 /*
@@ -192,7 +192,7 @@ b]Note:[/b] This method is implemented only on macOS.
 */
 func GetPopupOpenCallback(rid RID.NativeMenu) Callable.Function { //gd:NativeMenu.get_popup_open_callback
 	once.Do(singleton)
-	return Callable.Function(class(self).GetPopupOpenCallback(RID.Any(rid)))
+	return Callable.Function(Advanced().GetPopupOpenCallback(RID.Any(rid)))
 }
 
 /*
@@ -202,7 +202,7 @@ Registers callable to emit when the menu is about to show.
 */
 func SetPopupCloseCallback(rid RID.NativeMenu, callback func()) { //gd:NativeMenu.set_popup_close_callback
 	once.Do(singleton)
-	class(self).SetPopupCloseCallback(RID.Any(rid), Callable.New(callback))
+	Advanced().SetPopupCloseCallback(RID.Any(rid), Callable.New(callback))
 }
 
 /*
@@ -211,7 +211,7 @@ Returns global menu close callback.
 */
 func GetPopupCloseCallback(rid RID.NativeMenu) Callable.Function { //gd:NativeMenu.get_popup_close_callback
 	once.Do(singleton)
-	return Callable.Function(class(self).GetPopupCloseCallback(RID.Any(rid)))
+	return Callable.Function(Advanced().GetPopupCloseCallback(RID.Any(rid)))
 }
 
 /*
@@ -220,7 +220,7 @@ Sets the minimum width of the global menu.
 */
 func SetMinimumWidth(rid RID.NativeMenu, width Float.X) { //gd:NativeMenu.set_minimum_width
 	once.Do(singleton)
-	class(self).SetMinimumWidth(RID.Any(rid), float64(width))
+	Advanced().SetMinimumWidth(RID.Any(rid), float64(width))
 }
 
 /*
@@ -229,7 +229,7 @@ Returns global menu minimum width.
 */
 func GetMinimumWidth(rid RID.NativeMenu) Float.X { //gd:NativeMenu.get_minimum_width
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).GetMinimumWidth(RID.Any(rid))))
+	return Float.X(Float.X(Advanced().GetMinimumWidth(RID.Any(rid))))
 }
 
 /*
@@ -238,7 +238,7 @@ Returns [code]true[/code] if the menu is currently opened.
 */
 func IsOpened(rid RID.NativeMenu) bool { //gd:NativeMenu.is_opened
 	once.Do(singleton)
-	return bool(class(self).IsOpened(RID.Any(rid)))
+	return bool(Advanced().IsOpened(RID.Any(rid)))
 }
 
 /*
@@ -246,9 +246,19 @@ Adds an item that will act as a submenu of the global menu [param rid]. The [par
 Returns index of the inserted item, it's not guaranteed to be the same as [param index] value.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func AddSubmenuItem(rid RID.NativeMenu, label string, submenu_rid RID.NativeMenu) int { //gd:NativeMenu.add_submenu_item
+func AddSubmenuItem(rid RID.NativeMenu, label string, submenu_rid RID.NativeMenu, tag any) int { //gd:NativeMenu.add_submenu_item
 	once.Do(singleton)
-	return int(int(class(self).AddSubmenuItem(RID.Any(rid), String.New(label), RID.Any(submenu_rid), variant.New([1]any{}[0]), int64(-1))))
+	return int(int(Advanced().AddSubmenuItem(RID.Any(rid), String.New(label), RID.Any(submenu_rid), variant.New(tag), int64(-1))))
+}
+
+/*
+Adds an item that will act as a submenu of the global menu [param rid]. The [param submenu_rid] argument is the RID of the global menu that will be shown when the item is clicked.
+Returns index of the inserted item, it's not guaranteed to be the same as [param index] value.
+[b]Note:[/b] This method is implemented on macOS and Windows.
+*/
+func AddSubmenuItemExpanded(rid RID.NativeMenu, label string, submenu_rid RID.NativeMenu, tag any, index int) int { //gd:NativeMenu.add_submenu_item
+	once.Do(singleton)
+	return int(int(Advanced().AddSubmenuItem(RID.Any(rid), String.New(label), RID.Any(submenu_rid), variant.New(tag), int64(index))))
 }
 
 /*
@@ -259,9 +269,22 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
-func AddItem(rid RID.NativeMenu, label string) int { //gd:NativeMenu.add_item
+func AddItem(rid RID.NativeMenu, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key) int { //gd:NativeMenu.add_item
 	once.Do(singleton)
-	return int(int(class(self).AddItem(RID.Any(rid), String.New(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), variant.New([1]any{}[0]), 0, int64(-1))))
+	return int(int(Advanced().AddItem(RID.Any(rid), String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
+}
+
+/*
+Adds a new item with text [param label] to the global menu [param rid].
+Returns index of the inserted item, it's not guaranteed to be the same as [param index] value.
+An [param accelerator] can optionally be defined, which is a keyboard shortcut that can be pressed to trigger the menu button even if it's not currently open. The [param accelerator] is generally a combination of [enum KeyModifierMask]s and [enum Key]s using bitwise OR such as [code]KEY_MASK_CTRL | KEY_A[/code] ([kbd]Ctrl + A[/kbd]).
+[b]Note:[/b] The [param callback] and [param key_callback] Callables need to accept exactly one Variant parameter, the parameter passed to the Callables will be the value passed to [param tag].
+[b]Note:[/b] This method is implemented on macOS and Windows.
+[b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
+*/
+func AddItemExpanded(rid RID.NativeMenu, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:NativeMenu.add_item
+	once.Do(singleton)
+	return int(int(Advanced().AddItem(RID.Any(rid), String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
 
 /*
@@ -272,9 +295,22 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
-func AddCheckItem(rid RID.NativeMenu, label string) int { //gd:NativeMenu.add_check_item
+func AddCheckItem(rid RID.NativeMenu, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key) int { //gd:NativeMenu.add_check_item
 	once.Do(singleton)
-	return int(int(class(self).AddCheckItem(RID.Any(rid), String.New(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), variant.New([1]any{}[0]), 0, int64(-1))))
+	return int(int(Advanced().AddCheckItem(RID.Any(rid), String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
+}
+
+/*
+Adds a new checkable item with text [param label] to the global menu [param rid].
+Returns index of the inserted item, it's not guaranteed to be the same as [param index] value.
+An [param accelerator] can optionally be defined, which is a keyboard shortcut that can be pressed to trigger the menu button even if it's not currently open. The [param accelerator] is generally a combination of [enum KeyModifierMask]s and [enum Key]s using bitwise OR such as [code]KEY_MASK_CTRL | KEY_A[/code] ([kbd]Ctrl + A[/kbd]).
+[b]Note:[/b] The [param callback] and [param key_callback] Callables need to accept exactly one Variant parameter, the parameter passed to the Callables will be the value passed to [param tag].
+[b]Note:[/b] This method is implemented on macOS and Windows.
+[b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
+*/
+func AddCheckItemExpanded(rid RID.NativeMenu, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:NativeMenu.add_check_item
+	once.Do(singleton)
+	return int(int(Advanced().AddCheckItem(RID.Any(rid), String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
 
 /*
@@ -285,9 +321,22 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
-func AddIconItem(rid RID.NativeMenu, icon [1]gdclass.Texture2D, label string) int { //gd:NativeMenu.add_icon_item
+func AddIconItem(rid RID.NativeMenu, icon [1]gdclass.Texture2D, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key) int { //gd:NativeMenu.add_icon_item
 	once.Do(singleton)
-	return int(int(class(self).AddIconItem(RID.Any(rid), icon, String.New(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), variant.New([1]any{}[0]), 0, int64(-1))))
+	return int(int(Advanced().AddIconItem(RID.Any(rid), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
+}
+
+/*
+Adds a new item with text [param label] and icon [param icon] to the global menu [param rid].
+Returns index of the inserted item, it's not guaranteed to be the same as [param index] value.
+An [param accelerator] can optionally be defined, which is a keyboard shortcut that can be pressed to trigger the menu button even if it's not currently open. The [param accelerator] is generally a combination of [enum KeyModifierMask]s and [enum Key]s using bitwise OR such as [code]KEY_MASK_CTRL | KEY_A[/code] ([kbd]Ctrl + A[/kbd]).
+[b]Note:[/b] The [param callback] and [param key_callback] Callables need to accept exactly one Variant parameter, the parameter passed to the Callables will be the value passed to [param tag].
+[b]Note:[/b] This method is implemented on macOS and Windows.
+[b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
+*/
+func AddIconItemExpanded(rid RID.NativeMenu, icon [1]gdclass.Texture2D, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:NativeMenu.add_icon_item
+	once.Do(singleton)
+	return int(int(Advanced().AddIconItem(RID.Any(rid), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
 
 /*
@@ -298,9 +347,22 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
-func AddIconCheckItem(rid RID.NativeMenu, icon [1]gdclass.Texture2D, label string) int { //gd:NativeMenu.add_icon_check_item
+func AddIconCheckItem(rid RID.NativeMenu, icon [1]gdclass.Texture2D, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key) int { //gd:NativeMenu.add_icon_check_item
 	once.Do(singleton)
-	return int(int(class(self).AddIconCheckItem(RID.Any(rid), icon, String.New(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), variant.New([1]any{}[0]), 0, int64(-1))))
+	return int(int(Advanced().AddIconCheckItem(RID.Any(rid), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
+}
+
+/*
+Adds a new checkable item with text [param label] and icon [param icon] to the global menu [param rid].
+Returns index of the inserted item, it's not guaranteed to be the same as [param index] value.
+An [param accelerator] can optionally be defined, which is a keyboard shortcut that can be pressed to trigger the menu button even if it's not currently open. The [param accelerator] is generally a combination of [enum KeyModifierMask]s and [enum Key]s using bitwise OR such as [code]KEY_MASK_CTRL | KEY_A[/code] ([kbd]Ctrl + A[/kbd]).
+[b]Note:[/b] The [param callback] and [param key_callback] Callables need to accept exactly one Variant parameter, the parameter passed to the Callables will be the value passed to [param tag].
+[b]Note:[/b] This method is implemented on macOS and Windows.
+[b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
+*/
+func AddIconCheckItemExpanded(rid RID.NativeMenu, icon [1]gdclass.Texture2D, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:NativeMenu.add_icon_check_item
+	once.Do(singleton)
+	return int(int(Advanced().AddIconCheckItem(RID.Any(rid), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
 
 /*
@@ -312,9 +374,23 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
-func AddRadioCheckItem(rid RID.NativeMenu, label string) int { //gd:NativeMenu.add_radio_check_item
+func AddRadioCheckItem(rid RID.NativeMenu, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key) int { //gd:NativeMenu.add_radio_check_item
 	once.Do(singleton)
-	return int(int(class(self).AddRadioCheckItem(RID.Any(rid), String.New(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), variant.New([1]any{}[0]), 0, int64(-1))))
+	return int(int(Advanced().AddRadioCheckItem(RID.Any(rid), String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
+}
+
+/*
+Adds a new radio-checkable item with text [param label] to the global menu [param rid].
+Returns index of the inserted item, it's not guaranteed to be the same as [param index] value.
+An [param accelerator] can optionally be defined, which is a keyboard shortcut that can be pressed to trigger the menu button even if it's not currently open. The [param accelerator] is generally a combination of [enum KeyModifierMask]s and [enum Key]s using bitwise OR such as [code]KEY_MASK_CTRL | KEY_A[/code] ([kbd]Ctrl + A[/kbd]).
+[b]Note:[/b] Radio-checkable items just display a checkmark, but don't have any built-in checking behavior and must be checked/unchecked manually. See [method set_item_checked] for more info on how to control it.
+[b]Note:[/b] The [param callback] and [param key_callback] Callables need to accept exactly one Variant parameter, the parameter passed to the Callables will be the value passed to [param tag].
+[b]Note:[/b] This method is implemented on macOS and Windows.
+[b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
+*/
+func AddRadioCheckItemExpanded(rid RID.NativeMenu, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:NativeMenu.add_radio_check_item
+	once.Do(singleton)
+	return int(int(Advanced().AddRadioCheckItem(RID.Any(rid), String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
 
 /*
@@ -326,9 +402,23 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
-func AddIconRadioCheckItem(rid RID.NativeMenu, icon [1]gdclass.Texture2D, label string) int { //gd:NativeMenu.add_icon_radio_check_item
+func AddIconRadioCheckItem(rid RID.NativeMenu, icon [1]gdclass.Texture2D, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key) int { //gd:NativeMenu.add_icon_radio_check_item
 	once.Do(singleton)
-	return int(int(class(self).AddIconRadioCheckItem(RID.Any(rid), icon, String.New(label), Callable.New(Callable.Nil), Callable.New(Callable.Nil), variant.New([1]any{}[0]), 0, int64(-1))))
+	return int(int(Advanced().AddIconRadioCheckItem(RID.Any(rid), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
+}
+
+/*
+Adds a new radio-checkable item with text [param label] and icon [param icon] to the global menu [param rid].
+Returns index of the inserted item, it's not guaranteed to be the same as [param index] value.
+An [param accelerator] can optionally be defined, which is a keyboard shortcut that can be pressed to trigger the menu button even if it's not currently open. The [param accelerator] is generally a combination of [enum KeyModifierMask]s and [enum Key]s using bitwise OR such as [code]KEY_MASK_CTRL | KEY_A[/code] ([kbd]Ctrl + A[/kbd]).
+[b]Note:[/b] Radio-checkable items just display a checkmark, but don't have any built-in checking behavior and must be checked/unchecked manually. See [method set_item_checked] for more info on how to control it.
+[b]Note:[/b] The [param callback] and [param key_callback] Callables need to accept exactly one Variant parameter, the parameter passed to the Callables will be the value passed to [param tag].
+[b]Note:[/b] This method is implemented on macOS and Windows.
+[b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
+*/
+func AddIconRadioCheckItemExpanded(rid RID.NativeMenu, icon [1]gdclass.Texture2D, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:NativeMenu.add_icon_radio_check_item
+	once.Do(singleton)
+	return int(int(Advanced().AddIconRadioCheckItem(RID.Any(rid), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
 
 /*
@@ -341,9 +431,24 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
-func AddMultistateItem(rid RID.NativeMenu, label string, max_states int, default_state int) int { //gd:NativeMenu.add_multistate_item
+func AddMultistateItem(rid RID.NativeMenu, label string, max_states int, default_state int, callback func(tag any), key_callback func(tag any), tag any, accelerator Key) int { //gd:NativeMenu.add_multistate_item
 	once.Do(singleton)
-	return int(int(class(self).AddMultistateItem(RID.Any(rid), String.New(label), int64(max_states), int64(default_state), Callable.New(Callable.Nil), Callable.New(Callable.Nil), variant.New([1]any{}[0]), 0, int64(-1))))
+	return int(int(Advanced().AddMultistateItem(RID.Any(rid), String.New(label), int64(max_states), int64(default_state), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
+}
+
+/*
+Adds a new item with text [param label] to the global menu [param rid].
+Contrarily to normal binary items, multistate items can have more than two states, as defined by [param max_states]. Each press or activate of the item will increase the state by one. The default value is defined by [param default_state].
+Returns index of the inserted item, it's not guaranteed to be the same as [param index] value.
+An [param accelerator] can optionally be defined, which is a keyboard shortcut that can be pressed to trigger the menu button even if it's not currently open. The [param accelerator] is generally a combination of [enum KeyModifierMask]s and [enum Key]s using bitwise OR such as [code]KEY_MASK_CTRL | KEY_A[/code] ([kbd]Ctrl + A[/kbd]).
+[b]Note:[/b] By default, there's no indication of the current item state, it should be changed manually.
+[b]Note:[/b] The [param callback] and [param key_callback] Callables need to accept exactly one Variant parameter, the parameter passed to the Callables will be the value passed to [param tag].
+[b]Note:[/b] This method is implemented on macOS and Windows.
+[b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
+*/
+func AddMultistateItemExpanded(rid RID.NativeMenu, label string, max_states int, default_state int, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:NativeMenu.add_multistate_item
+	once.Do(singleton)
+	return int(int(Advanced().AddMultistateItem(RID.Any(rid), String.New(label), int64(max_states), int64(default_state), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
 
 /*
@@ -353,7 +458,17 @@ Returns index of the inserted item, it's not guaranteed to be the same as [param
 */
 func AddSeparator(rid RID.NativeMenu) int { //gd:NativeMenu.add_separator
 	once.Do(singleton)
-	return int(int(class(self).AddSeparator(RID.Any(rid), int64(-1))))
+	return int(int(Advanced().AddSeparator(RID.Any(rid), int64(-1))))
+}
+
+/*
+Adds a separator between items to the global menu [param rid]. Separators also occupy an index.
+Returns index of the inserted item, it's not guaranteed to be the same as [param index] value.
+[b]Note:[/b] This method is implemented on macOS and Windows.
+*/
+func AddSeparatorExpanded(rid RID.NativeMenu, index int) int { //gd:NativeMenu.add_separator
+	once.Do(singleton)
+	return int(int(Advanced().AddSeparator(RID.Any(rid), int64(index))))
 }
 
 /*
@@ -362,7 +477,7 @@ Returns the index of the item with the specified [param text]. Indices are autom
 */
 func FindItemIndexWithText(rid RID.NativeMenu, text string) int { //gd:NativeMenu.find_item_index_with_text
 	once.Do(singleton)
-	return int(int(class(self).FindItemIndexWithText(RID.Any(rid), String.New(text))))
+	return int(int(Advanced().FindItemIndexWithText(RID.Any(rid), String.New(text))))
 }
 
 /*
@@ -371,7 +486,7 @@ Returns the index of the item with the specified [param tag]. Indices are automa
 */
 func FindItemIndexWithTag(rid RID.NativeMenu, tag any) int { //gd:NativeMenu.find_item_index_with_tag
 	once.Do(singleton)
-	return int(int(class(self).FindItemIndexWithTag(RID.Any(rid), variant.New(tag))))
+	return int(int(Advanced().FindItemIndexWithTag(RID.Any(rid), variant.New(tag))))
 }
 
 /*
@@ -380,7 +495,7 @@ Returns the index of the item with the submenu specified by [param submenu_rid].
 */
 func FindItemIndexWithSubmenu(rid RID.NativeMenu, submenu_rid RID.NativeMenu) int { //gd:NativeMenu.find_item_index_with_submenu
 	once.Do(singleton)
-	return int(int(class(self).FindItemIndexWithSubmenu(RID.Any(rid), RID.Any(submenu_rid))))
+	return int(int(Advanced().FindItemIndexWithSubmenu(RID.Any(rid), RID.Any(submenu_rid))))
 }
 
 /*
@@ -389,7 +504,7 @@ Returns [code]true[/code] if the item at index [param idx] is checked.
 */
 func IsItemChecked(rid RID.NativeMenu, idx int) bool { //gd:NativeMenu.is_item_checked
 	once.Do(singleton)
-	return bool(class(self).IsItemChecked(RID.Any(rid), int64(idx)))
+	return bool(Advanced().IsItemChecked(RID.Any(rid), int64(idx)))
 }
 
 /*
@@ -398,7 +513,7 @@ Returns [code]true[/code] if the item at index [param idx] is checkable in some 
 */
 func IsItemCheckable(rid RID.NativeMenu, idx int) bool { //gd:NativeMenu.is_item_checkable
 	once.Do(singleton)
-	return bool(class(self).IsItemCheckable(RID.Any(rid), int64(idx)))
+	return bool(Advanced().IsItemCheckable(RID.Any(rid), int64(idx)))
 }
 
 /*
@@ -408,7 +523,7 @@ Returns [code]true[/code] if the item at index [param idx] has radio button-styl
 */
 func IsItemRadioCheckable(rid RID.NativeMenu, idx int) bool { //gd:NativeMenu.is_item_radio_checkable
 	once.Do(singleton)
-	return bool(class(self).IsItemRadioCheckable(RID.Any(rid), int64(idx)))
+	return bool(Advanced().IsItemRadioCheckable(RID.Any(rid), int64(idx)))
 }
 
 /*
@@ -417,7 +532,7 @@ Returns the callback of the item at index [param idx].
 */
 func GetItemCallback(rid RID.NativeMenu, idx int) Callable.Function { //gd:NativeMenu.get_item_callback
 	once.Do(singleton)
-	return Callable.Function(class(self).GetItemCallback(RID.Any(rid), int64(idx)))
+	return Callable.Function(Advanced().GetItemCallback(RID.Any(rid), int64(idx)))
 }
 
 /*
@@ -426,7 +541,7 @@ Returns the callback of the item accelerator at index [param idx].
 */
 func GetItemKeyCallback(rid RID.NativeMenu, idx int) Callable.Function { //gd:NativeMenu.get_item_key_callback
 	once.Do(singleton)
-	return Callable.Function(class(self).GetItemKeyCallback(RID.Any(rid), int64(idx)))
+	return Callable.Function(Advanced().GetItemKeyCallback(RID.Any(rid), int64(idx)))
 }
 
 /*
@@ -435,7 +550,7 @@ Returns the metadata of the specified item, which might be of any type. You can 
 */
 func GetItemTag(rid RID.NativeMenu, idx int) any { //gd:NativeMenu.get_item_tag
 	once.Do(singleton)
-	return any(class(self).GetItemTag(RID.Any(rid), int64(idx)).Interface())
+	return any(Advanced().GetItemTag(RID.Any(rid), int64(idx)).Interface())
 }
 
 /*
@@ -444,7 +559,7 @@ Returns the text of the item at index [param idx].
 */
 func GetItemText(rid RID.NativeMenu, idx int) string { //gd:NativeMenu.get_item_text
 	once.Do(singleton)
-	return string(class(self).GetItemText(RID.Any(rid), int64(idx)).String())
+	return string(Advanced().GetItemText(RID.Any(rid), int64(idx)).String())
 }
 
 /*
@@ -453,7 +568,7 @@ Returns the submenu ID of the item at index [param idx]. See [method add_submenu
 */
 func GetItemSubmenu(rid RID.NativeMenu, idx int) RID.NativeMenu { //gd:NativeMenu.get_item_submenu
 	once.Do(singleton)
-	return RID.NativeMenu(class(self).GetItemSubmenu(RID.Any(rid), int64(idx)))
+	return RID.NativeMenu(Advanced().GetItemSubmenu(RID.Any(rid), int64(idx)))
 }
 
 /*
@@ -462,7 +577,7 @@ Returns the accelerator of the item at index [param idx]. Accelerators are speci
 */
 func GetItemAccelerator(rid RID.NativeMenu, idx int) Key { //gd:NativeMenu.get_item_accelerator
 	once.Do(singleton)
-	return Key(class(self).GetItemAccelerator(RID.Any(rid), int64(idx)))
+	return Key(Advanced().GetItemAccelerator(RID.Any(rid), int64(idx)))
 }
 
 /*
@@ -472,7 +587,7 @@ See [method set_item_disabled] for more info on how to disable an item.
 */
 func IsItemDisabled(rid RID.NativeMenu, idx int) bool { //gd:NativeMenu.is_item_disabled
 	once.Do(singleton)
-	return bool(class(self).IsItemDisabled(RID.Any(rid), int64(idx)))
+	return bool(Advanced().IsItemDisabled(RID.Any(rid), int64(idx)))
 }
 
 /*
@@ -482,7 +597,7 @@ See [method set_item_hidden] for more info on how to hide an item.
 */
 func IsItemHidden(rid RID.NativeMenu, idx int) bool { //gd:NativeMenu.is_item_hidden
 	once.Do(singleton)
-	return bool(class(self).IsItemHidden(RID.Any(rid), int64(idx)))
+	return bool(Advanced().IsItemHidden(RID.Any(rid), int64(idx)))
 }
 
 /*
@@ -491,7 +606,7 @@ Returns the tooltip associated with the specified index [param idx].
 */
 func GetItemTooltip(rid RID.NativeMenu, idx int) string { //gd:NativeMenu.get_item_tooltip
 	once.Do(singleton)
-	return string(class(self).GetItemTooltip(RID.Any(rid), int64(idx)).String())
+	return string(Advanced().GetItemTooltip(RID.Any(rid), int64(idx)).String())
 }
 
 /*
@@ -500,7 +615,7 @@ Returns the state of a multistate item. See [method add_multistate_item] for det
 */
 func GetItemState(rid RID.NativeMenu, idx int) int { //gd:NativeMenu.get_item_state
 	once.Do(singleton)
-	return int(int(class(self).GetItemState(RID.Any(rid), int64(idx))))
+	return int(int(Advanced().GetItemState(RID.Any(rid), int64(idx))))
 }
 
 /*
@@ -509,7 +624,7 @@ Returns number of states of a multistate item. See [method add_multistate_item] 
 */
 func GetItemMaxStates(rid RID.NativeMenu, idx int) int { //gd:NativeMenu.get_item_max_states
 	once.Do(singleton)
-	return int(int(class(self).GetItemMaxStates(RID.Any(rid), int64(idx))))
+	return int(int(Advanced().GetItemMaxStates(RID.Any(rid), int64(idx))))
 }
 
 /*
@@ -518,7 +633,7 @@ Returns the icon of the item at index [param idx].
 */
 func GetItemIcon(rid RID.NativeMenu, idx int) [1]gdclass.Texture2D { //gd:NativeMenu.get_item_icon
 	once.Do(singleton)
-	return [1]gdclass.Texture2D(class(self).GetItemIcon(RID.Any(rid), int64(idx)))
+	return [1]gdclass.Texture2D(Advanced().GetItemIcon(RID.Any(rid), int64(idx)))
 }
 
 /*
@@ -527,7 +642,7 @@ Returns the horizontal offset of the item at the given [param idx].
 */
 func GetItemIndentationLevel(rid RID.NativeMenu, idx int) int { //gd:NativeMenu.get_item_indentation_level
 	once.Do(singleton)
-	return int(int(class(self).GetItemIndentationLevel(RID.Any(rid), int64(idx))))
+	return int(int(Advanced().GetItemIndentationLevel(RID.Any(rid), int64(idx))))
 }
 
 /*
@@ -536,7 +651,7 @@ Sets the checkstate status of the item at index [param idx].
 */
 func SetItemChecked(rid RID.NativeMenu, idx int, checked bool) { //gd:NativeMenu.set_item_checked
 	once.Do(singleton)
-	class(self).SetItemChecked(RID.Any(rid), int64(idx), checked)
+	Advanced().SetItemChecked(RID.Any(rid), int64(idx), checked)
 }
 
 /*
@@ -545,7 +660,7 @@ Sets whether the item at index [param idx] has a checkbox. If [code]false[/code]
 */
 func SetItemCheckable(rid RID.NativeMenu, idx int, checkable bool) { //gd:NativeMenu.set_item_checkable
 	once.Do(singleton)
-	class(self).SetItemCheckable(RID.Any(rid), int64(idx), checkable)
+	Advanced().SetItemCheckable(RID.Any(rid), int64(idx), checkable)
 }
 
 /*
@@ -555,7 +670,7 @@ Sets the type of the item at the specified index [param idx] to radio button. If
 */
 func SetItemRadioCheckable(rid RID.NativeMenu, idx int, checkable bool) { //gd:NativeMenu.set_item_radio_checkable
 	once.Do(singleton)
-	class(self).SetItemRadioCheckable(RID.Any(rid), int64(idx), checkable)
+	Advanced().SetItemRadioCheckable(RID.Any(rid), int64(idx), checkable)
 }
 
 /*
@@ -565,7 +680,7 @@ Sets the callback of the item at index [param idx]. Callback is emitted when an 
 */
 func SetItemCallback(rid RID.NativeMenu, idx int, callback func(tag any)) { //gd:NativeMenu.set_item_callback
 	once.Do(singleton)
-	class(self).SetItemCallback(RID.Any(rid), int64(idx), Callable.New(callback))
+	Advanced().SetItemCallback(RID.Any(rid), int64(idx), Callable.New(callback))
 }
 
 /*
@@ -575,7 +690,7 @@ Sets the callback of the item at index [param idx]. The callback is emitted when
 */
 func SetItemHoverCallbacks(rid RID.NativeMenu, idx int, callback func(tag any)) { //gd:NativeMenu.set_item_hover_callbacks
 	once.Do(singleton)
-	class(self).SetItemHoverCallbacks(RID.Any(rid), int64(idx), Callable.New(callback))
+	Advanced().SetItemHoverCallbacks(RID.Any(rid), int64(idx), Callable.New(callback))
 }
 
 /*
@@ -585,7 +700,7 @@ Sets the callback of the item at index [param idx]. Callback is emitted when its
 */
 func SetItemKeyCallback(rid RID.NativeMenu, idx int, key_callback func(tag any)) { //gd:NativeMenu.set_item_key_callback
 	once.Do(singleton)
-	class(self).SetItemKeyCallback(RID.Any(rid), int64(idx), Callable.New(key_callback))
+	Advanced().SetItemKeyCallback(RID.Any(rid), int64(idx), Callable.New(key_callback))
 }
 
 /*
@@ -594,7 +709,7 @@ Sets the metadata of an item, which may be of any type. You can later get it wit
 */
 func SetItemTag(rid RID.NativeMenu, idx int, tag any) { //gd:NativeMenu.set_item_tag
 	once.Do(singleton)
-	class(self).SetItemTag(RID.Any(rid), int64(idx), variant.New(tag))
+	Advanced().SetItemTag(RID.Any(rid), int64(idx), variant.New(tag))
 }
 
 /*
@@ -603,7 +718,7 @@ Sets the text of the item at index [param idx].
 */
 func SetItemText(rid RID.NativeMenu, idx int, text string) { //gd:NativeMenu.set_item_text
 	once.Do(singleton)
-	class(self).SetItemText(RID.Any(rid), int64(idx), String.New(text))
+	Advanced().SetItemText(RID.Any(rid), int64(idx), String.New(text))
 }
 
 /*
@@ -612,7 +727,7 @@ Sets the submenu RID of the item at index [param idx]. The submenu is a global m
 */
 func SetItemSubmenu(rid RID.NativeMenu, idx int, submenu_rid RID.NativeMenu) { //gd:NativeMenu.set_item_submenu
 	once.Do(singleton)
-	class(self).SetItemSubmenu(RID.Any(rid), int64(idx), RID.Any(submenu_rid))
+	Advanced().SetItemSubmenu(RID.Any(rid), int64(idx), RID.Any(submenu_rid))
 }
 
 /*
@@ -621,7 +736,7 @@ Sets the accelerator of the item at index [param idx]. [param keycode] can be a 
 */
 func SetItemAccelerator(rid RID.NativeMenu, idx int, keycode Key) { //gd:NativeMenu.set_item_accelerator
 	once.Do(singleton)
-	class(self).SetItemAccelerator(RID.Any(rid), int64(idx), keycode)
+	Advanced().SetItemAccelerator(RID.Any(rid), int64(idx), keycode)
 }
 
 /*
@@ -630,7 +745,7 @@ Enables/disables the item at index [param idx]. When it is disabled, it can't be
 */
 func SetItemDisabled(rid RID.NativeMenu, idx int, disabled bool) { //gd:NativeMenu.set_item_disabled
 	once.Do(singleton)
-	class(self).SetItemDisabled(RID.Any(rid), int64(idx), disabled)
+	Advanced().SetItemDisabled(RID.Any(rid), int64(idx), disabled)
 }
 
 /*
@@ -639,7 +754,7 @@ Hides/shows the item at index [param idx]. When it is hidden, an item does not a
 */
 func SetItemHidden(rid RID.NativeMenu, idx int, hidden bool) { //gd:NativeMenu.set_item_hidden
 	once.Do(singleton)
-	class(self).SetItemHidden(RID.Any(rid), int64(idx), hidden)
+	Advanced().SetItemHidden(RID.Any(rid), int64(idx), hidden)
 }
 
 /*
@@ -648,7 +763,7 @@ Sets the [String] tooltip of the item at the specified index [param idx].
 */
 func SetItemTooltip(rid RID.NativeMenu, idx int, tooltip string) { //gd:NativeMenu.set_item_tooltip
 	once.Do(singleton)
-	class(self).SetItemTooltip(RID.Any(rid), int64(idx), String.New(tooltip))
+	Advanced().SetItemTooltip(RID.Any(rid), int64(idx), String.New(tooltip))
 }
 
 /*
@@ -657,7 +772,7 @@ Sets the state of a multistate item. See [method add_multistate_item] for detail
 */
 func SetItemState(rid RID.NativeMenu, idx int, state int) { //gd:NativeMenu.set_item_state
 	once.Do(singleton)
-	class(self).SetItemState(RID.Any(rid), int64(idx), int64(state))
+	Advanced().SetItemState(RID.Any(rid), int64(idx), int64(state))
 }
 
 /*
@@ -666,7 +781,7 @@ Sets number of state of a multistate item. See [method add_multistate_item] for 
 */
 func SetItemMaxStates(rid RID.NativeMenu, idx int, max_states int) { //gd:NativeMenu.set_item_max_states
 	once.Do(singleton)
-	class(self).SetItemMaxStates(RID.Any(rid), int64(idx), int64(max_states))
+	Advanced().SetItemMaxStates(RID.Any(rid), int64(idx), int64(max_states))
 }
 
 /*
@@ -676,7 +791,7 @@ Replaces the [Texture2D] icon of the specified [param idx].
 */
 func SetItemIcon(rid RID.NativeMenu, idx int, icon [1]gdclass.Texture2D) { //gd:NativeMenu.set_item_icon
 	once.Do(singleton)
-	class(self).SetItemIcon(RID.Any(rid), int64(idx), icon)
+	Advanced().SetItemIcon(RID.Any(rid), int64(idx), icon)
 }
 
 /*
@@ -685,7 +800,7 @@ Sets the horizontal offset of the item at the given [param idx].
 */
 func SetItemIndentationLevel(rid RID.NativeMenu, idx int, level int) { //gd:NativeMenu.set_item_indentation_level
 	once.Do(singleton)
-	class(self).SetItemIndentationLevel(RID.Any(rid), int64(idx), int64(level))
+	Advanced().SetItemIndentationLevel(RID.Any(rid), int64(idx), int64(level))
 }
 
 /*
@@ -694,7 +809,7 @@ Returns number of items in the global menu [param rid].
 */
 func GetItemCount(rid RID.NativeMenu) int { //gd:NativeMenu.get_item_count
 	once.Do(singleton)
-	return int(int(class(self).GetItemCount(RID.Any(rid))))
+	return int(int(Advanced().GetItemCount(RID.Any(rid))))
 }
 
 /*
@@ -703,7 +818,7 @@ Return [code]true[/code] is global menu is a special system menu.
 */
 func IsSystemMenu(rid RID.NativeMenu) bool { //gd:NativeMenu.is_system_menu
 	once.Do(singleton)
-	return bool(class(self).IsSystemMenu(RID.Any(rid)))
+	return bool(Advanced().IsSystemMenu(RID.Any(rid)))
 }
 
 /*
@@ -713,7 +828,7 @@ Removes the item at index [param idx] from the global menu [param rid].
 */
 func RemoveItem(rid RID.NativeMenu, idx int) { //gd:NativeMenu.remove_item
 	once.Do(singleton)
-	class(self).RemoveItem(RID.Any(rid), int64(idx))
+	Advanced().RemoveItem(RID.Any(rid), int64(idx))
 }
 
 /*
@@ -722,7 +837,7 @@ Removes all items from the global menu [param rid].
 */
 func Clear(rid RID.NativeMenu) { //gd:NativeMenu.clear
 	once.Do(singleton)
-	class(self).Clear(RID.Any(rid))
+	Advanced().Clear(RID.Any(rid))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -114,6 +114,7 @@ if (result == Error.Ok)
 [/codeblocks]
 */
 type Instance [1]gdclass.PackedScene
+type Expanded [1]gdclass.PackedScene
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -127,28 +128,35 @@ type Any interface {
 Packs the [param path] node, and all owned sub-nodes, into this [PackedScene]. Any existing data will be cleared. See [member Node.owner].
 */
 func (self Instance) Pack(path [1]gdclass.Node) error { //gd:PackedScene.pack
-	return error(gd.ToError(class(self).Pack(path)))
+	return error(gd.ToError(Advanced(self).Pack(path)))
 }
 
 /*
 Instantiates the scene's node hierarchy. Triggers child scene instantiation(s). Triggers a [constant Node.NOTIFICATION_SCENE_INSTANTIATED] notification on the root node.
 */
 func (self Instance) Instantiate() [1]gdclass.Node { //gd:PackedScene.instantiate
-	return [1]gdclass.Node(class(self).Instantiate(0))
+	return [1]gdclass.Node(Advanced(self).Instantiate(0))
+}
+
+/*
+Instantiates the scene's node hierarchy. Triggers child scene instantiation(s). Triggers a [constant Node.NOTIFICATION_SCENE_INSTANTIATED] notification on the root node.
+*/
+func (self Expanded) Instantiate(edit_state gdclass.PackedSceneGenEditState) [1]gdclass.Node { //gd:PackedScene.instantiate
+	return [1]gdclass.Node(Advanced(self).Instantiate(edit_state))
 }
 
 /*
 Returns [code]true[/code] if the scene file has nodes.
 */
 func (self Instance) CanInstantiate() bool { //gd:PackedScene.can_instantiate
-	return bool(class(self).CanInstantiate())
+	return bool(Advanced(self).CanInstantiate())
 }
 
 /*
 Returns the [SceneState] representing the scene file contents.
 */
 func (self Instance) GetState() [1]gdclass.SceneState { //gd:PackedScene.get_state
-	return [1]gdclass.SceneState(class(self).GetState())
+	return [1]gdclass.SceneState(Advanced(self).GetState())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

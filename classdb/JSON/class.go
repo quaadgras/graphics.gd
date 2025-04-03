@@ -76,6 +76,7 @@ var data = JSON.parse_string(json_string) # Returns null if parsing failed.
 - Certain errors, such as invalid Unicode sequences, do not cause a parser error. Instead, the string is cleaned up and an error is logged to the console.
 */
 type Instance [1]gdclass.JSON
+type Expanded [1]gdclass.JSON
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -129,9 +130,58 @@ The [param indent] parameter controls if and how something is indented; its cont
 }
 [/codeblock]
 */
-func Stringify(data any) string { //gd:JSON.stringify
+func Stringify(data any, indent string, full_precision bool) string { //gd:JSON.stringify
 	self := Instance{}
-	return string(class(self).Stringify(variant.New(data), String.New(""), true, false).String())
+	return string(Advanced(self).Stringify(variant.New(data), String.New(indent), true, full_precision).String())
+}
+
+/*
+Converts a [Variant] var to JSON text and returns the result. Useful for serializing data to store or send over the network.
+[b]Note:[/b] The JSON specification does not define integer or float types, but only a [i]number[/i] type. Therefore, converting a Variant to JSON text will convert all numerical values to [float] types.
+[b]Note:[/b] If [param full_precision] is [code]true[/code], when stringifying floats, the unreliable digits are stringified in addition to the reliable digits to guarantee exact decoding.
+The [param indent] parameter controls if and how something is indented; its contents will be used where there should be an indent in the output. Even spaces like [code]"   "[/code] will work. [code]\t[/code] and [code]\n[/code] can also be used for a tab indent, or to make a newline for each indent respectively.
+[b]Example output:[/b]
+[codeblock]
+## JSON.stringify(my_dictionary)
+{"name":"my_dictionary","version":"1.0.0","entities":[{"name":"entity_0","value":"value_0"},{"name":"entity_1","value":"value_1"}]}
+
+## JSON.stringify(my_dictionary, "\t")
+
+	{
+	    "name": "my_dictionary",
+	    "version": "1.0.0",
+	    "entities": [
+	        {
+	            "name": "entity_0",
+	            "value": "value_0"
+	        },
+	        {
+	            "name": "entity_1",
+	            "value": "value_1"
+	        }
+	    ]
+	}
+
+## JSON.stringify(my_dictionary, "...")
+{
+..."name": "my_dictionary",
+..."version": "1.0.0",
+..."entities": [
+......{
+........."name": "entity_0",
+........."value": "value_0"
+......},
+......{
+........."name": "entity_1",
+........."value": "value_1"
+......}
+...]
+}
+[/codeblock]
+*/
+func StringifyExpanded(data any, indent string, sort_keys bool, full_precision bool) string { //gd:JSON.stringify
+	self := Instance{}
+	return string(Advanced(self).Stringify(variant.New(data), String.New(indent), sort_keys, full_precision).String())
 }
 
 /*
@@ -139,7 +189,7 @@ Attempts to parse the [param json_string] provided and returns the parsed data. 
 */
 func ParseString(json_string string) any { //gd:JSON.parse_string
 	self := Instance{}
-	return any(class(self).ParseString(String.New(json_string)).Interface())
+	return any(Advanced(self).ParseString(String.New(json_string)).Interface())
 }
 
 /*
@@ -149,28 +199,38 @@ Non-static variant of [method parse_string], if you want custom error handling.
 The optional [param keep_text] argument instructs the parser to keep a copy of the original text. This text can be obtained later by using the [method get_parsed_text] function and is used when saving the resource (instead of generating new text from [member data]).
 */
 func (self Instance) Parse(json_text string) error { //gd:JSON.parse
-	return error(gd.ToError(class(self).Parse(String.New(json_text), false)))
+	return error(gd.ToError(Advanced(self).Parse(String.New(json_text), false)))
+}
+
+/*
+Attempts to parse the [param json_text] provided.
+Returns an [enum Error]. If the parse was successful, it returns [constant OK] and the result can be retrieved using [member data]. If unsuccessful, use [method get_error_line] and [method get_error_message] to identify the source of the failure.
+Non-static variant of [method parse_string], if you want custom error handling.
+The optional [param keep_text] argument instructs the parser to keep a copy of the original text. This text can be obtained later by using the [method get_parsed_text] function and is used when saving the resource (instead of generating new text from [member data]).
+*/
+func (self Expanded) Parse(json_text string, keep_text bool) error { //gd:JSON.parse
+	return error(gd.ToError(Advanced(self).Parse(String.New(json_text), keep_text)))
 }
 
 /*
 Return the text parsed by [method parse] (requires passing [code]keep_text[/code] to [method parse]).
 */
 func (self Instance) GetParsedText() string { //gd:JSON.get_parsed_text
-	return string(class(self).GetParsedText().String())
+	return string(Advanced(self).GetParsedText().String())
 }
 
 /*
 Returns [code]0[/code] if the last call to [method parse] was successful, or the line number where the parse failed.
 */
 func (self Instance) GetErrorLine() int { //gd:JSON.get_error_line
-	return int(int(class(self).GetErrorLine()))
+	return int(int(Advanced(self).GetErrorLine()))
 }
 
 /*
 Returns an empty string if the last call to [method parse] was successful, or the error message if it failed.
 */
 func (self Instance) GetErrorMessage() string { //gd:JSON.get_error_message
-	return string(class(self).GetErrorMessage().String())
+	return string(Advanced(self).GetErrorMessage().String())
 }
 
 /*
@@ -184,9 +244,25 @@ func encode_data(value, full_objects = false):
 
 [/codeblock]
 */
-func FromNative(v any) any { //gd:JSON.from_native
+func FromNative(v any, full_objects bool) any { //gd:JSON.from_native
 	self := Instance{}
-	return any(class(self).FromNative(variant.New(v), false).Interface())
+	return any(Advanced(self).FromNative(variant.New(v), full_objects).Interface())
+}
+
+/*
+Converts a native engine type to a JSON-compliant value.
+By default, objects are ignored for security reasons, unless [param full_objects] is [code]true[/code].
+You can convert a native value to a JSON string like this:
+[codeblock]
+func encode_data(value, full_objects = false):
+
+	return JSON.stringify(JSON.from_native(value, full_objects))
+
+[/codeblock]
+*/
+func FromNativeExpanded(v any, full_objects bool) any { //gd:JSON.from_native
+	self := Instance{}
+	return any(Advanced(self).FromNative(variant.New(v), full_objects).Interface())
 }
 
 /*
@@ -200,9 +276,25 @@ func decode_data(string, allow_objects = false):
 
 [/codeblock]
 */
-func ToNative(json any) any { //gd:JSON.to_native
+func ToNative(json any, allow_objects bool) any { //gd:JSON.to_native
 	self := Instance{}
-	return any(class(self).ToNative(variant.New(json), false).Interface())
+	return any(Advanced(self).ToNative(variant.New(json), allow_objects).Interface())
+}
+
+/*
+Converts a JSON-compliant value that was created with [method from_native] back to native engine types.
+By default, objects are ignored for security reasons, unless [param allow_objects] is [code]true[/code].
+You can convert a JSON string back to a native value like this:
+[codeblock]
+func decode_data(string, allow_objects = false):
+
+	return JSON.to_native(JSON.parse_string(string), allow_objects)
+
+[/codeblock]
+*/
+func ToNativeExpanded(json any, allow_objects bool) any { //gd:JSON.to_native
+	self := Instance{}
+	return any(Advanced(self).ToNative(variant.New(json), allow_objects).Interface())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

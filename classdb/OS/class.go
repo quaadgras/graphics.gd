@@ -58,7 +58,7 @@ Generates a [PackedByteArray] of cryptographically secure random bytes with give
 */
 func GetEntropy(size int) []byte { //gd:OS.get_entropy
 	once.Do(singleton)
-	return []byte(class(self).GetEntropy(int64(size)).Bytes())
+	return []byte(Advanced().GetEntropy(int64(size)).Bytes())
 }
 
 /*
@@ -66,7 +66,7 @@ Returns the list of certification authorities trusted by the operating system as
 */
 func GetSystemCaCertificates() string { //gd:OS.get_system_ca_certificates
 	once.Do(singleton)
-	return string(class(self).GetSystemCaCertificates().String())
+	return string(Advanced().GetSystemCaCertificates().String())
 }
 
 /*
@@ -77,7 +77,7 @@ Returns an array of connected MIDI device names, if they exist. Returns an empty
 */
 func GetConnectedMidiInputs() []string { //gd:OS.get_connected_midi_inputs
 	once.Do(singleton)
-	return []string(class(self).GetConnectedMidiInputs().Strings())
+	return []string(Advanced().GetConnectedMidiInputs().Strings())
 }
 
 /*
@@ -88,7 +88,7 @@ Initializes the singleton for the system MIDI driver, allowing Godot to receive 
 */
 func OpenMidiInputs() { //gd:OS.open_midi_inputs
 	once.Do(singleton)
-	class(self).OpenMidiInputs()
+	Advanced().OpenMidiInputs()
 }
 
 /*
@@ -97,7 +97,7 @@ Shuts down the system MIDI driver. Godot will no longer receive [InputEventMIDI]
 */
 func CloseMidiInputs() { //gd:OS.close_midi_inputs
 	once.Do(singleton)
-	class(self).CloseMidiInputs()
+	Advanced().CloseMidiInputs()
 }
 
 /*
@@ -105,7 +105,15 @@ Displays a modal dialog box using the host platform's implementation. The engine
 */
 func Alert(text string) { //gd:OS.alert
 	once.Do(singleton)
-	class(self).Alert(String.New(text), String.New("Alert!"))
+	Advanced().Alert(String.New(text), String.New("Alert!"))
+}
+
+/*
+Displays a modal dialog box using the host platform's implementation. The engine execution is blocked until the dialog is closed.
+*/
+func AlertExpanded(text string, title string) { //gd:OS.alert
+	once.Do(singleton)
+	Advanced().Alert(String.New(text), String.New(title))
 }
 
 /*
@@ -114,7 +122,7 @@ Crashes the engine (or the editor if called within a [code]@tool[/code] script).
 */
 func Crash(message string) { //gd:OS.crash
 	once.Do(singleton)
-	class(self).Crash(String.New(message))
+	Advanced().Crash(String.New(message))
 }
 
 /*
@@ -122,7 +130,7 @@ Returns the number of [i]logical[/i] CPU cores available on the host machine. On
 */
 func GetProcessorCount() int { //gd:OS.get_processor_count
 	once.Do(singleton)
-	return int(int(class(self).GetProcessorCount()))
+	return int(int(Advanced().GetProcessorCount()))
 }
 
 /*
@@ -131,7 +139,7 @@ Returns the full name of the CPU model on the host machine (e.g. [code]"Intel(R)
 */
 func GetProcessorName() string { //gd:OS.get_processor_name
 	once.Do(singleton)
-	return string(class(self).GetProcessorName().String())
+	return string(Advanced().GetProcessorName().String())
 }
 
 /*
@@ -140,7 +148,7 @@ Returns the list of font family names available.
 */
 func GetSystemFonts() []string { //gd:OS.get_system_fonts
 	once.Do(singleton)
-	return []string(class(self).GetSystemFonts().Strings())
+	return []string(Advanced().GetSystemFonts().Strings())
 }
 
 /*
@@ -149,9 +157,20 @@ The following aliases can be used to request default fonts: "sans-serif", "serif
 [b]Note:[/b] Returned font might have different style if the requested style is not available.
 [b]Note:[/b] This method is implemented on Android, iOS, Linux, macOS and Windows.
 */
-func GetSystemFontPath(font_name string) string { //gd:OS.get_system_font_path
+func GetSystemFontPath(font_name string, italic bool) string { //gd:OS.get_system_font_path
 	once.Do(singleton)
-	return string(class(self).GetSystemFontPath(String.New(font_name), int64(400), int64(100), false).String())
+	return string(Advanced().GetSystemFontPath(String.New(font_name), int64(400), int64(100), italic).String())
+}
+
+/*
+Returns the path to the system font file with [param font_name] and style. Returns an empty string if no matching fonts found.
+The following aliases can be used to request default fonts: "sans-serif", "serif", "monospace", "cursive", and "fantasy".
+[b]Note:[/b] Returned font might have different style if the requested style is not available.
+[b]Note:[/b] This method is implemented on Android, iOS, Linux, macOS and Windows.
+*/
+func GetSystemFontPathExpanded(font_name string, weight int, stretch int, italic bool) string { //gd:OS.get_system_font_path
+	once.Do(singleton)
+	return string(Advanced().GetSystemFontPath(String.New(font_name), int64(weight), int64(stretch), italic).String())
 }
 
 /*
@@ -161,9 +180,21 @@ The following aliases can be used to request default fonts: "sans-serif", "serif
 [b]Note:[/b] Returned fonts might have different style if the requested style is not available or belong to a different font family.
 [b]Note:[/b] This method is implemented on Android, iOS, Linux, macOS and Windows.
 */
-func GetSystemFontPathForText(font_name string, text string) []string { //gd:OS.get_system_font_path_for_text
+func GetSystemFontPathForText(font_name string, text string, locale string, script string, italic bool) []string { //gd:OS.get_system_font_path_for_text
 	once.Do(singleton)
-	return []string(class(self).GetSystemFontPathForText(String.New(font_name), String.New(text), String.New(""), String.New(""), int64(400), int64(100), false).Strings())
+	return []string(Advanced().GetSystemFontPathForText(String.New(font_name), String.New(text), String.New(locale), String.New(script), int64(400), int64(100), italic).Strings())
+}
+
+/*
+Returns an array of the system substitute font file paths, which are similar to the font with [param font_name] and style for the specified text, locale, and script. Returns an empty array if no matching fonts found.
+The following aliases can be used to request default fonts: "sans-serif", "serif", "monospace", "cursive", and "fantasy".
+[b]Note:[/b] Depending on OS, it's not guaranteed that any of the returned fonts will be suitable for rendering specified text. Fonts should be loaded and checked in the order they are returned, and the first suitable one used.
+[b]Note:[/b] Returned fonts might have different style if the requested style is not available or belong to a different font family.
+[b]Note:[/b] This method is implemented on Android, iOS, Linux, macOS and Windows.
+*/
+func GetSystemFontPathForTextExpanded(font_name string, text string, locale string, script string, weight int, stretch int, italic bool) []string { //gd:OS.get_system_font_path_for_text
+	once.Do(singleton)
+	return []string(Advanced().GetSystemFontPathForText(String.New(font_name), String.New(text), String.New(locale), String.New(script), int64(weight), int64(stretch), italic).Strings())
 }
 
 /*
@@ -172,7 +203,7 @@ Returns the file path to the current engine executable.
 */
 func GetExecutablePath() string { //gd:OS.get_executable_path
 	once.Do(singleton)
-	return string(class(self).GetExecutablePath().String())
+	return string(Advanced().GetExecutablePath().String())
 }
 
 /*
@@ -186,7 +217,7 @@ Reads a user input as a UTF-8 encoded string from the standard input. This opera
 */
 func ReadStringFromStdin(buffer_size int) string { //gd:OS.read_string_from_stdin
 	once.Do(singleton)
-	return string(class(self).ReadStringFromStdin(int64(buffer_size)).String())
+	return string(Advanced().ReadStringFromStdin(int64(buffer_size)).String())
 }
 
 /*
@@ -199,7 +230,7 @@ Reads a user input as raw data from the standard input. This operation can be [i
 */
 func ReadBufferFromStdin(buffer_size int) []byte { //gd:OS.read_buffer_from_stdin
 	once.Do(singleton)
-	return []byte(class(self).ReadBufferFromStdin(int64(buffer_size)).Bytes())
+	return []byte(Advanced().ReadBufferFromStdin(int64(buffer_size)).Bytes())
 }
 
 /*
@@ -207,7 +238,7 @@ Returns type of the standard input device.
 */
 func GetStdinType() gdclass.OSStdHandleType { //gd:OS.get_stdin_type
 	once.Do(singleton)
-	return gdclass.OSStdHandleType(class(self).GetStdinType())
+	return gdclass.OSStdHandleType(Advanced().GetStdinType())
 }
 
 /*
@@ -215,7 +246,7 @@ Returns type of the standard output device.
 */
 func GetStdoutType() gdclass.OSStdHandleType { //gd:OS.get_stdout_type
 	once.Do(singleton)
-	return gdclass.OSStdHandleType(class(self).GetStdoutType())
+	return gdclass.OSStdHandleType(Advanced().GetStdoutType())
 }
 
 /*
@@ -223,7 +254,7 @@ Returns type of the standard error device.
 */
 func GetStderrType() gdclass.OSStdHandleType { //gd:OS.get_stderr_type
 	once.Do(singleton)
-	return gdclass.OSStdHandleType(class(self).GetStderrType())
+	return gdclass.OSStdHandleType(Advanced().GetStderrType())
 }
 
 /*
@@ -261,9 +292,49 @@ OS.Execute("CMD.exe", ["/C", "cd %TEMP% && dir"], output);
 [b]Note:[/b] On macOS, sandboxed applications are limited to run only embedded helper executables, specified during export.
 [b]Note:[/b] On Android, system commands such as [code]dumpsys[/code] can only be run on a rooted device.
 */
-func Execute(path string, arguments []string) int { //gd:OS.execute
+func Execute(path string, arguments []string, output []any, read_stderr bool, open_console bool) int { //gd:OS.execute
 	once.Do(singleton)
-	return int(int(class(self).Execute(String.New(path), Packed.MakeStrings(arguments...), Array.Nil, false, false)))
+	return int(int(Advanced().Execute(String.New(path), Packed.MakeStrings(arguments...), gd.EngineArrayFromSlice(output), read_stderr, open_console)))
+}
+
+/*
+Executes the given process in a [i]blocking[/i] way. The file specified in [param path] must exist and be executable. The system path resolution will be used. The [param arguments] are used in the given order, separated by spaces, and wrapped in quotes.
+If an [param output] array is provided, the complete shell output of the process is appended to [param output] as a single [String] element. If [param read_stderr] is [code]true[/code], the output to the standard error stream is also appended to the array.
+On Windows, if [param open_console] is [code]true[/code] and the process is a console app, a new terminal window is opened.
+This method returns the exit code of the command, or [code]-1[/code] if the process fails to execute.
+[b]Note:[/b] The main thread will be blocked until the executed command terminates. Use [Thread] to create a separate thread that will not block the main thread, or use [method create_process] to create a completely independent process.
+For example, to retrieve a list of the working directory's contents:
+[codeblocks]
+[gdscript]
+var output = []
+var exit_code = OS.execute("ls", ["-l", "/tmp"], output)
+[/gdscript]
+[csharp]
+Godot.Collections.Array output = [];
+int exitCode = OS.Execute("ls", ["-l", "/tmp"], output);
+[/csharp]
+[/codeblocks]
+If you wish to access a shell built-in or execute a composite command, a platform-specific shell can be invoked. For example:
+[codeblocks]
+[gdscript]
+var output = []
+OS.execute("CMD.exe", ["/C", "cd %TEMP% && dir"], output)
+[/gdscript]
+[csharp]
+Godot.Collections.Array output = [];
+OS.Execute("CMD.exe", ["/C", "cd %TEMP% && dir"], output);
+[/csharp]
+[/codeblocks]
+[b]Note:[/b] This method is implemented on Android, Linux, macOS, and Windows.
+[b]Note:[/b] To execute a Windows command interpreter built-in command, specify [code]cmd.exe[/code] in [param path], [code]/c[/code] as the first argument, and the desired command as the second argument.
+[b]Note:[/b] To execute a PowerShell built-in command, specify [code]powershell.exe[/code] in [param path], [code]-Command[/code] as the first argument, and the desired command as the second argument.
+[b]Note:[/b] To execute a Unix shell built-in command, specify shell executable name in [param path], [code]-c[/code] as the first argument, and the desired command as the second argument.
+[b]Note:[/b] On macOS, sandboxed applications are limited to run only embedded helper executables, specified during export.
+[b]Note:[/b] On Android, system commands such as [code]dumpsys[/code] can only be run on a rooted device.
+*/
+func ExecuteExpanded(path string, arguments []string, output []any, read_stderr bool, open_console bool) int { //gd:OS.execute
+	once.Do(singleton)
+	return int(int(Advanced().Execute(String.New(path), Packed.MakeStrings(arguments...), gd.EngineArrayFromSlice(output), read_stderr, open_console)))
 }
 
 /*
@@ -281,7 +352,25 @@ If the process cannot be created, this method returns an empty [Dictionary]. Oth
 */
 func ExecuteWithPipe(path string, arguments []string) Pipe { //gd:OS.execute_with_pipe
 	once.Do(singleton)
-	return Pipe(gd.DictionaryAs[Pipe](class(self).ExecuteWithPipe(String.New(path), Packed.MakeStrings(arguments...), true)))
+	return Pipe(gd.DictionaryAs[Pipe](Advanced().ExecuteWithPipe(String.New(path), Packed.MakeStrings(arguments...), true)))
+}
+
+/*
+Creates a new process that runs independently of Godot with redirected IO. It will not terminate when Godot terminates. The path specified in [param path] must exist and be an executable file or macOS [code].app[/code] bundle. The path is resolved based on the current platform. The [param arguments] are used in the given order and separated by a space.
+If [param blocking] is [code]false[/code], created pipes work in non-blocking mode, i.e. read and write operations will return immediately. Use [method FileAccess.get_error] to check if the last read/write operation was successful.
+If the process cannot be created, this method returns an empty [Dictionary]. Otherwise, this method returns a [Dictionary] with the following keys:
+- [code]"stdio"[/code] - [FileAccess] to access the process stdin and stdout pipes (read/write).
+- [code]"stderr"[/code] - [FileAccess] to access the process stderr pipe (read only).
+- [code]"pid"[/code] - Process ID as an [int], which you can use to monitor the process (and potentially terminate it with [method kill]).
+[b]Note:[/b] This method is implemented on Android, Linux, macOS, and Windows.
+[b]Note:[/b] To execute a Windows command interpreter built-in command, specify [code]cmd.exe[/code] in [param path], [code]/c[/code] as the first argument, and the desired command as the second argument.
+[b]Note:[/b] To execute a PowerShell built-in command, specify [code]powershell.exe[/code] in [param path], [code]-Command[/code] as the first argument, and the desired command as the second argument.
+[b]Note:[/b] To execute a Unix shell built-in command, specify shell executable name in [param path], [code]-c[/code] as the first argument, and the desired command as the second argument.
+[b]Note:[/b] On macOS, sandboxed applications are limited to run only embedded helper executables, specified during export or system .app bundle, system .app bundles will ignore arguments.
+*/
+func ExecuteWithPipeExpanded(path string, arguments []string, blocking bool) Pipe { //gd:OS.execute_with_pipe
+	once.Do(singleton)
+	return Pipe(gd.DictionaryAs[Pipe](Advanced().ExecuteWithPipe(String.New(path), Packed.MakeStrings(arguments...), blocking)))
 }
 
 /*
@@ -301,9 +390,31 @@ See [method execute] if you wish to run an external command and retrieve the res
 [b]Note:[/b] This method is implemented on Android, Linux, macOS, and Windows.
 [b]Note:[/b] On macOS, sandboxed applications are limited to run only embedded helper executables, specified during export or system .app bundle, system .app bundles will ignore arguments.
 */
-func CreateProcess(path string, arguments []string) int { //gd:OS.create_process
+func CreateProcess(path string, arguments []string, open_console bool) int { //gd:OS.create_process
 	once.Do(singleton)
-	return int(int(class(self).CreateProcess(String.New(path), Packed.MakeStrings(arguments...), false)))
+	return int(int(Advanced().CreateProcess(String.New(path), Packed.MakeStrings(arguments...), open_console)))
+}
+
+/*
+Creates a new process that runs independently of Godot. It will not terminate when Godot terminates. The path specified in [param path] must exist and be an executable file or macOS [code].app[/code] bundle. The path is resolved based on the current platform. The [param arguments] are used in the given order and separated by a space.
+On Windows, if [param open_console] is [code]true[/code] and the process is a console app, a new terminal window will be opened.
+If the process is successfully created, this method returns its process ID, which you can use to monitor the process (and potentially terminate it with [method kill]). Otherwise, this method returns [code]-1[/code].
+[b]Example:[/b] Run another instance of the project:
+[codeblocks]
+[gdscript]
+var pid = OS.create_process(OS.get_executable_path(), [])
+[/gdscript]
+[csharp]
+var pid = OS.CreateProcess(OS.GetExecutablePath(), []);
+[/csharp]
+[/codeblocks]
+See [method execute] if you wish to run an external command and retrieve the results.
+[b]Note:[/b] This method is implemented on Android, Linux, macOS, and Windows.
+[b]Note:[/b] On macOS, sandboxed applications are limited to run only embedded helper executables, specified during export or system .app bundle, system .app bundles will ignore arguments.
+*/
+func CreateProcessExpanded(path string, arguments []string, open_console bool) int { //gd:OS.create_process
+	once.Do(singleton)
+	return int(int(Advanced().CreateProcess(String.New(path), Packed.MakeStrings(arguments...), open_console)))
 }
 
 /*
@@ -314,7 +425,7 @@ See [method create_process] if you wish to run a different process.
 */
 func CreateInstance(arguments []string) int { //gd:OS.create_instance
 	once.Do(singleton)
-	return int(int(class(self).CreateInstance(Packed.MakeStrings(arguments...))))
+	return int(int(Advanced().CreateInstance(Packed.MakeStrings(arguments...))))
 }
 
 /*
@@ -324,7 +435,7 @@ Kill (terminate) the process identified by the given process ID ([param pid]), s
 */
 func Kill(pid int) error { //gd:OS.kill
 	once.Do(singleton)
-	return error(gd.ToError(class(self).Kill(int64(pid))))
+	return error(gd.ToError(Advanced().Kill(int64(pid))))
 }
 
 /*
@@ -339,7 +450,7 @@ Use [method ProjectSettings.globalize_path] to convert a [code]res://[/code] or 
 */
 func ShellOpen(uri string) error { //gd:OS.shell_open
 	once.Do(singleton)
-	return error(gd.ToError(class(self).ShellOpen(String.New(uri))))
+	return error(gd.ToError(Advanced().ShellOpen(String.New(uri))))
 }
 
 /*
@@ -350,7 +461,18 @@ Use [method ProjectSettings.globalize_path] to convert a [code]res://[/code] or 
 */
 func ShellShowInFileManager(file_or_dir_path string) error { //gd:OS.shell_show_in_file_manager
 	once.Do(singleton)
-	return error(gd.ToError(class(self).ShellShowInFileManager(String.New(file_or_dir_path), true)))
+	return error(gd.ToError(Advanced().ShellShowInFileManager(String.New(file_or_dir_path), true)))
+}
+
+/*
+Requests the OS to open the file manager, navigate to the given [param file_or_dir_path] and select the target file or folder.
+If [param open_folder] is [code]true[/code] and [param file_or_dir_path] is a valid directory path, the OS will open the file manager and navigate to the target folder without selecting anything.
+Use [method ProjectSettings.globalize_path] to convert a [code]res://[/code] or [code]user://[/code] project path into a system path to use with this method.
+[b]Note:[/b] This method is currently only implemented on Windows and macOS. On other platforms, it will fallback to [method shell_open] with a directory path of [param file_or_dir_path] prefixed with [code]file://[/code].
+*/
+func ShellShowInFileManagerExpanded(file_or_dir_path string, open_folder bool) error { //gd:OS.shell_show_in_file_manager
+	once.Do(singleton)
+	return error(gd.ToError(Advanced().ShellShowInFileManager(String.New(file_or_dir_path), open_folder)))
 }
 
 /*
@@ -359,7 +481,7 @@ Returns [code]true[/code] if the child process ID ([param pid]) is still running
 */
 func IsProcessRunning(pid int) bool { //gd:OS.is_process_running
 	once.Do(singleton)
-	return bool(class(self).IsProcessRunning(int64(pid)))
+	return bool(Advanced().IsProcessRunning(int64(pid)))
 }
 
 /*
@@ -370,7 +492,7 @@ Returns [code]-1[/code] if the [param pid] is not a PID of a spawned child proce
 */
 func GetProcessExitCode(pid int) int { //gd:OS.get_process_exit_code
 	once.Do(singleton)
-	return int(int(class(self).GetProcessExitCode(int64(pid))))
+	return int(int(Advanced().GetProcessExitCode(int64(pid))))
 }
 
 /*
@@ -379,7 +501,7 @@ Returns the number used by the host machine to uniquely identify this applicatio
 */
 func GetProcessId() int { //gd:OS.get_process_id
 	once.Do(singleton)
-	return int(int(class(self).GetProcessId()))
+	return int(int(Advanced().GetProcessId()))
 }
 
 /*
@@ -388,7 +510,7 @@ Returns [code]true[/code] if the environment variable with the name [param varia
 */
 func HasEnvironment(variable string) bool { //gd:OS.has_environment
 	once.Do(singleton)
-	return bool(class(self).HasEnvironment(String.New(variable)))
+	return bool(Advanced().HasEnvironment(String.New(variable)))
 }
 
 /*
@@ -398,7 +520,7 @@ Returns the value of the given environment variable, or an empty string if [para
 */
 func GetEnvironment(variable string) string { //gd:OS.get_environment
 	once.Do(singleton)
-	return string(class(self).GetEnvironment(String.New(variable)).String())
+	return string(Advanced().GetEnvironment(String.New(variable)).String())
 }
 
 /*
@@ -407,7 +529,7 @@ Sets the value of the environment variable [param variable] to [param value]. Th
 */
 func SetEnvironment(variable string, value string) { //gd:OS.set_environment
 	once.Do(singleton)
-	class(self).SetEnvironment(String.New(variable), String.New(value))
+	Advanced().SetEnvironment(String.New(variable), String.New(value))
 }
 
 /*
@@ -416,7 +538,7 @@ Removes the given environment variable from the current environment, if it exist
 */
 func UnsetEnvironment(variable string) { //gd:OS.unset_environment
 	once.Do(singleton)
-	class(self).UnsetEnvironment(String.New(variable))
+	Advanced().UnsetEnvironment(String.New(variable))
 }
 
 /*
@@ -481,7 +603,7 @@ switch (OS.GetName())
 */
 func GetName() string { //gd:OS.get_name
 	once.Do(singleton)
-	return string(class(self).GetName().String())
+	return string(Advanced().GetName().String())
 }
 
 /*
@@ -492,7 +614,7 @@ Returns the same value as [method get_name] for other platforms.
 */
 func GetDistributionName() string { //gd:OS.get_distribution_name
 	once.Do(singleton)
-	return string(class(self).GetDistributionName().String())
+	return string(Advanced().GetDistributionName().String())
 }
 
 /*
@@ -505,7 +627,7 @@ Returns the exact production and build version of the operating system. This is 
 */
 func GetVersion() string { //gd:OS.get_version
 	once.Do(singleton)
-	return string(class(self).GetVersion().String())
+	return string(Advanced().GetVersion().String())
 }
 
 /*
@@ -514,7 +636,7 @@ Returns the branded version used in marketing, followed by the build number (on 
 */
 func GetVersionAlias() string { //gd:OS.get_version_alias
 	once.Do(singleton)
-	return string(class(self).GetVersionAlias().String())
+	return string(Advanced().GetVersionAlias().String())
 }
 
 /*
@@ -561,7 +683,7 @@ foreach (var argument in OS.GetCmdlineArgs())
 */
 func GetCmdlineArgs() []string { //gd:OS.get_cmdline_args
 	once.Do(singleton)
-	return []string(class(self).GetCmdlineArgs().Strings())
+	return []string(Advanced().GetCmdlineArgs().Strings())
 }
 
 /*
@@ -577,7 +699,7 @@ To get all passed arguments, use [method get_cmdline_args].
 */
 func GetCmdlineUserArgs() []string { //gd:OS.get_cmdline_user_args
 	once.Do(singleton)
-	return []string(class(self).GetCmdlineUserArgs().Strings())
+	return []string(Advanced().GetCmdlineUserArgs().Strings())
 }
 
 /*
@@ -588,7 +710,7 @@ The second element holds the driver version. For example, on the [code]nvidia[/c
 */
 func GetVideoAdapterDriverInfo() []string { //gd:OS.get_video_adapter_driver_info
 	once.Do(singleton)
-	return []string(class(self).GetVideoAdapterDriverInfo().Strings())
+	return []string(Advanced().GetVideoAdapterDriverInfo().Strings())
 }
 
 /*
@@ -597,9 +719,20 @@ This method can be used to apply setting changes that require a restart. See als
 [b]Note:[/b] This method is only effective on desktop platforms, and only when the project isn't started from the editor. It will have no effect on mobile and Web platforms, or when the project is started from the editor.
 [b]Note:[/b] If the project process crashes or is [i]killed[/i] by the user (by sending [code]SIGKILL[/code] instead of the usual [code]SIGTERM[/code]), the project won't restart automatically.
 */
-func SetRestartOnExit(restart bool) { //gd:OS.set_restart_on_exit
+func SetRestartOnExit(restart bool, arguments []string) { //gd:OS.set_restart_on_exit
 	once.Do(singleton)
-	class(self).SetRestartOnExit(restart, Packed.MakeStrings([1][]string{}[0]...))
+	Advanced().SetRestartOnExit(restart, Packed.MakeStrings(arguments...))
+}
+
+/*
+If [param restart] is [code]true[/code], restarts the project automatically when it is exited with [method SceneTree.quit] or [constant Node.NOTIFICATION_WM_CLOSE_REQUEST]. Command-line [param arguments] can be supplied. To restart the project with the same command line arguments as originally used to run the project, pass [method get_cmdline_args] as the value for [param arguments].
+This method can be used to apply setting changes that require a restart. See also [method is_restart_on_exit_set] and [method get_restart_on_exit_arguments].
+[b]Note:[/b] This method is only effective on desktop platforms, and only when the project isn't started from the editor. It will have no effect on mobile and Web platforms, or when the project is started from the editor.
+[b]Note:[/b] If the project process crashes or is [i]killed[/i] by the user (by sending [code]SIGKILL[/code] instead of the usual [code]SIGTERM[/code]), the project won't restart automatically.
+*/
+func SetRestartOnExitExpanded(restart bool, arguments []string) { //gd:OS.set_restart_on_exit
+	once.Do(singleton)
+	Advanced().SetRestartOnExit(restart, Packed.MakeStrings(arguments...))
 }
 
 /*
@@ -607,7 +740,7 @@ Returns [code]true[/code] if the project will automatically restart when it exit
 */
 func IsRestartOnExitSet() bool { //gd:OS.is_restart_on_exit_set
 	once.Do(singleton)
-	return bool(class(self).IsRestartOnExitSet())
+	return bool(Advanced().IsRestartOnExitSet())
 }
 
 /*
@@ -615,7 +748,7 @@ Returns the list of command line arguments that will be used when the project au
 */
 func GetRestartOnExitArguments() []string { //gd:OS.get_restart_on_exit_arguments
 	once.Do(singleton)
-	return []string(class(self).GetRestartOnExitArguments().Strings())
+	return []string(Advanced().GetRestartOnExitArguments().Strings())
 }
 
 /*
@@ -625,7 +758,7 @@ Delays execution of the current thread by [param usec] microseconds. [param usec
 */
 func DelayUsec(usec int) { //gd:OS.delay_usec
 	once.Do(singleton)
-	class(self).DelayUsec(int64(usec))
+	Advanced().DelayUsec(int64(usec))
 }
 
 /*
@@ -635,7 +768,7 @@ Delays execution of the current thread by [param msec] milliseconds. [param msec
 */
 func DelayMsec(msec int) { //gd:OS.delay_msec
 	once.Do(singleton)
-	class(self).DelayMsec(int64(msec))
+	Advanced().DelayMsec(int64(msec))
 }
 
 /*
@@ -649,7 +782,7 @@ If you want only the language code and not the fully specified locale from the O
 */
 func GetLocale() string { //gd:OS.get_locale
 	once.Do(singleton)
-	return string(class(self).GetLocale().String())
+	return string(Advanced().GetLocale().String())
 }
 
 /*
@@ -658,7 +791,7 @@ This can be used to narrow down fully specified locale strings to only the "comm
 */
 func GetLocaleLanguage() string { //gd:OS.get_locale_language
 	once.Do(singleton)
-	return string(class(self).GetLocaleLanguage().String())
+	return string(Advanced().GetLocaleLanguage().String())
 }
 
 /*
@@ -667,7 +800,7 @@ Returns the model name of the current device.
 */
 func GetModelName() string { //gd:OS.get_model_name
 	once.Do(singleton)
-	return string(class(self).GetModelName().String())
+	return string(Advanced().GetModelName().String())
 }
 
 /*
@@ -675,7 +808,7 @@ Returns [code]true[/code] if the [code]user://[/code] file system is persistent,
 */
 func IsUserfsPersistent() bool { //gd:OS.is_userfs_persistent
 	once.Do(singleton)
-	return bool(class(self).IsUserfsPersistent())
+	return bool(Advanced().IsUserfsPersistent())
 }
 
 /*
@@ -683,7 +816,7 @@ Returns [code]true[/code] if the engine was executed with the [code]--verbose[/c
 */
 func IsStdoutVerbose() bool { //gd:OS.is_stdout_verbose
 	once.Do(singleton)
-	return bool(class(self).IsStdoutVerbose())
+	return bool(Advanced().IsStdoutVerbose())
 }
 
 /*
@@ -693,7 +826,7 @@ Returns [code]false[/code] if the Godot binary used to run the project is a [i]r
 */
 func IsDebugBuild() bool { //gd:OS.is_debug_build
 	once.Do(singleton)
-	return bool(class(self).IsDebugBuild())
+	return bool(Advanced().IsDebugBuild())
 }
 
 /*
@@ -701,7 +834,7 @@ Returns the amount of static memory being used by the program in bytes. Only wor
 */
 func GetStaticMemoryUsage() int { //gd:OS.get_static_memory_usage
 	once.Do(singleton)
-	return int(int(class(self).GetStaticMemoryUsage()))
+	return int(int(Advanced().GetStaticMemoryUsage()))
 }
 
 /*
@@ -709,7 +842,7 @@ Returns the maximum amount of static memory used. Only works in debug builds.
 */
 func GetStaticMemoryPeakUsage() int { //gd:OS.get_static_memory_peak_usage
 	once.Do(singleton)
-	return int(int(class(self).GetStaticMemoryPeakUsage()))
+	return int(int(Advanced().GetStaticMemoryPeakUsage()))
 }
 
 /*
@@ -722,7 +855,7 @@ Returns a [Dictionary] containing information about the current memory with the 
 */
 func GetMemoryInfo() MemoryInfo { //gd:OS.get_memory_info
 	once.Do(singleton)
-	return MemoryInfo(gd.DictionaryAs[MemoryInfo](class(self).GetMemoryInfo()))
+	return MemoryInfo(gd.DictionaryAs[MemoryInfo](Advanced().GetMemoryInfo()))
 }
 
 /*
@@ -744,7 +877,7 @@ OS.MoveToTrash(ProjectSettings.GlobalizePath(fileToRemove));
 */
 func MoveToTrash(path string) error { //gd:OS.move_to_trash
 	once.Do(singleton)
-	return error(gd.ToError(class(self).MoveToTrash(String.New(path))))
+	return error(gd.ToError(Advanced().MoveToTrash(String.New(path))))
 }
 
 /*
@@ -759,7 +892,7 @@ Not to be confused with [method get_data_dir], which returns the [i]global[/i] (
 */
 func GetUserDataDir() string { //gd:OS.get_user_data_dir
 	once.Do(singleton)
-	return string(class(self).GetUserDataDir().String())
+	return string(Advanced().GetUserDataDir().String())
 }
 
 /*
@@ -769,7 +902,17 @@ Returns the path to commonly used folders across different platforms, as defined
 */
 func GetSystemDir(dir gdclass.OSSystemDir) string { //gd:OS.get_system_dir
 	once.Do(singleton)
-	return string(class(self).GetSystemDir(dir, true).String())
+	return string(Advanced().GetSystemDir(dir, true).String())
+}
+
+/*
+Returns the path to commonly used folders across different platforms, as defined by [param dir]. See the [enum SystemDir] constants for available locations.
+[b]Note:[/b] This method is implemented on Android, Linux, macOS and Windows.
+[b]Note:[/b] Shared storage is implemented on Android and allows to differentiate between app specific and shared directories, if [param shared_storage] is [code]true[/code]. Shared directories have additional restrictions on Android.
+*/
+func GetSystemDirExpanded(dir gdclass.OSSystemDir, shared_storage bool) string { //gd:OS.get_system_dir
+	once.Do(singleton)
+	return string(Advanced().GetSystemDir(dir, shared_storage).String())
 }
 
 /*
@@ -779,7 +922,7 @@ Not to be confused with [method get_user_data_dir], which returns the [i]project
 */
 func GetConfigDir() string { //gd:OS.get_config_dir
 	once.Do(singleton)
-	return string(class(self).GetConfigDir().String())
+	return string(Advanced().GetConfigDir().String())
 }
 
 /*
@@ -789,7 +932,7 @@ Not to be confused with [method get_user_data_dir], which returns the [i]project
 */
 func GetDataDir() string { //gd:OS.get_data_dir
 	once.Do(singleton)
-	return string(class(self).GetDataDir().String())
+	return string(Advanced().GetDataDir().String())
 }
 
 /*
@@ -799,7 +942,7 @@ Not to be confused with [method get_user_data_dir], which returns the [i]project
 */
 func GetCacheDir() string { //gd:OS.get_cache_dir
 	once.Do(singleton)
-	return string(class(self).GetCacheDir().String())
+	return string(Advanced().GetCacheDir().String())
 }
 
 /*
@@ -807,7 +950,7 @@ Returns the [i]global[/i] temporary data directory according to the operating sy
 */
 func GetTempDir() string { //gd:OS.get_temp_dir
 	once.Do(singleton)
-	return string(class(self).GetTempDir().String())
+	return string(Advanced().GetTempDir().String())
 }
 
 /*
@@ -817,7 +960,7 @@ Returns a string that is unique to the device.
 */
 func GetUniqueId() string { //gd:OS.get_unique_id
 	once.Do(singleton)
-	return string(class(self).GetUniqueId().String())
+	return string(Advanced().GetUniqueId().String())
 }
 
 /*
@@ -838,7 +981,7 @@ See also [method find_keycode_from_string], [member InputEventKey.keycode], and 
 */
 func GetKeycodeString(code Key) string { //gd:OS.get_keycode_string
 	once.Do(singleton)
-	return string(class(self).GetKeycodeString(code).String())
+	return string(Advanced().GetKeycodeString(code).String())
 }
 
 /*
@@ -860,7 +1003,7 @@ GD.Print(OS.IsKeycodeUnicode((long)Key.Escape)); // Prints False
 */
 func IsKeycodeUnicode(code int) bool { //gd:OS.is_keycode_unicode
 	once.Do(singleton)
-	return bool(class(self).IsKeycodeUnicode(int64(code)))
+	return bool(Advanced().IsKeycodeUnicode(int64(code)))
 }
 
 /*
@@ -883,7 +1026,7 @@ See also [method get_keycode_string].
 */
 func FindKeycodeFromString(s string) Key { //gd:OS.find_keycode_from_string
 	once.Do(singleton)
-	return Key(class(self).FindKeycodeFromString(String.New(s)))
+	return Key(Advanced().FindKeycodeFromString(String.New(s)))
 }
 
 /*
@@ -892,7 +1035,7 @@ This can useful when files may be opened by other applications, such as antiviru
 */
 func SetUseFileAccessSaveAndSwap(enabled bool) { //gd:OS.set_use_file_access_save_and_swap
 	once.Do(singleton)
-	class(self).SetUseFileAccessSaveAndSwap(enabled)
+	Advanced().SetUseFileAccessSaveAndSwap(enabled)
 }
 
 /*
@@ -900,7 +1043,7 @@ Assigns the given name to the current thread. Returns [constant ERR_UNAVAILABLE]
 */
 func SetThreadName(name string) error { //gd:OS.set_thread_name
 	once.Do(singleton)
-	return error(gd.ToError(class(self).SetThreadName(String.New(name))))
+	return error(gd.ToError(Advanced().SetThreadName(String.New(name))))
 }
 
 /*
@@ -909,7 +1052,7 @@ Returns the ID of the current thread. This can be used in logs to ease debugging
 */
 func GetThreadCallerId() int { //gd:OS.get_thread_caller_id
 	once.Do(singleton)
-	return int(int(class(self).GetThreadCallerId()))
+	return int(int(Advanced().GetThreadCallerId()))
 }
 
 /*
@@ -918,7 +1061,7 @@ Returns the ID of the main thread. See [method get_thread_caller_id].
 */
 func GetMainThreadId() int { //gd:OS.get_main_thread_id
 	once.Do(singleton)
-	return int(int(class(self).GetMainThreadId()))
+	return int(int(Advanced().GetMainThreadId()))
 }
 
 /*
@@ -928,7 +1071,7 @@ Returns [code]true[/code] if the feature for the given feature tag is supported 
 */
 func HasFeature(tag_name string) bool { //gd:OS.has_feature
 	once.Do(singleton)
-	return bool(class(self).HasFeature(String.New(tag_name)))
+	return bool(Advanced().HasFeature(String.New(tag_name)))
 }
 
 /*
@@ -937,7 +1080,7 @@ Returns [code]true[/code] if the application is running in the sandbox.
 */
 func IsSandboxed() bool { //gd:OS.is_sandboxed
 	once.Do(singleton)
-	return bool(class(self).IsSandboxed())
+	return bool(Advanced().IsSandboxed())
 }
 
 /*
@@ -950,7 +1093,7 @@ The [param name] must be the full permission name. For example:
 */
 func RequestPermission(name string) bool { //gd:OS.request_permission
 	once.Do(singleton)
-	return bool(class(self).RequestPermission(String.New(name)))
+	return bool(Advanced().RequestPermission(String.New(name)))
 }
 
 /*
@@ -960,7 +1103,7 @@ Requests [i]dangerous[/i] permissions from the OS. Returns [code]true[/code] if 
 */
 func RequestPermissions() bool { //gd:OS.request_permissions
 	once.Do(singleton)
-	return bool(class(self).RequestPermissions())
+	return bool(Advanced().RequestPermissions())
 }
 
 /*
@@ -969,7 +1112,7 @@ On macOS: Returns the list of user selected folders accessible to the applicatio
 */
 func GetGrantedPermissions() []string { //gd:OS.get_granted_permissions
 	once.Do(singleton)
-	return []string(class(self).GetGrantedPermissions().Strings())
+	return []string(Advanced().GetGrantedPermissions().Strings())
 }
 
 /*
@@ -977,7 +1120,7 @@ On macOS (sandboxed applications only), this function clears list of user select
 */
 func RevokeGrantedPermissions() { //gd:OS.revoke_granted_permissions
 	once.Do(singleton)
-	class(self).RevokeGrantedPermissions()
+	Advanced().RevokeGrantedPermissions()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

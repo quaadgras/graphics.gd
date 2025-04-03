@@ -69,6 +69,7 @@ mesh.SurfaceEnd();
 [b]Note:[/b] Generating complex geometries with [ImmediateMesh] is highly inefficient. Instead, it is designed to generate simple geometry that changes often.
 */
 type Instance [1]gdclass.ImmediateMesh
+type Expanded [1]gdclass.ImmediateMesh
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -82,70 +83,77 @@ type Any interface {
 Begin a new surface.
 */
 func (self Instance) SurfaceBegin(primitive gdclass.MeshPrimitiveType) { //gd:ImmediateMesh.surface_begin
-	class(self).SurfaceBegin(primitive, [1][1]gdclass.Material{}[0])
+	Advanced(self).SurfaceBegin(primitive, [1][1]gdclass.Material{}[0])
+}
+
+/*
+Begin a new surface.
+*/
+func (self Expanded) SurfaceBegin(primitive gdclass.MeshPrimitiveType, material [1]gdclass.Material) { //gd:ImmediateMesh.surface_begin
+	Advanced(self).SurfaceBegin(primitive, material)
 }
 
 /*
 Set the color attribute that will be pushed with the next vertex.
 */
 func (self Instance) SurfaceSetColor(color Color.RGBA) { //gd:ImmediateMesh.surface_set_color
-	class(self).SurfaceSetColor(Color.RGBA(color))
+	Advanced(self).SurfaceSetColor(Color.RGBA(color))
 }
 
 /*
 Set the normal attribute that will be pushed with the next vertex.
 */
 func (self Instance) SurfaceSetNormal(normal Vector3.XYZ) { //gd:ImmediateMesh.surface_set_normal
-	class(self).SurfaceSetNormal(Vector3.XYZ(normal))
+	Advanced(self).SurfaceSetNormal(Vector3.XYZ(normal))
 }
 
 /*
 Set the tangent attribute that will be pushed with the next vertex.
 */
 func (self Instance) SurfaceSetTangent(tangent Plane.NormalD) { //gd:ImmediateMesh.surface_set_tangent
-	class(self).SurfaceSetTangent(Plane.NormalD(tangent))
+	Advanced(self).SurfaceSetTangent(Plane.NormalD(tangent))
 }
 
 /*
 Set the UV attribute that will be pushed with the next vertex.
 */
 func (self Instance) SurfaceSetUv(uv Vector2.XY) { //gd:ImmediateMesh.surface_set_uv
-	class(self).SurfaceSetUv(Vector2.XY(uv))
+	Advanced(self).SurfaceSetUv(Vector2.XY(uv))
 }
 
 /*
 Set the UV2 attribute that will be pushed with the next vertex.
 */
 func (self Instance) SurfaceSetUv2(uv2 Vector2.XY) { //gd:ImmediateMesh.surface_set_uv2
-	class(self).SurfaceSetUv2(Vector2.XY(uv2))
+	Advanced(self).SurfaceSetUv2(Vector2.XY(uv2))
 }
 
 /*
 Add a 3D vertex using the current attributes previously set.
 */
 func (self Instance) SurfaceAddVertex(vertex Vector3.XYZ) { //gd:ImmediateMesh.surface_add_vertex
-	class(self).SurfaceAddVertex(Vector3.XYZ(vertex))
+	Advanced(self).SurfaceAddVertex(Vector3.XYZ(vertex))
 }
 
 /*
 Add a 2D vertex using the current attributes previously set.
 */
 func (self Instance) SurfaceAddVertex2d(vertex Vector2.XY) { //gd:ImmediateMesh.surface_add_vertex_2d
-	class(self).SurfaceAddVertex2d(Vector2.XY(vertex))
+	Advanced(self).SurfaceAddVertex2d(Vector2.XY(vertex))
 }
 
 /*
 End and commit current surface. Note that surface being created will not be visible until this function is called.
 */
 func (self Instance) SurfaceEnd() { //gd:ImmediateMesh.surface_end
-	class(self).SurfaceEnd()
+	Advanced(self).SurfaceEnd()
 }
 
 /*
 Clear all surfaces.
 */
 func (self Instance) ClearSurfaces() { //gd:ImmediateMesh.clear_surfaces
-	class(self).ClearSurfaces()
+	Advanced(self).ClearSurfaces()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

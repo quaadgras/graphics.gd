@@ -60,7 +60,7 @@ type Any interface {
 Clamps the [member split_offset] value to not go outside the currently possible minimal and maximum values.
 */
 func (self Instance) ClampSplitOffset() { //gd:SplitContainer.clamp_split_offset
-	class(self).ClampSplitOffset()
+	Advanced(self).ClampSplitOffset()
 }
 
 /*
@@ -72,7 +72,7 @@ $BarnacleButton.reparent($SplitContainer.get_drag_area_control())
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash.
 */
 func (self Instance) GetDragAreaControl() [1]gdclass.Control { //gd:SplitContainer.get_drag_area_control
-	return [1]gdclass.Control(class(self).GetDragAreaControl())
+	return [1]gdclass.Control(Advanced(self).GetDragAreaControl())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

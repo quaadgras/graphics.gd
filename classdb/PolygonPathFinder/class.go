@@ -78,16 +78,16 @@ polygonPathFinder.Setup(points, connections);
 [/codeblocks]
 */
 func (self Instance) Setup(points []Vector2.XY, connections []int32) { //gd:PolygonPathFinder.setup
-	class(self).Setup(Packed.New(points...), Packed.New(connections...))
+	Advanced(self).Setup(Packed.New(points...), Packed.New(connections...))
 }
 func (self Instance) FindPath(from Vector2.XY, to Vector2.XY) []Vector2.XY { //gd:PolygonPathFinder.find_path
-	return []Vector2.XY(slices.Collect(class(self).FindPath(Vector2.XY(from), Vector2.XY(to)).Values()))
+	return []Vector2.XY(slices.Collect(Advanced(self).FindPath(Vector2.XY(from), Vector2.XY(to)).Values()))
 }
 func (self Instance) GetIntersections(from Vector2.XY, to Vector2.XY) []Vector2.XY { //gd:PolygonPathFinder.get_intersections
-	return []Vector2.XY(slices.Collect(class(self).GetIntersections(Vector2.XY(from), Vector2.XY(to)).Values()))
+	return []Vector2.XY(slices.Collect(Advanced(self).GetIntersections(Vector2.XY(from), Vector2.XY(to)).Values()))
 }
 func (self Instance) GetClosestPoint(point Vector2.XY) Vector2.XY { //gd:PolygonPathFinder.get_closest_point
-	return Vector2.XY(class(self).GetClosestPoint(Vector2.XY(point)))
+	return Vector2.XY(Advanced(self).GetClosestPoint(Vector2.XY(point)))
 }
 
 /*
@@ -119,16 +119,16 @@ GD.Print(polygonPathFinder.IsPointInside(new Vector2(1.0f, 1.0f))); // Prints Fa
 [/codeblocks]
 */
 func (self Instance) IsPointInside(point Vector2.XY) bool { //gd:PolygonPathFinder.is_point_inside
-	return bool(class(self).IsPointInside(Vector2.XY(point)))
+	return bool(Advanced(self).IsPointInside(Vector2.XY(point)))
 }
 func (self Instance) SetPointPenalty(idx int, penalty Float.X) { //gd:PolygonPathFinder.set_point_penalty
-	class(self).SetPointPenalty(int64(idx), float64(penalty))
+	Advanced(self).SetPointPenalty(int64(idx), float64(penalty))
 }
 func (self Instance) GetPointPenalty(idx int) Float.X { //gd:PolygonPathFinder.get_point_penalty
-	return Float.X(Float.X(class(self).GetPointPenalty(int64(idx))))
+	return Float.X(Float.X(Advanced(self).GetPointPenalty(int64(idx))))
 }
 func (self Instance) GetBounds() Rect2.PositionSize { //gd:PolygonPathFinder.get_bounds
-	return Rect2.PositionSize(class(self).GetBounds())
+	return Rect2.PositionSize(Advanced(self).GetBounds())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

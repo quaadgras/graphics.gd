@@ -48,6 +48,7 @@ Internally, [MultiplayerSynchronizer] uses [method MultiplayerAPI.object_configu
 [b]Note:[/b] Synchronization is not supported for [Object] type properties, like [Resource]. Properties that are unique to each peer, like the instance IDs of [Object]s (see [method Object.get_instance_id]) or [RID]s, will also not work in synchronization.
 */
 type Instance [1]gdclass.MultiplayerSynchronizer
+type Expanded [1]gdclass.MultiplayerSynchronizer
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -61,7 +62,14 @@ type Any interface {
 Updates the visibility of [param for_peer] according to visibility filters. If [param for_peer] is [code]0[/code] (the default), all peers' visibilties are updated.
 */
 func (self Instance) UpdateVisibility() { //gd:MultiplayerSynchronizer.update_visibility
-	class(self).UpdateVisibility(int64(0))
+	Advanced(self).UpdateVisibility(int64(0))
+}
+
+/*
+Updates the visibility of [param for_peer] according to visibility filters. If [param for_peer] is [code]0[/code] (the default), all peers' visibilties are updated.
+*/
+func (self Expanded) UpdateVisibility(for_peer int) { //gd:MultiplayerSynchronizer.update_visibility
+	Advanced(self).UpdateVisibility(int64(for_peer))
 }
 
 /*
@@ -69,28 +77,28 @@ Adds a peer visibility filter for this synchronizer.
 [param filter] should take a peer ID [int] and return a [bool].
 */
 func (self Instance) AddVisibilityFilter(filter func(peer_id int) bool) { //gd:MultiplayerSynchronizer.add_visibility_filter
-	class(self).AddVisibilityFilter(Callable.New(filter))
+	Advanced(self).AddVisibilityFilter(Callable.New(filter))
 }
 
 /*
 Removes a peer visibility filter from this synchronizer.
 */
 func (self Instance) RemoveVisibilityFilter(filter Callable.Function) { //gd:MultiplayerSynchronizer.remove_visibility_filter
-	class(self).RemoveVisibilityFilter(Callable.New(filter))
+	Advanced(self).RemoveVisibilityFilter(Callable.New(filter))
 }
 
 /*
 Sets the visibility of [param peer] to [param visible]. If [param peer] is [code]0[/code], the value of [member public_visibility] will be updated instead.
 */
 func (self Instance) SetVisibilityFor(peer int, visible bool) { //gd:MultiplayerSynchronizer.set_visibility_for
-	class(self).SetVisibilityFor(int64(peer), visible)
+	Advanced(self).SetVisibilityFor(int64(peer), visible)
 }
 
 /*
 Queries the current visibility for peer [param peer].
 */
 func (self Instance) GetVisibilityFor(peer int) bool { //gd:MultiplayerSynchronizer.get_visibility_for
-	return bool(class(self).GetVisibilityFor(int64(peer)))
+	return bool(Advanced(self).GetVisibilityFor(int64(peer)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -51,6 +51,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 [b]Note:[/b] Meshes should have sufficiently thick walls to avoid light leaks (avoid one-sided walls). For interior levels, enclose your level geometry in a sufficiently large box and bridge the loops to close the mesh. To further prevent light leaks, you can also strategically place temporary [MeshInstance3D] nodes with their [member GeometryInstance3D.gi_mode] set to [constant GeometryInstance3D.GI_MODE_STATIC]. These temporary nodes can then be hidden after baking the [VoxelGI] node.
 */
 type Instance [1]gdclass.VoxelGI
+type Expanded [1]gdclass.VoxelGI
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -66,14 +67,23 @@ Bakes the effect from all [GeometryInstance3D]s marked with [constant GeometryIn
 [b]Note:[/b] [GeometryInstance3D]s and [Light3D]s must be fully ready before [method bake] is called. If you are procedurally creating those and some meshes or lights are missing from your baked [VoxelGI], use [code]call_deferred("bake")[/code] instead of calling [method bake] directly.
 */
 func (self Instance) Bake() { //gd:VoxelGI.bake
-	class(self).Bake([1][1]gdclass.Node{}[0], false)
+	Advanced(self).Bake([1][1]gdclass.Node{}[0], false)
+}
+
+/*
+Bakes the effect from all [GeometryInstance3D]s marked with [constant GeometryInstance3D.GI_MODE_STATIC] and [Light3D]s marked with either [constant Light3D.BAKE_STATIC] or [constant Light3D.BAKE_DYNAMIC]. If [param create_visual_debug] is [code]true[/code], after baking the light, this will generate a [MultiMesh] that has a cube representing each solid cell with each cube colored to the cell's albedo color. This can be used to visualize the [VoxelGI]'s data and debug any issues that may be occurring.
+[b]Note:[/b] [method bake] works from the editor and in exported projects. This makes it suitable for procedurally generated or user-built levels. Baking a [VoxelGI] node generally takes from 5 to 20 seconds in most scenes. Reducing [member subdiv] can speed up baking.
+[b]Note:[/b] [GeometryInstance3D]s and [Light3D]s must be fully ready before [method bake] is called. If you are procedurally creating those and some meshes or lights are missing from your baked [VoxelGI], use [code]call_deferred("bake")[/code] instead of calling [method bake] directly.
+*/
+func (self Expanded) Bake(from_node [1]gdclass.Node, create_visual_debug bool) { //gd:VoxelGI.bake
+	Advanced(self).Bake(from_node, create_visual_debug)
 }
 
 /*
 Calls [method bake] with [code]create_visual_debug[/code] enabled.
 */
 func (self Instance) DebugBake() { //gd:VoxelGI.debug_bake
-	class(self).DebugBake()
+	Advanced(self).DebugBake()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

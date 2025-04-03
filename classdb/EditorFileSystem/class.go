@@ -58,35 +58,35 @@ type Any interface {
 Gets the root directory object.
 */
 func (self Instance) GetFilesystem() [1]gdclass.EditorFileSystemDirectory { //gd:EditorFileSystem.get_filesystem
-	return [1]gdclass.EditorFileSystemDirectory(class(self).GetFilesystem())
+	return [1]gdclass.EditorFileSystemDirectory(Advanced(self).GetFilesystem())
 }
 
 /*
 Returns [code]true[/code] if the filesystem is being scanned.
 */
 func (self Instance) IsScanning() bool { //gd:EditorFileSystem.is_scanning
-	return bool(class(self).IsScanning())
+	return bool(Advanced(self).IsScanning())
 }
 
 /*
 Returns the scan progress for 0 to 1 if the FS is being scanned.
 */
 func (self Instance) GetScanningProgress() Float.X { //gd:EditorFileSystem.get_scanning_progress
-	return Float.X(Float.X(class(self).GetScanningProgress()))
+	return Float.X(Float.X(Advanced(self).GetScanningProgress()))
 }
 
 /*
 Scan the filesystem for changes.
 */
 func (self Instance) Scan() { //gd:EditorFileSystem.scan
-	class(self).Scan()
+	Advanced(self).Scan()
 }
 
 /*
 Check if the source of any imported resource changed.
 */
 func (self Instance) ScanSources() { //gd:EditorFileSystem.scan_sources
-	class(self).ScanSources()
+	Advanced(self).ScanSources()
 }
 
 /*
@@ -94,21 +94,21 @@ Add a file in an existing directory, or schedule file information to be updated 
 This will not import the file. To reimport, call [method reimport_files] or [method scan] methods.
 */
 func (self Instance) UpdateFile(path string) { //gd:EditorFileSystem.update_file
-	class(self).UpdateFile(String.New(path))
+	Advanced(self).UpdateFile(String.New(path))
 }
 
 /*
 Returns a view into the filesystem at [param path].
 */
 func (self Instance) GetFilesystemPath(path string) [1]gdclass.EditorFileSystemDirectory { //gd:EditorFileSystem.get_filesystem_path
-	return [1]gdclass.EditorFileSystemDirectory(class(self).GetFilesystemPath(String.New(path)))
+	return [1]gdclass.EditorFileSystemDirectory(Advanced(self).GetFilesystemPath(String.New(path)))
 }
 
 /*
 Returns the resource type of the file, given the full path. This returns a string such as [code]"Resource"[/code] or [code]"GDScript"[/code], [i]not[/i] a file extension such as [code]".gd"[/code].
 */
 func (self Instance) GetFileType(path string) string { //gd:EditorFileSystem.get_file_type
-	return string(class(self).GetFileType(String.New(path)).String())
+	return string(Advanced(self).GetFileType(String.New(path)).String())
 }
 
 /*
@@ -117,7 +117,7 @@ If the file type changed or the file was newly created, use [method update_file]
 [b]Note:[/b] This function blocks until the import is finished. However, the main loop iteration, including timers and [method Node._process], will occur during the import process due to progress bar updates. Avoid calls to [method reimport_files] or [method scan] while an import is in progress.
 */
 func (self Instance) ReimportFiles(files []string) { //gd:EditorFileSystem.reimport_files
-	class(self).ReimportFiles(Packed.MakeStrings(files...))
+	Advanced(self).ReimportFiles(Packed.MakeStrings(files...))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

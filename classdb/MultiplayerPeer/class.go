@@ -46,6 +46,7 @@ Manages the connection with one or more remote peers acting as server or client 
 [b]Note:[/b] When exporting to Android, make sure to enable the [code]INTERNET[/code] permission in the Android export preset before exporting the project or using one-click deploy. Otherwise, network communication of any kind will be blocked by Android.
 */
 type Instance [1]gdclass.MultiplayerPeer
+type Expanded [1]gdclass.MultiplayerPeer
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -60,77 +61,84 @@ Sets the peer to which packets will be sent.
 The [param id] can be one of: [constant TARGET_PEER_BROADCAST] to send to all connected peers, [constant TARGET_PEER_SERVER] to send to the peer acting as server, a valid peer ID to send to that specific peer, a negative peer ID to send to all peers except that one. By default, the target peer is [constant TARGET_PEER_BROADCAST].
 */
 func (self Instance) SetTargetPeer(id int) { //gd:MultiplayerPeer.set_target_peer
-	class(self).SetTargetPeer(int64(id))
+	Advanced(self).SetTargetPeer(int64(id))
 }
 
 /*
 Returns the ID of the [MultiplayerPeer] who sent the next available packet. See [method PacketPeer.get_available_packet_count].
 */
 func (self Instance) GetPacketPeer() int { //gd:MultiplayerPeer.get_packet_peer
-	return int(int(class(self).GetPacketPeer()))
+	return int(int(Advanced(self).GetPacketPeer()))
 }
 
 /*
 Returns the channel over which the next available packet was received. See [method PacketPeer.get_available_packet_count].
 */
 func (self Instance) GetPacketChannel() int { //gd:MultiplayerPeer.get_packet_channel
-	return int(int(class(self).GetPacketChannel()))
+	return int(int(Advanced(self).GetPacketChannel()))
 }
 
 /*
 Returns the transfer mode the remote peer used to send the next available packet. See [method PacketPeer.get_available_packet_count].
 */
 func (self Instance) GetPacketMode() gdclass.MultiplayerPeerTransferMode { //gd:MultiplayerPeer.get_packet_mode
-	return gdclass.MultiplayerPeerTransferMode(class(self).GetPacketMode())
+	return gdclass.MultiplayerPeerTransferMode(Advanced(self).GetPacketMode())
 }
 
 /*
 Waits up to 1 second to receive a new network event.
 */
 func (self Instance) Poll() { //gd:MultiplayerPeer.poll
-	class(self).Poll()
+	Advanced(self).Poll()
 }
 
 /*
 Immediately close the multiplayer peer returning to the state [constant CONNECTION_DISCONNECTED]. Connected peers will be dropped without emitting [signal peer_disconnected].
 */
 func (self Instance) Close() { //gd:MultiplayerPeer.close
-	class(self).Close()
+	Advanced(self).Close()
 }
 
 /*
 Disconnects the given [param peer] from this host. If [param force] is [code]true[/code] the [signal peer_disconnected] signal will not be emitted for this peer.
 */
 func (self Instance) DisconnectPeer(peer int) { //gd:MultiplayerPeer.disconnect_peer
-	class(self).DisconnectPeer(int64(peer), false)
+	Advanced(self).DisconnectPeer(int64(peer), false)
+}
+
+/*
+Disconnects the given [param peer] from this host. If [param force] is [code]true[/code] the [signal peer_disconnected] signal will not be emitted for this peer.
+*/
+func (self Expanded) DisconnectPeer(peer int, force bool) { //gd:MultiplayerPeer.disconnect_peer
+	Advanced(self).DisconnectPeer(int64(peer), force)
 }
 
 /*
 Returns the current state of the connection. See [enum ConnectionStatus].
 */
 func (self Instance) GetConnectionStatus() gdclass.MultiplayerPeerConnectionStatus { //gd:MultiplayerPeer.get_connection_status
-	return gdclass.MultiplayerPeerConnectionStatus(class(self).GetConnectionStatus())
+	return gdclass.MultiplayerPeerConnectionStatus(Advanced(self).GetConnectionStatus())
 }
 
 /*
 Returns the ID of this [MultiplayerPeer].
 */
 func (self Instance) GetUniqueId() int { //gd:MultiplayerPeer.get_unique_id
-	return int(int(class(self).GetUniqueId()))
+	return int(int(Advanced(self).GetUniqueId()))
 }
 
 /*
 Returns a randomly generated integer that can be used as a network unique ID.
 */
 func (self Instance) GenerateUniqueId() int { //gd:MultiplayerPeer.generate_unique_id
-	return int(int(class(self).GenerateUniqueId()))
+	return int(int(Advanced(self).GenerateUniqueId()))
 }
 
 /*
 Returns [code]true[/code] if the server can act as a relay in the current configuration. That is, if the higher level [MultiplayerAPI] should notify connected clients of other peers, and implement a relay protocol to allow communication between them.
 */
 func (self Instance) IsServerRelaySupported() bool { //gd:MultiplayerPeer.is_server_relay_supported
-	return bool(class(self).IsServerRelaySupported())
+	return bool(Advanced(self).IsServerRelaySupported())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

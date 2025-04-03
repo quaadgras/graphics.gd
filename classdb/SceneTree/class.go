@@ -46,6 +46,7 @@ You can also use the [SceneTree] to organize your nodes into [b]groups[/b]: ever
 [SceneTree] is the default [MainLoop] implementation used by the engine, and is thus in charge of the game loop.
 */
 type Instance [1]gdclass.SceneTree
+type Expanded [1]gdclass.SceneTree
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -59,7 +60,7 @@ type Any interface {
 Returns [code]true[/code] if a node added to the given group [param name] exists in the tree.
 */
 func (self Instance) HasGroup(name string) bool { //gd:SceneTree.has_group
-	return bool(class(self).HasGroup(String.Name(String.New(name))))
+	return bool(Advanced(self).HasGroup(String.Name(String.New(name))))
 }
 
 /*
@@ -91,7 +92,39 @@ public async Task SomeFunction()
 [b]Note:[/b] The timer is always updated [i]after[/i] all of the nodes in the tree. A node's [method Node._process] method would be called before the timer updates (or [method Node._physics_process] if [param process_in_physics] is set to [code]true[/code]).
 */
 func (self Instance) CreateTimer(time_sec Float.X) [1]gdclass.SceneTreeTimer { //gd:SceneTree.create_timer
-	return [1]gdclass.SceneTreeTimer(class(self).CreateTimer(float64(time_sec), true, false, false))
+	return [1]gdclass.SceneTreeTimer(Advanced(self).CreateTimer(float64(time_sec), true, false, false))
+}
+
+/*
+Returns a new [SceneTreeTimer]. After [param time_sec] in seconds have passed, the timer will emit [signal SceneTreeTimer.timeout] and will be automatically freed.
+If [param process_always] is [code]false[/code], the timer will be paused when setting [member SceneTree.paused] to [code]true[/code].
+If [param process_in_physics] is [code]true[/code], the timer will update at the end of the physics frame, instead of the process frame.
+If [param ignore_time_scale] is [code]true[/code], the timer will ignore [member Engine.time_scale] and update with the real, elapsed time.
+This method is commonly used to create a one-shot delay timer, as in the following example:
+[codeblocks]
+[gdscript]
+func some_function():
+
+	print("start")
+	await get_tree().create_timer(1.0).timeout
+	print("end")
+
+[/gdscript]
+[csharp]
+public async Task SomeFunction()
+
+	{
+	    GD.Print("start");
+	    await ToSignal(GetTree().CreateTimer(1.0f), SceneTreeTimer.SignalName.Timeout);
+	    GD.Print("end");
+	}
+
+[/csharp]
+[/codeblocks]
+[b]Note:[/b] The timer is always updated [i]after[/i] all of the nodes in the tree. A node's [method Node._process] method would be called before the timer updates (or [method Node._physics_process] if [param process_in_physics] is set to [code]true[/code]).
+*/
+func (self Expanded) CreateTimer(time_sec Float.X, process_always bool, process_in_physics bool, ignore_time_scale bool) [1]gdclass.SceneTreeTimer { //gd:SceneTree.create_timer
+	return [1]gdclass.SceneTreeTimer(Advanced(self).CreateTimer(float64(time_sec), process_always, process_in_physics, ignore_time_scale))
 }
 
 /*
@@ -99,28 +132,28 @@ Creates and returns a new [Tween] processed in this tree. The Tween will start a
 [b]Note:[/b] A [Tween] created using this method is not bound to any [Node]. It may keep working until there is nothing left to animate. If you want the [Tween] to be automatically killed when the [Node] is freed, use [method Node.create_tween] or [method Tween.bind_node].
 */
 func (self Instance) CreateTween() [1]gdclass.Tween { //gd:SceneTree.create_tween
-	return [1]gdclass.Tween(class(self).CreateTween())
+	return [1]gdclass.Tween(Advanced(self).CreateTween())
 }
 
 /*
 Returns an [Array] of currently existing [Tween]s in the tree, including paused tweens.
 */
 func (self Instance) GetProcessedTweens() [][1]gdclass.Tween { //gd:SceneTree.get_processed_tweens
-	return [][1]gdclass.Tween(gd.ArrayAs[[][1]gdclass.Tween](gd.InternalArray(class(self).GetProcessedTweens())))
+	return [][1]gdclass.Tween(gd.ArrayAs[[][1]gdclass.Tween](gd.InternalArray(Advanced(self).GetProcessedTweens())))
 }
 
 /*
 Returns the number of nodes inside this tree.
 */
 func (self Instance) GetNodeCount() int { //gd:SceneTree.get_node_count
-	return int(int(class(self).GetNodeCount()))
+	return int(int(Advanced(self).GetNodeCount()))
 }
 
 /*
 Returns how many frames have been processed, since the application started. This is [i]not[/i] a measurement of elapsed time.
 */
 func (self Instance) GetFrame() int { //gd:SceneTree.get_frame
-	return int(int(class(self).GetFrame()))
+	return int(int(Advanced(self).GetFrame()))
 }
 
 /*
@@ -129,21 +162,30 @@ By convention, an exit code of [code]0[/code] indicates success, whereas any oth
 [b]Note:[/b] On iOS this method doesn't work. Instead, as recommended by the [url=https://developer.apple.com/library/archive/qa/qa1561/_index.html]iOS Human Interface Guidelines[/url], the user is expected to close apps via the Home button.
 */
 func (self Instance) Quit() { //gd:SceneTree.quit
-	class(self).Quit(int64(0))
+	Advanced(self).Quit(int64(0))
+}
+
+/*
+Quits the application at the end of the current iteration, with the given [param exit_code].
+By convention, an exit code of [code]0[/code] indicates success, whereas any other exit code indicates an error. For portability reasons, it should be between [code]0[/code] and [code]125[/code] (inclusive).
+[b]Note:[/b] On iOS this method doesn't work. Instead, as recommended by the [url=https://developer.apple.com/library/archive/qa/qa1561/_index.html]iOS Human Interface Guidelines[/url], the user is expected to close apps via the Home button.
+*/
+func (self Expanded) Quit(exit_code int) { //gd:SceneTree.quit
+	Advanced(self).Quit(int64(exit_code))
 }
 
 /*
 Queues the given [param obj] to be deleted, calling its [method Object.free] at the end of the current frame. This method is similar to [method Node.queue_free].
 */
 func (self Instance) QueueDelete(obj Object.Instance) { //gd:SceneTree.queue_delete
-	class(self).QueueDelete(obj)
+	Advanced(self).QueueDelete(obj)
 }
 
 /*
 Calls [method Object.notification] with the given [param notification] to all nodes inside this tree added to the [param group]. Use [param call_flags] to customize this method's behavior (see [enum GroupCallFlags]).
 */
 func (self Instance) NotifyGroupFlags(call_flags int, group string, notification int) { //gd:SceneTree.notify_group_flags
-	class(self).NotifyGroupFlags(int64(call_flags), String.Name(String.New(group)), int64(notification))
+	Advanced(self).NotifyGroupFlags(int64(call_flags), String.Name(String.New(group)), int64(notification))
 }
 
 /*
@@ -151,7 +193,7 @@ Sets the given [param property] to [param value] on all nodes inside this tree a
 [b]Note:[/b] In C#, [param property] must be in snake_case when referring to built-in Godot properties. Prefer using the names exposed in the [code]PropertyName[/code] class to avoid allocating a new [StringName] on each call.
 */
 func (self Instance) SetGroupFlags(call_flags int, group string, property string, value any) { //gd:SceneTree.set_group_flags
-	class(self).SetGroupFlags(int64(call_flags), String.Name(String.New(group)), String.New(property), variant.New(value))
+	Advanced(self).SetGroupFlags(int64(call_flags), String.Name(String.New(group)), String.New(property), variant.New(value))
 }
 
 /*
@@ -159,7 +201,7 @@ Calls [method Object.notification] with the given [param notification] to all no
 [b]Note:[/b] This method acts immediately on all selected nodes at once, which may cause stuttering in some performance-intensive situations.
 */
 func (self Instance) NotifyGroup(group string, notification int) { //gd:SceneTree.notify_group
-	class(self).NotifyGroup(String.Name(String.New(group)), int64(notification))
+	Advanced(self).NotifyGroup(String.Name(String.New(group)), int64(notification))
 }
 
 /*
@@ -168,28 +210,28 @@ Sets the given [param property] to [param value] on all nodes inside this tree a
 [b]Note:[/b] In C#, [param property] must be in snake_case when referring to built-in Godot properties. Prefer using the names exposed in the [code]PropertyName[/code] class to avoid allocating a new [StringName] on each call.
 */
 func (self Instance) SetGroup(group string, property string, value any) { //gd:SceneTree.set_group
-	class(self).SetGroup(String.Name(String.New(group)), String.New(property), variant.New(value))
+	Advanced(self).SetGroup(String.Name(String.New(group)), String.New(property), variant.New(value))
 }
 
 /*
 Returns an [Array] containing all nodes inside this tree, that have been added to the given [param group], in scene hierarchy order.
 */
 func (self Instance) GetNodesInGroup(group string) [][1]gdclass.Node { //gd:SceneTree.get_nodes_in_group
-	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](gd.InternalArray(class(self).GetNodesInGroup(String.Name(String.New(group))))))
+	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](gd.InternalArray(Advanced(self).GetNodesInGroup(String.Name(String.New(group))))))
 }
 
 /*
 Returns the first [Node] found inside the tree, that has been added to the given [param group], in scene hierarchy order. Returns [code]null[/code] if no match is found. See also [method get_nodes_in_group].
 */
 func (self Instance) GetFirstNodeInGroup(group string) [1]gdclass.Node { //gd:SceneTree.get_first_node_in_group
-	return [1]gdclass.Node(class(self).GetFirstNodeInGroup(String.Name(String.New(group))))
+	return [1]gdclass.Node(Advanced(self).GetFirstNodeInGroup(String.Name(String.New(group))))
 }
 
 /*
 Returns the number of nodes assigned to the given group.
 */
 func (self Instance) GetNodeCountInGroup(group string) int { //gd:SceneTree.get_node_count_in_group
-	return int(int(class(self).GetNodeCountInGroup(String.Name(String.New(group)))))
+	return int(int(Advanced(self).GetNodeCountInGroup(String.Name(String.New(group)))))
 }
 
 /*
@@ -198,7 +240,7 @@ Returns [constant OK] on success, [constant ERR_CANT_OPEN] if the [param path] c
 [b]Note:[/b] See [method change_scene_to_packed] for details on the order of operations.
 */
 func (self Instance) ChangeSceneToFile(path string) error { //gd:SceneTree.change_scene_to_file
-	return error(gd.ToError(class(self).ChangeSceneToFile(String.New(path))))
+	return error(gd.ToError(Advanced(self).ChangeSceneToFile(String.New(path))))
 }
 
 /*
@@ -210,7 +252,7 @@ Returns [constant OK] on success, [constant ERR_CANT_CREATE] if the scene cannot
 This ensures that both scenes aren't running at the same time, while still freeing the previous scene in a safe way similar to [method Node.queue_free].
 */
 func (self Instance) ChangeSceneToPacked(packed_scene [1]gdclass.PackedScene) error { //gd:SceneTree.change_scene_to_packed
-	return error(gd.ToError(class(self).ChangeSceneToPacked(packed_scene)))
+	return error(gd.ToError(Advanced(self).ChangeSceneToPacked(packed_scene)))
 }
 
 /*
@@ -218,14 +260,14 @@ Reloads the currently active scene, replacing [member current_scene] with a new 
 Returns [constant OK] on success, [constant ERR_UNCONFIGURED] if no [member current_scene] is defined, [constant ERR_CANT_OPEN] if [member current_scene] cannot be loaded into a [PackedScene], or [constant ERR_CANT_CREATE] if the scene cannot be instantiated.
 */
 func (self Instance) ReloadCurrentScene() error { //gd:SceneTree.reload_current_scene
-	return error(gd.ToError(class(self).ReloadCurrentScene()))
+	return error(gd.ToError(Advanced(self).ReloadCurrentScene()))
 }
 
 /*
 If a current scene is loaded, calling this method will unload it.
 */
 func (self Instance) UnloadCurrentScene() { //gd:SceneTree.unload_current_scene
-	class(self).UnloadCurrentScene()
+	Advanced(self).UnloadCurrentScene()
 }
 
 /*
@@ -233,14 +275,29 @@ Sets a custom [MultiplayerAPI] with the given [param root_path] (controlling als
 [b]Note:[/b] No [MultiplayerAPI] must be configured for the subpath containing [param root_path], nested custom multiplayers are not allowed. I.e. if one is configured for [code]"/root/Foo"[/code] setting one for [code]"/root/Foo/Bar"[/code] will cause an error.
 */
 func (self Instance) SetMultiplayer(multiplayer [1]gdclass.MultiplayerAPI) { //gd:SceneTree.set_multiplayer
-	class(self).SetMultiplayer(multiplayer, Path.ToNode(String.New("")))
+	Advanced(self).SetMultiplayer(multiplayer, Path.ToNode(String.New("")))
+}
+
+/*
+Sets a custom [MultiplayerAPI] with the given [param root_path] (controlling also the relative subpaths), or override the default one if [param root_path] is empty.
+[b]Note:[/b] No [MultiplayerAPI] must be configured for the subpath containing [param root_path], nested custom multiplayers are not allowed. I.e. if one is configured for [code]"/root/Foo"[/code] setting one for [code]"/root/Foo/Bar"[/code] will cause an error.
+*/
+func (self Expanded) SetMultiplayer(multiplayer [1]gdclass.MultiplayerAPI, root_path string) { //gd:SceneTree.set_multiplayer
+	Advanced(self).SetMultiplayer(multiplayer, Path.ToNode(String.New(root_path)))
 }
 
 /*
 Searches for the [MultiplayerAPI] configured for the given path, if one does not exist it searches the parent paths until one is found. If the path is empty, or none is found, the default one is returned. See [method set_multiplayer].
 */
 func (self Instance) GetMultiplayer() [1]gdclass.MultiplayerAPI { //gd:SceneTree.get_multiplayer
-	return [1]gdclass.MultiplayerAPI(class(self).GetMultiplayer(Path.ToNode(String.New(""))))
+	return [1]gdclass.MultiplayerAPI(Advanced(self).GetMultiplayer(Path.ToNode(String.New(""))))
+}
+
+/*
+Searches for the [MultiplayerAPI] configured for the given path, if one does not exist it searches the parent paths until one is found. If the path is empty, or none is found, the default one is returned. See [method set_multiplayer].
+*/
+func (self Expanded) GetMultiplayer(for_path string) [1]gdclass.MultiplayerAPI { //gd:SceneTree.get_multiplayer
+	return [1]gdclass.MultiplayerAPI(Advanced(self).GetMultiplayer(Path.ToNode(String.New(for_path))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

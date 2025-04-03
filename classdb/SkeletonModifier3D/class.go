@@ -87,7 +87,7 @@ func (Instance) _process_modification(impl func(ptr unsafe.Pointer)) (cb gd.Exte
 Get parent [Skeleton3D] node if found.
 */
 func (self Instance) GetSkeleton() [1]gdclass.Skeleton3D { //gd:SkeletonModifier3D.get_skeleton
-	return [1]gdclass.Skeleton3D(class(self).GetSkeleton())
+	return [1]gdclass.Skeleton3D(Advanced(self).GetSkeleton())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

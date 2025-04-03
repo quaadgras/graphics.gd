@@ -51,6 +51,7 @@ Affine operations (rotate, scale, translate) happen in parent's local coordinate
 [b]Note:[/b] Be aware that "Spatial" nodes are now called "Node3D" starting with Godot 4. Any Godot 3.x references to "Spatial" nodes refer to "Node3D" in Godot 4.
 */
 type Instance [1]gdclass.Node3D
+type Expanded [1]gdclass.Node3D
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -66,7 +67,7 @@ This is particularly important for frame-based operations that take place in [me
 [b]Note:[/b] This function creates an interpolation pump on the [Node3D] the first time it is called, which can respond to physics interpolation resets. If you get problems with "streaking" when initially following a [Node3D], be sure to call [method get_global_transform_interpolated] at least once [i]before[/i] resetting the [Node3D] physics interpolation.
 */
 func (self Instance) GetGlobalTransformInterpolated() Transform3D.BasisOrigin { //gd:Node3D.get_global_transform_interpolated
-	return Transform3D.BasisOrigin(class(self).GetGlobalTransformInterpolated())
+	return Transform3D.BasisOrigin(Advanced(self).GetGlobalTransformInterpolated())
 }
 
 /*
@@ -74,49 +75,49 @@ Returns the parent [Node3D], or [code]null[/code] if no parent exists, the paren
 [b]Note:[/b] Calling this method is not equivalent to [code]get_parent() as Node3D[/code], which does not take [member top_level] into account.
 */
 func (self Instance) GetParentNode3d() [1]gdclass.Node3D { //gd:Node3D.get_parent_node_3d
-	return [1]gdclass.Node3D(class(self).GetParentNode3d())
+	return [1]gdclass.Node3D(Advanced(self).GetParentNode3d())
 }
 
 /*
 Sets whether the node ignores notification that its transformation (global or local) changed.
 */
 func (self Instance) SetIgnoreTransformNotification(enabled bool) { //gd:Node3D.set_ignore_transform_notification
-	class(self).SetIgnoreTransformNotification(enabled)
+	Advanced(self).SetIgnoreTransformNotification(enabled)
 }
 
 /*
 Sets whether the node uses a scale of [code](1, 1, 1)[/code] or its local transformation scale. Changes to the local transformation scale are preserved.
 */
 func (self Instance) SetDisableScale(disable bool) { //gd:Node3D.set_disable_scale
-	class(self).SetDisableScale(disable)
+	Advanced(self).SetDisableScale(disable)
 }
 
 /*
 Returns whether this node uses a scale of [code](1, 1, 1)[/code] or its local transformation scale.
 */
 func (self Instance) IsScaleDisabled() bool { //gd:Node3D.is_scale_disabled
-	return bool(class(self).IsScaleDisabled())
+	return bool(Advanced(self).IsScaleDisabled())
 }
 
 /*
 Returns the current [World3D] resource this [Node3D] node is registered to.
 */
 func (self Instance) GetWorld3d() [1]gdclass.World3D { //gd:Node3D.get_world_3d
-	return [1]gdclass.World3D(class(self).GetWorld3d())
+	return [1]gdclass.World3D(Advanced(self).GetWorld3d())
 }
 
 /*
 Forces the transform to update. Transform changes in physics are not instant for performance reasons. Transforms are accumulated and then set. Use this if you need an up-to-date transform when doing physics operations.
 */
 func (self Instance) ForceUpdateTransform() { //gd:Node3D.force_update_transform
-	class(self).ForceUpdateTransform()
+	Advanced(self).ForceUpdateTransform()
 }
 
 /*
 Updates all the [Node3D] gizmos attached to this node.
 */
 func (self Instance) UpdateGizmos() { //gd:Node3D.update_gizmos
-	class(self).UpdateGizmos()
+	Advanced(self).UpdateGizmos()
 }
 
 /*
@@ -124,21 +125,21 @@ Attach an editor gizmo to this [Node3D].
 [b]Note:[/b] The gizmo object would typically be an instance of [EditorNode3DGizmo], but the argument type is kept generic to avoid creating a dependency on editor classes in [Node3D].
 */
 func (self Instance) AddGizmo(gizmo [1]gdclass.Node3DGizmo) { //gd:Node3D.add_gizmo
-	class(self).AddGizmo(gizmo)
+	Advanced(self).AddGizmo(gizmo)
 }
 
 /*
 Returns all the gizmos attached to this [Node3D].
 */
 func (self Instance) GetGizmos() [][1]gdclass.Node3DGizmo { //gd:Node3D.get_gizmos
-	return [][1]gdclass.Node3DGizmo(gd.ArrayAs[[][1]gdclass.Node3DGizmo](gd.InternalArray(class(self).GetGizmos())))
+	return [][1]gdclass.Node3DGizmo(gd.ArrayAs[[][1]gdclass.Node3DGizmo](gd.InternalArray(Advanced(self).GetGizmos())))
 }
 
 /*
 Clear all gizmos attached to this [Node3D].
 */
 func (self Instance) ClearGizmos() { //gd:Node3D.clear_gizmos
-	class(self).ClearGizmos()
+	Advanced(self).ClearGizmos()
 }
 
 /*
@@ -146,14 +147,14 @@ Set subgizmo selection for this node in the editor.
 [b]Note:[/b] The gizmo object would typically be an instance of [EditorNode3DGizmo], but the argument type is kept generic to avoid creating a dependency on editor classes in [Node3D].
 */
 func (self Instance) SetSubgizmoSelection(gizmo [1]gdclass.Node3DGizmo, id int, transform Transform3D.BasisOrigin) { //gd:Node3D.set_subgizmo_selection
-	class(self).SetSubgizmoSelection(gizmo, int64(id), Transform3D.BasisOrigin(transform))
+	Advanced(self).SetSubgizmoSelection(gizmo, int64(id), Transform3D.BasisOrigin(transform))
 }
 
 /*
 Clears subgizmo selection for this node in the editor. Useful when subgizmo IDs become invalid after a property change.
 */
 func (self Instance) ClearSubgizmoSelection() { //gd:Node3D.clear_subgizmo_selection
-	class(self).ClearSubgizmoSelection()
+	Advanced(self).ClearSubgizmoSelection()
 }
 
 /*
@@ -162,119 +163,119 @@ Visibility is checked only in parent nodes that inherit from [Node3D]. If the pa
 [b]Note:[/b] This method does not take [member VisualInstance3D.layers] into account, so even if this method returns [code]true[/code], the node might end up not being rendered.
 */
 func (self Instance) IsVisibleInTree() bool { //gd:Node3D.is_visible_in_tree
-	return bool(class(self).IsVisibleInTree())
+	return bool(Advanced(self).IsVisibleInTree())
 }
 
 /*
 Enables rendering of this node. Changes [member visible] to [code]true[/code].
 */
 func (self Instance) Show() { //gd:Node3D.show
-	class(self).Show()
+	Advanced(self).Show()
 }
 
 /*
 Disables rendering of this node. Changes [member visible] to [code]false[/code].
 */
 func (self Instance) Hide() { //gd:Node3D.hide
-	class(self).Hide()
+	Advanced(self).Hide()
 }
 
 /*
 Sets whether the node notifies about its local transformation changes. [Node3D] will not propagate this by default.
 */
 func (self Instance) SetNotifyLocalTransform(enable bool) { //gd:Node3D.set_notify_local_transform
-	class(self).SetNotifyLocalTransform(enable)
+	Advanced(self).SetNotifyLocalTransform(enable)
 }
 
 /*
 Returns whether node notifies about its local transformation changes. [Node3D] will not propagate this by default.
 */
 func (self Instance) IsLocalTransformNotificationEnabled() bool { //gd:Node3D.is_local_transform_notification_enabled
-	return bool(class(self).IsLocalTransformNotificationEnabled())
+	return bool(Advanced(self).IsLocalTransformNotificationEnabled())
 }
 
 /*
 Sets whether the node notifies about its global and local transformation changes. [Node3D] will not propagate this by default, unless it is in the editor context and it has a valid gizmo.
 */
 func (self Instance) SetNotifyTransform(enable bool) { //gd:Node3D.set_notify_transform
-	class(self).SetNotifyTransform(enable)
+	Advanced(self).SetNotifyTransform(enable)
 }
 
 /*
 Returns whether the node notifies about its global and local transformation changes. [Node3D] will not propagate this by default.
 */
 func (self Instance) IsTransformNotificationEnabled() bool { //gd:Node3D.is_transform_notification_enabled
-	return bool(class(self).IsTransformNotificationEnabled())
+	return bool(Advanced(self).IsTransformNotificationEnabled())
 }
 
 /*
 Rotates the local transformation around axis, a unit [Vector3], by specified angle in radians.
 */
 func (self Instance) Rotate(axis Vector3.XYZ, angle Float.X) { //gd:Node3D.rotate
-	class(self).Rotate(Vector3.XYZ(axis), float64(angle))
+	Advanced(self).Rotate(Vector3.XYZ(axis), float64(angle))
 }
 
 /*
 Rotates the global (world) transformation around axis, a unit [Vector3], by specified angle in radians. The rotation axis is in global coordinate system.
 */
 func (self Instance) GlobalRotate(axis Vector3.XYZ, angle Float.X) { //gd:Node3D.global_rotate
-	class(self).GlobalRotate(Vector3.XYZ(axis), float64(angle))
+	Advanced(self).GlobalRotate(Vector3.XYZ(axis), float64(angle))
 }
 
 /*
 Scales the global (world) transformation by the given [Vector3] scale factors.
 */
 func (self Instance) GlobalScale(scale Vector3.XYZ) { //gd:Node3D.global_scale
-	class(self).GlobalScale(Vector3.XYZ(scale))
+	Advanced(self).GlobalScale(Vector3.XYZ(scale))
 }
 
 /*
 Moves the global (world) transformation by [Vector3] offset. The offset is in global coordinate system.
 */
 func (self Instance) GlobalTranslate(offset Vector3.XYZ) { //gd:Node3D.global_translate
-	class(self).GlobalTranslate(Vector3.XYZ(offset))
+	Advanced(self).GlobalTranslate(Vector3.XYZ(offset))
 }
 
 /*
 Rotates the local transformation around axis, a unit [Vector3], by specified angle in radians. The rotation axis is in object-local coordinate system.
 */
 func (self Instance) RotateObjectLocal(axis Vector3.XYZ, angle Float.X) { //gd:Node3D.rotate_object_local
-	class(self).RotateObjectLocal(Vector3.XYZ(axis), float64(angle))
+	Advanced(self).RotateObjectLocal(Vector3.XYZ(axis), float64(angle))
 }
 
 /*
 Scales the local transformation by given 3D scale factors in object-local coordinate system.
 */
 func (self Instance) ScaleObjectLocal(scale Vector3.XYZ) { //gd:Node3D.scale_object_local
-	class(self).ScaleObjectLocal(Vector3.XYZ(scale))
+	Advanced(self).ScaleObjectLocal(Vector3.XYZ(scale))
 }
 
 /*
 Changes the node's position by the given offset [Vector3] in local space.
 */
 func (self Instance) TranslateObjectLocal(offset Vector3.XYZ) { //gd:Node3D.translate_object_local
-	class(self).TranslateObjectLocal(Vector3.XYZ(offset))
+	Advanced(self).TranslateObjectLocal(Vector3.XYZ(offset))
 }
 
 /*
 Rotates the local transformation around the X axis by angle in radians.
 */
 func (self Instance) RotateX(angle Float.X) { //gd:Node3D.rotate_x
-	class(self).RotateX(float64(angle))
+	Advanced(self).RotateX(float64(angle))
 }
 
 /*
 Rotates the local transformation around the Y axis by angle in radians.
 */
 func (self Instance) RotateY(angle Float.X) { //gd:Node3D.rotate_y
-	class(self).RotateY(float64(angle))
+	Advanced(self).RotateY(float64(angle))
 }
 
 /*
 Rotates the local transformation around the Z axis by angle in radians.
 */
 func (self Instance) RotateZ(angle Float.X) { //gd:Node3D.rotate_z
-	class(self).RotateZ(float64(angle))
+	Advanced(self).RotateZ(float64(angle))
 }
 
 /*
@@ -282,21 +283,21 @@ Changes the node's position by the given offset [Vector3].
 Note that the translation [param offset] is affected by the node's scale, so if scaled by e.g. [code](10, 1, 1)[/code], a translation by an offset of [code](2, 0, 0)[/code] would actually add 20 ([code]2 * 10[/code]) to the X coordinate.
 */
 func (self Instance) Translate(offset Vector3.XYZ) { //gd:Node3D.translate
-	class(self).Translate(Vector3.XYZ(offset))
+	Advanced(self).Translate(Vector3.XYZ(offset))
 }
 
 /*
 Resets this node's transformations (like scale, skew and taper) preserving its rotation and translation by performing Gram-Schmidt orthonormalization on this node's [Transform3D].
 */
 func (self Instance) Orthonormalize() { //gd:Node3D.orthonormalize
-	class(self).Orthonormalize()
+	Advanced(self).Orthonormalize()
 }
 
 /*
 Reset all transformations for this node (sets its [Transform3D] to the identity matrix).
 */
 func (self Instance) SetIdentity() { //gd:Node3D.set_identity
-	class(self).SetIdentity()
+	Advanced(self).SetIdentity()
 }
 
 /*
@@ -308,28 +309,47 @@ Operations take place in global space, which means that the node must be in the 
 If [param use_model_front] is [code]true[/code], the +Z axis (asset front) is treated as forward (implies +X is left) and points toward the [param target] position. By default, the -Z axis (camera forward) is treated as forward (implies +X is right).
 */
 func (self Instance) LookAt(target Vector3.XYZ) { //gd:Node3D.look_at
-	class(self).LookAt(Vector3.XYZ(target), Vector3.XYZ(gd.Vector3{0, 1, 0}), false)
+	Advanced(self).LookAt(Vector3.XYZ(target), Vector3.XYZ(gd.Vector3{0, 1, 0}), false)
+}
+
+/*
+Rotates the node so that the local forward axis (-Z, [constant Vector3.FORWARD]) points toward the [param target] position.
+The local up axis (+Y) points as close to the [param up] vector as possible while staying perpendicular to the local forward axis. The resulting transform is orthogonal, and the scale is preserved. Non-uniform scaling may not work correctly.
+The [param target] position cannot be the same as the node's position, the [param up] vector cannot be zero.
+The [param target] and the [param up] cannot be [constant Vector3.ZERO], and shouldn't be colinear to avoid unintended rotation around local Z axis.
+Operations take place in global space, which means that the node must be in the scene tree.
+If [param use_model_front] is [code]true[/code], the +Z axis (asset front) is treated as forward (implies +X is left) and points toward the [param target] position. By default, the -Z axis (camera forward) is treated as forward (implies +X is right).
+*/
+func (self Expanded) LookAt(target Vector3.XYZ, up Vector3.XYZ, use_model_front bool) { //gd:Node3D.look_at
+	Advanced(self).LookAt(Vector3.XYZ(target), Vector3.XYZ(up), use_model_front)
 }
 
 /*
 Moves the node to the specified [param position], and then rotates the node to point toward the [param target] as per [method look_at]. Operations take place in global space.
 */
 func (self Instance) LookAtFromPosition(position Vector3.XYZ, target Vector3.XYZ) { //gd:Node3D.look_at_from_position
-	class(self).LookAtFromPosition(Vector3.XYZ(position), Vector3.XYZ(target), Vector3.XYZ(gd.Vector3{0, 1, 0}), false)
+	Advanced(self).LookAtFromPosition(Vector3.XYZ(position), Vector3.XYZ(target), Vector3.XYZ(gd.Vector3{0, 1, 0}), false)
+}
+
+/*
+Moves the node to the specified [param position], and then rotates the node to point toward the [param target] as per [method look_at]. Operations take place in global space.
+*/
+func (self Expanded) LookAtFromPosition(position Vector3.XYZ, target Vector3.XYZ, up Vector3.XYZ, use_model_front bool) { //gd:Node3D.look_at_from_position
+	Advanced(self).LookAtFromPosition(Vector3.XYZ(position), Vector3.XYZ(target), Vector3.XYZ(up), use_model_front)
 }
 
 /*
 Transforms [param global_point] from world space to this node's local space.
 */
 func (self Instance) ToLocal(global_point Vector3.XYZ) Vector3.XYZ { //gd:Node3D.to_local
-	return Vector3.XYZ(class(self).ToLocal(Vector3.XYZ(global_point)))
+	return Vector3.XYZ(Advanced(self).ToLocal(Vector3.XYZ(global_point)))
 }
 
 /*
 Transforms [param local_point] from this node's local space to world space.
 */
 func (self Instance) ToGlobal(local_point Vector3.XYZ) Vector3.XYZ { //gd:Node3D.to_global
-	return Vector3.XYZ(class(self).ToGlobal(Vector3.XYZ(local_point)))
+	return Vector3.XYZ(Advanced(self).ToGlobal(Vector3.XYZ(local_point)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

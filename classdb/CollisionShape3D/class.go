@@ -60,14 +60,14 @@ type Any interface {
 This method does nothing.
 */
 func (self Instance) ResourceChanged(resource [1]gdclass.Resource) { //gd:CollisionShape3D.resource_changed
-	class(self).ResourceChanged(resource)
+	Advanced(self).ResourceChanged(resource)
 }
 
 /*
 Sets the collision shape's shape to the addition of all its convexed [MeshInstance3D] siblings geometry.
 */
 func (self Instance) MakeConvexFromSiblings() { //gd:CollisionShape3D.make_convex_from_siblings
-	class(self).MakeConvexFromSiblings()
+	Advanced(self).MakeConvexFromSiblings()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -46,6 +46,7 @@ The runtime part of an [AudioEffectSpectrumAnalyzer], which can be used to query
 An instance of this class can be obtained with [method AudioServer.get_bus_effect_instance].
 */
 type Instance [1]gdclass.AudioEffectSpectrumAnalyzerInstance
+type Expanded [1]gdclass.AudioEffectSpectrumAnalyzerInstance
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -60,7 +61,15 @@ Returns the magnitude of the frequencies from [param from_hz] to [param to_hz] i
 [param mode] determines how the frequency range will be processed. See [enum MagnitudeMode].
 */
 func (self Instance) GetMagnitudeForFrequencyRange(from_hz Float.X, to_hz Float.X) Vector2.XY { //gd:AudioEffectSpectrumAnalyzerInstance.get_magnitude_for_frequency_range
-	return Vector2.XY(class(self).GetMagnitudeForFrequencyRange(float64(from_hz), float64(to_hz), 1))
+	return Vector2.XY(Advanced(self).GetMagnitudeForFrequencyRange(float64(from_hz), float64(to_hz), 1))
+}
+
+/*
+Returns the magnitude of the frequencies from [param from_hz] to [param to_hz] in linear energy as a Vector2. The [code]x[/code] component of the return value represents the left stereo channel, and [code]y[/code] represents the right channel.
+[param mode] determines how the frequency range will be processed. See [enum MagnitudeMode].
+*/
+func (self Expanded) GetMagnitudeForFrequencyRange(from_hz Float.X, to_hz Float.X, mode gdclass.AudioEffectSpectrumAnalyzerInstanceMagnitudeMode) Vector2.XY { //gd:AudioEffectSpectrumAnalyzerInstance.get_magnitude_for_frequency_range
+	return Vector2.XY(Advanced(self).GetMagnitudeForFrequencyRange(float64(from_hz), float64(to_hz), mode))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

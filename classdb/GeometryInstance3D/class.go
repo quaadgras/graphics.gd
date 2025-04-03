@@ -63,14 +63,14 @@ Set the value of a shader uniform for this instance only ([url=$DOCS_URL/tutoria
 [b]Note:[/b] Per-instance shader uniforms are only available in Spatial and CanvasItem shaders, but not for Fog, Sky, or Particles shaders.
 */
 func (self Instance) SetInstanceShaderParameter(name string, value any) { //gd:GeometryInstance3D.set_instance_shader_parameter
-	class(self).SetInstanceShaderParameter(String.Name(String.New(name)), variant.New(value))
+	Advanced(self).SetInstanceShaderParameter(String.Name(String.New(name)), variant.New(value))
 }
 
 /*
 Get the value of a shader parameter as set on this instance.
 */
 func (self Instance) GetInstanceShaderParameter(name string) any { //gd:GeometryInstance3D.get_instance_shader_parameter
-	return any(class(self).GetInstanceShaderParameter(String.Name(String.New(name))).Interface())
+	return any(Advanced(self).GetInstanceShaderParameter(String.Name(String.New(name))).Interface())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

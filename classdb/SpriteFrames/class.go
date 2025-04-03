@@ -44,6 +44,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 Sprite frame library for an [AnimatedSprite2D] or [AnimatedSprite3D] node. Contains frames and animation data for playback.
 */
 type Instance [1]gdclass.SpriteFrames
+type Expanded [1]gdclass.SpriteFrames
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -57,105 +58,119 @@ type Any interface {
 Adds a new [param anim] animation to the library.
 */
 func (self Instance) AddAnimation(anim string) { //gd:SpriteFrames.add_animation
-	class(self).AddAnimation(String.Name(String.New(anim)))
+	Advanced(self).AddAnimation(String.Name(String.New(anim)))
 }
 
 /*
 Returns [code]true[/code] if the [param anim] animation exists.
 */
 func (self Instance) HasAnimation(anim string) bool { //gd:SpriteFrames.has_animation
-	return bool(class(self).HasAnimation(String.Name(String.New(anim))))
+	return bool(Advanced(self).HasAnimation(String.Name(String.New(anim))))
 }
 
 /*
 Duplicates the animation [param anim_from] to a new animation named [param anim_to]. Fails if [param anim_to] already exists, or if [param anim_from] does not exist.
 */
 func (self Instance) DuplicateAnimation(anim_from string, anim_to string) { //gd:SpriteFrames.duplicate_animation
-	class(self).DuplicateAnimation(String.Name(String.New(anim_from)), String.Name(String.New(anim_to)))
+	Advanced(self).DuplicateAnimation(String.Name(String.New(anim_from)), String.Name(String.New(anim_to)))
 }
 
 /*
 Removes the [param anim] animation.
 */
 func (self Instance) RemoveAnimation(anim string) { //gd:SpriteFrames.remove_animation
-	class(self).RemoveAnimation(String.Name(String.New(anim)))
+	Advanced(self).RemoveAnimation(String.Name(String.New(anim)))
 }
 
 /*
 Changes the [param anim] animation's name to [param newname].
 */
 func (self Instance) RenameAnimation(anim string, newname string) { //gd:SpriteFrames.rename_animation
-	class(self).RenameAnimation(String.Name(String.New(anim)), String.Name(String.New(newname)))
+	Advanced(self).RenameAnimation(String.Name(String.New(anim)), String.Name(String.New(newname)))
 }
 
 /*
 Returns an array containing the names associated to each animation. Values are placed in alphabetical order.
 */
 func (self Instance) GetAnimationNames() []string { //gd:SpriteFrames.get_animation_names
-	return []string(class(self).GetAnimationNames().Strings())
+	return []string(Advanced(self).GetAnimationNames().Strings())
 }
 
 /*
 Sets the speed for the [param anim] animation in frames per second.
 */
 func (self Instance) SetAnimationSpeed(anim string, fps Float.X) { //gd:SpriteFrames.set_animation_speed
-	class(self).SetAnimationSpeed(String.Name(String.New(anim)), float64(fps))
+	Advanced(self).SetAnimationSpeed(String.Name(String.New(anim)), float64(fps))
 }
 
 /*
 Returns the speed in frames per second for the [param anim] animation.
 */
 func (self Instance) GetAnimationSpeed(anim string) Float.X { //gd:SpriteFrames.get_animation_speed
-	return Float.X(Float.X(class(self).GetAnimationSpeed(String.Name(String.New(anim)))))
+	return Float.X(Float.X(Advanced(self).GetAnimationSpeed(String.Name(String.New(anim)))))
 }
 
 /*
 If [param loop] is [code]true[/code], the [param anim] animation will loop when it reaches the end, or the start if it is played in reverse.
 */
 func (self Instance) SetAnimationLoop(anim string, loop bool) { //gd:SpriteFrames.set_animation_loop
-	class(self).SetAnimationLoop(String.Name(String.New(anim)), loop)
+	Advanced(self).SetAnimationLoop(String.Name(String.New(anim)), loop)
 }
 
 /*
 Returns [code]true[/code] if the given animation is configured to loop when it finishes playing. Otherwise, returns [code]false[/code].
 */
 func (self Instance) GetAnimationLoop(anim string) bool { //gd:SpriteFrames.get_animation_loop
-	return bool(class(self).GetAnimationLoop(String.Name(String.New(anim))))
+	return bool(Advanced(self).GetAnimationLoop(String.Name(String.New(anim))))
 }
 
 /*
 Adds a frame to the [param anim] animation. If [param at_position] is [code]-1[/code], the frame will be added to the end of the animation. [param duration] specifies the relative duration, see [method get_frame_duration] for details.
 */
 func (self Instance) AddFrame(anim string, texture [1]gdclass.Texture2D) { //gd:SpriteFrames.add_frame
-	class(self).AddFrame(String.Name(String.New(anim)), texture, float64(1.0), int64(-1))
+	Advanced(self).AddFrame(String.Name(String.New(anim)), texture, float64(1.0), int64(-1))
+}
+
+/*
+Adds a frame to the [param anim] animation. If [param at_position] is [code]-1[/code], the frame will be added to the end of the animation. [param duration] specifies the relative duration, see [method get_frame_duration] for details.
+*/
+func (self Expanded) AddFrame(anim string, texture [1]gdclass.Texture2D, duration Float.X, at_position int) { //gd:SpriteFrames.add_frame
+	Advanced(self).AddFrame(String.Name(String.New(anim)), texture, float64(duration), int64(at_position))
 }
 
 /*
 Sets the [param texture] and the [param duration] of the frame [param idx] in the [param anim] animation. [param duration] specifies the relative duration, see [method get_frame_duration] for details.
 */
 func (self Instance) SetFrame(anim string, idx int, texture [1]gdclass.Texture2D) { //gd:SpriteFrames.set_frame
-	class(self).SetFrame(String.Name(String.New(anim)), int64(idx), texture, float64(1.0))
+	Advanced(self).SetFrame(String.Name(String.New(anim)), int64(idx), texture, float64(1.0))
+}
+
+/*
+Sets the [param texture] and the [param duration] of the frame [param idx] in the [param anim] animation. [param duration] specifies the relative duration, see [method get_frame_duration] for details.
+*/
+func (self Expanded) SetFrame(anim string, idx int, texture [1]gdclass.Texture2D, duration Float.X) { //gd:SpriteFrames.set_frame
+	Advanced(self).SetFrame(String.Name(String.New(anim)), int64(idx), texture, float64(duration))
 }
 
 /*
 Removes the [param anim] animation's frame [param idx].
 */
 func (self Instance) RemoveFrame(anim string, idx int) { //gd:SpriteFrames.remove_frame
-	class(self).RemoveFrame(String.Name(String.New(anim)), int64(idx))
+	Advanced(self).RemoveFrame(String.Name(String.New(anim)), int64(idx))
 }
 
 /*
 Returns the number of frames for the [param anim] animation.
 */
 func (self Instance) GetFrameCount(anim string) int { //gd:SpriteFrames.get_frame_count
-	return int(int(class(self).GetFrameCount(String.Name(String.New(anim)))))
+	return int(int(Advanced(self).GetFrameCount(String.Name(String.New(anim)))))
 }
 
 /*
 Returns the texture of the frame [param idx] in the [param anim] animation.
 */
 func (self Instance) GetFrameTexture(anim string, idx int) [1]gdclass.Texture2D { //gd:SpriteFrames.get_frame_texture
-	return [1]gdclass.Texture2D(class(self).GetFrameTexture(String.Name(String.New(anim)), int64(idx)))
+	return [1]gdclass.Texture2D(Advanced(self).GetFrameTexture(String.Name(String.New(anim)), int64(idx)))
 }
 
 /*
@@ -166,21 +181,21 @@ absolute_duration = relative_duration / (animation_fps * abs(playing_speed))
 In this example, [code]playing_speed[/code] refers to either [method AnimatedSprite2D.get_playing_speed] or [method AnimatedSprite3D.get_playing_speed].
 */
 func (self Instance) GetFrameDuration(anim string, idx int) Float.X { //gd:SpriteFrames.get_frame_duration
-	return Float.X(Float.X(class(self).GetFrameDuration(String.Name(String.New(anim)), int64(idx))))
+	return Float.X(Float.X(Advanced(self).GetFrameDuration(String.Name(String.New(anim)), int64(idx))))
 }
 
 /*
 Removes all frames from the [param anim] animation.
 */
 func (self Instance) Clear(anim string) { //gd:SpriteFrames.clear
-	class(self).Clear(String.Name(String.New(anim)))
+	Advanced(self).Clear(String.Name(String.New(anim)))
 }
 
 /*
 Removes all animations. An empty [code]default[/code] animation will be created.
 */
 func (self Instance) ClearAll() { //gd:SpriteFrames.clear_all
-	class(self).ClearAll()
+	Advanced(self).ClearAll()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

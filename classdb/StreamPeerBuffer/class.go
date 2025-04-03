@@ -58,42 +58,42 @@ type Any interface {
 Moves the cursor to the specified position. [param position] must be a valid index of [member data_array].
 */
 func (self Instance) SeekTo(position int) { //gd:StreamPeerBuffer.seek
-	class(self).SeekTo(int64(position))
+	Advanced(self).SeekTo(int64(position))
 }
 
 /*
 Returns the size of [member data_array].
 */
 func (self Instance) GetSize() int { //gd:StreamPeerBuffer.get_size
-	return int(int(class(self).GetSize()))
+	return int(int(Advanced(self).GetSize()))
 }
 
 /*
 Returns the current cursor position.
 */
 func (self Instance) GetPosition() int { //gd:StreamPeerBuffer.get_position
-	return int(int(class(self).GetPosition()))
+	return int(int(Advanced(self).GetPosition()))
 }
 
 /*
 Resizes the [member data_array]. This [i]doesn't[/i] update the cursor.
 */
 func (self Instance) Resize(size int) { //gd:StreamPeerBuffer.resize
-	class(self).Resize(int64(size))
+	Advanced(self).Resize(int64(size))
 }
 
 /*
 Clears the [member data_array] and resets the cursor.
 */
 func (self Instance) Clear() { //gd:StreamPeerBuffer.clear
-	class(self).Clear()
+	Advanced(self).Clear()
 }
 
 /*
 Returns a new [StreamPeerBuffer] with the same [member data_array] content.
 */
 func (self Instance) Duplicate() [1]gdclass.StreamPeerBuffer { //gd:StreamPeerBuffer.duplicate
-	return [1]gdclass.StreamPeerBuffer(class(self).Duplicate())
+	return [1]gdclass.StreamPeerBuffer(Advanced(self).Duplicate())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

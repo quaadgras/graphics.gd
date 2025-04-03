@@ -202,6 +202,7 @@ private void HttpRequestCompleted(long result, long responseCode, string[] heade
 [b]Note:[/b] [HTTPRequest] nodes will automatically handle decompression of response bodies. A [code]Accept-Encoding[/code] header will be automatically added to each of your requests, unless one is already specified. Any response with a [code]Content-Encoding: gzip[/code] header will automatically be decompressed and delivered to you as uncompressed bytes.
 */
 type Instance [1]gdclass.HTTPRequest
+type Expanded [1]gdclass.HTTPRequest
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -218,7 +219,17 @@ Returns [constant OK] if request is successfully created. (Does not imply that t
 [b]Note:[/b] It's recommended to use transport encryption (TLS) and to avoid sending sensitive information (such as login credentials) in HTTP GET URL parameters. Consider using HTTP POST requests or HTTP headers for such information instead.
 */
 func (self Instance) Request(url string) error { //gd:HTTPRequest.request
-	return error(gd.ToError(class(self).Request(String.New(url), Packed.MakeStrings([1][]string{}[0]...), 0, String.New(""))))
+	return error(gd.ToError(Advanced(self).Request(String.New(url), Packed.MakeStrings([1][]string{}[0]...), 0, String.New(""))))
+}
+
+/*
+Creates request on the underlying [HTTPClient]. If there is no configuration errors, it tries to connect using [method HTTPClient.connect_to_host] and passes parameters onto [method HTTPClient.request].
+Returns [constant OK] if request is successfully created. (Does not imply that the server has responded), [constant ERR_UNCONFIGURED] if not in the tree, [constant ERR_BUSY] if still processing previous request, [constant ERR_INVALID_PARAMETER] if given string is not a valid URL format, or [constant ERR_CANT_CONNECT] if not using thread and the [HTTPClient] cannot connect to host.
+[b]Note:[/b] When [param method] is [constant HTTPClient.METHOD_GET], the payload sent via [param request_data] might be ignored by the server or even cause the server to reject the request (check [url=https://datatracker.ietf.org/doc/html/rfc7231#section-4.3.1]RFC 7231 section 4.3.1[/url] for more details). As a workaround, you can send data as a query string in the URL (see [method String.uri_encode] for an example).
+[b]Note:[/b] It's recommended to use transport encryption (TLS) and to avoid sending sensitive information (such as login credentials) in HTTP GET URL parameters. Consider using HTTP POST requests or HTTP headers for such information instead.
+*/
+func (self Expanded) Request(url string, custom_headers []string, method gdclass.HTTPClientMethod, request_data string) error { //gd:HTTPRequest.request
+	return error(gd.ToError(Advanced(self).Request(String.New(url), Packed.MakeStrings(custom_headers...), method, String.New(request_data))))
 }
 
 /*
@@ -226,35 +237,43 @@ Creates request on the underlying [HTTPClient] using a raw array of bytes for th
 Returns [constant OK] if request is successfully created. (Does not imply that the server has responded), [constant ERR_UNCONFIGURED] if not in the tree, [constant ERR_BUSY] if still processing previous request, [constant ERR_INVALID_PARAMETER] if given string is not a valid URL format, or [constant ERR_CANT_CONNECT] if not using thread and the [HTTPClient] cannot connect to host.
 */
 func (self Instance) RequestRaw(url string) error { //gd:HTTPRequest.request_raw
-	return error(gd.ToError(class(self).RequestRaw(String.New(url), Packed.MakeStrings([1][]string{}[0]...), 0, Packed.Bytes(Packed.New([1][]byte{}[0]...)))))
+	return error(gd.ToError(Advanced(self).RequestRaw(String.New(url), Packed.MakeStrings([1][]string{}[0]...), 0, Packed.Bytes(Packed.New([1][]byte{}[0]...)))))
+}
+
+/*
+Creates request on the underlying [HTTPClient] using a raw array of bytes for the request body. If there is no configuration errors, it tries to connect using [method HTTPClient.connect_to_host] and passes parameters onto [method HTTPClient.request].
+Returns [constant OK] if request is successfully created. (Does not imply that the server has responded), [constant ERR_UNCONFIGURED] if not in the tree, [constant ERR_BUSY] if still processing previous request, [constant ERR_INVALID_PARAMETER] if given string is not a valid URL format, or [constant ERR_CANT_CONNECT] if not using thread and the [HTTPClient] cannot connect to host.
+*/
+func (self Expanded) RequestRaw(url string, custom_headers []string, method gdclass.HTTPClientMethod, request_data_raw []byte) error { //gd:HTTPRequest.request_raw
+	return error(gd.ToError(Advanced(self).RequestRaw(String.New(url), Packed.MakeStrings(custom_headers...), method, Packed.Bytes(Packed.New(request_data_raw...)))))
 }
 
 /*
 Cancels the current request.
 */
 func (self Instance) CancelRequest() { //gd:HTTPRequest.cancel_request
-	class(self).CancelRequest()
+	Advanced(self).CancelRequest()
 }
 
 /*
 Sets the [TLSOptions] to be used when connecting to an HTTPS server. See [method TLSOptions.client].
 */
 func (self Instance) SetTlsOptions(client_options [1]gdclass.TLSOptions) { //gd:HTTPRequest.set_tls_options
-	class(self).SetTlsOptions(client_options)
+	Advanced(self).SetTlsOptions(client_options)
 }
 
 /*
 Returns the current status of the underlying [HTTPClient]. See [enum HTTPClient.Status].
 */
 func (self Instance) GetHttpClientStatus() gdclass.HTTPClientStatus { //gd:HTTPRequest.get_http_client_status
-	return gdclass.HTTPClientStatus(class(self).GetHttpClientStatus())
+	return gdclass.HTTPClientStatus(Advanced(self).GetHttpClientStatus())
 }
 
 /*
 Returns the number of bytes this HTTPRequest downloaded.
 */
 func (self Instance) GetDownloadedBytes() int { //gd:HTTPRequest.get_downloaded_bytes
-	return int(int(class(self).GetDownloadedBytes()))
+	return int(int(Advanced(self).GetDownloadedBytes()))
 }
 
 /*
@@ -262,7 +281,7 @@ Returns the response body length.
 [b]Note:[/b] Some Web servers may not send a body length. In this case, the value returned will be [code]-1[/code]. If using chunked transfer encoding, the body length will also be [code]-1[/code].
 */
 func (self Instance) GetBodySize() int { //gd:HTTPRequest.get_body_size
-	return int(int(class(self).GetBodySize()))
+	return int(int(Advanced(self).GetBodySize()))
 }
 
 /*
@@ -270,7 +289,7 @@ Sets the proxy server for HTTP requests.
 The proxy server is unset if [param host] is empty or [param port] is -1.
 */
 func (self Instance) SetHttpProxy(host string, port int) { //gd:HTTPRequest.set_http_proxy
-	class(self).SetHttpProxy(String.New(host), int64(port))
+	Advanced(self).SetHttpProxy(String.New(host), int64(port))
 }
 
 /*
@@ -278,7 +297,7 @@ Sets the proxy server for HTTPS requests.
 The proxy server is unset if [param host] is empty or [param port] is -1.
 */
 func (self Instance) SetHttpsProxy(host string, port int) { //gd:HTTPRequest.set_https_proxy
-	class(self).SetHttpsProxy(String.New(host), int64(port))
+	Advanced(self).SetHttpsProxy(String.New(host), int64(port))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

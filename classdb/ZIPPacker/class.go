@@ -59,6 +59,7 @@ func write_zip_file():
 [/codeblock]
 */
 type Instance [1]gdclass.ZIPPacker
+type Expanded [1]gdclass.ZIPPacker
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -73,7 +74,15 @@ Opens a zip file for writing at the given path using the specified write mode.
 This must be called before everything else.
 */
 func (self Instance) Open(path string) error { //gd:ZIPPacker.open
-	return error(gd.ToError(class(self).Open(String.New(path), 0)))
+	return error(gd.ToError(Advanced(self).Open(String.New(path), 0)))
+}
+
+/*
+Opens a zip file for writing at the given path using the specified write mode.
+This must be called before everything else.
+*/
+func (self Expanded) Open(path string, append gdclass.ZIPPackerZipAppend) error { //gd:ZIPPacker.open
+	return error(gd.ToError(Advanced(self).Open(String.New(path), append)))
 }
 
 /*
@@ -81,7 +90,7 @@ Starts writing to a file within the archive. Only one file can be written at the
 Must be called after [method open].
 */
 func (self Instance) StartFile(path string) error { //gd:ZIPPacker.start_file
-	return error(gd.ToError(class(self).StartFile(String.New(path))))
+	return error(gd.ToError(Advanced(self).StartFile(String.New(path))))
 }
 
 /*
@@ -89,7 +98,7 @@ Write the given [param data] to the file.
 Needs to be called after [method start_file].
 */
 func (self Instance) WriteFile(data []byte) error { //gd:ZIPPacker.write_file
-	return error(gd.ToError(class(self).WriteFile(Packed.Bytes(Packed.New(data...)))))
+	return error(gd.ToError(Advanced(self).WriteFile(Packed.Bytes(Packed.New(data...)))))
 }
 
 /*
@@ -97,14 +106,14 @@ Stops writing to a file within the archive.
 It will fail if there is no open file.
 */
 func (self Instance) CloseFile() error { //gd:ZIPPacker.close_file
-	return error(gd.ToError(class(self).CloseFile()))
+	return error(gd.ToError(Advanced(self).CloseFile()))
 }
 
 /*
 Closes the underlying resources used by this instance.
 */
 func (self Instance) Close() error { //gd:ZIPPacker.close
-	return error(gd.ToError(class(self).Close()))
+	return error(gd.ToError(Advanced(self).Close()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

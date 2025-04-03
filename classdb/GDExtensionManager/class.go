@@ -57,7 +57,7 @@ Loads an extension by absolute file path. The [param path] needs to point to a v
 */
 func LoadExtension(path string) gdclass.GDExtensionManagerLoadStatus { //gd:GDExtensionManager.load_extension
 	once.Do(singleton)
-	return gdclass.GDExtensionManagerLoadStatus(class(self).LoadExtension(String.New(path)))
+	return gdclass.GDExtensionManagerLoadStatus(Advanced().LoadExtension(String.New(path)))
 }
 
 /*
@@ -66,7 +66,7 @@ Reloads the extension at the given file path. The [param path] needs to point to
 */
 func ReloadExtension(path string) gdclass.GDExtensionManagerLoadStatus { //gd:GDExtensionManager.reload_extension
 	once.Do(singleton)
-	return gdclass.GDExtensionManagerLoadStatus(class(self).ReloadExtension(String.New(path)))
+	return gdclass.GDExtensionManagerLoadStatus(Advanced().ReloadExtension(String.New(path)))
 }
 
 /*
@@ -74,7 +74,7 @@ Unloads an extension by file path. The [param path] needs to point to an already
 */
 func UnloadExtension(path string) gdclass.GDExtensionManagerLoadStatus { //gd:GDExtensionManager.unload_extension
 	once.Do(singleton)
-	return gdclass.GDExtensionManagerLoadStatus(class(self).UnloadExtension(String.New(path)))
+	return gdclass.GDExtensionManagerLoadStatus(Advanced().UnloadExtension(String.New(path)))
 }
 
 /*
@@ -82,7 +82,7 @@ Returns [code]true[/code] if the extension at the given file [param path] has al
 */
 func IsExtensionLoaded(path string) bool { //gd:GDExtensionManager.is_extension_loaded
 	once.Do(singleton)
-	return bool(class(self).IsExtensionLoaded(String.New(path)))
+	return bool(Advanced().IsExtensionLoaded(String.New(path)))
 }
 
 /*
@@ -90,7 +90,7 @@ Returns the file paths of all currently loaded extensions.
 */
 func GetLoadedExtensions() []string { //gd:GDExtensionManager.get_loaded_extensions
 	once.Do(singleton)
-	return []string(class(self).GetLoadedExtensions().Strings())
+	return []string(Advanced().GetLoadedExtensions().Strings())
 }
 
 /*
@@ -98,7 +98,7 @@ Returns the [GDExtension] at the given file [param path], or [code]null[/code] i
 */
 func GetExtension(path string) [1]gdclass.GDExtension { //gd:GDExtensionManager.get_extension
 	once.Do(singleton)
-	return [1]gdclass.GDExtension(class(self).GetExtension(String.New(path)))
+	return [1]gdclass.GDExtension(Advanced().GetExtension(String.New(path)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

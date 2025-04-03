@@ -58,7 +58,7 @@ If translations have been loaded beforehand for the new locale, they will be app
 */
 func SetLocale(locale string) { //gd:TranslationServer.set_locale
 	once.Do(singleton)
-	class(self).SetLocale(String.New(locale))
+	Advanced().SetLocale(String.New(locale))
 }
 
 /*
@@ -67,7 +67,7 @@ See also [method OS.get_locale] and [method OS.get_locale_language] to query the
 */
 func GetLocale() string { //gd:TranslationServer.get_locale
 	once.Do(singleton)
-	return string(class(self).GetLocale().String())
+	return string(Advanced().GetLocale().String())
 }
 
 /*
@@ -76,7 +76,7 @@ Returns the current locale of the editor.
 */
 func GetToolLocale() string { //gd:TranslationServer.get_tool_locale
 	once.Do(singleton)
-	return string(class(self).GetToolLocale().String())
+	return string(Advanced().GetToolLocale().String())
 }
 
 /*
@@ -84,15 +84,23 @@ Compares two locales and returns a similarity score between [code]0[/code] (no m
 */
 func CompareLocales(locale_a string, locale_b string) int { //gd:TranslationServer.compare_locales
 	once.Do(singleton)
-	return int(int(class(self).CompareLocales(String.New(locale_a), String.New(locale_b))))
+	return int(int(Advanced().CompareLocales(String.New(locale_a), String.New(locale_b))))
 }
 
 /*
 Returns a [param locale] string standardized to match known locales (e.g. [code]en-US[/code] would be matched to [code]en_US[/code]). If [param add_defaults] is [code]true[/code], the locale may have a default script or country added.
 */
-func StandardizeLocale(locale string) string { //gd:TranslationServer.standardize_locale
+func StandardizeLocale(locale string, add_defaults bool) string { //gd:TranslationServer.standardize_locale
 	once.Do(singleton)
-	return string(class(self).StandardizeLocale(String.New(locale), false).String())
+	return string(Advanced().StandardizeLocale(String.New(locale), add_defaults).String())
+}
+
+/*
+Returns a [param locale] string standardized to match known locales (e.g. [code]en-US[/code] would be matched to [code]en_US[/code]). If [param add_defaults] is [code]true[/code], the locale may have a default script or country added.
+*/
+func StandardizeLocaleExpanded(locale string, add_defaults bool) string { //gd:TranslationServer.standardize_locale
+	once.Do(singleton)
+	return string(Advanced().StandardizeLocale(String.New(locale), add_defaults).String())
 }
 
 /*
@@ -100,7 +108,7 @@ Returns array of known language codes.
 */
 func GetAllLanguages() []string { //gd:TranslationServer.get_all_languages
 	once.Do(singleton)
-	return []string(class(self).GetAllLanguages().Strings())
+	return []string(Advanced().GetAllLanguages().Strings())
 }
 
 /*
@@ -108,7 +116,7 @@ Returns a readable language name for the [param language] code.
 */
 func GetLanguageName(language string) string { //gd:TranslationServer.get_language_name
 	once.Do(singleton)
-	return string(class(self).GetLanguageName(String.New(language)).String())
+	return string(Advanced().GetLanguageName(String.New(language)).String())
 }
 
 /*
@@ -116,7 +124,7 @@ Returns an array of known script codes.
 */
 func GetAllScripts() []string { //gd:TranslationServer.get_all_scripts
 	once.Do(singleton)
-	return []string(class(self).GetAllScripts().Strings())
+	return []string(Advanced().GetAllScripts().Strings())
 }
 
 /*
@@ -124,7 +132,7 @@ Returns a readable script name for the [param script] code.
 */
 func GetScriptName(script string) string { //gd:TranslationServer.get_script_name
 	once.Do(singleton)
-	return string(class(self).GetScriptName(String.New(script)).String())
+	return string(Advanced().GetScriptName(String.New(script)).String())
 }
 
 /*
@@ -132,7 +140,7 @@ Returns an array of known country codes.
 */
 func GetAllCountries() []string { //gd:TranslationServer.get_all_countries
 	once.Do(singleton)
-	return []string(class(self).GetAllCountries().Strings())
+	return []string(Advanced().GetAllCountries().Strings())
 }
 
 /*
@@ -140,7 +148,7 @@ Returns a readable country name for the [param country] code.
 */
 func GetCountryName(country string) string { //gd:TranslationServer.get_country_name
 	once.Do(singleton)
-	return string(class(self).GetCountryName(String.New(country)).String())
+	return string(Advanced().GetCountryName(String.New(country)).String())
 }
 
 /*
@@ -148,16 +156,25 @@ Returns a locale's language and its variant (e.g. [code]"en_US"[/code] would ret
 */
 func GetLocaleName(locale string) string { //gd:TranslationServer.get_locale_name
 	once.Do(singleton)
-	return string(class(self).GetLocaleName(String.New(locale)).String())
+	return string(Advanced().GetLocaleName(String.New(locale)).String())
 }
 
 /*
 Returns the current locale's translation for the given message and context.
 [b]Note:[/b] This method always uses the main translation domain.
 */
-func Translate(message string) string { //gd:TranslationServer.translate
+func Translate(message string, context string) string { //gd:TranslationServer.translate
 	once.Do(singleton)
-	return string(class(self).Translate(String.Name(String.New(message)), String.Name(String.New(""))).String())
+	return string(Advanced().Translate(String.Name(String.New(message)), String.Name(String.New(context))).String())
+}
+
+/*
+Returns the current locale's translation for the given message and context.
+[b]Note:[/b] This method always uses the main translation domain.
+*/
+func TranslateExpanded(message string, context string) string { //gd:TranslationServer.translate
+	once.Do(singleton)
+	return string(Advanced().Translate(String.Name(String.New(message)), String.Name(String.New(context))).String())
 }
 
 /*
@@ -165,9 +182,19 @@ Returns the current locale's translation for the given message, plural message a
 The number [param n] is the number or quantity of the plural object. It will be used to guide the translation system to fetch the correct plural form for the selected language.
 [b]Note:[/b] This method always uses the main translation domain.
 */
-func TranslatePlural(message string, plural_message string, n int) string { //gd:TranslationServer.translate_plural
+func TranslatePlural(message string, plural_message string, n int, context string) string { //gd:TranslationServer.translate_plural
 	once.Do(singleton)
-	return string(class(self).TranslatePlural(String.Name(String.New(message)), String.Name(String.New(plural_message)), int64(n), String.Name(String.New(""))).String())
+	return string(Advanced().TranslatePlural(String.Name(String.New(message)), String.Name(String.New(plural_message)), int64(n), String.Name(String.New(context))).String())
+}
+
+/*
+Returns the current locale's translation for the given message, plural message and context.
+The number [param n] is the number or quantity of the plural object. It will be used to guide the translation system to fetch the correct plural form for the selected language.
+[b]Note:[/b] This method always uses the main translation domain.
+*/
+func TranslatePluralExpanded(message string, plural_message string, n int, context string) string { //gd:TranslationServer.translate_plural
+	once.Do(singleton)
+	return string(Advanced().TranslatePlural(String.Name(String.New(message)), String.Name(String.New(plural_message)), int64(n), String.Name(String.New(context))).String())
 }
 
 /*
@@ -175,7 +202,7 @@ Adds a translation to the main translation domain.
 */
 func AddTranslation(translation [1]gdclass.Translation) { //gd:TranslationServer.add_translation
 	once.Do(singleton)
-	class(self).AddTranslation(translation)
+	Advanced().AddTranslation(translation)
 }
 
 /*
@@ -183,7 +210,7 @@ Removes the given translation from the main translation domain.
 */
 func RemoveTranslation(translation [1]gdclass.Translation) { //gd:TranslationServer.remove_translation
 	once.Do(singleton)
-	class(self).RemoveTranslation(translation)
+	Advanced().RemoveTranslation(translation)
 }
 
 /*
@@ -191,7 +218,7 @@ Returns the [Translation] instance that best matches [param locale] in the main 
 */
 func GetTranslationObject(locale string) [1]gdclass.Translation { //gd:TranslationServer.get_translation_object
 	once.Do(singleton)
-	return [1]gdclass.Translation(class(self).GetTranslationObject(String.New(locale)))
+	return [1]gdclass.Translation(Advanced().GetTranslationObject(String.New(locale)))
 }
 
 /*
@@ -199,7 +226,7 @@ Returns [code]true[/code] if a translation domain with the specified name exists
 */
 func HasDomain(domain string) bool { //gd:TranslationServer.has_domain
 	once.Do(singleton)
-	return bool(class(self).HasDomain(String.Name(String.New(domain))))
+	return bool(Advanced().HasDomain(String.Name(String.New(domain))))
 }
 
 /*
@@ -207,7 +234,7 @@ Returns the translation domain with the specified name. An empty translation dom
 */
 func GetOrAddDomain(domain string) [1]gdclass.TranslationDomain { //gd:TranslationServer.get_or_add_domain
 	once.Do(singleton)
-	return [1]gdclass.TranslationDomain(class(self).GetOrAddDomain(String.Name(String.New(domain))))
+	return [1]gdclass.TranslationDomain(Advanced().GetOrAddDomain(String.Name(String.New(domain))))
 }
 
 /*
@@ -216,7 +243,7 @@ Removes the translation domain with the specified name.
 */
 func RemoveDomain(domain string) { //gd:TranslationServer.remove_domain
 	once.Do(singleton)
-	class(self).RemoveDomain(String.Name(String.New(domain)))
+	Advanced().RemoveDomain(String.Name(String.New(domain)))
 }
 
 /*
@@ -224,7 +251,7 @@ Removes all translations from the main translation domain.
 */
 func Clear() { //gd:TranslationServer.clear
 	once.Do(singleton)
-	class(self).Clear()
+	Advanced().Clear()
 }
 
 /*
@@ -232,7 +259,7 @@ Returns an array of all loaded locales of the project.
 */
 func GetLoadedLocales() []string { //gd:TranslationServer.get_loaded_locales
 	once.Do(singleton)
-	return []string(class(self).GetLoadedLocales().Strings())
+	return []string(Advanced().GetLoadedLocales().Strings())
 }
 
 /*
@@ -240,7 +267,7 @@ Reparses the pseudolocalization options and reloads the translation for the main
 */
 func ReloadPseudolocalization() { //gd:TranslationServer.reload_pseudolocalization
 	once.Do(singleton)
-	class(self).ReloadPseudolocalization()
+	Advanced().ReloadPseudolocalization()
 }
 
 /*
@@ -249,7 +276,7 @@ Returns the pseudolocalized string based on the [param message] passed in.
 */
 func Pseudolocalize(message string) string { //gd:TranslationServer.pseudolocalize
 	once.Do(singleton)
-	return string(class(self).Pseudolocalize(String.Name(String.New(message))).String())
+	return string(Advanced().Pseudolocalize(String.Name(String.New(message))).String())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -57,7 +57,7 @@ Returns a list of built-in include files that are currently registered.
 */
 func ListBuiltInIncludeFiles() []string { //gd:ShaderIncludeDB.list_built_in_include_files
 	self := Instance{}
-	return []string(class(self).ListBuiltInIncludeFiles().Strings())
+	return []string(Advanced(self).ListBuiltInIncludeFiles().Strings())
 }
 
 /*
@@ -65,7 +65,7 @@ Returns [code]true[/code] if an include file with this name exists.
 */
 func HasBuiltInIncludeFile(filename string) bool { //gd:ShaderIncludeDB.has_built_in_include_file
 	self := Instance{}
-	return bool(class(self).HasBuiltInIncludeFile(String.New(filename)))
+	return bool(Advanced(self).HasBuiltInIncludeFile(String.New(filename)))
 }
 
 /*
@@ -73,7 +73,7 @@ Returns the code for the built-in shader fragment. You can also access this in y
 */
 func GetBuiltInIncludeFile(filename string) string { //gd:ShaderIncludeDB.get_built_in_include_file
 	self := Instance{}
-	return string(class(self).GetBuiltInIncludeFile(String.New(filename)).String())
+	return string(Advanced(self).GetBuiltInIncludeFile(String.New(filename)).String())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

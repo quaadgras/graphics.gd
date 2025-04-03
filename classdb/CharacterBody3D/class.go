@@ -49,6 +49,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 For game objects that don't require complex movement or collision detection, such as moving platforms, [AnimatableBody3D] is simpler to configure.
 */
 type Instance [1]gdclass.CharacterBody3D
+type Expanded [1]gdclass.CharacterBody3D
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -65,56 +66,56 @@ When the body touches a moving platform, the platform's velocity is automaticall
 Returns [code]true[/code] if the body collided, otherwise, returns [code]false[/code].
 */
 func (self Instance) MoveAndSlide() bool { //gd:CharacterBody3D.move_and_slide
-	return bool(class(self).MoveAndSlide())
+	return bool(Advanced(self).MoveAndSlide())
 }
 
 /*
 Allows to manually apply a snap to the floor regardless of the body's velocity. This function does nothing when [method is_on_floor] returns [code]true[/code].
 */
 func (self Instance) ApplyFloorSnap() { //gd:CharacterBody3D.apply_floor_snap
-	class(self).ApplyFloorSnap()
+	Advanced(self).ApplyFloorSnap()
 }
 
 /*
 Returns [code]true[/code] if the body collided with the floor on the last call of [method move_and_slide]. Otherwise, returns [code]false[/code]. The [member up_direction] and [member floor_max_angle] are used to determine whether a surface is "floor" or not.
 */
 func (self Instance) IsOnFloor() bool { //gd:CharacterBody3D.is_on_floor
-	return bool(class(self).IsOnFloor())
+	return bool(Advanced(self).IsOnFloor())
 }
 
 /*
 Returns [code]true[/code] if the body collided only with the floor on the last call of [method move_and_slide]. Otherwise, returns [code]false[/code]. The [member up_direction] and [member floor_max_angle] are used to determine whether a surface is "floor" or not.
 */
 func (self Instance) IsOnFloorOnly() bool { //gd:CharacterBody3D.is_on_floor_only
-	return bool(class(self).IsOnFloorOnly())
+	return bool(Advanced(self).IsOnFloorOnly())
 }
 
 /*
 Returns [code]true[/code] if the body collided with the ceiling on the last call of [method move_and_slide]. Otherwise, returns [code]false[/code]. The [member up_direction] and [member floor_max_angle] are used to determine whether a surface is "ceiling" or not.
 */
 func (self Instance) IsOnCeiling() bool { //gd:CharacterBody3D.is_on_ceiling
-	return bool(class(self).IsOnCeiling())
+	return bool(Advanced(self).IsOnCeiling())
 }
 
 /*
 Returns [code]true[/code] if the body collided only with the ceiling on the last call of [method move_and_slide]. Otherwise, returns [code]false[/code]. The [member up_direction] and [member floor_max_angle] are used to determine whether a surface is "ceiling" or not.
 */
 func (self Instance) IsOnCeilingOnly() bool { //gd:CharacterBody3D.is_on_ceiling_only
-	return bool(class(self).IsOnCeilingOnly())
+	return bool(Advanced(self).IsOnCeilingOnly())
 }
 
 /*
 Returns [code]true[/code] if the body collided with a wall on the last call of [method move_and_slide]. Otherwise, returns [code]false[/code]. The [member up_direction] and [member floor_max_angle] are used to determine whether a surface is "wall" or not.
 */
 func (self Instance) IsOnWall() bool { //gd:CharacterBody3D.is_on_wall
-	return bool(class(self).IsOnWall())
+	return bool(Advanced(self).IsOnWall())
 }
 
 /*
 Returns [code]true[/code] if the body collided only with a wall on the last call of [method move_and_slide]. Otherwise, returns [code]false[/code]. The [member up_direction] and [member floor_max_angle] are used to determine whether a surface is "wall" or not.
 */
 func (self Instance) IsOnWallOnly() bool { //gd:CharacterBody3D.is_on_wall_only
-	return bool(class(self).IsOnWallOnly())
+	return bool(Advanced(self).IsOnWallOnly())
 }
 
 /*
@@ -122,7 +123,7 @@ Returns the collision normal of the floor at the last collision point. Only vali
 [b]Warning:[/b] The collision normal is not always the same as the surface normal.
 */
 func (self Instance) GetFloorNormal() Vector3.XYZ { //gd:CharacterBody3D.get_floor_normal
-	return Vector3.XYZ(class(self).GetFloorNormal())
+	return Vector3.XYZ(Advanced(self).GetFloorNormal())
 }
 
 /*
@@ -130,70 +131,77 @@ Returns the collision normal of the wall at the last collision point. Only valid
 [b]Warning:[/b] The collision normal is not always the same as the surface normal.
 */
 func (self Instance) GetWallNormal() Vector3.XYZ { //gd:CharacterBody3D.get_wall_normal
-	return Vector3.XYZ(class(self).GetWallNormal())
+	return Vector3.XYZ(Advanced(self).GetWallNormal())
 }
 
 /*
 Returns the last motion applied to the [CharacterBody3D] during the last call to [method move_and_slide]. The movement can be split into multiple motions when sliding occurs, and this method return the last one, which is useful to retrieve the current direction of the movement.
 */
 func (self Instance) GetLastMotion() Vector3.XYZ { //gd:CharacterBody3D.get_last_motion
-	return Vector3.XYZ(class(self).GetLastMotion())
+	return Vector3.XYZ(Advanced(self).GetLastMotion())
 }
 
 /*
 Returns the travel (position delta) that occurred during the last call to [method move_and_slide].
 */
 func (self Instance) GetPositionDelta() Vector3.XYZ { //gd:CharacterBody3D.get_position_delta
-	return Vector3.XYZ(class(self).GetPositionDelta())
+	return Vector3.XYZ(Advanced(self).GetPositionDelta())
 }
 
 /*
 Returns the current real velocity since the last call to [method move_and_slide]. For example, when you climb a slope, you will move diagonally even though the velocity is horizontal. This method returns the diagonal movement, as opposed to [member velocity] which returns the requested velocity.
 */
 func (self Instance) GetRealVelocity() Vector3.XYZ { //gd:CharacterBody3D.get_real_velocity
-	return Vector3.XYZ(class(self).GetRealVelocity())
+	return Vector3.XYZ(Advanced(self).GetRealVelocity())
 }
 
 /*
 Returns the floor's collision angle at the last collision point according to [param up_direction], which is [constant Vector3.UP] by default. This value is always positive and only valid after calling [method move_and_slide] and when [method is_on_floor] returns [code]true[/code].
 */
 func (self Instance) GetFloorAngle() Float.X { //gd:CharacterBody3D.get_floor_angle
-	return Float.X(Float.X(class(self).GetFloorAngle(Vector3.XYZ(gd.Vector3{0, 1, 0}))))
+	return Float.X(Float.X(Advanced(self).GetFloorAngle(Vector3.XYZ(gd.Vector3{0, 1, 0}))))
+}
+
+/*
+Returns the floor's collision angle at the last collision point according to [param up_direction], which is [constant Vector3.UP] by default. This value is always positive and only valid after calling [method move_and_slide] and when [method is_on_floor] returns [code]true[/code].
+*/
+func (self Expanded) GetFloorAngle(up_direction Vector3.XYZ) Float.X { //gd:CharacterBody3D.get_floor_angle
+	return Float.X(Float.X(Advanced(self).GetFloorAngle(Vector3.XYZ(up_direction))))
 }
 
 /*
 Returns the linear velocity of the platform at the last collision point. Only valid after calling [method move_and_slide].
 */
 func (self Instance) GetPlatformVelocity() Vector3.XYZ { //gd:CharacterBody3D.get_platform_velocity
-	return Vector3.XYZ(class(self).GetPlatformVelocity())
+	return Vector3.XYZ(Advanced(self).GetPlatformVelocity())
 }
 
 /*
 Returns the angular velocity of the platform at the last collision point. Only valid after calling [method move_and_slide].
 */
 func (self Instance) GetPlatformAngularVelocity() Vector3.XYZ { //gd:CharacterBody3D.get_platform_angular_velocity
-	return Vector3.XYZ(class(self).GetPlatformAngularVelocity())
+	return Vector3.XYZ(Advanced(self).GetPlatformAngularVelocity())
 }
 
 /*
 Returns the number of times the body collided and changed direction during the last call to [method move_and_slide].
 */
 func (self Instance) GetSlideCollisionCount() int { //gd:CharacterBody3D.get_slide_collision_count
-	return int(int(class(self).GetSlideCollisionCount()))
+	return int(int(Advanced(self).GetSlideCollisionCount()))
 }
 
 /*
 Returns a [KinematicCollision3D], which contains information about a collision that occurred during the last call to [method move_and_slide]. Since the body can collide several times in a single call to [method move_and_slide], you must specify the index of the collision in the range 0 to ([method get_slide_collision_count] - 1).
 */
 func (self Instance) GetSlideCollision(slide_idx int) [1]gdclass.KinematicCollision3D { //gd:CharacterBody3D.get_slide_collision
-	return [1]gdclass.KinematicCollision3D(class(self).GetSlideCollision(int64(slide_idx)))
+	return [1]gdclass.KinematicCollision3D(Advanced(self).GetSlideCollision(int64(slide_idx)))
 }
 
 /*
 Returns a [KinematicCollision3D], which contains information about the latest collision that occurred during the last call to [method move_and_slide].
 */
 func (self Instance) GetLastSlideCollision() [1]gdclass.KinematicCollision3D { //gd:CharacterBody3D.get_last_slide_collision
-	return [1]gdclass.KinematicCollision3D(class(self).GetLastSlideCollision())
+	return [1]gdclass.KinematicCollision3D(Advanced(self).GetLastSlideCollision())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

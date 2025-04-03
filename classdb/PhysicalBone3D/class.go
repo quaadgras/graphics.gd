@@ -54,6 +54,7 @@ The [PhysicalBone3D] node is a physics body that can be used to make bones in a 
 %!(EXTRA string=PhysicalBone3D)
 */
 type Instance [1]gdclass.PhysicalBone3D
+type Expanded [1]gdclass.PhysicalBone3D
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -93,7 +94,7 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 This is equivalent to using [method apply_impulse] at the body's center of mass.
 */
 func (self Instance) ApplyCentralImpulse(impulse Vector3.XYZ) { //gd:PhysicalBone3D.apply_central_impulse
-	class(self).ApplyCentralImpulse(Vector3.XYZ(impulse))
+	Advanced(self).ApplyCentralImpulse(Vector3.XYZ(impulse))
 }
 
 /*
@@ -102,28 +103,37 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 [param position] is the offset from the PhysicsBone3D origin in global coordinates.
 */
 func (self Instance) ApplyImpulse(impulse Vector3.XYZ) { //gd:PhysicalBone3D.apply_impulse
-	class(self).ApplyImpulse(Vector3.XYZ(impulse), Vector3.XYZ(gd.Vector3{0, 0, 0}))
+	Advanced(self).ApplyImpulse(Vector3.XYZ(impulse), Vector3.XYZ(gd.Vector3{0, 0, 0}))
+}
+
+/*
+Applies a positioned impulse to the PhysicsBone3D.
+An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_integrate_forces" functions otherwise).
+[param position] is the offset from the PhysicsBone3D origin in global coordinates.
+*/
+func (self Expanded) ApplyImpulse(impulse Vector3.XYZ, position Vector3.XYZ) { //gd:PhysicalBone3D.apply_impulse
+	Advanced(self).ApplyImpulse(Vector3.XYZ(impulse), Vector3.XYZ(position))
 }
 
 /*
 Returns [code]true[/code] if the PhysicsBone3D is allowed to simulate physics.
 */
 func (self Instance) GetSimulatePhysics() bool { //gd:PhysicalBone3D.get_simulate_physics
-	return bool(class(self).GetSimulatePhysics())
+	return bool(Advanced(self).GetSimulatePhysics())
 }
 
 /*
 Returns [code]true[/code] if the PhysicsBone3D is currently simulating physics.
 */
 func (self Instance) IsSimulatingPhysics() bool { //gd:PhysicalBone3D.is_simulating_physics
-	return bool(class(self).IsSimulatingPhysics())
+	return bool(Advanced(self).IsSimulatingPhysics())
 }
 
 /*
 Returns the unique identifier of the PhysicsBone3D.
 */
 func (self Instance) GetBoneId() int { //gd:PhysicalBone3D.get_bone_id
-	return int(int(class(self).GetBoneId()))
+	return int(int(Advanced(self).GetBoneId()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

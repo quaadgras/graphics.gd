@@ -64,7 +64,7 @@ tween.tween_callback(queue_free).set_delay(2)
 [/codeblock]
 */
 func (self Instance) SetDelay(delay Float.X) [1]gdclass.CallbackTweener { //gd:CallbackTweener.set_delay
-	return [1]gdclass.CallbackTweener(class(self).SetDelay(float64(delay)))
+	return [1]gdclass.CallbackTweener(Advanced(self).SetDelay(float64(delay)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

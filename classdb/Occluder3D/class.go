@@ -59,14 +59,14 @@ type Any interface {
 Returns the occluder shape's vertex positions.
 */
 func (self Instance) GetVertices() []Vector3.XYZ { //gd:Occluder3D.get_vertices
-	return []Vector3.XYZ(slices.Collect(class(self).GetVertices().Values()))
+	return []Vector3.XYZ(slices.Collect(Advanced(self).GetVertices().Values()))
 }
 
 /*
 Returns the occluder shape's vertex indices.
 */
 func (self Instance) GetIndices() []int32 { //gd:Occluder3D.get_indices
-	return []int32(slices.Collect(class(self).GetIndices().Values()))
+	return []int32(slices.Collect(Advanced(self).GetIndices().Values()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

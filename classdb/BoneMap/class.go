@@ -59,7 +59,7 @@ Returns a skeleton bone name is mapped to [param profile_bone_name].
 In the retargeting process, the returned bone name is the bone name of the source skeleton.
 */
 func (self Instance) GetSkeletonBoneName(profile_bone_name string) string { //gd:BoneMap.get_skeleton_bone_name
-	return string(class(self).GetSkeletonBoneName(String.Name(String.New(profile_bone_name))).String())
+	return string(Advanced(self).GetSkeletonBoneName(String.Name(String.New(profile_bone_name))).String())
 }
 
 /*
@@ -67,7 +67,7 @@ Maps a skeleton bone name to [param profile_bone_name].
 In the retargeting process, the setting bone name is the bone name of the source skeleton.
 */
 func (self Instance) SetSkeletonBoneName(profile_bone_name string, skeleton_bone_name string) { //gd:BoneMap.set_skeleton_bone_name
-	class(self).SetSkeletonBoneName(String.Name(String.New(profile_bone_name)), String.Name(String.New(skeleton_bone_name)))
+	Advanced(self).SetSkeletonBoneName(String.Name(String.New(profile_bone_name)), String.Name(String.New(skeleton_bone_name)))
 }
 
 /*
@@ -75,7 +75,7 @@ Returns a profile bone name having [param skeleton_bone_name]. If not found, an 
 In the retargeting process, the returned bone name is the bone name of the target skeleton.
 */
 func (self Instance) FindProfileBoneName(skeleton_bone_name string) string { //gd:BoneMap.find_profile_bone_name
-	return string(class(self).FindProfileBoneName(String.Name(String.New(skeleton_bone_name))).String())
+	return string(Advanced(self).FindProfileBoneName(String.Name(String.New(skeleton_bone_name))).String())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -57,28 +57,28 @@ type Any interface {
 Returns the [RenderSceneBuffers] object managing the scene buffers for rendering this viewport.
 */
 func (self Instance) GetRenderSceneBuffers() [1]gdclass.RenderSceneBuffers { //gd:RenderData.get_render_scene_buffers
-	return [1]gdclass.RenderSceneBuffers(class(self).GetRenderSceneBuffers())
+	return [1]gdclass.RenderSceneBuffers(Advanced(self).GetRenderSceneBuffers())
 }
 
 /*
 Returns the [RenderSceneData] object managing this frames scene data.
 */
 func (self Instance) GetRenderSceneData() [1]gdclass.RenderSceneData { //gd:RenderData.get_render_scene_data
-	return [1]gdclass.RenderSceneData(class(self).GetRenderSceneData())
+	return [1]gdclass.RenderSceneData(Advanced(self).GetRenderSceneData())
 }
 
 /*
 Returns the [RID] of the environment object in the [RenderingServer] being used to render this viewport.
 */
 func (self Instance) GetEnvironment() RID.Environment { //gd:RenderData.get_environment
-	return RID.Environment(class(self).GetEnvironment())
+	return RID.Environment(Advanced(self).GetEnvironment())
 }
 
 /*
 Returns the [RID] of the camera attributes object in the [RenderingServer] being used to render this viewport.
 */
 func (self Instance) GetCameraAttributes() RID.CameraAttributes { //gd:RenderData.get_camera_attributes
-	return RID.CameraAttributes(class(self).GetCameraAttributes())
+	return RID.CameraAttributes(Advanced(self).GetCameraAttributes())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

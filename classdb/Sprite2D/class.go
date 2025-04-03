@@ -63,7 +63,7 @@ Returns [code]true[/code], if the pixel at the given position is opaque and [cod
 [b]Note:[/b] It also returns [code]false[/code], if the sprite's texture is [code]null[/code] or if the given position is invalid.
 */
 func (self Instance) IsPixelOpaque(pos Vector2.XY) bool { //gd:Sprite2D.is_pixel_opaque
-	return bool(class(self).IsPixelOpaque(Vector2.XY(pos)))
+	return bool(Advanced(self).IsPixelOpaque(Vector2.XY(pos)))
 }
 
 /*
@@ -98,7 +98,7 @@ public override void _Input(InputEvent @event)
 [/codeblocks]
 */
 func (self Instance) GetRect() Rect2.PositionSize { //gd:Sprite2D.get_rect
-	return Rect2.PositionSize(class(self).GetRect())
+	return Rect2.PositionSize(Advanced(self).GetRect())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

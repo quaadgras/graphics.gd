@@ -44,6 +44,7 @@ This class cannot be directly instantiated and must be retrieved via a [EditorDe
 You can add tabs to the session UI via [method add_session_tab], send messages via [method send_message], and toggle [EngineProfiler]s via [method toggle_profiler].
 */
 type Instance [1]gdclass.EditorDebuggerSession
+type Expanded [1]gdclass.EditorDebuggerSession
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -57,56 +58,70 @@ type Any interface {
 Sends the given [param message] to the attached remote instance, optionally passing additionally [param data]. See [EngineDebugger] for how to retrieve those messages.
 */
 func (self Instance) SendMessage(message string) { //gd:EditorDebuggerSession.send_message
-	class(self).SendMessage(String.New(message), Array.Nil)
+	Advanced(self).SendMessage(String.New(message), Array.Nil)
+}
+
+/*
+Sends the given [param message] to the attached remote instance, optionally passing additionally [param data]. See [EngineDebugger] for how to retrieve those messages.
+*/
+func (self Expanded) SendMessage(message string, data []any) { //gd:EditorDebuggerSession.send_message
+	Advanced(self).SendMessage(String.New(message), gd.EngineArrayFromSlice(data))
 }
 
 /*
 Toggle the given [param profiler] on the attached remote instance, optionally passing additionally [param data]. See [EngineProfiler] for more details.
 */
 func (self Instance) ToggleProfiler(profiler string, enable bool) { //gd:EditorDebuggerSession.toggle_profiler
-	class(self).ToggleProfiler(String.New(profiler), enable, Array.Nil)
+	Advanced(self).ToggleProfiler(String.New(profiler), enable, Array.Nil)
+}
+
+/*
+Toggle the given [param profiler] on the attached remote instance, optionally passing additionally [param data]. See [EngineProfiler] for more details.
+*/
+func (self Expanded) ToggleProfiler(profiler string, enable bool, data []any) { //gd:EditorDebuggerSession.toggle_profiler
+	Advanced(self).ToggleProfiler(String.New(profiler), enable, gd.EngineArrayFromSlice(data))
 }
 
 /*
 Returns [code]true[/code] if the attached remote instance is currently in the debug loop.
 */
 func (self Instance) IsBreaked() bool { //gd:EditorDebuggerSession.is_breaked
-	return bool(class(self).IsBreaked())
+	return bool(Advanced(self).IsBreaked())
 }
 
 /*
 Returns [code]true[/code] if the attached remote instance can be debugged.
 */
 func (self Instance) IsDebuggable() bool { //gd:EditorDebuggerSession.is_debuggable
-	return bool(class(self).IsDebuggable())
+	return bool(Advanced(self).IsDebuggable())
 }
 
 /*
 Returns [code]true[/code] if the debug session is currently attached to a remote instance.
 */
 func (self Instance) IsActive() bool { //gd:EditorDebuggerSession.is_active
-	return bool(class(self).IsActive())
+	return bool(Advanced(self).IsActive())
 }
 
 /*
 Adds the given [param control] to the debug session UI in the debugger bottom panel. The [param control]'s node name will be used as the tab title.
 */
 func (self Instance) AddSessionTab(control [1]gdclass.Control) { //gd:EditorDebuggerSession.add_session_tab
-	class(self).AddSessionTab(control)
+	Advanced(self).AddSessionTab(control)
 }
 
 /*
 Removes the given [param control] from the debug session UI in the debugger bottom panel.
 */
 func (self Instance) RemoveSessionTab(control [1]gdclass.Control) { //gd:EditorDebuggerSession.remove_session_tab
-	class(self).RemoveSessionTab(control)
+	Advanced(self).RemoveSessionTab(control)
 }
 
 /*
 Enables or disables a specific breakpoint based on [param enabled], updating the Editor Breakpoint Panel accordingly.
 */
 func (self Instance) SetBreakpoint(path string, line int, enabled bool) { //gd:EditorDebuggerSession.set_breakpoint
-	class(self).SetBreakpoint(String.New(path), int64(line), enabled)
+	Advanced(self).SetBreakpoint(String.New(path), int64(line), enabled)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -126,14 +126,14 @@ func (Instance) _can_use_render_priority(impl func(ptr unsafe.Pointer) bool) (cb
 Only available when running in the editor. Opens a popup that visualizes the generated shader code, including all variants and internal shader code. See also [method Shader.inspect_native_shader_code].
 */
 func (self Instance) InspectNativeShaderCode() { //gd:Material.inspect_native_shader_code
-	class(self).InspectNativeShaderCode()
+	Advanced(self).InspectNativeShaderCode()
 }
 
 /*
 Creates a placeholder version of this resource ([PlaceholderMaterial]).
 */
 func (self Instance) CreatePlaceholder() [1]gdclass.Resource { //gd:Material.create_placeholder
-	return [1]gdclass.Resource(class(self).CreatePlaceholder())
+	return [1]gdclass.Resource(Advanced(self).CreatePlaceholder())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

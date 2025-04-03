@@ -60,42 +60,42 @@ type Any interface {
 Returns the [GridMap] node currently edited by the grid map editor.
 */
 func (self Instance) GetCurrentGridMap() [1]gdclass.GridMap { //gd:GridMapEditorPlugin.get_current_grid_map
-	return [1]gdclass.GridMap(class(self).GetCurrentGridMap())
+	return [1]gdclass.GridMap(Advanced(self).GetCurrentGridMap())
 }
 
 /*
 Selects the cells inside the given bounds from [param begin] to [param end].
 */
 func (self Instance) SetSelection(begin Vector3i.XYZ, end Vector3i.XYZ) { //gd:GridMapEditorPlugin.set_selection
-	class(self).SetSelection(Vector3i.XYZ(begin), Vector3i.XYZ(end))
+	Advanced(self).SetSelection(Vector3i.XYZ(begin), Vector3i.XYZ(end))
 }
 
 /*
 Deselects any currently selected cells.
 */
 func (self Instance) ClearSelection() { //gd:GridMapEditorPlugin.clear_selection
-	class(self).ClearSelection()
+	Advanced(self).ClearSelection()
 }
 
 /*
 Returns the cell coordinate bounds of the current selection. Use [method has_selection] to check if there is an active selection.
 */
 func (self Instance) GetSelection() AABB.PositionSize { //gd:GridMapEditorPlugin.get_selection
-	return AABB.PositionSize(class(self).GetSelection())
+	return AABB.PositionSize(Advanced(self).GetSelection())
 }
 
 /*
 Returns [code]true[/code] if there are selected cells.
 */
 func (self Instance) HasSelection() bool { //gd:GridMapEditorPlugin.has_selection
-	return bool(class(self).HasSelection())
+	return bool(Advanced(self).HasSelection())
 }
 
 /*
 Returns an array of [Vector3i]s with the selected cells' coordinates.
 */
 func (self Instance) GetSelectedCells() []any { //gd:GridMapEditorPlugin.get_selected_cells
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetSelectedCells())))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetSelectedCells())))
 }
 
 /*
@@ -103,7 +103,7 @@ Selects the [MeshLibrary] item with the given index in the grid map editor's pal
 [b]Note:[/b] The indices might not be in the same order as they appear in the editor's interface.
 */
 func (self Instance) SetSelectedPaletteItem(item int) { //gd:GridMapEditorPlugin.set_selected_palette_item
-	class(self).SetSelectedPaletteItem(int64(item))
+	Advanced(self).SetSelectedPaletteItem(int64(item))
 }
 
 /*
@@ -111,7 +111,7 @@ Returns the index of the selected [MeshLibrary] item in the grid map editor's pa
 [b]Note:[/b] The indices might not be in the same order as they appear in the editor's interface.
 */
 func (self Instance) GetSelectedPaletteItem() int { //gd:GridMapEditorPlugin.get_selected_palette_item
-	return int(int(class(self).GetSelectedPaletteItem()))
+	return int(int(Advanced(self).GetSelectedPaletteItem()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -58,42 +58,42 @@ type Any interface {
 Appends a [NodePath] to [member node_paths]. This can be used by [GLTFDocumentExtension] classes to define how a glTF object model property maps to a Godot property, or multiple Godot properties. Prefer using [method append_path_to_property] for simple cases. Be sure to also call [method set_types] once (the order does not matter).
 */
 func (self Instance) AppendNodePath(node_path string) { //gd:GLTFObjectModelProperty.append_node_path
-	class(self).AppendNodePath(Path.ToNode(String.New(node_path)))
+	Advanced(self).AppendNodePath(Path.ToNode(String.New(node_path)))
 }
 
 /*
 High-level wrapper over [method append_node_path] that handles the most common cases. It constructs a new [NodePath] using [param node_path] as a base and appends [param prop_name] to the subpath. Be sure to also call [method set_types] once (the order does not matter).
 */
 func (self Instance) AppendPathToProperty(node_path string, prop_name string) { //gd:GLTFObjectModelProperty.append_path_to_property
-	class(self).AppendPathToProperty(Path.ToNode(String.New(node_path)), String.Name(String.New(prop_name)))
+	Advanced(self).AppendPathToProperty(Path.ToNode(String.New(node_path)), String.Name(String.New(prop_name)))
 }
 
 /*
 The GLTF accessor type associated with this property's [member object_model_type]. See [member GLTFAccessor.accessor_type] for possible values, and see [enum GLTFObjectModelType] for how the object model type maps to accessor types.
 */
 func (self Instance) GetAccessorType() gdclass.GLTFAccessorGLTFAccessorType { //gd:GLTFObjectModelProperty.get_accessor_type
-	return gdclass.GLTFAccessorGLTFAccessorType(class(self).GetAccessorType())
+	return gdclass.GLTFAccessorGLTFAccessorType(Advanced(self).GetAccessorType())
 }
 
 /*
 Returns [code]true[/code] if [member node_paths] is not empty. This is used during import to determine if a [GLTFObjectModelProperty] can handle converting a glTF object model property to a Godot property.
 */
 func (self Instance) HasNodePaths() bool { //gd:GLTFObjectModelProperty.has_node_paths
-	return bool(class(self).HasNodePaths())
+	return bool(Advanced(self).HasNodePaths())
 }
 
 /*
 Returns [code]true[/code] if [member json_pointers] is not empty. This is used during export to determine if a [GLTFObjectModelProperty] can handle converting a Godot property to a glTF object model property.
 */
 func (self Instance) HasJsonPointers() bool { //gd:GLTFObjectModelProperty.has_json_pointers
-	return bool(class(self).HasJsonPointers())
+	return bool(Advanced(self).HasJsonPointers())
 }
 
 /*
 Sets the [member variant_type] and [member object_model_type] properties. This is a convenience method to set both properties at once, since they are almost always known at the same time. This method should be called once. Calling it again with the same values will have no effect.
 */
 func (self Instance) SetTypes(variant_type variant.Type, obj_model_type gdclass.GLTFObjectModelPropertyGLTFObjectModelType) { //gd:GLTFObjectModelProperty.set_types
-	class(self).SetTypes(variant_type, obj_model_type)
+	Advanced(self).SetTypes(variant_type, obj_model_type)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

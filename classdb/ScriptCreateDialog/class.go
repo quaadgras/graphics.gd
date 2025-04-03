@@ -70,6 +70,7 @@ public override void _Ready()
 [/codeblocks]
 */
 type Instance [1]gdclass.ScriptCreateDialog
+type Expanded [1]gdclass.ScriptCreateDialog
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -83,7 +84,14 @@ type Any interface {
 Prefills required fields to configure the ScriptCreateDialog for use.
 */
 func (self Instance) Config(inherits string, path string) { //gd:ScriptCreateDialog.config
-	class(self).Config(String.New(inherits), String.New(path), true, true)
+	Advanced(self).Config(String.New(inherits), String.New(path), true, true)
+}
+
+/*
+Prefills required fields to configure the ScriptCreateDialog for use.
+*/
+func (self Expanded) Config(inherits string, path string, built_in_enabled bool, load_enabled bool) { //gd:ScriptCreateDialog.config
+	Advanced(self).Config(String.New(inherits), String.New(path), built_in_enabled, load_enabled)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

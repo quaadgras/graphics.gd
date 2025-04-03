@@ -63,49 +63,49 @@ type Any interface {
 Resets the bone to the rest pose. This is equivalent to setting [member Node2D.transform] to [member rest].
 */
 func (self Instance) ApplyRest() { //gd:Bone2D.apply_rest
-	class(self).ApplyRest()
+	Advanced(self).ApplyRest()
 }
 
 /*
 Returns the node's [member rest] [Transform2D] if it doesn't have a parent, or its rest pose relative to its parent.
 */
 func (self Instance) GetSkeletonRest() Transform2D.OriginXY { //gd:Bone2D.get_skeleton_rest
-	return Transform2D.OriginXY(class(self).GetSkeletonRest())
+	return Transform2D.OriginXY(Advanced(self).GetSkeletonRest())
 }
 
 /*
 Returns the node's index as part of the entire skeleton. See [Skeleton2D].
 */
 func (self Instance) GetIndexInSkeleton() int { //gd:Bone2D.get_index_in_skeleton
-	return int(int(class(self).GetIndexInSkeleton()))
+	return int(int(Advanced(self).GetIndexInSkeleton()))
 }
 
 /*
 When set to [code]true[/code], the [Bone2D] node will attempt to automatically calculate the bone angle and length using the first child [Bone2D] node, if one exists. If none exist, the [Bone2D] cannot automatically calculate these values and will print a warning.
 */
 func (self Instance) SetAutocalculateLengthAndAngle(auto_calculate bool) { //gd:Bone2D.set_autocalculate_length_and_angle
-	class(self).SetAutocalculateLengthAndAngle(auto_calculate)
+	Advanced(self).SetAutocalculateLengthAndAngle(auto_calculate)
 }
 
 /*
 Returns whether this [Bone2D] is going to autocalculate its length and bone angle using its first [Bone2D] child node, if one exists. If there are no [Bone2D] children, then it cannot autocalculate these values and will print a warning.
 */
 func (self Instance) GetAutocalculateLengthAndAngle() bool { //gd:Bone2D.get_autocalculate_length_and_angle
-	return bool(class(self).GetAutocalculateLengthAndAngle())
+	return bool(Advanced(self).GetAutocalculateLengthAndAngle())
 }
 
 /*
 Sets the length of the bone in the [Bone2D].
 */
 func (self Instance) SetLength(length Float.X) { //gd:Bone2D.set_length
-	class(self).SetLength(float64(length))
+	Advanced(self).SetLength(float64(length))
 }
 
 /*
 Returns the length of the bone in the [Bone2D] node.
 */
 func (self Instance) GetLength() Float.X { //gd:Bone2D.get_length
-	return Float.X(Float.X(class(self).GetLength()))
+	return Float.X(Float.X(Advanced(self).GetLength()))
 }
 
 /*
@@ -113,7 +113,7 @@ Sets the bone angle for the [Bone2D]. This is typically set to the rotation from
 [b]Note:[/b] This is different from the [Bone2D]'s rotation. The bone's angle is the rotation of the bone shown by the gizmo, which is unaffected by the [Bone2D]'s [member Node2D.transform].
 */
 func (self Instance) SetBoneAngle(angle Float.X) { //gd:Bone2D.set_bone_angle
-	class(self).SetBoneAngle(float64(angle))
+	Advanced(self).SetBoneAngle(float64(angle))
 }
 
 /*
@@ -121,7 +121,7 @@ Returns the angle of the bone in the [Bone2D].
 [b]Note:[/b] This is different from the [Bone2D]'s rotation. The bone's angle is the rotation of the bone shown by the gizmo, which is unaffected by the [Bone2D]'s [member Node2D.transform].
 */
 func (self Instance) GetBoneAngle() Float.X { //gd:Bone2D.get_bone_angle
-	return Float.X(Float.X(class(self).GetBoneAngle()))
+	return Float.X(Float.X(Advanced(self).GetBoneAngle()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

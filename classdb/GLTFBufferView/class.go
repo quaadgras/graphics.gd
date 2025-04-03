@@ -58,7 +58,7 @@ type Any interface {
 Loads the buffer view data from the buffer referenced by this buffer view in the given [GLTFState]. Interleaved data with a byte stride is not yet supported by this method. The data is returned as a [PackedByteArray].
 */
 func (self Instance) LoadBufferViewData(state [1]gdclass.GLTFState) []byte { //gd:GLTFBufferView.load_buffer_view_data
-	return []byte(class(self).LoadBufferViewData(state).Bytes())
+	return []byte(Advanced(self).LoadBufferViewData(state).Bytes())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

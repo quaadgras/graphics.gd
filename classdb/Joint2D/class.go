@@ -59,7 +59,7 @@ type Any interface {
 Returns the joint's internal [RID] from the [PhysicsServer2D].
 */
 func (self Instance) GetRid() RID.Joint2D { //gd:Joint2D.get_rid
-	return RID.Joint2D(class(self).GetRid())
+	return RID.Joint2D(Advanced(self).GetRid())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

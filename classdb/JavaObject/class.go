@@ -58,7 +58,7 @@ type Any interface {
 Returns the [JavaClass] that this object is an instance of.
 */
 func (self Instance) GetJavaClass() [1]gdclass.JavaClass { //gd:JavaObject.get_java_class
-	return [1]gdclass.JavaClass(class(self).GetJavaClass())
+	return [1]gdclass.JavaClass(Advanced(self).GetJavaClass())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

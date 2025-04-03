@@ -59,147 +59,147 @@ type Any interface {
 Defines all input ports using a [String] formatted as a colon-separated list: [code]id,type,name;[/code] (see [method add_input_port]).
 */
 func (self Instance) SetInputs(inputs string) { //gd:VisualShaderNodeGroupBase.set_inputs
-	class(self).SetInputs(String.New(inputs))
+	Advanced(self).SetInputs(String.New(inputs))
 }
 
 /*
 Returns a [String] description of the input ports as a colon-separated list using the format [code]id,type,name;[/code] (see [method add_input_port]).
 */
 func (self Instance) GetInputs() string { //gd:VisualShaderNodeGroupBase.get_inputs
-	return string(class(self).GetInputs().String())
+	return string(Advanced(self).GetInputs().String())
 }
 
 /*
 Defines all output ports using a [String] formatted as a colon-separated list: [code]id,type,name;[/code] (see [method add_output_port]).
 */
 func (self Instance) SetOutputs(outputs string) { //gd:VisualShaderNodeGroupBase.set_outputs
-	class(self).SetOutputs(String.New(outputs))
+	Advanced(self).SetOutputs(String.New(outputs))
 }
 
 /*
 Returns a [String] description of the output ports as a colon-separated list using the format [code]id,type,name;[/code] (see [method add_output_port]).
 */
 func (self Instance) GetOutputs() string { //gd:VisualShaderNodeGroupBase.get_outputs
-	return string(class(self).GetOutputs().String())
+	return string(Advanced(self).GetOutputs().String())
 }
 
 /*
 Returns [code]true[/code] if the specified port name does not override an existed port name and is valid within the shader.
 */
 func (self Instance) IsValidPortName(name string) bool { //gd:VisualShaderNodeGroupBase.is_valid_port_name
-	return bool(class(self).IsValidPortName(String.New(name)))
+	return bool(Advanced(self).IsValidPortName(String.New(name)))
 }
 
 /*
 Adds an input port with the specified [param type] (see [enum VisualShaderNode.PortType]) and [param name].
 */
 func (self Instance) AddInputPort(id int, atype int, name string) { //gd:VisualShaderNodeGroupBase.add_input_port
-	class(self).AddInputPort(int64(id), int64(atype), String.New(name))
+	Advanced(self).AddInputPort(int64(id), int64(atype), String.New(name))
 }
 
 /*
 Removes the specified input port.
 */
 func (self Instance) RemoveInputPort(id int) { //gd:VisualShaderNodeGroupBase.remove_input_port
-	class(self).RemoveInputPort(int64(id))
+	Advanced(self).RemoveInputPort(int64(id))
 }
 
 /*
 Returns the number of input ports in use. Alternative for [method get_free_input_port_id].
 */
 func (self Instance) GetInputPortCount() int { //gd:VisualShaderNodeGroupBase.get_input_port_count
-	return int(int(class(self).GetInputPortCount()))
+	return int(int(Advanced(self).GetInputPortCount()))
 }
 
 /*
 Returns [code]true[/code] if the specified input port exists.
 */
 func (self Instance) HasInputPort(id int) bool { //gd:VisualShaderNodeGroupBase.has_input_port
-	return bool(class(self).HasInputPort(int64(id)))
+	return bool(Advanced(self).HasInputPort(int64(id)))
 }
 
 /*
 Removes all previously specified input ports.
 */
 func (self Instance) ClearInputPorts() { //gd:VisualShaderNodeGroupBase.clear_input_ports
-	class(self).ClearInputPorts()
+	Advanced(self).ClearInputPorts()
 }
 
 /*
 Adds an output port with the specified [param type] (see [enum VisualShaderNode.PortType]) and [param name].
 */
 func (self Instance) AddOutputPort(id int, atype int, name string) { //gd:VisualShaderNodeGroupBase.add_output_port
-	class(self).AddOutputPort(int64(id), int64(atype), String.New(name))
+	Advanced(self).AddOutputPort(int64(id), int64(atype), String.New(name))
 }
 
 /*
 Removes the specified output port.
 */
 func (self Instance) RemoveOutputPort(id int) { //gd:VisualShaderNodeGroupBase.remove_output_port
-	class(self).RemoveOutputPort(int64(id))
+	Advanced(self).RemoveOutputPort(int64(id))
 }
 
 /*
 Returns the number of output ports in use. Alternative for [method get_free_output_port_id].
 */
 func (self Instance) GetOutputPortCount() int { //gd:VisualShaderNodeGroupBase.get_output_port_count
-	return int(int(class(self).GetOutputPortCount()))
+	return int(int(Advanced(self).GetOutputPortCount()))
 }
 
 /*
 Returns [code]true[/code] if the specified output port exists.
 */
 func (self Instance) HasOutputPort(id int) bool { //gd:VisualShaderNodeGroupBase.has_output_port
-	return bool(class(self).HasOutputPort(int64(id)))
+	return bool(Advanced(self).HasOutputPort(int64(id)))
 }
 
 /*
 Removes all previously specified output ports.
 */
 func (self Instance) ClearOutputPorts() { //gd:VisualShaderNodeGroupBase.clear_output_ports
-	class(self).ClearOutputPorts()
+	Advanced(self).ClearOutputPorts()
 }
 
 /*
 Renames the specified input port.
 */
 func (self Instance) SetInputPortName(id int, name string) { //gd:VisualShaderNodeGroupBase.set_input_port_name
-	class(self).SetInputPortName(int64(id), String.New(name))
+	Advanced(self).SetInputPortName(int64(id), String.New(name))
 }
 
 /*
 Sets the specified input port's type (see [enum VisualShaderNode.PortType]).
 */
 func (self Instance) SetInputPortType(id int, atype int) { //gd:VisualShaderNodeGroupBase.set_input_port_type
-	class(self).SetInputPortType(int64(id), int64(atype))
+	Advanced(self).SetInputPortType(int64(id), int64(atype))
 }
 
 /*
 Renames the specified output port.
 */
 func (self Instance) SetOutputPortName(id int, name string) { //gd:VisualShaderNodeGroupBase.set_output_port_name
-	class(self).SetOutputPortName(int64(id), String.New(name))
+	Advanced(self).SetOutputPortName(int64(id), String.New(name))
 }
 
 /*
 Sets the specified output port's type (see [enum VisualShaderNode.PortType]).
 */
 func (self Instance) SetOutputPortType(id int, atype int) { //gd:VisualShaderNodeGroupBase.set_output_port_type
-	class(self).SetOutputPortType(int64(id), int64(atype))
+	Advanced(self).SetOutputPortType(int64(id), int64(atype))
 }
 
 /*
 Returns a free input port ID which can be used in [method add_input_port].
 */
 func (self Instance) GetFreeInputPortId() int { //gd:VisualShaderNodeGroupBase.get_free_input_port_id
-	return int(int(class(self).GetFreeInputPortId()))
+	return int(int(Advanced(self).GetFreeInputPortId()))
 }
 
 /*
 Returns a free output port ID which can be used in [method add_output_port].
 */
 func (self Instance) GetFreeOutputPortId() int { //gd:VisualShaderNodeGroupBase.get_free_output_port_id
-	return int(int(class(self).GetFreeOutputPortId()))
+	return int(int(Advanced(self).GetFreeOutputPortId()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

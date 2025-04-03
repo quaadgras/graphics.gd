@@ -72,14 +72,14 @@ type Any interface {
 Returns the smallest height value found in [member map_data]. Recalculates only when [member map_data] changes.
 */
 func (self Instance) GetMinHeight() Float.X { //gd:HeightMapShape3D.get_min_height
-	return Float.X(Float.X(class(self).GetMinHeight()))
+	return Float.X(Float.X(Advanced(self).GetMinHeight()))
 }
 
 /*
 Returns the largest height value found in [member map_data]. Recalculates only when [member map_data] changes.
 */
 func (self Instance) GetMaxHeight() Float.X { //gd:HeightMapShape3D.get_max_height
-	return Float.X(Float.X(class(self).GetMaxHeight()))
+	return Float.X(Float.X(Advanced(self).GetMaxHeight()))
 }
 
 /*
@@ -88,7 +88,7 @@ The image needs to be in either [constant Image.FORMAT_RF] (32 bit), [constant I
 Each image pixel is read in as a float on the range from [code]0.0[/code] (black pixel) to [code]1.0[/code] (white pixel). This range value gets remapped to [param height_min] and [param height_max] to form the final height value.
 */
 func (self Instance) UpdateMapDataFromImage(image [1]gdclass.Image, height_min Float.X, height_max Float.X) { //gd:HeightMapShape3D.update_map_data_from_image
-	class(self).UpdateMapDataFromImage(image, float64(height_min), float64(height_max))
+	Advanced(self).UpdateMapDataFromImage(image, float64(height_min), float64(height_max))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -58,7 +58,7 @@ type Any interface {
 Returns a translated name of the current constant in the Godot Shader Language. E.g. [code]"ALBEDO"[/code] if the [member input_name] equal to [code]"albedo"[/code].
 */
 func (self Instance) GetInputRealName() string { //gd:VisualShaderNodeInput.get_input_real_name
-	return string(class(self).GetInputRealName().String())
+	return string(Advanced(self).GetInputRealName().String())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

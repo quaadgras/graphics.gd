@@ -61,14 +61,14 @@ On macOS, returns [code]true[/code] if [kbd]Meta[/kbd] ([kbd]Cmd[/kbd]) is press
 On other platforms, returns [code]true[/code] if [kbd]Ctrl[/kbd] is pressed.
 */
 func (self Instance) IsCommandOrControlPressed() bool { //gd:InputEventWithModifiers.is_command_or_control_pressed
-	return bool(class(self).IsCommandOrControlPressed())
+	return bool(Advanced(self).IsCommandOrControlPressed())
 }
 
 /*
 Returns the keycode combination of modifier keys.
 */
 func (self Instance) GetModifiersMask() KeyModifierMask { //gd:InputEventWithModifiers.get_modifiers_mask
-	return KeyModifierMask(class(self).GetModifiersMask())
+	return KeyModifierMask(Advanced(self).GetModifiersMask())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

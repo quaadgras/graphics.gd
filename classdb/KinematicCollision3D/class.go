@@ -45,6 +45,7 @@ Holds collision data from the movement of a [PhysicsBody3D], usually from [metho
 The collision data includes the colliding object, the remaining motion, and the collision position. This data can be used to determine a custom response to the collision.
 */
 type Instance [1]gdclass.KinematicCollision3D
+type Expanded [1]gdclass.KinematicCollision3D
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -58,98 +59,168 @@ type Any interface {
 Returns the moving object's travel before collision.
 */
 func (self Instance) GetTravel() Vector3.XYZ { //gd:KinematicCollision3D.get_travel
-	return Vector3.XYZ(class(self).GetTravel())
+	return Vector3.XYZ(Advanced(self).GetTravel())
 }
 
 /*
 Returns the moving object's remaining movement vector.
 */
 func (self Instance) GetRemainder() Vector3.XYZ { //gd:KinematicCollision3D.get_remainder
-	return Vector3.XYZ(class(self).GetRemainder())
+	return Vector3.XYZ(Advanced(self).GetRemainder())
 }
 
 /*
 Returns the colliding body's length of overlap along the collision normal.
 */
 func (self Instance) GetDepth() Float.X { //gd:KinematicCollision3D.get_depth
-	return Float.X(Float.X(class(self).GetDepth()))
+	return Float.X(Float.X(Advanced(self).GetDepth()))
 }
 
 /*
 Returns the number of detected collisions.
 */
 func (self Instance) GetCollisionCount() int { //gd:KinematicCollision3D.get_collision_count
-	return int(int(class(self).GetCollisionCount()))
+	return int(int(Advanced(self).GetCollisionCount()))
 }
 
 /*
 Returns the point of collision in global coordinates given a collision index (the deepest collision by default).
 */
 func (self Instance) GetPosition() Vector3.XYZ { //gd:KinematicCollision3D.get_position
-	return Vector3.XYZ(class(self).GetPosition(int64(0)))
+	return Vector3.XYZ(Advanced(self).GetPosition(int64(0)))
+}
+
+/*
+Returns the point of collision in global coordinates given a collision index (the deepest collision by default).
+*/
+func (self Expanded) GetPosition(collision_index int) Vector3.XYZ { //gd:KinematicCollision3D.get_position
+	return Vector3.XYZ(Advanced(self).GetPosition(int64(collision_index)))
 }
 
 /*
 Returns the colliding body's shape's normal at the point of collision given a collision index (the deepest collision by default).
 */
 func (self Instance) GetNormal() Vector3.XYZ { //gd:KinematicCollision3D.get_normal
-	return Vector3.XYZ(class(self).GetNormal(int64(0)))
+	return Vector3.XYZ(Advanced(self).GetNormal(int64(0)))
+}
+
+/*
+Returns the colliding body's shape's normal at the point of collision given a collision index (the deepest collision by default).
+*/
+func (self Expanded) GetNormal(collision_index int) Vector3.XYZ { //gd:KinematicCollision3D.get_normal
+	return Vector3.XYZ(Advanced(self).GetNormal(int64(collision_index)))
 }
 
 /*
 Returns the collision angle according to [param up_direction], which is [constant Vector3.UP] by default. This value is always positive.
 */
 func (self Instance) GetAngle() Float.X { //gd:KinematicCollision3D.get_angle
-	return Float.X(Float.X(class(self).GetAngle(int64(0), Vector3.XYZ(gd.Vector3{0, 1, 0}))))
+	return Float.X(Float.X(Advanced(self).GetAngle(int64(0), Vector3.XYZ(gd.Vector3{0, 1, 0}))))
+}
+
+/*
+Returns the collision angle according to [param up_direction], which is [constant Vector3.UP] by default. This value is always positive.
+*/
+func (self Expanded) GetAngle(collision_index int, up_direction Vector3.XYZ) Float.X { //gd:KinematicCollision3D.get_angle
+	return Float.X(Float.X(Advanced(self).GetAngle(int64(collision_index), Vector3.XYZ(up_direction))))
 }
 
 /*
 Returns the moving object's colliding shape given a collision index (the deepest collision by default).
 */
 func (self Instance) GetLocalShape() Object.Instance { //gd:KinematicCollision3D.get_local_shape
-	return Object.Instance(class(self).GetLocalShape(int64(0)))
+	return Object.Instance(Advanced(self).GetLocalShape(int64(0)))
+}
+
+/*
+Returns the moving object's colliding shape given a collision index (the deepest collision by default).
+*/
+func (self Expanded) GetLocalShape(collision_index int) Object.Instance { //gd:KinematicCollision3D.get_local_shape
+	return Object.Instance(Advanced(self).GetLocalShape(int64(collision_index)))
 }
 
 /*
 Returns the colliding body's attached [Object] given a collision index (the deepest collision by default).
 */
 func (self Instance) GetCollider() Object.Instance { //gd:KinematicCollision3D.get_collider
-	return Object.Instance(class(self).GetCollider(int64(0)))
+	return Object.Instance(Advanced(self).GetCollider(int64(0)))
+}
+
+/*
+Returns the colliding body's attached [Object] given a collision index (the deepest collision by default).
+*/
+func (self Expanded) GetCollider(collision_index int) Object.Instance { //gd:KinematicCollision3D.get_collider
+	return Object.Instance(Advanced(self).GetCollider(int64(collision_index)))
 }
 
 /*
 Returns the unique instance ID of the colliding body's attached [Object] given a collision index (the deepest collision by default). See [method Object.get_instance_id].
 */
 func (self Instance) GetColliderId() int { //gd:KinematicCollision3D.get_collider_id
-	return int(int(class(self).GetColliderId(int64(0))))
+	return int(int(Advanced(self).GetColliderId(int64(0))))
+}
+
+/*
+Returns the unique instance ID of the colliding body's attached [Object] given a collision index (the deepest collision by default). See [method Object.get_instance_id].
+*/
+func (self Expanded) GetColliderId(collision_index int) int { //gd:KinematicCollision3D.get_collider_id
+	return int(int(Advanced(self).GetColliderId(int64(collision_index))))
 }
 
 /*
 Returns the colliding body's [RID] used by the [PhysicsServer3D] given a collision index (the deepest collision by default).
 */
 func (self Instance) GetColliderRid() RID.Body3D { //gd:KinematicCollision3D.get_collider_rid
-	return RID.Body3D(class(self).GetColliderRid(int64(0)))
+	return RID.Body3D(Advanced(self).GetColliderRid(int64(0)))
+}
+
+/*
+Returns the colliding body's [RID] used by the [PhysicsServer3D] given a collision index (the deepest collision by default).
+*/
+func (self Expanded) GetColliderRid(collision_index int) RID.Body3D { //gd:KinematicCollision3D.get_collider_rid
+	return RID.Body3D(Advanced(self).GetColliderRid(int64(collision_index)))
 }
 
 /*
 Returns the colliding body's shape given a collision index (the deepest collision by default).
 */
 func (self Instance) GetColliderShape() Object.Instance { //gd:KinematicCollision3D.get_collider_shape
-	return Object.Instance(class(self).GetColliderShape(int64(0)))
+	return Object.Instance(Advanced(self).GetColliderShape(int64(0)))
+}
+
+/*
+Returns the colliding body's shape given a collision index (the deepest collision by default).
+*/
+func (self Expanded) GetColliderShape(collision_index int) Object.Instance { //gd:KinematicCollision3D.get_collider_shape
+	return Object.Instance(Advanced(self).GetColliderShape(int64(collision_index)))
 }
 
 /*
 Returns the colliding body's shape index given a collision index (the deepest collision by default). See [CollisionObject3D].
 */
 func (self Instance) GetColliderShapeIndex() int { //gd:KinematicCollision3D.get_collider_shape_index
-	return int(int(class(self).GetColliderShapeIndex(int64(0))))
+	return int(int(Advanced(self).GetColliderShapeIndex(int64(0))))
+}
+
+/*
+Returns the colliding body's shape index given a collision index (the deepest collision by default). See [CollisionObject3D].
+*/
+func (self Expanded) GetColliderShapeIndex(collision_index int) int { //gd:KinematicCollision3D.get_collider_shape_index
+	return int(int(Advanced(self).GetColliderShapeIndex(int64(collision_index))))
 }
 
 /*
 Returns the colliding body's velocity given a collision index (the deepest collision by default).
 */
 func (self Instance) GetColliderVelocity() Vector3.XYZ { //gd:KinematicCollision3D.get_collider_velocity
-	return Vector3.XYZ(class(self).GetColliderVelocity(int64(0)))
+	return Vector3.XYZ(Advanced(self).GetColliderVelocity(int64(0)))
+}
+
+/*
+Returns the colliding body's velocity given a collision index (the deepest collision by default).
+*/
+func (self Expanded) GetColliderVelocity(collision_index int) Vector3.XYZ { //gd:KinematicCollision3D.get_collider_velocity
+	return Vector3.XYZ(Advanced(self).GetColliderVelocity(int64(collision_index)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

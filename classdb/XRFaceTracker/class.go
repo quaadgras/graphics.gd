@@ -58,14 +58,14 @@ type Any interface {
 Returns the requested face blend shape weight.
 */
 func (self Instance) GetBlendShape(blend_shape gdclass.XRFaceTrackerBlendShapeEntry) Float.X { //gd:XRFaceTracker.get_blend_shape
-	return Float.X(Float.X(class(self).GetBlendShape(blend_shape)))
+	return Float.X(Float.X(Advanced(self).GetBlendShape(blend_shape)))
 }
 
 /*
 Sets a face blend shape weight.
 */
 func (self Instance) SetBlendShape(blend_shape gdclass.XRFaceTrackerBlendShapeEntry, weight Float.X) { //gd:XRFaceTracker.set_blend_shape
-	class(self).SetBlendShape(blend_shape, float64(weight))
+	Advanced(self).SetBlendShape(blend_shape, float64(weight))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

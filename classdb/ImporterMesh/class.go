@@ -46,6 +46,7 @@ ImporterMesh is a type of [Resource] analogous to [ArrayMesh]. It contains verte
 Unlike its runtime counterpart, [ImporterMesh] contains mesh data before various import steps, such as lod and shadow mesh generation, have taken place. Modify surface data by calling [method clear], followed by [method add_surface] for each surface.
 */
 type Instance [1]gdclass.ImporterMesh
+type Expanded [1]gdclass.ImporterMesh
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -59,35 +60,35 @@ type Any interface {
 Adds name for a blend shape that will be added with [method add_surface]. Must be called before surface is added.
 */
 func (self Instance) AddBlendShape(name string) { //gd:ImporterMesh.add_blend_shape
-	class(self).AddBlendShape(String.New(name))
+	Advanced(self).AddBlendShape(String.New(name))
 }
 
 /*
 Returns the number of blend shapes that the mesh holds.
 */
 func (self Instance) GetBlendShapeCount() int { //gd:ImporterMesh.get_blend_shape_count
-	return int(int(class(self).GetBlendShapeCount()))
+	return int(int(Advanced(self).GetBlendShapeCount()))
 }
 
 /*
 Returns the name of the blend shape at this index.
 */
 func (self Instance) GetBlendShapeName(blend_shape_idx int) string { //gd:ImporterMesh.get_blend_shape_name
-	return string(class(self).GetBlendShapeName(int64(blend_shape_idx)).String())
+	return string(Advanced(self).GetBlendShapeName(int64(blend_shape_idx)).String())
 }
 
 /*
 Sets the blend shape mode to one of [enum Mesh.BlendShapeMode].
 */
 func (self Instance) SetBlendShapeMode(mode gdclass.MeshBlendShapeMode) { //gd:ImporterMesh.set_blend_shape_mode
-	class(self).SetBlendShapeMode(mode)
+	Advanced(self).SetBlendShapeMode(mode)
 }
 
 /*
 Returns the blend shape mode for this Mesh.
 */
 func (self Instance) GetBlendShapeMode() gdclass.MeshBlendShapeMode { //gd:ImporterMesh.get_blend_shape_mode
-	return gdclass.MeshBlendShapeMode(class(self).GetBlendShapeMode())
+	return gdclass.MeshBlendShapeMode(Advanced(self).GetBlendShapeMode())
 }
 
 /*
@@ -100,91 +101,104 @@ The [param flags] argument is the bitwise OR of, as required: One value of [enum
 [b]Note:[/b] When using indices, it is recommended to only use points, lines, or triangles.
 */
 func (self Instance) AddSurface(primitive gdclass.MeshPrimitiveType, arrays []any) { //gd:ImporterMesh.add_surface
-	class(self).AddSurface(primitive, gd.EngineArrayFromSlice(arrays), gd.ArrayFromSlice[Array.Contains[Array.Any]]([1][][]any{}[0]), Dictionary.Nil, [1][1]gdclass.Material{}[0], String.New(""), int64(0))
+	Advanced(self).AddSurface(primitive, gd.EngineArrayFromSlice(arrays), gd.ArrayFromSlice[Array.Contains[Array.Any]]([1][][]any{}[0]), Dictionary.Nil, [1][1]gdclass.Material{}[0], String.New(""), int64(0))
+}
+
+/*
+Creates a new surface. [method Mesh.get_surface_count] will become the [code]surf_idx[/code] for this new surface.
+Surfaces are created to be rendered using a [param primitive], which may be any of the values defined in [enum Mesh.PrimitiveType].
+The [param arrays] argument is an array of arrays. Each of the [constant Mesh.ARRAY_MAX] elements contains an array with some of the mesh data for this surface as described by the corresponding member of [enum Mesh.ArrayType] or [code]null[/code] if it is not used by the surface. For example, [code]arrays[0][/code] is the array of vertices. That first vertex sub-array is always required; the others are optional. Adding an index array puts this surface into "index mode" where the vertex and other arrays become the sources of data and the index array defines the vertex order. All sub-arrays must have the same length as the vertex array (or be an exact multiple of the vertex array's length, when multiple elements of a sub-array correspond to a single vertex) or be empty, except for [constant Mesh.ARRAY_INDEX] if it is used.
+The [param blend_shapes] argument is an array of vertex data for each blend shape. Each element is an array of the same structure as [param arrays], but [constant Mesh.ARRAY_VERTEX], [constant Mesh.ARRAY_NORMAL], and [constant Mesh.ARRAY_TANGENT] are set if and only if they are set in [param arrays] and all other entries are [code]null[/code].
+The [param lods] argument is a dictionary with [float] keys and [PackedInt32Array] values. Each entry in the dictionary represents an LOD level of the surface, where the value is the [constant Mesh.ARRAY_INDEX] array to use for the LOD level and the key is roughly proportional to the distance at which the LOD stats being used. I.e., increasing the key of an LOD also increases the distance that the objects has to be from the camera before the LOD is used.
+The [param flags] argument is the bitwise OR of, as required: One value of [enum Mesh.ArrayCustomFormat] left shifted by [code]ARRAY_FORMAT_CUSTOMn_SHIFT[/code] for each custom channel in use, [constant Mesh.ARRAY_FLAG_USE_DYNAMIC_UPDATE], [constant Mesh.ARRAY_FLAG_USE_8_BONE_WEIGHTS], or [constant Mesh.ARRAY_FLAG_USES_EMPTY_VERTEX_ARRAY].
+[b]Note:[/b] When using indices, it is recommended to only use points, lines, or triangles.
+*/
+func (self Expanded) AddSurface(primitive gdclass.MeshPrimitiveType, arrays []any, blend_shapes [][]any, lods map[float32][]int32, material [1]gdclass.Material, name string, flags int) { //gd:ImporterMesh.add_surface
+	Advanced(self).AddSurface(primitive, gd.EngineArrayFromSlice(arrays), gd.ArrayFromSlice[Array.Contains[Array.Any]](blend_shapes), gd.DictionaryFromMap(lods), material, String.New(name), int64(flags))
 }
 
 /*
 Returns the number of surfaces that the mesh holds.
 */
 func (self Instance) GetSurfaceCount() int { //gd:ImporterMesh.get_surface_count
-	return int(int(class(self).GetSurfaceCount()))
+	return int(int(Advanced(self).GetSurfaceCount()))
 }
 
 /*
 Returns the primitive type of the requested surface (see [method add_surface]).
 */
 func (self Instance) GetSurfacePrimitiveType(surface_idx int) gdclass.MeshPrimitiveType { //gd:ImporterMesh.get_surface_primitive_type
-	return gdclass.MeshPrimitiveType(class(self).GetSurfacePrimitiveType(int64(surface_idx)))
+	return gdclass.MeshPrimitiveType(Advanced(self).GetSurfacePrimitiveType(int64(surface_idx)))
 }
 
 /*
 Gets the name assigned to this surface.
 */
 func (self Instance) GetSurfaceName(surface_idx int) string { //gd:ImporterMesh.get_surface_name
-	return string(class(self).GetSurfaceName(int64(surface_idx)).String())
+	return string(Advanced(self).GetSurfaceName(int64(surface_idx)).String())
 }
 
 /*
 Returns the arrays for the vertices, normals, UVs, etc. that make up the requested surface. See [method add_surface].
 */
 func (self Instance) GetSurfaceArrays(surface_idx int) []any { //gd:ImporterMesh.get_surface_arrays
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetSurfaceArrays(int64(surface_idx)))))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetSurfaceArrays(int64(surface_idx)))))
 }
 
 /*
 Returns a single set of blend shape arrays for the requested blend shape index for a surface.
 */
 func (self Instance) GetSurfaceBlendShapeArrays(surface_idx int, blend_shape_idx int) []any { //gd:ImporterMesh.get_surface_blend_shape_arrays
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetSurfaceBlendShapeArrays(int64(surface_idx), int64(blend_shape_idx)))))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetSurfaceBlendShapeArrays(int64(surface_idx), int64(blend_shape_idx)))))
 }
 
 /*
 Returns the number of lods that the mesh holds on a given surface.
 */
 func (self Instance) GetSurfaceLodCount(surface_idx int) int { //gd:ImporterMesh.get_surface_lod_count
-	return int(int(class(self).GetSurfaceLodCount(int64(surface_idx))))
+	return int(int(Advanced(self).GetSurfaceLodCount(int64(surface_idx))))
 }
 
 /*
 Returns the screen ratio which activates a lod for a surface.
 */
 func (self Instance) GetSurfaceLodSize(surface_idx int, lod_idx int) Float.X { //gd:ImporterMesh.get_surface_lod_size
-	return Float.X(Float.X(class(self).GetSurfaceLodSize(int64(surface_idx), int64(lod_idx))))
+	return Float.X(Float.X(Advanced(self).GetSurfaceLodSize(int64(surface_idx), int64(lod_idx))))
 }
 
 /*
 Returns the index buffer of a lod for a surface.
 */
 func (self Instance) GetSurfaceLodIndices(surface_idx int, lod_idx int) []int32 { //gd:ImporterMesh.get_surface_lod_indices
-	return []int32(slices.Collect(class(self).GetSurfaceLodIndices(int64(surface_idx), int64(lod_idx)).Values()))
+	return []int32(slices.Collect(Advanced(self).GetSurfaceLodIndices(int64(surface_idx), int64(lod_idx)).Values()))
 }
 
 /*
 Returns a [Material] in a given surface. Surface is rendered using this material.
 */
 func (self Instance) GetSurfaceMaterial(surface_idx int) [1]gdclass.Material { //gd:ImporterMesh.get_surface_material
-	return [1]gdclass.Material(class(self).GetSurfaceMaterial(int64(surface_idx)))
+	return [1]gdclass.Material(Advanced(self).GetSurfaceMaterial(int64(surface_idx)))
 }
 
 /*
 Returns the format of the surface that the mesh holds.
 */
 func (self Instance) GetSurfaceFormat(surface_idx int) int { //gd:ImporterMesh.get_surface_format
-	return int(int(class(self).GetSurfaceFormat(int64(surface_idx))))
+	return int(int(Advanced(self).GetSurfaceFormat(int64(surface_idx))))
 }
 
 /*
 Sets a name for a given surface.
 */
 func (self Instance) SetSurfaceName(surface_idx int, name string) { //gd:ImporterMesh.set_surface_name
-	class(self).SetSurfaceName(int64(surface_idx), String.New(name))
+	Advanced(self).SetSurfaceName(int64(surface_idx), String.New(name))
 }
 
 /*
 Sets a [Material] for a given surface. Surface will be rendered using this material.
 */
 func (self Instance) SetSurfaceMaterial(surface_idx int, material [1]gdclass.Material) { //gd:ImporterMesh.set_surface_material
-	class(self).SetSurfaceMaterial(int64(surface_idx), material)
+	Advanced(self).SetSurfaceMaterial(int64(surface_idx), material)
 }
 
 /*
@@ -195,7 +209,7 @@ The number of generated lods can be accessed using [method get_surface_lod_count
 [param bone_transform_array] is an [Array] which can be either empty or contain [Transform3D]s which, for each of the mesh's bone IDs, will apply mesh skinning when generating the LOD mesh variations. This is usually used to account for discrepancies in scale between the mesh itself and its skinning data.
 */
 func (self Instance) GenerateLods(normal_merge_angle Float.X, normal_split_angle Float.X, bone_transform_array []any) { //gd:ImporterMesh.generate_lods
-	class(self).GenerateLods(float64(normal_merge_angle), float64(normal_split_angle), gd.EngineArrayFromSlice(bone_transform_array))
+	Advanced(self).GenerateLods(float64(normal_merge_angle), float64(normal_split_angle), gd.EngineArrayFromSlice(bone_transform_array))
 }
 
 /*
@@ -204,28 +218,37 @@ This method caches the returned mesh, and subsequent calls will return the cache
 If not yet cached and [param base_mesh] is provided, [param base_mesh] will be used and mutated.
 */
 func (self Instance) GetMesh() [1]gdclass.ArrayMesh { //gd:ImporterMesh.get_mesh
-	return [1]gdclass.ArrayMesh(class(self).GetMesh([1][1]gdclass.ArrayMesh{}[0]))
+	return [1]gdclass.ArrayMesh(Advanced(self).GetMesh([1][1]gdclass.ArrayMesh{}[0]))
+}
+
+/*
+Returns the mesh data represented by this [ImporterMesh] as a usable [ArrayMesh].
+This method caches the returned mesh, and subsequent calls will return the cached data until [method clear] is called.
+If not yet cached and [param base_mesh] is provided, [param base_mesh] will be used and mutated.
+*/
+func (self Expanded) GetMesh(base_mesh [1]gdclass.ArrayMesh) [1]gdclass.ArrayMesh { //gd:ImporterMesh.get_mesh
+	return [1]gdclass.ArrayMesh(Advanced(self).GetMesh(base_mesh))
 }
 
 /*
 Removes all surfaces and blend shapes from this [ImporterMesh].
 */
 func (self Instance) Clear() { //gd:ImporterMesh.clear
-	class(self).Clear()
+	Advanced(self).Clear()
 }
 
 /*
 Sets the size hint of this mesh for lightmap-unwrapping in UV-space.
 */
 func (self Instance) SetLightmapSizeHint(size Vector2i.XY) { //gd:ImporterMesh.set_lightmap_size_hint
-	class(self).SetLightmapSizeHint(Vector2i.XY(size))
+	Advanced(self).SetLightmapSizeHint(Vector2i.XY(size))
 }
 
 /*
 Returns the size hint of this mesh for lightmap-unwrapping in UV-space.
 */
 func (self Instance) GetLightmapSizeHint() Vector2i.XY { //gd:ImporterMesh.get_lightmap_size_hint
-	return Vector2i.XY(class(self).GetLightmapSizeHint())
+	return Vector2i.XY(Advanced(self).GetLightmapSizeHint())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

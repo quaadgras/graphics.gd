@@ -48,6 +48,7 @@ This implementation additionally provide [SceneTree] replication via the [Multip
 [b]Note:[/b] When exporting to Android, make sure to enable the [code]INTERNET[/code] permission in the Android export preset before exporting the project or using one-click deploy. Otherwise, network communication of any kind will be blocked by Android.
 */
 type Instance [1]gdclass.SceneMultiplayer
+type Expanded [1]gdclass.SceneMultiplayer
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -61,28 +62,28 @@ type Any interface {
 Clears the current SceneMultiplayer network state (you shouldn't call this unless you know what you are doing).
 */
 func (self Instance) Clear() { //gd:SceneMultiplayer.clear
-	class(self).Clear()
+	Advanced(self).Clear()
 }
 
 /*
 Disconnects the peer identified by [param id], removing it from the list of connected peers, and closing the underlying connection with it.
 */
 func (self Instance) DisconnectPeer(id int) { //gd:SceneMultiplayer.disconnect_peer
-	class(self).DisconnectPeer(int64(id))
+	Advanced(self).DisconnectPeer(int64(id))
 }
 
 /*
 Returns the IDs of the peers currently trying to authenticate with this [MultiplayerAPI].
 */
 func (self Instance) GetAuthenticatingPeers() []int32 { //gd:SceneMultiplayer.get_authenticating_peers
-	return []int32(slices.Collect(class(self).GetAuthenticatingPeers().Values()))
+	return []int32(slices.Collect(Advanced(self).GetAuthenticatingPeers().Values()))
 }
 
 /*
 Sends the specified [param data] to the remote peer identified by [param id] as part of an authentication message. This can be used to authenticate peers, and control when [signal MultiplayerAPI.peer_connected] is emitted (and the remote peer accepted as one of the connected peers).
 */
 func (self Instance) SendAuth(id int, data []byte) error { //gd:SceneMultiplayer.send_auth
-	return error(gd.ToError(class(self).SendAuth(int64(id), Packed.Bytes(Packed.New(data...)))))
+	return error(gd.ToError(Advanced(self).SendAuth(int64(id), Packed.Bytes(Packed.New(data...)))))
 }
 
 /*
@@ -90,14 +91,21 @@ Mark the authentication step as completed for the remote peer identified by [par
 If a peer disconnects before completing authentication, either due to a network issue, the [member auth_timeout] expiring, or manually calling [method disconnect_peer], the [signal peer_authentication_failed] signal will be emitted instead of [signal MultiplayerAPI.peer_disconnected].
 */
 func (self Instance) CompleteAuth(id int) error { //gd:SceneMultiplayer.complete_auth
-	return error(gd.ToError(class(self).CompleteAuth(int64(id))))
+	return error(gd.ToError(Advanced(self).CompleteAuth(int64(id))))
 }
 
 /*
 Sends the given raw [param bytes] to a specific peer identified by [param id] (see [method MultiplayerPeer.set_target_peer]). Default ID is [code]0[/code], i.e. broadcast to all peers.
 */
 func (self Instance) SendBytes(bytes []byte) error { //gd:SceneMultiplayer.send_bytes
-	return error(gd.ToError(class(self).SendBytes(Packed.Bytes(Packed.New(bytes...)), int64(0), 2, int64(0))))
+	return error(gd.ToError(Advanced(self).SendBytes(Packed.Bytes(Packed.New(bytes...)), int64(0), 2, int64(0))))
+}
+
+/*
+Sends the given raw [param bytes] to a specific peer identified by [param id] (see [method MultiplayerPeer.set_target_peer]). Default ID is [code]0[/code], i.e. broadcast to all peers.
+*/
+func (self Expanded) SendBytes(bytes []byte, id int, mode gdclass.MultiplayerPeerTransferMode, channel int) error { //gd:SceneMultiplayer.send_bytes
+	return error(gd.ToError(Advanced(self).SendBytes(Packed.Bytes(Packed.New(bytes...)), int64(id), mode, int64(channel))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

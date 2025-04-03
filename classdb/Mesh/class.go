@@ -51,6 +51,7 @@ Mesh is a type of [Resource] that contains vertex array-based geometry, divided 
 %!(EXTRA string=Mesh)
 */
 type Instance [1]gdclass.Mesh
+type Expanded [1]gdclass.Mesh
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -319,35 +320,35 @@ Returns the smallest [AABB] enclosing this mesh in local space. Not affected by 
 [b]Note:[/b] This is only implemented for [ArrayMesh] and [PrimitiveMesh].
 */
 func (self Instance) GetAabb() AABB.PositionSize { //gd:Mesh.get_aabb
-	return AABB.PositionSize(class(self).GetAabb())
+	return AABB.PositionSize(Advanced(self).GetAabb())
 }
 
 /*
 Returns all the vertices that make up the faces of the mesh. Each three vertices represent one triangle.
 */
 func (self Instance) GetFaces() []Vector3.XYZ { //gd:Mesh.get_faces
-	return []Vector3.XYZ(slices.Collect(class(self).GetFaces().Values()))
+	return []Vector3.XYZ(slices.Collect(Advanced(self).GetFaces().Values()))
 }
 
 /*
 Returns the number of surfaces that the [Mesh] holds. This is equivalent to [method MeshInstance3D.get_surface_override_material_count].
 */
 func (self Instance) GetSurfaceCount() int { //gd:Mesh.get_surface_count
-	return int(int(class(self).GetSurfaceCount()))
+	return int(int(Advanced(self).GetSurfaceCount()))
 }
 
 /*
 Returns the arrays for the vertices, normals, UVs, etc. that make up the requested surface (see [method ArrayMesh.add_surface_from_arrays]).
 */
 func (self Instance) SurfaceGetArrays(surf_idx int) []any { //gd:Mesh.surface_get_arrays
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).SurfaceGetArrays(int64(surf_idx)))))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).SurfaceGetArrays(int64(surf_idx)))))
 }
 
 /*
 Returns the blend shape arrays for the requested surface.
 */
 func (self Instance) SurfaceGetBlendShapeArrays(surf_idx int) [][]any { //gd:Mesh.surface_get_blend_shape_arrays
-	return [][]any(gd.ArrayAs[[][]any](gd.InternalArray(class(self).SurfaceGetBlendShapeArrays(int64(surf_idx)))))
+	return [][]any(gd.ArrayAs[[][]any](gd.InternalArray(Advanced(self).SurfaceGetBlendShapeArrays(int64(surf_idx)))))
 }
 
 /*
@@ -355,7 +356,7 @@ Sets a [Material] for a given surface. Surface will be rendered using this mater
 [b]Note:[/b] This assigns the material within the [Mesh] resource, not the [Material] associated to the [MeshInstance3D]'s Surface Material Override properties. To set the [Material] associated to the [MeshInstance3D]'s Surface Material Override properties, use [method MeshInstance3D.set_surface_override_material] instead.
 */
 func (self Instance) SurfaceSetMaterial(surf_idx int, material [1]gdclass.Material) { //gd:Mesh.surface_set_material
-	class(self).SurfaceSetMaterial(int64(surf_idx), material)
+	Advanced(self).SurfaceSetMaterial(int64(surf_idx), material)
 }
 
 /*
@@ -363,21 +364,21 @@ Returns a [Material] in a given surface. Surface is rendered using this material
 [b]Note:[/b] This returns the material within the [Mesh] resource, not the [Material] associated to the [MeshInstance3D]'s Surface Material Override properties. To get the [Material] associated to the [MeshInstance3D]'s Surface Material Override properties, use [method MeshInstance3D.get_surface_override_material] instead.
 */
 func (self Instance) SurfaceGetMaterial(surf_idx int) [1]gdclass.Material { //gd:Mesh.surface_get_material
-	return [1]gdclass.Material(class(self).SurfaceGetMaterial(int64(surf_idx)))
+	return [1]gdclass.Material(Advanced(self).SurfaceGetMaterial(int64(surf_idx)))
 }
 
 /*
 Creates a placeholder version of this resource ([PlaceholderMesh]).
 */
 func (self Instance) CreatePlaceholder() [1]gdclass.Resource { //gd:Mesh.create_placeholder
-	return [1]gdclass.Resource(class(self).CreatePlaceholder())
+	return [1]gdclass.Resource(Advanced(self).CreatePlaceholder())
 }
 
 /*
 Calculate a [ConcavePolygonShape3D] from the mesh.
 */
 func (self Instance) CreateTrimeshShape() [1]gdclass.ConcavePolygonShape3D { //gd:Mesh.create_trimesh_shape
-	return [1]gdclass.ConcavePolygonShape3D(class(self).CreateTrimeshShape())
+	return [1]gdclass.ConcavePolygonShape3D(Advanced(self).CreateTrimeshShape())
 }
 
 /*
@@ -386,7 +387,16 @@ If [param clean] is [code]true[/code] (default), duplicate and interior vertices
 If [param simplify] is [code]true[/code], the geometry can be further simplified to reduce the number of vertices. Disabled by default.
 */
 func (self Instance) CreateConvexShape() [1]gdclass.ConvexPolygonShape3D { //gd:Mesh.create_convex_shape
-	return [1]gdclass.ConvexPolygonShape3D(class(self).CreateConvexShape(true, false))
+	return [1]gdclass.ConvexPolygonShape3D(Advanced(self).CreateConvexShape(true, false))
+}
+
+/*
+Calculate a [ConvexPolygonShape3D] from the mesh.
+If [param clean] is [code]true[/code] (default), duplicate and interior vertices are removed automatically. You can set it to [code]false[/code] to make the process faster if not needed.
+If [param simplify] is [code]true[/code], the geometry can be further simplified to reduce the number of vertices. Disabled by default.
+*/
+func (self Expanded) CreateConvexShape(clean bool, simplify bool) [1]gdclass.ConvexPolygonShape3D { //gd:Mesh.create_convex_shape
+	return [1]gdclass.ConvexPolygonShape3D(Advanced(self).CreateConvexShape(clean, simplify))
 }
 
 /*
@@ -394,14 +404,14 @@ Calculate an outline mesh at a defined offset (margin) from the original mesh.
 [b]Note:[/b] This method typically returns the vertices in reverse order (e.g. clockwise to counterclockwise).
 */
 func (self Instance) CreateOutline(margin Float.X) [1]gdclass.Mesh { //gd:Mesh.create_outline
-	return [1]gdclass.Mesh(class(self).CreateOutline(float64(margin)))
+	return [1]gdclass.Mesh(Advanced(self).CreateOutline(float64(margin)))
 }
 
 /*
 Generate a [TriangleMesh] from the mesh. Considers only surfaces using one of these primitive types: [constant PRIMITIVE_TRIANGLES], [constant PRIMITIVE_TRIANGLE_STRIP].
 */
 func (self Instance) GenerateTriangleMesh() [1]gdclass.TriangleMesh { //gd:Mesh.generate_triangle_mesh
-	return [1]gdclass.TriangleMesh(class(self).GenerateTriangleMesh())
+	return [1]gdclass.TriangleMesh(Advanced(self).GenerateTriangleMesh())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

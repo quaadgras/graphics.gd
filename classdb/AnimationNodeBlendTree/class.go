@@ -48,6 +48,7 @@ This animation node may contain a sub-tree of any other type animation nodes, su
 An [AnimationNodeOutput] node named [code]output[/code] is created by default.
 */
 type Instance [1]gdclass.AnimationNodeBlendTree
+type Expanded [1]gdclass.AnimationNodeBlendTree
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -61,63 +62,70 @@ type Any interface {
 Adds an [AnimationNode] at the given [param position]. The [param name] is used to identify the created sub animation node later.
 */
 func (self Instance) AddNode(name string, node [1]gdclass.AnimationNode) { //gd:AnimationNodeBlendTree.add_node
-	class(self).AddNode(String.Name(String.New(name)), node, Vector2.XY(gd.Vector2{0, 0}))
+	Advanced(self).AddNode(String.Name(String.New(name)), node, Vector2.XY(gd.Vector2{0, 0}))
+}
+
+/*
+Adds an [AnimationNode] at the given [param position]. The [param name] is used to identify the created sub animation node later.
+*/
+func (self Expanded) AddNode(name string, node [1]gdclass.AnimationNode, position Vector2.XY) { //gd:AnimationNodeBlendTree.add_node
+	Advanced(self).AddNode(String.Name(String.New(name)), node, Vector2.XY(position))
 }
 
 /*
 Returns the sub animation node with the specified [param name].
 */
 func (self Instance) GetNode(name string) [1]gdclass.AnimationNode { //gd:AnimationNodeBlendTree.get_node
-	return [1]gdclass.AnimationNode(class(self).GetNode(String.Name(String.New(name))))
+	return [1]gdclass.AnimationNode(Advanced(self).GetNode(String.Name(String.New(name))))
 }
 
 /*
 Removes a sub animation node.
 */
 func (self Instance) RemoveNode(name string) { //gd:AnimationNodeBlendTree.remove_node
-	class(self).RemoveNode(String.Name(String.New(name)))
+	Advanced(self).RemoveNode(String.Name(String.New(name)))
 }
 
 /*
 Changes the name of a sub animation node.
 */
 func (self Instance) RenameNode(name string, new_name string) { //gd:AnimationNodeBlendTree.rename_node
-	class(self).RenameNode(String.Name(String.New(name)), String.Name(String.New(new_name)))
+	Advanced(self).RenameNode(String.Name(String.New(name)), String.Name(String.New(new_name)))
 }
 
 /*
 Returns [code]true[/code] if a sub animation node with specified [param name] exists.
 */
 func (self Instance) HasNode(name string) bool { //gd:AnimationNodeBlendTree.has_node
-	return bool(class(self).HasNode(String.Name(String.New(name))))
+	return bool(Advanced(self).HasNode(String.Name(String.New(name))))
 }
 
 /*
 Connects the output of an [AnimationNode] as input for another [AnimationNode], at the input port specified by [param input_index].
 */
 func (self Instance) ConnectNode(input_node string, input_index int, output_node string) { //gd:AnimationNodeBlendTree.connect_node
-	class(self).ConnectNode(String.Name(String.New(input_node)), int64(input_index), String.Name(String.New(output_node)))
+	Advanced(self).ConnectNode(String.Name(String.New(input_node)), int64(input_index), String.Name(String.New(output_node)))
 }
 
 /*
 Disconnects the animation node connected to the specified input.
 */
 func (self Instance) DisconnectNode(input_node string, input_index int) { //gd:AnimationNodeBlendTree.disconnect_node
-	class(self).DisconnectNode(String.Name(String.New(input_node)), int64(input_index))
+	Advanced(self).DisconnectNode(String.Name(String.New(input_node)), int64(input_index))
 }
 
 /*
 Modifies the position of a sub animation node.
 */
 func (self Instance) SetNodePosition(name string, position Vector2.XY) { //gd:AnimationNodeBlendTree.set_node_position
-	class(self).SetNodePosition(String.Name(String.New(name)), Vector2.XY(position))
+	Advanced(self).SetNodePosition(String.Name(String.New(name)), Vector2.XY(position))
 }
 
 /*
 Returns the position of the sub animation node with the specified [param name].
 */
 func (self Instance) GetNodePosition(name string) Vector2.XY { //gd:AnimationNodeBlendTree.get_node_position
-	return Vector2.XY(class(self).GetNodePosition(String.Name(String.New(name))))
+	return Vector2.XY(Advanced(self).GetNodePosition(String.Name(String.New(name))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -306,7 +306,7 @@ func wrap() error {
 		libraryPath = filepath.Join(graphics, ".godot", "public", "library.wasm")
 		runGodotArgs = []string{"--headless", "--export-debug", "Web"}
 	case "android":
-		libraryPath = "lib"+libraryPath+".so"
+		libraryPath = "lib" + libraryPath + ".so"
 	default:
 		libraryPath += ".so"
 	}

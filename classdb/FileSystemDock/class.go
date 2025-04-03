@@ -63,21 +63,21 @@ type Any interface {
 Sets the given [param path] as currently selected, ensuring that the selected file/directory is visible.
 */
 func (self Instance) NavigateToPath(path string) { //gd:FileSystemDock.navigate_to_path
-	class(self).NavigateToPath(String.New(path))
+	Advanced(self).NavigateToPath(String.New(path))
 }
 
 /*
 Registers a new [EditorResourceTooltipPlugin].
 */
 func (self Instance) AddResourceTooltipPlugin(plugin [1]gdclass.EditorResourceTooltipPlugin) { //gd:FileSystemDock.add_resource_tooltip_plugin
-	class(self).AddResourceTooltipPlugin(plugin)
+	Advanced(self).AddResourceTooltipPlugin(plugin)
 }
 
 /*
 Removes an [EditorResourceTooltipPlugin]. Fails if the plugin wasn't previously added.
 */
 func (self Instance) RemoveResourceTooltipPlugin(plugin [1]gdclass.EditorResourceTooltipPlugin) { //gd:FileSystemDock.remove_resource_tooltip_plugin
-	class(self).RemoveResourceTooltipPlugin(plugin)
+	Advanced(self).RemoveResourceTooltipPlugin(plugin)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

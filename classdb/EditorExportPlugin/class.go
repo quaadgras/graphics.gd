@@ -694,14 +694,14 @@ Adds a shared object or a directory containing only shared objects with the give
 In case of a directory code-sign will error if you place non code object in directory.
 */
 func (self Instance) AddSharedObject(path string, tags []string, target string) { //gd:EditorExportPlugin.add_shared_object
-	class(self).AddSharedObject(String.New(path), Packed.MakeStrings(tags...), String.New(target))
+	Advanced(self).AddSharedObject(String.New(path), Packed.MakeStrings(tags...), String.New(target))
 }
 
 /*
 Adds a static lib from the given [param path] to the iOS project.
 */
 func (self Instance) AddIosProjectStaticLib(path string) { //gd:EditorExportPlugin.add_ios_project_static_lib
-	class(self).AddIosProjectStaticLib(String.New(path))
+	Advanced(self).AddIosProjectStaticLib(String.New(path))
 }
 
 /*
@@ -710,14 +710,14 @@ When called inside [method _export_file] and [param remap] is [code]true[/code],
 [param file] will not be imported, so consider using [method _customize_resource] to remap imported resources.
 */
 func (self Instance) AddFile(path string, file []byte, remap bool) { //gd:EditorExportPlugin.add_file
-	class(self).AddFile(String.New(path), Packed.Bytes(Packed.New(file...)), remap)
+	Advanced(self).AddFile(String.New(path), Packed.Bytes(Packed.New(file...)), remap)
 }
 
 /*
 Adds a static library (*.a) or dynamic library (*.dylib, *.framework) to Linking Phase in iOS's Xcode project.
 */
 func (self Instance) AddIosFramework(path string) { //gd:EditorExportPlugin.add_ios_framework
-	class(self).AddIosFramework(String.New(path))
+	Advanced(self).AddIosFramework(String.New(path))
 }
 
 /*
@@ -726,35 +726,35 @@ Adds a dynamic library (*.dylib, *.framework) to Linking Phase in iOS's Xcode pr
 [b]Note:[/b] This method should not be used for System libraries as they are already present on the device.
 */
 func (self Instance) AddIosEmbeddedFramework(path string) { //gd:EditorExportPlugin.add_ios_embedded_framework
-	class(self).AddIosEmbeddedFramework(String.New(path))
+	Advanced(self).AddIosEmbeddedFramework(String.New(path))
 }
 
 /*
 Adds content for iOS Property List files.
 */
 func (self Instance) AddIosPlistContent(plist_content string) { //gd:EditorExportPlugin.add_ios_plist_content
-	class(self).AddIosPlistContent(String.New(plist_content))
+	Advanced(self).AddIosPlistContent(String.New(plist_content))
 }
 
 /*
 Adds linker flags for the iOS export.
 */
 func (self Instance) AddIosLinkerFlags(flags string) { //gd:EditorExportPlugin.add_ios_linker_flags
-	class(self).AddIosLinkerFlags(String.New(flags))
+	Advanced(self).AddIosLinkerFlags(String.New(flags))
 }
 
 /*
 Adds an iOS bundle file from the given [param path] to the exported project.
 */
 func (self Instance) AddIosBundleFile(path string) { //gd:EditorExportPlugin.add_ios_bundle_file
-	class(self).AddIosBundleFile(String.New(path))
+	Advanced(self).AddIosBundleFile(String.New(path))
 }
 
 /*
 Adds a C++ code to the iOS export. The final code is created from the code appended by each active export plugin.
 */
 func (self Instance) AddIosCppCode(code string) { //gd:EditorExportPlugin.add_ios_cpp_code
-	class(self).AddIosCppCode(String.New(code))
+	Advanced(self).AddIosCppCode(String.New(code))
 }
 
 /*
@@ -762,35 +762,35 @@ Adds file or directory matching [param path] to [code]PlugIns[/code] directory o
 [b]Note:[/b] This is useful only for macOS exports.
 */
 func (self Instance) AddMacosPluginFile(path string) { //gd:EditorExportPlugin.add_macos_plugin_file
-	class(self).AddMacosPluginFile(String.New(path))
+	Advanced(self).AddMacosPluginFile(String.New(path))
 }
 
 /*
 To be called inside [method _export_file]. Skips the current file, so it's not included in the export.
 */
 func (self Instance) Skip() { //gd:EditorExportPlugin.skip
-	class(self).Skip()
+	Advanced(self).Skip()
 }
 
 /*
 Returns the current value of an export option supplied by [method _get_export_options].
 */
 func (self Instance) GetOption(name string) any { //gd:EditorExportPlugin.get_option
-	return any(class(self).GetOption(String.Name(String.New(name))).Interface())
+	return any(Advanced(self).GetOption(String.Name(String.New(name))).Interface())
 }
 
 /*
 Returns currently used export preset.
 */
 func (self Instance) GetExportPreset() [1]gdclass.EditorExportPreset { //gd:EditorExportPlugin.get_export_preset
-	return [1]gdclass.EditorExportPreset(class(self).GetExportPreset())
+	return [1]gdclass.EditorExportPreset(Advanced(self).GetExportPreset())
 }
 
 /*
 Returns currently used export platform.
 */
 func (self Instance) GetExportPlatform() [1]gdclass.EditorExportPlatform { //gd:EditorExportPlugin.get_export_platform
-	return [1]gdclass.EditorExportPlatform(class(self).GetExportPlatform())
+	return [1]gdclass.EditorExportPlatform(Advanced(self).GetExportPlatform())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

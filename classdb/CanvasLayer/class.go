@@ -62,28 +62,28 @@ type Any interface {
 Shows any [CanvasItem] under this [CanvasLayer]. This is equivalent to setting [member visible] to [code]true[/code].
 */
 func (self Instance) Show() { //gd:CanvasLayer.show
-	class(self).Show()
+	Advanced(self).Show()
 }
 
 /*
 Hides any [CanvasItem] under this [CanvasLayer]. This is equivalent to setting [member visible] to [code]false[/code].
 */
 func (self Instance) Hide() { //gd:CanvasLayer.hide
-	class(self).Hide()
+	Advanced(self).Hide()
 }
 
 /*
 Returns the transform from the [CanvasLayer]s coordinate system to the [Viewport]s coordinate system.
 */
 func (self Instance) GetFinalTransform() Transform2D.OriginXY { //gd:CanvasLayer.get_final_transform
-	return Transform2D.OriginXY(class(self).GetFinalTransform())
+	return Transform2D.OriginXY(Advanced(self).GetFinalTransform())
 }
 
 /*
 Returns the RID of the canvas used by this layer.
 */
 func (self Instance) GetCanvas() RID.Canvas { //gd:CanvasLayer.get_canvas
-	return RID.Canvas(class(self).GetCanvas())
+	return RID.Canvas(Advanced(self).GetCanvas())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

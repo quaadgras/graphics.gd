@@ -59,56 +59,56 @@ type Any interface {
 Sets the [Bone2D] node that is being used as the first bone in the TwoBoneIK modification.
 */
 func (self Instance) SetJointOneBone2dNode(bone2d_node string) { //gd:SkeletonModification2DTwoBoneIK.set_joint_one_bone2d_node
-	class(self).SetJointOneBone2dNode(Path.ToNode(String.New(bone2d_node)))
+	Advanced(self).SetJointOneBone2dNode(Path.ToNode(String.New(bone2d_node)))
 }
 
 /*
 Returns the [Bone2D] node that is being used as the first bone in the TwoBoneIK modification.
 */
 func (self Instance) GetJointOneBone2dNode() string { //gd:SkeletonModification2DTwoBoneIK.get_joint_one_bone2d_node
-	return string(class(self).GetJointOneBone2dNode().String())
+	return string(Advanced(self).GetJointOneBone2dNode().String())
 }
 
 /*
 Sets the index of the [Bone2D] node that is being used as the first bone in the TwoBoneIK modification.
 */
 func (self Instance) SetJointOneBoneIdx(bone_idx int) { //gd:SkeletonModification2DTwoBoneIK.set_joint_one_bone_idx
-	class(self).SetJointOneBoneIdx(int64(bone_idx))
+	Advanced(self).SetJointOneBoneIdx(int64(bone_idx))
 }
 
 /*
 Returns the index of the [Bone2D] node that is being used as the first bone in the TwoBoneIK modification.
 */
 func (self Instance) GetJointOneBoneIdx() int { //gd:SkeletonModification2DTwoBoneIK.get_joint_one_bone_idx
-	return int(int(class(self).GetJointOneBoneIdx()))
+	return int(int(Advanced(self).GetJointOneBoneIdx()))
 }
 
 /*
 Sets the [Bone2D] node that is being used as the second bone in the TwoBoneIK modification.
 */
 func (self Instance) SetJointTwoBone2dNode(bone2d_node string) { //gd:SkeletonModification2DTwoBoneIK.set_joint_two_bone2d_node
-	class(self).SetJointTwoBone2dNode(Path.ToNode(String.New(bone2d_node)))
+	Advanced(self).SetJointTwoBone2dNode(Path.ToNode(String.New(bone2d_node)))
 }
 
 /*
 Returns the [Bone2D] node that is being used as the second bone in the TwoBoneIK modification.
 */
 func (self Instance) GetJointTwoBone2dNode() string { //gd:SkeletonModification2DTwoBoneIK.get_joint_two_bone2d_node
-	return string(class(self).GetJointTwoBone2dNode().String())
+	return string(Advanced(self).GetJointTwoBone2dNode().String())
 }
 
 /*
 Sets the index of the [Bone2D] node that is being used as the second bone in the TwoBoneIK modification.
 */
 func (self Instance) SetJointTwoBoneIdx(bone_idx int) { //gd:SkeletonModification2DTwoBoneIK.set_joint_two_bone_idx
-	class(self).SetJointTwoBoneIdx(int64(bone_idx))
+	Advanced(self).SetJointTwoBoneIdx(int64(bone_idx))
 }
 
 /*
 Returns the index of the [Bone2D] node that is being used as the second bone in the TwoBoneIK modification.
 */
 func (self Instance) GetJointTwoBoneIdx() int { //gd:SkeletonModification2DTwoBoneIK.get_joint_two_bone_idx
-	return int(int(class(self).GetJointTwoBoneIdx()))
+	return int(int(Advanced(self).GetJointTwoBoneIdx()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

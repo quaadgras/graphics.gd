@@ -61,42 +61,42 @@ type Any interface {
 Returns the number of [Bone2D] nodes in the node hierarchy parented by Skeleton2D.
 */
 func (self Instance) GetBoneCount() int { //gd:Skeleton2D.get_bone_count
-	return int(int(class(self).GetBoneCount()))
+	return int(int(Advanced(self).GetBoneCount()))
 }
 
 /*
 Returns a [Bone2D] from the node hierarchy parented by Skeleton2D. The object to return is identified by the parameter [param idx]. Bones are indexed by descending the node hierarchy from top to bottom, adding the children of each branch before moving to the next sibling.
 */
 func (self Instance) GetBone(idx int) [1]gdclass.Bone2D { //gd:Skeleton2D.get_bone
-	return [1]gdclass.Bone2D(class(self).GetBone(int64(idx)))
+	return [1]gdclass.Bone2D(Advanced(self).GetBone(int64(idx)))
 }
 
 /*
 Returns the [RID] of a Skeleton2D instance.
 */
 func (self Instance) GetSkeleton() RID.Skeleton { //gd:Skeleton2D.get_skeleton
-	return RID.Skeleton(class(self).GetSkeleton())
+	return RID.Skeleton(Advanced(self).GetSkeleton())
 }
 
 /*
 Sets the [SkeletonModificationStack2D] attached to this skeleton.
 */
 func (self Instance) SetModificationStack(modification_stack [1]gdclass.SkeletonModificationStack2D) { //gd:Skeleton2D.set_modification_stack
-	class(self).SetModificationStack(modification_stack)
+	Advanced(self).SetModificationStack(modification_stack)
 }
 
 /*
 Returns the [SkeletonModificationStack2D] attached to this skeleton, if one exists.
 */
 func (self Instance) GetModificationStack() [1]gdclass.SkeletonModificationStack2D { //gd:Skeleton2D.get_modification_stack
-	return [1]gdclass.SkeletonModificationStack2D(class(self).GetModificationStack())
+	return [1]gdclass.SkeletonModificationStack2D(Advanced(self).GetModificationStack())
 }
 
 /*
 Executes all the modifications on the [SkeletonModificationStack2D], if the Skeleton2D has one assigned.
 */
 func (self Instance) ExecuteModifications(delta Float.X, execution_mode int) { //gd:Skeleton2D.execute_modifications
-	class(self).ExecuteModifications(float64(delta), int64(execution_mode))
+	Advanced(self).ExecuteModifications(float64(delta), int64(execution_mode))
 }
 
 /*
@@ -105,14 +105,14 @@ Sets the local pose transform, [param override_pose], for the bone at [param bon
 [b]Note:[/b] The pose transform needs to be a local transform relative to the [Bone2D] node at [param bone_idx]!
 */
 func (self Instance) SetBoneLocalPoseOverride(bone_idx int, override_pose Transform2D.OriginXY, strength Float.X, persistent bool) { //gd:Skeleton2D.set_bone_local_pose_override
-	class(self).SetBoneLocalPoseOverride(int64(bone_idx), Transform2D.OriginXY(override_pose), float64(strength), persistent)
+	Advanced(self).SetBoneLocalPoseOverride(int64(bone_idx), Transform2D.OriginXY(override_pose), float64(strength), persistent)
 }
 
 /*
 Returns the local pose override transform for [param bone_idx].
 */
 func (self Instance) GetBoneLocalPoseOverride(bone_idx int) Transform2D.OriginXY { //gd:Skeleton2D.get_bone_local_pose_override
-	return Transform2D.OriginXY(class(self).GetBoneLocalPoseOverride(int64(bone_idx)))
+	return Transform2D.OriginXY(Advanced(self).GetBoneLocalPoseOverride(int64(bone_idx)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

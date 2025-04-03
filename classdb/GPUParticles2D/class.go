@@ -52,6 +52,7 @@ Use the [member process_material] property to add a [ParticleProcessMaterial] to
 2D particles can optionally collide with [LightOccluder2D], but they don't collide with [PhysicsBody2D] nodes.
 */
 type Instance [1]gdclass.GPUParticles2D
+type Expanded [1]gdclass.GPUParticles2D
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -66,7 +67,7 @@ Requests the particles to process for extra process time during a single frame.
 Useful for particle playback, if used in combination with [member use_fixed_seed] or by calling [method restart] with parameter [code]keep_seed[/code] set to [code]true[/code].
 */
 func (self Instance) RequestParticlesProcess(process_time Float.X) { //gd:GPUParticles2D.request_particles_process
-	class(self).RequestParticlesProcess(float64(process_time))
+	Advanced(self).RequestParticlesProcess(float64(process_time))
 }
 
 /*
@@ -74,7 +75,7 @@ Returns a rectangle containing the positions of all existing particles.
 [b]Note:[/b] When using threaded rendering this method synchronizes the rendering thread. Calling it often may have a negative impact on performance.
 */
 func (self Instance) CaptureRect() Rect2.PositionSize { //gd:GPUParticles2D.capture_rect
-	return Rect2.PositionSize(class(self).CaptureRect())
+	return Rect2.PositionSize(Advanced(self).CaptureRect())
 }
 
 /*
@@ -83,7 +84,16 @@ Restarts the particle emission cycle, clearing existing particles. To avoid part
 If [param keep_seed] is [code]true[/code], the current random seed will be preserved. Useful for seeking and playback.
 */
 func (self Instance) Restart() { //gd:GPUParticles2D.restart
-	class(self).Restart(false)
+	Advanced(self).Restart(false)
+}
+
+/*
+Restarts the particle emission cycle, clearing existing particles. To avoid particles vanishing from the viewport, wait for the [signal finished] signal before calling.
+[b]Note:[/b] The [signal finished] signal is only emitted by [member one_shot] emitters.
+If [param keep_seed] is [code]true[/code], the current random seed will be preserved. Useful for seeking and playback.
+*/
+func (self Expanded) Restart(keep_seed bool) { //gd:GPUParticles2D.restart
+	Advanced(self).Restart(keep_seed)
 }
 
 /*
@@ -92,14 +102,14 @@ The default ParticleProcessMaterial will overwrite [param color] and use the con
 [b]Note:[/b] [method emit_particle] is only supported on the Forward+ and Mobile rendering methods, not Compatibility.
 */
 func (self Instance) EmitParticle(xform Transform2D.OriginXY, velocity Vector2.XY, color Color.RGBA, custom Color.RGBA, flags int) { //gd:GPUParticles2D.emit_particle
-	class(self).EmitParticle(Transform2D.OriginXY(xform), Vector2.XY(velocity), Color.RGBA(color), Color.RGBA(custom), int64(flags))
+	Advanced(self).EmitParticle(Transform2D.OriginXY(xform), Vector2.XY(velocity), Color.RGBA(color), Color.RGBA(custom), int64(flags))
 }
 
 /*
 Sets this node's properties to match a given [CPUParticles2D] node.
 */
 func (self Instance) ConvertFromParticles(particles [1]gdclass.Node) { //gd:GPUParticles2D.convert_from_particles
-	class(self).ConvertFromParticles(particles)
+	Advanced(self).ConvertFromParticles(particles)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

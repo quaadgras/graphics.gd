@@ -59,84 +59,84 @@ type Any interface {
 If [code]true[/code], shortcuts are disabled and cannot be used to trigger the button.
 */
 func (self Instance) SetDisableShortcuts(disabled bool) { //gd:MenuBar.set_disable_shortcuts
-	class(self).SetDisableShortcuts(disabled)
+	Advanced(self).SetDisableShortcuts(disabled)
 }
 
 /*
 Returns [code]true[/code], if system global menu is supported and used by this [MenuBar].
 */
 func (self Instance) IsNativeMenu() bool { //gd:MenuBar.is_native_menu
-	return bool(class(self).IsNativeMenu())
+	return bool(Advanced(self).IsNativeMenu())
 }
 
 /*
 Returns number of menu items.
 */
 func (self Instance) GetMenuCount() int { //gd:MenuBar.get_menu_count
-	return int(int(class(self).GetMenuCount()))
+	return int(int(Advanced(self).GetMenuCount()))
 }
 
 /*
 Sets menu item title.
 */
 func (self Instance) SetMenuTitle(menu int, title string) { //gd:MenuBar.set_menu_title
-	class(self).SetMenuTitle(int64(menu), String.New(title))
+	Advanced(self).SetMenuTitle(int64(menu), String.New(title))
 }
 
 /*
 Returns menu item title.
 */
 func (self Instance) GetMenuTitle(menu int) string { //gd:MenuBar.get_menu_title
-	return string(class(self).GetMenuTitle(int64(menu)).String())
+	return string(Advanced(self).GetMenuTitle(int64(menu)).String())
 }
 
 /*
 Sets menu item tooltip.
 */
 func (self Instance) SetMenuTooltip(menu int, tooltip string) { //gd:MenuBar.set_menu_tooltip
-	class(self).SetMenuTooltip(int64(menu), String.New(tooltip))
+	Advanced(self).SetMenuTooltip(int64(menu), String.New(tooltip))
 }
 
 /*
 Returns menu item tooltip.
 */
 func (self Instance) GetMenuTooltip(menu int) string { //gd:MenuBar.get_menu_tooltip
-	return string(class(self).GetMenuTooltip(int64(menu)).String())
+	return string(Advanced(self).GetMenuTooltip(int64(menu)).String())
 }
 
 /*
 If [code]true[/code], menu item is disabled.
 */
 func (self Instance) SetMenuDisabled(menu int, disabled bool) { //gd:MenuBar.set_menu_disabled
-	class(self).SetMenuDisabled(int64(menu), disabled)
+	Advanced(self).SetMenuDisabled(int64(menu), disabled)
 }
 
 /*
 Returns [code]true[/code], if menu item is disabled.
 */
 func (self Instance) IsMenuDisabled(menu int) bool { //gd:MenuBar.is_menu_disabled
-	return bool(class(self).IsMenuDisabled(int64(menu)))
+	return bool(Advanced(self).IsMenuDisabled(int64(menu)))
 }
 
 /*
 If [code]true[/code], menu item is hidden.
 */
 func (self Instance) SetMenuHidden(menu int, hidden bool) { //gd:MenuBar.set_menu_hidden
-	class(self).SetMenuHidden(int64(menu), hidden)
+	Advanced(self).SetMenuHidden(int64(menu), hidden)
 }
 
 /*
 Returns [code]true[/code], if menu item is hidden.
 */
 func (self Instance) IsMenuHidden(menu int) bool { //gd:MenuBar.is_menu_hidden
-	return bool(class(self).IsMenuHidden(int64(menu)))
+	return bool(Advanced(self).IsMenuHidden(int64(menu)))
 }
 
 /*
 Returns [PopupMenu] associated with menu item.
 */
 func (self Instance) GetMenuPopup(menu int) [1]gdclass.PopupMenu { //gd:MenuBar.get_menu_popup
-	return [1]gdclass.PopupMenu(class(self).GetMenuPopup(int64(menu)))
+	return [1]gdclass.PopupMenu(Advanced(self).GetMenuPopup(int64(menu)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -45,6 +45,7 @@ A custom shader program implemented in the Godot shading language, saved with th
 This class is used by a [ShaderMaterial] and allows you to write your own custom behavior for rendering visual items or updating particle information. For a detailed explanation and usage, please see the tutorials linked below.
 */
 type Instance [1]gdclass.Shader
+type Expanded [1]gdclass.Shader
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -58,7 +59,7 @@ type Any interface {
 Returns the shader mode for the shader.
 */
 func (self Instance) GetMode() gdclass.ShaderMode { //gd:Shader.get_mode
-	return gdclass.ShaderMode(class(self).GetMode())
+	return gdclass.ShaderMode(Advanced(self).GetMode())
 }
 
 /*
@@ -67,7 +68,16 @@ Sets the default texture to be used with a texture uniform. The default is used 
 [b]Note:[/b] If the sampler array is used use [param index] to access the specified texture.
 */
 func (self Instance) SetDefaultTextureParameter(name string, texture [1]gdclass.Texture) { //gd:Shader.set_default_texture_parameter
-	class(self).SetDefaultTextureParameter(String.Name(String.New(name)), texture, int64(0))
+	Advanced(self).SetDefaultTextureParameter(String.Name(String.New(name)), texture, int64(0))
+}
+
+/*
+Sets the default texture to be used with a texture uniform. The default is used if a texture is not set in the [ShaderMaterial].
+[b]Note:[/b] [param name] must match the name of the uniform in the code exactly.
+[b]Note:[/b] If the sampler array is used use [param index] to access the specified texture.
+*/
+func (self Expanded) SetDefaultTextureParameter(name string, texture [1]gdclass.Texture, index int) { //gd:Shader.set_default_texture_parameter
+	Advanced(self).SetDefaultTextureParameter(String.Name(String.New(name)), texture, int64(index))
 }
 
 /*
@@ -76,7 +86,16 @@ Returns the texture that is set as default for the specified parameter.
 [b]Note:[/b] If the sampler array is used use [param index] to access the specified texture.
 */
 func (self Instance) GetDefaultTextureParameter(name string) [1]gdclass.Texture { //gd:Shader.get_default_texture_parameter
-	return [1]gdclass.Texture(class(self).GetDefaultTextureParameter(String.Name(String.New(name)), int64(0)))
+	return [1]gdclass.Texture(Advanced(self).GetDefaultTextureParameter(String.Name(String.New(name)), int64(0)))
+}
+
+/*
+Returns the texture that is set as default for the specified parameter.
+[b]Note:[/b] [param name] must match the name of the uniform in the code exactly.
+[b]Note:[/b] If the sampler array is used use [param index] to access the specified texture.
+*/
+func (self Expanded) GetDefaultTextureParameter(name string, index int) [1]gdclass.Texture { //gd:Shader.get_default_texture_parameter
+	return [1]gdclass.Texture(Advanced(self).GetDefaultTextureParameter(String.Name(String.New(name)), int64(index)))
 }
 
 /*
@@ -84,14 +103,22 @@ Returns the list of shader uniforms that can be assigned to a [ShaderMaterial], 
 If argument [param get_groups] is [code]true[/code], parameter grouping hints are also included in the list.
 */
 func (self Instance) GetShaderUniformList() []any { //gd:Shader.get_shader_uniform_list
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetShaderUniformList(false))))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetShaderUniformList(false))))
+}
+
+/*
+Returns the list of shader uniforms that can be assigned to a [ShaderMaterial], for use with [method ShaderMaterial.set_shader_parameter] and [method ShaderMaterial.get_shader_parameter]. The parameters returned are contained in dictionaries in a similar format to the ones returned by [method Object.get_property_list].
+If argument [param get_groups] is [code]true[/code], parameter grouping hints are also included in the list.
+*/
+func (self Expanded) GetShaderUniformList(get_groups bool) []any { //gd:Shader.get_shader_uniform_list
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetShaderUniformList(get_groups))))
 }
 
 /*
 Only available when running in the editor. Opens a popup that visualizes the generated shader code, including all variants and internal shader code. See also [method Material.inspect_native_shader_code].
 */
 func (self Instance) InspectNativeShaderCode() { //gd:Shader.inspect_native_shader_code
-	class(self).InspectNativeShaderCode()
+	Advanced(self).InspectNativeShaderCode()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

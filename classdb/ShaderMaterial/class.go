@@ -62,14 +62,14 @@ Changes the value set for this material of a uniform in the shader.
 [b]Note:[/b] Changes to the shader uniform will be effective on all instances using this [ShaderMaterial]. To prevent this, use per-instance uniforms with [method GeometryInstance3D.set_instance_shader_parameter] or duplicate the [ShaderMaterial] resource using [method Resource.duplicate]. Per-instance uniforms allow for better shader reuse and are therefore faster, so they should be preferred over duplicating the [ShaderMaterial] when possible.
 */
 func (self Instance) SetShaderParameter(param string, value any) { //gd:ShaderMaterial.set_shader_parameter
-	class(self).SetShaderParameter(String.Name(String.New(param)), variant.New(value))
+	Advanced(self).SetShaderParameter(String.Name(String.New(param)), variant.New(value))
 }
 
 /*
 Returns the current value set for this material of a uniform in the shader.
 */
 func (self Instance) GetShaderParameter(param string) any { //gd:ShaderMaterial.get_shader_parameter
-	return any(class(self).GetShaderParameter(String.Name(String.New(param))).Interface())
+	return any(Advanced(self).GetShaderParameter(String.Name(String.New(param))).Interface())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

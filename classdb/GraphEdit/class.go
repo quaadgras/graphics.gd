@@ -55,6 +55,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 %!(EXTRA string=GraphEdit)
 */
 type Instance [1]gdclass.GraphEdit
+type Expanded [1]gdclass.GraphEdit
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -244,35 +245,43 @@ Create a connection between the [param from_port] of the [param from_node] [Grap
 Connections with [param keep_alive] set to [code]false[/code] may be deleted automatically if invalid during a redraw.
 */
 func (self Instance) ConnectNode(from_node string, from_port int, to_node string, to_port int) error { //gd:GraphEdit.connect_node
-	return error(gd.ToError(class(self).ConnectNode(String.Name(String.New(from_node)), int64(from_port), String.Name(String.New(to_node)), int64(to_port), false)))
+	return error(gd.ToError(Advanced(self).ConnectNode(String.Name(String.New(from_node)), int64(from_port), String.Name(String.New(to_node)), int64(to_port), false)))
+}
+
+/*
+Create a connection between the [param from_port] of the [param from_node] [GraphNode] and the [param to_port] of the [param to_node] [GraphNode]. If the connection already exists, no connection is created.
+Connections with [param keep_alive] set to [code]false[/code] may be deleted automatically if invalid during a redraw.
+*/
+func (self Expanded) ConnectNode(from_node string, from_port int, to_node string, to_port int, keep_alive bool) error { //gd:GraphEdit.connect_node
+	return error(gd.ToError(Advanced(self).ConnectNode(String.Name(String.New(from_node)), int64(from_port), String.Name(String.New(to_node)), int64(to_port), keep_alive)))
 }
 
 /*
 Returns [code]true[/code] if the [param from_port] of the [param from_node] [GraphNode] is connected to the [param to_port] of the [param to_node] [GraphNode].
 */
 func (self Instance) IsNodeConnected(from_node string, from_port int, to_node string, to_port int) bool { //gd:GraphEdit.is_node_connected
-	return bool(class(self).IsNodeConnected(String.Name(String.New(from_node)), int64(from_port), String.Name(String.New(to_node)), int64(to_port)))
+	return bool(Advanced(self).IsNodeConnected(String.Name(String.New(from_node)), int64(from_port), String.Name(String.New(to_node)), int64(to_port)))
 }
 
 /*
 Removes the connection between the [param from_port] of the [param from_node] [GraphNode] and the [param to_port] of the [param to_node] [GraphNode]. If the connection does not exist, no connection is removed.
 */
 func (self Instance) DisconnectNode(from_node string, from_port int, to_node string, to_port int) { //gd:GraphEdit.disconnect_node
-	class(self).DisconnectNode(String.Name(String.New(from_node)), int64(from_port), String.Name(String.New(to_node)), int64(to_port))
+	Advanced(self).DisconnectNode(String.Name(String.New(from_node)), int64(from_port), String.Name(String.New(to_node)), int64(to_port))
 }
 
 /*
 Sets the coloration of the connection between [param from_node]'s [param from_port] and [param to_node]'s [param to_port] with the color provided in the [theme_item activity] theme property. The color is linearly interpolated between the connection color and the activity color using [param amount] as weight.
 */
 func (self Instance) SetConnectionActivity(from_node string, from_port int, to_node string, to_port int, amount Float.X) { //gd:GraphEdit.set_connection_activity
-	class(self).SetConnectionActivity(String.Name(String.New(from_node)), int64(from_port), String.Name(String.New(to_node)), int64(to_port), float64(amount))
+	Advanced(self).SetConnectionActivity(String.Name(String.New(from_node)), int64(from_port), String.Name(String.New(to_node)), int64(to_port), float64(amount))
 }
 
 /*
 Returns the number of connections from [param from_port] of [param from_node].
 */
 func (self Instance) GetConnectionCount(from_node string, from_port int) int { //gd:GraphEdit.get_connection_count
-	return int(int(class(self).GetConnectionCount(String.Name(String.New(from_node)), int64(from_port))))
+	return int(int(Advanced(self).GetConnectionCount(String.Name(String.New(from_node)), int64(from_port))))
 }
 
 /*
@@ -297,7 +306,32 @@ var connection = get_closest_connection_at_point(mouse_event.get_position())
 [/codeblocks]
 */
 func (self Instance) GetClosestConnectionAtPoint(point Vector2.XY) Connection { //gd:GraphEdit.get_closest_connection_at_point
-	return Connection(gd.DictionaryAs[Connection](class(self).GetClosestConnectionAtPoint(Vector2.XY(point), float64(4.0))))
+	return Connection(gd.DictionaryAs[Connection](Advanced(self).GetClosestConnectionAtPoint(Vector2.XY(point), float64(4.0))))
+}
+
+/*
+Returns the closest connection to the given point in screen space. If no connection is found within [param max_distance] pixels, an empty [Dictionary] is returned.
+A connection is represented as a [Dictionary] in the form of:
+[codeblock]
+
+	{
+	    from_node: StringName,
+	    from_port: int,
+	    to_node: StringName,
+	    to_port: int,
+	    keep_alive: bool
+	}
+
+[/codeblock]
+For example, getting a connection at a given mouse position can be achieved like this:
+[codeblocks]
+[gdscript]
+var connection = get_closest_connection_at_point(mouse_event.get_position())
+[/gdscript]
+[/codeblocks]
+*/
+func (self Expanded) GetClosestConnectionAtPoint(point Vector2.XY, max_distance Float.X) Connection { //gd:GraphEdit.get_closest_connection_at_point
+	return Connection(gd.DictionaryAs[Connection](Advanced(self).GetClosestConnectionAtPoint(Vector2.XY(point), float64(max_distance))))
 }
 
 /*
@@ -316,14 +350,14 @@ A connection is represented as a [Dictionary] in the form of:
 [/codeblock]
 */
 func (self Instance) GetConnectionsIntersectingWithRect(rect Rect2.PositionSize) []Connection { //gd:GraphEdit.get_connections_intersecting_with_rect
-	return []Connection(gd.ArrayAs[[]Connection](gd.InternalArray(class(self).GetConnectionsIntersectingWithRect(Rect2.PositionSize(rect)))))
+	return []Connection(gd.ArrayAs[[]Connection](gd.InternalArray(Advanced(self).GetConnectionsIntersectingWithRect(Rect2.PositionSize(rect)))))
 }
 
 /*
 Removes all connections between nodes.
 */
 func (self Instance) ClearConnections() { //gd:GraphEdit.clear_connections
-	class(self).ClearConnections()
+	Advanced(self).ClearConnections()
 }
 
 /*
@@ -332,35 +366,35 @@ This is best used together with [signal connection_drag_started] and [signal con
 [b]Note:[/b] This method suppresses any other connection request signals apart from [signal connection_drag_ended].
 */
 func (self Instance) ForceConnectionDragEnd() { //gd:GraphEdit.force_connection_drag_end
-	class(self).ForceConnectionDragEnd()
+	Advanced(self).ForceConnectionDragEnd()
 }
 
 /*
 Allows to disconnect nodes when dragging from the right port of the [GraphNode]'s slot if it has the specified type. See also [method remove_valid_right_disconnect_type].
 */
 func (self Instance) AddValidRightDisconnectType(atype int) { //gd:GraphEdit.add_valid_right_disconnect_type
-	class(self).AddValidRightDisconnectType(int64(atype))
+	Advanced(self).AddValidRightDisconnectType(int64(atype))
 }
 
 /*
 Disallows to disconnect nodes when dragging from the right port of the [GraphNode]'s slot if it has the specified type. Use this to disable disconnection previously allowed with [method add_valid_right_disconnect_type].
 */
 func (self Instance) RemoveValidRightDisconnectType(atype int) { //gd:GraphEdit.remove_valid_right_disconnect_type
-	class(self).RemoveValidRightDisconnectType(int64(atype))
+	Advanced(self).RemoveValidRightDisconnectType(int64(atype))
 }
 
 /*
 Allows to disconnect nodes when dragging from the left port of the [GraphNode]'s slot if it has the specified type. See also [method remove_valid_left_disconnect_type].
 */
 func (self Instance) AddValidLeftDisconnectType(atype int) { //gd:GraphEdit.add_valid_left_disconnect_type
-	class(self).AddValidLeftDisconnectType(int64(atype))
+	Advanced(self).AddValidLeftDisconnectType(int64(atype))
 }
 
 /*
 Disallows to disconnect nodes when dragging from the left port of the [GraphNode]'s slot if it has the specified type. Use this to disable disconnection previously allowed with [method add_valid_left_disconnect_type].
 */
 func (self Instance) RemoveValidLeftDisconnectType(atype int) { //gd:GraphEdit.remove_valid_left_disconnect_type
-	class(self).RemoveValidLeftDisconnectType(int64(atype))
+	Advanced(self).RemoveValidLeftDisconnectType(int64(atype))
 }
 
 /*
@@ -368,7 +402,7 @@ Allows the connection between two different port types. The port type is defined
 See also [method is_valid_connection_type] and [method remove_valid_connection_type].
 */
 func (self Instance) AddValidConnectionType(from_type int, to_type int) { //gd:GraphEdit.add_valid_connection_type
-	class(self).AddValidConnectionType(int64(from_type), int64(to_type))
+	Advanced(self).AddValidConnectionType(int64(from_type), int64(to_type))
 }
 
 /*
@@ -376,7 +410,7 @@ Disallows the connection between two different port types previously allowed by 
 See also [method is_valid_connection_type].
 */
 func (self Instance) RemoveValidConnectionType(from_type int, to_type int) { //gd:GraphEdit.remove_valid_connection_type
-	class(self).RemoveValidConnectionType(int64(from_type), int64(to_type))
+	Advanced(self).RemoveValidConnectionType(int64(from_type), int64(to_type))
 }
 
 /*
@@ -384,42 +418,42 @@ Returns whether it's possible to make a connection between two different port ty
 See also [method add_valid_connection_type] and [method remove_valid_connection_type].
 */
 func (self Instance) IsValidConnectionType(from_type int, to_type int) bool { //gd:GraphEdit.is_valid_connection_type
-	return bool(class(self).IsValidConnectionType(int64(from_type), int64(to_type)))
+	return bool(Advanced(self).IsValidConnectionType(int64(from_type), int64(to_type)))
 }
 
 /*
 Returns the points which would make up a connection between [param from_node] and [param to_node].
 */
 func (self Instance) GetConnectionLine(from_node Vector2.XY, to_node Vector2.XY) []Vector2.XY { //gd:GraphEdit.get_connection_line
-	return []Vector2.XY(slices.Collect(class(self).GetConnectionLine(Vector2.XY(from_node), Vector2.XY(to_node)).Values()))
+	return []Vector2.XY(slices.Collect(Advanced(self).GetConnectionLine(Vector2.XY(from_node), Vector2.XY(to_node)).Values()))
 }
 
 /*
 Attaches the [param element] [GraphElement] to the [param frame] [GraphFrame].
 */
 func (self Instance) AttachGraphElementToFrame(element string, frame_ string) { //gd:GraphEdit.attach_graph_element_to_frame
-	class(self).AttachGraphElementToFrame(String.Name(String.New(element)), String.Name(String.New(frame_)))
+	Advanced(self).AttachGraphElementToFrame(String.Name(String.New(element)), String.Name(String.New(frame_)))
 }
 
 /*
 Detaches the [param element] [GraphElement] from the [GraphFrame] it is currently attached to.
 */
 func (self Instance) DetachGraphElementFromFrame(element string) { //gd:GraphEdit.detach_graph_element_from_frame
-	class(self).DetachGraphElementFromFrame(String.Name(String.New(element)))
+	Advanced(self).DetachGraphElementFromFrame(String.Name(String.New(element)))
 }
 
 /*
 Returns the [GraphFrame] that contains the [GraphElement] with the given name.
 */
 func (self Instance) GetElementFrame(element string) [1]gdclass.GraphFrame { //gd:GraphEdit.get_element_frame
-	return [1]gdclass.GraphFrame(class(self).GetElementFrame(String.Name(String.New(element))))
+	return [1]gdclass.GraphFrame(Advanced(self).GetElementFrame(String.Name(String.New(element))))
 }
 
 /*
 Returns an array of node names that are attached to the [GraphFrame] with the given name.
 */
 func (self Instance) GetAttachedNodesOfFrame(frame_ string) []string { //gd:GraphEdit.get_attached_nodes_of_frame
-	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetAttachedNodesOfFrame(String.Name(String.New(frame_))))))
+	return []string(gd.ArrayAs[[]string](gd.InternalArray(Advanced(self).GetAttachedNodesOfFrame(String.Name(String.New(frame_))))))
 }
 
 /*
@@ -427,21 +461,21 @@ Gets the [HBoxContainer] that contains the zooming and grid snap controls in the
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
 func (self Instance) GetMenuHbox() [1]gdclass.HBoxContainer { //gd:GraphEdit.get_menu_hbox
-	return [1]gdclass.HBoxContainer(class(self).GetMenuHbox())
+	return [1]gdclass.HBoxContainer(Advanced(self).GetMenuHbox())
 }
 
 /*
 Rearranges selected nodes in a layout with minimum crossings between connections and uniform horizontal and vertical gap between nodes.
 */
 func (self Instance) ArrangeNodes() { //gd:GraphEdit.arrange_nodes
-	class(self).ArrangeNodes()
+	Advanced(self).ArrangeNodes()
 }
 
 /*
 Sets the specified [param node] as the one selected.
 */
 func (self Instance) SetSelected(node [1]gdclass.Node) { //gd:GraphEdit.set_selected
-	class(self).SetSelected(node)
+	Advanced(self).SetSelected(node)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -109,6 +109,7 @@ Debug.Assert(data.ToUtf8Buffer() == decrypted);
 [/codeblocks]
 */
 type Instance [1]gdclass.Crypto
+type Expanded [1]gdclass.Crypto
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -122,14 +123,14 @@ type Any interface {
 Generates a [PackedByteArray] of cryptographically secure random bytes with given [param size].
 */
 func (self Instance) GenerateRandomBytes(size int) []byte { //gd:Crypto.generate_random_bytes
-	return []byte(class(self).GenerateRandomBytes(int64(size)).Bytes())
+	return []byte(Advanced(self).GenerateRandomBytes(int64(size)).Bytes())
 }
 
 /*
 Generates an RSA [CryptoKey] that can be used for creating self-signed certificates and passed to [method StreamPeerTLS.accept_stream].
 */
 func (self Instance) GenerateRsa(size int) [1]gdclass.CryptoKey { //gd:Crypto.generate_rsa
-	return [1]gdclass.CryptoKey(class(self).GenerateRsa(int64(size)))
+	return [1]gdclass.CryptoKey(Advanced(self).GenerateRsa(int64(size)))
 }
 
 /*
@@ -153,21 +154,45 @@ X509Certificate cert = crypto.GenerateSelfSignedCertificate(key, "CN=mydomain.co
 [/codeblocks]
 */
 func (self Instance) GenerateSelfSignedCertificate(key [1]gdclass.CryptoKey) [1]gdclass.X509Certificate { //gd:Crypto.generate_self_signed_certificate
-	return [1]gdclass.X509Certificate(class(self).GenerateSelfSignedCertificate(key, String.New("CN=myserver,O=myorganisation,C=IT"), String.New("20140101000000"), String.New("20340101000000")))
+	return [1]gdclass.X509Certificate(Advanced(self).GenerateSelfSignedCertificate(key, String.New("CN=myserver,O=myorganisation,C=IT"), String.New("20140101000000"), String.New("20340101000000")))
+}
+
+/*
+Generates a self-signed [X509Certificate] from the given [CryptoKey] and [param issuer_name]. The certificate validity will be defined by [param not_before] and [param not_after] (first valid date and last valid date). The [param issuer_name] must contain at least "CN=" (common name, i.e. the domain name), "O=" (organization, i.e. your company name), "C=" (country, i.e. 2 lettered ISO-3166 code of the country the organization is based in).
+A small example to generate an RSA key and an X509 self-signed certificate.
+[codeblocks]
+[gdscript]
+var crypto = Crypto.new()
+# Generate 4096 bits RSA key.
+var key = crypto.generate_rsa(4096)
+# Generate self-signed certificate using the given key.
+var cert = crypto.generate_self_signed_certificate(key, "CN=example.com,O=A Game Company,C=IT")
+[/gdscript]
+[csharp]
+var crypto = new Crypto();
+// Generate 4096 bits RSA key.
+CryptoKey key = crypto.GenerateRsa(4096);
+// Generate self-signed certificate using the given key.
+X509Certificate cert = crypto.GenerateSelfSignedCertificate(key, "CN=mydomain.com,O=My Game Company,C=IT");
+[/csharp]
+[/codeblocks]
+*/
+func (self Expanded) GenerateSelfSignedCertificate(key [1]gdclass.CryptoKey, issuer_name string, not_before string, not_after string) [1]gdclass.X509Certificate { //gd:Crypto.generate_self_signed_certificate
+	return [1]gdclass.X509Certificate(Advanced(self).GenerateSelfSignedCertificate(key, String.New(issuer_name), String.New(not_before), String.New(not_after)))
 }
 
 /*
 Sign a given [param hash] of type [param hash_type] with the provided private [param key].
 */
 func (self Instance) Sign(hash_type gdclass.HashingContextHashType, hash []byte, key [1]gdclass.CryptoKey) []byte { //gd:Crypto.sign
-	return []byte(class(self).Sign(hash_type, Packed.Bytes(Packed.New(hash...)), key).Bytes())
+	return []byte(Advanced(self).Sign(hash_type, Packed.Bytes(Packed.New(hash...)), key).Bytes())
 }
 
 /*
 Verify that a given [param signature] for [param hash] of type [param hash_type] against the provided public [param key].
 */
 func (self Instance) Verify(hash_type gdclass.HashingContextHashType, hash []byte, signature []byte, key [1]gdclass.CryptoKey) bool { //gd:Crypto.verify
-	return bool(class(self).Verify(hash_type, Packed.Bytes(Packed.New(hash...)), Packed.Bytes(Packed.New(signature...)), key))
+	return bool(Advanced(self).Verify(hash_type, Packed.Bytes(Packed.New(hash...)), Packed.Bytes(Packed.New(signature...)), key))
 }
 
 /*
@@ -175,7 +200,7 @@ Encrypt the given [param plaintext] with the provided public [param key].
 [b]Note:[/b] The maximum size of accepted plaintext is limited by the key size.
 */
 func (self Instance) Encrypt(key [1]gdclass.CryptoKey, plaintext []byte) []byte { //gd:Crypto.encrypt
-	return []byte(class(self).Encrypt(key, Packed.Bytes(Packed.New(plaintext...))).Bytes())
+	return []byte(Advanced(self).Encrypt(key, Packed.Bytes(Packed.New(plaintext...))).Bytes())
 }
 
 /*
@@ -183,7 +208,7 @@ Decrypt the given [param ciphertext] with the provided private [param key].
 [b]Note:[/b] The maximum size of accepted ciphertext is limited by the key size.
 */
 func (self Instance) Decrypt(key [1]gdclass.CryptoKey, ciphertext []byte) []byte { //gd:Crypto.decrypt
-	return []byte(class(self).Decrypt(key, Packed.Bytes(Packed.New(ciphertext...))).Bytes())
+	return []byte(Advanced(self).Decrypt(key, Packed.Bytes(Packed.New(ciphertext...))).Bytes())
 }
 
 /*
@@ -191,7 +216,7 @@ Generates an [url=https://en.wikipedia.org/wiki/HMAC]HMAC[/url] digest of [param
 Currently, only [constant HashingContext.HASH_SHA256] and [constant HashingContext.HASH_SHA1] are supported.
 */
 func (self Instance) HmacDigest(hash_type gdclass.HashingContextHashType, key []byte, msg []byte) []byte { //gd:Crypto.hmac_digest
-	return []byte(class(self).HmacDigest(hash_type, Packed.Bytes(Packed.New(key...)), Packed.Bytes(Packed.New(msg...))).Bytes())
+	return []byte(Advanced(self).HmacDigest(hash_type, Packed.Bytes(Packed.New(key...)), Packed.Bytes(Packed.New(msg...))).Bytes())
 }
 
 /*
@@ -199,7 +224,7 @@ Compares two [PackedByteArray]s for equality without leaking timing information 
 See [url=https://paragonie.com/blog/2015/11/preventing-timing-attacks-on-string-comparison-with-double-hmac-strategy]this blog post[/url] for more information.
 */
 func (self Instance) ConstantTimeCompare(trusted []byte, received []byte) bool { //gd:Crypto.constant_time_compare
-	return bool(class(self).ConstantTimeCompare(Packed.Bytes(Packed.New(trusted...)), Packed.Bytes(Packed.New(received...))))
+	return bool(Advanced(self).ConstantTimeCompare(Packed.Bytes(Packed.New(trusted...)), Packed.Bytes(Packed.New(received...))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

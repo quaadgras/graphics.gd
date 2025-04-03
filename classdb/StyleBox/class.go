@@ -122,14 +122,14 @@ func (Instance) _test_mask(impl func(ptr unsafe.Pointer, point Vector2.XY, rect 
 Returns the minimum size that this stylebox can be shrunk to.
 */
 func (self Instance) GetMinimumSize() Vector2.XY { //gd:StyleBox.get_minimum_size
-	return Vector2.XY(class(self).GetMinimumSize())
+	return Vector2.XY(Advanced(self).GetMinimumSize())
 }
 
 /*
 Sets the default margin to [param offset] pixels for all sides.
 */
 func (self Instance) SetContentMarginAll(offset Float.X) { //gd:StyleBox.set_content_margin_all
-	class(self).SetContentMarginAll(float64(offset))
+	Advanced(self).SetContentMarginAll(float64(offset))
 }
 
 /*
@@ -137,14 +137,14 @@ Returns the content margin offset for the specified [enum Side].
 Positive values reduce size inwards, unlike [Control]'s margin values.
 */
 func (self Instance) GetMargin(margin Side) Float.X { //gd:StyleBox.get_margin
-	return Float.X(Float.X(class(self).GetMargin(margin)))
+	return Float.X(Float.X(Advanced(self).GetMargin(margin)))
 }
 
 /*
 Returns the "offset" of a stylebox. This helper function returns a value equivalent to [code]Vector2(style.get_margin(MARGIN_LEFT), style.get_margin(MARGIN_TOP))[/code].
 */
 func (self Instance) GetOffset() Vector2.XY { //gd:StyleBox.get_offset
-	return Vector2.XY(class(self).GetOffset())
+	return Vector2.XY(Advanced(self).GetOffset())
 }
 
 /*
@@ -152,21 +152,21 @@ Draws this stylebox using a canvas item identified by the given [RID].
 The [RID] value can either be the result of [method CanvasItem.get_canvas_item] called on an existing [CanvasItem]-derived node, or directly from creating a canvas item in the [RenderingServer] with [method RenderingServer.canvas_item_create].
 */
 func (self Instance) Draw(canvas_item RID.CanvasItem, rect Rect2.PositionSize) { //gd:StyleBox.draw
-	class(self).Draw(RID.Any(canvas_item), Rect2.PositionSize(rect))
+	Advanced(self).Draw(RID.Any(canvas_item), Rect2.PositionSize(rect))
 }
 
 /*
 Returns the [CanvasItem] that handles its [constant CanvasItem.NOTIFICATION_DRAW] or [method CanvasItem._draw] callback at this moment.
 */
 func (self Instance) GetCurrentItemDrawn() [1]gdclass.CanvasItem { //gd:StyleBox.get_current_item_drawn
-	return [1]gdclass.CanvasItem(class(self).GetCurrentItemDrawn())
+	return [1]gdclass.CanvasItem(Advanced(self).GetCurrentItemDrawn())
 }
 
 /*
 Test a position in a rectangle, return whether it passes the mask test.
 */
 func (self Instance) TestMask(point Vector2.XY, rect Rect2.PositionSize) bool { //gd:StyleBox.test_mask
-	return bool(class(self).TestMask(Vector2.XY(point), Rect2.PositionSize(rect)))
+	return bool(Advanced(self).TestMask(Vector2.XY(point), Rect2.PositionSize(rect)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

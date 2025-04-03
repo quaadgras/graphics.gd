@@ -61,7 +61,7 @@ type Any interface {
 Returns [code]true[/code] if this button is currently pressed.
 */
 func (self Instance) IsPressed() bool { //gd:TouchScreenButton.is_pressed
-	return bool(class(self).IsPressed())
+	return bool(Advanced(self).IsPressed())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

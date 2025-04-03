@@ -46,6 +46,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 [TileData] object represents a single tile in a [TileSet]. It is usually edited using the tileset editor, but it can be modified at runtime using [method TileMap._tile_data_runtime_update].
 */
 type Instance [1]gdclass.TileData
+type Expanded [1]gdclass.TileData
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -59,35 +60,35 @@ type Any interface {
 Sets the occluder polygon count in the TileSet occlusion layer with index [param layer_id].
 */
 func (self Instance) SetOccluderPolygonsCount(layer_id int, polygons_count int) { //gd:TileData.set_occluder_polygons_count
-	class(self).SetOccluderPolygonsCount(int64(layer_id), int64(polygons_count))
+	Advanced(self).SetOccluderPolygonsCount(int64(layer_id), int64(polygons_count))
 }
 
 /*
 Returns the number of occluder polygons of the tile in the TileSet occlusion layer with index [param layer_id].
 */
 func (self Instance) GetOccluderPolygonsCount(layer_id int) int { //gd:TileData.get_occluder_polygons_count
-	return int(int(class(self).GetOccluderPolygonsCount(int64(layer_id))))
+	return int(int(Advanced(self).GetOccluderPolygonsCount(int64(layer_id))))
 }
 
 /*
 Adds an occlusion polygon to the tile on the TileSet occlusion layer with index [param layer_id].
 */
 func (self Instance) AddOccluderPolygon(layer_id int) { //gd:TileData.add_occluder_polygon
-	class(self).AddOccluderPolygon(int64(layer_id))
+	Advanced(self).AddOccluderPolygon(int64(layer_id))
 }
 
 /*
 Removes the polygon at index [param polygon_index] for TileSet occlusion layer with index [param layer_id].
 */
 func (self Instance) RemoveOccluderPolygon(layer_id int, polygon_index int) { //gd:TileData.remove_occluder_polygon
-	class(self).RemoveOccluderPolygon(int64(layer_id), int64(polygon_index))
+	Advanced(self).RemoveOccluderPolygon(int64(layer_id), int64(polygon_index))
 }
 
 /*
 Sets the occluder for polygon with index [param polygon_index] in the TileSet occlusion layer with index [param layer_id].
 */
 func (self Instance) SetOccluderPolygon(layer_id int, polygon_index int, polygon [1]gdclass.OccluderPolygon2D) { //gd:TileData.set_occluder_polygon
-	class(self).SetOccluderPolygon(int64(layer_id), int64(polygon_index), polygon)
+	Advanced(self).SetOccluderPolygon(int64(layer_id), int64(polygon_index), polygon)
 }
 
 /*
@@ -95,14 +96,22 @@ Returns the occluder polygon at index [param polygon_index] from the TileSet occ
 The [param flip_h], [param flip_v], and [param transpose] parameters can be [code]true[/code] to transform the returned polygon.
 */
 func (self Instance) GetOccluderPolygon(layer_id int, polygon_index int) [1]gdclass.OccluderPolygon2D { //gd:TileData.get_occluder_polygon
-	return [1]gdclass.OccluderPolygon2D(class(self).GetOccluderPolygon(int64(layer_id), int64(polygon_index), false, false, false))
+	return [1]gdclass.OccluderPolygon2D(Advanced(self).GetOccluderPolygon(int64(layer_id), int64(polygon_index), false, false, false))
+}
+
+/*
+Returns the occluder polygon at index [param polygon_index] from the TileSet occlusion layer with index [param layer_id].
+The [param flip_h], [param flip_v], and [param transpose] parameters can be [code]true[/code] to transform the returned polygon.
+*/
+func (self Expanded) GetOccluderPolygon(layer_id int, polygon_index int, flip_h bool, flip_v bool, transpose bool) [1]gdclass.OccluderPolygon2D { //gd:TileData.get_occluder_polygon
+	return [1]gdclass.OccluderPolygon2D(Advanced(self).GetOccluderPolygon(int64(layer_id), int64(polygon_index), flip_h, flip_v, transpose))
 }
 
 /*
 Sets the occluder for the TileSet occlusion layer with index [param layer_id].
 */
 func (self Instance) SetOccluder(layer_id int, occluder_polygon [1]gdclass.OccluderPolygon2D) { //gd:TileData.set_occluder
-	class(self).SetOccluder(int64(layer_id), occluder_polygon)
+	Advanced(self).SetOccluder(int64(layer_id), occluder_polygon)
 }
 
 /*
@@ -110,133 +119,141 @@ Returns the occluder polygon of the tile for the TileSet occlusion layer with in
 [param flip_h], [param flip_v], and [param transpose] allow transforming the returned polygon.
 */
 func (self Instance) GetOccluder(layer_id int) [1]gdclass.OccluderPolygon2D { //gd:TileData.get_occluder
-	return [1]gdclass.OccluderPolygon2D(class(self).GetOccluder(int64(layer_id), false, false, false))
+	return [1]gdclass.OccluderPolygon2D(Advanced(self).GetOccluder(int64(layer_id), false, false, false))
+}
+
+/*
+Returns the occluder polygon of the tile for the TileSet occlusion layer with index [param layer_id].
+[param flip_h], [param flip_v], and [param transpose] allow transforming the returned polygon.
+*/
+func (self Expanded) GetOccluder(layer_id int, flip_h bool, flip_v bool, transpose bool) [1]gdclass.OccluderPolygon2D { //gd:TileData.get_occluder
+	return [1]gdclass.OccluderPolygon2D(Advanced(self).GetOccluder(int64(layer_id), flip_h, flip_v, transpose))
 }
 
 /*
 Sets the constant linear velocity. This does not move the tile. This linear velocity is applied to objects colliding with this tile. This is useful to create conveyor belts.
 */
 func (self Instance) SetConstantLinearVelocity(layer_id int, velocity Vector2.XY) { //gd:TileData.set_constant_linear_velocity
-	class(self).SetConstantLinearVelocity(int64(layer_id), Vector2.XY(velocity))
+	Advanced(self).SetConstantLinearVelocity(int64(layer_id), Vector2.XY(velocity))
 }
 
 /*
 Returns the constant linear velocity applied to objects colliding with this tile.
 */
 func (self Instance) GetConstantLinearVelocity(layer_id int) Vector2.XY { //gd:TileData.get_constant_linear_velocity
-	return Vector2.XY(class(self).GetConstantLinearVelocity(int64(layer_id)))
+	return Vector2.XY(Advanced(self).GetConstantLinearVelocity(int64(layer_id)))
 }
 
 /*
 Sets the constant angular velocity. This does not rotate the tile. This angular velocity is applied to objects colliding with this tile.
 */
 func (self Instance) SetConstantAngularVelocity(layer_id int, velocity Float.X) { //gd:TileData.set_constant_angular_velocity
-	class(self).SetConstantAngularVelocity(int64(layer_id), float64(velocity))
+	Advanced(self).SetConstantAngularVelocity(int64(layer_id), float64(velocity))
 }
 
 /*
 Returns the constant angular velocity applied to objects colliding with this tile.
 */
 func (self Instance) GetConstantAngularVelocity(layer_id int) Float.X { //gd:TileData.get_constant_angular_velocity
-	return Float.X(Float.X(class(self).GetConstantAngularVelocity(int64(layer_id))))
+	return Float.X(Float.X(Advanced(self).GetConstantAngularVelocity(int64(layer_id))))
 }
 
 /*
 Sets the polygons count for TileSet physics layer with index [param layer_id].
 */
 func (self Instance) SetCollisionPolygonsCount(layer_id int, polygons_count int) { //gd:TileData.set_collision_polygons_count
-	class(self).SetCollisionPolygonsCount(int64(layer_id), int64(polygons_count))
+	Advanced(self).SetCollisionPolygonsCount(int64(layer_id), int64(polygons_count))
 }
 
 /*
 Returns how many polygons the tile has for TileSet physics layer with index [param layer_id].
 */
 func (self Instance) GetCollisionPolygonsCount(layer_id int) int { //gd:TileData.get_collision_polygons_count
-	return int(int(class(self).GetCollisionPolygonsCount(int64(layer_id))))
+	return int(int(Advanced(self).GetCollisionPolygonsCount(int64(layer_id))))
 }
 
 /*
 Adds a collision polygon to the tile on the given TileSet physics layer.
 */
 func (self Instance) AddCollisionPolygon(layer_id int) { //gd:TileData.add_collision_polygon
-	class(self).AddCollisionPolygon(int64(layer_id))
+	Advanced(self).AddCollisionPolygon(int64(layer_id))
 }
 
 /*
 Removes the polygon at index [param polygon_index] for TileSet physics layer with index [param layer_id].
 */
 func (self Instance) RemoveCollisionPolygon(layer_id int, polygon_index int) { //gd:TileData.remove_collision_polygon
-	class(self).RemoveCollisionPolygon(int64(layer_id), int64(polygon_index))
+	Advanced(self).RemoveCollisionPolygon(int64(layer_id), int64(polygon_index))
 }
 
 /*
 Sets the points of the polygon at index [param polygon_index] for TileSet physics layer with index [param layer_id].
 */
 func (self Instance) SetCollisionPolygonPoints(layer_id int, polygon_index int, polygon []Vector2.XY) { //gd:TileData.set_collision_polygon_points
-	class(self).SetCollisionPolygonPoints(int64(layer_id), int64(polygon_index), Packed.New(polygon...))
+	Advanced(self).SetCollisionPolygonPoints(int64(layer_id), int64(polygon_index), Packed.New(polygon...))
 }
 
 /*
 Returns the points of the polygon at index [param polygon_index] for TileSet physics layer with index [param layer_id].
 */
 func (self Instance) GetCollisionPolygonPoints(layer_id int, polygon_index int) []Vector2.XY { //gd:TileData.get_collision_polygon_points
-	return []Vector2.XY(slices.Collect(class(self).GetCollisionPolygonPoints(int64(layer_id), int64(polygon_index)).Values()))
+	return []Vector2.XY(slices.Collect(Advanced(self).GetCollisionPolygonPoints(int64(layer_id), int64(polygon_index)).Values()))
 }
 
 /*
 Enables/disables one-way collisions on the polygon at index [param polygon_index] for TileSet physics layer with index [param layer_id].
 */
 func (self Instance) SetCollisionPolygonOneWay(layer_id int, polygon_index int, one_way bool) { //gd:TileData.set_collision_polygon_one_way
-	class(self).SetCollisionPolygonOneWay(int64(layer_id), int64(polygon_index), one_way)
+	Advanced(self).SetCollisionPolygonOneWay(int64(layer_id), int64(polygon_index), one_way)
 }
 
 /*
 Returns whether one-way collisions are enabled for the polygon at index [param polygon_index] for TileSet physics layer with index [param layer_id].
 */
 func (self Instance) IsCollisionPolygonOneWay(layer_id int, polygon_index int) bool { //gd:TileData.is_collision_polygon_one_way
-	return bool(class(self).IsCollisionPolygonOneWay(int64(layer_id), int64(polygon_index)))
+	return bool(Advanced(self).IsCollisionPolygonOneWay(int64(layer_id), int64(polygon_index)))
 }
 
 /*
 Sets the one-way margin (for one-way platforms) of the polygon at index [param polygon_index] for TileSet physics layer with index [param layer_id].
 */
 func (self Instance) SetCollisionPolygonOneWayMargin(layer_id int, polygon_index int, one_way_margin Float.X) { //gd:TileData.set_collision_polygon_one_way_margin
-	class(self).SetCollisionPolygonOneWayMargin(int64(layer_id), int64(polygon_index), float64(one_way_margin))
+	Advanced(self).SetCollisionPolygonOneWayMargin(int64(layer_id), int64(polygon_index), float64(one_way_margin))
 }
 
 /*
 Returns the one-way margin (for one-way platforms) of the polygon at index [param polygon_index] for TileSet physics layer with index [param layer_id].
 */
 func (self Instance) GetCollisionPolygonOneWayMargin(layer_id int, polygon_index int) Float.X { //gd:TileData.get_collision_polygon_one_way_margin
-	return Float.X(Float.X(class(self).GetCollisionPolygonOneWayMargin(int64(layer_id), int64(polygon_index))))
+	return Float.X(Float.X(Advanced(self).GetCollisionPolygonOneWayMargin(int64(layer_id), int64(polygon_index))))
 }
 
 /*
 Sets the tile's terrain bit for the given [param peering_bit] direction. To check that a direction is valid, use [method is_valid_terrain_peering_bit].
 */
 func (self Instance) SetTerrainPeeringBit(peering_bit gdclass.TileSetCellNeighbor, terrain int) { //gd:TileData.set_terrain_peering_bit
-	class(self).SetTerrainPeeringBit(peering_bit, int64(terrain))
+	Advanced(self).SetTerrainPeeringBit(peering_bit, int64(terrain))
 }
 
 /*
 Returns the tile's terrain bit for the given [param peering_bit] direction. To check that a direction is valid, use [method is_valid_terrain_peering_bit].
 */
 func (self Instance) GetTerrainPeeringBit(peering_bit gdclass.TileSetCellNeighbor) int { //gd:TileData.get_terrain_peering_bit
-	return int(int(class(self).GetTerrainPeeringBit(peering_bit)))
+	return int(int(Advanced(self).GetTerrainPeeringBit(peering_bit)))
 }
 
 /*
 Returns whether the given [param peering_bit] direction is valid for this tile.
 */
 func (self Instance) IsValidTerrainPeeringBit(peering_bit gdclass.TileSetCellNeighbor) bool { //gd:TileData.is_valid_terrain_peering_bit
-	return bool(class(self).IsValidTerrainPeeringBit(peering_bit))
+	return bool(Advanced(self).IsValidTerrainPeeringBit(peering_bit))
 }
 
 /*
 Sets the navigation polygon for the TileSet navigation layer with index [param layer_id].
 */
 func (self Instance) SetNavigationPolygon(layer_id int, navigation_polygon [1]gdclass.NavigationPolygon) { //gd:TileData.set_navigation_polygon
-	class(self).SetNavigationPolygon(int64(layer_id), navigation_polygon)
+	Advanced(self).SetNavigationPolygon(int64(layer_id), navigation_polygon)
 }
 
 /*
@@ -244,42 +261,50 @@ Returns the navigation polygon of the tile for the TileSet navigation layer with
 [param flip_h], [param flip_v], and [param transpose] allow transforming the returned polygon.
 */
 func (self Instance) GetNavigationPolygon(layer_id int) [1]gdclass.NavigationPolygon { //gd:TileData.get_navigation_polygon
-	return [1]gdclass.NavigationPolygon(class(self).GetNavigationPolygon(int64(layer_id), false, false, false))
+	return [1]gdclass.NavigationPolygon(Advanced(self).GetNavigationPolygon(int64(layer_id), false, false, false))
+}
+
+/*
+Returns the navigation polygon of the tile for the TileSet navigation layer with index [param layer_id].
+[param flip_h], [param flip_v], and [param transpose] allow transforming the returned polygon.
+*/
+func (self Expanded) GetNavigationPolygon(layer_id int, flip_h bool, flip_v bool, transpose bool) [1]gdclass.NavigationPolygon { //gd:TileData.get_navigation_polygon
+	return [1]gdclass.NavigationPolygon(Advanced(self).GetNavigationPolygon(int64(layer_id), flip_h, flip_v, transpose))
 }
 
 /*
 Sets the tile's custom data value for the TileSet custom data layer with name [param layer_name].
 */
 func (self Instance) SetCustomData(layer_name string, value any) { //gd:TileData.set_custom_data
-	class(self).SetCustomData(String.New(layer_name), variant.New(value))
+	Advanced(self).SetCustomData(String.New(layer_name), variant.New(value))
 }
 
 /*
 Returns the custom data value for custom data layer named [param layer_name]. To check if a custom data layer exists, use [method has_custom_data].
 */
 func (self Instance) GetCustomData(layer_name string) any { //gd:TileData.get_custom_data
-	return any(class(self).GetCustomData(String.New(layer_name)).Interface())
+	return any(Advanced(self).GetCustomData(String.New(layer_name)).Interface())
 }
 
 /*
 Returns whether there exists a custom data layer named [param layer_name].
 */
 func (self Instance) HasCustomData(layer_name string) bool { //gd:TileData.has_custom_data
-	return bool(class(self).HasCustomData(String.New(layer_name)))
+	return bool(Advanced(self).HasCustomData(String.New(layer_name)))
 }
 
 /*
 Sets the tile's custom data value for the TileSet custom data layer with index [param layer_id].
 */
 func (self Instance) SetCustomDataByLayerId(layer_id int, value any) { //gd:TileData.set_custom_data_by_layer_id
-	class(self).SetCustomDataByLayerId(int64(layer_id), variant.New(value))
+	Advanced(self).SetCustomDataByLayerId(int64(layer_id), variant.New(value))
 }
 
 /*
 Returns the custom data value for custom data layer with index [param layer_id].
 */
 func (self Instance) GetCustomDataByLayerId(layer_id int) any { //gd:TileData.get_custom_data_by_layer_id
-	return any(class(self).GetCustomDataByLayerId(int64(layer_id)).Interface())
+	return any(Advanced(self).GetCustomDataByLayerId(int64(layer_id)).Interface())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

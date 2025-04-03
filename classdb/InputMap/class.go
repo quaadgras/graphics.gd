@@ -56,7 +56,7 @@ Returns [code]true[/code] if the [InputMap] has a registered action with the giv
 */
 func HasAction(action string) bool { //gd:InputMap.has_action
 	once.Do(singleton)
-	return bool(class(self).HasAction(String.Name(String.New(action))))
+	return bool(Advanced().HasAction(String.Name(String.New(action))))
 }
 
 /*
@@ -64,7 +64,7 @@ Returns an array of all actions in the [InputMap].
 */
 func GetActions() []string { //gd:InputMap.get_actions
 	once.Do(singleton)
-	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetActions())))
+	return []string(gd.ArrayAs[[]string](gd.InternalArray(Advanced().GetActions())))
 }
 
 /*
@@ -73,7 +73,16 @@ An [InputEvent] can then be added to this action with [method action_add_event].
 */
 func AddAction(action string) { //gd:InputMap.add_action
 	once.Do(singleton)
-	class(self).AddAction(String.Name(String.New(action)), float64(0.2))
+	Advanced().AddAction(String.Name(String.New(action)), float64(0.2))
+}
+
+/*
+Adds an empty action to the [InputMap] with a configurable [param deadzone].
+An [InputEvent] can then be added to this action with [method action_add_event].
+*/
+func AddActionExpanded(action string, deadzone Float.X) { //gd:InputMap.add_action
+	once.Do(singleton)
+	Advanced().AddAction(String.Name(String.New(action)), float64(deadzone))
 }
 
 /*
@@ -81,7 +90,7 @@ Removes an action from the [InputMap].
 */
 func EraseAction(action string) { //gd:InputMap.erase_action
 	once.Do(singleton)
-	class(self).EraseAction(String.Name(String.New(action)))
+	Advanced().EraseAction(String.Name(String.New(action)))
 }
 
 /*
@@ -89,7 +98,7 @@ Sets a deadzone value for the action.
 */
 func ActionSetDeadzone(action string, deadzone Float.X) { //gd:InputMap.action_set_deadzone
 	once.Do(singleton)
-	class(self).ActionSetDeadzone(String.Name(String.New(action)), float64(deadzone))
+	Advanced().ActionSetDeadzone(String.Name(String.New(action)), float64(deadzone))
 }
 
 /*
@@ -97,7 +106,7 @@ Returns a deadzone value for the action.
 */
 func ActionGetDeadzone(action string) Float.X { //gd:InputMap.action_get_deadzone
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).ActionGetDeadzone(String.Name(String.New(action)))))
+	return Float.X(Float.X(Advanced().ActionGetDeadzone(String.Name(String.New(action)))))
 }
 
 /*
@@ -105,7 +114,7 @@ Adds an [InputEvent] to an action. This [InputEvent] will trigger the action.
 */
 func ActionAddEvent(action string, event [1]gdclass.InputEvent) { //gd:InputMap.action_add_event
 	once.Do(singleton)
-	class(self).ActionAddEvent(String.Name(String.New(action)), event)
+	Advanced().ActionAddEvent(String.Name(String.New(action)), event)
 }
 
 /*
@@ -113,7 +122,7 @@ Returns [code]true[/code] if the action has the given [InputEvent] associated wi
 */
 func ActionHasEvent(action string, event [1]gdclass.InputEvent) bool { //gd:InputMap.action_has_event
 	once.Do(singleton)
-	return bool(class(self).ActionHasEvent(String.Name(String.New(action)), event))
+	return bool(Advanced().ActionHasEvent(String.Name(String.New(action)), event))
 }
 
 /*
@@ -121,7 +130,7 @@ Removes an [InputEvent] from an action.
 */
 func ActionEraseEvent(action string, event [1]gdclass.InputEvent) { //gd:InputMap.action_erase_event
 	once.Do(singleton)
-	class(self).ActionEraseEvent(String.Name(String.New(action)), event)
+	Advanced().ActionEraseEvent(String.Name(String.New(action)), event)
 }
 
 /*
@@ -129,7 +138,7 @@ Removes all events from an action.
 */
 func ActionEraseEvents(action string) { //gd:InputMap.action_erase_events
 	once.Do(singleton)
-	class(self).ActionEraseEvents(String.Name(String.New(action)))
+	Advanced().ActionEraseEvents(String.Name(String.New(action)))
 }
 
 /*
@@ -138,16 +147,25 @@ Returns an array of [InputEvent]s associated with a given action.
 */
 func ActionGetEvents(action string) [][1]gdclass.InputEvent { //gd:InputMap.action_get_events
 	once.Do(singleton)
-	return [][1]gdclass.InputEvent(gd.ArrayAs[[][1]gdclass.InputEvent](gd.InternalArray(class(self).ActionGetEvents(String.Name(String.New(action))))))
+	return [][1]gdclass.InputEvent(gd.ArrayAs[[][1]gdclass.InputEvent](gd.InternalArray(Advanced().ActionGetEvents(String.Name(String.New(action))))))
 }
 
 /*
 Returns [code]true[/code] if the given event is part of an existing action. This method ignores keyboard modifiers if the given [InputEvent] is not pressed (for proper release detection). See [method action_has_event] if you don't want this behavior.
 If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
 */
-func EventIsAction(event [1]gdclass.InputEvent, action string) bool { //gd:InputMap.event_is_action
+func EventIsAction(event [1]gdclass.InputEvent, action string, exact_match bool) bool { //gd:InputMap.event_is_action
 	once.Do(singleton)
-	return bool(class(self).EventIsAction(event, String.Name(String.New(action)), false))
+	return bool(Advanced().EventIsAction(event, String.Name(String.New(action)), exact_match))
+}
+
+/*
+Returns [code]true[/code] if the given event is part of an existing action. This method ignores keyboard modifiers if the given [InputEvent] is not pressed (for proper release detection). See [method action_has_event] if you don't want this behavior.
+If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
+*/
+func EventIsActionExpanded(event [1]gdclass.InputEvent, action string, exact_match bool) bool { //gd:InputMap.event_is_action
+	once.Do(singleton)
+	return bool(Advanced().EventIsAction(event, String.Name(String.New(action)), exact_match))
 }
 
 /*
@@ -155,7 +173,7 @@ Clears all [InputEventAction] in the [InputMap] and load it anew from [ProjectSe
 */
 func LoadFromProjectSettings() { //gd:InputMap.load_from_project_settings
 	once.Do(singleton)
-	class(self).LoadFromProjectSettings()
+	Advanced().LoadFromProjectSettings()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

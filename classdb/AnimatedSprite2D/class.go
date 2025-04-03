@@ -47,6 +47,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 [AnimatedSprite2D] is similar to the [Sprite2D] node, except it carries multiple textures as animation frames. Animations are created using a [SpriteFrames] resource, which allows you to import image files (or a folder containing said files) to provide the animation frames for the sprite. The [SpriteFrames] resource can be configured in the editor via the SpriteFrames bottom panel.
 */
 type Instance [1]gdclass.AnimatedSprite2D
+type Expanded [1]gdclass.AnimatedSprite2D
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -60,7 +61,7 @@ type Any interface {
 Returns [code]true[/code] if an animation is currently playing (even if [member speed_scale] and/or [code]custom_speed[/code] are [code]0[/code]).
 */
 func (self Instance) IsPlaying() bool { //gd:AnimatedSprite2D.is_playing
-	return bool(class(self).IsPlaying())
+	return bool(Advanced(self).IsPlaying())
 }
 
 /*
@@ -68,7 +69,15 @@ Plays the animation with key [param name]. If [param custom_speed] is negative a
 If this method is called with that same animation [param name], or with no [param name] parameter, the assigned animation will resume playing if it was paused.
 */
 func (self Instance) Play() { //gd:AnimatedSprite2D.play
-	class(self).Play(String.Name(String.New("")), float64(1.0), false)
+	Advanced(self).Play(String.Name(String.New("")), float64(1.0), false)
+}
+
+/*
+Plays the animation with key [param name]. If [param custom_speed] is negative and [param from_end] is [code]true[/code], the animation will play backwards (which is equivalent to calling [method play_backwards]).
+If this method is called with that same animation [param name], or with no [param name] parameter, the assigned animation will resume playing if it was paused.
+*/
+func (self Expanded) Play(name string, custom_speed Float.X, from_end bool) { //gd:AnimatedSprite2D.play
+	Advanced(self).Play(String.Name(String.New(name)), float64(custom_speed), from_end)
 }
 
 /*
@@ -76,7 +85,15 @@ Plays the animation with key [param name] in reverse.
 This method is a shorthand for [method play] with [code]custom_speed = -1.0[/code] and [code]from_end = true[/code], so see its description for more information.
 */
 func (self Instance) PlayBackwards() { //gd:AnimatedSprite2D.play_backwards
-	class(self).PlayBackwards(String.Name(String.New("")))
+	Advanced(self).PlayBackwards(String.Name(String.New("")))
+}
+
+/*
+Plays the animation with key [param name] in reverse.
+This method is a shorthand for [method play] with [code]custom_speed = -1.0[/code] and [code]from_end = true[/code], so see its description for more information.
+*/
+func (self Expanded) PlayBackwards(name string) { //gd:AnimatedSprite2D.play_backwards
+	Advanced(self).PlayBackwards(String.Name(String.New(name)))
 }
 
 /*
@@ -84,14 +101,14 @@ Pauses the currently playing animation. The [member frame] and [member frame_pro
 See also [method stop].
 */
 func (self Instance) Pause() { //gd:AnimatedSprite2D.pause
-	class(self).Pause()
+	Advanced(self).Pause()
 }
 
 /*
 Stops the currently playing animation. The animation position is reset to [code]0[/code] and the [code]custom_speed[/code] is reset to [code]1.0[/code]. See also [method pause].
 */
 func (self Instance) Stop() { //gd:AnimatedSprite2D.stop
-	class(self).Stop()
+	Advanced(self).Stop()
 }
 
 /*
@@ -107,7 +124,7 @@ animated_sprite.set_frame_and_progress(current_frame, current_progress)
 [/codeblocks]
 */
 func (self Instance) SetFrameAndProgress(frame_ int, progress Float.X) { //gd:AnimatedSprite2D.set_frame_and_progress
-	class(self).SetFrameAndProgress(int64(frame_), float64(progress))
+	Advanced(self).SetFrameAndProgress(int64(frame_), float64(progress))
 }
 
 /*
@@ -115,7 +132,7 @@ Returns the actual playing speed of current animation or [code]0[/code] if not p
 Returns a negative value if the current animation is playing backwards.
 */
 func (self Instance) GetPlayingSpeed() Float.X { //gd:AnimatedSprite2D.get_playing_speed
-	return Float.X(Float.X(class(self).GetPlayingSpeed()))
+	return Float.X(Float.X(Advanced(self).GetPlayingSpeed()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

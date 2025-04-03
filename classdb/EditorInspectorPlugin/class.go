@@ -53,6 +53,7 @@ To use [EditorInspectorPlugin], register it using the [method EditorPlugin.add_i
 %!(EXTRA string=EditorInspectorPlugin)
 */
 type Instance [1]gdclass.EditorInspectorPlugin
+type Expanded [1]gdclass.EditorInspectorPlugin
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -184,7 +185,7 @@ func (Instance) _parse_end(impl func(ptr unsafe.Pointer, obj Object.Instance)) (
 Adds a custom control, which is not necessarily a property editor.
 */
 func (self Instance) AddCustomControl(control [1]gdclass.Control) { //gd:EditorInspectorPlugin.add_custom_control
-	class(self).AddCustomControl(control)
+	Advanced(self).AddCustomControl(control)
 }
 
 /*
@@ -193,14 +194,23 @@ There can be multiple property editors for a property. If [param add_to_end] is 
 [param label] can be used to choose a custom label for the property editor in the inspector. If left empty, the label is computed from the name of the property instead.
 */
 func (self Instance) AddPropertyEditor(property string, editor [1]gdclass.Control) { //gd:EditorInspectorPlugin.add_property_editor
-	class(self).AddPropertyEditor(String.New(property), editor, false, String.New(""))
+	Advanced(self).AddPropertyEditor(String.New(property), editor, false, String.New(""))
+}
+
+/*
+Adds a property editor for an individual property. The [param editor] control must extend [EditorProperty].
+There can be multiple property editors for a property. If [param add_to_end] is [code]true[/code], this newly added editor will be displayed after all the other editors of the property whose [param add_to_end] is [code]false[/code]. For example, the editor uses this parameter to add an "Edit Region" button for [member Sprite2D.region_rect] below the regular [Rect2] editor.
+[param label] can be used to choose a custom label for the property editor in the inspector. If left empty, the label is computed from the name of the property instead.
+*/
+func (self Expanded) AddPropertyEditor(property string, editor [1]gdclass.Control, add_to_end bool, label string) { //gd:EditorInspectorPlugin.add_property_editor
+	Advanced(self).AddPropertyEditor(String.New(property), editor, add_to_end, String.New(label))
 }
 
 /*
 Adds an editor that allows modifying multiple properties. The [param editor] control must extend [EditorProperty].
 */
 func (self Instance) AddPropertyEditorForMultipleProperties(label string, properties []string, editor [1]gdclass.Control) { //gd:EditorInspectorPlugin.add_property_editor_for_multiple_properties
-	class(self).AddPropertyEditorForMultipleProperties(String.New(label), Packed.MakeStrings(properties...), editor)
+	Advanced(self).AddPropertyEditorForMultipleProperties(String.New(label), Packed.MakeStrings(properties...), editor)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

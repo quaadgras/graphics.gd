@@ -60,70 +60,70 @@ type Any interface {
 Appends arrays of [param vertices] and [param indices] at the end of the existing arrays. Adds the existing index as an offset to the appended indices.
 */
 func (self Instance) AppendArrays(vertices []float32, indices []int32) { //gd:NavigationMeshSourceGeometryData3D.append_arrays
-	class(self).AppendArrays(Packed.New(vertices...), Packed.New(indices...))
+	Advanced(self).AppendArrays(Packed.New(vertices...), Packed.New(indices...))
 }
 
 /*
 Clears the internal data.
 */
 func (self Instance) Clear() { //gd:NavigationMeshSourceGeometryData3D.clear
-	class(self).Clear()
+	Advanced(self).Clear()
 }
 
 /*
 Returns [code]true[/code] when parsed source geometry data exists.
 */
 func (self Instance) HasData() bool { //gd:NavigationMeshSourceGeometryData3D.has_data
-	return bool(class(self).HasData())
+	return bool(Advanced(self).HasData())
 }
 
 /*
 Adds the geometry data of a [Mesh] resource to the navigation mesh baking data. The mesh must have valid triangulated mesh data to be considered. Since [NavigationMesh] resources have no transform, all vertex positions need to be offset by the node's transform using [param xform].
 */
 func (self Instance) AddMesh(mesh [1]gdclass.Mesh, xform Transform3D.BasisOrigin) { //gd:NavigationMeshSourceGeometryData3D.add_mesh
-	class(self).AddMesh(mesh, Transform3D.BasisOrigin(xform))
+	Advanced(self).AddMesh(mesh, Transform3D.BasisOrigin(xform))
 }
 
 /*
 Adds an [Array] the size of [constant Mesh.ARRAY_MAX] and with vertices at index [constant Mesh.ARRAY_VERTEX] and indices at index [constant Mesh.ARRAY_INDEX] to the navigation mesh baking data. The array must have valid triangulated mesh data to be considered. Since [NavigationMesh] resources have no transform, all vertex positions need to be offset by the node's transform using [param xform].
 */
 func (self Instance) AddMeshArray(mesh_array []any, xform Transform3D.BasisOrigin) { //gd:NavigationMeshSourceGeometryData3D.add_mesh_array
-	class(self).AddMeshArray(gd.EngineArrayFromSlice(mesh_array), Transform3D.BasisOrigin(xform))
+	Advanced(self).AddMeshArray(gd.EngineArrayFromSlice(mesh_array), Transform3D.BasisOrigin(xform))
 }
 
 /*
 Adds an array of vertex positions to the geometry data for navigation mesh baking to form triangulated faces. For each face the array must have three vertex positions in clockwise winding order. Since [NavigationMesh] resources have no transform, all vertex positions need to be offset by the node's transform using [param xform].
 */
 func (self Instance) AddFaces(faces []Vector3.XYZ, xform Transform3D.BasisOrigin) { //gd:NavigationMeshSourceGeometryData3D.add_faces
-	class(self).AddFaces(Packed.New(faces...), Transform3D.BasisOrigin(xform))
+	Advanced(self).AddFaces(Packed.New(faces...), Transform3D.BasisOrigin(xform))
 }
 
 /*
 Adds the geometry data of another [NavigationMeshSourceGeometryData3D] to the navigation mesh baking data.
 */
 func (self Instance) Merge(other_geometry [1]gdclass.NavigationMeshSourceGeometryData3D) { //gd:NavigationMeshSourceGeometryData3D.merge
-	class(self).Merge(other_geometry)
+	Advanced(self).Merge(other_geometry)
 }
 
 /*
 Adds a projected obstruction shape to the source geometry. The [param vertices] are considered projected on a xz-axes plane, placed at the global y-axis [param elevation] and extruded by [param height]. If [param carve] is [code]true[/code] the carved shape will not be affected by additional offsets (e.g. agent radius) of the navigation mesh baking process.
 */
 func (self Instance) AddProjectedObstruction(vertices []Vector3.XYZ, elevation Float.X, height Float.X, carve bool) { //gd:NavigationMeshSourceGeometryData3D.add_projected_obstruction
-	class(self).AddProjectedObstruction(Packed.New(vertices...), float64(elevation), float64(height), carve)
+	Advanced(self).AddProjectedObstruction(Packed.New(vertices...), float64(elevation), float64(height), carve)
 }
 
 /*
 Clears all projected obstructions.
 */
 func (self Instance) ClearProjectedObstructions() { //gd:NavigationMeshSourceGeometryData3D.clear_projected_obstructions
-	class(self).ClearProjectedObstructions()
+	Advanced(self).ClearProjectedObstructions()
 }
 
 /*
 Returns an axis-aligned bounding box that covers all the stored geometry data. The bounds are calculated when calling this function with the result cached until further geometry changes are made.
 */
 func (self Instance) GetBounds() AABB.PositionSize { //gd:NavigationMeshSourceGeometryData3D.get_bounds
-	return AABB.PositionSize(class(self).GetBounds())
+	return AABB.PositionSize(Advanced(self).GetBounds())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

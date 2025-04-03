@@ -80,42 +80,42 @@ func (Instance) _get_aabb(impl func(ptr unsafe.Pointer) AABB.PositionSize) (cb g
 Sets the resource that is instantiated by this [VisualInstance3D], which changes how the engine handles the [VisualInstance3D] under the hood. Equivalent to [method RenderingServer.instance_set_base].
 */
 func (self Instance) SetBase(base RID.VisualInstance) { //gd:VisualInstance3D.set_base
-	class(self).SetBase(RID.Any(base))
+	Advanced(self).SetBase(RID.Any(base))
 }
 
 /*
 Returns the RID of the resource associated with this [VisualInstance3D]. For example, if the Node is a [MeshInstance3D], this will return the RID of the associated [Mesh].
 */
 func (self Instance) GetBase() RID.VisualInstance { //gd:VisualInstance3D.get_base
-	return RID.VisualInstance(class(self).GetBase())
+	return RID.VisualInstance(Advanced(self).GetBase())
 }
 
 /*
 Returns the RID of this instance. This RID is the same as the RID returned by [method RenderingServer.instance_create]. This RID is needed if you want to call [RenderingServer] functions directly on this [VisualInstance3D].
 */
 func (self Instance) GetInstance() RID.VisualInstance { //gd:VisualInstance3D.get_instance
-	return RID.VisualInstance(class(self).GetInstance())
+	return RID.VisualInstance(Advanced(self).GetInstance())
 }
 
 /*
 Based on [param value], enables or disables the specified layer in the [member layers], given a [param layer_number] between 1 and 20.
 */
 func (self Instance) SetLayerMaskValue(layer_number int, value bool) { //gd:VisualInstance3D.set_layer_mask_value
-	class(self).SetLayerMaskValue(int64(layer_number), value)
+	Advanced(self).SetLayerMaskValue(int64(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member layers] is enabled, given a [param layer_number] between 1 and 20.
 */
 func (self Instance) GetLayerMaskValue(layer_number int) bool { //gd:VisualInstance3D.get_layer_mask_value
-	return bool(class(self).GetLayerMaskValue(int64(layer_number)))
+	return bool(Advanced(self).GetLayerMaskValue(int64(layer_number)))
 }
 
 /*
 Returns the [AABB] (also known as the bounding box) for this [VisualInstance3D].
 */
 func (self Instance) GetAabb() AABB.PositionSize { //gd:VisualInstance3D.get_aabb
-	return AABB.PositionSize(class(self).GetAabb())
+	return AABB.PositionSize(Advanced(self).GetAabb())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

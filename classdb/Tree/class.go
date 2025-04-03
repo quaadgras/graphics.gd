@@ -79,6 +79,7 @@ To iterate over all the [TreeItem] objects in a [Tree] object, use [method TreeI
 [b]Incremental search:[/b] Like [ItemList] and [PopupMenu], [Tree] supports searching within the list while the control is focused. Press a key that matches the first letter of an item's name to select the first item starting with the given letter. After that point, there are two ways to perform incremental search: 1) Press the same key again before the timeout duration to select the next item starting with the same letter. 2) Press letter keys that match the rest of the word before the timeout duration to match to select the item in question directly. Both of these actions will be reset to the beginning of the list if the timeout duration has passed since the last keystroke was registered. You can adjust the timeout duration by changing [member ProjectSettings.gui/timers/incremental_search_max_interval_msec].
 */
 type Instance [1]gdclass.Tree
+type Expanded [1]gdclass.Tree
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -92,7 +93,7 @@ type Any interface {
 Clears the tree. This removes all items.
 */
 func (self Instance) Clear() { //gd:Tree.clear
-	class(self).Clear()
+	Advanced(self).Clear()
 }
 
 /*
@@ -101,70 +102,79 @@ If [param parent] is [code]null[/code], the root item will be the parent, or the
 The new item will be the [param index]-th child of parent, or it will be the last child if there are not enough siblings.
 */
 func (self Instance) CreateItem() [1]gdclass.TreeItem { //gd:Tree.create_item
-	return [1]gdclass.TreeItem(class(self).CreateItem([1][1]gdclass.TreeItem{}[0], int64(-1)))
+	return [1]gdclass.TreeItem(Advanced(self).CreateItem([1][1]gdclass.TreeItem{}[0], int64(-1)))
+}
+
+/*
+Creates an item in the tree and adds it as a child of [param parent], which can be either a valid [TreeItem] or [code]null[/code].
+If [param parent] is [code]null[/code], the root item will be the parent, or the new item will be the root itself if the tree is empty.
+The new item will be the [param index]-th child of parent, or it will be the last child if there are not enough siblings.
+*/
+func (self Expanded) CreateItem(parent [1]gdclass.TreeItem, index int) [1]gdclass.TreeItem { //gd:Tree.create_item
+	return [1]gdclass.TreeItem(Advanced(self).CreateItem(parent, int64(index)))
 }
 
 /*
 Returns the tree's root item, or [code]null[/code] if the tree is empty.
 */
 func (self Instance) GetRoot() [1]gdclass.TreeItem { //gd:Tree.get_root
-	return [1]gdclass.TreeItem(class(self).GetRoot())
+	return [1]gdclass.TreeItem(Advanced(self).GetRoot())
 }
 
 /*
 Overrides the calculated minimum width of a column. It can be set to [code]0[/code] to restore the default behavior. Columns that have the "Expand" flag will use their "min_width" in a similar fashion to [member Control.size_flags_stretch_ratio].
 */
 func (self Instance) SetColumnCustomMinimumWidth(column int, min_width int) { //gd:Tree.set_column_custom_minimum_width
-	class(self).SetColumnCustomMinimumWidth(int64(column), int64(min_width))
+	Advanced(self).SetColumnCustomMinimumWidth(int64(column), int64(min_width))
 }
 
 /*
 If [code]true[/code], the column will have the "Expand" flag of [Control]. Columns that have the "Expand" flag will use their expand ratio in a similar fashion to [member Control.size_flags_stretch_ratio] (see [method set_column_expand_ratio]).
 */
 func (self Instance) SetColumnExpand(column int, expand bool) { //gd:Tree.set_column_expand
-	class(self).SetColumnExpand(int64(column), expand)
+	Advanced(self).SetColumnExpand(int64(column), expand)
 }
 
 /*
 Sets the relative expand ratio for a column. See [method set_column_expand].
 */
 func (self Instance) SetColumnExpandRatio(column int, ratio int) { //gd:Tree.set_column_expand_ratio
-	class(self).SetColumnExpandRatio(int64(column), int64(ratio))
+	Advanced(self).SetColumnExpandRatio(int64(column), int64(ratio))
 }
 
 /*
 Allows to enable clipping for column's content, making the content size ignored.
 */
 func (self Instance) SetColumnClipContent(column int, enable bool) { //gd:Tree.set_column_clip_content
-	class(self).SetColumnClipContent(int64(column), enable)
+	Advanced(self).SetColumnClipContent(int64(column), enable)
 }
 
 /*
 Returns [code]true[/code] if the column has enabled expanding (see [method set_column_expand]).
 */
 func (self Instance) IsColumnExpanding(column int) bool { //gd:Tree.is_column_expanding
-	return bool(class(self).IsColumnExpanding(int64(column)))
+	return bool(Advanced(self).IsColumnExpanding(int64(column)))
 }
 
 /*
 Returns [code]true[/code] if the column has enabled clipping (see [method set_column_clip_content]).
 */
 func (self Instance) IsColumnClippingContent(column int) bool { //gd:Tree.is_column_clipping_content
-	return bool(class(self).IsColumnClippingContent(int64(column)))
+	return bool(Advanced(self).IsColumnClippingContent(int64(column)))
 }
 
 /*
 Returns the expand ratio assigned to the column.
 */
 func (self Instance) GetColumnExpandRatio(column int) int { //gd:Tree.get_column_expand_ratio
-	return int(int(class(self).GetColumnExpandRatio(int64(column))))
+	return int(int(Advanced(self).GetColumnExpandRatio(int64(column))))
 }
 
 /*
 Returns the column's width in pixels.
 */
 func (self Instance) GetColumnWidth(column int) int { //gd:Tree.get_column_width
-	return int(int(class(self).GetColumnWidth(int64(column))))
+	return int(int(Advanced(self).GetColumnWidth(int64(column))))
 }
 
 /*
@@ -172,7 +182,7 @@ Returns the next selected [TreeItem] after the given one, or [code]null[/code] i
 If [param from] is [code]null[/code], this returns the first selected item.
 */
 func (self Instance) GetNextSelected(from [1]gdclass.TreeItem) [1]gdclass.TreeItem { //gd:Tree.get_next_selected
-	return [1]gdclass.TreeItem(class(self).GetNextSelected(from))
+	return [1]gdclass.TreeItem(Advanced(self).GetNextSelected(from))
 }
 
 /*
@@ -181,14 +191,14 @@ In [constant SELECT_ROW] and [constant SELECT_SINGLE] modes, the focused item is
 To get the currently selected item(s), use [method get_next_selected].
 */
 func (self Instance) GetSelected() [1]gdclass.TreeItem { //gd:Tree.get_selected
-	return [1]gdclass.TreeItem(class(self).GetSelected())
+	return [1]gdclass.TreeItem(Advanced(self).GetSelected())
 }
 
 /*
 Selects the specified [TreeItem] and column.
 */
 func (self Instance) SetSelected(item [1]gdclass.TreeItem, column int) { //gd:Tree.set_selected
-	class(self).SetSelected(item, int64(column))
+	Advanced(self).SetSelected(item, int64(column))
 }
 
 /*
@@ -197,21 +207,21 @@ In [constant SELECT_SINGLE] mode, the focused column is the selected column. In 
 To tell whether a column of an item is selected, use [method TreeItem.is_selected].
 */
 func (self Instance) GetSelectedColumn() int { //gd:Tree.get_selected_column
-	return int(int(class(self).GetSelectedColumn()))
+	return int(int(Advanced(self).GetSelectedColumn()))
 }
 
 /*
 Returns the last pressed button's index.
 */
 func (self Instance) GetPressedButton() int { //gd:Tree.get_pressed_button
-	return int(int(class(self).GetPressedButton()))
+	return int(int(Advanced(self).GetPressedButton()))
 }
 
 /*
 Deselects all tree items (rows and columns). In [constant SELECT_MULTI] mode also removes selection cursor.
 */
 func (self Instance) DeselectAll() { //gd:Tree.deselect_all
-	class(self).DeselectAll()
+	Advanced(self).DeselectAll()
 }
 
 /*
@@ -244,14 +254,14 @@ public void OnTreeItemEdited()
 [/codeblocks]
 */
 func (self Instance) GetEdited() [1]gdclass.TreeItem { //gd:Tree.get_edited
-	return [1]gdclass.TreeItem(class(self).GetEdited())
+	return [1]gdclass.TreeItem(Advanced(self).GetEdited())
 }
 
 /*
 Returns the column for the currently edited item.
 */
 func (self Instance) GetEditedColumn() int { //gd:Tree.get_edited_column
-	return int(int(class(self).GetEditedColumn()))
+	return int(int(Advanced(self).GetEditedColumn()))
 }
 
 /*
@@ -260,35 +270,51 @@ Either the item must be set editable with [method TreeItem.set_editable] or [par
 Returns [code]true[/code] if the item could be edited. Fails if no item is selected.
 */
 func (self Instance) EditSelected() bool { //gd:Tree.edit_selected
-	return bool(class(self).EditSelected(false))
+	return bool(Advanced(self).EditSelected(false))
+}
+
+/*
+Edits the selected tree item as if it was clicked.
+Either the item must be set editable with [method TreeItem.set_editable] or [param force_edit] must be [code]true[/code].
+Returns [code]true[/code] if the item could be edited. Fails if no item is selected.
+*/
+func (self Expanded) EditSelected(force_edit bool) bool { //gd:Tree.edit_selected
+	return bool(Advanced(self).EditSelected(force_edit))
 }
 
 /*
 Returns the rectangle for custom popups. Helper to create custom cell controls that display a popup. See [method TreeItem.set_cell_mode].
 */
 func (self Instance) GetCustomPopupRect() Rect2.PositionSize { //gd:Tree.get_custom_popup_rect
-	return Rect2.PositionSize(class(self).GetCustomPopupRect())
+	return Rect2.PositionSize(Advanced(self).GetCustomPopupRect())
 }
 
 /*
 Returns the rectangle area for the specified [TreeItem]. If [param column] is specified, only get the position and size of that column, otherwise get the rectangle containing all columns. If a button index is specified, the rectangle of that button will be returned.
 */
 func (self Instance) GetItemAreaRect(item [1]gdclass.TreeItem) Rect2.PositionSize { //gd:Tree.get_item_area_rect
-	return Rect2.PositionSize(class(self).GetItemAreaRect(item, int64(-1), int64(-1)))
+	return Rect2.PositionSize(Advanced(self).GetItemAreaRect(item, int64(-1), int64(-1)))
+}
+
+/*
+Returns the rectangle area for the specified [TreeItem]. If [param column] is specified, only get the position and size of that column, otherwise get the rectangle containing all columns. If a button index is specified, the rectangle of that button will be returned.
+*/
+func (self Expanded) GetItemAreaRect(item [1]gdclass.TreeItem, column int, button_index int) Rect2.PositionSize { //gd:Tree.get_item_area_rect
+	return Rect2.PositionSize(Advanced(self).GetItemAreaRect(item, int64(column), int64(button_index)))
 }
 
 /*
 Returns the tree item at the specified position (relative to the tree origin position).
 */
 func (self Instance) GetItemAtPosition(position Vector2.XY) [1]gdclass.TreeItem { //gd:Tree.get_item_at_position
-	return [1]gdclass.TreeItem(class(self).GetItemAtPosition(Vector2.XY(position)))
+	return [1]gdclass.TreeItem(Advanced(self).GetItemAtPosition(Vector2.XY(position)))
 }
 
 /*
 Returns the column index at [param position], or -1 if no item is there.
 */
 func (self Instance) GetColumnAtPosition(position Vector2.XY) int { //gd:Tree.get_column_at_position
-	return int(int(class(self).GetColumnAtPosition(Vector2.XY(position))))
+	return int(int(Advanced(self).GetColumnAtPosition(Vector2.XY(position))))
 }
 
 /*
@@ -297,14 +323,14 @@ Values -1, 0, or 1 will be returned for the "above item", "on item", and "below 
 To get the item which the returned drop section is relative to, use [method get_item_at_position].
 */
 func (self Instance) GetDropSectionAtPosition(position Vector2.XY) int { //gd:Tree.get_drop_section_at_position
-	return int(int(class(self).GetDropSectionAtPosition(Vector2.XY(position))))
+	return int(int(Advanced(self).GetDropSectionAtPosition(Vector2.XY(position))))
 }
 
 /*
 Returns the button ID at [param position], or -1 if no button is there.
 */
 func (self Instance) GetButtonIdAtPosition(position Vector2.XY) int { //gd:Tree.get_button_id_at_position
-	return int(int(class(self).GetButtonIdAtPosition(Vector2.XY(position))))
+	return int(int(Advanced(self).GetButtonIdAtPosition(Vector2.XY(position))))
 }
 
 /*
@@ -313,77 +339,84 @@ This will scroll the tree if necessary. In [constant SELECT_ROW] mode, this will
 [b]Note:[/b] Despite the name of this method, the focus cursor itself is only visible in [constant SELECT_MULTI] mode.
 */
 func (self Instance) EnsureCursorIsVisible() { //gd:Tree.ensure_cursor_is_visible
-	class(self).EnsureCursorIsVisible()
+	Advanced(self).EnsureCursorIsVisible()
 }
 
 /*
 Sets the title of a column.
 */
 func (self Instance) SetColumnTitle(column int, title string) { //gd:Tree.set_column_title
-	class(self).SetColumnTitle(int64(column), String.New(title))
+	Advanced(self).SetColumnTitle(int64(column), String.New(title))
 }
 
 /*
 Returns the column's title.
 */
 func (self Instance) GetColumnTitle(column int) string { //gd:Tree.get_column_title
-	return string(class(self).GetColumnTitle(int64(column)).String())
+	return string(Advanced(self).GetColumnTitle(int64(column)).String())
 }
 
 /*
 Sets the column title alignment. Note that [constant @GlobalScope.HORIZONTAL_ALIGNMENT_FILL] is not supported for column titles.
 */
 func (self Instance) SetColumnTitleAlignment(column int, title_alignment HorizontalAlignment) { //gd:Tree.set_column_title_alignment
-	class(self).SetColumnTitleAlignment(int64(column), title_alignment)
+	Advanced(self).SetColumnTitleAlignment(int64(column), title_alignment)
 }
 
 /*
 Returns the column title alignment.
 */
 func (self Instance) GetColumnTitleAlignment(column int) HorizontalAlignment { //gd:Tree.get_column_title_alignment
-	return HorizontalAlignment(class(self).GetColumnTitleAlignment(int64(column)))
+	return HorizontalAlignment(Advanced(self).GetColumnTitleAlignment(int64(column)))
 }
 
 /*
 Sets column title base writing direction.
 */
 func (self Instance) SetColumnTitleDirection(column int, direction gdclass.ControlTextDirection) { //gd:Tree.set_column_title_direction
-	class(self).SetColumnTitleDirection(int64(column), direction)
+	Advanced(self).SetColumnTitleDirection(int64(column), direction)
 }
 
 /*
 Returns column title base writing direction.
 */
 func (self Instance) GetColumnTitleDirection(column int) gdclass.ControlTextDirection { //gd:Tree.get_column_title_direction
-	return gdclass.ControlTextDirection(class(self).GetColumnTitleDirection(int64(column)))
+	return gdclass.ControlTextDirection(Advanced(self).GetColumnTitleDirection(int64(column)))
 }
 
 /*
 Sets language code of column title used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
 */
 func (self Instance) SetColumnTitleLanguage(column int, language string) { //gd:Tree.set_column_title_language
-	class(self).SetColumnTitleLanguage(int64(column), String.New(language))
+	Advanced(self).SetColumnTitleLanguage(int64(column), String.New(language))
 }
 
 /*
 Returns column title language code.
 */
 func (self Instance) GetColumnTitleLanguage(column int) string { //gd:Tree.get_column_title_language
-	return string(class(self).GetColumnTitleLanguage(int64(column)).String())
+	return string(Advanced(self).GetColumnTitleLanguage(int64(column)).String())
 }
 
 /*
 Returns the current scrolling position.
 */
 func (self Instance) GetScroll() Vector2.XY { //gd:Tree.get_scroll
-	return Vector2.XY(class(self).GetScroll())
+	return Vector2.XY(Advanced(self).GetScroll())
 }
 
 /*
 Causes the [Tree] to jump to the specified [TreeItem].
 */
 func (self Instance) ScrollToItem(item [1]gdclass.TreeItem) { //gd:Tree.scroll_to_item
-	class(self).ScrollToItem(item, false)
+	Advanced(self).ScrollToItem(item, false)
+}
+
+/*
+Causes the [Tree] to jump to the specified [TreeItem].
+*/
+func (self Expanded) ScrollToItem(item [1]gdclass.TreeItem, center_on_item bool) { //gd:Tree.scroll_to_item
+	Advanced(self).ScrollToItem(item, center_on_item)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

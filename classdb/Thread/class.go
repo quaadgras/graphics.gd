@@ -48,6 +48,7 @@ To ensure proper cleanup without crashes or deadlocks, when a [Thread]'s referen
 - [method wait_to_finish] should have been called on it.
 */
 type Instance [1]gdclass.Thread
+type Expanded [1]gdclass.Thread
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -64,21 +65,31 @@ The [param priority] of the [Thread] can be changed by passing a value from the 
 Returns [constant OK] on success, or [constant ERR_CANT_CREATE] on failure.
 */
 func (self Instance) Start(callable func()) error { //gd:Thread.start
-	return error(gd.ToError(class(self).Start(Callable.New(callable), 1)))
+	return error(gd.ToError(Advanced(self).Start(Callable.New(callable), 1)))
+}
+
+/*
+Starts a new [Thread] that calls [param callable].
+If the method takes some arguments, you can pass them using [method Callable.bind].
+The [param priority] of the [Thread] can be changed by passing a value from the [enum Priority] enum.
+Returns [constant OK] on success, or [constant ERR_CANT_CREATE] on failure.
+*/
+func (self Expanded) Start(callable func(), priority gdclass.ThreadPriority) error { //gd:Thread.start
+	return error(gd.ToError(Advanced(self).Start(Callable.New(callable), priority)))
 }
 
 /*
 Returns the current [Thread]'s ID, uniquely identifying it among all threads. If the [Thread] has not started running or if [method wait_to_finish] has been called, this returns an empty string.
 */
 func (self Instance) GetId() string { //gd:Thread.get_id
-	return string(class(self).GetId().String())
+	return string(Advanced(self).GetId().String())
 }
 
 /*
 Returns [code]true[/code] if this [Thread] has been started. Once started, this will return [code]true[/code] until it is joined using [method wait_to_finish]. For checking if a [Thread] is still executing its task, use [method is_alive].
 */
 func (self Instance) IsStarted() bool { //gd:Thread.is_started
-	return bool(class(self).IsStarted())
+	return bool(Advanced(self).IsStarted())
 }
 
 /*
@@ -86,7 +97,7 @@ Returns [code]true[/code] if this [Thread] is currently running the provided fun
 To check if a [Thread] is joinable, use [method is_started].
 */
 func (self Instance) IsAlive() bool { //gd:Thread.is_alive
-	return bool(class(self).IsAlive())
+	return bool(Advanced(self).IsAlive())
 }
 
 /*
@@ -95,7 +106,7 @@ Should either be used when you want to retrieve the value returned from the meth
 To determine if this can be called without blocking the calling thread, check if [method is_alive] is [code]false[/code].
 */
 func (self Instance) WaitToFinish() any { //gd:Thread.wait_to_finish
-	return any(class(self).WaitToFinish().Interface())
+	return any(Advanced(self).WaitToFinish().Interface())
 }
 
 /*
@@ -109,7 +120,7 @@ Because of that, there may be cases where the user may want to disable them ([pa
 */
 func SetThreadSafetyChecksEnabled(enabled bool) { //gd:Thread.set_thread_safety_checks_enabled
 	self := Instance{}
-	class(self).SetThreadSafetyChecksEnabled(enabled)
+	Advanced(self).SetThreadSafetyChecksEnabled(enabled)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

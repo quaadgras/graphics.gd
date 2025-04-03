@@ -49,6 +49,7 @@ A resource used by [AnimationNodeBlendTree].
 You can add vertices to the blend space with [method add_blend_point] and automatically triangulate it by setting [member auto_triangles] to [code]true[/code]. Otherwise, use [method add_triangle] and [method remove_triangle] to triangulate the blend space by hand.
 */
 type Instance [1]gdclass.AnimationNodeBlendSpace2D
+type Expanded [1]gdclass.AnimationNodeBlendSpace2D
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -62,77 +63,91 @@ type Any interface {
 Adds a new point that represents a [param node] at the position set by [param pos]. You can insert it at a specific index using the [param at_index] argument. If you use the default value for [param at_index], the point is inserted at the end of the blend points array.
 */
 func (self Instance) AddBlendPoint(node [1]gdclass.AnimationRootNode, pos Vector2.XY) { //gd:AnimationNodeBlendSpace2D.add_blend_point
-	class(self).AddBlendPoint(node, Vector2.XY(pos), int64(-1))
+	Advanced(self).AddBlendPoint(node, Vector2.XY(pos), int64(-1))
+}
+
+/*
+Adds a new point that represents a [param node] at the position set by [param pos]. You can insert it at a specific index using the [param at_index] argument. If you use the default value for [param at_index], the point is inserted at the end of the blend points array.
+*/
+func (self Expanded) AddBlendPoint(node [1]gdclass.AnimationRootNode, pos Vector2.XY, at_index int) { //gd:AnimationNodeBlendSpace2D.add_blend_point
+	Advanced(self).AddBlendPoint(node, Vector2.XY(pos), int64(at_index))
 }
 
 /*
 Updates the position of the point at index [param point] in the blend space.
 */
 func (self Instance) SetBlendPointPosition(point int, pos Vector2.XY) { //gd:AnimationNodeBlendSpace2D.set_blend_point_position
-	class(self).SetBlendPointPosition(int64(point), Vector2.XY(pos))
+	Advanced(self).SetBlendPointPosition(int64(point), Vector2.XY(pos))
 }
 
 /*
 Returns the position of the point at index [param point].
 */
 func (self Instance) GetBlendPointPosition(point int) Vector2.XY { //gd:AnimationNodeBlendSpace2D.get_blend_point_position
-	return Vector2.XY(class(self).GetBlendPointPosition(int64(point)))
+	return Vector2.XY(Advanced(self).GetBlendPointPosition(int64(point)))
 }
 
 /*
 Changes the [AnimationNode] referenced by the point at index [param point].
 */
 func (self Instance) SetBlendPointNode(point int, node [1]gdclass.AnimationRootNode) { //gd:AnimationNodeBlendSpace2D.set_blend_point_node
-	class(self).SetBlendPointNode(int64(point), node)
+	Advanced(self).SetBlendPointNode(int64(point), node)
 }
 
 /*
 Returns the [AnimationRootNode] referenced by the point at index [param point].
 */
 func (self Instance) GetBlendPointNode(point int) [1]gdclass.AnimationRootNode { //gd:AnimationNodeBlendSpace2D.get_blend_point_node
-	return [1]gdclass.AnimationRootNode(class(self).GetBlendPointNode(int64(point)))
+	return [1]gdclass.AnimationRootNode(Advanced(self).GetBlendPointNode(int64(point)))
 }
 
 /*
 Removes the point at index [param point] from the blend space.
 */
 func (self Instance) RemoveBlendPoint(point int) { //gd:AnimationNodeBlendSpace2D.remove_blend_point
-	class(self).RemoveBlendPoint(int64(point))
+	Advanced(self).RemoveBlendPoint(int64(point))
 }
 
 /*
 Returns the number of points in the blend space.
 */
 func (self Instance) GetBlendPointCount() int { //gd:AnimationNodeBlendSpace2D.get_blend_point_count
-	return int(int(class(self).GetBlendPointCount()))
+	return int(int(Advanced(self).GetBlendPointCount()))
 }
 
 /*
 Creates a new triangle using three points [param x], [param y], and [param z]. Triangles can overlap. You can insert the triangle at a specific index using the [param at_index] argument. If you use the default value for [param at_index], the point is inserted at the end of the blend points array.
 */
 func (self Instance) AddTriangle(x int, y int, z int) { //gd:AnimationNodeBlendSpace2D.add_triangle
-	class(self).AddTriangle(int64(x), int64(y), int64(z), int64(-1))
+	Advanced(self).AddTriangle(int64(x), int64(y), int64(z), int64(-1))
+}
+
+/*
+Creates a new triangle using three points [param x], [param y], and [param z]. Triangles can overlap. You can insert the triangle at a specific index using the [param at_index] argument. If you use the default value for [param at_index], the point is inserted at the end of the blend points array.
+*/
+func (self Expanded) AddTriangle(x int, y int, z int, at_index int) { //gd:AnimationNodeBlendSpace2D.add_triangle
+	Advanced(self).AddTriangle(int64(x), int64(y), int64(z), int64(at_index))
 }
 
 /*
 Returns the position of the point at index [param point] in the triangle of index [param triangle].
 */
 func (self Instance) GetTrianglePoint(triangle int, point int) int { //gd:AnimationNodeBlendSpace2D.get_triangle_point
-	return int(int(class(self).GetTrianglePoint(int64(triangle), int64(point))))
+	return int(int(Advanced(self).GetTrianglePoint(int64(triangle), int64(point))))
 }
 
 /*
 Removes the triangle at index [param triangle] from the blend space.
 */
 func (self Instance) RemoveTriangle(triangle int) { //gd:AnimationNodeBlendSpace2D.remove_triangle
-	class(self).RemoveTriangle(int64(triangle))
+	Advanced(self).RemoveTriangle(int64(triangle))
 }
 
 /*
 Returns the number of triangles in the blend space.
 */
 func (self Instance) GetTriangleCount() int { //gd:AnimationNodeBlendSpace2D.get_triangle_count
-	return int(int(class(self).GetTriangleCount()))
+	return int(int(Advanced(self).GetTriangleCount()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

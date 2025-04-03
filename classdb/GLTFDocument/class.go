@@ -46,6 +46,7 @@ All of the data in a glTF scene is stored in the [GLTFState] class. GLTFDocument
 GLTFDocument can be extended with arbitrary functionality by extending the [GLTFDocumentExtension] class and registering it with GLTFDocument via [method register_gltf_document_extension]. This allows for custom data to be imported and exported.
 */
 type Instance [1]gdclass.GLTFDocument
+type Expanded [1]gdclass.GLTFDocument
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -60,7 +61,15 @@ Takes a path to a glTF file and imports the data at that file path to the given 
 [b]Note:[/b] The [param base_path] tells [method append_from_file] where to find dependencies and can be empty.
 */
 func (self Instance) AppendFromFile(path string, state [1]gdclass.GLTFState) error { //gd:GLTFDocument.append_from_file
-	return error(gd.ToError(class(self).AppendFromFile(String.New(path), state, int64(0), String.New(""))))
+	return error(gd.ToError(Advanced(self).AppendFromFile(String.New(path), state, int64(0), String.New(""))))
+}
+
+/*
+Takes a path to a glTF file and imports the data at that file path to the given [GLTFState] object through the [param state] parameter.
+[b]Note:[/b] The [param base_path] tells [method append_from_file] where to find dependencies and can be empty.
+*/
+func (self Expanded) AppendFromFile(path string, state [1]gdclass.GLTFState, flags int, base_path string) error { //gd:GLTFDocument.append_from_file
+	return error(gd.ToError(Advanced(self).AppendFromFile(String.New(path), state, int64(flags), String.New(base_path))))
 }
 
 /*
@@ -68,14 +77,29 @@ Takes a [PackedByteArray] defining a glTF and imports the data to the given [GLT
 [b]Note:[/b] The [param base_path] tells [method append_from_buffer] where to find dependencies and can be empty.
 */
 func (self Instance) AppendFromBuffer(bytes []byte, base_path string, state [1]gdclass.GLTFState) error { //gd:GLTFDocument.append_from_buffer
-	return error(gd.ToError(class(self).AppendFromBuffer(Packed.Bytes(Packed.New(bytes...)), String.New(base_path), state, int64(0))))
+	return error(gd.ToError(Advanced(self).AppendFromBuffer(Packed.Bytes(Packed.New(bytes...)), String.New(base_path), state, int64(0))))
+}
+
+/*
+Takes a [PackedByteArray] defining a glTF and imports the data to the given [GLTFState] object through the [param state] parameter.
+[b]Note:[/b] The [param base_path] tells [method append_from_buffer] where to find dependencies and can be empty.
+*/
+func (self Expanded) AppendFromBuffer(bytes []byte, base_path string, state [1]gdclass.GLTFState, flags int) error { //gd:GLTFDocument.append_from_buffer
+	return error(gd.ToError(Advanced(self).AppendFromBuffer(Packed.Bytes(Packed.New(bytes...)), String.New(base_path), state, int64(flags))))
 }
 
 /*
 Takes a Godot Engine scene node and exports it and its descendants to the given [GLTFState] object through the [param state] parameter.
 */
 func (self Instance) AppendFromScene(node [1]gdclass.Node, state [1]gdclass.GLTFState) error { //gd:GLTFDocument.append_from_scene
-	return error(gd.ToError(class(self).AppendFromScene(node, state, int64(0))))
+	return error(gd.ToError(Advanced(self).AppendFromScene(node, state, int64(0))))
+}
+
+/*
+Takes a Godot Engine scene node and exports it and its descendants to the given [GLTFState] object through the [param state] parameter.
+*/
+func (self Expanded) AppendFromScene(node [1]gdclass.Node, state [1]gdclass.GLTFState, flags int) error { //gd:GLTFDocument.append_from_scene
+	return error(gd.ToError(Advanced(self).AppendFromScene(node, state, int64(flags))))
 }
 
 /*
@@ -83,14 +107,22 @@ Takes a [GLTFState] object through the [param state] parameter and returns a God
 The [param bake_fps] parameter overrides the bake_fps in [param state].
 */
 func (self Instance) GenerateScene(state [1]gdclass.GLTFState) [1]gdclass.Node { //gd:GLTFDocument.generate_scene
-	return [1]gdclass.Node(class(self).GenerateScene(state, float64(30), false, true))
+	return [1]gdclass.Node(Advanced(self).GenerateScene(state, float64(30), false, true))
+}
+
+/*
+Takes a [GLTFState] object through the [param state] parameter and returns a Godot Engine scene node.
+The [param bake_fps] parameter overrides the bake_fps in [param state].
+*/
+func (self Expanded) GenerateScene(state [1]gdclass.GLTFState, bake_fps Float.X, trimming bool, remove_immutable_tracks bool) [1]gdclass.Node { //gd:GLTFDocument.generate_scene
+	return [1]gdclass.Node(Advanced(self).GenerateScene(state, float64(bake_fps), trimming, remove_immutable_tracks))
 }
 
 /*
 Takes a [GLTFState] object through the [param state] parameter and returns a glTF [PackedByteArray].
 */
 func (self Instance) GenerateBuffer(state [1]gdclass.GLTFState) []byte { //gd:GLTFDocument.generate_buffer
-	return []byte(class(self).GenerateBuffer(state).Bytes())
+	return []byte(Advanced(self).GenerateBuffer(state).Bytes())
 }
 
 /*
@@ -98,7 +130,7 @@ Takes a [GLTFState] object through the [param state] parameter and writes a glTF
 [b]Note:[/b] The extension of the glTF file determines if it is a .glb binary file or a .gltf text file.
 */
 func (self Instance) WriteToFilesystem(state [1]gdclass.GLTFState, path string) error { //gd:GLTFDocument.write_to_filesystem
-	return error(gd.ToError(class(self).WriteToFilesystem(state, String.New(path))))
+	return error(gd.ToError(Advanced(self).WriteToFilesystem(state, String.New(path))))
 }
 
 /*
@@ -106,7 +138,7 @@ Determines a mapping between the given glTF Object Model [param json_pointer] an
 */
 func ImportObjectModelProperty(state [1]gdclass.GLTFState, json_pointer string) [1]gdclass.GLTFObjectModelProperty { //gd:GLTFDocument.import_object_model_property
 	self := Instance{}
-	return [1]gdclass.GLTFObjectModelProperty(class(self).ImportObjectModelProperty(state, String.New(json_pointer)))
+	return [1]gdclass.GLTFObjectModelProperty(Advanced(self).ImportObjectModelProperty(state, String.New(json_pointer)))
 }
 
 /*
@@ -114,16 +146,25 @@ Determines a mapping between the given Godot [param node_path] and the correspon
 */
 func ExportObjectModelProperty(state [1]gdclass.GLTFState, node_path string, godot_node [1]gdclass.Node, gltf_node_index int) [1]gdclass.GLTFObjectModelProperty { //gd:GLTFDocument.export_object_model_property
 	self := Instance{}
-	return [1]gdclass.GLTFObjectModelProperty(class(self).ExportObjectModelProperty(state, Path.ToNode(String.New(node_path)), godot_node, int64(gltf_node_index)))
+	return [1]gdclass.GLTFObjectModelProperty(Advanced(self).ExportObjectModelProperty(state, Path.ToNode(String.New(node_path)), godot_node, int64(gltf_node_index)))
 }
 
 /*
 Registers the given [GLTFDocumentExtension] instance with GLTFDocument. If [param first_priority] is [code]true[/code], this extension will be run first. Otherwise, it will be run last.
 [b]Note:[/b] Like GLTFDocument itself, all GLTFDocumentExtension classes must be stateless in order to function properly. If you need to store data, use the [code]set_additional_data[/code] and [code]get_additional_data[/code] methods in [GLTFState] or [GLTFNode].
 */
-func RegisterGltfDocumentExtension(extension [1]gdclass.GLTFDocumentExtension) { //gd:GLTFDocument.register_gltf_document_extension
+func RegisterGltfDocumentExtension(extension [1]gdclass.GLTFDocumentExtension, first_priority bool) { //gd:GLTFDocument.register_gltf_document_extension
 	self := Instance{}
-	class(self).RegisterGltfDocumentExtension(extension, false)
+	Advanced(self).RegisterGltfDocumentExtension(extension, first_priority)
+}
+
+/*
+Registers the given [GLTFDocumentExtension] instance with GLTFDocument. If [param first_priority] is [code]true[/code], this extension will be run first. Otherwise, it will be run last.
+[b]Note:[/b] Like GLTFDocument itself, all GLTFDocumentExtension classes must be stateless in order to function properly. If you need to store data, use the [code]set_additional_data[/code] and [code]get_additional_data[/code] methods in [GLTFState] or [GLTFNode].
+*/
+func RegisterGltfDocumentExtensionExpanded(extension [1]gdclass.GLTFDocumentExtension, first_priority bool) { //gd:GLTFDocument.register_gltf_document_extension
+	self := Instance{}
+	Advanced(self).RegisterGltfDocumentExtension(extension, first_priority)
 }
 
 /*
@@ -131,7 +172,7 @@ Unregisters the given [GLTFDocumentExtension] instance.
 */
 func UnregisterGltfDocumentExtension(extension [1]gdclass.GLTFDocumentExtension) { //gd:GLTFDocument.unregister_gltf_document_extension
 	self := Instance{}
-	class(self).UnregisterGltfDocumentExtension(extension)
+	Advanced(self).UnregisterGltfDocumentExtension(extension)
 }
 
 /*
@@ -140,7 +181,7 @@ Returns a list of all support glTF extensions, including extensions supported di
 */
 func GetSupportedGltfExtensions() []string { //gd:GLTFDocument.get_supported_gltf_extensions
 	self := Instance{}
-	return []string(class(self).GetSupportedGltfExtensions().Strings())
+	return []string(Advanced(self).GetSupportedGltfExtensions().Strings())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

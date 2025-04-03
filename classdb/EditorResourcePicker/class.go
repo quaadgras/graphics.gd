@@ -108,14 +108,14 @@ func (Instance) _handle_menu_selected(impl func(ptr unsafe.Pointer, id int) bool
 Returns a list of all allowed types and subtypes corresponding to the [member base_type]. If the [member base_type] is empty, an empty list is returned.
 */
 func (self Instance) GetAllowedTypes() []string { //gd:EditorResourcePicker.get_allowed_types
-	return []string(class(self).GetAllowedTypes().Strings())
+	return []string(Advanced(self).GetAllowedTypes().Strings())
 }
 
 /*
 Sets the toggle mode state for the main button. Works only if [member toggle_mode] is set to [code]true[/code].
 */
 func (self Instance) SetTogglePressed(pressed bool) { //gd:EditorResourcePicker.set_toggle_pressed
-	class(self).SetTogglePressed(pressed)
+	Advanced(self).SetTogglePressed(pressed)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

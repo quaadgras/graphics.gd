@@ -62,7 +62,7 @@ type Any interface {
 Setup this editor for the provided [param action_map] and [param interaction_profile].
 */
 func (self Instance) Setup(action_map [1]gdclass.OpenXRActionMap, interaction_profile [1]gdclass.OpenXRInteractionProfile) { //gd:OpenXRInteractionProfileEditorBase.setup
-	class(self).Setup(action_map, interaction_profile)
+	Advanced(self).Setup(action_map, interaction_profile)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

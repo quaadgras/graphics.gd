@@ -111,21 +111,21 @@ type Any interface {
 Starts a new hash computation of the given [param type] (e.g. [constant HASH_SHA256] to start computation of an SHA-256).
 */
 func (self Instance) Start(atype gdclass.HashingContextHashType) error { //gd:HashingContext.start
-	return error(gd.ToError(class(self).Start(atype)))
+	return error(gd.ToError(Advanced(self).Start(atype)))
 }
 
 /*
 Updates the computation with the given [param chunk] of data.
 */
 func (self Instance) Update(chunk []byte) error { //gd:HashingContext.update
-	return error(gd.ToError(class(self).Update(Packed.Bytes(Packed.New(chunk...)))))
+	return error(gd.ToError(Advanced(self).Update(Packed.Bytes(Packed.New(chunk...)))))
 }
 
 /*
 Closes the current context, and return the computed hash.
 */
 func (self Instance) Finish() []byte { //gd:HashingContext.finish
-	return []byte(class(self).Finish().Bytes())
+	return []byte(Advanced(self).Finish().Bytes())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

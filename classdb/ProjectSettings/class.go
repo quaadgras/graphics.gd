@@ -59,7 +59,7 @@ Returns [code]true[/code] if a configuration value is present.
 */
 func HasSetting(name string) bool { //gd:ProjectSettings.has_setting
 	once.Do(singleton)
-	return bool(class(self).HasSetting(String.New(name)))
+	return bool(Advanced().HasSetting(String.New(name)))
 }
 
 /*
@@ -76,7 +76,7 @@ This can also be used to erase custom project settings. To do this change the se
 */
 func SetSetting(name string, value any) { //gd:ProjectSettings.set_setting
 	once.Do(singleton)
-	class(self).SetSetting(String.New(name), variant.New(value))
+	Advanced().SetSetting(String.New(name), variant.New(value))
 }
 
 /*
@@ -93,9 +93,28 @@ GD.Print(ProjectSettings.GetSetting("application/config/custom_description", "No
 [/codeblocks]
 [b]Note:[/b] This method doesn't take potential feature overrides into account automatically. Use [method get_setting_with_override] to handle seamlessly.
 */
-func GetSetting(name string) any { //gd:ProjectSettings.get_setting
+func GetSetting(name string, default_value any) any { //gd:ProjectSettings.get_setting
 	once.Do(singleton)
-	return any(class(self).GetSetting(String.New(name), variant.New([1]any{}[0])).Interface())
+	return any(Advanced().GetSetting(String.New(name), variant.New(default_value)).Interface())
+}
+
+/*
+Returns the value of the setting identified by [param name]. If the setting doesn't exist and [param default_value] is specified, the value of [param default_value] is returned. Otherwise, [code]null[/code] is returned.
+[codeblocks]
+[gdscript]
+print(ProjectSettings.get_setting("application/config/name"))
+print(ProjectSettings.get_setting("application/config/custom_description", "No description specified."))
+[/gdscript]
+[csharp]
+GD.Print(ProjectSettings.GetSetting("application/config/name"));
+GD.Print(ProjectSettings.GetSetting("application/config/custom_description", "No description specified."));
+[/csharp]
+[/codeblocks]
+[b]Note:[/b] This method doesn't take potential feature overrides into account automatically. Use [method get_setting_with_override] to handle seamlessly.
+*/
+func GetSettingExpanded(name string, default_value any) any { //gd:ProjectSettings.get_setting
+	once.Do(singleton)
+	return any(Advanced().GetSetting(String.New(name), variant.New(default_value)).Interface())
 }
 
 /*
@@ -112,7 +131,7 @@ GD.Print(ProjectSettings.GetSettingWithOverride("application/config/name"));
 */
 func GetSettingWithOverride(name string) any { //gd:ProjectSettings.get_setting_with_override
 	once.Do(singleton)
-	return any(class(self).GetSettingWithOverride(String.Name(String.New(name))).Interface())
+	return any(Advanced().GetSettingWithOverride(String.Name(String.New(name))).Interface())
 }
 
 /*
@@ -126,7 +145,7 @@ Returns an [Array] of registered global classes. Each global class is represente
 */
 func GetGlobalClassList() []GlobalClass { //gd:ProjectSettings.get_global_class_list
 	once.Do(singleton)
-	return []GlobalClass(gd.ArrayAs[[]GlobalClass](gd.InternalArray(class(self).GetGlobalClassList())))
+	return []GlobalClass(gd.ArrayAs[[]GlobalClass](gd.InternalArray(Advanced().GetGlobalClassList())))
 }
 
 /*
@@ -134,7 +153,7 @@ Sets the order of a configuration value (influences when saved to the config fil
 */
 func SetOrder(name string, position int) { //gd:ProjectSettings.set_order
 	once.Do(singleton)
-	class(self).SetOrder(String.New(name), int64(position))
+	Advanced().SetOrder(String.New(name), int64(position))
 }
 
 /*
@@ -142,7 +161,7 @@ Returns the order of a configuration value (influences when saved to the config 
 */
 func GetOrder(name string) int { //gd:ProjectSettings.get_order
 	once.Do(singleton)
-	return int(int(class(self).GetOrder(String.New(name))))
+	return int(int(Advanced().GetOrder(String.New(name))))
 }
 
 /*
@@ -150,7 +169,7 @@ Sets the specified setting's initial value. This is the value the setting revert
 */
 func SetInitialValue(name string, value any) { //gd:ProjectSettings.set_initial_value
 	once.Do(singleton)
-	class(self).SetInitialValue(String.New(name), variant.New(value))
+	Advanced().SetInitialValue(String.New(name), variant.New(value))
 }
 
 /*
@@ -158,7 +177,7 @@ Defines if the specified setting is considered basic or advanced. Basic settings
 */
 func SetAsBasic(name string, basic bool) { //gd:ProjectSettings.set_as_basic
 	once.Do(singleton)
-	class(self).SetAsBasic(String.New(name), basic)
+	Advanced().SetAsBasic(String.New(name), basic)
 }
 
 /*
@@ -166,7 +185,7 @@ Defines if the specified setting is considered internal. An internal setting won
 */
 func SetAsInternal(name string, internal_ bool) { //gd:ProjectSettings.set_as_internal
 	once.Do(singleton)
-	class(self).SetAsInternal(String.New(name), internal_)
+	Advanced().SetAsInternal(String.New(name), internal_)
 }
 
 /*
@@ -205,7 +224,7 @@ ProjectSettings.AddPropertyInfo(propertyInfo);
 */
 func AddPropertyInfo(hint PropertyInfo) { //gd:ProjectSettings.add_property_info
 	once.Do(singleton)
-	class(self).AddPropertyInfo(gd.DictionaryFromMap(hint))
+	Advanced().AddPropertyInfo(gd.DictionaryFromMap(hint))
 }
 
 /*
@@ -214,7 +233,7 @@ Sets whether a setting requires restarting the editor to properly take effect.
 */
 func SetRestartIfChanged(name string, restart bool) { //gd:ProjectSettings.set_restart_if_changed
 	once.Do(singleton)
-	class(self).SetRestartIfChanged(String.New(name), restart)
+	Advanced().SetRestartIfChanged(String.New(name), restart)
 }
 
 /*
@@ -222,7 +241,7 @@ Clears the whole configuration (not recommended, may break things).
 */
 func Clear(name string) { //gd:ProjectSettings.clear
 	once.Do(singleton)
-	class(self).Clear(String.New(name))
+	Advanced().Clear(String.New(name))
 }
 
 /*
@@ -230,7 +249,7 @@ Returns the localized path (starting with [code]res://[/code]) corresponding to 
 */
 func LocalizePath(path string) string { //gd:ProjectSettings.localize_path
 	once.Do(singleton)
-	return string(class(self).LocalizePath(String.New(path)).String())
+	return string(Advanced().LocalizePath(String.New(path)).String())
 }
 
 /*
@@ -256,7 +275,7 @@ else:
 */
 func GlobalizePath(path string) string { //gd:ProjectSettings.globalize_path
 	once.Do(singleton)
-	return string(class(self).GlobalizePath(String.New(path)).String())
+	return string(Advanced().GlobalizePath(String.New(path)).String())
 }
 
 /*
@@ -265,7 +284,7 @@ Saves the configuration to the [code]project.godot[/code] file.
 */
 func Save() error { //gd:ProjectSettings.save
 	once.Do(singleton)
-	return error(gd.ToError(class(self).Save()))
+	return error(gd.ToError(Advanced().Save()))
 }
 
 /*
@@ -274,9 +293,20 @@ Loads the contents of the .pck or .zip file specified by [param pack] into the r
 [b]Note:[/b] The optional [param offset] parameter can be used to specify the offset in bytes to the start of the resource pack. This is only supported for .pck files.
 [b]Note:[/b] [DirAccess] will not show changes made to the contents of [code]res://[/code] after calling this function.
 */
-func LoadResourcePack(pack string) bool { //gd:ProjectSettings.load_resource_pack
+func LoadResourcePack(pack string, offset int) bool { //gd:ProjectSettings.load_resource_pack
 	once.Do(singleton)
-	return bool(class(self).LoadResourcePack(String.New(pack), true, int64(0)))
+	return bool(Advanced().LoadResourcePack(String.New(pack), true, int64(offset)))
+}
+
+/*
+Loads the contents of the .pck or .zip file specified by [param pack] into the resource filesystem ([code]res://[/code]). Returns [code]true[/code] on success.
+[b]Note:[/b] If a file from [param pack] shares the same path as a file already in the resource filesystem, any attempts to load that file will use the file from [param pack] unless [param replace_files] is set to [code]false[/code].
+[b]Note:[/b] The optional [param offset] parameter can be used to specify the offset in bytes to the start of the resource pack. This is only supported for .pck files.
+[b]Note:[/b] [DirAccess] will not show changes made to the contents of [code]res://[/code] after calling this function.
+*/
+func LoadResourcePackExpanded(pack string, replace_files bool, offset int) bool { //gd:ProjectSettings.load_resource_pack
+	once.Do(singleton)
+	return bool(Advanced().LoadResourcePack(String.New(pack), replace_files, int64(offset)))
 }
 
 /*
@@ -284,7 +314,7 @@ Saves the configuration to a custom file. The file extension must be [code].godo
 */
 func SaveCustom(file string) error { //gd:ProjectSettings.save_custom
 	once.Do(singleton)
-	return error(gd.ToError(class(self).SaveCustom(String.New(file))))
+	return error(gd.ToError(Advanced().SaveCustom(String.New(file))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

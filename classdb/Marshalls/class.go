@@ -55,9 +55,18 @@ func singleton() {
 Returns a Base64-encoded string of the [Variant] [param variant]. If [param full_objects] is [code]true[/code], encoding objects is allowed (and can potentially include code).
 Internally, this uses the same encoding mechanism as the [method @GlobalScope.var_to_bytes] method.
 */
-func VariantToBase64(v any) string { //gd:Marshalls.variant_to_base64
+func VariantToBase64(v any, full_objects bool) string { //gd:Marshalls.variant_to_base64
 	once.Do(singleton)
-	return string(class(self).VariantToBase64(variant.New(v), false).String())
+	return string(Advanced().VariantToBase64(variant.New(v), full_objects).String())
+}
+
+/*
+Returns a Base64-encoded string of the [Variant] [param variant]. If [param full_objects] is [code]true[/code], encoding objects is allowed (and can potentially include code).
+Internally, this uses the same encoding mechanism as the [method @GlobalScope.var_to_bytes] method.
+*/
+func VariantToBase64Expanded(v any, full_objects bool) string { //gd:Marshalls.variant_to_base64
+	once.Do(singleton)
+	return string(Advanced().VariantToBase64(variant.New(v), full_objects).String())
 }
 
 /*
@@ -65,9 +74,19 @@ Returns a decoded [Variant] corresponding to the Base64-encoded string [param ba
 Internally, this uses the same decoding mechanism as the [method @GlobalScope.bytes_to_var] method.
 [b]Warning:[/b] Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
 */
-func Base64ToVariant(base64_str string) any { //gd:Marshalls.base64_to_variant
+func Base64ToVariant(base64_str string, allow_objects bool) any { //gd:Marshalls.base64_to_variant
 	once.Do(singleton)
-	return any(class(self).Base64ToVariant(String.New(base64_str), false).Interface())
+	return any(Advanced().Base64ToVariant(String.New(base64_str), allow_objects).Interface())
+}
+
+/*
+Returns a decoded [Variant] corresponding to the Base64-encoded string [param base64_str]. If [param allow_objects] is [code]true[/code], decoding objects is allowed.
+Internally, this uses the same decoding mechanism as the [method @GlobalScope.bytes_to_var] method.
+[b]Warning:[/b] Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
+*/
+func Base64ToVariantExpanded(base64_str string, allow_objects bool) any { //gd:Marshalls.base64_to_variant
+	once.Do(singleton)
+	return any(Advanced().Base64ToVariant(String.New(base64_str), allow_objects).Interface())
 }
 
 /*
@@ -75,7 +94,7 @@ Returns a Base64-encoded string of a given [PackedByteArray].
 */
 func RawToBase64(array []byte) string { //gd:Marshalls.raw_to_base64
 	once.Do(singleton)
-	return string(class(self).RawToBase64(Packed.Bytes(Packed.New(array...))).String())
+	return string(Advanced().RawToBase64(Packed.Bytes(Packed.New(array...))).String())
 }
 
 /*
@@ -83,7 +102,7 @@ Returns a decoded [PackedByteArray] corresponding to the Base64-encoded string [
 */
 func Base64ToRaw(base64_str string) []byte { //gd:Marshalls.base64_to_raw
 	once.Do(singleton)
-	return []byte(class(self).Base64ToRaw(String.New(base64_str)).Bytes())
+	return []byte(Advanced().Base64ToRaw(String.New(base64_str)).Bytes())
 }
 
 /*
@@ -91,7 +110,7 @@ Returns a Base64-encoded string of the UTF-8 string [param utf8_str].
 */
 func Utf8ToBase64(utf8_str string) string { //gd:Marshalls.utf8_to_base64
 	once.Do(singleton)
-	return string(class(self).Utf8ToBase64(String.New(utf8_str)).String())
+	return string(Advanced().Utf8ToBase64(String.New(utf8_str)).String())
 }
 
 /*
@@ -99,7 +118,7 @@ Returns a decoded string corresponding to the Base64-encoded string [param base6
 */
 func Base64ToUtf8(base64_str string) string { //gd:Marshalls.base64_to_utf8
 	once.Do(singleton)
-	return string(class(self).Base64ToUtf8(String.New(base64_str)).String())
+	return string(Advanced().Base64ToUtf8(String.New(base64_str)).String())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

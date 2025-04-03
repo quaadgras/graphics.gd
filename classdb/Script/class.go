@@ -46,6 +46,7 @@ This is the base class for all scripts and should not be used directly. Trying t
 The [code]new[/code] method of a script subclass creates a new instance. [method Object.set_script] extends an existing object, if that object's class matches one of the script's base classes.
 */
 type Instance [1]gdclass.Script
+type Expanded [1]gdclass.Script
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -59,14 +60,14 @@ type Any interface {
 Returns [code]true[/code] if the script can be instantiated.
 */
 func (self Instance) CanInstantiate() bool { //gd:Script.can_instantiate
-	return bool(class(self).CanInstantiate())
+	return bool(Advanced(self).CanInstantiate())
 }
 
 /*
 Returns [code]true[/code] if [param base_object] is an instance of this script.
 */
 func (self Instance) InstanceHas(base_object Object.Instance) bool { //gd:Script.instance_has
-	return bool(class(self).InstanceHas(base_object))
+	return bool(Advanced(self).InstanceHas(base_object))
 }
 
 /*
@@ -74,28 +75,35 @@ Returns [code]true[/code] if the script contains non-empty source code.
 [b]Note:[/b] If a script does not have source code, this does not mean that it is invalid or unusable. For example, a [GDScript] that was exported with binary tokenization has no source code, but still behaves as expected and could be instantiated. This can be checked with [method can_instantiate].
 */
 func (self Instance) HasSourceCode() bool { //gd:Script.has_source_code
-	return bool(class(self).HasSourceCode())
+	return bool(Advanced(self).HasSourceCode())
 }
 
 /*
 Reloads the script's class implementation. Returns an error code.
 */
 func (self Instance) Reload() error { //gd:Script.reload
-	return error(gd.ToError(class(self).Reload(false)))
+	return error(gd.ToError(Advanced(self).Reload(false)))
+}
+
+/*
+Reloads the script's class implementation. Returns an error code.
+*/
+func (self Expanded) Reload(keep_state bool) error { //gd:Script.reload
+	return error(gd.ToError(Advanced(self).Reload(keep_state)))
 }
 
 /*
 Returns the script directly inherited by this script.
 */
 func (self Instance) GetBaseScript() [1]gdclass.Script { //gd:Script.get_base_script
-	return [1]gdclass.Script(class(self).GetBaseScript())
+	return [1]gdclass.Script(Advanced(self).GetBaseScript())
 }
 
 /*
 Returns the script's base type.
 */
 func (self Instance) GetInstanceBaseType() string { //gd:Script.get_instance_base_type
-	return string(class(self).GetInstanceBaseType().String())
+	return string(Advanced(self).GetInstanceBaseType().String())
 }
 
 /*
@@ -117,70 +125,70 @@ public partial class MyNode : Node
 [/codeblocks]
 */
 func (self Instance) GetGlobalName() string { //gd:Script.get_global_name
-	return string(class(self).GetGlobalName().String())
+	return string(Advanced(self).GetGlobalName().String())
 }
 
 /*
 Returns [code]true[/code] if the script, or a base class, defines a signal with the given name.
 */
 func (self Instance) HasScriptSignal(signal_name string) bool { //gd:Script.has_script_signal
-	return bool(class(self).HasScriptSignal(String.Name(String.New(signal_name))))
+	return bool(Advanced(self).HasScriptSignal(String.Name(String.New(signal_name))))
 }
 
 /*
 Returns the list of properties in this [Script].
 */
 func (self Instance) GetScriptPropertyList() []PropertyInfo { //gd:Script.get_script_property_list
-	return []PropertyInfo(gd.ArrayAs[[]PropertyInfo](gd.InternalArray(class(self).GetScriptPropertyList())))
+	return []PropertyInfo(gd.ArrayAs[[]PropertyInfo](gd.InternalArray(Advanced(self).GetScriptPropertyList())))
 }
 
 /*
 Returns the list of methods in this [Script].
 */
 func (self Instance) GetScriptMethodList() []PropertyInfo { //gd:Script.get_script_method_list
-	return []PropertyInfo(gd.ArrayAs[[]PropertyInfo](gd.InternalArray(class(self).GetScriptMethodList())))
+	return []PropertyInfo(gd.ArrayAs[[]PropertyInfo](gd.InternalArray(Advanced(self).GetScriptMethodList())))
 }
 
 /*
 Returns the list of user signals defined in this [Script].
 */
 func (self Instance) GetScriptSignalList() []SignalInfo { //gd:Script.get_script_signal_list
-	return []SignalInfo(gd.ArrayAs[[]SignalInfo](gd.InternalArray(class(self).GetScriptSignalList())))
+	return []SignalInfo(gd.ArrayAs[[]SignalInfo](gd.InternalArray(Advanced(self).GetScriptSignalList())))
 }
 
 /*
 Returns a dictionary containing constant names and their values.
 */
 func (self Instance) GetScriptConstantMap() map[string]interface{} { //gd:Script.get_script_constant_map
-	return map[string]interface{}(gd.DictionaryAs[map[string]interface{}](class(self).GetScriptConstantMap()))
+	return map[string]interface{}(gd.DictionaryAs[map[string]interface{}](Advanced(self).GetScriptConstantMap()))
 }
 
 /*
 Returns the default value of the specified property.
 */
 func (self Instance) GetPropertyDefaultValue(property string) any { //gd:Script.get_property_default_value
-	return any(class(self).GetPropertyDefaultValue(String.Name(String.New(property))).Interface())
+	return any(Advanced(self).GetPropertyDefaultValue(String.Name(String.New(property))).Interface())
 }
 
 /*
 Returns [code]true[/code] if the script is a tool script. A tool script can run in the editor.
 */
 func (self Instance) IsTool() bool { //gd:Script.is_tool
-	return bool(class(self).IsTool())
+	return bool(Advanced(self).IsTool())
 }
 
 /*
 Returns [code]true[/code] if the script is an abstract script. An abstract script does not have a constructor and cannot be instantiated.
 */
 func (self Instance) IsAbstract() bool { //gd:Script.is_abstract
-	return bool(class(self).IsAbstract())
+	return bool(Advanced(self).IsAbstract())
 }
 
 /*
 Returns a [Dictionary] mapping method names to their RPC configuration defined by this script.
 */
 func (self Instance) GetRpcConfig() any { //gd:Script.get_rpc_config
-	return any(class(self).GetRpcConfig().Interface())
+	return any(Advanced(self).GetRpcConfig().Interface())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

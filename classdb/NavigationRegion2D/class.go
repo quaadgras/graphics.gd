@@ -53,6 +53,7 @@ The pathfinding cost of traveling distances inside this region can be controlled
 [b]Note:[/b] This node caches changes to its properties, so if you make changes to the underlying region [RID] in [NavigationServer2D], they will not be reflected in this node's properties.
 */
 type Instance [1]gdclass.NavigationRegion2D
+type Expanded [1]gdclass.NavigationRegion2D
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -66,63 +67,70 @@ type Any interface {
 Returns the [RID] of this region on the [NavigationServer2D]. Combined with [method NavigationServer2D.map_get_closest_point_owner] can be used to identify the [NavigationRegion2D] closest to a point on the merged navigation map.
 */
 func (self Instance) GetRid() RID.NavigationRegion2D { //gd:NavigationRegion2D.get_rid
-	return RID.NavigationRegion2D(class(self).GetRid())
+	return RID.NavigationRegion2D(Advanced(self).GetRid())
 }
 
 /*
 Sets the [RID] of the navigation map this region should use. By default the region will automatically join the [World2D] default navigation map so this function is only required to override the default map.
 */
 func (self Instance) SetNavigationMap(navigation_map RID.NavigationMap2D) { //gd:NavigationRegion2D.set_navigation_map
-	class(self).SetNavigationMap(RID.Any(navigation_map))
+	Advanced(self).SetNavigationMap(RID.Any(navigation_map))
 }
 
 /*
 Returns the current navigation map [RID] used by this region.
 */
 func (self Instance) GetNavigationMap() RID.NavigationMap2D { //gd:NavigationRegion2D.get_navigation_map
-	return RID.NavigationMap2D(class(self).GetNavigationMap())
+	return RID.NavigationMap2D(Advanced(self).GetNavigationMap())
 }
 
 /*
 Based on [param value], enables or disables the specified layer in the [member navigation_layers] bitmask, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) SetNavigationLayerValue(layer_number int, value bool) { //gd:NavigationRegion2D.set_navigation_layer_value
-	class(self).SetNavigationLayerValue(int64(layer_number), value)
+	Advanced(self).SetNavigationLayerValue(int64(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member navigation_layers] bitmask is enabled, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) GetNavigationLayerValue(layer_number int) bool { //gd:NavigationRegion2D.get_navigation_layer_value
-	return bool(class(self).GetNavigationLayerValue(int64(layer_number)))
+	return bool(Advanced(self).GetNavigationLayerValue(int64(layer_number)))
 }
 
 /*
 Returns the [RID] of this region on the [NavigationServer2D].
 */
 func (self Instance) GetRegionRid() RID.NavigationRegion2D { //gd:NavigationRegion2D.get_region_rid
-	return RID.NavigationRegion2D(class(self).GetRegionRid())
+	return RID.NavigationRegion2D(Advanced(self).GetRegionRid())
 }
 
 /*
 Bakes the [NavigationPolygon]. If [param on_thread] is set to [code]true[/code] (default), the baking is done on a separate thread.
 */
 func (self Instance) BakeNavigationPolygon() { //gd:NavigationRegion2D.bake_navigation_polygon
-	class(self).BakeNavigationPolygon(true)
+	Advanced(self).BakeNavigationPolygon(true)
+}
+
+/*
+Bakes the [NavigationPolygon]. If [param on_thread] is set to [code]true[/code] (default), the baking is done on a separate thread.
+*/
+func (self Expanded) BakeNavigationPolygon(on_thread bool) { //gd:NavigationRegion2D.bake_navigation_polygon
+	Advanced(self).BakeNavigationPolygon(on_thread)
 }
 
 /*
 Returns [code]true[/code] when the [NavigationPolygon] is being baked on a background thread.
 */
 func (self Instance) IsBaking() bool { //gd:NavigationRegion2D.is_baking
-	return bool(class(self).IsBaking())
+	return bool(Advanced(self).IsBaking())
 }
 
 /*
 Returns the axis-aligned rectangle for the region's transformed navigation mesh.
 */
 func (self Instance) GetBounds() Rect2.PositionSize { //gd:NavigationRegion2D.get_bounds
-	return Rect2.PositionSize(class(self).GetBounds())
+	return Rect2.PositionSize(Advanced(self).GetBounds())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

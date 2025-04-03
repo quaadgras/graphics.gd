@@ -61,7 +61,7 @@ Returns the camera transform used to render this frame.
 [b]Note:[/b] If more than one view is rendered, this will return a centered transform.
 */
 func (self Instance) GetCamTransform() Transform3D.BasisOrigin { //gd:RenderSceneData.get_cam_transform
-	return Transform3D.BasisOrigin(class(self).GetCamTransform())
+	return Transform3D.BasisOrigin(Advanced(self).GetCamTransform())
 }
 
 /*
@@ -69,21 +69,21 @@ Returns the camera projection used to render this frame.
 [b]Note:[/b] If more than one view is rendered, this will return a combined projection.
 */
 func (self Instance) GetCamProjection() Projection.XYZW { //gd:RenderSceneData.get_cam_projection
-	return Projection.XYZW(class(self).GetCamProjection())
+	return Projection.XYZW(Advanced(self).GetCamProjection())
 }
 
 /*
 Returns the number of views being rendered.
 */
 func (self Instance) GetViewCount() int { //gd:RenderSceneData.get_view_count
-	return int(int(class(self).GetViewCount()))
+	return int(int(Advanced(self).GetViewCount()))
 }
 
 /*
 Returns the eye offset per view used to render this frame. This is the offset between our camera transform and the eye transform.
 */
 func (self Instance) GetViewEyeOffset(view int) Vector3.XYZ { //gd:RenderSceneData.get_view_eye_offset
-	return Vector3.XYZ(class(self).GetViewEyeOffset(int64(view)))
+	return Vector3.XYZ(Advanced(self).GetViewEyeOffset(int64(view)))
 }
 
 /*
@@ -91,14 +91,14 @@ Returns the view projection per view used to render this frame.
 [b]Note:[/b] If a single view is rendered, this returns the camera projection. If more than one view is rendered, this will return a projection for the given view including the eye offset.
 */
 func (self Instance) GetViewProjection(view int) Projection.XYZW { //gd:RenderSceneData.get_view_projection
-	return Projection.XYZW(class(self).GetViewProjection(int64(view)))
+	return Projection.XYZW(Advanced(self).GetViewProjection(int64(view)))
 }
 
 /*
 Return the [RID] of the uniform buffer containing the scene data as a UBO.
 */
 func (self Instance) GetUniformBuffer() RID.UniformBuffer { //gd:RenderSceneData.get_uniform_buffer
-	return RID.UniformBuffer(class(self).GetUniformBuffer())
+	return RID.UniformBuffer(Advanced(self).GetUniformBuffer())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

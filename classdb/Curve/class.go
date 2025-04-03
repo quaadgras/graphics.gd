@@ -46,6 +46,7 @@ This resource describes a mathematical curve by defining a set of points and tan
 Please note that many resources and nodes assume they are given [i]unit curves[/i]. A unit curve is a curve whose domain (the X axis) is between [code]0[/code] and [code]1[/code]. Some examples of unit curve usage are [member CPUParticles2D.angle_curve] and [member Line2D.width_curve].
 */
 type Instance [1]gdclass.Curve
+type Expanded [1]gdclass.Curve
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -59,140 +60,147 @@ type Any interface {
 Adds a point to the curve. For each side, if the [code]*_mode[/code] is [constant TANGENT_LINEAR], the [code]*_tangent[/code] angle (in degrees) uses the slope of the curve halfway to the adjacent point. Allows custom assignments to the [code]*_tangent[/code] angle if [code]*_mode[/code] is set to [constant TANGENT_FREE].
 */
 func (self Instance) AddPoint(position Vector2.XY) int { //gd:Curve.add_point
-	return int(int(class(self).AddPoint(Vector2.XY(position), float64(0), float64(0), 0, 0)))
+	return int(int(Advanced(self).AddPoint(Vector2.XY(position), float64(0), float64(0), 0, 0)))
+}
+
+/*
+Adds a point to the curve. For each side, if the [code]*_mode[/code] is [constant TANGENT_LINEAR], the [code]*_tangent[/code] angle (in degrees) uses the slope of the curve halfway to the adjacent point. Allows custom assignments to the [code]*_tangent[/code] angle if [code]*_mode[/code] is set to [constant TANGENT_FREE].
+*/
+func (self Expanded) AddPoint(position Vector2.XY, left_tangent Float.X, right_tangent Float.X, left_mode gdclass.CurveTangentMode, right_mode gdclass.CurveTangentMode) int { //gd:Curve.add_point
+	return int(int(Advanced(self).AddPoint(Vector2.XY(position), float64(left_tangent), float64(right_tangent), left_mode, right_mode)))
 }
 
 /*
 Removes the point at [param index] from the curve.
 */
 func (self Instance) RemovePoint(index int) { //gd:Curve.remove_point
-	class(self).RemovePoint(int64(index))
+	Advanced(self).RemovePoint(int64(index))
 }
 
 /*
 Removes all points from the curve.
 */
 func (self Instance) ClearPoints() { //gd:Curve.clear_points
-	class(self).ClearPoints()
+	Advanced(self).ClearPoints()
 }
 
 /*
 Returns the curve coordinates for the point at [param index].
 */
 func (self Instance) GetPointPosition(index int) Vector2.XY { //gd:Curve.get_point_position
-	return Vector2.XY(class(self).GetPointPosition(int64(index)))
+	return Vector2.XY(Advanced(self).GetPointPosition(int64(index)))
 }
 
 /*
 Assigns the vertical position [param y] to the point at [param index].
 */
 func (self Instance) SetPointValue(index int, y Float.X) { //gd:Curve.set_point_value
-	class(self).SetPointValue(int64(index), float64(y))
+	Advanced(self).SetPointValue(int64(index), float64(y))
 }
 
 /*
 Sets the offset from [code]0.5[/code].
 */
 func (self Instance) SetPointOffset(index int, offset Float.X) int { //gd:Curve.set_point_offset
-	return int(int(class(self).SetPointOffset(int64(index), float64(offset))))
+	return int(int(Advanced(self).SetPointOffset(int64(index), float64(offset))))
 }
 
 /*
 Returns the Y value for the point that would exist at the X position [param offset] along the curve.
 */
 func (self Instance) Sample(offset Float.X) Float.X { //gd:Curve.sample
-	return Float.X(Float.X(class(self).Sample(float64(offset))))
+	return Float.X(Float.X(Advanced(self).Sample(float64(offset))))
 }
 
 /*
 Returns the Y value for the point that would exist at the X position [param offset] along the curve using the baked cache. Bakes the curve's points if not already baked.
 */
 func (self Instance) SampleBaked(offset Float.X) Float.X { //gd:Curve.sample_baked
-	return Float.X(Float.X(class(self).SampleBaked(float64(offset))))
+	return Float.X(Float.X(Advanced(self).SampleBaked(float64(offset))))
 }
 
 /*
 Returns the left tangent angle (in degrees) for the point at [param index].
 */
 func (self Instance) GetPointLeftTangent(index int) Float.X { //gd:Curve.get_point_left_tangent
-	return Float.X(Float.X(class(self).GetPointLeftTangent(int64(index))))
+	return Float.X(Float.X(Advanced(self).GetPointLeftTangent(int64(index))))
 }
 
 /*
 Returns the right tangent angle (in degrees) for the point at [param index].
 */
 func (self Instance) GetPointRightTangent(index int) Float.X { //gd:Curve.get_point_right_tangent
-	return Float.X(Float.X(class(self).GetPointRightTangent(int64(index))))
+	return Float.X(Float.X(Advanced(self).GetPointRightTangent(int64(index))))
 }
 
 /*
 Returns the left [enum TangentMode] for the point at [param index].
 */
 func (self Instance) GetPointLeftMode(index int) gdclass.CurveTangentMode { //gd:Curve.get_point_left_mode
-	return gdclass.CurveTangentMode(class(self).GetPointLeftMode(int64(index)))
+	return gdclass.CurveTangentMode(Advanced(self).GetPointLeftMode(int64(index)))
 }
 
 /*
 Returns the right [enum TangentMode] for the point at [param index].
 */
 func (self Instance) GetPointRightMode(index int) gdclass.CurveTangentMode { //gd:Curve.get_point_right_mode
-	return gdclass.CurveTangentMode(class(self).GetPointRightMode(int64(index)))
+	return gdclass.CurveTangentMode(Advanced(self).GetPointRightMode(int64(index)))
 }
 
 /*
 Sets the left tangent angle for the point at [param index] to [param tangent].
 */
 func (self Instance) SetPointLeftTangent(index int, tangent Float.X) { //gd:Curve.set_point_left_tangent
-	class(self).SetPointLeftTangent(int64(index), float64(tangent))
+	Advanced(self).SetPointLeftTangent(int64(index), float64(tangent))
 }
 
 /*
 Sets the right tangent angle for the point at [param index] to [param tangent].
 */
 func (self Instance) SetPointRightTangent(index int, tangent Float.X) { //gd:Curve.set_point_right_tangent
-	class(self).SetPointRightTangent(int64(index), float64(tangent))
+	Advanced(self).SetPointRightTangent(int64(index), float64(tangent))
 }
 
 /*
 Sets the left [enum TangentMode] for the point at [param index] to [param mode].
 */
 func (self Instance) SetPointLeftMode(index int, mode gdclass.CurveTangentMode) { //gd:Curve.set_point_left_mode
-	class(self).SetPointLeftMode(int64(index), mode)
+	Advanced(self).SetPointLeftMode(int64(index), mode)
 }
 
 /*
 Sets the right [enum TangentMode] for the point at [param index] to [param mode].
 */
 func (self Instance) SetPointRightMode(index int, mode gdclass.CurveTangentMode) { //gd:Curve.set_point_right_mode
-	class(self).SetPointRightMode(int64(index), mode)
+	Advanced(self).SetPointRightMode(int64(index), mode)
 }
 
 /*
 Returns the difference between [member min_value] and [member max_value].
 */
 func (self Instance) GetValueRange() Float.X { //gd:Curve.get_value_range
-	return Float.X(Float.X(class(self).GetValueRange()))
+	return Float.X(Float.X(Advanced(self).GetValueRange()))
 }
 
 /*
 Returns the difference between [member min_domain] and [member max_domain].
 */
 func (self Instance) GetDomainRange() Float.X { //gd:Curve.get_domain_range
-	return Float.X(Float.X(class(self).GetDomainRange()))
+	return Float.X(Float.X(Advanced(self).GetDomainRange()))
 }
 
 /*
 Removes duplicate points, i.e. points that are less than 0.00001 units (engine epsilon value) away from their neighbor on the curve.
 */
 func (self Instance) CleanDupes() { //gd:Curve.clean_dupes
-	class(self).CleanDupes()
+	Advanced(self).CleanDupes()
 }
 
 /*
 Recomputes the baked cache of points for the curve.
 */
 func (self Instance) Bake() { //gd:Curve.bake
-	class(self).Bake()
+	Advanced(self).Bake()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -61,14 +61,14 @@ Creates a new GLTFPhysicsBody instance from the given Godot [CollisionObject3D] 
 */
 func FromNode(body_node [1]gdclass.CollisionObject3D) [1]gdclass.GLTFPhysicsBody { //gd:GLTFPhysicsBody.from_node
 	self := Instance{}
-	return [1]gdclass.GLTFPhysicsBody(class(self).FromNode(body_node))
+	return [1]gdclass.GLTFPhysicsBody(Advanced(self).FromNode(body_node))
 }
 
 /*
 Converts this GLTFPhysicsBody instance into a Godot [CollisionObject3D] node.
 */
 func (self Instance) ToNode() [1]gdclass.CollisionObject3D { //gd:GLTFPhysicsBody.to_node
-	return [1]gdclass.CollisionObject3D(class(self).ToNode())
+	return [1]gdclass.CollisionObject3D(Advanced(self).ToNode())
 }
 
 /*
@@ -76,14 +76,14 @@ Creates a new GLTFPhysicsBody instance by parsing the given [Dictionary] in the 
 */
 func FromDictionary(dictionary Structure) [1]gdclass.GLTFPhysicsBody { //gd:GLTFPhysicsBody.from_dictionary
 	self := Instance{}
-	return [1]gdclass.GLTFPhysicsBody(class(self).FromDictionary(gd.DictionaryFromMap(dictionary)))
+	return [1]gdclass.GLTFPhysicsBody(Advanced(self).FromDictionary(gd.DictionaryFromMap(dictionary)))
 }
 
 /*
 Serializes this GLTFPhysicsBody instance into a [Dictionary]. It will be in the format expected by the [code]OMI_physics_body[/code] glTF extension.
 */
 func (self Instance) ToDictionary() Structure { //gd:GLTFPhysicsBody.to_dictionary
-	return Structure(gd.DictionaryAs[Structure](class(self).ToDictionary()))
+	return Structure(gd.DictionaryAs[Structure](Advanced(self).ToDictionary()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

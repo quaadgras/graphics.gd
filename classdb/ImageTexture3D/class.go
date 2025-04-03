@@ -60,14 +60,14 @@ type Any interface {
 Creates the [ImageTexture3D] with specified [param width], [param height], and [param depth]. See [enum Image.Format] for [param format] options. If [param use_mipmaps] is [code]true[/code], then generate mipmaps for the [ImageTexture3D].
 */
 func (self Instance) Create(format gdclass.ImageFormat, width int, height int, depth int, use_mipmaps bool, data [][1]gdclass.Image) error { //gd:ImageTexture3D.create
-	return error(gd.ToError(class(self).Create(format, int64(width), int64(height), int64(depth), use_mipmaps, gd.ArrayFromSlice[Array.Contains[[1]gdclass.Image]](data))))
+	return error(gd.ToError(Advanced(self).Create(format, int64(width), int64(height), int64(depth), use_mipmaps, gd.ArrayFromSlice[Array.Contains[[1]gdclass.Image]](data))))
 }
 
 /*
 Replaces the texture's existing data with the layers specified in [param data]. The size of [param data] must match the parameters that were used for [method create]. In other words, the texture cannot be resized or have its format changed by calling [method update].
 */
 func (self Instance) Update(data [][1]gdclass.Image) { //gd:ImageTexture3D.update
-	class(self).Update(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Image]](data))
+	Advanced(self).Update(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Image]](data))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

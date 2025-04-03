@@ -50,6 +50,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 For game objects that don't require complex movement or collision detection, such as moving platforms, [AnimatableBody2D] is simpler to configure.
 */
 type Instance [1]gdclass.CharacterBody2D
+type Expanded [1]gdclass.CharacterBody2D
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -67,56 +68,56 @@ The general behavior and available properties change according to the [member mo
 Returns [code]true[/code] if the body collided, otherwise, returns [code]false[/code].
 */
 func (self Instance) MoveAndSlide() bool { //gd:CharacterBody2D.move_and_slide
-	return bool(class(self).MoveAndSlide())
+	return bool(Advanced(self).MoveAndSlide())
 }
 
 /*
 Allows to manually apply a snap to the floor regardless of the body's velocity. This function does nothing when [method is_on_floor] returns [code]true[/code].
 */
 func (self Instance) ApplyFloorSnap() { //gd:CharacterBody2D.apply_floor_snap
-	class(self).ApplyFloorSnap()
+	Advanced(self).ApplyFloorSnap()
 }
 
 /*
 Returns [code]true[/code] if the body collided with the floor on the last call of [method move_and_slide]. Otherwise, returns [code]false[/code]. The [member up_direction] and [member floor_max_angle] are used to determine whether a surface is "floor" or not.
 */
 func (self Instance) IsOnFloor() bool { //gd:CharacterBody2D.is_on_floor
-	return bool(class(self).IsOnFloor())
+	return bool(Advanced(self).IsOnFloor())
 }
 
 /*
 Returns [code]true[/code] if the body collided only with the floor on the last call of [method move_and_slide]. Otherwise, returns [code]false[/code]. The [member up_direction] and [member floor_max_angle] are used to determine whether a surface is "floor" or not.
 */
 func (self Instance) IsOnFloorOnly() bool { //gd:CharacterBody2D.is_on_floor_only
-	return bool(class(self).IsOnFloorOnly())
+	return bool(Advanced(self).IsOnFloorOnly())
 }
 
 /*
 Returns [code]true[/code] if the body collided with the ceiling on the last call of [method move_and_slide]. Otherwise, returns [code]false[/code]. The [member up_direction] and [member floor_max_angle] are used to determine whether a surface is "ceiling" or not.
 */
 func (self Instance) IsOnCeiling() bool { //gd:CharacterBody2D.is_on_ceiling
-	return bool(class(self).IsOnCeiling())
+	return bool(Advanced(self).IsOnCeiling())
 }
 
 /*
 Returns [code]true[/code] if the body collided only with the ceiling on the last call of [method move_and_slide]. Otherwise, returns [code]false[/code]. The [member up_direction] and [member floor_max_angle] are used to determine whether a surface is "ceiling" or not.
 */
 func (self Instance) IsOnCeilingOnly() bool { //gd:CharacterBody2D.is_on_ceiling_only
-	return bool(class(self).IsOnCeilingOnly())
+	return bool(Advanced(self).IsOnCeilingOnly())
 }
 
 /*
 Returns [code]true[/code] if the body collided with a wall on the last call of [method move_and_slide]. Otherwise, returns [code]false[/code]. The [member up_direction] and [member floor_max_angle] are used to determine whether a surface is "wall" or not.
 */
 func (self Instance) IsOnWall() bool { //gd:CharacterBody2D.is_on_wall
-	return bool(class(self).IsOnWall())
+	return bool(Advanced(self).IsOnWall())
 }
 
 /*
 Returns [code]true[/code] if the body collided only with a wall on the last call of [method move_and_slide]. Otherwise, returns [code]false[/code]. The [member up_direction] and [member floor_max_angle] are used to determine whether a surface is "wall" or not.
 */
 func (self Instance) IsOnWallOnly() bool { //gd:CharacterBody2D.is_on_wall_only
-	return bool(class(self).IsOnWallOnly())
+	return bool(Advanced(self).IsOnWallOnly())
 }
 
 /*
@@ -124,7 +125,7 @@ Returns the collision normal of the floor at the last collision point. Only vali
 [b]Warning:[/b] The collision normal is not always the same as the surface normal.
 */
 func (self Instance) GetFloorNormal() Vector2.XY { //gd:CharacterBody2D.get_floor_normal
-	return Vector2.XY(class(self).GetFloorNormal())
+	return Vector2.XY(Advanced(self).GetFloorNormal())
 }
 
 /*
@@ -132,49 +133,56 @@ Returns the collision normal of the wall at the last collision point. Only valid
 [b]Warning:[/b] The collision normal is not always the same as the surface normal.
 */
 func (self Instance) GetWallNormal() Vector2.XY { //gd:CharacterBody2D.get_wall_normal
-	return Vector2.XY(class(self).GetWallNormal())
+	return Vector2.XY(Advanced(self).GetWallNormal())
 }
 
 /*
 Returns the last motion applied to the [CharacterBody2D] during the last call to [method move_and_slide]. The movement can be split into multiple motions when sliding occurs, and this method return the last one, which is useful to retrieve the current direction of the movement.
 */
 func (self Instance) GetLastMotion() Vector2.XY { //gd:CharacterBody2D.get_last_motion
-	return Vector2.XY(class(self).GetLastMotion())
+	return Vector2.XY(Advanced(self).GetLastMotion())
 }
 
 /*
 Returns the travel (position delta) that occurred during the last call to [method move_and_slide].
 */
 func (self Instance) GetPositionDelta() Vector2.XY { //gd:CharacterBody2D.get_position_delta
-	return Vector2.XY(class(self).GetPositionDelta())
+	return Vector2.XY(Advanced(self).GetPositionDelta())
 }
 
 /*
 Returns the current real velocity since the last call to [method move_and_slide]. For example, when you climb a slope, you will move diagonally even though the velocity is horizontal. This method returns the diagonal movement, as opposed to [member velocity] which returns the requested velocity.
 */
 func (self Instance) GetRealVelocity() Vector2.XY { //gd:CharacterBody2D.get_real_velocity
-	return Vector2.XY(class(self).GetRealVelocity())
+	return Vector2.XY(Advanced(self).GetRealVelocity())
 }
 
 /*
 Returns the floor's collision angle at the last collision point according to [param up_direction], which is [constant Vector2.UP] by default. This value is always positive and only valid after calling [method move_and_slide] and when [method is_on_floor] returns [code]true[/code].
 */
 func (self Instance) GetFloorAngle() Float.X { //gd:CharacterBody2D.get_floor_angle
-	return Float.X(Float.X(class(self).GetFloorAngle(Vector2.XY(gd.Vector2{0, -1}))))
+	return Float.X(Float.X(Advanced(self).GetFloorAngle(Vector2.XY(gd.Vector2{0, -1}))))
+}
+
+/*
+Returns the floor's collision angle at the last collision point according to [param up_direction], which is [constant Vector2.UP] by default. This value is always positive and only valid after calling [method move_and_slide] and when [method is_on_floor] returns [code]true[/code].
+*/
+func (self Expanded) GetFloorAngle(up_direction Vector2.XY) Float.X { //gd:CharacterBody2D.get_floor_angle
+	return Float.X(Float.X(Advanced(self).GetFloorAngle(Vector2.XY(up_direction))))
 }
 
 /*
 Returns the linear velocity of the platform at the last collision point. Only valid after calling [method move_and_slide].
 */
 func (self Instance) GetPlatformVelocity() Vector2.XY { //gd:CharacterBody2D.get_platform_velocity
-	return Vector2.XY(class(self).GetPlatformVelocity())
+	return Vector2.XY(Advanced(self).GetPlatformVelocity())
 }
 
 /*
 Returns the number of times the body collided and changed direction during the last call to [method move_and_slide].
 */
 func (self Instance) GetSlideCollisionCount() int { //gd:CharacterBody2D.get_slide_collision_count
-	return int(int(class(self).GetSlideCollisionCount()))
+	return int(int(Advanced(self).GetSlideCollisionCount()))
 }
 
 /*
@@ -200,14 +208,14 @@ for (int i = 0; i < GetSlideCollisionCount(); i++)
 [/codeblocks]
 */
 func (self Instance) GetSlideCollision(slide_idx int) [1]gdclass.KinematicCollision2D { //gd:CharacterBody2D.get_slide_collision
-	return [1]gdclass.KinematicCollision2D(class(self).GetSlideCollision(int64(slide_idx)))
+	return [1]gdclass.KinematicCollision2D(Advanced(self).GetSlideCollision(int64(slide_idx)))
 }
 
 /*
 Returns a [KinematicCollision2D], which contains information about the latest collision that occurred during the last call to [method move_and_slide].
 */
 func (self Instance) GetLastSlideCollision() [1]gdclass.KinematicCollision2D { //gd:CharacterBody2D.get_last_slide_collision
-	return [1]gdclass.KinematicCollision2D(class(self).GetLastSlideCollision())
+	return [1]gdclass.KinematicCollision2D(Advanced(self).GetLastSlideCollision())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

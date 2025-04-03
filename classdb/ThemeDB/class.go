@@ -57,7 +57,7 @@ Returns a reference to the default engine [Theme]. This theme resource is respon
 */
 func GetDefaultTheme() [1]gdclass.Theme { //gd:ThemeDB.get_default_theme
 	once.Do(singleton)
-	return [1]gdclass.Theme(class(self).GetDefaultTheme())
+	return [1]gdclass.Theme(Advanced().GetDefaultTheme())
 }
 
 /*
@@ -66,7 +66,7 @@ To set the project theme, see [member ProjectSettings.gui/theme/custom].
 */
 func GetProjectTheme() [1]gdclass.Theme { //gd:ThemeDB.get_project_theme
 	once.Do(singleton)
-	return [1]gdclass.Theme(class(self).GetProjectTheme())
+	return [1]gdclass.Theme(Advanced().GetProjectTheme())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

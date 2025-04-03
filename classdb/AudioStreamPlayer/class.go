@@ -46,6 +46,7 @@ To use this node, [member stream] needs to be set to a valid [AudioStream] resou
 If you need to play audio at a specific position, use [AudioStreamPlayer2D] or [AudioStreamPlayer3D] instead.
 */
 type Instance [1]gdclass.AudioStreamPlayer
+type Expanded [1]gdclass.AudioStreamPlayer
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -59,21 +60,28 @@ type Any interface {
 Plays a sound from the beginning, or the given [param from_position] in seconds.
 */
 func (self Instance) Play() { //gd:AudioStreamPlayer.play
-	class(self).Play(float64(0.0))
+	Advanced(self).Play(float64(0.0))
+}
+
+/*
+Plays a sound from the beginning, or the given [param from_position] in seconds.
+*/
+func (self Expanded) Play(from_position Float.X) { //gd:AudioStreamPlayer.play
+	Advanced(self).Play(float64(from_position))
 }
 
 /*
 Restarts all sounds to be played from the given [param to_position], in seconds. Does nothing if no sounds are playing.
 */
 func (self Instance) SeekTo(to_position Float.X) { //gd:AudioStreamPlayer.seek
-	class(self).SeekTo(float64(to_position))
+	Advanced(self).SeekTo(float64(to_position))
 }
 
 /*
 Stops all sounds from this node.
 */
 func (self Instance) Stop() { //gd:AudioStreamPlayer.stop
-	class(self).Stop()
+	Advanced(self).Stop()
 }
 
 /*
@@ -82,21 +90,21 @@ Returns the position in the [AudioStream] of the latest sound, in seconds. Retur
 [b]Note:[/b] This method always returns [code]0.0[/code] if the [member stream] is an [AudioStreamInteractive], since it can have multiple clips playing at once.
 */
 func (self Instance) GetPlaybackPosition() Float.X { //gd:AudioStreamPlayer.get_playback_position
-	return Float.X(Float.X(class(self).GetPlaybackPosition()))
+	return Float.X(Float.X(Advanced(self).GetPlaybackPosition()))
 }
 
 /*
 Returns [code]true[/code] if any sound is active, even if [member stream_paused] is set to [code]true[/code]. See also [member playing] and [method get_stream_playback].
 */
 func (self Instance) HasStreamPlayback() bool { //gd:AudioStreamPlayer.has_stream_playback
-	return bool(class(self).HasStreamPlayback())
+	return bool(Advanced(self).HasStreamPlayback())
 }
 
 /*
 Returns the latest [AudioStreamPlayback] of this node, usually the most recently created by [method play]. If no sounds are playing, this method fails and returns an empty playback.
 */
 func (self Instance) GetStreamPlayback() [1]gdclass.AudioStreamPlayback { //gd:AudioStreamPlayer.get_stream_playback
-	return [1]gdclass.AudioStreamPlayback(class(self).GetStreamPlayback())
+	return [1]gdclass.AudioStreamPlayback(Advanced(self).GetStreamPlayback())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

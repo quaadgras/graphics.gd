@@ -49,6 +49,7 @@ Plugins are used by the editor to extend functionality. The most common types of
 %!(EXTRA string=EditorPlugin)
 */
 type Instance [1]gdclass.EditorPlugin
+type Expanded [1]gdclass.EditorPlugin
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -961,7 +962,7 @@ Please remember that you have to manage the visibility of your custom controls y
 When your plugin is deactivated, make sure to remove your custom control with [method remove_control_from_container] and free it with [method Node.queue_free].
 */
 func (self Instance) AddControlToContainer(container gdclass.EditorPluginCustomControlContainer, control [1]gdclass.Control) { //gd:EditorPlugin.add_control_to_container
-	class(self).AddControlToContainer(container, control)
+	Advanced(self).AddControlToContainer(container, control)
 }
 
 /*
@@ -969,7 +970,15 @@ Adds a control to the bottom panel (together with Output, Debug, Animation, etc.
 Optionally, you can specify a shortcut parameter. When pressed, this shortcut will toggle the bottom panel's visibility. See the default editor bottom panel shortcuts in the Editor Settings for inspiration. Per convention, they all use [kbd]Alt[/kbd] modifier.
 */
 func (self Instance) AddControlToBottomPanel(control [1]gdclass.Control, title string) [1]gdclass.Button { //gd:EditorPlugin.add_control_to_bottom_panel
-	return [1]gdclass.Button(class(self).AddControlToBottomPanel(control, String.New(title), [1][1]gdclass.Shortcut{}[0]))
+	return [1]gdclass.Button(Advanced(self).AddControlToBottomPanel(control, String.New(title), [1][1]gdclass.Shortcut{}[0]))
+}
+
+/*
+Adds a control to the bottom panel (together with Output, Debug, Animation, etc.). Returns a reference to the button added. It's up to you to hide/show the button when needed. When your plugin is deactivated, make sure to remove your custom control with [method remove_control_from_bottom_panel] and free it with [method Node.queue_free].
+Optionally, you can specify a shortcut parameter. When pressed, this shortcut will toggle the bottom panel's visibility. See the default editor bottom panel shortcuts in the Editor Settings for inspiration. Per convention, they all use [kbd]Alt[/kbd] modifier.
+*/
+func (self Expanded) AddControlToBottomPanel(control [1]gdclass.Control, title string, shortcut [1]gdclass.Shortcut) [1]gdclass.Button { //gd:EditorPlugin.add_control_to_bottom_panel
+	return [1]gdclass.Button(Advanced(self).AddControlToBottomPanel(control, String.New(title), shortcut))
 }
 
 /*
@@ -979,63 +988,73 @@ When your plugin is deactivated, make sure to remove your custom control with [m
 Optionally, you can specify a shortcut parameter. When pressed, this shortcut will toggle the dock's visibility once it's moved to the bottom panel (this shortcut does not affect the dock otherwise). See the default editor bottom panel shortcuts in the Editor Settings for inspiration. Per convention, they all use [kbd]Alt[/kbd] modifier.
 */
 func (self Instance) AddControlToDock(slot gdclass.EditorPluginDockSlot, control [1]gdclass.Control) { //gd:EditorPlugin.add_control_to_dock
-	class(self).AddControlToDock(slot, control, [1][1]gdclass.Shortcut{}[0])
+	Advanced(self).AddControlToDock(slot, control, [1][1]gdclass.Shortcut{}[0])
+}
+
+/*
+Adds the control to a specific dock slot (see [enum DockSlot] for options).
+If the dock is repositioned and as long as the plugin is active, the editor will save the dock position on further sessions.
+When your plugin is deactivated, make sure to remove your custom control with [method remove_control_from_docks] and free it with [method Node.queue_free].
+Optionally, you can specify a shortcut parameter. When pressed, this shortcut will toggle the dock's visibility once it's moved to the bottom panel (this shortcut does not affect the dock otherwise). See the default editor bottom panel shortcuts in the Editor Settings for inspiration. Per convention, they all use [kbd]Alt[/kbd] modifier.
+*/
+func (self Expanded) AddControlToDock(slot gdclass.EditorPluginDockSlot, control [1]gdclass.Control, shortcut [1]gdclass.Shortcut) { //gd:EditorPlugin.add_control_to_dock
+	Advanced(self).AddControlToDock(slot, control, shortcut)
 }
 
 /*
 Removes the control from the dock. You have to manually [method Node.queue_free] the control.
 */
 func (self Instance) RemoveControlFromDocks(control [1]gdclass.Control) { //gd:EditorPlugin.remove_control_from_docks
-	class(self).RemoveControlFromDocks(control)
+	Advanced(self).RemoveControlFromDocks(control)
 }
 
 /*
 Removes the control from the bottom panel. You have to manually [method Node.queue_free] the control.
 */
 func (self Instance) RemoveControlFromBottomPanel(control [1]gdclass.Control) { //gd:EditorPlugin.remove_control_from_bottom_panel
-	class(self).RemoveControlFromBottomPanel(control)
+	Advanced(self).RemoveControlFromBottomPanel(control)
 }
 
 /*
 Removes the control from the specified container. You have to manually [method Node.queue_free] the control.
 */
 func (self Instance) RemoveControlFromContainer(container gdclass.EditorPluginCustomControlContainer, control [1]gdclass.Control) { //gd:EditorPlugin.remove_control_from_container
-	class(self).RemoveControlFromContainer(container, control)
+	Advanced(self).RemoveControlFromContainer(container, control)
 }
 
 /*
 Sets the tab icon for the given control in a dock slot. Setting to [code]null[/code] removes the icon.
 */
 func (self Instance) SetDockTabIcon(control [1]gdclass.Control, icon [1]gdclass.Texture2D) { //gd:EditorPlugin.set_dock_tab_icon
-	class(self).SetDockTabIcon(control, icon)
+	Advanced(self).SetDockTabIcon(control, icon)
 }
 
 /*
 Adds a custom menu item to [b]Project > Tools[/b] named [param name]. When clicked, the provided [param callable] will be called.
 */
 func (self Instance) AddToolMenuItem(name string, callable func()) { //gd:EditorPlugin.add_tool_menu_item
-	class(self).AddToolMenuItem(String.New(name), Callable.New(callable))
+	Advanced(self).AddToolMenuItem(String.New(name), Callable.New(callable))
 }
 
 /*
 Adds a custom [PopupMenu] submenu under [b]Project > Tools >[/b] [param name]. Use [method remove_tool_menu_item] on plugin clean up to remove the menu.
 */
 func (self Instance) AddToolSubmenuItem(name string, submenu [1]gdclass.PopupMenu) { //gd:EditorPlugin.add_tool_submenu_item
-	class(self).AddToolSubmenuItem(String.New(name), submenu)
+	Advanced(self).AddToolSubmenuItem(String.New(name), submenu)
 }
 
 /*
 Removes a menu [param name] from [b]Project > Tools[/b].
 */
 func (self Instance) RemoveToolMenuItem(name string) { //gd:EditorPlugin.remove_tool_menu_item
-	class(self).RemoveToolMenuItem(String.New(name))
+	Advanced(self).RemoveToolMenuItem(String.New(name))
 }
 
 /*
 Returns the [PopupMenu] under [b]Scene > Export As...[/b].
 */
 func (self Instance) GetExportAsMenu() [1]gdclass.PopupMenu { //gd:EditorPlugin.get_export_as_menu
-	return [1]gdclass.PopupMenu(class(self).GetExportAsMenu())
+	return [1]gdclass.PopupMenu(Advanced(self).GetExportAsMenu())
 }
 
 /*
@@ -1047,56 +1066,56 @@ During run-time, this will be a simple object with a script so this function doe
 [b]Note:[/b] Custom types added this way are not true classes. They are just a helper to create a node with specific script.
 */
 func (self Instance) AddCustomType(atype string, base string, script [1]gdclass.Script, icon [1]gdclass.Texture2D) { //gd:EditorPlugin.add_custom_type
-	class(self).AddCustomType(String.New(atype), String.New(base), script, icon)
+	Advanced(self).AddCustomType(String.New(atype), String.New(base), script, icon)
 }
 
 /*
 Removes a custom type added by [method add_custom_type].
 */
 func (self Instance) RemoveCustomType(atype string) { //gd:EditorPlugin.remove_custom_type
-	class(self).RemoveCustomType(String.New(atype))
+	Advanced(self).RemoveCustomType(String.New(atype))
 }
 
 /*
 Adds a script at [param path] to the Autoload list as [param name].
 */
 func (self Instance) AddAutoloadSingleton(name string, path string) { //gd:EditorPlugin.add_autoload_singleton
-	class(self).AddAutoloadSingleton(String.New(name), String.New(path))
+	Advanced(self).AddAutoloadSingleton(String.New(name), String.New(path))
 }
 
 /*
 Removes an Autoload [param name] from the list.
 */
 func (self Instance) RemoveAutoloadSingleton(name string) { //gd:EditorPlugin.remove_autoload_singleton
-	class(self).RemoveAutoloadSingleton(String.New(name))
+	Advanced(self).RemoveAutoloadSingleton(String.New(name))
 }
 
 /*
 Updates the overlays of the 2D and 3D editor viewport. Causes methods [method _forward_canvas_draw_over_viewport], [method _forward_canvas_force_draw_over_viewport], [method _forward_3d_draw_over_viewport] and [method _forward_3d_force_draw_over_viewport] to be called.
 */
 func (self Instance) UpdateOverlays() int { //gd:EditorPlugin.update_overlays
-	return int(int(class(self).UpdateOverlays()))
+	return int(int(Advanced(self).UpdateOverlays()))
 }
 
 /*
 Makes a specific item in the bottom panel visible.
 */
 func (self Instance) MakeBottomPanelItemVisible(item [1]gdclass.Control) { //gd:EditorPlugin.make_bottom_panel_item_visible
-	class(self).MakeBottomPanelItemVisible(item)
+	Advanced(self).MakeBottomPanelItemVisible(item)
 }
 
 /*
 Minimizes the bottom panel.
 */
 func (self Instance) HideBottomPanel() { //gd:EditorPlugin.hide_bottom_panel
-	class(self).HideBottomPanel()
+	Advanced(self).HideBottomPanel()
 }
 
 /*
 Gets the undo/redo object. Most actions in the editor can be undoable, so use this object to make sure this happens when it's worth it.
 */
 func (self Instance) GetUndoRedo() [1]gdclass.EditorUndoRedoManager { //gd:EditorPlugin.get_undo_redo
-	return [1]gdclass.EditorUndoRedoManager(class(self).GetUndoRedo())
+	return [1]gdclass.EditorUndoRedoManager(Advanced(self).GetUndoRedo())
 }
 
 /*
@@ -1104,35 +1123,35 @@ Hooks a callback into the undo/redo action creation when a property is modified 
 The callback should have 4 arguments: [Object] [code]undo_redo[/code], [Object] [code]modified_object[/code], [String] [code]property[/code] and [Variant] [code]new_value[/code]. They are, respectively, the [UndoRedo] object used by the inspector, the currently modified object, the name of the modified property and the new value the property is about to take.
 */
 func (self Instance) AddUndoRedoInspectorHookCallback(callable func(undo_redo Object.Instance, modified_object Object.Instance, property string, new_value any)) { //gd:EditorPlugin.add_undo_redo_inspector_hook_callback
-	class(self).AddUndoRedoInspectorHookCallback(Callable.New(callable))
+	Advanced(self).AddUndoRedoInspectorHookCallback(Callable.New(callable))
 }
 
 /*
 Removes a callback previously added by [method add_undo_redo_inspector_hook_callback].
 */
 func (self Instance) RemoveUndoRedoInspectorHookCallback(callable Callable.Function) { //gd:EditorPlugin.remove_undo_redo_inspector_hook_callback
-	class(self).RemoveUndoRedoInspectorHookCallback(Callable.New(callable))
+	Advanced(self).RemoveUndoRedoInspectorHookCallback(Callable.New(callable))
 }
 
 /*
 Queue save the project's editor layout.
 */
 func (self Instance) QueueSaveLayout() { //gd:EditorPlugin.queue_save_layout
-	class(self).QueueSaveLayout()
+	Advanced(self).QueueSaveLayout()
 }
 
 /*
 Registers a custom translation parser plugin for extracting translatable strings from custom files.
 */
 func (self Instance) AddTranslationParserPlugin(parser [1]gdclass.EditorTranslationParserPlugin) { //gd:EditorPlugin.add_translation_parser_plugin
-	class(self).AddTranslationParserPlugin(parser)
+	Advanced(self).AddTranslationParserPlugin(parser)
 }
 
 /*
 Removes a custom translation parser plugin registered by [method add_translation_parser_plugin].
 */
 func (self Instance) RemoveTranslationParserPlugin(parser [1]gdclass.EditorTranslationParserPlugin) { //gd:EditorPlugin.remove_translation_parser_plugin
-	class(self).RemoveTranslationParserPlugin(parser)
+	Advanced(self).RemoveTranslationParserPlugin(parser)
 }
 
 /*
@@ -1142,14 +1161,24 @@ If [param first_priority] is [code]true[/code], the new import plugin is inserte
 See [method add_inspector_plugin] for an example of how to register a plugin.
 */
 func (self Instance) AddImportPlugin(importer [1]gdclass.EditorImportPlugin) { //gd:EditorPlugin.add_import_plugin
-	class(self).AddImportPlugin(importer, false)
+	Advanced(self).AddImportPlugin(importer, false)
+}
+
+/*
+Registers a new [EditorImportPlugin]. Import plugins are used to import custom and unsupported assets as a custom [Resource] type.
+If [param first_priority] is [code]true[/code], the new import plugin is inserted first in the list and takes precedence over pre-existing plugins.
+[b]Note:[/b] If you want to import custom 3D asset formats use [method add_scene_format_importer_plugin] instead.
+See [method add_inspector_plugin] for an example of how to register a plugin.
+*/
+func (self Expanded) AddImportPlugin(importer [1]gdclass.EditorImportPlugin, first_priority bool) { //gd:EditorPlugin.add_import_plugin
+	Advanced(self).AddImportPlugin(importer, first_priority)
 }
 
 /*
 Removes an import plugin registered by [method add_import_plugin].
 */
 func (self Instance) RemoveImportPlugin(importer [1]gdclass.EditorImportPlugin) { //gd:EditorPlugin.remove_import_plugin
-	class(self).RemoveImportPlugin(importer)
+	Advanced(self).RemoveImportPlugin(importer)
 }
 
 /*
@@ -1157,14 +1186,22 @@ Registers a new [EditorSceneFormatImporter]. Scene importers are used to import 
 If [param first_priority] is [code]true[/code], the new import plugin is inserted first in the list and takes precedence over pre-existing plugins.
 */
 func (self Instance) AddSceneFormatImporterPlugin(scene_format_importer [1]gdclass.EditorSceneFormatImporter) { //gd:EditorPlugin.add_scene_format_importer_plugin
-	class(self).AddSceneFormatImporterPlugin(scene_format_importer, false)
+	Advanced(self).AddSceneFormatImporterPlugin(scene_format_importer, false)
+}
+
+/*
+Registers a new [EditorSceneFormatImporter]. Scene importers are used to import custom 3D asset formats as scenes.
+If [param first_priority] is [code]true[/code], the new import plugin is inserted first in the list and takes precedence over pre-existing plugins.
+*/
+func (self Expanded) AddSceneFormatImporterPlugin(scene_format_importer [1]gdclass.EditorSceneFormatImporter, first_priority bool) { //gd:EditorPlugin.add_scene_format_importer_plugin
+	Advanced(self).AddSceneFormatImporterPlugin(scene_format_importer, first_priority)
 }
 
 /*
 Removes a scene format importer registered by [method add_scene_format_importer_plugin].
 */
 func (self Instance) RemoveSceneFormatImporterPlugin(scene_format_importer [1]gdclass.EditorSceneFormatImporter) { //gd:EditorPlugin.remove_scene_format_importer_plugin
-	class(self).RemoveSceneFormatImporterPlugin(scene_format_importer)
+	Advanced(self).RemoveSceneFormatImporterPlugin(scene_format_importer)
 }
 
 /*
@@ -1172,14 +1209,22 @@ Add a [EditorScenePostImportPlugin]. These plugins allow customizing the import 
 If [param first_priority] is [code]true[/code], the new import plugin is inserted first in the list and takes precedence over pre-existing plugins.
 */
 func (self Instance) AddScenePostImportPlugin(scene_import_plugin [1]gdclass.EditorScenePostImportPlugin) { //gd:EditorPlugin.add_scene_post_import_plugin
-	class(self).AddScenePostImportPlugin(scene_import_plugin, false)
+	Advanced(self).AddScenePostImportPlugin(scene_import_plugin, false)
+}
+
+/*
+Add a [EditorScenePostImportPlugin]. These plugins allow customizing the import process of 3D assets by adding new options to the import dialogs.
+If [param first_priority] is [code]true[/code], the new import plugin is inserted first in the list and takes precedence over pre-existing plugins.
+*/
+func (self Expanded) AddScenePostImportPlugin(scene_import_plugin [1]gdclass.EditorScenePostImportPlugin, first_priority bool) { //gd:EditorPlugin.add_scene_post_import_plugin
+	Advanced(self).AddScenePostImportPlugin(scene_import_plugin, first_priority)
 }
 
 /*
 Remove the [EditorScenePostImportPlugin], added with [method add_scene_post_import_plugin].
 */
 func (self Instance) RemoveScenePostImportPlugin(scene_import_plugin [1]gdclass.EditorScenePostImportPlugin) { //gd:EditorPlugin.remove_scene_post_import_plugin
-	class(self).RemoveScenePostImportPlugin(scene_import_plugin)
+	Advanced(self).RemoveScenePostImportPlugin(scene_import_plugin)
 }
 
 /*
@@ -1187,28 +1232,28 @@ Registers a new [EditorExportPlugin]. Export plugins are used to perform tasks w
 See [method add_inspector_plugin] for an example of how to register a plugin.
 */
 func (self Instance) AddExportPlugin(plugin [1]gdclass.EditorExportPlugin) { //gd:EditorPlugin.add_export_plugin
-	class(self).AddExportPlugin(plugin)
+	Advanced(self).AddExportPlugin(plugin)
 }
 
 /*
 Removes an export plugin registered by [method add_export_plugin].
 */
 func (self Instance) RemoveExportPlugin(plugin [1]gdclass.EditorExportPlugin) { //gd:EditorPlugin.remove_export_plugin
-	class(self).RemoveExportPlugin(plugin)
+	Advanced(self).RemoveExportPlugin(plugin)
 }
 
 /*
 Registers a new [EditorExportPlatform]. Export platforms provides functionality of exporting to the specific platform.
 */
 func (self Instance) AddExportPlatform(platform [1]gdclass.EditorExportPlatform) { //gd:EditorPlugin.add_export_platform
-	class(self).AddExportPlatform(platform)
+	Advanced(self).AddExportPlatform(platform)
 }
 
 /*
 Removes an export platform registered by [method add_export_platform].
 */
 func (self Instance) RemoveExportPlatform(platform [1]gdclass.EditorExportPlatform) { //gd:EditorPlugin.remove_export_platform
-	class(self).RemoveExportPlatform(platform)
+	Advanced(self).RemoveExportPlatform(platform)
 }
 
 /*
@@ -1216,14 +1261,14 @@ Registers a new [EditorNode3DGizmoPlugin]. Gizmo plugins are used to add custom 
 See [method add_inspector_plugin] for an example of how to register a plugin.
 */
 func (self Instance) AddNode3dGizmoPlugin(plugin [1]gdclass.EditorNode3DGizmoPlugin) { //gd:EditorPlugin.add_node_3d_gizmo_plugin
-	class(self).AddNode3dGizmoPlugin(plugin)
+	Advanced(self).AddNode3dGizmoPlugin(plugin)
 }
 
 /*
 Removes a gizmo plugin registered by [method add_node_3d_gizmo_plugin].
 */
 func (self Instance) RemoveNode3dGizmoPlugin(plugin [1]gdclass.EditorNode3DGizmoPlugin) { //gd:EditorPlugin.remove_node_3d_gizmo_plugin
-	class(self).RemoveNode3dGizmoPlugin(plugin)
+	Advanced(self).RemoveNode3dGizmoPlugin(plugin)
 }
 
 /*
@@ -1246,14 +1291,14 @@ func _exit_tree():
 [/codeblocks]
 */
 func (self Instance) AddInspectorPlugin(plugin [1]gdclass.EditorInspectorPlugin) { //gd:EditorPlugin.add_inspector_plugin
-	class(self).AddInspectorPlugin(plugin)
+	Advanced(self).AddInspectorPlugin(plugin)
 }
 
 /*
 Removes an inspector plugin registered by [method add_inspector_plugin].
 */
 func (self Instance) RemoveInspectorPlugin(plugin [1]gdclass.EditorInspectorPlugin) { //gd:EditorPlugin.remove_inspector_plugin
-	class(self).RemoveInspectorPlugin(plugin)
+	Advanced(self).RemoveInspectorPlugin(plugin)
 }
 
 /*
@@ -1261,28 +1306,28 @@ Registers a new [EditorResourceConversionPlugin]. Resource conversion plugins ar
 See [EditorResourceConversionPlugin] for an example of how to create a resource conversion plugin.
 */
 func (self Instance) AddResourceConversionPlugin(plugin [1]gdclass.EditorResourceConversionPlugin) { //gd:EditorPlugin.add_resource_conversion_plugin
-	class(self).AddResourceConversionPlugin(plugin)
+	Advanced(self).AddResourceConversionPlugin(plugin)
 }
 
 /*
 Removes a resource conversion plugin registered by [method add_resource_conversion_plugin].
 */
 func (self Instance) RemoveResourceConversionPlugin(plugin [1]gdclass.EditorResourceConversionPlugin) { //gd:EditorPlugin.remove_resource_conversion_plugin
-	class(self).RemoveResourceConversionPlugin(plugin)
+	Advanced(self).RemoveResourceConversionPlugin(plugin)
 }
 
 /*
 Use this method if you always want to receive inputs from 3D view screen inside [method _forward_3d_gui_input]. It might be especially usable if your plugin will want to use raycast in the scene.
 */
 func (self Instance) SetInputEventForwardingAlwaysEnabled() { //gd:EditorPlugin.set_input_event_forwarding_always_enabled
-	class(self).SetInputEventForwardingAlwaysEnabled()
+	Advanced(self).SetInputEventForwardingAlwaysEnabled()
 }
 
 /*
 Enables calling of [method _forward_canvas_force_draw_over_viewport] for the 2D editor and [method _forward_3d_force_draw_over_viewport] for the 3D editor when their viewports are updated. You need to call this method only once and it will work permanently for this plugin.
 */
 func (self Instance) SetForceDrawOverForwardingEnabled() { //gd:EditorPlugin.set_force_draw_over_forwarding_enabled
-	class(self).SetForceDrawOverForwardingEnabled()
+	Advanced(self).SetForceDrawOverForwardingEnabled()
 }
 
 /*
@@ -1290,21 +1335,21 @@ Adds a plugin to the context menu. [param slot] is the context menu where the pl
 See [enum EditorContextMenuPlugin.ContextMenuSlot] for available context menus. A plugin instance can belong only to a single context menu slot.
 */
 func (self Instance) AddContextMenuPlugin(slot gdclass.EditorContextMenuPluginContextMenuSlot, plugin [1]gdclass.EditorContextMenuPlugin) { //gd:EditorPlugin.add_context_menu_plugin
-	class(self).AddContextMenuPlugin(slot, plugin)
+	Advanced(self).AddContextMenuPlugin(slot, plugin)
 }
 
 /*
 Removes the specified context menu plugin.
 */
 func (self Instance) RemoveContextMenuPlugin(plugin [1]gdclass.EditorContextMenuPlugin) { //gd:EditorPlugin.remove_context_menu_plugin
-	class(self).RemoveContextMenuPlugin(plugin)
+	Advanced(self).RemoveContextMenuPlugin(plugin)
 }
 
 /*
 Returns the [EditorInterface] singleton instance.
 */
 func (self Instance) GetEditorInterface() [1]gdclass.EditorInterface { //gd:EditorPlugin.get_editor_interface
-	return [1]gdclass.EditorInterface(class(self).GetEditorInterface())
+	return [1]gdclass.EditorInterface(Advanced(self).GetEditorInterface())
 }
 
 /*
@@ -1313,28 +1358,28 @@ Gets the Editor's dialog used for making scripts.
 [b]Warning:[/b] Removing and freeing this node will render a part of the editor useless and may cause a crash.
 */
 func (self Instance) GetScriptCreateDialog() [1]gdclass.ScriptCreateDialog { //gd:EditorPlugin.get_script_create_dialog
-	return [1]gdclass.ScriptCreateDialog(class(self).GetScriptCreateDialog())
+	return [1]gdclass.ScriptCreateDialog(Advanced(self).GetScriptCreateDialog())
 }
 
 /*
 Adds a [Script] as debugger plugin to the Debugger. The script must extend [EditorDebuggerPlugin].
 */
 func (self Instance) AddDebuggerPlugin(script [1]gdclass.EditorDebuggerPlugin) { //gd:EditorPlugin.add_debugger_plugin
-	class(self).AddDebuggerPlugin(script)
+	Advanced(self).AddDebuggerPlugin(script)
 }
 
 /*
 Removes the debugger plugin with given script from the Debugger.
 */
 func (self Instance) RemoveDebuggerPlugin(script [1]gdclass.EditorDebuggerPlugin) { //gd:EditorPlugin.remove_debugger_plugin
-	class(self).RemoveDebuggerPlugin(script)
+	Advanced(self).RemoveDebuggerPlugin(script)
 }
 
 /*
 Provide the version of the plugin declared in the [code]plugin.cfg[/code] config file.
 */
 func (self Instance) GetPluginVersion() string { //gd:EditorPlugin.get_plugin_version
-	return string(class(self).GetPluginVersion().String())
+	return string(Advanced(self).GetPluginVersion().String())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

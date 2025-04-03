@@ -61,35 +61,35 @@ type Any interface {
 Returns the [RID] of this obstacle on the [NavigationServer3D].
 */
 func (self Instance) GetRid() RID.NavigationObstacle3D { //gd:NavigationObstacle3D.get_rid
-	return RID.NavigationObstacle3D(class(self).GetRid())
+	return RID.NavigationObstacle3D(Advanced(self).GetRid())
 }
 
 /*
 Sets the [RID] of the navigation map this NavigationObstacle node should use and also updates the [code]obstacle[/code] on the NavigationServer.
 */
 func (self Instance) SetNavigationMap(navigation_map RID.NavigationMap3D) { //gd:NavigationObstacle3D.set_navigation_map
-	class(self).SetNavigationMap(RID.Any(navigation_map))
+	Advanced(self).SetNavigationMap(RID.Any(navigation_map))
 }
 
 /*
 Returns the [RID] of the navigation map for this NavigationObstacle node. This function returns always the map set on the NavigationObstacle node and not the map of the abstract obstacle on the NavigationServer. If the obstacle map is changed directly with the NavigationServer API the NavigationObstacle node will not be aware of the map change. Use [method set_navigation_map] to change the navigation map for the NavigationObstacle and also update the obstacle on the NavigationServer.
 */
 func (self Instance) GetNavigationMap() RID.NavigationMap3D { //gd:NavigationObstacle3D.get_navigation_map
-	return RID.NavigationMap3D(class(self).GetNavigationMap())
+	return RID.NavigationMap3D(Advanced(self).GetNavigationMap())
 }
 
 /*
 Based on [param value], enables or disables the specified layer in the [member avoidance_layers] bitmask, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) SetAvoidanceLayerValue(layer_number int, value bool) { //gd:NavigationObstacle3D.set_avoidance_layer_value
-	class(self).SetAvoidanceLayerValue(int64(layer_number), value)
+	Advanced(self).SetAvoidanceLayerValue(int64(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member avoidance_layers] bitmask is enabled, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) GetAvoidanceLayerValue(layer_number int) bool { //gd:NavigationObstacle3D.get_avoidance_layer_value
-	return bool(class(self).GetAvoidanceLayerValue(int64(layer_number)))
+	return bool(Advanced(self).GetAvoidanceLayerValue(int64(layer_number)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

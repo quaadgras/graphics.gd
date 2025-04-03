@@ -49,6 +49,7 @@ An [Image] cannot be assigned to a texture property of an object directly (such 
 [b]Note:[/b] The maximum image size is 16384×16384 pixels due to graphics hardware limitations. Larger images may fail to import.
 */
 type Instance [1]gdclass.Image
+type Expanded [1]gdclass.Image
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -62,112 +63,126 @@ type Any interface {
 Returns the image's width.
 */
 func (self Instance) GetWidth() int { //gd:Image.get_width
-	return int(int(class(self).GetWidth()))
+	return int(int(Advanced(self).GetWidth()))
 }
 
 /*
 Returns the image's height.
 */
 func (self Instance) GetHeight() int { //gd:Image.get_height
-	return int(int(class(self).GetHeight()))
+	return int(int(Advanced(self).GetHeight()))
 }
 
 /*
 Returns the image's size (width and height).
 */
 func (self Instance) GetSize() Vector2i.XY { //gd:Image.get_size
-	return Vector2i.XY(class(self).GetSize())
+	return Vector2i.XY(Advanced(self).GetSize())
 }
 
 /*
 Returns [code]true[/code] if the image has generated mipmaps.
 */
 func (self Instance) HasMipmaps() bool { //gd:Image.has_mipmaps
-	return bool(class(self).HasMipmaps())
+	return bool(Advanced(self).HasMipmaps())
 }
 
 /*
 Returns the image's format. See [enum Format] constants.
 */
 func (self Instance) GetFormat() gdclass.ImageFormat { //gd:Image.get_format
-	return gdclass.ImageFormat(class(self).GetFormat())
+	return gdclass.ImageFormat(Advanced(self).GetFormat())
 }
 
 /*
 Returns a copy of the image's raw data.
 */
 func (self Instance) GetData() []byte { //gd:Image.get_data
-	return []byte(class(self).GetData().Bytes())
+	return []byte(Advanced(self).GetData().Bytes())
 }
 
 /*
 Returns size (in bytes) of the image's raw data.
 */
 func (self Instance) GetDataSize() int { //gd:Image.get_data_size
-	return int(int(class(self).GetDataSize()))
+	return int(int(Advanced(self).GetDataSize()))
 }
 
 /*
 Converts the image's format. See [enum Format] constants.
 */
 func (self Instance) Convert(format gdclass.ImageFormat) { //gd:Image.convert
-	class(self).Convert(format)
+	Advanced(self).Convert(format)
 }
 
 /*
 Returns the number of mipmap levels or 0 if the image has no mipmaps. The largest main level image is not counted as a mipmap level by this method, so if you want to include it you can add 1 to this count.
 */
 func (self Instance) GetMipmapCount() int { //gd:Image.get_mipmap_count
-	return int(int(class(self).GetMipmapCount()))
+	return int(int(Advanced(self).GetMipmapCount()))
 }
 
 /*
 Returns the offset where the image's mipmap with index [param mipmap] is stored in the [member data] dictionary.
 */
 func (self Instance) GetMipmapOffset(mipmap int) int { //gd:Image.get_mipmap_offset
-	return int(int(class(self).GetMipmapOffset(int64(mipmap))))
+	return int(int(Advanced(self).GetMipmapOffset(int64(mipmap))))
 }
 
 /*
 Resizes the image to the nearest power of 2 for the width and height. If [param square] is [code]true[/code] then set width and height to be the same. New pixels are calculated using the [param interpolation] mode defined via [enum Interpolation] constants.
 */
 func (self Instance) ResizeToPo2() { //gd:Image.resize_to_po2
-	class(self).ResizeToPo2(false, 1)
+	Advanced(self).ResizeToPo2(false, 1)
+}
+
+/*
+Resizes the image to the nearest power of 2 for the width and height. If [param square] is [code]true[/code] then set width and height to be the same. New pixels are calculated using the [param interpolation] mode defined via [enum Interpolation] constants.
+*/
+func (self Expanded) ResizeToPo2(square bool, interpolation gdclass.ImageInterpolation) { //gd:Image.resize_to_po2
+	Advanced(self).ResizeToPo2(square, interpolation)
 }
 
 /*
 Resizes the image to the given [param width] and [param height]. New pixels are calculated using the [param interpolation] mode defined via [enum Interpolation] constants.
 */
 func (self Instance) Resize(width int, height int) { //gd:Image.resize
-	class(self).Resize(int64(width), int64(height), 1)
+	Advanced(self).Resize(int64(width), int64(height), 1)
+}
+
+/*
+Resizes the image to the given [param width] and [param height]. New pixels are calculated using the [param interpolation] mode defined via [enum Interpolation] constants.
+*/
+func (self Expanded) Resize(width int, height int, interpolation gdclass.ImageInterpolation) { //gd:Image.resize
+	Advanced(self).Resize(int64(width), int64(height), interpolation)
 }
 
 /*
 Shrinks the image by a factor of 2 on each axis (this divides the pixel count by 4).
 */
 func (self Instance) ShrinkX2() { //gd:Image.shrink_x2
-	class(self).ShrinkX2()
+	Advanced(self).ShrinkX2()
 }
 
 /*
 Crops the image to the given [param width] and [param height]. If the specified size is larger than the current size, the extra area is filled with black pixels.
 */
 func (self Instance) Crop(width int, height int) { //gd:Image.crop
-	class(self).Crop(int64(width), int64(height))
+	Advanced(self).Crop(int64(width), int64(height))
 }
 
 /*
 Flips the image horizontally.
 */
 func (self Instance) FlipX() { //gd:Image.flip_x
-	class(self).FlipX()
+	Advanced(self).FlipX()
 }
 
 /*
 Flips the image vertically.
 */
 func (self Instance) FlipY() { //gd:Image.flip_y
-	class(self).FlipY()
+	Advanced(self).FlipY()
 }
 
 /*
@@ -175,14 +190,22 @@ Generates mipmaps for the image. Mipmaps are precalculated lower-resolution copi
 It is possible to check if the image has mipmaps by calling [method has_mipmaps] or [method get_mipmap_count]. Calling [method generate_mipmaps] on an image that already has mipmaps will replace existing mipmaps in the image.
 */
 func (self Instance) GenerateMipmaps() error { //gd:Image.generate_mipmaps
-	return error(gd.ToError(class(self).GenerateMipmaps(false)))
+	return error(gd.ToError(Advanced(self).GenerateMipmaps(false)))
+}
+
+/*
+Generates mipmaps for the image. Mipmaps are precalculated lower-resolution copies of the image that are automatically used if the image needs to be scaled down when rendered. They help improve image quality and performance when rendering. This method returns an error if the image is compressed, in a custom format, or if the image's width/height is [code]0[/code]. Enabling [param renormalize] when generating mipmaps for normal map textures will make sure all resulting vector values are normalized.
+It is possible to check if the image has mipmaps by calling [method has_mipmaps] or [method get_mipmap_count]. Calling [method generate_mipmaps] on an image that already has mipmaps will replace existing mipmaps in the image.
+*/
+func (self Expanded) GenerateMipmaps(renormalize bool) error { //gd:Image.generate_mipmaps
+	return error(gd.ToError(Advanced(self).GenerateMipmaps(renormalize)))
 }
 
 /*
 Removes the image's mipmaps.
 */
 func (self Instance) ClearMipmaps() { //gd:Image.clear_mipmaps
-	class(self).ClearMipmaps()
+	Advanced(self).ClearMipmaps()
 }
 
 /*
@@ -190,7 +213,7 @@ Creates an empty image of given size and format. See [enum Format] constants. If
 */
 func Create(width int, height int, use_mipmaps bool, format gdclass.ImageFormat) [1]gdclass.Image { //gd:Image.create
 	self := Instance{}
-	return [1]gdclass.Image(class(self).Create(int64(width), int64(height), use_mipmaps, format))
+	return [1]gdclass.Image(Advanced(self).Create(int64(width), int64(height), use_mipmaps, format))
 }
 
 /*
@@ -198,7 +221,7 @@ Creates an empty image of given size and format. See [enum Format] constants. If
 */
 func CreateEmpty(width int, height int, use_mipmaps bool, format gdclass.ImageFormat) [1]gdclass.Image { //gd:Image.create_empty
 	self := Instance{}
-	return [1]gdclass.Image(class(self).CreateEmpty(int64(width), int64(height), use_mipmaps, format))
+	return [1]gdclass.Image(Advanced(self).CreateEmpty(int64(width), int64(height), use_mipmaps, format))
 }
 
 /*
@@ -206,21 +229,21 @@ Creates a new image of given size and format. See [enum Format] constants. Fills
 */
 func CreateFromData(width int, height int, use_mipmaps bool, format gdclass.ImageFormat, data []byte) [1]gdclass.Image { //gd:Image.create_from_data
 	self := Instance{}
-	return [1]gdclass.Image(class(self).CreateFromData(int64(width), int64(height), use_mipmaps, format, Packed.Bytes(Packed.New(data...))))
+	return [1]gdclass.Image(Advanced(self).CreateFromData(int64(width), int64(height), use_mipmaps, format, Packed.Bytes(Packed.New(data...))))
 }
 
 /*
 Overwrites data of an existing [Image]. Non-static equivalent of [method create_from_data].
 */
 func (self Instance) SetData(width int, height int, use_mipmaps bool, format gdclass.ImageFormat, data []byte) { //gd:Image.set_data
-	class(self).SetData(int64(width), int64(height), use_mipmaps, format, Packed.Bytes(Packed.New(data...)))
+	Advanced(self).SetData(int64(width), int64(height), use_mipmaps, format, Packed.Bytes(Packed.New(data...)))
 }
 
 /*
 Returns [code]true[/code] if the image has no data.
 */
 func (self Instance) IsEmpty() bool { //gd:Image.is_empty
-	return bool(class(self).IsEmpty())
+	return bool(Advanced(self).IsEmpty())
 }
 
 /*
@@ -229,7 +252,7 @@ Loads an image from file [param path]. See [url=$DOCS_URL/tutorials/assets_pipel
 See also [ImageTexture] description for usage examples.
 */
 func (self Instance) Load(path string) error { //gd:Image.load
-	return error(gd.ToError(class(self).Load(String.New(path))))
+	return error(gd.ToError(Advanced(self).Load(String.New(path))))
 }
 
 /*
@@ -237,21 +260,21 @@ Creates a new [Image] and loads data from the specified file.
 */
 func LoadFromFile(path string) [1]gdclass.Image { //gd:Image.load_from_file
 	self := Instance{}
-	return [1]gdclass.Image(class(self).LoadFromFile(String.New(path)))
+	return [1]gdclass.Image(Advanced(self).LoadFromFile(String.New(path)))
 }
 
 /*
 Saves the image as a PNG file to the file at [param path].
 */
 func (self Instance) SavePng(path string) error { //gd:Image.save_png
-	return error(gd.ToError(class(self).SavePng(String.New(path))))
+	return error(gd.ToError(Advanced(self).SavePng(String.New(path))))
 }
 
 /*
 Saves the image as a PNG file to a byte array.
 */
 func (self Instance) SavePngToBuffer() []byte { //gd:Image.save_png_to_buffer
-	return []byte(class(self).SavePngToBuffer().Bytes())
+	return []byte(Advanced(self).SavePngToBuffer().Bytes())
 }
 
 /*
@@ -259,7 +282,15 @@ Saves the image as a JPEG file to [param path] with the specified [param quality
 [b]Note:[/b] JPEG does not save an alpha channel. If the [Image] contains an alpha channel, the image will still be saved, but the resulting JPEG file won't contain the alpha channel.
 */
 func (self Instance) SaveJpg(path string) error { //gd:Image.save_jpg
-	return error(gd.ToError(class(self).SaveJpg(String.New(path), float64(0.75))))
+	return error(gd.ToError(Advanced(self).SaveJpg(String.New(path), float64(0.75))))
+}
+
+/*
+Saves the image as a JPEG file to [param path] with the specified [param quality] between [code]0.01[/code] and [code]1.0[/code] (inclusive). Higher [param quality] values result in better-looking output at the cost of larger file sizes. Recommended [param quality] values are between [code]0.75[/code] and [code]0.90[/code]. Even at quality [code]1.00[/code], JPEG compression remains lossy.
+[b]Note:[/b] JPEG does not save an alpha channel. If the [Image] contains an alpha channel, the image will still be saved, but the resulting JPEG file won't contain the alpha channel.
+*/
+func (self Expanded) SaveJpg(path string, quality Float.X) error { //gd:Image.save_jpg
+	return error(gd.ToError(Advanced(self).SaveJpg(String.New(path), float64(quality))))
 }
 
 /*
@@ -267,7 +298,15 @@ Saves the image as a JPEG file to a byte array with the specified [param quality
 [b]Note:[/b] JPEG does not save an alpha channel. If the [Image] contains an alpha channel, the image will still be saved, but the resulting byte array won't contain the alpha channel.
 */
 func (self Instance) SaveJpgToBuffer() []byte { //gd:Image.save_jpg_to_buffer
-	return []byte(class(self).SaveJpgToBuffer(float64(0.75)).Bytes())
+	return []byte(Advanced(self).SaveJpgToBuffer(float64(0.75)).Bytes())
+}
+
+/*
+Saves the image as a JPEG file to a byte array with the specified [param quality] between [code]0.01[/code] and [code]1.0[/code] (inclusive). Higher [param quality] values result in better-looking output at the cost of larger byte array sizes (and therefore memory usage). Recommended [param quality] values are between [code]0.75[/code] and [code]0.90[/code]. Even at quality [code]1.00[/code], JPEG compression remains lossy.
+[b]Note:[/b] JPEG does not save an alpha channel. If the [Image] contains an alpha channel, the image will still be saved, but the resulting byte array won't contain the alpha channel.
+*/
+func (self Expanded) SaveJpgToBuffer(quality Float.X) []byte { //gd:Image.save_jpg_to_buffer
+	return []byte(Advanced(self).SaveJpgToBuffer(float64(quality)).Bytes())
 }
 
 /*
@@ -275,7 +314,15 @@ Saves the image as an EXR file to [param path]. If [param grayscale] is [code]tr
 [b]Note:[/b] The TinyEXR module is disabled in non-editor builds, which means [method save_exr] will return [constant ERR_UNAVAILABLE] when it is called from an exported project.
 */
 func (self Instance) SaveExr(path string) error { //gd:Image.save_exr
-	return error(gd.ToError(class(self).SaveExr(String.New(path), false)))
+	return error(gd.ToError(Advanced(self).SaveExr(String.New(path), false)))
+}
+
+/*
+Saves the image as an EXR file to [param path]. If [param grayscale] is [code]true[/code] and the image has only one channel, it will be saved explicitly as monochrome rather than one red channel. This function will return [constant ERR_UNAVAILABLE] if Godot was compiled without the TinyEXR module.
+[b]Note:[/b] The TinyEXR module is disabled in non-editor builds, which means [method save_exr] will return [constant ERR_UNAVAILABLE] when it is called from an exported project.
+*/
+func (self Expanded) SaveExr(path string, grayscale bool) error { //gd:Image.save_exr
+	return error(gd.ToError(Advanced(self).SaveExr(String.New(path), grayscale)))
 }
 
 /*
@@ -283,7 +330,15 @@ Saves the image as an EXR file to a byte array. If [param grayscale] is [code]tr
 [b]Note:[/b] The TinyEXR module is disabled in non-editor builds, which means [method save_exr] will return an empty byte array when it is called from an exported project.
 */
 func (self Instance) SaveExrToBuffer() []byte { //gd:Image.save_exr_to_buffer
-	return []byte(class(self).SaveExrToBuffer(false).Bytes())
+	return []byte(Advanced(self).SaveExrToBuffer(false).Bytes())
+}
+
+/*
+Saves the image as an EXR file to a byte array. If [param grayscale] is [code]true[/code] and the image has only one channel, it will be saved explicitly as monochrome rather than one red channel. This function will return an empty byte array if Godot was compiled without the TinyEXR module.
+[b]Note:[/b] The TinyEXR module is disabled in non-editor builds, which means [method save_exr] will return an empty byte array when it is called from an exported project.
+*/
+func (self Expanded) SaveExrToBuffer(grayscale bool) []byte { //gd:Image.save_exr_to_buffer
+	return []byte(Advanced(self).SaveExrToBuffer(grayscale).Bytes())
 }
 
 /*
@@ -291,7 +346,15 @@ Saves the image as a WebP (Web Picture) file to the file at [param path]. By def
 [b]Note:[/b] The WebP format is limited to a size of 16383×16383 pixels, while PNG can save larger images.
 */
 func (self Instance) SaveWebp(path string) error { //gd:Image.save_webp
-	return error(gd.ToError(class(self).SaveWebp(String.New(path), false, float64(0.75))))
+	return error(gd.ToError(Advanced(self).SaveWebp(String.New(path), false, float64(0.75))))
+}
+
+/*
+Saves the image as a WebP (Web Picture) file to the file at [param path]. By default it will save lossless. If [param lossy] is [code]true[/code], the image will be saved lossy, using the [param quality] setting between [code]0.0[/code] and [code]1.0[/code] (inclusive). Lossless WebP offers more efficient compression than PNG.
+[b]Note:[/b] The WebP format is limited to a size of 16383×16383 pixels, while PNG can save larger images.
+*/
+func (self Expanded) SaveWebp(path string, lossy bool, quality Float.X) error { //gd:Image.save_webp
+	return error(gd.ToError(Advanced(self).SaveWebp(String.New(path), lossy, float64(quality))))
 }
 
 /*
@@ -299,28 +362,43 @@ Saves the image as a WebP (Web Picture) file to a byte array. By default it will
 [b]Note:[/b] The WebP format is limited to a size of 16383×16383 pixels, while PNG can save larger images.
 */
 func (self Instance) SaveWebpToBuffer() []byte { //gd:Image.save_webp_to_buffer
-	return []byte(class(self).SaveWebpToBuffer(false, float64(0.75)).Bytes())
+	return []byte(Advanced(self).SaveWebpToBuffer(false, float64(0.75)).Bytes())
+}
+
+/*
+Saves the image as a WebP (Web Picture) file to a byte array. By default it will save lossless. If [param lossy] is [code]true[/code], the image will be saved lossy, using the [param quality] setting between [code]0.0[/code] and [code]1.0[/code] (inclusive). Lossless WebP offers more efficient compression than PNG.
+[b]Note:[/b] The WebP format is limited to a size of 16383×16383 pixels, while PNG can save larger images.
+*/
+func (self Expanded) SaveWebpToBuffer(lossy bool, quality Float.X) []byte { //gd:Image.save_webp_to_buffer
+	return []byte(Advanced(self).SaveWebpToBuffer(lossy, float64(quality)).Bytes())
 }
 
 /*
 Returns [constant ALPHA_BLEND] if the image has data for alpha values. Returns [constant ALPHA_BIT] if all the alpha values are stored in a single bit. Returns [constant ALPHA_NONE] if no data for alpha values is found.
 */
 func (self Instance) DetectAlpha() gdclass.ImageAlphaMode { //gd:Image.detect_alpha
-	return gdclass.ImageAlphaMode(class(self).DetectAlpha())
+	return gdclass.ImageAlphaMode(Advanced(self).DetectAlpha())
 }
 
 /*
 Returns [code]true[/code] if all the image's pixels have an alpha value of 0. Returns [code]false[/code] if any pixel has an alpha value higher than 0.
 */
 func (self Instance) IsInvisible() bool { //gd:Image.is_invisible
-	return bool(class(self).IsInvisible())
+	return bool(Advanced(self).IsInvisible())
 }
 
 /*
 Returns the color channels used by this image, as one of the [enum UsedChannels] constants. If the image is compressed, the original [param source] must be specified.
 */
 func (self Instance) DetectUsedChannels() gdclass.ImageUsedChannels { //gd:Image.detect_used_channels
-	return gdclass.ImageUsedChannels(class(self).DetectUsedChannels(0))
+	return gdclass.ImageUsedChannels(Advanced(self).DetectUsedChannels(0))
+}
+
+/*
+Returns the color channels used by this image, as one of the [enum UsedChannels] constants. If the image is compressed, the original [param source] must be specified.
+*/
+func (self Expanded) DetectUsedChannels(source gdclass.ImageCompressSource) gdclass.ImageUsedChannels { //gd:Image.detect_used_channels
+	return gdclass.ImageUsedChannels(Advanced(self).DetectUsedChannels(source))
 }
 
 /*
@@ -329,7 +407,16 @@ The [param source] parameter helps to pick the best compression method for DXT a
 For ASTC compression, the [param astc_format] parameter must be supplied.
 */
 func (self Instance) Compress(mode gdclass.ImageCompressMode) error { //gd:Image.compress
-	return error(gd.ToError(class(self).Compress(mode, 0, 0)))
+	return error(gd.ToError(Advanced(self).Compress(mode, 0, 0)))
+}
+
+/*
+Compresses the image to use less memory. Can not directly access pixel data while the image is compressed. Returns error if the chosen compression mode is not available.
+The [param source] parameter helps to pick the best compression method for DXT and ETC2 formats. It is ignored for ASTC compression.
+For ASTC compression, the [param astc_format] parameter must be supplied.
+*/
+func (self Expanded) Compress(mode gdclass.ImageCompressMode, source gdclass.ImageCompressSource, astc_format gdclass.ImageASTCFormat) error { //gd:Image.compress
+	return error(gd.ToError(Advanced(self).Compress(mode, source, astc_format)))
 }
 
 /*
@@ -338,7 +425,16 @@ This is an alternative to [method compress] that lets the user supply the channe
 For ASTC compression, the [param astc_format] parameter must be supplied.
 */
 func (self Instance) CompressFromChannels(mode gdclass.ImageCompressMode, channels gdclass.ImageUsedChannels) error { //gd:Image.compress_from_channels
-	return error(gd.ToError(class(self).CompressFromChannels(mode, channels, 0)))
+	return error(gd.ToError(Advanced(self).CompressFromChannels(mode, channels, 0)))
+}
+
+/*
+Compresses the image to use less memory. Can not directly access pixel data while the image is compressed. Returns error if the chosen compression mode is not available.
+This is an alternative to [method compress] that lets the user supply the channels used in order for the compressor to pick the best DXT and ETC2 formats. For other formats (non DXT or ETC2), this argument is ignored.
+For ASTC compression, the [param astc_format] parameter must be supplied.
+*/
+func (self Expanded) CompressFromChannels(mode gdclass.ImageCompressMode, channels gdclass.ImageUsedChannels, astc_format gdclass.ImageASTCFormat) error { //gd:Image.compress_from_channels
+	return error(gd.ToError(Advanced(self).CompressFromChannels(mode, channels, astc_format)))
 }
 
 /*
@@ -346,77 +442,84 @@ Decompresses the image if it is VRAM compressed in a supported format. Returns [
 [b]Note:[/b] The following formats can be decompressed: DXT, RGTC, BPTC. The formats ETC1 and ETC2 are not supported.
 */
 func (self Instance) Decompress() error { //gd:Image.decompress
-	return error(gd.ToError(class(self).Decompress()))
+	return error(gd.ToError(Advanced(self).Decompress()))
 }
 
 /*
 Returns [code]true[/code] if the image is compressed.
 */
 func (self Instance) IsCompressed() bool { //gd:Image.is_compressed
-	return bool(class(self).IsCompressed())
+	return bool(Advanced(self).IsCompressed())
 }
 
 /*
 Rotates the image in the specified [param direction] by [code]90[/code] degrees. The width and height of the image must be greater than [code]1[/code]. If the width and height are not equal, the image will be resized.
 */
 func (self Instance) Rotate90(direction ClockDirection) { //gd:Image.rotate_90
-	class(self).Rotate90(direction)
+	Advanced(self).Rotate90(direction)
 }
 
 /*
 Rotates the image by [code]180[/code] degrees. The width and height of the image must be greater than [code]1[/code].
 */
 func (self Instance) Rotate180() { //gd:Image.rotate_180
-	class(self).Rotate180()
+	Advanced(self).Rotate180()
 }
 
 /*
 Blends low-alpha pixels with nearby pixels.
 */
 func (self Instance) FixAlphaEdges() { //gd:Image.fix_alpha_edges
-	class(self).FixAlphaEdges()
+	Advanced(self).FixAlphaEdges()
 }
 
 /*
 Multiplies color values with alpha values. Resulting color values for a pixel are [code](color * alpha)/256[/code]. See also [member CanvasItemMaterial.blend_mode].
 */
 func (self Instance) PremultiplyAlpha() { //gd:Image.premultiply_alpha
-	class(self).PremultiplyAlpha()
+	Advanced(self).PremultiplyAlpha()
 }
 
 /*
 Converts the raw data from the sRGB colorspace to a linear scale. Only works on images with [constant FORMAT_RGB8] or [constant FORMAT_RGBA8] formats.
 */
 func (self Instance) SrgbToLinear() { //gd:Image.srgb_to_linear
-	class(self).SrgbToLinear()
+	Advanced(self).SrgbToLinear()
 }
 
 /*
 Converts the entire image from the linear colorspace to the sRGB colorspace. Only works on images with [constant FORMAT_RGB8] or [constant FORMAT_RGBA8] formats.
 */
 func (self Instance) LinearToSrgb() { //gd:Image.linear_to_srgb
-	class(self).LinearToSrgb()
+	Advanced(self).LinearToSrgb()
 }
 
 /*
 Converts the image's data to represent coordinates on a 3D plane. This is used when the image represents a normal map. A normal map can add lots of detail to a 3D surface without increasing the polygon count.
 */
 func (self Instance) NormalMapToXy() { //gd:Image.normal_map_to_xy
-	class(self).NormalMapToXy()
+	Advanced(self).NormalMapToXy()
 }
 
 /*
 Converts a standard RGBE (Red Green Blue Exponent) image to an sRGB image.
 */
 func (self Instance) RgbeToSrgb() [1]gdclass.Image { //gd:Image.rgbe_to_srgb
-	return [1]gdclass.Image(class(self).RgbeToSrgb())
+	return [1]gdclass.Image(Advanced(self).RgbeToSrgb())
 }
 
 /*
 Converts a bump map to a normal map. A bump map provides a height offset per-pixel, while a normal map provides a normal direction per pixel.
 */
 func (self Instance) BumpMapToNormalMap() { //gd:Image.bump_map_to_normal_map
-	class(self).BumpMapToNormalMap(float64(1.0))
+	Advanced(self).BumpMapToNormalMap(float64(1.0))
+}
+
+/*
+Converts a bump map to a normal map. A bump map provides a height offset per-pixel, while a normal map provides a normal direction per pixel.
+*/
+func (self Expanded) BumpMapToNormalMap(bump_scale Float.X) { //gd:Image.bump_map_to_normal_map
+	Advanced(self).BumpMapToNormalMap(float64(bump_scale))
 }
 
 /*
@@ -424,7 +527,7 @@ Compute image metrics on the current image and the compared image.
 The dictionary contains [code]max[/code], [code]mean[/code], [code]mean_squared[/code], [code]root_mean_squared[/code] and [code]peak_snr[/code].
 */
 func (self Instance) ComputeImageMetrics(compared_image [1]gdclass.Image, use_luma bool) Metrics { //gd:Image.compute_image_metrics
-	return Metrics(gd.DictionaryAs[Metrics](class(self).ComputeImageMetrics(compared_image, use_luma)))
+	return Metrics(gd.DictionaryAs[Metrics](Advanced(self).ComputeImageMetrics(compared_image, use_luma)))
 }
 
 /*
@@ -432,63 +535,63 @@ Copies [param src_rect] from [param src] image to this image at coordinates [par
 [b]Note:[/b] The alpha channel data in [param src] will overwrite the corresponding data in this image at the target position. To blend alpha channels, use [method blend_rect] instead.
 */
 func (self Instance) BlitRect(src [1]gdclass.Image, src_rect Rect2i.PositionSize, dst Vector2i.XY) { //gd:Image.blit_rect
-	class(self).BlitRect(src, Rect2i.PositionSize(src_rect), Vector2i.XY(dst))
+	Advanced(self).BlitRect(src, Rect2i.PositionSize(src_rect), Vector2i.XY(dst))
 }
 
 /*
 Blits [param src_rect] area from [param src] image to this image at the coordinates given by [param dst], clipped accordingly to both image bounds. [param src] pixel is copied onto [param dst] if the corresponding [param mask] pixel's alpha value is not 0. This image and [param src] image [b]must[/b] have the same format. [param src] image and [param mask] image [b]must[/b] have the same size (width and height) but they can have different formats. [param src_rect] with non-positive size is treated as empty.
 */
 func (self Instance) BlitRectMask(src [1]gdclass.Image, mask [1]gdclass.Image, src_rect Rect2i.PositionSize, dst Vector2i.XY) { //gd:Image.blit_rect_mask
-	class(self).BlitRectMask(src, mask, Rect2i.PositionSize(src_rect), Vector2i.XY(dst))
+	Advanced(self).BlitRectMask(src, mask, Rect2i.PositionSize(src_rect), Vector2i.XY(dst))
 }
 
 /*
 Alpha-blends [param src_rect] from [param src] image to this image at coordinates [param dst], clipped accordingly to both image bounds. This image and [param src] image [b]must[/b] have the same format. [param src_rect] with non-positive size is treated as empty.
 */
 func (self Instance) BlendRect(src [1]gdclass.Image, src_rect Rect2i.PositionSize, dst Vector2i.XY) { //gd:Image.blend_rect
-	class(self).BlendRect(src, Rect2i.PositionSize(src_rect), Vector2i.XY(dst))
+	Advanced(self).BlendRect(src, Rect2i.PositionSize(src_rect), Vector2i.XY(dst))
 }
 
 /*
 Alpha-blends [param src_rect] from [param src] image to this image using [param mask] image at coordinates [param dst], clipped accordingly to both image bounds. Alpha channels are required for both [param src] and [param mask]. [param dst] pixels and [param src] pixels will blend if the corresponding mask pixel's alpha value is not 0. This image and [param src] image [b]must[/b] have the same format. [param src] image and [param mask] image [b]must[/b] have the same size (width and height) but they can have different formats. [param src_rect] with non-positive size is treated as empty.
 */
 func (self Instance) BlendRectMask(src [1]gdclass.Image, mask [1]gdclass.Image, src_rect Rect2i.PositionSize, dst Vector2i.XY) { //gd:Image.blend_rect_mask
-	class(self).BlendRectMask(src, mask, Rect2i.PositionSize(src_rect), Vector2i.XY(dst))
+	Advanced(self).BlendRectMask(src, mask, Rect2i.PositionSize(src_rect), Vector2i.XY(dst))
 }
 
 /*
 Fills the image with [param color].
 */
 func (self Instance) Fill(color Color.RGBA) { //gd:Image.fill
-	class(self).Fill(Color.RGBA(color))
+	Advanced(self).Fill(Color.RGBA(color))
 }
 
 /*
 Fills [param rect] with [param color].
 */
 func (self Instance) FillRect(rect Rect2i.PositionSize, color Color.RGBA) { //gd:Image.fill_rect
-	class(self).FillRect(Rect2i.PositionSize(rect), Color.RGBA(color))
+	Advanced(self).FillRect(Rect2i.PositionSize(rect), Color.RGBA(color))
 }
 
 /*
 Returns a [Rect2i] enclosing the visible portion of the image, considering each pixel with a non-zero alpha channel as visible.
 */
 func (self Instance) GetUsedRect() Rect2i.PositionSize { //gd:Image.get_used_rect
-	return Rect2i.PositionSize(class(self).GetUsedRect())
+	return Rect2i.PositionSize(Advanced(self).GetUsedRect())
 }
 
 /*
 Returns a new [Image] that is a copy of this [Image]'s area specified with [param region].
 */
 func (self Instance) GetRegion(region Rect2i.PositionSize) [1]gdclass.Image { //gd:Image.get_region
-	return [1]gdclass.Image(class(self).GetRegion(Rect2i.PositionSize(region)))
+	return [1]gdclass.Image(Advanced(self).GetRegion(Rect2i.PositionSize(region)))
 }
 
 /*
 Copies [param src] image to this image.
 */
 func (self Instance) CopyFrom(src [1]gdclass.Image) { //gd:Image.copy_from
-	class(self).CopyFrom(src)
+	Advanced(self).CopyFrom(src)
 }
 
 /*
@@ -496,7 +599,7 @@ Returns the color of the pixel at [param point].
 This is the same as [method get_pixel], but with a [Vector2i] argument instead of two integer arguments.
 */
 func (self Instance) GetPixelv(point Vector2i.XY) Color.RGBA { //gd:Image.get_pixelv
-	return Color.RGBA(class(self).GetPixelv(Vector2i.XY(point)))
+	return Color.RGBA(Advanced(self).GetPixelv(Vector2i.XY(point)))
 }
 
 /*
@@ -504,7 +607,7 @@ Returns the color of the pixel at [code](x, y)[/code].
 This is the same as [method get_pixelv], but with two integer arguments instead of a [Vector2i] argument.
 */
 func (self Instance) GetPixel(x int, y int) Color.RGBA { //gd:Image.get_pixel
-	return Color.RGBA(class(self).GetPixel(int64(x), int64(y)))
+	return Color.RGBA(Advanced(self).GetPixel(int64(x), int64(y)))
 }
 
 /*
@@ -528,7 +631,7 @@ img.SetPixelv(new Vector2I(1, 2), Colors.Red); // Sets the color at (1, 2) to re
 This is the same as [method set_pixel], but with a [Vector2i] argument instead of two integer arguments.
 */
 func (self Instance) SetPixelv(point Vector2i.XY, color Color.RGBA) { //gd:Image.set_pixelv
-	class(self).SetPixelv(Vector2i.XY(point), Color.RGBA(color))
+	Advanced(self).SetPixelv(Vector2i.XY(point), Color.RGBA(color))
 }
 
 /*
@@ -552,35 +655,35 @@ img.SetPixel(1, 2, Colors.Red); // Sets the color at (1, 2) to red.
 This is the same as [method set_pixelv], but with a two integer arguments instead of a [Vector2i] argument.
 */
 func (self Instance) SetPixel(x int, y int, color Color.RGBA) { //gd:Image.set_pixel
-	class(self).SetPixel(int64(x), int64(y), Color.RGBA(color))
+	Advanced(self).SetPixel(int64(x), int64(y), Color.RGBA(color))
 }
 
 /*
 Adjusts this image's [param brightness], [param contrast], and [param saturation] by the given values. Does not work if the image is compressed (see [method is_compressed]).
 */
 func (self Instance) AdjustBcs(brightness Float.X, contrast Float.X, saturation Float.X) { //gd:Image.adjust_bcs
-	class(self).AdjustBcs(float64(brightness), float64(contrast), float64(saturation))
+	Advanced(self).AdjustBcs(float64(brightness), float64(contrast), float64(saturation))
 }
 
 /*
 Loads an image from the binary contents of a PNG file.
 */
 func (self Instance) LoadPngFromBuffer(buffer []byte) error { //gd:Image.load_png_from_buffer
-	return error(gd.ToError(class(self).LoadPngFromBuffer(Packed.Bytes(Packed.New(buffer...)))))
+	return error(gd.ToError(Advanced(self).LoadPngFromBuffer(Packed.Bytes(Packed.New(buffer...)))))
 }
 
 /*
 Loads an image from the binary contents of a JPEG file.
 */
 func (self Instance) LoadJpgFromBuffer(buffer []byte) error { //gd:Image.load_jpg_from_buffer
-	return error(gd.ToError(class(self).LoadJpgFromBuffer(Packed.Bytes(Packed.New(buffer...)))))
+	return error(gd.ToError(Advanced(self).LoadJpgFromBuffer(Packed.Bytes(Packed.New(buffer...)))))
 }
 
 /*
 Loads an image from the binary contents of a WebP file.
 */
 func (self Instance) LoadWebpFromBuffer(buffer []byte) error { //gd:Image.load_webp_from_buffer
-	return error(gd.ToError(class(self).LoadWebpFromBuffer(Packed.Bytes(Packed.New(buffer...)))))
+	return error(gd.ToError(Advanced(self).LoadWebpFromBuffer(Packed.Bytes(Packed.New(buffer...)))))
 }
 
 /*
@@ -588,7 +691,7 @@ Loads an image from the binary contents of a TGA file.
 [b]Note:[/b] This method is only available in engine builds with the TGA module enabled. By default, the TGA module is enabled, but it can be disabled at build-time using the [code]module_tga_enabled=no[/code] SCons option.
 */
 func (self Instance) LoadTgaFromBuffer(buffer []byte) error { //gd:Image.load_tga_from_buffer
-	return error(gd.ToError(class(self).LoadTgaFromBuffer(Packed.Bytes(Packed.New(buffer...)))))
+	return error(gd.ToError(Advanced(self).LoadTgaFromBuffer(Packed.Bytes(Packed.New(buffer...)))))
 }
 
 /*
@@ -597,7 +700,7 @@ Loads an image from the binary contents of a BMP file.
 [b]Note:[/b] This method is only available in engine builds with the BMP module enabled. By default, the BMP module is enabled, but it can be disabled at build-time using the [code]module_bmp_enabled=no[/code] SCons option.
 */
 func (self Instance) LoadBmpFromBuffer(buffer []byte) error { //gd:Image.load_bmp_from_buffer
-	return error(gd.ToError(class(self).LoadBmpFromBuffer(Packed.Bytes(Packed.New(buffer...)))))
+	return error(gd.ToError(Advanced(self).LoadBmpFromBuffer(Packed.Bytes(Packed.New(buffer...)))))
 }
 
 /*
@@ -606,7 +709,7 @@ Loads an image from the binary contents of a [url=https://github.com/KhronosGrou
 [b]Note:[/b] This method is only available in engine builds with the KTX module enabled. By default, the KTX module is enabled, but it can be disabled at build-time using the [code]module_ktx_enabled=no[/code] SCons option.
 */
 func (self Instance) LoadKtxFromBuffer(buffer []byte) error { //gd:Image.load_ktx_from_buffer
-	return error(gd.ToError(class(self).LoadKtxFromBuffer(Packed.Bytes(Packed.New(buffer...)))))
+	return error(gd.ToError(Advanced(self).LoadKtxFromBuffer(Packed.Bytes(Packed.New(buffer...)))))
 }
 
 /*
@@ -615,7 +718,16 @@ Loads an image from the UTF-8 binary contents of an [b]uncompressed[/b] SVG file
 [b]Note:[/b] This method is only available in engine builds with the SVG module enabled. By default, the SVG module is enabled, but it can be disabled at build-time using the [code]module_svg_enabled=no[/code] SCons option.
 */
 func (self Instance) LoadSvgFromBuffer(buffer []byte) error { //gd:Image.load_svg_from_buffer
-	return error(gd.ToError(class(self).LoadSvgFromBuffer(Packed.Bytes(Packed.New(buffer...)), float64(1.0))))
+	return error(gd.ToError(Advanced(self).LoadSvgFromBuffer(Packed.Bytes(Packed.New(buffer...)), float64(1.0))))
+}
+
+/*
+Loads an image from the UTF-8 binary contents of an [b]uncompressed[/b] SVG file ([b].svg[/b]).
+[b]Note:[/b] Beware when using compressed SVG files (like [b].svgz[/b]), they need to be [code]decompressed[/code] before loading.
+[b]Note:[/b] This method is only available in engine builds with the SVG module enabled. By default, the SVG module is enabled, but it can be disabled at build-time using the [code]module_svg_enabled=no[/code] SCons option.
+*/
+func (self Expanded) LoadSvgFromBuffer(buffer []byte, scale Float.X) error { //gd:Image.load_svg_from_buffer
+	return error(gd.ToError(Advanced(self).LoadSvgFromBuffer(Packed.Bytes(Packed.New(buffer...)), float64(scale))))
 }
 
 /*
@@ -623,7 +735,15 @@ Loads an image from the string contents of an SVG file ([b].svg[/b]).
 [b]Note:[/b] This method is only available in engine builds with the SVG module enabled. By default, the SVG module is enabled, but it can be disabled at build-time using the [code]module_svg_enabled=no[/code] SCons option.
 */
 func (self Instance) LoadSvgFromString(svg_str string) error { //gd:Image.load_svg_from_string
-	return error(gd.ToError(class(self).LoadSvgFromString(String.New(svg_str), float64(1.0))))
+	return error(gd.ToError(Advanced(self).LoadSvgFromString(String.New(svg_str), float64(1.0))))
+}
+
+/*
+Loads an image from the string contents of an SVG file ([b].svg[/b]).
+[b]Note:[/b] This method is only available in engine builds with the SVG module enabled. By default, the SVG module is enabled, but it can be disabled at build-time using the [code]module_svg_enabled=no[/code] SCons option.
+*/
+func (self Expanded) LoadSvgFromString(svg_str string, scale Float.X) error { //gd:Image.load_svg_from_string
+	return error(gd.ToError(Advanced(self).LoadSvgFromString(String.New(svg_str), float64(scale))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

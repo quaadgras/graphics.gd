@@ -179,49 +179,49 @@ func (Instance) _get_layer_data(impl func(ptr unsafe.Pointer, layer_index int) [
 Returns the current format being used by this texture. See [enum Image.Format] for details.
 */
 func (self Instance) GetFormat() gdclass.ImageFormat { //gd:TextureLayered.get_format
-	return gdclass.ImageFormat(class(self).GetFormat())
+	return gdclass.ImageFormat(Advanced(self).GetFormat())
 }
 
 /*
 Returns the [TextureLayered]'s type. The type determines how the data is accessed, with cubemaps having special types.
 */
 func (self Instance) GetLayeredType() gdclass.TextureLayeredLayeredType { //gd:TextureLayered.get_layered_type
-	return gdclass.TextureLayeredLayeredType(class(self).GetLayeredType())
+	return gdclass.TextureLayeredLayeredType(Advanced(self).GetLayeredType())
 }
 
 /*
 Returns the width of the texture in pixels. Width is typically represented by the X axis.
 */
 func (self Instance) GetWidth() int { //gd:TextureLayered.get_width
-	return int(int(class(self).GetWidth()))
+	return int(int(Advanced(self).GetWidth()))
 }
 
 /*
 Returns the height of the texture in pixels. Height is typically represented by the Y axis.
 */
 func (self Instance) GetHeight() int { //gd:TextureLayered.get_height
-	return int(int(class(self).GetHeight()))
+	return int(int(Advanced(self).GetHeight()))
 }
 
 /*
 Returns the number of referenced [Image]s.
 */
 func (self Instance) GetLayers() int { //gd:TextureLayered.get_layers
-	return int(int(class(self).GetLayers()))
+	return int(int(Advanced(self).GetLayers()))
 }
 
 /*
 Returns [code]true[/code] if the layers have generated mipmaps.
 */
 func (self Instance) HasMipmaps() bool { //gd:TextureLayered.has_mipmaps
-	return bool(class(self).HasMipmaps())
+	return bool(Advanced(self).HasMipmaps())
 }
 
 /*
 Returns an [Image] resource with the data from specified [param layer].
 */
 func (self Instance) GetLayerData(layer int) [1]gdclass.Image { //gd:TextureLayered.get_layer_data
-	return [1]gdclass.Image(class(self).GetLayerData(int64(layer)))
+	return [1]gdclass.Image(Advanced(self).GetLayerData(int64(layer)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

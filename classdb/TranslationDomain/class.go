@@ -44,6 +44,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 If you're working with the main translation domain, it is more convenient to use the wrap methods on [TranslationServer].
 */
 type Instance [1]gdclass.TranslationDomain
+type Expanded [1]gdclass.TranslationDomain
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -57,35 +58,42 @@ type Any interface {
 Returns the [Translation] instance that best matches [param locale]. Returns [code]null[/code] if there are no matches.
 */
 func (self Instance) GetTranslationObject(locale string) [1]gdclass.Translation { //gd:TranslationDomain.get_translation_object
-	return [1]gdclass.Translation(class(self).GetTranslationObject(String.New(locale)))
+	return [1]gdclass.Translation(Advanced(self).GetTranslationObject(String.New(locale)))
 }
 
 /*
 Adds a translation.
 */
 func (self Instance) AddTranslation(translation [1]gdclass.Translation) { //gd:TranslationDomain.add_translation
-	class(self).AddTranslation(translation)
+	Advanced(self).AddTranslation(translation)
 }
 
 /*
 Removes the given translation.
 */
 func (self Instance) RemoveTranslation(translation [1]gdclass.Translation) { //gd:TranslationDomain.remove_translation
-	class(self).RemoveTranslation(translation)
+	Advanced(self).RemoveTranslation(translation)
 }
 
 /*
 Removes all translations.
 */
 func (self Instance) Clear() { //gd:TranslationDomain.clear
-	class(self).Clear()
+	Advanced(self).Clear()
 }
 
 /*
 Returns the current locale's translation for the given message and context.
 */
 func (self Instance) Translate(message string) string { //gd:TranslationDomain.translate
-	return string(class(self).Translate(String.Name(String.New(message)), String.Name(String.New(""))).String())
+	return string(Advanced(self).Translate(String.Name(String.New(message)), String.Name(String.New(""))).String())
+}
+
+/*
+Returns the current locale's translation for the given message and context.
+*/
+func (self Expanded) Translate(message string, context string) string { //gd:TranslationDomain.translate
+	return string(Advanced(self).Translate(String.Name(String.New(message)), String.Name(String.New(context))).String())
 }
 
 /*
@@ -93,14 +101,22 @@ Returns the current locale's translation for the given message, plural message a
 The number [param n] is the number or quantity of the plural object. It will be used to guide the translation system to fetch the correct plural form for the selected language.
 */
 func (self Instance) TranslatePlural(message string, message_plural string, n int) string { //gd:TranslationDomain.translate_plural
-	return string(class(self).TranslatePlural(String.Name(String.New(message)), String.Name(String.New(message_plural)), int64(n), String.Name(String.New(""))).String())
+	return string(Advanced(self).TranslatePlural(String.Name(String.New(message)), String.Name(String.New(message_plural)), int64(n), String.Name(String.New(""))).String())
+}
+
+/*
+Returns the current locale's translation for the given message, plural message and context.
+The number [param n] is the number or quantity of the plural object. It will be used to guide the translation system to fetch the correct plural form for the selected language.
+*/
+func (self Expanded) TranslatePlural(message string, message_plural string, n int, context string) string { //gd:TranslationDomain.translate_plural
+	return string(Advanced(self).TranslatePlural(String.Name(String.New(message)), String.Name(String.New(message_plural)), int64(n), String.Name(String.New(context))).String())
 }
 
 /*
 Returns the pseudolocalized string based on the [param message] passed in.
 */
 func (self Instance) Pseudolocalize(message string) string { //gd:TranslationDomain.pseudolocalize
-	return string(class(self).Pseudolocalize(String.Name(String.New(message))).String())
+	return string(Advanced(self).Pseudolocalize(String.Name(String.New(message))).String())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

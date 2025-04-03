@@ -48,6 +48,7 @@ See also [AudioStreamPlayer] to play a sound non-positionally.
 [b]Note:[/b] Hiding an [AudioStreamPlayer3D] node does not disable its audio output. To temporarily disable an [AudioStreamPlayer3D]'s audio output, set [member volume_db] to a very low value like [code]-100[/code] (which isn't audible to human hearing).
 */
 type Instance [1]gdclass.AudioStreamPlayer3D
+type Expanded [1]gdclass.AudioStreamPlayer3D
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -61,42 +62,49 @@ type Any interface {
 Queues the audio to play on the next physics frame, from the given position [param from_position], in seconds.
 */
 func (self Instance) Play() { //gd:AudioStreamPlayer3D.play
-	class(self).Play(float64(0.0))
+	Advanced(self).Play(float64(0.0))
+}
+
+/*
+Queues the audio to play on the next physics frame, from the given position [param from_position], in seconds.
+*/
+func (self Expanded) Play(from_position Float.X) { //gd:AudioStreamPlayer3D.play
+	Advanced(self).Play(float64(from_position))
 }
 
 /*
 Sets the position from which audio will be played, in seconds.
 */
 func (self Instance) SeekTo(to_position Float.X) { //gd:AudioStreamPlayer3D.seek
-	class(self).SeekTo(float64(to_position))
+	Advanced(self).SeekTo(float64(to_position))
 }
 
 /*
 Stops the audio.
 */
 func (self Instance) Stop() { //gd:AudioStreamPlayer3D.stop
-	class(self).Stop()
+	Advanced(self).Stop()
 }
 
 /*
 Returns the position in the [AudioStream].
 */
 func (self Instance) GetPlaybackPosition() Float.X { //gd:AudioStreamPlayer3D.get_playback_position
-	return Float.X(Float.X(class(self).GetPlaybackPosition()))
+	return Float.X(Float.X(Advanced(self).GetPlaybackPosition()))
 }
 
 /*
 Returns whether the [AudioStreamPlayer] can return the [AudioStreamPlayback] object or not.
 */
 func (self Instance) HasStreamPlayback() bool { //gd:AudioStreamPlayer3D.has_stream_playback
-	return bool(class(self).HasStreamPlayback())
+	return bool(Advanced(self).HasStreamPlayback())
 }
 
 /*
 Returns the [AudioStreamPlayback] object associated with this [AudioStreamPlayer3D].
 */
 func (self Instance) GetStreamPlayback() [1]gdclass.AudioStreamPlayback { //gd:AudioStreamPlayer3D.get_stream_playback
-	return [1]gdclass.AudioStreamPlayback(class(self).GetStreamPlayback())
+	return [1]gdclass.AudioStreamPlayback(Advanced(self).GetStreamPlayback())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

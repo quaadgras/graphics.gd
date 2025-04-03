@@ -234,7 +234,7 @@ func (Instance) _rest_info(impl func(ptr unsafe.Pointer, shape_rid RID.Any, tran
 	}
 }
 func (self Instance) IsBodyExcludedFromQuery(body RID.Body2D) bool { //gd:PhysicsDirectSpaceState2DExtension.is_body_excluded_from_query
-	return bool(class(self).IsBodyExcludedFromQuery(RID.Any(body)))
+	return bool(Advanced(self).IsBodyExcludedFromQuery(RID.Any(body)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

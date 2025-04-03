@@ -46,6 +46,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 The default use of [AcceptDialog] is to allow it to only be accepted or closed, with the same result. However, the [signal confirmed] and [signal canceled] signals allow to make the two actions different, and the [method add_button] method allows to add custom buttons and actions.
 */
 type Instance [1]gdclass.AcceptDialog
+type Expanded [1]gdclass.AcceptDialog
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -60,7 +61,7 @@ Returns the OK [Button] instance.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
 func (self Instance) GetOkButton() [1]gdclass.Button { //gd:AcceptDialog.get_ok_button
-	return [1]gdclass.Button(class(self).GetOkButton())
+	return [1]gdclass.Button(Advanced(self).GetOkButton())
 }
 
 /*
@@ -68,7 +69,7 @@ Returns the label used for built-in text.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
 func (self Instance) GetLabel() [1]gdclass.Label { //gd:AcceptDialog.get_label
-	return [1]gdclass.Label(class(self).GetLabel())
+	return [1]gdclass.Label(Advanced(self).GetLabel())
 }
 
 /*
@@ -77,7 +78,16 @@ If [code]true[/code], [param right] will place the button to the right of any si
 You can use [method remove_button] method to remove a button created with this method from the dialog.
 */
 func (self Instance) AddButton(text string) [1]gdclass.Button { //gd:AcceptDialog.add_button
-	return [1]gdclass.Button(class(self).AddButton(String.New(text), false, String.New("")))
+	return [1]gdclass.Button(Advanced(self).AddButton(String.New(text), false, String.New("")))
+}
+
+/*
+Adds a button with label [param text] and a custom [param action] to the dialog and returns the created button. [param action] will be passed to the [signal custom_action] signal when pressed.
+If [code]true[/code], [param right] will place the button to the right of any sibling buttons.
+You can use [method remove_button] method to remove a button created with this method from the dialog.
+*/
+func (self Expanded) AddButton(text string, right bool, action string) [1]gdclass.Button { //gd:AcceptDialog.add_button
+	return [1]gdclass.Button(Advanced(self).AddButton(String.New(text), right, String.New(action)))
 }
 
 /*
@@ -85,21 +95,21 @@ Adds a button with label [param name] and a cancel action to the dialog and retu
 You can use [method remove_button] method to remove a button created with this method from the dialog.
 */
 func (self Instance) AddCancelButton(name string) [1]gdclass.Button { //gd:AcceptDialog.add_cancel_button
-	return [1]gdclass.Button(class(self).AddCancelButton(String.New(name)))
+	return [1]gdclass.Button(Advanced(self).AddCancelButton(String.New(name)))
 }
 
 /*
 Removes the [param button] from the dialog. Does NOT free the [param button]. The [param button] must be a [Button] added with [method add_button] or [method add_cancel_button] method. After removal, pressing the [param button] will no longer emit this dialog's [signal custom_action] or [signal canceled] signals.
 */
 func (self Instance) RemoveButton(button [1]gdclass.Button) { //gd:AcceptDialog.remove_button
-	class(self).RemoveButton(button)
+	Advanced(self).RemoveButton(button)
 }
 
 /*
 Registers a [LineEdit] in the dialog. When the enter key is pressed, the dialog will be accepted.
 */
 func (self Instance) RegisterTextEnter(line_edit [1]gdclass.LineEdit) { //gd:AcceptDialog.register_text_enter
-	class(self).RegisterTextEnter(line_edit)
+	Advanced(self).RegisterTextEnter(line_edit)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

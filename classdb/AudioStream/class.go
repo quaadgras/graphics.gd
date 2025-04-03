@@ -214,42 +214,42 @@ func (Instance) _get_bar_beats(impl func(ptr unsafe.Pointer) int) (cb gd.Extensi
 Returns the length of the audio stream in seconds.
 */
 func (self Instance) GetLength() Float.X { //gd:AudioStream.get_length
-	return Float.X(Float.X(class(self).GetLength()))
+	return Float.X(Float.X(Advanced(self).GetLength()))
 }
 
 /*
 Returns [code]true[/code] if this audio stream only supports one channel ([i]monophony[/i]), or [code]false[/code] if the audio stream supports two or more channels ([i]polyphony[/i]).
 */
 func (self Instance) IsMonophonic() bool { //gd:AudioStream.is_monophonic
-	return bool(class(self).IsMonophonic())
+	return bool(Advanced(self).IsMonophonic())
 }
 
 /*
 Returns a newly created [AudioStreamPlayback] intended to play this audio stream. Useful for when you want to extend [method _instantiate_playback] but call [method instantiate_playback] from an internally held AudioStream subresource. An example of this can be found in the source code for [code]AudioStreamRandomPitch::instantiate_playback[/code].
 */
 func (self Instance) InstantiatePlayback() [1]gdclass.AudioStreamPlayback { //gd:AudioStream.instantiate_playback
-	return [1]gdclass.AudioStreamPlayback(class(self).InstantiatePlayback())
+	return [1]gdclass.AudioStreamPlayback(Advanced(self).InstantiatePlayback())
 }
 
 /*
 Returns if the current [AudioStream] can be used as a sample. Only static streams can be sampled.
 */
 func (self Instance) CanBeSampled() bool { //gd:AudioStream.can_be_sampled
-	return bool(class(self).CanBeSampled())
+	return bool(Advanced(self).CanBeSampled())
 }
 
 /*
 Generates an [AudioSample] based on the current stream.
 */
 func (self Instance) GenerateSample() [1]gdclass.AudioSample { //gd:AudioStream.generate_sample
-	return [1]gdclass.AudioSample(class(self).GenerateSample())
+	return [1]gdclass.AudioSample(Advanced(self).GenerateSample())
 }
 
 /*
 Returns [code]true[/code] if the stream is a collection of other streams, [code]false[/code] otherwise.
 */
 func (self Instance) IsMetaStream() bool { //gd:AudioStream.is_meta_stream
-	return bool(class(self).IsMetaStream())
+	return bool(Advanced(self).IsMetaStream())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

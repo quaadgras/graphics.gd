@@ -48,6 +48,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 %!(EXTRA string=Translation)
 */
 type Instance [1]gdclass.Translation
+type Expanded [1]gdclass.Translation
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -122,7 +123,15 @@ Adds a message if nonexistent, followed by its translation.
 An additional context could be used to specify the translation context or differentiate polysemic words.
 */
 func (self Instance) AddMessage(src_message string, xlated_message string) { //gd:Translation.add_message
-	class(self).AddMessage(String.Name(String.New(src_message)), String.Name(String.New(xlated_message)), String.Name(String.New("")))
+	Advanced(self).AddMessage(String.Name(String.New(src_message)), String.Name(String.New(xlated_message)), String.Name(String.New("")))
+}
+
+/*
+Adds a message if nonexistent, followed by its translation.
+An additional context could be used to specify the translation context or differentiate polysemic words.
+*/
+func (self Expanded) AddMessage(src_message string, xlated_message string, context string) { //gd:Translation.add_message
+	Advanced(self).AddMessage(String.Name(String.New(src_message)), String.Name(String.New(xlated_message)), String.Name(String.New(context)))
 }
 
 /*
@@ -130,14 +139,29 @@ Adds a message involving plural translation if nonexistent, followed by its tran
 An additional context could be used to specify the translation context or differentiate polysemic words.
 */
 func (self Instance) AddPluralMessage(src_message string, xlated_messages []string) { //gd:Translation.add_plural_message
-	class(self).AddPluralMessage(String.Name(String.New(src_message)), Packed.MakeStrings(xlated_messages...), String.Name(String.New("")))
+	Advanced(self).AddPluralMessage(String.Name(String.New(src_message)), Packed.MakeStrings(xlated_messages...), String.Name(String.New("")))
+}
+
+/*
+Adds a message involving plural translation if nonexistent, followed by its translation.
+An additional context could be used to specify the translation context or differentiate polysemic words.
+*/
+func (self Expanded) AddPluralMessage(src_message string, xlated_messages []string, context string) { //gd:Translation.add_plural_message
+	Advanced(self).AddPluralMessage(String.Name(String.New(src_message)), Packed.MakeStrings(xlated_messages...), String.Name(String.New(context)))
 }
 
 /*
 Returns a message's translation.
 */
 func (self Instance) GetMessage(src_message string) string { //gd:Translation.get_message
-	return string(class(self).GetMessage(String.Name(String.New(src_message)), String.Name(String.New(""))).String())
+	return string(Advanced(self).GetMessage(String.Name(String.New(src_message)), String.Name(String.New(""))).String())
+}
+
+/*
+Returns a message's translation.
+*/
+func (self Expanded) GetMessage(src_message string, context string) string { //gd:Translation.get_message
+	return string(Advanced(self).GetMessage(String.Name(String.New(src_message)), String.Name(String.New(context))).String())
 }
 
 /*
@@ -145,35 +169,50 @@ Returns a message's translation involving plurals.
 The number [param n] is the number or quantity of the plural object. It will be used to guide the translation system to fetch the correct plural form for the selected language.
 */
 func (self Instance) GetPluralMessage(src_message string, src_plural_message string, n int) string { //gd:Translation.get_plural_message
-	return string(class(self).GetPluralMessage(String.Name(String.New(src_message)), String.Name(String.New(src_plural_message)), int64(n), String.Name(String.New(""))).String())
+	return string(Advanced(self).GetPluralMessage(String.Name(String.New(src_message)), String.Name(String.New(src_plural_message)), int64(n), String.Name(String.New(""))).String())
+}
+
+/*
+Returns a message's translation involving plurals.
+The number [param n] is the number or quantity of the plural object. It will be used to guide the translation system to fetch the correct plural form for the selected language.
+*/
+func (self Expanded) GetPluralMessage(src_message string, src_plural_message string, n int, context string) string { //gd:Translation.get_plural_message
+	return string(Advanced(self).GetPluralMessage(String.Name(String.New(src_message)), String.Name(String.New(src_plural_message)), int64(n), String.Name(String.New(context))).String())
 }
 
 /*
 Erases a message.
 */
 func (self Instance) EraseMessage(src_message string) { //gd:Translation.erase_message
-	class(self).EraseMessage(String.Name(String.New(src_message)), String.Name(String.New("")))
+	Advanced(self).EraseMessage(String.Name(String.New(src_message)), String.Name(String.New("")))
+}
+
+/*
+Erases a message.
+*/
+func (self Expanded) EraseMessage(src_message string, context string) { //gd:Translation.erase_message
+	Advanced(self).EraseMessage(String.Name(String.New(src_message)), String.Name(String.New(context)))
 }
 
 /*
 Returns all the messages (keys).
 */
 func (self Instance) GetMessageList() []string { //gd:Translation.get_message_list
-	return []string(class(self).GetMessageList().Strings())
+	return []string(Advanced(self).GetMessageList().Strings())
 }
 
 /*
 Returns all the messages (translated text).
 */
 func (self Instance) GetTranslatedMessageList() []string { //gd:Translation.get_translated_message_list
-	return []string(class(self).GetTranslatedMessageList().Strings())
+	return []string(Advanced(self).GetTranslatedMessageList().Strings())
 }
 
 /*
 Returns the number of existing messages.
 */
 func (self Instance) GetMessageCount() int { //gd:Translation.get_message_count
-	return int(int(class(self).GetMessageCount()))
+	return int(int(Advanced(self).GetMessageCount()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

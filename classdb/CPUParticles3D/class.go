@@ -51,6 +51,7 @@ CPU-based 3D particle node used to create a variety of particle systems and effe
 See also [GPUParticles3D], which provides the same functionality with hardware acceleration, but may not run on older devices.
 */
 type Instance [1]gdclass.CPUParticles3D
+type Expanded [1]gdclass.CPUParticles3D
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -65,7 +66,15 @@ Restarts the particle emitter.
 If [param keep_seed] is [code]true[/code], the current random seed will be preserved. Useful for seeking and playback.
 */
 func (self Instance) Restart() { //gd:CPUParticles3D.restart
-	class(self).Restart(false)
+	Advanced(self).Restart(false)
+}
+
+/*
+Restarts the particle emitter.
+If [param keep_seed] is [code]true[/code], the current random seed will be preserved. Useful for seeking and playback.
+*/
+func (self Expanded) Restart(keep_seed bool) { //gd:CPUParticles3D.restart
+	Advanced(self).Restart(keep_seed)
 }
 
 /*
@@ -73,21 +82,21 @@ Requests the particles to process for extra process time during a single frame.
 Useful for particle playback, if used in combination with [member use_fixed_seed] or by calling [method restart] with parameter [code]keep_seed[/code] set to [code]true[/code].
 */
 func (self Instance) RequestParticlesProcess(process_time Float.X) { //gd:CPUParticles3D.request_particles_process
-	class(self).RequestParticlesProcess(float64(process_time))
+	Advanced(self).RequestParticlesProcess(float64(process_time))
 }
 
 /*
 Returns the axis-aligned bounding box that contains all the particles that are active in the current frame.
 */
 func (self Instance) CaptureAabb() AABB.PositionSize { //gd:CPUParticles3D.capture_aabb
-	return AABB.PositionSize(class(self).CaptureAabb())
+	return AABB.PositionSize(Advanced(self).CaptureAabb())
 }
 
 /*
 Sets this node's properties to match a given [GPUParticles3D] node with an assigned [ParticleProcessMaterial].
 */
 func (self Instance) ConvertFromParticles(particles [1]gdclass.Node) { //gd:CPUParticles3D.convert_from_particles
-	class(self).ConvertFromParticles(particles)
+	Advanced(self).ConvertFromParticles(particles)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

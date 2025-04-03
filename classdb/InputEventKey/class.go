@@ -63,7 +63,7 @@ Returns the Latin keycode combined with modifier keys such as [kbd]Shift[/kbd] o
 To get a human-readable representation of the [InputEventKey] with modifiers, use [code]OS.get_keycode_string(event.get_keycode_with_modifiers())[/code] where [code]event[/code] is the [InputEventKey].
 */
 func (self Instance) GetKeycodeWithModifiers() Key { //gd:InputEventKey.get_keycode_with_modifiers
-	return Key(class(self).GetKeycodeWithModifiers())
+	return Key(Advanced(self).GetKeycodeWithModifiers())
 }
 
 /*
@@ -71,7 +71,7 @@ Returns the physical keycode combined with modifier keys such as [kbd]Shift[/kbd
 To get a human-readable representation of the [InputEventKey] with modifiers, use [code]OS.get_keycode_string(event.get_physical_keycode_with_modifiers())[/code] where [code]event[/code] is the [InputEventKey].
 */
 func (self Instance) GetPhysicalKeycodeWithModifiers() Key { //gd:InputEventKey.get_physical_keycode_with_modifiers
-	return Key(class(self).GetPhysicalKeycodeWithModifiers())
+	return Key(Advanced(self).GetPhysicalKeycodeWithModifiers())
 }
 
 /*
@@ -79,35 +79,35 @@ Returns the localized key label combined with modifier keys such as [kbd]Shift[/
 To get a human-readable representation of the [InputEventKey] with modifiers, use [code]OS.get_keycode_string(event.get_key_label_with_modifiers())[/code] where [code]event[/code] is the [InputEventKey].
 */
 func (self Instance) GetKeyLabelWithModifiers() Key { //gd:InputEventKey.get_key_label_with_modifiers
-	return Key(class(self).GetKeyLabelWithModifiers())
+	return Key(Advanced(self).GetKeyLabelWithModifiers())
 }
 
 /*
 Returns a [String] representation of the event's [member keycode] and modifiers.
 */
 func (self Instance) AsTextKeycode() string { //gd:InputEventKey.as_text_keycode
-	return string(class(self).AsTextKeycode().String())
+	return string(Advanced(self).AsTextKeycode().String())
 }
 
 /*
 Returns a [String] representation of the event's [member physical_keycode] and modifiers.
 */
 func (self Instance) AsTextPhysicalKeycode() string { //gd:InputEventKey.as_text_physical_keycode
-	return string(class(self).AsTextPhysicalKeycode().String())
+	return string(Advanced(self).AsTextPhysicalKeycode().String())
 }
 
 /*
 Returns a [String] representation of the event's [member key_label] and modifiers.
 */
 func (self Instance) AsTextKeyLabel() string { //gd:InputEventKey.as_text_key_label
-	return string(class(self).AsTextKeyLabel().String())
+	return string(Advanced(self).AsTextKeyLabel().String())
 }
 
 /*
 Returns a [String] representation of the event's [member location]. This will be a blank string if the event is not specific to a location.
 */
 func (self Instance) AsTextLocation() string { //gd:InputEventKey.as_text_location
-	return string(class(self).AsTextLocation().String())
+	return string(Advanced(self).AsTextLocation().String())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

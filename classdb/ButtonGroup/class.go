@@ -58,14 +58,14 @@ type Any interface {
 Returns the current pressed button.
 */
 func (self Instance) GetPressedButton() [1]gdclass.BaseButton { //gd:ButtonGroup.get_pressed_button
-	return [1]gdclass.BaseButton(class(self).GetPressedButton())
+	return [1]gdclass.BaseButton(Advanced(self).GetPressedButton())
 }
 
 /*
 Returns an [Array] of [Button]s who have this as their [ButtonGroup] (see [member BaseButton.button_group]).
 */
 func (self Instance) GetButtons() [][1]gdclass.BaseButton { //gd:ButtonGroup.get_buttons
-	return [][1]gdclass.BaseButton(gd.ArrayAs[[][1]gdclass.BaseButton](gd.InternalArray(class(self).GetButtons())))
+	return [][1]gdclass.BaseButton(gd.ArrayAs[[][1]gdclass.BaseButton](gd.InternalArray(Advanced(self).GetButtons())))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

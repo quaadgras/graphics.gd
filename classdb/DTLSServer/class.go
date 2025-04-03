@@ -206,7 +206,7 @@ type Any interface {
 Setup the DTLS server to use the given [param server_options]. See [method TLSOptions.server].
 */
 func (self Instance) Setup(server_options [1]gdclass.TLSOptions) error { //gd:DTLSServer.setup
-	return error(gd.ToError(class(self).Setup(server_options)))
+	return error(gd.ToError(Advanced(self).Setup(server_options)))
 }
 
 /*
@@ -214,7 +214,7 @@ Try to initiate the DTLS handshake with the given [param udp_peer] which must be
 [b]Note:[/b] You must check that the state of the return PacketPeerUDP is [constant PacketPeerDTLS.STATUS_HANDSHAKING], as it is normal that 50% of the new connections will be invalid due to cookie exchange.
 */
 func (self Instance) TakeConnection(udp_peer [1]gdclass.PacketPeerUDP) [1]gdclass.PacketPeerDTLS { //gd:DTLSServer.take_connection
-	return [1]gdclass.PacketPeerDTLS(class(self).TakeConnection(udp_peer))
+	return [1]gdclass.PacketPeerDTLS(Advanced(self).TakeConnection(udp_peer))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

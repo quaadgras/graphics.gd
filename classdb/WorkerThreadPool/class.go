@@ -98,9 +98,19 @@ Adds [param action] as a task to be executed by a worker thread. [param high_pri
 Returns a task ID that can be used by other methods.
 [b]Warning:[/b] Every task must be waited for completion using [method wait_for_task_completion] or [method wait_for_group_task_completion] at some point so that any allocated resources inside the task can be cleaned up.
 */
-func AddTask(action func()) int { //gd:WorkerThreadPool.add_task
+func AddTask(action func(), high_priority bool, description string) int { //gd:WorkerThreadPool.add_task
 	once.Do(singleton)
-	return int(int(class(self).AddTask(Callable.New(action), false, String.New(""))))
+	return int(int(Advanced().AddTask(Callable.New(action), high_priority, String.New(description))))
+}
+
+/*
+Adds [param action] as a task to be executed by a worker thread. [param high_priority] determines if the task has a high priority or a low priority (default). You can optionally provide a [param description] to help with debugging.
+Returns a task ID that can be used by other methods.
+[b]Warning:[/b] Every task must be waited for completion using [method wait_for_task_completion] or [method wait_for_group_task_completion] at some point so that any allocated resources inside the task can be cleaned up.
+*/
+func AddTaskExpanded(action func(), high_priority bool, description string) int { //gd:WorkerThreadPool.add_task
+	once.Do(singleton)
+	return int(int(Advanced().AddTask(Callable.New(action), high_priority, String.New(description))))
 }
 
 /*
@@ -109,7 +119,7 @@ Returns [code]true[/code] if the task with the given ID is completed.
 */
 func IsTaskCompleted(task_id int) bool { //gd:WorkerThreadPool.is_task_completed
 	once.Do(singleton)
-	return bool(class(self).IsTaskCompleted(int64(task_id)))
+	return bool(Advanced().IsTaskCompleted(int64(task_id)))
 }
 
 /*
@@ -120,7 +130,7 @@ Returns [constant @GlobalScope.ERR_BUSY] if the call is made from another runnin
 */
 func WaitForTaskCompletion(task_id int) error { //gd:WorkerThreadPool.wait_for_task_completion
 	once.Do(singleton)
-	return error(gd.ToError(class(self).WaitForTaskCompletion(int64(task_id))))
+	return error(gd.ToError(Advanced().WaitForTaskCompletion(int64(task_id))))
 }
 
 /*
@@ -129,9 +139,20 @@ The number of threads the task is distributed to is defined by [param tasks_need
 Returns a group task ID that can be used by other methods.
 [b]Warning:[/b] Every task must be waited for completion using [method wait_for_task_completion] or [method wait_for_group_task_completion] at some point so that any allocated resources inside the task can be cleaned up.
 */
-func AddGroupTask(action func(), elements int) int { //gd:WorkerThreadPool.add_group_task
+func AddGroupTask(action func(), elements int, high_priority bool, description string) int { //gd:WorkerThreadPool.add_group_task
 	once.Do(singleton)
-	return int(int(class(self).AddGroupTask(Callable.New(action), int64(elements), int64(-1), false, String.New(""))))
+	return int(int(Advanced().AddGroupTask(Callable.New(action), int64(elements), int64(-1), high_priority, String.New(description))))
+}
+
+/*
+Adds [param action] as a group task to be executed by the worker threads. The [Callable] will be called a number of times based on [param elements], with the first thread calling it with the value [code]0[/code] as a parameter, and each consecutive execution incrementing this value by 1 until it reaches [code]element - 1[/code].
+The number of threads the task is distributed to is defined by [param tasks_needed], where the default value [code]-1[/code] means it is distributed to all worker threads. [param high_priority] determines if the task has a high priority or a low priority (default). You can optionally provide a [param description] to help with debugging.
+Returns a group task ID that can be used by other methods.
+[b]Warning:[/b] Every task must be waited for completion using [method wait_for_task_completion] or [method wait_for_group_task_completion] at some point so that any allocated resources inside the task can be cleaned up.
+*/
+func AddGroupTaskExpanded(action func(), elements int, tasks_needed int, high_priority bool, description string) int { //gd:WorkerThreadPool.add_group_task
+	once.Do(singleton)
+	return int(int(Advanced().AddGroupTask(Callable.New(action), int64(elements), int64(tasks_needed), high_priority, String.New(description))))
 }
 
 /*
@@ -140,7 +161,7 @@ Returns [code]true[/code] if the group task with the given ID is completed.
 */
 func IsGroupTaskCompleted(group_id int) bool { //gd:WorkerThreadPool.is_group_task_completed
 	once.Do(singleton)
-	return bool(class(self).IsGroupTaskCompleted(int64(group_id)))
+	return bool(Advanced().IsGroupTaskCompleted(int64(group_id)))
 }
 
 /*
@@ -149,7 +170,7 @@ Returns how many times the [Callable] of the group task with the given ID has al
 */
 func GetGroupProcessedElementCount(group_id int) int { //gd:WorkerThreadPool.get_group_processed_element_count
 	once.Do(singleton)
-	return int(int(class(self).GetGroupProcessedElementCount(int64(group_id))))
+	return int(int(Advanced().GetGroupProcessedElementCount(int64(group_id))))
 }
 
 /*
@@ -157,7 +178,7 @@ Pauses the thread that calls this method until the group task with the given ID 
 */
 func WaitForGroupTaskCompletion(group_id int) { //gd:WorkerThreadPool.wait_for_group_task_completion
 	once.Do(singleton)
-	class(self).WaitForGroupTaskCompletion(int64(group_id))
+	Advanced().WaitForGroupTaskCompletion(int64(group_id))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

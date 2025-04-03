@@ -63,14 +63,14 @@ type Any interface {
 Sets the intensity of the glow level [param idx]. A value above [code]0.0[/code] enables the level. Each level relies on the previous level. This means that enabling higher glow levels will slow down the glow effect rendering, even if previous levels aren't enabled.
 */
 func (self Instance) SetGlowLevel(idx int, intensity Float.X) { //gd:Environment.set_glow_level
-	class(self).SetGlowLevel(int64(idx), float64(intensity))
+	Advanced(self).SetGlowLevel(int64(idx), float64(intensity))
 }
 
 /*
 Returns the intensity of the glow level [param idx].
 */
 func (self Instance) GetGlowLevel(idx int) Float.X { //gd:Environment.get_glow_level
-	return Float.X(Float.X(class(self).GetGlowLevel(int64(idx))))
+	return Float.X(Float.X(Advanced(self).GetGlowLevel(int64(idx))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

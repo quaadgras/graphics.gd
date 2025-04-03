@@ -58,21 +58,21 @@ type Any interface {
 Returns the Java class name.
 */
 func (self Instance) GetJavaClassName() string { //gd:JavaClass.get_java_class_name
-	return string(class(self).GetJavaClassName().String())
+	return string(Advanced(self).GetJavaClassName().String())
 }
 
 /*
 Returns the object's Java methods and their signatures as an [Array] of dictionaries, in the same format as [method Object.get_method_list].
 */
 func (self Instance) GetJavaMethodList() []PropertyInfo { //gd:JavaClass.get_java_method_list
-	return []PropertyInfo(gd.ArrayAs[[]PropertyInfo](gd.InternalArray(class(self).GetJavaMethodList())))
+	return []PropertyInfo(gd.ArrayAs[[]PropertyInfo](gd.InternalArray(Advanced(self).GetJavaMethodList())))
 }
 
 /*
 Returns a [JavaClass] representing the Java parent class of this class.
 */
 func (self Instance) GetJavaParentClass() [1]gdclass.JavaClass { //gd:JavaClass.get_java_parent_class
-	return [1]gdclass.JavaClass(class(self).GetJavaParentClass())
+	return [1]gdclass.JavaClass(Advanced(self).GetJavaParentClass())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

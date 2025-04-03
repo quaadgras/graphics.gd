@@ -58,7 +58,7 @@ type Any interface {
 }
 
 func (self Instance) Allocate(to_cell_xform Transform3D.BasisOrigin, aabb AABB.PositionSize, octree_size Vector3.XYZ, octree_cells []byte, data_cells []byte, distance_field []byte, level_counts []int32) { //gd:VoxelGIData.allocate
-	class(self).Allocate(Transform3D.BasisOrigin(to_cell_xform), AABB.PositionSize(aabb), Vector3.XYZ(octree_size), Packed.Bytes(Packed.New(octree_cells...)), Packed.Bytes(Packed.New(data_cells...)), Packed.Bytes(Packed.New(distance_field...)), Packed.New(level_counts...))
+	Advanced(self).Allocate(Transform3D.BasisOrigin(to_cell_xform), AABB.PositionSize(aabb), Vector3.XYZ(octree_size), Packed.Bytes(Packed.New(octree_cells...)), Packed.Bytes(Packed.New(data_cells...)), Packed.Bytes(Packed.New(distance_field...)), Packed.New(level_counts...))
 }
 
 /*
@@ -66,22 +66,22 @@ Returns the bounds of the baked voxel data as an [AABB], which should match [mem
 [b]Note:[/b] If the size was modified without baking the VoxelGI data, then the value of [method get_bounds] and [member VoxelGI.size] will not match.
 */
 func (self Instance) GetBounds() AABB.PositionSize { //gd:VoxelGIData.get_bounds
-	return AABB.PositionSize(class(self).GetBounds())
+	return AABB.PositionSize(Advanced(self).GetBounds())
 }
 func (self Instance) GetOctreeSize() Vector3.XYZ { //gd:VoxelGIData.get_octree_size
-	return Vector3.XYZ(class(self).GetOctreeSize())
+	return Vector3.XYZ(Advanced(self).GetOctreeSize())
 }
 func (self Instance) GetToCellXform() Transform3D.BasisOrigin { //gd:VoxelGIData.get_to_cell_xform
-	return Transform3D.BasisOrigin(class(self).GetToCellXform())
+	return Transform3D.BasisOrigin(Advanced(self).GetToCellXform())
 }
 func (self Instance) GetOctreeCells() []byte { //gd:VoxelGIData.get_octree_cells
-	return []byte(class(self).GetOctreeCells().Bytes())
+	return []byte(Advanced(self).GetOctreeCells().Bytes())
 }
 func (self Instance) GetDataCells() []byte { //gd:VoxelGIData.get_data_cells
-	return []byte(class(self).GetDataCells().Bytes())
+	return []byte(Advanced(self).GetDataCells().Bytes())
 }
 func (self Instance) GetLevelCounts() []int32 { //gd:VoxelGIData.get_level_counts
-	return []int32(slices.Collect(class(self).GetLevelCounts().Values()))
+	return []int32(slices.Collect(Advanced(self).GetLevelCounts().Values()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

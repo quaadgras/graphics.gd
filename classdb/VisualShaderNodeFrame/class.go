@@ -62,14 +62,14 @@ type Any interface {
 Adds a node to the list of nodes attached to the frame. Should not be called directly, use the [method VisualShader.attach_node_to_frame] method instead.
 */
 func (self Instance) AddAttachedNode(node int) { //gd:VisualShaderNodeFrame.add_attached_node
-	class(self).AddAttachedNode(int64(node))
+	Advanced(self).AddAttachedNode(int64(node))
 }
 
 /*
 Removes a node from the list of nodes attached to the frame. Should not be called directly, use the [method VisualShader.detach_node_from_frame] method instead.
 */
 func (self Instance) RemoveAttachedNode(node int) { //gd:VisualShaderNodeFrame.remove_attached_node
-	class(self).RemoveAttachedNode(int64(node))
+	Advanced(self).RemoveAttachedNode(int64(node))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

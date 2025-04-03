@@ -813,28 +813,28 @@ func (Instance) _get_debug_protocol(impl func(ptr unsafe.Pointer) string) (cb gd
 Sets current configuration error message text. This method should be called only from the [method _can_export], [method _has_valid_export_configuration], or [method _has_valid_project_configuration] implementations.
 */
 func (self Instance) SetConfigError(error_text string) { //gd:EditorExportPlatformExtension.set_config_error
-	class(self).SetConfigError(String.New(error_text))
+	Advanced(self).SetConfigError(String.New(error_text))
 }
 
 /*
 Returns current configuration error message text. This method should be called only from the [method _can_export], [method _has_valid_export_configuration], or [method _has_valid_project_configuration] implementations.
 */
 func (self Instance) GetConfigError() string { //gd:EditorExportPlatformExtension.get_config_error
-	return string(class(self).GetConfigError().String())
+	return string(Advanced(self).GetConfigError().String())
 }
 
 /*
 Set to [code]true[/code] is export templates are missing from the current configuration. This method should be called only from the [method _can_export], [method _has_valid_export_configuration], or [method _has_valid_project_configuration] implementations.
 */
 func (self Instance) SetConfigMissingTemplates(missing_templates bool) { //gd:EditorExportPlatformExtension.set_config_missing_templates
-	class(self).SetConfigMissingTemplates(missing_templates)
+	Advanced(self).SetConfigMissingTemplates(missing_templates)
 }
 
 /*
 Returns [code]true[/code] is export templates are missing from the current configuration. This method should be called only from the [method _can_export], [method _has_valid_export_configuration], or [method _has_valid_project_configuration] implementations.
 */
 func (self Instance) GetConfigMissingTemplates() bool { //gd:EditorExportPlatformExtension.get_config_missing_templates
-	return bool(class(self).GetConfigMissingTemplates())
+	return bool(Advanced(self).GetConfigMissingTemplates())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

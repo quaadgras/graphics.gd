@@ -44,6 +44,7 @@ A TCP server. Listens to connections on a port and returns a [StreamPeerTCP] whe
 [b]Note:[/b] When exporting to Android, make sure to enable the [code]INTERNET[/code] permission in the Android export preset before exporting the project or using one-click deploy. Otherwise, network communication of any kind will be blocked by Android.
 */
 type Instance [1]gdclass.TCPServer
+type Expanded [1]gdclass.TCPServer
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -60,42 +61,52 @@ If [param bind_address] is set as [code]"0.0.0.0"[/code] (for IPv4) or [code]"::
 If [param bind_address] is set to any valid address (e.g. [code]"192.168.1.101"[/code], [code]"::1"[/code], etc.), the server will only listen on the interface with that address (or fail if no interface with the given address exists).
 */
 func (self Instance) Listen(port int) error { //gd:TCPServer.listen
-	return error(gd.ToError(class(self).Listen(int64(port), String.New("*"))))
+	return error(gd.ToError(Advanced(self).Listen(int64(port), String.New("*"))))
+}
+
+/*
+Listen on the [param port] binding to [param bind_address].
+If [param bind_address] is set as [code]"*"[/code] (default), the server will listen on all available addresses (both IPv4 and IPv6).
+If [param bind_address] is set as [code]"0.0.0.0"[/code] (for IPv4) or [code]"::"[/code] (for IPv6), the server will listen on all available addresses matching that IP type.
+If [param bind_address] is set to any valid address (e.g. [code]"192.168.1.101"[/code], [code]"::1"[/code], etc.), the server will only listen on the interface with that address (or fail if no interface with the given address exists).
+*/
+func (self Expanded) Listen(port int, bind_address string) error { //gd:TCPServer.listen
+	return error(gd.ToError(Advanced(self).Listen(int64(port), String.New(bind_address))))
 }
 
 /*
 Returns [code]true[/code] if a connection is available for taking.
 */
 func (self Instance) IsConnectionAvailable() bool { //gd:TCPServer.is_connection_available
-	return bool(class(self).IsConnectionAvailable())
+	return bool(Advanced(self).IsConnectionAvailable())
 }
 
 /*
 Returns [code]true[/code] if the server is currently listening for connections.
 */
 func (self Instance) IsListening() bool { //gd:TCPServer.is_listening
-	return bool(class(self).IsListening())
+	return bool(Advanced(self).IsListening())
 }
 
 /*
 Returns the local port this server is listening to.
 */
 func (self Instance) GetLocalPort() int { //gd:TCPServer.get_local_port
-	return int(int(class(self).GetLocalPort()))
+	return int(int(Advanced(self).GetLocalPort()))
 }
 
 /*
 If a connection is available, returns a StreamPeerTCP with the connection.
 */
 func (self Instance) TakeConnection() [1]gdclass.StreamPeerTCP { //gd:TCPServer.take_connection
-	return [1]gdclass.StreamPeerTCP(class(self).TakeConnection())
+	return [1]gdclass.StreamPeerTCP(Advanced(self).TakeConnection())
 }
 
 /*
 Stops listening.
 */
 func (self Instance) Stop() { //gd:TCPServer.stop
-	class(self).Stop()
+	Advanced(self).Stop()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

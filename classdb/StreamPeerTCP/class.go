@@ -45,6 +45,7 @@ A stream peer that handles TCP connections. This object can be used to connect t
 [b]Note:[/b] When exporting to Android, make sure to enable the [code]INTERNET[/code] permission in the Android export preset before exporting the project or using one-click deploy. Otherwise, network communication of any kind will be blocked by Android.
 */
 type Instance [1]gdclass.StreamPeerTCP
+type Expanded [1]gdclass.StreamPeerTCP
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -59,56 +60,64 @@ Opens the TCP socket, and binds it to the specified local address.
 This method is generally not needed, and only used to force the subsequent call to [method connect_to_host] to use the specified [param host] and [param port] as source address. This can be desired in some NAT punchthrough techniques, or when forcing the source network interface.
 */
 func (self Instance) Bind(port int) error { //gd:StreamPeerTCP.bind
-	return error(gd.ToError(class(self).Bind(int64(port), String.New("*"))))
+	return error(gd.ToError(Advanced(self).Bind(int64(port), String.New("*"))))
+}
+
+/*
+Opens the TCP socket, and binds it to the specified local address.
+This method is generally not needed, and only used to force the subsequent call to [method connect_to_host] to use the specified [param host] and [param port] as source address. This can be desired in some NAT punchthrough techniques, or when forcing the source network interface.
+*/
+func (self Expanded) Bind(port int, host string) error { //gd:StreamPeerTCP.bind
+	return error(gd.ToError(Advanced(self).Bind(int64(port), String.New(host))))
 }
 
 /*
 Connects to the specified [code]host:port[/code] pair. A hostname will be resolved if valid. Returns [constant OK] on success.
 */
 func (self Instance) ConnectToHost(host string, port int) error { //gd:StreamPeerTCP.connect_to_host
-	return error(gd.ToError(class(self).ConnectToHost(String.New(host), int64(port))))
+	return error(gd.ToError(Advanced(self).ConnectToHost(String.New(host), int64(port))))
 }
 
 /*
 Poll the socket, updating its state. See [method get_status].
 */
 func (self Instance) Poll() error { //gd:StreamPeerTCP.poll
-	return error(gd.ToError(class(self).Poll()))
+	return error(gd.ToError(Advanced(self).Poll()))
 }
 
 /*
 Returns the status of the connection, see [enum Status].
 */
 func (self Instance) GetStatus() gdclass.StreamPeerTCPStatus { //gd:StreamPeerTCP.get_status
-	return gdclass.StreamPeerTCPStatus(class(self).GetStatus())
+	return gdclass.StreamPeerTCPStatus(Advanced(self).GetStatus())
 }
 
 /*
 Returns the IP of this peer.
 */
 func (self Instance) GetConnectedHost() string { //gd:StreamPeerTCP.get_connected_host
-	return string(class(self).GetConnectedHost().String())
+	return string(Advanced(self).GetConnectedHost().String())
 }
 
 /*
 Returns the port of this peer.
 */
 func (self Instance) GetConnectedPort() int { //gd:StreamPeerTCP.get_connected_port
-	return int(int(class(self).GetConnectedPort()))
+	return int(int(Advanced(self).GetConnectedPort()))
 }
 
 /*
 Returns the local port to which this peer is bound.
 */
 func (self Instance) GetLocalPort() int { //gd:StreamPeerTCP.get_local_port
-	return int(int(class(self).GetLocalPort()))
+	return int(int(Advanced(self).GetLocalPort()))
 }
 
 /*
 Disconnects from host.
 */
 func (self Instance) DisconnectFromHost() { //gd:StreamPeerTCP.disconnect_from_host
-	class(self).DisconnectFromHost()
+	Advanced(self).DisconnectFromHost()
 }
 
 /*
@@ -116,7 +125,7 @@ If [param enabled] is [code]true[/code], packets will be sent immediately. If [p
 [b]Note:[/b] It's recommended to leave this disabled for applications that send large packets or need to transfer a lot of data, as enabling this can decrease the total available bandwidth.
 */
 func (self Instance) SetNoDelay(enabled bool) { //gd:StreamPeerTCP.set_no_delay
-	class(self).SetNoDelay(enabled)
+	Advanced(self).SetNoDelay(enabled)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

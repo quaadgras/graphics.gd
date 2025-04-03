@@ -60,7 +60,7 @@ type Any interface {
 Returns the current line count.
 */
 func (self Instance) GetLineCount() int { //gd:FlowContainer.get_line_count
-	return int(int(class(self).GetLineCount()))
+	return int(int(Advanced(self).GetLineCount()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

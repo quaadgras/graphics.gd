@@ -44,6 +44,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 Provides direct access to a physics space in the [PhysicsServer2D]. It's used mainly to do queries against objects and areas residing in a given space.
 */
 type Instance [1]gdclass.PhysicsDirectSpaceState2D
+type Expanded [1]gdclass.PhysicsDirectSpaceState2D
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -63,7 +64,20 @@ The number of intersections can be limited with the [param max_results] paramete
 [b]Note:[/b] [ConcavePolygonShape2D]s and [CollisionPolygon2D]s in [code]Segments[/code] build mode are not solid shapes. Therefore, they will not be detected.
 */
 func (self Instance) IntersectPoint(parameters [1]gdclass.PhysicsPointQueryParameters2D) []PhysicsDirectSpaceState2D_Intersection { //gd:PhysicsDirectSpaceState2D.intersect_point
-	return []PhysicsDirectSpaceState2D_Intersection(gd.ArrayAs[[]PhysicsDirectSpaceState2D_Intersection](gd.InternalArray(class(self).IntersectPoint(parameters, int64(32)))))
+	return []PhysicsDirectSpaceState2D_Intersection(gd.ArrayAs[[]PhysicsDirectSpaceState2D_Intersection](gd.InternalArray(Advanced(self).IntersectPoint(parameters, int64(32)))))
+}
+
+/*
+Checks whether a point is inside any solid shape. Position and other parameters are defined through [PhysicsPointQueryParameters2D]. The shapes the point is inside of are returned in an array containing dictionaries with the following fields:
+[code]collider[/code]: The colliding object.
+[code]collider_id[/code]: The colliding object's ID.
+[code]rid[/code]: The intersecting object's [RID].
+[code]shape[/code]: The shape index of the colliding shape.
+The number of intersections can be limited with the [param max_results] parameter, to reduce the processing time.
+[b]Note:[/b] [ConcavePolygonShape2D]s and [CollisionPolygon2D]s in [code]Segments[/code] build mode are not solid shapes. Therefore, they will not be detected.
+*/
+func (self Expanded) IntersectPoint(parameters [1]gdclass.PhysicsPointQueryParameters2D, max_results int) []PhysicsDirectSpaceState2D_Intersection { //gd:PhysicsDirectSpaceState2D.intersect_point
+	return []PhysicsDirectSpaceState2D_Intersection(gd.ArrayAs[[]PhysicsDirectSpaceState2D_Intersection](gd.InternalArray(Advanced(self).IntersectPoint(parameters, int64(max_results)))))
 }
 
 /*
@@ -77,7 +91,7 @@ Intersects a ray in a given space. Ray position and other parameters are defined
 If the ray did not intersect anything, then an empty dictionary is returned instead.
 */
 func (self Instance) IntersectRay(parameters [1]gdclass.PhysicsRayQueryParameters2D) PhysicsDirectSpaceState2D_Intersection { //gd:PhysicsDirectSpaceState2D.intersect_ray
-	return PhysicsDirectSpaceState2D_Intersection(gd.DictionaryAs[PhysicsDirectSpaceState2D_Intersection](class(self).IntersectRay(parameters)))
+	return PhysicsDirectSpaceState2D_Intersection(gd.DictionaryAs[PhysicsDirectSpaceState2D_Intersection](Advanced(self).IntersectRay(parameters)))
 }
 
 /*
@@ -89,7 +103,19 @@ Checks the intersections of a shape, given through a [PhysicsShapeQueryParameter
 The number of intersections can be limited with the [param max_results] parameter, to reduce the processing time.
 */
 func (self Instance) IntersectShape(parameters [1]gdclass.PhysicsShapeQueryParameters2D) []PhysicsDirectSpaceState2D_Intersection { //gd:PhysicsDirectSpaceState2D.intersect_shape
-	return []PhysicsDirectSpaceState2D_Intersection(gd.ArrayAs[[]PhysicsDirectSpaceState2D_Intersection](gd.InternalArray(class(self).IntersectShape(parameters, int64(32)))))
+	return []PhysicsDirectSpaceState2D_Intersection(gd.ArrayAs[[]PhysicsDirectSpaceState2D_Intersection](gd.InternalArray(Advanced(self).IntersectShape(parameters, int64(32)))))
+}
+
+/*
+Checks the intersections of a shape, given through a [PhysicsShapeQueryParameters2D] object, against the space. The intersected shapes are returned in an array containing dictionaries with the following fields:
+[code]collider[/code]: The colliding object.
+[code]collider_id[/code]: The colliding object's ID.
+[code]rid[/code]: The intersecting object's [RID].
+[code]shape[/code]: The shape index of the colliding shape.
+The number of intersections can be limited with the [param max_results] parameter, to reduce the processing time.
+*/
+func (self Expanded) IntersectShape(parameters [1]gdclass.PhysicsShapeQueryParameters2D, max_results int) []PhysicsDirectSpaceState2D_Intersection { //gd:PhysicsDirectSpaceState2D.intersect_shape
+	return []PhysicsDirectSpaceState2D_Intersection(gd.ArrayAs[[]PhysicsDirectSpaceState2D_Intersection](gd.InternalArray(Advanced(self).IntersectShape(parameters, int64(max_results)))))
 }
 
 /*
@@ -98,7 +124,7 @@ Returns an array with the safe and unsafe proportions (between 0 and 1) of the m
 [b]Note:[/b] Any [Shape2D]s that the shape is already colliding with e.g. inside of, will be ignored. Use [method collide_shape] to determine the [Shape2D]s that the shape is already colliding with.
 */
 func (self Instance) CastMotion(parameters [1]gdclass.PhysicsShapeQueryParameters2D) []float32 { //gd:PhysicsDirectSpaceState2D.cast_motion
-	return []float32(slices.Collect(class(self).CastMotion(parameters).Values()))
+	return []float32(slices.Collect(Advanced(self).CastMotion(parameters).Values()))
 }
 
 /*
@@ -106,7 +132,15 @@ Checks the intersections of a shape, given through a [PhysicsShapeQueryParameter
 Returned points are a list of pairs of contact points. For each pair the first one is in the shape passed in [PhysicsShapeQueryParameters2D] object, second one is in the collided shape from the physics space.
 */
 func (self Instance) CollideShape(parameters [1]gdclass.PhysicsShapeQueryParameters2D) []Vector2.XY { //gd:PhysicsDirectSpaceState2D.collide_shape
-	return []Vector2.XY(gd.ArrayAs[[]Vector2.XY](gd.InternalArray(class(self).CollideShape(parameters, int64(32)))))
+	return []Vector2.XY(gd.ArrayAs[[]Vector2.XY](gd.InternalArray(Advanced(self).CollideShape(parameters, int64(32)))))
+}
+
+/*
+Checks the intersections of a shape, given through a [PhysicsShapeQueryParameters2D] object, against the space. The resulting array contains a list of points where the shape intersects another. Like with [method intersect_shape], the number of returned results can be limited to save processing time.
+Returned points are a list of pairs of contact points. For each pair the first one is in the shape passed in [PhysicsShapeQueryParameters2D] object, second one is in the collided shape from the physics space.
+*/
+func (self Expanded) CollideShape(parameters [1]gdclass.PhysicsShapeQueryParameters2D, max_results int) []Vector2.XY { //gd:PhysicsDirectSpaceState2D.collide_shape
+	return []Vector2.XY(gd.ArrayAs[[]Vector2.XY](gd.InternalArray(Advanced(self).CollideShape(parameters, int64(max_results)))))
 }
 
 /*
@@ -120,7 +154,7 @@ Checks the intersections of a shape, given through a [PhysicsShapeQueryParameter
 [code]shape[/code]: The shape index of the colliding shape.
 */
 func (self Instance) GetRestInfo(parameters [1]gdclass.PhysicsShapeQueryParameters2D) PhysicsDirectSpaceState2D_RestInfo { //gd:PhysicsDirectSpaceState2D.get_rest_info
-	return PhysicsDirectSpaceState2D_RestInfo(gd.DictionaryAs[PhysicsDirectSpaceState2D_RestInfo](class(self).GetRestInfo(parameters)))
+	return PhysicsDirectSpaceState2D_RestInfo(gd.DictionaryAs[PhysicsDirectSpaceState2D_RestInfo](Advanced(self).GetRestInfo(parameters)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

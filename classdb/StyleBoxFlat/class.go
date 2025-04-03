@@ -71,28 +71,28 @@ type Any interface {
 Sets the border width to [param width] pixels for all sides.
 */
 func (self Instance) SetBorderWidthAll(width int) { //gd:StyleBoxFlat.set_border_width_all
-	class(self).SetBorderWidthAll(int64(width))
+	Advanced(self).SetBorderWidthAll(int64(width))
 }
 
 /*
 Returns the smallest border width out of all four borders.
 */
 func (self Instance) GetBorderWidthMin() int { //gd:StyleBoxFlat.get_border_width_min
-	return int(int(class(self).GetBorderWidthMin()))
+	return int(int(Advanced(self).GetBorderWidthMin()))
 }
 
 /*
 Sets the corner radius to [param radius] pixels for all corners.
 */
 func (self Instance) SetCornerRadiusAll(radius int) { //gd:StyleBoxFlat.set_corner_radius_all
-	class(self).SetCornerRadiusAll(int64(radius))
+	Advanced(self).SetCornerRadiusAll(int64(radius))
 }
 
 /*
 Sets the expand margin to [param size] pixels for all sides.
 */
 func (self Instance) SetExpandMarginAll(size Float.X) { //gd:StyleBoxFlat.set_expand_margin_all
-	class(self).SetExpandMarginAll(float64(size))
+	Advanced(self).SetExpandMarginAll(float64(size))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

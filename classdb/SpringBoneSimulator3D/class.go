@@ -66,28 +66,28 @@ type Any interface {
 Sets the root bone name of the bone chain.
 */
 func (self Instance) SetRootBoneName(index int, bone_name string) { //gd:SpringBoneSimulator3D.set_root_bone_name
-	class(self).SetRootBoneName(int64(index), String.New(bone_name))
+	Advanced(self).SetRootBoneName(int64(index), String.New(bone_name))
 }
 
 /*
 Returns the root bone name of the bone chain.
 */
 func (self Instance) GetRootBoneName(index int) string { //gd:SpringBoneSimulator3D.get_root_bone_name
-	return string(class(self).GetRootBoneName(int64(index)).String())
+	return string(Advanced(self).GetRootBoneName(int64(index)).String())
 }
 
 /*
 Sets the root bone index of the bone chain.
 */
 func (self Instance) SetRootBone(index int, bone int) { //gd:SpringBoneSimulator3D.set_root_bone
-	class(self).SetRootBone(int64(index), int64(bone))
+	Advanced(self).SetRootBone(int64(index), int64(bone))
 }
 
 /*
 Returns the root bone index of the bone chain.
 */
 func (self Instance) GetRootBone(index int) int { //gd:SpringBoneSimulator3D.get_root_bone
-	return int(int(class(self).GetRootBone(int64(index))))
+	return int(int(Advanced(self).GetRootBone(int64(index))))
 }
 
 /*
@@ -95,28 +95,28 @@ Sets the end bone name of the bone chain.
 [b]Note:[/b] End bone must be the root bone or a child of the root bone. If they are the same, the tail must be extended by [method set_extend_end_bone] to jiggle the bone.
 */
 func (self Instance) SetEndBoneName(index int, bone_name string) { //gd:SpringBoneSimulator3D.set_end_bone_name
-	class(self).SetEndBoneName(int64(index), String.New(bone_name))
+	Advanced(self).SetEndBoneName(int64(index), String.New(bone_name))
 }
 
 /*
 Returns the end bone name of the bone chain.
 */
 func (self Instance) GetEndBoneName(index int) string { //gd:SpringBoneSimulator3D.get_end_bone_name
-	return string(class(self).GetEndBoneName(int64(index)).String())
+	return string(Advanced(self).GetEndBoneName(int64(index)).String())
 }
 
 /*
 Sets the end bone index of the bone chain.
 */
 func (self Instance) SetEndBone(index int, bone int) { //gd:SpringBoneSimulator3D.set_end_bone
-	class(self).SetEndBone(int64(index), int64(bone))
+	Advanced(self).SetEndBone(int64(index), int64(bone))
 }
 
 /*
 Returns the end bone index of the bone chain.
 */
 func (self Instance) GetEndBone(index int) int { //gd:SpringBoneSimulator3D.get_end_bone
-	return int(int(class(self).GetEndBone(int64(index))))
+	return int(int(Advanced(self).GetEndBone(int64(index))))
 }
 
 /*
@@ -125,42 +125,42 @@ The extended tail config is allocated to the last element in the joint list.
 In other words, if you set [param enabled] is [code]false[/code], the config of last element in the joint list has no effect in the simulated result.
 */
 func (self Instance) SetExtendEndBone(index int, enabled bool) { //gd:SpringBoneSimulator3D.set_extend_end_bone
-	class(self).SetExtendEndBone(int64(index), enabled)
+	Advanced(self).SetExtendEndBone(int64(index), enabled)
 }
 
 /*
 Returns [code]true[/code] if the end bone is extended to have the tail.
 */
 func (self Instance) IsEndBoneExtended(index int) bool { //gd:SpringBoneSimulator3D.is_end_bone_extended
-	return bool(class(self).IsEndBoneExtended(int64(index)))
+	return bool(Advanced(self).IsEndBoneExtended(int64(index)))
 }
 
 /*
 Sets the end bone tail direction of the bone chain when [method is_end_bone_extended] is [code]true[/code].
 */
 func (self Instance) SetEndBoneDirection(index int, bone_direction gdclass.SpringBoneSimulator3DBoneDirection) { //gd:SpringBoneSimulator3D.set_end_bone_direction
-	class(self).SetEndBoneDirection(int64(index), bone_direction)
+	Advanced(self).SetEndBoneDirection(int64(index), bone_direction)
 }
 
 /*
 Returns the end bone's tail direction of the bone chain when [method is_end_bone_extended] is [code]true[/code].
 */
 func (self Instance) GetEndBoneDirection(index int) gdclass.SpringBoneSimulator3DBoneDirection { //gd:SpringBoneSimulator3D.get_end_bone_direction
-	return gdclass.SpringBoneSimulator3DBoneDirection(class(self).GetEndBoneDirection(int64(index)))
+	return gdclass.SpringBoneSimulator3DBoneDirection(Advanced(self).GetEndBoneDirection(int64(index)))
 }
 
 /*
 Sets the end bone tail length of the bone chain when [method is_end_bone_extended] is [code]true[/code].
 */
 func (self Instance) SetEndBoneLength(index int, length Float.X) { //gd:SpringBoneSimulator3D.set_end_bone_length
-	class(self).SetEndBoneLength(int64(index), float64(length))
+	Advanced(self).SetEndBoneLength(int64(index), float64(length))
 }
 
 /*
 Returns the end bone's tail length of the bone chain when [method is_end_bone_extended] is [code]true[/code].
 */
 func (self Instance) GetEndBoneLength(index int) Float.X { //gd:SpringBoneSimulator3D.get_end_bone_length
-	return Float.X(Float.X(class(self).GetEndBoneLength(int64(index))))
+	return Float.X(Float.X(Advanced(self).GetEndBoneLength(int64(index))))
 }
 
 /*
@@ -170,56 +170,56 @@ For example, if the parent [Skeleton3D] is used as the center, the bones are con
 In this case, only a change in the bone pose is considered to be a bone movement.
 */
 func (self Instance) SetCenterFrom(index int, center_from gdclass.SpringBoneSimulator3DCenterFrom) { //gd:SpringBoneSimulator3D.set_center_from
-	class(self).SetCenterFrom(int64(index), center_from)
+	Advanced(self).SetCenterFrom(int64(index), center_from)
 }
 
 /*
 Returns what the center originates from in the bone chain.
 */
 func (self Instance) GetCenterFrom(index int) gdclass.SpringBoneSimulator3DCenterFrom { //gd:SpringBoneSimulator3D.get_center_from
-	return gdclass.SpringBoneSimulator3DCenterFrom(class(self).GetCenterFrom(int64(index)))
+	return gdclass.SpringBoneSimulator3DCenterFrom(Advanced(self).GetCenterFrom(int64(index)))
 }
 
 /*
 Sets the center node path of the bone chain.
 */
 func (self Instance) SetCenterNode(index int, node_path string) { //gd:SpringBoneSimulator3D.set_center_node
-	class(self).SetCenterNode(int64(index), Path.ToNode(String.New(node_path)))
+	Advanced(self).SetCenterNode(int64(index), Path.ToNode(String.New(node_path)))
 }
 
 /*
 Returns the center node path of the bone chain.
 */
 func (self Instance) GetCenterNode(index int) string { //gd:SpringBoneSimulator3D.get_center_node
-	return string(class(self).GetCenterNode(int64(index)).String())
+	return string(Advanced(self).GetCenterNode(int64(index)).String())
 }
 
 /*
 Sets the center bone name of the bone chain.
 */
 func (self Instance) SetCenterBoneName(index int, bone_name string) { //gd:SpringBoneSimulator3D.set_center_bone_name
-	class(self).SetCenterBoneName(int64(index), String.New(bone_name))
+	Advanced(self).SetCenterBoneName(int64(index), String.New(bone_name))
 }
 
 /*
 Returns the center bone name of the bone chain.
 */
 func (self Instance) GetCenterBoneName(index int) string { //gd:SpringBoneSimulator3D.get_center_bone_name
-	return string(class(self).GetCenterBoneName(int64(index)).String())
+	return string(Advanced(self).GetCenterBoneName(int64(index)).String())
 }
 
 /*
 Sets the center bone index of the bone chain.
 */
 func (self Instance) SetCenterBone(index int, bone int) { //gd:SpringBoneSimulator3D.set_center_bone
-	class(self).SetCenterBone(int64(index), int64(bone))
+	Advanced(self).SetCenterBone(int64(index), int64(bone))
 }
 
 /*
 Returns the center bone index of the bone chain.
 */
 func (self Instance) GetCenterBone(index int) int { //gd:SpringBoneSimulator3D.get_center_bone
-	return int(int(class(self).GetCenterBone(int64(index))))
+	return int(int(Advanced(self).GetCenterBone(int64(index))))
 }
 
 /*
@@ -227,14 +227,14 @@ Sets the joint radius of the bone chain. It is used to move and slide with the [
 The value is scaled by [method set_radius_damping_curve] and cached in each joint setting in the joint list.
 */
 func (self Instance) SetRadius(index int, radius Float.X) { //gd:SpringBoneSimulator3D.set_radius
-	class(self).SetRadius(int64(index), float64(radius))
+	Advanced(self).SetRadius(int64(index), float64(radius))
 }
 
 /*
 Returns the joint radius of the bone chain.
 */
 func (self Instance) GetRadius(index int) Float.X { //gd:SpringBoneSimulator3D.get_radius
-	return Float.X(Float.X(class(self).GetRadius(int64(index))))
+	return Float.X(Float.X(Advanced(self).GetRadius(int64(index))))
 }
 
 /*
@@ -243,28 +243,28 @@ The value is cached in each joint setting in the joint list.
 [b]Note:[/b] The rotation axis and the forward vector shouldn't be colinear to avoid unintended rotation since [SpringBoneSimulator3D] does not factor in twisting forces.
 */
 func (self Instance) SetRotationAxis(index int, axis gdclass.SpringBoneSimulator3DRotationAxis) { //gd:SpringBoneSimulator3D.set_rotation_axis
-	class(self).SetRotationAxis(int64(index), axis)
+	Advanced(self).SetRotationAxis(int64(index), axis)
 }
 
 /*
 Returns the rotation axis of the bone chain.
 */
 func (self Instance) GetRotationAxis(index int) gdclass.SpringBoneSimulator3DRotationAxis { //gd:SpringBoneSimulator3D.get_rotation_axis
-	return gdclass.SpringBoneSimulator3DRotationAxis(class(self).GetRotationAxis(int64(index)))
+	return gdclass.SpringBoneSimulator3DRotationAxis(Advanced(self).GetRotationAxis(int64(index)))
 }
 
 /*
 Sets the joint radius damping curve of the bone chain.
 */
 func (self Instance) SetRadiusDampingCurve(index int, curve [1]gdclass.Curve) { //gd:SpringBoneSimulator3D.set_radius_damping_curve
-	class(self).SetRadiusDampingCurve(int64(index), curve)
+	Advanced(self).SetRadiusDampingCurve(int64(index), curve)
 }
 
 /*
 Returns the joint radius damping curve of the bone chain.
 */
 func (self Instance) GetRadiusDampingCurve(index int) [1]gdclass.Curve { //gd:SpringBoneSimulator3D.get_radius_damping_curve
-	return [1]gdclass.Curve(class(self).GetRadiusDampingCurve(int64(index)))
+	return [1]gdclass.Curve(Advanced(self).GetRadiusDampingCurve(int64(index)))
 }
 
 /*
@@ -273,28 +273,28 @@ If [param stiffness] is [code]0[/code], the modified pose will not return to the
 The value is scaled by [method set_stiffness_damping_curve] and cached in each joint setting in the joint list.
 */
 func (self Instance) SetStiffness(index int, stiffness Float.X) { //gd:SpringBoneSimulator3D.set_stiffness
-	class(self).SetStiffness(int64(index), float64(stiffness))
+	Advanced(self).SetStiffness(int64(index), float64(stiffness))
 }
 
 /*
 Returns the stiffness force of the bone chain.
 */
 func (self Instance) GetStiffness(index int) Float.X { //gd:SpringBoneSimulator3D.get_stiffness
-	return Float.X(Float.X(class(self).GetStiffness(int64(index))))
+	return Float.X(Float.X(Advanced(self).GetStiffness(int64(index))))
 }
 
 /*
 Sets the stiffness force damping curve of the bone chain.
 */
 func (self Instance) SetStiffnessDampingCurve(index int, curve [1]gdclass.Curve) { //gd:SpringBoneSimulator3D.set_stiffness_damping_curve
-	class(self).SetStiffnessDampingCurve(int64(index), curve)
+	Advanced(self).SetStiffnessDampingCurve(int64(index), curve)
 }
 
 /*
 Returns the stiffness force damping curve of the bone chain.
 */
 func (self Instance) GetStiffnessDampingCurve(index int) [1]gdclass.Curve { //gd:SpringBoneSimulator3D.get_stiffness_damping_curve
-	return [1]gdclass.Curve(class(self).GetStiffnessDampingCurve(int64(index)))
+	return [1]gdclass.Curve(Advanced(self).GetStiffnessDampingCurve(int64(index)))
 }
 
 /*
@@ -302,28 +302,28 @@ Sets the drag force of the bone chain. The greater the value, the more suppresse
 The value is scaled by [method set_drag_damping_curve] and cached in each joint setting in the joint list.
 */
 func (self Instance) SetDrag(index int, drag Float.X) { //gd:SpringBoneSimulator3D.set_drag
-	class(self).SetDrag(int64(index), float64(drag))
+	Advanced(self).SetDrag(int64(index), float64(drag))
 }
 
 /*
 Returns the drag force damping curve of the bone chain.
 */
 func (self Instance) GetDrag(index int) Float.X { //gd:SpringBoneSimulator3D.get_drag
-	return Float.X(Float.X(class(self).GetDrag(int64(index))))
+	return Float.X(Float.X(Advanced(self).GetDrag(int64(index))))
 }
 
 /*
 Sets the drag force damping curve of the bone chain.
 */
 func (self Instance) SetDragDampingCurve(index int, curve [1]gdclass.Curve) { //gd:SpringBoneSimulator3D.set_drag_damping_curve
-	class(self).SetDragDampingCurve(int64(index), curve)
+	Advanced(self).SetDragDampingCurve(int64(index), curve)
 }
 
 /*
 Returns the drag force damping curve of the bone chain.
 */
 func (self Instance) GetDragDampingCurve(index int) [1]gdclass.Curve { //gd:SpringBoneSimulator3D.get_drag_damping_curve
-	return [1]gdclass.Curve(class(self).GetDragDampingCurve(int64(index)))
+	return [1]gdclass.Curve(Advanced(self).GetDragDampingCurve(int64(index)))
 }
 
 /*
@@ -332,28 +332,28 @@ If [param gravity] is not [code]0[/code], the modified pose will not return to t
 The value is scaled by [method set_gravity_damping_curve] and cached in each joint setting in the joint list.
 */
 func (self Instance) SetGravity(index int, gravity Float.X) { //gd:SpringBoneSimulator3D.set_gravity
-	class(self).SetGravity(int64(index), float64(gravity))
+	Advanced(self).SetGravity(int64(index), float64(gravity))
 }
 
 /*
 Returns the gravity amount of the bone chain.
 */
 func (self Instance) GetGravity(index int) Float.X { //gd:SpringBoneSimulator3D.get_gravity
-	return Float.X(Float.X(class(self).GetGravity(int64(index))))
+	return Float.X(Float.X(Advanced(self).GetGravity(int64(index))))
 }
 
 /*
 Sets the gravity amount damping curve of the bone chain.
 */
 func (self Instance) SetGravityDampingCurve(index int, curve [1]gdclass.Curve) { //gd:SpringBoneSimulator3D.set_gravity_damping_curve
-	class(self).SetGravityDampingCurve(int64(index), curve)
+	Advanced(self).SetGravityDampingCurve(int64(index), curve)
 }
 
 /*
 Returns the gravity amount damping curve of the bone chain.
 */
 func (self Instance) GetGravityDampingCurve(index int) [1]gdclass.Curve { //gd:SpringBoneSimulator3D.get_gravity_damping_curve
-	return [1]gdclass.Curve(class(self).GetGravityDampingCurve(int64(index)))
+	return [1]gdclass.Curve(Advanced(self).GetGravityDampingCurve(int64(index)))
 }
 
 /*
@@ -361,140 +361,140 @@ Sets the gravity direction of the bone chain. This value is internally normalize
 The value is cached in each joint setting in the joint list.
 */
 func (self Instance) SetGravityDirection(index int, gravity_direction Vector3.XYZ) { //gd:SpringBoneSimulator3D.set_gravity_direction
-	class(self).SetGravityDirection(int64(index), Vector3.XYZ(gravity_direction))
+	Advanced(self).SetGravityDirection(int64(index), Vector3.XYZ(gravity_direction))
 }
 
 /*
 Returns the gravity direction of the bone chain.
 */
 func (self Instance) GetGravityDirection(index int) Vector3.XYZ { //gd:SpringBoneSimulator3D.get_gravity_direction
-	return Vector3.XYZ(class(self).GetGravityDirection(int64(index)))
+	return Vector3.XYZ(Advanced(self).GetGravityDirection(int64(index)))
 }
 
 /*
 Clears all settings.
 */
 func (self Instance) ClearSettings() { //gd:SpringBoneSimulator3D.clear_settings
-	class(self).ClearSettings()
+	Advanced(self).ClearSettings()
 }
 
 /*
 If [param enabled] is [code]true[/code], the config can be edited individually for each joint.
 */
 func (self Instance) SetIndividualConfig(index int, enabled bool) { //gd:SpringBoneSimulator3D.set_individual_config
-	class(self).SetIndividualConfig(int64(index), enabled)
+	Advanced(self).SetIndividualConfig(int64(index), enabled)
 }
 
 /*
 Returns [code]true[/code] if the config can be edited individually for each joint.
 */
 func (self Instance) IsConfigIndividual(index int) bool { //gd:SpringBoneSimulator3D.is_config_individual
-	return bool(class(self).IsConfigIndividual(int64(index)))
+	return bool(Advanced(self).IsConfigIndividual(int64(index)))
 }
 
 /*
 Returns the bone name at [param joint] in the bone chain's joint list.
 */
 func (self Instance) GetJointBoneName(index int, joint int) string { //gd:SpringBoneSimulator3D.get_joint_bone_name
-	return string(class(self).GetJointBoneName(int64(index), int64(joint)).String())
+	return string(Advanced(self).GetJointBoneName(int64(index), int64(joint)).String())
 }
 
 /*
 Returns the bone index at [param joint] in the bone chain's joint list.
 */
 func (self Instance) GetJointBone(index int, joint int) int { //gd:SpringBoneSimulator3D.get_joint_bone
-	return int(int(class(self).GetJointBone(int64(index), int64(joint))))
+	return int(int(Advanced(self).GetJointBone(int64(index), int64(joint))))
 }
 
 /*
 Sets the rotation axis at [param joint] in the bone chain's joint list when [method is_config_individual] is [code]true[/code].
 */
 func (self Instance) SetJointRotationAxis(index int, joint int, axis gdclass.SpringBoneSimulator3DRotationAxis) { //gd:SpringBoneSimulator3D.set_joint_rotation_axis
-	class(self).SetJointRotationAxis(int64(index), int64(joint), axis)
+	Advanced(self).SetJointRotationAxis(int64(index), int64(joint), axis)
 }
 
 /*
 Returns the rotation axis at [param joint] in the bone chain's joint list.
 */
 func (self Instance) GetJointRotationAxis(index int, joint int) gdclass.SpringBoneSimulator3DRotationAxis { //gd:SpringBoneSimulator3D.get_joint_rotation_axis
-	return gdclass.SpringBoneSimulator3DRotationAxis(class(self).GetJointRotationAxis(int64(index), int64(joint)))
+	return gdclass.SpringBoneSimulator3DRotationAxis(Advanced(self).GetJointRotationAxis(int64(index), int64(joint)))
 }
 
 /*
 Sets the joint radius at [param joint] in the bone chain's joint list when [method is_config_individual] is [code]true[/code].
 */
 func (self Instance) SetJointRadius(index int, joint int, radius Float.X) { //gd:SpringBoneSimulator3D.set_joint_radius
-	class(self).SetJointRadius(int64(index), int64(joint), float64(radius))
+	Advanced(self).SetJointRadius(int64(index), int64(joint), float64(radius))
 }
 
 /*
 Returns the radius at [param joint] in the bone chain's joint list.
 */
 func (self Instance) GetJointRadius(index int, joint int) Float.X { //gd:SpringBoneSimulator3D.get_joint_radius
-	return Float.X(Float.X(class(self).GetJointRadius(int64(index), int64(joint))))
+	return Float.X(Float.X(Advanced(self).GetJointRadius(int64(index), int64(joint))))
 }
 
 /*
 Sets the stiffness force at [param joint] in the bone chain's joint list when [method is_config_individual] is [code]true[/code].
 */
 func (self Instance) SetJointStiffness(index int, joint int, stiffness Float.X) { //gd:SpringBoneSimulator3D.set_joint_stiffness
-	class(self).SetJointStiffness(int64(index), int64(joint), float64(stiffness))
+	Advanced(self).SetJointStiffness(int64(index), int64(joint), float64(stiffness))
 }
 
 /*
 Returns the stiffness force at [param joint] in the bone chain's joint list.
 */
 func (self Instance) GetJointStiffness(index int, joint int) Float.X { //gd:SpringBoneSimulator3D.get_joint_stiffness
-	return Float.X(Float.X(class(self).GetJointStiffness(int64(index), int64(joint))))
+	return Float.X(Float.X(Advanced(self).GetJointStiffness(int64(index), int64(joint))))
 }
 
 /*
 Sets the drag force at [param joint] in the bone chain's joint list when [method is_config_individual] is [code]true[/code].
 */
 func (self Instance) SetJointDrag(index int, joint int, drag Float.X) { //gd:SpringBoneSimulator3D.set_joint_drag
-	class(self).SetJointDrag(int64(index), int64(joint), float64(drag))
+	Advanced(self).SetJointDrag(int64(index), int64(joint), float64(drag))
 }
 
 /*
 Returns the drag force at [param joint] in the bone chain's joint list.
 */
 func (self Instance) GetJointDrag(index int, joint int) Float.X { //gd:SpringBoneSimulator3D.get_joint_drag
-	return Float.X(Float.X(class(self).GetJointDrag(int64(index), int64(joint))))
+	return Float.X(Float.X(Advanced(self).GetJointDrag(int64(index), int64(joint))))
 }
 
 /*
 Sets the gravity amount at [param joint] in the bone chain's joint list when [method is_config_individual] is [code]true[/code].
 */
 func (self Instance) SetJointGravity(index int, joint int, gravity Float.X) { //gd:SpringBoneSimulator3D.set_joint_gravity
-	class(self).SetJointGravity(int64(index), int64(joint), float64(gravity))
+	Advanced(self).SetJointGravity(int64(index), int64(joint), float64(gravity))
 }
 
 /*
 Returns the gravity amount at [param joint] in the bone chain's joint list.
 */
 func (self Instance) GetJointGravity(index int, joint int) Float.X { //gd:SpringBoneSimulator3D.get_joint_gravity
-	return Float.X(Float.X(class(self).GetJointGravity(int64(index), int64(joint))))
+	return Float.X(Float.X(Advanced(self).GetJointGravity(int64(index), int64(joint))))
 }
 
 /*
 Sets the gravity direction at [param joint] in the bone chain's joint list when [method is_config_individual] is [code]true[/code].
 */
 func (self Instance) SetJointGravityDirection(index int, joint int, gravity_direction Vector3.XYZ) { //gd:SpringBoneSimulator3D.set_joint_gravity_direction
-	class(self).SetJointGravityDirection(int64(index), int64(joint), Vector3.XYZ(gravity_direction))
+	Advanced(self).SetJointGravityDirection(int64(index), int64(joint), Vector3.XYZ(gravity_direction))
 }
 
 /*
 Returns the gravity direction at [param joint] in the bone chain's joint list.
 */
 func (self Instance) GetJointGravityDirection(index int, joint int) Vector3.XYZ { //gd:SpringBoneSimulator3D.get_joint_gravity_direction
-	return Vector3.XYZ(class(self).GetJointGravityDirection(int64(index), int64(joint)))
+	return Vector3.XYZ(Advanced(self).GetJointGravityDirection(int64(index), int64(joint)))
 }
 
 /*
 Returns the joint count of the bone chain's joint list.
 */
 func (self Instance) GetJointCount(index int) int { //gd:SpringBoneSimulator3D.get_joint_count
-	return int(int(class(self).GetJointCount(int64(index))))
+	return int(int(Advanced(self).GetJointCount(int64(index))))
 }
 
 /*
@@ -502,84 +502,84 @@ If sets [param enabled] to [code]true[/code], the all child [SpringBoneCollision
 If sets [param enabled] to [code]false[/code], you need to manually register all valid collisions with [method set_collision_path].
 */
 func (self Instance) SetEnableAllChildCollisions(index int, enabled bool) { //gd:SpringBoneSimulator3D.set_enable_all_child_collisions
-	class(self).SetEnableAllChildCollisions(int64(index), enabled)
+	Advanced(self).SetEnableAllChildCollisions(int64(index), enabled)
 }
 
 /*
 Returns [code]true[/code] if the all child [SpringBoneCollision3D]s are contained in the collision list at [param index] in the settings.
 */
 func (self Instance) AreAllChildCollisionsEnabled(index int) bool { //gd:SpringBoneSimulator3D.are_all_child_collisions_enabled
-	return bool(class(self).AreAllChildCollisionsEnabled(int64(index)))
+	return bool(Advanced(self).AreAllChildCollisionsEnabled(int64(index)))
 }
 
 /*
 Sets the node path of the [SpringBoneCollision3D] at [param collision] in the bone chain's exclude collision list when [method are_all_child_collisions_enabled] is [code]true[/code].
 */
 func (self Instance) SetExcludeCollisionPath(index int, collision int, node_path string) { //gd:SpringBoneSimulator3D.set_exclude_collision_path
-	class(self).SetExcludeCollisionPath(int64(index), int64(collision), Path.ToNode(String.New(node_path)))
+	Advanced(self).SetExcludeCollisionPath(int64(index), int64(collision), Path.ToNode(String.New(node_path)))
 }
 
 /*
 Returns the node path of the [SpringBoneCollision3D] at [param collision] in the bone chain's exclude collision list when [method are_all_child_collisions_enabled] is [code]true[/code].
 */
 func (self Instance) GetExcludeCollisionPath(index int, collision int) string { //gd:SpringBoneSimulator3D.get_exclude_collision_path
-	return string(class(self).GetExcludeCollisionPath(int64(index), int64(collision)).String())
+	return string(Advanced(self).GetExcludeCollisionPath(int64(index), int64(collision)).String())
 }
 
 /*
 Sets the number of exclude collisions in the exclude collision list at [param index] in the settings when [method are_all_child_collisions_enabled] is [code]true[/code].
 */
 func (self Instance) SetExcludeCollisionCount(index int, count int) { //gd:SpringBoneSimulator3D.set_exclude_collision_count
-	class(self).SetExcludeCollisionCount(int64(index), int64(count))
+	Advanced(self).SetExcludeCollisionCount(int64(index), int64(count))
 }
 
 /*
 Returns the exclude collision count of the bone chain's exclude collision list when [method are_all_child_collisions_enabled] is [code]true[/code].
 */
 func (self Instance) GetExcludeCollisionCount(index int) int { //gd:SpringBoneSimulator3D.get_exclude_collision_count
-	return int(int(class(self).GetExcludeCollisionCount(int64(index))))
+	return int(int(Advanced(self).GetExcludeCollisionCount(int64(index))))
 }
 
 /*
 Clears all exclude collisions from the collision list at [param index] in the settings when [method are_all_child_collisions_enabled] is [code]true[/code].
 */
 func (self Instance) ClearExcludeCollisions(index int) { //gd:SpringBoneSimulator3D.clear_exclude_collisions
-	class(self).ClearExcludeCollisions(int64(index))
+	Advanced(self).ClearExcludeCollisions(int64(index))
 }
 
 /*
 Sets the node path of the [SpringBoneCollision3D] at [param collision] in the bone chain's collision list when [method are_all_child_collisions_enabled] is [code]false[/code].
 */
 func (self Instance) SetCollisionPath(index int, collision int, node_path string) { //gd:SpringBoneSimulator3D.set_collision_path
-	class(self).SetCollisionPath(int64(index), int64(collision), Path.ToNode(String.New(node_path)))
+	Advanced(self).SetCollisionPath(int64(index), int64(collision), Path.ToNode(String.New(node_path)))
 }
 
 /*
 Returns the node path of the [SpringBoneCollision3D] at [param collision] in the bone chain's collision list when [method are_all_child_collisions_enabled] is [code]false[/code].
 */
 func (self Instance) GetCollisionPath(index int, collision int) string { //gd:SpringBoneSimulator3D.get_collision_path
-	return string(class(self).GetCollisionPath(int64(index), int64(collision)).String())
+	return string(Advanced(self).GetCollisionPath(int64(index), int64(collision)).String())
 }
 
 /*
 Sets the number of collisions in the collision list at [param index] in the settings when [method are_all_child_collisions_enabled] is [code]false[/code].
 */
 func (self Instance) SetCollisionCount(index int, count int) { //gd:SpringBoneSimulator3D.set_collision_count
-	class(self).SetCollisionCount(int64(index), int64(count))
+	Advanced(self).SetCollisionCount(int64(index), int64(count))
 }
 
 /*
 Returns the collision count of the bone chain's collision list when [method are_all_child_collisions_enabled] is [code]false[/code].
 */
 func (self Instance) GetCollisionCount(index int) int { //gd:SpringBoneSimulator3D.get_collision_count
-	return int(int(class(self).GetCollisionCount(int64(index))))
+	return int(int(Advanced(self).GetCollisionCount(int64(index))))
 }
 
 /*
 Clears all collisions from the collision list at [param index] in the settings when [method are_all_child_collisions_enabled] is [code]false[/code].
 */
 func (self Instance) ClearCollisions(index int) { //gd:SpringBoneSimulator3D.clear_collisions
-	class(self).ClearCollisions(int64(index))
+	Advanced(self).ClearCollisions(int64(index))
 }
 
 /*
@@ -587,7 +587,7 @@ Resets a simulating state with respect to the current bone pose.
 It is useful to prevent the simulation result getting violent. For example, calling this immediately after a call to [method AnimationPlayer.play] without a fading, or within the previous [signal SkeletonModifier3D.modification_processed] signal if it's condition changes significantly.
 */
 func (self Instance) Reset() { //gd:SpringBoneSimulator3D.reset
-	class(self).Reset()
+	Advanced(self).Reset()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

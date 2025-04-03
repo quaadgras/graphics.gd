@@ -63,35 +63,35 @@ type Any interface {
 Returns [code]true[/code] if the button with the given [param name] is pressed.
 */
 func (self Instance) IsButtonPressed(name string) bool { //gd:XRController3D.is_button_pressed
-	return bool(class(self).IsButtonPressed(String.Name(String.New(name))))
+	return bool(Advanced(self).IsButtonPressed(String.Name(String.New(name))))
 }
 
 /*
 Returns a [Variant] for the input with the given [param name]. This works for any input type, the variant will be typed according to the actions configuration.
 */
 func (self Instance) GetInput(name string) any { //gd:XRController3D.get_input
-	return any(class(self).GetInput(String.Name(String.New(name))).Interface())
+	return any(Advanced(self).GetInput(String.Name(String.New(name))).Interface())
 }
 
 /*
 Returns a numeric value for the input with the given [param name]. This is used for triggers and grip sensors.
 */
 func (self Instance) GetFloat(name string) Float.X { //gd:XRController3D.get_float
-	return Float.X(Float.X(class(self).GetFloat(String.Name(String.New(name)))))
+	return Float.X(Float.X(Advanced(self).GetFloat(String.Name(String.New(name)))))
 }
 
 /*
 Returns a [Vector2] for the input with the given [param name]. This is used for thumbsticks and thumbpads found on many controllers.
 */
 func (self Instance) GetVector2(name string) Vector2.XY { //gd:XRController3D.get_vector2
-	return Vector2.XY(class(self).GetVector2(String.Name(String.New(name))))
+	return Vector2.XY(Advanced(self).GetVector2(String.Name(String.New(name))))
 }
 
 /*
 Returns the hand holding this controller, if known. See [enum XRPositionalTracker.TrackerHand].
 */
 func (self Instance) GetTrackerHand() gdclass.XRPositionalTrackerTrackerHand { //gd:XRController3D.get_tracker_hand
-	return gdclass.XRPositionalTrackerTrackerHand(class(self).GetTrackerHand())
+	return gdclass.XRPositionalTrackerTrackerHand(Advanced(self).GetTrackerHand())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

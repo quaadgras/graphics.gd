@@ -116,21 +116,21 @@ func (Instance) _set_aabb(impl func(ptr unsafe.Pointer, aabb AABB.PositionSize))
 Sets the position for the [SoftBody3D] vertex at the index specified by [param vertex_id].
 */
 func (self Instance) SetVertex(vertex_id int, vertex Vector3.XYZ) { //gd:PhysicsServer3DRenderingServerHandler.set_vertex
-	class(self).SetVertex(int64(vertex_id), Vector3.XYZ(vertex))
+	Advanced(self).SetVertex(int64(vertex_id), Vector3.XYZ(vertex))
 }
 
 /*
 Sets the normal for the [SoftBody3D] vertex at the index specified by [param vertex_id].
 */
 func (self Instance) SetNormal(vertex_id int, normal Vector3.XYZ) { //gd:PhysicsServer3DRenderingServerHandler.set_normal
-	class(self).SetNormal(int64(vertex_id), Vector3.XYZ(normal))
+	Advanced(self).SetNormal(int64(vertex_id), Vector3.XYZ(normal))
 }
 
 /*
 Sets the bounding box for the [SoftBody3D].
 */
 func (self Instance) SetAabb(aabb AABB.PositionSize) { //gd:PhysicsServer3DRenderingServerHandler.set_aabb
-	class(self).SetAabb(AABB.PositionSize(aabb))
+	Advanced(self).SetAabb(AABB.PositionSize(aabb))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

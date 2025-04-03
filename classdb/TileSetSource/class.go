@@ -62,21 +62,21 @@ type Any interface {
 Returns how many tiles this atlas source defines (not including alternative tiles).
 */
 func (self Instance) GetTilesCount() int { //gd:TileSetSource.get_tiles_count
-	return int(int(class(self).GetTilesCount()))
+	return int(int(Advanced(self).GetTilesCount()))
 }
 
 /*
 Returns the tile coordinates ID of the tile with index [param index].
 */
 func (self Instance) GetTileId(index int) Vector2i.XY { //gd:TileSetSource.get_tile_id
-	return Vector2i.XY(class(self).GetTileId(int64(index)))
+	return Vector2i.XY(Advanced(self).GetTileId(int64(index)))
 }
 
 /*
 Returns if this atlas has a tile with coordinates ID [param atlas_coords].
 */
 func (self Instance) HasTile(atlas_coords Vector2i.XY) bool { //gd:TileSetSource.has_tile
-	return bool(class(self).HasTile(Vector2i.XY(atlas_coords)))
+	return bool(Advanced(self).HasTile(Vector2i.XY(atlas_coords)))
 }
 
 /*
@@ -85,21 +85,21 @@ For [TileSetAtlasSource], this always return at least 1, as the base tile with I
 Returns -1 if there is not tile at the given coords.
 */
 func (self Instance) GetAlternativeTilesCount(atlas_coords Vector2i.XY) int { //gd:TileSetSource.get_alternative_tiles_count
-	return int(int(class(self).GetAlternativeTilesCount(Vector2i.XY(atlas_coords))))
+	return int(int(Advanced(self).GetAlternativeTilesCount(Vector2i.XY(atlas_coords))))
 }
 
 /*
 Returns the alternative ID for the tile with coordinates ID [param atlas_coords] at index [param index].
 */
 func (self Instance) GetAlternativeTileId(atlas_coords Vector2i.XY, index int) int { //gd:TileSetSource.get_alternative_tile_id
-	return int(int(class(self).GetAlternativeTileId(Vector2i.XY(atlas_coords), int64(index))))
+	return int(int(Advanced(self).GetAlternativeTileId(Vector2i.XY(atlas_coords), int64(index))))
 }
 
 /*
 Returns if the base tile at coordinates [param atlas_coords] has an alternative with ID [param alternative_tile].
 */
 func (self Instance) HasAlternativeTile(atlas_coords Vector2i.XY, alternative_tile int) bool { //gd:TileSetSource.has_alternative_tile
-	return bool(class(self).HasAlternativeTile(Vector2i.XY(atlas_coords), int64(alternative_tile)))
+	return bool(Advanced(self).HasAlternativeTile(Vector2i.XY(atlas_coords), int64(alternative_tile)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

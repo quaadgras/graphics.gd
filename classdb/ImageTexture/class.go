@@ -80,14 +80,14 @@ Creates a new [ImageTexture] and initializes it by allocating and setting the da
 */
 func CreateFromImage(image [1]gdclass.Image) [1]gdclass.ImageTexture { //gd:ImageTexture.create_from_image
 	self := Instance{}
-	return [1]gdclass.ImageTexture(class(self).CreateFromImage(image))
+	return [1]gdclass.ImageTexture(Advanced(self).CreateFromImage(image))
 }
 
 /*
 Returns the format of the texture, one of [enum Image.Format].
 */
 func (self Instance) GetFormat() gdclass.ImageFormat { //gd:ImageTexture.get_format
-	return gdclass.ImageFormat(class(self).GetFormat())
+	return gdclass.ImageFormat(Advanced(self).GetFormat())
 }
 
 /*
@@ -95,7 +95,7 @@ Replaces the texture's data with a new [Image]. This will re-allocate new memory
 If you want to update the image, but don't need to change its parameters (format, size), use [method update] instead for better performance.
 */
 func (self Instance) SetImage(image [1]gdclass.Image) { //gd:ImageTexture.set_image
-	class(self).SetImage(image)
+	Advanced(self).SetImage(image)
 }
 
 /*
@@ -104,14 +104,14 @@ Replaces the texture's data with a new [Image].
 Use this method over [method set_image] if you need to update the texture frequently, which is faster than allocating additional memory for a new texture each time.
 */
 func (self Instance) Update(image [1]gdclass.Image) { //gd:ImageTexture.update
-	class(self).Update(image)
+	Advanced(self).Update(image)
 }
 
 /*
 Resizes the texture to the specified dimensions.
 */
 func (self Instance) SetSizeOverride(size Vector2i.XY) { //gd:ImageTexture.set_size_override
-	class(self).SetSizeOverride(Vector2i.XY(size))
+	Advanced(self).SetSizeOverride(Vector2i.XY(size))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

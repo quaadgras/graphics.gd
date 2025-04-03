@@ -47,6 +47,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 A control for displaying plain text. It gives you control over the horizontal and vertical alignment and can wrap the text inside the node's bounding rectangle. It doesn't support bold, italics, or other rich text formatting. For that, use [RichTextLabel] instead.
 */
 type Instance [1]gdclass.Label
+type Expanded [1]gdclass.Label
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -62,35 +63,44 @@ If [param line] is set to [code]-1[/code], returns the biggest line height.
 If there are no lines, returns font size in pixels.
 */
 func (self Instance) GetLineHeight() int { //gd:Label.get_line_height
-	return int(int(class(self).GetLineHeight(int64(-1))))
+	return int(int(Advanced(self).GetLineHeight(int64(-1))))
+}
+
+/*
+Returns the height of the line [param line].
+If [param line] is set to [code]-1[/code], returns the biggest line height.
+If there are no lines, returns font size in pixels.
+*/
+func (self Expanded) GetLineHeight(line int) int { //gd:Label.get_line_height
+	return int(int(Advanced(self).GetLineHeight(int64(line))))
 }
 
 /*
 Returns the number of lines of text the Label has.
 */
 func (self Instance) GetLineCount() int { //gd:Label.get_line_count
-	return int(int(class(self).GetLineCount()))
+	return int(int(Advanced(self).GetLineCount()))
 }
 
 /*
 Returns the number of lines shown. Useful if the [Label]'s height cannot currently display all lines.
 */
 func (self Instance) GetVisibleLineCount() int { //gd:Label.get_visible_line_count
-	return int(int(class(self).GetVisibleLineCount()))
+	return int(int(Advanced(self).GetVisibleLineCount()))
 }
 
 /*
 Returns the total number of printable characters in the text (excluding spaces and newlines).
 */
 func (self Instance) GetTotalCharacterCount() int { //gd:Label.get_total_character_count
-	return int(int(class(self).GetTotalCharacterCount()))
+	return int(int(Advanced(self).GetTotalCharacterCount()))
 }
 
 /*
 Returns the bounding rectangle of the character at position [param pos] in the label's local coordinate system. If the character is a non-visual character or [param pos] is outside the valid range, an empty [Rect2] is returned. If the character is a part of a composite grapheme, the bounding rectangle of the whole grapheme is returned.
 */
 func (self Instance) GetCharacterBounds(pos int) Rect2.PositionSize { //gd:Label.get_character_bounds
-	return Rect2.PositionSize(class(self).GetCharacterBounds(int64(pos)))
+	return Rect2.PositionSize(Advanced(self).GetCharacterBounds(int64(pos)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

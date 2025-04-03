@@ -61,56 +61,56 @@ type Any interface {
 Adds a bone with the specified [param path] and [param weights].
 */
 func (self Instance) AddBone(path string, weights []float32) { //gd:Polygon2D.add_bone
-	class(self).AddBone(Path.ToNode(String.New(path)), Packed.New(weights...))
+	Advanced(self).AddBone(Path.ToNode(String.New(path)), Packed.New(weights...))
 }
 
 /*
 Returns the number of bones in this [Polygon2D].
 */
 func (self Instance) GetBoneCount() int { //gd:Polygon2D.get_bone_count
-	return int(int(class(self).GetBoneCount()))
+	return int(int(Advanced(self).GetBoneCount()))
 }
 
 /*
 Returns the path to the node associated with the specified bone.
 */
 func (self Instance) GetBonePath(index int) string { //gd:Polygon2D.get_bone_path
-	return string(class(self).GetBonePath(int64(index)).String())
+	return string(Advanced(self).GetBonePath(int64(index)).String())
 }
 
 /*
 Returns the weight values of the specified bone.
 */
 func (self Instance) GetBoneWeights(index int) []float32 { //gd:Polygon2D.get_bone_weights
-	return []float32(slices.Collect(class(self).GetBoneWeights(int64(index)).Values()))
+	return []float32(slices.Collect(Advanced(self).GetBoneWeights(int64(index)).Values()))
 }
 
 /*
 Removes the specified bone from this [Polygon2D].
 */
 func (self Instance) EraseBone(index int) { //gd:Polygon2D.erase_bone
-	class(self).EraseBone(int64(index))
+	Advanced(self).EraseBone(int64(index))
 }
 
 /*
 Removes all bones from this [Polygon2D].
 */
 func (self Instance) ClearBones() { //gd:Polygon2D.clear_bones
-	class(self).ClearBones()
+	Advanced(self).ClearBones()
 }
 
 /*
 Sets the path to the node associated with the specified bone.
 */
 func (self Instance) SetBonePath(index int, path string) { //gd:Polygon2D.set_bone_path
-	class(self).SetBonePath(int64(index), Path.ToNode(String.New(path)))
+	Advanced(self).SetBonePath(int64(index), Path.ToNode(String.New(path)))
 }
 
 /*
 Sets the weight values for the specified bone.
 */
 func (self Instance) SetBoneWeights(index int, weights []float32) { //gd:Polygon2D.set_bone_weights
-	class(self).SetBoneWeights(int64(index), Packed.New(weights...))
+	Advanced(self).SetBoneWeights(int64(index), Packed.New(weights...))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -51,6 +51,7 @@ Additionally, [SoftBody3D] is subject to wind forces defined in [Area3D] (see [m
 [b]Note:[/b] There are many known bugs in [SoftBody3D]. Therefore, it's not recommended to use them for things that can affect gameplay (such as trampolines).
 */
 type Instance [1]gdclass.SoftBody3D
+type Expanded [1]gdclass.SoftBody3D
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -64,77 +65,84 @@ type Any interface {
 Returns the internal [RID] used by the [PhysicsServer3D] for this body.
 */
 func (self Instance) GetPhysicsRid() RID.SoftBody3D { //gd:SoftBody3D.get_physics_rid
-	return RID.SoftBody3D(class(self).GetPhysicsRid())
+	return RID.SoftBody3D(Advanced(self).GetPhysicsRid())
 }
 
 /*
 Based on [param value], enables or disables the specified layer in the [member collision_mask], given a [param layer_number] between 1 and 32.
 */
 func (self Instance) SetCollisionMaskValue(layer_number int, value bool) { //gd:SoftBody3D.set_collision_mask_value
-	class(self).SetCollisionMaskValue(int64(layer_number), value)
+	Advanced(self).SetCollisionMaskValue(int64(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member collision_mask] is enabled, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) GetCollisionMaskValue(layer_number int) bool { //gd:SoftBody3D.get_collision_mask_value
-	return bool(class(self).GetCollisionMaskValue(int64(layer_number)))
+	return bool(Advanced(self).GetCollisionMaskValue(int64(layer_number)))
 }
 
 /*
 Based on [param value], enables or disables the specified layer in the [member collision_layer], given a [param layer_number] between 1 and 32.
 */
 func (self Instance) SetCollisionLayerValue(layer_number int, value bool) { //gd:SoftBody3D.set_collision_layer_value
-	class(self).SetCollisionLayerValue(int64(layer_number), value)
+	Advanced(self).SetCollisionLayerValue(int64(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member collision_layer] is enabled, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) GetCollisionLayerValue(layer_number int) bool { //gd:SoftBody3D.get_collision_layer_value
-	return bool(class(self).GetCollisionLayerValue(int64(layer_number)))
+	return bool(Advanced(self).GetCollisionLayerValue(int64(layer_number)))
 }
 
 /*
 Returns an array of nodes that were added as collision exceptions for this body.
 */
 func (self Instance) GetCollisionExceptions() [][1]gdclass.PhysicsBody3D { //gd:SoftBody3D.get_collision_exceptions
-	return [][1]gdclass.PhysicsBody3D(gd.ArrayAs[[][1]gdclass.PhysicsBody3D](gd.InternalArray(class(self).GetCollisionExceptions())))
+	return [][1]gdclass.PhysicsBody3D(gd.ArrayAs[[][1]gdclass.PhysicsBody3D](gd.InternalArray(Advanced(self).GetCollisionExceptions())))
 }
 
 /*
 Adds a body to the list of bodies that this body can't collide with.
 */
 func (self Instance) AddCollisionExceptionWith(body [1]gdclass.Node) { //gd:SoftBody3D.add_collision_exception_with
-	class(self).AddCollisionExceptionWith(body)
+	Advanced(self).AddCollisionExceptionWith(body)
 }
 
 /*
 Removes a body from the list of bodies that this body can't collide with.
 */
 func (self Instance) RemoveCollisionExceptionWith(body [1]gdclass.Node) { //gd:SoftBody3D.remove_collision_exception_with
-	class(self).RemoveCollisionExceptionWith(body)
+	Advanced(self).RemoveCollisionExceptionWith(body)
 }
 
 /*
 Returns local translation of a vertex in the surface array.
 */
 func (self Instance) GetPointTransform(point_index int) Vector3.XYZ { //gd:SoftBody3D.get_point_transform
-	return Vector3.XYZ(class(self).GetPointTransform(int64(point_index)))
+	return Vector3.XYZ(Advanced(self).GetPointTransform(int64(point_index)))
 }
 
 /*
 Sets the pinned state of a surface vertex. When set to [code]true[/code], the optional [param attachment_path] can define a [Node3D] the pinned vertex will be attached to.
 */
 func (self Instance) SetPointPinned(point_index int, pinned bool) { //gd:SoftBody3D.set_point_pinned
-	class(self).SetPointPinned(int64(point_index), pinned, Path.ToNode(String.New("")), int64(-1))
+	Advanced(self).SetPointPinned(int64(point_index), pinned, Path.ToNode(String.New("")), int64(-1))
+}
+
+/*
+Sets the pinned state of a surface vertex. When set to [code]true[/code], the optional [param attachment_path] can define a [Node3D] the pinned vertex will be attached to.
+*/
+func (self Expanded) SetPointPinned(point_index int, pinned bool, attachment_path string, insert_at int) { //gd:SoftBody3D.set_point_pinned
+	Advanced(self).SetPointPinned(int64(point_index), pinned, Path.ToNode(String.New(attachment_path)), int64(insert_at))
 }
 
 /*
 Returns [code]true[/code] if vertex is set to pinned.
 */
 func (self Instance) IsPointPinned(point_index int) bool { //gd:SoftBody3D.is_point_pinned
-	return bool(class(self).IsPointPinned(int64(point_index)))
+	return bool(Advanced(self).IsPointPinned(int64(point_index)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

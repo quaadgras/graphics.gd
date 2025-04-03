@@ -47,6 +47,7 @@ A synchronization semaphore that can be used to synchronize multiple [Thread]s. 
 - When a [Thread]'s reference count reaches zero and it is therefore destroyed, it must not be waiting on any semaphore.
 */
 type Instance [1]gdclass.Semaphore
+type Expanded [1]gdclass.Semaphore
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -60,21 +61,28 @@ type Any interface {
 Waits for the [Semaphore], if its value is zero, blocks until non-zero.
 */
 func (self Instance) Wait() { //gd:Semaphore.wait
-	class(self).Wait()
+	Advanced(self).Wait()
 }
 
 /*
 Like [method wait], but won't block, so if the value is zero, fails immediately and returns [code]false[/code]. If non-zero, it returns [code]true[/code] to report success.
 */
 func (self Instance) TryWait() bool { //gd:Semaphore.try_wait
-	return bool(class(self).TryWait())
+	return bool(Advanced(self).TryWait())
 }
 
 /*
 Lowers the [Semaphore], allowing one thread in, or more if [param count] is specified.
 */
 func (self Instance) Post() { //gd:Semaphore.post
-	class(self).Post(int64(1))
+	Advanced(self).Post(int64(1))
+}
+
+/*
+Lowers the [Semaphore], allowing one thread in, or more if [param count] is specified.
+*/
+func (self Expanded) Post(count int) { //gd:Semaphore.post
+	Advanced(self).Post(int64(count))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

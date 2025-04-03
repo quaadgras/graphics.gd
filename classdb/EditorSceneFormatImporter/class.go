@@ -48,6 +48,7 @@ To use [EditorSceneFormatImporter], register it using the [method EditorPlugin.a
 %!(EXTRA string=EditorSceneFormatImporter)
 */
 type Instance [1]gdclass.EditorSceneFormatImporter
+type Expanded [1]gdclass.EditorSceneFormatImporter
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -161,14 +162,21 @@ func (Instance) _get_option_visibility(impl func(ptr unsafe.Pointer, path string
 Add a specific import option (name and default value only). This function can only be called from [method _get_import_options].
 */
 func (self Instance) AddImportOption(name string, value any) { //gd:EditorSceneFormatImporter.add_import_option
-	class(self).AddImportOption(String.New(name), variant.New(value))
+	Advanced(self).AddImportOption(String.New(name), variant.New(value))
 }
 
 /*
 Add a specific import option. This function can only be called from [method _get_import_options].
 */
 func (self Instance) AddImportOptionAdvanced(atype variant.Type, name string, default_value any) { //gd:EditorSceneFormatImporter.add_import_option_advanced
-	class(self).AddImportOptionAdvanced(atype, String.New(name), variant.New(default_value), 0, String.New(""), int64(6))
+	Advanced(self).AddImportOptionAdvanced(atype, String.New(name), variant.New(default_value), 0, String.New(""), int64(6))
+}
+
+/*
+Add a specific import option. This function can only be called from [method _get_import_options].
+*/
+func (self Expanded) AddImportOptionAdvanced(atype variant.Type, name string, default_value any, hint PropertyHint, hint_string string, usage_flags int) { //gd:EditorSceneFormatImporter.add_import_option_advanced
+	Advanced(self).AddImportOptionAdvanced(atype, String.New(name), variant.New(default_value), hint, String.New(hint_string), int64(usage_flags))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

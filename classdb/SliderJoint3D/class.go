@@ -59,14 +59,14 @@ type Any interface {
 Assigns [param value] to the given parameter (see [enum Param] constants).
 */
 func (self Instance) SetParam(param gdclass.SliderJoint3DParam, value Float.X) { //gd:SliderJoint3D.set_param
-	class(self).SetParam(param, float64(value))
+	Advanced(self).SetParam(param, float64(value))
 }
 
 /*
 Returns the value of the given parameter (see [enum Param] constants).
 */
 func (self Instance) GetParam(param gdclass.SliderJoint3DParam) Float.X { //gd:SliderJoint3D.get_param
-	return Float.X(Float.X(class(self).GetParam(param)))
+	return Float.X(Float.X(Advanced(self).GetParam(param)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

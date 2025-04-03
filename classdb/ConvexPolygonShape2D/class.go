@@ -62,7 +62,7 @@ type Any interface {
 Based on the set of points provided, this assigns the [member points] property using the convex hull algorithm, removing all unneeded points. See [method Geometry2D.convex_hull] for details.
 */
 func (self Instance) SetPointCloud(point_cloud []Vector2.XY) { //gd:ConvexPolygonShape2D.set_point_cloud
-	class(self).SetPointCloud(Packed.New(point_cloud...))
+	Advanced(self).SetPointCloud(Packed.New(point_cloud...))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -50,6 +50,7 @@ The engine keeps a global cache of all loaded resources, referenced by paths (se
 %!(EXTRA string=Resource)
 */
 type Instance [1]gdclass.Resource
+type Expanded [1]gdclass.Resource
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -146,42 +147,42 @@ func (Instance) _set_path_cache(impl func(ptr unsafe.Pointer, path string)) (cb 
 Sets the [member resource_path] to [param path], potentially overriding an existing cache entry for this path. Further attempts to load an overridden resource by path will instead return this resource.
 */
 func (self Instance) TakeOverPath(path string) { //gd:Resource.take_over_path
-	class(self).TakeOverPath(String.New(path))
+	Advanced(self).TakeOverPath(String.New(path))
 }
 
 /*
 Sets the resource's path to [param path] without involving the resource cache.
 */
 func (self Instance) SetPathCache(path string) { //gd:Resource.set_path_cache
-	class(self).SetPathCache(String.New(path))
+	Advanced(self).SetPathCache(String.New(path))
 }
 
 /*
 Returns the [RID] of this resource (or an empty RID). Many resources (such as [Texture2D], [Mesh], and so on) are high-level abstractions of resources stored in a specialized server ([DisplayServer], [RenderingServer], etc.), so this function will return the original [RID].
 */
 func (self Instance) GetRid() ID { //gd:Resource.get_rid
-	return ID(class(self).GetRid())
+	return ID(Advanced(self).GetRid())
 }
 
 /*
 If [member resource_local_to_scene] is set to [code]true[/code] and the resource has been loaded from a [PackedScene] instantiation, returns the root [Node] of the scene where this resource is used. Otherwise, returns [code]null[/code].
 */
 func (self Instance) GetLocalScene() [1]gdclass.Node { //gd:Resource.get_local_scene
-	return [1]gdclass.Node(class(self).GetLocalScene())
+	return [1]gdclass.Node(Advanced(self).GetLocalScene())
 }
 
 /*
 Calls [method _setup_local_to_scene]. If [member resource_local_to_scene] is set to [code]true[/code], this method is automatically called from [method PackedScene.instantiate] by the newly duplicated resource within the scene instance.
 */
 func (self Instance) SetupLocalToScene() { //gd:Resource.setup_local_to_scene
-	class(self).SetupLocalToScene()
+	Advanced(self).SetupLocalToScene()
 }
 
 /*
 For resources that use a variable number of properties, either via [method Object._validate_property] or [method Object._get_property_list], override [method _reset_state] to correctly clear the resource's state.
 */
 func (self Instance) ResetState() { //gd:Resource.reset_state
-	class(self).ResetState()
+	Advanced(self).ResetState()
 }
 
 /*
@@ -189,7 +190,7 @@ Sets the unique identifier to [param id] for the resource with the given [param 
 [b]Note:[/b] This method is only implemented when running in an editor context.
 */
 func (self Instance) SetIdForPath(path string, id string) { //gd:Resource.set_id_for_path
-	class(self).SetIdForPath(String.New(path), String.New(id))
+	Advanced(self).SetIdForPath(String.New(path), String.New(id))
 }
 
 /*
@@ -197,14 +198,14 @@ Returns the unique identifier for the resource with the given [param path] from 
 [b]Note:[/b] This method is only implemented when running in an editor context. At runtime, it returns an empty string.
 */
 func (self Instance) GetIdForPath(path string) string { //gd:Resource.get_id_for_path
-	return string(class(self).GetIdForPath(String.New(path)).String())
+	return string(Advanced(self).GetIdForPath(String.New(path)).String())
 }
 
 /*
 Returns [code]true[/code] if the resource is built-in (from the engine) or [code]false[/code] if it is user-defined.
 */
 func (self Instance) IsBuiltIn() bool { //gd:Resource.is_built_in
-	return bool(class(self).IsBuiltIn())
+	return bool(Advanced(self).IsBuiltIn())
 }
 
 /*
@@ -212,7 +213,7 @@ Generates a unique identifier for a resource to be contained inside a [PackedSce
 */
 func GenerateSceneUniqueId() string { //gd:Resource.generate_scene_unique_id
 	self := Instance{}
-	return string(class(self).GenerateSceneUniqueId().String())
+	return string(Advanced(self).GenerateSceneUniqueId().String())
 }
 
 /*
@@ -229,7 +230,7 @@ var damage:
 [/codeblock]
 */
 func (self Instance) EmitChanged() { //gd:Resource.emit_changed
-	class(self).EmitChanged()
+	Advanced(self).EmitChanged()
 }
 
 /*
@@ -242,7 +243,20 @@ If [param subresources] is [code]false[/code], a shallow copy is returned; neste
 [b]Note:[/b] For custom resources, this method will fail if [method Object._init] has been defined with required parameters.
 */
 func (self Instance) Duplicate() [1]gdclass.Resource { //gd:Resource.duplicate
-	return [1]gdclass.Resource(class(self).Duplicate(false))
+	return [1]gdclass.Resource(Advanced(self).Duplicate(false))
+}
+
+/*
+Duplicates this resource, returning a new resource with its [code]export[/code]ed or [constant PROPERTY_USAGE_STORAGE] properties copied from the original.
+If [param subresources] is [code]false[/code], a shallow copy is returned; nested resources within subresources are not duplicated and are shared with the original resource (with one exception; see below). If [param subresources] is [code]true[/code], a deep copy is returned; nested subresources will be duplicated and are not shared (with two exceptions; see below).
+[param subresources] is usually respected, with the following exceptions:
+- Subresource properties with the [constant PROPERTY_USAGE_ALWAYS_DUPLICATE] flag are always duplicated.
+- Subresource properties with the [constant PROPERTY_USAGE_NEVER_DUPLICATE] flag are never duplicated.
+- Subresources inside [Array] and [Dictionary] properties are never duplicated.
+[b]Note:[/b] For custom resources, this method will fail if [method Object._init] has been defined with required parameters.
+*/
+func (self Expanded) Duplicate(subresources bool) [1]gdclass.Resource { //gd:Resource.duplicate
+	return [1]gdclass.Resource(Advanced(self).Duplicate(subresources))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

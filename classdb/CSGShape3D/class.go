@@ -65,49 +65,49 @@ type Any interface {
 Returns [code]true[/code] if this is a root shape and is thus the object that is rendered.
 */
 func (self Instance) IsRootShape() bool { //gd:CSGShape3D.is_root_shape
-	return bool(class(self).IsRootShape())
+	return bool(Advanced(self).IsRootShape())
 }
 
 /*
 Based on [param value], enables or disables the specified layer in the [member collision_mask], given a [param layer_number] between 1 and 32.
 */
 func (self Instance) SetCollisionMaskValue(layer_number int, value bool) { //gd:CSGShape3D.set_collision_mask_value
-	class(self).SetCollisionMaskValue(int64(layer_number), value)
+	Advanced(self).SetCollisionMaskValue(int64(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member collision_mask] is enabled, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) GetCollisionMaskValue(layer_number int) bool { //gd:CSGShape3D.get_collision_mask_value
-	return bool(class(self).GetCollisionMaskValue(int64(layer_number)))
+	return bool(Advanced(self).GetCollisionMaskValue(int64(layer_number)))
 }
 
 /*
 Based on [param value], enables or disables the specified layer in the [member collision_layer], given a [param layer_number] between 1 and 32.
 */
 func (self Instance) SetCollisionLayerValue(layer_number int, value bool) { //gd:CSGShape3D.set_collision_layer_value
-	class(self).SetCollisionLayerValue(int64(layer_number), value)
+	Advanced(self).SetCollisionLayerValue(int64(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member collision_layer] is enabled, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) GetCollisionLayerValue(layer_number int) bool { //gd:CSGShape3D.get_collision_layer_value
-	return bool(class(self).GetCollisionLayerValue(int64(layer_number)))
+	return bool(Advanced(self).GetCollisionLayerValue(int64(layer_number)))
 }
 
 /*
 Returns an [Array] with two elements, the first is the [Transform3D] of this node and the second is the root [Mesh] of this node. Only works when this node is the root shape.
 */
 func (self Instance) GetMeshes() []any { //gd:CSGShape3D.get_meshes
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetMeshes())))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetMeshes())))
 }
 
 /*
 Returns a baked static [ArrayMesh] of this node's CSG operation result. Materials from involved CSG nodes are added as extra mesh surfaces. Returns an empty mesh if the node is not a CSG root node or has no valid geometry.
 */
 func (self Instance) BakeStaticMesh() [1]gdclass.ArrayMesh { //gd:CSGShape3D.bake_static_mesh
-	return [1]gdclass.ArrayMesh(class(self).BakeStaticMesh())
+	return [1]gdclass.ArrayMesh(Advanced(self).BakeStaticMesh())
 }
 
 /*
@@ -115,7 +115,7 @@ Returns a baked physics [ConcavePolygonShape3D] of this node's CSG operation res
 [b]Performance:[/b] If the CSG operation results in a very detailed geometry with many faces physics performance will be very slow. Concave shapes should in general only be used for static level geometry and not with dynamic objects that are moving.
 */
 func (self Instance) BakeCollisionShape() [1]gdclass.ConcavePolygonShape3D { //gd:CSGShape3D.bake_collision_shape
-	return [1]gdclass.ConcavePolygonShape3D(class(self).BakeCollisionShape())
+	return [1]gdclass.ConcavePolygonShape3D(Advanced(self).BakeCollisionShape())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -59,7 +59,7 @@ type Any interface {
 Returns the [member transform] with world scale and our reference frame applied. This is the transform used to position [XRNode3D] objects.
 */
 func (self Instance) GetAdjustedTransform() Transform3D.BasisOrigin { //gd:XRPose.get_adjusted_transform
-	return Transform3D.BasisOrigin(class(self).GetAdjustedTransform())
+	return Transform3D.BasisOrigin(Advanced(self).GetAdjustedTransform())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

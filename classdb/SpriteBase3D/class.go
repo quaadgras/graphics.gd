@@ -63,14 +63,14 @@ type Any interface {
 Returns the rectangle representing this sprite.
 */
 func (self Instance) GetItemRect() Rect2.PositionSize { //gd:SpriteBase3D.get_item_rect
-	return Rect2.PositionSize(class(self).GetItemRect())
+	return Rect2.PositionSize(Advanced(self).GetItemRect())
 }
 
 /*
 Returns a [TriangleMesh] with the sprite's vertices following its current configuration (such as its [member axis] and [member pixel_size]).
 */
 func (self Instance) GenerateTriangleMesh() [1]gdclass.TriangleMesh { //gd:SpriteBase3D.generate_triangle_mesh
-	return [1]gdclass.TriangleMesh(class(self).GenerateTriangleMesh())
+	return [1]gdclass.TriangleMesh(Advanced(self).GenerateTriangleMesh())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

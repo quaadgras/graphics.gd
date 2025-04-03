@@ -3,10 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
-	"strings"
 
 	"graphics.gd/internal/gdjson"
-	"graphics.gd/variant/String"
 	"runtime.link/api/xray"
 )
 
@@ -22,22 +20,31 @@ func work() error {
 	if err != nil {
 		return xray.New(err)
 	}
+	var unique = make(map[string]bool)
 	for _, class := range spec.Classes {
 		for _, method := range class.Methods {
+			if !method.IsStatic && !class.IsSingleton {
+				continue
+			}
 			var hasDefault bool
 			for _, arg := range method.Arguments {
 				if arg.DefaultValue != nil {
-					hasDefault = true
+					if !gdjson.IsTheDefaultValueZero(*arg.DefaultValue) {
+						hasDefault = true
+						unique[*arg.DefaultValue] = true
+					}
 				}
 			}
-			nodefault, ok := gdjson.NoDefaultName[class.Name+"."+method.Name]
-			if hasDefault && !ok {
-				fmt.Printf("%v.%v https://docs.godotengine.org/en/stable/classes/class_%[3]v.html#class-%[3]v-method-%[4]v\n",
-					class.Name, method.Name, strings.ToLower(class.Name), strings.Replace(method.Name, "_", "-", -1))
-			} else if nodefault == String.ToPascalCase(method.Name) {
-				panic("no default for " + class.Name + "." + method.Name)
+			if hasDefault {
+				fmt.Printf("%v.%vOptions\n",
+					class.Name, gdjson.ConvertName(method.Name))
 			}
+
 		}
 	}
+	//fmt.Printf("%#v\n", sorted)
+	/*for name := range unique {
+	fmt.Println(name)
+	}*/
 	return nil
 }

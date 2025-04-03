@@ -63,7 +63,7 @@ Returns [code]true[/code] if the bounding box is on the screen.
 [b]Note:[/b] It takes one frame for the [VisibleOnScreenNotifier3D]'s visibility to be assessed once added to the scene tree, so this method will always return [code]false[/code] right after it is instantiated.
 */
 func (self Instance) IsOnScreen() bool { //gd:VisibleOnScreenNotifier3D.is_on_screen
-	return bool(class(self).IsOnScreen())
+	return bool(Advanced(self).IsOnScreen())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -70,7 +70,7 @@ Returns the cancel button.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
 func (self Instance) GetCancelButton() [1]gdclass.Button { //gd:ConfirmationDialog.get_cancel_button
-	return [1]gdclass.Button(class(self).GetCancelButton())
+	return [1]gdclass.Button(Advanced(self).GetCancelButton())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

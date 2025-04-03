@@ -64,7 +64,7 @@ Returns the absolute path to the user's data folder. This folder should be used 
 [/codeblock]
 */
 func (self Instance) GetDataDir() string { //gd:EditorPaths.get_data_dir
-	return string(class(self).GetDataDir().String())
+	return string(Advanced(self).GetDataDir().String())
 }
 
 /*
@@ -77,7 +77,7 @@ Returns the absolute path to the user's configuration folder. This folder should
 [/codeblock]
 */
 func (self Instance) GetConfigDir() string { //gd:EditorPaths.get_config_dir
-	return string(class(self).GetConfigDir().String())
+	return string(Advanced(self).GetConfigDir().String())
 }
 
 /*
@@ -90,7 +90,7 @@ Returns the absolute path to the user's cache folder. This folder should be used
 [/codeblock]
 */
 func (self Instance) GetCacheDir() string { //gd:EditorPaths.get_cache_dir
-	return string(class(self).GetCacheDir().String())
+	return string(Advanced(self).GetCacheDir().String())
 }
 
 /*
@@ -101,21 +101,21 @@ Self-contained mode can be enabled by creating a file named [code]._sc_[/code] o
 [b]Note:[/b] The Steam release of Godot uses self-contained mode by default.
 */
 func (self Instance) IsSelfContained() bool { //gd:EditorPaths.is_self_contained
-	return bool(class(self).IsSelfContained())
+	return bool(Advanced(self).IsSelfContained())
 }
 
 /*
 Returns the absolute path to the self-contained file that makes the current Godot editor instance be considered as self-contained. Returns an empty string if the current Godot editor instance isn't self-contained. See also [method is_self_contained].
 */
 func (self Instance) GetSelfContainedFile() string { //gd:EditorPaths.get_self_contained_file
-	return string(class(self).GetSelfContainedFile().String())
+	return string(Advanced(self).GetSelfContainedFile().String())
 }
 
 /*
 Returns the project-specific editor settings path. Projects all have a unique subdirectory inside the settings path where project-specific editor settings are saved.
 */
 func (self Instance) GetProjectSettingsDir() string { //gd:EditorPaths.get_project_settings_dir
-	return string(class(self).GetProjectSettingsDir().String())
+	return string(Advanced(self).GetProjectSettingsDir().String())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -49,6 +49,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 [b]Warning:[/b] With a non-uniform scale, this node will likely not behave as expected. It is advised to keep its scale the same on all axes and adjust its collision shape(s) instead.
 */
 type Instance [1]gdclass.PhysicsBody3D
+type Expanded [1]gdclass.PhysicsBody3D
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -67,7 +68,19 @@ If [param recovery_as_collision] is [code]true[/code], any depenetration from th
 [param max_collisions] allows to retrieve more than one collision result.
 */
 func (self Instance) MoveAndCollide(motion Vector3.XYZ) [1]gdclass.KinematicCollision3D { //gd:PhysicsBody3D.move_and_collide
-	return [1]gdclass.KinematicCollision3D(class(self).MoveAndCollide(Vector3.XYZ(motion), false, float64(0.001), false, int64(1)))
+	return [1]gdclass.KinematicCollision3D(Advanced(self).MoveAndCollide(Vector3.XYZ(motion), false, float64(0.001), false, int64(1)))
+}
+
+/*
+Moves the body along the vector [param motion]. In order to be frame rate independent in [method Node._physics_process] or [method Node._process], [param motion] should be computed using [code]delta[/code].
+The body will stop if it collides. Returns a [KinematicCollision3D], which contains information about the collision when stopped, or when touching another body along the motion.
+If [param test_only] is [code]true[/code], the body does not move but the would-be collision information is given.
+[param safe_margin] is the extra margin used for collision recovery (see [member CharacterBody3D.safe_margin] for more details).
+If [param recovery_as_collision] is [code]true[/code], any depenetration from the recovery phase is also reported as a collision; this is used e.g. by [CharacterBody3D] for improving floor detection during floor snapping.
+[param max_collisions] allows to retrieve more than one collision result.
+*/
+func (self Expanded) MoveAndCollide(motion Vector3.XYZ, test_only bool, safe_margin Float.X, recovery_as_collision bool, max_collisions int) [1]gdclass.KinematicCollision3D { //gd:PhysicsBody3D.move_and_collide
+	return [1]gdclass.KinematicCollision3D(Advanced(self).MoveAndCollide(Vector3.XYZ(motion), test_only, float64(safe_margin), recovery_as_collision, int64(max_collisions)))
 }
 
 /*
@@ -79,35 +92,47 @@ If [param recovery_as_collision] is [code]true[/code], any depenetration from th
 [param max_collisions] allows to retrieve more than one collision result.
 */
 func (self Instance) TestMove(from Transform3D.BasisOrigin, motion Vector3.XYZ) bool { //gd:PhysicsBody3D.test_move
-	return bool(class(self).TestMove(Transform3D.BasisOrigin(from), Vector3.XYZ(motion), [1][1]gdclass.KinematicCollision3D{}[0], float64(0.001), false, int64(1)))
+	return bool(Advanced(self).TestMove(Transform3D.BasisOrigin(from), Vector3.XYZ(motion), [1][1]gdclass.KinematicCollision3D{}[0], float64(0.001), false, int64(1)))
+}
+
+/*
+Checks for collisions without moving the body. In order to be frame rate independent in [method Node._physics_process] or [method Node._process], [param motion] should be computed using [code]delta[/code].
+Virtually sets the node's position, scale and rotation to that of the given [Transform3D], then tries to move the body along the vector [param motion]. Returns [code]true[/code] if a collision would stop the body from moving along the whole path.
+[param collision] is an optional object of type [KinematicCollision3D], which contains additional information about the collision when stopped, or when touching another body along the motion.
+[param safe_margin] is the extra margin used for collision recovery (see [member CharacterBody3D.safe_margin] for more details).
+If [param recovery_as_collision] is [code]true[/code], any depenetration from the recovery phase is also reported as a collision; this is useful for checking whether the body would [i]touch[/i] any other bodies.
+[param max_collisions] allows to retrieve more than one collision result.
+*/
+func (self Expanded) TestMove(from Transform3D.BasisOrigin, motion Vector3.XYZ, collision [1]gdclass.KinematicCollision3D, safe_margin Float.X, recovery_as_collision bool, max_collisions int) bool { //gd:PhysicsBody3D.test_move
+	return bool(Advanced(self).TestMove(Transform3D.BasisOrigin(from), Vector3.XYZ(motion), collision, float64(safe_margin), recovery_as_collision, int64(max_collisions)))
 }
 
 /*
 Returns the gravity vector computed from all sources that can affect the body, including all gravity overrides from [Area3D] nodes and the global world gravity.
 */
 func (self Instance) GetGravity() Vector3.XYZ { //gd:PhysicsBody3D.get_gravity
-	return Vector3.XYZ(class(self).GetGravity())
+	return Vector3.XYZ(Advanced(self).GetGravity())
 }
 
 /*
 Returns an array of nodes that were added as collision exceptions for this body.
 */
 func (self Instance) GetCollisionExceptions() [][1]gdclass.PhysicsBody3D { //gd:PhysicsBody3D.get_collision_exceptions
-	return [][1]gdclass.PhysicsBody3D(gd.ArrayAs[[][1]gdclass.PhysicsBody3D](gd.InternalArray(class(self).GetCollisionExceptions())))
+	return [][1]gdclass.PhysicsBody3D(gd.ArrayAs[[][1]gdclass.PhysicsBody3D](gd.InternalArray(Advanced(self).GetCollisionExceptions())))
 }
 
 /*
 Adds a body to the list of bodies that this body can't collide with.
 */
 func (self Instance) AddCollisionExceptionWith(body [1]gdclass.Node) { //gd:PhysicsBody3D.add_collision_exception_with
-	class(self).AddCollisionExceptionWith(body)
+	Advanced(self).AddCollisionExceptionWith(body)
 }
 
 /*
 Removes a body from the list of bodies that this body can't collide with.
 */
 func (self Instance) RemoveCollisionExceptionWith(body [1]gdclass.Node) { //gd:PhysicsBody3D.remove_collision_exception_with
-	class(self).RemoveCollisionExceptionWith(body)
+	Advanced(self).RemoveCollisionExceptionWith(body)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

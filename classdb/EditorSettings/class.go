@@ -65,6 +65,7 @@ Godot.Collections.Array<Godot.Collections.Dictionary> listOfSettings = settings.
 [b]Note:[/b] This class shouldn't be instantiated directly. Instead, access the singleton using [method EditorInterface.get_editor_settings].
 */
 type Instance [1]gdclass.EditorSettings
+type Expanded [1]gdclass.EditorSettings
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -78,35 +79,35 @@ type Any interface {
 Returns [code]true[/code] if the setting specified by [param name] exists, [code]false[/code] otherwise.
 */
 func (self Instance) HasSetting(name string) bool { //gd:EditorSettings.has_setting
-	return bool(class(self).HasSetting(String.New(name)))
+	return bool(Advanced(self).HasSetting(String.New(name)))
 }
 
 /*
 Sets the [param value] of the setting specified by [param name]. This is equivalent to using [method Object.set] on the EditorSettings instance.
 */
 func (self Instance) SetSetting(name string, value any) { //gd:EditorSettings.set_setting
-	class(self).SetSetting(String.New(name), variant.New(value))
+	Advanced(self).SetSetting(String.New(name), variant.New(value))
 }
 
 /*
 Returns the value of the setting specified by [param name]. This is equivalent to using [method Object.get] on the EditorSettings instance.
 */
 func (self Instance) GetSetting(name string) any { //gd:EditorSettings.get_setting
-	return any(class(self).GetSetting(String.New(name)).Interface())
+	return any(Advanced(self).GetSetting(String.New(name)).Interface())
 }
 
 /*
 Erases the setting whose name is specified by [param property].
 */
 func (self Instance) Erase(property string) { //gd:EditorSettings.erase
-	class(self).Erase(String.New(property))
+	Advanced(self).Erase(String.New(property))
 }
 
 /*
 Sets the initial value of the setting specified by [param name] to [param value]. This is used to provide a value for the Revert button in the Editor Settings. If [param update_current] is [code]true[/code], the setting is reset to [param value] as well.
 */
 func (self Instance) SetInitialValue(name string, value any, update_current bool) { //gd:EditorSettings.set_initial_value
-	class(self).SetInitialValue(String.Name(String.New(name)), variant.New(value), update_current)
+	Advanced(self).SetInitialValue(String.Name(String.New(name)), variant.New(value), update_current)
 }
 
 /*
@@ -146,77 +147,84 @@ settings.AddPropertyInfo(propertyInfo);
 [/codeblocks]
 */
 func (self Instance) AddPropertyInfo(info PropertyInfo) { //gd:EditorSettings.add_property_info
-	class(self).AddPropertyInfo(gd.DictionaryFromMap(info))
+	Advanced(self).AddPropertyInfo(gd.DictionaryFromMap(info))
 }
 
 /*
 Sets project-specific metadata with the [param section], [param key] and [param data] specified. This metadata is stored outside the project folder and therefore won't be checked into version control. See also [method get_project_metadata].
 */
 func (self Instance) SetProjectMetadata(section string, key string, data any) { //gd:EditorSettings.set_project_metadata
-	class(self).SetProjectMetadata(String.New(section), String.New(key), variant.New(data))
+	Advanced(self).SetProjectMetadata(String.New(section), String.New(key), variant.New(data))
 }
 
 /*
 Returns project-specific metadata for the [param section] and [param key] specified. If the metadata doesn't exist, [param default] will be returned instead. See also [method set_project_metadata].
 */
 func (self Instance) GetProjectMetadata(section string, key string) any { //gd:EditorSettings.get_project_metadata
-	return any(class(self).GetProjectMetadata(String.New(section), String.New(key), variant.New([1]any{}[0])).Interface())
+	return any(Advanced(self).GetProjectMetadata(String.New(section), String.New(key), variant.New([1]any{}[0])).Interface())
+}
+
+/*
+Returns project-specific metadata for the [param section] and [param key] specified. If the metadata doesn't exist, [param default] will be returned instead. See also [method set_project_metadata].
+*/
+func (self Expanded) GetProjectMetadata(section string, key string, def any) any { //gd:EditorSettings.get_project_metadata
+	return any(Advanced(self).GetProjectMetadata(String.New(section), String.New(key), variant.New(def)).Interface())
 }
 
 /*
 Sets the list of favorite files and directories for this project.
 */
 func (self Instance) SetFavorites(dirs []string) { //gd:EditorSettings.set_favorites
-	class(self).SetFavorites(Packed.MakeStrings(dirs...))
+	Advanced(self).SetFavorites(Packed.MakeStrings(dirs...))
 }
 
 /*
 Returns the list of favorite files and directories for this project.
 */
 func (self Instance) GetFavorites() []string { //gd:EditorSettings.get_favorites
-	return []string(class(self).GetFavorites().Strings())
+	return []string(Advanced(self).GetFavorites().Strings())
 }
 
 /*
 Sets the list of recently visited folders in the file dialog for this project.
 */
 func (self Instance) SetRecentDirs(dirs []string) { //gd:EditorSettings.set_recent_dirs
-	class(self).SetRecentDirs(Packed.MakeStrings(dirs...))
+	Advanced(self).SetRecentDirs(Packed.MakeStrings(dirs...))
 }
 
 /*
 Returns the list of recently visited folders in the file dialog for this project.
 */
 func (self Instance) GetRecentDirs() []string { //gd:EditorSettings.get_recent_dirs
-	return []string(class(self).GetRecentDirs().Strings())
+	return []string(Advanced(self).GetRecentDirs().Strings())
 }
 
 /*
 Overrides the built-in editor action [param name] with the input actions defined in [param actions_list].
 */
 func (self Instance) SetBuiltinActionOverride(name string, actions_list [][1]gdclass.InputEvent) { //gd:EditorSettings.set_builtin_action_override
-	class(self).SetBuiltinActionOverride(String.New(name), gd.ArrayFromSlice[Array.Contains[[1]gdclass.InputEvent]](actions_list))
+	Advanced(self).SetBuiltinActionOverride(String.New(name), gd.ArrayFromSlice[Array.Contains[[1]gdclass.InputEvent]](actions_list))
 }
 
 /*
 Checks if any settings with the prefix [param setting_prefix] exist in the set of changed settings. See also [method get_changed_settings].
 */
 func (self Instance) CheckChangedSettingsInGroup(setting_prefix string) bool { //gd:EditorSettings.check_changed_settings_in_group
-	return bool(class(self).CheckChangedSettingsInGroup(String.New(setting_prefix)))
+	return bool(Advanced(self).CheckChangedSettingsInGroup(String.New(setting_prefix)))
 }
 
 /*
 Gets an array of the settings which have been changed since the last save. Note that internally [code]changed_settings[/code] is cleared after a successful save, so generally the most appropriate place to use this method is when processing [constant NOTIFICATION_EDITOR_SETTINGS_CHANGED].
 */
 func (self Instance) GetChangedSettings() []string { //gd:EditorSettings.get_changed_settings
-	return []string(class(self).GetChangedSettings().Strings())
+	return []string(Advanced(self).GetChangedSettings().Strings())
 }
 
 /*
 Marks the passed editor setting as being changed, see [method get_changed_settings]. Only settings which exist (see [method has_setting]) will be accepted.
 */
 func (self Instance) MarkSettingChanged(setting string) { //gd:EditorSettings.mark_setting_changed
-	class(self).MarkSettingChanged(String.New(setting))
+	Advanced(self).MarkSettingChanged(String.New(setting))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

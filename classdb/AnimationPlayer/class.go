@@ -48,6 +48,7 @@ Some methods and properties use a single key to reference an animation directly.
 Updating the target properties of animations occurs at the process frame.
 */
 type Instance [1]gdclass.AnimationPlayer
+type Expanded [1]gdclass.AnimationPlayer
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -61,28 +62,28 @@ type Any interface {
 Triggers the [param animation_to] animation when the [param animation_from] animation completes.
 */
 func (self Instance) AnimationSetNext(animation_from string, animation_to string) { //gd:AnimationPlayer.animation_set_next
-	class(self).AnimationSetNext(String.Name(String.New(animation_from)), String.Name(String.New(animation_to)))
+	Advanced(self).AnimationSetNext(String.Name(String.New(animation_from)), String.Name(String.New(animation_to)))
 }
 
 /*
 Returns the key of the animation which is queued to play after the [param animation_from] animation.
 */
 func (self Instance) AnimationGetNext(animation_from string) string { //gd:AnimationPlayer.animation_get_next
-	return string(class(self).AnimationGetNext(String.Name(String.New(animation_from))).String())
+	return string(Advanced(self).AnimationGetNext(String.Name(String.New(animation_from))).String())
 }
 
 /*
 Specifies a blend time (in seconds) between two animations, referenced by their keys.
 */
 func (self Instance) SetBlendTime(animation_from string, animation_to string, sec Float.X) { //gd:AnimationPlayer.set_blend_time
-	class(self).SetBlendTime(String.Name(String.New(animation_from)), String.Name(String.New(animation_to)), float64(sec))
+	Advanced(self).SetBlendTime(String.Name(String.New(animation_from)), String.Name(String.New(animation_to)), float64(sec))
 }
 
 /*
 Returns the blend time (in seconds) between two animations, referenced by their keys.
 */
 func (self Instance) GetBlendTime(animation_from string, animation_to string) Float.X { //gd:AnimationPlayer.get_blend_time
-	return Float.X(Float.X(class(self).GetBlendTime(String.Name(String.New(animation_from)), String.Name(String.New(animation_to)))))
+	return Float.X(Float.X(Advanced(self).GetBlendTime(String.Name(String.New(animation_from)), String.Name(String.New(animation_to)))))
 }
 
 /*
@@ -92,7 +93,17 @@ The [AnimationPlayer] keeps track of its current or last played animation with [
 [b]Note:[/b] The animation will be updated the next time the [AnimationPlayer] is processed. If other variables are updated at the same time this is called, they may be updated too early. To perform the update immediately, call [code]advance(0)[/code].
 */
 func (self Instance) Play() { //gd:AnimationPlayer.play
-	class(self).Play(String.Name(String.New("")), float64(-1), float64(1.0), false)
+	Advanced(self).Play(String.Name(String.New("")), float64(-1), float64(1.0), false)
+}
+
+/*
+Plays the animation with key [param name]. Custom blend times and speed can be set.
+The [param from_end] option only affects when switching to a new animation track, or if the same track but at the start or end. It does not affect resuming playback that was paused in the middle of an animation. If [param custom_speed] is negative and [param from_end] is [code]true[/code], the animation will play backwards (which is equivalent to calling [method play_backwards]).
+The [AnimationPlayer] keeps track of its current or last played animation with [member assigned_animation]. If this method is called with that same animation [param name], or with no [param name] parameter, the assigned animation will resume playing if it was paused.
+[b]Note:[/b] The animation will be updated the next time the [AnimationPlayer] is processed. If other variables are updated at the same time this is called, they may be updated too early. To perform the update immediately, call [code]advance(0)[/code].
+*/
+func (self Expanded) Play(name string, custom_blend Float.X, custom_speed Float.X, from_end bool) { //gd:AnimationPlayer.play
+	Advanced(self).Play(String.Name(String.New(name)), float64(custom_blend), float64(custom_speed), from_end)
 }
 
 /*
@@ -100,7 +111,15 @@ Plays the animation with key [param name] and the section starting from [param s
 If the start marker is empty, the section starts from the beginning of the animation. If the end marker is empty, the section ends on the end of the animation. See also [method play].
 */
 func (self Instance) PlaySectionWithMarkers() { //gd:AnimationPlayer.play_section_with_markers
-	class(self).PlaySectionWithMarkers(String.Name(String.New("")), String.Name(String.New("")), String.Name(String.New("")), float64(-1), float64(1.0), false)
+	Advanced(self).PlaySectionWithMarkers(String.Name(String.New("")), String.Name(String.New("")), String.Name(String.New("")), float64(-1), float64(1.0), false)
+}
+
+/*
+Plays the animation with key [param name] and the section starting from [param start_marker] and ending on [param end_marker].
+If the start marker is empty, the section starts from the beginning of the animation. If the end marker is empty, the section ends on the end of the animation. See also [method play].
+*/
+func (self Expanded) PlaySectionWithMarkers(name string, start_marker string, end_marker string, custom_blend Float.X, custom_speed Float.X, from_end bool) { //gd:AnimationPlayer.play_section_with_markers
+	Advanced(self).PlaySectionWithMarkers(String.Name(String.New(name)), String.Name(String.New(start_marker)), String.Name(String.New(end_marker)), float64(custom_blend), float64(custom_speed), from_end)
 }
 
 /*
@@ -108,7 +127,15 @@ Plays the animation with key [param name] and the section starting from [param s
 Setting [param start_time] to a value outside the range of the animation means the start of the animation will be used instead, and setting [param end_time] to a value outside the range of the animation means the end of the animation will be used instead. [param start_time] cannot be equal to [param end_time].
 */
 func (self Instance) PlaySection() { //gd:AnimationPlayer.play_section
-	class(self).PlaySection(String.Name(String.New("")), float64(-1), float64(-1), float64(-1), float64(1.0), false)
+	Advanced(self).PlaySection(String.Name(String.New("")), float64(-1), float64(-1), float64(-1), float64(1.0), false)
+}
+
+/*
+Plays the animation with key [param name] and the section starting from [param start_time] and ending on [param end_time]. See also [method play].
+Setting [param start_time] to a value outside the range of the animation means the start of the animation will be used instead, and setting [param end_time] to a value outside the range of the animation means the end of the animation will be used instead. [param start_time] cannot be equal to [param end_time].
+*/
+func (self Expanded) PlaySection(name string, start_time Float.X, end_time Float.X, custom_blend Float.X, custom_speed Float.X, from_end bool) { //gd:AnimationPlayer.play_section
+	Advanced(self).PlaySection(String.Name(String.New(name)), float64(start_time), float64(end_time), float64(custom_blend), float64(custom_speed), from_end)
 }
 
 /*
@@ -116,7 +143,15 @@ Plays the animation with key [param name] in reverse.
 This method is a shorthand for [method play] with [code]custom_speed = -1.0[/code] and [code]from_end = true[/code], so see its description for more information.
 */
 func (self Instance) PlayBackwards() { //gd:AnimationPlayer.play_backwards
-	class(self).PlayBackwards(String.Name(String.New("")), float64(-1))
+	Advanced(self).PlayBackwards(String.Name(String.New("")), float64(-1))
+}
+
+/*
+Plays the animation with key [param name] in reverse.
+This method is a shorthand for [method play] with [code]custom_speed = -1.0[/code] and [code]from_end = true[/code], so see its description for more information.
+*/
+func (self Expanded) PlayBackwards(name string, custom_blend Float.X) { //gd:AnimationPlayer.play_backwards
+	Advanced(self).PlayBackwards(String.Name(String.New(name)), float64(custom_blend))
 }
 
 /*
@@ -124,7 +159,15 @@ Plays the animation with key [param name] and the section starting from [param s
 This method is a shorthand for [method play_section_with_markers] with [code]custom_speed = -1.0[/code] and [code]from_end = true[/code], see its description for more information.
 */
 func (self Instance) PlaySectionWithMarkersBackwards() { //gd:AnimationPlayer.play_section_with_markers_backwards
-	class(self).PlaySectionWithMarkersBackwards(String.Name(String.New("")), String.Name(String.New("")), String.Name(String.New("")), float64(-1))
+	Advanced(self).PlaySectionWithMarkersBackwards(String.Name(String.New("")), String.Name(String.New("")), String.Name(String.New("")), float64(-1))
+}
+
+/*
+Plays the animation with key [param name] and the section starting from [param start_marker] and ending on [param end_marker] in reverse.
+This method is a shorthand for [method play_section_with_markers] with [code]custom_speed = -1.0[/code] and [code]from_end = true[/code], see its description for more information.
+*/
+func (self Expanded) PlaySectionWithMarkersBackwards(name string, start_marker string, end_marker string, custom_blend Float.X) { //gd:AnimationPlayer.play_section_with_markers_backwards
+	Advanced(self).PlaySectionWithMarkersBackwards(String.Name(String.New(name)), String.Name(String.New(start_marker)), String.Name(String.New(end_marker)), float64(custom_blend))
 }
 
 /*
@@ -132,7 +175,15 @@ Plays the animation with key [param name] and the section starting from [param s
 This method is a shorthand for [method play_section] with [code]custom_speed = -1.0[/code] and [code]from_end = true[/code], see its description for more information.
 */
 func (self Instance) PlaySectionBackwards() { //gd:AnimationPlayer.play_section_backwards
-	class(self).PlaySectionBackwards(String.Name(String.New("")), float64(-1), float64(-1), float64(-1))
+	Advanced(self).PlaySectionBackwards(String.Name(String.New("")), float64(-1), float64(-1), float64(-1))
+}
+
+/*
+Plays the animation with key [param name] and the section starting from [param start_time] and ending on [param end_time] in reverse.
+This method is a shorthand for [method play_section] with [code]custom_speed = -1.0[/code] and [code]from_end = true[/code], see its description for more information.
+*/
+func (self Expanded) PlaySectionBackwards(name string, start_time Float.X, end_time Float.X, custom_blend Float.X) { //gd:AnimationPlayer.play_section_backwards
+	Advanced(self).PlaySectionBackwards(String.Name(String.New(name)), float64(start_time), float64(end_time), float64(custom_blend))
 }
 
 /*
@@ -147,7 +198,22 @@ If [param duration] is a negative value, the duration is set to the interval bet
 [b]Note:[/b] The [param duration] takes [member speed_scale] into account, but [param custom_speed] does not, because the capture cache is interpolated with the blend result and the result may contain multiple animations.
 */
 func (self Instance) PlayWithCapture() { //gd:AnimationPlayer.play_with_capture
-	class(self).PlayWithCapture(String.Name(String.New("")), float64(-1.0), float64(-1), float64(1.0), false, 0, 0)
+	Advanced(self).PlayWithCapture(String.Name(String.New("")), float64(-1.0), float64(-1), float64(1.0), false, 0, 0)
+}
+
+/*
+See also [method AnimationMixer.capture].
+You can use this method to use more detailed options for capture than those performed by [member playback_auto_capture]. When [member playback_auto_capture] is [code]false[/code], this method is almost the same as the following:
+[codeblock]
+capture(name, duration, trans_type, ease_type)
+play(name, custom_blend, custom_speed, from_end)
+[/codeblock]
+If [param name] is blank, it specifies [member assigned_animation].
+If [param duration] is a negative value, the duration is set to the interval between the current position and the first key, when [param from_end] is [code]true[/code], uses the interval between the current position and the last key instead.
+[b]Note:[/b] The [param duration] takes [member speed_scale] into account, but [param custom_speed] does not, because the capture cache is interpolated with the blend result and the result may contain multiple animations.
+*/
+func (self Expanded) PlayWithCapture(name string, duration Float.X, custom_blend Float.X, custom_speed Float.X, from_end bool, trans_type gdclass.TweenTransitionType, ease_type gdclass.TweenEaseType) { //gd:AnimationPlayer.play_with_capture
+	Advanced(self).PlayWithCapture(String.Name(String.New(name)), float64(duration), float64(custom_blend), float64(custom_speed), from_end, trans_type, ease_type)
 }
 
 /*
@@ -155,7 +221,7 @@ Pauses the currently playing animation. The [member current_animation_position] 
 See also [method stop].
 */
 func (self Instance) Pause() { //gd:AnimationPlayer.pause
-	class(self).Pause()
+	Advanced(self).Pause()
 }
 
 /*
@@ -164,14 +230,23 @@ If [param keep_state] is [code]true[/code], the animation state is not updated v
 [b]Note:[/b] The method / audio / animation playback tracks will not be processed by this method.
 */
 func (self Instance) Stop() { //gd:AnimationPlayer.stop
-	class(self).Stop(false)
+	Advanced(self).Stop(false)
+}
+
+/*
+Stops the currently playing animation. The animation position is reset to [code]0[/code] and the [code]custom_speed[/code] is reset to [code]1.0[/code]. See also [method pause].
+If [param keep_state] is [code]true[/code], the animation state is not updated visually.
+[b]Note:[/b] The method / audio / animation playback tracks will not be processed by this method.
+*/
+func (self Expanded) Stop(keep_state bool) { //gd:AnimationPlayer.stop
+	Advanced(self).Stop(keep_state)
 }
 
 /*
 Returns [code]true[/code] if an animation is currently playing (even if [member speed_scale] and/or [code]custom_speed[/code] are [code]0[/code]).
 */
 func (self Instance) IsPlaying() bool { //gd:AnimationPlayer.is_playing
-	return bool(class(self).IsPlaying())
+	return bool(Advanced(self).IsPlaying())
 }
 
 /*
@@ -179,21 +254,21 @@ Queues an animation for playback once the current animation and all previously q
 [b]Note:[/b] If a looped animation is currently playing, the queued animation will never play unless the looped animation is stopped somehow.
 */
 func (self Instance) Queue(name string) { //gd:AnimationPlayer.queue
-	class(self).Queue(String.Name(String.New(name)))
+	Advanced(self).Queue(String.Name(String.New(name)))
 }
 
 /*
 Returns a list of the animation keys that are currently queued to play.
 */
 func (self Instance) GetQueue() []string { //gd:AnimationPlayer.get_queue
-	return []string(class(self).GetQueue().Strings())
+	return []string(Advanced(self).GetQueue().Strings())
 }
 
 /*
 Clears all queued, unplayed animations.
 */
 func (self Instance) ClearQueue() { //gd:AnimationPlayer.clear_queue
-	class(self).ClearQueue()
+	Advanced(self).ClearQueue()
 }
 
 /*
@@ -201,7 +276,7 @@ Returns the actual playing speed of current animation or [code]0[/code] if not p
 Returns a negative value if the current animation is playing backwards.
 */
 func (self Instance) GetPlayingSpeed() Float.X { //gd:AnimationPlayer.get_playing_speed
-	return Float.X(Float.X(class(self).GetPlayingSpeed()))
+	return Float.X(Float.X(Advanced(self).GetPlayingSpeed()))
 }
 
 /*
@@ -209,42 +284,57 @@ Changes the start and end markers of the section being played. The current playb
 If the argument is empty, the section uses the beginning or end of the animation. If both are empty, it means that the section is not set.
 */
 func (self Instance) SetSectionWithMarkers() { //gd:AnimationPlayer.set_section_with_markers
-	class(self).SetSectionWithMarkers(String.Name(String.New("")), String.Name(String.New("")))
+	Advanced(self).SetSectionWithMarkers(String.Name(String.New("")), String.Name(String.New("")))
+}
+
+/*
+Changes the start and end markers of the section being played. The current playback position will be clamped within the new section. See also [method play_section_with_markers].
+If the argument is empty, the section uses the beginning or end of the animation. If both are empty, it means that the section is not set.
+*/
+func (self Expanded) SetSectionWithMarkers(start_marker string, end_marker string) { //gd:AnimationPlayer.set_section_with_markers
+	Advanced(self).SetSectionWithMarkers(String.Name(String.New(start_marker)), String.Name(String.New(end_marker)))
 }
 
 /*
 Changes the start and end times of the section being played. The current playback position will be clamped within the new section. See also [method play_section].
 */
 func (self Instance) SetSection() { //gd:AnimationPlayer.set_section
-	class(self).SetSection(float64(-1), float64(-1))
+	Advanced(self).SetSection(float64(-1), float64(-1))
+}
+
+/*
+Changes the start and end times of the section being played. The current playback position will be clamped within the new section. See also [method play_section].
+*/
+func (self Expanded) SetSection(start_time Float.X, end_time Float.X) { //gd:AnimationPlayer.set_section
+	Advanced(self).SetSection(float64(start_time), float64(end_time))
 }
 
 /*
 Resets the current section if section is set.
 */
 func (self Instance) ResetSection() { //gd:AnimationPlayer.reset_section
-	class(self).ResetSection()
+	Advanced(self).ResetSection()
 }
 
 /*
 Returns the start time of the section currently being played.
 */
 func (self Instance) GetSectionStartTime() Float.X { //gd:AnimationPlayer.get_section_start_time
-	return Float.X(Float.X(class(self).GetSectionStartTime()))
+	return Float.X(Float.X(Advanced(self).GetSectionStartTime()))
 }
 
 /*
 Returns the end time of the section currently being played.
 */
 func (self Instance) GetSectionEndTime() Float.X { //gd:AnimationPlayer.get_section_end_time
-	return Float.X(Float.X(class(self).GetSectionEndTime()))
+	return Float.X(Float.X(Advanced(self).GetSectionEndTime()))
 }
 
 /*
 Returns [code]true[/code] if an animation is currently playing with section.
 */
 func (self Instance) HasSection() bool { //gd:AnimationPlayer.has_section
-	return bool(class(self).HasSection())
+	return bool(Advanced(self).HasSection())
 }
 
 /*
@@ -253,49 +343,58 @@ If [param update_only] is [code]true[/code], the method / audio / animation play
 [b]Note:[/b] Seeking to the end of the animation doesn't emit [signal AnimationMixer.animation_finished]. If you want to skip animation and emit the signal, use [method AnimationMixer.advance].
 */
 func (self Instance) SeekTo(seconds Float.X) { //gd:AnimationPlayer.seek
-	class(self).SeekTo(float64(seconds), false, false)
+	Advanced(self).SeekTo(float64(seconds), false, false)
+}
+
+/*
+Seeks the animation to the [param seconds] point in time (in seconds). If [param update] is [code]true[/code], the animation updates too, otherwise it updates at process time. Events between the current frame and [param seconds] are skipped.
+If [param update_only] is [code]true[/code], the method / audio / animation playback tracks will not be processed.
+[b]Note:[/b] Seeking to the end of the animation doesn't emit [signal AnimationMixer.animation_finished]. If you want to skip animation and emit the signal, use [method AnimationMixer.advance].
+*/
+func (self Expanded) SeekTo(seconds Float.X, update bool, update_only bool) { //gd:AnimationPlayer.seek
+	Advanced(self).SeekTo(float64(seconds), update, update_only)
 }
 
 /*
 Sets the process notification in which to update animations.
 */
 func (self Instance) SetProcessCallback(mode gdclass.AnimationPlayerAnimationProcessCallback) { //gd:AnimationPlayer.set_process_callback
-	class(self).SetProcessCallback(mode)
+	Advanced(self).SetProcessCallback(mode)
 }
 
 /*
 Returns the process notification in which to update animations.
 */
 func (self Instance) GetProcessCallback() gdclass.AnimationPlayerAnimationProcessCallback { //gd:AnimationPlayer.get_process_callback
-	return gdclass.AnimationPlayerAnimationProcessCallback(class(self).GetProcessCallback())
+	return gdclass.AnimationPlayerAnimationProcessCallback(Advanced(self).GetProcessCallback())
 }
 
 /*
 Sets the call mode used for "Call Method" tracks.
 */
 func (self Instance) SetMethodCallMode(mode gdclass.AnimationPlayerAnimationMethodCallMode) { //gd:AnimationPlayer.set_method_call_mode
-	class(self).SetMethodCallMode(mode)
+	Advanced(self).SetMethodCallMode(mode)
 }
 
 /*
 Returns the call mode used for "Call Method" tracks.
 */
 func (self Instance) GetMethodCallMode() gdclass.AnimationPlayerAnimationMethodCallMode { //gd:AnimationPlayer.get_method_call_mode
-	return gdclass.AnimationPlayerAnimationMethodCallMode(class(self).GetMethodCallMode())
+	return gdclass.AnimationPlayerAnimationMethodCallMode(Advanced(self).GetMethodCallMode())
 }
 
 /*
 Sets the node which node path references will travel from.
 */
 func (self Instance) SetRoot(path string) { //gd:AnimationPlayer.set_root
-	class(self).SetRoot(Path.ToNode(String.New(path)))
+	Advanced(self).SetRoot(Path.ToNode(String.New(path)))
 }
 
 /*
 Returns the node which node path references will travel from.
 */
 func (self Instance) GetRoot() string { //gd:AnimationPlayer.get_root
-	return string(class(self).GetRoot().String())
+	return string(Advanced(self).GetRoot().String())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

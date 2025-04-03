@@ -44,6 +44,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 Visual shader graphs consist of various nodes. Each node in the graph is a separate object and they are represented as a rectangular boxes with title and a set of properties. Each node also has connection ports that allow to connect it to another nodes and control the flow of the shader.
 */
 type Instance [1]gdclass.VisualShaderNode
+type Expanded [1]gdclass.VisualShaderNode
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -57,35 +58,42 @@ type Any interface {
 Returns the input port which should be connected by default when this node is created as a result of dragging a connection from an existing node to the empty space on the graph.
 */
 func (self Instance) GetDefaultInputPort(atype gdclass.VisualShaderNodePortType) int { //gd:VisualShaderNode.get_default_input_port
-	return int(int(class(self).GetDefaultInputPort(atype)))
+	return int(int(Advanced(self).GetDefaultInputPort(atype)))
 }
 
 /*
 Sets the default [param value] for the selected input [param port].
 */
 func (self Instance) SetInputPortDefaultValue(port int, value any) { //gd:VisualShaderNode.set_input_port_default_value
-	class(self).SetInputPortDefaultValue(int64(port), variant.New(value), variant.New([1]any{}[0]))
+	Advanced(self).SetInputPortDefaultValue(int64(port), variant.New(value), variant.New([1]any{}[0]))
+}
+
+/*
+Sets the default [param value] for the selected input [param port].
+*/
+func (self Expanded) SetInputPortDefaultValue(port int, value any, prev_value any) { //gd:VisualShaderNode.set_input_port_default_value
+	Advanced(self).SetInputPortDefaultValue(int64(port), variant.New(value), variant.New(prev_value))
 }
 
 /*
 Returns the default value of the input [param port].
 */
 func (self Instance) GetInputPortDefaultValue(port int) any { //gd:VisualShaderNode.get_input_port_default_value
-	return any(class(self).GetInputPortDefaultValue(int64(port)).Interface())
+	return any(Advanced(self).GetInputPortDefaultValue(int64(port)).Interface())
 }
 
 /*
 Removes the default value of the input [param port].
 */
 func (self Instance) RemoveInputPortDefaultValue(port int) { //gd:VisualShaderNode.remove_input_port_default_value
-	class(self).RemoveInputPortDefaultValue(int64(port))
+	Advanced(self).RemoveInputPortDefaultValue(int64(port))
 }
 
 /*
 Clears the default input ports value.
 */
 func (self Instance) ClearDefaultInputValues() { //gd:VisualShaderNode.clear_default_input_values
-	class(self).ClearDefaultInputValues()
+	Advanced(self).ClearDefaultInputValues()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

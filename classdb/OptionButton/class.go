@@ -51,6 +51,7 @@ See also [BaseButton] which contains common properties and methods associated wi
 [b]Note:[/b] The [member Button.text] and [member Button.icon] properties are set automatically based on the selected item. They shouldn't be changed manually.
 */
 type Instance [1]gdclass.OptionButton
+type Expanded [1]gdclass.OptionButton
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -64,28 +65,42 @@ type Any interface {
 Adds an item, with text [param label] and (optionally) [param id]. If no [param id] is passed, the item index will be used as the item's ID. New items are appended at the end.
 */
 func (self Instance) AddItem(label string) { //gd:OptionButton.add_item
-	class(self).AddItem(String.New(label), int64(-1))
+	Advanced(self).AddItem(String.New(label), int64(-1))
+}
+
+/*
+Adds an item, with text [param label] and (optionally) [param id]. If no [param id] is passed, the item index will be used as the item's ID. New items are appended at the end.
+*/
+func (self Expanded) AddItem(label string, id int) { //gd:OptionButton.add_item
+	Advanced(self).AddItem(String.New(label), int64(id))
 }
 
 /*
 Adds an item, with a [param texture] icon, text [param label] and (optionally) [param id]. If no [param id] is passed, the item index will be used as the item's ID. New items are appended at the end.
 */
 func (self Instance) AddIconItem(texture [1]gdclass.Texture2D, label string) { //gd:OptionButton.add_icon_item
-	class(self).AddIconItem(texture, String.New(label), int64(-1))
+	Advanced(self).AddIconItem(texture, String.New(label), int64(-1))
+}
+
+/*
+Adds an item, with a [param texture] icon, text [param label] and (optionally) [param id]. If no [param id] is passed, the item index will be used as the item's ID. New items are appended at the end.
+*/
+func (self Expanded) AddIconItem(texture [1]gdclass.Texture2D, label string, id int) { //gd:OptionButton.add_icon_item
+	Advanced(self).AddIconItem(texture, String.New(label), int64(id))
 }
 
 /*
 Sets the text of the item at index [param idx].
 */
 func (self Instance) SetItemText(idx int, text string) { //gd:OptionButton.set_item_text
-	class(self).SetItemText(int64(idx), String.New(text))
+	Advanced(self).SetItemText(int64(idx), String.New(text))
 }
 
 /*
 Sets the icon of the item at index [param idx].
 */
 func (self Instance) SetItemIcon(idx int, texture [1]gdclass.Texture2D) { //gd:OptionButton.set_item_icon
-	class(self).SetItemIcon(int64(idx), texture)
+	Advanced(self).SetItemIcon(int64(idx), texture)
 }
 
 /*
@@ -93,98 +108,105 @@ Sets whether the item at index [param idx] is disabled.
 Disabled items are drawn differently in the dropdown and are not selectable by the user. If the current selected item is set as disabled, it will remain selected.
 */
 func (self Instance) SetItemDisabled(idx int, disabled bool) { //gd:OptionButton.set_item_disabled
-	class(self).SetItemDisabled(int64(idx), disabled)
+	Advanced(self).SetItemDisabled(int64(idx), disabled)
 }
 
 /*
 Sets the ID of the item at index [param idx].
 */
 func (self Instance) SetItemId(idx int, id int) { //gd:OptionButton.set_item_id
-	class(self).SetItemId(int64(idx), int64(id))
+	Advanced(self).SetItemId(int64(idx), int64(id))
 }
 
 /*
 Sets the metadata of an item. Metadata may be of any type and can be used to store extra information about an item, such as an external string ID.
 */
 func (self Instance) SetItemMetadata(idx int, metadata any) { //gd:OptionButton.set_item_metadata
-	class(self).SetItemMetadata(int64(idx), variant.New(metadata))
+	Advanced(self).SetItemMetadata(int64(idx), variant.New(metadata))
 }
 
 /*
 Sets the tooltip of the item at index [param idx].
 */
 func (self Instance) SetItemTooltip(idx int, tooltip string) { //gd:OptionButton.set_item_tooltip
-	class(self).SetItemTooltip(int64(idx), String.New(tooltip))
+	Advanced(self).SetItemTooltip(int64(idx), String.New(tooltip))
 }
 
 /*
 Returns the text of the item at index [param idx].
 */
 func (self Instance) GetItemText(idx int) string { //gd:OptionButton.get_item_text
-	return string(class(self).GetItemText(int64(idx)).String())
+	return string(Advanced(self).GetItemText(int64(idx)).String())
 }
 
 /*
 Returns the icon of the item at index [param idx].
 */
 func (self Instance) GetItemIcon(idx int) [1]gdclass.Texture2D { //gd:OptionButton.get_item_icon
-	return [1]gdclass.Texture2D(class(self).GetItemIcon(int64(idx)))
+	return [1]gdclass.Texture2D(Advanced(self).GetItemIcon(int64(idx)))
 }
 
 /*
 Returns the ID of the item at index [param idx].
 */
 func (self Instance) GetItemId(idx int) int { //gd:OptionButton.get_item_id
-	return int(int(class(self).GetItemId(int64(idx))))
+	return int(int(Advanced(self).GetItemId(int64(idx))))
 }
 
 /*
 Returns the index of the item with the given [param id].
 */
 func (self Instance) GetItemIndex(id int) int { //gd:OptionButton.get_item_index
-	return int(int(class(self).GetItemIndex(int64(id))))
+	return int(int(Advanced(self).GetItemIndex(int64(id))))
 }
 
 /*
 Retrieves the metadata of an item. Metadata may be any type and can be used to store extra information about an item, such as an external string ID.
 */
 func (self Instance) GetItemMetadata(idx int) any { //gd:OptionButton.get_item_metadata
-	return any(class(self).GetItemMetadata(int64(idx)).Interface())
+	return any(Advanced(self).GetItemMetadata(int64(idx)).Interface())
 }
 
 /*
 Returns the tooltip of the item at index [param idx].
 */
 func (self Instance) GetItemTooltip(idx int) string { //gd:OptionButton.get_item_tooltip
-	return string(class(self).GetItemTooltip(int64(idx)).String())
+	return string(Advanced(self).GetItemTooltip(int64(idx)).String())
 }
 
 /*
 Returns [code]true[/code] if the item at index [param idx] is disabled.
 */
 func (self Instance) IsItemDisabled(idx int) bool { //gd:OptionButton.is_item_disabled
-	return bool(class(self).IsItemDisabled(int64(idx)))
+	return bool(Advanced(self).IsItemDisabled(int64(idx)))
 }
 
 /*
 Returns [code]true[/code] if the item at index [param idx] is marked as a separator.
 */
 func (self Instance) IsItemSeparator(idx int) bool { //gd:OptionButton.is_item_separator
-	return bool(class(self).IsItemSeparator(int64(idx)))
+	return bool(Advanced(self).IsItemSeparator(int64(idx)))
 }
 
 /*
 Adds a separator to the list of items. Separators help to group items, and can optionally be given a [param text] header. A separator also gets an index assigned, and is appended at the end of the item list.
 */
 func (self Instance) AddSeparator() { //gd:OptionButton.add_separator
-	class(self).AddSeparator(String.New(""))
+	Advanced(self).AddSeparator(String.New(""))
+}
+
+/*
+Adds a separator to the list of items. Separators help to group items, and can optionally be given a [param text] header. A separator also gets an index assigned, and is appended at the end of the item list.
+*/
+func (self Expanded) AddSeparator(text string) { //gd:OptionButton.add_separator
+	Advanced(self).AddSeparator(String.New(text))
 }
 
 /*
 Clears all the items in the [OptionButton].
 */
 func (self Instance) Clear() { //gd:OptionButton.clear
-	class(self).Clear()
+	Advanced(self).Clear()
 }
 
 /*
@@ -192,28 +214,28 @@ Selects an item by index and makes it the current item. This will work even if t
 Passing [code]-1[/code] as the index deselects any currently selected item.
 */
 func (self Instance) Select(idx int) { //gd:OptionButton.select
-	class(self).Select(int64(idx))
+	Advanced(self).Select(int64(idx))
 }
 
 /*
 Returns the ID of the selected item, or [code]-1[/code] if no item is selected.
 */
 func (self Instance) GetSelectedId() int { //gd:OptionButton.get_selected_id
-	return int(int(class(self).GetSelectedId()))
+	return int(int(Advanced(self).GetSelectedId()))
 }
 
 /*
 Gets the metadata of the selected item. Metadata for items can be set using [method set_item_metadata].
 */
 func (self Instance) GetSelectedMetadata() any { //gd:OptionButton.get_selected_metadata
-	return any(class(self).GetSelectedMetadata().Interface())
+	return any(Advanced(self).GetSelectedMetadata().Interface())
 }
 
 /*
 Removes the item at index [param idx].
 */
 func (self Instance) RemoveItem(idx int) { //gd:OptionButton.remove_item
-	class(self).RemoveItem(int64(idx))
+	Advanced(self).RemoveItem(int64(idx))
 }
 
 /*
@@ -221,21 +243,21 @@ Returns the [PopupMenu] contained in this button.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member Window.visible] property.
 */
 func (self Instance) GetPopup() [1]gdclass.PopupMenu { //gd:OptionButton.get_popup
-	return [1]gdclass.PopupMenu(class(self).GetPopup())
+	return [1]gdclass.PopupMenu(Advanced(self).GetPopup())
 }
 
 /*
 Adjusts popup position and sizing for the [OptionButton], then shows the [PopupMenu]. Prefer this over using [code]get_popup().popup()[/code].
 */
 func (self Instance) ShowPopup() { //gd:OptionButton.show_popup
-	class(self).ShowPopup()
+	Advanced(self).ShowPopup()
 }
 
 /*
 Returns [code]true[/code] if this button contains at least one item which is not disabled, or marked as a separator.
 */
 func (self Instance) HasSelectableItems() bool { //gd:OptionButton.has_selectable_items
-	return bool(class(self).HasSelectableItems())
+	return bool(Advanced(self).HasSelectableItems())
 }
 
 /*
@@ -243,14 +265,22 @@ Returns the index of the first item which is not disabled, or marked as a separa
 Returns [code]-1[/code] if no item is found.
 */
 func (self Instance) GetSelectableItem() int { //gd:OptionButton.get_selectable_item
-	return int(int(class(self).GetSelectableItem(false)))
+	return int(int(Advanced(self).GetSelectableItem(false)))
+}
+
+/*
+Returns the index of the first item which is not disabled, or marked as a separator. If [param from_last] is [code]true[/code], the items will be searched in reverse order.
+Returns [code]-1[/code] if no item is found.
+*/
+func (self Expanded) GetSelectableItem(from_last bool) int { //gd:OptionButton.get_selectable_item
+	return int(int(Advanced(self).GetSelectableItem(from_last)))
 }
 
 /*
 If [code]true[/code], shortcuts are disabled and cannot be used to trigger the button.
 */
 func (self Instance) SetDisableShortcuts(disabled bool) { //gd:OptionButton.set_disable_shortcuts
-	class(self).SetDisableShortcuts(disabled)
+	Advanced(self).SetDisableShortcuts(disabled)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

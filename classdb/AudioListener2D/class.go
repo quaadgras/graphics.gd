@@ -61,21 +61,21 @@ Makes the [AudioListener2D] active, setting it as the hearing point for the soun
 This method will have no effect if the [AudioListener2D] is not added to [SceneTree].
 */
 func (self Instance) MakeCurrent() { //gd:AudioListener2D.make_current
-	class(self).MakeCurrent()
+	Advanced(self).MakeCurrent()
 }
 
 /*
 Disables the [AudioListener2D]. If it's not set as current, this method will have no effect.
 */
 func (self Instance) ClearCurrent() { //gd:AudioListener2D.clear_current
-	class(self).ClearCurrent()
+	Advanced(self).ClearCurrent()
 }
 
 /*
 Returns [code]true[/code] if this [AudioListener2D] is currently active.
 */
 func (self Instance) IsCurrent() bool { //gd:AudioListener2D.is_current
-	return bool(class(self).IsCurrent())
+	return bool(Advanced(self).IsCurrent())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

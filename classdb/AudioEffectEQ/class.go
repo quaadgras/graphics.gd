@@ -58,21 +58,21 @@ type Any interface {
 Sets band's gain at the specified index, in dB.
 */
 func (self Instance) SetBandGainDb(band_idx int, volume_db Float.X) { //gd:AudioEffectEQ.set_band_gain_db
-	class(self).SetBandGainDb(int64(band_idx), float64(volume_db))
+	Advanced(self).SetBandGainDb(int64(band_idx), float64(volume_db))
 }
 
 /*
 Returns the band's gain at the specified index, in dB.
 */
 func (self Instance) GetBandGainDb(band_idx int) Float.X { //gd:AudioEffectEQ.get_band_gain_db
-	return Float.X(Float.X(class(self).GetBandGainDb(int64(band_idx))))
+	return Float.X(Float.X(Advanced(self).GetBandGainDb(int64(band_idx))))
 }
 
 /*
 Returns the number of bands of the equalizer.
 */
 func (self Instance) GetBandCount() int { //gd:AudioEffectEQ.get_band_count
-	return int(int(class(self).GetBandCount()))
+	return int(int(Advanced(self).GetBandCount()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

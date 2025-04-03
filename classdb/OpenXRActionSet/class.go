@@ -58,21 +58,21 @@ type Any interface {
 Retrieve the number of actions in our action set.
 */
 func (self Instance) GetActionCount() int { //gd:OpenXRActionSet.get_action_count
-	return int(int(class(self).GetActionCount()))
+	return int(int(Advanced(self).GetActionCount()))
 }
 
 /*
 Add an action to this action set.
 */
 func (self Instance) AddAction(action [1]gdclass.OpenXRAction) { //gd:OpenXRActionSet.add_action
-	class(self).AddAction(action)
+	Advanced(self).AddAction(action)
 }
 
 /*
 Remove an action from this action set.
 */
 func (self Instance) RemoveAction(action [1]gdclass.OpenXRAction) { //gd:OpenXRActionSet.remove_action
-	class(self).RemoveAction(action)
+	Advanced(self).RemoveAction(action)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

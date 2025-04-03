@@ -59,70 +59,70 @@ type Any interface {
 Clears the internal data.
 */
 func (self Instance) Clear() { //gd:NavigationMeshSourceGeometryData2D.clear
-	class(self).Clear()
+	Advanced(self).Clear()
 }
 
 /*
 Returns [code]true[/code] when parsed source geometry data exists.
 */
 func (self Instance) HasData() bool { //gd:NavigationMeshSourceGeometryData2D.has_data
-	return bool(class(self).HasData())
+	return bool(Advanced(self).HasData())
 }
 
 /*
 Appends another array of [param traversable_outlines] at the end of the existing traversable outlines array.
 */
 func (self Instance) AppendTraversableOutlines(traversable_outlines [][]Vector2.XY) { //gd:NavigationMeshSourceGeometryData2D.append_traversable_outlines
-	class(self).AppendTraversableOutlines(gd.ArrayFromSlice[Array.Contains[Packed.Array[Vector2.XY]]](traversable_outlines))
+	Advanced(self).AppendTraversableOutlines(gd.ArrayFromSlice[Array.Contains[Packed.Array[Vector2.XY]]](traversable_outlines))
 }
 
 /*
 Appends another array of [param obstruction_outlines] at the end of the existing obstruction outlines array.
 */
 func (self Instance) AppendObstructionOutlines(obstruction_outlines [][]Vector2.XY) { //gd:NavigationMeshSourceGeometryData2D.append_obstruction_outlines
-	class(self).AppendObstructionOutlines(gd.ArrayFromSlice[Array.Contains[Packed.Array[Vector2.XY]]](obstruction_outlines))
+	Advanced(self).AppendObstructionOutlines(gd.ArrayFromSlice[Array.Contains[Packed.Array[Vector2.XY]]](obstruction_outlines))
 }
 
 /*
 Adds the outline points of a shape as traversable area.
 */
 func (self Instance) AddTraversableOutline(shape_outline []Vector2.XY) { //gd:NavigationMeshSourceGeometryData2D.add_traversable_outline
-	class(self).AddTraversableOutline(Packed.New(shape_outline...))
+	Advanced(self).AddTraversableOutline(Packed.New(shape_outline...))
 }
 
 /*
 Adds the outline points of a shape as obstructed area.
 */
 func (self Instance) AddObstructionOutline(shape_outline []Vector2.XY) { //gd:NavigationMeshSourceGeometryData2D.add_obstruction_outline
-	class(self).AddObstructionOutline(Packed.New(shape_outline...))
+	Advanced(self).AddObstructionOutline(Packed.New(shape_outline...))
 }
 
 /*
 Adds the geometry data of another [NavigationMeshSourceGeometryData2D] to the navigation mesh baking data.
 */
 func (self Instance) Merge(other_geometry [1]gdclass.NavigationMeshSourceGeometryData2D) { //gd:NavigationMeshSourceGeometryData2D.merge
-	class(self).Merge(other_geometry)
+	Advanced(self).Merge(other_geometry)
 }
 
 /*
 Adds a projected obstruction shape to the source geometry. If [param carve] is [code]true[/code] the carved shape will not be affected by additional offsets (e.g. agent radius) of the navigation mesh baking process.
 */
 func (self Instance) AddProjectedObstruction(vertices []Vector2.XY, carve bool) { //gd:NavigationMeshSourceGeometryData2D.add_projected_obstruction
-	class(self).AddProjectedObstruction(Packed.New(vertices...), carve)
+	Advanced(self).AddProjectedObstruction(Packed.New(vertices...), carve)
 }
 
 /*
 Clears all projected obstructions.
 */
 func (self Instance) ClearProjectedObstructions() { //gd:NavigationMeshSourceGeometryData2D.clear_projected_obstructions
-	class(self).ClearProjectedObstructions()
+	Advanced(self).ClearProjectedObstructions()
 }
 
 /*
 Returns an axis-aligned bounding box that covers all the stored geometry data. The bounds are calculated when calling this function with the result cached until further geometry changes are made.
 */
 func (self Instance) GetBounds() Rect2.PositionSize { //gd:NavigationMeshSourceGeometryData2D.get_bounds
-	return Rect2.PositionSize(class(self).GetBounds())
+	return Rect2.PositionSize(Advanced(self).GetBounds())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

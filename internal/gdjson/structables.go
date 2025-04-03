@@ -314,6 +314,10 @@ type namedType struct {
 	name string
 }
 
+func (nt namedType) PkgPath() string {
+	return "graphics.gd/internal/gdjson"
+}
+
 func (nt namedType) Name() string { return nt.name }
 
 type FormatParameters struct {

@@ -59,14 +59,14 @@ type Any interface {
 Sets the value of the specified parameter.
 */
 func (self Instance) SetParam(param gdclass.PinJoint3DParam, value Float.X) { //gd:PinJoint3D.set_param
-	class(self).SetParam(param, float64(value))
+	Advanced(self).SetParam(param, float64(value))
 }
 
 /*
 Returns the value of the specified parameter.
 */
 func (self Instance) GetParam(param gdclass.PinJoint3DParam) Float.X { //gd:PinJoint3D.get_param
-	return Float.X(Float.X(class(self).GetParam(param)))
+	return Float.X(Float.X(Advanced(self).GetParam(param)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

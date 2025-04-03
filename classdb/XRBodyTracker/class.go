@@ -60,28 +60,28 @@ type Any interface {
 Sets flags about the validity of the tracking data for the given body joint.
 */
 func (self Instance) SetJointFlags(joint gdclass.XRBodyTrackerJoint, flags gdclass.XRBodyTrackerJointFlags) { //gd:XRBodyTracker.set_joint_flags
-	class(self).SetJointFlags(joint, flags)
+	Advanced(self).SetJointFlags(joint, flags)
 }
 
 /*
 Returns flags about the validity of the tracking data for the given body joint (see [enum XRBodyTracker.JointFlags]).
 */
 func (self Instance) GetJointFlags(joint gdclass.XRBodyTrackerJoint) gdclass.XRBodyTrackerJointFlags { //gd:XRBodyTracker.get_joint_flags
-	return gdclass.XRBodyTrackerJointFlags(class(self).GetJointFlags(joint))
+	return gdclass.XRBodyTrackerJointFlags(Advanced(self).GetJointFlags(joint))
 }
 
 /*
 Sets the transform for the given body joint.
 */
 func (self Instance) SetJointTransform(joint gdclass.XRBodyTrackerJoint, transform Transform3D.BasisOrigin) { //gd:XRBodyTracker.set_joint_transform
-	class(self).SetJointTransform(joint, Transform3D.BasisOrigin(transform))
+	Advanced(self).SetJointTransform(joint, Transform3D.BasisOrigin(transform))
 }
 
 /*
 Returns the transform for the given body joint.
 */
 func (self Instance) GetJointTransform(joint gdclass.XRBodyTrackerJoint) Transform3D.BasisOrigin { //gd:XRBodyTracker.get_joint_transform
-	return Transform3D.BasisOrigin(class(self).GetJointTransform(joint))
+	return Transform3D.BasisOrigin(Advanced(self).GetJointTransform(joint))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

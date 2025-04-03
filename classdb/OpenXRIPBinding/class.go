@@ -57,42 +57,42 @@ type Any interface {
 Get the number of binding modifiers for this binding.
 */
 func (self Instance) GetBindingModifierCount() int { //gd:OpenXRIPBinding.get_binding_modifier_count
-	return int(int(class(self).GetBindingModifierCount()))
+	return int(int(Advanced(self).GetBindingModifierCount()))
 }
 
 /*
 Get the [OpenXRBindingModifier] at this index.
 */
 func (self Instance) GetBindingModifier(index int) [1]gdclass.OpenXRActionBindingModifier { //gd:OpenXRIPBinding.get_binding_modifier
-	return [1]gdclass.OpenXRActionBindingModifier(class(self).GetBindingModifier(int64(index)))
+	return [1]gdclass.OpenXRActionBindingModifier(Advanced(self).GetBindingModifier(int64(index)))
 }
 
 /*
 Get the number of input/output paths in this binding.
 */
 func (self Instance) GetPathCount() int { //gd:OpenXRIPBinding.get_path_count
-	return int(int(class(self).GetPathCount()))
+	return int(int(Advanced(self).GetPathCount()))
 }
 
 /*
 Returns [code]true[/code] if this input/output path is part of this binding.
 */
 func (self Instance) HasPath(path string) bool { //gd:OpenXRIPBinding.has_path
-	return bool(class(self).HasPath(String.New(path)))
+	return bool(Advanced(self).HasPath(String.New(path)))
 }
 
 /*
 Add an input/output path to this binding.
 */
 func (self Instance) AddPath(path string) { //gd:OpenXRIPBinding.add_path
-	class(self).AddPath(String.New(path))
+	Advanced(self).AddPath(String.New(path))
 }
 
 /*
 Removes this input/output path from this binding.
 */
 func (self Instance) RemovePath(path string) { //gd:OpenXRIPBinding.remove_path
-	class(self).RemovePath(String.New(path))
+	Advanced(self).RemovePath(String.New(path))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

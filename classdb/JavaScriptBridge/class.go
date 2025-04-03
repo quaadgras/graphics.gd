@@ -56,9 +56,18 @@ func singleton() {
 Execute the string [param code] as JavaScript code within the browser window. This is a call to the actual global JavaScript function [code skip-lint]eval()[/code].
 If [param use_global_execution_context] is [code]true[/code], the code will be evaluated in the global execution context. Otherwise, it is evaluated in the execution context of a function within the engine's runtime environment.
 */
-func Eval(code string) any { //gd:JavaScriptBridge.eval
+func Eval(code string, use_global_execution_context bool) any { //gd:JavaScriptBridge.eval
 	once.Do(singleton)
-	return any(class(self).Eval(String.New(code), false).Interface())
+	return any(Advanced().Eval(String.New(code), use_global_execution_context).Interface())
+}
+
+/*
+Execute the string [param code] as JavaScript code within the browser window. This is a call to the actual global JavaScript function [code skip-lint]eval()[/code].
+If [param use_global_execution_context] is [code]true[/code], the code will be evaluated in the global execution context. Otherwise, it is evaluated in the execution context of a function within the engine's runtime environment.
+*/
+func EvalExpanded(code string, use_global_execution_context bool) any { //gd:JavaScriptBridge.eval
+	once.Do(singleton)
+	return any(Advanced().Eval(String.New(code), use_global_execution_context).Interface())
 }
 
 /*
@@ -66,7 +75,7 @@ Returns an interface to a JavaScript object that can be used by scripts. The [pa
 */
 func GetInterface(intf string) [1]gdclass.JavaScriptObject { //gd:JavaScriptBridge.get_interface
 	once.Do(singleton)
-	return [1]gdclass.JavaScriptObject(class(self).GetInterface(String.New(intf)))
+	return [1]gdclass.JavaScriptObject(Advanced().GetInterface(String.New(intf)))
 }
 
 /*
@@ -75,7 +84,7 @@ Creates a reference to a [Callable] that can be used as a callback by JavaScript
 */
 func CreateCallback(callable Callable.Function) [1]gdclass.JavaScriptObject { //gd:JavaScriptBridge.create_callback
 	once.Do(singleton)
-	return [1]gdclass.JavaScriptObject(class(self).CreateCallback(Callable.New(callable)))
+	return [1]gdclass.JavaScriptObject(Advanced().CreateCallback(Callable.New(callable)))
 }
 
 /*
@@ -83,7 +92,7 @@ Returns [code]true[/code] if the given [param javascript_object] is of type [url
 */
 func IsJsBuffer(javascript_object [1]gdclass.JavaScriptObject) bool { //gd:JavaScriptBridge.is_js_buffer
 	once.Do(singleton)
-	return bool(class(self).IsJsBuffer(javascript_object))
+	return bool(Advanced().IsJsBuffer(javascript_object))
 }
 
 /*
@@ -91,7 +100,7 @@ Returns a copy of [param javascript_buffer]'s contents as a [PackedByteArray]. S
 */
 func JsBufferToPackedByteArray(javascript_buffer [1]gdclass.JavaScriptObject) []byte { //gd:JavaScriptBridge.js_buffer_to_packed_byte_array
 	once.Do(singleton)
-	return []byte(class(self).JsBufferToPackedByteArray(javascript_buffer).Bytes())
+	return []byte(Advanced().JsBufferToPackedByteArray(javascript_buffer).Bytes())
 }
 
 /*
@@ -102,7 +111,18 @@ Prompts the user to download a file containing the specified [param buffer]. The
 */
 func DownloadBuffer(buffer []byte, name string) { //gd:JavaScriptBridge.download_buffer
 	once.Do(singleton)
-	class(self).DownloadBuffer(Packed.Bytes(Packed.New(buffer...)), String.New(name), String.New("application/octet-stream"))
+	Advanced().DownloadBuffer(Packed.Bytes(Packed.New(buffer...)), String.New(name), String.New("application/octet-stream"))
+}
+
+/*
+Prompts the user to download a file containing the specified [param buffer]. The file will have the given [param name] and [param mime] type.
+[b]Note:[/b] The browser may override the [url=https://en.wikipedia.org/wiki/Media_type]MIME type[/url] provided based on the file [param name]'s extension.
+[b]Note:[/b] Browsers might block the download if [method download_buffer] is not being called from a user interaction (e.g. button click).
+[b]Note:[/b] Browsers might ask the user for permission or block the download if multiple download requests are made in a quick succession.
+*/
+func DownloadBufferExpanded(buffer []byte, name string, mime string) { //gd:JavaScriptBridge.download_buffer
+	once.Do(singleton)
+	Advanced().DownloadBuffer(Packed.Bytes(Packed.New(buffer...)), String.New(name), String.New(mime))
 }
 
 /*
@@ -111,7 +131,7 @@ Returns [code]true[/code] if a new version of the progressive web app is waiting
 */
 func PwaNeedsUpdate() bool { //gd:JavaScriptBridge.pwa_needs_update
 	once.Do(singleton)
-	return bool(class(self).PwaNeedsUpdate())
+	return bool(Advanced().PwaNeedsUpdate())
 }
 
 /*
@@ -121,7 +141,7 @@ Performs the live update of the progressive web app. Forcing the new version to 
 */
 func PwaUpdate() error { //gd:JavaScriptBridge.pwa_update
 	once.Do(singleton)
-	return error(gd.ToError(class(self).PwaUpdate()))
+	return error(gd.ToError(Advanced().PwaUpdate()))
 }
 
 /*
@@ -130,7 +150,7 @@ Force synchronization of the persistent file system (when enabled).
 */
 func ForceFsSync() { //gd:JavaScriptBridge.force_fs_sync
 	once.Do(singleton)
-	class(self).ForceFsSync()
+	Advanced().ForceFsSync()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

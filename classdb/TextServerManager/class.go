@@ -57,7 +57,7 @@ Registers a [TextServer] interface.
 */
 func AddInterface(intf [1]gdclass.TextServer) { //gd:TextServerManager.add_interface
 	once.Do(singleton)
-	class(self).AddInterface(intf)
+	Advanced().AddInterface(intf)
 }
 
 /*
@@ -65,7 +65,7 @@ Returns the number of interfaces currently registered.
 */
 func GetInterfaceCount() int { //gd:TextServerManager.get_interface_count
 	once.Do(singleton)
-	return int(int(class(self).GetInterfaceCount()))
+	return int(int(Advanced().GetInterfaceCount()))
 }
 
 /*
@@ -73,7 +73,7 @@ Removes an interface. All fonts and shaped text caches should be freed before re
 */
 func RemoveInterface(intf [1]gdclass.TextServer) { //gd:TextServerManager.remove_interface
 	once.Do(singleton)
-	class(self).RemoveInterface(intf)
+	Advanced().RemoveInterface(intf)
 }
 
 /*
@@ -81,7 +81,7 @@ Returns the interface registered at a given index.
 */
 func GetInterface(idx int) [1]gdclass.TextServer { //gd:TextServerManager.get_interface
 	once.Do(singleton)
-	return [1]gdclass.TextServer(class(self).GetInterface(int64(idx)))
+	return [1]gdclass.TextServer(Advanced().GetInterface(int64(idx)))
 }
 
 /*
@@ -89,7 +89,7 @@ Returns a list of available interfaces, with the index and name of each interfac
 */
 func GetInterfaces() []map[int]string { //gd:TextServerManager.get_interfaces
 	once.Do(singleton)
-	return []map[int]string(gd.ArrayAs[[]map[int]string](gd.InternalArray(class(self).GetInterfaces())))
+	return []map[int]string(gd.ArrayAs[[]map[int]string](gd.InternalArray(Advanced().GetInterfaces())))
 }
 
 /*
@@ -97,7 +97,7 @@ Finds an interface by its [param name].
 */
 func FindInterface(name string) [1]gdclass.TextServer { //gd:TextServerManager.find_interface
 	once.Do(singleton)
-	return [1]gdclass.TextServer(class(self).FindInterface(String.New(name)))
+	return [1]gdclass.TextServer(Advanced().FindInterface(String.New(name)))
 }
 
 /*
@@ -105,7 +105,7 @@ Sets the primary [TextServer] interface.
 */
 func SetPrimaryInterface(index [1]gdclass.TextServer) { //gd:TextServerManager.set_primary_interface
 	once.Do(singleton)
-	class(self).SetPrimaryInterface(index)
+	Advanced().SetPrimaryInterface(index)
 }
 
 /*
@@ -113,7 +113,7 @@ Returns the primary [TextServer] interface currently in use.
 */
 func GetPrimaryInterface() [1]gdclass.TextServer { //gd:TextServerManager.get_primary_interface
 	once.Do(singleton)
-	return [1]gdclass.TextServer(class(self).GetPrimaryInterface())
+	return [1]gdclass.TextServer(Advanced().GetPrimaryInterface())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

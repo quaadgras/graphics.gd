@@ -45,6 +45,7 @@ The CryptoKey class represents a cryptographic key. Keys can be loaded and saved
 They can be used to generate a self-signed [X509Certificate] via [method Crypto.generate_self_signed_certificate] and as private key in [method StreamPeerTLS.accept_stream] along with the appropriate certificate.
 */
 type Instance [1]gdclass.CryptoKey
+type Expanded [1]gdclass.CryptoKey
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -59,7 +60,15 @@ Saves a key to the given [param path]. If [param public_only] is [code]true[/cod
 [b]Note:[/b] [param path] should be a "*.pub" file if [param public_only] is [code]true[/code], a "*.key" file otherwise.
 */
 func (self Instance) Save(path string) error { //gd:CryptoKey.save
-	return error(gd.ToError(class(self).Save(String.New(path), false)))
+	return error(gd.ToError(Advanced(self).Save(String.New(path), false)))
+}
+
+/*
+Saves a key to the given [param path]. If [param public_only] is [code]true[/code], only the public key will be saved.
+[b]Note:[/b] [param path] should be a "*.pub" file if [param public_only] is [code]true[/code], a "*.key" file otherwise.
+*/
+func (self Expanded) Save(path string, public_only bool) error { //gd:CryptoKey.save
+	return error(gd.ToError(Advanced(self).Save(String.New(path), public_only)))
 }
 
 /*
@@ -67,28 +76,50 @@ Loads a key from [param path]. If [param public_only] is [code]true[/code], only
 [b]Note:[/b] [param path] should be a "*.pub" file if [param public_only] is [code]true[/code], a "*.key" file otherwise.
 */
 func (self Instance) Load(path string) error { //gd:CryptoKey.load
-	return error(gd.ToError(class(self).Load(String.New(path), false)))
+	return error(gd.ToError(Advanced(self).Load(String.New(path), false)))
+}
+
+/*
+Loads a key from [param path]. If [param public_only] is [code]true[/code], only the public key will be loaded.
+[b]Note:[/b] [param path] should be a "*.pub" file if [param public_only] is [code]true[/code], a "*.key" file otherwise.
+*/
+func (self Expanded) Load(path string, public_only bool) error { //gd:CryptoKey.load
+	return error(gd.ToError(Advanced(self).Load(String.New(path), public_only)))
 }
 
 /*
 Returns [code]true[/code] if this CryptoKey only has the public part, and not the private one.
 */
 func (self Instance) IsPublicOnly() bool { //gd:CryptoKey.is_public_only
-	return bool(class(self).IsPublicOnly())
+	return bool(Advanced(self).IsPublicOnly())
 }
 
 /*
 Returns a string containing the key in PEM format. If [param public_only] is [code]true[/code], only the public key will be included.
 */
 func (self Instance) SaveToString() string { //gd:CryptoKey.save_to_string
-	return string(class(self).SaveToString(false).String())
+	return string(Advanced(self).SaveToString(false).String())
+}
+
+/*
+Returns a string containing the key in PEM format. If [param public_only] is [code]true[/code], only the public key will be included.
+*/
+func (self Expanded) SaveToString(public_only bool) string { //gd:CryptoKey.save_to_string
+	return string(Advanced(self).SaveToString(public_only).String())
 }
 
 /*
 Loads a key from the given [param string_key]. If [param public_only] is [code]true[/code], only the public key will be loaded.
 */
 func (self Instance) LoadFromString(string_key string) error { //gd:CryptoKey.load_from_string
-	return error(gd.ToError(class(self).LoadFromString(String.New(string_key), false)))
+	return error(gd.ToError(Advanced(self).LoadFromString(String.New(string_key), false)))
+}
+
+/*
+Loads a key from the given [param string_key]. If [param public_only] is [code]true[/code], only the public key will be loaded.
+*/
+func (self Expanded) LoadFromString(string_key string, public_only bool) error { //gd:CryptoKey.load_from_string
+	return error(gd.ToError(Advanced(self).LoadFromString(String.New(string_key), public_only)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

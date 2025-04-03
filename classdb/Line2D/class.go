@@ -50,6 +50,7 @@ This node draws a 2D polyline, i.e. a shape consisting of several points connect
 [b]Note:[/b] [Line2D] is drawn using a 2D mesh.
 */
 type Instance [1]gdclass.Line2D
+type Expanded [1]gdclass.Line2D
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -63,21 +64,21 @@ type Any interface {
 Overwrites the position of the point at the given [param index] with the supplied [param position].
 */
 func (self Instance) SetPointPosition(index int, position Vector2.XY) { //gd:Line2D.set_point_position
-	class(self).SetPointPosition(int64(index), Vector2.XY(position))
+	Advanced(self).SetPointPosition(int64(index), Vector2.XY(position))
 }
 
 /*
 Returns the position of the point at index [param index].
 */
 func (self Instance) GetPointPosition(index int) Vector2.XY { //gd:Line2D.get_point_position
-	return Vector2.XY(class(self).GetPointPosition(int64(index)))
+	return Vector2.XY(Advanced(self).GetPointPosition(int64(index)))
 }
 
 /*
 Returns the number of points in the polyline.
 */
 func (self Instance) GetPointCount() int { //gd:Line2D.get_point_count
-	return int(int(class(self).GetPointCount()))
+	return int(int(Advanced(self).GetPointCount()))
 }
 
 /*
@@ -85,21 +86,29 @@ Adds a point with the specified [param position] relative to the polyline's own 
 If [param index] is given, the new point is inserted before the existing point identified by index [param index]. The indices of the points after the new point get increased by 1. The provided [param index] must not exceed the number of existing points in the polyline. See [method get_point_count].
 */
 func (self Instance) AddPoint(position Vector2.XY) { //gd:Line2D.add_point
-	class(self).AddPoint(Vector2.XY(position), int64(-1))
+	Advanced(self).AddPoint(Vector2.XY(position), int64(-1))
+}
+
+/*
+Adds a point with the specified [param position] relative to the polyline's own position. If no [param index] is provided, the new point will be added to the end of the points array.
+If [param index] is given, the new point is inserted before the existing point identified by index [param index]. The indices of the points after the new point get increased by 1. The provided [param index] must not exceed the number of existing points in the polyline. See [method get_point_count].
+*/
+func (self Expanded) AddPoint(position Vector2.XY, index int) { //gd:Line2D.add_point
+	Advanced(self).AddPoint(Vector2.XY(position), int64(index))
 }
 
 /*
 Removes the point at index [param index] from the polyline.
 */
 func (self Instance) RemovePoint(index int) { //gd:Line2D.remove_point
-	class(self).RemovePoint(int64(index))
+	Advanced(self).RemovePoint(int64(index))
 }
 
 /*
 Removes all points from the polyline, making it empty.
 */
 func (self Instance) ClearPoints() { //gd:Line2D.clear_points
-	class(self).ClearPoints()
+	Advanced(self).ClearPoints()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

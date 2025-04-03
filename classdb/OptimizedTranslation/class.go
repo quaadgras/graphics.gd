@@ -59,7 +59,7 @@ Generates and sets an optimized translation from the given [Translation] resourc
 [b]Note:[/b] This method is intended to be used in the editor. It does nothing when called from an exported project.
 */
 func (self Instance) Generate(from [1]gdclass.Translation) { //gd:OptimizedTranslation.generate
-	class(self).Generate(from)
+	Advanced(self).Generate(from)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

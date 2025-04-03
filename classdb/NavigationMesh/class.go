@@ -59,42 +59,42 @@ type Any interface {
 Based on [param value], enables or disables the specified layer in the [member geometry_collision_mask], given a [param layer_number] between 1 and 32.
 */
 func (self Instance) SetCollisionMaskValue(layer_number int, value bool) { //gd:NavigationMesh.set_collision_mask_value
-	class(self).SetCollisionMaskValue(int64(layer_number), value)
+	Advanced(self).SetCollisionMaskValue(int64(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member geometry_collision_mask] is enabled, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) GetCollisionMaskValue(layer_number int) bool { //gd:NavigationMesh.get_collision_mask_value
-	return bool(class(self).GetCollisionMaskValue(int64(layer_number)))
+	return bool(Advanced(self).GetCollisionMaskValue(int64(layer_number)))
 }
 
 /*
 Adds a polygon using the indices of the vertices you get when calling [method get_vertices].
 */
 func (self Instance) AddPolygon(polygon []int32) { //gd:NavigationMesh.add_polygon
-	class(self).AddPolygon(Packed.New(polygon...))
+	Advanced(self).AddPolygon(Packed.New(polygon...))
 }
 
 /*
 Returns the number of polygons in the navigation mesh.
 */
 func (self Instance) GetPolygonCount() int { //gd:NavigationMesh.get_polygon_count
-	return int(int(class(self).GetPolygonCount()))
+	return int(int(Advanced(self).GetPolygonCount()))
 }
 
 /*
 Returns a [PackedInt32Array] containing the indices of the vertices of a created polygon.
 */
 func (self Instance) GetPolygon(idx int) []int32 { //gd:NavigationMesh.get_polygon
-	return []int32(slices.Collect(class(self).GetPolygon(int64(idx)).Values()))
+	return []int32(slices.Collect(Advanced(self).GetPolygon(int64(idx)).Values()))
 }
 
 /*
 Clears the array of polygons, but it doesn't clear the array of vertices.
 */
 func (self Instance) ClearPolygons() { //gd:NavigationMesh.clear_polygons
-	class(self).ClearPolygons()
+	Advanced(self).ClearPolygons()
 }
 
 /*
@@ -102,14 +102,14 @@ Initializes the navigation mesh by setting the vertices and indices according to
 [b]Note:[/b] The given [param mesh] must be of type [constant Mesh.PRIMITIVE_TRIANGLES] and have an index array.
 */
 func (self Instance) CreateFromMesh(mesh [1]gdclass.Mesh) { //gd:NavigationMesh.create_from_mesh
-	class(self).CreateFromMesh(mesh)
+	Advanced(self).CreateFromMesh(mesh)
 }
 
 /*
 Clears the internal arrays for vertices and polygon indices.
 */
 func (self Instance) Clear() { //gd:NavigationMesh.clear
-	class(self).Clear()
+	Advanced(self).Clear()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

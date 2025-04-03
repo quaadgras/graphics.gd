@@ -137,7 +137,7 @@ func (Instance) _make_tooltip_for_path(impl func(ptr unsafe.Pointer, path string
 Requests a thumbnail for the given [TextureRect]. The thumbnail is created asynchronously by [EditorResourcePreview] and automatically set when available.
 */
 func (self Instance) RequestThumbnail(path string, control [1]gdclass.TextureRect) { //gd:EditorResourceTooltipPlugin.request_thumbnail
-	class(self).RequestThumbnail(String.New(path), control)
+	Advanced(self).RequestThumbnail(String.New(path), control)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

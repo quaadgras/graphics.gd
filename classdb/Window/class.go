@@ -54,6 +54,7 @@ At runtime, [Window]s will not close automatically when requested. You need to h
 %!(EXTRA string=Window)
 */
 type Instance [1]gdclass.Window
+type Expanded [1]gdclass.Window
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -89,21 +90,21 @@ func (Instance) _get_contents_minimum_size(impl func(ptr unsafe.Pointer) Vector2
 Returns the ID of the window.
 */
 func (self Instance) GetWindowId() int { //gd:Window.get_window_id
-	return int(int(class(self).GetWindowId()))
+	return int(int(Advanced(self).GetWindowId()))
 }
 
 /*
 Centers a native window on the current screen and an embedded window on its embedder [Viewport].
 */
 func (self Instance) MoveToCenter() { //gd:Window.move_to_center
-	class(self).MoveToCenter()
+	Advanced(self).MoveToCenter()
 }
 
 /*
 Resets the size to the minimum size, which is the max of [member min_size] and (if [member wrap_controls] is enabled) [method get_contents_minimum_size]. This is equivalent to calling [code]set_size(Vector2i())[/code] (or any size below the minimum).
 */
 func (self Instance) ResetSize() { //gd:Window.reset_size
-	class(self).ResetSize()
+	Advanced(self).ResetSize()
 }
 
 /*
@@ -111,7 +112,7 @@ Returns the window's position including its border.
 [b]Note:[/b] If [member visible] is [code]false[/code], this method returns the same value as [member position].
 */
 func (self Instance) GetPositionWithDecorations() Vector2i.XY { //gd:Window.get_position_with_decorations
-	return Vector2i.XY(class(self).GetPositionWithDecorations())
+	return Vector2i.XY(Advanced(self).GetPositionWithDecorations())
 }
 
 /*
@@ -119,42 +120,42 @@ Returns the window's size including its border.
 [b]Note:[/b] If [member visible] is [code]false[/code], this method returns the same value as [member size].
 */
 func (self Instance) GetSizeWithDecorations() Vector2i.XY { //gd:Window.get_size_with_decorations
-	return Vector2i.XY(class(self).GetSizeWithDecorations())
+	return Vector2i.XY(Advanced(self).GetSizeWithDecorations())
 }
 
 /*
 Returns [code]true[/code] if the window can be maximized (the maximize button is enabled).
 */
 func (self Instance) IsMaximizeAllowed() bool { //gd:Window.is_maximize_allowed
-	return bool(class(self).IsMaximizeAllowed())
+	return bool(Advanced(self).IsMaximizeAllowed())
 }
 
 /*
 Tells the OS that the [Window] needs an attention. This makes the window stand out in some way depending on the system, e.g. it might blink on the task bar.
 */
 func (self Instance) RequestAttention() { //gd:Window.request_attention
-	class(self).RequestAttention()
+	Advanced(self).RequestAttention()
 }
 
 /*
 Causes the window to grab focus, allowing it to receive user input.
 */
 func (self Instance) MoveToForeground() { //gd:Window.move_to_foreground
-	class(self).MoveToForeground()
+	Advanced(self).MoveToForeground()
 }
 
 /*
 Hides the window. This is not the same as minimized state. Hidden window can't be interacted with and needs to be made visible with [method show].
 */
 func (self Instance) Hide() { //gd:Window.hide
-	class(self).Hide()
+	Advanced(self).Hide()
 }
 
 /*
 Makes the [Window] appear. This enables interactions with the [Window] and doesn't change any of its property other than visibility (unlike e.g. [method popup]).
 */
 func (self Instance) Show() { //gd:Window.show
-	class(self).Show()
+	Advanced(self).Show()
 }
 
 /*
@@ -162,63 +163,63 @@ If [param unparent] is [code]true[/code], the window is automatically unparented
 [b]Note:[/b] Make sure to keep a reference to the node, otherwise it will be orphaned. You also need to manually call [method Node.queue_free] to free the window if it's not parented.
 */
 func (self Instance) SetUnparentWhenInvisible(unparent bool) { //gd:Window.set_unparent_when_invisible
-	class(self).SetUnparentWhenInvisible(unparent)
+	Advanced(self).SetUnparentWhenInvisible(unparent)
 }
 
 /*
 Returns whether the window is being drawn to the screen.
 */
 func (self Instance) CanDraw() bool { //gd:Window.can_draw
-	return bool(class(self).CanDraw())
+	return bool(Advanced(self).CanDraw())
 }
 
 /*
 Returns [code]true[/code] if the window is focused.
 */
 func (self Instance) HasFocus() bool { //gd:Window.has_focus
-	return bool(class(self).HasFocus())
+	return bool(Advanced(self).HasFocus())
 }
 
 /*
 Causes the window to grab focus, allowing it to receive user input.
 */
 func (self Instance) GrabFocus() { //gd:Window.grab_focus
-	class(self).GrabFocus()
+	Advanced(self).GrabFocus()
 }
 
 /*
 Starts an interactive drag operation on the window, using the current mouse position. Call this method when handling a mouse button being pressed to simulate a pressed event on the window's title bar. Using this method allows the window to participate in space switching, tiling, and other system features.
 */
 func (self Instance) StartDrag() { //gd:Window.start_drag
-	class(self).StartDrag()
+	Advanced(self).StartDrag()
 }
 
 /*
 Starts an interactive resize operation on the window, using the current mouse position. Call this method when handling a mouse button being pressed to simulate a pressed event on the window's edge.
 */
 func (self Instance) StartResize(edge gdclass.DisplayServerWindowResizeEdge) { //gd:Window.start_resize
-	class(self).StartResize(edge)
+	Advanced(self).StartResize(edge)
 }
 
 /*
 If [param active] is [code]true[/code], enables system's native IME (Input Method Editor).
 */
 func (self Instance) SetImeActive(active bool) { //gd:Window.set_ime_active
-	class(self).SetImeActive(active)
+	Advanced(self).SetImeActive(active)
 }
 
 /*
 Moves IME to the given position.
 */
 func (self Instance) SetImePosition(position Vector2i.XY) { //gd:Window.set_ime_position
-	class(self).SetImePosition(Vector2i.XY(position))
+	Advanced(self).SetImePosition(Vector2i.XY(position))
 }
 
 /*
 Returns [code]true[/code] if the window is currently embedded in another window.
 */
 func (self Instance) IsEmbedded() bool { //gd:Window.is_embedded
-	return bool(class(self).IsEmbedded())
+	return bool(Advanced(self).IsEmbedded())
 }
 
 /*
@@ -226,42 +227,42 @@ Returns the combined minimum size from the child [Control] nodes of the window. 
 The value returned by this method can be overridden with [method _get_contents_minimum_size].
 */
 func (self Instance) GetContentsMinimumSize() Vector2.XY { //gd:Window.get_contents_minimum_size
-	return Vector2.XY(class(self).GetContentsMinimumSize())
+	return Vector2.XY(Advanced(self).GetContentsMinimumSize())
 }
 
 /*
 Enables font oversampling. This makes fonts look better when they are scaled up.
 */
 func (self Instance) SetUseFontOversampling(enable bool) { //gd:Window.set_use_font_oversampling
-	class(self).SetUseFontOversampling(enable)
+	Advanced(self).SetUseFontOversampling(enable)
 }
 
 /*
 Returns [code]true[/code] if font oversampling is enabled. See [method set_use_font_oversampling].
 */
 func (self Instance) IsUsingFontOversampling() bool { //gd:Window.is_using_font_oversampling
-	return bool(class(self).IsUsingFontOversampling())
+	return bool(Advanced(self).IsUsingFontOversampling())
 }
 
 /*
 Requests an update of the [Window] size to fit underlying [Control] nodes.
 */
 func (self Instance) ChildControlsChanged() { //gd:Window.child_controls_changed
-	class(self).ChildControlsChanged()
+	Advanced(self).ChildControlsChanged()
 }
 
 /*
 Prevents [code]*_theme_*_override[/code] methods from emitting [constant NOTIFICATION_THEME_CHANGED] until [method end_bulk_theme_override] is called.
 */
 func (self Instance) BeginBulkThemeOverride() { //gd:Window.begin_bulk_theme_override
-	class(self).BeginBulkThemeOverride()
+	Advanced(self).BeginBulkThemeOverride()
 }
 
 /*
 Ends a bulk theme override update. See [method begin_bulk_theme_override].
 */
 func (self Instance) EndBulkThemeOverride() { //gd:Window.end_bulk_theme_override
-	class(self).EndBulkThemeOverride()
+	Advanced(self).EndBulkThemeOverride()
 }
 
 /*
@@ -269,7 +270,7 @@ Creates a local override for a theme icon with the specified [param name]. Local
 See also [method get_theme_icon].
 */
 func (self Instance) AddThemeIconOverride(name string, texture [1]gdclass.Texture2D) { //gd:Window.add_theme_icon_override
-	class(self).AddThemeIconOverride(String.Name(String.New(name)), texture)
+	Advanced(self).AddThemeIconOverride(String.Name(String.New(name)), texture)
 }
 
 /*
@@ -277,7 +278,7 @@ Creates a local override for a theme [StyleBox] with the specified [param name].
 See also [method get_theme_stylebox] and [method Control.add_theme_stylebox_override] for more details.
 */
 func (self Instance) AddThemeStyleboxOverride(name string, stylebox [1]gdclass.StyleBox) { //gd:Window.add_theme_stylebox_override
-	class(self).AddThemeStyleboxOverride(String.Name(String.New(name)), stylebox)
+	Advanced(self).AddThemeStyleboxOverride(String.Name(String.New(name)), stylebox)
 }
 
 /*
@@ -285,7 +286,7 @@ Creates a local override for a theme [Font] with the specified [param name]. Loc
 See also [method get_theme_font].
 */
 func (self Instance) AddThemeFontOverride(name string, font [1]gdclass.Font) { //gd:Window.add_theme_font_override
-	class(self).AddThemeFontOverride(String.Name(String.New(name)), font)
+	Advanced(self).AddThemeFontOverride(String.Name(String.New(name)), font)
 }
 
 /*
@@ -293,7 +294,7 @@ Creates a local override for a theme font size with the specified [param name]. 
 See also [method get_theme_font_size].
 */
 func (self Instance) AddThemeFontSizeOverride(name string, font_size int) { //gd:Window.add_theme_font_size_override
-	class(self).AddThemeFontSizeOverride(String.Name(String.New(name)), int64(font_size))
+	Advanced(self).AddThemeFontSizeOverride(String.Name(String.New(name)), int64(font_size))
 }
 
 /*
@@ -301,7 +302,7 @@ Creates a local override for a theme [Color] with the specified [param name]. Lo
 See also [method get_theme_color] and [method Control.add_theme_color_override] for more details.
 */
 func (self Instance) AddThemeColorOverride(name string, color Color.RGBA) { //gd:Window.add_theme_color_override
-	class(self).AddThemeColorOverride(String.Name(String.New(name)), Color.RGBA(color))
+	Advanced(self).AddThemeColorOverride(String.Name(String.New(name)), Color.RGBA(color))
 }
 
 /*
@@ -309,49 +310,49 @@ Creates a local override for a theme constant with the specified [param name]. L
 See also [method get_theme_constant].
 */
 func (self Instance) AddThemeConstantOverride(name string, constant int) { //gd:Window.add_theme_constant_override
-	class(self).AddThemeConstantOverride(String.Name(String.New(name)), int64(constant))
+	Advanced(self).AddThemeConstantOverride(String.Name(String.New(name)), int64(constant))
 }
 
 /*
 Removes a local override for a theme icon with the specified [param name] previously added by [method add_theme_icon_override] or via the Inspector dock.
 */
 func (self Instance) RemoveThemeIconOverride(name string) { //gd:Window.remove_theme_icon_override
-	class(self).RemoveThemeIconOverride(String.Name(String.New(name)))
+	Advanced(self).RemoveThemeIconOverride(String.Name(String.New(name)))
 }
 
 /*
 Removes a local override for a theme [StyleBox] with the specified [param name] previously added by [method add_theme_stylebox_override] or via the Inspector dock.
 */
 func (self Instance) RemoveThemeStyleboxOverride(name string) { //gd:Window.remove_theme_stylebox_override
-	class(self).RemoveThemeStyleboxOverride(String.Name(String.New(name)))
+	Advanced(self).RemoveThemeStyleboxOverride(String.Name(String.New(name)))
 }
 
 /*
 Removes a local override for a theme [Font] with the specified [param name] previously added by [method add_theme_font_override] or via the Inspector dock.
 */
 func (self Instance) RemoveThemeFontOverride(name string) { //gd:Window.remove_theme_font_override
-	class(self).RemoveThemeFontOverride(String.Name(String.New(name)))
+	Advanced(self).RemoveThemeFontOverride(String.Name(String.New(name)))
 }
 
 /*
 Removes a local override for a theme font size with the specified [param name] previously added by [method add_theme_font_size_override] or via the Inspector dock.
 */
 func (self Instance) RemoveThemeFontSizeOverride(name string) { //gd:Window.remove_theme_font_size_override
-	class(self).RemoveThemeFontSizeOverride(String.Name(String.New(name)))
+	Advanced(self).RemoveThemeFontSizeOverride(String.Name(String.New(name)))
 }
 
 /*
 Removes a local override for a theme [Color] with the specified [param name] previously added by [method add_theme_color_override] or via the Inspector dock.
 */
 func (self Instance) RemoveThemeColorOverride(name string) { //gd:Window.remove_theme_color_override
-	class(self).RemoveThemeColorOverride(String.Name(String.New(name)))
+	Advanced(self).RemoveThemeColorOverride(String.Name(String.New(name)))
 }
 
 /*
 Removes a local override for a theme constant with the specified [param name] previously added by [method add_theme_constant_override] or via the Inspector dock.
 */
 func (self Instance) RemoveThemeConstantOverride(name string) { //gd:Window.remove_theme_constant_override
-	class(self).RemoveThemeConstantOverride(String.Name(String.New(name)))
+	Advanced(self).RemoveThemeConstantOverride(String.Name(String.New(name)))
 }
 
 /*
@@ -359,7 +360,15 @@ Returns an icon from the first matching [Theme] in the tree if that [Theme] has 
 See [method Control.get_theme_color] for details.
 */
 func (self Instance) GetThemeIcon(name string) [1]gdclass.Texture2D { //gd:Window.get_theme_icon
-	return [1]gdclass.Texture2D(class(self).GetThemeIcon(String.Name(String.New(name)), String.Name(String.New(""))))
+	return [1]gdclass.Texture2D(Advanced(self).GetThemeIcon(String.Name(String.New(name)), String.Name(String.New(""))))
+}
+
+/*
+Returns an icon from the first matching [Theme] in the tree if that [Theme] has an icon item with the specified [param name] and [param theme_type].
+See [method Control.get_theme_color] for details.
+*/
+func (self Expanded) GetThemeIcon(name string, theme_type string) [1]gdclass.Texture2D { //gd:Window.get_theme_icon
+	return [1]gdclass.Texture2D(Advanced(self).GetThemeIcon(String.Name(String.New(name)), String.Name(String.New(theme_type))))
 }
 
 /*
@@ -367,7 +376,15 @@ Returns a [StyleBox] from the first matching [Theme] in the tree if that [Theme]
 See [method Control.get_theme_color] for details.
 */
 func (self Instance) GetThemeStylebox(name string) [1]gdclass.StyleBox { //gd:Window.get_theme_stylebox
-	return [1]gdclass.StyleBox(class(self).GetThemeStylebox(String.Name(String.New(name)), String.Name(String.New(""))))
+	return [1]gdclass.StyleBox(Advanced(self).GetThemeStylebox(String.Name(String.New(name)), String.Name(String.New(""))))
+}
+
+/*
+Returns a [StyleBox] from the first matching [Theme] in the tree if that [Theme] has a stylebox item with the specified [param name] and [param theme_type].
+See [method Control.get_theme_color] for details.
+*/
+func (self Expanded) GetThemeStylebox(name string, theme_type string) [1]gdclass.StyleBox { //gd:Window.get_theme_stylebox
+	return [1]gdclass.StyleBox(Advanced(self).GetThemeStylebox(String.Name(String.New(name)), String.Name(String.New(theme_type))))
 }
 
 /*
@@ -375,7 +392,15 @@ Returns a [Font] from the first matching [Theme] in the tree if that [Theme] has
 See [method Control.get_theme_color] for details.
 */
 func (self Instance) GetThemeFont(name string) [1]gdclass.Font { //gd:Window.get_theme_font
-	return [1]gdclass.Font(class(self).GetThemeFont(String.Name(String.New(name)), String.Name(String.New(""))))
+	return [1]gdclass.Font(Advanced(self).GetThemeFont(String.Name(String.New(name)), String.Name(String.New(""))))
+}
+
+/*
+Returns a [Font] from the first matching [Theme] in the tree if that [Theme] has a font item with the specified [param name] and [param theme_type].
+See [method Control.get_theme_color] for details.
+*/
+func (self Expanded) GetThemeFont(name string, theme_type string) [1]gdclass.Font { //gd:Window.get_theme_font
+	return [1]gdclass.Font(Advanced(self).GetThemeFont(String.Name(String.New(name)), String.Name(String.New(theme_type))))
 }
 
 /*
@@ -383,7 +408,15 @@ Returns a font size from the first matching [Theme] in the tree if that [Theme] 
 See [method Control.get_theme_color] for details.
 */
 func (self Instance) GetThemeFontSize(name string) int { //gd:Window.get_theme_font_size
-	return int(int(class(self).GetThemeFontSize(String.Name(String.New(name)), String.Name(String.New("")))))
+	return int(int(Advanced(self).GetThemeFontSize(String.Name(String.New(name)), String.Name(String.New("")))))
+}
+
+/*
+Returns a font size from the first matching [Theme] in the tree if that [Theme] has a font size item with the specified [param name] and [param theme_type].
+See [method Control.get_theme_color] for details.
+*/
+func (self Expanded) GetThemeFontSize(name string, theme_type string) int { //gd:Window.get_theme_font_size
+	return int(int(Advanced(self).GetThemeFontSize(String.Name(String.New(name)), String.Name(String.New(theme_type)))))
 }
 
 /*
@@ -391,7 +424,15 @@ Returns a [Color] from the first matching [Theme] in the tree if that [Theme] ha
 See [method Control.get_theme_color] for more details.
 */
 func (self Instance) GetThemeColor(name string) Color.RGBA { //gd:Window.get_theme_color
-	return Color.RGBA(class(self).GetThemeColor(String.Name(String.New(name)), String.Name(String.New(""))))
+	return Color.RGBA(Advanced(self).GetThemeColor(String.Name(String.New(name)), String.Name(String.New(""))))
+}
+
+/*
+Returns a [Color] from the first matching [Theme] in the tree if that [Theme] has a color item with the specified [param name] and [param theme_type].
+See [method Control.get_theme_color] for more details.
+*/
+func (self Expanded) GetThemeColor(name string, theme_type string) Color.RGBA { //gd:Window.get_theme_color
+	return Color.RGBA(Advanced(self).GetThemeColor(String.Name(String.New(name)), String.Name(String.New(theme_type))))
 }
 
 /*
@@ -399,7 +440,15 @@ Returns a constant from the first matching [Theme] in the tree if that [Theme] h
 See [method Control.get_theme_color] for more details.
 */
 func (self Instance) GetThemeConstant(name string) int { //gd:Window.get_theme_constant
-	return int(int(class(self).GetThemeConstant(String.Name(String.New(name)), String.Name(String.New("")))))
+	return int(int(Advanced(self).GetThemeConstant(String.Name(String.New(name)), String.Name(String.New("")))))
+}
+
+/*
+Returns a constant from the first matching [Theme] in the tree if that [Theme] has a constant item with the specified [param name] and [param theme_type].
+See [method Control.get_theme_color] for more details.
+*/
+func (self Expanded) GetThemeConstant(name string, theme_type string) int { //gd:Window.get_theme_constant
+	return int(int(Advanced(self).GetThemeConstant(String.Name(String.New(name)), String.Name(String.New(theme_type)))))
 }
 
 /*
@@ -407,7 +456,7 @@ Returns [code]true[/code] if there is a local override for a theme icon with the
 See [method add_theme_icon_override].
 */
 func (self Instance) HasThemeIconOverride(name string) bool { //gd:Window.has_theme_icon_override
-	return bool(class(self).HasThemeIconOverride(String.Name(String.New(name))))
+	return bool(Advanced(self).HasThemeIconOverride(String.Name(String.New(name))))
 }
 
 /*
@@ -415,7 +464,7 @@ Returns [code]true[/code] if there is a local override for a theme [StyleBox] wi
 See [method add_theme_stylebox_override].
 */
 func (self Instance) HasThemeStyleboxOverride(name string) bool { //gd:Window.has_theme_stylebox_override
-	return bool(class(self).HasThemeStyleboxOverride(String.Name(String.New(name))))
+	return bool(Advanced(self).HasThemeStyleboxOverride(String.Name(String.New(name))))
 }
 
 /*
@@ -423,7 +472,7 @@ Returns [code]true[/code] if there is a local override for a theme [Font] with t
 See [method add_theme_font_override].
 */
 func (self Instance) HasThemeFontOverride(name string) bool { //gd:Window.has_theme_font_override
-	return bool(class(self).HasThemeFontOverride(String.Name(String.New(name))))
+	return bool(Advanced(self).HasThemeFontOverride(String.Name(String.New(name))))
 }
 
 /*
@@ -431,7 +480,7 @@ Returns [code]true[/code] if there is a local override for a theme font size wit
 See [method add_theme_font_size_override].
 */
 func (self Instance) HasThemeFontSizeOverride(name string) bool { //gd:Window.has_theme_font_size_override
-	return bool(class(self).HasThemeFontSizeOverride(String.Name(String.New(name))))
+	return bool(Advanced(self).HasThemeFontSizeOverride(String.Name(String.New(name))))
 }
 
 /*
@@ -439,7 +488,7 @@ Returns [code]true[/code] if there is a local override for a theme [Color] with 
 See [method add_theme_color_override].
 */
 func (self Instance) HasThemeColorOverride(name string) bool { //gd:Window.has_theme_color_override
-	return bool(class(self).HasThemeColorOverride(String.Name(String.New(name))))
+	return bool(Advanced(self).HasThemeColorOverride(String.Name(String.New(name))))
 }
 
 /*
@@ -447,7 +496,7 @@ Returns [code]true[/code] if there is a local override for a theme constant with
 See [method add_theme_constant_override].
 */
 func (self Instance) HasThemeConstantOverride(name string) bool { //gd:Window.has_theme_constant_override
-	return bool(class(self).HasThemeConstantOverride(String.Name(String.New(name))))
+	return bool(Advanced(self).HasThemeConstantOverride(String.Name(String.New(name))))
 }
 
 /*
@@ -455,7 +504,15 @@ Returns [code]true[/code] if there is a matching [Theme] in the tree that has an
 See [method Control.get_theme_color] for details.
 */
 func (self Instance) HasThemeIcon(name string) bool { //gd:Window.has_theme_icon
-	return bool(class(self).HasThemeIcon(String.Name(String.New(name)), String.Name(String.New(""))))
+	return bool(Advanced(self).HasThemeIcon(String.Name(String.New(name)), String.Name(String.New(""))))
+}
+
+/*
+Returns [code]true[/code] if there is a matching [Theme] in the tree that has an icon item with the specified [param name] and [param theme_type].
+See [method Control.get_theme_color] for details.
+*/
+func (self Expanded) HasThemeIcon(name string, theme_type string) bool { //gd:Window.has_theme_icon
+	return bool(Advanced(self).HasThemeIcon(String.Name(String.New(name)), String.Name(String.New(theme_type))))
 }
 
 /*
@@ -463,7 +520,15 @@ Returns [code]true[/code] if there is a matching [Theme] in the tree that has a 
 See [method Control.get_theme_color] for details.
 */
 func (self Instance) HasThemeStylebox(name string) bool { //gd:Window.has_theme_stylebox
-	return bool(class(self).HasThemeStylebox(String.Name(String.New(name)), String.Name(String.New(""))))
+	return bool(Advanced(self).HasThemeStylebox(String.Name(String.New(name)), String.Name(String.New(""))))
+}
+
+/*
+Returns [code]true[/code] if there is a matching [Theme] in the tree that has a stylebox item with the specified [param name] and [param theme_type].
+See [method Control.get_theme_color] for details.
+*/
+func (self Expanded) HasThemeStylebox(name string, theme_type string) bool { //gd:Window.has_theme_stylebox
+	return bool(Advanced(self).HasThemeStylebox(String.Name(String.New(name)), String.Name(String.New(theme_type))))
 }
 
 /*
@@ -471,7 +536,15 @@ Returns [code]true[/code] if there is a matching [Theme] in the tree that has a 
 See [method Control.get_theme_color] for details.
 */
 func (self Instance) HasThemeFont(name string) bool { //gd:Window.has_theme_font
-	return bool(class(self).HasThemeFont(String.Name(String.New(name)), String.Name(String.New(""))))
+	return bool(Advanced(self).HasThemeFont(String.Name(String.New(name)), String.Name(String.New(""))))
+}
+
+/*
+Returns [code]true[/code] if there is a matching [Theme] in the tree that has a font item with the specified [param name] and [param theme_type].
+See [method Control.get_theme_color] for details.
+*/
+func (self Expanded) HasThemeFont(name string, theme_type string) bool { //gd:Window.has_theme_font
+	return bool(Advanced(self).HasThemeFont(String.Name(String.New(name)), String.Name(String.New(theme_type))))
 }
 
 /*
@@ -479,7 +552,15 @@ Returns [code]true[/code] if there is a matching [Theme] in the tree that has a 
 See [method Control.get_theme_color] for details.
 */
 func (self Instance) HasThemeFontSize(name string) bool { //gd:Window.has_theme_font_size
-	return bool(class(self).HasThemeFontSize(String.Name(String.New(name)), String.Name(String.New(""))))
+	return bool(Advanced(self).HasThemeFontSize(String.Name(String.New(name)), String.Name(String.New(""))))
+}
+
+/*
+Returns [code]true[/code] if there is a matching [Theme] in the tree that has a font size item with the specified [param name] and [param theme_type].
+See [method Control.get_theme_color] for details.
+*/
+func (self Expanded) HasThemeFontSize(name string, theme_type string) bool { //gd:Window.has_theme_font_size
+	return bool(Advanced(self).HasThemeFontSize(String.Name(String.New(name)), String.Name(String.New(theme_type))))
 }
 
 /*
@@ -487,7 +568,15 @@ Returns [code]true[/code] if there is a matching [Theme] in the tree that has a 
 See [method Control.get_theme_color] for details.
 */
 func (self Instance) HasThemeColor(name string) bool { //gd:Window.has_theme_color
-	return bool(class(self).HasThemeColor(String.Name(String.New(name)), String.Name(String.New(""))))
+	return bool(Advanced(self).HasThemeColor(String.Name(String.New(name)), String.Name(String.New(""))))
+}
+
+/*
+Returns [code]true[/code] if there is a matching [Theme] in the tree that has a color item with the specified [param name] and [param theme_type].
+See [method Control.get_theme_color] for details.
+*/
+func (self Expanded) HasThemeColor(name string, theme_type string) bool { //gd:Window.has_theme_color
+	return bool(Advanced(self).HasThemeColor(String.Name(String.New(name)), String.Name(String.New(theme_type))))
 }
 
 /*
@@ -495,7 +584,15 @@ Returns [code]true[/code] if there is a matching [Theme] in the tree that has a 
 See [method Control.get_theme_color] for details.
 */
 func (self Instance) HasThemeConstant(name string) bool { //gd:Window.has_theme_constant
-	return bool(class(self).HasThemeConstant(String.Name(String.New(name)), String.Name(String.New(""))))
+	return bool(Advanced(self).HasThemeConstant(String.Name(String.New(name)), String.Name(String.New(""))))
+}
+
+/*
+Returns [code]true[/code] if there is a matching [Theme] in the tree that has a constant item with the specified [param name] and [param theme_type].
+See [method Control.get_theme_color] for details.
+*/
+func (self Expanded) HasThemeConstant(name string, theme_type string) bool { //gd:Window.has_theme_constant
+	return bool(Advanced(self).HasThemeConstant(String.Name(String.New(name)), String.Name(String.New(theme_type))))
 }
 
 /*
@@ -503,7 +600,7 @@ Returns the default base scale value from the first matching [Theme] in the tree
 See [method Control.get_theme_color] for details.
 */
 func (self Instance) GetThemeDefaultBaseScale() Float.X { //gd:Window.get_theme_default_base_scale
-	return Float.X(Float.X(class(self).GetThemeDefaultBaseScale()))
+	return Float.X(Float.X(Advanced(self).GetThemeDefaultBaseScale()))
 }
 
 /*
@@ -511,7 +608,7 @@ Returns the default font from the first matching [Theme] in the tree if that [Th
 See [method Control.get_theme_color] for details.
 */
 func (self Instance) GetThemeDefaultFont() [1]gdclass.Font { //gd:Window.get_theme_default_font
-	return [1]gdclass.Font(class(self).GetThemeDefaultFont())
+	return [1]gdclass.Font(Advanced(self).GetThemeDefaultFont())
 }
 
 /*
@@ -519,28 +616,28 @@ Returns the default font size value from the first matching [Theme] in the tree 
 See [method Control.get_theme_color] for details.
 */
 func (self Instance) GetThemeDefaultFontSize() int { //gd:Window.get_theme_default_font_size
-	return int(int(class(self).GetThemeDefaultFontSize()))
+	return int(int(Advanced(self).GetThemeDefaultFontSize()))
 }
 
 /*
 Sets layout direction and text writing direction. Right-to-left layouts are necessary for certain languages (e.g. Arabic and Hebrew).
 */
 func (self Instance) SetLayoutDirection(direction gdclass.WindowLayoutDirection) { //gd:Window.set_layout_direction
-	class(self).SetLayoutDirection(direction)
+	Advanced(self).SetLayoutDirection(direction)
 }
 
 /*
 Returns layout direction and text writing direction.
 */
 func (self Instance) GetLayoutDirection() gdclass.WindowLayoutDirection { //gd:Window.get_layout_direction
-	return gdclass.WindowLayoutDirection(class(self).GetLayoutDirection())
+	return gdclass.WindowLayoutDirection(Advanced(self).GetLayoutDirection())
 }
 
 /*
 Returns [code]true[/code] if layout is right-to-left.
 */
 func (self Instance) IsLayoutRtl() bool { //gd:Window.is_layout_rtl
-	return bool(class(self).IsLayoutRtl())
+	return bool(Advanced(self).IsLayoutRtl())
 }
 
 /*
@@ -550,14 +647,24 @@ If [member ProjectSettings.display/window/subwindows/embed_subwindows] is [code]
 [b]Note:[/b] [param rect] must be in global coordinates if specified.
 */
 func (self Instance) Popup() { //gd:Window.popup
-	class(self).Popup(Rect2i.PositionSize(gd.NewRect2i(0, 0, 0, 0)))
+	Advanced(self).Popup(Rect2i.PositionSize(gd.NewRect2i(0, 0, 0, 0)))
+}
+
+/*
+Shows the [Window] and makes it transient (see [member transient]). If [param rect] is provided, it will be set as the [Window]'s size. Fails if called on the main window.
+If [member ProjectSettings.display/window/subwindows/embed_subwindows] is [code]true[/code] (single-window mode), [param rect]'s coordinates are global and relative to the main window's top-left corner (excluding window decorations). If [param rect]'s position coordinates are negative, the window will be located outside the main window and may not be visible as a result.
+If [member ProjectSettings.display/window/subwindows/embed_subwindows] is [code]false[/code] (multi-window mode), [param rect]'s coordinates are global and relative to the top-left corner of the leftmost screen. If [param rect]'s position coordinates are negative, the window will be placed at the top-left corner of the screen.
+[b]Note:[/b] [param rect] must be in global coordinates if specified.
+*/
+func (self Expanded) Popup(rect Rect2i.PositionSize) { //gd:Window.popup
+	Advanced(self).Popup(Rect2i.PositionSize(rect))
 }
 
 /*
 Popups the [Window] with a position shifted by parent [Window]'s position. If the [Window] is embedded, has the same effect as [method popup].
 */
 func (self Instance) PopupOnParent(parent_rect Rect2i.PositionSize) { //gd:Window.popup_on_parent
-	class(self).PopupOnParent(Rect2i.PositionSize(parent_rect))
+	Advanced(self).PopupOnParent(Rect2i.PositionSize(parent_rect))
 }
 
 /*
@@ -565,7 +672,15 @@ Popups the [Window] at the center of the current screen, with optionally given m
 [b]Note:[/b] Calling it with the default value of [param minsize] is equivalent to calling it with [member size].
 */
 func (self Instance) PopupCentered() { //gd:Window.popup_centered
-	class(self).PopupCentered(Vector2i.XY(gd.Vector2i{0, 0}))
+	Advanced(self).PopupCentered(Vector2i.XY(gd.Vector2i{0, 0}))
+}
+
+/*
+Popups the [Window] at the center of the current screen, with optionally given minimum size. If the [Window] is embedded, it will be centered in the parent [Viewport] instead.
+[b]Note:[/b] Calling it with the default value of [param minsize] is equivalent to calling it with [member size].
+*/
+func (self Expanded) PopupCentered(minsize Vector2i.XY) { //gd:Window.popup_centered
+	Advanced(self).PopupCentered(Vector2i.XY(minsize))
 }
 
 /*
@@ -573,7 +688,15 @@ If [Window] is embedded, popups the [Window] centered inside its embedder and se
 If [Window] is a native window, popups the [Window] centered inside the screen of its parent [Window] and sets its size as a [param ratio] of the screen size.
 */
 func (self Instance) PopupCenteredRatio() { //gd:Window.popup_centered_ratio
-	class(self).PopupCenteredRatio(float64(0.8))
+	Advanced(self).PopupCenteredRatio(float64(0.8))
+}
+
+/*
+If [Window] is embedded, popups the [Window] centered inside its embedder and sets its size as a [param ratio] of embedder's size.
+If [Window] is a native window, popups the [Window] centered inside the screen of its parent [Window] and sets its size as a [param ratio] of the screen size.
+*/
+func (self Expanded) PopupCenteredRatio(ratio Float.X) { //gd:Window.popup_centered_ratio
+	Advanced(self).PopupCenteredRatio(float64(ratio))
 }
 
 /*
@@ -581,7 +704,15 @@ Popups the [Window] centered inside its parent [Window]. [param fallback_ratio] 
 [b]Note:[/b] Calling it with the default value of [param minsize] is equivalent to calling it with [member size].
 */
 func (self Instance) PopupCenteredClamped() { //gd:Window.popup_centered_clamped
-	class(self).PopupCenteredClamped(Vector2i.XY(gd.Vector2i{0, 0}), float64(0.75))
+	Advanced(self).PopupCenteredClamped(Vector2i.XY(gd.Vector2i{0, 0}), float64(0.75))
+}
+
+/*
+Popups the [Window] centered inside its parent [Window]. [param fallback_ratio] determines the maximum size of the [Window], in relation to its parent.
+[b]Note:[/b] Calling it with the default value of [param minsize] is equivalent to calling it with [member size].
+*/
+func (self Expanded) PopupCenteredClamped(minsize Vector2i.XY, fallback_ratio Float.X) { //gd:Window.popup_centered_clamped
+	Advanced(self).PopupCenteredClamped(Vector2i.XY(minsize), float64(fallback_ratio))
 }
 
 /*
@@ -589,7 +720,15 @@ Attempts to parent this dialog to the last exclusive window relative to [param f
 See also [method set_unparent_when_invisible] and [method Node.get_last_exclusive_window].
 */
 func (self Instance) PopupExclusive(from_node [1]gdclass.Node) { //gd:Window.popup_exclusive
-	class(self).PopupExclusive(from_node, Rect2i.PositionSize(gd.NewRect2i(0, 0, 0, 0)))
+	Advanced(self).PopupExclusive(from_node, Rect2i.PositionSize(gd.NewRect2i(0, 0, 0, 0)))
+}
+
+/*
+Attempts to parent this dialog to the last exclusive window relative to [param from_node], and then calls [method Window.popup] on it. The dialog must have no current parent, otherwise the method fails.
+See also [method set_unparent_when_invisible] and [method Node.get_last_exclusive_window].
+*/
+func (self Expanded) PopupExclusive(from_node [1]gdclass.Node, rect Rect2i.PositionSize) { //gd:Window.popup_exclusive
+	Advanced(self).PopupExclusive(from_node, Rect2i.PositionSize(rect))
 }
 
 /*
@@ -597,7 +736,7 @@ Attempts to parent this dialog to the last exclusive window relative to [param f
 See also [method set_unparent_when_invisible] and [method Node.get_last_exclusive_window].
 */
 func (self Instance) PopupExclusiveOnParent(from_node [1]gdclass.Node, parent_rect Rect2i.PositionSize) { //gd:Window.popup_exclusive_on_parent
-	class(self).PopupExclusiveOnParent(from_node, Rect2i.PositionSize(parent_rect))
+	Advanced(self).PopupExclusiveOnParent(from_node, Rect2i.PositionSize(parent_rect))
 }
 
 /*
@@ -605,7 +744,15 @@ Attempts to parent this dialog to the last exclusive window relative to [param f
 See also [method set_unparent_when_invisible] and [method Node.get_last_exclusive_window].
 */
 func (self Instance) PopupExclusiveCentered(from_node [1]gdclass.Node) { //gd:Window.popup_exclusive_centered
-	class(self).PopupExclusiveCentered(from_node, Vector2i.XY(gd.Vector2i{0, 0}))
+	Advanced(self).PopupExclusiveCentered(from_node, Vector2i.XY(gd.Vector2i{0, 0}))
+}
+
+/*
+Attempts to parent this dialog to the last exclusive window relative to [param from_node], and then calls [method Window.popup_centered] on it. The dialog must have no current parent, otherwise the method fails.
+See also [method set_unparent_when_invisible] and [method Node.get_last_exclusive_window].
+*/
+func (self Expanded) PopupExclusiveCentered(from_node [1]gdclass.Node, minsize Vector2i.XY) { //gd:Window.popup_exclusive_centered
+	Advanced(self).PopupExclusiveCentered(from_node, Vector2i.XY(minsize))
 }
 
 /*
@@ -613,7 +760,15 @@ Attempts to parent this dialog to the last exclusive window relative to [param f
 See also [method set_unparent_when_invisible] and [method Node.get_last_exclusive_window].
 */
 func (self Instance) PopupExclusiveCenteredRatio(from_node [1]gdclass.Node) { //gd:Window.popup_exclusive_centered_ratio
-	class(self).PopupExclusiveCenteredRatio(from_node, float64(0.8))
+	Advanced(self).PopupExclusiveCenteredRatio(from_node, float64(0.8))
+}
+
+/*
+Attempts to parent this dialog to the last exclusive window relative to [param from_node], and then calls [method Window.popup_centered_ratio] on it. The dialog must have no current parent, otherwise the method fails.
+See also [method set_unparent_when_invisible] and [method Node.get_last_exclusive_window].
+*/
+func (self Expanded) PopupExclusiveCenteredRatio(from_node [1]gdclass.Node, ratio Float.X) { //gd:Window.popup_exclusive_centered_ratio
+	Advanced(self).PopupExclusiveCenteredRatio(from_node, float64(ratio))
 }
 
 /*
@@ -621,7 +776,15 @@ Attempts to parent this dialog to the last exclusive window relative to [param f
 See also [method set_unparent_when_invisible] and [method Node.get_last_exclusive_window].
 */
 func (self Instance) PopupExclusiveCenteredClamped(from_node [1]gdclass.Node) { //gd:Window.popup_exclusive_centered_clamped
-	class(self).PopupExclusiveCenteredClamped(from_node, Vector2i.XY(gd.Vector2i{0, 0}), float64(0.75))
+	Advanced(self).PopupExclusiveCenteredClamped(from_node, Vector2i.XY(gd.Vector2i{0, 0}), float64(0.75))
+}
+
+/*
+Attempts to parent this dialog to the last exclusive window relative to [param from_node], and then calls [method Window.popup_centered_clamped] on it. The dialog must have no current parent, otherwise the method fails.
+See also [method set_unparent_when_invisible] and [method Node.get_last_exclusive_window].
+*/
+func (self Expanded) PopupExclusiveCenteredClamped(from_node [1]gdclass.Node, minsize Vector2i.XY, fallback_ratio Float.X) { //gd:Window.popup_exclusive_centered_clamped
+	Advanced(self).PopupExclusiveCenteredClamped(from_node, Vector2i.XY(minsize), float64(fallback_ratio))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -60,35 +60,35 @@ type Any interface {
 Returns the name of the group at [param group_idx] that will be the drawing group in the [BoneMap] editor.
 */
 func (self Instance) GetGroupName(group_idx int) string { //gd:SkeletonProfile.get_group_name
-	return string(class(self).GetGroupName(int64(group_idx)).String())
+	return string(Advanced(self).GetGroupName(int64(group_idx)).String())
 }
 
 /*
 Sets the name of the group at [param group_idx] that will be the drawing group in the [BoneMap] editor.
 */
 func (self Instance) SetGroupName(group_idx int, group_name string) { //gd:SkeletonProfile.set_group_name
-	class(self).SetGroupName(int64(group_idx), String.Name(String.New(group_name)))
+	Advanced(self).SetGroupName(int64(group_idx), String.Name(String.New(group_name)))
 }
 
 /*
 Returns the texture of the group at [param group_idx] that will be the drawing group background image in the [BoneMap] editor.
 */
 func (self Instance) GetTexture(group_idx int) [1]gdclass.Texture2D { //gd:SkeletonProfile.get_texture
-	return [1]gdclass.Texture2D(class(self).GetTexture(int64(group_idx)))
+	return [1]gdclass.Texture2D(Advanced(self).GetTexture(int64(group_idx)))
 }
 
 /*
 Sets the texture of the group at [param group_idx] that will be the drawing group background image in the [BoneMap] editor.
 */
 func (self Instance) SetTexture(group_idx int, texture [1]gdclass.Texture2D) { //gd:SkeletonProfile.set_texture
-	class(self).SetTexture(int64(group_idx), texture)
+	Advanced(self).SetTexture(int64(group_idx), texture)
 }
 
 /*
 Returns the bone index that matches [param bone_name] as its name.
 */
 func (self Instance) FindBone(bone_name string) int { //gd:SkeletonProfile.find_bone
-	return int(int(class(self).FindBone(String.Name(String.New(bone_name)))))
+	return int(int(Advanced(self).FindBone(String.Name(String.New(bone_name)))))
 }
 
 /*
@@ -96,7 +96,7 @@ Returns the name of the bone at [param bone_idx] that will be the key name in th
 In the retargeting process, the returned bone name is the bone name of the target skeleton.
 */
 func (self Instance) GetBoneName(bone_idx int) string { //gd:SkeletonProfile.get_bone_name
-	return string(class(self).GetBoneName(int64(bone_idx)).String())
+	return string(Advanced(self).GetBoneName(int64(bone_idx)).String())
 }
 
 /*
@@ -104,28 +104,28 @@ Sets the name of the bone at [param bone_idx] that will be the key name in the [
 In the retargeting process, the setting bone name is the bone name of the target skeleton.
 */
 func (self Instance) SetBoneName(bone_idx int, bone_name string) { //gd:SkeletonProfile.set_bone_name
-	class(self).SetBoneName(int64(bone_idx), String.Name(String.New(bone_name)))
+	Advanced(self).SetBoneName(int64(bone_idx), String.Name(String.New(bone_name)))
 }
 
 /*
 Returns the name of the bone which is the parent to the bone at [param bone_idx]. The result is empty if the bone has no parent.
 */
 func (self Instance) GetBoneParent(bone_idx int) string { //gd:SkeletonProfile.get_bone_parent
-	return string(class(self).GetBoneParent(int64(bone_idx)).String())
+	return string(Advanced(self).GetBoneParent(int64(bone_idx)).String())
 }
 
 /*
 Sets the bone with name [param bone_parent] as the parent of the bone at [param bone_idx]. If an empty string is passed, then the bone has no parent.
 */
 func (self Instance) SetBoneParent(bone_idx int, bone_parent string) { //gd:SkeletonProfile.set_bone_parent
-	class(self).SetBoneParent(int64(bone_idx), String.Name(String.New(bone_parent)))
+	Advanced(self).SetBoneParent(int64(bone_idx), String.Name(String.New(bone_parent)))
 }
 
 /*
 Returns the tail direction of the bone at [param bone_idx].
 */
 func (self Instance) GetTailDirection(bone_idx int) gdclass.SkeletonProfileTailDirection { //gd:SkeletonProfile.get_tail_direction
-	return gdclass.SkeletonProfileTailDirection(class(self).GetTailDirection(int64(bone_idx)))
+	return gdclass.SkeletonProfileTailDirection(Advanced(self).GetTailDirection(int64(bone_idx)))
 }
 
 /*
@@ -133,35 +133,35 @@ Sets the tail direction of the bone at [param bone_idx].
 [b]Note:[/b] This only specifies the method of calculation. The actual coordinates required should be stored in an external skeleton, so the calculation itself needs to be done externally.
 */
 func (self Instance) SetTailDirection(bone_idx int, tail_direction gdclass.SkeletonProfileTailDirection) { //gd:SkeletonProfile.set_tail_direction
-	class(self).SetTailDirection(int64(bone_idx), tail_direction)
+	Advanced(self).SetTailDirection(int64(bone_idx), tail_direction)
 }
 
 /*
 Returns the name of the bone which is the tail of the bone at [param bone_idx].
 */
 func (self Instance) GetBoneTail(bone_idx int) string { //gd:SkeletonProfile.get_bone_tail
-	return string(class(self).GetBoneTail(int64(bone_idx)).String())
+	return string(Advanced(self).GetBoneTail(int64(bone_idx)).String())
 }
 
 /*
 Sets the bone with name [param bone_tail] as the tail of the bone at [param bone_idx].
 */
 func (self Instance) SetBoneTail(bone_idx int, bone_tail string) { //gd:SkeletonProfile.set_bone_tail
-	class(self).SetBoneTail(int64(bone_idx), String.Name(String.New(bone_tail)))
+	Advanced(self).SetBoneTail(int64(bone_idx), String.Name(String.New(bone_tail)))
 }
 
 /*
 Returns the reference pose transform for bone [param bone_idx].
 */
 func (self Instance) GetReferencePose(bone_idx int) Transform3D.BasisOrigin { //gd:SkeletonProfile.get_reference_pose
-	return Transform3D.BasisOrigin(class(self).GetReferencePose(int64(bone_idx)))
+	return Transform3D.BasisOrigin(Advanced(self).GetReferencePose(int64(bone_idx)))
 }
 
 /*
 Sets the reference pose transform for bone [param bone_idx].
 */
 func (self Instance) SetReferencePose(bone_idx int, bone_name Transform3D.BasisOrigin) { //gd:SkeletonProfile.set_reference_pose
-	class(self).SetReferencePose(int64(bone_idx), Transform3D.BasisOrigin(bone_name))
+	Advanced(self).SetReferencePose(int64(bone_idx), Transform3D.BasisOrigin(bone_name))
 }
 
 /*
@@ -169,7 +169,7 @@ Returns the offset of the bone at [param bone_idx] that will be the button posit
 This is the offset with origin at the top left corner of the square.
 */
 func (self Instance) GetHandleOffset(bone_idx int) Vector2.XY { //gd:SkeletonProfile.get_handle_offset
-	return Vector2.XY(class(self).GetHandleOffset(int64(bone_idx)))
+	return Vector2.XY(Advanced(self).GetHandleOffset(int64(bone_idx)))
 }
 
 /*
@@ -177,21 +177,21 @@ Sets the offset of the bone at [param bone_idx] that will be the button position
 This is the offset with origin at the top left corner of the square.
 */
 func (self Instance) SetHandleOffset(bone_idx int, handle_offset Vector2.XY) { //gd:SkeletonProfile.set_handle_offset
-	class(self).SetHandleOffset(int64(bone_idx), Vector2.XY(handle_offset))
+	Advanced(self).SetHandleOffset(int64(bone_idx), Vector2.XY(handle_offset))
 }
 
 /*
 Returns the group of the bone at [param bone_idx].
 */
 func (self Instance) GetGroup(bone_idx int) string { //gd:SkeletonProfile.get_group
-	return string(class(self).GetGroup(int64(bone_idx)).String())
+	return string(Advanced(self).GetGroup(int64(bone_idx)).String())
 }
 
 /*
 Sets the group of the bone at [param bone_idx].
 */
 func (self Instance) SetGroup(bone_idx int, group string) { //gd:SkeletonProfile.set_group
-	class(self).SetGroup(int64(bone_idx), String.Name(String.New(group)))
+	Advanced(self).SetGroup(int64(bone_idx), String.Name(String.New(group)))
 }
 
 /*
@@ -199,14 +199,14 @@ Returns whether the bone at [param bone_idx] is required for retargeting.
 This value is used by the bone map editor. If this method returns [code]true[/code], and no bone is assigned, the handle color will be red on the bone map editor.
 */
 func (self Instance) IsRequired(bone_idx int) bool { //gd:SkeletonProfile.is_required
-	return bool(class(self).IsRequired(int64(bone_idx)))
+	return bool(Advanced(self).IsRequired(int64(bone_idx)))
 }
 
 /*
 Sets the required status for bone [param bone_idx] to [param required].
 */
 func (self Instance) SetRequired(bone_idx int, required bool) { //gd:SkeletonProfile.set_required
-	class(self).SetRequired(int64(bone_idx), required)
+	Advanced(self).SetRequired(int64(bone_idx), required)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

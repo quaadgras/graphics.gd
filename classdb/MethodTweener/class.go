@@ -59,21 +59,21 @@ type Any interface {
 Sets the time in seconds after which the [MethodTweener] will start interpolating. By default there's no delay.
 */
 func (self Instance) SetDelay(delay Float.X) [1]gdclass.MethodTweener { //gd:MethodTweener.set_delay
-	return [1]gdclass.MethodTweener(class(self).SetDelay(float64(delay)))
+	return [1]gdclass.MethodTweener(Advanced(self).SetDelay(float64(delay)))
 }
 
 /*
 Sets the type of used transition from [enum Tween.TransitionType]. If not set, the default transition is used from the [Tween] that contains this Tweener.
 */
 func (self Instance) SetTrans(trans gdclass.TweenTransitionType) [1]gdclass.MethodTweener { //gd:MethodTweener.set_trans
-	return [1]gdclass.MethodTweener(class(self).SetTrans(trans))
+	return [1]gdclass.MethodTweener(Advanced(self).SetTrans(trans))
 }
 
 /*
 Sets the type of used easing from [enum Tween.EaseType]. If not set, the default easing is used from the [Tween] that contains this Tweener.
 */
 func (self Instance) SetEase(ease gdclass.TweenEaseType) [1]gdclass.MethodTweener { //gd:MethodTweener.set_ease
-	return [1]gdclass.MethodTweener(class(self).SetEase(ease))
+	return [1]gdclass.MethodTweener(Advanced(self).SetEase(ease))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

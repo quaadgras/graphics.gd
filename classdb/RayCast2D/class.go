@@ -63,7 +63,7 @@ type Any interface {
 Returns whether any object is intersecting with the ray's vector (considering the vector length).
 */
 func (self Instance) IsColliding() bool { //gd:RayCast2D.is_colliding
-	return bool(class(self).IsColliding())
+	return bool(Advanced(self).IsColliding())
 }
 
 /*
@@ -71,21 +71,21 @@ Updates the collision information for the ray immediately, without waiting for t
 [b]Note:[/b] [member enabled] does not need to be [code]true[/code] for this to work.
 */
 func (self Instance) ForceRaycastUpdate() { //gd:RayCast2D.force_raycast_update
-	class(self).ForceRaycastUpdate()
+	Advanced(self).ForceRaycastUpdate()
 }
 
 /*
 Returns the first object that the ray intersects, or [code]null[/code] if no object is intersecting the ray (i.e. [method is_colliding] returns [code]false[/code]).
 */
 func (self Instance) GetCollider() Object.Instance { //gd:RayCast2D.get_collider
-	return Object.Instance(class(self).GetCollider())
+	return Object.Instance(Advanced(self).GetCollider())
 }
 
 /*
 Returns the [RID] of the first object that the ray intersects, or an empty [RID] if no object is intersecting the ray (i.e. [method is_colliding] returns [code]false[/code]).
 */
 func (self Instance) GetColliderRid() RID.Body2D { //gd:RayCast2D.get_collider_rid
-	return RID.Body2D(class(self).GetColliderRid())
+	return RID.Body2D(Advanced(self).GetColliderRid())
 }
 
 /*
@@ -107,7 +107,7 @@ var shape = target.ShapeOwnerGetOwner(ownerId);
 [/codeblocks]
 */
 func (self Instance) GetColliderShape() int { //gd:RayCast2D.get_collider_shape
-	return int(int(class(self).GetColliderShape()))
+	return int(int(Advanced(self).GetColliderShape()))
 }
 
 /*
@@ -115,7 +115,7 @@ Returns the collision point at which the ray intersects the closest object, in t
 [b]Note:[/b] Check that [method is_colliding] returns [code]true[/code] before calling this method to ensure the returned point is valid and up-to-date.
 */
 func (self Instance) GetCollisionPoint() Vector2.XY { //gd:RayCast2D.get_collision_point
-	return Vector2.XY(class(self).GetCollisionPoint())
+	return Vector2.XY(Advanced(self).GetCollisionPoint())
 }
 
 /*
@@ -123,56 +123,56 @@ Returns the normal of the intersecting object's shape at the collision point, or
 [b]Note:[/b] Check that [method is_colliding] returns [code]true[/code] before calling this method to ensure the returned normal is valid and up-to-date.
 */
 func (self Instance) GetCollisionNormal() Vector2.XY { //gd:RayCast2D.get_collision_normal
-	return Vector2.XY(class(self).GetCollisionNormal())
+	return Vector2.XY(Advanced(self).GetCollisionNormal())
 }
 
 /*
 Adds a collision exception so the ray does not report collisions with the specified [RID].
 */
 func (self Instance) AddExceptionRid(rid RID.Body2D) { //gd:RayCast2D.add_exception_rid
-	class(self).AddExceptionRid(RID.Any(rid))
+	Advanced(self).AddExceptionRid(RID.Any(rid))
 }
 
 /*
 Adds a collision exception so the ray does not report collisions with the specified [CollisionObject2D] node.
 */
 func (self Instance) AddException(node [1]gdclass.CollisionObject2D) { //gd:RayCast2D.add_exception
-	class(self).AddException(node)
+	Advanced(self).AddException(node)
 }
 
 /*
 Removes a collision exception so the ray does report collisions with the specified [RID].
 */
 func (self Instance) RemoveExceptionRid(rid RID.Body2D) { //gd:RayCast2D.remove_exception_rid
-	class(self).RemoveExceptionRid(RID.Any(rid))
+	Advanced(self).RemoveExceptionRid(RID.Any(rid))
 }
 
 /*
 Removes a collision exception so the ray does report collisions with the specified [CollisionObject2D] node.
 */
 func (self Instance) RemoveException(node [1]gdclass.CollisionObject2D) { //gd:RayCast2D.remove_exception
-	class(self).RemoveException(node)
+	Advanced(self).RemoveException(node)
 }
 
 /*
 Removes all collision exceptions for this ray.
 */
 func (self Instance) ClearExceptions() { //gd:RayCast2D.clear_exceptions
-	class(self).ClearExceptions()
+	Advanced(self).ClearExceptions()
 }
 
 /*
 Based on [param value], enables or disables the specified layer in the [member collision_mask], given a [param layer_number] between 1 and 32.
 */
 func (self Instance) SetCollisionMaskValue(layer_number int, value bool) { //gd:RayCast2D.set_collision_mask_value
-	class(self).SetCollisionMaskValue(int64(layer_number), value)
+	Advanced(self).SetCollisionMaskValue(int64(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member collision_mask] is enabled, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) GetCollisionMaskValue(layer_number int) bool { //gd:RayCast2D.get_collision_mask_value
-	return bool(class(self).GetCollisionMaskValue(int64(layer_number)))
+	return bool(Advanced(self).GetCollisionMaskValue(int64(layer_number)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

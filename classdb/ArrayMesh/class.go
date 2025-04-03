@@ -91,6 +91,7 @@ See also [ImmediateMesh], [MeshDataTool] and [SurfaceTool] for procedural geomet
 [b]Note:[/b] Godot uses clockwise [url=https://learnopengl.com/Advanced-OpenGL/Face-culling]winding order[/url] for front faces of triangle primitive modes.
 */
 type Instance [1]gdclass.ArrayMesh
+type Expanded [1]gdclass.ArrayMesh
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -104,35 +105,35 @@ type Any interface {
 Adds name for a blend shape that will be added with [method add_surface_from_arrays]. Must be called before surface is added.
 */
 func (self Instance) AddBlendShape(name string) { //gd:ArrayMesh.add_blend_shape
-	class(self).AddBlendShape(String.Name(String.New(name)))
+	Advanced(self).AddBlendShape(String.Name(String.New(name)))
 }
 
 /*
 Returns the number of blend shapes that the [ArrayMesh] holds.
 */
 func (self Instance) GetBlendShapeCount() int { //gd:ArrayMesh.get_blend_shape_count
-	return int(int(class(self).GetBlendShapeCount()))
+	return int(int(Advanced(self).GetBlendShapeCount()))
 }
 
 /*
 Returns the name of the blend shape at this index.
 */
 func (self Instance) GetBlendShapeName(index int) string { //gd:ArrayMesh.get_blend_shape_name
-	return string(class(self).GetBlendShapeName(int64(index)).String())
+	return string(Advanced(self).GetBlendShapeName(int64(index)).String())
 }
 
 /*
 Sets the name of the blend shape at this index.
 */
 func (self Instance) SetBlendShapeName(index int, name string) { //gd:ArrayMesh.set_blend_shape_name
-	class(self).SetBlendShapeName(int64(index), String.Name(String.New(name)))
+	Advanced(self).SetBlendShapeName(int64(index), String.Name(String.New(name)))
 }
 
 /*
 Removes all blend shapes from this [ArrayMesh].
 */
 func (self Instance) ClearBlendShapes() { //gd:ArrayMesh.clear_blend_shapes
-	class(self).ClearBlendShapes()
+	Advanced(self).ClearBlendShapes()
 }
 
 /*
@@ -145,93 +146,106 @@ The [param flags] argument is the bitwise OR of, as required: One value of [enum
 [b]Note:[/b] When using indices, it is recommended to only use points, lines, or triangles.
 */
 func (self Instance) AddSurfaceFromArrays(primitive gdclass.MeshPrimitiveType, arrays []any) { //gd:ArrayMesh.add_surface_from_arrays
-	class(self).AddSurfaceFromArrays(primitive, gd.EngineArrayFromSlice(arrays), gd.ArrayFromSlice[Array.Contains[Array.Any]]([1][][]any{}[0]), Dictionary.Nil, 0)
+	Advanced(self).AddSurfaceFromArrays(primitive, gd.EngineArrayFromSlice(arrays), gd.ArrayFromSlice[Array.Contains[Array.Any]]([1][][]any{}[0]), Dictionary.Nil, 0)
+}
+
+/*
+Creates a new surface. [method Mesh.get_surface_count] will become the [code]surf_idx[/code] for this new surface.
+Surfaces are created to be rendered using a [param primitive], which may be any of the values defined in [enum Mesh.PrimitiveType].
+The [param arrays] argument is an array of arrays. Each of the [constant Mesh.ARRAY_MAX] elements contains an array with some of the mesh data for this surface as described by the corresponding member of [enum Mesh.ArrayType] or [code]null[/code] if it is not used by the surface. For example, [code]arrays[0][/code] is the array of vertices. That first vertex sub-array is always required; the others are optional. Adding an index array puts this surface into "index mode" where the vertex and other arrays become the sources of data and the index array defines the vertex order. All sub-arrays must have the same length as the vertex array (or be an exact multiple of the vertex array's length, when multiple elements of a sub-array correspond to a single vertex) or be empty, except for [constant Mesh.ARRAY_INDEX] if it is used.
+The [param blend_shapes] argument is an array of vertex data for each blend shape. Each element is an array of the same structure as [param arrays], but [constant Mesh.ARRAY_VERTEX], [constant Mesh.ARRAY_NORMAL], and [constant Mesh.ARRAY_TANGENT] are set if and only if they are set in [param arrays] and all other entries are [code]null[/code].
+The [param lods] argument is a dictionary with [float] keys and [PackedInt32Array] values. Each entry in the dictionary represents an LOD level of the surface, where the value is the [constant Mesh.ARRAY_INDEX] array to use for the LOD level and the key is roughly proportional to the distance at which the LOD stats being used. I.e., increasing the key of an LOD also increases the distance that the objects has to be from the camera before the LOD is used.
+The [param flags] argument is the bitwise OR of, as required: One value of [enum Mesh.ArrayCustomFormat] left shifted by [code]ARRAY_FORMAT_CUSTOMn_SHIFT[/code] for each custom channel in use, [constant Mesh.ARRAY_FLAG_USE_DYNAMIC_UPDATE], [constant Mesh.ARRAY_FLAG_USE_8_BONE_WEIGHTS], or [constant Mesh.ARRAY_FLAG_USES_EMPTY_VERTEX_ARRAY].
+[b]Note:[/b] When using indices, it is recommended to only use points, lines, or triangles.
+*/
+func (self Expanded) AddSurfaceFromArrays(primitive gdclass.MeshPrimitiveType, arrays []any, blend_shapes [][]any, lods map[float32][]int32, flags gdclass.MeshArrayFormat) { //gd:ArrayMesh.add_surface_from_arrays
+	Advanced(self).AddSurfaceFromArrays(primitive, gd.EngineArrayFromSlice(arrays), gd.ArrayFromSlice[Array.Contains[Array.Any]](blend_shapes), gd.DictionaryFromMap(lods), flags)
 }
 
 /*
 Removes all surfaces from this [ArrayMesh].
 */
 func (self Instance) ClearSurfaces() { //gd:ArrayMesh.clear_surfaces
-	class(self).ClearSurfaces()
+	Advanced(self).ClearSurfaces()
 }
 
 /*
 Removes the surface at the given index from the Mesh, shifting surfaces with higher index down by one.
 */
 func (self Instance) SurfaceRemove(surf_idx int) { //gd:ArrayMesh.surface_remove
-	class(self).SurfaceRemove(int64(surf_idx))
+	Advanced(self).SurfaceRemove(int64(surf_idx))
 }
 func (self Instance) SurfaceUpdateVertexRegion(surf_idx int, offset int, data []byte) { //gd:ArrayMesh.surface_update_vertex_region
-	class(self).SurfaceUpdateVertexRegion(int64(surf_idx), int64(offset), Packed.Bytes(Packed.New(data...)))
+	Advanced(self).SurfaceUpdateVertexRegion(int64(surf_idx), int64(offset), Packed.Bytes(Packed.New(data...)))
 }
 func (self Instance) SurfaceUpdateAttributeRegion(surf_idx int, offset int, data []byte) { //gd:ArrayMesh.surface_update_attribute_region
-	class(self).SurfaceUpdateAttributeRegion(int64(surf_idx), int64(offset), Packed.Bytes(Packed.New(data...)))
+	Advanced(self).SurfaceUpdateAttributeRegion(int64(surf_idx), int64(offset), Packed.Bytes(Packed.New(data...)))
 }
 func (self Instance) SurfaceUpdateSkinRegion(surf_idx int, offset int, data []byte) { //gd:ArrayMesh.surface_update_skin_region
-	class(self).SurfaceUpdateSkinRegion(int64(surf_idx), int64(offset), Packed.Bytes(Packed.New(data...)))
+	Advanced(self).SurfaceUpdateSkinRegion(int64(surf_idx), int64(offset), Packed.Bytes(Packed.New(data...)))
 }
 
 /*
 Returns the length in vertices of the vertex array in the requested surface (see [method add_surface_from_arrays]).
 */
 func (self Instance) SurfaceGetArrayLen(surf_idx int) int { //gd:ArrayMesh.surface_get_array_len
-	return int(int(class(self).SurfaceGetArrayLen(int64(surf_idx))))
+	return int(int(Advanced(self).SurfaceGetArrayLen(int64(surf_idx))))
 }
 
 /*
 Returns the length in indices of the index array in the requested surface (see [method add_surface_from_arrays]).
 */
 func (self Instance) SurfaceGetArrayIndexLen(surf_idx int) int { //gd:ArrayMesh.surface_get_array_index_len
-	return int(int(class(self).SurfaceGetArrayIndexLen(int64(surf_idx))))
+	return int(int(Advanced(self).SurfaceGetArrayIndexLen(int64(surf_idx))))
 }
 
 /*
 Returns the format mask of the requested surface (see [method add_surface_from_arrays]).
 */
 func (self Instance) SurfaceGetFormat(surf_idx int) gdclass.MeshArrayFormat { //gd:ArrayMesh.surface_get_format
-	return gdclass.MeshArrayFormat(class(self).SurfaceGetFormat(int64(surf_idx)))
+	return gdclass.MeshArrayFormat(Advanced(self).SurfaceGetFormat(int64(surf_idx)))
 }
 
 /*
 Returns the primitive type of the requested surface (see [method add_surface_from_arrays]).
 */
 func (self Instance) SurfaceGetPrimitiveType(surf_idx int) gdclass.MeshPrimitiveType { //gd:ArrayMesh.surface_get_primitive_type
-	return gdclass.MeshPrimitiveType(class(self).SurfaceGetPrimitiveType(int64(surf_idx)))
+	return gdclass.MeshPrimitiveType(Advanced(self).SurfaceGetPrimitiveType(int64(surf_idx)))
 }
 
 /*
 Returns the index of the first surface with this name held within this [ArrayMesh]. If none are found, -1 is returned.
 */
 func (self Instance) SurfaceFindByName(name string) int { //gd:ArrayMesh.surface_find_by_name
-	return int(int(class(self).SurfaceFindByName(String.New(name))))
+	return int(int(Advanced(self).SurfaceFindByName(String.New(name))))
 }
 
 /*
 Sets a name for a given surface.
 */
 func (self Instance) SurfaceSetName(surf_idx int, name string) { //gd:ArrayMesh.surface_set_name
-	class(self).SurfaceSetName(int64(surf_idx), String.New(name))
+	Advanced(self).SurfaceSetName(int64(surf_idx), String.New(name))
 }
 
 /*
 Gets the name assigned to this surface.
 */
 func (self Instance) SurfaceGetName(surf_idx int) string { //gd:ArrayMesh.surface_get_name
-	return string(class(self).SurfaceGetName(int64(surf_idx)).String())
+	return string(Advanced(self).SurfaceGetName(int64(surf_idx)).String())
 }
 
 /*
 Regenerates tangents for each of the [ArrayMesh]'s surfaces.
 */
 func (self Instance) RegenNormalMaps() { //gd:ArrayMesh.regen_normal_maps
-	class(self).RegenNormalMaps()
+	Advanced(self).RegenNormalMaps()
 }
 
 /*
 Performs a UV unwrap on the [ArrayMesh] to prepare the mesh for lightmapping.
 */
 func (self Instance) LightmapUnwrap(transform Transform3D.BasisOrigin, texel_size Float.X) error { //gd:ArrayMesh.lightmap_unwrap
-	return error(gd.ToError(class(self).LightmapUnwrap(Transform3D.BasisOrigin(transform), float64(texel_size))))
+	return error(gd.ToError(Advanced(self).LightmapUnwrap(Transform3D.BasisOrigin(transform), float64(texel_size))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

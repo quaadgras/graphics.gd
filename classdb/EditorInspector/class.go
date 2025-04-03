@@ -67,29 +67,37 @@ Shows the properties of the given [param object] in this inspector for editing. 
 [b]Note:[/b] If you want to edit an object in the editor's main inspector, use the [code]edit_*[/code] methods in [EditorInterface] instead.
 */
 func (self Instance) Edit(obj Object.Instance) { //gd:EditorInspector.edit
-	class(self).Edit(obj)
+	Advanced(self).Edit(obj)
 }
 
 /*
 Gets the path of the currently selected property.
 */
 func (self Instance) GetSelectedPath() string { //gd:EditorInspector.get_selected_path
-	return string(class(self).GetSelectedPath().String())
+	return string(Advanced(self).GetSelectedPath().String())
 }
 
 /*
 Returns the object currently selected in this inspector.
 */
 func (self Instance) GetEditedObject() Object.Instance { //gd:EditorInspector.get_edited_object
-	return Object.Instance(class(self).GetEditedObject())
+	return Object.Instance(Advanced(self).GetEditedObject())
 }
 
 /*
 Creates a property editor that can be used by plugin UI to edit the specified property of an [param object].
 */
-func InstantiatePropertyEditor(obj Object.Instance, atype variant.Type, path string, hint PropertyHint, hint_text string, usage int) [1]gdclass.EditorProperty { //gd:EditorInspector.instantiate_property_editor
+func InstantiatePropertyEditor(obj Object.Instance, atype variant.Type, path string, hint PropertyHint, hint_text string, usage int, wide bool) [1]gdclass.EditorProperty { //gd:EditorInspector.instantiate_property_editor
 	self := Instance{}
-	return [1]gdclass.EditorProperty(class(self).InstantiatePropertyEditor(obj, atype, String.New(path), hint, String.New(hint_text), int64(usage), false))
+	return [1]gdclass.EditorProperty(Advanced(self).InstantiatePropertyEditor(obj, atype, String.New(path), hint, String.New(hint_text), int64(usage), wide))
+}
+
+/*
+Creates a property editor that can be used by plugin UI to edit the specified property of an [param object].
+*/
+func InstantiatePropertyEditorExpanded(obj Object.Instance, atype variant.Type, path string, hint PropertyHint, hint_text string, usage int, wide bool) [1]gdclass.EditorProperty { //gd:EditorInspector.instantiate_property_editor
+	self := Instance{}
+	return [1]gdclass.EditorProperty(Advanced(self).InstantiatePropertyEditor(obj, atype, String.New(path), hint, String.New(hint_text), int64(usage), wide))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

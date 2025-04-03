@@ -45,6 +45,7 @@ This class allows to compress or decompress data using GZIP/deflate in a streami
 After starting the stream via [method start_compression] (or [method start_decompression]), calling [method StreamPeer.put_partial_data] on this stream will compress (or decompress) the data, writing it to the internal buffer. Calling [method StreamPeer.get_available_bytes] will return the pending bytes in the internal buffer, and [method StreamPeer.get_partial_data] will retrieve the compressed (or decompressed) bytes from it. When the stream is over, you must call [method finish] to ensure the internal buffer is properly flushed (make sure to call [method StreamPeer.get_available_bytes] on last time to check if more data needs to be read after that).
 */
 type Instance [1]gdclass.StreamPeerGZIP
+type Expanded [1]gdclass.StreamPeerGZIP
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -58,28 +59,42 @@ type Any interface {
 Start the stream in compression mode with the given [param buffer_size], if [param use_deflate] is [code]true[/code] uses deflate instead of GZIP.
 */
 func (self Instance) StartCompression() error { //gd:StreamPeerGZIP.start_compression
-	return error(gd.ToError(class(self).StartCompression(false, int64(65535))))
+	return error(gd.ToError(Advanced(self).StartCompression(false, int64(65535))))
+}
+
+/*
+Start the stream in compression mode with the given [param buffer_size], if [param use_deflate] is [code]true[/code] uses deflate instead of GZIP.
+*/
+func (self Expanded) StartCompression(use_deflate bool, buffer_size int) error { //gd:StreamPeerGZIP.start_compression
+	return error(gd.ToError(Advanced(self).StartCompression(use_deflate, int64(buffer_size))))
 }
 
 /*
 Start the stream in decompression mode with the given [param buffer_size], if [param use_deflate] is [code]true[/code] uses deflate instead of GZIP.
 */
 func (self Instance) StartDecompression() error { //gd:StreamPeerGZIP.start_decompression
-	return error(gd.ToError(class(self).StartDecompression(false, int64(65535))))
+	return error(gd.ToError(Advanced(self).StartDecompression(false, int64(65535))))
+}
+
+/*
+Start the stream in decompression mode with the given [param buffer_size], if [param use_deflate] is [code]true[/code] uses deflate instead of GZIP.
+*/
+func (self Expanded) StartDecompression(use_deflate bool, buffer_size int) error { //gd:StreamPeerGZIP.start_decompression
+	return error(gd.ToError(Advanced(self).StartDecompression(use_deflate, int64(buffer_size))))
 }
 
 /*
 Finalizes the stream, compressing or decompressing any buffered chunk left.
 */
 func (self Instance) Finish() error { //gd:StreamPeerGZIP.finish
-	return error(gd.ToError(class(self).Finish()))
+	return error(gd.ToError(Advanced(self).Finish()))
 }
 
 /*
 Clears this stream, resetting the internal state.
 */
 func (self Instance) Clear() { //gd:StreamPeerGZIP.clear
-	class(self).Clear()
+	Advanced(self).Clear()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

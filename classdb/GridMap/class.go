@@ -52,6 +52,7 @@ Internally, a GridMap is split into a sparse collection of octants for efficient
 [b]Note:[/b] GridMap doesn't extend [VisualInstance3D] and therefore can't be hidden or cull masked based on [member VisualInstance3D.layers]. If you make a light not affect the first layer, the whole GridMap won't be lit by the light in question.
 */
 type Instance [1]gdclass.GridMap
+type Expanded [1]gdclass.GridMap
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -65,35 +66,35 @@ type Any interface {
 Based on [param value], enables or disables the specified layer in the [member collision_mask], given a [param layer_number] between 1 and 32.
 */
 func (self Instance) SetCollisionMaskValue(layer_number int, value bool) { //gd:GridMap.set_collision_mask_value
-	class(self).SetCollisionMaskValue(int64(layer_number), value)
+	Advanced(self).SetCollisionMaskValue(int64(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member collision_mask] is enabled, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) GetCollisionMaskValue(layer_number int) bool { //gd:GridMap.get_collision_mask_value
-	return bool(class(self).GetCollisionMaskValue(int64(layer_number)))
+	return bool(Advanced(self).GetCollisionMaskValue(int64(layer_number)))
 }
 
 /*
 Based on [param value], enables or disables the specified layer in the [member collision_layer], given a [param layer_number] between 1 and 32.
 */
 func (self Instance) SetCollisionLayerValue(layer_number int, value bool) { //gd:GridMap.set_collision_layer_value
-	class(self).SetCollisionLayerValue(int64(layer_number), value)
+	Advanced(self).SetCollisionLayerValue(int64(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member collision_layer] is enabled, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) GetCollisionLayerValue(layer_number int) bool { //gd:GridMap.get_collision_layer_value
-	return bool(class(self).GetCollisionLayerValue(int64(layer_number)))
+	return bool(Advanced(self).GetCollisionLayerValue(int64(layer_number)))
 }
 
 /*
 Sets the [RID] of the navigation map this GridMap node should use for its cell baked navigation meshes.
 */
 func (self Instance) SetNavigationMap(navigation_map RID.NavigationMap3D) { //gd:GridMap.set_navigation_map
-	class(self).SetNavigationMap(RID.Any(navigation_map))
+	Advanced(self).SetNavigationMap(RID.Any(navigation_map))
 }
 
 /*
@@ -101,7 +102,7 @@ Returns the [RID] of the navigation map this GridMap node uses for its cell bake
 This function returns always the map set on the GridMap node and not the map on the NavigationServer. If the map is changed directly with the NavigationServer API the GridMap node will not be aware of the map change.
 */
 func (self Instance) GetNavigationMap() RID.NavigationMap3D { //gd:GridMap.get_navigation_map
-	return RID.NavigationMap3D(class(self).GetNavigationMap())
+	return RID.NavigationMap3D(Advanced(self).GetNavigationMap())
 }
 
 /*
@@ -110,119 +111,135 @@ A negative item index such as [constant INVALID_CELL_ITEM] will clear the cell.
 Optionally, the item's orientation can be passed. For valid orientation values, see [method get_orthogonal_index_from_basis].
 */
 func (self Instance) SetCellItem(position Vector3i.XYZ, item int) { //gd:GridMap.set_cell_item
-	class(self).SetCellItem(Vector3i.XYZ(position), int64(item), int64(0))
+	Advanced(self).SetCellItem(Vector3i.XYZ(position), int64(item), int64(0))
+}
+
+/*
+Sets the mesh index for the cell referenced by its grid coordinates.
+A negative item index such as [constant INVALID_CELL_ITEM] will clear the cell.
+Optionally, the item's orientation can be passed. For valid orientation values, see [method get_orthogonal_index_from_basis].
+*/
+func (self Expanded) SetCellItem(position Vector3i.XYZ, item int, orientation int) { //gd:GridMap.set_cell_item
+	Advanced(self).SetCellItem(Vector3i.XYZ(position), int64(item), int64(orientation))
 }
 
 /*
 The [MeshLibrary] item index located at the given grid coordinates. If the cell is empty, [constant INVALID_CELL_ITEM] will be returned.
 */
 func (self Instance) GetCellItem(position Vector3i.XYZ) int { //gd:GridMap.get_cell_item
-	return int(int(class(self).GetCellItem(Vector3i.XYZ(position))))
+	return int(int(Advanced(self).GetCellItem(Vector3i.XYZ(position))))
 }
 
 /*
 The orientation of the cell at the given grid coordinates. [code]-1[/code] is returned if the cell is empty.
 */
 func (self Instance) GetCellItemOrientation(position Vector3i.XYZ) int { //gd:GridMap.get_cell_item_orientation
-	return int(int(class(self).GetCellItemOrientation(Vector3i.XYZ(position))))
+	return int(int(Advanced(self).GetCellItemOrientation(Vector3i.XYZ(position))))
 }
 
 /*
 Returns the basis that gives the specified cell its orientation.
 */
 func (self Instance) GetCellItemBasis(position Vector3i.XYZ) Basis.XYZ { //gd:GridMap.get_cell_item_basis
-	return Basis.XYZ(class(self).GetCellItemBasis(Vector3i.XYZ(position)))
+	return Basis.XYZ(Advanced(self).GetCellItemBasis(Vector3i.XYZ(position)))
 }
 
 /*
 Returns one of 24 possible rotations that lie along the vectors (x,y,z) with each component being either -1, 0, or 1. For further details, refer to the Godot source code.
 */
 func (self Instance) GetBasisWithOrthogonalIndex(index int) Basis.XYZ { //gd:GridMap.get_basis_with_orthogonal_index
-	return Basis.XYZ(class(self).GetBasisWithOrthogonalIndex(int64(index)))
+	return Basis.XYZ(Advanced(self).GetBasisWithOrthogonalIndex(int64(index)))
 }
 
 /*
 This function considers a discretization of rotations into 24 points on unit sphere, lying along the vectors (x,y,z) with each component being either -1, 0, or 1, and returns the index (in the range from 0 to 23) of the point best representing the orientation of the object. For further details, refer to the Godot source code.
 */
 func (self Instance) GetOrthogonalIndexFromBasis(basis Basis.XYZ) int { //gd:GridMap.get_orthogonal_index_from_basis
-	return int(int(class(self).GetOrthogonalIndexFromBasis(Basis.XYZ(basis))))
+	return int(int(Advanced(self).GetOrthogonalIndexFromBasis(Basis.XYZ(basis))))
 }
 
 /*
 Returns the map coordinates of the cell containing the given [param local_position]. If [param local_position] is in global coordinates, consider using [method Node3D.to_local] before passing it to this method. See also [method map_to_local].
 */
 func (self Instance) LocalToMap(local_position Vector3.XYZ) Vector3i.XYZ { //gd:GridMap.local_to_map
-	return Vector3i.XYZ(class(self).LocalToMap(Vector3.XYZ(local_position)))
+	return Vector3i.XYZ(Advanced(self).LocalToMap(Vector3.XYZ(local_position)))
 }
 
 /*
 Returns the position of a grid cell in the GridMap's local coordinate space. To convert the returned value into global coordinates, use [method Node3D.to_global]. See also [method local_to_map].
 */
 func (self Instance) MapToLocal(map_position Vector3i.XYZ) Vector3.XYZ { //gd:GridMap.map_to_local
-	return Vector3.XYZ(class(self).MapToLocal(Vector3i.XYZ(map_position)))
+	return Vector3.XYZ(Advanced(self).MapToLocal(Vector3i.XYZ(map_position)))
 }
 
 /*
 This method does nothing.
 */
 func (self Instance) ResourceChanged(resource [1]gdclass.Resource) { //gd:GridMap.resource_changed
-	class(self).ResourceChanged(resource)
+	Advanced(self).ResourceChanged(resource)
 }
 
 /*
 Clear all cells.
 */
 func (self Instance) Clear() { //gd:GridMap.clear
-	class(self).Clear()
+	Advanced(self).Clear()
 }
 
 /*
 Returns an array of [Vector3] with the non-empty cell coordinates in the grid map.
 */
 func (self Instance) GetUsedCells() []Vector3i.XYZ { //gd:GridMap.get_used_cells
-	return []Vector3i.XYZ(gd.ArrayAs[[]Vector3i.XYZ](gd.InternalArray(class(self).GetUsedCells())))
+	return []Vector3i.XYZ(gd.ArrayAs[[]Vector3i.XYZ](gd.InternalArray(Advanced(self).GetUsedCells())))
 }
 
 /*
 Returns an array of all cells with the given item index specified in [param item].
 */
 func (self Instance) GetUsedCellsByItem(item int) []Vector3i.XYZ { //gd:GridMap.get_used_cells_by_item
-	return []Vector3i.XYZ(gd.ArrayAs[[]Vector3i.XYZ](gd.InternalArray(class(self).GetUsedCellsByItem(int64(item)))))
+	return []Vector3i.XYZ(gd.ArrayAs[[]Vector3i.XYZ](gd.InternalArray(Advanced(self).GetUsedCellsByItem(int64(item)))))
 }
 
 /*
 Returns an array of [Transform3D] and [Mesh] references corresponding to the non-empty cells in the grid. The transforms are specified in local space.
 */
 func (self Instance) GetMeshes() []any { //gd:GridMap.get_meshes
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetMeshes())))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetMeshes())))
 }
 
 /*
 Returns an array of [ArrayMesh]es and [Transform3D] references of all bake meshes that exist within the current GridMap.
 */
 func (self Instance) GetBakeMeshes() []any { //gd:GridMap.get_bake_meshes
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetBakeMeshes())))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetBakeMeshes())))
 }
 
 /*
 Returns [RID] of a baked mesh with the given [param idx].
 */
 func (self Instance) GetBakeMeshInstance(idx int) RID.Mesh { //gd:GridMap.get_bake_mesh_instance
-	return RID.Mesh(class(self).GetBakeMeshInstance(int64(idx)))
+	return RID.Mesh(Advanced(self).GetBakeMeshInstance(int64(idx)))
 }
 
 /*
 Clears all baked meshes. See [method make_baked_meshes].
 */
 func (self Instance) ClearBakedMeshes() { //gd:GridMap.clear_baked_meshes
-	class(self).ClearBakedMeshes()
+	Advanced(self).ClearBakedMeshes()
 }
 
 /*
 Bakes lightmap data for all meshes in the assigned [MeshLibrary].
 */
 func (self Instance) MakeBakedMeshes() { //gd:GridMap.make_baked_meshes
-	class(self).MakeBakedMeshes(false, float64(0.1))
+	Advanced(self).MakeBakedMeshes(false, float64(0.1))
+}
+
+/*
+Bakes lightmap data for all meshes in the assigned [MeshLibrary].
+*/
+func (self Expanded) MakeBakedMeshes(gen_lightmap_uv bool, lightmap_uv_texel_size Float.X) { //gd:GridMap.make_baked_meshes
+	Advanced(self).MakeBakedMeshes(gen_lightmap_uv, float64(lightmap_uv_texel_size))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

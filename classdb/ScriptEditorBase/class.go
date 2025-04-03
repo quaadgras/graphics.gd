@@ -62,14 +62,14 @@ type Any interface {
 Returns the underlying [Control] used for editing scripts. For text scripts, this is a [CodeEdit].
 */
 func (self Instance) GetBaseEditor() [1]gdclass.Control { //gd:ScriptEditorBase.get_base_editor
-	return [1]gdclass.Control(class(self).GetBaseEditor())
+	return [1]gdclass.Control(Advanced(self).GetBaseEditor())
 }
 
 /*
 Adds a [EditorSyntaxHighlighter] to the open script.
 */
 func (self Instance) AddSyntaxHighlighter(highlighter [1]gdclass.EditorSyntaxHighlighter) { //gd:ScriptEditorBase.add_syntax_highlighter
-	class(self).AddSyntaxHighlighter(highlighter)
+	Advanced(self).AddSyntaxHighlighter(highlighter)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

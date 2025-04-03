@@ -46,6 +46,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 Abstraction over [TextServer] for handling a single line of text.
 */
 type Instance [1]gdclass.TextLine
+type Expanded [1]gdclass.TextLine
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -59,7 +60,7 @@ type Any interface {
 Clears text line (removes text and inline objects).
 */
 func (self Instance) Clear() { //gd:TextLine.clear
-	class(self).Clear()
+	Advanced(self).Clear()
 }
 
 /*
@@ -67,119 +68,154 @@ Overrides BiDi for the structured text.
 Override ranges should cover full source text without overlaps. BiDi algorithm will be used on each range separately.
 */
 func (self Instance) SetBidiOverride(override []any) { //gd:TextLine.set_bidi_override
-	class(self).SetBidiOverride(gd.EngineArrayFromSlice(override))
+	Advanced(self).SetBidiOverride(gd.EngineArrayFromSlice(override))
 }
 
 /*
 Adds text span and font to draw it.
 */
 func (self Instance) AddString(text string, font [1]gdclass.Font, font_size int) bool { //gd:TextLine.add_string
-	return bool(class(self).AddString(String.New(text), font, int64(font_size), String.New(""), variant.New([1]any{}[0])))
+	return bool(Advanced(self).AddString(String.New(text), font, int64(font_size), String.New(""), variant.New([1]any{}[0])))
+}
+
+/*
+Adds text span and font to draw it.
+*/
+func (self Expanded) AddString(text string, font [1]gdclass.Font, font_size int, language string, meta any) bool { //gd:TextLine.add_string
+	return bool(Advanced(self).AddString(String.New(text), font, int64(font_size), String.New(language), variant.New(meta)))
 }
 
 /*
 Adds inline object to the text buffer, [param key] must be unique. In the text, object is represented as [param length] object replacement characters.
 */
 func (self Instance) AddObject(key any, size Vector2.XY) bool { //gd:TextLine.add_object
-	return bool(class(self).AddObject(variant.New(key), Vector2.XY(size), 5, int64(1), float64(0.0)))
+	return bool(Advanced(self).AddObject(variant.New(key), Vector2.XY(size), 5, int64(1), float64(0.0)))
+}
+
+/*
+Adds inline object to the text buffer, [param key] must be unique. In the text, object is represented as [param length] object replacement characters.
+*/
+func (self Expanded) AddObject(key any, size Vector2.XY, inline_align InlineAlignment, length int, baseline Float.X) bool { //gd:TextLine.add_object
+	return bool(Advanced(self).AddObject(variant.New(key), Vector2.XY(size), inline_align, int64(length), float64(baseline)))
 }
 
 /*
 Sets new size and alignment of embedded object.
 */
 func (self Instance) ResizeObject(key any, size Vector2.XY) bool { //gd:TextLine.resize_object
-	return bool(class(self).ResizeObject(variant.New(key), Vector2.XY(size), 5, float64(0.0)))
+	return bool(Advanced(self).ResizeObject(variant.New(key), Vector2.XY(size), 5, float64(0.0)))
+}
+
+/*
+Sets new size and alignment of embedded object.
+*/
+func (self Expanded) ResizeObject(key any, size Vector2.XY, inline_align InlineAlignment, baseline Float.X) bool { //gd:TextLine.resize_object
+	return bool(Advanced(self).ResizeObject(variant.New(key), Vector2.XY(size), inline_align, float64(baseline)))
 }
 
 /*
 Aligns text to the given tab-stops.
 */
 func (self Instance) TabAlign(tab_stops []float32) { //gd:TextLine.tab_align
-	class(self).TabAlign(Packed.New(tab_stops...))
+	Advanced(self).TabAlign(Packed.New(tab_stops...))
 }
 
 /*
 Returns array of inline objects.
 */
 func (self Instance) GetObjects() []any { //gd:TextLine.get_objects
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetObjects())))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetObjects())))
 }
 
 /*
 Returns bounding rectangle of the inline object.
 */
 func (self Instance) GetObjectRect(key any) Rect2.PositionSize { //gd:TextLine.get_object_rect
-	return Rect2.PositionSize(class(self).GetObjectRect(variant.New(key)))
+	return Rect2.PositionSize(Advanced(self).GetObjectRect(variant.New(key)))
 }
 
 /*
 Returns size of the bounding box of the text.
 */
 func (self Instance) GetSize() Vector2.XY { //gd:TextLine.get_size
-	return Vector2.XY(class(self).GetSize())
+	return Vector2.XY(Advanced(self).GetSize())
 }
 
 /*
 Returns TextServer buffer RID.
 */
 func (self Instance) GetRid() RID.TextBuffer { //gd:TextLine.get_rid
-	return RID.TextBuffer(class(self).GetRid())
+	return RID.TextBuffer(Advanced(self).GetRid())
 }
 
 /*
 Returns the text ascent (number of pixels above the baseline for horizontal layout or to the left of baseline for vertical).
 */
 func (self Instance) GetLineAscent() Float.X { //gd:TextLine.get_line_ascent
-	return Float.X(Float.X(class(self).GetLineAscent()))
+	return Float.X(Float.X(Advanced(self).GetLineAscent()))
 }
 
 /*
 Returns the text descent (number of pixels below the baseline for horizontal layout or to the right of baseline for vertical).
 */
 func (self Instance) GetLineDescent() Float.X { //gd:TextLine.get_line_descent
-	return Float.X(Float.X(class(self).GetLineDescent()))
+	return Float.X(Float.X(Advanced(self).GetLineDescent()))
 }
 
 /*
 Returns width (for horizontal layout) or height (for vertical) of the text.
 */
 func (self Instance) GetLineWidth() Float.X { //gd:TextLine.get_line_width
-	return Float.X(Float.X(class(self).GetLineWidth()))
+	return Float.X(Float.X(Advanced(self).GetLineWidth()))
 }
 
 /*
 Returns pixel offset of the underline below the baseline.
 */
 func (self Instance) GetLineUnderlinePosition() Float.X { //gd:TextLine.get_line_underline_position
-	return Float.X(Float.X(class(self).GetLineUnderlinePosition()))
+	return Float.X(Float.X(Advanced(self).GetLineUnderlinePosition()))
 }
 
 /*
 Returns thickness of the underline.
 */
 func (self Instance) GetLineUnderlineThickness() Float.X { //gd:TextLine.get_line_underline_thickness
-	return Float.X(Float.X(class(self).GetLineUnderlineThickness()))
+	return Float.X(Float.X(Advanced(self).GetLineUnderlineThickness()))
 }
 
 /*
 Draw text into a canvas item at a given position, with [param color]. [param pos] specifies the top left corner of the bounding box.
 */
 func (self Instance) Draw(canvas RID.Canvas, pos Vector2.XY) { //gd:TextLine.draw
-	class(self).Draw(RID.Any(canvas), Vector2.XY(pos), Color.RGBA(gd.Color{1, 1, 1, 1}))
+	Advanced(self).Draw(RID.Any(canvas), Vector2.XY(pos), Color.RGBA(gd.Color{1, 1, 1, 1}))
+}
+
+/*
+Draw text into a canvas item at a given position, with [param color]. [param pos] specifies the top left corner of the bounding box.
+*/
+func (self Expanded) Draw(canvas RID.Canvas, pos Vector2.XY, color Color.RGBA) { //gd:TextLine.draw
+	Advanced(self).Draw(RID.Any(canvas), Vector2.XY(pos), Color.RGBA(color))
 }
 
 /*
 Draw text into a canvas item at a given position, with [param color]. [param pos] specifies the top left corner of the bounding box.
 */
 func (self Instance) DrawOutline(canvas RID.Canvas, pos Vector2.XY) { //gd:TextLine.draw_outline
-	class(self).DrawOutline(RID.Any(canvas), Vector2.XY(pos), int64(1), Color.RGBA(gd.Color{1, 1, 1, 1}))
+	Advanced(self).DrawOutline(RID.Any(canvas), Vector2.XY(pos), int64(1), Color.RGBA(gd.Color{1, 1, 1, 1}))
+}
+
+/*
+Draw text into a canvas item at a given position, with [param color]. [param pos] specifies the top left corner of the bounding box.
+*/
+func (self Expanded) DrawOutline(canvas RID.Canvas, pos Vector2.XY, outline_size int, color Color.RGBA) { //gd:TextLine.draw_outline
+	Advanced(self).DrawOutline(RID.Any(canvas), Vector2.XY(pos), int64(outline_size), Color.RGBA(color))
 }
 
 /*
 Returns caret character offset at the specified pixel offset at the baseline. This function always returns a valid position.
 */
 func (self Instance) HitTest(coords Float.X) int { //gd:TextLine.hit_test
-	return int(int(class(self).HitTest(float64(coords))))
+	return int(int(Advanced(self).HitTest(float64(coords))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

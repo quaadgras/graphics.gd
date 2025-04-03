@@ -60,7 +60,7 @@ type Any interface {
 Returns the [RID] owned by this SkinReference, as returned by [method RenderingServer.skeleton_create].
 */
 func (self Instance) GetSkeleton() RID.Skeleton { //gd:SkinReference.get_skeleton
-	return RID.Skeleton(class(self).GetSkeleton())
+	return RID.Skeleton(Advanced(self).GetSkeleton())
 }
 
 /*
@@ -68,7 +68,7 @@ Returns the [Skin] connected to this SkinReference. In the case of [MeshInstance
 Note that a single [Skin] may have more than one [SkinReference] in the case that it is shared by meshes across multiple [Skeleton3D] nodes.
 */
 func (self Instance) GetSkin() [1]gdclass.Skin { //gd:SkinReference.get_skin
-	return [1]gdclass.Skin(class(self).GetSkin())
+	return [1]gdclass.Skin(Advanced(self).GetSkin())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

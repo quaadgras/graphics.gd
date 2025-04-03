@@ -49,6 +49,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 Unlike [FileDialog], [EditorFileDialog] does not have a property for using native dialogs. Instead, native dialogs can be enabled globally via the [member EditorSettings.interface/editor/use_native_file_dialogs] editor setting. They are also enabled automatically when running in sandbox (e.g. on macOS).
 */
 type Instance [1]gdclass.EditorFileDialog
+type Expanded [1]gdclass.EditorFileDialog
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -62,7 +63,7 @@ type Any interface {
 Removes all filters except for "All Files (*.*)".
 */
 func (self Instance) ClearFilters() { //gd:EditorFileDialog.clear_filters
-	class(self).ClearFilters()
+	Advanced(self).ClearFilters()
 }
 
 /*
@@ -71,49 +72,58 @@ A [param filter] should be of the form [code]"filename.extension"[/code], where 
 For example, a [param filter] of [code]"*.tscn, *.scn"[/code] and a [param description] of [code]"Scenes"[/code] results in filter text "Scenes (*.tscn, *.scn)".
 */
 func (self Instance) AddFilter(filter string) { //gd:EditorFileDialog.add_filter
-	class(self).AddFilter(String.New(filter), String.New(""))
+	Advanced(self).AddFilter(String.New(filter), String.New(""))
+}
+
+/*
+Adds a comma-delimited file name [param filter] option to the [EditorFileDialog] with an optional [param description], which restricts what files can be picked.
+A [param filter] should be of the form [code]"filename.extension"[/code], where filename and extension can be [code]*[/code] to match any string. Filters starting with [code].[/code] (i.e. empty filenames) are not allowed.
+For example, a [param filter] of [code]"*.tscn, *.scn"[/code] and a [param description] of [code]"Scenes"[/code] results in filter text "Scenes (*.tscn, *.scn)".
+*/
+func (self Expanded) AddFilter(filter string, description string) { //gd:EditorFileDialog.add_filter
+	Advanced(self).AddFilter(String.New(filter), String.New(description))
 }
 
 /*
 Returns the name of the [OptionButton] or [CheckBox] with index [param option].
 */
 func (self Instance) GetOptionName(option int) string { //gd:EditorFileDialog.get_option_name
-	return string(class(self).GetOptionName(int64(option)).String())
+	return string(Advanced(self).GetOptionName(int64(option)).String())
 }
 
 /*
 Returns an array of values of the [OptionButton] with index [param option].
 */
 func (self Instance) GetOptionValues(option int) []string { //gd:EditorFileDialog.get_option_values
-	return []string(class(self).GetOptionValues(int64(option)).Strings())
+	return []string(Advanced(self).GetOptionValues(int64(option)).Strings())
 }
 
 /*
 Returns the default value index of the [OptionButton] or [CheckBox] with index [param option].
 */
 func (self Instance) GetOptionDefault(option int) int { //gd:EditorFileDialog.get_option_default
-	return int(int(class(self).GetOptionDefault(int64(option))))
+	return int(int(Advanced(self).GetOptionDefault(int64(option))))
 }
 
 /*
 Sets the name of the [OptionButton] or [CheckBox] with index [param option].
 */
 func (self Instance) SetOptionName(option int, name string) { //gd:EditorFileDialog.set_option_name
-	class(self).SetOptionName(int64(option), String.New(name))
+	Advanced(self).SetOptionName(int64(option), String.New(name))
 }
 
 /*
 Sets the option values of the [OptionButton] with index [param option].
 */
 func (self Instance) SetOptionValues(option int, values []string) { //gd:EditorFileDialog.set_option_values
-	class(self).SetOptionValues(int64(option), Packed.MakeStrings(values...))
+	Advanced(self).SetOptionValues(int64(option), Packed.MakeStrings(values...))
 }
 
 /*
 Sets the default value index of the [OptionButton] or [CheckBox] with index [param option].
 */
 func (self Instance) SetOptionDefault(option int, default_value_index int) { //gd:EditorFileDialog.set_option_default
-	class(self).SetOptionDefault(int64(option), int64(default_value_index))
+	Advanced(self).SetOptionDefault(int64(option), int64(default_value_index))
 }
 
 /*
@@ -121,35 +131,35 @@ Adds an additional [OptionButton] to the file dialog. If [param values] is empty
 [param default_value_index] should be an index of the value in the [param values]. If [param values] is empty it should be either [code]1[/code] (checked), or [code]0[/code] (unchecked).
 */
 func (self Instance) AddOption(name string, values []string, default_value_index int) { //gd:EditorFileDialog.add_option
-	class(self).AddOption(String.New(name), Packed.MakeStrings(values...), int64(default_value_index))
+	Advanced(self).AddOption(String.New(name), Packed.MakeStrings(values...), int64(default_value_index))
 }
 
 /*
 Returns a [Dictionary] with the selected values of the additional [OptionButton]s and/or [CheckBox]es. [Dictionary] keys are names and values are selected value indices.
 */
 func (self Instance) GetSelectedOptions() map[string]int { //gd:EditorFileDialog.get_selected_options
-	return map[string]int(gd.DictionaryAs[map[string]int](class(self).GetSelectedOptions()))
+	return map[string]int(gd.DictionaryAs[map[string]int](Advanced(self).GetSelectedOptions()))
 }
 
 /*
 Clear the filter for file names.
 */
 func (self Instance) ClearFilenameFilter() { //gd:EditorFileDialog.clear_filename_filter
-	class(self).ClearFilenameFilter()
+	Advanced(self).ClearFilenameFilter()
 }
 
 /*
 Sets the value of the filter for file names.
 */
 func (self Instance) SetFilenameFilter(filter string) { //gd:EditorFileDialog.set_filename_filter
-	class(self).SetFilenameFilter(String.New(filter))
+	Advanced(self).SetFilenameFilter(String.New(filter))
 }
 
 /*
 Returns the value of the filter for file names.
 */
 func (self Instance) GetFilenameFilter() string { //gd:EditorFileDialog.get_filename_filter
-	return string(class(self).GetFilenameFilter().String())
+	return string(Advanced(self).GetFilenameFilter().String())
 }
 
 /*
@@ -157,7 +167,7 @@ Returns the [VBoxContainer] used to display the file system.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
 func (self Instance) GetVbox() [1]gdclass.VBoxContainer { //gd:EditorFileDialog.get_vbox
-	return [1]gdclass.VBoxContainer(class(self).GetVbox())
+	return [1]gdclass.VBoxContainer(Advanced(self).GetVbox())
 }
 
 /*
@@ -165,28 +175,35 @@ Returns the LineEdit for the selected file.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
 func (self Instance) GetLineEdit() [1]gdclass.LineEdit { //gd:EditorFileDialog.get_line_edit
-	return [1]gdclass.LineEdit(class(self).GetLineEdit())
+	return [1]gdclass.LineEdit(Advanced(self).GetLineEdit())
 }
 
 /*
 Adds the given [param menu] to the side of the file dialog with the given [param title] text on top. Only one side menu is allowed.
 */
 func (self Instance) AddSideMenu(menu [1]gdclass.Control) { //gd:EditorFileDialog.add_side_menu
-	class(self).AddSideMenu(menu, String.New(""))
+	Advanced(self).AddSideMenu(menu, String.New(""))
+}
+
+/*
+Adds the given [param menu] to the side of the file dialog with the given [param title] text on top. Only one side menu is allowed.
+*/
+func (self Expanded) AddSideMenu(menu [1]gdclass.Control, title string) { //gd:EditorFileDialog.add_side_menu
+	Advanced(self).AddSideMenu(menu, String.New(title))
 }
 
 /*
 Shows the [EditorFileDialog] at the default size and position for file dialogs in the editor, and selects the file name if there is a current file.
 */
 func (self Instance) PopupFileDialog() { //gd:EditorFileDialog.popup_file_dialog
-	class(self).PopupFileDialog()
+	Advanced(self).PopupFileDialog()
 }
 
 /*
 Notify the [EditorFileDialog] that its view of the data is no longer accurate. Updates the view contents on next view update.
 */
 func (self Instance) Invalidate() { //gd:EditorFileDialog.invalidate
-	class(self).Invalidate()
+	Advanced(self).Invalidate()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

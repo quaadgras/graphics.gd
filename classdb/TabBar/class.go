@@ -48,6 +48,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 A control that provides a horizontal bar with tabs. Similar to [TabContainer] but is only in charge of drawing tabs, not interacting with children.
 */
 type Instance [1]gdclass.TabBar
+type Expanded [1]gdclass.TabBar
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -61,35 +62,35 @@ type Any interface {
 Returns the previously active tab index.
 */
 func (self Instance) GetPreviousTab() int { //gd:TabBar.get_previous_tab
-	return int(int(class(self).GetPreviousTab()))
+	return int(int(Advanced(self).GetPreviousTab()))
 }
 
 /*
 Selects the first available tab with lower index than the currently selected. Returns [code]true[/code] if tab selection changed.
 */
 func (self Instance) SelectPreviousAvailable() bool { //gd:TabBar.select_previous_available
-	return bool(class(self).SelectPreviousAvailable())
+	return bool(Advanced(self).SelectPreviousAvailable())
 }
 
 /*
 Selects the first available tab with greater index than the currently selected. Returns [code]true[/code] if tab selection changed.
 */
 func (self Instance) SelectNextAvailable() bool { //gd:TabBar.select_next_available
-	return bool(class(self).SelectNextAvailable())
+	return bool(Advanced(self).SelectNextAvailable())
 }
 
 /*
 Sets a [param title] for the tab at index [param tab_idx].
 */
 func (self Instance) SetTabTitle(tab_idx int, title string) { //gd:TabBar.set_tab_title
-	class(self).SetTabTitle(int64(tab_idx), String.New(title))
+	Advanced(self).SetTabTitle(int64(tab_idx), String.New(title))
 }
 
 /*
 Returns the title of the tab at index [param tab_idx].
 */
 func (self Instance) GetTabTitle(tab_idx int) string { //gd:TabBar.get_tab_title
-	return string(class(self).GetTabTitle(int64(tab_idx)).String())
+	return string(Advanced(self).GetTabTitle(int64(tab_idx)).String())
 }
 
 /*
@@ -97,189 +98,196 @@ Sets a [param tooltip] for tab at index [param tab_idx].
 [b]Note:[/b] By default, if the [param tooltip] is empty and the tab text is truncated (not all characters fit into the tab), the title will be displayed as a tooltip. To hide the tooltip, assign [code]" "[/code] as the [param tooltip] text.
 */
 func (self Instance) SetTabTooltip(tab_idx int, tooltip string) { //gd:TabBar.set_tab_tooltip
-	class(self).SetTabTooltip(int64(tab_idx), String.New(tooltip))
+	Advanced(self).SetTabTooltip(int64(tab_idx), String.New(tooltip))
 }
 
 /*
 Returns the tooltip text of the tab at index [param tab_idx].
 */
 func (self Instance) GetTabTooltip(tab_idx int) string { //gd:TabBar.get_tab_tooltip
-	return string(class(self).GetTabTooltip(int64(tab_idx)).String())
+	return string(Advanced(self).GetTabTooltip(int64(tab_idx)).String())
 }
 
 /*
 Sets tab title base writing direction.
 */
 func (self Instance) SetTabTextDirection(tab_idx int, direction gdclass.ControlTextDirection) { //gd:TabBar.set_tab_text_direction
-	class(self).SetTabTextDirection(int64(tab_idx), direction)
+	Advanced(self).SetTabTextDirection(int64(tab_idx), direction)
 }
 
 /*
 Returns tab title text base writing direction.
 */
 func (self Instance) GetTabTextDirection(tab_idx int) gdclass.ControlTextDirection { //gd:TabBar.get_tab_text_direction
-	return gdclass.ControlTextDirection(class(self).GetTabTextDirection(int64(tab_idx)))
+	return gdclass.ControlTextDirection(Advanced(self).GetTabTextDirection(int64(tab_idx)))
 }
 
 /*
 Sets language code of tab title used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
 */
 func (self Instance) SetTabLanguage(tab_idx int, language string) { //gd:TabBar.set_tab_language
-	class(self).SetTabLanguage(int64(tab_idx), String.New(language))
+	Advanced(self).SetTabLanguage(int64(tab_idx), String.New(language))
 }
 
 /*
 Returns tab title language code.
 */
 func (self Instance) GetTabLanguage(tab_idx int) string { //gd:TabBar.get_tab_language
-	return string(class(self).GetTabLanguage(int64(tab_idx)).String())
+	return string(Advanced(self).GetTabLanguage(int64(tab_idx)).String())
 }
 
 /*
 Sets an [param icon] for the tab at index [param tab_idx].
 */
 func (self Instance) SetTabIcon(tab_idx int, icon [1]gdclass.Texture2D) { //gd:TabBar.set_tab_icon
-	class(self).SetTabIcon(int64(tab_idx), icon)
+	Advanced(self).SetTabIcon(int64(tab_idx), icon)
 }
 
 /*
 Returns the icon for the tab at index [param tab_idx] or [code]null[/code] if the tab has no icon.
 */
 func (self Instance) GetTabIcon(tab_idx int) [1]gdclass.Texture2D { //gd:TabBar.get_tab_icon
-	return [1]gdclass.Texture2D(class(self).GetTabIcon(int64(tab_idx)))
+	return [1]gdclass.Texture2D(Advanced(self).GetTabIcon(int64(tab_idx)))
 }
 
 /*
 Sets the maximum allowed width of the icon for the tab at index [param tab_idx]. This limit is applied on top of the default size of the icon and on top of [theme_item icon_max_width]. The height is adjusted according to the icon's ratio.
 */
 func (self Instance) SetTabIconMaxWidth(tab_idx int, width int) { //gd:TabBar.set_tab_icon_max_width
-	class(self).SetTabIconMaxWidth(int64(tab_idx), int64(width))
+	Advanced(self).SetTabIconMaxWidth(int64(tab_idx), int64(width))
 }
 
 /*
 Returns the maximum allowed width of the icon for the tab at index [param tab_idx].
 */
 func (self Instance) GetTabIconMaxWidth(tab_idx int) int { //gd:TabBar.get_tab_icon_max_width
-	return int(int(class(self).GetTabIconMaxWidth(int64(tab_idx))))
+	return int(int(Advanced(self).GetTabIconMaxWidth(int64(tab_idx))))
 }
 
 /*
 Sets an [param icon] for the button of the tab at index [param tab_idx] (located to the right, before the close button), making it visible and clickable (See [signal tab_button_pressed]). Giving it a [code]null[/code] value will hide the button.
 */
 func (self Instance) SetTabButtonIcon(tab_idx int, icon [1]gdclass.Texture2D) { //gd:TabBar.set_tab_button_icon
-	class(self).SetTabButtonIcon(int64(tab_idx), icon)
+	Advanced(self).SetTabButtonIcon(int64(tab_idx), icon)
 }
 
 /*
 Returns the icon for the right button of the tab at index [param tab_idx] or [code]null[/code] if the right button has no icon.
 */
 func (self Instance) GetTabButtonIcon(tab_idx int) [1]gdclass.Texture2D { //gd:TabBar.get_tab_button_icon
-	return [1]gdclass.Texture2D(class(self).GetTabButtonIcon(int64(tab_idx)))
+	return [1]gdclass.Texture2D(Advanced(self).GetTabButtonIcon(int64(tab_idx)))
 }
 
 /*
 If [param disabled] is [code]true[/code], disables the tab at index [param tab_idx], making it non-interactable.
 */
 func (self Instance) SetTabDisabled(tab_idx int, disabled bool) { //gd:TabBar.set_tab_disabled
-	class(self).SetTabDisabled(int64(tab_idx), disabled)
+	Advanced(self).SetTabDisabled(int64(tab_idx), disabled)
 }
 
 /*
 Returns [code]true[/code] if the tab at index [param tab_idx] is disabled.
 */
 func (self Instance) IsTabDisabled(tab_idx int) bool { //gd:TabBar.is_tab_disabled
-	return bool(class(self).IsTabDisabled(int64(tab_idx)))
+	return bool(Advanced(self).IsTabDisabled(int64(tab_idx)))
 }
 
 /*
 If [param hidden] is [code]true[/code], hides the tab at index [param tab_idx], making it disappear from the tab area.
 */
 func (self Instance) SetTabHidden(tab_idx int, hidden bool) { //gd:TabBar.set_tab_hidden
-	class(self).SetTabHidden(int64(tab_idx), hidden)
+	Advanced(self).SetTabHidden(int64(tab_idx), hidden)
 }
 
 /*
 Returns [code]true[/code] if the tab at index [param tab_idx] is hidden.
 */
 func (self Instance) IsTabHidden(tab_idx int) bool { //gd:TabBar.is_tab_hidden
-	return bool(class(self).IsTabHidden(int64(tab_idx)))
+	return bool(Advanced(self).IsTabHidden(int64(tab_idx)))
 }
 
 /*
 Sets the metadata value for the tab at index [param tab_idx], which can be retrieved later using [method get_tab_metadata].
 */
 func (self Instance) SetTabMetadata(tab_idx int, metadata any) { //gd:TabBar.set_tab_metadata
-	class(self).SetTabMetadata(int64(tab_idx), variant.New(metadata))
+	Advanced(self).SetTabMetadata(int64(tab_idx), variant.New(metadata))
 }
 
 /*
 Returns the metadata value set to the tab at index [param tab_idx] using [method set_tab_metadata]. If no metadata was previously set, returns [code]null[/code] by default.
 */
 func (self Instance) GetTabMetadata(tab_idx int) any { //gd:TabBar.get_tab_metadata
-	return any(class(self).GetTabMetadata(int64(tab_idx)).Interface())
+	return any(Advanced(self).GetTabMetadata(int64(tab_idx)).Interface())
 }
 
 /*
 Removes the tab at index [param tab_idx].
 */
 func (self Instance) RemoveTab(tab_idx int) { //gd:TabBar.remove_tab
-	class(self).RemoveTab(int64(tab_idx))
+	Advanced(self).RemoveTab(int64(tab_idx))
 }
 
 /*
 Adds a new tab.
 */
 func (self Instance) AddTab() { //gd:TabBar.add_tab
-	class(self).AddTab(String.New(""), [1][1]gdclass.Texture2D{}[0])
+	Advanced(self).AddTab(String.New(""), [1][1]gdclass.Texture2D{}[0])
+}
+
+/*
+Adds a new tab.
+*/
+func (self Expanded) AddTab(title string, icon [1]gdclass.Texture2D) { //gd:TabBar.add_tab
+	Advanced(self).AddTab(String.New(title), icon)
 }
 
 /*
 Returns the index of the tab at local coordinates [param point]. Returns [code]-1[/code] if the point is outside the control boundaries or if there's no tab at the queried position.
 */
 func (self Instance) GetTabIdxAtPoint(point Vector2.XY) int { //gd:TabBar.get_tab_idx_at_point
-	return int(int(class(self).GetTabIdxAtPoint(Vector2.XY(point))))
+	return int(int(Advanced(self).GetTabIdxAtPoint(Vector2.XY(point))))
 }
 
 /*
 Returns the number of hidden tabs offsetted to the left.
 */
 func (self Instance) GetTabOffset() int { //gd:TabBar.get_tab_offset
-	return int(int(class(self).GetTabOffset()))
+	return int(int(Advanced(self).GetTabOffset()))
 }
 
 /*
 Returns [code]true[/code] if the offset buttons (the ones that appear when there's not enough space for all tabs) are visible.
 */
 func (self Instance) GetOffsetButtonsVisible() bool { //gd:TabBar.get_offset_buttons_visible
-	return bool(class(self).GetOffsetButtonsVisible())
+	return bool(Advanced(self).GetOffsetButtonsVisible())
 }
 
 /*
 Moves the scroll view to make the tab visible.
 */
 func (self Instance) EnsureTabVisible(idx int) { //gd:TabBar.ensure_tab_visible
-	class(self).EnsureTabVisible(int64(idx))
+	Advanced(self).EnsureTabVisible(int64(idx))
 }
 
 /*
 Returns tab [Rect2] with local position and size.
 */
 func (self Instance) GetTabRect(tab_idx int) Rect2.PositionSize { //gd:TabBar.get_tab_rect
-	return Rect2.PositionSize(class(self).GetTabRect(int64(tab_idx)))
+	return Rect2.PositionSize(Advanced(self).GetTabRect(int64(tab_idx)))
 }
 
 /*
 Moves a tab from [param from] to [param to].
 */
 func (self Instance) MoveTab(from int, to int) { //gd:TabBar.move_tab
-	class(self).MoveTab(int64(from), int64(to))
+	Advanced(self).MoveTab(int64(from), int64(to))
 }
 
 /*
 Clears all tabs.
 */
 func (self Instance) ClearTabs() { //gd:TabBar.clear_tabs
-	class(self).ClearTabs()
+	Advanced(self).ClearTabs()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -61,42 +61,42 @@ type Any interface {
 Sets [constant TRANSFORM_FLAG_POSITION] into [member enable].
 */
 func (self Instance) SetPositionEnabled(enabled bool) { //gd:RetargetModifier3D.set_position_enabled
-	class(self).SetPositionEnabled(enabled)
+	Advanced(self).SetPositionEnabled(enabled)
 }
 
 /*
 Returns [code]true[/code] if [member enable] has [constant TRANSFORM_FLAG_POSITION].
 */
 func (self Instance) IsPositionEnabled() bool { //gd:RetargetModifier3D.is_position_enabled
-	return bool(class(self).IsPositionEnabled())
+	return bool(Advanced(self).IsPositionEnabled())
 }
 
 /*
 Sets [constant TRANSFORM_FLAG_ROTATION] into [member enable].
 */
 func (self Instance) SetRotationEnabled(enabled bool) { //gd:RetargetModifier3D.set_rotation_enabled
-	class(self).SetRotationEnabled(enabled)
+	Advanced(self).SetRotationEnabled(enabled)
 }
 
 /*
 Returns [code]true[/code] if [member enable] has [constant TRANSFORM_FLAG_ROTATION].
 */
 func (self Instance) IsRotationEnabled() bool { //gd:RetargetModifier3D.is_rotation_enabled
-	return bool(class(self).IsRotationEnabled())
+	return bool(Advanced(self).IsRotationEnabled())
 }
 
 /*
 Sets [constant TRANSFORM_FLAG_SCALE] into [member enable].
 */
 func (self Instance) SetScaleEnabled(enabled bool) { //gd:RetargetModifier3D.set_scale_enabled
-	class(self).SetScaleEnabled(enabled)
+	Advanced(self).SetScaleEnabled(enabled)
 }
 
 /*
 Returns [code]true[/code] if [member enable] has [constant TRANSFORM_FLAG_SCALE].
 */
 func (self Instance) IsScaleEnabled() bool { //gd:RetargetModifier3D.is_scale_enabled
-	return bool(class(self).IsScaleEnabled())
+	return bool(Advanced(self).IsScaleEnabled())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

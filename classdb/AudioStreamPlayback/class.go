@@ -48,6 +48,7 @@ Can play, loop, pause a scroll through audio. See [AudioStream] and [AudioStream
 %!(EXTRA string=AudioStreamPlayback)
 */
 type Instance [1]gdclass.AudioStreamPlayback
+type Expanded [1]gdclass.AudioStreamPlayback
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -227,14 +228,14 @@ func (Instance) _get_parameter(impl func(ptr unsafe.Pointer, name string) any) (
 Associates [AudioSamplePlayback] to this [AudioStreamPlayback] for playing back the audio sample of this stream.
 */
 func (self Instance) SetSamplePlayback(playback_sample [1]gdclass.AudioSamplePlayback) { //gd:AudioStreamPlayback.set_sample_playback
-	class(self).SetSamplePlayback(playback_sample)
+	Advanced(self).SetSamplePlayback(playback_sample)
 }
 
 /*
 Returns the [AudioSamplePlayback] associated with this [AudioStreamPlayback] for playing back the audio sample of this stream.
 */
 func (self Instance) GetSamplePlayback() [1]gdclass.AudioSamplePlayback { //gd:AudioStreamPlayback.get_sample_playback
-	return [1]gdclass.AudioSamplePlayback(class(self).GetSamplePlayback())
+	return [1]gdclass.AudioSamplePlayback(Advanced(self).GetSamplePlayback())
 }
 
 /*
@@ -243,49 +244,63 @@ Returns a [PackedVector2Array] where each element holds the left and right chann
 [b]Note:[/b] Can return fewer frames than requested, make sure to use the size of the return value.
 */
 func (self Instance) MixAudio(rate_scale Float.X, frames int) []Vector2.XY { //gd:AudioStreamPlayback.mix_audio
-	return []Vector2.XY(slices.Collect(class(self).MixAudio(float64(rate_scale), int64(frames)).Values()))
+	return []Vector2.XY(slices.Collect(Advanced(self).MixAudio(float64(rate_scale), int64(frames)).Values()))
 }
 
 /*
 Starts the stream from the given [param from_pos], in seconds.
 */
 func (self Instance) Start() { //gd:AudioStreamPlayback.start
-	class(self).Start(float64(0.0))
+	Advanced(self).Start(float64(0.0))
+}
+
+/*
+Starts the stream from the given [param from_pos], in seconds.
+*/
+func (self Expanded) Start(from_pos Float.X) { //gd:AudioStreamPlayback.start
+	Advanced(self).Start(float64(from_pos))
 }
 
 /*
 Seeks the stream at the given [param time], in seconds.
 */
 func (self Instance) SeekTo() { //gd:AudioStreamPlayback.seek
-	class(self).SeekTo(float64(0.0))
+	Advanced(self).SeekTo(float64(0.0))
+}
+
+/*
+Seeks the stream at the given [param time], in seconds.
+*/
+func (self Expanded) SeekTo(time Float.X) { //gd:AudioStreamPlayback.seek
+	Advanced(self).SeekTo(float64(time))
 }
 
 /*
 Stops the stream.
 */
 func (self Instance) Stop() { //gd:AudioStreamPlayback.stop
-	class(self).Stop()
+	Advanced(self).Stop()
 }
 
 /*
 Returns the number of times the stream has looped.
 */
 func (self Instance) GetLoopCount() int { //gd:AudioStreamPlayback.get_loop_count
-	return int(int(class(self).GetLoopCount()))
+	return int(int(Advanced(self).GetLoopCount()))
 }
 
 /*
 Returns the current position in the stream, in seconds.
 */
 func (self Instance) GetPlaybackPosition() Float.X { //gd:AudioStreamPlayback.get_playback_position
-	return Float.X(Float.X(class(self).GetPlaybackPosition()))
+	return Float.X(Float.X(Advanced(self).GetPlaybackPosition()))
 }
 
 /*
 Returns [code]true[/code] if the stream is playing.
 */
 func (self Instance) IsPlaying() bool { //gd:AudioStreamPlayback.is_playing
-	return bool(class(self).IsPlaying())
+	return bool(Advanced(self).IsPlaying())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

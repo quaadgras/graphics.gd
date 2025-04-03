@@ -45,6 +45,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 This modification takes the transforms of [PhysicalBone2D] nodes and applies them to [Bone2D] nodes. This allows the [Bone2D] nodes to react to physics thanks to the linked [PhysicalBone2D] nodes.
 */
 type Instance [1]gdclass.SkeletonModification2DPhysicalBones
+type Expanded [1]gdclass.SkeletonModification2DPhysicalBones
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -59,21 +60,21 @@ Sets the [PhysicalBone2D] node at [param joint_idx].
 [b]Note:[/b] This is just the index used for this modification, not the bone index used in the [Skeleton2D].
 */
 func (self Instance) SetPhysicalBoneNode(joint_idx int, physicalbone2d_node string) { //gd:SkeletonModification2DPhysicalBones.set_physical_bone_node
-	class(self).SetPhysicalBoneNode(int64(joint_idx), Path.ToNode(String.New(physicalbone2d_node)))
+	Advanced(self).SetPhysicalBoneNode(int64(joint_idx), Path.ToNode(String.New(physicalbone2d_node)))
 }
 
 /*
 Returns the [PhysicalBone2D] node at [param joint_idx].
 */
 func (self Instance) GetPhysicalBoneNode(joint_idx int) string { //gd:SkeletonModification2DPhysicalBones.get_physical_bone_node
-	return string(class(self).GetPhysicalBoneNode(int64(joint_idx)).String())
+	return string(Advanced(self).GetPhysicalBoneNode(int64(joint_idx)).String())
 }
 
 /*
 Empties the list of [PhysicalBone2D] nodes and populates it with all [PhysicalBone2D] nodes that are children of the [Skeleton2D].
 */
 func (self Instance) FetchPhysicalBones() { //gd:SkeletonModification2DPhysicalBones.fetch_physical_bones
-	class(self).FetchPhysicalBones()
+	Advanced(self).FetchPhysicalBones()
 }
 
 /*
@@ -81,7 +82,15 @@ Tell the [PhysicalBone2D] nodes to start simulating and interacting with the phy
 Optionally, an array of bone names can be passed to this function, and that will cause only [PhysicalBone2D] nodes with those names to start simulating.
 */
 func (self Instance) StartSimulation() { //gd:SkeletonModification2DPhysicalBones.start_simulation
-	class(self).StartSimulation(gd.ArrayFromSlice[Array.Contains[String.Name]]([1][]string{}[0]))
+	Advanced(self).StartSimulation(gd.ArrayFromSlice[Array.Contains[String.Name]]([1][]string{}[0]))
+}
+
+/*
+Tell the [PhysicalBone2D] nodes to start simulating and interacting with the physics world.
+Optionally, an array of bone names can be passed to this function, and that will cause only [PhysicalBone2D] nodes with those names to start simulating.
+*/
+func (self Expanded) StartSimulation(bones []string) { //gd:SkeletonModification2DPhysicalBones.start_simulation
+	Advanced(self).StartSimulation(gd.ArrayFromSlice[Array.Contains[String.Name]](bones))
 }
 
 /*
@@ -89,7 +98,15 @@ Tell the [PhysicalBone2D] nodes to stop simulating and interacting with the phys
 Optionally, an array of bone names can be passed to this function, and that will cause only [PhysicalBone2D] nodes with those names to stop simulating.
 */
 func (self Instance) StopSimulation() { //gd:SkeletonModification2DPhysicalBones.stop_simulation
-	class(self).StopSimulation(gd.ArrayFromSlice[Array.Contains[String.Name]]([1][]string{}[0]))
+	Advanced(self).StopSimulation(gd.ArrayFromSlice[Array.Contains[String.Name]]([1][]string{}[0]))
+}
+
+/*
+Tell the [PhysicalBone2D] nodes to stop simulating and interacting with the physics world.
+Optionally, an array of bone names can be passed to this function, and that will cause only [PhysicalBone2D] nodes with those names to stop simulating.
+*/
+func (self Expanded) StopSimulation(bones []string) { //gd:SkeletonModification2DPhysicalBones.stop_simulation
+	Advanced(self).StopSimulation(gd.ArrayFromSlice[Array.Contains[String.Name]](bones))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

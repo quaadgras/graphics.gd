@@ -570,27 +570,27 @@ func (Instance) _get_velocity_texture(impl func(ptr unsafe.Pointer) RID.Any) (cb
 	}
 }
 func (self Instance) GetColorTexture() RID.Texture { //gd:XRInterfaceExtension.get_color_texture
-	return RID.Texture(class(self).GetColorTexture())
+	return RID.Texture(Advanced(self).GetColorTexture())
 }
 func (self Instance) GetDepthTexture() RID.Texture { //gd:XRInterfaceExtension.get_depth_texture
-	return RID.Texture(class(self).GetDepthTexture())
+	return RID.Texture(Advanced(self).GetDepthTexture())
 }
 func (self Instance) GetVelocityTexture() RID.Texture { //gd:XRInterfaceExtension.get_velocity_texture
-	return RID.Texture(class(self).GetVelocityTexture())
+	return RID.Texture(Advanced(self).GetVelocityTexture())
 }
 
 /*
 Blits our render results to screen optionally applying lens distortion. This can only be called while processing [code]_commit_views[/code].
 */
 func (self Instance) AddBlit(render_target RID.Framebuffer, src_rect Rect2.PositionSize, dst_rect Rect2i.PositionSize, use_layer bool, layer int, apply_lens_distortion bool, eye_center Vector2.XY, k1 Float.X, k2 Float.X, upscale Float.X, aspect_ratio Float.X) { //gd:XRInterfaceExtension.add_blit
-	class(self).AddBlit(RID.Any(render_target), Rect2.PositionSize(src_rect), Rect2i.PositionSize(dst_rect), use_layer, int64(layer), apply_lens_distortion, Vector2.XY(eye_center), float64(k1), float64(k2), float64(upscale), float64(aspect_ratio))
+	Advanced(self).AddBlit(RID.Any(render_target), Rect2.PositionSize(src_rect), Rect2i.PositionSize(dst_rect), use_layer, int64(layer), apply_lens_distortion, Vector2.XY(eye_center), float64(k1), float64(k2), float64(upscale), float64(aspect_ratio))
 }
 
 /*
 Returns a valid [RID] for a texture to which we should render the current frame if supported by the interface.
 */
 func (self Instance) GetRenderTargetTexture(render_target RID.Framebuffer) RID.Texture { //gd:XRInterfaceExtension.get_render_target_texture
-	return RID.Texture(class(self).GetRenderTargetTexture(RID.Any(render_target)))
+	return RID.Texture(Advanced(self).GetRenderTargetTexture(RID.Any(render_target)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

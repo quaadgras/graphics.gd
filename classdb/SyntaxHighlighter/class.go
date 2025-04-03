@@ -133,7 +133,7 @@ Each entry is a column number containing a nested [Dictionary]. The column numbe
 [/codeblock]
 */
 func (self Instance) GetLineSyntaxHighlighting(line int) map[int]Entry { //gd:SyntaxHighlighter.get_line_syntax_highlighting
-	return map[int]Entry(gd.DictionaryAs[map[int]Entry](class(self).GetLineSyntaxHighlighting(int64(line))))
+	return map[int]Entry(gd.DictionaryAs[map[int]Entry](Advanced(self).GetLineSyntaxHighlighting(int64(line))))
 }
 
 /*
@@ -141,7 +141,7 @@ Clears then updates the [SyntaxHighlighter] caches. Override [method _update_cac
 [b]Note:[/b] This is called automatically when the associated [TextEdit] node, updates its own cache.
 */
 func (self Instance) UpdateCache() { //gd:SyntaxHighlighter.update_cache
-	class(self).UpdateCache()
+	Advanced(self).UpdateCache()
 }
 
 /*
@@ -149,14 +149,14 @@ Clears all cached syntax highlighting data.
 Then calls overridable method [method _clear_highlighting_cache].
 */
 func (self Instance) ClearHighlightingCache() { //gd:SyntaxHighlighter.clear_highlighting_cache
-	class(self).ClearHighlightingCache()
+	Advanced(self).ClearHighlightingCache()
 }
 
 /*
 Returns the associated [TextEdit] node.
 */
 func (self Instance) GetTextEdit() [1]gdclass.TextEdit { //gd:SyntaxHighlighter.get_text_edit
-	return [1]gdclass.TextEdit(class(self).GetTextEdit())
+	return [1]gdclass.TextEdit(Advanced(self).GetTextEdit())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

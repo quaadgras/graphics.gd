@@ -66,7 +66,7 @@ Returns all created navigation map [RID]s on the NavigationServer. This returns 
 */
 func GetMaps() [][]RID.NavigationMap2D { //gd:NavigationServer2D.get_maps
 	once.Do(singleton)
-	return [][]RID.NavigationMap2D(gd.ArrayAs[[][]RID.NavigationMap2D](gd.InternalArray(class(self).GetMaps())))
+	return [][]RID.NavigationMap2D(gd.ArrayAs[[][]RID.NavigationMap2D](gd.InternalArray(Advanced().GetMaps())))
 }
 
 /*
@@ -74,7 +74,7 @@ Create a new map.
 */
 func MapCreate() RID.NavigationMap2D { //gd:NavigationServer2D.map_create
 	once.Do(singleton)
-	return RID.NavigationMap2D(class(self).MapCreate())
+	return RID.NavigationMap2D(Advanced().MapCreate())
 }
 
 /*
@@ -82,7 +82,7 @@ Sets the map active.
 */
 func MapSetActive(mapping RID.NavigationMap2D, active bool) { //gd:NavigationServer2D.map_set_active
 	once.Do(singleton)
-	class(self).MapSetActive(RID.Any(mapping), active)
+	Advanced().MapSetActive(RID.Any(mapping), active)
 }
 
 /*
@@ -90,7 +90,7 @@ Returns [code]true[/code] if the map is active.
 */
 func MapIsActive(mapping RID.NavigationMap2D) bool { //gd:NavigationServer2D.map_is_active
 	once.Do(singleton)
-	return bool(class(self).MapIsActive(RID.Any(mapping)))
+	return bool(Advanced().MapIsActive(RID.Any(mapping)))
 }
 
 /*
@@ -98,7 +98,7 @@ Sets the map cell size used to rasterize the navigation mesh vertices. Must matc
 */
 func MapSetCellSize(mapping RID.NavigationMap2D, cell_size Float.X) { //gd:NavigationServer2D.map_set_cell_size
 	once.Do(singleton)
-	class(self).MapSetCellSize(RID.Any(mapping), float64(cell_size))
+	Advanced().MapSetCellSize(RID.Any(mapping), float64(cell_size))
 }
 
 /*
@@ -106,7 +106,7 @@ Returns the map cell size used to rasterize the navigation mesh vertices.
 */
 func MapGetCellSize(mapping RID.NavigationMap2D) Float.X { //gd:NavigationServer2D.map_get_cell_size
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).MapGetCellSize(RID.Any(mapping))))
+	return Float.X(Float.X(Advanced().MapGetCellSize(RID.Any(mapping))))
 }
 
 /*
@@ -114,7 +114,7 @@ Set the navigation [param map] edge connection use. If [param enabled] is [code]
 */
 func MapSetUseEdgeConnections(mapping RID.NavigationMap2D, enabled bool) { //gd:NavigationServer2D.map_set_use_edge_connections
 	once.Do(singleton)
-	class(self).MapSetUseEdgeConnections(RID.Any(mapping), enabled)
+	Advanced().MapSetUseEdgeConnections(RID.Any(mapping), enabled)
 }
 
 /*
@@ -122,7 +122,7 @@ Returns whether the navigation [param map] allows navigation regions to use edge
 */
 func MapGetUseEdgeConnections(mapping RID.NavigationMap2D) bool { //gd:NavigationServer2D.map_get_use_edge_connections
 	once.Do(singleton)
-	return bool(class(self).MapGetUseEdgeConnections(RID.Any(mapping)))
+	return bool(Advanced().MapGetUseEdgeConnections(RID.Any(mapping)))
 }
 
 /*
@@ -130,7 +130,7 @@ Set the map edge connection margin used to weld the compatible region edges.
 */
 func MapSetEdgeConnectionMargin(mapping RID.NavigationMap2D, margin Float.X) { //gd:NavigationServer2D.map_set_edge_connection_margin
 	once.Do(singleton)
-	class(self).MapSetEdgeConnectionMargin(RID.Any(mapping), float64(margin))
+	Advanced().MapSetEdgeConnectionMargin(RID.Any(mapping), float64(margin))
 }
 
 /*
@@ -138,7 +138,7 @@ Returns the edge connection margin of the map. The edge connection margin is a d
 */
 func MapGetEdgeConnectionMargin(mapping RID.NavigationMap2D) Float.X { //gd:NavigationServer2D.map_get_edge_connection_margin
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).MapGetEdgeConnectionMargin(RID.Any(mapping))))
+	return Float.X(Float.X(Advanced().MapGetEdgeConnectionMargin(RID.Any(mapping))))
 }
 
 /*
@@ -146,7 +146,7 @@ Set the map's link connection radius used to connect links to navigation polygon
 */
 func MapSetLinkConnectionRadius(mapping RID.NavigationMap2D, radius Float.X) { //gd:NavigationServer2D.map_set_link_connection_radius
 	once.Do(singleton)
-	class(self).MapSetLinkConnectionRadius(RID.Any(mapping), float64(radius))
+	Advanced().MapSetLinkConnectionRadius(RID.Any(mapping), float64(radius))
 }
 
 /*
@@ -154,7 +154,7 @@ Returns the link connection radius of the map. This distance is the maximum rang
 */
 func MapGetLinkConnectionRadius(mapping RID.NavigationMap2D) Float.X { //gd:NavigationServer2D.map_get_link_connection_radius
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).MapGetLinkConnectionRadius(RID.Any(mapping))))
+	return Float.X(Float.X(Advanced().MapGetLinkConnectionRadius(RID.Any(mapping))))
 }
 
 /*
@@ -162,7 +162,15 @@ Returns the navigation path to reach the destination from the origin. [param nav
 */
 func MapGetPath(mapping RID.NavigationMap2D, origin Vector2.XY, destination Vector2.XY, optimize bool) []Vector2.XY { //gd:NavigationServer2D.map_get_path
 	once.Do(singleton)
-	return []Vector2.XY(slices.Collect(class(self).MapGetPath(RID.Any(mapping), Vector2.XY(origin), Vector2.XY(destination), optimize, int64(1)).Values()))
+	return []Vector2.XY(slices.Collect(Advanced().MapGetPath(RID.Any(mapping), Vector2.XY(origin), Vector2.XY(destination), optimize, int64(1)).Values()))
+}
+
+/*
+Returns the navigation path to reach the destination from the origin. [param navigation_layers] is a bitmask of all region navigation layers that are allowed to be in the path.
+*/
+func MapGetPathExpanded(mapping RID.NavigationMap2D, origin Vector2.XY, destination Vector2.XY, optimize bool, navigation_layers int) []Vector2.XY { //gd:NavigationServer2D.map_get_path
+	once.Do(singleton)
+	return []Vector2.XY(slices.Collect(Advanced().MapGetPath(RID.Any(mapping), Vector2.XY(origin), Vector2.XY(destination), optimize, int64(navigation_layers)).Values()))
 }
 
 /*
@@ -170,7 +178,7 @@ Returns the navigation mesh surface point closest to the provided [param to_poin
 */
 func MapGetClosestPoint(mapping RID.NavigationMap2D, to_point Vector2.XY) Vector2.XY { //gd:NavigationServer2D.map_get_closest_point
 	once.Do(singleton)
-	return Vector2.XY(class(self).MapGetClosestPoint(RID.Any(mapping), Vector2.XY(to_point)))
+	return Vector2.XY(Advanced().MapGetClosestPoint(RID.Any(mapping), Vector2.XY(to_point)))
 }
 
 /*
@@ -178,7 +186,7 @@ Returns the owner region RID for the navigation mesh surface point closest to th
 */
 func MapGetClosestPointOwner(mapping RID.NavigationMap2D, to_point Vector2.XY) RID.NavigationRegion2D { //gd:NavigationServer2D.map_get_closest_point_owner
 	once.Do(singleton)
-	return RID.NavigationRegion2D(class(self).MapGetClosestPointOwner(RID.Any(mapping), Vector2.XY(to_point)))
+	return RID.NavigationRegion2D(Advanced().MapGetClosestPointOwner(RID.Any(mapping), Vector2.XY(to_point)))
 }
 
 /*
@@ -186,7 +194,7 @@ Returns all navigation link [RID]s that are currently assigned to the requested 
 */
 func MapGetLinks(mapping RID.NavigationMap2D) [][]RID.NavigationLink2D { //gd:NavigationServer2D.map_get_links
 	once.Do(singleton)
-	return [][]RID.NavigationLink2D(gd.ArrayAs[[][]RID.NavigationLink2D](gd.InternalArray(class(self).MapGetLinks(RID.Any(mapping)))))
+	return [][]RID.NavigationLink2D(gd.ArrayAs[[][]RID.NavigationLink2D](gd.InternalArray(Advanced().MapGetLinks(RID.Any(mapping)))))
 }
 
 /*
@@ -194,7 +202,7 @@ Returns all navigation regions [RID]s that are currently assigned to the request
 */
 func MapGetRegions(mapping RID.NavigationMap2D) [][]RID.NavigationRegion2D { //gd:NavigationServer2D.map_get_regions
 	once.Do(singleton)
-	return [][]RID.NavigationRegion2D(gd.ArrayAs[[][]RID.NavigationRegion2D](gd.InternalArray(class(self).MapGetRegions(RID.Any(mapping)))))
+	return [][]RID.NavigationRegion2D(gd.ArrayAs[[][]RID.NavigationRegion2D](gd.InternalArray(Advanced().MapGetRegions(RID.Any(mapping)))))
 }
 
 /*
@@ -202,7 +210,7 @@ Returns all navigation agents [RID]s that are currently assigned to the requeste
 */
 func MapGetAgents(mapping RID.NavigationMap2D) [][]RID.NavigationAgent2D { //gd:NavigationServer2D.map_get_agents
 	once.Do(singleton)
-	return [][]RID.NavigationAgent2D(gd.ArrayAs[[][]RID.NavigationAgent2D](gd.InternalArray(class(self).MapGetAgents(RID.Any(mapping)))))
+	return [][]RID.NavigationAgent2D(gd.ArrayAs[[][]RID.NavigationAgent2D](gd.InternalArray(Advanced().MapGetAgents(RID.Any(mapping)))))
 }
 
 /*
@@ -210,7 +218,7 @@ Returns all navigation obstacle [RID]s that are currently assigned to the reques
 */
 func MapGetObstacles(mapping RID.NavigationMap2D) [][]RID.NavigationObstacle2D { //gd:NavigationServer2D.map_get_obstacles
 	once.Do(singleton)
-	return [][]RID.NavigationObstacle2D(gd.ArrayAs[[][]RID.NavigationObstacle2D](gd.InternalArray(class(self).MapGetObstacles(RID.Any(mapping)))))
+	return [][]RID.NavigationObstacle2D(gd.ArrayAs[[][]RID.NavigationObstacle2D](gd.InternalArray(Advanced().MapGetObstacles(RID.Any(mapping)))))
 }
 
 /*
@@ -221,7 +229,7 @@ Avoidance processing and dispatch of the [code]safe_velocity[/code] signals is u
 */
 func MapForceUpdate(mapping RID.NavigationMap2D) { //gd:NavigationServer2D.map_force_update
 	once.Do(singleton)
-	class(self).MapForceUpdate(RID.Any(mapping))
+	Advanced().MapForceUpdate(RID.Any(mapping))
 }
 
 /*
@@ -230,7 +238,7 @@ Returns the current iteration id of the navigation map. Every time the navigatio
 */
 func MapGetIterationId(mapping RID.NavigationMap2D) int { //gd:NavigationServer2D.map_get_iteration_id
 	once.Do(singleton)
-	return int(int(class(self).MapGetIterationId(RID.Any(mapping))))
+	return int(int(Advanced().MapGetIterationId(RID.Any(mapping))))
 }
 
 /*
@@ -238,7 +246,7 @@ If [param enabled] is [code]true[/code] the [param map] synchronization uses an 
 */
 func MapSetUseAsyncIterations(mapping RID.NavigationMap2D, enabled bool) { //gd:NavigationServer2D.map_set_use_async_iterations
 	once.Do(singleton)
-	class(self).MapSetUseAsyncIterations(RID.Any(mapping), enabled)
+	Advanced().MapSetUseAsyncIterations(RID.Any(mapping), enabled)
 }
 
 /*
@@ -246,7 +254,7 @@ Returns [code]true[/code] if the [param map] synchronization uses an async proce
 */
 func MapGetUseAsyncIterations(mapping RID.NavigationMap2D) bool { //gd:NavigationServer2D.map_get_use_async_iterations
 	once.Do(singleton)
-	return bool(class(self).MapGetUseAsyncIterations(RID.Any(mapping)))
+	return bool(Advanced().MapGetUseAsyncIterations(RID.Any(mapping)))
 }
 
 /*
@@ -256,15 +264,23 @@ If [param uniformly] is [code]false[/code], just a random region and a random po
 */
 func MapGetRandomPoint(mapping RID.NavigationMap2D, navigation_layers int, uniformly bool) Vector2.XY { //gd:NavigationServer2D.map_get_random_point
 	once.Do(singleton)
-	return Vector2.XY(class(self).MapGetRandomPoint(RID.Any(mapping), int64(navigation_layers), uniformly))
+	return Vector2.XY(Advanced().MapGetRandomPoint(RID.Any(mapping), int64(navigation_layers), uniformly))
 }
 
 /*
 Queries a path in a given navigation map. Start and target position and other parameters are defined through [NavigationPathQueryParameters2D]. Updates the provided [NavigationPathQueryResult2D] result object with the path among other results requested by the query. After the process is finished the optional [param callback] will be called.
 */
-func QueryPath(parameters [1]gdclass.NavigationPathQueryParameters2D, result [1]gdclass.NavigationPathQueryResult2D) { //gd:NavigationServer2D.query_path
+func QueryPath(parameters [1]gdclass.NavigationPathQueryParameters2D, result [1]gdclass.NavigationPathQueryResult2D, callback func()) { //gd:NavigationServer2D.query_path
 	once.Do(singleton)
-	class(self).QueryPath(parameters, result, Callable.New(Callable.Nil))
+	Advanced().QueryPath(parameters, result, Callable.New(callback))
+}
+
+/*
+Queries a path in a given navigation map. Start and target position and other parameters are defined through [NavigationPathQueryParameters2D]. Updates the provided [NavigationPathQueryResult2D] result object with the path among other results requested by the query. After the process is finished the optional [param callback] will be called.
+*/
+func QueryPathExpanded(parameters [1]gdclass.NavigationPathQueryParameters2D, result [1]gdclass.NavigationPathQueryResult2D, callback func()) { //gd:NavigationServer2D.query_path
+	once.Do(singleton)
+	Advanced().QueryPath(parameters, result, Callable.New(callback))
 }
 
 /*
@@ -272,7 +288,7 @@ Creates a new region.
 */
 func RegionCreate() RID.NavigationRegion2D { //gd:NavigationServer2D.region_create
 	once.Do(singleton)
-	return RID.NavigationRegion2D(class(self).RegionCreate())
+	return RID.NavigationRegion2D(Advanced().RegionCreate())
 }
 
 /*
@@ -280,7 +296,7 @@ If [param enabled] is [code]true[/code] the specified [param region] will contri
 */
 func RegionSetEnabled(region RID.NavigationRegion2D, enabled bool) { //gd:NavigationServer2D.region_set_enabled
 	once.Do(singleton)
-	class(self).RegionSetEnabled(RID.Any(region), enabled)
+	Advanced().RegionSetEnabled(RID.Any(region), enabled)
 }
 
 /*
@@ -288,7 +304,7 @@ Returns [code]true[/code] if the specified [param region] is enabled.
 */
 func RegionGetEnabled(region RID.NavigationRegion2D) bool { //gd:NavigationServer2D.region_get_enabled
 	once.Do(singleton)
-	return bool(class(self).RegionGetEnabled(RID.Any(region)))
+	return bool(Advanced().RegionGetEnabled(RID.Any(region)))
 }
 
 /*
@@ -296,7 +312,7 @@ If [param enabled] is [code]true[/code], the navigation [param region] will use 
 */
 func RegionSetUseEdgeConnections(region RID.NavigationRegion2D, enabled bool) { //gd:NavigationServer2D.region_set_use_edge_connections
 	once.Do(singleton)
-	class(self).RegionSetUseEdgeConnections(RID.Any(region), enabled)
+	Advanced().RegionSetUseEdgeConnections(RID.Any(region), enabled)
 }
 
 /*
@@ -304,7 +320,7 @@ Returns whether the navigation [param region] is set to use edge connections to 
 */
 func RegionGetUseEdgeConnections(region RID.NavigationRegion2D) bool { //gd:NavigationServer2D.region_get_use_edge_connections
 	once.Do(singleton)
-	return bool(class(self).RegionGetUseEdgeConnections(RID.Any(region)))
+	return bool(Advanced().RegionGetUseEdgeConnections(RID.Any(region)))
 }
 
 /*
@@ -312,7 +328,7 @@ Sets the [param enter_cost] for this [param region].
 */
 func RegionSetEnterCost(region RID.NavigationRegion2D, enter_cost Float.X) { //gd:NavigationServer2D.region_set_enter_cost
 	once.Do(singleton)
-	class(self).RegionSetEnterCost(RID.Any(region), float64(enter_cost))
+	Advanced().RegionSetEnterCost(RID.Any(region), float64(enter_cost))
 }
 
 /*
@@ -320,7 +336,7 @@ Returns the enter cost of this [param region].
 */
 func RegionGetEnterCost(region RID.NavigationRegion2D) Float.X { //gd:NavigationServer2D.region_get_enter_cost
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).RegionGetEnterCost(RID.Any(region))))
+	return Float.X(Float.X(Advanced().RegionGetEnterCost(RID.Any(region))))
 }
 
 /*
@@ -328,7 +344,7 @@ Sets the [param travel_cost] for this [param region].
 */
 func RegionSetTravelCost(region RID.NavigationRegion2D, travel_cost Float.X) { //gd:NavigationServer2D.region_set_travel_cost
 	once.Do(singleton)
-	class(self).RegionSetTravelCost(RID.Any(region), float64(travel_cost))
+	Advanced().RegionSetTravelCost(RID.Any(region), float64(travel_cost))
 }
 
 /*
@@ -336,7 +352,7 @@ Returns the travel cost of this [param region].
 */
 func RegionGetTravelCost(region RID.NavigationRegion2D) Float.X { //gd:NavigationServer2D.region_get_travel_cost
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).RegionGetTravelCost(RID.Any(region))))
+	return Float.X(Float.X(Advanced().RegionGetTravelCost(RID.Any(region))))
 }
 
 /*
@@ -344,7 +360,7 @@ Set the [code]ObjectID[/code] of the object which manages this region.
 */
 func RegionSetOwnerId(region RID.NavigationRegion2D, owner_id int) { //gd:NavigationServer2D.region_set_owner_id
 	once.Do(singleton)
-	class(self).RegionSetOwnerId(RID.Any(region), int64(owner_id))
+	Advanced().RegionSetOwnerId(RID.Any(region), int64(owner_id))
 }
 
 /*
@@ -352,7 +368,7 @@ Returns the [code]ObjectID[/code] of the object which manages this region.
 */
 func RegionGetOwnerId(region RID.NavigationRegion2D) int { //gd:NavigationServer2D.region_get_owner_id
 	once.Do(singleton)
-	return int(int(class(self).RegionGetOwnerId(RID.Any(region))))
+	return int(int(Advanced().RegionGetOwnerId(RID.Any(region))))
 }
 
 /*
@@ -362,7 +378,7 @@ If multiple navigation meshes have positions at equal distance the navigation re
 */
 func RegionOwnsPoint(region RID.NavigationRegion2D, point Vector2.XY) bool { //gd:NavigationServer2D.region_owns_point
 	once.Do(singleton)
-	return bool(class(self).RegionOwnsPoint(RID.Any(region), Vector2.XY(point)))
+	return bool(Advanced().RegionOwnsPoint(RID.Any(region), Vector2.XY(point)))
 }
 
 /*
@@ -370,7 +386,7 @@ Sets the map for the region.
 */
 func RegionSetMap(region RID.NavigationRegion2D, mapping RID.NavigationMap2D) { //gd:NavigationServer2D.region_set_map
 	once.Do(singleton)
-	class(self).RegionSetMap(RID.Any(region), RID.Any(mapping))
+	Advanced().RegionSetMap(RID.Any(region), RID.Any(mapping))
 }
 
 /*
@@ -378,7 +394,7 @@ Returns the navigation map [RID] the requested [param region] is currently assig
 */
 func RegionGetMap(region RID.NavigationRegion2D) RID.NavigationMap2D { //gd:NavigationServer2D.region_get_map
 	once.Do(singleton)
-	return RID.NavigationMap2D(class(self).RegionGetMap(RID.Any(region)))
+	return RID.NavigationMap2D(Advanced().RegionGetMap(RID.Any(region)))
 }
 
 /*
@@ -386,7 +402,7 @@ Set the region's navigation layers. This allows selecting regions from a path re
 */
 func RegionSetNavigationLayers(region RID.NavigationRegion2D, navigation_layers int) { //gd:NavigationServer2D.region_set_navigation_layers
 	once.Do(singleton)
-	class(self).RegionSetNavigationLayers(RID.Any(region), int64(navigation_layers))
+	Advanced().RegionSetNavigationLayers(RID.Any(region), int64(navigation_layers))
 }
 
 /*
@@ -394,7 +410,7 @@ Returns the region's navigation layers.
 */
 func RegionGetNavigationLayers(region RID.NavigationRegion2D) int { //gd:NavigationServer2D.region_get_navigation_layers
 	once.Do(singleton)
-	return int(int(class(self).RegionGetNavigationLayers(RID.Any(region))))
+	return int(int(Advanced().RegionGetNavigationLayers(RID.Any(region))))
 }
 
 /*
@@ -402,7 +418,7 @@ Sets the global transformation for the region.
 */
 func RegionSetTransform(region RID.NavigationRegion2D, transform Transform2D.OriginXY) { //gd:NavigationServer2D.region_set_transform
 	once.Do(singleton)
-	class(self).RegionSetTransform(RID.Any(region), Transform2D.OriginXY(transform))
+	Advanced().RegionSetTransform(RID.Any(region), Transform2D.OriginXY(transform))
 }
 
 /*
@@ -410,7 +426,7 @@ Returns the global transformation of this [param region].
 */
 func RegionGetTransform(region RID.NavigationRegion2D) Transform2D.OriginXY { //gd:NavigationServer2D.region_get_transform
 	once.Do(singleton)
-	return Transform2D.OriginXY(class(self).RegionGetTransform(RID.Any(region)))
+	return Transform2D.OriginXY(Advanced().RegionGetTransform(RID.Any(region)))
 }
 
 /*
@@ -418,7 +434,7 @@ Sets the [param navigation_polygon] for the region.
 */
 func RegionSetNavigationPolygon(region RID.NavigationRegion2D, navigation_polygon [1]gdclass.NavigationPolygon) { //gd:NavigationServer2D.region_set_navigation_polygon
 	once.Do(singleton)
-	class(self).RegionSetNavigationPolygon(RID.Any(region), navigation_polygon)
+	Advanced().RegionSetNavigationPolygon(RID.Any(region), navigation_polygon)
 }
 
 /*
@@ -426,7 +442,7 @@ Returns how many connections this [param region] has with other regions in the m
 */
 func RegionGetConnectionsCount(region RID.NavigationRegion2D) int { //gd:NavigationServer2D.region_get_connections_count
 	once.Do(singleton)
-	return int(int(class(self).RegionGetConnectionsCount(RID.Any(region))))
+	return int(int(Advanced().RegionGetConnectionsCount(RID.Any(region))))
 }
 
 /*
@@ -434,7 +450,7 @@ Returns the starting point of a connection door. [param connection] is an index 
 */
 func RegionGetConnectionPathwayStart(region RID.NavigationRegion2D, connection int) Vector2.XY { //gd:NavigationServer2D.region_get_connection_pathway_start
 	once.Do(singleton)
-	return Vector2.XY(class(self).RegionGetConnectionPathwayStart(RID.Any(region), int64(connection)))
+	return Vector2.XY(Advanced().RegionGetConnectionPathwayStart(RID.Any(region), int64(connection)))
 }
 
 /*
@@ -442,7 +458,7 @@ Returns the ending point of a connection door. [param connection] is an index be
 */
 func RegionGetConnectionPathwayEnd(region RID.NavigationRegion2D, connection int) Vector2.XY { //gd:NavigationServer2D.region_get_connection_pathway_end
 	once.Do(singleton)
-	return Vector2.XY(class(self).RegionGetConnectionPathwayEnd(RID.Any(region), int64(connection)))
+	return Vector2.XY(Advanced().RegionGetConnectionPathwayEnd(RID.Any(region), int64(connection)))
 }
 
 /*
@@ -450,7 +466,7 @@ Returns the navigation mesh surface point closest to the provided [param to_poin
 */
 func RegionGetClosestPoint(region RID.NavigationRegion2D, to_point Vector2.XY) Vector2.XY { //gd:NavigationServer2D.region_get_closest_point
 	once.Do(singleton)
-	return Vector2.XY(class(self).RegionGetClosestPoint(RID.Any(region), Vector2.XY(to_point)))
+	return Vector2.XY(Advanced().RegionGetClosestPoint(RID.Any(region), Vector2.XY(to_point)))
 }
 
 /*
@@ -460,7 +476,7 @@ If [param uniformly] is [code]false[/code], just a random polygon and face is pi
 */
 func RegionGetRandomPoint(region RID.NavigationRegion2D, navigation_layers int, uniformly bool) Vector2.XY { //gd:NavigationServer2D.region_get_random_point
 	once.Do(singleton)
-	return Vector2.XY(class(self).RegionGetRandomPoint(RID.Any(region), int64(navigation_layers), uniformly))
+	return Vector2.XY(Advanced().RegionGetRandomPoint(RID.Any(region), int64(navigation_layers), uniformly))
 }
 
 /*
@@ -468,7 +484,7 @@ Returns the axis-aligned rectangle for the [param region]'s transformed navigati
 */
 func RegionGetBounds(region RID.NavigationRegion2D) Rect2.PositionSize { //gd:NavigationServer2D.region_get_bounds
 	once.Do(singleton)
-	return Rect2.PositionSize(class(self).RegionGetBounds(RID.Any(region)))
+	return Rect2.PositionSize(Advanced().RegionGetBounds(RID.Any(region)))
 }
 
 /*
@@ -476,7 +492,7 @@ Create a new link between two positions on a map.
 */
 func LinkCreate() RID.NavigationLink2D { //gd:NavigationServer2D.link_create
 	once.Do(singleton)
-	return RID.NavigationLink2D(class(self).LinkCreate())
+	return RID.NavigationLink2D(Advanced().LinkCreate())
 }
 
 /*
@@ -484,7 +500,7 @@ Sets the navigation map [RID] for the link.
 */
 func LinkSetMap(link RID.NavigationLink2D, mapping RID.NavigationMap2D) { //gd:NavigationServer2D.link_set_map
 	once.Do(singleton)
-	class(self).LinkSetMap(RID.Any(link), RID.Any(mapping))
+	Advanced().LinkSetMap(RID.Any(link), RID.Any(mapping))
 }
 
 /*
@@ -492,7 +508,7 @@ Returns the navigation map [RID] the requested [param link] is currently assigne
 */
 func LinkGetMap(link RID.NavigationLink2D) RID.NavigationMap2D { //gd:NavigationServer2D.link_get_map
 	once.Do(singleton)
-	return RID.NavigationMap2D(class(self).LinkGetMap(RID.Any(link)))
+	return RID.NavigationMap2D(Advanced().LinkGetMap(RID.Any(link)))
 }
 
 /*
@@ -500,7 +516,7 @@ If [param enabled] is [code]true[/code], the specified [param link] will contrib
 */
 func LinkSetEnabled(link RID.NavigationLink2D, enabled bool) { //gd:NavigationServer2D.link_set_enabled
 	once.Do(singleton)
-	class(self).LinkSetEnabled(RID.Any(link), enabled)
+	Advanced().LinkSetEnabled(RID.Any(link), enabled)
 }
 
 /*
@@ -508,7 +524,7 @@ Returns [code]true[/code] if the specified [param link] is enabled.
 */
 func LinkGetEnabled(link RID.NavigationLink2D) bool { //gd:NavigationServer2D.link_get_enabled
 	once.Do(singleton)
-	return bool(class(self).LinkGetEnabled(RID.Any(link)))
+	return bool(Advanced().LinkGetEnabled(RID.Any(link)))
 }
 
 /*
@@ -516,7 +532,7 @@ Sets whether this [param link] can be travelled in both directions.
 */
 func LinkSetBidirectional(link RID.NavigationLink2D, bidirectional bool) { //gd:NavigationServer2D.link_set_bidirectional
 	once.Do(singleton)
-	class(self).LinkSetBidirectional(RID.Any(link), bidirectional)
+	Advanced().LinkSetBidirectional(RID.Any(link), bidirectional)
 }
 
 /*
@@ -524,7 +540,7 @@ Returns whether this [param link] can be travelled in both directions.
 */
 func LinkIsBidirectional(link RID.NavigationLink2D) bool { //gd:NavigationServer2D.link_is_bidirectional
 	once.Do(singleton)
-	return bool(class(self).LinkIsBidirectional(RID.Any(link)))
+	return bool(Advanced().LinkIsBidirectional(RID.Any(link)))
 }
 
 /*
@@ -532,7 +548,7 @@ Set the links's navigation layers. This allows selecting links from a path reque
 */
 func LinkSetNavigationLayers(link RID.NavigationLink2D, navigation_layers int) { //gd:NavigationServer2D.link_set_navigation_layers
 	once.Do(singleton)
-	class(self).LinkSetNavigationLayers(RID.Any(link), int64(navigation_layers))
+	Advanced().LinkSetNavigationLayers(RID.Any(link), int64(navigation_layers))
 }
 
 /*
@@ -540,7 +556,7 @@ Returns the navigation layers for this [param link].
 */
 func LinkGetNavigationLayers(link RID.NavigationLink2D) int { //gd:NavigationServer2D.link_get_navigation_layers
 	once.Do(singleton)
-	return int(int(class(self).LinkGetNavigationLayers(RID.Any(link))))
+	return int(int(Advanced().LinkGetNavigationLayers(RID.Any(link))))
 }
 
 /*
@@ -548,7 +564,7 @@ Sets the entry position for this [param link].
 */
 func LinkSetStartPosition(link RID.NavigationLink2D, position Vector2.XY) { //gd:NavigationServer2D.link_set_start_position
 	once.Do(singleton)
-	class(self).LinkSetStartPosition(RID.Any(link), Vector2.XY(position))
+	Advanced().LinkSetStartPosition(RID.Any(link), Vector2.XY(position))
 }
 
 /*
@@ -556,7 +572,7 @@ Returns the starting position of this [param link].
 */
 func LinkGetStartPosition(link RID.NavigationLink2D) Vector2.XY { //gd:NavigationServer2D.link_get_start_position
 	once.Do(singleton)
-	return Vector2.XY(class(self).LinkGetStartPosition(RID.Any(link)))
+	return Vector2.XY(Advanced().LinkGetStartPosition(RID.Any(link)))
 }
 
 /*
@@ -564,7 +580,7 @@ Sets the exit position for the [param link].
 */
 func LinkSetEndPosition(link RID.NavigationLink2D, position Vector2.XY) { //gd:NavigationServer2D.link_set_end_position
 	once.Do(singleton)
-	class(self).LinkSetEndPosition(RID.Any(link), Vector2.XY(position))
+	Advanced().LinkSetEndPosition(RID.Any(link), Vector2.XY(position))
 }
 
 /*
@@ -572,7 +588,7 @@ Returns the ending position of this [param link].
 */
 func LinkGetEndPosition(link RID.NavigationLink2D) Vector2.XY { //gd:NavigationServer2D.link_get_end_position
 	once.Do(singleton)
-	return Vector2.XY(class(self).LinkGetEndPosition(RID.Any(link)))
+	return Vector2.XY(Advanced().LinkGetEndPosition(RID.Any(link)))
 }
 
 /*
@@ -580,7 +596,7 @@ Sets the [param enter_cost] for this [param link].
 */
 func LinkSetEnterCost(link RID.NavigationLink2D, enter_cost Float.X) { //gd:NavigationServer2D.link_set_enter_cost
 	once.Do(singleton)
-	class(self).LinkSetEnterCost(RID.Any(link), float64(enter_cost))
+	Advanced().LinkSetEnterCost(RID.Any(link), float64(enter_cost))
 }
 
 /*
@@ -588,7 +604,7 @@ Returns the enter cost of this [param link].
 */
 func LinkGetEnterCost(link RID.NavigationLink2D) Float.X { //gd:NavigationServer2D.link_get_enter_cost
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).LinkGetEnterCost(RID.Any(link))))
+	return Float.X(Float.X(Advanced().LinkGetEnterCost(RID.Any(link))))
 }
 
 /*
@@ -596,7 +612,7 @@ Sets the [param travel_cost] for this [param link].
 */
 func LinkSetTravelCost(link RID.NavigationLink2D, travel_cost Float.X) { //gd:NavigationServer2D.link_set_travel_cost
 	once.Do(singleton)
-	class(self).LinkSetTravelCost(RID.Any(link), float64(travel_cost))
+	Advanced().LinkSetTravelCost(RID.Any(link), float64(travel_cost))
 }
 
 /*
@@ -604,7 +620,7 @@ Returns the travel cost of this [param link].
 */
 func LinkGetTravelCost(link RID.NavigationLink2D) Float.X { //gd:NavigationServer2D.link_get_travel_cost
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).LinkGetTravelCost(RID.Any(link))))
+	return Float.X(Float.X(Advanced().LinkGetTravelCost(RID.Any(link))))
 }
 
 /*
@@ -612,7 +628,7 @@ Set the [code]ObjectID[/code] of the object which manages this link.
 */
 func LinkSetOwnerId(link RID.NavigationLink2D, owner_id int) { //gd:NavigationServer2D.link_set_owner_id
 	once.Do(singleton)
-	class(self).LinkSetOwnerId(RID.Any(link), int64(owner_id))
+	Advanced().LinkSetOwnerId(RID.Any(link), int64(owner_id))
 }
 
 /*
@@ -620,7 +636,7 @@ Returns the [code]ObjectID[/code] of the object which manages this link.
 */
 func LinkGetOwnerId(link RID.NavigationLink2D) int { //gd:NavigationServer2D.link_get_owner_id
 	once.Do(singleton)
-	return int(int(class(self).LinkGetOwnerId(RID.Any(link))))
+	return int(int(Advanced().LinkGetOwnerId(RID.Any(link))))
 }
 
 /*
@@ -628,7 +644,7 @@ Creates the agent.
 */
 func AgentCreate() RID.NavigationAgent2D { //gd:NavigationServer2D.agent_create
 	once.Do(singleton)
-	return RID.NavigationAgent2D(class(self).AgentCreate())
+	return RID.NavigationAgent2D(Advanced().AgentCreate())
 }
 
 /*
@@ -636,7 +652,7 @@ If [param enabled] is [code]true[/code], the specified [param agent] uses avoida
 */
 func AgentSetAvoidanceEnabled(agent RID.NavigationAgent2D, enabled bool) { //gd:NavigationServer2D.agent_set_avoidance_enabled
 	once.Do(singleton)
-	class(self).AgentSetAvoidanceEnabled(RID.Any(agent), enabled)
+	Advanced().AgentSetAvoidanceEnabled(RID.Any(agent), enabled)
 }
 
 /*
@@ -644,7 +660,7 @@ Return [code]true[/code] if the specified [param agent] uses avoidance.
 */
 func AgentGetAvoidanceEnabled(agent RID.NavigationAgent2D) bool { //gd:NavigationServer2D.agent_get_avoidance_enabled
 	once.Do(singleton)
-	return bool(class(self).AgentGetAvoidanceEnabled(RID.Any(agent)))
+	return bool(Advanced().AgentGetAvoidanceEnabled(RID.Any(agent)))
 }
 
 /*
@@ -652,7 +668,7 @@ Puts the agent in the map.
 */
 func AgentSetMap(agent RID.NavigationAgent2D, mapping RID.NavigationMap2D) { //gd:NavigationServer2D.agent_set_map
 	once.Do(singleton)
-	class(self).AgentSetMap(RID.Any(agent), RID.Any(mapping))
+	Advanced().AgentSetMap(RID.Any(agent), RID.Any(mapping))
 }
 
 /*
@@ -660,7 +676,7 @@ Returns the navigation map [RID] the requested [param agent] is currently assign
 */
 func AgentGetMap(agent RID.NavigationAgent2D) RID.NavigationMap2D { //gd:NavigationServer2D.agent_get_map
 	once.Do(singleton)
-	return RID.NavigationMap2D(class(self).AgentGetMap(RID.Any(agent)))
+	return RID.NavigationMap2D(Advanced().AgentGetMap(RID.Any(agent)))
 }
 
 /*
@@ -668,7 +684,7 @@ If [param paused] is [code]true[/code] the specified [param agent] will not be p
 */
 func AgentSetPaused(agent RID.NavigationAgent2D, paused bool) { //gd:NavigationServer2D.agent_set_paused
 	once.Do(singleton)
-	class(self).AgentSetPaused(RID.Any(agent), paused)
+	Advanced().AgentSetPaused(RID.Any(agent), paused)
 }
 
 /*
@@ -676,7 +692,7 @@ Returns [code]true[/code] if the specified [param agent] is paused.
 */
 func AgentGetPaused(agent RID.NavigationAgent2D) bool { //gd:NavigationServer2D.agent_get_paused
 	once.Do(singleton)
-	return bool(class(self).AgentGetPaused(RID.Any(agent)))
+	return bool(Advanced().AgentGetPaused(RID.Any(agent)))
 }
 
 /*
@@ -684,7 +700,7 @@ Sets the maximum distance to other agents this agent takes into account in the n
 */
 func AgentSetNeighborDistance(agent RID.NavigationAgent2D, distance Float.X) { //gd:NavigationServer2D.agent_set_neighbor_distance
 	once.Do(singleton)
-	class(self).AgentSetNeighborDistance(RID.Any(agent), float64(distance))
+	Advanced().AgentSetNeighborDistance(RID.Any(agent), float64(distance))
 }
 
 /*
@@ -692,7 +708,7 @@ Returns the maximum distance to other agents the specified [param agent] takes i
 */
 func AgentGetNeighborDistance(agent RID.NavigationAgent2D) Float.X { //gd:NavigationServer2D.agent_get_neighbor_distance
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).AgentGetNeighborDistance(RID.Any(agent))))
+	return Float.X(Float.X(Advanced().AgentGetNeighborDistance(RID.Any(agent))))
 }
 
 /*
@@ -700,7 +716,7 @@ Sets the maximum number of other agents the agent takes into account in the navi
 */
 func AgentSetMaxNeighbors(agent RID.NavigationAgent2D, count int) { //gd:NavigationServer2D.agent_set_max_neighbors
 	once.Do(singleton)
-	class(self).AgentSetMaxNeighbors(RID.Any(agent), int64(count))
+	Advanced().AgentSetMaxNeighbors(RID.Any(agent), int64(count))
 }
 
 /*
@@ -708,7 +724,7 @@ Returns the maximum number of other agents the specified [param agent] takes int
 */
 func AgentGetMaxNeighbors(agent RID.NavigationAgent2D) int { //gd:NavigationServer2D.agent_get_max_neighbors
 	once.Do(singleton)
-	return int(int(class(self).AgentGetMaxNeighbors(RID.Any(agent))))
+	return int(int(Advanced().AgentGetMaxNeighbors(RID.Any(agent))))
 }
 
 /*
@@ -716,7 +732,7 @@ The minimal amount of time for which the agent's velocities that are computed by
 */
 func AgentSetTimeHorizonAgents(agent RID.NavigationAgent2D, time_horizon Float.X) { //gd:NavigationServer2D.agent_set_time_horizon_agents
 	once.Do(singleton)
-	class(self).AgentSetTimeHorizonAgents(RID.Any(agent), float64(time_horizon))
+	Advanced().AgentSetTimeHorizonAgents(RID.Any(agent), float64(time_horizon))
 }
 
 /*
@@ -724,7 +740,7 @@ Returns the minimal amount of time for which the specified [param agent]'s veloc
 */
 func AgentGetTimeHorizonAgents(agent RID.NavigationAgent2D) Float.X { //gd:NavigationServer2D.agent_get_time_horizon_agents
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).AgentGetTimeHorizonAgents(RID.Any(agent))))
+	return Float.X(Float.X(Advanced().AgentGetTimeHorizonAgents(RID.Any(agent))))
 }
 
 /*
@@ -732,7 +748,7 @@ The minimal amount of time for which the agent's velocities that are computed by
 */
 func AgentSetTimeHorizonObstacles(agent RID.NavigationAgent2D, time_horizon Float.X) { //gd:NavigationServer2D.agent_set_time_horizon_obstacles
 	once.Do(singleton)
-	class(self).AgentSetTimeHorizonObstacles(RID.Any(agent), float64(time_horizon))
+	Advanced().AgentSetTimeHorizonObstacles(RID.Any(agent), float64(time_horizon))
 }
 
 /*
@@ -740,7 +756,7 @@ Returns the minimal amount of time for which the specified [param agent]'s veloc
 */
 func AgentGetTimeHorizonObstacles(agent RID.NavigationAgent2D) Float.X { //gd:NavigationServer2D.agent_get_time_horizon_obstacles
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).AgentGetTimeHorizonObstacles(RID.Any(agent))))
+	return Float.X(Float.X(Advanced().AgentGetTimeHorizonObstacles(RID.Any(agent))))
 }
 
 /*
@@ -748,7 +764,7 @@ Sets the radius of the agent.
 */
 func AgentSetRadius(agent RID.NavigationAgent2D, radius Float.X) { //gd:NavigationServer2D.agent_set_radius
 	once.Do(singleton)
-	class(self).AgentSetRadius(RID.Any(agent), float64(radius))
+	Advanced().AgentSetRadius(RID.Any(agent), float64(radius))
 }
 
 /*
@@ -756,7 +772,7 @@ Returns the radius of the specified [param agent].
 */
 func AgentGetRadius(agent RID.NavigationAgent2D) Float.X { //gd:NavigationServer2D.agent_get_radius
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).AgentGetRadius(RID.Any(agent))))
+	return Float.X(Float.X(Advanced().AgentGetRadius(RID.Any(agent))))
 }
 
 /*
@@ -764,7 +780,7 @@ Sets the maximum speed of the agent. Must be positive.
 */
 func AgentSetMaxSpeed(agent RID.NavigationAgent2D, max_speed Float.X) { //gd:NavigationServer2D.agent_set_max_speed
 	once.Do(singleton)
-	class(self).AgentSetMaxSpeed(RID.Any(agent), float64(max_speed))
+	Advanced().AgentSetMaxSpeed(RID.Any(agent), float64(max_speed))
 }
 
 /*
@@ -772,7 +788,7 @@ Returns the maximum speed of the specified [param agent].
 */
 func AgentGetMaxSpeed(agent RID.NavigationAgent2D) Float.X { //gd:NavigationServer2D.agent_get_max_speed
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).AgentGetMaxSpeed(RID.Any(agent))))
+	return Float.X(Float.X(Advanced().AgentGetMaxSpeed(RID.Any(agent))))
 }
 
 /*
@@ -780,7 +796,7 @@ Replaces the internal velocity in the collision avoidance simulation with [param
 */
 func AgentSetVelocityForced(agent RID.NavigationAgent2D, velocity Vector2.XY) { //gd:NavigationServer2D.agent_set_velocity_forced
 	once.Do(singleton)
-	class(self).AgentSetVelocityForced(RID.Any(agent), Vector2.XY(velocity))
+	Advanced().AgentSetVelocityForced(RID.Any(agent), Vector2.XY(velocity))
 }
 
 /*
@@ -788,7 +804,7 @@ Sets [param velocity] as the new wanted velocity for the specified [param agent]
 */
 func AgentSetVelocity(agent RID.NavigationAgent2D, velocity Vector2.XY) { //gd:NavigationServer2D.agent_set_velocity
 	once.Do(singleton)
-	class(self).AgentSetVelocity(RID.Any(agent), Vector2.XY(velocity))
+	Advanced().AgentSetVelocity(RID.Any(agent), Vector2.XY(velocity))
 }
 
 /*
@@ -796,7 +812,7 @@ Returns the velocity of the specified [param agent].
 */
 func AgentGetVelocity(agent RID.NavigationAgent2D) Vector2.XY { //gd:NavigationServer2D.agent_get_velocity
 	once.Do(singleton)
-	return Vector2.XY(class(self).AgentGetVelocity(RID.Any(agent)))
+	return Vector2.XY(Advanced().AgentGetVelocity(RID.Any(agent)))
 }
 
 /*
@@ -804,7 +820,7 @@ Sets the position of the agent in world space.
 */
 func AgentSetPosition(agent RID.NavigationAgent2D, position Vector2.XY) { //gd:NavigationServer2D.agent_set_position
 	once.Do(singleton)
-	class(self).AgentSetPosition(RID.Any(agent), Vector2.XY(position))
+	Advanced().AgentSetPosition(RID.Any(agent), Vector2.XY(position))
 }
 
 /*
@@ -812,7 +828,7 @@ Returns the position of the specified [param agent] in world space.
 */
 func AgentGetPosition(agent RID.NavigationAgent2D) Vector2.XY { //gd:NavigationServer2D.agent_get_position
 	once.Do(singleton)
-	return Vector2.XY(class(self).AgentGetPosition(RID.Any(agent)))
+	return Vector2.XY(Advanced().AgentGetPosition(RID.Any(agent)))
 }
 
 /*
@@ -820,7 +836,7 @@ Returns [code]true[/code] if the map got changed the previous frame.
 */
 func AgentIsMapChanged(agent RID.NavigationAgent2D) bool { //gd:NavigationServer2D.agent_is_map_changed
 	once.Do(singleton)
-	return bool(class(self).AgentIsMapChanged(RID.Any(agent)))
+	return bool(Advanced().AgentIsMapChanged(RID.Any(agent)))
 }
 
 /*
@@ -829,7 +845,7 @@ Sets the callback [Callable] that gets called after each avoidance processing st
 */
 func AgentSetAvoidanceCallback(agent RID.NavigationAgent2D, callback func(velocity Vector2.XY)) { //gd:NavigationServer2D.agent_set_avoidance_callback
 	once.Do(singleton)
-	class(self).AgentSetAvoidanceCallback(RID.Any(agent), Callable.New(callback))
+	Advanced().AgentSetAvoidanceCallback(RID.Any(agent), Callable.New(callback))
 }
 
 /*
@@ -837,7 +853,7 @@ Return [code]true[/code] if the specified [param agent] has an avoidance callbac
 */
 func AgentHasAvoidanceCallback(agent RID.NavigationAgent2D) bool { //gd:NavigationServer2D.agent_has_avoidance_callback
 	once.Do(singleton)
-	return bool(class(self).AgentHasAvoidanceCallback(RID.Any(agent)))
+	return bool(Advanced().AgentHasAvoidanceCallback(RID.Any(agent)))
 }
 
 /*
@@ -845,7 +861,7 @@ Set the agent's [code]avoidance_layers[/code] bitmask.
 */
 func AgentSetAvoidanceLayers(agent RID.NavigationAgent2D, layers int) { //gd:NavigationServer2D.agent_set_avoidance_layers
 	once.Do(singleton)
-	class(self).AgentSetAvoidanceLayers(RID.Any(agent), int64(layers))
+	Advanced().AgentSetAvoidanceLayers(RID.Any(agent), int64(layers))
 }
 
 /*
@@ -853,7 +869,7 @@ Returns the [code]avoidance_layers[/code] bitmask of the specified [param agent]
 */
 func AgentGetAvoidanceLayers(agent RID.NavigationAgent2D) int { //gd:NavigationServer2D.agent_get_avoidance_layers
 	once.Do(singleton)
-	return int(int(class(self).AgentGetAvoidanceLayers(RID.Any(agent))))
+	return int(int(Advanced().AgentGetAvoidanceLayers(RID.Any(agent))))
 }
 
 /*
@@ -861,7 +877,7 @@ Set the agent's [code]avoidance_mask[/code] bitmask.
 */
 func AgentSetAvoidanceMask(agent RID.NavigationAgent2D, mask int) { //gd:NavigationServer2D.agent_set_avoidance_mask
 	once.Do(singleton)
-	class(self).AgentSetAvoidanceMask(RID.Any(agent), int64(mask))
+	Advanced().AgentSetAvoidanceMask(RID.Any(agent), int64(mask))
 }
 
 /*
@@ -869,7 +885,7 @@ Returns the [code]avoidance_mask[/code] bitmask of the specified [param agent].
 */
 func AgentGetAvoidanceMask(agent RID.NavigationAgent2D) int { //gd:NavigationServer2D.agent_get_avoidance_mask
 	once.Do(singleton)
-	return int(int(class(self).AgentGetAvoidanceMask(RID.Any(agent))))
+	return int(int(Advanced().AgentGetAvoidanceMask(RID.Any(agent))))
 }
 
 /*
@@ -878,7 +894,7 @@ The specified [param agent] does not adjust the velocity for other agents that w
 */
 func AgentSetAvoidancePriority(agent RID.NavigationAgent2D, priority Float.X) { //gd:NavigationServer2D.agent_set_avoidance_priority
 	once.Do(singleton)
-	class(self).AgentSetAvoidancePriority(RID.Any(agent), float64(priority))
+	Advanced().AgentSetAvoidancePriority(RID.Any(agent), float64(priority))
 }
 
 /*
@@ -886,7 +902,7 @@ Returns the [code]avoidance_priority[/code] of the specified [param agent].
 */
 func AgentGetAvoidancePriority(agent RID.NavigationAgent2D) Float.X { //gd:NavigationServer2D.agent_get_avoidance_priority
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).AgentGetAvoidancePriority(RID.Any(agent))))
+	return Float.X(Float.X(Advanced().AgentGetAvoidancePriority(RID.Any(agent))))
 }
 
 /*
@@ -894,7 +910,7 @@ Creates a new navigation obstacle.
 */
 func ObstacleCreate() RID.NavigationObstacle2D { //gd:NavigationServer2D.obstacle_create
 	once.Do(singleton)
-	return RID.NavigationObstacle2D(class(self).ObstacleCreate())
+	return RID.NavigationObstacle2D(Advanced().ObstacleCreate())
 }
 
 /*
@@ -902,7 +918,7 @@ If [param enabled] is [code]true[/code], the provided [param obstacle] affects a
 */
 func ObstacleSetAvoidanceEnabled(obstacle RID.NavigationObstacle2D, enabled bool) { //gd:NavigationServer2D.obstacle_set_avoidance_enabled
 	once.Do(singleton)
-	class(self).ObstacleSetAvoidanceEnabled(RID.Any(obstacle), enabled)
+	Advanced().ObstacleSetAvoidanceEnabled(RID.Any(obstacle), enabled)
 }
 
 /*
@@ -910,7 +926,7 @@ Returns [code]true[/code] if the provided [param obstacle] has avoidance enabled
 */
 func ObstacleGetAvoidanceEnabled(obstacle RID.NavigationObstacle2D) bool { //gd:NavigationServer2D.obstacle_get_avoidance_enabled
 	once.Do(singleton)
-	return bool(class(self).ObstacleGetAvoidanceEnabled(RID.Any(obstacle)))
+	return bool(Advanced().ObstacleGetAvoidanceEnabled(RID.Any(obstacle)))
 }
 
 /*
@@ -918,7 +934,7 @@ Sets the navigation map [RID] for the obstacle.
 */
 func ObstacleSetMap(obstacle RID.NavigationObstacle2D, mapping RID.NavigationMap2D) { //gd:NavigationServer2D.obstacle_set_map
 	once.Do(singleton)
-	class(self).ObstacleSetMap(RID.Any(obstacle), RID.Any(mapping))
+	Advanced().ObstacleSetMap(RID.Any(obstacle), RID.Any(mapping))
 }
 
 /*
@@ -926,7 +942,7 @@ Returns the navigation map [RID] the requested [param obstacle] is currently ass
 */
 func ObstacleGetMap(obstacle RID.NavigationObstacle2D) RID.NavigationMap2D { //gd:NavigationServer2D.obstacle_get_map
 	once.Do(singleton)
-	return RID.NavigationMap2D(class(self).ObstacleGetMap(RID.Any(obstacle)))
+	return RID.NavigationMap2D(Advanced().ObstacleGetMap(RID.Any(obstacle)))
 }
 
 /*
@@ -934,7 +950,7 @@ If [param paused] is [code]true[/code] the specified [param obstacle] will not b
 */
 func ObstacleSetPaused(obstacle RID.NavigationObstacle2D, paused bool) { //gd:NavigationServer2D.obstacle_set_paused
 	once.Do(singleton)
-	class(self).ObstacleSetPaused(RID.Any(obstacle), paused)
+	Advanced().ObstacleSetPaused(RID.Any(obstacle), paused)
 }
 
 /*
@@ -942,7 +958,7 @@ Returns [code]true[/code] if the specified [param obstacle] is paused.
 */
 func ObstacleGetPaused(obstacle RID.NavigationObstacle2D) bool { //gd:NavigationServer2D.obstacle_get_paused
 	once.Do(singleton)
-	return bool(class(self).ObstacleGetPaused(RID.Any(obstacle)))
+	return bool(Advanced().ObstacleGetPaused(RID.Any(obstacle)))
 }
 
 /*
@@ -950,7 +966,7 @@ Sets the radius of the dynamic obstacle.
 */
 func ObstacleSetRadius(obstacle RID.NavigationObstacle2D, radius Float.X) { //gd:NavigationServer2D.obstacle_set_radius
 	once.Do(singleton)
-	class(self).ObstacleSetRadius(RID.Any(obstacle), float64(radius))
+	Advanced().ObstacleSetRadius(RID.Any(obstacle), float64(radius))
 }
 
 /*
@@ -958,7 +974,7 @@ Returns the radius of the specified dynamic [param obstacle].
 */
 func ObstacleGetRadius(obstacle RID.NavigationObstacle2D) Float.X { //gd:NavigationServer2D.obstacle_get_radius
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).ObstacleGetRadius(RID.Any(obstacle))))
+	return Float.X(Float.X(Advanced().ObstacleGetRadius(RID.Any(obstacle))))
 }
 
 /*
@@ -966,7 +982,7 @@ Sets [param velocity] of the dynamic [param obstacle]. Allows other agents to be
 */
 func ObstacleSetVelocity(obstacle RID.NavigationObstacle2D, velocity Vector2.XY) { //gd:NavigationServer2D.obstacle_set_velocity
 	once.Do(singleton)
-	class(self).ObstacleSetVelocity(RID.Any(obstacle), Vector2.XY(velocity))
+	Advanced().ObstacleSetVelocity(RID.Any(obstacle), Vector2.XY(velocity))
 }
 
 /*
@@ -974,7 +990,7 @@ Returns the velocity of the specified dynamic [param obstacle].
 */
 func ObstacleGetVelocity(obstacle RID.NavigationObstacle2D) Vector2.XY { //gd:NavigationServer2D.obstacle_get_velocity
 	once.Do(singleton)
-	return Vector2.XY(class(self).ObstacleGetVelocity(RID.Any(obstacle)))
+	return Vector2.XY(Advanced().ObstacleGetVelocity(RID.Any(obstacle)))
 }
 
 /*
@@ -982,7 +998,7 @@ Sets the position of the obstacle in world space.
 */
 func ObstacleSetPosition(obstacle RID.NavigationObstacle2D, position Vector2.XY) { //gd:NavigationServer2D.obstacle_set_position
 	once.Do(singleton)
-	class(self).ObstacleSetPosition(RID.Any(obstacle), Vector2.XY(position))
+	Advanced().ObstacleSetPosition(RID.Any(obstacle), Vector2.XY(position))
 }
 
 /*
@@ -990,7 +1006,7 @@ Returns the position of the specified [param obstacle] in world space.
 */
 func ObstacleGetPosition(obstacle RID.NavigationObstacle2D) Vector2.XY { //gd:NavigationServer2D.obstacle_get_position
 	once.Do(singleton)
-	return Vector2.XY(class(self).ObstacleGetPosition(RID.Any(obstacle)))
+	return Vector2.XY(Advanced().ObstacleGetPosition(RID.Any(obstacle)))
 }
 
 /*
@@ -998,7 +1014,7 @@ Sets the outline vertices for the obstacle. If the vertices are winded in clockw
 */
 func ObstacleSetVertices(obstacle RID.NavigationObstacle2D, vertices []Vector2.XY) { //gd:NavigationServer2D.obstacle_set_vertices
 	once.Do(singleton)
-	class(self).ObstacleSetVertices(RID.Any(obstacle), Packed.New(vertices...))
+	Advanced().ObstacleSetVertices(RID.Any(obstacle), Packed.New(vertices...))
 }
 
 /*
@@ -1006,7 +1022,7 @@ Returns the outline vertices for the specified [param obstacle].
 */
 func ObstacleGetVertices(obstacle RID.NavigationObstacle2D) []Vector2.XY { //gd:NavigationServer2D.obstacle_get_vertices
 	once.Do(singleton)
-	return []Vector2.XY(slices.Collect(class(self).ObstacleGetVertices(RID.Any(obstacle)).Values()))
+	return []Vector2.XY(slices.Collect(Advanced().ObstacleGetVertices(RID.Any(obstacle)).Values()))
 }
 
 /*
@@ -1014,7 +1030,7 @@ Set the obstacles's [code]avoidance_layers[/code] bitmask.
 */
 func ObstacleSetAvoidanceLayers(obstacle RID.NavigationObstacle2D, layers int) { //gd:NavigationServer2D.obstacle_set_avoidance_layers
 	once.Do(singleton)
-	class(self).ObstacleSetAvoidanceLayers(RID.Any(obstacle), int64(layers))
+	Advanced().ObstacleSetAvoidanceLayers(RID.Any(obstacle), int64(layers))
 }
 
 /*
@@ -1022,7 +1038,7 @@ Returns the [code]avoidance_layers[/code] bitmask of the specified [param obstac
 */
 func ObstacleGetAvoidanceLayers(obstacle RID.NavigationObstacle2D) int { //gd:NavigationServer2D.obstacle_get_avoidance_layers
 	once.Do(singleton)
-	return int(int(class(self).ObstacleGetAvoidanceLayers(RID.Any(obstacle))))
+	return int(int(Advanced().ObstacleGetAvoidanceLayers(RID.Any(obstacle))))
 }
 
 /*
@@ -1030,25 +1046,51 @@ Parses the [SceneTree] for source geometry according to the properties of [param
 [b]Note:[/b] This function needs to run on the main thread or with a deferred call as the SceneTree is not thread-safe.
 [b]Performance:[/b] While convenient, reading data arrays from [Mesh] resources can affect the frame rate negatively. The data needs to be received from the GPU, stalling the [RenderingServer] in the process. For performance prefer the use of e.g. collision shapes or creating the data arrays entirely in code.
 */
-func ParseSourceGeometryData(navigation_polygon [1]gdclass.NavigationPolygon, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData2D, root_node [1]gdclass.Node) { //gd:NavigationServer2D.parse_source_geometry_data
+func ParseSourceGeometryData(navigation_polygon [1]gdclass.NavigationPolygon, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData2D, root_node [1]gdclass.Node, callback func()) { //gd:NavigationServer2D.parse_source_geometry_data
 	once.Do(singleton)
-	class(self).ParseSourceGeometryData(navigation_polygon, source_geometry_data, root_node, Callable.New(Callable.Nil))
+	Advanced().ParseSourceGeometryData(navigation_polygon, source_geometry_data, root_node, Callable.New(callback))
+}
+
+/*
+Parses the [SceneTree] for source geometry according to the properties of [param navigation_polygon]. Updates the provided [param source_geometry_data] resource with the resulting data. The resource can then be used to bake a navigation mesh with [method bake_from_source_geometry_data]. After the process is finished the optional [param callback] will be called.
+[b]Note:[/b] This function needs to run on the main thread or with a deferred call as the SceneTree is not thread-safe.
+[b]Performance:[/b] While convenient, reading data arrays from [Mesh] resources can affect the frame rate negatively. The data needs to be received from the GPU, stalling the [RenderingServer] in the process. For performance prefer the use of e.g. collision shapes or creating the data arrays entirely in code.
+*/
+func ParseSourceGeometryDataExpanded(navigation_polygon [1]gdclass.NavigationPolygon, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData2D, root_node [1]gdclass.Node, callback func()) { //gd:NavigationServer2D.parse_source_geometry_data
+	once.Do(singleton)
+	Advanced().ParseSourceGeometryData(navigation_polygon, source_geometry_data, root_node, Callable.New(callback))
 }
 
 /*
 Bakes the provided [param navigation_polygon] with the data from the provided [param source_geometry_data]. After the process is finished the optional [param callback] will be called.
 */
-func BakeFromSourceGeometryData(navigation_polygon [1]gdclass.NavigationPolygon, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData2D) { //gd:NavigationServer2D.bake_from_source_geometry_data
+func BakeFromSourceGeometryData(navigation_polygon [1]gdclass.NavigationPolygon, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData2D, callback func()) { //gd:NavigationServer2D.bake_from_source_geometry_data
 	once.Do(singleton)
-	class(self).BakeFromSourceGeometryData(navigation_polygon, source_geometry_data, Callable.New(Callable.Nil))
+	Advanced().BakeFromSourceGeometryData(navigation_polygon, source_geometry_data, Callable.New(callback))
+}
+
+/*
+Bakes the provided [param navigation_polygon] with the data from the provided [param source_geometry_data]. After the process is finished the optional [param callback] will be called.
+*/
+func BakeFromSourceGeometryDataExpanded(navigation_polygon [1]gdclass.NavigationPolygon, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData2D, callback func()) { //gd:NavigationServer2D.bake_from_source_geometry_data
+	once.Do(singleton)
+	Advanced().BakeFromSourceGeometryData(navigation_polygon, source_geometry_data, Callable.New(callback))
 }
 
 /*
 Bakes the provided [param navigation_polygon] with the data from the provided [param source_geometry_data] as an async task running on a background thread. After the process is finished the optional [param callback] will be called.
 */
-func BakeFromSourceGeometryDataAsync(navigation_polygon [1]gdclass.NavigationPolygon, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData2D) { //gd:NavigationServer2D.bake_from_source_geometry_data_async
+func BakeFromSourceGeometryDataAsync(navigation_polygon [1]gdclass.NavigationPolygon, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData2D, callback func()) { //gd:NavigationServer2D.bake_from_source_geometry_data_async
 	once.Do(singleton)
-	class(self).BakeFromSourceGeometryDataAsync(navigation_polygon, source_geometry_data, Callable.New(Callable.Nil))
+	Advanced().BakeFromSourceGeometryDataAsync(navigation_polygon, source_geometry_data, Callable.New(callback))
+}
+
+/*
+Bakes the provided [param navigation_polygon] with the data from the provided [param source_geometry_data] as an async task running on a background thread. After the process is finished the optional [param callback] will be called.
+*/
+func BakeFromSourceGeometryDataAsyncExpanded(navigation_polygon [1]gdclass.NavigationPolygon, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData2D, callback func()) { //gd:NavigationServer2D.bake_from_source_geometry_data_async
+	once.Do(singleton)
+	Advanced().BakeFromSourceGeometryDataAsync(navigation_polygon, source_geometry_data, Callable.New(callback))
 }
 
 /*
@@ -1056,7 +1098,7 @@ Returns [code]true[/code] when the provided navigation polygon is being baked on
 */
 func IsBakingNavigationPolygon(navigation_polygon [1]gdclass.NavigationPolygon) bool { //gd:NavigationServer2D.is_baking_navigation_polygon
 	once.Do(singleton)
-	return bool(class(self).IsBakingNavigationPolygon(navigation_polygon))
+	return bool(Advanced().IsBakingNavigationPolygon(navigation_polygon))
 }
 
 /*
@@ -1064,7 +1106,7 @@ Creates a new source geometry parser. If a [Callable] is set for the parser with
 */
 func SourceGeometryParserCreate() RID.NavigationSourceGeometryParser2D { //gd:NavigationServer2D.source_geometry_parser_create
 	once.Do(singleton)
-	return RID.NavigationSourceGeometryParser2D(class(self).SourceGeometryParserCreate())
+	return RID.NavigationSourceGeometryParser2D(Advanced().SourceGeometryParserCreate())
 }
 
 /*
@@ -1075,7 +1117,7 @@ Sets the [param callback] [Callable] for the specific source geometry [param par
 */
 func SourceGeometryParserSetCallback(parser RID.NavigationSourceGeometryParser2D, callback func(navigation_mesh [1]gdclass.NavigationPolygon, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData2D, node [1]gdclass.Node)) { //gd:NavigationServer2D.source_geometry_parser_set_callback
 	once.Do(singleton)
-	class(self).SourceGeometryParserSetCallback(RID.Any(parser), Callable.New(callback))
+	Advanced().SourceGeometryParserSetCallback(RID.Any(parser), Callable.New(callback))
 }
 
 /*
@@ -1084,7 +1126,7 @@ Path simplification can be helpful to mitigate various path following issues tha
 */
 func SimplifyPath(path []Vector2.XY, epsilon Float.X) []Vector2.XY { //gd:NavigationServer2D.simplify_path
 	once.Do(singleton)
-	return []Vector2.XY(slices.Collect(class(self).SimplifyPath(Packed.New(path...), float64(epsilon)).Values()))
+	return []Vector2.XY(slices.Collect(Advanced().SimplifyPath(Packed.New(path...), float64(epsilon)).Values()))
 }
 
 /*
@@ -1092,7 +1134,7 @@ Destroys the given RID.
 */
 func FreeRid(rid RID.Any) { //gd:NavigationServer2D.free_rid
 	once.Do(singleton)
-	class(self).FreeRid(RID.Any(rid))
+	Advanced().FreeRid(RID.Any(rid))
 }
 
 /*
@@ -1100,7 +1142,7 @@ If [code]true[/code] enables debug mode on the NavigationServer.
 */
 func SetDebugEnabled(enabled bool) { //gd:NavigationServer2D.set_debug_enabled
 	once.Do(singleton)
-	class(self).SetDebugEnabled(enabled)
+	Advanced().SetDebugEnabled(enabled)
 }
 
 /*
@@ -1108,7 +1150,7 @@ Returns [code]true[/code] when the NavigationServer has debug enabled.
 */
 func GetDebugEnabled() bool { //gd:NavigationServer2D.get_debug_enabled
 	once.Do(singleton)
-	return bool(class(self).GetDebugEnabled())
+	return bool(Advanced().GetDebugEnabled())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

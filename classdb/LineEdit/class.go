@@ -75,6 +75,7 @@ On macOS, some extra keyboard shortcuts are available:
 [b]Note:[/b] Caret movement shortcuts listed above are not affected by [member shortcut_keys_enabled].
 */
 type Instance [1]gdclass.LineEdit
+type Expanded [1]gdclass.LineEdit
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -88,21 +89,21 @@ type Any interface {
 Returns [code]true[/code] if the user has text in the [url=https://en.wikipedia.org/wiki/Input_method]Input Method Editor[/url] (IME).
 */
 func (self Instance) HasImeText() bool { //gd:LineEdit.has_ime_text
-	return bool(class(self).HasImeText())
+	return bool(Advanced(self).HasImeText())
 }
 
 /*
 Closes the [url=https://en.wikipedia.org/wiki/Input_method]Input Method Editor[/url] (IME) if it is open. Any text in the IME will be lost.
 */
 func (self Instance) CancelIme() { //gd:LineEdit.cancel_ime
-	class(self).CancelIme()
+	Advanced(self).CancelIme()
 }
 
 /*
 Applies text from the [url=https://en.wikipedia.org/wiki/Input_method]Input Method Editor[/url] (IME) and closes the IME if it is open.
 */
 func (self Instance) ApplyIme() { //gd:LineEdit.apply_ime
-	class(self).ApplyIme()
+	Advanced(self).ApplyIme()
 }
 
 /*
@@ -110,28 +111,28 @@ Allows entering edit mode whether the [LineEdit] is focused or not.
 See also [member keep_editing_on_text_submit].
 */
 func (self Instance) Edit() { //gd:LineEdit.edit
-	class(self).Edit()
+	Advanced(self).Edit()
 }
 
 /*
 Allows exiting edit mode while preserving focus.
 */
 func (self Instance) Unedit() { //gd:LineEdit.unedit
-	class(self).Unedit()
+	Advanced(self).Unedit()
 }
 
 /*
 Returns whether the [LineEdit] is being edited.
 */
 func (self Instance) IsEditing() bool { //gd:LineEdit.is_editing
-	return bool(class(self).IsEditing())
+	return bool(Advanced(self).IsEditing())
 }
 
 /*
 Erases the [LineEdit]'s [member text].
 */
 func (self Instance) Clear() { //gd:LineEdit.clear
-	class(self).Clear()
+	Advanced(self).Clear()
 }
 
 /*
@@ -152,98 +153,119 @@ Select(2, 5); // Will select "lco".
 [/codeblocks]
 */
 func (self Instance) Select() { //gd:LineEdit.select
-	class(self).Select(int64(0), int64(-1))
+	Advanced(self).Select(int64(0), int64(-1))
+}
+
+/*
+Selects characters inside [LineEdit] between [param from] and [param to]. By default, [param from] is at the beginning and [param to] at the end.
+[codeblocks]
+[gdscript]
+text = "Welcome"
+select() # Will select "Welcome".
+select(4) # Will select "ome".
+select(2, 5) # Will select "lco".
+[/gdscript]
+[csharp]
+Text = "Welcome";
+Select(); // Will select "Welcome".
+Select(4); // Will select "ome".
+Select(2, 5); // Will select "lco".
+[/csharp]
+[/codeblocks]
+*/
+func (self Expanded) Select(from int, to int) { //gd:LineEdit.select
+	Advanced(self).Select(int64(from), int64(to))
 }
 
 /*
 Selects the whole [String].
 */
 func (self Instance) SelectAll() { //gd:LineEdit.select_all
-	class(self).SelectAll()
+	Advanced(self).SelectAll()
 }
 
 /*
 Clears the current selection.
 */
 func (self Instance) Deselect() { //gd:LineEdit.deselect
-	class(self).Deselect()
+	Advanced(self).Deselect()
 }
 
 /*
 Returns [code]true[/code] if an "undo" action is available.
 */
 func (self Instance) HasUndo() bool { //gd:LineEdit.has_undo
-	return bool(class(self).HasUndo())
+	return bool(Advanced(self).HasUndo())
 }
 
 /*
 Returns [code]true[/code] if a "redo" action is available.
 */
 func (self Instance) HasRedo() bool { //gd:LineEdit.has_redo
-	return bool(class(self).HasRedo())
+	return bool(Advanced(self).HasRedo())
 }
 
 /*
 Returns [code]true[/code] if the user has selected text.
 */
 func (self Instance) HasSelection() bool { //gd:LineEdit.has_selection
-	return bool(class(self).HasSelection())
+	return bool(Advanced(self).HasSelection())
 }
 
 /*
 Returns the text inside the selection.
 */
 func (self Instance) GetSelectedText() string { //gd:LineEdit.get_selected_text
-	return string(class(self).GetSelectedText().String())
+	return string(Advanced(self).GetSelectedText().String())
 }
 
 /*
 Returns the selection begin column.
 */
 func (self Instance) GetSelectionFromColumn() int { //gd:LineEdit.get_selection_from_column
-	return int(int(class(self).GetSelectionFromColumn()))
+	return int(int(Advanced(self).GetSelectionFromColumn()))
 }
 
 /*
 Returns the selection end column.
 */
 func (self Instance) GetSelectionToColumn() int { //gd:LineEdit.get_selection_to_column
-	return int(int(class(self).GetSelectionToColumn()))
+	return int(int(Advanced(self).GetSelectionToColumn()))
 }
 
 /*
 Returns the scroll offset due to [member caret_column], as a number of characters.
 */
 func (self Instance) GetScrollOffset() Float.X { //gd:LineEdit.get_scroll_offset
-	return Float.X(Float.X(class(self).GetScrollOffset()))
+	return Float.X(Float.X(Advanced(self).GetScrollOffset()))
 }
 
 /*
 Inserts [param text] at the caret. If the resulting value is longer than [member max_length], nothing happens.
 */
 func (self Instance) InsertTextAtCaret(text string) { //gd:LineEdit.insert_text_at_caret
-	class(self).InsertTextAtCaret(String.New(text))
+	Advanced(self).InsertTextAtCaret(String.New(text))
 }
 
 /*
 Deletes one character at the caret's current position (equivalent to pressing [kbd]Delete[/kbd]).
 */
 func (self Instance) DeleteCharAtCaret() { //gd:LineEdit.delete_char_at_caret
-	class(self).DeleteCharAtCaret()
+	Advanced(self).DeleteCharAtCaret()
 }
 
 /*
 Deletes a section of the [member text] going from position [param from_column] to [param to_column]. Both parameters should be within the text's length.
 */
 func (self Instance) DeleteText(from_column int, to_column int) { //gd:LineEdit.delete_text
-	class(self).DeleteText(int64(from_column), int64(to_column))
+	Advanced(self).DeleteText(int64(from_column), int64(to_column))
 }
 
 /*
 Executes a given action as defined in the [enum MenuItems] enum.
 */
 func (self Instance) MenuOption(option int) { //gd:LineEdit.menu_option
-	class(self).MenuOption(int64(option))
+	Advanced(self).MenuOption(int64(option))
 }
 
 /*
@@ -296,14 +318,14 @@ public void OnItemPressed(int id)
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member Window.visible] property.
 */
 func (self Instance) GetMenu() [1]gdclass.PopupMenu { //gd:LineEdit.get_menu
-	return [1]gdclass.PopupMenu(class(self).GetMenu())
+	return [1]gdclass.PopupMenu(Advanced(self).GetMenu())
 }
 
 /*
 Returns whether the menu is visible. Use this instead of [code]get_menu().visible[/code] to improve performance (so the creation of the menu is avoided).
 */
 func (self Instance) IsMenuVisible() bool { //gd:LineEdit.is_menu_visible
-	return bool(class(self).IsMenuVisible())
+	return bool(Advanced(self).IsMenuVisible())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

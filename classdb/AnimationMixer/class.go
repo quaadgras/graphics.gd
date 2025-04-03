@@ -51,6 +51,7 @@ After instantiating the playback information data within the extended class, the
 %!(EXTRA string=AnimationMixer)
 */
 type Instance [1]gdclass.AnimationMixer
+type Expanded [1]gdclass.AnimationMixer
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -111,28 +112,28 @@ global_library.add_animation("animation_name", animation_resource)
 [/codeblocks]
 */
 func (self Instance) AddAnimationLibrary(name string, library [1]gdclass.AnimationLibrary) error { //gd:AnimationMixer.add_animation_library
-	return error(gd.ToError(class(self).AddAnimationLibrary(String.Name(String.New(name)), library)))
+	return error(gd.ToError(Advanced(self).AddAnimationLibrary(String.Name(String.New(name)), library)))
 }
 
 /*
 Removes the [AnimationLibrary] associated with the key [param name].
 */
 func (self Instance) RemoveAnimationLibrary(name string) { //gd:AnimationMixer.remove_animation_library
-	class(self).RemoveAnimationLibrary(String.Name(String.New(name)))
+	Advanced(self).RemoveAnimationLibrary(String.Name(String.New(name)))
 }
 
 /*
 Moves the [AnimationLibrary] associated with the key [param name] to the key [param newname].
 */
 func (self Instance) RenameAnimationLibrary(name string, newname string) { //gd:AnimationMixer.rename_animation_library
-	class(self).RenameAnimationLibrary(String.Name(String.New(name)), String.Name(String.New(newname)))
+	Advanced(self).RenameAnimationLibrary(String.Name(String.New(name)), String.Name(String.New(newname)))
 }
 
 /*
 Returns [code]true[/code] if the [AnimationMixer] stores an [AnimationLibrary] with key [param name].
 */
 func (self Instance) HasAnimationLibrary(name string) bool { //gd:AnimationMixer.has_animation_library
-	return bool(class(self).HasAnimationLibrary(String.Name(String.New(name))))
+	return bool(Advanced(self).HasAnimationLibrary(String.Name(String.New(name))))
 }
 
 /*
@@ -140,35 +141,35 @@ Returns the first [AnimationLibrary] with key [param name] or [code]null[/code] 
 To get the [AnimationMixer]'s global animation library, use [code]get_animation_library("")[/code].
 */
 func (self Instance) GetAnimationLibrary(name string) [1]gdclass.AnimationLibrary { //gd:AnimationMixer.get_animation_library
-	return [1]gdclass.AnimationLibrary(class(self).GetAnimationLibrary(String.Name(String.New(name))))
+	return [1]gdclass.AnimationLibrary(Advanced(self).GetAnimationLibrary(String.Name(String.New(name))))
 }
 
 /*
 Returns the list of stored library keys.
 */
 func (self Instance) GetAnimationLibraryList() []string { //gd:AnimationMixer.get_animation_library_list
-	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetAnimationLibraryList())))
+	return []string(gd.ArrayAs[[]string](gd.InternalArray(Advanced(self).GetAnimationLibraryList())))
 }
 
 /*
 Returns [code]true[/code] if the [AnimationMixer] stores an [Animation] with key [param name].
 */
 func (self Instance) HasAnimation(name string) bool { //gd:AnimationMixer.has_animation
-	return bool(class(self).HasAnimation(String.Name(String.New(name))))
+	return bool(Advanced(self).HasAnimation(String.Name(String.New(name))))
 }
 
 /*
 Returns the [Animation] with the key [param name]. If the animation does not exist, [code]null[/code] is returned and an error is logged.
 */
 func (self Instance) GetAnimation(name string) [1]gdclass.Animation { //gd:AnimationMixer.get_animation
-	return [1]gdclass.Animation(class(self).GetAnimation(String.Name(String.New(name))))
+	return [1]gdclass.Animation(Advanced(self).GetAnimation(String.Name(String.New(name))))
 }
 
 /*
 Returns the list of stored animation keys.
 */
 func (self Instance) GetAnimationList() []string { //gd:AnimationMixer.get_animation_list
-	return []string(class(self).GetAnimationList().Strings())
+	return []string(Advanced(self).GetAnimationList().Strings())
 }
 
 /*
@@ -222,7 +223,7 @@ func _process(delta):
 [/codeblocks]
 */
 func (self Instance) GetRootMotionPosition() Vector3.XYZ { //gd:AnimationMixer.get_root_motion_position
-	return Vector3.XYZ(class(self).GetRootMotionPosition())
+	return Vector3.XYZ(Advanced(self).GetRootMotionPosition())
 }
 
 /*
@@ -242,7 +243,7 @@ func _process(delta):
 [/codeblocks]
 */
 func (self Instance) GetRootMotionRotation() Quaternion.IJKX { //gd:AnimationMixer.get_root_motion_rotation
-	return Quaternion.IJKX(class(self).GetRootMotionRotation())
+	return Quaternion.IJKX(Advanced(self).GetRootMotionRotation())
 }
 
 /*
@@ -268,7 +269,7 @@ func _process(delta):
 [/codeblocks]
 */
 func (self Instance) GetRootMotionScale() Vector3.XYZ { //gd:AnimationMixer.get_root_motion_scale
-	return Vector3.XYZ(class(self).GetRootMotionScale())
+	return Vector3.XYZ(Advanced(self).GetRootMotionScale())
 }
 
 /*
@@ -293,7 +294,7 @@ func _process(delta):
 However, if the animation loops, an unintended discrete change may occur, so this is only useful for some simple use cases.
 */
 func (self Instance) GetRootMotionPositionAccumulator() Vector3.XYZ { //gd:AnimationMixer.get_root_motion_position_accumulator
-	return Vector3.XYZ(class(self).GetRootMotionPositionAccumulator())
+	return Vector3.XYZ(Advanced(self).GetRootMotionPositionAccumulator())
 }
 
 /*
@@ -319,7 +320,7 @@ func _process(delta):
 However, if the animation loops, an unintended discrete change may occur, so this is only useful for some simple use cases.
 */
 func (self Instance) GetRootMotionRotationAccumulator() Quaternion.IJKX { //gd:AnimationMixer.get_root_motion_rotation_accumulator
-	return Quaternion.IJKX(class(self).GetRootMotionRotationAccumulator())
+	return Quaternion.IJKX(Advanced(self).GetRootMotionRotationAccumulator())
 }
 
 /*
@@ -343,21 +344,21 @@ func _process(delta):
 However, if the animation loops, an unintended discrete change may occur, so this is only useful for some simple use cases.
 */
 func (self Instance) GetRootMotionScaleAccumulator() Vector3.XYZ { //gd:AnimationMixer.get_root_motion_scale_accumulator
-	return Vector3.XYZ(class(self).GetRootMotionScaleAccumulator())
+	return Vector3.XYZ(Advanced(self).GetRootMotionScaleAccumulator())
 }
 
 /*
 [AnimationMixer] caches animated nodes. It may not notice if a node disappears; [method clear_caches] forces it to update the cache again.
 */
 func (self Instance) ClearCaches() { //gd:AnimationMixer.clear_caches
-	class(self).ClearCaches()
+	Advanced(self).ClearCaches()
 }
 
 /*
 Manually advance the animations by the specified time (in seconds).
 */
 func (self Instance) Advance(delta Float.X) { //gd:AnimationMixer.advance
-	class(self).Advance(float64(delta))
+	Advanced(self).Advance(float64(delta))
 }
 
 /*
@@ -366,21 +367,30 @@ After this it will interpolate with current animation blending result during the
 You can specify [param trans_type] as the curve for the interpolation. For better results, it may be appropriate to specify [constant Tween.TRANS_LINEAR] for cases where the first key of the track begins with a non-zero value or where the key value does not change, and [constant Tween.TRANS_QUAD] for cases where the key value changes linearly.
 */
 func (self Instance) Capture(name string, duration Float.X) { //gd:AnimationMixer.capture
-	class(self).Capture(String.Name(String.New(name)), float64(duration), 0, 0)
+	Advanced(self).Capture(String.Name(String.New(name)), float64(duration), 0, 0)
+}
+
+/*
+If the animation track specified by [param name] has an option [constant Animation.UPDATE_CAPTURE], stores current values of the objects indicated by the track path as a cache. If there is already a captured cache, the old cache is discarded.
+After this it will interpolate with current animation blending result during the playback process for the time specified by [param duration], working like a crossfade.
+You can specify [param trans_type] as the curve for the interpolation. For better results, it may be appropriate to specify [constant Tween.TRANS_LINEAR] for cases where the first key of the track begins with a non-zero value or where the key value does not change, and [constant Tween.TRANS_QUAD] for cases where the key value changes linearly.
+*/
+func (self Expanded) Capture(name string, duration Float.X, trans_type gdclass.TweenTransitionType, ease_type gdclass.TweenEaseType) { //gd:AnimationMixer.capture
+	Advanced(self).Capture(String.Name(String.New(name)), float64(duration), trans_type, ease_type)
 }
 
 /*
 Returns the key of [param animation] or an empty [StringName] if not found.
 */
 func (self Instance) FindAnimation(animation [1]gdclass.Animation) string { //gd:AnimationMixer.find_animation
-	return string(class(self).FindAnimation(animation).String())
+	return string(Advanced(self).FindAnimation(animation).String())
 }
 
 /*
 Returns the key for the [AnimationLibrary] that contains [param animation] or an empty [StringName] if not found.
 */
 func (self Instance) FindAnimationLibrary(animation [1]gdclass.Animation) string { //gd:AnimationMixer.find_animation_library
-	return string(class(self).FindAnimationLibrary(animation).String())
+	return string(Advanced(self).FindAnimationLibrary(animation).String())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

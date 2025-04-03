@@ -79,14 +79,14 @@ Packs the given container into a binary representation. The [param value] must b
 [b]Note:[/b] Subsequent calls to this method will overwrite the existing data.
 */
 func (self Instance) Pack(value any) error { //gd:PackedDataContainer.pack
-	return error(gd.ToError(class(self).Pack(variant.New(value))))
+	return error(gd.ToError(Advanced(self).Pack(variant.New(value))))
 }
 
 /*
 Returns the size of the packed container (see [method Array.size] and [method Dictionary.size]).
 */
 func (self Instance) Size() int { //gd:PackedDataContainer.size
-	return int(int(class(self).Size()))
+	return int(int(Advanced(self).Size()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

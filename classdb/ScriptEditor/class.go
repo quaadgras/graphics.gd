@@ -62,21 +62,21 @@ type Any interface {
 Returns the [ScriptEditorBase] object that the user is currently editing.
 */
 func (self Instance) GetCurrentEditor() [1]gdclass.ScriptEditorBase { //gd:ScriptEditor.get_current_editor
-	return [1]gdclass.ScriptEditorBase(class(self).GetCurrentEditor())
+	return [1]gdclass.ScriptEditorBase(Advanced(self).GetCurrentEditor())
 }
 
 /*
 Returns an array with all [ScriptEditorBase] objects which are currently open in editor.
 */
 func (self Instance) GetOpenScriptEditors() [][1]gdclass.ScriptEditorBase { //gd:ScriptEditor.get_open_script_editors
-	return [][1]gdclass.ScriptEditorBase(gd.ArrayAs[[][1]gdclass.ScriptEditorBase](gd.InternalArray(class(self).GetOpenScriptEditors())))
+	return [][1]gdclass.ScriptEditorBase(gd.ArrayAs[[][1]gdclass.ScriptEditorBase](gd.InternalArray(Advanced(self).GetOpenScriptEditors())))
 }
 
 /*
 Returns array of breakpoints.
 */
 func (self Instance) GetBreakpoints() []string { //gd:ScriptEditor.get_breakpoints
-	return []string(class(self).GetBreakpoints().Strings())
+	return []string(Advanced(self).GetBreakpoints().Strings())
 }
 
 /*
@@ -84,7 +84,7 @@ Registers the [EditorSyntaxHighlighter] to the editor, the [EditorSyntaxHighligh
 [b]Note:[/b] Does not apply to scripts that are already opened.
 */
 func (self Instance) RegisterSyntaxHighlighter(syntax_highlighter [1]gdclass.EditorSyntaxHighlighter) { //gd:ScriptEditor.register_syntax_highlighter
-	class(self).RegisterSyntaxHighlighter(syntax_highlighter)
+	Advanced(self).RegisterSyntaxHighlighter(syntax_highlighter)
 }
 
 /*
@@ -92,35 +92,35 @@ Unregisters the [EditorSyntaxHighlighter] from the editor.
 [b]Note:[/b] The [EditorSyntaxHighlighter] will still be applied to scripts that are already opened.
 */
 func (self Instance) UnregisterSyntaxHighlighter(syntax_highlighter [1]gdclass.EditorSyntaxHighlighter) { //gd:ScriptEditor.unregister_syntax_highlighter
-	class(self).UnregisterSyntaxHighlighter(syntax_highlighter)
+	Advanced(self).UnregisterSyntaxHighlighter(syntax_highlighter)
 }
 
 /*
 Goes to the specified line in the current script.
 */
 func (self Instance) GotoLine(line_number int) { //gd:ScriptEditor.goto_line
-	class(self).GotoLine(int64(line_number))
+	Advanced(self).GotoLine(int64(line_number))
 }
 
 /*
 Returns a [Script] that is currently active in editor.
 */
 func (self Instance) GetCurrentScript() [1]gdclass.Script { //gd:ScriptEditor.get_current_script
-	return [1]gdclass.Script(class(self).GetCurrentScript())
+	return [1]gdclass.Script(Advanced(self).GetCurrentScript())
 }
 
 /*
 Returns an array with all [Script] objects which are currently open in editor.
 */
 func (self Instance) GetOpenScripts() [][1]gdclass.Script { //gd:ScriptEditor.get_open_scripts
-	return [][1]gdclass.Script(gd.ArrayAs[[][1]gdclass.Script](gd.InternalArray(class(self).GetOpenScripts())))
+	return [][1]gdclass.Script(gd.ArrayAs[[][1]gdclass.Script](gd.InternalArray(Advanced(self).GetOpenScripts())))
 }
 
 /*
 Opens the script create dialog. The script will extend [param base_name]. The file extension can be omitted from [param base_path]. It will be added based on the selected scripting language.
 */
 func (self Instance) OpenScriptCreateDialog(base_name string, base_path string) { //gd:ScriptEditor.open_script_create_dialog
-	class(self).OpenScriptCreateDialog(String.New(base_name), String.New(base_path))
+	Advanced(self).OpenScriptCreateDialog(String.New(base_name), String.New(base_path))
 }
 
 /*
@@ -148,7 +148,7 @@ class_theme_item:GraphNode:panel_selected
 [/codeblock]
 */
 func (self Instance) GotoHelp(topic string) { //gd:ScriptEditor.goto_help
-	class(self).GotoHelp(String.New(topic))
+	Advanced(self).GotoHelp(String.New(topic))
 }
 
 /*
@@ -156,7 +156,7 @@ Updates the documentation for the given [param script] if the script's documenta
 [b]Note:[/b] This should be called whenever the script is changed to keep the open documentation state up to date.
 */
 func (self Instance) UpdateDocsFromScript(script [1]gdclass.Script) { //gd:ScriptEditor.update_docs_from_script
-	class(self).UpdateDocsFromScript(script)
+	Advanced(self).UpdateDocsFromScript(script)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

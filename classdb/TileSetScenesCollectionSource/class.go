@@ -76,6 +76,7 @@ if (sourceId > -1)
 [/codeblocks]
 */
 type Instance [1]gdclass.TileSetScenesCollectionSource
+type Expanded [1]gdclass.TileSetScenesCollectionSource
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -89,21 +90,21 @@ type Any interface {
 Returns the number or scene tiles this TileSet source has.
 */
 func (self Instance) GetSceneTilesCount() int { //gd:TileSetScenesCollectionSource.get_scene_tiles_count
-	return int(int(class(self).GetSceneTilesCount()))
+	return int(int(Advanced(self).GetSceneTilesCount()))
 }
 
 /*
 Returns the scene tile ID of the scene tile at [param index].
 */
 func (self Instance) GetSceneTileId(index int) int { //gd:TileSetScenesCollectionSource.get_scene_tile_id
-	return int(int(class(self).GetSceneTileId(int64(index))))
+	return int(int(Advanced(self).GetSceneTileId(int64(index))))
 }
 
 /*
 Returns whether this TileSet source has a scene tile with [param id].
 */
 func (self Instance) HasSceneTileId(id int) bool { //gd:TileSetScenesCollectionSource.has_scene_tile_id
-	return bool(class(self).HasSceneTileId(int64(id)))
+	return bool(Advanced(self).HasSceneTileId(int64(id)))
 }
 
 /*
@@ -111,56 +112,64 @@ Creates a scene-based tile out of the given scene.
 Returns a newly generated unique ID.
 */
 func (self Instance) CreateSceneTile(packed_scene [1]gdclass.PackedScene) int { //gd:TileSetScenesCollectionSource.create_scene_tile
-	return int(int(class(self).CreateSceneTile(packed_scene, int64(-1))))
+	return int(int(Advanced(self).CreateSceneTile(packed_scene, int64(-1))))
+}
+
+/*
+Creates a scene-based tile out of the given scene.
+Returns a newly generated unique ID.
+*/
+func (self Expanded) CreateSceneTile(packed_scene [1]gdclass.PackedScene, id_override int) int { //gd:TileSetScenesCollectionSource.create_scene_tile
+	return int(int(Advanced(self).CreateSceneTile(packed_scene, int64(id_override))))
 }
 
 /*
 Changes a scene tile's ID from [param id] to [param new_id]. This will fail if there is already a tile with an ID equal to [param new_id].
 */
 func (self Instance) SetSceneTileId(id int, new_id int) { //gd:TileSetScenesCollectionSource.set_scene_tile_id
-	class(self).SetSceneTileId(int64(id), int64(new_id))
+	Advanced(self).SetSceneTileId(int64(id), int64(new_id))
 }
 
 /*
 Assigns a [PackedScene] resource to the scene tile with [param id]. This will fail if the scene does not extend CanvasItem, as positioning properties are needed to place the scene on the TileMap.
 */
 func (self Instance) SetSceneTileScene(id int, packed_scene [1]gdclass.PackedScene) { //gd:TileSetScenesCollectionSource.set_scene_tile_scene
-	class(self).SetSceneTileScene(int64(id), packed_scene)
+	Advanced(self).SetSceneTileScene(int64(id), packed_scene)
 }
 
 /*
 Returns the [PackedScene] resource of scene tile with [param id].
 */
 func (self Instance) GetSceneTileScene(id int) [1]gdclass.PackedScene { //gd:TileSetScenesCollectionSource.get_scene_tile_scene
-	return [1]gdclass.PackedScene(class(self).GetSceneTileScene(int64(id)))
+	return [1]gdclass.PackedScene(Advanced(self).GetSceneTileScene(int64(id)))
 }
 
 /*
 Sets whether or not the scene tile with [param id] should display a placeholder in the editor. This might be useful for scenes that are not visible.
 */
 func (self Instance) SetSceneTileDisplayPlaceholder(id int, display_placeholder bool) { //gd:TileSetScenesCollectionSource.set_scene_tile_display_placeholder
-	class(self).SetSceneTileDisplayPlaceholder(int64(id), display_placeholder)
+	Advanced(self).SetSceneTileDisplayPlaceholder(int64(id), display_placeholder)
 }
 
 /*
 Returns whether the scene tile with [param id] displays a placeholder in the editor.
 */
 func (self Instance) GetSceneTileDisplayPlaceholder(id int) bool { //gd:TileSetScenesCollectionSource.get_scene_tile_display_placeholder
-	return bool(class(self).GetSceneTileDisplayPlaceholder(int64(id)))
+	return bool(Advanced(self).GetSceneTileDisplayPlaceholder(int64(id)))
 }
 
 /*
 Remove the scene tile with [param id].
 */
 func (self Instance) RemoveSceneTile(id int) { //gd:TileSetScenesCollectionSource.remove_scene_tile
-	class(self).RemoveSceneTile(int64(id))
+	Advanced(self).RemoveSceneTile(int64(id))
 }
 
 /*
 Returns the scene ID a following call to [method create_scene_tile] would return.
 */
 func (self Instance) GetNextSceneTileId() int { //gd:TileSetScenesCollectionSource.get_next_scene_tile_id
-	return int(int(class(self).GetNextSceneTileId()))
+	return int(int(Advanced(self).GetNextSceneTileId()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

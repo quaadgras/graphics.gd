@@ -103,14 +103,14 @@ arrMesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Triangles, c.GetMeshArrays());
 [/codeblocks]
 */
 func (self Instance) GetMeshArrays() []any { //gd:PrimitiveMesh.get_mesh_arrays
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetMeshArrays())))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetMeshArrays())))
 }
 
 /*
 Request an update of this primitive mesh based on its properties.
 */
 func (self Instance) RequestUpdate() { //gd:PrimitiveMesh.request_update
-	class(self).RequestUpdate()
+	Advanced(self).RequestUpdate()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

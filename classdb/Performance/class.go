@@ -69,7 +69,7 @@ See [method get_custom_monitor] to query custom performance monitors' values.
 */
 func GetMonitor(monitor gdclass.PerformanceMonitor) Float.X { //gd:Performance.get_monitor
 	once.Do(singleton)
-	return Float.X(Float.X(class(self).GetMonitor(monitor)))
+	return Float.X(Float.X(Advanced().GetMonitor(monitor)))
 }
 
 /*
@@ -130,9 +130,72 @@ public int GetMonitorValue()
 The debugger calls the callable to get the value of custom monitor. The callable must return a zero or positive integer or floating-point number.
 Callables are called with arguments supplied in argument array.
 */
-func AddCustomMonitor(id string, callable Callable.Function) { //gd:Performance.add_custom_monitor
+func AddCustomMonitor(id string, callable Callable.Function, arguments []any) { //gd:Performance.add_custom_monitor
 	once.Do(singleton)
-	class(self).AddCustomMonitor(String.Name(String.New(id)), Callable.New(callable), Array.Nil)
+	Advanced().AddCustomMonitor(String.Name(String.New(id)), Callable.New(callable), gd.EngineArrayFromSlice(arguments))
+}
+
+/*
+Adds a custom monitor with the name [param id]. You can specify the category of the monitor using slash delimiters in [param id] (for example: [code]"Game/NumberOfNPCs"[/code]). If there is more than one slash delimiter, then the default category is used. The default category is [code]"Custom"[/code]. Prints an error if given [param id] is already present.
+[codeblocks]
+[gdscript]
+func _ready():
+
+	var monitor_value = Callable(self, "get_monitor_value")
+
+	# Adds monitor with name "MyName" to category "MyCategory".
+	Performance.add_custom_monitor("MyCategory/MyMonitor", monitor_value)
+
+	# Adds monitor with name "MyName" to category "Custom".
+	# Note: "MyCategory/MyMonitor" and "MyMonitor" have same name but different IDs, so the code is valid.
+	Performance.add_custom_monitor("MyMonitor", monitor_value)
+
+	# Adds monitor with name "MyName" to category "Custom".
+	# Note: "MyMonitor" and "Custom/MyMonitor" have same name and same category but different IDs, so the code is valid.
+	Performance.add_custom_monitor("Custom/MyMonitor", monitor_value)
+
+	# Adds monitor with name "MyCategoryOne/MyCategoryTwo/MyMonitor" to category "Custom".
+	Performance.add_custom_monitor("MyCategoryOne/MyCategoryTwo/MyMonitor", monitor_value)
+
+func get_monitor_value():
+
+	return randi() % 25
+
+[/gdscript]
+[csharp]
+public override void _Ready()
+
+	{
+	    var monitorValue = new Callable(this, MethodName.GetMonitorValue);
+
+	    // Adds monitor with name "MyName" to category "MyCategory".
+	    Performance.AddCustomMonitor("MyCategory/MyMonitor", monitorValue);
+	    // Adds monitor with name "MyName" to category "Custom".
+	    // Note: "MyCategory/MyMonitor" and "MyMonitor" have same name but different ids so the code is valid.
+	    Performance.AddCustomMonitor("MyMonitor", monitorValue);
+
+	    // Adds monitor with name "MyName" to category "Custom".
+	    // Note: "MyMonitor" and "Custom/MyMonitor" have same name and same category but different ids so the code is valid.
+	    Performance.AddCustomMonitor("Custom/MyMonitor", monitorValue);
+
+	    // Adds monitor with name "MyCategoryOne/MyCategoryTwo/MyMonitor" to category "Custom".
+	    Performance.AddCustomMonitor("MyCategoryOne/MyCategoryTwo/MyMonitor", monitorValue);
+	}
+
+public int GetMonitorValue()
+
+	{
+	    return GD.Randi() % 25;
+	}
+
+[/csharp]
+[/codeblocks]
+The debugger calls the callable to get the value of custom monitor. The callable must return a zero or positive integer or floating-point number.
+Callables are called with arguments supplied in argument array.
+*/
+func AddCustomMonitorExpanded(id string, callable Callable.Function, arguments []any) { //gd:Performance.add_custom_monitor
+	once.Do(singleton)
+	Advanced().AddCustomMonitor(String.Name(String.New(id)), Callable.New(callable), gd.EngineArrayFromSlice(arguments))
 }
 
 /*
@@ -140,7 +203,7 @@ Removes the custom monitor with given [param id]. Prints an error if the given [
 */
 func RemoveCustomMonitor(id string) { //gd:Performance.remove_custom_monitor
 	once.Do(singleton)
-	class(self).RemoveCustomMonitor(String.Name(String.New(id)))
+	Advanced().RemoveCustomMonitor(String.Name(String.New(id)))
 }
 
 /*
@@ -148,7 +211,7 @@ Returns [code]true[/code] if custom monitor with the given [param id] is present
 */
 func HasCustomMonitor(id string) bool { //gd:Performance.has_custom_monitor
 	once.Do(singleton)
-	return bool(class(self).HasCustomMonitor(String.Name(String.New(id))))
+	return bool(Advanced().HasCustomMonitor(String.Name(String.New(id))))
 }
 
 /*
@@ -156,7 +219,7 @@ Returns the value of custom monitor with given [param id]. The callable is calle
 */
 func GetCustomMonitor(id string) any { //gd:Performance.get_custom_monitor
 	once.Do(singleton)
-	return any(class(self).GetCustomMonitor(String.Name(String.New(id))).Interface())
+	return any(Advanced().GetCustomMonitor(String.Name(String.New(id))).Interface())
 }
 
 /*
@@ -164,7 +227,7 @@ Returns the last tick in which custom monitor was added/removed (in microseconds
 */
 func GetMonitorModificationTime() int { //gd:Performance.get_monitor_modification_time
 	once.Do(singleton)
-	return int(int(class(self).GetMonitorModificationTime()))
+	return int(int(Advanced().GetMonitorModificationTime()))
 }
 
 /*
@@ -172,7 +235,7 @@ Returns the names of active custom monitors in an [Array].
 */
 func GetCustomMonitorNames() []string { //gd:Performance.get_custom_monitor_names
 	once.Do(singleton)
-	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetCustomMonitorNames())))
+	return []string(gd.ArrayAs[[]string](gd.InternalArray(Advanced().GetCustomMonitorNames())))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

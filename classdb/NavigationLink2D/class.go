@@ -60,63 +60,63 @@ type Any interface {
 Returns the [RID] of this link on the [NavigationServer2D].
 */
 func (self Instance) GetRid() RID.NavigationLink2D { //gd:NavigationLink2D.get_rid
-	return RID.NavigationLink2D(class(self).GetRid())
+	return RID.NavigationLink2D(Advanced(self).GetRid())
 }
 
 /*
 Sets the [RID] of the navigation map this link should use. By default the link will automatically join the [World2D] default navigation map so this function is only required to override the default map.
 */
 func (self Instance) SetNavigationMap(navigation_map RID.NavigationMap2D) { //gd:NavigationLink2D.set_navigation_map
-	class(self).SetNavigationMap(RID.Any(navigation_map))
+	Advanced(self).SetNavigationMap(RID.Any(navigation_map))
 }
 
 /*
 Returns the current navigation map [RID] used by this link.
 */
 func (self Instance) GetNavigationMap() RID.NavigationMap2D { //gd:NavigationLink2D.get_navigation_map
-	return RID.NavigationMap2D(class(self).GetNavigationMap())
+	return RID.NavigationMap2D(Advanced(self).GetNavigationMap())
 }
 
 /*
 Based on [param value], enables or disables the specified layer in the [member navigation_layers] bitmask, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) SetNavigationLayerValue(layer_number int, value bool) { //gd:NavigationLink2D.set_navigation_layer_value
-	class(self).SetNavigationLayerValue(int64(layer_number), value)
+	Advanced(self).SetNavigationLayerValue(int64(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member navigation_layers] bitmask is enabled, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) GetNavigationLayerValue(layer_number int) bool { //gd:NavigationLink2D.get_navigation_layer_value
-	return bool(class(self).GetNavigationLayerValue(int64(layer_number)))
+	return bool(Advanced(self).GetNavigationLayerValue(int64(layer_number)))
 }
 
 /*
 Sets the [member start_position] that is relative to the link from a global [param position].
 */
 func (self Instance) SetGlobalStartPosition(position Vector2.XY) { //gd:NavigationLink2D.set_global_start_position
-	class(self).SetGlobalStartPosition(Vector2.XY(position))
+	Advanced(self).SetGlobalStartPosition(Vector2.XY(position))
 }
 
 /*
 Returns the [member start_position] that is relative to the link as a global position.
 */
 func (self Instance) GetGlobalStartPosition() Vector2.XY { //gd:NavigationLink2D.get_global_start_position
-	return Vector2.XY(class(self).GetGlobalStartPosition())
+	return Vector2.XY(Advanced(self).GetGlobalStartPosition())
 }
 
 /*
 Sets the [member end_position] that is relative to the link from a global [param position].
 */
 func (self Instance) SetGlobalEndPosition(position Vector2.XY) { //gd:NavigationLink2D.set_global_end_position
-	class(self).SetGlobalEndPosition(Vector2.XY(position))
+	Advanced(self).SetGlobalEndPosition(Vector2.XY(position))
 }
 
 /*
 Returns the [member end_position] that is relative to the link as a global position.
 */
 func (self Instance) GetGlobalEndPosition() Vector2.XY { //gd:NavigationLink2D.get_global_end_position
-	return Vector2.XY(class(self).GetGlobalEndPosition())
+	return Vector2.XY(Advanced(self).GetGlobalEndPosition())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

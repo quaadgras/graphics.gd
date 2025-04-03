@@ -114,14 +114,14 @@ func (Instance) _get_allowed_size_flags_vertical(impl func(ptr unsafe.Pointer) [
 Queue resort of the contained children. This is called automatically anyway, but can be called upon request.
 */
 func (self Instance) QueueSort() { //gd:Container.queue_sort
-	class(self).QueueSort()
+	Advanced(self).QueueSort()
 }
 
 /*
 Fit a child control in a given rect. This is mainly a helper for creating custom container classes.
 */
 func (self Instance) FitChildInRect(child [1]gdclass.Control, rect Rect2.PositionSize) { //gd:Container.fit_child_in_rect
-	class(self).FitChildInRect(child, Rect2.PositionSize(rect))
+	Advanced(self).FitChildInRect(child, Rect2.PositionSize(rect))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

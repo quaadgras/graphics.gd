@@ -97,6 +97,7 @@ func _exit_tree():
 [b]Further reading:[/b] If you want to know more about UPnP (and the Internet Gateway Device (IGD) and Port Control Protocol (PCP) specifically), [url=https://en.wikipedia.org/wiki/Universal_Plug_and_Play]Wikipedia[/url] is a good first stop, the specification can be found at the [url=https://openconnectivity.org/developer/specifications/upnp-resources/upnp/]Open Connectivity Foundation[/url] and Godot's implementation is based on the [url=https://github.com/miniupnp/miniupnp]MiniUPnP client[/url].
 */
 type Instance [1]gdclass.UPNP
+type Expanded [1]gdclass.UPNP
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -110,49 +111,49 @@ type Any interface {
 Returns the number of discovered [UPNPDevice]s.
 */
 func (self Instance) GetDeviceCount() int { //gd:UPNP.get_device_count
-	return int(int(class(self).GetDeviceCount()))
+	return int(int(Advanced(self).GetDeviceCount()))
 }
 
 /*
 Returns the [UPNPDevice] at the given [param index].
 */
 func (self Instance) GetDevice(index int) [1]gdclass.UPNPDevice { //gd:UPNP.get_device
-	return [1]gdclass.UPNPDevice(class(self).GetDevice(int64(index)))
+	return [1]gdclass.UPNPDevice(Advanced(self).GetDevice(int64(index)))
 }
 
 /*
 Adds the given [UPNPDevice] to the list of discovered devices.
 */
 func (self Instance) AddDevice(device [1]gdclass.UPNPDevice) { //gd:UPNP.add_device
-	class(self).AddDevice(device)
+	Advanced(self).AddDevice(device)
 }
 
 /*
 Sets the device at [param index] from the list of discovered devices to [param device].
 */
 func (self Instance) SetDevice(index int, device [1]gdclass.UPNPDevice) { //gd:UPNP.set_device
-	class(self).SetDevice(int64(index), device)
+	Advanced(self).SetDevice(int64(index), device)
 }
 
 /*
 Removes the device at [param index] from the list of discovered devices.
 */
 func (self Instance) RemoveDevice(index int) { //gd:UPNP.remove_device
-	class(self).RemoveDevice(int64(index))
+	Advanced(self).RemoveDevice(int64(index))
 }
 
 /*
 Clears the list of discovered devices.
 */
 func (self Instance) ClearDevices() { //gd:UPNP.clear_devices
-	class(self).ClearDevices()
+	Advanced(self).ClearDevices()
 }
 
 /*
 Returns the default gateway. That is the first discovered [UPNPDevice] that is also a valid IGD (InternetGatewayDevice).
 */
 func (self Instance) GetGateway() [1]gdclass.UPNPDevice { //gd:UPNP.get_gateway
-	return [1]gdclass.UPNPDevice(class(self).GetGateway())
+	return [1]gdclass.UPNPDevice(Advanced(self).GetGateway())
 }
 
 /*
@@ -161,14 +162,23 @@ Filters for IGD (InternetGatewayDevice) type devices by default, as those manage
 See [enum UPNPResult] for possible return values.
 */
 func (self Instance) Discover() int { //gd:UPNP.discover
-	return int(int(class(self).Discover(int64(2000), int64(2), String.New("InternetGatewayDevice"))))
+	return int(int(Advanced(self).Discover(int64(2000), int64(2), String.New("InternetGatewayDevice"))))
+}
+
+/*
+Discovers local [UPNPDevice]s. Clears the list of previously discovered devices.
+Filters for IGD (InternetGatewayDevice) type devices by default, as those manage port forwarding. [param timeout] is the time to wait for responses in milliseconds. [param ttl] is the time-to-live; only touch this if you know what you're doing.
+See [enum UPNPResult] for possible return values.
+*/
+func (self Expanded) Discover(timeout int, ttl int, device_filter string) int { //gd:UPNP.discover
+	return int(int(Advanced(self).Discover(int64(timeout), int64(ttl), String.New(device_filter))))
 }
 
 /*
 Returns the external [IP] address of the default gateway (see [method get_gateway]) as string. Returns an empty string on error.
 */
 func (self Instance) QueryExternalAddress() string { //gd:UPNP.query_external_address
-	return string(class(self).QueryExternalAddress().String())
+	return string(Advanced(self).QueryExternalAddress().String())
 }
 
 /*
@@ -180,14 +190,33 @@ The mapping's lease [param duration] can be limited by specifying a duration in 
 See [enum UPNPResult] for possible return values.
 */
 func (self Instance) AddPortMapping(port int) int { //gd:UPNP.add_port_mapping
-	return int(int(class(self).AddPortMapping(int64(port), int64(0), String.New(""), String.New("UDP"), int64(0))))
+	return int(int(Advanced(self).AddPortMapping(int64(port), int64(0), String.New(""), String.New("UDP"), int64(0))))
+}
+
+/*
+Adds a mapping to forward the external [param port] (between 1 and 65535, although recommended to use port 1024 or above) on the default gateway (see [method get_gateway]) to the [param port_internal] on the local machine for the given protocol [param proto] (either [code]"TCP"[/code] or [code]"UDP"[/code], with UDP being the default). If a port mapping for the given port and protocol combination already exists on that gateway device, this method tries to overwrite it. If that is not desired, you can retrieve the gateway manually with [method get_gateway] and call [method add_port_mapping] on it, if any. Note that forwarding a well-known port (below 1024) with UPnP may fail depending on the device.
+Depending on the gateway device, if a mapping for that port already exists, it will either be updated or it will refuse this command due to that conflict, especially if the existing mapping for that port wasn't created via UPnP or points to a different network address (or device) than this one.
+If [param port_internal] is [code]0[/code] (the default), the same port number is used for both the external and the internal port (the [param port] value).
+The description ([param desc]) is shown in some routers management UIs and can be used to point out which application added the mapping.
+The mapping's lease [param duration] can be limited by specifying a duration in seconds. The default of [code]0[/code] means no duration, i.e. a permanent lease and notably some devices only support these permanent leases. Note that whether permanent or not, this is only a request and the gateway may still decide at any point to remove the mapping (which usually happens on a reboot of the gateway, when its external IP address changes, or on some models when it detects a port mapping has become inactive, i.e. had no traffic for multiple minutes). If not [code]0[/code] (permanent), the allowed range according to spec is between [code]120[/code] (2 minutes) and [code]86400[/code] seconds (24 hours).
+See [enum UPNPResult] for possible return values.
+*/
+func (self Expanded) AddPortMapping(port int, port_internal int, desc string, proto string, duration int) int { //gd:UPNP.add_port_mapping
+	return int(int(Advanced(self).AddPortMapping(int64(port), int64(port_internal), String.New(desc), String.New(proto), int64(duration))))
 }
 
 /*
 Deletes the port mapping for the given port and protocol combination on the default gateway (see [method get_gateway]) if one exists. [param port] must be a valid port between 1 and 65535, [param proto] can be either [code]"TCP"[/code] or [code]"UDP"[/code]. May be refused for mappings pointing to addresses other than this one, for well-known ports (below 1024), or for mappings not added via UPnP. See [enum UPNPResult] for possible return values.
 */
 func (self Instance) DeletePortMapping(port int) int { //gd:UPNP.delete_port_mapping
-	return int(int(class(self).DeletePortMapping(int64(port), String.New("UDP"))))
+	return int(int(Advanced(self).DeletePortMapping(int64(port), String.New("UDP"))))
+}
+
+/*
+Deletes the port mapping for the given port and protocol combination on the default gateway (see [method get_gateway]) if one exists. [param port] must be a valid port between 1 and 65535, [param proto] can be either [code]"TCP"[/code] or [code]"UDP"[/code]. May be refused for mappings pointing to addresses other than this one, for well-known ports (below 1024), or for mappings not added via UPnP. See [enum UPNPResult] for possible return values.
+*/
+func (self Expanded) DeletePortMapping(port int, proto string) int { //gd:UPNP.delete_port_mapping
+	return int(int(Advanced(self).DeletePortMapping(int64(port), String.New(proto))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

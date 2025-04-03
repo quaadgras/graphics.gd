@@ -253,7 +253,7 @@ func (Instance) _get_closest_point_to_object_volume(impl func(ptr unsafe.Pointer
 	}
 }
 func (self Instance) IsBodyExcludedFromQuery(body RID.Body3D) bool { //gd:PhysicsDirectSpaceState3DExtension.is_body_excluded_from_query
-	return bool(class(self).IsBodyExcludedFromQuery(RID.Any(body)))
+	return bool(Advanced(self).IsBodyExcludedFromQuery(RID.Any(body)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

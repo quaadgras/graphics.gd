@@ -52,6 +52,7 @@ For more information on HTTP, see [url=https://developer.mozilla.org/en-US/docs/
 [b]Warning:[/b] TLS certificate revocation and certificate pinning are currently not supported. Revoked certificates are accepted as long as they are otherwise valid. If this is a concern, you may want to use automatically managed certificates with a short validity period.
 */
 type Instance [1]gdclass.HTTPClient
+type Expanded [1]gdclass.HTTPClient
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -66,7 +67,15 @@ Connects to a host. This needs to be done before any requests are sent.
 If no [param port] is specified (or [code]-1[/code] is used), it is automatically set to 80 for HTTP and 443 for HTTPS. You can pass the optional [param tls_options] parameter to customize the trusted certification authorities, or the common name verification when using HTTPS. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
 func (self Instance) ConnectToHost(host string) error { //gd:HTTPClient.connect_to_host
-	return error(gd.ToError(class(self).ConnectToHost(String.New(host), int64(-1), [1][1]gdclass.TLSOptions{}[0])))
+	return error(gd.ToError(Advanced(self).ConnectToHost(String.New(host), int64(-1), [1][1]gdclass.TLSOptions{}[0])))
+}
+
+/*
+Connects to a host. This needs to be done before any requests are sent.
+If no [param port] is specified (or [code]-1[/code] is used), it is automatically set to 80 for HTTP and 443 for HTTPS. You can pass the optional [param tls_options] parameter to customize the trusted certification authorities, or the common name verification when using HTTPS. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
+*/
+func (self Expanded) ConnectToHost(host string, port int, tls_options [1]gdclass.TLSOptions) error { //gd:HTTPClient.connect_to_host
+	return error(gd.ToError(Advanced(self).ConnectToHost(String.New(host), int64(port), tls_options)))
 }
 
 /*
@@ -76,7 +85,7 @@ Headers are HTTP request headers. For available HTTP methods, see [enum Method].
 Sends the body data raw, as a byte array and does not encode it in any way.
 */
 func (self Instance) RequestRaw(method gdclass.HTTPClientMethod, url string, headers []string, body []byte) error { //gd:HTTPClient.request_raw
-	return error(gd.ToError(class(self).RequestRaw(method, String.New(url), Packed.MakeStrings(headers...), Packed.Bytes(Packed.New(body...)))))
+	return error(gd.ToError(Advanced(self).RequestRaw(method, String.New(url), Packed.MakeStrings(headers...), Packed.Bytes(Packed.New(body...)))))
 }
 
 /*
@@ -101,42 +110,67 @@ var result = new HttpClient().Request(HttpClient.Method.Post, "index.php", heade
 [b]Note:[/b] The [param body] parameter is ignored if [param method] is [constant HTTPClient.METHOD_GET]. This is because GET methods can't contain request data. As a workaround, you can pass request data as a query string in the URL. See [method String.uri_encode] for an example.
 */
 func (self Instance) Request(method gdclass.HTTPClientMethod, url string, headers []string) error { //gd:HTTPClient.request
-	return error(gd.ToError(class(self).Request(method, String.New(url), Packed.MakeStrings(headers...), String.New(""))))
+	return error(gd.ToError(Advanced(self).Request(method, String.New(url), Packed.MakeStrings(headers...), String.New(""))))
+}
+
+/*
+Sends a request to the connected host.
+The URL parameter is usually just the part after the host, so for [code]https://example.com/index.php[/code], it is [code]/index.php[/code]. When sending requests to an HTTP proxy server, it should be an absolute URL. For [constant HTTPClient.METHOD_OPTIONS] requests, [code]*[/code] is also allowed. For [constant HTTPClient.METHOD_CONNECT] requests, it should be the authority component ([code]host:port[/code]).
+Headers are HTTP request headers. For available HTTP methods, see [enum Method].
+To create a POST request with query strings to push to the server, do:
+[codeblocks]
+[gdscript]
+var fields = {"username" : "user", "password" : "pass"}
+var query_string = http_client.query_string_from_dict(fields)
+var headers = ["Content-Type: application/x-www-form-urlencoded", "Content-Length: " + str(query_string.length())]
+var result = http_client.request(http_client.METHOD_POST, "/index.php", headers, query_string)
+[/gdscript]
+[csharp]
+var fields = new Godot.Collections.Dictionary { { "username", "user" }, { "password", "pass" } };
+string queryString = new HttpClient().QueryStringFromDict(fields);
+string[] headers = ["Content-Type: application/x-www-form-urlencoded", $"Content-Length: {queryString.Length}"];
+var result = new HttpClient().Request(HttpClient.Method.Post, "index.php", headers, queryString);
+[/csharp]
+[/codeblocks]
+[b]Note:[/b] The [param body] parameter is ignored if [param method] is [constant HTTPClient.METHOD_GET]. This is because GET methods can't contain request data. As a workaround, you can pass request data as a query string in the URL. See [method String.uri_encode] for an example.
+*/
+func (self Expanded) Request(method gdclass.HTTPClientMethod, url string, headers []string, body string) error { //gd:HTTPClient.request
+	return error(gd.ToError(Advanced(self).Request(method, String.New(url), Packed.MakeStrings(headers...), String.New(body))))
 }
 
 /*
 Closes the current connection, allowing reuse of this [HTTPClient].
 */
 func (self Instance) Close() { //gd:HTTPClient.close
-	class(self).Close()
+	Advanced(self).Close()
 }
 
 /*
 If [code]true[/code], this [HTTPClient] has a response available.
 */
 func (self Instance) HasResponse() bool { //gd:HTTPClient.has_response
-	return bool(class(self).HasResponse())
+	return bool(Advanced(self).HasResponse())
 }
 
 /*
 If [code]true[/code], this [HTTPClient] has a response that is chunked.
 */
 func (self Instance) IsResponseChunked() bool { //gd:HTTPClient.is_response_chunked
-	return bool(class(self).IsResponseChunked())
+	return bool(Advanced(self).IsResponseChunked())
 }
 
 /*
 Returns the response's HTTP status code.
 */
 func (self Instance) GetResponseCode() int { //gd:HTTPClient.get_response_code
-	return int(int(class(self).GetResponseCode()))
+	return int(int(Advanced(self).GetResponseCode()))
 }
 
 /*
 Returns the response headers.
 */
 func (self Instance) GetResponseHeaders() []string { //gd:HTTPClient.get_response_headers
-	return []string(class(self).GetResponseHeaders().Strings())
+	return []string(Advanced(self).GetResponseHeaders().Strings())
 }
 
 /*
@@ -151,7 +185,7 @@ Returns all response headers as a [Dictionary]. Each entry is composed by the he
 [/codeblock]
 */
 func (self Instance) GetResponseHeadersAsDictionary() map[string]string { //gd:HTTPClient.get_response_headers_as_dictionary
-	return map[string]string(gd.DictionaryAs[map[string]string](class(self).GetResponseHeadersAsDictionary()))
+	return map[string]string(gd.DictionaryAs[map[string]string](Advanced(self).GetResponseHeadersAsDictionary()))
 }
 
 /*
@@ -160,28 +194,28 @@ Returns the response's body length.
 [b]Note:[/b] This function always returns [code]-1[/code] on the Web platform due to browsers limitations.
 */
 func (self Instance) GetResponseBodyLength() int { //gd:HTTPClient.get_response_body_length
-	return int(int(class(self).GetResponseBodyLength()))
+	return int(int(Advanced(self).GetResponseBodyLength()))
 }
 
 /*
 Reads one chunk from the response.
 */
 func (self Instance) ReadResponseBodyChunk() []byte { //gd:HTTPClient.read_response_body_chunk
-	return []byte(class(self).ReadResponseBodyChunk().Bytes())
+	return []byte(Advanced(self).ReadResponseBodyChunk().Bytes())
 }
 
 /*
 Returns a [enum Status] constant. Need to call [method poll] in order to get status updates.
 */
 func (self Instance) GetStatus() gdclass.HTTPClientStatus { //gd:HTTPClient.get_status
-	return gdclass.HTTPClientStatus(class(self).GetStatus())
+	return gdclass.HTTPClientStatus(Advanced(self).GetStatus())
 }
 
 /*
 This needs to be called in order to have any request processed. Check results with [method get_status].
 */
 func (self Instance) Poll() error { //gd:HTTPClient.poll
-	return error(gd.ToError(class(self).Poll()))
+	return error(gd.ToError(Advanced(self).Poll()))
 }
 
 /*
@@ -189,7 +223,7 @@ Sets the proxy server for HTTP requests.
 The proxy server is unset if [param host] is empty or [param port] is -1.
 */
 func (self Instance) SetHttpProxy(host string, port int) { //gd:HTTPClient.set_http_proxy
-	class(self).SetHttpProxy(String.New(host), int64(port))
+	Advanced(self).SetHttpProxy(String.New(host), int64(port))
 }
 
 /*
@@ -197,7 +231,7 @@ Sets the proxy server for HTTPS requests.
 The proxy server is unset if [param host] is empty or [param port] is -1.
 */
 func (self Instance) SetHttpsProxy(host string, port int) { //gd:HTTPClient.set_https_proxy
-	class(self).SetHttpsProxy(String.New(host), int64(port))
+	Advanced(self).SetHttpsProxy(String.New(host), int64(port))
 }
 
 /*
@@ -236,7 +270,7 @@ string queryString = httpClient.QueryStringFromDict(fields);
 [/codeblocks]
 */
 func (self Instance) QueryStringFromDict(fields map[string]string) string { //gd:HTTPClient.query_string_from_dict
-	return string(class(self).QueryStringFromDict(gd.DictionaryFromMap(fields)).String())
+	return string(Advanced(self).QueryStringFromDict(gd.DictionaryFromMap(fields)).String())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

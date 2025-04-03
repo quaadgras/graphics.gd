@@ -43,6 +43,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 Export preset configuration. Instances of [EditorExportPreset] by editor UI and intended to be used a read-only configuration passed to the [EditorExportPlatform] methods when exporting the project.
 */
 type Instance [1]gdclass.EditorExportPreset
+type Expanded [1]gdclass.EditorExportPreset
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -56,161 +57,168 @@ type Any interface {
 Returns [code]true[/code] if preset has specified property.
 */
 func (self Instance) Has(property string) bool { //gd:EditorExportPreset.has
-	return bool(class(self).Has(String.Name(String.New(property))))
+	return bool(Advanced(self).Has(String.Name(String.New(property))))
 }
 
 /*
 Returns array of files to export.
 */
 func (self Instance) GetFilesToExport() []string { //gd:EditorExportPreset.get_files_to_export
-	return []string(class(self).GetFilesToExport().Strings())
+	return []string(Advanced(self).GetFilesToExport().Strings())
 }
 
 /*
 Returns [Dictionary] of files selected in the "Resources" tab of the export dialog. Dictionary keys are file names and values are export mode - [code]"strip"[/code], [code]"keep"[/code], or [code]"remove"[/code]. See also [method get_file_export_mode].
 */
 func (self Instance) GetCustomizedFiles() map[string]string { //gd:EditorExportPreset.get_customized_files
-	return map[string]string(gd.DictionaryAs[map[string]string](class(self).GetCustomizedFiles()))
+	return map[string]string(gd.DictionaryAs[map[string]string](Advanced(self).GetCustomizedFiles()))
 }
 
 /*
 Returns number of files selected in the "Resources" tab of the export dialog.
 */
 func (self Instance) GetCustomizedFilesCount() int { //gd:EditorExportPreset.get_customized_files_count
-	return int(int(class(self).GetCustomizedFilesCount()))
+	return int(int(Advanced(self).GetCustomizedFilesCount()))
 }
 
 /*
 Returns [code]true[/code] if specified file is exported.
 */
 func (self Instance) HasExportFile(path string) bool { //gd:EditorExportPreset.has_export_file
-	return bool(class(self).HasExportFile(String.New(path)))
+	return bool(Advanced(self).HasExportFile(String.New(path)))
 }
 
 /*
 Returns file export mode for the specified file.
 */
 func (self Instance) GetFileExportMode(path string) gdclass.EditorExportPresetFileExportMode { //gd:EditorExportPreset.get_file_export_mode
-	return gdclass.EditorExportPresetFileExportMode(class(self).GetFileExportMode(String.New(path), 0))
+	return gdclass.EditorExportPresetFileExportMode(Advanced(self).GetFileExportMode(String.New(path), 0))
+}
+
+/*
+Returns file export mode for the specified file.
+*/
+func (self Expanded) GetFileExportMode(path string, def gdclass.EditorExportPresetFileExportMode) gdclass.EditorExportPresetFileExportMode { //gd:EditorExportPreset.get_file_export_mode
+	return gdclass.EditorExportPresetFileExportMode(Advanced(self).GetFileExportMode(String.New(path), def))
 }
 
 /*
 Returns export preset name.
 */
 func (self Instance) GetPresetName() string { //gd:EditorExportPreset.get_preset_name
-	return string(class(self).GetPresetName().String())
+	return string(Advanced(self).GetPresetName().String())
 }
 
 /*
 Returns [code]true[/code] if "Runnable" toggle is enabled in the export dialog.
 */
 func (self Instance) IsRunnable() bool { //gd:EditorExportPreset.is_runnable
-	return bool(class(self).IsRunnable())
+	return bool(Advanced(self).IsRunnable())
 }
 
 /*
 Returns [code]true[/code] if "Advanced" toggle is enabled in the export dialog.
 */
 func (self Instance) AreAdvancedOptionsEnabled() bool { //gd:EditorExportPreset.are_advanced_options_enabled
-	return bool(class(self).AreAdvancedOptionsEnabled())
+	return bool(Advanced(self).AreAdvancedOptionsEnabled())
 }
 
 /*
 Returns [code]true[/code] if dedicated server export mode is selected in the export dialog.
 */
 func (self Instance) IsDedicatedServer() bool { //gd:EditorExportPreset.is_dedicated_server
-	return bool(class(self).IsDedicatedServer())
+	return bool(Advanced(self).IsDedicatedServer())
 }
 
 /*
 Returns export file filter mode selected in the "Resources" tab of the export dialog.
 */
 func (self Instance) GetExportFilter() gdclass.EditorExportPresetExportFilter { //gd:EditorExportPreset.get_export_filter
-	return gdclass.EditorExportPresetExportFilter(class(self).GetExportFilter())
+	return gdclass.EditorExportPresetExportFilter(Advanced(self).GetExportFilter())
 }
 
 /*
 Returns file filters to include during export.
 */
 func (self Instance) GetIncludeFilter() string { //gd:EditorExportPreset.get_include_filter
-	return string(class(self).GetIncludeFilter().String())
+	return string(Advanced(self).GetIncludeFilter().String())
 }
 
 /*
 Returns file filters to exclude during export.
 */
 func (self Instance) GetExcludeFilter() string { //gd:EditorExportPreset.get_exclude_filter
-	return string(class(self).GetExcludeFilter().String())
+	return string(Advanced(self).GetExcludeFilter().String())
 }
 
 /*
 Returns string with a comma separated list of custom features.
 */
 func (self Instance) GetCustomFeatures() string { //gd:EditorExportPreset.get_custom_features
-	return string(class(self).GetCustomFeatures().String())
+	return string(Advanced(self).GetCustomFeatures().String())
 }
 
 /*
 Returns the list of packs on which to base a patch export on.
 */
 func (self Instance) GetPatches() []string { //gd:EditorExportPreset.get_patches
-	return []string(class(self).GetPatches().Strings())
+	return []string(Advanced(self).GetPatches().Strings())
 }
 
 /*
 Returns export target path.
 */
 func (self Instance) GetExportPath() string { //gd:EditorExportPreset.get_export_path
-	return string(class(self).GetExportPath().String())
+	return string(Advanced(self).GetExportPath().String())
 }
 
 /*
 Returns file filters to include during PCK encryption.
 */
 func (self Instance) GetEncryptionInFilter() string { //gd:EditorExportPreset.get_encryption_in_filter
-	return string(class(self).GetEncryptionInFilter().String())
+	return string(Advanced(self).GetEncryptionInFilter().String())
 }
 
 /*
 Returns file filters to exclude during PCK encryption.
 */
 func (self Instance) GetEncryptionExFilter() string { //gd:EditorExportPreset.get_encryption_ex_filter
-	return string(class(self).GetEncryptionExFilter().String())
+	return string(Advanced(self).GetEncryptionExFilter().String())
 }
 
 /*
 Returns [code]true[/code], PCK encryption is enabled in the export dialog.
 */
 func (self Instance) GetEncryptPck() bool { //gd:EditorExportPreset.get_encrypt_pck
-	return bool(class(self).GetEncryptPck())
+	return bool(Advanced(self).GetEncryptPck())
 }
 
 /*
 Returns [code]true[/code], PCK directory encryption is enabled in the export dialog.
 */
 func (self Instance) GetEncryptDirectory() bool { //gd:EditorExportPreset.get_encrypt_directory
-	return bool(class(self).GetEncryptDirectory())
+	return bool(Advanced(self).GetEncryptDirectory())
 }
 
 /*
 Returns PCK encryption key.
 */
 func (self Instance) GetEncryptionKey() string { //gd:EditorExportPreset.get_encryption_key
-	return string(class(self).GetEncryptionKey().String())
+	return string(Advanced(self).GetEncryptionKey().String())
 }
 
 /*
 Returns script export mode.
 */
 func (self Instance) GetScriptExportMode() int { //gd:EditorExportPreset.get_script_export_mode
-	return int(int(class(self).GetScriptExportMode()))
+	return int(int(Advanced(self).GetScriptExportMode()))
 }
 
 /*
 Returns export option value or value of environment variable if it is set.
 */
 func (self Instance) GetOrEnv(name string, env_var string) any { //gd:EditorExportPreset.get_or_env
-	return any(class(self).GetOrEnv(String.Name(String.New(name)), String.New(env_var)).Interface())
+	return any(Advanced(self).GetOrEnv(String.Name(String.New(name)), String.New(env_var)).Interface())
 }
 
 /*
@@ -218,7 +226,7 @@ Returns the preset's version number, or fall back to the [member ProjectSettings
 If [param windows_version] is [code]true[/code], formats the returned version number to be compatible with Windows executable metadata.
 */
 func (self Instance) GetVersion(name string, windows_version bool) string { //gd:EditorExportPreset.get_version
-	return string(class(self).GetVersion(String.Name(String.New(name)), windows_version).String())
+	return string(Advanced(self).GetVersion(String.Name(String.New(name)), windows_version).String())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

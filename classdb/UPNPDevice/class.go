@@ -43,6 +43,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 Universal Plug and Play (UPnP) device. See [UPNP] for UPnP discovery and utility functions. Provides low-level access to UPNP control commands. Allows to manage port mappings (port forwarding) and to query network information of the device (like local and external IP address and status). Note that methods on this class are synchronous and block the calling thread.
 */
 type Instance [1]gdclass.UPNPDevice
+type Expanded [1]gdclass.UPNPDevice
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -56,28 +57,42 @@ type Any interface {
 Returns [code]true[/code] if this is a valid IGD (InternetGatewayDevice) which potentially supports port forwarding.
 */
 func (self Instance) IsValidGateway() bool { //gd:UPNPDevice.is_valid_gateway
-	return bool(class(self).IsValidGateway())
+	return bool(Advanced(self).IsValidGateway())
 }
 
 /*
 Returns the external IP address of this [UPNPDevice] or an empty string.
 */
 func (self Instance) QueryExternalAddress() string { //gd:UPNPDevice.query_external_address
-	return string(class(self).QueryExternalAddress().String())
+	return string(Advanced(self).QueryExternalAddress().String())
 }
 
 /*
 Adds a port mapping to forward the given external port on this [UPNPDevice] for the given protocol to the local machine. See [method UPNP.add_port_mapping].
 */
 func (self Instance) AddPortMapping(port int) int { //gd:UPNPDevice.add_port_mapping
-	return int(int(class(self).AddPortMapping(int64(port), int64(0), String.New(""), String.New("UDP"), int64(0))))
+	return int(int(Advanced(self).AddPortMapping(int64(port), int64(0), String.New(""), String.New("UDP"), int64(0))))
+}
+
+/*
+Adds a port mapping to forward the given external port on this [UPNPDevice] for the given protocol to the local machine. See [method UPNP.add_port_mapping].
+*/
+func (self Expanded) AddPortMapping(port int, port_internal int, desc string, proto string, duration int) int { //gd:UPNPDevice.add_port_mapping
+	return int(int(Advanced(self).AddPortMapping(int64(port), int64(port_internal), String.New(desc), String.New(proto), int64(duration))))
 }
 
 /*
 Deletes the port mapping identified by the given port and protocol combination on this device. See [method UPNP.delete_port_mapping].
 */
 func (self Instance) DeletePortMapping(port int) int { //gd:UPNPDevice.delete_port_mapping
-	return int(int(class(self).DeletePortMapping(int64(port), String.New("UDP"))))
+	return int(int(Advanced(self).DeletePortMapping(int64(port), String.New("UDP"))))
+}
+
+/*
+Deletes the port mapping identified by the given port and protocol combination on this device. See [method UPNP.delete_port_mapping].
+*/
+func (self Expanded) DeletePortMapping(port int, proto string) int { //gd:UPNPDevice.delete_port_mapping
+	return int(int(Advanced(self).DeletePortMapping(int64(port), String.New(proto))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

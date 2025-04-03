@@ -62,42 +62,42 @@ type Any interface {
 Returns [code]true[/code] if the tracker is available and is currently tracking the bound [param name] pose.
 */
 func (self Instance) HasPose(name string) bool { //gd:XRPositionalTracker.has_pose
-	return bool(class(self).HasPose(String.Name(String.New(name))))
+	return bool(Advanced(self).HasPose(String.Name(String.New(name))))
 }
 
 /*
 Returns the current [XRPose] state object for the bound [param name] pose.
 */
 func (self Instance) GetPose(name string) [1]gdclass.XRPose { //gd:XRPositionalTracker.get_pose
-	return [1]gdclass.XRPose(class(self).GetPose(String.Name(String.New(name))))
+	return [1]gdclass.XRPose(Advanced(self).GetPose(String.Name(String.New(name))))
 }
 
 /*
 Marks this pose as invalid, we don't clear the last reported state but it allows users to decide if trackers need to be hidden if we lose tracking or just remain at their last known position.
 */
 func (self Instance) InvalidatePose(name string) { //gd:XRPositionalTracker.invalidate_pose
-	class(self).InvalidatePose(String.Name(String.New(name)))
+	Advanced(self).InvalidatePose(String.Name(String.New(name)))
 }
 
 /*
 Sets the transform, linear velocity, angular velocity and tracking confidence for the given pose. This method is called by a [XRInterface] implementation and should not be used directly.
 */
 func (self Instance) SetPose(name string, transform Transform3D.BasisOrigin, linear_velocity Vector3.XYZ, angular_velocity Vector3.XYZ, tracking_confidence gdclass.XRPoseTrackingConfidence) { //gd:XRPositionalTracker.set_pose
-	class(self).SetPose(String.Name(String.New(name)), Transform3D.BasisOrigin(transform), Vector3.XYZ(linear_velocity), Vector3.XYZ(angular_velocity), tracking_confidence)
+	Advanced(self).SetPose(String.Name(String.New(name)), Transform3D.BasisOrigin(transform), Vector3.XYZ(linear_velocity), Vector3.XYZ(angular_velocity), tracking_confidence)
 }
 
 /*
 Returns an input for this tracker. It can return a boolean, float or [Vector2] value depending on whether the input is a button, trigger or thumbstick/thumbpad.
 */
 func (self Instance) GetInput(name string) any { //gd:XRPositionalTracker.get_input
-	return any(class(self).GetInput(String.Name(String.New(name))).Interface())
+	return any(Advanced(self).GetInput(String.Name(String.New(name))).Interface())
 }
 
 /*
 Changes the value for the given input. This method is called by a [XRInterface] implementation and should not be used directly.
 */
 func (self Instance) SetInput(name string, value any) { //gd:XRPositionalTracker.set_input
-	class(self).SetInput(String.Name(String.New(name)), variant.New(value))
+	Advanced(self).SetInput(String.Name(String.New(name)), variant.New(value))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -58,28 +58,28 @@ type Any interface {
 Returns the spring arm's current length.
 */
 func (self Instance) GetHitLength() Float.X { //gd:SpringArm3D.get_hit_length
-	return Float.X(Float.X(class(self).GetHitLength()))
+	return Float.X(Float.X(Advanced(self).GetHitLength()))
 }
 
 /*
 Adds the [PhysicsBody3D] object with the given [RID] to the list of [PhysicsBody3D] objects excluded from the collision check.
 */
 func (self Instance) AddExcludedObject(rid RID.Body3D) { //gd:SpringArm3D.add_excluded_object
-	class(self).AddExcludedObject(RID.Any(rid))
+	Advanced(self).AddExcludedObject(RID.Any(rid))
 }
 
 /*
 Removes the given [RID] from the list of [PhysicsBody3D] objects excluded from the collision check.
 */
 func (self Instance) RemoveExcludedObject(rid RID.Body3D) bool { //gd:SpringArm3D.remove_excluded_object
-	return bool(class(self).RemoveExcludedObject(RID.Any(rid)))
+	return bool(Advanced(self).RemoveExcludedObject(RID.Any(rid)))
 }
 
 /*
 Clears the list of [PhysicsBody3D] objects excluded from the collision check.
 */
 func (self Instance) ClearExcludedObjects() { //gd:SpringArm3D.clear_excluded_objects
-	class(self).ClearExcludedObjects()
+	Advanced(self).ClearExcludedObjects()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

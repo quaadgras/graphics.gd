@@ -236,7 +236,7 @@ func (Instance) _breakpoint_set_in_tree(impl func(ptr unsafe.Pointer, script [1]
 Returns the [EditorDebuggerSession] with the given [param id].
 */
 func (self Instance) GetSession(id int) [1]gdclass.EditorDebuggerSession { //gd:EditorDebuggerPlugin.get_session
-	return [1]gdclass.EditorDebuggerSession(class(self).GetSession(int64(id)))
+	return [1]gdclass.EditorDebuggerSession(Advanced(self).GetSession(int64(id)))
 }
 
 /*
@@ -244,7 +244,7 @@ Returns an array of [EditorDebuggerSession] currently available to this debugger
 [b]Note:[/b] Sessions in the array may be inactive, check their state via [method EditorDebuggerSession.is_active].
 */
 func (self Instance) GetSessions() []any { //gd:EditorDebuggerPlugin.get_sessions
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetSessions())))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetSessions())))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

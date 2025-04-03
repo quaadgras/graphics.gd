@@ -59,42 +59,42 @@ type Any interface {
 Pushes a single audio data frame to the buffer. This is usually less efficient than [method push_buffer] in C# and compiled languages via GDExtension, but [method push_frame] may be [i]more[/i] efficient in GDScript.
 */
 func (self Instance) PushFrame(frame_ Vector2.XY) bool { //gd:AudioStreamGeneratorPlayback.push_frame
-	return bool(class(self).PushFrame(Vector2.XY(frame_)))
+	return bool(Advanced(self).PushFrame(Vector2.XY(frame_)))
 }
 
 /*
 Returns [code]true[/code] if a buffer of the size [param amount] can be pushed to the audio sample data buffer without overflowing it, [code]false[/code] otherwise.
 */
 func (self Instance) CanPushBuffer(amount int) bool { //gd:AudioStreamGeneratorPlayback.can_push_buffer
-	return bool(class(self).CanPushBuffer(int64(amount)))
+	return bool(Advanced(self).CanPushBuffer(int64(amount)))
 }
 
 /*
 Pushes several audio data frames to the buffer. This is usually more efficient than [method push_frame] in C# and compiled languages via GDExtension, but [method push_buffer] may be [i]less[/i] efficient in GDScript.
 */
 func (self Instance) PushBuffer(frames []Vector2.XY) bool { //gd:AudioStreamGeneratorPlayback.push_buffer
-	return bool(class(self).PushBuffer(Packed.New(frames...)))
+	return bool(Advanced(self).PushBuffer(Packed.New(frames...)))
 }
 
 /*
 Returns the number of frames that can be pushed to the audio sample data buffer without overflowing it. If the result is [code]0[/code], the buffer is full.
 */
 func (self Instance) GetFramesAvailable() int { //gd:AudioStreamGeneratorPlayback.get_frames_available
-	return int(int(class(self).GetFramesAvailable()))
+	return int(int(Advanced(self).GetFramesAvailable()))
 }
 
 /*
 Returns the number of times the playback skipped due to a buffer underrun in the audio sample data. This value is reset at the start of the playback.
 */
 func (self Instance) GetSkips() int { //gd:AudioStreamGeneratorPlayback.get_skips
-	return int(int(class(self).GetSkips()))
+	return int(int(Advanced(self).GetSkips()))
 }
 
 /*
 Clears the audio sample data buffer.
 */
 func (self Instance) ClearBuffer() { //gd:AudioStreamGeneratorPlayback.clear_buffer
-	class(self).ClearBuffer()
+	Advanced(self).ClearBuffer()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

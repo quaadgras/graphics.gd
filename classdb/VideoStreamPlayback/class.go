@@ -48,6 +48,7 @@ This class is intended to be overridden by video decoder extensions with custom 
 %!(EXTRA string=VideoStreamPlayback)
 */
 type Instance [1]gdclass.VideoStreamPlayback
+type Expanded [1]gdclass.VideoStreamPlayback
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -258,7 +259,14 @@ func (Instance) _get_mix_rate(impl func(ptr unsafe.Pointer) int) (cb gd.Extensio
 Render [param num_frames] audio frames (of [method _get_channels] floats each) from [param buffer], starting from index [param offset] in the array. Returns the number of audio frames rendered, or -1 on error.
 */
 func (self Instance) MixAudio(num_frames int) int { //gd:VideoStreamPlayback.mix_audio
-	return int(int(class(self).MixAudio(int64(num_frames), Packed.New([1][]float32{}[0]...), int64(0))))
+	return int(int(Advanced(self).MixAudio(int64(num_frames), Packed.New([1][]float32{}[0]...), int64(0))))
+}
+
+/*
+Render [param num_frames] audio frames (of [method _get_channels] floats each) from [param buffer], starting from index [param offset] in the array. Returns the number of audio frames rendered, or -1 on error.
+*/
+func (self Expanded) MixAudio(num_frames int, buffer []float32, offset int) int { //gd:VideoStreamPlayback.mix_audio
+	return int(int(Advanced(self).MixAudio(int64(num_frames), Packed.New(buffer...), int64(offset))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

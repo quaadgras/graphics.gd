@@ -66,14 +66,14 @@ type Any interface {
 Based on [param value], enables or disables the specified layer in the [member bake_mask], given a [param layer_number] between 1 and 32.
 */
 func (self Instance) SetBakeMaskValue(layer_number int, value bool) { //gd:GPUParticlesCollisionSDF3D.set_bake_mask_value
-	class(self).SetBakeMaskValue(int64(layer_number), value)
+	Advanced(self).SetBakeMaskValue(int64(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member bake_mask] is enabled, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) GetBakeMaskValue(layer_number int) bool { //gd:GPUParticlesCollisionSDF3D.get_bake_mask_value
-	return bool(class(self).GetBakeMaskValue(int64(layer_number)))
+	return bool(Advanced(self).GetBakeMaskValue(int64(layer_number)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

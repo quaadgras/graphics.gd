@@ -54,6 +54,7 @@ All [code]set_*[/code] methods allow negative item indices, i.e. [code]-1[/code]
 [b]Incremental search:[/b] Like [PopupMenu] and [Tree], [ItemList] supports searching within the list while the control is focused. Press a key that matches the first letter of an item's name to select the first item starting with the given letter. After that point, there are two ways to perform incremental search: 1) Press the same key again before the timeout duration to select the next item starting with the same letter. 2) Press letter keys that match the rest of the word before the timeout duration to match to select the item in question directly. Both of these actions will be reset to the beginning of the list if the timeout duration has passed since the last keystroke was registered. You can adjust the timeout duration by changing [member ProjectSettings.gui/timers/incremental_search_max_interval_msec].
 */
 type Instance [1]gdclass.ItemList
+type Expanded [1]gdclass.ItemList
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -69,70 +70,86 @@ Specify an [param icon], or use [code]null[/code] as the [param icon] for a list
 If [param selectable] is [code]true[/code], the list item will be selectable.
 */
 func (self Instance) AddItem(text string) int { //gd:ItemList.add_item
-	return int(int(class(self).AddItem(String.New(text), [1][1]gdclass.Texture2D{}[0], true)))
+	return int(int(Advanced(self).AddItem(String.New(text), [1][1]gdclass.Texture2D{}[0], true)))
+}
+
+/*
+Adds an item to the item list with specified text. Returns the index of an added item.
+Specify an [param icon], or use [code]null[/code] as the [param icon] for a list item with no icon.
+If [param selectable] is [code]true[/code], the list item will be selectable.
+*/
+func (self Expanded) AddItem(text string, icon [1]gdclass.Texture2D, selectable bool) int { //gd:ItemList.add_item
+	return int(int(Advanced(self).AddItem(String.New(text), icon, selectable)))
 }
 
 /*
 Adds an item to the item list with no text, only an icon. Returns the index of an added item.
 */
 func (self Instance) AddIconItem(icon [1]gdclass.Texture2D) int { //gd:ItemList.add_icon_item
-	return int(int(class(self).AddIconItem(icon, true)))
+	return int(int(Advanced(self).AddIconItem(icon, true)))
+}
+
+/*
+Adds an item to the item list with no text, only an icon. Returns the index of an added item.
+*/
+func (self Expanded) AddIconItem(icon [1]gdclass.Texture2D, selectable bool) int { //gd:ItemList.add_icon_item
+	return int(int(Advanced(self).AddIconItem(icon, selectable)))
 }
 
 /*
 Sets text of the item associated with the specified index.
 */
 func (self Instance) SetItemText(idx int, text string) { //gd:ItemList.set_item_text
-	class(self).SetItemText(int64(idx), String.New(text))
+	Advanced(self).SetItemText(int64(idx), String.New(text))
 }
 
 /*
 Returns the text associated with the specified index.
 */
 func (self Instance) GetItemText(idx int) string { //gd:ItemList.get_item_text
-	return string(class(self).GetItemText(int64(idx)).String())
+	return string(Advanced(self).GetItemText(int64(idx)).String())
 }
 
 /*
 Sets (or replaces) the icon's [Texture2D] associated with the specified index.
 */
 func (self Instance) SetItemIcon(idx int, icon [1]gdclass.Texture2D) { //gd:ItemList.set_item_icon
-	class(self).SetItemIcon(int64(idx), icon)
+	Advanced(self).SetItemIcon(int64(idx), icon)
 }
 
 /*
 Returns the icon associated with the specified index.
 */
 func (self Instance) GetItemIcon(idx int) [1]gdclass.Texture2D { //gd:ItemList.get_item_icon
-	return [1]gdclass.Texture2D(class(self).GetItemIcon(int64(idx)))
+	return [1]gdclass.Texture2D(Advanced(self).GetItemIcon(int64(idx)))
 }
 
 /*
 Sets item's text base writing direction.
 */
 func (self Instance) SetItemTextDirection(idx int, direction gdclass.ControlTextDirection) { //gd:ItemList.set_item_text_direction
-	class(self).SetItemTextDirection(int64(idx), direction)
+	Advanced(self).SetItemTextDirection(int64(idx), direction)
 }
 
 /*
 Returns item's text base writing direction.
 */
 func (self Instance) GetItemTextDirection(idx int) gdclass.ControlTextDirection { //gd:ItemList.get_item_text_direction
-	return gdclass.ControlTextDirection(class(self).GetItemTextDirection(int64(idx)))
+	return gdclass.ControlTextDirection(Advanced(self).GetItemTextDirection(int64(idx)))
 }
 
 /*
 Sets language code of item's text used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
 */
 func (self Instance) SetItemLanguage(idx int, language string) { //gd:ItemList.set_item_language
-	class(self).SetItemLanguage(int64(idx), String.New(language))
+	Advanced(self).SetItemLanguage(int64(idx), String.New(language))
 }
 
 /*
 Returns item's text language code.
 */
 func (self Instance) GetItemLanguage(idx int) string { //gd:ItemList.get_item_language
-	return string(class(self).GetItemLanguage(int64(idx)).String())
+	return string(Advanced(self).GetItemLanguage(int64(idx)).String())
 }
 
 /*
@@ -140,70 +157,70 @@ Sets the auto translate mode of the item associated with the specified index.
 Items use [constant Node.AUTO_TRANSLATE_MODE_INHERIT] by default, which uses the same auto translate mode as the [ItemList] itself.
 */
 func (self Instance) SetItemAutoTranslateMode(idx int, mode gdclass.NodeAutoTranslateMode) { //gd:ItemList.set_item_auto_translate_mode
-	class(self).SetItemAutoTranslateMode(int64(idx), mode)
+	Advanced(self).SetItemAutoTranslateMode(int64(idx), mode)
 }
 
 /*
 Returns item's auto translate mode.
 */
 func (self Instance) GetItemAutoTranslateMode(idx int) gdclass.NodeAutoTranslateMode { //gd:ItemList.get_item_auto_translate_mode
-	return gdclass.NodeAutoTranslateMode(class(self).GetItemAutoTranslateMode(int64(idx)))
+	return gdclass.NodeAutoTranslateMode(Advanced(self).GetItemAutoTranslateMode(int64(idx)))
 }
 
 /*
 Sets whether the item icon will be drawn transposed.
 */
 func (self Instance) SetItemIconTransposed(idx int, transposed bool) { //gd:ItemList.set_item_icon_transposed
-	class(self).SetItemIconTransposed(int64(idx), transposed)
+	Advanced(self).SetItemIconTransposed(int64(idx), transposed)
 }
 
 /*
 Returns [code]true[/code] if the item icon will be drawn transposed, i.e. the X and Y axes are swapped.
 */
 func (self Instance) IsItemIconTransposed(idx int) bool { //gd:ItemList.is_item_icon_transposed
-	return bool(class(self).IsItemIconTransposed(int64(idx)))
+	return bool(Advanced(self).IsItemIconTransposed(int64(idx)))
 }
 
 /*
 Sets the region of item's icon used. The whole icon will be used if the region has no area.
 */
 func (self Instance) SetItemIconRegion(idx int, rect Rect2.PositionSize) { //gd:ItemList.set_item_icon_region
-	class(self).SetItemIconRegion(int64(idx), Rect2.PositionSize(rect))
+	Advanced(self).SetItemIconRegion(int64(idx), Rect2.PositionSize(rect))
 }
 
 /*
 Returns the region of item's icon used. The whole icon will be used if the region has no area.
 */
 func (self Instance) GetItemIconRegion(idx int) Rect2.PositionSize { //gd:ItemList.get_item_icon_region
-	return Rect2.PositionSize(class(self).GetItemIconRegion(int64(idx)))
+	return Rect2.PositionSize(Advanced(self).GetItemIconRegion(int64(idx)))
 }
 
 /*
 Sets a modulating [Color] of the item associated with the specified index.
 */
 func (self Instance) SetItemIconModulate(idx int, modulate Color.RGBA) { //gd:ItemList.set_item_icon_modulate
-	class(self).SetItemIconModulate(int64(idx), Color.RGBA(modulate))
+	Advanced(self).SetItemIconModulate(int64(idx), Color.RGBA(modulate))
 }
 
 /*
 Returns a [Color] modulating item's icon at the specified index.
 */
 func (self Instance) GetItemIconModulate(idx int) Color.RGBA { //gd:ItemList.get_item_icon_modulate
-	return Color.RGBA(class(self).GetItemIconModulate(int64(idx)))
+	return Color.RGBA(Advanced(self).GetItemIconModulate(int64(idx)))
 }
 
 /*
 Allows or disallows selection of the item associated with the specified index.
 */
 func (self Instance) SetItemSelectable(idx int, selectable bool) { //gd:ItemList.set_item_selectable
-	class(self).SetItemSelectable(int64(idx), selectable)
+	Advanced(self).SetItemSelectable(int64(idx), selectable)
 }
 
 /*
 Returns [code]true[/code] if the item at the specified index is selectable.
 */
 func (self Instance) IsItemSelectable(idx int) bool { //gd:ItemList.is_item_selectable
-	return bool(class(self).IsItemSelectable(int64(idx)))
+	return bool(Advanced(self).IsItemSelectable(int64(idx)))
 }
 
 /*
@@ -211,56 +228,56 @@ Disables (or enables) the item at the specified index.
 Disabled items cannot be selected and do not trigger activation signals (when double-clicking or pressing [kbd]Enter[/kbd]).
 */
 func (self Instance) SetItemDisabled(idx int, disabled bool) { //gd:ItemList.set_item_disabled
-	class(self).SetItemDisabled(int64(idx), disabled)
+	Advanced(self).SetItemDisabled(int64(idx), disabled)
 }
 
 /*
 Returns [code]true[/code] if the item at the specified index is disabled.
 */
 func (self Instance) IsItemDisabled(idx int) bool { //gd:ItemList.is_item_disabled
-	return bool(class(self).IsItemDisabled(int64(idx)))
+	return bool(Advanced(self).IsItemDisabled(int64(idx)))
 }
 
 /*
 Sets a value (of any type) to be stored with the item associated with the specified index.
 */
 func (self Instance) SetItemMetadata(idx int, metadata any) { //gd:ItemList.set_item_metadata
-	class(self).SetItemMetadata(int64(idx), variant.New(metadata))
+	Advanced(self).SetItemMetadata(int64(idx), variant.New(metadata))
 }
 
 /*
 Returns the metadata value of the specified index.
 */
 func (self Instance) GetItemMetadata(idx int) any { //gd:ItemList.get_item_metadata
-	return any(class(self).GetItemMetadata(int64(idx)).Interface())
+	return any(Advanced(self).GetItemMetadata(int64(idx)).Interface())
 }
 
 /*
 Sets the background color of the item specified by [param idx] index to the specified [Color].
 */
 func (self Instance) SetItemCustomBgColor(idx int, custom_bg_color Color.RGBA) { //gd:ItemList.set_item_custom_bg_color
-	class(self).SetItemCustomBgColor(int64(idx), Color.RGBA(custom_bg_color))
+	Advanced(self).SetItemCustomBgColor(int64(idx), Color.RGBA(custom_bg_color))
 }
 
 /*
 Returns the custom background color of the item specified by [param idx] index.
 */
 func (self Instance) GetItemCustomBgColor(idx int) Color.RGBA { //gd:ItemList.get_item_custom_bg_color
-	return Color.RGBA(class(self).GetItemCustomBgColor(int64(idx)))
+	return Color.RGBA(Advanced(self).GetItemCustomBgColor(int64(idx)))
 }
 
 /*
 Sets the foreground color of the item specified by [param idx] index to the specified [Color].
 */
 func (self Instance) SetItemCustomFgColor(idx int, custom_fg_color Color.RGBA) { //gd:ItemList.set_item_custom_fg_color
-	class(self).SetItemCustomFgColor(int64(idx), Color.RGBA(custom_fg_color))
+	Advanced(self).SetItemCustomFgColor(int64(idx), Color.RGBA(custom_fg_color))
 }
 
 /*
 Returns the custom foreground color of the item specified by [param idx] index.
 */
 func (self Instance) GetItemCustomFgColor(idx int) Color.RGBA { //gd:ItemList.get_item_custom_fg_color
-	return Color.RGBA(class(self).GetItemCustomFgColor(int64(idx)))
+	return Color.RGBA(Advanced(self).GetItemCustomFgColor(int64(idx)))
 }
 
 /*
@@ -268,35 +285,43 @@ Returns the position and size of the item with the specified index, in the coord
 [b]Note:[/b] The returned value is unreliable if called right after modifying the [ItemList], before it redraws in the next frame.
 */
 func (self Instance) GetItemRect(idx int) Rect2.PositionSize { //gd:ItemList.get_item_rect
-	return Rect2.PositionSize(class(self).GetItemRect(int64(idx), true))
+	return Rect2.PositionSize(Advanced(self).GetItemRect(int64(idx), true))
+}
+
+/*
+Returns the position and size of the item with the specified index, in the coordinate system of the [ItemList] node. If [param expand] is [code]true[/code] the last column expands to fill the rest of the row.
+[b]Note:[/b] The returned value is unreliable if called right after modifying the [ItemList], before it redraws in the next frame.
+*/
+func (self Expanded) GetItemRect(idx int, expand bool) Rect2.PositionSize { //gd:ItemList.get_item_rect
+	return Rect2.PositionSize(Advanced(self).GetItemRect(int64(idx), expand))
 }
 
 /*
 Sets whether the tooltip hint is enabled for specified item index.
 */
 func (self Instance) SetItemTooltipEnabled(idx int, enable bool) { //gd:ItemList.set_item_tooltip_enabled
-	class(self).SetItemTooltipEnabled(int64(idx), enable)
+	Advanced(self).SetItemTooltipEnabled(int64(idx), enable)
 }
 
 /*
 Returns [code]true[/code] if the tooltip is enabled for specified item index.
 */
 func (self Instance) IsItemTooltipEnabled(idx int) bool { //gd:ItemList.is_item_tooltip_enabled
-	return bool(class(self).IsItemTooltipEnabled(int64(idx)))
+	return bool(Advanced(self).IsItemTooltipEnabled(int64(idx)))
 }
 
 /*
 Sets the tooltip hint for the item associated with the specified index.
 */
 func (self Instance) SetItemTooltip(idx int, tooltip string) { //gd:ItemList.set_item_tooltip
-	class(self).SetItemTooltip(int64(idx), String.New(tooltip))
+	Advanced(self).SetItemTooltip(int64(idx), String.New(tooltip))
 }
 
 /*
 Returns the tooltip hint associated with the specified index.
 */
 func (self Instance) GetItemTooltip(idx int) string { //gd:ItemList.get_item_tooltip
-	return string(class(self).GetItemTooltip(int64(idx)).String())
+	return string(Advanced(self).GetItemTooltip(int64(idx)).String())
 }
 
 /*
@@ -304,70 +329,78 @@ Select the item at the specified index.
 [b]Note:[/b] This method does not trigger the item selection signal.
 */
 func (self Instance) Select(idx int) { //gd:ItemList.select
-	class(self).Select(int64(idx), true)
+	Advanced(self).Select(int64(idx), true)
+}
+
+/*
+Select the item at the specified index.
+[b]Note:[/b] This method does not trigger the item selection signal.
+*/
+func (self Expanded) Select(idx int, single bool) { //gd:ItemList.select
+	Advanced(self).Select(int64(idx), single)
 }
 
 /*
 Ensures the item associated with the specified index is not selected.
 */
 func (self Instance) Deselect(idx int) { //gd:ItemList.deselect
-	class(self).Deselect(int64(idx))
+	Advanced(self).Deselect(int64(idx))
 }
 
 /*
 Ensures there are no items selected.
 */
 func (self Instance) DeselectAll() { //gd:ItemList.deselect_all
-	class(self).DeselectAll()
+	Advanced(self).DeselectAll()
 }
 
 /*
 Returns [code]true[/code] if the item at the specified index is currently selected.
 */
 func (self Instance) IsSelected(idx int) bool { //gd:ItemList.is_selected
-	return bool(class(self).IsSelected(int64(idx)))
+	return bool(Advanced(self).IsSelected(int64(idx)))
 }
 
 /*
 Returns an array with the indexes of the selected items.
 */
 func (self Instance) GetSelectedItems() []int32 { //gd:ItemList.get_selected_items
-	return []int32(slices.Collect(class(self).GetSelectedItems().Values()))
+	return []int32(slices.Collect(Advanced(self).GetSelectedItems().Values()))
 }
 
 /*
 Moves item from index [param from_idx] to [param to_idx].
 */
 func (self Instance) MoveItem(from_idx int, to_idx int) { //gd:ItemList.move_item
-	class(self).MoveItem(int64(from_idx), int64(to_idx))
+	Advanced(self).MoveItem(int64(from_idx), int64(to_idx))
 }
 
 /*
 Removes the item specified by [param idx] index from the list.
 */
 func (self Instance) RemoveItem(idx int) { //gd:ItemList.remove_item
-	class(self).RemoveItem(int64(idx))
+	Advanced(self).RemoveItem(int64(idx))
 }
 
 /*
 Removes all items from the list.
 */
 func (self Instance) Clear() { //gd:ItemList.clear
-	class(self).Clear()
+	Advanced(self).Clear()
 }
 
 /*
 Sorts items in the list by their text.
 */
 func (self Instance) SortItemsByText() { //gd:ItemList.sort_items_by_text
-	class(self).SortItemsByText()
+	Advanced(self).SortItemsByText()
 }
 
 /*
 Returns [code]true[/code] if one or more items are selected.
 */
 func (self Instance) IsAnythingSelected() bool { //gd:ItemList.is_anything_selected
-	return bool(class(self).IsAnythingSelected())
+	return bool(Advanced(self).IsAnythingSelected())
 }
 
 /*
@@ -376,14 +409,23 @@ When there is no item at that point, -1 will be returned if [param exact] is [co
 [b]Note:[/b] The returned value is unreliable if called right after modifying the [ItemList], before it redraws in the next frame.
 */
 func (self Instance) GetItemAtPosition(position Vector2.XY) int { //gd:ItemList.get_item_at_position
-	return int(int(class(self).GetItemAtPosition(Vector2.XY(position), false)))
+	return int(int(Advanced(self).GetItemAtPosition(Vector2.XY(position), false)))
+}
+
+/*
+Returns the item index at the given [param position].
+When there is no item at that point, -1 will be returned if [param exact] is [code]true[/code], and the closest item index will be returned otherwise.
+[b]Note:[/b] The returned value is unreliable if called right after modifying the [ItemList], before it redraws in the next frame.
+*/
+func (self Expanded) GetItemAtPosition(position Vector2.XY, exact bool) int { //gd:ItemList.get_item_at_position
+	return int(int(Advanced(self).GetItemAtPosition(Vector2.XY(position), exact)))
 }
 
 /*
 Ensure current selection is visible, adjusting the scroll position as necessary.
 */
 func (self Instance) EnsureCurrentIsVisible() { //gd:ItemList.ensure_current_is_visible
-	class(self).EnsureCurrentIsVisible()
+	Advanced(self).EnsureCurrentIsVisible()
 }
 
 /*
@@ -391,7 +433,7 @@ Returns the vertical scrollbar.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
 func (self Instance) GetVScrollBar() [1]gdclass.VScrollBar { //gd:ItemList.get_v_scroll_bar
-	return [1]gdclass.VScrollBar(class(self).GetVScrollBar())
+	return [1]gdclass.VScrollBar(Advanced(self).GetVScrollBar())
 }
 
 /*
@@ -399,14 +441,14 @@ Returns the horizontal scrollbar.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
 func (self Instance) GetHScrollBar() [1]gdclass.HScrollBar { //gd:ItemList.get_h_scroll_bar
-	return [1]gdclass.HScrollBar(class(self).GetHScrollBar())
+	return [1]gdclass.HScrollBar(Advanced(self).GetHScrollBar())
 }
 
 /*
 Forces an update to the list size based on its items. This happens automatically whenever size of the items, or other relevant settings like [member auto_height], change. The method can be used to trigger the update ahead of next drawing pass.
 */
 func (self Instance) ForceUpdateListSize() { //gd:ItemList.force_update_list_size
-	class(self).ForceUpdateListSize()
+	Advanced(self).ForceUpdateListSize()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

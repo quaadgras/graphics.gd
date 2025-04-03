@@ -80,7 +80,7 @@ type Any interface {
 Returns the size of the packed container (see [method Array.size] and [method Dictionary.size]).
 */
 func (self Instance) Size() int { //gd:PackedDataContainerRef.size
-	return int(int(class(self).Size()))
+	return int(int(Advanced(self).Size()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

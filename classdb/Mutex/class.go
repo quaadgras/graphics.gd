@@ -62,7 +62,7 @@ Locks this [Mutex], blocks until it is unlocked by the current owner.
 [b]Note:[/b] This function returns without blocking if the thread already has ownership of the mutex.
 */
 func (self Instance) Lock() { //gd:Mutex.lock
-	class(self).Lock()
+	Advanced(self).Lock()
 }
 
 /*
@@ -70,7 +70,7 @@ Tries locking this [Mutex], but does not block. Returns [code]true[/code] on suc
 [b]Note:[/b] This function returns [code]true[/code] if the thread already has ownership of the mutex.
 */
 func (self Instance) TryLock() bool { //gd:Mutex.try_lock
-	return bool(class(self).TryLock())
+	return bool(Advanced(self).TryLock())
 }
 
 /*
@@ -79,7 +79,7 @@ Unlocks this [Mutex], leaving it to other threads.
 [b]Warning:[/b] Calling [method unlock] more times that [method lock] on a given thread, thus ending up trying to unlock a non-locked mutex, is wrong and may causes crashes or deadlocks.
 */
 func (self Instance) Unlock() { //gd:Mutex.unlock
-	class(self).Unlock()
+	Advanced(self).Unlock()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

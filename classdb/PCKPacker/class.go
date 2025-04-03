@@ -59,6 +59,7 @@ The above [PCKPacker] creates package [code]test.pck[/code], then adds a file na
 [b]Note:[/b] PCK is Godot's own pack file format. To create ZIP archives that can be read by any program, use [ZIPPacker] instead.
 */
 type Instance [1]gdclass.PCKPacker
+type Expanded [1]gdclass.PCKPacker
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -72,28 +73,49 @@ type Any interface {
 Creates a new PCK file at the file path [param pck_path]. The [code].pck[/code] file extension isn't added automatically, so it should be part of [param pck_path] (even though it's not required).
 */
 func (self Instance) PckStart(pck_path string) error { //gd:PCKPacker.pck_start
-	return error(gd.ToError(class(self).PckStart(String.New(pck_path), int64(32), String.New("0000000000000000000000000000000000000000000000000000000000000000"), false)))
+	return error(gd.ToError(Advanced(self).PckStart(String.New(pck_path), int64(32), String.New("0000000000000000000000000000000000000000000000000000000000000000"), false)))
+}
+
+/*
+Creates a new PCK file at the file path [param pck_path]. The [code].pck[/code] file extension isn't added automatically, so it should be part of [param pck_path] (even though it's not required).
+*/
+func (self Expanded) PckStart(pck_path string, alignment int, key string, encrypt_directory bool) error { //gd:PCKPacker.pck_start
+	return error(gd.ToError(Advanced(self).PckStart(String.New(pck_path), int64(alignment), String.New(key), encrypt_directory)))
 }
 
 /*
 Adds the [param source_path] file to the current PCK package at the [param target_path] internal path. The [code]res://[/code] prefix for [param target_path] is optional and stripped internally.
 */
 func (self Instance) AddFile(target_path string, source_path string) error { //gd:PCKPacker.add_file
-	return error(gd.ToError(class(self).AddFile(String.New(target_path), String.New(source_path), false)))
+	return error(gd.ToError(Advanced(self).AddFile(String.New(target_path), String.New(source_path), false)))
+}
+
+/*
+Adds the [param source_path] file to the current PCK package at the [param target_path] internal path. The [code]res://[/code] prefix for [param target_path] is optional and stripped internally.
+*/
+func (self Expanded) AddFile(target_path string, source_path string, encrypt bool) error { //gd:PCKPacker.add_file
+	return error(gd.ToError(Advanced(self).AddFile(String.New(target_path), String.New(source_path), encrypt)))
 }
 
 /*
 Registers a file removal of the [param target_path] internal path to the PCK. This is mainly used for patches. If the file at this path has been loaded from a previous PCK, it will be removed. The [code]res://[/code] prefix for [param target_path] is optional and stripped internally.
 */
 func (self Instance) AddFileRemoval(target_path string) error { //gd:PCKPacker.add_file_removal
-	return error(gd.ToError(class(self).AddFileRemoval(String.New(target_path))))
+	return error(gd.ToError(Advanced(self).AddFileRemoval(String.New(target_path))))
 }
 
 /*
 Writes the files specified using all [method add_file] calls since the last flush. If [param verbose] is [code]true[/code], a list of files added will be printed to the console for easier debugging.
 */
 func (self Instance) Flush() error { //gd:PCKPacker.flush
-	return error(gd.ToError(class(self).Flush(false)))
+	return error(gd.ToError(Advanced(self).Flush(false)))
+}
+
+/*
+Writes the files specified using all [method add_file] calls since the last flush. If [param verbose] is [code]true[/code], a list of files added will be printed to the console for easier debugging.
+*/
+func (self Expanded) Flush(verbose bool) error { //gd:PCKPacker.flush
+	return error(gd.ToError(Advanced(self).Flush(verbose)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

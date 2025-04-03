@@ -98,70 +98,70 @@ func (Instance) _deactivate_feed(impl func(ptr unsafe.Pointer)) (cb gd.Extension
 Returns the unique ID for this feed.
 */
 func (self Instance) GetId() int { //gd:CameraFeed.get_id
-	return int(int(class(self).GetId()))
+	return int(int(Advanced(self).GetId()))
 }
 
 /*
 Returns the camera's name.
 */
 func (self Instance) GetName() string { //gd:CameraFeed.get_name
-	return string(class(self).GetName().String())
+	return string(Advanced(self).GetName().String())
 }
 
 /*
 Sets the camera's name.
 */
 func (self Instance) SetName(name string) { //gd:CameraFeed.set_name
-	class(self).SetName(String.New(name))
+	Advanced(self).SetName(String.New(name))
 }
 
 /*
 Returns the position of camera on the device.
 */
 func (self Instance) GetPosition() gdclass.CameraFeedFeedPosition { //gd:CameraFeed.get_position
-	return gdclass.CameraFeedFeedPosition(class(self).GetPosition())
+	return gdclass.CameraFeedFeedPosition(Advanced(self).GetPosition())
 }
 
 /*
 Sets the position of this camera.
 */
 func (self Instance) SetPosition(position gdclass.CameraFeedFeedPosition) { //gd:CameraFeed.set_position
-	class(self).SetPosition(position)
+	Advanced(self).SetPosition(position)
 }
 
 /*
 Sets RGB image for this feed.
 */
 func (self Instance) SetRgbImage(rgb_image [1]gdclass.Image) { //gd:CameraFeed.set_rgb_image
-	class(self).SetRgbImage(rgb_image)
+	Advanced(self).SetRgbImage(rgb_image)
 }
 
 /*
 Sets YCbCr image for this feed.
 */
 func (self Instance) SetYcbcrImage(ycbcr_image [1]gdclass.Image) { //gd:CameraFeed.set_ycbcr_image
-	class(self).SetYcbcrImage(ycbcr_image)
+	Advanced(self).SetYcbcrImage(ycbcr_image)
 }
 
 /*
 Sets the feed as external feed provided by another library.
 */
 func (self Instance) SetExternal(width int, height int) { //gd:CameraFeed.set_external
-	class(self).SetExternal(int64(width), int64(height))
+	Advanced(self).SetExternal(int64(width), int64(height))
 }
 
 /*
 Returns the texture backend ID (usable by some external libraries that need a handle to a texture to write data).
 */
 func (self Instance) GetTextureTexId(feed_image_type gdclass.CameraServerFeedImage) int { //gd:CameraFeed.get_texture_tex_id
-	return int(int(class(self).GetTextureTexId(feed_image_type)))
+	return int(int(Advanced(self).GetTextureTexId(feed_image_type)))
 }
 
 /*
 Returns feed image data type.
 */
 func (self Instance) GetDatatype() gdclass.CameraFeedFeedDataType { //gd:CameraFeed.get_datatype
-	return gdclass.CameraFeedFeedDataType(class(self).GetDatatype())
+	return gdclass.CameraFeedFeedDataType(Advanced(self).GetDatatype())
 }
 
 /*
@@ -171,7 +171,7 @@ Sets the feed format parameters for the given index in the [member formats] arra
 [code]copy[/code] will result in FEED_YCBCR
 */
 func (self Instance) SetFormat(index int, parameters FormatParameters) bool { //gd:CameraFeed.set_format
-	return bool(class(self).SetFormat(int64(index), gd.DictionaryFromMap(parameters)))
+	return bool(Advanced(self).SetFormat(int64(index), gd.DictionaryFromMap(parameters)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

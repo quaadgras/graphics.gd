@@ -61,7 +61,7 @@ Correct the [param transform]. [param rotation_mode] implicitly specifies how po
 */
 func CorrectPosture(transform Transform3D.BasisOrigin, rotation_mode gdclass.PathFollow3DRotationMode) Transform3D.BasisOrigin { //gd:PathFollow3D.correct_posture
 	self := Instance{}
-	return Transform3D.BasisOrigin(class(self).CorrectPosture(Transform3D.BasisOrigin(transform), rotation_mode))
+	return Transform3D.BasisOrigin(Advanced(self).CorrectPosture(Transform3D.BasisOrigin(transform), rotation_mode))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

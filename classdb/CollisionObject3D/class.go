@@ -128,140 +128,140 @@ func (Instance) _mouse_exit(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClass
 Based on [param value], enables or disables the specified layer in the [member collision_layer], given a [param layer_number] between 1 and 32.
 */
 func (self Instance) SetCollisionLayerValue(layer_number int, value bool) { //gd:CollisionObject3D.set_collision_layer_value
-	class(self).SetCollisionLayerValue(int64(layer_number), value)
+	Advanced(self).SetCollisionLayerValue(int64(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member collision_layer] is enabled, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) GetCollisionLayerValue(layer_number int) bool { //gd:CollisionObject3D.get_collision_layer_value
-	return bool(class(self).GetCollisionLayerValue(int64(layer_number)))
+	return bool(Advanced(self).GetCollisionLayerValue(int64(layer_number)))
 }
 
 /*
 Based on [param value], enables or disables the specified layer in the [member collision_mask], given a [param layer_number] between 1 and 32.
 */
 func (self Instance) SetCollisionMaskValue(layer_number int, value bool) { //gd:CollisionObject3D.set_collision_mask_value
-	class(self).SetCollisionMaskValue(int64(layer_number), value)
+	Advanced(self).SetCollisionMaskValue(int64(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member collision_mask] is enabled, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) GetCollisionMaskValue(layer_number int) bool { //gd:CollisionObject3D.get_collision_mask_value
-	return bool(class(self).GetCollisionMaskValue(int64(layer_number)))
+	return bool(Advanced(self).GetCollisionMaskValue(int64(layer_number)))
 }
 
 /*
 Returns the object's [RID].
 */
 func (self Instance) GetRid() RID.Body3D { //gd:CollisionObject3D.get_rid
-	return RID.Body3D(class(self).GetRid())
+	return RID.Body3D(Advanced(self).GetRid())
 }
 
 /*
 Creates a new shape owner for the given object. Returns [code]owner_id[/code] of the new owner for future reference.
 */
 func (self Instance) CreateShapeOwner(owner Object.Instance) int { //gd:CollisionObject3D.create_shape_owner
-	return int(int(class(self).CreateShapeOwner(owner)))
+	return int(int(Advanced(self).CreateShapeOwner(owner)))
 }
 
 /*
 Removes the given shape owner.
 */
 func (self Instance) RemoveShapeOwner(owner_id int) { //gd:CollisionObject3D.remove_shape_owner
-	class(self).RemoveShapeOwner(int64(owner_id))
+	Advanced(self).RemoveShapeOwner(int64(owner_id))
 }
 
 /*
 Returns an [Array] of [code]owner_id[/code] identifiers. You can use these ids in other methods that take [code]owner_id[/code] as an argument.
 */
 func (self Instance) GetShapeOwners() []int32 { //gd:CollisionObject3D.get_shape_owners
-	return []int32(slices.Collect(class(self).GetShapeOwners().Values()))
+	return []int32(slices.Collect(Advanced(self).GetShapeOwners().Values()))
 }
 
 /*
 Sets the [Transform3D] of the given shape owner.
 */
 func (self Instance) ShapeOwnerSetTransform(owner_id int, transform Transform3D.BasisOrigin) { //gd:CollisionObject3D.shape_owner_set_transform
-	class(self).ShapeOwnerSetTransform(int64(owner_id), Transform3D.BasisOrigin(transform))
+	Advanced(self).ShapeOwnerSetTransform(int64(owner_id), Transform3D.BasisOrigin(transform))
 }
 
 /*
 Returns the shape owner's [Transform3D].
 */
 func (self Instance) ShapeOwnerGetTransform(owner_id int) Transform3D.BasisOrigin { //gd:CollisionObject3D.shape_owner_get_transform
-	return Transform3D.BasisOrigin(class(self).ShapeOwnerGetTransform(int64(owner_id)))
+	return Transform3D.BasisOrigin(Advanced(self).ShapeOwnerGetTransform(int64(owner_id)))
 }
 
 /*
 Returns the parent object of the given shape owner.
 */
 func (self Instance) ShapeOwnerGetOwner(owner_id int) Object.Instance { //gd:CollisionObject3D.shape_owner_get_owner
-	return Object.Instance(class(self).ShapeOwnerGetOwner(int64(owner_id)))
+	return Object.Instance(Advanced(self).ShapeOwnerGetOwner(int64(owner_id)))
 }
 
 /*
 If [code]true[/code], disables the given shape owner.
 */
 func (self Instance) ShapeOwnerSetDisabled(owner_id int, disabled bool) { //gd:CollisionObject3D.shape_owner_set_disabled
-	class(self).ShapeOwnerSetDisabled(int64(owner_id), disabled)
+	Advanced(self).ShapeOwnerSetDisabled(int64(owner_id), disabled)
 }
 
 /*
 If [code]true[/code], the shape owner and its shapes are disabled.
 */
 func (self Instance) IsShapeOwnerDisabled(owner_id int) bool { //gd:CollisionObject3D.is_shape_owner_disabled
-	return bool(class(self).IsShapeOwnerDisabled(int64(owner_id)))
+	return bool(Advanced(self).IsShapeOwnerDisabled(int64(owner_id)))
 }
 
 /*
 Adds a [Shape3D] to the shape owner.
 */
 func (self Instance) ShapeOwnerAddShape(owner_id int, shape [1]gdclass.Shape3D) { //gd:CollisionObject3D.shape_owner_add_shape
-	class(self).ShapeOwnerAddShape(int64(owner_id), shape)
+	Advanced(self).ShapeOwnerAddShape(int64(owner_id), shape)
 }
 
 /*
 Returns the number of shapes the given shape owner contains.
 */
 func (self Instance) ShapeOwnerGetShapeCount(owner_id int) int { //gd:CollisionObject3D.shape_owner_get_shape_count
-	return int(int(class(self).ShapeOwnerGetShapeCount(int64(owner_id))))
+	return int(int(Advanced(self).ShapeOwnerGetShapeCount(int64(owner_id))))
 }
 
 /*
 Returns the [Shape3D] with the given ID from the given shape owner.
 */
 func (self Instance) ShapeOwnerGetShape(owner_id int, shape_id int) [1]gdclass.Shape3D { //gd:CollisionObject3D.shape_owner_get_shape
-	return [1]gdclass.Shape3D(class(self).ShapeOwnerGetShape(int64(owner_id), int64(shape_id)))
+	return [1]gdclass.Shape3D(Advanced(self).ShapeOwnerGetShape(int64(owner_id), int64(shape_id)))
 }
 
 /*
 Returns the child index of the [Shape3D] with the given ID from the given shape owner.
 */
 func (self Instance) ShapeOwnerGetShapeIndex(owner_id int, shape_id int) int { //gd:CollisionObject3D.shape_owner_get_shape_index
-	return int(int(class(self).ShapeOwnerGetShapeIndex(int64(owner_id), int64(shape_id))))
+	return int(int(Advanced(self).ShapeOwnerGetShapeIndex(int64(owner_id), int64(shape_id))))
 }
 
 /*
 Removes a shape from the given shape owner.
 */
 func (self Instance) ShapeOwnerRemoveShape(owner_id int, shape_id int) { //gd:CollisionObject3D.shape_owner_remove_shape
-	class(self).ShapeOwnerRemoveShape(int64(owner_id), int64(shape_id))
+	Advanced(self).ShapeOwnerRemoveShape(int64(owner_id), int64(shape_id))
 }
 
 /*
 Removes all shapes from the shape owner.
 */
 func (self Instance) ShapeOwnerClearShapes(owner_id int) { //gd:CollisionObject3D.shape_owner_clear_shapes
-	class(self).ShapeOwnerClearShapes(int64(owner_id))
+	Advanced(self).ShapeOwnerClearShapes(int64(owner_id))
 }
 
 /*
 Returns the [code]owner_id[/code] of the given shape.
 */
 func (self Instance) ShapeFindOwner(shape_index int) int { //gd:CollisionObject3D.shape_find_owner
-	return int(int(class(self).ShapeFindOwner(int64(shape_index))))
+	return int(int(Advanced(self).ShapeFindOwner(int64(shape_index))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

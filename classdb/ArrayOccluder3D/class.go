@@ -60,7 +60,7 @@ type Any interface {
 Sets [member indices] and [member vertices], while updating the final occluder only once after both values are set.
 */
 func (self Instance) SetArrays(vertices []Vector3.XYZ, indices []int32) { //gd:ArrayOccluder3D.set_arrays
-	class(self).SetArrays(Packed.New(vertices...), Packed.New(indices...))
+	Advanced(self).SetArrays(Packed.New(vertices...), Packed.New(indices...))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

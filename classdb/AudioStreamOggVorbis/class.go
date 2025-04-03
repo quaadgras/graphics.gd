@@ -59,7 +59,7 @@ Creates a new [AudioStreamOggVorbis] instance from the given buffer. The buffer 
 */
 func LoadFromBuffer(stream_data []byte) [1]gdclass.AudioStreamOggVorbis { //gd:AudioStreamOggVorbis.load_from_buffer
 	self := Instance{}
-	return [1]gdclass.AudioStreamOggVorbis(class(self).LoadFromBuffer(Packed.Bytes(Packed.New(stream_data...))))
+	return [1]gdclass.AudioStreamOggVorbis(Advanced(self).LoadFromBuffer(Packed.Bytes(Packed.New(stream_data...))))
 }
 
 /*
@@ -67,7 +67,7 @@ Creates a new [AudioStreamOggVorbis] instance from the given file path. The file
 */
 func LoadFromFile(path string) [1]gdclass.AudioStreamOggVorbis { //gd:AudioStreamOggVorbis.load_from_file
 	self := Instance{}
-	return [1]gdclass.AudioStreamOggVorbis(class(self).LoadFromFile(String.New(path)))
+	return [1]gdclass.AudioStreamOggVorbis(Advanced(self).LoadFromFile(String.New(path)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

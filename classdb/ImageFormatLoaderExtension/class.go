@@ -120,14 +120,14 @@ func (Instance) _load_image(impl func(ptr unsafe.Pointer, image [1]gdclass.Image
 Add this format loader to the engine, allowing it to recognize the file extensions returned by [method _get_recognized_extensions].
 */
 func (self Instance) AddFormatLoader() { //gd:ImageFormatLoaderExtension.add_format_loader
-	class(self).AddFormatLoader()
+	Advanced(self).AddFormatLoader()
 }
 
 /*
 Remove this format loader from the engine.
 */
 func (self Instance) RemoveFormatLoader() { //gd:ImageFormatLoaderExtension.remove_format_loader
-	class(self).RemoveFormatLoader()
+	Advanced(self).RemoveFormatLoader()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

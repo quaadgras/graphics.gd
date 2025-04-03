@@ -58,7 +58,7 @@ Gets additional arbitrary data in this [GLTFMesh] instance. This can be used to 
 The argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the glTF file), and the return value can be anything you set. If nothing was set, the return value is [code]null[/code].
 */
 func (self Instance) GetAdditionalData(extension_name string) any { //gd:GLTFMesh.get_additional_data
-	return any(class(self).GetAdditionalData(String.Name(String.New(extension_name))).Interface())
+	return any(Advanced(self).GetAdditionalData(String.Name(String.New(extension_name))).Interface())
 }
 
 /*
@@ -66,7 +66,7 @@ Sets additional arbitrary data in this [GLTFMesh] instance. This can be used to 
 The first argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the glTF file), and the second argument can be anything you want.
 */
 func (self Instance) SetAdditionalData(extension_name string, additional_data any) { //gd:GLTFMesh.set_additional_data
-	class(self).SetAdditionalData(String.Name(String.New(extension_name)), variant.New(additional_data))
+	Advanced(self).SetAdditionalData(String.Name(String.New(extension_name)), variant.New(additional_data))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -135,6 +135,7 @@ _undo_redo.CommitAction();
 [/codeblocks]
 */
 type Instance [1]gdclass.UndoRedo
+type Expanded [1]gdclass.UndoRedo
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -150,49 +151,65 @@ The way actions are merged is dictated by [param merge_mode]. See [enum MergeMod
 The way undo operation are ordered in actions is dictated by [param backward_undo_ops]. When [param backward_undo_ops] is [code]false[/code] undo option are ordered in the same order they were added. Which means the first operation to be added will be the first to be undone.
 */
 func (self Instance) CreateAction(name string) { //gd:UndoRedo.create_action
-	class(self).CreateAction(String.New(name), 0, false)
+	Advanced(self).CreateAction(String.New(name), 0, false)
+}
+
+/*
+Create a new action. After this is called, do all your calls to [method add_do_method], [method add_undo_method], [method add_do_property], and [method add_undo_property], then commit the action with [method commit_action].
+The way actions are merged is dictated by [param merge_mode]. See [enum MergeMode] for details.
+The way undo operation are ordered in actions is dictated by [param backward_undo_ops]. When [param backward_undo_ops] is [code]false[/code] undo option are ordered in the same order they were added. Which means the first operation to be added will be the first to be undone.
+*/
+func (self Expanded) CreateAction(name string, merge_mode gdclass.UndoRedoMergeMode, backward_undo_ops bool) { //gd:UndoRedo.create_action
+	Advanced(self).CreateAction(String.New(name), merge_mode, backward_undo_ops)
 }
 
 /*
 Commit the action. If [param execute] is [code]true[/code] (which it is by default), all "do" methods/properties are called/set when this function is called.
 */
 func (self Instance) CommitAction() { //gd:UndoRedo.commit_action
-	class(self).CommitAction(true)
+	Advanced(self).CommitAction(true)
+}
+
+/*
+Commit the action. If [param execute] is [code]true[/code] (which it is by default), all "do" methods/properties are called/set when this function is called.
+*/
+func (self Expanded) CommitAction(execute bool) { //gd:UndoRedo.commit_action
+	Advanced(self).CommitAction(execute)
 }
 
 /*
 Returns [code]true[/code] if the [UndoRedo] is currently committing the action, i.e. running its "do" method or property change (see [method commit_action]).
 */
 func (self Instance) IsCommittingAction() bool { //gd:UndoRedo.is_committing_action
-	return bool(class(self).IsCommittingAction())
+	return bool(Advanced(self).IsCommittingAction())
 }
 
 /*
 Register a [Callable] that will be called when the action is committed.
 */
 func (self Instance) AddDoMethod(callable func()) { //gd:UndoRedo.add_do_method
-	class(self).AddDoMethod(Callable.New(callable))
+	Advanced(self).AddDoMethod(Callable.New(callable))
 }
 
 /*
 Register a [Callable] that will be called when the action is undone.
 */
 func (self Instance) AddUndoMethod(callable func()) { //gd:UndoRedo.add_undo_method
-	class(self).AddUndoMethod(Callable.New(callable))
+	Advanced(self).AddUndoMethod(Callable.New(callable))
 }
 
 /*
 Register a [param property] that would change its value to [param value] when the action is committed.
 */
 func (self Instance) AddDoProperty(obj Object.Instance, property string, value any) { //gd:UndoRedo.add_do_property
-	class(self).AddDoProperty(obj, String.Name(String.New(property)), variant.New(value))
+	Advanced(self).AddDoProperty(obj, String.Name(String.New(property)), variant.New(value))
 }
 
 /*
 Register a [param property] that would change its value to [param value] when the action is undone.
 */
 func (self Instance) AddUndoProperty(obj Object.Instance, property string, value any) { //gd:UndoRedo.add_undo_property
-	class(self).AddUndoProperty(obj, String.Name(String.New(property)), variant.New(value))
+	Advanced(self).AddUndoProperty(obj, String.Name(String.New(property)), variant.New(value))
 }
 
 /*
@@ -208,7 +225,7 @@ undo_redo.commit_action()
 [/codeblock]
 */
 func (self Instance) AddDoReference(obj Object.Instance) { //gd:UndoRedo.add_do_reference
-	class(self).AddDoReference(obj)
+	Advanced(self).AddDoReference(obj)
 }
 
 /*
@@ -224,42 +241,42 @@ undo_redo.commit_action()
 [/codeblock]
 */
 func (self Instance) AddUndoReference(obj Object.Instance) { //gd:UndoRedo.add_undo_reference
-	class(self).AddUndoReference(obj)
+	Advanced(self).AddUndoReference(obj)
 }
 
 /*
 Marks the next "do" and "undo" operations to be processed even if the action gets merged with another in the [constant MERGE_ENDS] mode. Return to normal operation using [method end_force_keep_in_merge_ends].
 */
 func (self Instance) StartForceKeepInMergeEnds() { //gd:UndoRedo.start_force_keep_in_merge_ends
-	class(self).StartForceKeepInMergeEnds()
+	Advanced(self).StartForceKeepInMergeEnds()
 }
 
 /*
 Stops marking operations as to be processed even if the action gets merged with another in the [constant MERGE_ENDS] mode. See [method start_force_keep_in_merge_ends].
 */
 func (self Instance) EndForceKeepInMergeEnds() { //gd:UndoRedo.end_force_keep_in_merge_ends
-	class(self).EndForceKeepInMergeEnds()
+	Advanced(self).EndForceKeepInMergeEnds()
 }
 
 /*
 Returns how many elements are in the history.
 */
 func (self Instance) GetHistoryCount() int { //gd:UndoRedo.get_history_count
-	return int(int(class(self).GetHistoryCount()))
+	return int(int(Advanced(self).GetHistoryCount()))
 }
 
 /*
 Gets the index of the current action.
 */
 func (self Instance) GetCurrentAction() int { //gd:UndoRedo.get_current_action
-	return int(int(class(self).GetCurrentAction()))
+	return int(int(Advanced(self).GetCurrentAction()))
 }
 
 /*
 Gets the action name from its index.
 */
 func (self Instance) GetActionName(id int) string { //gd:UndoRedo.get_action_name
-	return string(class(self).GetActionName(int64(id)).String())
+	return string(Advanced(self).GetActionName(int64(id)).String())
 }
 
 /*
@@ -267,28 +284,36 @@ Clear the undo/redo history and associated references.
 Passing [code]false[/code] to [param increase_version] will prevent the version number from increasing when the history is cleared.
 */
 func (self Instance) ClearHistory() { //gd:UndoRedo.clear_history
-	class(self).ClearHistory(true)
+	Advanced(self).ClearHistory(true)
+}
+
+/*
+Clear the undo/redo history and associated references.
+Passing [code]false[/code] to [param increase_version] will prevent the version number from increasing when the history is cleared.
+*/
+func (self Expanded) ClearHistory(increase_version bool) { //gd:UndoRedo.clear_history
+	Advanced(self).ClearHistory(increase_version)
 }
 
 /*
 Gets the name of the current action, equivalent to [code]get_action_name(get_current_action())[/code].
 */
 func (self Instance) GetCurrentActionName() string { //gd:UndoRedo.get_current_action_name
-	return string(class(self).GetCurrentActionName().String())
+	return string(Advanced(self).GetCurrentActionName().String())
 }
 
 /*
 Returns [code]true[/code] if an "undo" action is available.
 */
 func (self Instance) HasUndo() bool { //gd:UndoRedo.has_undo
-	return bool(class(self).HasUndo())
+	return bool(Advanced(self).HasUndo())
 }
 
 /*
 Returns [code]true[/code] if a "redo" action is available.
 */
 func (self Instance) HasRedo() bool { //gd:UndoRedo.has_redo
-	return bool(class(self).HasRedo())
+	return bool(Advanced(self).HasRedo())
 }
 
 /*
@@ -296,21 +321,21 @@ Gets the version. Every time a new action is committed, the [UndoRedo]'s version
 This is useful mostly to check if something changed from a saved version.
 */
 func (self Instance) GetVersion() int { //gd:UndoRedo.get_version
-	return int(int(class(self).GetVersion()))
+	return int(int(Advanced(self).GetVersion()))
 }
 
 /*
 Redo the last action.
 */
 func (self Instance) Redo() bool { //gd:UndoRedo.redo
-	return bool(class(self).Redo())
+	return bool(Advanced(self).Redo())
 }
 
 /*
 Undo the last action.
 */
 func (self Instance) Undo() bool { //gd:UndoRedo.undo
-	return bool(class(self).Undo())
+	return bool(Advanced(self).Undo())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

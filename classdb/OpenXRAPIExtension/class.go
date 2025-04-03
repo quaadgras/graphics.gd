@@ -60,35 +60,35 @@ type Any interface {
 Returns the [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrInstance.html]XrInstance[/url] created during the initialization of the OpenXR API.
 */
 func (self Instance) GetInstance() int { //gd:OpenXRAPIExtension.get_instance
-	return int(int(class(self).GetInstance()))
+	return int(int(Advanced(self).GetInstance()))
 }
 
 /*
 Returns the id of the system, which is a [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrSystemId.html]XrSystemId[/url] cast to an integer.
 */
 func (self Instance) GetSystemId() int { //gd:OpenXRAPIExtension.get_system_id
-	return int(int(class(self).GetSystemId()))
+	return int(int(Advanced(self).GetSystemId()))
 }
 
 /*
 Returns the OpenXR session, which is an [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrSession.html]XrSession[/url] cast to an integer.
 */
 func (self Instance) GetSession() int { //gd:OpenXRAPIExtension.get_session
-	return int(int(class(self).GetSession()))
+	return int(int(Advanced(self).GetSession()))
 }
 
 /*
 Creates a [Transform3D] from an [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrPosef.html]XrPosef[/url].
 */
 func (self Instance) TransformFromPose(pose unsafe.Pointer) Transform3D.BasisOrigin { //gd:OpenXRAPIExtension.transform_from_pose
-	return Transform3D.BasisOrigin(class(self).TransformFromPose(pose))
+	return Transform3D.BasisOrigin(Advanced(self).TransformFromPose(pose))
 }
 
 /*
 Returns [code]true[/code] if the provided [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrResult.html]XrResult[/url] (cast to an integer) is successful. Otherwise returns [code]false[/code] and prints the [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrResult.html]XrResult[/url] converted to a string, with the specified additional information.
 */
 func (self Instance) XrResult(result int, format string, args []any) bool { //gd:OpenXRAPIExtension.xr_result
-	return bool(class(self).XrResult(int64(result), String.New(format), gd.EngineArrayFromSlice(args)))
+	return bool(Advanced(self).XrResult(int64(result), String.New(format), gd.EngineArrayFromSlice(args)))
 }
 
 /*
@@ -96,7 +96,7 @@ Returns [code]true[/code] if OpenXR is enabled.
 */
 func OpenxrIsEnabled(check_run_in_editor bool) bool { //gd:OpenXRAPIExtension.openxr_is_enabled
 	self := Instance{}
-	return bool(class(self).OpenxrIsEnabled(check_run_in_editor))
+	return bool(Advanced(self).OpenxrIsEnabled(check_run_in_editor))
 }
 
 /*
@@ -104,140 +104,140 @@ Returns the function pointer of the OpenXR function with the specified name, cas
 [b]Note:[/b] [code]openxr/util.h[/code] contains utility macros for acquiring OpenXR functions, e.g. [code]GDEXTENSION_INIT_XR_FUNC_V(xrCreateAction)[/code].
 */
 func (self Instance) GetInstanceProcAddr(name string) int { //gd:OpenXRAPIExtension.get_instance_proc_addr
-	return int(int(class(self).GetInstanceProcAddr(String.New(name))))
+	return int(int(Advanced(self).GetInstanceProcAddr(String.New(name))))
 }
 
 /*
 Returns an error string for the given [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrResult.html]XrResult[/url].
 */
 func (self Instance) GetErrorString(result int) string { //gd:OpenXRAPIExtension.get_error_string
-	return string(class(self).GetErrorString(int64(result)).String())
+	return string(Advanced(self).GetErrorString(int64(result)).String())
 }
 
 /*
 Returns the name of the specified swapchain format.
 */
 func (self Instance) GetSwapchainFormatName(swapchain_format int) string { //gd:OpenXRAPIExtension.get_swapchain_format_name
-	return string(class(self).GetSwapchainFormatName(int64(swapchain_format)).String())
+	return string(Advanced(self).GetSwapchainFormatName(int64(swapchain_format)).String())
 }
 
 /*
 Set the object name of an OpenXR object, used for debug output. [param object_type] must be a valid OpenXR [code]XrObjectType[/code] enum and [param object_handle] must be a valid OpenXR object handle.
 */
 func (self Instance) SetObjectName(object_type int, object_handle int, object_name string) { //gd:OpenXRAPIExtension.set_object_name
-	class(self).SetObjectName(int64(object_type), int64(object_handle), String.New(object_name))
+	Advanced(self).SetObjectName(int64(object_type), int64(object_handle), String.New(object_name))
 }
 
 /*
 Begins a new debug label region, this label will be reported in debug messages for any calls following this until [method end_debug_label_region] is called. Debug labels can be stacked.
 */
 func (self Instance) BeginDebugLabelRegion(label_name string) { //gd:OpenXRAPIExtension.begin_debug_label_region
-	class(self).BeginDebugLabelRegion(String.New(label_name))
+	Advanced(self).BeginDebugLabelRegion(String.New(label_name))
 }
 
 /*
 Marks the end of a debug label region. Removes the latest debug label region added by calling [method begin_debug_label_region].
 */
 func (self Instance) EndDebugLabelRegion() { //gd:OpenXRAPIExtension.end_debug_label_region
-	class(self).EndDebugLabelRegion()
+	Advanced(self).EndDebugLabelRegion()
 }
 
 /*
 Inserts a debug label, this label is reported in any debug message resulting from the OpenXR calls that follows, until any of [method begin_debug_label_region], [method end_debug_label_region], or [method insert_debug_label] is called.
 */
 func (self Instance) InsertDebugLabel(label_name string) { //gd:OpenXRAPIExtension.insert_debug_label
-	class(self).InsertDebugLabel(String.New(label_name))
+	Advanced(self).InsertDebugLabel(String.New(label_name))
 }
 
 /*
 Returns [code]true[/code] if OpenXR is initialized.
 */
 func (self Instance) IsInitialized() bool { //gd:OpenXRAPIExtension.is_initialized
-	return bool(class(self).IsInitialized())
+	return bool(Advanced(self).IsInitialized())
 }
 
 /*
 Returns [code]true[/code] if OpenXR is running ([url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/xrBeginSession.html]xrBeginSession[/url] was successfully called and the swapchains were created).
 */
 func (self Instance) IsRunning() bool { //gd:OpenXRAPIExtension.is_running
-	return bool(class(self).IsRunning())
+	return bool(Advanced(self).IsRunning())
 }
 
 /*
 Returns the play space, which is an [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrSpace.html]XrSpace[/url] cast to an integer.
 */
 func (self Instance) GetPlaySpace() int { //gd:OpenXRAPIExtension.get_play_space
-	return int(int(class(self).GetPlaySpace()))
+	return int(int(Advanced(self).GetPlaySpace()))
 }
 
 /*
 Returns the predicted display timing for the current frame.
 */
 func (self Instance) GetPredictedDisplayTime() int { //gd:OpenXRAPIExtension.get_predicted_display_time
-	return int(int(class(self).GetPredictedDisplayTime()))
+	return int(int(Advanced(self).GetPredictedDisplayTime()))
 }
 
 /*
 Returns the predicted display timing for the next frame.
 */
 func (self Instance) GetNextFrameTime() int { //gd:OpenXRAPIExtension.get_next_frame_time
-	return int(int(class(self).GetNextFrameTime()))
+	return int(int(Advanced(self).GetNextFrameTime()))
 }
 
 /*
 Returns [code]true[/code] if OpenXR is initialized for rendering with an XR viewport.
 */
 func (self Instance) CanRender() bool { //gd:OpenXRAPIExtension.can_render
-	return bool(class(self).CanRender())
+	return bool(Advanced(self).CanRender())
 }
 
 /*
 Returns the [RID] corresponding to an [code]Action[/code] of a matching name, optionally limited to a specified action set.
 */
 func (self Instance) FindAction(name string, action_set RID.ActionSet) RID.Action { //gd:OpenXRAPIExtension.find_action
-	return RID.Action(class(self).FindAction(String.New(name), RID.Any(action_set)))
+	return RID.Action(Advanced(self).FindAction(String.New(name), RID.Any(action_set)))
 }
 
 /*
 Returns the corresponding [code]XrAction[/code] OpenXR handle for the given action RID.
 */
 func (self Instance) ActionGetHandle(action RID.Action) int { //gd:OpenXRAPIExtension.action_get_handle
-	return int(int(class(self).ActionGetHandle(RID.Any(action))))
+	return int(int(Advanced(self).ActionGetHandle(RID.Any(action))))
 }
 
 /*
 Returns the corresponding [code]XRHandTrackerEXT[/code] handle for the given hand index value.
 */
 func (self Instance) GetHandTracker(hand_index int) int { //gd:OpenXRAPIExtension.get_hand_tracker
-	return int(int(class(self).GetHandTracker(int64(hand_index))))
+	return int(int(Advanced(self).GetHandTracker(int64(hand_index))))
 }
 
 /*
 Registers the given extension as a composition layer provider.
 */
 func (self Instance) RegisterCompositionLayerProvider(extension [1]gdclass.OpenXRExtensionWrapperExtension) { //gd:OpenXRAPIExtension.register_composition_layer_provider
-	class(self).RegisterCompositionLayerProvider(extension)
+	Advanced(self).RegisterCompositionLayerProvider(extension)
 }
 
 /*
 Unregisters the given extension as a composition layer provider.
 */
 func (self Instance) UnregisterCompositionLayerProvider(extension [1]gdclass.OpenXRExtensionWrapperExtension) { //gd:OpenXRAPIExtension.unregister_composition_layer_provider
-	class(self).UnregisterCompositionLayerProvider(extension)
+	Advanced(self).UnregisterCompositionLayerProvider(extension)
 }
 
 /*
 Registers the given extension as a provider of additional data structures to projections views.
 */
 func (self Instance) RegisterProjectionViewsExtension(extension [1]gdclass.OpenXRExtensionWrapperExtension) { //gd:OpenXRAPIExtension.register_projection_views_extension
-	class(self).RegisterProjectionViewsExtension(extension)
+	Advanced(self).RegisterProjectionViewsExtension(extension)
 }
 
 /*
 Unregisters the given extension as a provider of additional data structures to projections views.
 */
 func (self Instance) UnregisterProjectionViewsExtension(extension [1]gdclass.OpenXRExtensionWrapperExtension) { //gd:OpenXRAPIExtension.unregister_projection_views_extension
-	class(self).UnregisterProjectionViewsExtension(extension)
+	Advanced(self).UnregisterProjectionViewsExtension(extension)
 }
 
 /*
@@ -245,7 +245,7 @@ Returns the near boundary value of the camera frustum.
 [b]Note:[/b] This is only accessible in the render thread.
 */
 func (self Instance) GetRenderStateZNear() Float.X { //gd:OpenXRAPIExtension.get_render_state_z_near
-	return Float.X(Float.X(class(self).GetRenderStateZNear()))
+	return Float.X(Float.X(Advanced(self).GetRenderStateZNear()))
 }
 
 /*
@@ -253,77 +253,77 @@ Returns the far boundary value of the camera frustum.
 [b]Note:[/b] This is only accessible in the render thread.
 */
 func (self Instance) GetRenderStateZFar() Float.X { //gd:OpenXRAPIExtension.get_render_state_z_far
-	return Float.X(Float.X(class(self).GetRenderStateZFar()))
+	return Float.X(Float.X(Advanced(self).GetRenderStateZFar()))
 }
 
 /*
 Sets the render target of the velocity texture.
 */
 func (self Instance) SetVelocityTexture(render_target RID.Framebuffer) { //gd:OpenXRAPIExtension.set_velocity_texture
-	class(self).SetVelocityTexture(RID.Any(render_target))
+	Advanced(self).SetVelocityTexture(RID.Any(render_target))
 }
 
 /*
 Sets the render target of the velocity depth texture.
 */
 func (self Instance) SetVelocityDepthTexture(render_target RID.Framebuffer) { //gd:OpenXRAPIExtension.set_velocity_depth_texture
-	class(self).SetVelocityDepthTexture(RID.Any(render_target))
+	Advanced(self).SetVelocityDepthTexture(RID.Any(render_target))
 }
 
 /*
 Sets the target size of the velocity and velocity depth textures.
 */
 func (self Instance) SetVelocityTargetSize(target_size Vector2i.XY) { //gd:OpenXRAPIExtension.set_velocity_target_size
-	class(self).SetVelocityTargetSize(Vector2i.XY(target_size))
+	Advanced(self).SetVelocityTargetSize(Vector2i.XY(target_size))
 }
 
 /*
 Returns an array of supported swapchain formats.
 */
 func (self Instance) GetSupportedSwapchainFormats() []int64 { //gd:OpenXRAPIExtension.get_supported_swapchain_formats
-	return []int64(slices.Collect(class(self).GetSupportedSwapchainFormats().Values()))
+	return []int64(slices.Collect(Advanced(self).GetSupportedSwapchainFormats().Values()))
 }
 
 /*
 Returns a pointer to a new swapchain created using the provided parameters.
 */
 func (self Instance) OpenxrSwapchainCreate(create_flags int, usage_flags int, swapchain_format int, width int, height int, sample_count int, array_size int) int { //gd:OpenXRAPIExtension.openxr_swapchain_create
-	return int(int(class(self).OpenxrSwapchainCreate(int64(create_flags), int64(usage_flags), int64(swapchain_format), int64(width), int64(height), int64(sample_count), int64(array_size))))
+	return int(int(Advanced(self).OpenxrSwapchainCreate(int64(create_flags), int64(usage_flags), int64(swapchain_format), int64(width), int64(height), int64(sample_count), int64(array_size))))
 }
 
 /*
 Destroys the provided swapchain and frees it from memory.
 */
 func (self Instance) OpenxrSwapchainFree(swapchain int) { //gd:OpenXRAPIExtension.openxr_swapchain_free
-	class(self).OpenxrSwapchainFree(int64(swapchain))
+	Advanced(self).OpenxrSwapchainFree(int64(swapchain))
 }
 
 /*
 Returns the [code]XrSwapchain[/code] handle of the provided swapchain.
 */
 func (self Instance) OpenxrSwapchainGetSwapchain(swapchain int) int { //gd:OpenXRAPIExtension.openxr_swapchain_get_swapchain
-	return int(int(class(self).OpenxrSwapchainGetSwapchain(int64(swapchain))))
+	return int(int(Advanced(self).OpenxrSwapchainGetSwapchain(int64(swapchain))))
 }
 
 /*
 Acquires the image of the provided swapchain.
 */
 func (self Instance) OpenxrSwapchainAcquire(swapchain int) { //gd:OpenXRAPIExtension.openxr_swapchain_acquire
-	class(self).OpenxrSwapchainAcquire(int64(swapchain))
+	Advanced(self).OpenxrSwapchainAcquire(int64(swapchain))
 }
 
 /*
 Returns the RID of the provided swapchain's image.
 */
 func (self Instance) OpenxrSwapchainGetImage(swapchain int) RID.Texture { //gd:OpenXRAPIExtension.openxr_swapchain_get_image
-	return RID.Texture(class(self).OpenxrSwapchainGetImage(int64(swapchain)))
+	return RID.Texture(Advanced(self).OpenxrSwapchainGetImage(int64(swapchain)))
 }
 
 /*
 Releases the image of the provided swapchain.
 */
 func (self Instance) OpenxrSwapchainRelease(swapchain int) { //gd:OpenXRAPIExtension.openxr_swapchain_release
-	class(self).OpenxrSwapchainRelease(int64(swapchain))
+	Advanced(self).OpenxrSwapchainRelease(int64(swapchain))
 }
 
 /*
@@ -331,28 +331,28 @@ Returns a pointer to the render state's [code]XrCompositionLayerProjection[/code
 [b]Note:[/b] This method should only be called from the rendering thread.
 */
 func (self Instance) GetProjectionLayer() int { //gd:OpenXRAPIExtension.get_projection_layer
-	return int(int(class(self).GetProjectionLayer()))
+	return int(int(Advanced(self).GetProjectionLayer()))
 }
 
 /*
 Sets the render region to [param render_region], overriding the normal render target's rect.
 */
 func (self Instance) SetRenderRegion(render_region Rect2i.PositionSize) { //gd:OpenXRAPIExtension.set_render_region
-	class(self).SetRenderRegion(Rect2i.PositionSize(render_region))
+	Advanced(self).SetRenderRegion(Rect2i.PositionSize(render_region))
 }
 
 /*
 If set to [code]true[/code], an OpenXR extension is loaded which is capable of emulating the [constant XRInterface.XR_ENV_BLEND_MODE_ALPHA_BLEND] blend mode.
 */
 func (self Instance) SetEmulateEnvironmentBlendModeAlphaBlend(enabled bool) { //gd:OpenXRAPIExtension.set_emulate_environment_blend_mode_alpha_blend
-	class(self).SetEmulateEnvironmentBlendModeAlphaBlend(enabled)
+	Advanced(self).SetEmulateEnvironmentBlendModeAlphaBlend(enabled)
 }
 
 /*
 Returns [enum OpenXRAPIExtension.OpenXRAlphaBlendModeSupport] denoting if [constant XRInterface.XR_ENV_BLEND_MODE_ALPHA_BLEND] is really supported, emulated or not supported at all.
 */
 func (self Instance) IsEnvironmentBlendModeAlphaSupported() gdclass.OpenXRAPIExtensionOpenXRAlphaBlendModeSupport { //gd:OpenXRAPIExtension.is_environment_blend_mode_alpha_supported
-	return gdclass.OpenXRAPIExtensionOpenXRAlphaBlendModeSupport(class(self).IsEnvironmentBlendModeAlphaSupported())
+	return gdclass.OpenXRAPIExtensionOpenXRAlphaBlendModeSupport(Advanced(self).IsEnvironmentBlendModeAlphaSupported())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

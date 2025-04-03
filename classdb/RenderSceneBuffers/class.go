@@ -57,7 +57,7 @@ type Any interface {
 This method is called by the rendering server when the associated viewports configuration is changed. It will discard the old buffers and recreate the internal buffers used.
 */
 func (self Instance) Configure(config [1]gdclass.RenderSceneBuffersConfiguration) { //gd:RenderSceneBuffers.configure
-	class(self).Configure(config)
+	Advanced(self).Configure(config)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

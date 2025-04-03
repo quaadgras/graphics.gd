@@ -48,6 +48,7 @@ Currently, context menus are supported for three commonly used areas: the file s
 %!(EXTRA string=EditorContextMenuPlugin)
 */
 type Instance [1]gdclass.EditorContextMenuPlugin
+type Expanded [1]gdclass.EditorContextMenuPlugin
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -90,7 +91,7 @@ func _init():
 [/codeblock]
 */
 func (self Instance) AddMenuShortcut(shortcut [1]gdclass.Shortcut, callback func(array []any)) { //gd:EditorContextMenuPlugin.add_menu_shortcut
-	class(self).AddMenuShortcut(shortcut, Callable.New(callback))
+	Advanced(self).AddMenuShortcut(shortcut, Callable.New(callback))
 }
 
 /*
@@ -104,7 +105,21 @@ func _popup_menu(paths):
 If you want to assign shortcut to the menu item, use [method add_context_menu_item_from_shortcut] instead.
 */
 func (self Instance) AddContextMenuItem(name string, callback func(array []any)) { //gd:EditorContextMenuPlugin.add_context_menu_item
-	class(self).AddContextMenuItem(String.New(name), Callable.New(callback), [1][1]gdclass.Texture2D{}[0])
+	Advanced(self).AddContextMenuItem(String.New(name), Callable.New(callback), [1][1]gdclass.Texture2D{}[0])
+}
+
+/*
+Add custom option to the context menu of the plugin's specified slot. When the option is activated, [param callback] will be called. Callback should take single [Array] argument; array contents depend on context menu slot.
+[codeblock]
+func _popup_menu(paths):
+
+	add_context_menu_item("File Custom options", handle, ICON)
+
+[/codeblock]
+If you want to assign shortcut to the menu item, use [method add_context_menu_item_from_shortcut] instead.
+*/
+func (self Expanded) AddContextMenuItem(name string, callback func(array []any), icon [1]gdclass.Texture2D) { //gd:EditorContextMenuPlugin.add_context_menu_item
+	Advanced(self).AddContextMenuItem(String.New(name), Callable.New(callback), icon)
 }
 
 /*
@@ -121,7 +136,24 @@ func _popup_menu(paths):
 [/codeblock]
 */
 func (self Instance) AddContextMenuItemFromShortcut(name string, shortcut [1]gdclass.Shortcut) { //gd:EditorContextMenuPlugin.add_context_menu_item_from_shortcut
-	class(self).AddContextMenuItemFromShortcut(String.New(name), shortcut, [1][1]gdclass.Texture2D{}[0])
+	Advanced(self).AddContextMenuItemFromShortcut(String.New(name), shortcut, [1][1]gdclass.Texture2D{}[0])
+}
+
+/*
+Add custom option to the context menu of the plugin's specified slot. The option will have the [param shortcut] assigned and reuse its callback. The shortcut has to be registered beforehand with [method add_menu_shortcut].
+[codeblock]
+func _init():
+
+	add_menu_shortcut(SHORTCUT, handle)
+
+func _popup_menu(paths):
+
+	add_context_menu_item_from_shortcut("File Custom options", SHORTCUT, ICON)
+
+[/codeblock]
+*/
+func (self Expanded) AddContextMenuItemFromShortcut(name string, shortcut [1]gdclass.Shortcut, icon [1]gdclass.Texture2D) { //gd:EditorContextMenuPlugin.add_context_menu_item_from_shortcut
+	Advanced(self).AddContextMenuItemFromShortcut(String.New(name), shortcut, icon)
 }
 
 /*
@@ -139,7 +171,25 @@ func _popup_menu(paths):
 [/codeblock]
 */
 func (self Instance) AddContextSubmenuItem(name string, menu [1]gdclass.PopupMenu) { //gd:EditorContextMenuPlugin.add_context_submenu_item
-	class(self).AddContextSubmenuItem(String.New(name), menu, [1][1]gdclass.Texture2D{}[0])
+	Advanced(self).AddContextSubmenuItem(String.New(name), menu, [1][1]gdclass.Texture2D{}[0])
+}
+
+/*
+Add a submenu to the context menu of the plugin's specified slot. The submenu is not automatically handled, you need to connect to its signals yourself. Also the submenu is freed on every popup, so provide a new [PopupMenu] every time.
+[codeblock]
+func _popup_menu(paths):
+
+	var popup_menu = PopupMenu.new()
+	popup_menu.add_item("Blue")
+	popup_menu.add_item("White")
+	popup_menu.id_pressed.connect(_on_color_submenu_option)
+
+	add_context_submenu_item("Set Node Color", popup_menu)
+
+[/codeblock]
+*/
+func (self Expanded) AddContextSubmenuItem(name string, menu [1]gdclass.PopupMenu, icon [1]gdclass.Texture2D) { //gd:EditorContextMenuPlugin.add_context_submenu_item
+	Advanced(self).AddContextSubmenuItem(String.New(name), menu, icon)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

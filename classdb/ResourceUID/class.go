@@ -57,7 +57,7 @@ Converts the given UID to a [code]uid://[/code] string value.
 */
 func IdToText(id int) string { //gd:ResourceUID.id_to_text
 	once.Do(singleton)
-	return string(class(self).IdToText(int64(id)).String())
+	return string(Advanced().IdToText(int64(id)).String())
 }
 
 /*
@@ -65,7 +65,7 @@ Extracts the UID value from the given [code]uid://[/code] string.
 */
 func TextToId(text_id string) int { //gd:ResourceUID.text_to_id
 	once.Do(singleton)
-	return int(int(class(self).TextToId(String.New(text_id))))
+	return int(int(Advanced().TextToId(String.New(text_id))))
 }
 
 /*
@@ -74,7 +74,7 @@ In order for this UID to be registered, you must call [method add_id] or [method
 */
 func CreateId() int { //gd:ResourceUID.create_id
 	once.Do(singleton)
-	return int(int(class(self).CreateId()))
+	return int(int(Advanced().CreateId()))
 }
 
 /*
@@ -82,7 +82,7 @@ Returns whether the given UID value is known to the cache.
 */
 func HasId(id int) bool { //gd:ResourceUID.has_id
 	once.Do(singleton)
-	return bool(class(self).HasId(int64(id)))
+	return bool(Advanced().HasId(int64(id)))
 }
 
 /*
@@ -91,7 +91,7 @@ Fails with an error if the UID already exists, so be sure to check [method has_i
 */
 func AddId(id int, path string) { //gd:ResourceUID.add_id
 	once.Do(singleton)
-	class(self).AddId(int64(id), String.New(path))
+	Advanced().AddId(int64(id), String.New(path))
 }
 
 /*
@@ -100,7 +100,7 @@ Fails with an error if the UID does not exist, so be sure to check [method has_i
 */
 func SetId(id int, path string) { //gd:ResourceUID.set_id
 	once.Do(singleton)
-	class(self).SetId(int64(id), String.New(path))
+	Advanced().SetId(int64(id), String.New(path))
 }
 
 /*
@@ -109,7 +109,7 @@ Fails with an error if the UID does not exist, so be sure to check [method has_i
 */
 func GetIdPath(id int) string { //gd:ResourceUID.get_id_path
 	once.Do(singleton)
-	return string(class(self).GetIdPath(int64(id)).String())
+	return string(Advanced().GetIdPath(int64(id)).String())
 }
 
 /*
@@ -118,7 +118,7 @@ Fails with an error if the UID does not exist, so be sure to check [method has_i
 */
 func RemoveId(id int) { //gd:ResourceUID.remove_id
 	once.Do(singleton)
-	class(self).RemoveId(int64(id))
+	Advanced().RemoveId(int64(id))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -58,42 +58,42 @@ type Any interface {
 Adds a resource to the preloader with the given [param name]. If a resource with the given [param name] already exists, the new resource will be renamed to "[param name] N" where N is an incrementing number starting from 2.
 */
 func (self Instance) AddResource(name string, resource [1]gdclass.Resource) { //gd:ResourcePreloader.add_resource
-	class(self).AddResource(String.Name(String.New(name)), resource)
+	Advanced(self).AddResource(String.Name(String.New(name)), resource)
 }
 
 /*
 Removes the resource associated to [param name] from the preloader.
 */
 func (self Instance) RemoveResource(name string) { //gd:ResourcePreloader.remove_resource
-	class(self).RemoveResource(String.Name(String.New(name)))
+	Advanced(self).RemoveResource(String.Name(String.New(name)))
 }
 
 /*
 Renames a resource inside the preloader from [param name] to [param newname].
 */
 func (self Instance) RenameResource(name string, newname string) { //gd:ResourcePreloader.rename_resource
-	class(self).RenameResource(String.Name(String.New(name)), String.Name(String.New(newname)))
+	Advanced(self).RenameResource(String.Name(String.New(name)), String.Name(String.New(newname)))
 }
 
 /*
 Returns [code]true[/code] if the preloader contains a resource associated to [param name].
 */
 func (self Instance) HasResource(name string) bool { //gd:ResourcePreloader.has_resource
-	return bool(class(self).HasResource(String.Name(String.New(name))))
+	return bool(Advanced(self).HasResource(String.Name(String.New(name))))
 }
 
 /*
 Returns the resource associated to [param name].
 */
 func (self Instance) GetResource(name string) [1]gdclass.Resource { //gd:ResourcePreloader.get_resource
-	return [1]gdclass.Resource(class(self).GetResource(String.Name(String.New(name))))
+	return [1]gdclass.Resource(Advanced(self).GetResource(String.Name(String.New(name))))
 }
 
 /*
 Returns the list of resources inside the preloader.
 */
 func (self Instance) GetResourceList() []string { //gd:ResourcePreloader.get_resource_list
-	return []string(class(self).GetResourceList().Strings())
+	return []string(Advanced(self).GetResourceList().Strings())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -61,7 +61,7 @@ type Any interface {
 Starts the video playback from the beginning. If the video is paused, this will not unpause the video.
 */
 func (self Instance) Play() { //gd:VideoStreamPlayer.play
-	class(self).Play()
+	Advanced(self).Play()
 }
 
 /*
@@ -69,7 +69,7 @@ Stops the video playback and sets the stream position to 0.
 [b]Note:[/b] Although the stream position will be set to 0, the first frame of the video stream won't become the current frame.
 */
 func (self Instance) Stop() { //gd:VideoStreamPlayer.stop
-	class(self).Stop()
+	Advanced(self).Stop()
 }
 
 /*
@@ -77,14 +77,14 @@ Returns [code]true[/code] if the video is playing.
 [b]Note:[/b] The video is still considered playing if paused during playback.
 */
 func (self Instance) IsPlaying() bool { //gd:VideoStreamPlayer.is_playing
-	return bool(class(self).IsPlaying())
+	return bool(Advanced(self).IsPlaying())
 }
 
 /*
 Returns the video stream's name, or [code]"<No Stream>"[/code] if no video stream is assigned.
 */
 func (self Instance) GetStreamName() string { //gd:VideoStreamPlayer.get_stream_name
-	return string(class(self).GetStreamName().String())
+	return string(Advanced(self).GetStreamName().String())
 }
 
 /*
@@ -92,14 +92,14 @@ The length of the current stream, in seconds.
 [b]Note:[/b] For [VideoStreamTheora] streams (the built-in format supported by Godot), this value will always be zero, as getting the stream length is not implemented yet. The feature may be supported by video formats implemented by a GDExtension add-on.
 */
 func (self Instance) GetStreamLength() Float.X { //gd:VideoStreamPlayer.get_stream_length
-	return Float.X(Float.X(class(self).GetStreamLength()))
+	return Float.X(Float.X(Advanced(self).GetStreamLength()))
 }
 
 /*
 Returns the current frame as a [Texture2D].
 */
 func (self Instance) GetVideoTexture() [1]gdclass.Texture2D { //gd:VideoStreamPlayer.get_video_texture
-	return [1]gdclass.Texture2D(class(self).GetVideoTexture())
+	return [1]gdclass.Texture2D(Advanced(self).GetVideoTexture())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -43,6 +43,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 [url=https://www.jsonrpc.org/]JSON-RPC[/url] is a standard which wraps a method call in a [JSON] object. The object has a particular structure and identifies which method is called, the parameters to that function, and carries an ID to keep track of responses. This class implements that standard on top of [Dictionary]; you will have to convert between a [Dictionary] and [JSON] with other functions.
 */
 type Instance [1]gdclass.JSONRPC
+type Expanded [1]gdclass.JSONRPC
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -53,7 +54,7 @@ type Any interface {
 }
 
 func (self Instance) SetScope(scope string, target Object.Instance) { //gd:JSONRPC.set_scope
-	class(self).SetScope(String.New(scope), target)
+	Advanced(self).SetScope(String.New(scope), target)
 }
 
 /*
@@ -62,10 +63,19 @@ To add new supported methods extend the JSONRPC class and call [method process_a
 [param action]: The action to be run, as a Dictionary in the form of a JSON-RPC request or notification.
 */
 func (self Instance) ProcessAction(action any) any { //gd:JSONRPC.process_action
-	return any(class(self).ProcessAction(variant.New(action), false).Interface())
+	return any(Advanced(self).ProcessAction(variant.New(action), false).Interface())
+}
+
+/*
+Given a Dictionary which takes the form of a JSON-RPC request: unpack the request and run it. Methods are resolved by looking at the field called "method" and looking for an equivalently named function in the JSONRPC object. If one is found that method is called.
+To add new supported methods extend the JSONRPC class and call [method process_action] on your subclass.
+[param action]: The action to be run, as a Dictionary in the form of a JSON-RPC request or notification.
+*/
+func (self Expanded) ProcessAction(action any, recurse bool) any { //gd:JSONRPC.process_action
+	return any(Advanced(self).ProcessAction(variant.New(action), recurse).Interface())
 }
 func (self Instance) ProcessString(action string) string { //gd:JSONRPC.process_string
-	return string(class(self).ProcessString(String.New(action)).String())
+	return string(Advanced(self).ProcessString(String.New(action)).String())
 }
 
 /*
@@ -75,7 +85,7 @@ Returns a dictionary in the form of a JSON-RPC request. Requests are sent to a s
 - [param id]: Uniquely identifies this request. The server is expected to send a response with the same ID.
 */
 func (self Instance) MakeRequest(method string, params any, id any) Request { //gd:JSONRPC.make_request
-	return Request(gd.DictionaryAs[Request](class(self).MakeRequest(String.New(method), variant.New(params), variant.New(id))))
+	return Request(gd.DictionaryAs[Request](Advanced(self).MakeRequest(String.New(method), variant.New(params), variant.New(id))))
 }
 
 /*
@@ -84,7 +94,7 @@ When a server has received and processed a request, it is expected to send a res
 - [param id]: The ID of the request this response is targeted to.
 */
 func (self Instance) MakeResponse(result any, id any) Response { //gd:JSONRPC.make_response
-	return Response(gd.DictionaryAs[Response](class(self).MakeResponse(variant.New(result), variant.New(id))))
+	return Response(gd.DictionaryAs[Response](Advanced(self).MakeResponse(variant.New(result), variant.New(id))))
 }
 
 /*
@@ -93,7 +103,7 @@ Returns a dictionary in the form of a JSON-RPC notification. Notifications are o
 - [param params]: An array or dictionary of parameters being passed to the method.
 */
 func (self Instance) MakeNotification(method string, params any) Notification { //gd:JSONRPC.make_notification
-	return Notification(gd.DictionaryAs[Notification](class(self).MakeNotification(String.New(method), variant.New(params))))
+	return Notification(gd.DictionaryAs[Notification](Advanced(self).MakeNotification(String.New(method), variant.New(params))))
 }
 
 /*
@@ -103,7 +113,17 @@ Creates a response which indicates a previous reply has failed in some way.
 - [param id]: The request this error is a response to.
 */
 func (self Instance) MakeResponseError(code int, message string) ResponseError { //gd:JSONRPC.make_response_error
-	return ResponseError(gd.DictionaryAs[ResponseError](class(self).MakeResponseError(int64(code), String.New(message), variant.New([1]any{}[0]))))
+	return ResponseError(gd.DictionaryAs[ResponseError](Advanced(self).MakeResponseError(int64(code), String.New(message), variant.New([1]any{}[0]))))
+}
+
+/*
+Creates a response which indicates a previous reply has failed in some way.
+- [param code]: The error code corresponding to what kind of error this is. See the [enum ErrorCode] constants.
+- [param message]: A custom message about this error.
+- [param id]: The request this error is a response to.
+*/
+func (self Expanded) MakeResponseError(code int, message string, id any) ResponseError { //gd:JSONRPC.make_response_error
+	return ResponseError(gd.DictionaryAs[ResponseError](Advanced(self).MakeResponseError(int64(code), String.New(message), variant.New(id))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

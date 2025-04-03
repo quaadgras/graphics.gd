@@ -54,42 +54,42 @@ type Any interface {
 Reserved, but not used for now.
 */
 func (self Instance) Poll() error { //gd:WebRTCDataChannel.poll
-	return error(gd.ToError(class(self).Poll()))
+	return error(gd.ToError(Advanced(self).Poll()))
 }
 
 /*
 Closes this data channel, notifying the other peer.
 */
 func (self Instance) Close() { //gd:WebRTCDataChannel.close
-	class(self).Close()
+	Advanced(self).Close()
 }
 
 /*
 Returns [code]true[/code] if the last received packet was transferred as text. See [member write_mode].
 */
 func (self Instance) WasStringPacket() bool { //gd:WebRTCDataChannel.was_string_packet
-	return bool(class(self).WasStringPacket())
+	return bool(Advanced(self).WasStringPacket())
 }
 
 /*
 Returns the current state of this channel, see [enum ChannelState].
 */
 func (self Instance) GetReadyState() gdclass.WebRTCDataChannelChannelState { //gd:WebRTCDataChannel.get_ready_state
-	return gdclass.WebRTCDataChannelChannelState(class(self).GetReadyState())
+	return gdclass.WebRTCDataChannelChannelState(Advanced(self).GetReadyState())
 }
 
 /*
 Returns the label assigned to this channel during creation.
 */
 func (self Instance) GetLabel() string { //gd:WebRTCDataChannel.get_label
-	return string(class(self).GetLabel().String())
+	return string(Advanced(self).GetLabel().String())
 }
 
 /*
 Returns [code]true[/code] if this channel was created with ordering enabled (default).
 */
 func (self Instance) IsOrdered() bool { //gd:WebRTCDataChannel.is_ordered
-	return bool(class(self).IsOrdered())
+	return bool(Advanced(self).IsOrdered())
 }
 
 /*
@@ -97,7 +97,7 @@ Returns the ID assigned to this channel during creation (or auto-assigned during
 If the channel is not negotiated out-of-band the ID will only be available after the connection is established (will return [code]65535[/code] until then).
 */
 func (self Instance) GetId() int { //gd:WebRTCDataChannel.get_id
-	return int(int(class(self).GetId()))
+	return int(int(Advanced(self).GetId()))
 }
 
 /*
@@ -105,7 +105,7 @@ Returns the [code]maxPacketLifeTime[/code] value assigned to this channel during
 Will be [code]65535[/code] if not specified.
 */
 func (self Instance) GetMaxPacketLifeTime() int { //gd:WebRTCDataChannel.get_max_packet_life_time
-	return int(int(class(self).GetMaxPacketLifeTime()))
+	return int(int(Advanced(self).GetMaxPacketLifeTime()))
 }
 
 /*
@@ -113,28 +113,28 @@ Returns the [code]maxRetransmits[/code] value assigned to this channel during cr
 Will be [code]65535[/code] if not specified.
 */
 func (self Instance) GetMaxRetransmits() int { //gd:WebRTCDataChannel.get_max_retransmits
-	return int(int(class(self).GetMaxRetransmits()))
+	return int(int(Advanced(self).GetMaxRetransmits()))
 }
 
 /*
 Returns the sub-protocol assigned to this channel during creation. An empty string if not specified.
 */
 func (self Instance) GetProtocol() string { //gd:WebRTCDataChannel.get_protocol
-	return string(class(self).GetProtocol().String())
+	return string(Advanced(self).GetProtocol().String())
 }
 
 /*
 Returns [code]true[/code] if this channel was created with out-of-band configuration.
 */
 func (self Instance) IsNegotiated() bool { //gd:WebRTCDataChannel.is_negotiated
-	return bool(class(self).IsNegotiated())
+	return bool(Advanced(self).IsNegotiated())
 }
 
 /*
 Returns the number of bytes currently queued to be sent over this channel.
 */
 func (self Instance) GetBufferedAmount() int { //gd:WebRTCDataChannel.get_buffered_amount
-	return int(int(class(self).GetBufferedAmount()))
+	return int(int(Advanced(self).GetBufferedAmount()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

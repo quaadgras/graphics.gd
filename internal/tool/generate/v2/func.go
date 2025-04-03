@@ -34,7 +34,7 @@ func (classDB ClassDB) signalCall(w io.Writer, class gdjson.Class, signal gdjson
 	fmt.Fprint(w, "\n}\n\n")
 }
 
-func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson.Method, singleton bool) {
+func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson.Method, singleton, defaults bool) {
 	if method.IsVararg {
 		return
 	}
@@ -56,16 +56,26 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 	resultSimple := classDB.convertTypeSimple(class, class.Name+"."+method.Name+".", method.ReturnValue.Meta, method.ReturnValue.Type)
 	resultExpert := gdtype.EngineTypeAsGoType(class.Name, method.ReturnValue.Meta, method.ReturnValue.Type)
 	if singleton || method.IsStatic {
-		fmt.Fprintf(w, "func %v(", convertName(method.Name))
+		if defaults {
+			fmt.Fprintf(w, "func %v(", convertName(method.Name))
+		} else {
+			fmt.Fprintf(w, "func %vOptions(", convertName(method.Name))
+		}
 	} else {
-		fmt.Fprintf(w, "func (self Instance) %v(", convertName(method.Name))
+		if defaults {
+			fmt.Fprintf(w, "func (self Instance) %v(", convertName(method.Name))
+		} else {
+			fmt.Fprintf(w, "func (self Expanded) %v(", convertName(method.Name))
+		}
 	}
-	for i, arg := range method.Arguments {
-		if arg.DefaultValue == nil {
-			if i > 0 {
+	var first = true
+	for _, arg := range method.Arguments {
+		if !defaults || arg.DefaultValue == nil || ((singleton || method.IsStatic) && arg.DefaultValue != nil && gdjson.IsTheDefaultValueZero(*arg.DefaultValue)) {
+			if !first {
 				fmt.Fprint(w, ", ")
 			}
 			fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertTypeSimple(class, class.Name+"."+method.Name+"."+arg.Name, arg.Meta, arg.Type))
+			first = false
 		}
 	}
 	fmt.Fprint(w, ") ")
@@ -83,13 +93,17 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 		fmt.Fprintf(w, "return %s(", resultSimple)
 	}
 	var call strings.Builder
-	fmt.Fprintf(&call, "class(self).%v(", convertName(method.Name))
+	if singleton {
+		fmt.Fprintf(&call, "Advanced().%v(", convertName(method.Name))
+	} else {
+		fmt.Fprintf(&call, "Advanced(self).%v(", convertName(method.Name))
+	}
 	for i, arg := range method.Arguments {
 		if i > 0 {
 			fmt.Fprint(&call, ", ")
 		}
 		val := fixReserved(arg.Name)
-		if arg.DefaultValue != nil {
+		if arg.DefaultValue != nil && defaults && !((singleton || method.IsStatic) && gdjson.IsTheDefaultValueZero(*arg.DefaultValue)) {
 			switch arg.Type {
 			case "Array":
 				val = "Array.Nil"
@@ -336,11 +350,11 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 			if result == "gd.Object" {
 				switch semantics := gdjson.ClassMethodOwnership[class.Name][method.Name]["return value"]; semantics {
 				case gdjson.RefCountedManagement, gdjson.OwnershipTransferred:
-					fmt.Fprintf(w, "\tvar ret = "+prefix+"PointerWithOwnershipTransferredToGo[gd.Object](r_ret.Get())\n")
+					fmt.Fprintf(w, "\tvar ret = %sPointerWithOwnershipTransferredToGo[gd.Object](r_ret.Get())\n", prefix)
 				case gdjson.LifetimeBoundToClass:
-					fmt.Fprintf(w, "\tvar ret = "+prefix+"PointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret.Get())\n")
+					fmt.Fprintf(w, "\tvar ret = %sPointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret.Get())\n", prefix)
 				case gdjson.MustAssertInstanceID:
-					fmt.Fprintf(w, "\tvar ret = "+prefix+"PointerMustAssertInstanceID[gd.Object](r_ret.Get())\n")
+					fmt.Fprintf(w, "\tvar ret = %sPointerMustAssertInstanceID[gd.Object](r_ret.Get())\n", prefix)
 				default:
 					panic("unknown ownership: " + fmt.Sprint(semantics))
 				}

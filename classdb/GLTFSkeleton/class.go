@@ -51,13 +51,13 @@ type Any interface {
 }
 
 func (self Instance) GetGodotSkeleton() [1]gdclass.Skeleton3D { //gd:GLTFSkeleton.get_godot_skeleton
-	return [1]gdclass.Skeleton3D(class(self).GetGodotSkeleton())
+	return [1]gdclass.Skeleton3D(Advanced(self).GetGodotSkeleton())
 }
 func (self Instance) GetBoneAttachmentCount() int { //gd:GLTFSkeleton.get_bone_attachment_count
-	return int(int(class(self).GetBoneAttachmentCount()))
+	return int(int(Advanced(self).GetBoneAttachmentCount()))
 }
 func (self Instance) GetBoneAttachment(idx int) [1]gdclass.BoneAttachment3D { //gd:GLTFSkeleton.get_bone_attachment
-	return [1]gdclass.BoneAttachment3D(class(self).GetBoneAttachment(int64(idx)))
+	return [1]gdclass.BoneAttachment3D(Advanced(self).GetBoneAttachment(int64(idx)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

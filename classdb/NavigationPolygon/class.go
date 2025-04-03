@@ -95,112 +95,112 @@ type Any interface {
 Adds a polygon using the indices of the vertices you get when calling [method get_vertices].
 */
 func (self Instance) AddPolygon(polygon []int32) { //gd:NavigationPolygon.add_polygon
-	class(self).AddPolygon(Packed.New(polygon...))
+	Advanced(self).AddPolygon(Packed.New(polygon...))
 }
 
 /*
 Returns the count of all polygons.
 */
 func (self Instance) GetPolygonCount() int { //gd:NavigationPolygon.get_polygon_count
-	return int(int(class(self).GetPolygonCount()))
+	return int(int(Advanced(self).GetPolygonCount()))
 }
 
 /*
 Returns a [PackedInt32Array] containing the indices of the vertices of a created polygon.
 */
 func (self Instance) GetPolygon(idx int) []int32 { //gd:NavigationPolygon.get_polygon
-	return []int32(slices.Collect(class(self).GetPolygon(int64(idx)).Values()))
+	return []int32(slices.Collect(Advanced(self).GetPolygon(int64(idx)).Values()))
 }
 
 /*
 Clears the array of polygons, but it doesn't clear the array of outlines and vertices.
 */
 func (self Instance) ClearPolygons() { //gd:NavigationPolygon.clear_polygons
-	class(self).ClearPolygons()
+	Advanced(self).ClearPolygons()
 }
 
 /*
 Returns the [NavigationMesh] resulting from this navigation polygon. This navigation mesh can be used to update the navigation mesh of a region with the [method NavigationServer3D.region_set_navigation_mesh] API directly (as 2D uses the 3D server behind the scene).
 */
 func (self Instance) GetNavigationMesh() [1]gdclass.NavigationMesh { //gd:NavigationPolygon.get_navigation_mesh
-	return [1]gdclass.NavigationMesh(class(self).GetNavigationMesh())
+	return [1]gdclass.NavigationMesh(Advanced(self).GetNavigationMesh())
 }
 
 /*
 Appends a [PackedVector2Array] that contains the vertices of an outline to the internal array that contains all the outlines.
 */
 func (self Instance) AddOutline(outline []Vector2.XY) { //gd:NavigationPolygon.add_outline
-	class(self).AddOutline(Packed.New(outline...))
+	Advanced(self).AddOutline(Packed.New(outline...))
 }
 
 /*
 Adds a [PackedVector2Array] that contains the vertices of an outline to the internal array that contains all the outlines at a fixed position.
 */
 func (self Instance) AddOutlineAtIndex(outline []Vector2.XY, index int) { //gd:NavigationPolygon.add_outline_at_index
-	class(self).AddOutlineAtIndex(Packed.New(outline...), int64(index))
+	Advanced(self).AddOutlineAtIndex(Packed.New(outline...), int64(index))
 }
 
 /*
 Returns the number of outlines that were created in the editor or by script.
 */
 func (self Instance) GetOutlineCount() int { //gd:NavigationPolygon.get_outline_count
-	return int(int(class(self).GetOutlineCount()))
+	return int(int(Advanced(self).GetOutlineCount()))
 }
 
 /*
 Changes an outline created in the editor or by script. You have to call [method make_polygons_from_outlines] for the polygons to update.
 */
 func (self Instance) SetOutline(idx int, outline []Vector2.XY) { //gd:NavigationPolygon.set_outline
-	class(self).SetOutline(int64(idx), Packed.New(outline...))
+	Advanced(self).SetOutline(int64(idx), Packed.New(outline...))
 }
 
 /*
 Returns a [PackedVector2Array] containing the vertices of an outline that was created in the editor or by script.
 */
 func (self Instance) GetOutline(idx int) []Vector2.XY { //gd:NavigationPolygon.get_outline
-	return []Vector2.XY(slices.Collect(class(self).GetOutline(int64(idx)).Values()))
+	return []Vector2.XY(slices.Collect(Advanced(self).GetOutline(int64(idx)).Values()))
 }
 
 /*
 Removes an outline created in the editor or by script. You have to call [method make_polygons_from_outlines] for the polygons to update.
 */
 func (self Instance) RemoveOutline(idx int) { //gd:NavigationPolygon.remove_outline
-	class(self).RemoveOutline(int64(idx))
+	Advanced(self).RemoveOutline(int64(idx))
 }
 
 /*
 Clears the array of the outlines, but it doesn't clear the vertices and the polygons that were created by them.
 */
 func (self Instance) ClearOutlines() { //gd:NavigationPolygon.clear_outlines
-	class(self).ClearOutlines()
+	Advanced(self).ClearOutlines()
 }
 
 /*
 Creates polygons from the outlines added in the editor or by script.
 */
 func (self Instance) MakePolygonsFromOutlines() { //gd:NavigationPolygon.make_polygons_from_outlines
-	class(self).MakePolygonsFromOutlines()
+	Advanced(self).MakePolygonsFromOutlines()
 }
 
 /*
 Based on [param value], enables or disables the specified layer in the [member parsed_collision_mask], given a [param layer_number] between 1 and 32.
 */
 func (self Instance) SetParsedCollisionMaskValue(layer_number int, value bool) { //gd:NavigationPolygon.set_parsed_collision_mask_value
-	class(self).SetParsedCollisionMaskValue(int64(layer_number), value)
+	Advanced(self).SetParsedCollisionMaskValue(int64(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member parsed_collision_mask] is enabled, given a [param layer_number] between 1 and 32.
 */
 func (self Instance) GetParsedCollisionMaskValue(layer_number int) bool { //gd:NavigationPolygon.get_parsed_collision_mask_value
-	return bool(class(self).GetParsedCollisionMaskValue(int64(layer_number)))
+	return bool(Advanced(self).GetParsedCollisionMaskValue(int64(layer_number)))
 }
 
 /*
 Clears the internal arrays for vertices and polygon indices.
 */
 func (self Instance) Clear() { //gd:NavigationPolygon.clear
-	class(self).Clear()
+	Advanced(self).Clear()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

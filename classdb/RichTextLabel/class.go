@@ -55,6 +55,7 @@ A control for displaying text that can contain custom fonts, images, and basic f
 [b]Note:[/b] Unlike [Label], [RichTextLabel] doesn't have a [i]property[/i] to horizontally align text to the center. Instead, enable [member bbcode_enabled] and surround the text in a [code skip-lint][center][/code] tag as follows: [code skip-lint][center]Example[/center][/code]. There is currently no built-in way to vertically align text either, but this can be emulated by relying on anchors/containers and the [member fit_content] property.
 */
 type Instance [1]gdclass.RichTextLabel
+type Expanded [1]gdclass.RichTextLabel
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -68,14 +69,14 @@ type Any interface {
 Returns the text without BBCode mark-up.
 */
 func (self Instance) GetParsedText() string { //gd:RichTextLabel.get_parsed_text
-	return string(class(self).GetParsedText().String())
+	return string(Advanced(self).GetParsedText().String())
 }
 
 /*
 Adds raw non-BBCode-parsed text to the tag stack.
 */
 func (self Instance) AddText(text string) { //gd:RichTextLabel.add_text
-	class(self).AddText(String.New(text))
+	Advanced(self).AddText(String.New(text))
 }
 
 /*
@@ -87,21 +88,40 @@ If [param pad] is set, and the image is smaller than the size specified by [para
 If [param size_in_percent] is set, [param width] and [param height] values are percentages of the control width instead of pixels.
 */
 func (self Instance) AddImage(image [1]gdclass.Texture2D) { //gd:RichTextLabel.add_image
-	class(self).AddImage(image, int64(0), int64(0), Color.RGBA(gd.Color{1, 1, 1, 1}), 5, Rect2.PositionSize(gd.NewRect2(0, 0, 0, 0)), variant.New([1]any{}[0]), false, String.New(""), false)
+	Advanced(self).AddImage(image, int64(0), int64(0), Color.RGBA(gd.Color{1, 1, 1, 1}), 5, Rect2.PositionSize(gd.NewRect2(0, 0, 0, 0)), variant.New([1]any{}[0]), false, String.New(""), false)
+}
+
+/*
+Adds an image's opening and closing tags to the tag stack, optionally providing a [param width] and [param height] to resize the image, a [param color] to tint the image and a [param region] to only use parts of the image.
+If [param width] or [param height] is set to 0, the image size will be adjusted in order to keep the original aspect ratio.
+If [param width] and [param height] are not set, but [param region] is, the region's rect will be used.
+[param key] is an optional identifier, that can be used to modify the image via [method update_image].
+If [param pad] is set, and the image is smaller than the size specified by [param width] and [param height], the image padding is added to match the size instead of upscaling.
+If [param size_in_percent] is set, [param width] and [param height] values are percentages of the control width instead of pixels.
+*/
+func (self Expanded) AddImage(image [1]gdclass.Texture2D, width int, height int, color Color.RGBA, inline_align InlineAlignment, region Rect2.PositionSize, key any, pad bool, tooltip string, size_in_percent bool) { //gd:RichTextLabel.add_image
+	Advanced(self).AddImage(image, int64(width), int64(height), Color.RGBA(color), inline_align, Rect2.PositionSize(region), variant.New(key), pad, String.New(tooltip), size_in_percent)
 }
 
 /*
 Updates the existing images with the key [param key]. Only properties specified by [param mask] bits are updated. See [method add_image].
 */
 func (self Instance) UpdateImage(key any, mask gdclass.RichTextLabelImageUpdateMask, image [1]gdclass.Texture2D) { //gd:RichTextLabel.update_image
-	class(self).UpdateImage(variant.New(key), mask, image, int64(0), int64(0), Color.RGBA(gd.Color{1, 1, 1, 1}), 5, Rect2.PositionSize(gd.NewRect2(0, 0, 0, 0)), false, String.New(""), false)
+	Advanced(self).UpdateImage(variant.New(key), mask, image, int64(0), int64(0), Color.RGBA(gd.Color{1, 1, 1, 1}), 5, Rect2.PositionSize(gd.NewRect2(0, 0, 0, 0)), false, String.New(""), false)
+}
+
+/*
+Updates the existing images with the key [param key]. Only properties specified by [param mask] bits are updated. See [method add_image].
+*/
+func (self Expanded) UpdateImage(key any, mask gdclass.RichTextLabelImageUpdateMask, image [1]gdclass.Texture2D, width int, height int, color Color.RGBA, inline_align InlineAlignment, region Rect2.PositionSize, pad bool, tooltip string, size_in_percent bool) { //gd:RichTextLabel.update_image
+	Advanced(self).UpdateImage(variant.New(key), mask, image, int64(width), int64(height), Color.RGBA(color), inline_align, Rect2.PositionSize(region), pad, String.New(tooltip), size_in_percent)
 }
 
 /*
 Adds a newline tag to the tag stack.
 */
 func (self Instance) Newline() { //gd:RichTextLabel.newline
-	class(self).Newline()
+	Advanced(self).Newline()
 }
 
 /*
@@ -110,14 +130,23 @@ The [param paragraph] argument is the index of the paragraph to remove, it can t
 If [param no_invalidate] is set to [code]true[/code], cache for the subsequent paragraphs is not invalidated. Use it for faster updates if deleted paragraph is fully self-contained (have no unclosed tags), or this call is part of the complex edit operation and [method invalidate_paragraph] will be called at the end of operation.
 */
 func (self Instance) RemoveParagraph(paragraph int) bool { //gd:RichTextLabel.remove_paragraph
-	return bool(class(self).RemoveParagraph(int64(paragraph), false))
+	return bool(Advanced(self).RemoveParagraph(int64(paragraph), false))
+}
+
+/*
+Removes a paragraph of content from the label. Returns [code]true[/code] if the paragraph exists.
+The [param paragraph] argument is the index of the paragraph to remove, it can take values in the interval [code][0, get_paragraph_count() - 1][/code].
+If [param no_invalidate] is set to [code]true[/code], cache for the subsequent paragraphs is not invalidated. Use it for faster updates if deleted paragraph is fully self-contained (have no unclosed tags), or this call is part of the complex edit operation and [method invalidate_paragraph] will be called at the end of operation.
+*/
+func (self Expanded) RemoveParagraph(paragraph int, no_invalidate bool) bool { //gd:RichTextLabel.remove_paragraph
+	return bool(Advanced(self).RemoveParagraph(int64(paragraph), no_invalidate))
 }
 
 /*
 Invalidates [param paragraph] and all subsequent paragraphs cache.
 */
 func (self Instance) InvalidateParagraph(paragraph int) bool { //gd:RichTextLabel.invalidate_paragraph
-	return bool(class(self).InvalidateParagraph(int64(paragraph)))
+	return bool(Advanced(self).InvalidateParagraph(int64(paragraph)))
 }
 
 /*
@@ -125,91 +154,113 @@ Adds a [code skip-lint][font][/code] tag to the tag stack. Overrides default fon
 Passing [code]0[/code] to [param font_size] will use the existing default font size.
 */
 func (self Instance) PushFont(font [1]gdclass.Font) { //gd:RichTextLabel.push_font
-	class(self).PushFont(font, int64(0))
+	Advanced(self).PushFont(font, int64(0))
+}
+
+/*
+Adds a [code skip-lint][font][/code] tag to the tag stack. Overrides default fonts for its duration.
+Passing [code]0[/code] to [param font_size] will use the existing default font size.
+*/
+func (self Expanded) PushFont(font [1]gdclass.Font, font_size int) { //gd:RichTextLabel.push_font
+	Advanced(self).PushFont(font, int64(font_size))
 }
 
 /*
 Adds a [code skip-lint][font_size][/code] tag to the tag stack. Overrides default font size for its duration.
 */
 func (self Instance) PushFontSize(font_size int) { //gd:RichTextLabel.push_font_size
-	class(self).PushFontSize(int64(font_size))
+	Advanced(self).PushFontSize(int64(font_size))
 }
 
 /*
 Adds a [code skip-lint][font][/code] tag with a normal font to the tag stack.
 */
 func (self Instance) PushNormal() { //gd:RichTextLabel.push_normal
-	class(self).PushNormal()
+	Advanced(self).PushNormal()
 }
 
 /*
 Adds a [code skip-lint][font][/code] tag with a bold font to the tag stack. This is the same as adding a [code skip-lint][b][/code] tag if not currently in a [code skip-lint][i][/code] tag.
 */
 func (self Instance) PushBold() { //gd:RichTextLabel.push_bold
-	class(self).PushBold()
+	Advanced(self).PushBold()
 }
 
 /*
 Adds a [code skip-lint][font][/code] tag with a bold italics font to the tag stack.
 */
 func (self Instance) PushBoldItalics() { //gd:RichTextLabel.push_bold_italics
-	class(self).PushBoldItalics()
+	Advanced(self).PushBoldItalics()
 }
 
 /*
 Adds a [code skip-lint][font][/code] tag with an italics font to the tag stack. This is the same as adding an [code skip-lint][i][/code] tag if not currently in a [code skip-lint][b][/code] tag.
 */
 func (self Instance) PushItalics() { //gd:RichTextLabel.push_italics
-	class(self).PushItalics()
+	Advanced(self).PushItalics()
 }
 
 /*
 Adds a [code skip-lint][font][/code] tag with a monospace font to the tag stack.
 */
 func (self Instance) PushMono() { //gd:RichTextLabel.push_mono
-	class(self).PushMono()
+	Advanced(self).PushMono()
 }
 
 /*
 Adds a [code skip-lint][color][/code] tag to the tag stack.
 */
 func (self Instance) PushColor(color Color.RGBA) { //gd:RichTextLabel.push_color
-	class(self).PushColor(Color.RGBA(color))
+	Advanced(self).PushColor(Color.RGBA(color))
 }
 
 /*
 Adds a [code skip-lint][outline_size][/code] tag to the tag stack. Overrides default text outline size for its duration.
 */
 func (self Instance) PushOutlineSize(outline_size int) { //gd:RichTextLabel.push_outline_size
-	class(self).PushOutlineSize(int64(outline_size))
+	Advanced(self).PushOutlineSize(int64(outline_size))
 }
 
 /*
 Adds a [code skip-lint][outline_color][/code] tag to the tag stack. Adds text outline for its duration.
 */
 func (self Instance) PushOutlineColor(color Color.RGBA) { //gd:RichTextLabel.push_outline_color
-	class(self).PushOutlineColor(Color.RGBA(color))
+	Advanced(self).PushOutlineColor(Color.RGBA(color))
 }
 
 /*
 Adds a [code skip-lint][p][/code] tag to the tag stack.
 */
 func (self Instance) PushParagraph(alignment HorizontalAlignment) { //gd:RichTextLabel.push_paragraph
-	class(self).PushParagraph(alignment, 0, String.New(""), 0, 163, Packed.New([1][]float32{}[0]...))
+	Advanced(self).PushParagraph(alignment, 0, String.New(""), 0, 163, Packed.New([1][]float32{}[0]...))
+}
+
+/*
+Adds a [code skip-lint][p][/code] tag to the tag stack.
+*/
+func (self Expanded) PushParagraph(alignment HorizontalAlignment, base_direction gdclass.ControlTextDirection, language string, st_parser gdclass.TextServerStructuredTextParser, justification_flags gdclass.TextServerJustificationFlag, tab_stops []float32) { //gd:RichTextLabel.push_paragraph
+	Advanced(self).PushParagraph(alignment, base_direction, String.New(language), st_parser, justification_flags, Packed.New(tab_stops...))
 }
 
 /*
 Adds an [code skip-lint][indent][/code] tag to the tag stack. Multiplies [param level] by current [member tab_size] to determine new margin length.
 */
 func (self Instance) PushIndent(level int) { //gd:RichTextLabel.push_indent
-	class(self).PushIndent(int64(level))
+	Advanced(self).PushIndent(int64(level))
 }
 
 /*
 Adds [code skip-lint][ol][/code] or [code skip-lint][ul][/code] tag to the tag stack. Multiplies [param level] by current [member tab_size] to determine new margin length.
 */
 func (self Instance) PushList(level int, atype gdclass.RichTextLabelListType, capitalize bool) { //gd:RichTextLabel.push_list
-	class(self).PushList(int64(level), atype, capitalize, String.New("•"))
+	Advanced(self).PushList(int64(level), atype, capitalize, String.New("•"))
+}
+
+/*
+Adds [code skip-lint][ol][/code] or [code skip-lint][ul][/code] tag to the tag stack. Multiplies [param level] by current [member tab_size] to determine new margin length.
+*/
+func (self Expanded) PushList(level int, atype gdclass.RichTextLabelListType, capitalize bool, bullet string) { //gd:RichTextLabel.push_list
+	Advanced(self).PushList(int64(level), atype, capitalize, String.New(bullet))
 }
 
 /*
@@ -218,49 +269,72 @@ If [member meta_underlined] is [code]true[/code], meta tags display an underline
 [b]Note:[/b] Meta tags do nothing by default when clicked. To assign behavior when clicked, connect [signal meta_clicked] to a function that is called when the meta tag is clicked.
 */
 func (self Instance) PushMeta(data any) { //gd:RichTextLabel.push_meta
-	class(self).PushMeta(variant.New(data), 1, String.New(""))
+	Advanced(self).PushMeta(variant.New(data), 1, String.New(""))
+}
+
+/*
+Adds a meta tag to the tag stack. Similar to the BBCode [code skip-lint][url=something]{text}[/url][/code], but supports non-[String] metadata types.
+If [member meta_underlined] is [code]true[/code], meta tags display an underline. This behavior can be customized with [param underline_mode].
+[b]Note:[/b] Meta tags do nothing by default when clicked. To assign behavior when clicked, connect [signal meta_clicked] to a function that is called when the meta tag is clicked.
+*/
+func (self Expanded) PushMeta(data any, underline_mode gdclass.RichTextLabelMetaUnderline, tooltip string) { //gd:RichTextLabel.push_meta
+	Advanced(self).PushMeta(variant.New(data), underline_mode, String.New(tooltip))
 }
 
 /*
 Adds a [code skip-lint][hint][/code] tag to the tag stack. Same as BBCode [code skip-lint][hint=something]{text}[/hint][/code].
 */
 func (self Instance) PushHint(description string) { //gd:RichTextLabel.push_hint
-	class(self).PushHint(String.New(description))
+	Advanced(self).PushHint(String.New(description))
 }
 
 /*
 Adds language code used for text shaping algorithm and Open-Type font features.
 */
 func (self Instance) PushLanguage(language string) { //gd:RichTextLabel.push_language
-	class(self).PushLanguage(String.New(language))
+	Advanced(self).PushLanguage(String.New(language))
 }
 
 /*
 Adds a [code skip-lint][u][/code] tag to the tag stack.
 */
 func (self Instance) PushUnderline() { //gd:RichTextLabel.push_underline
-	class(self).PushUnderline()
+	Advanced(self).PushUnderline()
 }
 
 /*
 Adds a [code skip-lint][s][/code] tag to the tag stack.
 */
 func (self Instance) PushStrikethrough() { //gd:RichTextLabel.push_strikethrough
-	class(self).PushStrikethrough()
+	Advanced(self).PushStrikethrough()
 }
 
 /*
 Adds a [code skip-lint][table=columns,inline_align][/code] tag to the tag stack. Use [method set_table_column_expand] to set column expansion ratio. Use [method push_cell] to add cells.
 */
 func (self Instance) PushTable(columns int) { //gd:RichTextLabel.push_table
-	class(self).PushTable(int64(columns), 0, int64(-1))
+	Advanced(self).PushTable(int64(columns), 0, int64(-1))
+}
+
+/*
+Adds a [code skip-lint][table=columns,inline_align][/code] tag to the tag stack. Use [method set_table_column_expand] to set column expansion ratio. Use [method push_cell] to add cells.
+*/
+func (self Expanded) PushTable(columns int, inline_align InlineAlignment, align_to_row int) { //gd:RichTextLabel.push_table
+	Advanced(self).PushTable(int64(columns), inline_align, int64(align_to_row))
 }
 
 /*
 Adds a [code skip-lint][dropcap][/code] tag to the tag stack. Drop cap (dropped capital) is a decorative element at the beginning of a paragraph that is larger than the rest of the text.
 */
 func (self Instance) PushDropcap(s string, font [1]gdclass.Font, size int) { //gd:RichTextLabel.push_dropcap
-	class(self).PushDropcap(String.New(s), font, int64(size), Rect2.PositionSize(gd.NewRect2(0, 0, 0, 0)), Color.RGBA(gd.Color{1, 1, 1, 1}), int64(0), Color.RGBA(gd.Color{0, 0, 0, 0}))
+	Advanced(self).PushDropcap(String.New(s), font, int64(size), Rect2.PositionSize(gd.NewRect2(0, 0, 0, 0)), Color.RGBA(gd.Color{1, 1, 1, 1}), int64(0), Color.RGBA(gd.Color{0, 0, 0, 0}))
+}
+
+/*
+Adds a [code skip-lint][dropcap][/code] tag to the tag stack. Drop cap (dropped capital) is a decorative element at the beginning of a paragraph that is larger than the rest of the text.
+*/
+func (self Expanded) PushDropcap(s string, font [1]gdclass.Font, size int, dropcap_margins Rect2.PositionSize, color Color.RGBA, outline_size int, outline_color Color.RGBA) { //gd:RichTextLabel.push_dropcap
+	Advanced(self).PushDropcap(String.New(s), font, int64(size), Rect2.PositionSize(dropcap_margins), Color.RGBA(color), int64(outline_size), Color.RGBA(outline_color))
 }
 
 /*
@@ -269,91 +343,100 @@ For example, 2 columns with ratios 3 and 4 plus 70 pixels in available width wou
 If [param expand] is [code]false[/code], the column will not contribute to the total ratio.
 */
 func (self Instance) SetTableColumnExpand(column int, expand bool) { //gd:RichTextLabel.set_table_column_expand
-	class(self).SetTableColumnExpand(int64(column), expand, int64(1), true)
+	Advanced(self).SetTableColumnExpand(int64(column), expand, int64(1), true)
+}
+
+/*
+Edits the selected column's expansion options. If [param expand] is [code]true[/code], the column expands in proportion to its expansion ratio versus the other columns' ratios.
+For example, 2 columns with ratios 3 and 4 plus 70 pixels in available width would expand 30 and 40 pixels, respectively.
+If [param expand] is [code]false[/code], the column will not contribute to the total ratio.
+*/
+func (self Expanded) SetTableColumnExpand(column int, expand bool, ratio int, shrink bool) { //gd:RichTextLabel.set_table_column_expand
+	Advanced(self).SetTableColumnExpand(int64(column), expand, int64(ratio), shrink)
 }
 
 /*
 Sets color of a table cell. Separate colors for alternating rows can be specified.
 */
 func (self Instance) SetCellRowBackgroundColor(odd_row_bg Color.RGBA, even_row_bg Color.RGBA) { //gd:RichTextLabel.set_cell_row_background_color
-	class(self).SetCellRowBackgroundColor(Color.RGBA(odd_row_bg), Color.RGBA(even_row_bg))
+	Advanced(self).SetCellRowBackgroundColor(Color.RGBA(odd_row_bg), Color.RGBA(even_row_bg))
 }
 
 /*
 Sets color of a table cell border.
 */
 func (self Instance) SetCellBorderColor(color Color.RGBA) { //gd:RichTextLabel.set_cell_border_color
-	class(self).SetCellBorderColor(Color.RGBA(color))
+	Advanced(self).SetCellBorderColor(Color.RGBA(color))
 }
 
 /*
 Sets minimum and maximum size overrides for a table cell.
 */
 func (self Instance) SetCellSizeOverride(min_size Vector2.XY, max_size Vector2.XY) { //gd:RichTextLabel.set_cell_size_override
-	class(self).SetCellSizeOverride(Vector2.XY(min_size), Vector2.XY(max_size))
+	Advanced(self).SetCellSizeOverride(Vector2.XY(min_size), Vector2.XY(max_size))
 }
 
 /*
 Sets inner padding of a table cell.
 */
 func (self Instance) SetCellPadding(padding Rect2.PositionSize) { //gd:RichTextLabel.set_cell_padding
-	class(self).SetCellPadding(Rect2.PositionSize(padding))
+	Advanced(self).SetCellPadding(Rect2.PositionSize(padding))
 }
 
 /*
 Adds a [code skip-lint][cell][/code] tag to the tag stack. Must be inside a [code skip-lint][table][/code] tag. See [method push_table] for details. Use [method set_table_column_expand] to set column expansion ratio, [method set_cell_border_color] to set cell border, [method set_cell_row_background_color] to set cell background, [method set_cell_size_override] to override cell size, and [method set_cell_padding] to set padding.
 */
 func (self Instance) PushCell() { //gd:RichTextLabel.push_cell
-	class(self).PushCell()
+	Advanced(self).PushCell()
 }
 
 /*
 Adds a [code skip-lint][fgcolor][/code] tag to the tag stack.
 */
 func (self Instance) PushFgcolor(fgcolor Color.RGBA) { //gd:RichTextLabel.push_fgcolor
-	class(self).PushFgcolor(Color.RGBA(fgcolor))
+	Advanced(self).PushFgcolor(Color.RGBA(fgcolor))
 }
 
 /*
 Adds a [code skip-lint][bgcolor][/code] tag to the tag stack.
 */
 func (self Instance) PushBgcolor(bgcolor Color.RGBA) { //gd:RichTextLabel.push_bgcolor
-	class(self).PushBgcolor(Color.RGBA(bgcolor))
+	Advanced(self).PushBgcolor(Color.RGBA(bgcolor))
 }
 
 /*
 Adds a custom effect tag to the tag stack. The effect does not need to be in [member custom_effects]. The environment is directly passed to the effect.
 */
 func (self Instance) PushCustomfx(effect [1]gdclass.RichTextEffect, env map[string]interface{}) { //gd:RichTextLabel.push_customfx
-	class(self).PushCustomfx(effect, gd.DictionaryFromMap(env))
+	Advanced(self).PushCustomfx(effect, gd.DictionaryFromMap(env))
 }
 
 /*
 Adds a context marker to the tag stack. See [method pop_context].
 */
 func (self Instance) PushContext() { //gd:RichTextLabel.push_context
-	class(self).PushContext()
+	Advanced(self).PushContext()
 }
 
 /*
 Terminates tags opened after the last [method push_context] call (including context marker), or all tags if there's no context marker on the stack.
 */
 func (self Instance) PopContext() { //gd:RichTextLabel.pop_context
-	class(self).PopContext()
+	Advanced(self).PopContext()
 }
 
 /*
 Terminates the current tag. Use after [code]push_*[/code] methods to close BBCodes manually. Does not need to follow [code]add_*[/code] methods.
 */
 func (self Instance) Pop() { //gd:RichTextLabel.pop
-	class(self).Pop()
+	Advanced(self).Pop()
 }
 
 /*
 Terminates all tags opened by [code]push_*[/code] methods.
 */
 func (self Instance) PopAll() { //gd:RichTextLabel.pop_all
-	class(self).PopAll()
+	Advanced(self).PopAll()
 }
 
 /*
@@ -361,7 +444,7 @@ Clears the tag stack, causing the label to display nothing.
 [b]Note:[/b] This method does not affect [member text], and its contents will show again if the label is redrawn. However, setting [member text] to an empty [String] also clears the stack.
 */
 func (self Instance) Clear() { //gd:RichTextLabel.clear
-	class(self).Clear()
+	Advanced(self).Clear()
 }
 
 /*
@@ -369,49 +452,49 @@ Returns the vertical scrollbar.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
 func (self Instance) GetVScrollBar() [1]gdclass.VScrollBar { //gd:RichTextLabel.get_v_scroll_bar
-	return [1]gdclass.VScrollBar(class(self).GetVScrollBar())
+	return [1]gdclass.VScrollBar(Advanced(self).GetVScrollBar())
 }
 
 /*
 Scrolls the window's top line to match [param line].
 */
 func (self Instance) ScrollToLine(line int) { //gd:RichTextLabel.scroll_to_line
-	class(self).ScrollToLine(int64(line))
+	Advanced(self).ScrollToLine(int64(line))
 }
 
 /*
 Scrolls the window's top line to match first line of the [param paragraph].
 */
 func (self Instance) ScrollToParagraph(paragraph int) { //gd:RichTextLabel.scroll_to_paragraph
-	class(self).ScrollToParagraph(int64(paragraph))
+	Advanced(self).ScrollToParagraph(int64(paragraph))
 }
 
 /*
 Scrolls to the beginning of the current selection.
 */
 func (self Instance) ScrollToSelection() { //gd:RichTextLabel.scroll_to_selection
-	class(self).ScrollToSelection()
+	Advanced(self).ScrollToSelection()
 }
 
 /*
 Returns the current selection first character index if a selection is active, [code]-1[/code] otherwise. Does not include BBCodes.
 */
 func (self Instance) GetSelectionFrom() int { //gd:RichTextLabel.get_selection_from
-	return int(int(class(self).GetSelectionFrom()))
+	return int(int(Advanced(self).GetSelectionFrom()))
 }
 
 /*
 Returns the current selection last character index if a selection is active, [code]-1[/code] otherwise. Does not include BBCodes.
 */
 func (self Instance) GetSelectionTo() int { //gd:RichTextLabel.get_selection_to
-	return int(int(class(self).GetSelectionTo()))
+	return int(int(Advanced(self).GetSelectionTo()))
 }
 
 /*
 Returns the current selection vertical line offset if a selection is active, [code]-1.0[/code] otherwise.
 */
 func (self Instance) GetSelectionLineOffset() Float.X { //gd:RichTextLabel.get_selection_line_offset
-	return Float.X(Float.X(class(self).GetSelectionLineOffset()))
+	return Float.X(Float.X(Advanced(self).GetSelectionLineOffset()))
 }
 
 /*
@@ -419,28 +502,28 @@ Select all the text.
 If [member selection_enabled] is [code]false[/code], no selection will occur.
 */
 func (self Instance) SelectAll() { //gd:RichTextLabel.select_all
-	class(self).SelectAll()
+	Advanced(self).SelectAll()
 }
 
 /*
 Returns the current selection text. Does not include BBCodes.
 */
 func (self Instance) GetSelectedText() string { //gd:RichTextLabel.get_selected_text
-	return string(class(self).GetSelectedText().String())
+	return string(Advanced(self).GetSelectedText().String())
 }
 
 /*
 Clears the current selection.
 */
 func (self Instance) Deselect() { //gd:RichTextLabel.deselect
-	class(self).Deselect()
+	Advanced(self).Deselect()
 }
 
 /*
 The assignment version of [method append_text]. Clears the tag stack and inserts the new content.
 */
 func (self Instance) ParseBbcode(bbcode string) { //gd:RichTextLabel.parse_bbcode
-	class(self).ParseBbcode(String.New(bbcode))
+	Advanced(self).ParseBbcode(String.New(bbcode))
 }
 
 /*
@@ -448,21 +531,21 @@ Parses [param bbcode] and adds tags to the tag stack as needed.
 [b]Note:[/b] Using this method, you can't close a tag that was opened in a previous [method append_text] call. This is done to improve performance, especially when updating large RichTextLabels since rebuilding the whole BBCode every time would be slower. If you absolutely need to close a tag in a future method call, append the [member text] instead of using [method append_text].
 */
 func (self Instance) AppendText(bbcode string) { //gd:RichTextLabel.append_text
-	class(self).AppendText(String.New(bbcode))
+	Advanced(self).AppendText(String.New(bbcode))
 }
 
 /*
 If [member threaded] is enabled, returns [code]true[/code] if the background thread has finished text processing, otherwise always return [code]true[/code].
 */
 func (self Instance) IsReady() bool { //gd:RichTextLabel.is_ready
-	return bool(class(self).IsReady())
+	return bool(Advanced(self).IsReady())
 }
 
 /*
 If [member threaded] is enabled, returns [code]true[/code] if the background thread has finished text processing, otherwise always return [code]true[/code].
 */
 func (self Instance) IsFinished() bool { //gd:RichTextLabel.is_finished
-	return bool(class(self).IsFinished())
+	return bool(Advanced(self).IsFinished())
 }
 
 /*
@@ -470,7 +553,7 @@ Returns the line number of the character position provided. Line and character n
 [b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_finished] or [signal finished] to determine whether document is fully loaded.
 */
 func (self Instance) GetCharacterLine(character int) int { //gd:RichTextLabel.get_character_line
-	return int(int(class(self).GetCharacterLine(int64(character))))
+	return int(int(Advanced(self).GetCharacterLine(int64(character))))
 }
 
 /*
@@ -478,14 +561,14 @@ Returns the paragraph number of the character position provided. Paragraph and c
 [b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_finished] or [signal finished] to determine whether document is fully loaded.
 */
 func (self Instance) GetCharacterParagraph(character int) int { //gd:RichTextLabel.get_character_paragraph
-	return int(int(class(self).GetCharacterParagraph(int64(character))))
+	return int(int(Advanced(self).GetCharacterParagraph(int64(character))))
 }
 
 /*
 Returns the total number of characters from text tags. Does not include BBCodes.
 */
 func (self Instance) GetTotalCharacterCount() int { //gd:RichTextLabel.get_total_character_count
-	return int(int(class(self).GetTotalCharacterCount()))
+	return int(int(Advanced(self).GetTotalCharacterCount()))
 }
 
 /*
@@ -494,7 +577,7 @@ Returns the total number of lines in the text. Wrapped text is counted as multip
 [b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_finished] or [signal finished] to determine whether document is fully loaded.
 */
 func (self Instance) GetLineCount() int { //gd:RichTextLabel.get_line_count
-	return int(int(class(self).GetLineCount()))
+	return int(int(Advanced(self).GetLineCount()))
 }
 
 /*
@@ -503,7 +586,7 @@ Returns the indexes of the first and last visible characters for the given [para
 [b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_finished] or [signal finished] to determine whether document is fully loaded.
 */
 func (self Instance) GetLineRange(line int) Vector2i.XY { //gd:RichTextLabel.get_line_range
-	return Vector2i.XY(class(self).GetLineRange(int64(line)))
+	return Vector2i.XY(Advanced(self).GetLineRange(int64(line)))
 }
 
 /*
@@ -511,14 +594,14 @@ Returns the number of visible lines.
 [b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_finished] or [signal finished] to determine whether document is fully loaded.
 */
 func (self Instance) GetVisibleLineCount() int { //gd:RichTextLabel.get_visible_line_count
-	return int(int(class(self).GetVisibleLineCount()))
+	return int(int(Advanced(self).GetVisibleLineCount()))
 }
 
 /*
 Returns the total number of paragraphs (newlines or [code]p[/code] tags in the tag stack's text tags). Considers wrapped text as one paragraph.
 */
 func (self Instance) GetParagraphCount() int { //gd:RichTextLabel.get_paragraph_count
-	return int(int(class(self).GetParagraphCount()))
+	return int(int(Advanced(self).GetParagraphCount()))
 }
 
 /*
@@ -526,7 +609,7 @@ Returns the number of visible paragraphs. A paragraph is considered visible if a
 [b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_finished] or [signal finished] to determine whether document is fully loaded.
 */
 func (self Instance) GetVisibleParagraphCount() int { //gd:RichTextLabel.get_visible_paragraph_count
-	return int(int(class(self).GetVisibleParagraphCount()))
+	return int(int(Advanced(self).GetVisibleParagraphCount()))
 }
 
 /*
@@ -534,7 +617,7 @@ Returns the height of the content.
 [b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_finished] or [signal finished] to determine whether document is fully loaded.
 */
 func (self Instance) GetContentHeight() int { //gd:RichTextLabel.get_content_height
-	return int(int(class(self).GetContentHeight()))
+	return int(int(Advanced(self).GetContentHeight()))
 }
 
 /*
@@ -542,7 +625,7 @@ Returns the width of the content.
 [b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_finished] or [signal finished] to determine whether document is fully loaded.
 */
 func (self Instance) GetContentWidth() int { //gd:RichTextLabel.get_content_width
-	return int(int(class(self).GetContentWidth()))
+	return int(int(Advanced(self).GetContentWidth()))
 }
 
 /*
@@ -550,7 +633,7 @@ Returns the vertical offset of the line found at the provided index.
 [b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_finished] or [signal finished] to determine whether document is fully loaded.
 */
 func (self Instance) GetLineOffset(line int) Float.X { //gd:RichTextLabel.get_line_offset
-	return Float.X(Float.X(class(self).GetLineOffset(int64(line))))
+	return Float.X(Float.X(Advanced(self).GetLineOffset(int64(line))))
 }
 
 /*
@@ -558,14 +641,14 @@ Returns the vertical offset of the paragraph found at the provided index.
 [b]Note:[/b] If [member threaded] is enabled, this method returns a value for the loaded part of the document. Use [method is_finished] or [signal finished] to determine whether document is fully loaded.
 */
 func (self Instance) GetParagraphOffset(paragraph int) Float.X { //gd:RichTextLabel.get_paragraph_offset
-	return Float.X(Float.X(class(self).GetParagraphOffset(int64(paragraph))))
+	return Float.X(Float.X(Advanced(self).GetParagraphOffset(int64(paragraph))))
 }
 
 /*
 Parses BBCode parameter [param expressions] into a dictionary.
 */
 func (self Instance) ParseExpressionsForValues(expressions []string) map[string]interface{} { //gd:RichTextLabel.parse_expressions_for_values
-	return map[string]interface{}(gd.DictionaryAs[map[string]interface{}](class(self).ParseExpressionsForValues(Packed.MakeStrings(expressions...))))
+	return map[string]interface{}(gd.DictionaryAs[map[string]interface{}](Advanced(self).ParseExpressionsForValues(Packed.MakeStrings(expressions...))))
 }
 
 /*
@@ -595,7 +678,7 @@ func _ready():
 [/codeblock]
 */
 func (self Instance) InstallEffect(effect any) { //gd:RichTextLabel.install_effect
-	class(self).InstallEffect(variant.New(effect))
+	Advanced(self).InstallEffect(variant.New(effect))
 }
 
 /*
@@ -648,21 +731,21 @@ public void OnItemPressed(int id)
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member Window.visible] property.
 */
 func (self Instance) GetMenu() [1]gdclass.PopupMenu { //gd:RichTextLabel.get_menu
-	return [1]gdclass.PopupMenu(class(self).GetMenu())
+	return [1]gdclass.PopupMenu(Advanced(self).GetMenu())
 }
 
 /*
 Returns whether the menu is visible. Use this instead of [code]get_menu().visible[/code] to improve performance (so the creation of the menu is avoided).
 */
 func (self Instance) IsMenuVisible() bool { //gd:RichTextLabel.is_menu_visible
-	return bool(class(self).IsMenuVisible())
+	return bool(Advanced(self).IsMenuVisible())
 }
 
 /*
 Executes a given action as defined in the [enum MenuItems] enum.
 */
 func (self Instance) MenuOption(option int) { //gd:RichTextLabel.menu_option
-	class(self).MenuOption(int64(option))
+	Advanced(self).MenuOption(int64(option))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

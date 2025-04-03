@@ -46,6 +46,7 @@ Also supports custom node spawns through [method spawn], calling [member spawn_f
 Internally, [MultiplayerSpawner] uses [method MultiplayerAPI.object_configuration_add] to notify spawns passing the spawned node as the [code]object[/code] and itself as the [code]configuration[/code], and [method MultiplayerAPI.object_configuration_remove] to notify despawns in a similar way.
 */
 type Instance [1]gdclass.MultiplayerSpawner
+type Expanded [1]gdclass.MultiplayerSpawner
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -59,28 +60,28 @@ type Any interface {
 Adds a scene path to spawnable scenes, making it automatically replicated from the multiplayer authority to other peers when added as children of the node pointed by [member spawn_path].
 */
 func (self Instance) AddSpawnableScene(path string) { //gd:MultiplayerSpawner.add_spawnable_scene
-	class(self).AddSpawnableScene(String.New(path))
+	Advanced(self).AddSpawnableScene(String.New(path))
 }
 
 /*
 Returns the count of spawnable scene paths.
 */
 func (self Instance) GetSpawnableSceneCount() int { //gd:MultiplayerSpawner.get_spawnable_scene_count
-	return int(int(class(self).GetSpawnableSceneCount()))
+	return int(int(Advanced(self).GetSpawnableSceneCount()))
 }
 
 /*
 Returns the spawnable scene path by index.
 */
 func (self Instance) GetSpawnableScene(index int) string { //gd:MultiplayerSpawner.get_spawnable_scene
-	return string(class(self).GetSpawnableScene(int64(index)).String())
+	return string(Advanced(self).GetSpawnableScene(int64(index)).String())
 }
 
 /*
 Clears all spawnable scenes. Does not despawn existing instances on remote peers.
 */
 func (self Instance) ClearSpawnableScenes() { //gd:MultiplayerSpawner.clear_spawnable_scenes
-	class(self).ClearSpawnableScenes()
+	Advanced(self).ClearSpawnableScenes()
 }
 
 /*
@@ -88,7 +89,15 @@ Requests a custom spawn, with [param data] passed to [member spawn_function] on 
 [b]Note:[/b] Spawnable scenes are spawned automatically. [method spawn] is only needed for custom spawns.
 */
 func (self Instance) Spawn() [1]gdclass.Node { //gd:MultiplayerSpawner.spawn
-	return [1]gdclass.Node(class(self).Spawn(variant.New([1]any{}[0])))
+	return [1]gdclass.Node(Advanced(self).Spawn(variant.New([1]any{}[0])))
+}
+
+/*
+Requests a custom spawn, with [param data] passed to [member spawn_function] on all peers. Returns the locally spawned node instance already inside the scene tree, and added as a child of the node pointed by [member spawn_path].
+[b]Note:[/b] Spawnable scenes are spawned automatically. [method spawn] is only needed for custom spawns.
+*/
+func (self Expanded) Spawn(data any) [1]gdclass.Node { //gd:MultiplayerSpawner.spawn
+	return [1]gdclass.Node(Advanced(self).Spawn(variant.New(data)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

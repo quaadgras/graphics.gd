@@ -59,7 +59,7 @@ type Any interface {
 [RemoteTransform3D] caches the remote node. It may not notice if the remote node disappears; [method force_update_cache] forces it to update the cache again.
 */
 func (self Instance) ForceUpdateCache() { //gd:RemoteTransform3D.force_update_cache
-	class(self).ForceUpdateCache()
+	Advanced(self).ForceUpdateCache()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -50,6 +50,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 [Camera3D] is a special node that displays what is visible from its current location. Cameras register themselves in the nearest [Viewport] node (when ascending the tree). Only one camera can be active per viewport. If no viewport is available ascending the tree, the camera will register in the global viewport. In other words, a camera just provides 3D display capabilities to a [Viewport], and, without one, a scene registered in that [Viewport] (or higher viewports) can't be displayed.
 */
 type Instance [1]gdclass.Camera3D
+type Expanded [1]gdclass.Camera3D
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -63,21 +64,21 @@ type Any interface {
 Returns a normal vector in world space, that is the result of projecting a point on the [Viewport] rectangle by the inverse camera projection. This is useful for casting rays in the form of (origin, normal) for object intersection or picking.
 */
 func (self Instance) ProjectRayNormal(screen_point Vector2.XY) Vector3.XYZ { //gd:Camera3D.project_ray_normal
-	return Vector3.XYZ(class(self).ProjectRayNormal(Vector2.XY(screen_point)))
+	return Vector3.XYZ(Advanced(self).ProjectRayNormal(Vector2.XY(screen_point)))
 }
 
 /*
 Returns a normal vector from the screen point location directed along the camera. Orthogonal cameras are normalized. Perspective cameras account for perspective, screen width/height, etc.
 */
 func (self Instance) ProjectLocalRayNormal(screen_point Vector2.XY) Vector3.XYZ { //gd:Camera3D.project_local_ray_normal
-	return Vector3.XYZ(class(self).ProjectLocalRayNormal(Vector2.XY(screen_point)))
+	return Vector3.XYZ(Advanced(self).ProjectLocalRayNormal(Vector2.XY(screen_point)))
 }
 
 /*
 Returns a 3D position in world space, that is the result of projecting a point on the [Viewport] rectangle by the inverse camera projection. This is useful for casting rays in the form of (origin, normal) for object intersection or picking.
 */
 func (self Instance) ProjectRayOrigin(screen_point Vector2.XY) Vector3.XYZ { //gd:Camera3D.project_ray_origin
-	return Vector3.XYZ(class(self).ProjectRayOrigin(Vector2.XY(screen_point)))
+	return Vector3.XYZ(Advanced(self).ProjectRayOrigin(Vector2.XY(screen_point)))
 }
 
 /*
@@ -91,7 +92,7 @@ control.position = get_viewport().get_camera_3d().unproject_position(global_tran
 [/codeblock]
 */
 func (self Instance) UnprojectPosition(world_point Vector3.XYZ) Vector2.XY { //gd:Camera3D.unproject_position
-	return Vector2.XY(class(self).UnprojectPosition(Vector3.XYZ(world_point)))
+	return Vector2.XY(Advanced(self).UnprojectPosition(Vector3.XYZ(world_point)))
 }
 
 /*
@@ -99,105 +100,112 @@ Returns [code]true[/code] if the given position is behind the camera (the blue p
 [b]Note:[/b] A position which returns [code]false[/code] may still be outside the camera's field of view.
 */
 func (self Instance) IsPositionBehind(world_point Vector3.XYZ) bool { //gd:Camera3D.is_position_behind
-	return bool(class(self).IsPositionBehind(Vector3.XYZ(world_point)))
+	return bool(Advanced(self).IsPositionBehind(Vector3.XYZ(world_point)))
 }
 
 /*
 Returns the 3D point in world space that maps to the given 2D coordinate in the [Viewport] rectangle on a plane that is the given [param z_depth] distance into the scene away from the camera.
 */
 func (self Instance) ProjectPosition(screen_point Vector2.XY, z_depth Float.X) Vector3.XYZ { //gd:Camera3D.project_position
-	return Vector3.XYZ(class(self).ProjectPosition(Vector2.XY(screen_point), float64(z_depth)))
+	return Vector3.XYZ(Advanced(self).ProjectPosition(Vector2.XY(screen_point), float64(z_depth)))
 }
 
 /*
 Sets the camera projection to perspective mode (see [constant PROJECTION_PERSPECTIVE]), by specifying a [param fov] (field of view) angle in degrees, and the [param z_near] and [param z_far] clip planes in world space units.
 */
 func (self Instance) SetPerspective(fov Float.X, z_near Float.X, z_far Float.X) { //gd:Camera3D.set_perspective
-	class(self).SetPerspective(float64(fov), float64(z_near), float64(z_far))
+	Advanced(self).SetPerspective(float64(fov), float64(z_near), float64(z_far))
 }
 
 /*
 Sets the camera projection to orthogonal mode (see [constant PROJECTION_ORTHOGONAL]), by specifying a [param size], and the [param z_near] and [param z_far] clip planes in world space units. (As a hint, 2D games often use this projection, with values specified in pixels.)
 */
 func (self Instance) SetOrthogonal(size Float.X, z_near Float.X, z_far Float.X) { //gd:Camera3D.set_orthogonal
-	class(self).SetOrthogonal(float64(size), float64(z_near), float64(z_far))
+	Advanced(self).SetOrthogonal(float64(size), float64(z_near), float64(z_far))
 }
 
 /*
 Sets the camera projection to frustum mode (see [constant PROJECTION_FRUSTUM]), by specifying a [param size], an [param offset], and the [param z_near] and [param z_far] clip planes in world space units. See also [member frustum_offset].
 */
 func (self Instance) SetFrustum(size Float.X, offset Vector2.XY, z_near Float.X, z_far Float.X) { //gd:Camera3D.set_frustum
-	class(self).SetFrustum(float64(size), Vector2.XY(offset), float64(z_near), float64(z_far))
+	Advanced(self).SetFrustum(float64(size), Vector2.XY(offset), float64(z_near), float64(z_far))
 }
 
 /*
 Makes this camera the current camera for the [Viewport] (see class description). If the camera node is outside the scene tree, it will attempt to become current once it's added.
 */
 func (self Instance) MakeCurrent() { //gd:Camera3D.make_current
-	class(self).MakeCurrent()
+	Advanced(self).MakeCurrent()
 }
 
 /*
 If this is the current camera, remove it from being current. If [param enable_next] is [code]true[/code], request to make the next camera current, if any.
 */
 func (self Instance) ClearCurrent() { //gd:Camera3D.clear_current
-	class(self).ClearCurrent(true)
+	Advanced(self).ClearCurrent(true)
+}
+
+/*
+If this is the current camera, remove it from being current. If [param enable_next] is [code]true[/code], request to make the next camera current, if any.
+*/
+func (self Expanded) ClearCurrent(enable_next bool) { //gd:Camera3D.clear_current
+	Advanced(self).ClearCurrent(enable_next)
 }
 
 /*
 Returns the transform of the camera plus the vertical ([member v_offset]) and horizontal ([member h_offset]) offsets; and any other adjustments made to the position and orientation of the camera by subclassed cameras such as [XRCamera3D].
 */
 func (self Instance) GetCameraTransform() Transform3D.BasisOrigin { //gd:Camera3D.get_camera_transform
-	return Transform3D.BasisOrigin(class(self).GetCameraTransform())
+	return Transform3D.BasisOrigin(Advanced(self).GetCameraTransform())
 }
 
 /*
 Returns the projection matrix that this camera uses to render to its associated viewport. The camera must be part of the scene tree to function.
 */
 func (self Instance) GetCameraProjection() Projection.XYZW { //gd:Camera3D.get_camera_projection
-	return Projection.XYZW(class(self).GetCameraProjection())
+	return Projection.XYZW(Advanced(self).GetCameraProjection())
 }
 
 /*
 Returns the camera's frustum planes in world space units as an array of [Plane]s in the following order: near, far, left, top, right, bottom. Not to be confused with [member frustum_offset].
 */
 func (self Instance) GetFrustum() []Plane.NormalD { //gd:Camera3D.get_frustum
-	return []Plane.NormalD(gd.ArrayAs[[]Plane.NormalD](gd.InternalArray(class(self).GetFrustum())))
+	return []Plane.NormalD(gd.ArrayAs[[]Plane.NormalD](gd.InternalArray(Advanced(self).GetFrustum())))
 }
 
 /*
 Returns [code]true[/code] if the given position is inside the camera's frustum (the green part of the linked diagram). [url=https://raw.githubusercontent.com/godotengine/godot-docs/master/img/camera3d_position_frustum.png]See this diagram[/url] for an overview of position query methods.
 */
 func (self Instance) IsPositionInFrustum(world_point Vector3.XYZ) bool { //gd:Camera3D.is_position_in_frustum
-	return bool(class(self).IsPositionInFrustum(Vector3.XYZ(world_point)))
+	return bool(Advanced(self).IsPositionInFrustum(Vector3.XYZ(world_point)))
 }
 
 /*
 Returns the camera's RID from the [RenderingServer].
 */
 func (self Instance) GetCameraRid() RID.Camera { //gd:Camera3D.get_camera_rid
-	return RID.Camera(class(self).GetCameraRid())
+	return RID.Camera(Advanced(self).GetCameraRid())
 }
 
 /*
 Returns the RID of a pyramid shape encompassing the camera's view frustum, ignoring the camera's near plane. The tip of the pyramid represents the position of the camera.
 */
 func (self Instance) GetPyramidShapeRid() RID.Shape3D { //gd:Camera3D.get_pyramid_shape_rid
-	return RID.Shape3D(class(self).GetPyramidShapeRid())
+	return RID.Shape3D(Advanced(self).GetPyramidShapeRid())
 }
 
 /*
 Based on [param value], enables or disables the specified layer in the [member cull_mask], given a [param layer_number] between 1 and 20.
 */
 func (self Instance) SetCullMaskValue(layer_number int, value bool) { //gd:Camera3D.set_cull_mask_value
-	class(self).SetCullMaskValue(int64(layer_number), value)
+	Advanced(self).SetCullMaskValue(int64(layer_number), value)
 }
 
 /*
 Returns whether or not the specified layer of the [member cull_mask] is enabled, given a [param layer_number] between 1 and 20.
 */
 func (self Instance) GetCullMaskValue(layer_number int) bool { //gd:Camera3D.get_cull_mask_value
-	return bool(class(self).GetCullMaskValue(int64(layer_number)))
+	return bool(Advanced(self).GetCullMaskValue(int64(layer_number)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

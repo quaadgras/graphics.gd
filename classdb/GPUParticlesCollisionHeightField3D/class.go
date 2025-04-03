@@ -65,14 +65,14 @@ type Any interface {
 Based on [param value], enables or disables the specified layer in the [member heightfield_mask], given a [param layer_number] between [code]1[/code] and [code]20[/code], inclusive.
 */
 func (self Instance) SetHeightfieldMaskValue(layer_number int, value bool) { //gd:GPUParticlesCollisionHeightField3D.set_heightfield_mask_value
-	class(self).SetHeightfieldMaskValue(int64(layer_number), value)
+	Advanced(self).SetHeightfieldMaskValue(int64(layer_number), value)
 }
 
 /*
 Returns [code]true[/code] if the specified layer of the [member heightfield_mask] is enabled, given a [param layer_number] between [code]1[/code] and [code]20[/code], inclusive.
 */
 func (self Instance) GetHeightfieldMaskValue(layer_number int) bool { //gd:GPUParticlesCollisionHeightField3D.get_heightfield_mask_value
-	return bool(class(self).GetHeightfieldMaskValue(int64(layer_number)))
+	return bool(Advanced(self).GetHeightfieldMaskValue(int64(layer_number)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

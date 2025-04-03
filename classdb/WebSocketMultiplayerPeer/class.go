@@ -46,6 +46,7 @@ Base class for WebSocket server and client, allowing them to be used as multipla
 [b]Note:[/b] When exporting to Android, make sure to enable the [code]INTERNET[/code] permission in the Android export preset before exporting the project or using one-click deploy. Otherwise, network communication of any kind will be blocked by Android.
 */
 type Instance [1]gdclass.WebSocketMultiplayerPeer
+type Expanded [1]gdclass.WebSocketMultiplayerPeer
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -60,35 +61,50 @@ Starts a new multiplayer client connecting to the given [param url]. TLS certifi
 [b]Note:[/b] It is recommended to specify the scheme part of the URL, i.e. the [param url] should start with either [code]ws://[/code] or [code]wss://[/code].
 */
 func (self Instance) CreateClient(url string) error { //gd:WebSocketMultiplayerPeer.create_client
-	return error(gd.ToError(class(self).CreateClient(String.New(url), [1][1]gdclass.TLSOptions{}[0])))
+	return error(gd.ToError(Advanced(self).CreateClient(String.New(url), [1][1]gdclass.TLSOptions{}[0])))
+}
+
+/*
+Starts a new multiplayer client connecting to the given [param url]. TLS certificates will be verified against the hostname when connecting using the [code]wss://[/code] protocol. You can pass the optional [param tls_client_options] parameter to customize the trusted certification authorities, or disable the common name verification. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
+[b]Note:[/b] It is recommended to specify the scheme part of the URL, i.e. the [param url] should start with either [code]ws://[/code] or [code]wss://[/code].
+*/
+func (self Expanded) CreateClient(url string, tls_client_options [1]gdclass.TLSOptions) error { //gd:WebSocketMultiplayerPeer.create_client
+	return error(gd.ToError(Advanced(self).CreateClient(String.New(url), tls_client_options)))
 }
 
 /*
 Starts a new multiplayer server listening on the given [param port]. You can optionally specify a [param bind_address], and provide valid [param tls_server_options] to use TLS. See [method TLSOptions.server].
 */
 func (self Instance) CreateServer(port int) error { //gd:WebSocketMultiplayerPeer.create_server
-	return error(gd.ToError(class(self).CreateServer(int64(port), String.New("*"), [1][1]gdclass.TLSOptions{}[0])))
+	return error(gd.ToError(Advanced(self).CreateServer(int64(port), String.New("*"), [1][1]gdclass.TLSOptions{}[0])))
+}
+
+/*
+Starts a new multiplayer server listening on the given [param port]. You can optionally specify a [param bind_address], and provide valid [param tls_server_options] to use TLS. See [method TLSOptions.server].
+*/
+func (self Expanded) CreateServer(port int, bind_address string, tls_server_options [1]gdclass.TLSOptions) error { //gd:WebSocketMultiplayerPeer.create_server
+	return error(gd.ToError(Advanced(self).CreateServer(int64(port), String.New(bind_address), tls_server_options)))
 }
 
 /*
 Returns the [WebSocketPeer] associated to the given [param peer_id].
 */
 func (self Instance) GetPeer(peer_id int) [1]gdclass.WebSocketPeer { //gd:WebSocketMultiplayerPeer.get_peer
-	return [1]gdclass.WebSocketPeer(class(self).GetPeer(int64(peer_id)))
+	return [1]gdclass.WebSocketPeer(Advanced(self).GetPeer(int64(peer_id)))
 }
 
 /*
 Returns the IP address of the given peer.
 */
 func (self Instance) GetPeerAddress(id int) string { //gd:WebSocketMultiplayerPeer.get_peer_address
-	return string(class(self).GetPeerAddress(int64(id)).String())
+	return string(Advanced(self).GetPeerAddress(int64(id)).String())
 }
 
 /*
 Returns the remote port of the given peer.
 */
 func (self Instance) GetPeerPort(id int) int { //gd:WebSocketMultiplayerPeer.get_peer_port
-	return int(int(class(self).GetPeerPort(int64(id))))
+	return int(int(Advanced(self).GetPeerPort(int64(id))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -47,6 +47,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 A two-dimensional array of boolean values, can be used to efficiently store a binary matrix (every matrix element takes only one bit) and query the values using natural cartesian coordinates.
 */
 type Instance [1]gdclass.BitMap
+type Expanded [1]gdclass.BitMap
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -60,84 +61,91 @@ type Any interface {
 Creates a bitmap with the specified size, filled with [code]false[/code].
 */
 func (self Instance) Create(size Vector2i.XY) { //gd:BitMap.create
-	class(self).Create(Vector2i.XY(size))
+	Advanced(self).Create(Vector2i.XY(size))
 }
 
 /*
 Creates a bitmap that matches the given image dimensions, every element of the bitmap is set to [code]false[/code] if the alpha value of the image at that position is equal to [param threshold] or less, and [code]true[/code] in other case.
 */
 func (self Instance) CreateFromImageAlpha(image [1]gdclass.Image) { //gd:BitMap.create_from_image_alpha
-	class(self).CreateFromImageAlpha(image, float64(0.1))
+	Advanced(self).CreateFromImageAlpha(image, float64(0.1))
+}
+
+/*
+Creates a bitmap that matches the given image dimensions, every element of the bitmap is set to [code]false[/code] if the alpha value of the image at that position is equal to [param threshold] or less, and [code]true[/code] in other case.
+*/
+func (self Expanded) CreateFromImageAlpha(image [1]gdclass.Image, threshold Float.X) { //gd:BitMap.create_from_image_alpha
+	Advanced(self).CreateFromImageAlpha(image, float64(threshold))
 }
 
 /*
 Sets the bitmap's element at the specified position, to the specified value.
 */
 func (self Instance) SetBitv(position Vector2i.XY, bit bool) { //gd:BitMap.set_bitv
-	class(self).SetBitv(Vector2i.XY(position), bit)
+	Advanced(self).SetBitv(Vector2i.XY(position), bit)
 }
 
 /*
 Sets the bitmap's element at the specified position, to the specified value.
 */
 func (self Instance) SetBit(x int, y int, bit bool) { //gd:BitMap.set_bit
-	class(self).SetBit(int64(x), int64(y), bit)
+	Advanced(self).SetBit(int64(x), int64(y), bit)
 }
 
 /*
 Returns bitmap's value at the specified position.
 */
 func (self Instance) GetBitv(position Vector2i.XY) bool { //gd:BitMap.get_bitv
-	return bool(class(self).GetBitv(Vector2i.XY(position)))
+	return bool(Advanced(self).GetBitv(Vector2i.XY(position)))
 }
 
 /*
 Returns bitmap's value at the specified position.
 */
 func (self Instance) GetBit(x int, y int) bool { //gd:BitMap.get_bit
-	return bool(class(self).GetBit(int64(x), int64(y)))
+	return bool(Advanced(self).GetBit(int64(x), int64(y)))
 }
 
 /*
 Sets a rectangular portion of the bitmap to the specified value.
 */
 func (self Instance) SetBitRect(rect Rect2i.PositionSize, bit bool) { //gd:BitMap.set_bit_rect
-	class(self).SetBitRect(Rect2i.PositionSize(rect), bit)
+	Advanced(self).SetBitRect(Rect2i.PositionSize(rect), bit)
 }
 
 /*
 Returns the number of bitmap elements that are set to [code]true[/code].
 */
 func (self Instance) GetTrueBitCount() int { //gd:BitMap.get_true_bit_count
-	return int(int(class(self).GetTrueBitCount()))
+	return int(int(Advanced(self).GetTrueBitCount()))
 }
 
 /*
 Returns bitmap's dimensions.
 */
 func (self Instance) GetSize() Vector2i.XY { //gd:BitMap.get_size
-	return Vector2i.XY(class(self).GetSize())
+	return Vector2i.XY(Advanced(self).GetSize())
 }
 
 /*
 Resizes the image to [param new_size].
 */
 func (self Instance) Resize(new_size Vector2i.XY) { //gd:BitMap.resize
-	class(self).Resize(Vector2i.XY(new_size))
+	Advanced(self).Resize(Vector2i.XY(new_size))
 }
 
 /*
 Applies morphological dilation or erosion to the bitmap. If [param pixels] is positive, dilation is applied to the bitmap. If [param pixels] is negative, erosion is applied to the bitmap. [param rect] defines the area where the morphological operation is applied. Pixels located outside the [param rect] are unaffected by [method grow_mask].
 */
 func (self Instance) GrowMask(pixels int, rect Rect2i.PositionSize) { //gd:BitMap.grow_mask
-	class(self).GrowMask(int64(pixels), Rect2i.PositionSize(rect))
+	Advanced(self).GrowMask(int64(pixels), Rect2i.PositionSize(rect))
 }
 
 /*
 Returns an image of the same size as the bitmap and with a [enum Image.Format] of type [constant Image.FORMAT_L8]. [code]true[/code] bits of the bitmap are being converted into white pixels, and [code]false[/code] bits into black.
 */
 func (self Instance) ConvertToImage() [1]gdclass.Image { //gd:BitMap.convert_to_image
-	return [1]gdclass.Image(class(self).ConvertToImage())
+	return [1]gdclass.Image(Advanced(self).ConvertToImage())
 }
 
 /*
@@ -149,7 +157,19 @@ Rect2(Vector2(), get_size())
 [param epsilon] is passed to RDP to control how accurately the polygons cover the bitmap: a lower [param epsilon] corresponds to more points in the polygons.
 */
 func (self Instance) OpaqueToPolygons(rect Rect2i.PositionSize) [][]Vector2.XY { //gd:BitMap.opaque_to_polygons
-	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(class(self).OpaqueToPolygons(Rect2i.PositionSize(rect), float64(2.0)))))
+	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(Advanced(self).OpaqueToPolygons(Rect2i.PositionSize(rect), float64(2.0)))))
+}
+
+/*
+Creates an [Array] of polygons covering a rectangular portion of the bitmap. It uses a marching squares algorithm, followed by Ramer-Douglas-Peucker (RDP) reduction of the number of vertices. Each polygon is described as a [PackedVector2Array] of its vertices.
+To get polygons covering the whole bitmap, pass:
+[codeblock]
+Rect2(Vector2(), get_size())
+[/codeblock]
+[param epsilon] is passed to RDP to control how accurately the polygons cover the bitmap: a lower [param epsilon] corresponds to more points in the polygons.
+*/
+func (self Expanded) OpaqueToPolygons(rect Rect2i.PositionSize, epsilon Float.X) [][]Vector2.XY { //gd:BitMap.opaque_to_polygons
+	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(Advanced(self).OpaqueToPolygons(Rect2i.PositionSize(rect), float64(epsilon)))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

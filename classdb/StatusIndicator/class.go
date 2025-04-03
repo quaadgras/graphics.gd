@@ -56,7 +56,7 @@ type Any interface {
 Returns the status indicator rectangle in screen coordinates. If this status indicator is not visible, returns an empty [Rect2].
 */
 func (self Instance) GetRect() Rect2.PositionSize { //gd:StatusIndicator.get_rect
-	return Rect2.PositionSize(class(self).GetRect())
+	return Rect2.PositionSize(Advanced(self).GetRect())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

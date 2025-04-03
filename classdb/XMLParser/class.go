@@ -92,14 +92,14 @@ type Any interface {
 Parses the next node in the file. This method returns an error code.
 */
 func (self Instance) Read() error { //gd:XMLParser.read
-	return error(gd.ToError(class(self).Read()))
+	return error(gd.ToError(Advanced(self).Read()))
 }
 
 /*
 Returns the type of the current node. Compare with [enum NodeType] constants.
 */
 func (self Instance) GetNodeType() gdclass.XMLParserNodeType { //gd:XMLParser.get_node_type
-	return gdclass.XMLParserNodeType(class(self).GetNodeType())
+	return gdclass.XMLParserNodeType(Advanced(self).GetNodeType())
 }
 
 /*
@@ -107,21 +107,21 @@ Returns the name of a node. This method will raise an error if the currently par
 [b]Note:[/b] The content of a [constant NODE_CDATA] node and the comment string of a [constant NODE_COMMENT] node are also considered names.
 */
 func (self Instance) GetNodeName() string { //gd:XMLParser.get_node_name
-	return string(class(self).GetNodeName().String())
+	return string(Advanced(self).GetNodeName().String())
 }
 
 /*
 Returns the contents of a text node. This method will raise an error if the current parsed node is of any other type.
 */
 func (self Instance) GetNodeData() string { //gd:XMLParser.get_node_data
-	return string(class(self).GetNodeData().String())
+	return string(Advanced(self).GetNodeData().String())
 }
 
 /*
 Returns the byte offset of the currently parsed node since the beginning of the file or buffer. This is usually equivalent to the number of characters before the read position.
 */
 func (self Instance) GetNodeOffset() int { //gd:XMLParser.get_node_offset
-	return int(int(class(self).GetNodeOffset()))
+	return int(int(Advanced(self).GetNodeOffset()))
 }
 
 /*
@@ -129,84 +129,84 @@ Returns the number of attributes in the currently parsed element.
 [b]Note:[/b] If this method is used while the currently parsed node is not [constant NODE_ELEMENT] or [constant NODE_ELEMENT_END], this count will not be updated and will still reflect the last element.
 */
 func (self Instance) GetAttributeCount() int { //gd:XMLParser.get_attribute_count
-	return int(int(class(self).GetAttributeCount()))
+	return int(int(Advanced(self).GetAttributeCount()))
 }
 
 /*
 Returns the name of an attribute of the currently parsed element, specified by the [param idx] index.
 */
 func (self Instance) GetAttributeName(idx int) string { //gd:XMLParser.get_attribute_name
-	return string(class(self).GetAttributeName(int64(idx)).String())
+	return string(Advanced(self).GetAttributeName(int64(idx)).String())
 }
 
 /*
 Returns the value of an attribute of the currently parsed element, specified by the [param idx] index.
 */
 func (self Instance) GetAttributeValue(idx int) string { //gd:XMLParser.get_attribute_value
-	return string(class(self).GetAttributeValue(int64(idx)).String())
+	return string(Advanced(self).GetAttributeValue(int64(idx)).String())
 }
 
 /*
 Returns [code]true[/code] if the currently parsed element has an attribute with the [param name].
 */
 func (self Instance) HasAttribute(name string) bool { //gd:XMLParser.has_attribute
-	return bool(class(self).HasAttribute(String.New(name)))
+	return bool(Advanced(self).HasAttribute(String.New(name)))
 }
 
 /*
 Returns the value of an attribute of the currently parsed element, specified by its [param name]. This method will raise an error if the element has no such attribute.
 */
 func (self Instance) GetNamedAttributeValue(name string) string { //gd:XMLParser.get_named_attribute_value
-	return string(class(self).GetNamedAttributeValue(String.New(name)).String())
+	return string(Advanced(self).GetNamedAttributeValue(String.New(name)).String())
 }
 
 /*
 Returns the value of an attribute of the currently parsed element, specified by its [param name]. This method will return an empty string if the element has no such attribute.
 */
 func (self Instance) GetNamedAttributeValueSafe(name string) string { //gd:XMLParser.get_named_attribute_value_safe
-	return string(class(self).GetNamedAttributeValueSafe(String.New(name)).String())
+	return string(Advanced(self).GetNamedAttributeValueSafe(String.New(name)).String())
 }
 
 /*
 Returns [code]true[/code] if the currently parsed element is empty, e.g. [code]<element />[/code].
 */
 func (self Instance) IsEmpty() bool { //gd:XMLParser.is_empty
-	return bool(class(self).IsEmpty())
+	return bool(Advanced(self).IsEmpty())
 }
 
 /*
 Returns the current line in the parsed file, counting from 0.
 */
 func (self Instance) GetCurrentLine() int { //gd:XMLParser.get_current_line
-	return int(int(class(self).GetCurrentLine()))
+	return int(int(Advanced(self).GetCurrentLine()))
 }
 
 /*
 Skips the current section. If the currently parsed node contains more inner nodes, they will be ignored and the cursor will go to the closing of the current element.
 */
 func (self Instance) SkipSection() { //gd:XMLParser.skip_section
-	class(self).SkipSection()
+	Advanced(self).SkipSection()
 }
 
 /*
 Moves the buffer cursor to a certain offset (since the beginning) and reads the next node there. This method returns an error code.
 */
 func (self Instance) SeekTo(position int) error { //gd:XMLParser.seek
-	return error(gd.ToError(class(self).SeekTo(int64(position))))
+	return error(gd.ToError(Advanced(self).SeekTo(int64(position))))
 }
 
 /*
 Opens an XML [param file] for parsing. This method returns an error code.
 */
 func (self Instance) Open(file string) error { //gd:XMLParser.open
-	return error(gd.ToError(class(self).Open(String.New(file))))
+	return error(gd.ToError(Advanced(self).Open(String.New(file))))
 }
 
 /*
 Opens an XML raw [param buffer] for parsing. This method returns an error code.
 */
 func (self Instance) OpenBuffer(buffer []byte) error { //gd:XMLParser.open_buffer
-	return error(gd.ToError(class(self).OpenBuffer(Packed.Bytes(Packed.New(buffer...)))))
+	return error(gd.ToError(Advanced(self).OpenBuffer(Packed.Bytes(Packed.New(buffer...)))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -58,7 +58,7 @@ type Any interface {
 Sets the time in seconds after which the [SubtweenTweener] will start running the subtween. By default there's no delay.
 */
 func (self Instance) SetDelay(delay Float.X) [1]gdclass.SubtweenTweener { //gd:SubtweenTweener.set_delay
-	return [1]gdclass.SubtweenTweener(class(self).SetDelay(float64(delay)))
+	return [1]gdclass.SubtweenTweener(Advanced(self).SetDelay(float64(delay)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

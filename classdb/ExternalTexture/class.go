@@ -63,7 +63,7 @@ Returns the external texture ID.
 Depending on your use case, you may need to pass this to platform APIs, for example, when creating an [code]android.graphics.SurfaceTexture[/code] on Android.
 */
 func (self Instance) GetExternalTextureId() int { //gd:ExternalTexture.get_external_texture_id
-	return int(int(class(self).GetExternalTextureId()))
+	return int(int(Advanced(self).GetExternalTextureId()))
 }
 
 /*
@@ -71,7 +71,7 @@ Sets the external buffer ID.
 Depending on your use case, you may need to call this with data received from a platform API, for example, [code]SurfaceTexture.getHardwareBuffer()[/code] on Android.
 */
 func (self Instance) SetExternalBufferId(external_buffer_id int) { //gd:ExternalTexture.set_external_buffer_id
-	class(self).SetExternalBufferId(int64(external_buffer_id))
+	Advanced(self).SetExternalBufferId(int64(external_buffer_id))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

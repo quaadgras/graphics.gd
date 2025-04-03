@@ -52,6 +52,7 @@ func _ready():
 [/codeblock]
 */
 type Instance [1]gdclass.RandomNumberGenerator
+type Expanded [1]gdclass.RandomNumberGenerator
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -65,14 +66,14 @@ type Any interface {
 Returns a pseudo-random 32-bit unsigned integer between [code]0[/code] and [code]4294967295[/code] (inclusive).
 */
 func (self Instance) Randi() int { //gd:RandomNumberGenerator.randi
-	return int(int(class(self).Randi()))
+	return int(int(Advanced(self).Randi()))
 }
 
 /*
 Returns a pseudo-random float between [code]0.0[/code] and [code]1.0[/code] (inclusive).
 */
 func (self Instance) Randf() Float.X { //gd:RandomNumberGenerator.randf
-	return Float.X(Float.X(class(self).Randf()))
+	return Float.X(Float.X(Advanced(self).Randf()))
 }
 
 /*
@@ -80,21 +81,29 @@ Returns a [url=https://en.wikipedia.org/wiki/Normal_distribution]normally-distri
 [b]Note:[/b] This method uses the [url=https://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform]Box-Muller transform[/url] algorithm.
 */
 func (self Instance) Randfn() Float.X { //gd:RandomNumberGenerator.randfn
-	return Float.X(Float.X(class(self).Randfn(float64(0.0), float64(1.0))))
+	return Float.X(Float.X(Advanced(self).Randfn(float64(0.0), float64(1.0))))
+}
+
+/*
+Returns a [url=https://en.wikipedia.org/wiki/Normal_distribution]normally-distributed[/url], pseudo-random floating-point number from the specified [param mean] and a standard [param deviation]. This is also known as a Gaussian distribution.
+[b]Note:[/b] This method uses the [url=https://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform]Box-Muller transform[/url] algorithm.
+*/
+func (self Expanded) Randfn(mean Float.X, deviation Float.X) Float.X { //gd:RandomNumberGenerator.randfn
+	return Float.X(Float.X(Advanced(self).Randfn(float64(mean), float64(deviation))))
 }
 
 /*
 Returns a pseudo-random float between [param from] and [param to] (inclusive).
 */
 func (self Instance) RandfRange(from Float.X, to Float.X) Float.X { //gd:RandomNumberGenerator.randf_range
-	return Float.X(Float.X(class(self).RandfRange(float64(from), float64(to))))
+	return Float.X(Float.X(Advanced(self).RandfRange(float64(from), float64(to))))
 }
 
 /*
 Returns a pseudo-random 32-bit signed integer between [param from] and [param to] (inclusive).
 */
 func (self Instance) RandiRange(from int, to int) int { //gd:RandomNumberGenerator.randi_range
-	return int(int(class(self).RandiRange(int64(from), int64(to))))
+	return int(int(Advanced(self).RandiRange(int64(from), int64(to))))
 }
 
 /*
@@ -113,14 +122,14 @@ print(my_array[rng.rand_weighted(weights)])
 [/codeblocks]
 */
 func (self Instance) RandWeighted(weights []float32) int { //gd:RandomNumberGenerator.rand_weighted
-	return int(int(class(self).RandWeighted(Packed.New(weights...))))
+	return int(int(Advanced(self).RandWeighted(Packed.New(weights...))))
 }
 
 /*
 Sets up a time-based seed for this [RandomNumberGenerator] instance. Unlike the [@GlobalScope] random number generation functions, different [RandomNumberGenerator] instances can use different seeds.
 */
 func (self Instance) Randomize() { //gd:RandomNumberGenerator.randomize
-	class(self).Randomize()
+	Advanced(self).Randomize()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

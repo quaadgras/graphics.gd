@@ -60,9 +60,21 @@ var query = PhysicsRayQueryParameters2D.create(global_position, global_position 
 var collision = get_world_2d().direct_space_state.intersect_ray(query)
 [/codeblock]
 */
-func Create(from Vector2.XY, to Vector2.XY) [1]gdclass.PhysicsRayQueryParameters2D { //gd:PhysicsRayQueryParameters2D.create
+func Create(from Vector2.XY, to Vector2.XY, exclude [][]RID.Body2D) [1]gdclass.PhysicsRayQueryParameters2D { //gd:PhysicsRayQueryParameters2D.create
 	self := Instance{}
-	return [1]gdclass.PhysicsRayQueryParameters2D(class(self).Create(Vector2.XY(from), Vector2.XY(to), int64(4294967295), gd.ArrayFromSlice[Array.Contains[RID.Any]]([1][]RID.Any{}[0])))
+	return [1]gdclass.PhysicsRayQueryParameters2D(Advanced(self).Create(Vector2.XY(from), Vector2.XY(to), int64(4294967295), gd.ArrayFromSlice[Array.Contains[RID.Any]](exclude)))
+}
+
+/*
+Returns a new, pre-configured [PhysicsRayQueryParameters2D] object. Use it to quickly create query parameters using the most common options.
+[codeblock]
+var query = PhysicsRayQueryParameters2D.create(global_position, global_position + Vector2(0, 100))
+var collision = get_world_2d().direct_space_state.intersect_ray(query)
+[/codeblock]
+*/
+func CreateExpanded(from Vector2.XY, to Vector2.XY, collision_mask int, exclude [][]RID.Body2D) [1]gdclass.PhysicsRayQueryParameters2D { //gd:PhysicsRayQueryParameters2D.create
+	self := Instance{}
+	return [1]gdclass.PhysicsRayQueryParameters2D(Advanced(self).Create(Vector2.XY(from), Vector2.XY(to), int64(collision_mask), gd.ArrayFromSlice[Array.Contains[RID.Any]](exclude)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

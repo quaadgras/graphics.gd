@@ -51,6 +51,7 @@ Also, viewports can be assigned to different screens in case the devices have mu
 Finally, viewports can also behave as render targets, in which case they will not be visible unless the associated texture is used to draw.
 */
 type Instance [1]gdclass.Viewport
+type Expanded [1]gdclass.Viewport
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -64,7 +65,7 @@ type Any interface {
 Returns the first valid [World2D] for this viewport, searching the [member world_2d] property of itself and any Viewport ancestor.
 */
 func (self Instance) FindWorld2d() [1]gdclass.World2D { //gd:Viewport.find_world_2d
-	return [1]gdclass.World2D(class(self).FindWorld2d())
+	return [1]gdclass.World2D(Advanced(self).FindWorld2d())
 }
 
 /*
@@ -72,35 +73,35 @@ Returns the automatically computed 2D stretch transform, taking the [Viewport]'s
 [b]Note:[/b] Due to how pixel scaling works, the returned transform's X and Y scale may differ slightly, even when [member Window.content_scale_aspect] is set to a mode that preserves the pixels' aspect ratio. If [member Window.content_scale_aspect] is [constant Window.CONTENT_SCALE_ASPECT_IGNORE], the X and Y scale may differ [i]significantly[/i].
 */
 func (self Instance) GetStretchTransform() Transform2D.OriginXY { //gd:Viewport.get_stretch_transform
-	return Transform2D.OriginXY(class(self).GetStretchTransform())
+	return Transform2D.OriginXY(Advanced(self).GetStretchTransform())
 }
 
 /*
 Returns the transform from the viewport's coordinate system to the embedder's coordinate system.
 */
 func (self Instance) GetFinalTransform() Transform2D.OriginXY { //gd:Viewport.get_final_transform
-	return Transform2D.OriginXY(class(self).GetFinalTransform())
+	return Transform2D.OriginXY(Advanced(self).GetFinalTransform())
 }
 
 /*
 Returns the transform from the Viewport's coordinates to the screen coordinates of the containing window manager window.
 */
 func (self Instance) GetScreenTransform() Transform2D.OriginXY { //gd:Viewport.get_screen_transform
-	return Transform2D.OriginXY(class(self).GetScreenTransform())
+	return Transform2D.OriginXY(Advanced(self).GetScreenTransform())
 }
 
 /*
 Returns the visible rectangle in global screen coordinates.
 */
 func (self Instance) GetVisibleRect() Rect2.PositionSize { //gd:Viewport.get_visible_rect
-	return Rect2.PositionSize(class(self).GetVisibleRect())
+	return Rect2.PositionSize(Advanced(self).GetVisibleRect())
 }
 
 /*
 Returns rendering statistics of the given type. See [enum RenderInfoType] and [enum RenderInfo] for options.
 */
 func (self Instance) GetRenderInfo(atype gdclass.ViewportRenderInfoType, info gdclass.ViewportRenderInfo) int { //gd:Viewport.get_render_info
-	return int(int(class(self).GetRenderInfo(atype, info)))
+	return int(int(Advanced(self).GetRenderInfo(atype, info)))
 }
 
 /*
@@ -116,21 +117,21 @@ func _ready():
 [b]Note:[/b] When [member use_hdr_2d] is [code]true[/code] the returned texture will be an HDR image encoded in linear space.
 */
 func (self Instance) GetTexture() [1]gdclass.ViewportTexture { //gd:Viewport.get_texture
-	return [1]gdclass.ViewportTexture(class(self).GetTexture())
+	return [1]gdclass.ViewportTexture(Advanced(self).GetTexture())
 }
 
 /*
 Returns the viewport's RID from the [RenderingServer].
 */
 func (self Instance) GetViewportRid() RID.Viewport { //gd:Viewport.get_viewport_rid
-	return RID.Viewport(class(self).GetViewportRid())
+	return RID.Viewport(Advanced(self).GetViewportRid())
 }
 
 /*
 Helper method which calls the [code]set_text()[/code] method on the currently focused [Control], provided that it is defined (e.g. if the focused Control is [Button] or [LineEdit]).
 */
 func (self Instance) PushTextInput(text string) { //gd:Viewport.push_text_input
-	class(self).PushTextInput(String.New(text))
+	Advanced(self).PushTextInput(String.New(text))
 }
 
 /*
@@ -147,7 +148,24 @@ If an earlier method marks the input as handled via [method set_input_as_handled
 If none of the methods handle the event and [member physics_object_picking] is [code]true[/code], the event is used for physics object picking.
 */
 func (self Instance) PushInput(event [1]gdclass.InputEvent) { //gd:Viewport.push_input
-	class(self).PushInput(event, false)
+	Advanced(self).PushInput(event, false)
+}
+
+/*
+Triggers the given [param event] in this [Viewport]. This can be used to pass an [InputEvent] between viewports, or to locally apply inputs that were sent over the network or saved to a file.
+If [param in_local_coords] is [code]false[/code], the event's position is in the embedder's coordinates and will be converted to viewport coordinates. If [param in_local_coords] is [code]true[/code], the event's position is in viewport coordinates.
+While this method serves a similar purpose as [method Input.parse_input_event], it does not remap the specified [param event] based on project settings like [member ProjectSettings.input_devices/pointing/emulate_touch_from_mouse].
+Calling this method will propagate calls to child nodes for following methods in the given order:
+- [method Node._input]
+- [method Control._gui_input] for [Control] nodes
+- [method Node._shortcut_input]
+- [method Node._unhandled_key_input]
+- [method Node._unhandled_input]
+If an earlier method marks the input as handled via [method set_input_as_handled], any later method in this list will not be called.
+If none of the methods handle the event and [member physics_object_picking] is [code]true[/code], the event is used for physics object picking.
+*/
+func (self Expanded) PushInput(event [1]gdclass.InputEvent, in_local_coords bool) { //gd:Viewport.push_input
+	Advanced(self).PushInput(event, in_local_coords)
 }
 
 /*
@@ -162,7 +180,22 @@ If none of the methods handle the event and [member physics_object_picking] is [
 [b]Note:[/b] This method doesn't propagate input events to embedded [Window]s or [SubViewport]s.
 */
 func (self Instance) PushUnhandledInput(event [1]gdclass.InputEvent) { //gd:Viewport.push_unhandled_input
-	class(self).PushUnhandledInput(event, false)
+	Advanced(self).PushUnhandledInput(event, false)
+}
+
+/*
+Triggers the given [param event] in this [Viewport]. This can be used to pass an [InputEvent] between viewports, or to locally apply inputs that were sent over the network or saved to a file.
+If [param in_local_coords] is [code]false[/code], the event's position is in the embedder's coordinates and will be converted to viewport coordinates. If [param in_local_coords] is [code]true[/code], the event's position is in viewport coordinates.
+Calling this method will propagate calls to child nodes for following methods in the given order:
+- [method Node._shortcut_input]
+- [method Node._unhandled_key_input]
+- [method Node._unhandled_input]
+If an earlier method marks the input as handled via [method set_input_as_handled], any later method in this list will not be called.
+If none of the methods handle the event and [member physics_object_picking] is [code]true[/code], the event is used for physics object picking.
+[b]Note:[/b] This method doesn't propagate input events to embedded [Window]s or [SubViewport]s.
+*/
+func (self Expanded) PushUnhandledInput(event [1]gdclass.InputEvent, in_local_coords bool) { //gd:Viewport.push_unhandled_input
+	Advanced(self).PushUnhandledInput(event, in_local_coords)
 }
 
 /*
@@ -170,7 +203,7 @@ Inform the Viewport that the mouse has entered its area. Use this function befor
 [b]Note:[/b] In most cases, it is not necessary to call this function because [SubViewport] nodes that are children of [SubViewportContainer] are notified automatically. This is only necessary when interacting with viewports in non-default ways, for example as textures in [TextureRect] or with an [Area3D] that forwards input events.
 */
 func (self Instance) NotifyMouseEntered() { //gd:Viewport.notify_mouse_entered
-	class(self).NotifyMouseEntered()
+	Advanced(self).NotifyMouseEntered()
 }
 
 /*
@@ -178,14 +211,14 @@ Inform the Viewport that the mouse has left its area. Use this function when the
 [b]Note:[/b] In most cases, it is not necessary to call this function because [SubViewport] nodes that are children of [SubViewportContainer] are notified automatically. This is only necessary when interacting with viewports in non-default ways, for example as textures in [TextureRect] or with an [Area3D] that forwards input events.
 */
 func (self Instance) NotifyMouseExited() { //gd:Viewport.notify_mouse_exited
-	class(self).NotifyMouseExited()
+	Advanced(self).NotifyMouseExited()
 }
 
 /*
 Returns the mouse's position in this [Viewport] using the coordinate system of this [Viewport].
 */
 func (self Instance) GetMousePosition() Vector2.XY { //gd:Viewport.get_mouse_position
-	return Vector2.XY(class(self).GetMousePosition())
+	return Vector2.XY(Advanced(self).GetMousePosition())
 }
 
 /*
@@ -193,28 +226,28 @@ Moves the mouse pointer to the specified position in this [Viewport] using the c
 [b]Note:[/b] [method warp_mouse] is only supported on Windows, macOS and Linux. It has no effect on Android, iOS and Web.
 */
 func (self Instance) WarpMouse(position Vector2.XY) { //gd:Viewport.warp_mouse
-	class(self).WarpMouse(Vector2.XY(position))
+	Advanced(self).WarpMouse(Vector2.XY(position))
 }
 
 /*
 Force instantly updating the display based on the current mouse cursor position. This includes updating the mouse cursor shape and sending necessary [signal Control.mouse_entered], [signal CollisionObject2D.mouse_entered], [signal CollisionObject3D.mouse_entered] and [signal Window.mouse_entered] signals and their respective [code]mouse_exited[/code] counterparts.
 */
 func (self Instance) UpdateMouseCursorState() { //gd:Viewport.update_mouse_cursor_state
-	class(self).UpdateMouseCursorState()
+	Advanced(self).UpdateMouseCursorState()
 }
 
 /*
 Cancels the drag operation that was previously started through [method Control._get_drag_data] or forced with [method Control.force_drag].
 */
 func (self Instance) GuiCancelDrag() { //gd:Viewport.gui_cancel_drag
-	class(self).GuiCancelDrag()
+	Advanced(self).GuiCancelDrag()
 }
 
 /*
 Returns the drag data from the GUI, that was previously returned by [method Control._get_drag_data].
 */
 func (self Instance) GuiGetDragData() any { //gd:Viewport.gui_get_drag_data
-	return any(class(self).GuiGetDragData().Interface())
+	return any(Advanced(self).GuiGetDragData().Interface())
 }
 
 /*
@@ -222,28 +255,28 @@ Returns [code]true[/code] if a drag operation is currently ongoing and where the
 Alternative to [constant Node.NOTIFICATION_DRAG_BEGIN] and [constant Node.NOTIFICATION_DRAG_END] when you prefer polling the value.
 */
 func (self Instance) GuiIsDragging() bool { //gd:Viewport.gui_is_dragging
-	return bool(class(self).GuiIsDragging())
+	return bool(Advanced(self).GuiIsDragging())
 }
 
 /*
 Returns [code]true[/code] if the drag operation is successful.
 */
 func (self Instance) GuiIsDragSuccessful() bool { //gd:Viewport.gui_is_drag_successful
-	return bool(class(self).GuiIsDragSuccessful())
+	return bool(Advanced(self).GuiIsDragSuccessful())
 }
 
 /*
 Removes the focus from the currently focused [Control] within this viewport. If no [Control] has the focus, does nothing.
 */
 func (self Instance) GuiReleaseFocus() { //gd:Viewport.gui_release_focus
-	class(self).GuiReleaseFocus()
+	Advanced(self).GuiReleaseFocus()
 }
 
 /*
 Returns the currently focused [Control] within this viewport. If no [Control] is focused, returns [code]null[/code].
 */
 func (self Instance) GuiGetFocusOwner() [1]gdclass.Control { //gd:Viewport.gui_get_focus_owner
-	return [1]gdclass.Control(class(self).GuiGetFocusOwner())
+	return [1]gdclass.Control(Advanced(self).GuiGetFocusOwner())
 }
 
 /*
@@ -251,7 +284,7 @@ Returns the [Control] that the mouse is currently hovering over in this viewport
 Typically the leaf [Control] node or deepest level of the subtree which claims hover. This is very useful when used together with [method Node.is_ancestor_of] to find if the mouse is within a control tree.
 */
 func (self Instance) GuiGetHoveredControl() [1]gdclass.Control { //gd:Viewport.gui_get_hovered_control
-	return [1]gdclass.Control(class(self).GuiGetHoveredControl())
+	return [1]gdclass.Control(Advanced(self).GuiGetHoveredControl())
 }
 
 /*
@@ -259,7 +292,7 @@ Stops the input from propagating further down the [SceneTree].
 [b]Note:[/b] This does not affect the methods in [Input], only the way events are propagated.
 */
 func (self Instance) SetInputAsHandled() { //gd:Viewport.set_input_as_handled
-	class(self).SetInputAsHandled()
+	Advanced(self).SetInputAsHandled()
 }
 
 /*
@@ -268,7 +301,7 @@ This is usually done as part of input handling methods like [method Node._input]
 If [member handle_input_locally] is set to [code]false[/code], this method will try finding the first parent viewport that is set to handle input locally, and return its value for [method is_input_handled] instead.
 */
 func (self Instance) IsInputHandled() bool { //gd:Viewport.is_input_handled
-	return bool(class(self).IsInputHandled())
+	return bool(Advanced(self).IsInputHandled())
 }
 
 /*
@@ -276,56 +309,56 @@ Returns a list of the visible embedded [Window]s inside the viewport.
 [b]Note:[/b] [Window]s inside other viewports will not be listed.
 */
 func (self Instance) GetEmbeddedSubwindows() [][1]gdclass.Window { //gd:Viewport.get_embedded_subwindows
-	return [][1]gdclass.Window(gd.ArrayAs[[][1]gdclass.Window](gd.InternalArray(class(self).GetEmbeddedSubwindows())))
+	return [][1]gdclass.Window(gd.ArrayAs[[][1]gdclass.Window](gd.InternalArray(Advanced(self).GetEmbeddedSubwindows())))
 }
 
 /*
 Set/clear individual bits on the rendering layer mask. This simplifies editing this [Viewport]'s layers.
 */
 func (self Instance) SetCanvasCullMaskBit(layer int, enable bool) { //gd:Viewport.set_canvas_cull_mask_bit
-	class(self).SetCanvasCullMaskBit(int64(layer), enable)
+	Advanced(self).SetCanvasCullMaskBit(int64(layer), enable)
 }
 
 /*
 Returns an individual bit on the rendering layer mask.
 */
 func (self Instance) GetCanvasCullMaskBit(layer int) bool { //gd:Viewport.get_canvas_cull_mask_bit
-	return bool(class(self).GetCanvasCullMaskBit(int64(layer)))
+	return bool(Advanced(self).GetCanvasCullMaskBit(int64(layer)))
 }
 
 /*
 Returns the currently active 2D audio listener. Returns [code]null[/code] if there are no active 2D audio listeners, in which case the active 2D camera will be treated as listener.
 */
 func (self Instance) GetAudioListener2d() [1]gdclass.AudioListener2D { //gd:Viewport.get_audio_listener_2d
-	return [1]gdclass.AudioListener2D(class(self).GetAudioListener2d())
+	return [1]gdclass.AudioListener2D(Advanced(self).GetAudioListener2d())
 }
 
 /*
 Returns the currently active 2D camera. Returns [code]null[/code] if there are no active cameras.
 */
 func (self Instance) GetCamera2d() [1]gdclass.Camera2D { //gd:Viewport.get_camera_2d
-	return [1]gdclass.Camera2D(class(self).GetCamera2d())
+	return [1]gdclass.Camera2D(Advanced(self).GetCamera2d())
 }
 
 /*
 Returns the first valid [World3D] for this viewport, searching the [member world_3d] property of itself and any Viewport ancestor.
 */
 func (self Instance) FindWorld3d() [1]gdclass.World3D { //gd:Viewport.find_world_3d
-	return [1]gdclass.World3D(class(self).FindWorld3d())
+	return [1]gdclass.World3D(Advanced(self).FindWorld3d())
 }
 
 /*
 Returns the currently active 3D audio listener. Returns [code]null[/code] if there are no active 3D audio listeners, in which case the active 3D camera will be treated as listener.
 */
 func (self Instance) GetAudioListener3d() [1]gdclass.AudioListener3D { //gd:Viewport.get_audio_listener_3d
-	return [1]gdclass.AudioListener3D(class(self).GetAudioListener3d())
+	return [1]gdclass.AudioListener3D(Advanced(self).GetAudioListener3d())
 }
 
 /*
 Returns the currently active 3D camera.
 */
 func (self Instance) GetCamera3d() [1]gdclass.Camera3D { //gd:Viewport.get_camera_3d
-	return [1]gdclass.Camera3D(class(self).GetCamera3d())
+	return [1]gdclass.Camera3D(Advanced(self).GetCamera3d())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

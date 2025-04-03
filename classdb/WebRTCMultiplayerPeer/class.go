@@ -48,6 +48,7 @@ When creating the peer via [method create_client] or [method create_server] the 
 [b]Note:[/b] When exporting to Android, make sure to enable the [code]INTERNET[/code] permission in the Android export preset before exporting the project or using one-click deploy. Otherwise, network communication of any kind will be blocked by Android.
 */
 type Instance [1]gdclass.WebRTCMultiplayerPeer
+type Expanded [1]gdclass.WebRTCMultiplayerPeer
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -62,7 +63,15 @@ Initialize the multiplayer peer as a server (with unique ID of [code]1[/code]). 
 You can optionally specify a [param channels_config] array of [enum MultiplayerPeer.TransferMode] which will be used to create extra channels (WebRTC only supports one transfer mode per channel).
 */
 func (self Instance) CreateServer() error { //gd:WebRTCMultiplayerPeer.create_server
-	return error(gd.ToError(class(self).CreateServer(Array.Nil)))
+	return error(gd.ToError(Advanced(self).CreateServer(Array.Nil)))
+}
+
+/*
+Initialize the multiplayer peer as a server (with unique ID of [code]1[/code]). This mode enables [method MultiplayerPeer.is_server_relay_supported], allowing the upper [MultiplayerAPI] layer to perform peer exchange and packet relaying.
+You can optionally specify a [param channels_config] array of [enum MultiplayerPeer.TransferMode] which will be used to create extra channels (WebRTC only supports one transfer mode per channel).
+*/
+func (self Expanded) CreateServer(channels_config []any) error { //gd:WebRTCMultiplayerPeer.create_server
+	return error(gd.ToError(Advanced(self).CreateServer(gd.EngineArrayFromSlice(channels_config))))
 }
 
 /*
@@ -70,14 +79,29 @@ Initialize the multiplayer peer as a client with the given [param peer_id] (must
 You can optionally specify a [param channels_config] array of [enum MultiplayerPeer.TransferMode] which will be used to create extra channels (WebRTC only supports one transfer mode per channel).
 */
 func (self Instance) CreateClient(peer_id int) error { //gd:WebRTCMultiplayerPeer.create_client
-	return error(gd.ToError(class(self).CreateClient(int64(peer_id), Array.Nil)))
+	return error(gd.ToError(Advanced(self).CreateClient(int64(peer_id), Array.Nil)))
+}
+
+/*
+Initialize the multiplayer peer as a client with the given [param peer_id] (must be between 2 and 2147483647). In this mode, you should only call [method add_peer] once and with [param peer_id] of [code]1[/code]. This mode enables [method MultiplayerPeer.is_server_relay_supported], allowing the upper [MultiplayerAPI] layer to perform peer exchange and packet relaying.
+You can optionally specify a [param channels_config] array of [enum MultiplayerPeer.TransferMode] which will be used to create extra channels (WebRTC only supports one transfer mode per channel).
+*/
+func (self Expanded) CreateClient(peer_id int, channels_config []any) error { //gd:WebRTCMultiplayerPeer.create_client
+	return error(gd.ToError(Advanced(self).CreateClient(int64(peer_id), gd.EngineArrayFromSlice(channels_config))))
 }
 
 /*
 Initialize the multiplayer peer as a mesh (i.e. all peers connect to each other) with the given [param peer_id] (must be between 1 and 2147483647).
 */
 func (self Instance) CreateMesh(peer_id int) error { //gd:WebRTCMultiplayerPeer.create_mesh
-	return error(gd.ToError(class(self).CreateMesh(int64(peer_id), Array.Nil)))
+	return error(gd.ToError(Advanced(self).CreateMesh(int64(peer_id), Array.Nil)))
+}
+
+/*
+Initialize the multiplayer peer as a mesh (i.e. all peers connect to each other) with the given [param peer_id] (must be between 1 and 2147483647).
+*/
+func (self Expanded) CreateMesh(peer_id int, channels_config []any) error { //gd:WebRTCMultiplayerPeer.create_mesh
+	return error(gd.ToError(Advanced(self).CreateMesh(int64(peer_id), gd.EngineArrayFromSlice(channels_config))))
 }
 
 /*
@@ -85,35 +109,43 @@ Add a new peer to the mesh with the given [param peer_id]. The [WebRTCPeerConnec
 Three channels will be created for reliable, unreliable, and ordered transport. The value of [param unreliable_lifetime] will be passed to the [code]"maxPacketLifetime"[/code] option when creating unreliable and ordered channels (see [method WebRTCPeerConnection.create_data_channel]).
 */
 func (self Instance) AddPeer(peer [1]gdclass.WebRTCPeerConnection, peer_id int) error { //gd:WebRTCMultiplayerPeer.add_peer
-	return error(gd.ToError(class(self).AddPeer(peer, int64(peer_id), int64(1))))
+	return error(gd.ToError(Advanced(self).AddPeer(peer, int64(peer_id), int64(1))))
+}
+
+/*
+Add a new peer to the mesh with the given [param peer_id]. The [WebRTCPeerConnection] must be in state [constant WebRTCPeerConnection.STATE_NEW].
+Three channels will be created for reliable, unreliable, and ordered transport. The value of [param unreliable_lifetime] will be passed to the [code]"maxPacketLifetime"[/code] option when creating unreliable and ordered channels (see [method WebRTCPeerConnection.create_data_channel]).
+*/
+func (self Expanded) AddPeer(peer [1]gdclass.WebRTCPeerConnection, peer_id int, unreliable_lifetime int) error { //gd:WebRTCMultiplayerPeer.add_peer
+	return error(gd.ToError(Advanced(self).AddPeer(peer, int64(peer_id), int64(unreliable_lifetime))))
 }
 
 /*
 Remove the peer with given [param peer_id] from the mesh. If the peer was connected, and [signal MultiplayerPeer.peer_connected] was emitted for it, then [signal MultiplayerPeer.peer_disconnected] will be emitted.
 */
 func (self Instance) RemovePeer(peer_id int) { //gd:WebRTCMultiplayerPeer.remove_peer
-	class(self).RemovePeer(int64(peer_id))
+	Advanced(self).RemovePeer(int64(peer_id))
 }
 
 /*
 Returns [code]true[/code] if the given [param peer_id] is in the peers map (it might not be connected though).
 */
 func (self Instance) HasPeer(peer_id int) bool { //gd:WebRTCMultiplayerPeer.has_peer
-	return bool(class(self).HasPeer(int64(peer_id)))
+	return bool(Advanced(self).HasPeer(int64(peer_id)))
 }
 
 /*
 Returns a dictionary representation of the peer with given [param peer_id] with three keys. [code]"connection"[/code] containing the [WebRTCPeerConnection] to this peer, [code]"channels"[/code] an array of three [WebRTCDataChannel], and [code]"connected"[/code] a boolean representing if the peer connection is currently connected (all three channels are open).
 */
 func (self Instance) GetPeer(peer_id int) Conn { //gd:WebRTCMultiplayerPeer.get_peer
-	return Conn(gd.DictionaryAs[Conn](class(self).GetPeer(int64(peer_id))))
+	return Conn(gd.DictionaryAs[Conn](Advanced(self).GetPeer(int64(peer_id))))
 }
 
 /*
 Returns a dictionary which keys are the peer ids and values the peer representation as in [method get_peer].
 */
 func (self Instance) GetPeers() map[int]Conn { //gd:WebRTCMultiplayerPeer.get_peers
-	return map[int]Conn(gd.DictionaryAs[map[int]Conn](class(self).GetPeers()))
+	return map[int]Conn(gd.DictionaryAs[map[int]Conn](Advanced(self).GetPeers()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

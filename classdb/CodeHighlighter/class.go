@@ -46,6 +46,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 By adjusting various properties of this resource, you can change the colors of strings, comments, numbers, and other text patterns inside a [TextEdit] control.
 */
 type Instance [1]gdclass.CodeHighlighter
+type Expanded [1]gdclass.CodeHighlighter
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -60,35 +61,35 @@ Sets the color for a keyword.
 The keyword cannot contain any symbols except '_'.
 */
 func (self Instance) AddKeywordColor(keyword string, color Color.RGBA) { //gd:CodeHighlighter.add_keyword_color
-	class(self).AddKeywordColor(String.New(keyword), Color.RGBA(color))
+	Advanced(self).AddKeywordColor(String.New(keyword), Color.RGBA(color))
 }
 
 /*
 Removes the keyword.
 */
 func (self Instance) RemoveKeywordColor(keyword string) { //gd:CodeHighlighter.remove_keyword_color
-	class(self).RemoveKeywordColor(String.New(keyword))
+	Advanced(self).RemoveKeywordColor(String.New(keyword))
 }
 
 /*
 Returns [code]true[/code] if the keyword exists, else [code]false[/code].
 */
 func (self Instance) HasKeywordColor(keyword string) bool { //gd:CodeHighlighter.has_keyword_color
-	return bool(class(self).HasKeywordColor(String.New(keyword)))
+	return bool(Advanced(self).HasKeywordColor(String.New(keyword)))
 }
 
 /*
 Returns the color for a keyword.
 */
 func (self Instance) GetKeywordColor(keyword string) Color.RGBA { //gd:CodeHighlighter.get_keyword_color
-	return Color.RGBA(class(self).GetKeywordColor(String.New(keyword)))
+	return Color.RGBA(Advanced(self).GetKeywordColor(String.New(keyword)))
 }
 
 /*
 Removes all keywords.
 */
 func (self Instance) ClearKeywordColors() { //gd:CodeHighlighter.clear_keyword_colors
-	class(self).ClearKeywordColors()
+	Advanced(self).ClearKeywordColors()
 }
 
 /*
@@ -97,35 +98,35 @@ The member keyword cannot contain any symbols except '_'.
 It will not be highlighted if preceded by a '.'.
 */
 func (self Instance) AddMemberKeywordColor(member_keyword string, color Color.RGBA) { //gd:CodeHighlighter.add_member_keyword_color
-	class(self).AddMemberKeywordColor(String.New(member_keyword), Color.RGBA(color))
+	Advanced(self).AddMemberKeywordColor(String.New(member_keyword), Color.RGBA(color))
 }
 
 /*
 Removes the member keyword.
 */
 func (self Instance) RemoveMemberKeywordColor(member_keyword string) { //gd:CodeHighlighter.remove_member_keyword_color
-	class(self).RemoveMemberKeywordColor(String.New(member_keyword))
+	Advanced(self).RemoveMemberKeywordColor(String.New(member_keyword))
 }
 
 /*
 Returns [code]true[/code] if the member keyword exists, else [code]false[/code].
 */
 func (self Instance) HasMemberKeywordColor(member_keyword string) bool { //gd:CodeHighlighter.has_member_keyword_color
-	return bool(class(self).HasMemberKeywordColor(String.New(member_keyword)))
+	return bool(Advanced(self).HasMemberKeywordColor(String.New(member_keyword)))
 }
 
 /*
 Returns the color for a member keyword.
 */
 func (self Instance) GetMemberKeywordColor(member_keyword string) Color.RGBA { //gd:CodeHighlighter.get_member_keyword_color
-	return Color.RGBA(class(self).GetMemberKeywordColor(String.New(member_keyword)))
+	return Color.RGBA(Advanced(self).GetMemberKeywordColor(String.New(member_keyword)))
 }
 
 /*
 Removes all member keywords.
 */
 func (self Instance) ClearMemberKeywordColors() { //gd:CodeHighlighter.clear_member_keyword_colors
-	class(self).ClearMemberKeywordColors()
+	Advanced(self).ClearMemberKeywordColors()
 }
 
 /*
@@ -133,28 +134,36 @@ Adds a color region (such as for comments or strings) from [param start_key] to 
 If [param line_only] is [code]true[/code] or [param end_key] is an empty [String], the region does not carry over to the next line.
 */
 func (self Instance) AddColorRegion(start_key string, end_key string, color Color.RGBA) { //gd:CodeHighlighter.add_color_region
-	class(self).AddColorRegion(String.New(start_key), String.New(end_key), Color.RGBA(color), false)
+	Advanced(self).AddColorRegion(String.New(start_key), String.New(end_key), Color.RGBA(color), false)
+}
+
+/*
+Adds a color region (such as for comments or strings) from [param start_key] to [param end_key]. Both keys should be symbols, and [param start_key] must not be shared with other delimiters.
+If [param line_only] is [code]true[/code] or [param end_key] is an empty [String], the region does not carry over to the next line.
+*/
+func (self Expanded) AddColorRegion(start_key string, end_key string, color Color.RGBA, line_only bool) { //gd:CodeHighlighter.add_color_region
+	Advanced(self).AddColorRegion(String.New(start_key), String.New(end_key), Color.RGBA(color), line_only)
 }
 
 /*
 Removes the color region that uses that start key.
 */
 func (self Instance) RemoveColorRegion(start_key string) { //gd:CodeHighlighter.remove_color_region
-	class(self).RemoveColorRegion(String.New(start_key))
+	Advanced(self).RemoveColorRegion(String.New(start_key))
 }
 
 /*
 Returns [code]true[/code] if the start key exists, else [code]false[/code].
 */
 func (self Instance) HasColorRegion(start_key string) bool { //gd:CodeHighlighter.has_color_region
-	return bool(class(self).HasColorRegion(String.New(start_key)))
+	return bool(Advanced(self).HasColorRegion(String.New(start_key)))
 }
 
 /*
 Removes all color regions.
 */
 func (self Instance) ClearColorRegions() { //gd:CodeHighlighter.clear_color_regions
-	class(self).ClearColorRegions()
+	Advanced(self).ClearColorRegions()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

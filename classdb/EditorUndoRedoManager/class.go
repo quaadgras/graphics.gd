@@ -50,6 +50,7 @@ This guessing can sometimes yield false results, so you can provide a custom con
 The manager's API is mostly the same as in [UndoRedo], so you can refer to its documentation for more examples. The main difference is that [EditorUndoRedoManager] uses object + method name for actions, instead of [Callable].
 */
 type Instance [1]gdclass.EditorUndoRedoManager
+type Expanded [1]gdclass.EditorUndoRedoManager
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -66,21 +67,38 @@ If [param custom_context] object is provided, it will be used for deducing targe
 The way undo operation are ordered in actions is dictated by [param backward_undo_ops]. When [param backward_undo_ops] is [code]false[/code] undo option are ordered in the same order they were added. Which means the first operation to be added will be the first to be undone.
 */
 func (self Instance) CreateAction(name string) { //gd:EditorUndoRedoManager.create_action
-	class(self).CreateAction(String.New(name), 0, [1]Object.Instance{}[0], false)
+	Advanced(self).CreateAction(String.New(name), 0, [1]Object.Instance{}[0], false)
+}
+
+/*
+Create a new action. After this is called, do all your calls to [method add_do_method], [method add_undo_method], [method add_do_property], and [method add_undo_property], then commit the action with [method commit_action].
+The way actions are merged is dictated by the [param merge_mode] argument. See [enum UndoRedo.MergeMode] for details.
+If [param custom_context] object is provided, it will be used for deducing target history (instead of using the first operation).
+The way undo operation are ordered in actions is dictated by [param backward_undo_ops]. When [param backward_undo_ops] is [code]false[/code] undo option are ordered in the same order they were added. Which means the first operation to be added will be the first to be undone.
+*/
+func (self Expanded) CreateAction(name string, merge_mode gdclass.UndoRedoMergeMode, custom_context Object.Instance, backward_undo_ops bool) { //gd:EditorUndoRedoManager.create_action
+	Advanced(self).CreateAction(String.New(name), merge_mode, custom_context, backward_undo_ops)
 }
 
 /*
 Commits the action. If [param execute] is [code]true[/code] (default), all "do" methods/properties are called/set when this function is called.
 */
 func (self Instance) CommitAction() { //gd:EditorUndoRedoManager.commit_action
-	class(self).CommitAction(true)
+	Advanced(self).CommitAction(true)
+}
+
+/*
+Commits the action. If [param execute] is [code]true[/code] (default), all "do" methods/properties are called/set when this function is called.
+*/
+func (self Expanded) CommitAction(execute bool) { //gd:EditorUndoRedoManager.commit_action
+	Advanced(self).CommitAction(execute)
 }
 
 /*
 Returns [code]true[/code] if the [EditorUndoRedoManager] is currently committing the action, i.e. running its "do" method or property change (see [method commit_action]).
 */
 func (self Instance) IsCommittingAction() bool { //gd:EditorUndoRedoManager.is_committing_action
-	return bool(class(self).IsCommittingAction())
+	return bool(Advanced(self).IsCommittingAction())
 }
 
 /*
@@ -88,7 +106,7 @@ Forces the next operation (e.g. [method add_do_method]) to use the action's hist
 This method should only be used when absolutely necessary, otherwise it might cause invalid history state. For most of complex cases, the [code]custom_context[/code] parameter of [method create_action] is sufficient.
 */
 func (self Instance) ForceFixedHistory() { //gd:EditorUndoRedoManager.force_fixed_history
-	class(self).ForceFixedHistory()
+	Advanced(self).ForceFixedHistory()
 }
 
 /*
@@ -96,7 +114,7 @@ Register a property value change for "do".
 If this is the first operation, the [param object] will be used to deduce target undo history.
 */
 func (self Instance) AddDoProperty(obj Object.Instance, property string, value any) { //gd:EditorUndoRedoManager.add_do_property
-	class(self).AddDoProperty(obj, String.Name(String.New(property)), variant.New(value))
+	Advanced(self).AddDoProperty(obj, String.Name(String.New(property)), variant.New(value))
 }
 
 /*
@@ -104,28 +122,28 @@ Register a property value change for "undo".
 If this is the first operation, the [param object] will be used to deduce target undo history.
 */
 func (self Instance) AddUndoProperty(obj Object.Instance, property string, value any) { //gd:EditorUndoRedoManager.add_undo_property
-	class(self).AddUndoProperty(obj, String.Name(String.New(property)), variant.New(value))
+	Advanced(self).AddUndoProperty(obj, String.Name(String.New(property)), variant.New(value))
 }
 
 /*
 Register a reference for "do" that will be erased if the "do" history is lost. This is useful mostly for new nodes created for the "do" call. Do not use for resources.
 */
 func (self Instance) AddDoReference(obj Object.Instance) { //gd:EditorUndoRedoManager.add_do_reference
-	class(self).AddDoReference(obj)
+	Advanced(self).AddDoReference(obj)
 }
 
 /*
 Register a reference for "undo" that will be erased if the "undo" history is lost. This is useful mostly for nodes removed with the "do" call (not the "undo" call!).
 */
 func (self Instance) AddUndoReference(obj Object.Instance) { //gd:EditorUndoRedoManager.add_undo_reference
-	class(self).AddUndoReference(obj)
+	Advanced(self).AddUndoReference(obj)
 }
 
 /*
 Returns the history ID deduced from the given [param object]. It can be used with [method get_history_undo_redo].
 */
 func (self Instance) GetObjectHistoryId(obj Object.Instance) int { //gd:EditorUndoRedoManager.get_object_history_id
-	return int(int(class(self).GetObjectHistoryId(obj)))
+	return int(int(Advanced(self).GetObjectHistoryId(obj)))
 }
 
 /*
@@ -134,7 +152,7 @@ Returns the [UndoRedo] object associated with the given history [param id].
 Best used with [method get_object_history_id]. This method is only provided in case you need some more advanced methods of [UndoRedo] (but keep in mind that directly operating on the [UndoRedo] object might affect editor's stability).
 */
 func (self Instance) GetHistoryUndoRedo(id int) [1]gdclass.UndoRedo { //gd:EditorUndoRedoManager.get_history_undo_redo
-	return [1]gdclass.UndoRedo(class(self).GetHistoryUndoRedo(int64(id)))
+	return [1]gdclass.UndoRedo(Advanced(self).GetHistoryUndoRedo(int64(id)))
 }
 
 /*
@@ -148,7 +166,21 @@ undo_redo.clear_history(undo_redo.get_object_history_id(scene_root))
 [b]Note:[/b] If you want to mark an edited scene as unsaved without clearing its history, use [method EditorInterface.mark_scene_as_unsaved] instead.
 */
 func (self Instance) ClearHistory() { //gd:EditorUndoRedoManager.clear_history
-	class(self).ClearHistory(int64(-99), true)
+	Advanced(self).ClearHistory(int64(-99), true)
+}
+
+/*
+Clears the given undo history. You can clear history for a specific scene, global history, or for all scenes at once if [param id] is [constant INVALID_HISTORY].
+If [param increase_version] is [code]true[/code], the undo history version will be increased, marking it as unsaved. Useful for operations that modify the scene, but don't support undo.
+[codeblock]
+var scene_root = EditorInterface.get_edited_scene_root()
+var undo_redo = EditorInterface.get_editor_undo_redo()
+undo_redo.clear_history(undo_redo.get_object_history_id(scene_root))
+[/codeblock]
+[b]Note:[/b] If you want to mark an edited scene as unsaved without clearing its history, use [method EditorInterface.mark_scene_as_unsaved] instead.
+*/
+func (self Expanded) ClearHistory(id int, increase_version bool) { //gd:EditorUndoRedoManager.clear_history
+	Advanced(self).ClearHistory(int64(id), increase_version)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

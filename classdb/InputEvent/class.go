@@ -46,6 +46,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 Abstract base class of all types of input events. See [method Node._input].
 */
 type Instance [1]gdclass.InputEvent
+type Expanded [1]gdclass.InputEvent
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -60,7 +61,15 @@ Returns [code]true[/code] if this input event matches a pre-defined action of an
 If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
 */
 func (self Instance) IsAction(action string) bool { //gd:InputEvent.is_action
-	return bool(class(self).IsAction(String.Name(String.New(action)), false))
+	return bool(Advanced(self).IsAction(String.Name(String.New(action)), false))
+}
+
+/*
+Returns [code]true[/code] if this input event matches a pre-defined action of any type.
+If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
+*/
+func (self Expanded) IsAction(action string, exact_match bool) bool { //gd:InputEvent.is_action
+	return bool(Advanced(self).IsAction(String.Name(String.New(action)), exact_match))
 }
 
 /*
@@ -69,7 +78,16 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 [b]Note:[/b] Due to keyboard ghosting, [method is_action_pressed] may return [code]false[/code] even if one of the action's keys is pressed. See [url=$DOCS_URL/tutorials/inputs/input_examples.html#keyboard-events]Input examples[/url] in the documentation for more information.
 */
 func (self Instance) IsActionPressed(action string) bool { //gd:InputEvent.is_action_pressed
-	return bool(class(self).IsActionPressed(String.Name(String.New(action)), false, false))
+	return bool(Advanced(self).IsActionPressed(String.Name(String.New(action)), false, false))
+}
+
+/*
+Returns [code]true[/code] if the given action is being pressed (and is not an echo event for [InputEventKey] events, unless [param allow_echo] is [code]true[/code]). Not relevant for events of type [InputEventMouseMotion] or [InputEventScreenDrag].
+If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
+[b]Note:[/b] Due to keyboard ghosting, [method is_action_pressed] may return [code]false[/code] even if one of the action's keys is pressed. See [url=$DOCS_URL/tutorials/inputs/input_examples.html#keyboard-events]Input examples[/url] in the documentation for more information.
+*/
+func (self Expanded) IsActionPressed(action string, allow_echo bool, exact_match bool) bool { //gd:InputEvent.is_action_pressed
+	return bool(Advanced(self).IsActionPressed(String.Name(String.New(action)), allow_echo, exact_match))
 }
 
 /*
@@ -77,7 +95,15 @@ Returns [code]true[/code] if the given action is released (i.e. not pressed). No
 If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
 */
 func (self Instance) IsActionReleased(action string) bool { //gd:InputEvent.is_action_released
-	return bool(class(self).IsActionReleased(String.Name(String.New(action)), false))
+	return bool(Advanced(self).IsActionReleased(String.Name(String.New(action)), false))
+}
+
+/*
+Returns [code]true[/code] if the given action is released (i.e. not pressed). Not relevant for events of type [InputEventMouseMotion] or [InputEventScreenDrag].
+If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
+*/
+func (self Expanded) IsActionReleased(action string, exact_match bool) bool { //gd:InputEvent.is_action_released
+	return bool(Advanced(self).IsActionReleased(String.Name(String.New(action)), exact_match))
 }
 
 /*
@@ -85,14 +111,22 @@ Returns a value between 0.0 and 1.0 depending on the given actions' state. Usefu
 If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
 */
 func (self Instance) GetActionStrength(action string) Float.X { //gd:InputEvent.get_action_strength
-	return Float.X(Float.X(class(self).GetActionStrength(String.Name(String.New(action)), false)))
+	return Float.X(Float.X(Advanced(self).GetActionStrength(String.Name(String.New(action)), false)))
+}
+
+/*
+Returns a value between 0.0 and 1.0 depending on the given actions' state. Useful for getting the value of events of type [InputEventJoypadMotion].
+If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
+*/
+func (self Expanded) GetActionStrength(action string, exact_match bool) Float.X { //gd:InputEvent.get_action_strength
+	return Float.X(Float.X(Advanced(self).GetActionStrength(String.Name(String.New(action)), exact_match)))
 }
 
 /*
 Returns [code]true[/code] if this input event has been canceled.
 */
 func (self Instance) IsCanceled() bool { //gd:InputEvent.is_canceled
-	return bool(class(self).IsCanceled())
+	return bool(Advanced(self).IsCanceled())
 }
 
 /*
@@ -100,14 +134,14 @@ Returns [code]true[/code] if this input event is pressed. Not relevant for event
 [b]Note:[/b] Due to keyboard ghosting, [method is_pressed] may return [code]false[/code] even if one of the action's keys is pressed. See [url=$DOCS_URL/tutorials/inputs/input_examples.html#keyboard-events]Input examples[/url] in the documentation for more information.
 */
 func (self Instance) IsPressed() bool { //gd:InputEvent.is_pressed
-	return bool(class(self).IsPressed())
+	return bool(Advanced(self).IsPressed())
 }
 
 /*
 Returns [code]true[/code] if this input event is released. Not relevant for events of type [InputEventMouseMotion] or [InputEventScreenDrag].
 */
 func (self Instance) IsReleased() bool { //gd:InputEvent.is_released
-	return bool(class(self).IsReleased())
+	return bool(Advanced(self).IsReleased())
 }
 
 /*
@@ -115,14 +149,14 @@ Returns [code]true[/code] if this input event is an echo event (only for events 
 [b]Note:[/b] The rate at which echo events are sent is typically around 20 events per second (after holding down the key for roughly half a second). However, the key repeat delay/speed can be changed by the user or disabled entirely in the operating system settings. To ensure your project works correctly on all configurations, do not assume the user has a specific key repeat configuration in your project's behavior.
 */
 func (self Instance) IsEcho() bool { //gd:InputEvent.is_echo
-	return bool(class(self).IsEcho())
+	return bool(Advanced(self).IsEcho())
 }
 
 /*
 Returns a [String] representation of the event.
 */
 func (self Instance) AsText() string { //gd:InputEvent.as_text
-	return string(class(self).AsText().String())
+	return string(Advanced(self).AsText().String())
 }
 
 /*
@@ -131,14 +165,23 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 [b]Note:[/b] Only considers the event configuration (such as the keyboard key or joypad axis), not state information like [method is_pressed], [method is_released], [method is_echo], or [method is_canceled].
 */
 func (self Instance) IsMatch(event [1]gdclass.InputEvent) bool { //gd:InputEvent.is_match
-	return bool(class(self).IsMatch(event, true))
+	return bool(Advanced(self).IsMatch(event, true))
+}
+
+/*
+Returns [code]true[/code] if the specified [param event] matches this event. Only valid for action events i.e key ([InputEventKey]), button ([InputEventMouseButton] or [InputEventJoypadButton]), axis [InputEventJoypadMotion] or action ([InputEventAction]) events.
+If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
+[b]Note:[/b] Only considers the event configuration (such as the keyboard key or joypad axis), not state information like [method is_pressed], [method is_released], [method is_echo], or [method is_canceled].
+*/
+func (self Expanded) IsMatch(event [1]gdclass.InputEvent, exact_match bool) bool { //gd:InputEvent.is_match
+	return bool(Advanced(self).IsMatch(event, exact_match))
 }
 
 /*
 Returns [code]true[/code] if this input event's type is one that can be assigned to an input action.
 */
 func (self Instance) IsActionType() bool { //gd:InputEvent.is_action_type
-	return bool(class(self).IsActionType())
+	return bool(Advanced(self).IsActionType())
 }
 
 /*
@@ -146,14 +189,21 @@ Returns [code]true[/code] if the given input event and this input event can be a
 The given input event's position, global position and speed will be copied. The resulting [code]relative[/code] is a sum of both events. Both events' modifiers have to be identical.
 */
 func (self Instance) Accumulate(with_event [1]gdclass.InputEvent) bool { //gd:InputEvent.accumulate
-	return bool(class(self).Accumulate(with_event))
+	return bool(Advanced(self).Accumulate(with_event))
 }
 
 /*
 Returns a copy of the given input event which has been offset by [param local_ofs] and transformed by [param xform]. Relevant for events of type [InputEventMouseButton], [InputEventMouseMotion], [InputEventScreenTouch], [InputEventScreenDrag], [InputEventMagnifyGesture] and [InputEventPanGesture].
 */
 func (self Instance) XformedBy(xform Transform2D.OriginXY) [1]gdclass.InputEvent { //gd:InputEvent.xformed_by
-	return [1]gdclass.InputEvent(class(self).XformedBy(Transform2D.OriginXY(xform), Vector2.XY(gd.Vector2{0, 0})))
+	return [1]gdclass.InputEvent(Advanced(self).XformedBy(Transform2D.OriginXY(xform), Vector2.XY(gd.Vector2{0, 0})))
+}
+
+/*
+Returns a copy of the given input event which has been offset by [param local_ofs] and transformed by [param xform]. Relevant for events of type [InputEventMouseButton], [InputEventMouseMotion], [InputEventScreenTouch], [InputEventScreenDrag], [InputEventMagnifyGesture] and [InputEventPanGesture].
+*/
+func (self Expanded) XformedBy(xform Transform2D.OriginXY, local_ofs Vector2.XY) [1]gdclass.InputEvent { //gd:InputEvent.xformed_by
+	return [1]gdclass.InputEvent(Advanced(self).XformedBy(Transform2D.OriginXY(xform), Vector2.XY(local_ofs)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

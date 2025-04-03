@@ -2588,14 +2588,14 @@ func (Instance) _get_process_info(impl func(ptr unsafe.Pointer, process_info gdc
 Returns [code]true[/code] if the body with the given [RID] is being excluded from [method _body_test_motion]. See also [method Object.get_instance_id].
 */
 func (self Instance) BodyTestMotionIsExcludingBody(body RID.Body2D) bool { //gd:PhysicsServer2DExtension.body_test_motion_is_excluding_body
-	return bool(class(self).BodyTestMotionIsExcludingBody(RID.Any(body)))
+	return bool(Advanced(self).BodyTestMotionIsExcludingBody(RID.Any(body)))
 }
 
 /*
 Returns [code]true[/code] if the object with the given instance ID is being excluded from [method _body_test_motion]. See also [method Object.get_instance_id].
 */
 func (self Instance) BodyTestMotionIsExcludingObject(obj int) bool { //gd:PhysicsServer2DExtension.body_test_motion_is_excluding_object
-	return bool(class(self).BodyTestMotionIsExcludingObject(int64(obj)))
+	return bool(Advanced(self).BodyTestMotionIsExcludingObject(int64(obj)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

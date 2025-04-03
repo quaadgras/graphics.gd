@@ -40,7 +40,7 @@ func TestArrayConversions(t *testing.T) {
 	if len(info) == 0 {
 		t.Error("expected non-empty string")
 	}
-	date := Time.GetDateDictFromSystem()
+	date := Time.GetDateDictFromSystem(false)
 	if date.Year != time.Now().Year() {
 		t.Error("expected current year")
 	}

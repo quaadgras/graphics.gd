@@ -46,6 +46,7 @@ var _ = slices.Delete[[]struct{}, struct{}]
 Provides direct access to a physics body in the [PhysicsServer3D], allowing safe changes to physics properties. This object is passed via the direct state callback of [RigidBody3D], and is intended for changing the direct state of that body. See [method RigidBody3D._integrate_forces].
 */
 type Instance [1]gdclass.PhysicsDirectBodyState3D
+type Expanded [1]gdclass.PhysicsDirectBodyState3D
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -59,7 +60,7 @@ type Any interface {
 Returns the body's velocity at the given relative position, including both translation and rotation.
 */
 func (self Instance) GetVelocityAtLocalPosition(local_position Vector3.XYZ) Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_velocity_at_local_position
-	return Vector3.XYZ(class(self).GetVelocityAtLocalPosition(Vector3.XYZ(local_position)))
+	return Vector3.XYZ(Advanced(self).GetVelocityAtLocalPosition(Vector3.XYZ(local_position)))
 }
 
 /*
@@ -68,7 +69,16 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 This is equivalent to using [method apply_impulse] at the body's center of mass.
 */
 func (self Instance) ApplyCentralImpulse() { //gd:PhysicsDirectBodyState3D.apply_central_impulse
-	class(self).ApplyCentralImpulse(Vector3.XYZ(gd.Vector3{0, 0, 0}))
+	Advanced(self).ApplyCentralImpulse(Vector3.XYZ(gd.Vector3{0, 0, 0}))
+}
+
+/*
+Applies a directional impulse without affecting rotation.
+An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
+This is equivalent to using [method apply_impulse] at the body's center of mass.
+*/
+func (self Expanded) ApplyCentralImpulse(impulse Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.apply_central_impulse
+	Advanced(self).ApplyCentralImpulse(Vector3.XYZ(impulse))
 }
 
 /*
@@ -77,7 +87,16 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 [param position] is the offset from the body origin in global coordinates.
 */
 func (self Instance) ApplyImpulse(impulse Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.apply_impulse
-	class(self).ApplyImpulse(Vector3.XYZ(impulse), Vector3.XYZ(gd.Vector3{0, 0, 0}))
+	Advanced(self).ApplyImpulse(Vector3.XYZ(impulse), Vector3.XYZ(gd.Vector3{0, 0, 0}))
+}
+
+/*
+Applies a positioned impulse to the body.
+An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
+[param position] is the offset from the body origin in global coordinates.
+*/
+func (self Expanded) ApplyImpulse(impulse Vector3.XYZ, position Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.apply_impulse
+	Advanced(self).ApplyImpulse(Vector3.XYZ(impulse), Vector3.XYZ(position))
 }
 
 /*
@@ -86,7 +105,7 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 [b]Note:[/b] [member inverse_inertia] is required for this to work. To have [member inverse_inertia], an active [CollisionShape3D] must be a child of the node, or you can manually set [member inverse_inertia].
 */
 func (self Instance) ApplyTorqueImpulse(impulse Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.apply_torque_impulse
-	class(self).ApplyTorqueImpulse(Vector3.XYZ(impulse))
+	Advanced(self).ApplyTorqueImpulse(Vector3.XYZ(impulse))
 }
 
 /*
@@ -94,7 +113,15 @@ Applies a directional force without affecting rotation. A force is time dependen
 This is equivalent to using [method apply_force] at the body's center of mass.
 */
 func (self Instance) ApplyCentralForce() { //gd:PhysicsDirectBodyState3D.apply_central_force
-	class(self).ApplyCentralForce(Vector3.XYZ(gd.Vector3{0, 0, 0}))
+	Advanced(self).ApplyCentralForce(Vector3.XYZ(gd.Vector3{0, 0, 0}))
+}
+
+/*
+Applies a directional force without affecting rotation. A force is time dependent and meant to be applied every physics update.
+This is equivalent to using [method apply_force] at the body's center of mass.
+*/
+func (self Expanded) ApplyCentralForce(force Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.apply_central_force
+	Advanced(self).ApplyCentralForce(Vector3.XYZ(force))
 }
 
 /*
@@ -102,7 +129,15 @@ Applies a positioned force to the body. A force is time dependent and meant to b
 [param position] is the offset from the body origin in global coordinates.
 */
 func (self Instance) ApplyForce(force Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.apply_force
-	class(self).ApplyForce(Vector3.XYZ(force), Vector3.XYZ(gd.Vector3{0, 0, 0}))
+	Advanced(self).ApplyForce(Vector3.XYZ(force), Vector3.XYZ(gd.Vector3{0, 0, 0}))
+}
+
+/*
+Applies a positioned force to the body. A force is time dependent and meant to be applied every physics update.
+[param position] is the offset from the body origin in global coordinates.
+*/
+func (self Expanded) ApplyForce(force Vector3.XYZ, position Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.apply_force
+	Advanced(self).ApplyForce(Vector3.XYZ(force), Vector3.XYZ(position))
 }
 
 /*
@@ -110,7 +145,7 @@ Applies a rotational force without affecting position. A force is time dependent
 [b]Note:[/b] [member inverse_inertia] is required for this to work. To have [member inverse_inertia], an active [CollisionShape3D] must be a child of the node, or you can manually set [member inverse_inertia].
 */
 func (self Instance) ApplyTorque(torque Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.apply_torque
-	class(self).ApplyTorque(Vector3.XYZ(torque))
+	Advanced(self).ApplyTorque(Vector3.XYZ(torque))
 }
 
 /*
@@ -118,7 +153,15 @@ Adds a constant directional force without affecting rotation that keeps being ap
 This is equivalent to using [method add_constant_force] at the body's center of mass.
 */
 func (self Instance) AddConstantCentralForce() { //gd:PhysicsDirectBodyState3D.add_constant_central_force
-	class(self).AddConstantCentralForce(Vector3.XYZ(gd.Vector3{0, 0, 0}))
+	Advanced(self).AddConstantCentralForce(Vector3.XYZ(gd.Vector3{0, 0, 0}))
+}
+
+/*
+Adds a constant directional force without affecting rotation that keeps being applied over time until cleared with [code]constant_force = Vector3(0, 0, 0)[/code].
+This is equivalent to using [method add_constant_force] at the body's center of mass.
+*/
+func (self Expanded) AddConstantCentralForce(force Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.add_constant_central_force
+	Advanced(self).AddConstantCentralForce(Vector3.XYZ(force))
 }
 
 /*
@@ -126,14 +169,22 @@ Adds a constant positioned force to the body that keeps being applied over time 
 [param position] is the offset from the body origin in global coordinates.
 */
 func (self Instance) AddConstantForce(force Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.add_constant_force
-	class(self).AddConstantForce(Vector3.XYZ(force), Vector3.XYZ(gd.Vector3{0, 0, 0}))
+	Advanced(self).AddConstantForce(Vector3.XYZ(force), Vector3.XYZ(gd.Vector3{0, 0, 0}))
+}
+
+/*
+Adds a constant positioned force to the body that keeps being applied over time until cleared with [code]constant_force = Vector3(0, 0, 0)[/code].
+[param position] is the offset from the body origin in global coordinates.
+*/
+func (self Expanded) AddConstantForce(force Vector3.XYZ, position Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.add_constant_force
+	Advanced(self).AddConstantForce(Vector3.XYZ(force), Vector3.XYZ(position))
 }
 
 /*
 Adds a constant rotational force without affecting position that keeps being applied over time until cleared with [code]constant_torque = Vector3(0, 0, 0)[/code].
 */
 func (self Instance) AddConstantTorque(torque Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.add_constant_torque
-	class(self).AddConstantTorque(Vector3.XYZ(torque))
+	Advanced(self).AddConstantTorque(Vector3.XYZ(torque))
 }
 
 /*
@@ -141,7 +192,7 @@ Sets the body's total constant positional forces applied during each physics upd
 See [method add_constant_force] and [method add_constant_central_force].
 */
 func (self Instance) SetConstantForce(force Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.set_constant_force
-	class(self).SetConstantForce(Vector3.XYZ(force))
+	Advanced(self).SetConstantForce(Vector3.XYZ(force))
 }
 
 /*
@@ -149,7 +200,7 @@ Returns the body's total constant positional forces applied during each physics 
 See [method add_constant_force] and [method add_constant_central_force].
 */
 func (self Instance) GetConstantForce() Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_constant_force
-	return Vector3.XYZ(class(self).GetConstantForce())
+	return Vector3.XYZ(Advanced(self).GetConstantForce())
 }
 
 /*
@@ -157,7 +208,7 @@ Sets the body's total constant rotational forces applied during each physics upd
 See [method add_constant_torque].
 */
 func (self Instance) SetConstantTorque(torque Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.set_constant_torque
-	class(self).SetConstantTorque(Vector3.XYZ(torque))
+	Advanced(self).SetConstantTorque(Vector3.XYZ(torque))
 }
 
 /*
@@ -165,7 +216,7 @@ Returns the body's total constant rotational forces applied during each physics 
 See [method add_constant_torque].
 */
 func (self Instance) GetConstantTorque() Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_constant_torque
-	return Vector3.XYZ(class(self).GetConstantTorque())
+	return Vector3.XYZ(Advanced(self).GetConstantTorque())
 }
 
 /*
@@ -173,98 +224,98 @@ Returns the number of contacts this body has with other bodies.
 [b]Note:[/b] By default, this returns 0 unless bodies are configured to monitor contacts. See [member RigidBody3D.contact_monitor].
 */
 func (self Instance) GetContactCount() int { //gd:PhysicsDirectBodyState3D.get_contact_count
-	return int(int(class(self).GetContactCount()))
+	return int(int(Advanced(self).GetContactCount()))
 }
 
 /*
 Returns the position of the contact point on the body in the global coordinate system.
 */
 func (self Instance) GetContactLocalPosition(contact_idx int) Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_contact_local_position
-	return Vector3.XYZ(class(self).GetContactLocalPosition(int64(contact_idx)))
+	return Vector3.XYZ(Advanced(self).GetContactLocalPosition(int64(contact_idx)))
 }
 
 /*
 Returns the local normal at the contact point.
 */
 func (self Instance) GetContactLocalNormal(contact_idx int) Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_contact_local_normal
-	return Vector3.XYZ(class(self).GetContactLocalNormal(int64(contact_idx)))
+	return Vector3.XYZ(Advanced(self).GetContactLocalNormal(int64(contact_idx)))
 }
 
 /*
 Impulse created by the contact.
 */
 func (self Instance) GetContactImpulse(contact_idx int) Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_contact_impulse
-	return Vector3.XYZ(class(self).GetContactImpulse(int64(contact_idx)))
+	return Vector3.XYZ(Advanced(self).GetContactImpulse(int64(contact_idx)))
 }
 
 /*
 Returns the local shape index of the collision.
 */
 func (self Instance) GetContactLocalShape(contact_idx int) int { //gd:PhysicsDirectBodyState3D.get_contact_local_shape
-	return int(int(class(self).GetContactLocalShape(int64(contact_idx))))
+	return int(int(Advanced(self).GetContactLocalShape(int64(contact_idx))))
 }
 
 /*
 Returns the linear velocity vector at the body's contact point.
 */
 func (self Instance) GetContactLocalVelocityAtPosition(contact_idx int) Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_contact_local_velocity_at_position
-	return Vector3.XYZ(class(self).GetContactLocalVelocityAtPosition(int64(contact_idx)))
+	return Vector3.XYZ(Advanced(self).GetContactLocalVelocityAtPosition(int64(contact_idx)))
 }
 
 /*
 Returns the collider's [RID].
 */
 func (self Instance) GetContactCollider(contact_idx int) RID.Body3D { //gd:PhysicsDirectBodyState3D.get_contact_collider
-	return RID.Body3D(class(self).GetContactCollider(int64(contact_idx)))
+	return RID.Body3D(Advanced(self).GetContactCollider(int64(contact_idx)))
 }
 
 /*
 Returns the position of the contact point on the collider in the global coordinate system.
 */
 func (self Instance) GetContactColliderPosition(contact_idx int) Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_contact_collider_position
-	return Vector3.XYZ(class(self).GetContactColliderPosition(int64(contact_idx)))
+	return Vector3.XYZ(Advanced(self).GetContactColliderPosition(int64(contact_idx)))
 }
 
 /*
 Returns the collider's object id.
 */
 func (self Instance) GetContactColliderId(contact_idx int) int { //gd:PhysicsDirectBodyState3D.get_contact_collider_id
-	return int(int(class(self).GetContactColliderId(int64(contact_idx))))
+	return int(int(Advanced(self).GetContactColliderId(int64(contact_idx))))
 }
 
 /*
 Returns the collider object.
 */
 func (self Instance) GetContactColliderObject(contact_idx int) Object.Instance { //gd:PhysicsDirectBodyState3D.get_contact_collider_object
-	return Object.Instance(class(self).GetContactColliderObject(int64(contact_idx)))
+	return Object.Instance(Advanced(self).GetContactColliderObject(int64(contact_idx)))
 }
 
 /*
 Returns the collider's shape index.
 */
 func (self Instance) GetContactColliderShape(contact_idx int) int { //gd:PhysicsDirectBodyState3D.get_contact_collider_shape
-	return int(int(class(self).GetContactColliderShape(int64(contact_idx))))
+	return int(int(Advanced(self).GetContactColliderShape(int64(contact_idx))))
 }
 
 /*
 Returns the linear velocity vector at the collider's contact point.
 */
 func (self Instance) GetContactColliderVelocityAtPosition(contact_idx int) Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_contact_collider_velocity_at_position
-	return Vector3.XYZ(class(self).GetContactColliderVelocityAtPosition(int64(contact_idx)))
+	return Vector3.XYZ(Advanced(self).GetContactColliderVelocityAtPosition(int64(contact_idx)))
 }
 
 /*
 Updates the body's linear and angular velocity by applying gravity and damping for the equivalent of one physics tick.
 */
 func (self Instance) IntegrateForces() { //gd:PhysicsDirectBodyState3D.integrate_forces
-	class(self).IntegrateForces()
+	Advanced(self).IntegrateForces()
 }
 
 /*
 Returns the current state of the space, useful for queries.
 */
 func (self Instance) GetSpaceState() [1]gdclass.PhysicsDirectSpaceState3D { //gd:PhysicsDirectBodyState3D.get_space_state
-	return [1]gdclass.PhysicsDirectSpaceState3D(class(self).GetSpaceState())
+	return [1]gdclass.PhysicsDirectSpaceState3D(Advanced(self).GetSpaceState())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

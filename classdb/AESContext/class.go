@@ -117,6 +117,7 @@ public partial class MyNode : Node
 [/codeblocks]
 */
 type Instance [1]gdclass.AESContext
+type Expanded [1]gdclass.AESContext
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -130,7 +131,14 @@ type Any interface {
 Start the AES context in the given [param mode]. A [param key] of either 16 or 32 bytes must always be provided, while an [param iv] (initialization vector) of exactly 16 bytes, is only needed when [param mode] is either [constant MODE_CBC_ENCRYPT] or [constant MODE_CBC_DECRYPT].
 */
 func (self Instance) Start(mode gdclass.AESContextMode, key []byte) error { //gd:AESContext.start
-	return error(gd.ToError(class(self).Start(mode, Packed.Bytes(Packed.New(key...)), Packed.Bytes(Packed.New([1][]byte{}[0]...)))))
+	return error(gd.ToError(Advanced(self).Start(mode, Packed.Bytes(Packed.New(key...)), Packed.Bytes(Packed.New([1][]byte{}[0]...)))))
+}
+
+/*
+Start the AES context in the given [param mode]. A [param key] of either 16 or 32 bytes must always be provided, while an [param iv] (initialization vector) of exactly 16 bytes, is only needed when [param mode] is either [constant MODE_CBC_ENCRYPT] or [constant MODE_CBC_DECRYPT].
+*/
+func (self Expanded) Start(mode gdclass.AESContextMode, key []byte, iv []byte) error { //gd:AESContext.start
+	return error(gd.ToError(Advanced(self).Start(mode, Packed.Bytes(Packed.New(key...)), Packed.Bytes(Packed.New(iv...)))))
 }
 
 /*
@@ -138,7 +146,7 @@ Run the desired operation for this AES context. Will return a [PackedByteArray] 
 [b]Note:[/b] The size of [param src] must be a multiple of 16. Apply some padding if needed.
 */
 func (self Instance) Update(src []byte) []byte { //gd:AESContext.update
-	return []byte(class(self).Update(Packed.Bytes(Packed.New(src...))).Bytes())
+	return []byte(Advanced(self).Update(Packed.Bytes(Packed.New(src...))).Bytes())
 }
 
 /*
@@ -146,14 +154,14 @@ Get the current IV state for this context (IV gets updated when calling [method 
 [b]Note:[/b] This function only makes sense when the context is started with [constant MODE_CBC_ENCRYPT] or [constant MODE_CBC_DECRYPT].
 */
 func (self Instance) GetIvState() []byte { //gd:AESContext.get_iv_state
-	return []byte(class(self).GetIvState().Bytes())
+	return []byte(Advanced(self).GetIvState().Bytes())
 }
 
 /*
 Close this AES context so it can be started again. See [method start].
 */
 func (self Instance) Finish() { //gd:AESContext.finish
-	class(self).Finish()
+	Advanced(self).Finish()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

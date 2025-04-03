@@ -63,14 +63,14 @@ type Any interface {
 Returns the estimated size of the plane that was detected. Say when the anchor relates to a table in the real world, this is the estimated size of the surface of that table.
 */
 func (self Instance) GetSize() Vector3.XYZ { //gd:XRAnchor3D.get_size
-	return Vector3.XYZ(class(self).GetSize())
+	return Vector3.XYZ(Advanced(self).GetSize())
 }
 
 /*
 Returns a plane aligned with our anchor; handy for intersection testing.
 */
 func (self Instance) GetPlane() Plane.NormalD { //gd:XRAnchor3D.get_plane
-	return Plane.NormalD(class(self).GetPlane())
+	return Plane.NormalD(Advanced(self).GetPlane())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

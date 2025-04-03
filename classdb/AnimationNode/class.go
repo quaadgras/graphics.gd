@@ -56,6 +56,7 @@ var current_delta = $AnimationTree[parameters/AnimationNodeName/current_delta]
 %!(EXTRA string=AnimationNode)
 */
 type Instance [1]gdclass.AnimationNode
+type Expanded [1]gdclass.AnimationNode
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -234,56 +235,56 @@ func (Instance) _has_filter(impl func(ptr unsafe.Pointer) bool) (cb gd.Extension
 Adds an input to the animation node. This is only useful for animation nodes created for use in an [AnimationNodeBlendTree]. If the addition fails, returns [code]false[/code].
 */
 func (self Instance) AddInput(name string) bool { //gd:AnimationNode.add_input
-	return bool(class(self).AddInput(String.New(name)))
+	return bool(Advanced(self).AddInput(String.New(name)))
 }
 
 /*
 Removes an input, call this only when inactive.
 */
 func (self Instance) RemoveInput(index int) { //gd:AnimationNode.remove_input
-	class(self).RemoveInput(int64(index))
+	Advanced(self).RemoveInput(int64(index))
 }
 
 /*
 Sets the name of the input at the given [param input] index. If the setting fails, returns [code]false[/code].
 */
 func (self Instance) SetInputName(input int, name string) bool { //gd:AnimationNode.set_input_name
-	return bool(class(self).SetInputName(int64(input), String.New(name)))
+	return bool(Advanced(self).SetInputName(int64(input), String.New(name)))
 }
 
 /*
 Gets the name of an input by index.
 */
 func (self Instance) GetInputName(input int) string { //gd:AnimationNode.get_input_name
-	return string(class(self).GetInputName(int64(input)).String())
+	return string(Advanced(self).GetInputName(int64(input)).String())
 }
 
 /*
 Amount of inputs in this animation node, only useful for animation nodes that go into [AnimationNodeBlendTree].
 */
 func (self Instance) GetInputCount() int { //gd:AnimationNode.get_input_count
-	return int(int(class(self).GetInputCount()))
+	return int(int(Advanced(self).GetInputCount()))
 }
 
 /*
 Returns the input index which corresponds to [param name]. If not found, returns [code]-1[/code].
 */
 func (self Instance) FindInput(name string) int { //gd:AnimationNode.find_input
-	return int(int(class(self).FindInput(String.New(name))))
+	return int(int(Advanced(self).FindInput(String.New(name))))
 }
 
 /*
 Adds or removes a path for the filter.
 */
 func (self Instance) SetFilterPath(path string, enable bool) { //gd:AnimationNode.set_filter_path
-	class(self).SetFilterPath(Path.ToNode(String.New(path)), enable)
+	Advanced(self).SetFilterPath(Path.ToNode(String.New(path)), enable)
 }
 
 /*
 Returns [code]true[/code] if the given path is filtered.
 */
 func (self Instance) IsPathFiltered(path string) bool { //gd:AnimationNode.is_path_filtered
-	return bool(class(self).IsPathFiltered(Path.ToNode(String.New(path))))
+	return bool(Advanced(self).IsPathFiltered(Path.ToNode(String.New(path))))
 }
 
 /*
@@ -291,14 +292,14 @@ Returns the object id of the [AnimationTree] that owns this node.
 [b]Note:[/b] This method should only be called from within the [method AnimationNodeExtension._process_animation_node] method, and will return an invalid id otherwise.
 */
 func (self Instance) GetProcessingAnimationTreeInstanceId() int { //gd:AnimationNode.get_processing_animation_tree_instance_id
-	return int(int(class(self).GetProcessingAnimationTreeInstanceId()))
+	return int(int(Advanced(self).GetProcessingAnimationTreeInstanceId()))
 }
 
 /*
 Returns [code]true[/code] if this animation node is being processed in test-only mode.
 */
 func (self Instance) IsProcessTesting() bool { //gd:AnimationNode.is_process_testing
-	return bool(class(self).IsProcessTesting())
+	return bool(Advanced(self).IsProcessTesting())
 }
 
 /*
@@ -306,35 +307,57 @@ Blend an animation by [param blend] amount (name must be valid in the linked [An
 A [param looped_flag] is used by internal processing immediately after the loop. See also [enum Animation.LoopedFlag].
 */
 func (self Instance) BlendAnimation(animation string, time Float.X, delta Float.X, seeked bool, is_external_seeking bool, blend Float.X) { //gd:AnimationNode.blend_animation
-	class(self).BlendAnimation(String.Name(String.New(animation)), float64(time), float64(delta), seeked, is_external_seeking, float64(blend), 0)
+	Advanced(self).BlendAnimation(String.Name(String.New(animation)), float64(time), float64(delta), seeked, is_external_seeking, float64(blend), 0)
+}
+
+/*
+Blend an animation by [param blend] amount (name must be valid in the linked [AnimationPlayer]). A [param time] and [param delta] may be passed, as well as whether [param seeked] happened.
+A [param looped_flag] is used by internal processing immediately after the loop. See also [enum Animation.LoopedFlag].
+*/
+func (self Expanded) BlendAnimation(animation string, time Float.X, delta Float.X, seeked bool, is_external_seeking bool, blend Float.X, looped_flag gdclass.AnimationLoopedFlag) { //gd:AnimationNode.blend_animation
+	Advanced(self).BlendAnimation(String.Name(String.New(animation)), float64(time), float64(delta), seeked, is_external_seeking, float64(blend), looped_flag)
 }
 
 /*
 Blend another animation node (in case this animation node contains child animation nodes). This function is only useful if you inherit from [AnimationRootNode] instead, otherwise editors will not display your animation node for addition.
 */
 func (self Instance) BlendNode(name string, node [1]gdclass.AnimationNode, time Float.X, seek bool, is_external_seeking bool, blend Float.X) Float.X { //gd:AnimationNode.blend_node
-	return Float.X(Float.X(class(self).BlendNode(String.Name(String.New(name)), node, float64(time), seek, is_external_seeking, float64(blend), 0, true, false)))
+	return Float.X(Float.X(Advanced(self).BlendNode(String.Name(String.New(name)), node, float64(time), seek, is_external_seeking, float64(blend), 0, true, false)))
+}
+
+/*
+Blend another animation node (in case this animation node contains child animation nodes). This function is only useful if you inherit from [AnimationRootNode] instead, otherwise editors will not display your animation node for addition.
+*/
+func (self Expanded) BlendNode(name string, node [1]gdclass.AnimationNode, time Float.X, seek bool, is_external_seeking bool, blend Float.X, filter gdclass.AnimationNodeFilterAction, sync bool, test_only bool) Float.X { //gd:AnimationNode.blend_node
+	return Float.X(Float.X(Advanced(self).BlendNode(String.Name(String.New(name)), node, float64(time), seek, is_external_seeking, float64(blend), filter, sync, test_only)))
 }
 
 /*
 Blend an input. This is only useful for animation nodes created for an [AnimationNodeBlendTree]. The [param time] parameter is a relative delta, unless [param seek] is [code]true[/code], in which case it is absolute. A filter mode may be optionally passed (see [enum FilterAction] for options).
 */
 func (self Instance) BlendInput(input_index int, time Float.X, seek bool, is_external_seeking bool, blend Float.X) Float.X { //gd:AnimationNode.blend_input
-	return Float.X(Float.X(class(self).BlendInput(int64(input_index), float64(time), seek, is_external_seeking, float64(blend), 0, true, false)))
+	return Float.X(Float.X(Advanced(self).BlendInput(int64(input_index), float64(time), seek, is_external_seeking, float64(blend), 0, true, false)))
+}
+
+/*
+Blend an input. This is only useful for animation nodes created for an [AnimationNodeBlendTree]. The [param time] parameter is a relative delta, unless [param seek] is [code]true[/code], in which case it is absolute. A filter mode may be optionally passed (see [enum FilterAction] for options).
+*/
+func (self Expanded) BlendInput(input_index int, time Float.X, seek bool, is_external_seeking bool, blend Float.X, filter gdclass.AnimationNodeFilterAction, sync bool, test_only bool) Float.X { //gd:AnimationNode.blend_input
+	return Float.X(Float.X(Advanced(self).BlendInput(int64(input_index), float64(time), seek, is_external_seeking, float64(blend), filter, sync, test_only)))
 }
 
 /*
 Sets a custom parameter. These are used as local memory, because resources can be reused across the tree or scenes.
 */
 func (self Instance) SetParameter(name string, value any) { //gd:AnimationNode.set_parameter
-	class(self).SetParameter(String.Name(String.New(name)), variant.New(value))
+	Advanced(self).SetParameter(String.Name(String.New(name)), variant.New(value))
 }
 
 /*
 Gets the value of a parameter. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees.
 */
 func (self Instance) GetParameter(name string) any { //gd:AnimationNode.get_parameter
-	return any(class(self).GetParameter(String.Name(String.New(name))).Interface())
+	return any(Advanced(self).GetParameter(String.Name(String.New(name))).Interface())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -65,7 +65,7 @@ Returns the [ColorPicker] that this node toggles.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
 func (self Instance) GetPicker() [1]gdclass.ColorPicker { //gd:ColorPickerButton.get_picker
-	return [1]gdclass.ColorPicker(class(self).GetPicker())
+	return [1]gdclass.ColorPicker(Advanced(self).GetPicker())
 }
 
 /*
@@ -73,7 +73,7 @@ Returns the control's [PopupPanel] which allows you to connect to popup signals.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member Window.visible] property.
 */
 func (self Instance) GetPopup() [1]gdclass.PopupPanel { //gd:ColorPickerButton.get_popup
-	return [1]gdclass.PopupPanel(class(self).GetPopup())
+	return [1]gdclass.PopupPanel(Advanced(self).GetPopup())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

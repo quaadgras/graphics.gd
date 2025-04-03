@@ -61,21 +61,21 @@ type Any interface {
 If [code]true[/code], the sound will be recorded. Note that restarting the recording will remove the previously recorded sample.
 */
 func (self Instance) SetRecordingActive(record bool) { //gd:AudioEffectRecord.set_recording_active
-	class(self).SetRecordingActive(record)
+	Advanced(self).SetRecordingActive(record)
 }
 
 /*
 Returns whether the recording is active or not.
 */
 func (self Instance) IsRecordingActive() bool { //gd:AudioEffectRecord.is_recording_active
-	return bool(class(self).IsRecordingActive())
+	return bool(Advanced(self).IsRecordingActive())
 }
 
 /*
 Returns the recorded sample.
 */
 func (self Instance) GetRecording() [1]gdclass.AudioStreamWAV { //gd:AudioEffectRecord.get_recording
-	return [1]gdclass.AudioStreamWAV(class(self).GetRecording())
+	return [1]gdclass.AudioStreamWAV(Advanced(self).GetRecording())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

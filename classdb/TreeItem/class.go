@@ -47,6 +47,7 @@ To create a [TreeItem], use [method Tree.create_item] or [method TreeItem.create
 [b]Note:[/b] The ID values used for buttons are 32-bit, unlike [int] which is always 64-bit. They go from [code]-2147483648[/code] to [code]2147483647[/code].
 */
 type Instance [1]gdclass.TreeItem
+type Expanded [1]gdclass.TreeItem
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -60,14 +61,14 @@ type Any interface {
 Sets the given column's cell mode to [param mode]. This determines how the cell is displayed and edited. See [enum TreeCellMode] constants for details.
 */
 func (self Instance) SetCellMode(column int, mode gdclass.TreeItemTreeCellMode) { //gd:TreeItem.set_cell_mode
-	class(self).SetCellMode(int64(column), mode)
+	Advanced(self).SetCellMode(int64(column), mode)
 }
 
 /*
 Returns the column's cell mode.
 */
 func (self Instance) GetCellMode(column int) gdclass.TreeItemTreeCellMode { //gd:TreeItem.get_cell_mode
-	return gdclass.TreeItemTreeCellMode(class(self).GetCellMode(int64(column)))
+	return gdclass.TreeItemTreeCellMode(Advanced(self).GetCellMode(int64(column)))
 }
 
 /*
@@ -75,14 +76,14 @@ Sets the given column's auto translate mode to [param mode].
 All columns use [constant Node.AUTO_TRANSLATE_MODE_INHERIT] by default, which uses the same auto translate mode as the [Tree] itself.
 */
 func (self Instance) SetAutoTranslateMode(column int, mode gdclass.NodeAutoTranslateMode) { //gd:TreeItem.set_auto_translate_mode
-	class(self).SetAutoTranslateMode(int64(column), mode)
+	Advanced(self).SetAutoTranslateMode(int64(column), mode)
 }
 
 /*
 Returns the column's auto translate mode.
 */
 func (self Instance) GetAutoTranslateMode(column int) gdclass.NodeAutoTranslateMode { //gd:TreeItem.get_auto_translate_mode
-	return gdclass.NodeAutoTranslateMode(class(self).GetAutoTranslateMode(int64(column)))
+	return gdclass.NodeAutoTranslateMode(Advanced(self).GetAutoTranslateMode(int64(column)))
 }
 
 /*
@@ -90,21 +91,21 @@ If [param multiline] is [code]true[/code], the given [param column] is multiline
 [b]Note:[/b] This option only affects the type of control ([LineEdit] or [TextEdit]) that appears when editing the column. You can set multiline values with [method set_text] even if the column is not multiline editable.
 */
 func (self Instance) SetEditMultiline(column int, multiline bool) { //gd:TreeItem.set_edit_multiline
-	class(self).SetEditMultiline(int64(column), multiline)
+	Advanced(self).SetEditMultiline(int64(column), multiline)
 }
 
 /*
 Returns [code]true[/code] if the given [param column] is multiline editable.
 */
 func (self Instance) IsEditMultiline(column int) bool { //gd:TreeItem.is_edit_multiline
-	return bool(class(self).IsEditMultiline(int64(column)))
+	return bool(Advanced(self).IsEditMultiline(int64(column)))
 }
 
 /*
 If [param checked] is [code]true[/code], the given [param column] is checked. Clears column's indeterminate status.
 */
 func (self Instance) SetChecked(column int, checked bool) { //gd:TreeItem.set_checked
-	class(self).SetChecked(int64(column), checked)
+	Advanced(self).SetChecked(int64(column), checked)
 }
 
 /*
@@ -112,224 +113,231 @@ If [param indeterminate] is [code]true[/code], the given [param column] is marke
 [b]Note:[/b] If set [code]true[/code] from [code]false[/code], then column is cleared of checked status.
 */
 func (self Instance) SetIndeterminate(column int, indeterminate bool) { //gd:TreeItem.set_indeterminate
-	class(self).SetIndeterminate(int64(column), indeterminate)
+	Advanced(self).SetIndeterminate(int64(column), indeterminate)
 }
 
 /*
 Returns [code]true[/code] if the given [param column] is checked.
 */
 func (self Instance) IsChecked(column int) bool { //gd:TreeItem.is_checked
-	return bool(class(self).IsChecked(int64(column)))
+	return bool(Advanced(self).IsChecked(int64(column)))
 }
 
 /*
 Returns [code]true[/code] if the given [param column] is indeterminate.
 */
 func (self Instance) IsIndeterminate(column int) bool { //gd:TreeItem.is_indeterminate
-	return bool(class(self).IsIndeterminate(int64(column)))
+	return bool(Advanced(self).IsIndeterminate(int64(column)))
 }
 
 /*
 Propagates this item's checked status to its children and parents for the given [param column]. It is possible to process the items affected by this method call by connecting to [signal Tree.check_propagated_to_item]. The order that the items affected will be processed is as follows: the item invoking this method, children of that item, and finally parents of that item. If [param emit_signal] is [code]false[/code], then [signal Tree.check_propagated_to_item] will not be emitted.
 */
 func (self Instance) PropagateCheck(column int) { //gd:TreeItem.propagate_check
-	class(self).PropagateCheck(int64(column), true)
+	Advanced(self).PropagateCheck(int64(column), true)
+}
+
+/*
+Propagates this item's checked status to its children and parents for the given [param column]. It is possible to process the items affected by this method call by connecting to [signal Tree.check_propagated_to_item]. The order that the items affected will be processed is as follows: the item invoking this method, children of that item, and finally parents of that item. If [param emit_signal] is [code]false[/code], then [signal Tree.check_propagated_to_item] will not be emitted.
+*/
+func (self Expanded) PropagateCheck(column int, emit_signal bool) { //gd:TreeItem.propagate_check
+	Advanced(self).PropagateCheck(int64(column), emit_signal)
 }
 
 /*
 Sets the given column's text value.
 */
 func (self Instance) SetText(column int, text string) { //gd:TreeItem.set_text
-	class(self).SetText(int64(column), String.New(text))
+	Advanced(self).SetText(int64(column), String.New(text))
 }
 
 /*
 Returns the given column's text.
 */
 func (self Instance) GetText(column int) string { //gd:TreeItem.get_text
-	return string(class(self).GetText(int64(column)).String())
+	return string(Advanced(self).GetText(int64(column)).String())
 }
 
 /*
 Sets item's text base writing direction.
 */
 func (self Instance) SetTextDirection(column int, direction gdclass.ControlTextDirection) { //gd:TreeItem.set_text_direction
-	class(self).SetTextDirection(int64(column), direction)
+	Advanced(self).SetTextDirection(int64(column), direction)
 }
 
 /*
 Returns item's text base writing direction.
 */
 func (self Instance) GetTextDirection(column int) gdclass.ControlTextDirection { //gd:TreeItem.get_text_direction
-	return gdclass.ControlTextDirection(class(self).GetTextDirection(int64(column)))
+	return gdclass.ControlTextDirection(Advanced(self).GetTextDirection(int64(column)))
 }
 
 /*
 Sets the autowrap mode in the given [param column]. If set to something other than [constant TextServer.AUTOWRAP_OFF], the text gets wrapped inside the cell's bounding rectangle.
 */
 func (self Instance) SetAutowrapMode(column int, autowrap_mode gdclass.TextServerAutowrapMode) { //gd:TreeItem.set_autowrap_mode
-	class(self).SetAutowrapMode(int64(column), autowrap_mode)
+	Advanced(self).SetAutowrapMode(int64(column), autowrap_mode)
 }
 
 /*
 Returns the text autowrap mode in the given [param column]. By default it is [constant TextServer.AUTOWRAP_OFF].
 */
 func (self Instance) GetAutowrapMode(column int) gdclass.TextServerAutowrapMode { //gd:TreeItem.get_autowrap_mode
-	return gdclass.TextServerAutowrapMode(class(self).GetAutowrapMode(int64(column)))
+	return gdclass.TextServerAutowrapMode(Advanced(self).GetAutowrapMode(int64(column)))
 }
 
 /*
 Sets the clipping behavior when the text exceeds the item's bounding rectangle in the given [param column].
 */
 func (self Instance) SetTextOverrunBehavior(column int, overrun_behavior gdclass.TextServerOverrunBehavior) { //gd:TreeItem.set_text_overrun_behavior
-	class(self).SetTextOverrunBehavior(int64(column), overrun_behavior)
+	Advanced(self).SetTextOverrunBehavior(int64(column), overrun_behavior)
 }
 
 /*
 Returns the clipping behavior when the text exceeds the item's bounding rectangle in the given [param column]. By default it is [constant TextServer.OVERRUN_TRIM_ELLIPSIS].
 */
 func (self Instance) GetTextOverrunBehavior(column int) gdclass.TextServerOverrunBehavior { //gd:TreeItem.get_text_overrun_behavior
-	return gdclass.TextServerOverrunBehavior(class(self).GetTextOverrunBehavior(int64(column)))
+	return gdclass.TextServerOverrunBehavior(Advanced(self).GetTextOverrunBehavior(int64(column)))
 }
 
 /*
 Set BiDi algorithm override for the structured text. Has effect for cells that display text.
 */
 func (self Instance) SetStructuredTextBidiOverride(column int, parser gdclass.TextServerStructuredTextParser) { //gd:TreeItem.set_structured_text_bidi_override
-	class(self).SetStructuredTextBidiOverride(int64(column), parser)
+	Advanced(self).SetStructuredTextBidiOverride(int64(column), parser)
 }
 
 /*
 Returns the BiDi algorithm override set for this cell.
 */
 func (self Instance) GetStructuredTextBidiOverride(column int) gdclass.TextServerStructuredTextParser { //gd:TreeItem.get_structured_text_bidi_override
-	return gdclass.TextServerStructuredTextParser(class(self).GetStructuredTextBidiOverride(int64(column)))
+	return gdclass.TextServerStructuredTextParser(Advanced(self).GetStructuredTextBidiOverride(int64(column)))
 }
 
 /*
 Set additional options for BiDi override. Has effect for cells that display text.
 */
 func (self Instance) SetStructuredTextBidiOverrideOptions(column int, args []any) { //gd:TreeItem.set_structured_text_bidi_override_options
-	class(self).SetStructuredTextBidiOverrideOptions(int64(column), gd.EngineArrayFromSlice(args))
+	Advanced(self).SetStructuredTextBidiOverrideOptions(int64(column), gd.EngineArrayFromSlice(args))
 }
 
 /*
 Returns the additional BiDi options set for this cell.
 */
 func (self Instance) GetStructuredTextBidiOverrideOptions(column int) []any { //gd:TreeItem.get_structured_text_bidi_override_options
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetStructuredTextBidiOverrideOptions(int64(column)))))
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetStructuredTextBidiOverrideOptions(int64(column)))))
 }
 
 /*
 Sets language code of item's text used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
 */
 func (self Instance) SetLanguage(column int, language string) { //gd:TreeItem.set_language
-	class(self).SetLanguage(int64(column), String.New(language))
+	Advanced(self).SetLanguage(int64(column), String.New(language))
 }
 
 /*
 Returns item's text language code.
 */
 func (self Instance) GetLanguage(column int) string { //gd:TreeItem.get_language
-	return string(class(self).GetLanguage(int64(column)).String())
+	return string(Advanced(self).GetLanguage(int64(column)).String())
 }
 
 /*
 Sets a string to be shown after a column's value (for example, a unit abbreviation).
 */
 func (self Instance) SetSuffix(column int, text string) { //gd:TreeItem.set_suffix
-	class(self).SetSuffix(int64(column), String.New(text))
+	Advanced(self).SetSuffix(int64(column), String.New(text))
 }
 
 /*
 Gets the suffix string shown after the column value.
 */
 func (self Instance) GetSuffix(column int) string { //gd:TreeItem.get_suffix
-	return string(class(self).GetSuffix(int64(column)).String())
+	return string(Advanced(self).GetSuffix(int64(column)).String())
 }
 
 /*
 Sets the given cell's icon [Texture2D]. If the cell is in [constant CELL_MODE_ICON] mode, the icon is displayed in the center of the cell. Otherwise, the icon is displayed before the cell's text. [constant CELL_MODE_RANGE] does not display an icon.
 */
 func (self Instance) SetIcon(column int, texture [1]gdclass.Texture2D) { //gd:TreeItem.set_icon
-	class(self).SetIcon(int64(column), texture)
+	Advanced(self).SetIcon(int64(column), texture)
 }
 
 /*
 Returns the given column's icon [Texture2D]. Error if no icon is set.
 */
 func (self Instance) GetIcon(column int) [1]gdclass.Texture2D { //gd:TreeItem.get_icon
-	return [1]gdclass.Texture2D(class(self).GetIcon(int64(column)))
+	return [1]gdclass.Texture2D(Advanced(self).GetIcon(int64(column)))
 }
 
 /*
 Sets the given cell's icon overlay [Texture2D]. The cell has to be in [constant CELL_MODE_ICON] mode, and icon has to be set. Overlay is drawn on top of icon, in the bottom left corner.
 */
 func (self Instance) SetIconOverlay(column int, texture [1]gdclass.Texture2D) { //gd:TreeItem.set_icon_overlay
-	class(self).SetIconOverlay(int64(column), texture)
+	Advanced(self).SetIconOverlay(int64(column), texture)
 }
 
 /*
 Returns the given column's icon overlay [Texture2D].
 */
 func (self Instance) GetIconOverlay(column int) [1]gdclass.Texture2D { //gd:TreeItem.get_icon_overlay
-	return [1]gdclass.Texture2D(class(self).GetIconOverlay(int64(column)))
+	return [1]gdclass.Texture2D(Advanced(self).GetIconOverlay(int64(column)))
 }
 
 /*
 Sets the given column's icon's texture region.
 */
 func (self Instance) SetIconRegion(column int, region Rect2.PositionSize) { //gd:TreeItem.set_icon_region
-	class(self).SetIconRegion(int64(column), Rect2.PositionSize(region))
+	Advanced(self).SetIconRegion(int64(column), Rect2.PositionSize(region))
 }
 
 /*
 Returns the icon [Texture2D] region as [Rect2].
 */
 func (self Instance) GetIconRegion(column int) Rect2.PositionSize { //gd:TreeItem.get_icon_region
-	return Rect2.PositionSize(class(self).GetIconRegion(int64(column)))
+	return Rect2.PositionSize(Advanced(self).GetIconRegion(int64(column)))
 }
 
 /*
 Sets the maximum allowed width of the icon in the given [param column]. This limit is applied on top of the default size of the icon and on top of [theme_item Tree.icon_max_width]. The height is adjusted according to the icon's ratio.
 */
 func (self Instance) SetIconMaxWidth(column int, width int) { //gd:TreeItem.set_icon_max_width
-	class(self).SetIconMaxWidth(int64(column), int64(width))
+	Advanced(self).SetIconMaxWidth(int64(column), int64(width))
 }
 
 /*
 Returns the maximum allowed width of the icon in the given [param column].
 */
 func (self Instance) GetIconMaxWidth(column int) int { //gd:TreeItem.get_icon_max_width
-	return int(int(class(self).GetIconMaxWidth(int64(column))))
+	return int(int(Advanced(self).GetIconMaxWidth(int64(column))))
 }
 
 /*
 Modulates the given column's icon with [param modulate].
 */
 func (self Instance) SetIconModulate(column int, modulate Color.RGBA) { //gd:TreeItem.set_icon_modulate
-	class(self).SetIconModulate(int64(column), Color.RGBA(modulate))
+	Advanced(self).SetIconModulate(int64(column), Color.RGBA(modulate))
 }
 
 /*
 Returns the [Color] modulating the column's icon.
 */
 func (self Instance) GetIconModulate(column int) Color.RGBA { //gd:TreeItem.get_icon_modulate
-	return Color.RGBA(class(self).GetIconModulate(int64(column)))
+	return Color.RGBA(Advanced(self).GetIconModulate(int64(column)))
 }
 
 /*
 Sets the value of a [constant CELL_MODE_RANGE] column.
 */
 func (self Instance) SetRange(column int, value Float.X) { //gd:TreeItem.set_range
-	class(self).SetRange(int64(column), float64(value))
+	Advanced(self).SetRange(int64(column), float64(value))
 }
 
 /*
 Returns the value of a [constant CELL_MODE_RANGE] column.
 */
 func (self Instance) GetRange(column int) Float.X { //gd:TreeItem.get_range
-	return Float.X(Float.X(class(self).GetRange(int64(column))))
+	return Float.X(Float.X(Advanced(self).GetRange(int64(column))))
 }
 
 /*
@@ -337,28 +345,36 @@ Sets the range of accepted values for a column. The column must be in the [const
 If [param expr] is [code]true[/code], the edit mode slider will use an exponential scale as with [member Range.exp_edit].
 */
 func (self Instance) SetRangeConfig(column int, min Float.X, max Float.X, step Float.X) { //gd:TreeItem.set_range_config
-	class(self).SetRangeConfig(int64(column), float64(min), float64(max), float64(step), false)
+	Advanced(self).SetRangeConfig(int64(column), float64(min), float64(max), float64(step), false)
+}
+
+/*
+Sets the range of accepted values for a column. The column must be in the [constant CELL_MODE_RANGE] mode.
+If [param expr] is [code]true[/code], the edit mode slider will use an exponential scale as with [member Range.exp_edit].
+*/
+func (self Expanded) SetRangeConfig(column int, min Float.X, max Float.X, step Float.X, expr bool) { //gd:TreeItem.set_range_config
+	Advanced(self).SetRangeConfig(int64(column), float64(min), float64(max), float64(step), expr)
 }
 
 /*
 Returns a dictionary containing the range parameters for a given column. The keys are "min", "max", "step", and "expr".
 */
 func (self Instance) GetRangeConfig(column int) RangeConfig { //gd:TreeItem.get_range_config
-	return RangeConfig(gd.DictionaryAs[RangeConfig](class(self).GetRangeConfig(int64(column))))
+	return RangeConfig(gd.DictionaryAs[RangeConfig](Advanced(self).GetRangeConfig(int64(column))))
 }
 
 /*
 Sets the metadata value for the given column, which can be retrieved later using [method get_metadata]. This can be used, for example, to store a reference to the original data.
 */
 func (self Instance) SetMetadata(column int, meta any) { //gd:TreeItem.set_metadata
-	class(self).SetMetadata(int64(column), variant.New(meta))
+	Advanced(self).SetMetadata(int64(column), variant.New(meta))
 }
 
 /*
 Returns the metadata value that was set for the given column using [method set_metadata].
 */
 func (self Instance) GetMetadata(column int) any { //gd:TreeItem.get_metadata
-	return any(class(self).GetMetadata(int64(column)).Interface())
+	return any(Advanced(self).GetMetadata(int64(column)).Interface())
 }
 
 /*
@@ -366,7 +382,7 @@ Sets the given column's custom draw callback to the [param callback] method on [
 The method named [param callback] should accept two arguments: the [TreeItem] that is drawn and its position and size as a [Rect2].
 */
 func (self Instance) SetCustomDraw(column int, obj Object.Instance, callback string) { //gd:TreeItem.set_custom_draw
-	class(self).SetCustomDraw(int64(column), obj, String.Name(String.New(callback)))
+	Advanced(self).SetCustomDraw(int64(column), obj, String.Name(String.New(callback)))
 }
 
 /*
@@ -374,21 +390,21 @@ Sets the given column's custom draw callback. Use an empty [Callable] ([code ski
 The [param callback] should accept two arguments: the [TreeItem] that is drawn and its position and size as a [Rect2].
 */
 func (self Instance) SetCustomDrawCallback(column int, callback func(item [1]gdclass.TreeItem, rect Rect2.PositionSize)) { //gd:TreeItem.set_custom_draw_callback
-	class(self).SetCustomDrawCallback(int64(column), Callable.New(callback))
+	Advanced(self).SetCustomDrawCallback(int64(column), Callable.New(callback))
 }
 
 /*
 Returns the custom callback of column [param column].
 */
 func (self Instance) GetCustomDrawCallback(column int) Callable.Function { //gd:TreeItem.get_custom_draw_callback
-	return Callable.Function(class(self).GetCustomDrawCallback(int64(column)))
+	return Callable.Function(Advanced(self).GetCustomDrawCallback(int64(column)))
 }
 
 /*
 Collapses or uncollapses this [TreeItem] and all the descendants of this item.
 */
 func (self Instance) SetCollapsedRecursive(enable bool) { //gd:TreeItem.set_collapsed_recursive
-	class(self).SetCollapsedRecursive(enable)
+	Advanced(self).SetCollapsedRecursive(enable)
 }
 
 /*
@@ -396,294 +412,316 @@ Returns [code]true[/code] if this [TreeItem], or any of its descendants, is coll
 If [param only_visible] is [code]true[/code] it ignores non-visible [TreeItem]s.
 */
 func (self Instance) IsAnyCollapsed() bool { //gd:TreeItem.is_any_collapsed
-	return bool(class(self).IsAnyCollapsed(false))
+	return bool(Advanced(self).IsAnyCollapsed(false))
+}
+
+/*
+Returns [code]true[/code] if this [TreeItem], or any of its descendants, is collapsed.
+If [param only_visible] is [code]true[/code] it ignores non-visible [TreeItem]s.
+*/
+func (self Expanded) IsAnyCollapsed(only_visible bool) bool { //gd:TreeItem.is_any_collapsed
+	return bool(Advanced(self).IsAnyCollapsed(only_visible))
 }
 
 /*
 Returns [code]true[/code] if [member visible] is [code]true[/code] and all its ancestors are also visible.
 */
 func (self Instance) IsVisibleInTree() bool { //gd:TreeItem.is_visible_in_tree
-	return bool(class(self).IsVisibleInTree())
+	return bool(Advanced(self).IsVisibleInTree())
 }
 
 /*
 Uncollapses all [TreeItem]s necessary to reveal this [TreeItem], i.e. all ancestor [TreeItem]s.
 */
 func (self Instance) UncollapseTree() { //gd:TreeItem.uncollapse_tree
-	class(self).UncollapseTree()
+	Advanced(self).UncollapseTree()
 }
 
 /*
 If [param selectable] is [code]true[/code], the given [param column] is selectable.
 */
 func (self Instance) SetSelectable(column int, selectable bool) { //gd:TreeItem.set_selectable
-	class(self).SetSelectable(int64(column), selectable)
+	Advanced(self).SetSelectable(int64(column), selectable)
 }
 
 /*
 Returns [code]true[/code] if the given [param column] is selectable.
 */
 func (self Instance) IsSelectable(column int) bool { //gd:TreeItem.is_selectable
-	return bool(class(self).IsSelectable(int64(column)))
+	return bool(Advanced(self).IsSelectable(int64(column)))
 }
 
 /*
 Returns [code]true[/code] if the given [param column] is selected.
 */
 func (self Instance) IsSelected(column int) bool { //gd:TreeItem.is_selected
-	return bool(class(self).IsSelected(int64(column)))
+	return bool(Advanced(self).IsSelected(int64(column)))
 }
 
 /*
 Selects the given [param column].
 */
 func (self Instance) Select(column int) { //gd:TreeItem.select
-	class(self).Select(int64(column))
+	Advanced(self).Select(int64(column))
 }
 
 /*
 Deselects the given column.
 */
 func (self Instance) Deselect(column int) { //gd:TreeItem.deselect
-	class(self).Deselect(int64(column))
+	Advanced(self).Deselect(int64(column))
 }
 
 /*
 If [param enabled] is [code]true[/code], the given [param column] is editable.
 */
 func (self Instance) SetEditable(column int, enabled bool) { //gd:TreeItem.set_editable
-	class(self).SetEditable(int64(column), enabled)
+	Advanced(self).SetEditable(int64(column), enabled)
 }
 
 /*
 Returns [code]true[/code] if the given [param column] is editable.
 */
 func (self Instance) IsEditable(column int) bool { //gd:TreeItem.is_editable
-	return bool(class(self).IsEditable(int64(column)))
+	return bool(Advanced(self).IsEditable(int64(column)))
 }
 
 /*
 Sets the given column's custom color.
 */
 func (self Instance) SetCustomColor(column int, color Color.RGBA) { //gd:TreeItem.set_custom_color
-	class(self).SetCustomColor(int64(column), Color.RGBA(color))
+	Advanced(self).SetCustomColor(int64(column), Color.RGBA(color))
 }
 
 /*
 Returns the custom color of column [param column].
 */
 func (self Instance) GetCustomColor(column int) Color.RGBA { //gd:TreeItem.get_custom_color
-	return Color.RGBA(class(self).GetCustomColor(int64(column)))
+	return Color.RGBA(Advanced(self).GetCustomColor(int64(column)))
 }
 
 /*
 Resets the color for the given column to default.
 */
 func (self Instance) ClearCustomColor(column int) { //gd:TreeItem.clear_custom_color
-	class(self).ClearCustomColor(int64(column))
+	Advanced(self).ClearCustomColor(int64(column))
 }
 
 /*
 Sets custom font used to draw text in the given [param column].
 */
 func (self Instance) SetCustomFont(column int, font [1]gdclass.Font) { //gd:TreeItem.set_custom_font
-	class(self).SetCustomFont(int64(column), font)
+	Advanced(self).SetCustomFont(int64(column), font)
 }
 
 /*
 Returns custom font used to draw text in the column [param column].
 */
 func (self Instance) GetCustomFont(column int) [1]gdclass.Font { //gd:TreeItem.get_custom_font
-	return [1]gdclass.Font(class(self).GetCustomFont(int64(column)))
+	return [1]gdclass.Font(Advanced(self).GetCustomFont(int64(column)))
 }
 
 /*
 Sets custom font size used to draw text in the given [param column].
 */
 func (self Instance) SetCustomFontSize(column int, font_size int) { //gd:TreeItem.set_custom_font_size
-	class(self).SetCustomFontSize(int64(column), int64(font_size))
+	Advanced(self).SetCustomFontSize(int64(column), int64(font_size))
 }
 
 /*
 Returns custom font size used to draw text in the column [param column].
 */
 func (self Instance) GetCustomFontSize(column int) int { //gd:TreeItem.get_custom_font_size
-	return int(int(class(self).GetCustomFontSize(int64(column))))
+	return int(int(Advanced(self).GetCustomFontSize(int64(column))))
 }
 
 /*
 Sets the given column's custom background color and whether to just use it as an outline.
 */
 func (self Instance) SetCustomBgColor(column int, color Color.RGBA) { //gd:TreeItem.set_custom_bg_color
-	class(self).SetCustomBgColor(int64(column), Color.RGBA(color), false)
+	Advanced(self).SetCustomBgColor(int64(column), Color.RGBA(color), false)
+}
+
+/*
+Sets the given column's custom background color and whether to just use it as an outline.
+*/
+func (self Expanded) SetCustomBgColor(column int, color Color.RGBA, just_outline bool) { //gd:TreeItem.set_custom_bg_color
+	Advanced(self).SetCustomBgColor(int64(column), Color.RGBA(color), just_outline)
 }
 
 /*
 Resets the background color for the given column to default.
 */
 func (self Instance) ClearCustomBgColor(column int) { //gd:TreeItem.clear_custom_bg_color
-	class(self).ClearCustomBgColor(int64(column))
+	Advanced(self).ClearCustomBgColor(int64(column))
 }
 
 /*
 Returns the custom background color of column [param column].
 */
 func (self Instance) GetCustomBgColor(column int) Color.RGBA { //gd:TreeItem.get_custom_bg_color
-	return Color.RGBA(class(self).GetCustomBgColor(int64(column)))
+	return Color.RGBA(Advanced(self).GetCustomBgColor(int64(column)))
 }
 
 /*
 Makes a cell with [constant CELL_MODE_CUSTOM] display as a non-flat button with a [StyleBox].
 */
 func (self Instance) SetCustomAsButton(column int, enable bool) { //gd:TreeItem.set_custom_as_button
-	class(self).SetCustomAsButton(int64(column), enable)
+	Advanced(self).SetCustomAsButton(int64(column), enable)
 }
 
 /*
 Returns [code]true[/code] if the cell was made into a button with [method set_custom_as_button].
 */
 func (self Instance) IsCustomSetAsButton(column int) bool { //gd:TreeItem.is_custom_set_as_button
-	return bool(class(self).IsCustomSetAsButton(int64(column)))
+	return bool(Advanced(self).IsCustomSetAsButton(int64(column)))
 }
 
 /*
 Removes all buttons from all columns of this item.
 */
 func (self Instance) ClearButtons() { //gd:TreeItem.clear_buttons
-	class(self).ClearButtons()
+	Advanced(self).ClearButtons()
 }
 
 /*
 Adds a button with [Texture2D] [param button] to the end of the cell at column [param column]. The [param id] is used to identify the button in the according [signal Tree.button_clicked] signal and can be different from the buttons index. If not specified, the next available index is used, which may be retrieved by calling [method get_button_count] immediately before this method. Optionally, the button can be [param disabled] and have a [param tooltip_text].
 */
 func (self Instance) AddButton(column int, button [1]gdclass.Texture2D) { //gd:TreeItem.add_button
-	class(self).AddButton(int64(column), button, int64(-1), false, String.New(""))
+	Advanced(self).AddButton(int64(column), button, int64(-1), false, String.New(""))
+}
+
+/*
+Adds a button with [Texture2D] [param button] to the end of the cell at column [param column]. The [param id] is used to identify the button in the according [signal Tree.button_clicked] signal and can be different from the buttons index. If not specified, the next available index is used, which may be retrieved by calling [method get_button_count] immediately before this method. Optionally, the button can be [param disabled] and have a [param tooltip_text].
+*/
+func (self Expanded) AddButton(column int, button [1]gdclass.Texture2D, id int, disabled bool, tooltip_text string) { //gd:TreeItem.add_button
+	Advanced(self).AddButton(int64(column), button, int64(id), disabled, String.New(tooltip_text))
 }
 
 /*
 Returns the number of buttons in column [param column].
 */
 func (self Instance) GetButtonCount(column int) int { //gd:TreeItem.get_button_count
-	return int(int(class(self).GetButtonCount(int64(column))))
+	return int(int(Advanced(self).GetButtonCount(int64(column))))
 }
 
 /*
 Returns the tooltip text for the button at index [param button_index] in column [param column].
 */
 func (self Instance) GetButtonTooltipText(column int, button_index int) string { //gd:TreeItem.get_button_tooltip_text
-	return string(class(self).GetButtonTooltipText(int64(column), int64(button_index)).String())
+	return string(Advanced(self).GetButtonTooltipText(int64(column), int64(button_index)).String())
 }
 
 /*
 Returns the ID for the button at index [param button_index] in column [param column].
 */
 func (self Instance) GetButtonId(column int, button_index int) int { //gd:TreeItem.get_button_id
-	return int(int(class(self).GetButtonId(int64(column), int64(button_index))))
+	return int(int(Advanced(self).GetButtonId(int64(column), int64(button_index))))
 }
 
 /*
 Returns the button index if there is a button with ID [param id] in column [param column], otherwise returns -1.
 */
 func (self Instance) GetButtonById(column int, id int) int { //gd:TreeItem.get_button_by_id
-	return int(int(class(self).GetButtonById(int64(column), int64(id))))
+	return int(int(Advanced(self).GetButtonById(int64(column), int64(id))))
 }
 
 /*
 Returns the color of the button with ID [param id] in column [param column]. If the specified button does not exist, returns [constant Color.BLACK].
 */
 func (self Instance) GetButtonColor(column int, id int) Color.RGBA { //gd:TreeItem.get_button_color
-	return Color.RGBA(class(self).GetButtonColor(int64(column), int64(id)))
+	return Color.RGBA(Advanced(self).GetButtonColor(int64(column), int64(id)))
 }
 
 /*
 Returns the [Texture2D] of the button at index [param button_index] in column [param column].
 */
 func (self Instance) GetButton(column int, button_index int) [1]gdclass.Texture2D { //gd:TreeItem.get_button
-	return [1]gdclass.Texture2D(class(self).GetButton(int64(column), int64(button_index)))
+	return [1]gdclass.Texture2D(Advanced(self).GetButton(int64(column), int64(button_index)))
 }
 
 /*
 Sets the tooltip text for the button at index [param button_index] in the given [param column].
 */
 func (self Instance) SetButtonTooltipText(column int, button_index int, tooltip string) { //gd:TreeItem.set_button_tooltip_text
-	class(self).SetButtonTooltipText(int64(column), int64(button_index), String.New(tooltip))
+	Advanced(self).SetButtonTooltipText(int64(column), int64(button_index), String.New(tooltip))
 }
 
 /*
 Sets the given column's button [Texture2D] at index [param button_index] to [param button].
 */
 func (self Instance) SetButton(column int, button_index int, button [1]gdclass.Texture2D) { //gd:TreeItem.set_button
-	class(self).SetButton(int64(column), int64(button_index), button)
+	Advanced(self).SetButton(int64(column), int64(button_index), button)
 }
 
 /*
 Removes the button at index [param button_index] in column [param column].
 */
 func (self Instance) EraseButton(column int, button_index int) { //gd:TreeItem.erase_button
-	class(self).EraseButton(int64(column), int64(button_index))
+	Advanced(self).EraseButton(int64(column), int64(button_index))
 }
 
 /*
 If [code]true[/code], disables the button at index [param button_index] in the given [param column].
 */
 func (self Instance) SetButtonDisabled(column int, button_index int, disabled bool) { //gd:TreeItem.set_button_disabled
-	class(self).SetButtonDisabled(int64(column), int64(button_index), disabled)
+	Advanced(self).SetButtonDisabled(int64(column), int64(button_index), disabled)
 }
 
 /*
 Sets the given column's button color at index [param button_index] to [param color].
 */
 func (self Instance) SetButtonColor(column int, button_index int, color Color.RGBA) { //gd:TreeItem.set_button_color
-	class(self).SetButtonColor(int64(column), int64(button_index), Color.RGBA(color))
+	Advanced(self).SetButtonColor(int64(column), int64(button_index), Color.RGBA(color))
 }
 
 /*
 Returns [code]true[/code] if the button at index [param button_index] for the given [param column] is disabled.
 */
 func (self Instance) IsButtonDisabled(column int, button_index int) bool { //gd:TreeItem.is_button_disabled
-	return bool(class(self).IsButtonDisabled(int64(column), int64(button_index)))
+	return bool(Advanced(self).IsButtonDisabled(int64(column), int64(button_index)))
 }
 
 /*
 Sets the given column's tooltip text.
 */
 func (self Instance) SetTooltipText(column int, tooltip string) { //gd:TreeItem.set_tooltip_text
-	class(self).SetTooltipText(int64(column), String.New(tooltip))
+	Advanced(self).SetTooltipText(int64(column), String.New(tooltip))
 }
 
 /*
 Returns the given column's tooltip text.
 */
 func (self Instance) GetTooltipText(column int) string { //gd:TreeItem.get_tooltip_text
-	return string(class(self).GetTooltipText(int64(column)).String())
+	return string(Advanced(self).GetTooltipText(int64(column)).String())
 }
 
 /*
 Sets the given column's text alignment. See [enum HorizontalAlignment] for possible values.
 */
 func (self Instance) SetTextAlignment(column int, text_alignment HorizontalAlignment) { //gd:TreeItem.set_text_alignment
-	class(self).SetTextAlignment(int64(column), text_alignment)
+	Advanced(self).SetTextAlignment(int64(column), text_alignment)
 }
 
 /*
 Returns the given column's text alignment.
 */
 func (self Instance) GetTextAlignment(column int) HorizontalAlignment { //gd:TreeItem.get_text_alignment
-	return HorizontalAlignment(class(self).GetTextAlignment(int64(column)))
+	return HorizontalAlignment(Advanced(self).GetTextAlignment(int64(column)))
 }
 
 /*
 If [param enable] is [code]true[/code], the given [param column] is expanded to the right.
 */
 func (self Instance) SetExpandRight(column int, enable bool) { //gd:TreeItem.set_expand_right
-	class(self).SetExpandRight(int64(column), enable)
+	Advanced(self).SetExpandRight(int64(column), enable)
 }
 
 /*
 Returns [code]true[/code] if [code]expand_right[/code] is set.
 */
 func (self Instance) GetExpandRight(column int) bool { //gd:TreeItem.get_expand_right
-	return bool(class(self).GetExpandRight(int64(column)))
+	return bool(Advanced(self).GetExpandRight(int64(column)))
 }
 
 /*
@@ -691,14 +729,22 @@ Creates an item and adds it as a child.
 The new item will be inserted as position [param index] (the default value [code]-1[/code] means the last position), or it will be the last child if [param index] is higher than the child count.
 */
 func (self Instance) CreateChild() [1]gdclass.TreeItem { //gd:TreeItem.create_child
-	return [1]gdclass.TreeItem(class(self).CreateChild(int64(-1)))
+	return [1]gdclass.TreeItem(Advanced(self).CreateChild(int64(-1)))
+}
+
+/*
+Creates an item and adds it as a child.
+The new item will be inserted as position [param index] (the default value [code]-1[/code] means the last position), or it will be the last child if [param index] is higher than the child count.
+*/
+func (self Expanded) CreateChild(index int) [1]gdclass.TreeItem { //gd:TreeItem.create_child
+	return [1]gdclass.TreeItem(Advanced(self).CreateChild(int64(index)))
 }
 
 /*
 Adds a previously unparented [TreeItem] as a direct child of this one. The [param child] item must not be a part of any [Tree] or parented to any [TreeItem]. See also [method remove_child].
 */
 func (self Instance) AddChild(child [1]gdclass.TreeItem) { //gd:TreeItem.add_child
-	class(self).AddChild(child)
+	Advanced(self).AddChild(child)
 }
 
 /*
@@ -706,42 +752,42 @@ Removes the given child [TreeItem] and all its children from the [Tree]. Note th
 [b]Note:[/b] If you want to move a child from one [Tree] to another, then instead of removing and adding it manually you can use [method move_before] or [method move_after].
 */
 func (self Instance) RemoveChild(child [1]gdclass.TreeItem) { //gd:TreeItem.remove_child
-	class(self).RemoveChild(child)
+	Advanced(self).RemoveChild(child)
 }
 
 /*
 Returns the [Tree] that owns this TreeItem.
 */
 func (self Instance) GetTree() [1]gdclass.Tree { //gd:TreeItem.get_tree
-	return [1]gdclass.Tree(class(self).GetTree())
+	return [1]gdclass.Tree(Advanced(self).GetTree())
 }
 
 /*
 Returns the next sibling TreeItem in the tree or a [code]null[/code] object if there is none.
 */
 func (self Instance) GetNext() [1]gdclass.TreeItem { //gd:TreeItem.get_next
-	return [1]gdclass.TreeItem(class(self).GetNext())
+	return [1]gdclass.TreeItem(Advanced(self).GetNext())
 }
 
 /*
 Returns the previous sibling TreeItem in the tree or a [code]null[/code] object if there is none.
 */
 func (self Instance) GetPrev() [1]gdclass.TreeItem { //gd:TreeItem.get_prev
-	return [1]gdclass.TreeItem(class(self).GetPrev())
+	return [1]gdclass.TreeItem(Advanced(self).GetPrev())
 }
 
 /*
 Returns the parent TreeItem or a [code]null[/code] object if there is none.
 */
 func (self Instance) GetParent() [1]gdclass.TreeItem { //gd:TreeItem.get_parent
-	return [1]gdclass.TreeItem(class(self).GetParent())
+	return [1]gdclass.TreeItem(Advanced(self).GetParent())
 }
 
 /*
 Returns the TreeItem's first child.
 */
 func (self Instance) GetFirstChild() [1]gdclass.TreeItem { //gd:TreeItem.get_first_child
-	return [1]gdclass.TreeItem(class(self).GetFirstChild())
+	return [1]gdclass.TreeItem(Advanced(self).GetFirstChild())
 }
 
 /*
@@ -749,7 +795,15 @@ Returns the next TreeItem in the tree (in the context of a depth-first search) o
 If [param wrap] is enabled, the method will wrap around to the first element in the tree when called on the last element, otherwise it returns [code]null[/code].
 */
 func (self Instance) GetNextInTree() [1]gdclass.TreeItem { //gd:TreeItem.get_next_in_tree
-	return [1]gdclass.TreeItem(class(self).GetNextInTree(false))
+	return [1]gdclass.TreeItem(Advanced(self).GetNextInTree(false))
+}
+
+/*
+Returns the next TreeItem in the tree (in the context of a depth-first search) or a [code]null[/code] object if there is none.
+If [param wrap] is enabled, the method will wrap around to the first element in the tree when called on the last element, otherwise it returns [code]null[/code].
+*/
+func (self Expanded) GetNextInTree(wrap bool) [1]gdclass.TreeItem { //gd:TreeItem.get_next_in_tree
+	return [1]gdclass.TreeItem(Advanced(self).GetNextInTree(wrap))
 }
 
 /*
@@ -757,7 +811,15 @@ Returns the previous TreeItem in the tree (in the context of a depth-first searc
 If [param wrap] is enabled, the method will wrap around to the last element in the tree when called on the first visible element, otherwise it returns [code]null[/code].
 */
 func (self Instance) GetPrevInTree() [1]gdclass.TreeItem { //gd:TreeItem.get_prev_in_tree
-	return [1]gdclass.TreeItem(class(self).GetPrevInTree(false))
+	return [1]gdclass.TreeItem(Advanced(self).GetPrevInTree(false))
+}
+
+/*
+Returns the previous TreeItem in the tree (in the context of a depth-first search) or a [code]null[/code] object if there is none.
+If [param wrap] is enabled, the method will wrap around to the last element in the tree when called on the first visible element, otherwise it returns [code]null[/code].
+*/
+func (self Expanded) GetPrevInTree(wrap bool) [1]gdclass.TreeItem { //gd:TreeItem.get_prev_in_tree
+	return [1]gdclass.TreeItem(Advanced(self).GetPrevInTree(wrap))
 }
 
 /*
@@ -765,7 +827,15 @@ Returns the next visible TreeItem in the tree (in the context of a depth-first s
 If [param wrap] is enabled, the method will wrap around to the first visible element in the tree when called on the last visible element, otherwise it returns [code]null[/code].
 */
 func (self Instance) GetNextVisible() [1]gdclass.TreeItem { //gd:TreeItem.get_next_visible
-	return [1]gdclass.TreeItem(class(self).GetNextVisible(false))
+	return [1]gdclass.TreeItem(Advanced(self).GetNextVisible(false))
+}
+
+/*
+Returns the next visible TreeItem in the tree (in the context of a depth-first search) or a [code]null[/code] object if there is none.
+If [param wrap] is enabled, the method will wrap around to the first visible element in the tree when called on the last visible element, otherwise it returns [code]null[/code].
+*/
+func (self Expanded) GetNextVisible(wrap bool) [1]gdclass.TreeItem { //gd:TreeItem.get_next_visible
+	return [1]gdclass.TreeItem(Advanced(self).GetNextVisible(wrap))
 }
 
 /*
@@ -773,7 +843,15 @@ Returns the previous visible sibling TreeItem in the tree (in the context of a d
 If [param wrap] is enabled, the method will wrap around to the last visible element in the tree when called on the first visible element, otherwise it returns [code]null[/code].
 */
 func (self Instance) GetPrevVisible() [1]gdclass.TreeItem { //gd:TreeItem.get_prev_visible
-	return [1]gdclass.TreeItem(class(self).GetPrevVisible(false))
+	return [1]gdclass.TreeItem(Advanced(self).GetPrevVisible(false))
+}
+
+/*
+Returns the previous visible sibling TreeItem in the tree (in the context of a depth-first search) or a [code]null[/code] object if there is none.
+If [param wrap] is enabled, the method will wrap around to the last visible element in the tree when called on the first visible element, otherwise it returns [code]null[/code].
+*/
+func (self Expanded) GetPrevVisible(wrap bool) [1]gdclass.TreeItem { //gd:TreeItem.get_prev_visible
+	return [1]gdclass.TreeItem(Advanced(self).GetPrevVisible(wrap))
 }
 
 /*
@@ -781,28 +859,28 @@ Returns a child item by its [param index] (see [method get_child_count]). This m
 Negative indices access the children from the last one.
 */
 func (self Instance) GetChild(index int) [1]gdclass.TreeItem { //gd:TreeItem.get_child
-	return [1]gdclass.TreeItem(class(self).GetChild(int64(index)))
+	return [1]gdclass.TreeItem(Advanced(self).GetChild(int64(index)))
 }
 
 /*
 Returns the number of child items.
 */
 func (self Instance) GetChildCount() int { //gd:TreeItem.get_child_count
-	return int(int(class(self).GetChildCount()))
+	return int(int(Advanced(self).GetChildCount()))
 }
 
 /*
 Returns an array of references to the item's children.
 */
 func (self Instance) GetChildren() [][1]gdclass.TreeItem { //gd:TreeItem.get_children
-	return [][1]gdclass.TreeItem(gd.ArrayAs[[][1]gdclass.TreeItem](gd.InternalArray(class(self).GetChildren())))
+	return [][1]gdclass.TreeItem(gd.ArrayAs[[][1]gdclass.TreeItem](gd.InternalArray(Advanced(self).GetChildren())))
 }
 
 /*
 Returns the node's order in the tree. For example, if called on the first child item the position is [code]0[/code].
 */
 func (self Instance) GetIndex() int { //gd:TreeItem.get_index
-	return int(int(class(self).GetIndex()))
+	return int(int(Advanced(self).GetIndex()))
 }
 
 /*
@@ -810,7 +888,7 @@ Moves this TreeItem right before the given [param item].
 [b]Note:[/b] You can't move to the root or move the root.
 */
 func (self Instance) MoveBefore(item [1]gdclass.TreeItem) { //gd:TreeItem.move_before
-	class(self).MoveBefore(item)
+	Advanced(self).MoveBefore(item)
 }
 
 /*
@@ -818,7 +896,7 @@ Moves this TreeItem right after the given [param item].
 [b]Note:[/b] You can't move to the root or move the root.
 */
 func (self Instance) MoveAfter(item [1]gdclass.TreeItem) { //gd:TreeItem.move_after
-	class(self).MoveAfter(item)
+	Advanced(self).MoveAfter(item)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

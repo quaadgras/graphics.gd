@@ -86,21 +86,21 @@ func (Instance) _value_changed(impl func(ptr unsafe.Pointer, new_value Float.X))
 Sets the [Range]'s current value to the specified [param value], without emitting the [signal value_changed] signal.
 */
 func (self Instance) SetValueNoSignal(value Float.X) { //gd:Range.set_value_no_signal
-	class(self).SetValueNoSignal(float64(value))
+	Advanced(self).SetValueNoSignal(float64(value))
 }
 
 /*
 Binds two [Range]s together along with any ranges previously grouped with either of them. When any of range's member variables change, it will share the new value with all other ranges in its group.
 */
 func (self Instance) Share(with [1]gdclass.Node) { //gd:Range.share
-	class(self).Share(with)
+	Advanced(self).Share(with)
 }
 
 /*
 Stops the [Range] from sharing its member variables with any other.
 */
 func (self Instance) Unshare() { //gd:Range.unshare
-	class(self).Unshare()
+	Advanced(self).Unshare()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

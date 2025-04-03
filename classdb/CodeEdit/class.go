@@ -54,6 +54,7 @@ CodeEdit is a specialized [TextEdit] designed for editing plain text code files.
 %!(EXTRA string=CodeEdit)
 */
 type Instance [1]gdclass.CodeEdit
+type Expanded [1]gdclass.CodeEdit
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -130,21 +131,21 @@ func (Instance) _filter_code_completion_candidates(impl func(ptr unsafe.Pointer,
 If there is no selection, indentation is inserted at the caret. Otherwise, the selected lines are indented like [method indent_lines]. Equivalent to the [member ProjectSettings.input/ui_text_indent] action. The indentation characters used depend on [member indent_use_spaces] and [member indent_size].
 */
 func (self Instance) DoIndent() { //gd:CodeEdit.do_indent
-	class(self).DoIndent()
+	Advanced(self).DoIndent()
 }
 
 /*
 Indents all lines that are selected or have a caret on them. Uses spaces or a tab depending on [member indent_use_spaces]. See [method unindent_lines].
 */
 func (self Instance) IndentLines() { //gd:CodeEdit.indent_lines
-	class(self).IndentLines()
+	Advanced(self).IndentLines()
 }
 
 /*
 Unindents all lines that are selected or have a caret on them. Uses spaces or a tab depending on [member indent_use_spaces]. Equivalent to the [member ProjectSettings.input/ui_text_dedent] action. See [method indent_lines].
 */
 func (self Instance) UnindentLines() { //gd:CodeEdit.unindent_lines
-	class(self).UnindentLines()
+	Advanced(self).UnindentLines()
 }
 
 /*
@@ -152,7 +153,15 @@ Converts the indents of lines between [param from_line] and [param to_line] to t
 Values of [code]-1[/code] convert the entire text.
 */
 func (self Instance) ConvertIndent() { //gd:CodeEdit.convert_indent
-	class(self).ConvertIndent(int64(-1), int64(-1))
+	Advanced(self).ConvertIndent(int64(-1), int64(-1))
+}
+
+/*
+Converts the indents of lines between [param from_line] and [param to_line] to tabs or spaces as set by [member indent_use_spaces].
+Values of [code]-1[/code] convert the entire text.
+*/
+func (self Expanded) ConvertIndent(from_line int, to_line int) { //gd:CodeEdit.convert_indent
+	Advanced(self).ConvertIndent(int64(from_line), int64(to_line))
 }
 
 /*
@@ -160,175 +169,175 @@ Adds a brace pair.
 Both the start and end keys must be symbols. Only the start key has to be unique.
 */
 func (self Instance) AddAutoBraceCompletionPair(start_key string, end_key string) { //gd:CodeEdit.add_auto_brace_completion_pair
-	class(self).AddAutoBraceCompletionPair(String.New(start_key), String.New(end_key))
+	Advanced(self).AddAutoBraceCompletionPair(String.New(start_key), String.New(end_key))
 }
 
 /*
 Returns [code]true[/code] if open key [param open_key] exists.
 */
 func (self Instance) HasAutoBraceCompletionOpenKey(open_key string) bool { //gd:CodeEdit.has_auto_brace_completion_open_key
-	return bool(class(self).HasAutoBraceCompletionOpenKey(String.New(open_key)))
+	return bool(Advanced(self).HasAutoBraceCompletionOpenKey(String.New(open_key)))
 }
 
 /*
 Returns [code]true[/code] if close key [param close_key] exists.
 */
 func (self Instance) HasAutoBraceCompletionCloseKey(close_key string) bool { //gd:CodeEdit.has_auto_brace_completion_close_key
-	return bool(class(self).HasAutoBraceCompletionCloseKey(String.New(close_key)))
+	return bool(Advanced(self).HasAutoBraceCompletionCloseKey(String.New(close_key)))
 }
 
 /*
 Gets the matching auto brace close key for [param open_key].
 */
 func (self Instance) GetAutoBraceCompletionCloseKey(open_key string) string { //gd:CodeEdit.get_auto_brace_completion_close_key
-	return string(class(self).GetAutoBraceCompletionCloseKey(String.New(open_key)).String())
+	return string(Advanced(self).GetAutoBraceCompletionCloseKey(String.New(open_key)).String())
 }
 
 /*
 Sets the given line as a breakpoint. If [code]true[/code] and [member gutters_draw_breakpoints_gutter] is [code]true[/code], draws the [theme_item breakpoint] icon in the gutter for this line. See [method get_breakpointed_lines] and [method is_line_breakpointed].
 */
 func (self Instance) SetLineAsBreakpoint(line int, breakpointed bool) { //gd:CodeEdit.set_line_as_breakpoint
-	class(self).SetLineAsBreakpoint(int64(line), breakpointed)
+	Advanced(self).SetLineAsBreakpoint(int64(line), breakpointed)
 }
 
 /*
 Returns [code]true[/code] if the given line is breakpointed. See [method set_line_as_breakpoint].
 */
 func (self Instance) IsLineBreakpointed(line int) bool { //gd:CodeEdit.is_line_breakpointed
-	return bool(class(self).IsLineBreakpointed(int64(line)))
+	return bool(Advanced(self).IsLineBreakpointed(int64(line)))
 }
 
 /*
 Clears all breakpointed lines.
 */
 func (self Instance) ClearBreakpointedLines() { //gd:CodeEdit.clear_breakpointed_lines
-	class(self).ClearBreakpointedLines()
+	Advanced(self).ClearBreakpointedLines()
 }
 
 /*
 Gets all breakpointed lines.
 */
 func (self Instance) GetBreakpointedLines() []int32 { //gd:CodeEdit.get_breakpointed_lines
-	return []int32(slices.Collect(class(self).GetBreakpointedLines().Values()))
+	return []int32(slices.Collect(Advanced(self).GetBreakpointedLines().Values()))
 }
 
 /*
 Sets the given line as bookmarked. If [code]true[/code] and [member gutters_draw_bookmarks] is [code]true[/code], draws the [theme_item bookmark] icon in the gutter for this line. See [method get_bookmarked_lines] and [method is_line_bookmarked].
 */
 func (self Instance) SetLineAsBookmarked(line int, bookmarked bool) { //gd:CodeEdit.set_line_as_bookmarked
-	class(self).SetLineAsBookmarked(int64(line), bookmarked)
+	Advanced(self).SetLineAsBookmarked(int64(line), bookmarked)
 }
 
 /*
 Returns [code]true[/code] if the given line is bookmarked. See [method set_line_as_bookmarked].
 */
 func (self Instance) IsLineBookmarked(line int) bool { //gd:CodeEdit.is_line_bookmarked
-	return bool(class(self).IsLineBookmarked(int64(line)))
+	return bool(Advanced(self).IsLineBookmarked(int64(line)))
 }
 
 /*
 Clears all bookmarked lines.
 */
 func (self Instance) ClearBookmarkedLines() { //gd:CodeEdit.clear_bookmarked_lines
-	class(self).ClearBookmarkedLines()
+	Advanced(self).ClearBookmarkedLines()
 }
 
 /*
 Gets all bookmarked lines.
 */
 func (self Instance) GetBookmarkedLines() []int32 { //gd:CodeEdit.get_bookmarked_lines
-	return []int32(slices.Collect(class(self).GetBookmarkedLines().Values()))
+	return []int32(slices.Collect(Advanced(self).GetBookmarkedLines().Values()))
 }
 
 /*
 Sets the given line as executing. If [code]true[/code] and [member gutters_draw_executing_lines] is [code]true[/code], draws the [theme_item executing_line] icon in the gutter for this line. See [method get_executing_lines] and [method is_line_executing].
 */
 func (self Instance) SetLineAsExecuting(line int, executing bool) { //gd:CodeEdit.set_line_as_executing
-	class(self).SetLineAsExecuting(int64(line), executing)
+	Advanced(self).SetLineAsExecuting(int64(line), executing)
 }
 
 /*
 Returns [code]true[/code] if the given line is marked as executing. See [method set_line_as_executing].
 */
 func (self Instance) IsLineExecuting(line int) bool { //gd:CodeEdit.is_line_executing
-	return bool(class(self).IsLineExecuting(int64(line)))
+	return bool(Advanced(self).IsLineExecuting(int64(line)))
 }
 
 /*
 Clears all executed lines.
 */
 func (self Instance) ClearExecutingLines() { //gd:CodeEdit.clear_executing_lines
-	class(self).ClearExecutingLines()
+	Advanced(self).ClearExecutingLines()
 }
 
 /*
 Gets all executing lines.
 */
 func (self Instance) GetExecutingLines() []int32 { //gd:CodeEdit.get_executing_lines
-	return []int32(slices.Collect(class(self).GetExecutingLines().Values()))
+	return []int32(slices.Collect(Advanced(self).GetExecutingLines().Values()))
 }
 
 /*
 Returns [code]true[/code] if the given line is foldable. A line is foldable if it is the start of a valid code region (see [method get_code_region_start_tag]), if it is the start of a comment or string block, or if the next non-empty line is more indented (see [method TextEdit.get_indent_level]).
 */
 func (self Instance) CanFoldLine(line int) bool { //gd:CodeEdit.can_fold_line
-	return bool(class(self).CanFoldLine(int64(line)))
+	return bool(Advanced(self).CanFoldLine(int64(line)))
 }
 
 /*
 Folds the given line, if possible (see [method can_fold_line]).
 */
 func (self Instance) FoldLine(line int) { //gd:CodeEdit.fold_line
-	class(self).FoldLine(int64(line))
+	Advanced(self).FoldLine(int64(line))
 }
 
 /*
 Unfolds the given line if it is folded or if it is hidden under a folded line.
 */
 func (self Instance) UnfoldLine(line int) { //gd:CodeEdit.unfold_line
-	class(self).UnfoldLine(int64(line))
+	Advanced(self).UnfoldLine(int64(line))
 }
 
 /*
 Folds all lines that are possible to be folded (see [method can_fold_line]).
 */
 func (self Instance) FoldAllLines() { //gd:CodeEdit.fold_all_lines
-	class(self).FoldAllLines()
+	Advanced(self).FoldAllLines()
 }
 
 /*
 Unfolds all lines that are folded.
 */
 func (self Instance) UnfoldAllLines() { //gd:CodeEdit.unfold_all_lines
-	class(self).UnfoldAllLines()
+	Advanced(self).UnfoldAllLines()
 }
 
 /*
 Toggle the folding of the code block at the given line.
 */
 func (self Instance) ToggleFoldableLine(line int) { //gd:CodeEdit.toggle_foldable_line
-	class(self).ToggleFoldableLine(int64(line))
+	Advanced(self).ToggleFoldableLine(int64(line))
 }
 
 /*
 Toggle the folding of the code block on all lines with a caret on them.
 */
 func (self Instance) ToggleFoldableLinesAtCarets() { //gd:CodeEdit.toggle_foldable_lines_at_carets
-	class(self).ToggleFoldableLinesAtCarets()
+	Advanced(self).ToggleFoldableLinesAtCarets()
 }
 
 /*
 Returns [code]true[/code] if the given line is folded. See [method fold_line].
 */
 func (self Instance) IsLineFolded(line int) bool { //gd:CodeEdit.is_line_folded
-	return bool(class(self).IsLineFolded(int64(line)))
+	return bool(Advanced(self).IsLineFolded(int64(line)))
 }
 
 /*
 Returns all lines that are currently folded.
 */
 func (self Instance) GetFoldedLines() []int { //gd:CodeEdit.get_folded_lines
-	return []int(gd.ArrayAs[[]int](gd.InternalArray(class(self).GetFoldedLines())))
+	return []int(gd.ArrayAs[[]int](gd.InternalArray(Advanced(self).GetFoldedLines())))
 }
 
 /*
@@ -338,42 +347,49 @@ Code region start and end tags can be customized (see [method set_code_region_ta
 Code regions are delimited using start and end tags (respectively [code]region[/code] and [code]endregion[/code] by default) preceded by one line comment delimiter. (eg. [code]#region[/code] and [code]#endregion[/code])
 */
 func (self Instance) CreateCodeRegion() { //gd:CodeEdit.create_code_region
-	class(self).CreateCodeRegion()
+	Advanced(self).CreateCodeRegion()
 }
 
 /*
 Returns the code region start tag (without comment delimiter).
 */
 func (self Instance) GetCodeRegionStartTag() string { //gd:CodeEdit.get_code_region_start_tag
-	return string(class(self).GetCodeRegionStartTag().String())
+	return string(Advanced(self).GetCodeRegionStartTag().String())
 }
 
 /*
 Returns the code region end tag (without comment delimiter).
 */
 func (self Instance) GetCodeRegionEndTag() string { //gd:CodeEdit.get_code_region_end_tag
-	return string(class(self).GetCodeRegionEndTag().String())
+	return string(Advanced(self).GetCodeRegionEndTag().String())
 }
 
 /*
 Sets the code region start and end tags (without comment delimiter).
 */
 func (self Instance) SetCodeRegionTags() { //gd:CodeEdit.set_code_region_tags
-	class(self).SetCodeRegionTags(String.New("region"), String.New("endregion"))
+	Advanced(self).SetCodeRegionTags(String.New("region"), String.New("endregion"))
+}
+
+/*
+Sets the code region start and end tags (without comment delimiter).
+*/
+func (self Expanded) SetCodeRegionTags(start string, end string) { //gd:CodeEdit.set_code_region_tags
+	Advanced(self).SetCodeRegionTags(String.New(start), String.New(end))
 }
 
 /*
 Returns [code]true[/code] if the given line is a code region start. See [method set_code_region_tags].
 */
 func (self Instance) IsLineCodeRegionStart(line int) bool { //gd:CodeEdit.is_line_code_region_start
-	return bool(class(self).IsLineCodeRegionStart(int64(line)))
+	return bool(Advanced(self).IsLineCodeRegionStart(int64(line)))
 }
 
 /*
 Returns [code]true[/code] if the given line is a code region end. See [method set_code_region_tags].
 */
 func (self Instance) IsLineCodeRegionEnd(line int) bool { //gd:CodeEdit.is_line_code_region_end
-	return bool(class(self).IsLineCodeRegionEnd(int64(line)))
+	return bool(Advanced(self).IsLineCodeRegionEnd(int64(line)))
 }
 
 /*
@@ -381,35 +397,50 @@ Defines a string delimiter from [param start_key] to [param end_key]. Both keys 
 If [param line_only] is [code]true[/code] or [param end_key] is an empty [String], the region does not carry over to the next line.
 */
 func (self Instance) AddStringDelimiter(start_key string, end_key string) { //gd:CodeEdit.add_string_delimiter
-	class(self).AddStringDelimiter(String.New(start_key), String.New(end_key), false)
+	Advanced(self).AddStringDelimiter(String.New(start_key), String.New(end_key), false)
+}
+
+/*
+Defines a string delimiter from [param start_key] to [param end_key]. Both keys should be symbols, and [param start_key] must not be shared with other delimiters.
+If [param line_only] is [code]true[/code] or [param end_key] is an empty [String], the region does not carry over to the next line.
+*/
+func (self Expanded) AddStringDelimiter(start_key string, end_key string, line_only bool) { //gd:CodeEdit.add_string_delimiter
+	Advanced(self).AddStringDelimiter(String.New(start_key), String.New(end_key), line_only)
 }
 
 /*
 Removes the string delimiter with [param start_key].
 */
 func (self Instance) RemoveStringDelimiter(start_key string) { //gd:CodeEdit.remove_string_delimiter
-	class(self).RemoveStringDelimiter(String.New(start_key))
+	Advanced(self).RemoveStringDelimiter(String.New(start_key))
 }
 
 /*
 Returns [code]true[/code] if string [param start_key] exists.
 */
 func (self Instance) HasStringDelimiter(start_key string) bool { //gd:CodeEdit.has_string_delimiter
-	return bool(class(self).HasStringDelimiter(String.New(start_key)))
+	return bool(Advanced(self).HasStringDelimiter(String.New(start_key)))
 }
 
 /*
 Removes all string delimiters.
 */
 func (self Instance) ClearStringDelimiters() { //gd:CodeEdit.clear_string_delimiters
-	class(self).ClearStringDelimiters()
+	Advanced(self).ClearStringDelimiters()
 }
 
 /*
 Returns the delimiter index if [param line] [param column] is in a string. If [param column] is not provided, will return the delimiter index if the entire [param line] is a string. Otherwise [code]-1[/code].
 */
 func (self Instance) IsInString(line int) int { //gd:CodeEdit.is_in_string
-	return int(int(class(self).IsInString(int64(line), int64(-1))))
+	return int(int(Advanced(self).IsInString(int64(line), int64(-1))))
+}
+
+/*
+Returns the delimiter index if [param line] [param column] is in a string. If [param column] is not provided, will return the delimiter index if the entire [param line] is a string. Otherwise [code]-1[/code].
+*/
+func (self Expanded) IsInString(line int, column int) int { //gd:CodeEdit.is_in_string
+	return int(int(Advanced(self).IsInString(int64(line), int64(column))))
 }
 
 /*
@@ -417,91 +448,113 @@ Adds a comment delimiter from [param start_key] to [param end_key]. Both keys sh
 If [param line_only] is [code]true[/code] or [param end_key] is an empty [String], the region does not carry over to the next line.
 */
 func (self Instance) AddCommentDelimiter(start_key string, end_key string) { //gd:CodeEdit.add_comment_delimiter
-	class(self).AddCommentDelimiter(String.New(start_key), String.New(end_key), false)
+	Advanced(self).AddCommentDelimiter(String.New(start_key), String.New(end_key), false)
+}
+
+/*
+Adds a comment delimiter from [param start_key] to [param end_key]. Both keys should be symbols, and [param start_key] must not be shared with other delimiters.
+If [param line_only] is [code]true[/code] or [param end_key] is an empty [String], the region does not carry over to the next line.
+*/
+func (self Expanded) AddCommentDelimiter(start_key string, end_key string, line_only bool) { //gd:CodeEdit.add_comment_delimiter
+	Advanced(self).AddCommentDelimiter(String.New(start_key), String.New(end_key), line_only)
 }
 
 /*
 Removes the comment delimiter with [param start_key].
 */
 func (self Instance) RemoveCommentDelimiter(start_key string) { //gd:CodeEdit.remove_comment_delimiter
-	class(self).RemoveCommentDelimiter(String.New(start_key))
+	Advanced(self).RemoveCommentDelimiter(String.New(start_key))
 }
 
 /*
 Returns [code]true[/code] if comment [param start_key] exists.
 */
 func (self Instance) HasCommentDelimiter(start_key string) bool { //gd:CodeEdit.has_comment_delimiter
-	return bool(class(self).HasCommentDelimiter(String.New(start_key)))
+	return bool(Advanced(self).HasCommentDelimiter(String.New(start_key)))
 }
 
 /*
 Removes all comment delimiters.
 */
 func (self Instance) ClearCommentDelimiters() { //gd:CodeEdit.clear_comment_delimiters
-	class(self).ClearCommentDelimiters()
+	Advanced(self).ClearCommentDelimiters()
 }
 
 /*
 Returns delimiter index if [param line] [param column] is in a comment. If [param column] is not provided, will return delimiter index if the entire [param line] is a comment. Otherwise [code]-1[/code].
 */
 func (self Instance) IsInComment(line int) int { //gd:CodeEdit.is_in_comment
-	return int(int(class(self).IsInComment(int64(line), int64(-1))))
+	return int(int(Advanced(self).IsInComment(int64(line), int64(-1))))
+}
+
+/*
+Returns delimiter index if [param line] [param column] is in a comment. If [param column] is not provided, will return delimiter index if the entire [param line] is a comment. Otherwise [code]-1[/code].
+*/
+func (self Expanded) IsInComment(line int, column int) int { //gd:CodeEdit.is_in_comment
+	return int(int(Advanced(self).IsInComment(int64(line), int64(column))))
 }
 
 /*
 Gets the start key for a string or comment region index.
 */
 func (self Instance) GetDelimiterStartKey(delimiter_index int) string { //gd:CodeEdit.get_delimiter_start_key
-	return string(class(self).GetDelimiterStartKey(int64(delimiter_index)).String())
+	return string(Advanced(self).GetDelimiterStartKey(int64(delimiter_index)).String())
 }
 
 /*
 Gets the end key for a string or comment region index.
 */
 func (self Instance) GetDelimiterEndKey(delimiter_index int) string { //gd:CodeEdit.get_delimiter_end_key
-	return string(class(self).GetDelimiterEndKey(int64(delimiter_index)).String())
+	return string(Advanced(self).GetDelimiterEndKey(int64(delimiter_index)).String())
 }
 
 /*
 If [param line] [param column] is in a string or comment, returns the start position of the region. If not or no start could be found, both [Vector2] values will be [code]-1[/code].
 */
 func (self Instance) GetDelimiterStartPosition(line int, column int) Vector2.XY { //gd:CodeEdit.get_delimiter_start_position
-	return Vector2.XY(class(self).GetDelimiterStartPosition(int64(line), int64(column)))
+	return Vector2.XY(Advanced(self).GetDelimiterStartPosition(int64(line), int64(column)))
 }
 
 /*
 If [param line] [param column] is in a string or comment, returns the end position of the region. If not or no end could be found, both [Vector2] values will be [code]-1[/code].
 */
 func (self Instance) GetDelimiterEndPosition(line int, column int) Vector2.XY { //gd:CodeEdit.get_delimiter_end_position
-	return Vector2.XY(class(self).GetDelimiterEndPosition(int64(line), int64(column)))
+	return Vector2.XY(Advanced(self).GetDelimiterEndPosition(int64(line), int64(column)))
 }
 
 /*
 Sets the code hint text. Pass an empty string to clear.
 */
 func (self Instance) SetCodeHint(code_hint string) { //gd:CodeEdit.set_code_hint
-	class(self).SetCodeHint(String.New(code_hint))
+	Advanced(self).SetCodeHint(String.New(code_hint))
 }
 
 /*
 If [code]true[/code], the code hint will draw below the main caret. If [code]false[/code], the code hint will draw above the main caret. See [method set_code_hint].
 */
 func (self Instance) SetCodeHintDrawBelow(draw_below bool) { //gd:CodeEdit.set_code_hint_draw_below
-	class(self).SetCodeHintDrawBelow(draw_below)
+	Advanced(self).SetCodeHintDrawBelow(draw_below)
 }
 
 /*
 Returns the full text with char [code]0xFFFF[/code] at the caret location.
 */
 func (self Instance) GetTextForCodeCompletion() string { //gd:CodeEdit.get_text_for_code_completion
-	return string(class(self).GetTextForCodeCompletion().String())
+	return string(Advanced(self).GetTextForCodeCompletion().String())
 }
 
 /*
 Emits [signal code_completion_requested], if [param force] is [code]true[/code] will bypass all checks. Otherwise will check that the caret is in a word or in front of a prefix. Will ignore the request if all current options are of type file path, node path, or signal.
 */
 func (self Instance) RequestCodeCompletion() { //gd:CodeEdit.request_code_completion
-	class(self).RequestCodeCompletion(false)
+	Advanced(self).RequestCodeCompletion(false)
+}
+
+/*
+Emits [signal code_completion_requested], if [param force] is [code]true[/code] will bypass all checks. Otherwise will check that the caret is in a word or in front of a prefix. Will ignore the request if all current options are of type file path, node path, or signal.
+*/
+func (self Expanded) RequestCodeCompletion(force bool) { //gd:CodeEdit.request_code_completion
+	Advanced(self).RequestCodeCompletion(force)
 }
 
 /*
@@ -510,7 +563,16 @@ Submits an item to the queue of potential candidates for the autocomplete menu. 
 [b]Note:[/b] This list will replace all current candidates.
 */
 func (self Instance) AddCodeCompletionOption(atype gdclass.CodeEditCodeCompletionKind, display_text string, insert_text string) { //gd:CodeEdit.add_code_completion_option
-	class(self).AddCodeCompletionOption(atype, String.New(display_text), String.New(insert_text), Color.RGBA(gd.Color{1, 1, 1, 1}), [1][1]gdclass.Resource{}[0], variant.New([1]any{}[0]), int64(1024))
+	Advanced(self).AddCodeCompletionOption(atype, String.New(display_text), String.New(insert_text), Color.RGBA(gd.Color{1, 1, 1, 1}), [1][1]gdclass.Resource{}[0], variant.New([1]any{}[0]), int64(1024))
+}
+
+/*
+Submits an item to the queue of potential candidates for the autocomplete menu. Call [method update_code_completion_options] to update the list.
+[param location] indicates location of the option relative to the location of the code completion query. See [enum CodeEdit.CodeCompletionLocation] for how to set this value.
+[b]Note:[/b] This list will replace all current candidates.
+*/
+func (self Expanded) AddCodeCompletionOption(atype gdclass.CodeEditCodeCompletionKind, display_text string, insert_text string, text_color Color.RGBA, icon [1]gdclass.Resource, value any, location int) { //gd:CodeEdit.add_code_completion_option
+	Advanced(self).AddCodeCompletionOption(atype, String.New(display_text), String.New(insert_text), Color.RGBA(text_color), icon, variant.New(value), int64(location))
 }
 
 /*
@@ -518,14 +580,14 @@ Submits all completion options added with [method add_code_completion_option]. W
 [b]Note:[/b] This will replace all current candidates.
 */
 func (self Instance) UpdateCodeCompletionOptions(force bool) { //gd:CodeEdit.update_code_completion_options
-	class(self).UpdateCodeCompletionOptions(force)
+	Advanced(self).UpdateCodeCompletionOptions(force)
 }
 
 /*
 Gets all completion options, see [method get_code_completion_option] for return content.
 */
 func (self Instance) GetCodeCompletionOptions() []CompletionInfo { //gd:CodeEdit.get_code_completion_options
-	return []CompletionInfo(gd.ArrayAs[[]CompletionInfo](gd.InternalArray(class(self).GetCodeCompletionOptions())))
+	return []CompletionInfo(gd.ArrayAs[[]CompletionInfo](gd.InternalArray(Advanced(self).GetCodeCompletionOptions())))
 }
 
 /*
@@ -538,91 +600,98 @@ Gets the completion option at [param index]. The return [Dictionary] has the fol
 [code]default_value[/code]: Value of the symbol.
 */
 func (self Instance) GetCodeCompletionOption(index int) CompletionInfo { //gd:CodeEdit.get_code_completion_option
-	return CompletionInfo(gd.DictionaryAs[CompletionInfo](class(self).GetCodeCompletionOption(int64(index))))
+	return CompletionInfo(gd.DictionaryAs[CompletionInfo](Advanced(self).GetCodeCompletionOption(int64(index))))
 }
 
 /*
 Gets the index of the current selected completion option.
 */
 func (self Instance) GetCodeCompletionSelectedIndex() int { //gd:CodeEdit.get_code_completion_selected_index
-	return int(int(class(self).GetCodeCompletionSelectedIndex()))
+	return int(int(Advanced(self).GetCodeCompletionSelectedIndex()))
 }
 
 /*
 Sets the current selected completion option.
 */
 func (self Instance) SetCodeCompletionSelectedIndex(index int) { //gd:CodeEdit.set_code_completion_selected_index
-	class(self).SetCodeCompletionSelectedIndex(int64(index))
+	Advanced(self).SetCodeCompletionSelectedIndex(int64(index))
 }
 
 /*
 Inserts the selected entry into the text. If [param replace] is [code]true[/code], any existing text is replaced rather than merged.
 */
 func (self Instance) ConfirmCodeCompletion() { //gd:CodeEdit.confirm_code_completion
-	class(self).ConfirmCodeCompletion(false)
+	Advanced(self).ConfirmCodeCompletion(false)
+}
+
+/*
+Inserts the selected entry into the text. If [param replace] is [code]true[/code], any existing text is replaced rather than merged.
+*/
+func (self Expanded) ConfirmCodeCompletion(replace bool) { //gd:CodeEdit.confirm_code_completion
+	Advanced(self).ConfirmCodeCompletion(replace)
 }
 
 /*
 Cancels the autocomplete menu.
 */
 func (self Instance) CancelCodeCompletion() { //gd:CodeEdit.cancel_code_completion
-	class(self).CancelCodeCompletion()
+	Advanced(self).CancelCodeCompletion()
 }
 
 /*
 Returns the full text with char [code]0xFFFF[/code] at the cursor location.
 */
 func (self Instance) GetTextForSymbolLookup() string { //gd:CodeEdit.get_text_for_symbol_lookup
-	return string(class(self).GetTextForSymbolLookup().String())
+	return string(Advanced(self).GetTextForSymbolLookup().String())
 }
 
 /*
 Returns the full text with char [code]0xFFFF[/code] at the specified location.
 */
 func (self Instance) GetTextWithCursorChar(line int, column int) string { //gd:CodeEdit.get_text_with_cursor_char
-	return string(class(self).GetTextWithCursorChar(int64(line), int64(column)).String())
+	return string(Advanced(self).GetTextWithCursorChar(int64(line), int64(column)).String())
 }
 
 /*
 Sets the symbol emitted by [signal symbol_validate] as a valid lookup.
 */
 func (self Instance) SetSymbolLookupWordAsValid(valid bool) { //gd:CodeEdit.set_symbol_lookup_word_as_valid
-	class(self).SetSymbolLookupWordAsValid(valid)
+	Advanced(self).SetSymbolLookupWordAsValid(valid)
 }
 
 /*
 Moves all lines up that are selected or have a caret on them.
 */
 func (self Instance) MoveLinesUp() { //gd:CodeEdit.move_lines_up
-	class(self).MoveLinesUp()
+	Advanced(self).MoveLinesUp()
 }
 
 /*
 Moves all lines down that are selected or have a caret on them.
 */
 func (self Instance) MoveLinesDown() { //gd:CodeEdit.move_lines_down
-	class(self).MoveLinesDown()
+	Advanced(self).MoveLinesDown()
 }
 
 /*
 Deletes all lines that are selected or have a caret on them.
 */
 func (self Instance) DeleteLines() { //gd:CodeEdit.delete_lines
-	class(self).DeleteLines()
+	Advanced(self).DeleteLines()
 }
 
 /*
 Duplicates all selected text and duplicates all lines with a caret on them.
 */
 func (self Instance) DuplicateSelection() { //gd:CodeEdit.duplicate_selection
-	class(self).DuplicateSelection()
+	Advanced(self).DuplicateSelection()
 }
 
 /*
 Duplicates all lines currently selected with any caret. Duplicates the entire line beneath the current one no matter where the caret is within the line.
 */
 func (self Instance) DuplicateLines() { //gd:CodeEdit.duplicate_lines
-	class(self).DuplicateLines()
+	Advanced(self).DuplicateLines()
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
