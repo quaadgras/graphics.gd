@@ -21,5 +21,5 @@ func Set(object Any, property string, value any) { //gd:Object.set
 //
 // Note: property must be in snake_case when referring to built-in Godot properties.
 func Get(object Any, property string) any { //gd:Object.get
-	return object.AsObject()[0].Get(gd.NewStringName(property))
+	return object.AsObject()[0].Get(gd.NewStringName(property)).Interface()
 }
