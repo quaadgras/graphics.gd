@@ -23,3 +23,10 @@ func Set(object Any, property string, value any) { //gd:Object.set
 func Get(object Any, property string) any { //gd:Object.get
 	return object.AsObject()[0].Get(gd.NewStringName(property)).Interface()
 }
+
+// HasMethod returns true if the given method name exists in the object.
+//
+// Note: In C#, method must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the MethodName class to avoid allocating a new StringName on each call.
+func HasMethod(object Any, method string) bool { //gd:Object.has_method
+	return object.AsObject()[0].HasMethod(gd.NewStringName(method))
+}

@@ -18,3 +18,4 @@ example/bin/
 *.wasm
 /gdextension/internal
 /go.work.sum
+.idea
