@@ -74,7 +74,7 @@ func RestartEditor() { //gd:EditorInterface.restart_editor
 /*
 Restarts the editor. This closes the editor and then opens the same project. If [param save] is [code]true[/code], the project will be saved before restarting.
 */
-func RestartEditorExpanded(save bool) { //gd:EditorInterface.restart_editor
+func RestartEditorOptions(save bool) { //gd:EditorInterface.restart_editor
 	once.Do(singleton)
 	Advanced().RestartEditor(save)
 }
@@ -224,7 +224,7 @@ func GetEditorViewport3d(idx int) [1]gdclass.SubViewport { //gd:EditorInterface.
 /*
 Returns the specified 3D editor [SubViewport], from [code]0[/code] to [code]3[/code]. The viewport can be used to access the active editor cameras with [method Viewport.get_camera_3d].
 */
-func GetEditorViewport3dExpanded(idx int) [1]gdclass.SubViewport { //gd:EditorInterface.get_editor_viewport_3d
+func GetEditorViewport3dOptions(idx int) [1]gdclass.SubViewport { //gd:EditorInterface.get_editor_viewport_3d
 	once.Do(singleton)
 	return [1]gdclass.SubViewport(Advanced().GetEditorViewport3d(int64(idx)))
 }
@@ -270,7 +270,7 @@ func PopupDialog(dialog [1]gdclass.Window, rect Rect2i.PositionSize) { //gd:Edit
 Pops up the [param dialog] in the editor UI with [method Window.popup_exclusive]. The dialog must have no current parent, otherwise the method fails.
 See also [method Window.set_unparent_when_invisible].
 */
-func PopupDialogExpanded(dialog [1]gdclass.Window, rect Rect2i.PositionSize) { //gd:EditorInterface.popup_dialog
+func PopupDialogOptions(dialog [1]gdclass.Window, rect Rect2i.PositionSize) { //gd:EditorInterface.popup_dialog
 	once.Do(singleton)
 	Advanced().PopupDialog(dialog, Rect2i.PositionSize(rect))
 }
@@ -288,7 +288,7 @@ func PopupDialogCentered(dialog [1]gdclass.Window, minsize Vector2i.XY) { //gd:E
 Pops up the [param dialog] in the editor UI with [method Window.popup_exclusive_centered]. The dialog must have no current parent, otherwise the method fails.
 See also [method Window.set_unparent_when_invisible].
 */
-func PopupDialogCenteredExpanded(dialog [1]gdclass.Window, minsize Vector2i.XY) { //gd:EditorInterface.popup_dialog_centered
+func PopupDialogCenteredOptions(dialog [1]gdclass.Window, minsize Vector2i.XY) { //gd:EditorInterface.popup_dialog_centered
 	once.Do(singleton)
 	Advanced().PopupDialogCentered(dialog, Vector2i.XY(minsize))
 }
@@ -306,7 +306,7 @@ func PopupDialogCenteredRatio(dialog [1]gdclass.Window) { //gd:EditorInterface.p
 Pops up the [param dialog] in the editor UI with [method Window.popup_exclusive_centered_ratio]. The dialog must have no current parent, otherwise the method fails.
 See also [method Window.set_unparent_when_invisible].
 */
-func PopupDialogCenteredRatioExpanded(dialog [1]gdclass.Window, ratio Float.X) { //gd:EditorInterface.popup_dialog_centered_ratio
+func PopupDialogCenteredRatioOptions(dialog [1]gdclass.Window, ratio Float.X) { //gd:EditorInterface.popup_dialog_centered_ratio
 	once.Do(singleton)
 	Advanced().PopupDialogCenteredRatio(dialog, float64(ratio))
 }
@@ -324,7 +324,7 @@ func PopupDialogCenteredClamped(dialog [1]gdclass.Window, minsize Vector2i.XY) {
 Pops up the [param dialog] in the editor UI with [method Window.popup_exclusive_centered_clamped]. The dialog must have no current parent, otherwise the method fails.
 See also [method Window.set_unparent_when_invisible].
 */
-func PopupDialogCenteredClampedExpanded(dialog [1]gdclass.Window, minsize Vector2i.XY, fallback_ratio Float.X) { //gd:EditorInterface.popup_dialog_centered_clamped
+func PopupDialogCenteredClampedOptions(dialog [1]gdclass.Window, minsize Vector2i.XY, fallback_ratio Float.X) { //gd:EditorInterface.popup_dialog_centered_clamped
 	once.Do(singleton)
 	Advanced().PopupDialogCenteredClamped(dialog, Vector2i.XY(minsize), float64(fallback_ratio))
 }
@@ -390,7 +390,7 @@ func _on_node_selected(node_path):
 
 [/codeblock]
 */
-func PopupNodeSelectorExpanded(callback func(selected string), valid_types []string, current_value [1]gdclass.Node) { //gd:EditorInterface.popup_node_selector
+func PopupNodeSelectorOptions(callback func(selected string), valid_types []string, current_value [1]gdclass.Node) { //gd:EditorInterface.popup_node_selector
 	once.Do(singleton)
 	Advanced().PopupNodeSelector(Callable.New(callback), gd.ArrayFromSlice[Array.Contains[String.Name]](valid_types), current_value)
 }
@@ -434,7 +434,7 @@ func _on_property_selected(property_path):
 
 [/codeblock]
 */
-func PopupPropertySelectorExpanded(obj Object.Instance, callback func(selected string), type_filter []int32, current_value string) { //gd:EditorInterface.popup_property_selector
+func PopupPropertySelectorOptions(obj Object.Instance, callback func(selected string), type_filter []int32, current_value string) { //gd:EditorInterface.popup_property_selector
 	once.Do(singleton)
 	Advanced().PopupPropertySelector(obj, Callable.New(callback), Packed.New(type_filter...), String.New(current_value))
 }
@@ -450,7 +450,7 @@ func PopupMethodSelector(obj Object.Instance, callback func(selected string), cu
 /*
 Pops up an editor dialog for selecting a method from [param object]. The [param callback] must take a single argument of type [String] which will contain the name of the selected method or be empty if the dialog is canceled. If [param current_value] is provided, the method will be selected automatically in the method list, if it exists.
 */
-func PopupMethodSelectorExpanded(obj Object.Instance, callback func(selected string), current_value string) { //gd:EditorInterface.popup_method_selector
+func PopupMethodSelectorOptions(obj Object.Instance, callback func(selected string), current_value string) { //gd:EditorInterface.popup_method_selector
 	once.Do(singleton)
 	Advanced().PopupMethodSelector(obj, Callable.New(callback), String.New(current_value))
 }
@@ -466,7 +466,7 @@ func PopupQuickOpen(callback func(selected string), base_types []string) { //gd:
 /*
 Pops up an editor dialog for quick selecting a resource file. The [param callback] must take a single argument of type [String] which will contain the path of the selected resource or be empty if the dialog is canceled. If [param base_types] is provided, the dialog will only show resources that match these types. Only types deriving from [Resource] are supported.
 */
-func PopupQuickOpenExpanded(callback func(selected string), base_types []string) { //gd:EditorInterface.popup_quick_open
+func PopupQuickOpenOptions(callback func(selected string), base_types []string) { //gd:EditorInterface.popup_quick_open
 	once.Do(singleton)
 	Advanced().PopupQuickOpen(Callable.New(callback), gd.ArrayFromSlice[Array.Contains[String.Name]](base_types))
 }
@@ -494,7 +494,7 @@ The [param dialog_title] allows you to define a custom title for the dialog. Thi
 The [param type_blocklist] contains a list of type names, and the types in the blocklist will be hidden from the create dialog.
 [b]Note:[/b] Trying to list the base type in the [param type_blocklist] will hide all types derived from the base type from the create dialog.
 */
-func PopupCreateDialogExpanded(callback func(selected string), base_type string, current_type string, dialog_title string, type_blocklist []string) { //gd:EditorInterface.popup_create_dialog
+func PopupCreateDialogOptions(callback func(selected string), base_type string, current_type string, dialog_title string, type_blocklist []string) { //gd:EditorInterface.popup_create_dialog
 	once.Do(singleton)
 	Advanced().PopupCreateDialog(Callable.New(callback), String.Name(String.New(base_type)), String.New(current_type), String.New(dialog_title), gd.ArrayFromSlice[Array.Contains[String.Name]](type_blocklist))
 }
@@ -560,7 +560,7 @@ func InspectObject(obj Object.Instance, for_property string, inspector_only bool
 /*
 Shows the given property on the given [param object] in the editor's Inspector dock. If [param inspector_only] is [code]true[/code], plugins will not attempt to edit [param object].
 */
-func InspectObjectExpanded(obj Object.Instance, for_property string, inspector_only bool) { //gd:EditorInterface.inspect_object
+func InspectObjectOptions(obj Object.Instance, for_property string, inspector_only bool) { //gd:EditorInterface.inspect_object
 	once.Do(singleton)
 	Advanced().InspectObject(obj, String.New(for_property), inspector_only)
 }
@@ -592,7 +592,7 @@ func EditScript(script [1]gdclass.Script, column int) { //gd:EditorInterface.edi
 /*
 Edits the given [Script]. The line and column on which to open the script can also be specified. The script will be open with the user-configured editor for the script's language which may be an external editor.
 */
-func EditScriptExpanded(script [1]gdclass.Script, line int, column int, grab_focus bool) { //gd:EditorInterface.edit_script
+func EditScriptOptions(script [1]gdclass.Script, line int, column int, grab_focus bool) { //gd:EditorInterface.edit_script
 	once.Do(singleton)
 	Advanced().EditScript(script, int64(line), int64(column), grab_focus)
 }
@@ -608,7 +608,7 @@ func OpenSceneFromPath(scene_filepath string, set_inherited bool) { //gd:EditorI
 /*
 Opens the scene at the given path. If [param set_inherited] is [code]true[/code], creates a new inherited scene.
 */
-func OpenSceneFromPathExpanded(scene_filepath string, set_inherited bool) { //gd:EditorInterface.open_scene_from_path
+func OpenSceneFromPathOptions(scene_filepath string, set_inherited bool) { //gd:EditorInterface.open_scene_from_path
 	once.Do(singleton)
 	Advanced().OpenSceneFromPath(String.New(scene_filepath), set_inherited)
 }
@@ -656,7 +656,7 @@ func SaveSceneAs(path string) { //gd:EditorInterface.save_scene_as
 /*
 Saves the currently active scene as a file at [param path].
 */
-func SaveSceneAsExpanded(path string, with_preview bool) { //gd:EditorInterface.save_scene_as
+func SaveSceneAsOptions(path string, with_preview bool) { //gd:EditorInterface.save_scene_as
 	once.Do(singleton)
 	Advanced().SaveSceneAs(String.New(path), with_preview)
 }

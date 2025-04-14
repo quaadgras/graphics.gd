@@ -242,7 +242,7 @@ func AreaAddShape(area RID.Area2D, shape RID.Shape2D, disabled bool) { //gd:Phys
 /*
 Adds a shape to the area, with the given local transform. The shape (together with its [param transform] and [param disabled] properties) is added to an array of shapes, and the shapes of an area are usually referenced by their index in this array.
 */
-func AreaAddShapeExpanded(area RID.Area2D, shape RID.Shape2D, transform Transform2D.OriginXY, disabled bool) { //gd:PhysicsServer2D.area_add_shape
+func AreaAddShapeOptions(area RID.Area2D, shape RID.Shape2D, transform Transform2D.OriginXY, disabled bool) { //gd:PhysicsServer2D.area_add_shape
 	once.Do(singleton)
 	Advanced().AreaAddShape(RID.Any(area), RID.Any(shape), Transform2D.OriginXY(transform), disabled)
 }
@@ -498,7 +498,7 @@ func BodyAddShape(body RID.Body2D, shape RID.Shape2D, disabled bool) { //gd:Phys
 /*
 Adds a shape to the area, with the given local transform. The shape (together with its [param transform] and [param disabled] properties) is added to an array of shapes, and the shapes of a body are usually referenced by their index in this array.
 */
-func BodyAddShapeExpanded(body RID.Body2D, shape RID.Shape2D, transform Transform2D.OriginXY, disabled bool) { //gd:PhysicsServer2D.body_add_shape
+func BodyAddShapeOptions(body RID.Body2D, shape RID.Shape2D, transform Transform2D.OriginXY, disabled bool) { //gd:PhysicsServer2D.body_add_shape
 	once.Do(singleton)
 	Advanced().BodyAddShape(RID.Any(body), RID.Any(shape), Transform2D.OriginXY(transform), disabled)
 }
@@ -747,7 +747,7 @@ Applies a positioned impulse to the body. The impulse can affect rotation if [pa
 An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
 [param position] is the offset from the body origin in global coordinates.
 */
-func BodyApplyImpulseExpanded(body RID.Body2D, impulse Vector2.XY, position Vector2.XY) { //gd:PhysicsServer2D.body_apply_impulse
+func BodyApplyImpulseOptions(body RID.Body2D, impulse Vector2.XY, position Vector2.XY) { //gd:PhysicsServer2D.body_apply_impulse
 	once.Do(singleton)
 	Advanced().BodyApplyImpulse(RID.Any(body), Vector2.XY(impulse), Vector2.XY(position))
 }
@@ -774,7 +774,7 @@ func BodyApplyForce(body RID.Body2D, force Vector2.XY, position Vector2.XY) { //
 Applies a positioned force to the body. The force can affect rotation if [param position] is different from the body's center of mass. A force is time dependent and meant to be applied every physics update.
 [param position] is the offset from the body origin in global coordinates.
 */
-func BodyApplyForceExpanded(body RID.Body2D, force Vector2.XY, position Vector2.XY) { //gd:PhysicsServer2D.body_apply_force
+func BodyApplyForceOptions(body RID.Body2D, force Vector2.XY, position Vector2.XY) { //gd:PhysicsServer2D.body_apply_force
 	once.Do(singleton)
 	Advanced().BodyApplyForce(RID.Any(body), Vector2.XY(force), Vector2.XY(position))
 }
@@ -809,7 +809,7 @@ func BodyAddConstantForce(body RID.Body2D, force Vector2.XY, position Vector2.XY
 Adds a constant positioned force to the body. The force can affect rotation if [param position] is different from the body's center of mass. The force remains applied over time until cleared with [code]PhysicsServer2D.body_set_constant_force(body, Vector2(0, 0))[/code].
 [param position] is the offset from the body origin in global coordinates.
 */
-func BodyAddConstantForceExpanded(body RID.Body2D, force Vector2.XY, position Vector2.XY) { //gd:PhysicsServer2D.body_add_constant_force
+func BodyAddConstantForceOptions(body RID.Body2D, force Vector2.XY, position Vector2.XY) { //gd:PhysicsServer2D.body_add_constant_force
 	once.Do(singleton)
 	Advanced().BodyAddConstantForce(RID.Any(body), Vector2.XY(force), Vector2.XY(position))
 }
@@ -947,7 +947,7 @@ If [param userdata] is not [code]null[/code], the function [param callable] must
 2. [code skip-lint]userdata[/code]: a [Variant]; its value will be the [param userdata] passed into this method.
 If [param userdata] is [code]null[/code], then [param callable] must take only the [code]state[/code] parameter.
 */
-func BodySetForceIntegrationCallbackExpanded(body RID.Body2D, callable func(state [1]gdclass.PhysicsDirectBodyState2D, userdata any), userdata any) { //gd:PhysicsServer2D.body_set_force_integration_callback
+func BodySetForceIntegrationCallbackOptions(body RID.Body2D, callable func(state [1]gdclass.PhysicsDirectBodyState2D, userdata any), userdata any) { //gd:PhysicsServer2D.body_set_force_integration_callback
 	once.Do(singleton)
 	Advanced().BodySetForceIntegrationCallback(RID.Any(body), Callable.New(callable), variant.New(userdata))
 }
@@ -963,7 +963,7 @@ func BodyTestMotion(body RID.Body2D, parameters [1]gdclass.PhysicsTestMotionPara
 /*
 Returns [code]true[/code] if a collision would result from moving the body along a motion vector from a given point in space. See [PhysicsTestMotionParameters2D] for the available motion parameters. Optionally a [PhysicsTestMotionResult2D] object can be passed, which will be used to store the information about the resulting collision.
 */
-func BodyTestMotionExpanded(body RID.Body2D, parameters [1]gdclass.PhysicsTestMotionParameters2D, result [1]gdclass.PhysicsTestMotionResult2D) bool { //gd:PhysicsServer2D.body_test_motion
+func BodyTestMotionOptions(body RID.Body2D, parameters [1]gdclass.PhysicsTestMotionParameters2D, result [1]gdclass.PhysicsTestMotionResult2D) bool { //gd:PhysicsServer2D.body_test_motion
 	once.Do(singleton)
 	return bool(Advanced().BodyTestMotion(RID.Any(body), parameters, result))
 }
@@ -1035,7 +1035,7 @@ func JointMakePin(joint RID.Joint2D, anchor Vector2.XY, body_a RID.Body2D, body_
 /*
 Makes the joint a pin joint. If [param body_b] is an empty [RID], then [param body_a] is pinned to the point [param anchor] (given in global coordinates); otherwise, [param body_a] is pinned to [param body_b] at the point [param anchor] (given in global coordinates). To set the parameters which are specific to the pin joint, see [method pin_joint_set_param].
 */
-func JointMakePinExpanded(joint RID.Joint2D, anchor Vector2.XY, body_a RID.Body2D, body_b RID.Body2D) { //gd:PhysicsServer2D.joint_make_pin
+func JointMakePinOptions(joint RID.Joint2D, anchor Vector2.XY, body_a RID.Body2D, body_b RID.Body2D) { //gd:PhysicsServer2D.joint_make_pin
 	once.Do(singleton)
 	Advanced().JointMakePin(RID.Any(joint), Vector2.XY(anchor), RID.Any(body_a), RID.Any(body_b))
 }
@@ -1051,7 +1051,7 @@ func JointMakeGroove(joint RID.Joint2D, groove1_a Vector2.XY, groove2_a Vector2.
 /*
 Makes the joint a groove joint.
 */
-func JointMakeGrooveExpanded(joint RID.Joint2D, groove1_a Vector2.XY, groove2_a Vector2.XY, anchor_b Vector2.XY, body_a RID.Body2D, body_b RID.Body2D) { //gd:PhysicsServer2D.joint_make_groove
+func JointMakeGrooveOptions(joint RID.Joint2D, groove1_a Vector2.XY, groove2_a Vector2.XY, anchor_b Vector2.XY, body_a RID.Body2D, body_b RID.Body2D) { //gd:PhysicsServer2D.joint_make_groove
 	once.Do(singleton)
 	Advanced().JointMakeGroove(RID.Any(joint), Vector2.XY(groove1_a), Vector2.XY(groove2_a), Vector2.XY(anchor_b), RID.Any(body_a), RID.Any(body_b))
 }
@@ -1067,7 +1067,7 @@ func JointMakeDampedSpring(joint RID.Joint2D, anchor_a Vector2.XY, anchor_b Vect
 /*
 Makes the joint a damped spring joint, attached at the point [param anchor_a] (given in global coordinates) on the body [param body_a] and at the point [param anchor_b] (given in global coordinates) on the body [param body_b]. To set the parameters which are specific to the damped spring, see [method damped_spring_joint_set_param].
 */
-func JointMakeDampedSpringExpanded(joint RID.Joint2D, anchor_a Vector2.XY, anchor_b Vector2.XY, body_a RID.Body2D, body_b RID.Body2D) { //gd:PhysicsServer2D.joint_make_damped_spring
+func JointMakeDampedSpringOptions(joint RID.Joint2D, anchor_a Vector2.XY, anchor_b Vector2.XY, body_a RID.Body2D, body_b RID.Body2D) { //gd:PhysicsServer2D.joint_make_damped_spring
 	once.Do(singleton)
 	Advanced().JointMakeDampedSpring(RID.Any(joint), Vector2.XY(anchor_a), Vector2.XY(anchor_b), RID.Any(body_a), RID.Any(body_b))
 }

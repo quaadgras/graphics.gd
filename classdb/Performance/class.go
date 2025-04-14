@@ -193,7 +193,7 @@ public int GetMonitorValue()
 The debugger calls the callable to get the value of custom monitor. The callable must return a zero or positive integer or floating-point number.
 Callables are called with arguments supplied in argument array.
 */
-func AddCustomMonitorExpanded(id string, callable Callable.Function, arguments []any) { //gd:Performance.add_custom_monitor
+func AddCustomMonitorOptions(id string, callable Callable.Function, arguments []any) { //gd:Performance.add_custom_monitor
 	once.Do(singleton)
 	Advanced().AddCustomMonitor(String.Name(String.New(id)), Callable.New(callable), gd.EngineArrayFromSlice(arguments))
 }

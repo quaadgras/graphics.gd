@@ -179,7 +179,7 @@ The [param indent] parameter controls if and how something is indented; its cont
 }
 [/codeblock]
 */
-func StringifyExpanded(data any, indent string, sort_keys bool, full_precision bool) string { //gd:JSON.stringify
+func StringifyOptions(data any, indent string, sort_keys bool, full_precision bool) string { //gd:JSON.stringify
 	self := Instance{}
 	return string(Advanced(self).Stringify(variant.New(data), String.New(indent), sort_keys, full_precision).String())
 }
@@ -260,7 +260,7 @@ func encode_data(value, full_objects = false):
 
 [/codeblock]
 */
-func FromNativeExpanded(v any, full_objects bool) any { //gd:JSON.from_native
+func FromNativeOptions(v any, full_objects bool) any { //gd:JSON.from_native
 	self := Instance{}
 	return any(Advanced(self).FromNative(variant.New(v), full_objects).Interface())
 }
@@ -292,7 +292,7 @@ func decode_data(string, allow_objects = false):
 
 [/codeblock]
 */
-func ToNativeExpanded(json any, allow_objects bool) any { //gd:JSON.to_native
+func ToNativeOptions(json any, allow_objects bool) any { //gd:JSON.to_native
 	self := Instance{}
 	return any(Advanced(self).ToNative(variant.New(json), allow_objects).Interface())
 }

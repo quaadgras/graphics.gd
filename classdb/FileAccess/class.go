@@ -114,7 +114,7 @@ Creates a new [FileAccess] object and opens an encrypted file in write or read m
 [b]Note:[/b] The provided key must be 32 bytes long.
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
-func OpenEncryptedExpanded(path string, mode_flags gdclass.FileAccessModeFlags, key []byte, iv []byte) [1]gdclass.FileAccess { //gd:FileAccess.open_encrypted
+func OpenEncryptedOptions(path string, mode_flags gdclass.FileAccessModeFlags, key []byte, iv []byte) [1]gdclass.FileAccess { //gd:FileAccess.open_encrypted
 	self := Instance{}
 	return [1]gdclass.FileAccess(Advanced(self).OpenEncrypted(String.New(path), mode_flags, Packed.Bytes(Packed.New(key...)), Packed.Bytes(Packed.New(iv...))))
 }
@@ -143,7 +143,7 @@ Creates a new [FileAccess] object and opens a compressed file for reading or wri
 [b]Note:[/b] [method open_compressed] can only read files that were saved by Godot, not third-party compression formats. See [url=https://github.com/godotengine/godot/issues/28999]GitHub issue #28999[/url] for a workaround.
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
-func OpenCompressedExpanded(path string, mode_flags gdclass.FileAccessModeFlags, compression_mode gdclass.FileAccessCompressionMode) [1]gdclass.FileAccess { //gd:FileAccess.open_compressed
+func OpenCompressedOptions(path string, mode_flags gdclass.FileAccessModeFlags, compression_mode gdclass.FileAccessCompressionMode) [1]gdclass.FileAccess { //gd:FileAccess.open_compressed
 	self := Instance{}
 	return [1]gdclass.FileAccess(Advanced(self).OpenCompressed(String.New(path), mode_flags, compression_mode))
 }
@@ -175,7 +175,7 @@ If [param extension] is not empty, it will be appended to the temporary file nam
 If [param keep] is [code]true[/code], the file is not deleted when the returned [FileAccess] is freed.
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
-func CreateTempExpanded(mode_flags int, prefix string, extension string, keep bool) [1]gdclass.FileAccess { //gd:FileAccess.create_temp
+func CreateTempOptions(mode_flags int, prefix string, extension string, keep bool) [1]gdclass.FileAccess { //gd:FileAccess.create_temp
 	self := Instance{}
 	return [1]gdclass.FileAccess(Advanced(self).CreateTemp(int64(mode_flags), String.New(prefix), String.New(extension), keep))
 }

@@ -65,7 +65,7 @@ func Eval(code string, use_global_execution_context bool) any { //gd:JavaScriptB
 Execute the string [param code] as JavaScript code within the browser window. This is a call to the actual global JavaScript function [code skip-lint]eval()[/code].
 If [param use_global_execution_context] is [code]true[/code], the code will be evaluated in the global execution context. Otherwise, it is evaluated in the execution context of a function within the engine's runtime environment.
 */
-func EvalExpanded(code string, use_global_execution_context bool) any { //gd:JavaScriptBridge.eval
+func EvalOptions(code string, use_global_execution_context bool) any { //gd:JavaScriptBridge.eval
 	once.Do(singleton)
 	return any(Advanced().Eval(String.New(code), use_global_execution_context).Interface())
 }
@@ -120,7 +120,7 @@ Prompts the user to download a file containing the specified [param buffer]. The
 [b]Note:[/b] Browsers might block the download if [method download_buffer] is not being called from a user interaction (e.g. button click).
 [b]Note:[/b] Browsers might ask the user for permission or block the download if multiple download requests are made in a quick succession.
 */
-func DownloadBufferExpanded(buffer []byte, name string, mime string) { //gd:JavaScriptBridge.download_buffer
+func DownloadBufferOptions(buffer []byte, name string, mime string) { //gd:JavaScriptBridge.download_buffer
 	once.Do(singleton)
 	Advanced().DownloadBuffer(Packed.Bytes(Packed.New(buffer...)), String.New(name), String.New(mime))
 }

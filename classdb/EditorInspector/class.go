@@ -95,7 +95,7 @@ func InstantiatePropertyEditor(obj Object.Instance, atype variant.Type, path str
 /*
 Creates a property editor that can be used by plugin UI to edit the specified property of an [param object].
 */
-func InstantiatePropertyEditorExpanded(obj Object.Instance, atype variant.Type, path string, hint PropertyHint, hint_text string, usage int, wide bool) [1]gdclass.EditorProperty { //gd:EditorInspector.instantiate_property_editor
+func InstantiatePropertyEditorOptions(obj Object.Instance, atype variant.Type, path string, hint PropertyHint, hint_text string, usage int, wide bool) [1]gdclass.EditorProperty { //gd:EditorInspector.instantiate_property_editor
 	self := Instance{}
 	return [1]gdclass.EditorProperty(Advanced(self).InstantiatePropertyEditor(obj, atype, String.New(path), hint, String.New(hint_text), int64(usage), wide))
 }
@@ -152,7 +152,7 @@ func (self class) GetEditedObject() [1]gd.Object { //gd:EditorInspector.get_edit
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInspector.Bind_get_edited_object, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(r_ret.Get())})}
+	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret.Get())}
 	frame.Free()
 	return ret
 }

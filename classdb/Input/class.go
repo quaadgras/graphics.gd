@@ -121,7 +121,7 @@ Returns [code]true[/code] if you are pressing the action event.
 If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
 [b]Note:[/b] Due to keyboard ghosting, [method is_action_pressed] may return [code]false[/code] even if one of the action's keys is pressed. See [url=$DOCS_URL/tutorials/inputs/input_examples.html#keyboard-events]Input examples[/url] in the documentation for more information.
 */
-func IsActionPressedExpanded(action string, exact_match bool) bool { //gd:Input.is_action_pressed
+func IsActionPressedOptions(action string, exact_match bool) bool { //gd:Input.is_action_pressed
 	once.Do(singleton)
 	return bool(Advanced().IsActionPressed(String.Name(String.New(action)), exact_match))
 }
@@ -147,7 +147,7 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 [b]Note:[/b] Due to keyboard ghosting, [method is_action_just_pressed] may return [code]false[/code] even if one of the action's keys is pressed. See [url=$DOCS_URL/tutorials/inputs/input_examples.html#keyboard-events]Input examples[/url] in the documentation for more information.
 [b]Note:[/b] During input handling (e.g. [method Node._input]), use [method InputEvent.is_action_pressed] instead to query the action state of the current event.
 */
-func IsActionJustPressedExpanded(action string, exact_match bool) bool { //gd:Input.is_action_just_pressed
+func IsActionJustPressedOptions(action string, exact_match bool) bool { //gd:Input.is_action_just_pressed
 	once.Do(singleton)
 	return bool(Advanced().IsActionJustPressed(String.Name(String.New(action)), exact_match))
 }
@@ -169,7 +169,7 @@ Returns [code]true[/code] when the user [i]stops[/i] pressing the action event i
 If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
 [b]Note:[/b] During input handling (e.g. [method Node._input]), use [method InputEvent.is_action_released] instead to query the action state of the current event.
 */
-func IsActionJustReleasedExpanded(action string, exact_match bool) bool { //gd:Input.is_action_just_released
+func IsActionJustReleasedOptions(action string, exact_match bool) bool { //gd:Input.is_action_just_released
 	once.Do(singleton)
 	return bool(Advanced().IsActionJustReleased(String.Name(String.New(action)), exact_match))
 }
@@ -187,7 +187,7 @@ func GetActionStrength(action string, exact_match bool) Float.X { //gd:Input.get
 Returns a value between 0 and 1 representing the intensity of the given action. In a joypad, for example, the further away the axis (analog sticks or L2, R2 triggers) is from the dead zone, the closer the value will be to 1. If the action is mapped to a control that has no axis such as the keyboard, the value returned will be 0 or 1.
 If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
 */
-func GetActionStrengthExpanded(action string, exact_match bool) Float.X { //gd:Input.get_action_strength
+func GetActionStrengthOptions(action string, exact_match bool) Float.X { //gd:Input.get_action_strength
 	once.Do(singleton)
 	return Float.X(Float.X(Advanced().GetActionStrength(String.Name(String.New(action)), exact_match)))
 }
@@ -205,7 +205,7 @@ func GetActionRawStrength(action string, exact_match bool) Float.X { //gd:Input.
 Returns a value between 0 and 1 representing the raw intensity of the given action, ignoring the action's deadzone. In most cases, you should use [method get_action_strength] instead.
 If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
 */
-func GetActionRawStrengthExpanded(action string, exact_match bool) Float.X { //gd:Input.get_action_raw_strength
+func GetActionRawStrengthOptions(action string, exact_match bool) Float.X { //gd:Input.get_action_raw_strength
 	once.Do(singleton)
 	return Float.X(Float.X(Advanced().GetActionRawStrength(String.Name(String.New(action)), exact_match)))
 }
@@ -234,7 +234,7 @@ Gets an input vector by specifying four actions for the positive and negative X 
 This method is useful when getting vector input, such as from a joystick, directional pad, arrows, or WASD. The vector has its length limited to 1 and has a circular deadzone, which is useful for using vector input as movement.
 By default, the deadzone is automatically calculated from the average of the action deadzones. However, you can override the deadzone to be whatever you want (on the range of 0 to 1).
 */
-func GetVectorExpanded(negative_x string, positive_x string, negative_y string, positive_y string, deadzone Float.X) Vector2.XY { //gd:Input.get_vector
+func GetVectorOptions(negative_x string, positive_x string, negative_y string, positive_y string, deadzone Float.X) Vector2.XY { //gd:Input.get_vector
 	once.Do(singleton)
 	return Vector2.XY(Advanced().GetVector(String.Name(String.New(negative_x)), String.Name(String.New(positive_x)), String.Name(String.New(negative_y)), String.Name(String.New(positive_y)), float64(deadzone)))
 }
@@ -250,7 +250,7 @@ func AddJoyMapping(mapping string, update_existing bool) { //gd:Input.add_joy_ma
 /*
 Adds a new mapping entry (in SDL2 format) to the mapping database. Optionally update already connected devices.
 */
-func AddJoyMappingExpanded(mapping string, update_existing bool) { //gd:Input.add_joy_mapping
+func AddJoyMappingOptions(mapping string, update_existing bool) { //gd:Input.add_joy_mapping
 	once.Do(singleton)
 	Advanced().AddJoyMapping(String.New(mapping), update_existing)
 }
@@ -363,7 +363,7 @@ Starts to vibrate the joypad. Joypads usually come with two rumble motors, a str
 [b]Note:[/b] Not every hardware is compatible with long effect durations; it is recommended to restart an effect if it has to be played for more than a few seconds.
 [b]Note:[/b] For macOS, vibration is only supported in macOS 11 and later.
 */
-func StartJoyVibrationExpanded(device int, weak_magnitude Float.X, strong_magnitude Float.X, duration Float.X) { //gd:Input.start_joy_vibration
+func StartJoyVibrationOptions(device int, weak_magnitude Float.X, strong_magnitude Float.X, duration Float.X) { //gd:Input.start_joy_vibration
 	once.Do(singleton)
 	Advanced().StartJoyVibration(int64(device), float64(weak_magnitude), float64(strong_magnitude), float64(duration))
 }
@@ -399,7 +399,7 @@ Vibrate the handheld device for the specified duration in milliseconds.
 [b]Note:[/b] For Web, the amplitude cannot be changed.
 [b]Note:[/b] Some web browsers such as Safari and Firefox for Android do not support [method vibrate_handheld].
 */
-func VibrateHandheldExpanded(duration_ms int, amplitude Float.X) { //gd:Input.vibrate_handheld
+func VibrateHandheldOptions(duration_ms int, amplitude Float.X) { //gd:Input.vibrate_handheld
 	once.Do(singleton)
 	Advanced().VibrateHandheld(int64(duration_ms), float64(amplitude))
 }
@@ -530,7 +530,7 @@ This will simulate pressing the specified action.
 The strength can be used for non-boolean actions, it's ranged between 0 and 1 representing the intensity of the given action.
 [b]Note:[/b] This method will not cause any [method Node._input] calls. It is intended to be used with [method is_action_pressed] and [method is_action_just_pressed]. If you want to simulate [code]_input[/code], use [method parse_input_event] instead.
 */
-func ActionPressExpanded(action string, strength Float.X) { //gd:Input.action_press
+func ActionPressOptions(action string, strength Float.X) { //gd:Input.action_press
 	once.Do(singleton)
 	Advanced().ActionPress(String.Name(String.New(action)), float64(strength))
 }
@@ -558,7 +558,7 @@ Sets the default cursor shape to be used in the viewport instead of [constant CU
 [b]Note:[/b] If you want to change the default cursor shape for [Control]'s nodes, use [member Control.mouse_default_cursor_shape] instead.
 [b]Note:[/b] This method generates an [InputEventMouseMotion] to update cursor immediately.
 */
-func SetDefaultCursorShapeExpanded(shape gdclass.InputCursorShape) { //gd:Input.set_default_cursor_shape
+func SetDefaultCursorShapeOptions(shape gdclass.InputCursorShape) { //gd:Input.set_default_cursor_shape
 	once.Do(singleton)
 	Advanced().SetDefaultCursorShape(shape)
 }
@@ -592,7 +592,7 @@ Sets a custom mouse cursor image, which is only visible inside the game window. 
 [b]Note:[/b] The [b]Lossless[/b], [b]Lossy[/b] or [b]Uncompressed[/b] compression modes are recommended. The [b]Video RAM[/b] compression mode can be used, but it will be decompressed on the CPU, which means loading times are slowed down and no memory is saved compared to lossless modes.
 [b]Note:[/b] On the web platform, the maximum allowed cursor image size is 128×128. Cursor images larger than 32×32 will also only be displayed if the mouse cursor image is entirely located within the page for [url=https://chromestatus.com/feature/5825971391299584]security reasons[/url].
 */
-func SetCustomMouseCursorExpanded(image [1]gdclass.Resource, shape gdclass.InputCursorShape, hotspot Vector2.XY) { //gd:Input.set_custom_mouse_cursor
+func SetCustomMouseCursorOptions(image [1]gdclass.Resource, shape gdclass.InputCursorShape, hotspot Vector2.XY) { //gd:Input.set_custom_mouse_cursor
 	once.Do(singleton)
 	Advanced().SetCustomMouseCursor(image, shape, Vector2.XY(hotspot))
 }

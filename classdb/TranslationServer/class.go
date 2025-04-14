@@ -98,7 +98,7 @@ func StandardizeLocale(locale string, add_defaults bool) string { //gd:Translati
 /*
 Returns a [param locale] string standardized to match known locales (e.g. [code]en-US[/code] would be matched to [code]en_US[/code]). If [param add_defaults] is [code]true[/code], the locale may have a default script or country added.
 */
-func StandardizeLocaleExpanded(locale string, add_defaults bool) string { //gd:TranslationServer.standardize_locale
+func StandardizeLocaleOptions(locale string, add_defaults bool) string { //gd:TranslationServer.standardize_locale
 	once.Do(singleton)
 	return string(Advanced().StandardizeLocale(String.New(locale), add_defaults).String())
 }
@@ -172,7 +172,7 @@ func Translate(message string, context string) string { //gd:TranslationServer.t
 Returns the current locale's translation for the given message and context.
 [b]Note:[/b] This method always uses the main translation domain.
 */
-func TranslateExpanded(message string, context string) string { //gd:TranslationServer.translate
+func TranslateOptions(message string, context string) string { //gd:TranslationServer.translate
 	once.Do(singleton)
 	return string(Advanced().Translate(String.Name(String.New(message)), String.Name(String.New(context))).String())
 }
@@ -192,7 +192,7 @@ Returns the current locale's translation for the given message, plural message a
 The number [param n] is the number or quantity of the plural object. It will be used to guide the translation system to fetch the correct plural form for the selected language.
 [b]Note:[/b] This method always uses the main translation domain.
 */
-func TranslatePluralExpanded(message string, plural_message string, n int, context string) string { //gd:TranslationServer.translate_plural
+func TranslatePluralOptions(message string, plural_message string, n int, context string) string { //gd:TranslationServer.translate_plural
 	once.Do(singleton)
 	return string(Advanced().TranslatePlural(String.Name(String.New(message)), String.Name(String.New(plural_message)), int64(n), String.Name(String.New(context))).String())
 }

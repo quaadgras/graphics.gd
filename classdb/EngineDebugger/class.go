@@ -110,7 +110,7 @@ func ProfilerEnable(name string, enable bool, arguments []any) { //gd:EngineDebu
 /*
 Calls the [code]toggle[/code] callable of the profiler with given [param name] and [param arguments]. Enables/Disables the same profiler depending on [param enable] argument.
 */
-func ProfilerEnableExpanded(name string, enable bool, arguments []any) { //gd:EngineDebugger.profiler_enable
+func ProfilerEnableOptions(name string, enable bool, arguments []any) { //gd:EngineDebugger.profiler_enable
 	once.Do(singleton)
 	Advanced().ProfilerEnable(String.Name(String.New(name)), enable, gd.EngineArrayFromSlice(arguments))
 }
@@ -168,7 +168,7 @@ func Debug(is_error_breakpoint bool) { //gd:EngineDebugger.debug
 /*
 Starts a debug break in script execution, optionally specifying whether the program can continue based on [param can_continue] and whether the break was due to a breakpoint.
 */
-func DebugExpanded(can_continue bool, is_error_breakpoint bool) { //gd:EngineDebugger.debug
+func DebugOptions(can_continue bool, is_error_breakpoint bool) { //gd:EngineDebugger.debug
 	once.Do(singleton)
 	Advanced().Debug(can_continue, is_error_breakpoint)
 }
@@ -184,7 +184,7 @@ func ScriptDebug(language [1]gdclass.ScriptLanguage, is_error_breakpoint bool) {
 /*
 Starts a debug break in script execution, optionally specifying whether the program can continue based on [param can_continue] and whether the break was due to a breakpoint.
 */
-func ScriptDebugExpanded(language [1]gdclass.ScriptLanguage, can_continue bool, is_error_breakpoint bool) { //gd:EngineDebugger.script_debug
+func ScriptDebugOptions(language [1]gdclass.ScriptLanguage, can_continue bool, is_error_breakpoint bool) { //gd:EngineDebugger.script_debug
 	once.Do(singleton)
 	Advanced().ScriptDebug(language, can_continue, is_error_breakpoint)
 }

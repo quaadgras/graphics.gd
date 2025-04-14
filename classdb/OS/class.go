@@ -111,7 +111,7 @@ func Alert(text string) { //gd:OS.alert
 /*
 Displays a modal dialog box using the host platform's implementation. The engine execution is blocked until the dialog is closed.
 */
-func AlertExpanded(text string, title string) { //gd:OS.alert
+func AlertOptions(text string, title string) { //gd:OS.alert
 	once.Do(singleton)
 	Advanced().Alert(String.New(text), String.New(title))
 }
@@ -168,7 +168,7 @@ The following aliases can be used to request default fonts: "sans-serif", "serif
 [b]Note:[/b] Returned font might have different style if the requested style is not available.
 [b]Note:[/b] This method is implemented on Android, iOS, Linux, macOS and Windows.
 */
-func GetSystemFontPathExpanded(font_name string, weight int, stretch int, italic bool) string { //gd:OS.get_system_font_path
+func GetSystemFontPathOptions(font_name string, weight int, stretch int, italic bool) string { //gd:OS.get_system_font_path
 	once.Do(singleton)
 	return string(Advanced().GetSystemFontPath(String.New(font_name), int64(weight), int64(stretch), italic).String())
 }
@@ -192,7 +192,7 @@ The following aliases can be used to request default fonts: "sans-serif", "serif
 [b]Note:[/b] Returned fonts might have different style if the requested style is not available or belong to a different font family.
 [b]Note:[/b] This method is implemented on Android, iOS, Linux, macOS and Windows.
 */
-func GetSystemFontPathForTextExpanded(font_name string, text string, locale string, script string, weight int, stretch int, italic bool) []string { //gd:OS.get_system_font_path_for_text
+func GetSystemFontPathForTextOptions(font_name string, text string, locale string, script string, weight int, stretch int, italic bool) []string { //gd:OS.get_system_font_path_for_text
 	once.Do(singleton)
 	return []string(Advanced().GetSystemFontPathForText(String.New(font_name), String.New(text), String.New(locale), String.New(script), int64(weight), int64(stretch), italic).Strings())
 }
@@ -332,7 +332,7 @@ OS.Execute("CMD.exe", ["/C", "cd %TEMP% && dir"], output);
 [b]Note:[/b] On macOS, sandboxed applications are limited to run only embedded helper executables, specified during export.
 [b]Note:[/b] On Android, system commands such as [code]dumpsys[/code] can only be run on a rooted device.
 */
-func ExecuteExpanded(path string, arguments []string, output []any, read_stderr bool, open_console bool) int { //gd:OS.execute
+func ExecuteOptions(path string, arguments []string, output []any, read_stderr bool, open_console bool) int { //gd:OS.execute
 	once.Do(singleton)
 	return int(int(Advanced().Execute(String.New(path), Packed.MakeStrings(arguments...), gd.EngineArrayFromSlice(output), read_stderr, open_console)))
 }
@@ -368,7 +368,7 @@ If the process cannot be created, this method returns an empty [Dictionary]. Oth
 [b]Note:[/b] To execute a Unix shell built-in command, specify shell executable name in [param path], [code]-c[/code] as the first argument, and the desired command as the second argument.
 [b]Note:[/b] On macOS, sandboxed applications are limited to run only embedded helper executables, specified during export or system .app bundle, system .app bundles will ignore arguments.
 */
-func ExecuteWithPipeExpanded(path string, arguments []string, blocking bool) Pipe { //gd:OS.execute_with_pipe
+func ExecuteWithPipeOptions(path string, arguments []string, blocking bool) Pipe { //gd:OS.execute_with_pipe
 	once.Do(singleton)
 	return Pipe(gd.DictionaryAs[Pipe](Advanced().ExecuteWithPipe(String.New(path), Packed.MakeStrings(arguments...), blocking)))
 }
@@ -412,7 +412,7 @@ See [method execute] if you wish to run an external command and retrieve the res
 [b]Note:[/b] This method is implemented on Android, Linux, macOS, and Windows.
 [b]Note:[/b] On macOS, sandboxed applications are limited to run only embedded helper executables, specified during export or system .app bundle, system .app bundles will ignore arguments.
 */
-func CreateProcessExpanded(path string, arguments []string, open_console bool) int { //gd:OS.create_process
+func CreateProcessOptions(path string, arguments []string, open_console bool) int { //gd:OS.create_process
 	once.Do(singleton)
 	return int(int(Advanced().CreateProcess(String.New(path), Packed.MakeStrings(arguments...), open_console)))
 }
@@ -470,7 +470,7 @@ If [param open_folder] is [code]true[/code] and [param file_or_dir_path] is a va
 Use [method ProjectSettings.globalize_path] to convert a [code]res://[/code] or [code]user://[/code] project path into a system path to use with this method.
 [b]Note:[/b] This method is currently only implemented on Windows and macOS. On other platforms, it will fallback to [method shell_open] with a directory path of [param file_or_dir_path] prefixed with [code]file://[/code].
 */
-func ShellShowInFileManagerExpanded(file_or_dir_path string, open_folder bool) error { //gd:OS.shell_show_in_file_manager
+func ShellShowInFileManagerOptions(file_or_dir_path string, open_folder bool) error { //gd:OS.shell_show_in_file_manager
 	once.Do(singleton)
 	return error(gd.ToError(Advanced().ShellShowInFileManager(String.New(file_or_dir_path), open_folder)))
 }
@@ -730,7 +730,7 @@ This method can be used to apply setting changes that require a restart. See als
 [b]Note:[/b] This method is only effective on desktop platforms, and only when the project isn't started from the editor. It will have no effect on mobile and Web platforms, or when the project is started from the editor.
 [b]Note:[/b] If the project process crashes or is [i]killed[/i] by the user (by sending [code]SIGKILL[/code] instead of the usual [code]SIGTERM[/code]), the project won't restart automatically.
 */
-func SetRestartOnExitExpanded(restart bool, arguments []string) { //gd:OS.set_restart_on_exit
+func SetRestartOnExitOptions(restart bool, arguments []string) { //gd:OS.set_restart_on_exit
 	once.Do(singleton)
 	Advanced().SetRestartOnExit(restart, Packed.MakeStrings(arguments...))
 }
@@ -910,7 +910,7 @@ Returns the path to commonly used folders across different platforms, as defined
 [b]Note:[/b] This method is implemented on Android, Linux, macOS and Windows.
 [b]Note:[/b] Shared storage is implemented on Android and allows to differentiate between app specific and shared directories, if [param shared_storage] is [code]true[/code]. Shared directories have additional restrictions on Android.
 */
-func GetSystemDirExpanded(dir gdclass.OSSystemDir, shared_storage bool) string { //gd:OS.get_system_dir
+func GetSystemDirOptions(dir gdclass.OSSystemDir, shared_storage bool) string { //gd:OS.get_system_dir
 	once.Do(singleton)
 	return string(Advanced().GetSystemDir(dir, shared_storage).String())
 }

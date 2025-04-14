@@ -108,7 +108,7 @@ Adds [param action] as a task to be executed by a worker thread. [param high_pri
 Returns a task ID that can be used by other methods.
 [b]Warning:[/b] Every task must be waited for completion using [method wait_for_task_completion] or [method wait_for_group_task_completion] at some point so that any allocated resources inside the task can be cleaned up.
 */
-func AddTaskExpanded(action func(), high_priority bool, description string) int { //gd:WorkerThreadPool.add_task
+func AddTaskOptions(action func(), high_priority bool, description string) int { //gd:WorkerThreadPool.add_task
 	once.Do(singleton)
 	return int(int(Advanced().AddTask(Callable.New(action), high_priority, String.New(description))))
 }
@@ -150,7 +150,7 @@ The number of threads the task is distributed to is defined by [param tasks_need
 Returns a group task ID that can be used by other methods.
 [b]Warning:[/b] Every task must be waited for completion using [method wait_for_task_completion] or [method wait_for_group_task_completion] at some point so that any allocated resources inside the task can be cleaned up.
 */
-func AddGroupTaskExpanded(action func(), elements int, tasks_needed int, high_priority bool, description string) int { //gd:WorkerThreadPool.add_group_task
+func AddGroupTaskOptions(action func(), elements int, tasks_needed int, high_priority bool, description string) int { //gd:WorkerThreadPool.add_group_task
 	once.Do(singleton)
 	return int(int(Advanced().AddGroupTask(Callable.New(action), int64(elements), int64(tasks_needed), high_priority, String.New(description))))
 }

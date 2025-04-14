@@ -72,7 +72,7 @@ var query = PhysicsRayQueryParameters3D.create(position, position + Vector3(0, -
 var collision = get_world_3d().direct_space_state.intersect_ray(query)
 [/codeblock]
 */
-func CreateExpanded(from Vector3.XYZ, to Vector3.XYZ, collision_mask int, exclude [][]RID.Body3D) [1]gdclass.PhysicsRayQueryParameters3D { //gd:PhysicsRayQueryParameters3D.create
+func CreateOptions(from Vector3.XYZ, to Vector3.XYZ, collision_mask int, exclude [][]RID.Body3D) [1]gdclass.PhysicsRayQueryParameters3D { //gd:PhysicsRayQueryParameters3D.create
 	self := Instance{}
 	return [1]gdclass.PhysicsRayQueryParameters3D(Advanced(self).Create(Vector3.XYZ(from), Vector3.XYZ(to), int64(collision_mask), gd.ArrayFromSlice[Array.Contains[RID.Any]](exclude)))
 }

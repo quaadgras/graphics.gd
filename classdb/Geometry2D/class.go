@@ -290,7 +290,7 @@ GD.Print((Variant)polygon); // Prints [(50, 50), (150, 50), (150, 150), (50, 150
 [/csharp]
 [/codeblocks]
 */
-func OffsetPolygonExpanded(polygon []Vector2.XY, delta Float.X, join_type gdclass.Geometry2DPolyJoinType) [][]Vector2.XY { //gd:Geometry2D.offset_polygon
+func OffsetPolygonOptions(polygon []Vector2.XY, delta Float.X, join_type gdclass.Geometry2DPolyJoinType) [][]Vector2.XY { //gd:Geometry2D.offset_polygon
 	once.Do(singleton)
 	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(Advanced().OffsetPolygon(Packed.New(polygon...), float64(delta), join_type))))
 }
@@ -312,7 +312,7 @@ Each polygon's vertices will be rounded as determined by [param join_type], see 
 Each polygon's endpoints will be rounded as determined by [param end_type], see [enum PolyEndType].
 The operation may result in an outer polygon (boundary) and inner polygon (hole) produced which could be distinguished by calling [method is_polygon_clockwise].
 */
-func OffsetPolylineExpanded(polyline []Vector2.XY, delta Float.X, join_type gdclass.Geometry2DPolyJoinType, end_type gdclass.Geometry2DPolyEndType) [][]Vector2.XY { //gd:Geometry2D.offset_polyline
+func OffsetPolylineOptions(polyline []Vector2.XY, delta Float.X, join_type gdclass.Geometry2DPolyJoinType, end_type gdclass.Geometry2DPolyEndType) [][]Vector2.XY { //gd:Geometry2D.offset_polyline
 	once.Do(singleton)
 	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(Advanced().OffsetPolyline(Packed.New(polyline...), float64(delta), join_type, end_type))))
 }

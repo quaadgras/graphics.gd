@@ -80,7 +80,7 @@ func AddAction(action string) { //gd:InputMap.add_action
 Adds an empty action to the [InputMap] with a configurable [param deadzone].
 An [InputEvent] can then be added to this action with [method action_add_event].
 */
-func AddActionExpanded(action string, deadzone Float.X) { //gd:InputMap.add_action
+func AddActionOptions(action string, deadzone Float.X) { //gd:InputMap.add_action
 	once.Do(singleton)
 	Advanced().AddAction(String.Name(String.New(action)), float64(deadzone))
 }
@@ -163,7 +163,7 @@ func EventIsAction(event [1]gdclass.InputEvent, action string, exact_match bool)
 Returns [code]true[/code] if the given event is part of an existing action. This method ignores keyboard modifiers if the given [InputEvent] is not pressed (for proper release detection). See [method action_has_event] if you don't want this behavior.
 If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
 */
-func EventIsActionExpanded(event [1]gdclass.InputEvent, action string, exact_match bool) bool { //gd:InputMap.event_is_action
+func EventIsActionOptions(event [1]gdclass.InputEvent, action string, exact_match bool) bool { //gd:InputMap.event_is_action
 	once.Do(singleton)
 	return bool(Advanced().EventIsAction(event, String.Name(String.New(action)), exact_match))
 }

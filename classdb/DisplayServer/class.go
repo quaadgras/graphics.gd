@@ -125,7 +125,7 @@ Returns index of the inserted item, it's not guaranteed to be the same as [param
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddSubmenuItemExpanded(menu_root string, label string, submenu string, index int) int { //gd:DisplayServer.global_menu_add_submenu_item
+func GlobalMenuAddSubmenuItemOptions(menu_root string, label string, submenu string, index int) int { //gd:DisplayServer.global_menu_add_submenu_item
 	once.Do(singleton)
 	return int(int(Advanced().GlobalMenuAddSubmenuItem(String.New(menu_root), String.New(label), String.New(submenu), int64(index))))
 }
@@ -165,7 +165,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddItemExpanded(menu_root string, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:DisplayServer.global_menu_add_item
+func GlobalMenuAddItemOptions(menu_root string, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:DisplayServer.global_menu_add_item
 	once.Do(singleton)
 	return int(int(Advanced().GlobalMenuAddItem(String.New(menu_root), String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
@@ -205,7 +205,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddCheckItemExpanded(menu_root string, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:DisplayServer.global_menu_add_check_item
+func GlobalMenuAddCheckItemOptions(menu_root string, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:DisplayServer.global_menu_add_check_item
 	once.Do(singleton)
 	return int(int(Advanced().GlobalMenuAddCheckItem(String.New(menu_root), String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
@@ -245,7 +245,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddIconItemExpanded(menu_root string, icon [1]gdclass.Texture2D, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:DisplayServer.global_menu_add_icon_item
+func GlobalMenuAddIconItemOptions(menu_root string, icon [1]gdclass.Texture2D, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:DisplayServer.global_menu_add_icon_item
 	once.Do(singleton)
 	return int(int(Advanced().GlobalMenuAddIconItem(String.New(menu_root), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
@@ -285,7 +285,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddIconCheckItemExpanded(menu_root string, icon [1]gdclass.Texture2D, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:DisplayServer.global_menu_add_icon_check_item
+func GlobalMenuAddIconCheckItemOptions(menu_root string, icon [1]gdclass.Texture2D, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:DisplayServer.global_menu_add_icon_check_item
 	once.Do(singleton)
 	return int(int(Advanced().GlobalMenuAddIconCheckItem(String.New(menu_root), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
@@ -327,7 +327,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddRadioCheckItemExpanded(menu_root string, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:DisplayServer.global_menu_add_radio_check_item
+func GlobalMenuAddRadioCheckItemOptions(menu_root string, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:DisplayServer.global_menu_add_radio_check_item
 	once.Do(singleton)
 	return int(int(Advanced().GlobalMenuAddRadioCheckItem(String.New(menu_root), String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
@@ -369,7 +369,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddIconRadioCheckItemExpanded(menu_root string, icon [1]gdclass.Texture2D, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:DisplayServer.global_menu_add_icon_radio_check_item
+func GlobalMenuAddIconRadioCheckItemOptions(menu_root string, icon [1]gdclass.Texture2D, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:DisplayServer.global_menu_add_icon_radio_check_item
 	once.Do(singleton)
 	return int(int(Advanced().GlobalMenuAddIconRadioCheckItem(String.New(menu_root), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
@@ -413,7 +413,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddMultistateItemExpanded(menu_root string, label string, max_states int, default_state int, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:DisplayServer.global_menu_add_multistate_item
+func GlobalMenuAddMultistateItemOptions(menu_root string, label string, max_states int, default_state int, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:DisplayServer.global_menu_add_multistate_item
 	once.Do(singleton)
 	return int(int(Advanced().GlobalMenuAddMultistateItem(String.New(menu_root), String.New(label), int64(max_states), int64(default_state), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
@@ -449,7 +449,7 @@ Returns index of the inserted item, it's not guaranteed to be the same as [param
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddSeparatorExpanded(menu_root string, index int) int { //gd:DisplayServer.global_menu_add_separator
+func GlobalMenuAddSeparatorOptions(menu_root string, index int) int { //gd:DisplayServer.global_menu_add_separator
 	once.Do(singleton)
 	return int(int(Advanced().GlobalMenuAddSeparator(String.New(menu_root), int64(index))))
 }
@@ -896,7 +896,7 @@ Adds an utterance to the queue. If [param interrupt] is [code]true[/code], the q
 [b]Note:[/b] This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
 [b]Note:[/b] [member ProjectSettings.audio/general/text_to_speech] should be [code]true[/code] to use text-to-speech.
 */
-func TtsSpeakExpanded(text string, voice string, volume int, pitch Float.X, rate Float.X, utterance_id int, interrupt bool) { //gd:DisplayServer.tts_speak
+func TtsSpeakOptions(text string, voice string, volume int, pitch Float.X, rate Float.X, utterance_id int, interrupt bool) { //gd:DisplayServer.tts_speak
 	once.Do(singleton)
 	Advanced().TtsSpeak(String.New(text), String.New(voice), int64(volume), float64(pitch), float64(rate), int64(utterance_id), interrupt)
 }
@@ -1172,7 +1172,7 @@ Returns the screen's top-left corner position in pixels. On multi-monitor setups
 See also [method screen_get_size].
 [b]Note:[/b] On Linux (Wayland) this method always returns [code](0, 0)[/code].
 */
-func ScreenGetPositionExpanded(screen int) Vector2i.XY { //gd:DisplayServer.screen_get_position
+func ScreenGetPositionOptions(screen int) Vector2i.XY { //gd:DisplayServer.screen_get_position
 	once.Do(singleton)
 	return Vector2i.XY(Advanced().ScreenGetPosition(int64(screen)))
 }
@@ -1188,7 +1188,7 @@ func ScreenGetSize() Vector2i.XY { //gd:DisplayServer.screen_get_size
 /*
 Returns the screen's size in pixels. See also [method screen_get_position] and [method screen_get_usable_rect].
 */
-func ScreenGetSizeExpanded(screen int) Vector2i.XY { //gd:DisplayServer.screen_get_size
+func ScreenGetSizeOptions(screen int) Vector2i.XY { //gd:DisplayServer.screen_get_size
 	once.Do(singleton)
 	return Vector2i.XY(Advanced().ScreenGetSize(int64(screen)))
 }
@@ -1204,7 +1204,7 @@ func ScreenGetUsableRect() Rect2i.PositionSize { //gd:DisplayServer.screen_get_u
 /*
 Returns the portion of the screen that is not obstructed by a status bar in pixels. See also [method screen_get_size].
 */
-func ScreenGetUsableRectExpanded(screen int) Rect2i.PositionSize { //gd:DisplayServer.screen_get_usable_rect
+func ScreenGetUsableRectOptions(screen int) Rect2i.PositionSize { //gd:DisplayServer.screen_get_usable_rect
 	once.Do(singleton)
 	return Rect2i.PositionSize(Advanced().ScreenGetUsableRect(int64(screen)))
 }
@@ -1246,7 +1246,7 @@ xxxhdpi - 640 dpi
 [/codeblock]
 [b]Note:[/b] This method is implemented on Android, Linux (X11/Wayland), macOS and Windows. Returns [code]72[/code] on unsupported platforms.
 */
-func ScreenGetDpiExpanded(screen int) int { //gd:DisplayServer.screen_get_dpi
+func ScreenGetDpiOptions(screen int) int { //gd:DisplayServer.screen_get_dpi
 	once.Do(singleton)
 	return int(int(Advanced().ScreenGetDpi(int64(screen))))
 }
@@ -1268,7 +1268,7 @@ Returns the scale factor of the specified screen by index.
 [b]Note:[/b] On Linux (Wayland), the returned value is accurate only when [param screen] is [constant SCREEN_OF_MAIN_WINDOW]. Due to API limitations, passing a direct index will return a rounded-up integer, if the screen has a fractional scale (e.g. [code]1.25[/code] would get rounded up to [code]2.0[/code]).
 [b]Note:[/b] This method is implemented on Android, iOS, Web, macOS, and Linux (Wayland).
 */
-func ScreenGetScaleExpanded(screen int) Float.X { //gd:DisplayServer.screen_get_scale
+func ScreenGetScaleOptions(screen int) Float.X { //gd:DisplayServer.screen_get_scale
 	once.Do(singleton)
 	return Float.X(Float.X(Advanced().ScreenGetScale(int64(screen))))
 }
@@ -1320,7 +1320,7 @@ if refresh_rate < 0:
 
 [/codeblock]
 */
-func ScreenGetRefreshRateExpanded(screen int) Float.X { //gd:DisplayServer.screen_get_refresh_rate
+func ScreenGetRefreshRateOptions(screen int) Float.X { //gd:DisplayServer.screen_get_refresh_rate
 	once.Do(singleton)
 	return Float.X(Float.X(Advanced().ScreenGetRefreshRate(int64(screen))))
 }
@@ -1350,7 +1350,7 @@ Returns screenshot of the [param screen].
 [b]Note:[/b] This method is implemented on Linux (X11), macOS, and Windows.
 [b]Note:[/b] On macOS, this method requires "Screen Recording" permission, if permission is not granted it will return desktop wallpaper color.
 */
-func ScreenGetImageExpanded(screen int) [1]gdclass.Image { //gd:DisplayServer.screen_get_image
+func ScreenGetImageOptions(screen int) [1]gdclass.Image { //gd:DisplayServer.screen_get_image
 	once.Do(singleton)
 	return [1]gdclass.Image(Advanced().ScreenGetImage(int64(screen)))
 }
@@ -1378,7 +1378,7 @@ func ScreenSetOrientation(orientation gdclass.DisplayServerScreenOrientation) { 
 Sets the [param screen]'s [param orientation]. See also [method screen_get_orientation].
 [b]Note:[/b] On iOS, this method has no effect if [member ProjectSettings.display/window/handheld/orientation] is not set to [constant SCREEN_SENSOR].
 */
-func ScreenSetOrientationExpanded(orientation gdclass.DisplayServerScreenOrientation, screen int) { //gd:DisplayServer.screen_set_orientation
+func ScreenSetOrientationOptions(orientation gdclass.DisplayServerScreenOrientation, screen int) { //gd:DisplayServer.screen_set_orientation
 	once.Do(singleton)
 	Advanced().ScreenSetOrientation(orientation, int64(screen))
 }
@@ -1396,7 +1396,7 @@ func ScreenGetOrientation() gdclass.DisplayServerScreenOrientation { //gd:Displa
 Returns the [param screen]'s current orientation. See also [method screen_set_orientation].
 [b]Note:[/b] This method is implemented on Android and iOS.
 */
-func ScreenGetOrientationExpanded(screen int) gdclass.DisplayServerScreenOrientation { //gd:DisplayServer.screen_get_orientation
+func ScreenGetOrientationOptions(screen int) gdclass.DisplayServerScreenOrientation { //gd:DisplayServer.screen_get_orientation
 	once.Do(singleton)
 	return gdclass.DisplayServerScreenOrientation(Advanced().ScreenGetOrientation(int64(screen)))
 }
@@ -1456,7 +1456,7 @@ func WindowGetNativeHandle(handle_type gdclass.DisplayServerHandleType, window_i
 Returns internal structure pointers for use in plugins.
 [b]Note:[/b] This method is implemented on Android, Linux (X11/Wayland), macOS, and Windows.
 */
-func WindowGetNativeHandleExpanded(handle_type gdclass.DisplayServerHandleType, window_id int) int { //gd:DisplayServer.window_get_native_handle
+func WindowGetNativeHandleOptions(handle_type gdclass.DisplayServerHandleType, window_id int) int { //gd:DisplayServer.window_get_native_handle
 	once.Do(singleton)
 	return int(int(Advanced().WindowGetNativeHandle(handle_type, int64(window_id))))
 }
@@ -1500,7 +1500,7 @@ Sets the title of the given window to [param title].
 [b]Note:[/b] It's recommended to change this value using [member Window.title] instead.
 [b]Note:[/b] Avoid changing the window title every frame, as this can cause performance issues on certain window managers. Try to change the window title only a few times per second at most.
 */
-func WindowSetTitleExpanded(title string, window_id int) { //gd:DisplayServer.window_set_title
+func WindowSetTitleOptions(title string, window_id int) { //gd:DisplayServer.window_set_title
 	once.Do(singleton)
 	Advanced().WindowSetTitle(String.New(title), int64(window_id))
 }
@@ -1518,7 +1518,7 @@ func WindowGetTitleSize(title string, window_id int) Vector2i.XY { //gd:DisplayS
 Returns the estimated window title bar size (including text and window buttons) for the window specified by [param window_id] (in pixels). This method does not change the window title.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func WindowGetTitleSizeExpanded(title string, window_id int) Vector2i.XY { //gd:DisplayServer.window_get_title_size
+func WindowGetTitleSizeOptions(title string, window_id int) Vector2i.XY { //gd:DisplayServer.window_get_title_size
 	once.Do(singleton)
 	return Vector2i.XY(Advanced().WindowGetTitleSize(String.New(title), int64(window_id)))
 }
@@ -1584,7 +1584,7 @@ DisplayServer.WindowSetMousePassthrough([]);
 [b]Note:[/b] On Windows, the portion of a window that lies outside the region is not drawn, while on Linux (X11) and macOS it is.
 [b]Note:[/b] This method is implemented on Linux (X11), macOS and Windows.
 */
-func WindowSetMousePassthroughExpanded(region []Vector2.XY, window_id int) { //gd:DisplayServer.window_set_mouse_passthrough
+func WindowSetMousePassthroughOptions(region []Vector2.XY, window_id int) { //gd:DisplayServer.window_set_mouse_passthrough
 	once.Do(singleton)
 	Advanced().WindowSetMousePassthrough(Packed.New(region...), int64(window_id))
 }
@@ -1600,7 +1600,7 @@ func WindowGetCurrentScreen(window_id int) int { //gd:DisplayServer.window_get_c
 /*
 Returns the screen the window specified by [param window_id] is currently positioned on. If the screen overlaps multiple displays, the screen where the window's center is located is returned. See also [method window_set_current_screen].
 */
-func WindowGetCurrentScreenExpanded(window_id int) int { //gd:DisplayServer.window_get_current_screen
+func WindowGetCurrentScreenOptions(window_id int) int { //gd:DisplayServer.window_get_current_screen
 	once.Do(singleton)
 	return int(int(Advanced().WindowGetCurrentScreen(int64(window_id))))
 }
@@ -1616,7 +1616,7 @@ func WindowSetCurrentScreen(screen int, window_id int) { //gd:DisplayServer.wind
 /*
 Moves the window specified by [param window_id] to the specified [param screen]. See also [method window_get_current_screen].
 */
-func WindowSetCurrentScreenExpanded(screen int, window_id int) { //gd:DisplayServer.window_set_current_screen
+func WindowSetCurrentScreenOptions(screen int, window_id int) { //gd:DisplayServer.window_set_current_screen
 	once.Do(singleton)
 	Advanced().WindowSetCurrentScreen(int64(screen), int64(window_id))
 }
@@ -1632,7 +1632,7 @@ func WindowGetPosition(window_id int) Vector2i.XY { //gd:DisplayServer.window_ge
 /*
 Returns the position of the client area of the given window on the screen.
 */
-func WindowGetPositionExpanded(window_id int) Vector2i.XY { //gd:DisplayServer.window_get_position
+func WindowGetPositionOptions(window_id int) Vector2i.XY { //gd:DisplayServer.window_get_position
 	once.Do(singleton)
 	return Vector2i.XY(Advanced().WindowGetPosition(int64(window_id)))
 }
@@ -1648,7 +1648,7 @@ func WindowGetPositionWithDecorations(window_id int) Vector2i.XY { //gd:DisplayS
 /*
 Returns the position of the given window on the screen including the borders drawn by the operating system. See also [method window_get_position].
 */
-func WindowGetPositionWithDecorationsExpanded(window_id int) Vector2i.XY { //gd:DisplayServer.window_get_position_with_decorations
+func WindowGetPositionWithDecorationsOptions(window_id int) Vector2i.XY { //gd:DisplayServer.window_get_position_with_decorations
 	once.Do(singleton)
 	return Vector2i.XY(Advanced().WindowGetPositionWithDecorations(int64(window_id)))
 }
@@ -1688,7 +1688,7 @@ See also [method window_get_position] and [method window_set_size].
 [b]Note:[/b] It's recommended to change this value using [member Window.position] instead.
 [b]Note:[/b] On Linux (Wayland): this method is a no-op.
 */
-func WindowSetPositionExpanded(position Vector2i.XY, window_id int) { //gd:DisplayServer.window_set_position
+func WindowSetPositionOptions(position Vector2i.XY, window_id int) { //gd:DisplayServer.window_set_position
 	once.Do(singleton)
 	Advanced().WindowSetPosition(Vector2i.XY(position), int64(window_id))
 }
@@ -1704,7 +1704,7 @@ func WindowGetSize(window_id int) Vector2i.XY { //gd:DisplayServer.window_get_si
 /*
 Returns the size of the window specified by [param window_id] (in pixels), excluding the borders drawn by the operating system. This is also called the "client area". See also [method window_get_size_with_decorations], [method window_set_size] and [method window_get_position].
 */
-func WindowGetSizeExpanded(window_id int) Vector2i.XY { //gd:DisplayServer.window_get_size
+func WindowGetSizeOptions(window_id int) Vector2i.XY { //gd:DisplayServer.window_get_size
 	once.Do(singleton)
 	return Vector2i.XY(Advanced().WindowGetSize(int64(window_id)))
 }
@@ -1722,7 +1722,7 @@ func WindowSetSize(size Vector2i.XY, window_id int) { //gd:DisplayServer.window_
 Sets the size of the given window to [param size] (in pixels). See also [method window_get_size] and [method window_get_position].
 [b]Note:[/b] It's recommended to change this value using [member Window.size] instead.
 */
-func WindowSetSizeExpanded(size Vector2i.XY, window_id int) { //gd:DisplayServer.window_set_size
+func WindowSetSizeOptions(size Vector2i.XY, window_id int) { //gd:DisplayServer.window_set_size
 	once.Do(singleton)
 	Advanced().WindowSetSize(Vector2i.XY(size), int64(window_id))
 }
@@ -1740,7 +1740,7 @@ func WindowSetRectChangedCallback(callback func(rect Rect2i.PositionSize), windo
 Sets the [param callback] that will be called when the window specified by [param window_id] is moved or resized.
 [b]Warning:[/b] Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
 */
-func WindowSetRectChangedCallbackExpanded(callback func(rect Rect2i.PositionSize), window_id int) { //gd:DisplayServer.window_set_rect_changed_callback
+func WindowSetRectChangedCallbackOptions(callback func(rect Rect2i.PositionSize), window_id int) { //gd:DisplayServer.window_set_rect_changed_callback
 	once.Do(singleton)
 	Advanced().WindowSetRectChangedCallback(Callable.New(callback), int64(window_id))
 }
@@ -1758,7 +1758,7 @@ func WindowSetWindowEventCallback(callback func(event gdclass.DisplayServerWindo
 Sets the [param callback] that will be called when an event occurs in the window specified by [param window_id].
 [b]Warning:[/b] Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
 */
-func WindowSetWindowEventCallbackExpanded(callback func(event gdclass.DisplayServerWindowEvent), window_id int) { //gd:DisplayServer.window_set_window_event_callback
+func WindowSetWindowEventCallbackOptions(callback func(event gdclass.DisplayServerWindowEvent), window_id int) { //gd:DisplayServer.window_set_window_event_callback
 	once.Do(singleton)
 	Advanced().WindowSetWindowEventCallback(Callable.New(callback), int64(window_id))
 }
@@ -1776,7 +1776,7 @@ func WindowSetInputEventCallback(callback func(event [1]gdclass.InputEvent), win
 Sets the [param callback] that should be called when any [InputEvent] is sent to the window specified by [param window_id].
 [b]Warning:[/b] Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
 */
-func WindowSetInputEventCallbackExpanded(callback func(event [1]gdclass.InputEvent), window_id int) { //gd:DisplayServer.window_set_input_event_callback
+func WindowSetInputEventCallbackOptions(callback func(event [1]gdclass.InputEvent), window_id int) { //gd:DisplayServer.window_set_input_event_callback
 	once.Do(singleton)
 	Advanced().WindowSetInputEventCallback(Callable.New(callback), int64(window_id))
 }
@@ -1794,7 +1794,7 @@ func WindowSetInputTextCallback(callback func(text string), window_id int) { //g
 Sets the [param callback] that should be called when text is entered using the virtual keyboard to the window specified by [param window_id].
 [b]Warning:[/b] Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
 */
-func WindowSetInputTextCallbackExpanded(callback func(text string), window_id int) { //gd:DisplayServer.window_set_input_text_callback
+func WindowSetInputTextCallbackOptions(callback func(text string), window_id int) { //gd:DisplayServer.window_set_input_text_callback
 	once.Do(singleton)
 	Advanced().WindowSetInputTextCallback(Callable.New(callback), int64(window_id))
 }
@@ -1814,7 +1814,7 @@ Sets the [param callback] that should be called when files are dropped from the 
 [b]Warning:[/b] Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
 [b]Note:[/b] This method is implemented on Windows, macOS, Linux (X11/Wayland), and Web.
 */
-func WindowSetDropFilesCallbackExpanded(callback func(tag any), window_id int) { //gd:DisplayServer.window_set_drop_files_callback
+func WindowSetDropFilesCallbackOptions(callback func(tag any), window_id int) { //gd:DisplayServer.window_set_drop_files_callback
 	once.Do(singleton)
 	Advanced().WindowSetDropFilesCallback(Callable.New(callback), int64(window_id))
 }
@@ -1830,7 +1830,7 @@ func WindowGetAttachedInstanceId(window_id int) int { //gd:DisplayServer.window_
 /*
 Returns the [method Object.get_instance_id] of the [Window] the [param window_id] is attached to.
 */
-func WindowGetAttachedInstanceIdExpanded(window_id int) int { //gd:DisplayServer.window_get_attached_instance_id
+func WindowGetAttachedInstanceIdOptions(window_id int) int { //gd:DisplayServer.window_get_attached_instance_id
 	once.Do(singleton)
 	return int(int(Advanced().WindowGetAttachedInstanceId(int64(window_id))))
 }
@@ -1846,7 +1846,7 @@ func WindowGetMaxSize(window_id int) Vector2i.XY { //gd:DisplayServer.window_get
 /*
 Returns the window's maximum size (in pixels). See also [method window_set_max_size].
 */
-func WindowGetMaxSizeExpanded(window_id int) Vector2i.XY { //gd:DisplayServer.window_get_max_size
+func WindowGetMaxSizeOptions(window_id int) Vector2i.XY { //gd:DisplayServer.window_get_max_size
 	once.Do(singleton)
 	return Vector2i.XY(Advanced().WindowGetMaxSize(int64(window_id)))
 }
@@ -1866,7 +1866,7 @@ Sets the maximum size of the window specified by [param window_id] in pixels. No
 [b]Note:[/b] It's recommended to change this value using [member Window.max_size] instead.
 [b]Note:[/b] Using third-party tools, it is possible for users to disable window geometry restrictions and therefore bypass this limit.
 */
-func WindowSetMaxSizeExpanded(max_size Vector2i.XY, window_id int) { //gd:DisplayServer.window_set_max_size
+func WindowSetMaxSizeOptions(max_size Vector2i.XY, window_id int) { //gd:DisplayServer.window_set_max_size
 	once.Do(singleton)
 	Advanced().WindowSetMaxSize(Vector2i.XY(max_size), int64(window_id))
 }
@@ -1882,7 +1882,7 @@ func WindowGetMinSize(window_id int) Vector2i.XY { //gd:DisplayServer.window_get
 /*
 Returns the window's minimum size (in pixels). See also [method window_set_min_size].
 */
-func WindowGetMinSizeExpanded(window_id int) Vector2i.XY { //gd:DisplayServer.window_get_min_size
+func WindowGetMinSizeOptions(window_id int) Vector2i.XY { //gd:DisplayServer.window_get_min_size
 	once.Do(singleton)
 	return Vector2i.XY(Advanced().WindowGetMinSize(int64(window_id)))
 }
@@ -1904,7 +1904,7 @@ Sets the minimum size for the given window to [param min_size] in pixels. Normal
 [b]Note:[/b] By default, the main window has a minimum size of [code]Vector2i(64, 64)[/code]. This prevents issues that can arise when the window is resized to a near-zero size.
 [b]Note:[/b] Using third-party tools, it is possible for users to disable window geometry restrictions and therefore bypass this limit.
 */
-func WindowSetMinSizeExpanded(min_size Vector2i.XY, window_id int) { //gd:DisplayServer.window_set_min_size
+func WindowSetMinSizeOptions(min_size Vector2i.XY, window_id int) { //gd:DisplayServer.window_set_min_size
 	once.Do(singleton)
 	Advanced().WindowSetMinSize(Vector2i.XY(min_size), int64(window_id))
 }
@@ -1920,7 +1920,7 @@ func WindowGetSizeWithDecorations(window_id int) Vector2i.XY { //gd:DisplayServe
 /*
 Returns the size of the window specified by [param window_id] (in pixels), including the borders drawn by the operating system. See also [method window_get_size].
 */
-func WindowGetSizeWithDecorationsExpanded(window_id int) Vector2i.XY { //gd:DisplayServer.window_get_size_with_decorations
+func WindowGetSizeWithDecorationsOptions(window_id int) Vector2i.XY { //gd:DisplayServer.window_get_size_with_decorations
 	once.Do(singleton)
 	return Vector2i.XY(Advanced().WindowGetSizeWithDecorations(int64(window_id)))
 }
@@ -1936,7 +1936,7 @@ func WindowGetMode(window_id int) gdclass.DisplayServerWindowMode { //gd:Display
 /*
 Returns the mode of the given window.
 */
-func WindowGetModeExpanded(window_id int) gdclass.DisplayServerWindowMode { //gd:DisplayServer.window_get_mode
+func WindowGetModeOptions(window_id int) gdclass.DisplayServerWindowMode { //gd:DisplayServer.window_get_mode
 	once.Do(singleton)
 	return gdclass.DisplayServerWindowMode(Advanced().WindowGetMode(int64(window_id)))
 }
@@ -1956,7 +1956,7 @@ Sets window mode for the given window to [param mode]. See [enum WindowMode] for
 [b]Note:[/b] On Android, setting it to [constant WINDOW_MODE_FULLSCREEN] or [constant WINDOW_MODE_EXCLUSIVE_FULLSCREEN] will enable immersive mode.
 [b]Note:[/b] Setting the window to full screen forcibly sets the borderless flag to [code]true[/code], so make sure to set it back to [code]false[/code] when not wanted.
 */
-func WindowSetModeExpanded(mode gdclass.DisplayServerWindowMode, window_id int) { //gd:DisplayServer.window_set_mode
+func WindowSetModeOptions(mode gdclass.DisplayServerWindowMode, window_id int) { //gd:DisplayServer.window_set_mode
 	once.Do(singleton)
 	Advanced().WindowSetMode(mode, int64(window_id))
 }
@@ -1972,7 +1972,7 @@ func WindowSetFlag(flag gdclass.DisplayServerWindowFlags, enabled bool, window_i
 /*
 Enables or disables the given window's given [param flag]. See [enum WindowFlags] for possible values and their behavior.
 */
-func WindowSetFlagExpanded(flag gdclass.DisplayServerWindowFlags, enabled bool, window_id int) { //gd:DisplayServer.window_set_flag
+func WindowSetFlagOptions(flag gdclass.DisplayServerWindowFlags, enabled bool, window_id int) { //gd:DisplayServer.window_set_flag
 	once.Do(singleton)
 	Advanced().WindowSetFlag(flag, enabled, int64(window_id))
 }
@@ -1988,7 +1988,7 @@ func WindowGetFlag(flag gdclass.DisplayServerWindowFlags, window_id int) bool { 
 /*
 Returns the current value of the given window's [param flag].
 */
-func WindowGetFlagExpanded(flag gdclass.DisplayServerWindowFlags, window_id int) bool { //gd:DisplayServer.window_get_flag
+func WindowGetFlagOptions(flag gdclass.DisplayServerWindowFlags, window_id int) bool { //gd:DisplayServer.window_get_flag
 	once.Do(singleton)
 	return bool(Advanced().WindowGetFlag(flag, int64(window_id)))
 }
@@ -2006,7 +2006,7 @@ func WindowSetWindowButtonsOffset(offset Vector2i.XY, window_id int) { //gd:Disp
 When [constant WINDOW_FLAG_EXTEND_TO_TITLE] flag is set, set offset to the center of the first titlebar button.
 [b]Note:[/b] This flag is implemented only on macOS.
 */
-func WindowSetWindowButtonsOffsetExpanded(offset Vector2i.XY, window_id int) { //gd:DisplayServer.window_set_window_buttons_offset
+func WindowSetWindowButtonsOffsetOptions(offset Vector2i.XY, window_id int) { //gd:DisplayServer.window_set_window_buttons_offset
 	once.Do(singleton)
 	Advanced().WindowSetWindowButtonsOffset(Vector2i.XY(offset), int64(window_id))
 }
@@ -2022,7 +2022,7 @@ func WindowGetSafeTitleMargins(window_id int) Vector3i.XYZ { //gd:DisplayServer.
 /*
 Returns left margins ([code]x[/code]), right margins ([code]y[/code]) and height ([code]z[/code]) of the title that are safe to use (contains no buttons or other elements) when [constant WINDOW_FLAG_EXTEND_TO_TITLE] flag is set.
 */
-func WindowGetSafeTitleMarginsExpanded(window_id int) Vector3i.XYZ { //gd:DisplayServer.window_get_safe_title_margins
+func WindowGetSafeTitleMarginsOptions(window_id int) Vector3i.XYZ { //gd:DisplayServer.window_get_safe_title_margins
 	once.Do(singleton)
 	return Vector3i.XYZ(Advanced().WindowGetSafeTitleMargins(int64(window_id)))
 }
@@ -2038,7 +2038,7 @@ func WindowRequestAttention(window_id int) { //gd:DisplayServer.window_request_a
 /*
 Makes the window specified by [param window_id] request attention, which is materialized by the window title and taskbar entry blinking until the window is focused. This usually has no visible effect if the window is currently focused. The exact behavior varies depending on the operating system.
 */
-func WindowRequestAttentionExpanded(window_id int) { //gd:DisplayServer.window_request_attention
+func WindowRequestAttentionOptions(window_id int) { //gd:DisplayServer.window_request_attention
 	once.Do(singleton)
 	Advanced().WindowRequestAttention(int64(window_id))
 }
@@ -2054,7 +2054,7 @@ func WindowMoveToForeground(window_id int) { //gd:DisplayServer.window_move_to_f
 /*
 Moves the window specified by [param window_id] to the foreground, so that it is visible over other windows.
 */
-func WindowMoveToForegroundExpanded(window_id int) { //gd:DisplayServer.window_move_to_foreground
+func WindowMoveToForegroundOptions(window_id int) { //gd:DisplayServer.window_move_to_foreground
 	once.Do(singleton)
 	Advanced().WindowMoveToForeground(int64(window_id))
 }
@@ -2070,7 +2070,7 @@ func WindowIsFocused(window_id int) bool { //gd:DisplayServer.window_is_focused
 /*
 Returns [code]true[/code] if the window specified by [param window_id] is focused.
 */
-func WindowIsFocusedExpanded(window_id int) bool { //gd:DisplayServer.window_is_focused
+func WindowIsFocusedOptions(window_id int) bool { //gd:DisplayServer.window_is_focused
 	once.Do(singleton)
 	return bool(Advanced().WindowIsFocused(int64(window_id)))
 }
@@ -2086,7 +2086,7 @@ func WindowCanDraw(window_id int) bool { //gd:DisplayServer.window_can_draw
 /*
 Returns [code]true[/code] if anything can be drawn in the window specified by [param window_id], [code]false[/code] otherwise. Using the [code]--disable-render-loop[/code] command line argument or a headless build will return [code]false[/code].
 */
-func WindowCanDrawExpanded(window_id int) bool { //gd:DisplayServer.window_can_draw
+func WindowCanDrawOptions(window_id int) bool { //gd:DisplayServer.window_can_draw
 	once.Do(singleton)
 	return bool(Advanced().WindowCanDraw(int64(window_id)))
 }
@@ -2122,7 +2122,7 @@ func WindowSetImeActive(active bool, window_id int) { //gd:DisplayServer.window_
 /*
 Sets whether [url=https://en.wikipedia.org/wiki/Input_method]Input Method Editor[/url] should be enabled for the window specified by [param window_id]. See also [method window_set_ime_position].
 */
-func WindowSetImeActiveExpanded(active bool, window_id int) { //gd:DisplayServer.window_set_ime_active
+func WindowSetImeActiveOptions(active bool, window_id int) { //gd:DisplayServer.window_set_ime_active
 	once.Do(singleton)
 	Advanced().WindowSetImeActive(active, int64(window_id))
 }
@@ -2138,7 +2138,7 @@ func WindowSetImePosition(position Vector2i.XY, window_id int) { //gd:DisplaySer
 /*
 Sets the position of the [url=https://en.wikipedia.org/wiki/Input_method]Input Method Editor[/url] popup for the specified [param window_id]. Only effective if [method window_set_ime_active] was set to [code]true[/code] for the specified [param window_id].
 */
-func WindowSetImePositionExpanded(position Vector2i.XY, window_id int) { //gd:DisplayServer.window_set_ime_position
+func WindowSetImePositionOptions(position Vector2i.XY, window_id int) { //gd:DisplayServer.window_set_ime_position
 	once.Do(singleton)
 	Advanced().WindowSetImePosition(Vector2i.XY(position), int64(window_id))
 }
@@ -2160,7 +2160,7 @@ See [enum DisplayServer.VSyncMode] for possible values and how they affect the b
 Depending on the platform and used renderer, the engine will fall back to [constant VSYNC_ENABLED] if the desired mode is not supported.
 [b]Note:[/b] V-Sync modes other than [constant VSYNC_ENABLED] are only supported in the Forward+ and Mobile rendering methods, not Compatibility.
 */
-func WindowSetVsyncModeExpanded(vsync_mode gdclass.DisplayServerVSyncMode, window_id int) { //gd:DisplayServer.window_set_vsync_mode
+func WindowSetVsyncModeOptions(vsync_mode gdclass.DisplayServerVSyncMode, window_id int) { //gd:DisplayServer.window_set_vsync_mode
 	once.Do(singleton)
 	Advanced().WindowSetVsyncMode(vsync_mode, int64(window_id))
 }
@@ -2176,7 +2176,7 @@ func WindowGetVsyncMode(window_id int) gdclass.DisplayServerVSyncMode { //gd:Dis
 /*
 Returns the V-Sync mode of the given window.
 */
-func WindowGetVsyncModeExpanded(window_id int) gdclass.DisplayServerVSyncMode { //gd:DisplayServer.window_get_vsync_mode
+func WindowGetVsyncModeOptions(window_id int) gdclass.DisplayServerVSyncMode { //gd:DisplayServer.window_get_vsync_mode
 	once.Do(singleton)
 	return gdclass.DisplayServerVSyncMode(Advanced().WindowGetVsyncMode(int64(window_id)))
 }
@@ -2192,7 +2192,7 @@ func WindowIsMaximizeAllowed(window_id int) bool { //gd:DisplayServer.window_is_
 /*
 Returns [code]true[/code] if the given window can be maximized (the maximize button is enabled).
 */
-func WindowIsMaximizeAllowedExpanded(window_id int) bool { //gd:DisplayServer.window_is_maximize_allowed
+func WindowIsMaximizeAllowedOptions(window_id int) bool { //gd:DisplayServer.window_is_maximize_allowed
 	once.Do(singleton)
 	return bool(Advanced().WindowIsMaximizeAllowed(int64(window_id)))
 }
@@ -2228,7 +2228,7 @@ func WindowStartDrag(window_id int) { //gd:DisplayServer.window_start_drag
 Starts an interactive drag operation on the window with the given [param window_id], using the current mouse position. Call this method when handling a mouse button being pressed to simulate a pressed event on the window's title bar. Using this method allows the window to participate in space switching, tiling, and other system features.
 [b]Note:[/b] This method is implemented on Linux (X11/Wayland), macOS, and Windows.
 */
-func WindowStartDragExpanded(window_id int) { //gd:DisplayServer.window_start_drag
+func WindowStartDragOptions(window_id int) { //gd:DisplayServer.window_start_drag
 	once.Do(singleton)
 	Advanced().WindowStartDrag(int64(window_id))
 }
@@ -2246,7 +2246,7 @@ func WindowStartResize(edge gdclass.DisplayServerWindowResizeEdge, window_id int
 Starts an interactive resize operation on the window with the given [param window_id], using the current mouse position. Call this method when handling a mouse button being pressed to simulate a pressed event on the window's edge.
 [b]Note:[/b] This method is implemented on Linux (X11/Wayland), macOS, and Windows.
 */
-func WindowStartResizeExpanded(edge gdclass.DisplayServerWindowResizeEdge, window_id int) { //gd:DisplayServer.window_start_resize
+func WindowStartResizeOptions(edge gdclass.DisplayServerWindowResizeEdge, window_id int) { //gd:DisplayServer.window_start_resize
 	once.Do(singleton)
 	Advanced().WindowStartResize(edge, int64(window_id))
 }
@@ -2294,7 +2294,7 @@ Shows the virtual keyboard if the platform has one.
 [param cursor_start] and [param cursor_end] can optionally define the current text selection.
 [b]Note:[/b] This method is implemented on Android, iOS and Web.
 */
-func VirtualKeyboardShowExpanded(existing_text string, position Rect2.PositionSize, atype gdclass.DisplayServerVirtualKeyboardType, max_length int, cursor_start int, cursor_end int) { //gd:DisplayServer.virtual_keyboard_show
+func VirtualKeyboardShowOptions(existing_text string, position Rect2.PositionSize, atype gdclass.DisplayServerVirtualKeyboardType, max_length int, cursor_start int, cursor_end int) { //gd:DisplayServer.virtual_keyboard_show
 	once.Do(singleton)
 	Advanced().VirtualKeyboardShow(String.New(existing_text), Rect2.PositionSize(position), atype, int64(max_length), int64(cursor_start), int64(cursor_end))
 }
@@ -2353,7 +2353,7 @@ func CursorSetCustomImage(cursor [1]gdclass.Resource, shape gdclass.DisplayServe
 Sets a custom mouse cursor image for the given [param shape]. This means the user's operating system and mouse cursor theme will no longer influence the mouse cursor's appearance.
 [param cursor] can be either a [Texture2D] or an [Image], and it should not be larger than 256×256 to display correctly. Optionally, [param hotspot] can be set to offset the image's position relative to the click point. By default, [param hotspot] is set to the top-left corner of the image. See also [method cursor_set_shape].
 */
-func CursorSetCustomImageExpanded(cursor [1]gdclass.Resource, shape gdclass.DisplayServerCursorShape, hotspot Vector2.XY) { //gd:DisplayServer.cursor_set_custom_image
+func CursorSetCustomImageOptions(cursor [1]gdclass.Resource, shape gdclass.DisplayServerCursorShape, hotspot Vector2.XY) { //gd:DisplayServer.cursor_set_custom_image
 	once.Do(singleton)
 	Advanced().CursorSetCustomImage(cursor, shape, Vector2.XY(hotspot))
 }

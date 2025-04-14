@@ -67,7 +67,7 @@ func LoadThreadedRequest(path string, type_hint string, use_sub_threads bool) er
 Loads the resource using threads. If [param use_sub_threads] is [code]true[/code], multiple threads will be used to load the resource, which makes loading faster, but may affect the main thread (and thus cause game slowdowns).
 The [param cache_mode] property defines whether and how the cache should be used or updated when loading the resource. See [enum CacheMode] for details.
 */
-func LoadThreadedRequestExpanded(path string, type_hint string, use_sub_threads bool, cache_mode gdclass.ResourceLoaderCacheMode) error { //gd:ResourceLoader.load_threaded_request
+func LoadThreadedRequestOptions(path string, type_hint string, use_sub_threads bool, cache_mode gdclass.ResourceLoaderCacheMode) error { //gd:ResourceLoader.load_threaded_request
 	once.Do(singleton)
 	return error(gd.ToError(Advanced().LoadThreadedRequest(String.New(path), String.New(type_hint), use_sub_threads, cache_mode)))
 }
@@ -87,7 +87,7 @@ Returns the status of a threaded loading operation started with [method load_thr
 An array variable can optionally be passed via [param progress], and will return a one-element array containing the ratio of completion of the threaded loading (between [code]0.0[/code] and [code]1.0[/code]).
 [b]Note:[/b] The recommended way of using this method is to call it during different frames (e.g., in [method Node._process], instead of a loop).
 */
-func LoadThreadedGetStatusExpanded(path string, progress []any) gdclass.ResourceLoaderThreadLoadStatus { //gd:ResourceLoader.load_threaded_get_status
+func LoadThreadedGetStatusOptions(path string, progress []any) gdclass.ResourceLoaderThreadLoadStatus { //gd:ResourceLoader.load_threaded_get_status
 	once.Do(singleton)
 	return gdclass.ResourceLoaderThreadLoadStatus(Advanced().LoadThreadedGetStatus(String.New(path), gd.EngineArrayFromSlice(progress)))
 }
@@ -126,7 +126,7 @@ GDScript has a simplified [method @GDScript.load] built-in method which can be u
 [b]Note:[/b] If [member ProjectSettings.editor/export/convert_text_resources_to_binary] is [code]true[/code], [method @GDScript.load] will not be able to read converted files in an exported project. If you rely on run-time loading of files present within the PCK, set [member ProjectSettings.editor/export/convert_text_resources_to_binary] to [code]false[/code].
 [b]Note:[/b] Relative paths will be prefixed with [code]"res://"[/code] before loading, to avoid unexpected results make sure your paths are absolute.
 */
-func LoadExpanded(path string, type_hint string, cache_mode gdclass.ResourceLoaderCacheMode) [1]gdclass.Resource { //gd:ResourceLoader.load
+func LoadOptions(path string, type_hint string, cache_mode gdclass.ResourceLoaderCacheMode) [1]gdclass.Resource { //gd:ResourceLoader.load
 	once.Do(singleton)
 	return [1]gdclass.Resource(Advanced().Load(String.New(path), String.New(type_hint), cache_mode))
 }
@@ -152,7 +152,7 @@ func AddResourceFormatLoader(format_loader [1]gdclass.ResourceFormatLoader, at_f
 Registers a new [ResourceFormatLoader]. The ResourceLoader will use the ResourceFormatLoader as described in [method load].
 This method is performed implicitly for ResourceFormatLoaders written in GDScript (see [ResourceFormatLoader] for more information).
 */
-func AddResourceFormatLoaderExpanded(format_loader [1]gdclass.ResourceFormatLoader, at_front bool) { //gd:ResourceLoader.add_resource_format_loader
+func AddResourceFormatLoaderOptions(format_loader [1]gdclass.ResourceFormatLoader, at_front bool) { //gd:ResourceLoader.add_resource_format_loader
 	once.Do(singleton)
 	Advanced().AddResourceFormatLoader(format_loader, at_front)
 }
@@ -222,7 +222,7 @@ Returns whether a recognized resource exists for the given [param path].
 An optional [param type_hint] can be used to further specify the [Resource] type that should be handled by the [ResourceFormatLoader]. Anything that inherits from [Resource] can be used as a type hint, for example [Image].
 [b]Note:[/b] If you use [method Resource.take_over_path], this method will return [code]true[/code] for the taken path even if the resource wasn't saved (i.e. exists only in resource cache).
 */
-func ExistsExpanded(path string, type_hint string) bool { //gd:ResourceLoader.exists
+func ExistsOptions(path string, type_hint string) bool { //gd:ResourceLoader.exists
 	once.Do(singleton)
 	return bool(Advanced().Exists(String.New(path), String.New(type_hint)))
 }

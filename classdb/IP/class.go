@@ -63,7 +63,7 @@ func ResolveHostname(host string) string { //gd:IP.resolve_hostname
 /*
 Returns a given hostname's IPv4 or IPv6 address when resolved (blocking-type method). The address type returned depends on the [enum Type] constant given as [param ip_type].
 */
-func ResolveHostnameExpanded(host string, ip_type gdclass.IPType) string { //gd:IP.resolve_hostname
+func ResolveHostnameOptions(host string, ip_type gdclass.IPType) string { //gd:IP.resolve_hostname
 	once.Do(singleton)
 	return string(Advanced().ResolveHostname(String.New(host), ip_type).String())
 }
@@ -79,7 +79,7 @@ func ResolveHostnameAddresses(host string) []string { //gd:IP.resolve_hostname_a
 /*
 Resolves a given hostname in a blocking way. Addresses are returned as an [Array] of IPv4 or IPv6 addresses depending on [param ip_type].
 */
-func ResolveHostnameAddressesExpanded(host string, ip_type gdclass.IPType) []string { //gd:IP.resolve_hostname_addresses
+func ResolveHostnameAddressesOptions(host string, ip_type gdclass.IPType) []string { //gd:IP.resolve_hostname_addresses
 	once.Do(singleton)
 	return []string(Advanced().ResolveHostnameAddresses(String.New(host), ip_type).Strings())
 }
@@ -95,7 +95,7 @@ func ResolveHostnameQueueItem(host string) int { //gd:IP.resolve_hostname_queue_
 /*
 Creates a queue item to resolve a hostname to an IPv4 or IPv6 address depending on the [enum Type] constant given as [param ip_type]. Returns the queue ID if successful, or [constant RESOLVER_INVALID_ID] on error.
 */
-func ResolveHostnameQueueItemExpanded(host string, ip_type gdclass.IPType) int { //gd:IP.resolve_hostname_queue_item
+func ResolveHostnameQueueItemOptions(host string, ip_type gdclass.IPType) int { //gd:IP.resolve_hostname_queue_item
 	once.Do(singleton)
 	return int(int(Advanced().ResolveHostnameQueueItem(String.New(host), ip_type)))
 }
@@ -170,7 +170,7 @@ func ClearCache(hostname string) { //gd:IP.clear_cache
 /*
 Removes all of a [param hostname]'s cached references. If no [param hostname] is given, all cached IP addresses are removed.
 */
-func ClearCacheExpanded(hostname string) { //gd:IP.clear_cache
+func ClearCacheOptions(hostname string) { //gd:IP.clear_cache
 	once.Do(singleton)
 	Advanced().ClearCache(String.New(hostname))
 }

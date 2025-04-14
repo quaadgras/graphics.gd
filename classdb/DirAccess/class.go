@@ -147,7 +147,7 @@ If [param prefix] is not empty, it will be prefixed to the directory name, separ
 If [param keep] is [code]true[/code], the directory is not deleted when the returned [DirAccess] is freed.
 Returns [code]null[/code] if opening the directory failed. You can use [method get_open_error] to check the error that occurred.
 */
-func CreateTempExpanded(prefix string, keep bool) [1]gdclass.DirAccess { //gd:DirAccess.create_temp
+func CreateTempOptions(prefix string, keep bool) [1]gdclass.DirAccess { //gd:DirAccess.create_temp
 	self := Instance{}
 	return [1]gdclass.DirAccess(Advanced(self).CreateTemp(String.New(prefix), keep))
 }
@@ -367,7 +367,7 @@ func CopyAbsolute(from string, to string) error { //gd:DirAccess.copy_absolute
 /*
 Static version of [method copy]. Supports only absolute paths.
 */
-func CopyAbsoluteExpanded(from string, to string, chmod_flags int) error { //gd:DirAccess.copy_absolute
+func CopyAbsoluteOptions(from string, to string, chmod_flags int) error { //gd:DirAccess.copy_absolute
 	self := Instance{}
 	return error(gd.ToError(Advanced(self).CopyAbsolute(String.New(from), String.New(to), int64(chmod_flags))))
 }

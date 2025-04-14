@@ -346,15 +346,15 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 
 	if isPtr {
 		_, ok := classDB[strings.TrimPrefix(result, "[1]gdclass.")]
-		if ok || result == "gd.Object" {
-			if result == "gd.Object" {
+		if ok || result == "[1]gd.Object" {
+			if result == "[1]gd.Object" {
 				switch semantics := gdjson.ClassMethodOwnership[class.Name][method.Name]["return value"]; semantics {
 				case gdjson.RefCountedManagement, gdjson.OwnershipTransferred:
-					fmt.Fprintf(w, "\tvar ret = %sPointerWithOwnershipTransferredToGo[gd.Object](r_ret.Get())\n", prefix)
+					fmt.Fprintf(w, "\tvar ret = [1]gd.Object{%sPointerWithOwnershipTransferredToGo[gd.Object](r_ret.Get())}\n", prefix)
 				case gdjson.LifetimeBoundToClass:
-					fmt.Fprintf(w, "\tvar ret = %sPointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret.Get())\n", prefix)
+					fmt.Fprintf(w, "\tvar ret = [1]gd.Object{%sPointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret.Get())}\n", prefix)
 				case gdjson.MustAssertInstanceID:
-					fmt.Fprintf(w, "\tvar ret = %sPointerMustAssertInstanceID[gd.Object](r_ret.Get())\n", prefix)
+					fmt.Fprintf(w, "\tvar ret = [1]gd.Object{%sPointerMustAssertInstanceID[gd.Object](r_ret.Get())}\n", prefix)
 				default:
 					panic("unknown ownership: " + fmt.Sprint(semantics))
 				}

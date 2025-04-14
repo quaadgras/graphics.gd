@@ -346,7 +346,7 @@ func (self class) GetLocalShape(collision_index int64) [1]gd.Object { //gd:Kinem
 	callframe.Arg(frame, collision_index)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.KinematicCollision3D.Bind_get_local_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(r_ret.Get())})}
+	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -360,7 +360,7 @@ func (self class) GetCollider(collision_index int64) [1]gd.Object { //gd:Kinemat
 	callframe.Arg(frame, collision_index)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.KinematicCollision3D.Bind_get_collider, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(r_ret.Get())})}
+	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret.Get())}
 	frame.Free()
 	return ret
 }
@@ -402,7 +402,7 @@ func (self class) GetColliderShape(collision_index int64) [1]gd.Object { //gd:Ki
 	callframe.Arg(frame, collision_index)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.KinematicCollision3D.Bind_get_collider_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(r_ret.Get())})}
+	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret.Get())}
 	frame.Free()
 	return ret
 }

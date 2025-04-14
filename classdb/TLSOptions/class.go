@@ -80,7 +80,7 @@ Creates a TLS client configuration which validates certificates and their common
 You can specify a custom [param trusted_chain] of certification authorities (the default CA list will be used if [code]null[/code]), and optionally provide a [param common_name_override] if you expect the certificate to have a common name other than the server FQDN.
 [b]Note:[/b] On the Web platform, TLS verification is always enforced against the CA list of the web browser. This is considered a security feature.
 */
-func ClientExpanded(trusted_chain [1]gdclass.X509Certificate, common_name_override string) [1]gdclass.TLSOptions { //gd:TLSOptions.client
+func ClientOptions(trusted_chain [1]gdclass.X509Certificate, common_name_override string) [1]gdclass.TLSOptions { //gd:TLSOptions.client
 	self := Instance{}
 	return [1]gdclass.TLSOptions(Advanced(self).Client(trusted_chain, String.New(common_name_override)))
 }
@@ -98,7 +98,7 @@ func ClientUnsafe(trusted_chain [1]gdclass.X509Certificate) [1]gdclass.TLSOption
 Creates an [b]unsafe[/b] TLS client configuration where certificate validation is optional. You can optionally provide a valid [param trusted_chain], but the common name of the certificates will never be checked. Using this configuration for purposes other than testing [b]is not recommended[/b].
 [b]Note:[/b] On the Web platform, TLS verification is always enforced against the CA list of the web browser. This is considered a security feature.
 */
-func ClientUnsafeExpanded(trusted_chain [1]gdclass.X509Certificate) [1]gdclass.TLSOptions { //gd:TLSOptions.client_unsafe
+func ClientUnsafeOptions(trusted_chain [1]gdclass.X509Certificate) [1]gdclass.TLSOptions { //gd:TLSOptions.client_unsafe
 	self := Instance{}
 	return [1]gdclass.TLSOptions(Advanced(self).ClientUnsafe(trusted_chain))
 }

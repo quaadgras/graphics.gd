@@ -69,7 +69,7 @@ The [param flags] bitmask can be specified to customize the save behavior using 
 Returns [constant OK] on success.
 [b]Note:[/b] When the project is running, any generated UID associated with the resource will not be saved as the required code is only executed in editor mode.
 */
-func SaveExpanded(resource [1]gdclass.Resource, path string, flags gdclass.ResourceSaverSaverFlags) error { //gd:ResourceSaver.save
+func SaveOptions(resource [1]gdclass.Resource, path string, flags gdclass.ResourceSaverSaverFlags) error { //gd:ResourceSaver.save
 	once.Do(singleton)
 	return error(gd.ToError(Advanced().Save(resource, String.New(path), flags)))
 }
@@ -95,7 +95,7 @@ func AddResourceFormatSaver(format_saver [1]gdclass.ResourceFormatSaver, at_fron
 Registers a new [ResourceFormatSaver]. The ResourceSaver will use the ResourceFormatSaver as described in [method save].
 This method is performed implicitly for ResourceFormatSavers written in GDScript (see [ResourceFormatSaver] for more information).
 */
-func AddResourceFormatSaverExpanded(format_saver [1]gdclass.ResourceFormatSaver, at_front bool) { //gd:ResourceSaver.add_resource_format_saver
+func AddResourceFormatSaverOptions(format_saver [1]gdclass.ResourceFormatSaver, at_front bool) { //gd:ResourceSaver.add_resource_format_saver
 	once.Do(singleton)
 	Advanced().AddResourceFormatSaver(format_saver, at_front)
 }
@@ -119,7 +119,7 @@ func GetResourceIdForPath(path string, generate bool) int { //gd:ResourceSaver.g
 /*
 Returns the resource ID for the given path. If [param generate] is [code]true[/code], a new resource ID will be generated if one for the path is not found. If [param generate] is [code]false[/code] and the path is not found, [constant ResourceUID.INVALID_ID] is returned.
 */
-func GetResourceIdForPathExpanded(path string, generate bool) int { //gd:ResourceSaver.get_resource_id_for_path
+func GetResourceIdForPathOptions(path string, generate bool) int { //gd:ResourceSaver.get_resource_id_for_path
 	once.Do(singleton)
 	return int(int(Advanced().GetResourceIdForPath(String.New(path), generate)))
 }

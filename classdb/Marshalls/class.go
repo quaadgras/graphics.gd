@@ -64,7 +64,7 @@ func VariantToBase64(v any, full_objects bool) string { //gd:Marshalls.variant_t
 Returns a Base64-encoded string of the [Variant] [param variant]. If [param full_objects] is [code]true[/code], encoding objects is allowed (and can potentially include code).
 Internally, this uses the same encoding mechanism as the [method @GlobalScope.var_to_bytes] method.
 */
-func VariantToBase64Expanded(v any, full_objects bool) string { //gd:Marshalls.variant_to_base64
+func VariantToBase64Options(v any, full_objects bool) string { //gd:Marshalls.variant_to_base64
 	once.Do(singleton)
 	return string(Advanced().VariantToBase64(variant.New(v), full_objects).String())
 }
@@ -84,7 +84,7 @@ Returns a decoded [Variant] corresponding to the Base64-encoded string [param ba
 Internally, this uses the same decoding mechanism as the [method @GlobalScope.bytes_to_var] method.
 [b]Warning:[/b] Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
 */
-func Base64ToVariantExpanded(base64_str string, allow_objects bool) any { //gd:Marshalls.base64_to_variant
+func Base64ToVariantOptions(base64_str string, allow_objects bool) any { //gd:Marshalls.base64_to_variant
 	once.Do(singleton)
 	return any(Advanced().Base64ToVariant(String.New(base64_str), allow_objects).Interface())
 }

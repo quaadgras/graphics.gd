@@ -72,7 +72,7 @@ var query = PhysicsRayQueryParameters2D.create(global_position, global_position 
 var collision = get_world_2d().direct_space_state.intersect_ray(query)
 [/codeblock]
 */
-func CreateExpanded(from Vector2.XY, to Vector2.XY, collision_mask int, exclude [][]RID.Body2D) [1]gdclass.PhysicsRayQueryParameters2D { //gd:PhysicsRayQueryParameters2D.create
+func CreateOptions(from Vector2.XY, to Vector2.XY, collision_mask int, exclude [][]RID.Body2D) [1]gdclass.PhysicsRayQueryParameters2D { //gd:PhysicsRayQueryParameters2D.create
 	self := Instance{}
 	return [1]gdclass.PhysicsRayQueryParameters2D(Advanced(self).Create(Vector2.XY(from), Vector2.XY(to), int64(collision_mask), gd.ArrayFromSlice[Array.Contains[RID.Any]](exclude)))
 }

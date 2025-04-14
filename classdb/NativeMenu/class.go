@@ -256,7 +256,7 @@ Adds an item that will act as a submenu of the global menu [param rid]. The [par
 Returns index of the inserted item, it's not guaranteed to be the same as [param index] value.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func AddSubmenuItemExpanded(rid RID.NativeMenu, label string, submenu_rid RID.NativeMenu, tag any, index int) int { //gd:NativeMenu.add_submenu_item
+func AddSubmenuItemOptions(rid RID.NativeMenu, label string, submenu_rid RID.NativeMenu, tag any, index int) int { //gd:NativeMenu.add_submenu_item
 	once.Do(singleton)
 	return int(int(Advanced().AddSubmenuItem(RID.Any(rid), String.New(label), RID.Any(submenu_rid), variant.New(tag), int64(index))))
 }
@@ -282,7 +282,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
-func AddItemExpanded(rid RID.NativeMenu, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:NativeMenu.add_item
+func AddItemOptions(rid RID.NativeMenu, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:NativeMenu.add_item
 	once.Do(singleton)
 	return int(int(Advanced().AddItem(RID.Any(rid), String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
@@ -308,7 +308,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
-func AddCheckItemExpanded(rid RID.NativeMenu, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:NativeMenu.add_check_item
+func AddCheckItemOptions(rid RID.NativeMenu, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:NativeMenu.add_check_item
 	once.Do(singleton)
 	return int(int(Advanced().AddCheckItem(RID.Any(rid), String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
@@ -334,7 +334,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
-func AddIconItemExpanded(rid RID.NativeMenu, icon [1]gdclass.Texture2D, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:NativeMenu.add_icon_item
+func AddIconItemOptions(rid RID.NativeMenu, icon [1]gdclass.Texture2D, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:NativeMenu.add_icon_item
 	once.Do(singleton)
 	return int(int(Advanced().AddIconItem(RID.Any(rid), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
@@ -360,7 +360,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
-func AddIconCheckItemExpanded(rid RID.NativeMenu, icon [1]gdclass.Texture2D, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:NativeMenu.add_icon_check_item
+func AddIconCheckItemOptions(rid RID.NativeMenu, icon [1]gdclass.Texture2D, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:NativeMenu.add_icon_check_item
 	once.Do(singleton)
 	return int(int(Advanced().AddIconCheckItem(RID.Any(rid), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
@@ -388,7 +388,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
-func AddRadioCheckItemExpanded(rid RID.NativeMenu, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:NativeMenu.add_radio_check_item
+func AddRadioCheckItemOptions(rid RID.NativeMenu, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:NativeMenu.add_radio_check_item
 	once.Do(singleton)
 	return int(int(Advanced().AddRadioCheckItem(RID.Any(rid), String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
@@ -416,7 +416,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
-func AddIconRadioCheckItemExpanded(rid RID.NativeMenu, icon [1]gdclass.Texture2D, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:NativeMenu.add_icon_radio_check_item
+func AddIconRadioCheckItemOptions(rid RID.NativeMenu, icon [1]gdclass.Texture2D, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:NativeMenu.add_icon_radio_check_item
 	once.Do(singleton)
 	return int(int(Advanced().AddIconRadioCheckItem(RID.Any(rid), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
@@ -446,7 +446,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
-func AddMultistateItemExpanded(rid RID.NativeMenu, label string, max_states int, default_state int, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:NativeMenu.add_multistate_item
+func AddMultistateItemOptions(rid RID.NativeMenu, label string, max_states int, default_state int, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:NativeMenu.add_multistate_item
 	once.Do(singleton)
 	return int(int(Advanced().AddMultistateItem(RID.Any(rid), String.New(label), int64(max_states), int64(default_state), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
@@ -466,7 +466,7 @@ Adds a separator between items to the global menu [param rid]. Separators also o
 Returns index of the inserted item, it's not guaranteed to be the same as [param index] value.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func AddSeparatorExpanded(rid RID.NativeMenu, index int) int { //gd:NativeMenu.add_separator
+func AddSeparatorOptions(rid RID.NativeMenu, index int) int { //gd:NativeMenu.add_separator
 	once.Do(singleton)
 	return int(int(Advanced().AddSeparator(RID.Any(rid), int64(index))))
 }

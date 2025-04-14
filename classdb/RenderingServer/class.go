@@ -120,7 +120,7 @@ func TextureCreateFromNativeHandle(atype gdclass.RenderingServerTextureType, for
 Creates a texture based on a native handle that was created outside of Godot's renderer.
 [b]Note:[/b] If using only the rendering device renderer, it's recommend to use [method RenderingDevice.texture_create_from_extension] together with [method RenderingServer.texture_rd_create], rather than this method. It will give you much more control over the texture's format and usage.
 */
-func TextureCreateFromNativeHandleExpanded(atype gdclass.RenderingServerTextureType, format gdclass.ImageFormat, native_handle int, width int, height int, depth int, layers int, layered_type gdclass.RenderingServerTextureLayeredType) RID.Texture { //gd:RenderingServer.texture_create_from_native_handle
+func TextureCreateFromNativeHandleOptions(atype gdclass.RenderingServerTextureType, format gdclass.ImageFormat, native_handle int, width int, height int, depth int, layers int, layered_type gdclass.RenderingServerTextureLayeredType) RID.Texture { //gd:RenderingServer.texture_create_from_native_handle
 	once.Do(singleton)
 	return RID.Texture(Advanced().TextureCreateFromNativeHandle(atype, format, int64(native_handle), int64(width), int64(height), int64(depth), int64(layers), layered_type))
 }
@@ -253,7 +253,7 @@ func TextureRdCreate(rd_texture RID.Texture, layer_type gdclass.RenderingServerT
 /*
 Creates a new texture object based on a texture created directly on the [RenderingDevice]. If the texture contains layers, [param layer_type] is used to define the layer type.
 */
-func TextureRdCreateExpanded(rd_texture RID.Texture, layer_type gdclass.RenderingServerTextureLayeredType) RID.Texture { //gd:RenderingServer.texture_rd_create
+func TextureRdCreateOptions(rd_texture RID.Texture, layer_type gdclass.RenderingServerTextureLayeredType) RID.Texture { //gd:RenderingServer.texture_rd_create
 	once.Do(singleton)
 	return RID.Texture(Advanced().TextureRdCreate(RID.Any(rd_texture), layer_type))
 }
@@ -269,7 +269,7 @@ func TextureGetRdTexture(texture RID.Texture, srgb bool) RID.Texture { //gd:Rend
 /*
 Returns a texture [RID] that can be used with [RenderingDevice].
 */
-func TextureGetRdTextureExpanded(texture RID.Texture, srgb bool) RID.Texture { //gd:RenderingServer.texture_get_rd_texture
+func TextureGetRdTextureOptions(texture RID.Texture, srgb bool) RID.Texture { //gd:RenderingServer.texture_get_rd_texture
 	once.Do(singleton)
 	return RID.Texture(Advanced().TextureGetRdTexture(RID.Any(texture), srgb))
 }
@@ -287,7 +287,7 @@ func TextureGetNativeHandle(texture RID.Texture, srgb bool) int { //gd:Rendering
 Returns the internal graphics handle for this texture object. For use when communicating with third-party APIs mostly with GDExtension.
 [b]Note:[/b] This function returns a [code]uint64_t[/code] which internally maps to a [code]GLuint[/code] (OpenGL) or [code]VkImage[/code] (Vulkan).
 */
-func TextureGetNativeHandleExpanded(texture RID.Texture, srgb bool) int { //gd:RenderingServer.texture_get_native_handle
+func TextureGetNativeHandleOptions(texture RID.Texture, srgb bool) int { //gd:RenderingServer.texture_get_native_handle
 	once.Do(singleton)
 	return int(int(Advanced().TextureGetNativeHandle(RID.Any(texture), srgb)))
 }
@@ -355,7 +355,7 @@ func ShaderSetDefaultTextureParameter(shader RID.Shader, name string, texture RI
 Sets a shader's default texture. Overwrites the texture given by name.
 [b]Note:[/b] If the sampler array is used use [param index] to access the specified texture.
 */
-func ShaderSetDefaultTextureParameterExpanded(shader RID.Shader, name string, texture RID.Texture, index int) { //gd:RenderingServer.shader_set_default_texture_parameter
+func ShaderSetDefaultTextureParameterOptions(shader RID.Shader, name string, texture RID.Texture, index int) { //gd:RenderingServer.shader_set_default_texture_parameter
 	once.Do(singleton)
 	Advanced().ShaderSetDefaultTextureParameter(RID.Any(shader), String.Name(String.New(name)), RID.Any(texture), int64(index))
 }
@@ -373,7 +373,7 @@ func ShaderGetDefaultTextureParameter(shader RID.Shader, name string, index int)
 Returns a default texture from a shader searched by name.
 [b]Note:[/b] If the sampler array is used use [param index] to access the specified texture.
 */
-func ShaderGetDefaultTextureParameterExpanded(shader RID.Shader, name string, index int) RID.Texture { //gd:RenderingServer.shader_get_default_texture_parameter
+func ShaderGetDefaultTextureParameterOptions(shader RID.Shader, name string, index int) RID.Texture { //gd:RenderingServer.shader_get_default_texture_parameter
 	once.Do(singleton)
 	return RID.Texture(Advanced().ShaderGetDefaultTextureParameter(RID.Any(shader), String.Name(String.New(name)), int64(index)))
 }
@@ -431,7 +431,7 @@ func MeshCreateFromSurfaces(surfaces []Surface, blend_shape_count int) RID.Mesh 
 	once.Do(singleton)
 	return RID.Mesh(Advanced().MeshCreateFromSurfaces(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](surfaces), int64(blend_shape_count)))
 }
-func MeshCreateFromSurfacesExpanded(surfaces []Surface, blend_shape_count int) RID.Mesh { //gd:RenderingServer.mesh_create_from_surfaces
+func MeshCreateFromSurfacesOptions(surfaces []Surface, blend_shape_count int) RID.Mesh { //gd:RenderingServer.mesh_create_from_surfaces
 	once.Do(singleton)
 	return RID.Mesh(Advanced().MeshCreateFromSurfaces(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](surfaces), int64(blend_shape_count)))
 }
@@ -494,7 +494,7 @@ func MeshAddSurfaceFromArrays(mesh RID.Mesh, primitive gdclass.RenderingServerPr
 	once.Do(singleton)
 	Advanced().MeshAddSurfaceFromArrays(RID.Any(mesh), primitive, gd.EngineArrayFromSlice(arrays), gd.EngineArrayFromSlice(blend_shapes), gd.DictionaryFromMap(lods), compress_format)
 }
-func MeshAddSurfaceFromArraysExpanded(mesh RID.Mesh, primitive gdclass.RenderingServerPrimitiveType, arrays []any, blend_shapes []any, lods map[float32][]int32, compress_format gdclass.RenderingServerArrayFormat) { //gd:RenderingServer.mesh_add_surface_from_arrays
+func MeshAddSurfaceFromArraysOptions(mesh RID.Mesh, primitive gdclass.RenderingServerPrimitiveType, arrays []any, blend_shapes []any, lods map[float32][]int32, compress_format gdclass.RenderingServerArrayFormat) { //gd:RenderingServer.mesh_add_surface_from_arrays
 	once.Do(singleton)
 	Advanced().MeshAddSurfaceFromArrays(RID.Any(mesh), primitive, gd.EngineArrayFromSlice(arrays), gd.EngineArrayFromSlice(blend_shapes), gd.DictionaryFromMap(lods), compress_format)
 }
@@ -629,7 +629,7 @@ func MultimeshAllocateData(multimesh RID.MultiMesh, instances int, transform_for
 	once.Do(singleton)
 	Advanced().MultimeshAllocateData(RID.Any(multimesh), int64(instances), transform_format, color_format, custom_data_format, use_indirect)
 }
-func MultimeshAllocateDataExpanded(multimesh RID.MultiMesh, instances int, transform_format gdclass.RenderingServerMultimeshTransformFormat, color_format bool, custom_data_format bool, use_indirect bool) { //gd:RenderingServer.multimesh_allocate_data
+func MultimeshAllocateDataOptions(multimesh RID.MultiMesh, instances int, transform_format gdclass.RenderingServerMultimeshTransformFormat, color_format bool, custom_data_format bool, use_indirect bool) { //gd:RenderingServer.multimesh_allocate_data
 	once.Do(singleton)
 	Advanced().MultimeshAllocateData(RID.Any(multimesh), int64(instances), transform_format, color_format, custom_data_format, use_indirect)
 }
@@ -880,7 +880,7 @@ func SkeletonAllocateData(skeleton RID.Skeleton, bones int, is_2d_skeleton bool)
 	once.Do(singleton)
 	Advanced().SkeletonAllocateData(RID.Any(skeleton), int64(bones), is_2d_skeleton)
 }
-func SkeletonAllocateDataExpanded(skeleton RID.Skeleton, bones int, is_2d_skeleton bool) { //gd:RenderingServer.skeleton_allocate_data
+func SkeletonAllocateDataOptions(skeleton RID.Skeleton, bones int, is_2d_skeleton bool) { //gd:RenderingServer.skeleton_allocate_data
 	once.Do(singleton)
 	Advanced().SkeletonAllocateData(RID.Any(skeleton), int64(bones), is_2d_skeleton)
 }
@@ -2117,7 +2117,7 @@ func _ready():
 [/codeblocks]
 Using this can result in significant optimization, especially on lower-end devices. However, it comes at the cost of having to manage your viewports manually. For further optimization, see [method viewport_set_render_direct_to_screen].
 */
-func ViewportAttachToScreenExpanded(viewport RID.Viewport, rect Rect2.PositionSize, screen int) { //gd:RenderingServer.viewport_attach_to_screen
+func ViewportAttachToScreenOptions(viewport RID.Viewport, rect Rect2.PositionSize, screen int) { //gd:RenderingServer.viewport_attach_to_screen
 	once.Do(singleton)
 	Advanced().ViewportAttachToScreen(RID.Any(viewport), Rect2.PositionSize(rect), int64(screen))
 }
@@ -2366,7 +2366,7 @@ func ViewportSetPositionalShadowAtlasSize(viewport RID.Viewport, size int, use_1
 Sets the [param size] of the shadow atlas's images (used for omni and spot lights) on the viewport specified by the [param viewport] RID. The value is rounded up to the nearest power of 2. If [param use_16_bits] is [code]true[/code], use 16 bits for the omni/spot shadow depth map. Enabling this results in shadows having less precision and may result in shadow acne, but can lead to performance improvements on some devices.
 [b]Note:[/b] If this is set to [code]0[/code], no positional shadows will be visible at all. This can improve performance significantly on low-end systems by reducing both the CPU and GPU load (as fewer draw calls are needed to draw the scene without shadows).
 */
-func ViewportSetPositionalShadowAtlasSizeExpanded(viewport RID.Viewport, size int, use_16_bits bool) { //gd:RenderingServer.viewport_set_positional_shadow_atlas_size
+func ViewportSetPositionalShadowAtlasSizeOptions(viewport RID.Viewport, size int, use_16_bits bool) { //gd:RenderingServer.viewport_set_positional_shadow_atlas_size
 	once.Do(singleton)
 	Advanced().ViewportSetPositionalShadowAtlasSize(RID.Any(viewport), int64(size), use_16_bits)
 }
@@ -2713,7 +2713,7 @@ func EnvironmentSetAmbientLight(env RID.Environment, color Color.RGBA, ambient g
 /*
 Sets the values to be used for ambient light rendering. See [Environment] for more details.
 */
-func EnvironmentSetAmbientLightExpanded(env RID.Environment, color Color.RGBA, ambient gdclass.RenderingServerEnvironmentAmbientSource, energy Float.X, sky_contribution Float.X, reflection_source gdclass.RenderingServerEnvironmentReflectionSource) { //gd:RenderingServer.environment_set_ambient_light
+func EnvironmentSetAmbientLightOptions(env RID.Environment, color Color.RGBA, ambient gdclass.RenderingServerEnvironmentAmbientSource, energy Float.X, sky_contribution Float.X, reflection_source gdclass.RenderingServerEnvironmentReflectionSource) { //gd:RenderingServer.environment_set_ambient_light
 	once.Do(singleton)
 	Advanced().EnvironmentSetAmbientLight(RID.Any(env), Color.RGBA(color), ambient, float64(energy), float64(sky_contribution), reflection_source)
 }
@@ -2769,7 +2769,7 @@ func EnvironmentSetFog(env RID.Environment, enable bool, light_color Color.RGBA,
 /*
 Configures fog for the specified environment RID. See [code]fog_*[/code] properties in [Environment] for more information.
 */
-func EnvironmentSetFogExpanded(env RID.Environment, enable bool, light_color Color.RGBA, light_energy Float.X, sun_scatter Float.X, density Float.X, height Float.X, height_density Float.X, aerial_perspective Float.X, sky_affect Float.X, fog_mode gdclass.RenderingServerEnvironmentFogMode) { //gd:RenderingServer.environment_set_fog
+func EnvironmentSetFogOptions(env RID.Environment, enable bool, light_color Color.RGBA, light_energy Float.X, sun_scatter Float.X, density Float.X, height Float.X, height_density Float.X, aerial_perspective Float.X, sky_affect Float.X, fog_mode gdclass.RenderingServerEnvironmentFogMode) { //gd:RenderingServer.environment_set_fog
 	once.Do(singleton)
 	Advanced().EnvironmentSetFog(RID.Any(env), enable, Color.RGBA(light_color), float64(light_energy), float64(sun_scatter), float64(density), float64(height), float64(height_density), float64(aerial_perspective), float64(sky_affect), fog_mode)
 }
@@ -3260,7 +3260,7 @@ func InstancesCullAabb(aabb AABB.PositionSize, scenario RID.Scenario) []int64 { 
 Returns an array of object IDs intersecting with the provided AABB. Only 3D nodes that inherit from [VisualInstance3D] are considered, such as [MeshInstance3D] or [DirectionalLight3D]. Use [method @GlobalScope.instance_from_id] to obtain the actual nodes. A scenario RID must be provided, which is available in the [World3D] you want to query. This forces an update for all resources queued to update.
 [b]Warning:[/b] This function is primarily intended for editor usage. For in-game use cases, prefer physics collision.
 */
-func InstancesCullAabbExpanded(aabb AABB.PositionSize, scenario RID.Scenario) []int64 { //gd:RenderingServer.instances_cull_aabb
+func InstancesCullAabbOptions(aabb AABB.PositionSize, scenario RID.Scenario) []int64 { //gd:RenderingServer.instances_cull_aabb
 	once.Do(singleton)
 	return []int64(slices.Collect(Advanced().InstancesCullAabb(AABB.PositionSize(aabb), RID.Any(scenario)).Values()))
 }
@@ -3278,7 +3278,7 @@ func InstancesCullRay(from Vector3.XYZ, to Vector3.XYZ, scenario RID.Scenario) [
 Returns an array of object IDs intersecting with the provided 3D ray. Only 3D nodes that inherit from [VisualInstance3D] are considered, such as [MeshInstance3D] or [DirectionalLight3D]. Use [method @GlobalScope.instance_from_id] to obtain the actual nodes. A scenario RID must be provided, which is available in the [World3D] you want to query. This forces an update for all resources queued to update.
 [b]Warning:[/b] This function is primarily intended for editor usage. For in-game use cases, prefer physics collision.
 */
-func InstancesCullRayExpanded(from Vector3.XYZ, to Vector3.XYZ, scenario RID.Scenario) []int64 { //gd:RenderingServer.instances_cull_ray
+func InstancesCullRayOptions(from Vector3.XYZ, to Vector3.XYZ, scenario RID.Scenario) []int64 { //gd:RenderingServer.instances_cull_ray
 	once.Do(singleton)
 	return []int64(slices.Collect(Advanced().InstancesCullRay(Vector3.XYZ(from), Vector3.XYZ(to), RID.Any(scenario)).Values()))
 }
@@ -3296,7 +3296,7 @@ func InstancesCullConvex(convex []Plane.NormalD, scenario RID.Scenario) []int64 
 Returns an array of object IDs intersecting with the provided convex shape. Only 3D nodes that inherit from [VisualInstance3D] are considered, such as [MeshInstance3D] or [DirectionalLight3D]. Use [method @GlobalScope.instance_from_id] to obtain the actual nodes. A scenario RID must be provided, which is available in the [World3D] you want to query. This forces an update for all resources queued to update.
 [b]Warning:[/b] This function is primarily intended for editor usage. For in-game use cases, prefer physics collision.
 */
-func InstancesCullConvexExpanded(convex []Plane.NormalD, scenario RID.Scenario) []int64 { //gd:RenderingServer.instances_cull_convex
+func InstancesCullConvexOptions(convex []Plane.NormalD, scenario RID.Scenario) []int64 { //gd:RenderingServer.instances_cull_convex
 	once.Do(singleton)
 	return []int64(slices.Collect(Advanced().InstancesCullConvex(gd.ArrayFromSlice[Array.Contains[Plane.NormalD]](convex), RID.Any(scenario)).Values()))
 }
@@ -3484,7 +3484,7 @@ func CanvasItemSetCustomRect(item RID.CanvasItem, use_custom_rect bool, rect Rec
 /*
 If [param use_custom_rect] is [code]true[/code], sets the custom visibility rectangle (used for culling) to [param rect] for the canvas item specified by [param item]. Setting a custom visibility rect can reduce CPU load when drawing lots of 2D instances. If [param use_custom_rect] is [code]false[/code], automatically computes a visibility rectangle based on the canvas item's draw commands.
 */
-func CanvasItemSetCustomRectExpanded(item RID.CanvasItem, use_custom_rect bool, rect Rect2.PositionSize) { //gd:RenderingServer.canvas_item_set_custom_rect
+func CanvasItemSetCustomRectOptions(item RID.CanvasItem, use_custom_rect bool, rect Rect2.PositionSize) { //gd:RenderingServer.canvas_item_set_custom_rect
 	once.Do(singleton)
 	Advanced().CanvasItemSetCustomRect(RID.Any(item), use_custom_rect, Rect2.PositionSize(rect))
 }
@@ -3550,7 +3550,7 @@ func CanvasItemAddLine(item RID.CanvasItem, from Vector2.XY, to Vector2.XY, colo
 /*
 Draws a line on the [CanvasItem] pointed to by the [param item] [RID]. See also [method CanvasItem.draw_line].
 */
-func CanvasItemAddLineExpanded(item RID.CanvasItem, from Vector2.XY, to Vector2.XY, color Color.RGBA, width Float.X, antialiased bool) { //gd:RenderingServer.canvas_item_add_line
+func CanvasItemAddLineOptions(item RID.CanvasItem, from Vector2.XY, to Vector2.XY, color Color.RGBA, width Float.X, antialiased bool) { //gd:RenderingServer.canvas_item_add_line
 	once.Do(singleton)
 	Advanced().CanvasItemAddLine(RID.Any(item), Vector2.XY(from), Vector2.XY(to), Color.RGBA(color), float64(width), antialiased)
 }
@@ -3566,7 +3566,7 @@ func CanvasItemAddPolyline(item RID.CanvasItem, points []Vector2.XY, colors []Co
 /*
 Draws a 2D polyline on the [CanvasItem] pointed to by the [param item] [RID]. See also [method CanvasItem.draw_polyline] and [method CanvasItem.draw_polyline_colors].
 */
-func CanvasItemAddPolylineExpanded(item RID.CanvasItem, points []Vector2.XY, colors []Color.RGBA, width Float.X, antialiased bool) { //gd:RenderingServer.canvas_item_add_polyline
+func CanvasItemAddPolylineOptions(item RID.CanvasItem, points []Vector2.XY, colors []Color.RGBA, width Float.X, antialiased bool) { //gd:RenderingServer.canvas_item_add_polyline
 	once.Do(singleton)
 	Advanced().CanvasItemAddPolyline(RID.Any(item), Packed.New(points...), Packed.New(colors...), float64(width), antialiased)
 }
@@ -3582,7 +3582,7 @@ func CanvasItemAddMultiline(item RID.CanvasItem, points []Vector2.XY, colors []C
 /*
 Draws a 2D multiline on the [CanvasItem] pointed to by the [param item] [RID]. See also [method CanvasItem.draw_multiline] and [method CanvasItem.draw_multiline_colors].
 */
-func CanvasItemAddMultilineExpanded(item RID.CanvasItem, points []Vector2.XY, colors []Color.RGBA, width Float.X, antialiased bool) { //gd:RenderingServer.canvas_item_add_multiline
+func CanvasItemAddMultilineOptions(item RID.CanvasItem, points []Vector2.XY, colors []Color.RGBA, width Float.X, antialiased bool) { //gd:RenderingServer.canvas_item_add_multiline
 	once.Do(singleton)
 	Advanced().CanvasItemAddMultiline(RID.Any(item), Packed.New(points...), Packed.New(colors...), float64(width), antialiased)
 }
@@ -3598,7 +3598,7 @@ func CanvasItemAddRect(item RID.CanvasItem, rect Rect2.PositionSize, color Color
 /*
 Draws a rectangle on the [CanvasItem] pointed to by the [param item] [RID]. See also [method CanvasItem.draw_rect].
 */
-func CanvasItemAddRectExpanded(item RID.CanvasItem, rect Rect2.PositionSize, color Color.RGBA, antialiased bool) { //gd:RenderingServer.canvas_item_add_rect
+func CanvasItemAddRectOptions(item RID.CanvasItem, rect Rect2.PositionSize, color Color.RGBA, antialiased bool) { //gd:RenderingServer.canvas_item_add_rect
 	once.Do(singleton)
 	Advanced().CanvasItemAddRect(RID.Any(item), Rect2.PositionSize(rect), Color.RGBA(color), antialiased)
 }
@@ -3614,7 +3614,7 @@ func CanvasItemAddCircle(item RID.CanvasItem, pos Vector2.XY, radius Float.X, co
 /*
 Draws a circle on the [CanvasItem] pointed to by the [param item] [RID]. See also [method CanvasItem.draw_circle].
 */
-func CanvasItemAddCircleExpanded(item RID.CanvasItem, pos Vector2.XY, radius Float.X, color Color.RGBA, antialiased bool) { //gd:RenderingServer.canvas_item_add_circle
+func CanvasItemAddCircleOptions(item RID.CanvasItem, pos Vector2.XY, radius Float.X, color Color.RGBA, antialiased bool) { //gd:RenderingServer.canvas_item_add_circle
 	once.Do(singleton)
 	Advanced().CanvasItemAddCircle(RID.Any(item), Vector2.XY(pos), float64(radius), Color.RGBA(color), antialiased)
 }
@@ -3630,7 +3630,7 @@ func CanvasItemAddTextureRect(item RID.CanvasItem, rect Rect2.PositionSize, text
 /*
 Draws a 2D textured rectangle on the [CanvasItem] pointed to by the [param item] [RID]. See also [method CanvasItem.draw_texture_rect] and [method Texture2D.draw_rect].
 */
-func CanvasItemAddTextureRectExpanded(item RID.CanvasItem, rect Rect2.PositionSize, texture RID.CanvasTexture, tile bool, modulate Color.RGBA, transpose bool) { //gd:RenderingServer.canvas_item_add_texture_rect
+func CanvasItemAddTextureRectOptions(item RID.CanvasItem, rect Rect2.PositionSize, texture RID.CanvasTexture, tile bool, modulate Color.RGBA, transpose bool) { //gd:RenderingServer.canvas_item_add_texture_rect
 	once.Do(singleton)
 	Advanced().CanvasItemAddTextureRect(RID.Any(item), Rect2.PositionSize(rect), RID.Any(texture), tile, Color.RGBA(modulate), transpose)
 }
@@ -3646,7 +3646,7 @@ func CanvasItemAddMsdfTextureRectRegion(item RID.CanvasItem, rect Rect2.Position
 /*
 See also [method CanvasItem.draw_msdf_texture_rect_region].
 */
-func CanvasItemAddMsdfTextureRectRegionExpanded(item RID.CanvasItem, rect Rect2.PositionSize, texture RID.CanvasTexture, src_rect Rect2.PositionSize, modulate Color.RGBA, outline_size int, px_range Float.X, scale Float.X) { //gd:RenderingServer.canvas_item_add_msdf_texture_rect_region
+func CanvasItemAddMsdfTextureRectRegionOptions(item RID.CanvasItem, rect Rect2.PositionSize, texture RID.CanvasTexture, src_rect Rect2.PositionSize, modulate Color.RGBA, outline_size int, px_range Float.X, scale Float.X) { //gd:RenderingServer.canvas_item_add_msdf_texture_rect_region
 	once.Do(singleton)
 	Advanced().CanvasItemAddMsdfTextureRectRegion(RID.Any(item), Rect2.PositionSize(rect), RID.Any(texture), Rect2.PositionSize(src_rect), Color.RGBA(modulate), int64(outline_size), float64(px_range), float64(scale))
 }
@@ -3670,7 +3670,7 @@ func CanvasItemAddTextureRectRegion(item RID.CanvasItem, rect Rect2.PositionSize
 /*
 Draws the specified region of a 2D textured rectangle on the [CanvasItem] pointed to by the [param item] [RID]. See also [method CanvasItem.draw_texture_rect_region] and [method Texture2D.draw_rect_region].
 */
-func CanvasItemAddTextureRectRegionExpanded(item RID.CanvasItem, rect Rect2.PositionSize, texture RID.CanvasTexture, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool) { //gd:RenderingServer.canvas_item_add_texture_rect_region
+func CanvasItemAddTextureRectRegionOptions(item RID.CanvasItem, rect Rect2.PositionSize, texture RID.CanvasTexture, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool) { //gd:RenderingServer.canvas_item_add_texture_rect_region
 	once.Do(singleton)
 	Advanced().CanvasItemAddTextureRectRegion(RID.Any(item), Rect2.PositionSize(rect), RID.Any(texture), Rect2.PositionSize(src_rect), Color.RGBA(modulate), transpose, clip_uv)
 }
@@ -3686,7 +3686,7 @@ func CanvasItemAddNinePatch(item RID.CanvasItem, rect Rect2.PositionSize, source
 /*
 Draws a nine-patch rectangle on the [CanvasItem] pointed to by the [param item] [RID].
 */
-func CanvasItemAddNinePatchExpanded(item RID.CanvasItem, rect Rect2.PositionSize, source Rect2.PositionSize, texture RID.CanvasTexture, topleft Vector2.XY, bottomright Vector2.XY, x_axis_mode gdclass.RenderingServerNinePatchAxisMode, y_axis_mode gdclass.RenderingServerNinePatchAxisMode, draw_center bool, modulate Color.RGBA) { //gd:RenderingServer.canvas_item_add_nine_patch
+func CanvasItemAddNinePatchOptions(item RID.CanvasItem, rect Rect2.PositionSize, source Rect2.PositionSize, texture RID.CanvasTexture, topleft Vector2.XY, bottomright Vector2.XY, x_axis_mode gdclass.RenderingServerNinePatchAxisMode, y_axis_mode gdclass.RenderingServerNinePatchAxisMode, draw_center bool, modulate Color.RGBA) { //gd:RenderingServer.canvas_item_add_nine_patch
 	once.Do(singleton)
 	Advanced().CanvasItemAddNinePatch(RID.Any(item), Rect2.PositionSize(rect), Rect2.PositionSize(source), RID.Any(texture), Vector2.XY(topleft), Vector2.XY(bottomright), x_axis_mode, y_axis_mode, draw_center, Color.RGBA(modulate))
 }
@@ -3712,7 +3712,7 @@ func CanvasItemAddPolygon(item RID.CanvasItem, points []Vector2.XY, colors []Col
 Draws a 2D polygon on the [CanvasItem] pointed to by the [param item] [RID]. If you need more flexibility (such as being able to use bones), use [method canvas_item_add_triangle_array] instead. See also [method CanvasItem.draw_polygon].
 [b]Note:[/b] If you frequently redraw the same polygon with a large number of vertices, consider pre-calculating the triangulation with [method Geometry2D.triangulate_polygon] and using [method CanvasItem.draw_mesh], [method CanvasItem.draw_multimesh], or [method canvas_item_add_triangle_array].
 */
-func CanvasItemAddPolygonExpanded(item RID.CanvasItem, points []Vector2.XY, colors []Color.RGBA, uvs []Vector2.XY, texture RID.CanvasTexture) { //gd:RenderingServer.canvas_item_add_polygon
+func CanvasItemAddPolygonOptions(item RID.CanvasItem, points []Vector2.XY, colors []Color.RGBA, uvs []Vector2.XY, texture RID.CanvasTexture) { //gd:RenderingServer.canvas_item_add_polygon
 	once.Do(singleton)
 	Advanced().CanvasItemAddPolygon(RID.Any(item), Packed.New(points...), Packed.New(colors...), Packed.New(uvs...), RID.Any(texture))
 }
@@ -3730,7 +3730,7 @@ func CanvasItemAddTriangleArray(item RID.CanvasItem, indices []int32, points []V
 Draws a triangle array on the [CanvasItem] pointed to by the [param item] [RID]. This is internally used by [Line2D] and [StyleBoxFlat] for rendering. [method canvas_item_add_triangle_array] is highly flexible, but more complex to use than [method canvas_item_add_polygon].
 [b]Note:[/b] [param count] is unused and can be left unspecified.
 */
-func CanvasItemAddTriangleArrayExpanded(item RID.CanvasItem, indices []int32, points []Vector2.XY, colors []Color.RGBA, uvs []Vector2.XY, bones []int32, weights []float32, texture RID.CanvasTexture, count int) { //gd:RenderingServer.canvas_item_add_triangle_array
+func CanvasItemAddTriangleArrayOptions(item RID.CanvasItem, indices []int32, points []Vector2.XY, colors []Color.RGBA, uvs []Vector2.XY, bones []int32, weights []float32, texture RID.CanvasTexture, count int) { //gd:RenderingServer.canvas_item_add_triangle_array
 	once.Do(singleton)
 	Advanced().CanvasItemAddTriangleArray(RID.Any(item), Packed.New(indices...), Packed.New(points...), Packed.New(colors...), Packed.New(uvs...), Packed.New(bones...), Packed.New(weights...), RID.Any(texture), int64(count))
 }
@@ -3746,7 +3746,7 @@ func CanvasItemAddMesh(item RID.CanvasItem, mesh RID.Mesh, texture RID.CanvasTex
 /*
 Draws a mesh created with [method mesh_create] with given [param transform], [param modulate] color, and [param texture]. This is used internally by [MeshInstance2D].
 */
-func CanvasItemAddMeshExpanded(item RID.CanvasItem, mesh RID.Mesh, transform Transform2D.OriginXY, modulate Color.RGBA, texture RID.CanvasTexture) { //gd:RenderingServer.canvas_item_add_mesh
+func CanvasItemAddMeshOptions(item RID.CanvasItem, mesh RID.Mesh, transform Transform2D.OriginXY, modulate Color.RGBA, texture RID.CanvasTexture) { //gd:RenderingServer.canvas_item_add_mesh
 	once.Do(singleton)
 	Advanced().CanvasItemAddMesh(RID.Any(item), RID.Any(mesh), Transform2D.OriginXY(transform), Color.RGBA(modulate), RID.Any(texture))
 }
@@ -3762,7 +3762,7 @@ func CanvasItemAddMultimesh(item RID.CanvasItem, mesh RID.MultiMesh, texture RID
 /*
 Draws a 2D [MultiMesh] on the [CanvasItem] pointed to by the [param item] [RID]. See also [method CanvasItem.draw_multimesh].
 */
-func CanvasItemAddMultimeshExpanded(item RID.CanvasItem, mesh RID.MultiMesh, texture RID.Texture) { //gd:RenderingServer.canvas_item_add_multimesh
+func CanvasItemAddMultimeshOptions(item RID.CanvasItem, mesh RID.MultiMesh, texture RID.Texture) { //gd:RenderingServer.canvas_item_add_multimesh
 	once.Do(singleton)
 	Advanced().CanvasItemAddMultimesh(RID.Any(item), RID.Any(mesh), RID.Any(texture))
 }
@@ -3802,7 +3802,7 @@ func CanvasItemAddAnimationSlice(item RID.CanvasItem, animation_length Float.X, 
 /*
 Subsequent drawing commands will be ignored unless they fall within the specified animation slice. This is a faster way to implement animations that loop on background rather than redrawing constantly.
 */
-func CanvasItemAddAnimationSliceExpanded(item RID.CanvasItem, animation_length Float.X, slice_begin Float.X, slice_end Float.X, offset Float.X) { //gd:RenderingServer.canvas_item_add_animation_slice
+func CanvasItemAddAnimationSliceOptions(item RID.CanvasItem, animation_length Float.X, slice_begin Float.X, slice_end Float.X, offset Float.X) { //gd:RenderingServer.canvas_item_add_animation_slice
 	once.Do(singleton)
 	Advanced().CanvasItemAddAnimationSlice(RID.Any(item), float64(animation_length), float64(slice_begin), float64(slice_end), float64(offset))
 }
@@ -3934,7 +3934,7 @@ func CanvasItemSetCanvasGroupMode(item RID.CanvasItem, mode gdclass.RenderingSer
 Sets the canvas group mode used during 2D rendering for the canvas item specified by the [param item] RID. For faster but more limited clipping, use [method canvas_item_set_clip] instead.
 [b]Note:[/b] The equivalent node functionality is found in [CanvasGroup] and [member CanvasItem.clip_children].
 */
-func CanvasItemSetCanvasGroupModeExpanded(item RID.CanvasItem, mode gdclass.RenderingServerCanvasGroupMode, clear_margin Float.X, fit_empty bool, fit_margin Float.X, blur_mipmaps bool) { //gd:RenderingServer.canvas_item_set_canvas_group_mode
+func CanvasItemSetCanvasGroupModeOptions(item RID.CanvasItem, mode gdclass.RenderingServerCanvasGroupMode, clear_margin Float.X, fit_empty bool, fit_margin Float.X, blur_mipmaps bool) { //gd:RenderingServer.canvas_item_set_canvas_group_mode
 	once.Do(singleton)
 	Advanced().CanvasItemSetCanvasGroupMode(RID.Any(item), mode, float64(clear_margin), fit_empty, float64(fit_margin), blur_mipmaps)
 }
@@ -4463,7 +4463,7 @@ func SetBootImage(image [1]gdclass.Image, color Color.RGBA, scale bool) { //gd:R
 /*
 Sets a boot image. The color defines the background color. If [param scale] is [code]true[/code], the image will be scaled to fit the screen size. If [param use_filter] is [code]true[/code], the image will be scaled with linear interpolation. If [param use_filter] is [code]false[/code], the image will be scaled with nearest-neighbor interpolation.
 */
-func SetBootImageExpanded(image [1]gdclass.Image, color Color.RGBA, scale bool, use_filter bool) { //gd:RenderingServer.set_boot_image
+func SetBootImageOptions(image [1]gdclass.Image, color Color.RGBA, scale bool, use_filter bool) { //gd:RenderingServer.set_boot_image
 	once.Do(singleton)
 	Advanced().SetBootImage(image, Color.RGBA(color), scale, use_filter)
 }
@@ -4528,7 +4528,7 @@ func ForceDraw(frame_step Float.X) { //gd:RenderingServer.force_draw
 /*
 Forces redrawing of all viewports at once. Must be called from the main thread.
 */
-func ForceDrawExpanded(swap_buffers bool, frame_step Float.X) { //gd:RenderingServer.force_draw
+func ForceDrawOptions(swap_buffers bool, frame_step Float.X) { //gd:RenderingServer.force_draw
 	once.Do(singleton)
 	Advanced().ForceDraw(swap_buffers, float64(frame_step))
 }

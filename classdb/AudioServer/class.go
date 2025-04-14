@@ -70,7 +70,7 @@ func AddBus() { //gd:AudioServer.add_bus
 /*
 Adds a bus at [param at_position].
 */
-func AddBusExpanded(at_position int) { //gd:AudioServer.add_bus
+func AddBusOptions(at_position int) { //gd:AudioServer.add_bus
 	once.Do(singleton)
 	Advanced().AddBus(int64(at_position))
 }
@@ -224,7 +224,7 @@ func AddBusEffect(bus_idx int, effect [1]gdclass.AudioEffect) { //gd:AudioServer
 /*
 Adds an [AudioEffect] effect to the bus [param bus_idx] at [param at_position].
 */
-func AddBusEffectExpanded(bus_idx int, effect [1]gdclass.AudioEffect, at_position int) { //gd:AudioServer.add_bus_effect
+func AddBusEffectOptions(bus_idx int, effect [1]gdclass.AudioEffect, at_position int) { //gd:AudioServer.add_bus_effect
 	once.Do(singleton)
 	Advanced().AddBusEffect(int64(bus_idx), effect, int64(at_position))
 }
@@ -264,7 +264,7 @@ func GetBusEffectInstance(bus_idx int, effect_idx int, channel int) [1]gdclass.A
 /*
 Returns the [AudioEffectInstance] assigned to the given bus and effect indices (and optionally channel).
 */
-func GetBusEffectInstanceExpanded(bus_idx int, effect_idx int, channel int) [1]gdclass.AudioEffectInstance { //gd:AudioServer.get_bus_effect_instance
+func GetBusEffectInstanceOptions(bus_idx int, effect_idx int, channel int) [1]gdclass.AudioEffectInstance { //gd:AudioServer.get_bus_effect_instance
 	once.Do(singleton)
 	return [1]gdclass.AudioEffectInstance(Advanced().GetBusEffectInstance(int64(bus_idx), int64(effect_idx), int64(channel)))
 }

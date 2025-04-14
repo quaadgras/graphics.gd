@@ -112,7 +112,7 @@ func CreateFromString(pattern string) [1]gdclass.RegEx { //gd:RegEx.create_from_
 /*
 Creates and compiles a new [RegEx] object. See also [method compile].
 */
-func CreateFromStringExpanded(pattern string, show_error bool) [1]gdclass.RegEx { //gd:RegEx.create_from_string
+func CreateFromStringOptions(pattern string, show_error bool) [1]gdclass.RegEx { //gd:RegEx.create_from_string
 	self := Instance{}
 	return [1]gdclass.RegEx(Advanced(self).CreateFromString(String.New(pattern), show_error))
 }

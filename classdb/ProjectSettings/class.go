@@ -112,7 +112,7 @@ GD.Print(ProjectSettings.GetSetting("application/config/custom_description", "No
 [/codeblocks]
 [b]Note:[/b] This method doesn't take potential feature overrides into account automatically. Use [method get_setting_with_override] to handle seamlessly.
 */
-func GetSettingExpanded(name string, default_value any) any { //gd:ProjectSettings.get_setting
+func GetSettingOptions(name string, default_value any) any { //gd:ProjectSettings.get_setting
 	once.Do(singleton)
 	return any(Advanced().GetSetting(String.New(name), variant.New(default_value)).Interface())
 }
@@ -304,7 +304,7 @@ Loads the contents of the .pck or .zip file specified by [param pack] into the r
 [b]Note:[/b] The optional [param offset] parameter can be used to specify the offset in bytes to the start of the resource pack. This is only supported for .pck files.
 [b]Note:[/b] [DirAccess] will not show changes made to the contents of [code]res://[/code] after calling this function.
 */
-func LoadResourcePackExpanded(pack string, replace_files bool, offset int) bool { //gd:ProjectSettings.load_resource_pack
+func LoadResourcePackOptions(pack string, replace_files bool, offset int) bool { //gd:ProjectSettings.load_resource_pack
 	once.Do(singleton)
 	return bool(Advanced().LoadResourcePack(String.New(pack), replace_files, int64(offset)))
 }

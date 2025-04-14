@@ -227,7 +227,7 @@ func AreaAddShape(area RID.Area3D, shape RID.Shape3D, disabled bool) { //gd:Phys
 /*
 Adds a shape to the area, along with a transform matrix. Shapes are usually referenced by their index, so you should track which shape has a given index.
 */
-func AreaAddShapeExpanded(area RID.Area3D, shape RID.Shape3D, transform Transform3D.BasisOrigin, disabled bool) { //gd:PhysicsServer3D.area_add_shape
+func AreaAddShapeOptions(area RID.Area3D, shape RID.Shape3D, transform Transform3D.BasisOrigin, disabled bool) { //gd:PhysicsServer3D.area_add_shape
 	once.Do(singleton)
 	Advanced().AreaAddShape(RID.Any(area), RID.Any(shape), Transform3D.BasisOrigin(transform), disabled)
 }
@@ -512,7 +512,7 @@ func BodyAddShape(body RID.Body3D, shape RID.Shape3D, disabled bool) { //gd:Phys
 /*
 Adds a shape to the body, along with a transform matrix. Shapes are usually referenced by their index, so you should track which shape has a given index.
 */
-func BodyAddShapeExpanded(body RID.Body3D, shape RID.Shape3D, transform Transform3D.BasisOrigin, disabled bool) { //gd:PhysicsServer3D.body_add_shape
+func BodyAddShapeOptions(body RID.Body3D, shape RID.Shape3D, transform Transform3D.BasisOrigin, disabled bool) { //gd:PhysicsServer3D.body_add_shape
 	once.Do(singleton)
 	Advanced().BodyAddShape(RID.Any(body), RID.Any(shape), Transform3D.BasisOrigin(transform), disabled)
 }
@@ -675,7 +675,7 @@ Applies a positioned impulse to the body.
 An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
 [param position] is the offset from the body origin in global coordinates.
 */
-func BodyApplyImpulseExpanded(body RID.Body3D, impulse Vector3.XYZ, position Vector3.XYZ) { //gd:PhysicsServer3D.body_apply_impulse
+func BodyApplyImpulseOptions(body RID.Body3D, impulse Vector3.XYZ, position Vector3.XYZ) { //gd:PhysicsServer3D.body_apply_impulse
 	once.Do(singleton)
 	Advanced().BodyApplyImpulse(RID.Any(body), Vector3.XYZ(impulse), Vector3.XYZ(position))
 }
@@ -711,7 +711,7 @@ func BodyApplyForce(body RID.Body3D, force Vector3.XYZ, position Vector3.XYZ) { 
 Applies a positioned force to the body. A force is time dependent and meant to be applied every physics update.
 [param position] is the offset from the body origin in global coordinates.
 */
-func BodyApplyForceExpanded(body RID.Body3D, force Vector3.XYZ, position Vector3.XYZ) { //gd:PhysicsServer3D.body_apply_force
+func BodyApplyForceOptions(body RID.Body3D, force Vector3.XYZ, position Vector3.XYZ) { //gd:PhysicsServer3D.body_apply_force
 	once.Do(singleton)
 	Advanced().BodyApplyForce(RID.Any(body), Vector3.XYZ(force), Vector3.XYZ(position))
 }
@@ -746,7 +746,7 @@ func BodyAddConstantForce(body RID.Body3D, force Vector3.XYZ, position Vector3.X
 Adds a constant positioned force to the body that keeps being applied over time until cleared with [code]body_set_constant_force(body, Vector3(0, 0, 0))[/code].
 [param position] is the offset from the body origin in global coordinates.
 */
-func BodyAddConstantForceExpanded(body RID.Body3D, force Vector3.XYZ, position Vector3.XYZ) { //gd:PhysicsServer3D.body_add_constant_force
+func BodyAddConstantForceOptions(body RID.Body3D, force Vector3.XYZ, position Vector3.XYZ) { //gd:PhysicsServer3D.body_add_constant_force
 	once.Do(singleton)
 	Advanced().BodyAddConstantForce(RID.Any(body), Vector3.XYZ(force), Vector3.XYZ(position))
 }
@@ -893,7 +893,7 @@ If [param userdata] is not [code]null[/code], the function [param callable] must
 2. [code skip-lint]userdata[/code]: a [Variant]; its value will be the [param userdata] passed into this method.
 If [param userdata] is [code]null[/code], then [param callable] must take only the [code]state[/code] parameter.
 */
-func BodySetForceIntegrationCallbackExpanded(body RID.Body3D, callable func(state [1]gdclass.PhysicsDirectBodyState3D, userdata any), userdata any) { //gd:PhysicsServer3D.body_set_force_integration_callback
+func BodySetForceIntegrationCallbackOptions(body RID.Body3D, callable func(state [1]gdclass.PhysicsDirectBodyState3D, userdata any), userdata any) { //gd:PhysicsServer3D.body_set_force_integration_callback
 	once.Do(singleton)
 	Advanced().BodySetForceIntegrationCallback(RID.Any(body), Callable.New(callable), variant.New(userdata))
 }
@@ -917,7 +917,7 @@ func BodyTestMotion(body RID.Body3D, parameters [1]gdclass.PhysicsTestMotionPara
 /*
 Returns [code]true[/code] if a collision would result from moving along a motion vector from a given point in space. [PhysicsTestMotionParameters3D] is passed to set motion parameters. [PhysicsTestMotionResult3D] can be passed to return additional information.
 */
-func BodyTestMotionExpanded(body RID.Body3D, parameters [1]gdclass.PhysicsTestMotionParameters3D, result [1]gdclass.PhysicsTestMotionResult3D) bool { //gd:PhysicsServer3D.body_test_motion
+func BodyTestMotionOptions(body RID.Body3D, parameters [1]gdclass.PhysicsTestMotionParameters3D, result [1]gdclass.PhysicsTestMotionResult3D) bool { //gd:PhysicsServer3D.body_test_motion
 	once.Do(singleton)
 	return bool(Advanced().BodyTestMotion(RID.Any(body), parameters, result))
 }
