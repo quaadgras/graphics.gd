@@ -361,7 +361,7 @@ func (self class) GetInertiaTensor() Basis.XYZ { //gd:GLTFPhysicsBody.get_inerti
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Basis.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_get_inertia_tensor, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Basis.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -369,7 +369,7 @@ func (self class) GetInertiaTensor() Basis.XYZ { //gd:GLTFPhysicsBody.get_inerti
 //go:nosplit
 func (self class) SetInertiaTensor(inertia_tensor Basis.XYZ) { //gd:GLTFPhysicsBody.set_inertia_tensor
 	var frame = callframe.New()
-	callframe.Arg(frame, inertia_tensor)
+	callframe.Arg(frame, Basis.Transposed(inertia_tensor))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_set_inertia_tensor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

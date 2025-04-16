@@ -2047,7 +2047,7 @@ Sets the global transformation for the region.
 func (self class) RegionSetTransform(region RID.Any, transform Transform3D.BasisOrigin) { //gd:NavigationServer3D.region_set_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, region)
-	callframe.Arg(frame, transform)
+	callframe.Arg(frame, gd.Transposed(transform))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer3D.Bind_region_set_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -2062,7 +2062,7 @@ func (self class) RegionGetTransform(region RID.Any) Transform3D.BasisOrigin { /
 	callframe.Arg(frame, region)
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer3D.Bind_region_get_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }

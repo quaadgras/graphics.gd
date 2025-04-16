@@ -441,7 +441,6 @@ Returns one-click deploy menu item icon for the specified [param device], icon s
 func (Instance) _get_option_icon(impl func(ptr unsafe.Pointer, device int) [1]gdclass.ImageTexture) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var device = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(device))
 		ptr, ok := pointers.End(ret[0])
@@ -460,7 +459,6 @@ Returns one-click deploy menu item label for the specified [param device].
 func (Instance) _get_option_label(impl func(ptr unsafe.Pointer, device int) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var device = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(device))
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
@@ -479,7 +477,6 @@ Returns one-click deploy menu item tooltip for the specified [param device].
 func (Instance) _get_option_tooltip(impl func(ptr unsafe.Pointer, device int) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var device = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(device))
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
@@ -498,7 +495,6 @@ Returns device architecture for one-click deploy.
 func (Instance) _get_device_architecture(impl func(ptr unsafe.Pointer, device int) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var device = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(device))
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
@@ -532,9 +528,7 @@ func (Instance) _run(impl func(ptr unsafe.Pointer, preset [1]gdclass.EditorExpor
 
 		defer pointers.End(preset[0])
 		var device = gd.UnsafeGet[int64](p_args, 1)
-
 		var debug_flags = gd.UnsafeGet[gdclass.EditorExportPlatformDebugFlags](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, preset, int(device), debug_flags)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
@@ -574,7 +568,6 @@ func (Instance) _can_export(impl func(ptr unsafe.Pointer, preset [1]gdclass.Edit
 
 		defer pointers.End(preset[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, preset, debug)
 		gd.UnsafeSet(p_back, ret)
@@ -591,7 +584,6 @@ func (Instance) _has_valid_export_configuration(impl func(ptr unsafe.Pointer, pr
 
 		defer pointers.End(preset[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, preset, debug)
 		gd.UnsafeSet(p_back, ret)
@@ -645,11 +637,9 @@ func (Instance) _export_project(impl func(ptr unsafe.Pointer, preset [1]gdclass.
 
 		defer pointers.End(preset[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalString(path))
 		var flags = gd.UnsafeGet[gdclass.EditorExportPlatformDebugFlags](p_args, 3)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, preset, debug, path.String(), flags)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
@@ -672,11 +662,9 @@ func (Instance) _export_pack(impl func(ptr unsafe.Pointer, preset [1]gdclass.Edi
 
 		defer pointers.End(preset[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalString(path))
 		var flags = gd.UnsafeGet[gdclass.EditorExportPlatformDebugFlags](p_args, 3)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, preset, debug, path.String(), flags)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
@@ -699,11 +687,9 @@ func (Instance) _export_zip(impl func(ptr unsafe.Pointer, preset [1]gdclass.Edit
 
 		defer pointers.End(preset[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalString(path))
 		var flags = gd.UnsafeGet[gdclass.EditorExportPlatformDebugFlags](p_args, 3)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, preset, debug, path.String(), flags)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
@@ -727,13 +713,11 @@ func (Instance) _export_pack_patch(impl func(ptr unsafe.Pointer, preset [1]gdcla
 
 		defer pointers.End(preset[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalString(path))
 		var patches = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 3)))))
 		defer pointers.End(gd.InternalPackedStrings(patches))
 		var flags = gd.UnsafeGet[gdclass.EditorExportPlatformDebugFlags](p_args, 4)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, preset, debug, path.String(), patches.Strings(), flags)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
@@ -757,13 +741,11 @@ func (Instance) _export_zip_patch(impl func(ptr unsafe.Pointer, preset [1]gdclas
 
 		defer pointers.End(preset[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalString(path))
 		var patches = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 3)))))
 		defer pointers.End(gd.InternalPackedStrings(patches))
 		var flags = gd.UnsafeGet[gdclass.EditorExportPlatformDebugFlags](p_args, 4)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, preset, debug, path.String(), patches.Strings(), flags)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
@@ -1066,7 +1048,6 @@ Returns one-click deploy menu item icon for the specified [param device], icon s
 func (class) _get_option_icon(impl func(ptr unsafe.Pointer, device int64) [1]gdclass.ImageTexture) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var device = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, device)
 		ptr, ok := pointers.End(ret[0])
@@ -1085,7 +1066,6 @@ Returns one-click deploy menu item label for the specified [param device].
 func (class) _get_option_label(impl func(ptr unsafe.Pointer, device int64) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var device = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, device)
 		ptr, ok := pointers.End(gd.InternalString(ret))
@@ -1104,7 +1084,6 @@ Returns one-click deploy menu item tooltip for the specified [param device].
 func (class) _get_option_tooltip(impl func(ptr unsafe.Pointer, device int64) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var device = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, device)
 		ptr, ok := pointers.End(gd.InternalString(ret))
@@ -1123,7 +1102,6 @@ Returns device architecture for one-click deploy.
 func (class) _get_device_architecture(impl func(ptr unsafe.Pointer, device int64) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var device = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, device)
 		ptr, ok := pointers.End(gd.InternalString(ret))
@@ -1157,9 +1135,7 @@ func (class) _run(impl func(ptr unsafe.Pointer, preset [1]gdclass.EditorExportPr
 
 		defer pointers.End(preset[0])
 		var device = gd.UnsafeGet[int64](p_args, 1)
-
 		var debug_flags = gd.UnsafeGet[gdclass.EditorExportPlatformDebugFlags](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, preset, device, debug_flags)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
@@ -1199,7 +1175,6 @@ func (class) _can_export(impl func(ptr unsafe.Pointer, preset [1]gdclass.EditorE
 
 		defer pointers.End(preset[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, preset, debug)
 		gd.UnsafeSet(p_back, ret)
@@ -1216,7 +1191,6 @@ func (class) _has_valid_export_configuration(impl func(ptr unsafe.Pointer, prese
 
 		defer pointers.End(preset[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, preset, debug)
 		gd.UnsafeSet(p_back, ret)
@@ -1270,11 +1244,9 @@ func (class) _export_project(impl func(ptr unsafe.Pointer, preset [1]gdclass.Edi
 
 		defer pointers.End(preset[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalString(path))
 		var flags = gd.UnsafeGet[gdclass.EditorExportPlatformDebugFlags](p_args, 3)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, preset, debug, path, flags)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
@@ -1297,11 +1269,9 @@ func (class) _export_pack(impl func(ptr unsafe.Pointer, preset [1]gdclass.Editor
 
 		defer pointers.End(preset[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalString(path))
 		var flags = gd.UnsafeGet[gdclass.EditorExportPlatformDebugFlags](p_args, 3)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, preset, debug, path, flags)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
@@ -1324,11 +1294,9 @@ func (class) _export_zip(impl func(ptr unsafe.Pointer, preset [1]gdclass.EditorE
 
 		defer pointers.End(preset[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalString(path))
 		var flags = gd.UnsafeGet[gdclass.EditorExportPlatformDebugFlags](p_args, 3)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, preset, debug, path, flags)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
@@ -1352,13 +1320,11 @@ func (class) _export_pack_patch(impl func(ptr unsafe.Pointer, preset [1]gdclass.
 
 		defer pointers.End(preset[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalString(path))
 		var patches = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 3)))))
 		defer pointers.End(gd.InternalPackedStrings(patches))
 		var flags = gd.UnsafeGet[gdclass.EditorExportPlatformDebugFlags](p_args, 4)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, preset, debug, path, patches, flags)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
@@ -1382,13 +1348,11 @@ func (class) _export_zip_patch(impl func(ptr unsafe.Pointer, preset [1]gdclass.E
 
 		defer pointers.End(preset[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalString(path))
 		var patches = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 3)))))
 		defer pointers.End(gd.InternalPackedStrings(patches))
 		var flags = gd.UnsafeGet[gdclass.EditorExportPlatformDebugFlags](p_args, 4)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, preset, debug, path, patches, flags)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)

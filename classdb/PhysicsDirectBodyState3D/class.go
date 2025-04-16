@@ -463,7 +463,7 @@ func (self class) GetPrincipalInertiaAxes() Basis.XYZ { //gd:PhysicsDirectBodySt
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Basis.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_principal_inertia_axes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Basis.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -493,7 +493,7 @@ func (self class) GetInverseInertiaTensor() Basis.XYZ { //gd:PhysicsDirectBodySt
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Basis.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_inverse_inertia_tensor, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Basis.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -539,7 +539,7 @@ func (self class) GetAngularVelocity() Vector3.XYZ { //gd:PhysicsDirectBodyState
 //go:nosplit
 func (self class) SetTransform(transform Transform3D.BasisOrigin) { //gd:PhysicsDirectBodyState3D.set_transform
 	var frame = callframe.New()
-	callframe.Arg(frame, transform)
+	callframe.Arg(frame, gd.Transposed(transform))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_set_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -550,7 +550,7 @@ func (self class) GetTransform() Transform3D.BasisOrigin { //gd:PhysicsDirectBod
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }

@@ -203,7 +203,7 @@ func (Instance) _get_principal_inertia_axes(impl func(ptr unsafe.Pointer) Basis.
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, Basis.XYZ(ret))
+		gd.UnsafeSet(p_back, Basis.Transposed(Basis.XYZ(ret)))
 	}
 }
 func (Instance) _get_inverse_mass(impl func(ptr unsafe.Pointer) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -224,13 +224,12 @@ func (Instance) _get_inverse_inertia_tensor(impl func(ptr unsafe.Pointer) Basis.
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, Basis.XYZ(ret))
+		gd.UnsafeSet(p_back, Basis.Transposed(Basis.XYZ(ret)))
 	}
 }
 func (Instance) _set_linear_velocity(impl func(ptr unsafe.Pointer, velocity Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var velocity = gd.UnsafeGet[Vector3.XYZ](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, velocity)
 	}
@@ -245,7 +244,6 @@ func (Instance) _get_linear_velocity(impl func(ptr unsafe.Pointer) Vector3.XYZ) 
 func (Instance) _set_angular_velocity(impl func(ptr unsafe.Pointer, velocity Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var velocity = gd.UnsafeGet[Vector3.XYZ](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, velocity)
 	}
@@ -259,8 +257,7 @@ func (Instance) _get_angular_velocity(impl func(ptr unsafe.Pointer) Vector3.XYZ)
 }
 func (Instance) _set_transform(impl func(ptr unsafe.Pointer, transform Transform3D.BasisOrigin)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var transform = gd.UnsafeGet[Transform3D.BasisOrigin](p_args, 0)
-
+		var transform = gd.Transposed(gd.UnsafeGet[Transform3D.BasisOrigin](p_args, 0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, transform)
 	}
@@ -269,13 +266,12 @@ func (Instance) _get_transform(impl func(ptr unsafe.Pointer) Transform3D.BasisOr
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, Transform3D.BasisOrigin(ret))
+		gd.UnsafeSet(p_back, gd.Transposed(Transform3D.BasisOrigin(ret)))
 	}
 }
 func (Instance) _get_velocity_at_local_position(impl func(ptr unsafe.Pointer, local_position Vector3.XYZ) Vector3.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var local_position = gd.UnsafeGet[Vector3.XYZ](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, local_position)
 		gd.UnsafeSet(p_back, Vector3.XYZ(ret))
@@ -284,7 +280,6 @@ func (Instance) _get_velocity_at_local_position(impl func(ptr unsafe.Pointer, lo
 func (Instance) _apply_central_impulse(impl func(ptr unsafe.Pointer, impulse Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var impulse = gd.UnsafeGet[Vector3.XYZ](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, impulse)
 	}
@@ -292,9 +287,7 @@ func (Instance) _apply_central_impulse(impl func(ptr unsafe.Pointer, impulse Vec
 func (Instance) _apply_impulse(impl func(ptr unsafe.Pointer, impulse Vector3.XYZ, position Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var impulse = gd.UnsafeGet[Vector3.XYZ](p_args, 0)
-
 		var position = gd.UnsafeGet[Vector3.XYZ](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, impulse, position)
 	}
@@ -302,7 +295,6 @@ func (Instance) _apply_impulse(impl func(ptr unsafe.Pointer, impulse Vector3.XYZ
 func (Instance) _apply_torque_impulse(impl func(ptr unsafe.Pointer, impulse Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var impulse = gd.UnsafeGet[Vector3.XYZ](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, impulse)
 	}
@@ -310,7 +302,6 @@ func (Instance) _apply_torque_impulse(impl func(ptr unsafe.Pointer, impulse Vect
 func (Instance) _apply_central_force(impl func(ptr unsafe.Pointer, force Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var force = gd.UnsafeGet[Vector3.XYZ](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, force)
 	}
@@ -318,9 +309,7 @@ func (Instance) _apply_central_force(impl func(ptr unsafe.Pointer, force Vector3
 func (Instance) _apply_force(impl func(ptr unsafe.Pointer, force Vector3.XYZ, position Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var force = gd.UnsafeGet[Vector3.XYZ](p_args, 0)
-
 		var position = gd.UnsafeGet[Vector3.XYZ](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, force, position)
 	}
@@ -328,7 +317,6 @@ func (Instance) _apply_force(impl func(ptr unsafe.Pointer, force Vector3.XYZ, po
 func (Instance) _apply_torque(impl func(ptr unsafe.Pointer, torque Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var torque = gd.UnsafeGet[Vector3.XYZ](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, torque)
 	}
@@ -336,7 +324,6 @@ func (Instance) _apply_torque(impl func(ptr unsafe.Pointer, torque Vector3.XYZ))
 func (Instance) _add_constant_central_force(impl func(ptr unsafe.Pointer, force Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var force = gd.UnsafeGet[Vector3.XYZ](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, force)
 	}
@@ -344,9 +331,7 @@ func (Instance) _add_constant_central_force(impl func(ptr unsafe.Pointer, force 
 func (Instance) _add_constant_force(impl func(ptr unsafe.Pointer, force Vector3.XYZ, position Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var force = gd.UnsafeGet[Vector3.XYZ](p_args, 0)
-
 		var position = gd.UnsafeGet[Vector3.XYZ](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, force, position)
 	}
@@ -354,7 +339,6 @@ func (Instance) _add_constant_force(impl func(ptr unsafe.Pointer, force Vector3.
 func (Instance) _add_constant_torque(impl func(ptr unsafe.Pointer, torque Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var torque = gd.UnsafeGet[Vector3.XYZ](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, torque)
 	}
@@ -362,7 +346,6 @@ func (Instance) _add_constant_torque(impl func(ptr unsafe.Pointer, torque Vector
 func (Instance) _set_constant_force(impl func(ptr unsafe.Pointer, force Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var force = gd.UnsafeGet[Vector3.XYZ](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, force)
 	}
@@ -377,7 +360,6 @@ func (Instance) _get_constant_force(impl func(ptr unsafe.Pointer) Vector3.XYZ) (
 func (Instance) _set_constant_torque(impl func(ptr unsafe.Pointer, torque Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var torque = gd.UnsafeGet[Vector3.XYZ](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, torque)
 	}
@@ -392,7 +374,6 @@ func (Instance) _get_constant_torque(impl func(ptr unsafe.Pointer) Vector3.XYZ) 
 func (Instance) _set_sleep_state(impl func(ptr unsafe.Pointer, enabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var enabled = gd.UnsafeGet[bool](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, enabled)
 	}
@@ -414,7 +395,6 @@ func (Instance) _get_contact_count(impl func(ptr unsafe.Pointer) int) (cb gd.Ext
 func (Instance) _get_contact_local_position(impl func(ptr unsafe.Pointer, contact_idx int) Vector3.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var contact_idx = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(contact_idx))
 		gd.UnsafeSet(p_back, Vector3.XYZ(ret))
@@ -423,7 +403,6 @@ func (Instance) _get_contact_local_position(impl func(ptr unsafe.Pointer, contac
 func (Instance) _get_contact_local_normal(impl func(ptr unsafe.Pointer, contact_idx int) Vector3.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var contact_idx = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(contact_idx))
 		gd.UnsafeSet(p_back, Vector3.XYZ(ret))
@@ -432,7 +411,6 @@ func (Instance) _get_contact_local_normal(impl func(ptr unsafe.Pointer, contact_
 func (Instance) _get_contact_impulse(impl func(ptr unsafe.Pointer, contact_idx int) Vector3.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var contact_idx = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(contact_idx))
 		gd.UnsafeSet(p_back, Vector3.XYZ(ret))
@@ -441,7 +419,6 @@ func (Instance) _get_contact_impulse(impl func(ptr unsafe.Pointer, contact_idx i
 func (Instance) _get_contact_local_shape(impl func(ptr unsafe.Pointer, contact_idx int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var contact_idx = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(contact_idx))
 		gd.UnsafeSet(p_back, int64(ret))
@@ -450,7 +427,6 @@ func (Instance) _get_contact_local_shape(impl func(ptr unsafe.Pointer, contact_i
 func (Instance) _get_contact_local_velocity_at_position(impl func(ptr unsafe.Pointer, contact_idx int) Vector3.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var contact_idx = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(contact_idx))
 		gd.UnsafeSet(p_back, Vector3.XYZ(ret))
@@ -459,7 +435,6 @@ func (Instance) _get_contact_local_velocity_at_position(impl func(ptr unsafe.Poi
 func (Instance) _get_contact_collider(impl func(ptr unsafe.Pointer, contact_idx int) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var contact_idx = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(contact_idx))
 		gd.UnsafeSet(p_back, RID.Any(ret))
@@ -468,7 +443,6 @@ func (Instance) _get_contact_collider(impl func(ptr unsafe.Pointer, contact_idx 
 func (Instance) _get_contact_collider_position(impl func(ptr unsafe.Pointer, contact_idx int) Vector3.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var contact_idx = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(contact_idx))
 		gd.UnsafeSet(p_back, Vector3.XYZ(ret))
@@ -477,7 +451,6 @@ func (Instance) _get_contact_collider_position(impl func(ptr unsafe.Pointer, con
 func (Instance) _get_contact_collider_id(impl func(ptr unsafe.Pointer, contact_idx int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var contact_idx = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(contact_idx))
 		gd.UnsafeSet(p_back, int64(ret))
@@ -486,7 +459,6 @@ func (Instance) _get_contact_collider_id(impl func(ptr unsafe.Pointer, contact_i
 func (Instance) _get_contact_collider_object(impl func(ptr unsafe.Pointer, contact_idx int) Object.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var contact_idx = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(contact_idx))
 		ptr, ok := pointers.End(ret[0])
@@ -500,7 +472,6 @@ func (Instance) _get_contact_collider_object(impl func(ptr unsafe.Pointer, conta
 func (Instance) _get_contact_collider_shape(impl func(ptr unsafe.Pointer, contact_idx int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var contact_idx = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(contact_idx))
 		gd.UnsafeSet(p_back, int64(ret))
@@ -509,7 +480,6 @@ func (Instance) _get_contact_collider_shape(impl func(ptr unsafe.Pointer, contac
 func (Instance) _get_contact_collider_velocity_at_position(impl func(ptr unsafe.Pointer, contact_idx int) Vector3.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var contact_idx = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(contact_idx))
 		gd.UnsafeSet(p_back, Vector3.XYZ(ret))
@@ -603,7 +573,7 @@ func (class) _get_principal_inertia_axes(impl func(ptr unsafe.Pointer) Basis.XYZ
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, Basis.Transposed(ret))
 	}
 }
 
@@ -627,14 +597,13 @@ func (class) _get_inverse_inertia_tensor(impl func(ptr unsafe.Pointer) Basis.XYZ
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, Basis.Transposed(ret))
 	}
 }
 
 func (class) _set_linear_velocity(impl func(ptr unsafe.Pointer, velocity Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var velocity = gd.UnsafeGet[Vector3.XYZ](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, velocity)
 	}
@@ -651,7 +620,6 @@ func (class) _get_linear_velocity(impl func(ptr unsafe.Pointer) Vector3.XYZ) (cb
 func (class) _set_angular_velocity(impl func(ptr unsafe.Pointer, velocity Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var velocity = gd.UnsafeGet[Vector3.XYZ](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, velocity)
 	}
@@ -667,8 +635,7 @@ func (class) _get_angular_velocity(impl func(ptr unsafe.Pointer) Vector3.XYZ) (c
 
 func (class) _set_transform(impl func(ptr unsafe.Pointer, transform Transform3D.BasisOrigin)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var transform = gd.UnsafeGet[Transform3D.BasisOrigin](p_args, 0)
-
+		var transform = gd.Transposed(gd.UnsafeGet[Transform3D.BasisOrigin](p_args, 0))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, transform)
 	}
@@ -678,14 +645,13 @@ func (class) _get_transform(impl func(ptr unsafe.Pointer) Transform3D.BasisOrigi
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.Transposed(ret))
 	}
 }
 
 func (class) _get_velocity_at_local_position(impl func(ptr unsafe.Pointer, local_position Vector3.XYZ) Vector3.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var local_position = gd.UnsafeGet[Vector3.XYZ](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, local_position)
 		gd.UnsafeSet(p_back, ret)
@@ -695,7 +661,6 @@ func (class) _get_velocity_at_local_position(impl func(ptr unsafe.Pointer, local
 func (class) _apply_central_impulse(impl func(ptr unsafe.Pointer, impulse Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var impulse = gd.UnsafeGet[Vector3.XYZ](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, impulse)
 	}
@@ -704,9 +669,7 @@ func (class) _apply_central_impulse(impl func(ptr unsafe.Pointer, impulse Vector
 func (class) _apply_impulse(impl func(ptr unsafe.Pointer, impulse Vector3.XYZ, position Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var impulse = gd.UnsafeGet[Vector3.XYZ](p_args, 0)
-
 		var position = gd.UnsafeGet[Vector3.XYZ](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, impulse, position)
 	}
@@ -715,7 +678,6 @@ func (class) _apply_impulse(impl func(ptr unsafe.Pointer, impulse Vector3.XYZ, p
 func (class) _apply_torque_impulse(impl func(ptr unsafe.Pointer, impulse Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var impulse = gd.UnsafeGet[Vector3.XYZ](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, impulse)
 	}
@@ -724,7 +686,6 @@ func (class) _apply_torque_impulse(impl func(ptr unsafe.Pointer, impulse Vector3
 func (class) _apply_central_force(impl func(ptr unsafe.Pointer, force Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var force = gd.UnsafeGet[Vector3.XYZ](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, force)
 	}
@@ -733,9 +694,7 @@ func (class) _apply_central_force(impl func(ptr unsafe.Pointer, force Vector3.XY
 func (class) _apply_force(impl func(ptr unsafe.Pointer, force Vector3.XYZ, position Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var force = gd.UnsafeGet[Vector3.XYZ](p_args, 0)
-
 		var position = gd.UnsafeGet[Vector3.XYZ](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, force, position)
 	}
@@ -744,7 +703,6 @@ func (class) _apply_force(impl func(ptr unsafe.Pointer, force Vector3.XYZ, posit
 func (class) _apply_torque(impl func(ptr unsafe.Pointer, torque Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var torque = gd.UnsafeGet[Vector3.XYZ](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, torque)
 	}
@@ -753,7 +711,6 @@ func (class) _apply_torque(impl func(ptr unsafe.Pointer, torque Vector3.XYZ)) (c
 func (class) _add_constant_central_force(impl func(ptr unsafe.Pointer, force Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var force = gd.UnsafeGet[Vector3.XYZ](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, force)
 	}
@@ -762,9 +719,7 @@ func (class) _add_constant_central_force(impl func(ptr unsafe.Pointer, force Vec
 func (class) _add_constant_force(impl func(ptr unsafe.Pointer, force Vector3.XYZ, position Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var force = gd.UnsafeGet[Vector3.XYZ](p_args, 0)
-
 		var position = gd.UnsafeGet[Vector3.XYZ](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, force, position)
 	}
@@ -773,7 +728,6 @@ func (class) _add_constant_force(impl func(ptr unsafe.Pointer, force Vector3.XYZ
 func (class) _add_constant_torque(impl func(ptr unsafe.Pointer, torque Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var torque = gd.UnsafeGet[Vector3.XYZ](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, torque)
 	}
@@ -782,7 +736,6 @@ func (class) _add_constant_torque(impl func(ptr unsafe.Pointer, torque Vector3.X
 func (class) _set_constant_force(impl func(ptr unsafe.Pointer, force Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var force = gd.UnsafeGet[Vector3.XYZ](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, force)
 	}
@@ -799,7 +752,6 @@ func (class) _get_constant_force(impl func(ptr unsafe.Pointer) Vector3.XYZ) (cb 
 func (class) _set_constant_torque(impl func(ptr unsafe.Pointer, torque Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var torque = gd.UnsafeGet[Vector3.XYZ](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, torque)
 	}
@@ -816,7 +768,6 @@ func (class) _get_constant_torque(impl func(ptr unsafe.Pointer) Vector3.XYZ) (cb
 func (class) _set_sleep_state(impl func(ptr unsafe.Pointer, enabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var enabled = gd.UnsafeGet[bool](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, enabled)
 	}
@@ -841,7 +792,6 @@ func (class) _get_contact_count(impl func(ptr unsafe.Pointer) int64) (cb gd.Exte
 func (class) _get_contact_local_position(impl func(ptr unsafe.Pointer, contact_idx int64) Vector3.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var contact_idx = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, contact_idx)
 		gd.UnsafeSet(p_back, ret)
@@ -851,7 +801,6 @@ func (class) _get_contact_local_position(impl func(ptr unsafe.Pointer, contact_i
 func (class) _get_contact_local_normal(impl func(ptr unsafe.Pointer, contact_idx int64) Vector3.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var contact_idx = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, contact_idx)
 		gd.UnsafeSet(p_back, ret)
@@ -861,7 +810,6 @@ func (class) _get_contact_local_normal(impl func(ptr unsafe.Pointer, contact_idx
 func (class) _get_contact_impulse(impl func(ptr unsafe.Pointer, contact_idx int64) Vector3.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var contact_idx = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, contact_idx)
 		gd.UnsafeSet(p_back, ret)
@@ -871,7 +819,6 @@ func (class) _get_contact_impulse(impl func(ptr unsafe.Pointer, contact_idx int6
 func (class) _get_contact_local_shape(impl func(ptr unsafe.Pointer, contact_idx int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var contact_idx = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, contact_idx)
 		gd.UnsafeSet(p_back, ret)
@@ -881,7 +828,6 @@ func (class) _get_contact_local_shape(impl func(ptr unsafe.Pointer, contact_idx 
 func (class) _get_contact_local_velocity_at_position(impl func(ptr unsafe.Pointer, contact_idx int64) Vector3.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var contact_idx = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, contact_idx)
 		gd.UnsafeSet(p_back, ret)
@@ -891,7 +837,6 @@ func (class) _get_contact_local_velocity_at_position(impl func(ptr unsafe.Pointe
 func (class) _get_contact_collider(impl func(ptr unsafe.Pointer, contact_idx int64) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var contact_idx = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, contact_idx)
 		gd.UnsafeSet(p_back, ret)
@@ -901,7 +846,6 @@ func (class) _get_contact_collider(impl func(ptr unsafe.Pointer, contact_idx int
 func (class) _get_contact_collider_position(impl func(ptr unsafe.Pointer, contact_idx int64) Vector3.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var contact_idx = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, contact_idx)
 		gd.UnsafeSet(p_back, ret)
@@ -911,7 +855,6 @@ func (class) _get_contact_collider_position(impl func(ptr unsafe.Pointer, contac
 func (class) _get_contact_collider_id(impl func(ptr unsafe.Pointer, contact_idx int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var contact_idx = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, contact_idx)
 		gd.UnsafeSet(p_back, ret)
@@ -921,7 +864,6 @@ func (class) _get_contact_collider_id(impl func(ptr unsafe.Pointer, contact_idx 
 func (class) _get_contact_collider_object(impl func(ptr unsafe.Pointer, contact_idx int64) [1]gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var contact_idx = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, contact_idx)
 		ptr, ok := pointers.End(ret[0])
@@ -936,7 +878,6 @@ func (class) _get_contact_collider_object(impl func(ptr unsafe.Pointer, contact_
 func (class) _get_contact_collider_shape(impl func(ptr unsafe.Pointer, contact_idx int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var contact_idx = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, contact_idx)
 		gd.UnsafeSet(p_back, ret)
@@ -946,7 +887,6 @@ func (class) _get_contact_collider_shape(impl func(ptr unsafe.Pointer, contact_i
 func (class) _get_contact_collider_velocity_at_position(impl func(ptr unsafe.Pointer, contact_idx int64) Vector3.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var contact_idx = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, contact_idx)
 		gd.UnsafeSet(p_back, ret)

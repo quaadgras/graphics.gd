@@ -849,7 +849,7 @@ The default ParticleProcessMaterial will overwrite [param color] and use the con
 //go:nosplit
 func (self class) EmitParticle(xform Transform3D.BasisOrigin, velocity Vector3.XYZ, color Color.RGBA, custom Color.RGBA, flags int64) { //gd:GPUParticles3D.emit_particle
 	var frame = callframe.New()
-	callframe.Arg(frame, xform)
+	callframe.Arg(frame, gd.Transposed(xform))
 	callframe.Arg(frame, velocity)
 	callframe.Arg(frame, color)
 	callframe.Arg(frame, custom)

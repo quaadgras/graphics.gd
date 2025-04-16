@@ -127,7 +127,7 @@ func (self class) GetBindCount() int64 { //gd:Skin.get_bind_count
 func (self class) AddBind(bone int64, pose Transform3D.BasisOrigin) { //gd:Skin.add_bind
 	var frame = callframe.New()
 	callframe.Arg(frame, bone)
-	callframe.Arg(frame, pose)
+	callframe.Arg(frame, gd.Transposed(pose))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skin.Bind_add_bind, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -137,7 +137,7 @@ func (self class) AddBind(bone int64, pose Transform3D.BasisOrigin) { //gd:Skin.
 func (self class) AddNamedBind(name String.Readable, pose Transform3D.BasisOrigin) { //gd:Skin.add_named_bind
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	callframe.Arg(frame, pose)
+	callframe.Arg(frame, gd.Transposed(pose))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skin.Bind_add_named_bind, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -147,7 +147,7 @@ func (self class) AddNamedBind(name String.Readable, pose Transform3D.BasisOrigi
 func (self class) SetBindPose(bind_index int64, pose Transform3D.BasisOrigin) { //gd:Skin.set_bind_pose
 	var frame = callframe.New()
 	callframe.Arg(frame, bind_index)
-	callframe.Arg(frame, pose)
+	callframe.Arg(frame, gd.Transposed(pose))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skin.Bind_set_bind_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -159,7 +159,7 @@ func (self class) GetBindPose(bind_index int64) Transform3D.BasisOrigin { //gd:S
 	callframe.Arg(frame, bind_index)
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skin.Bind_get_bind_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }

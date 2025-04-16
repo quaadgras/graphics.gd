@@ -64,9 +64,7 @@ func (self implementation) GetStreamSamplingRate() (_ Float.X)                  
 func (Instance) _mix_resampled(impl func(ptr unsafe.Pointer, dst_buffer *AudioFrame, frame_count int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var dst_buffer = gd.UnsafeGet[*AudioFrame](p_args, 0)
-
 		var frame_count = gd.UnsafeGet[int64](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, dst_buffer, int(frame_count))
 		gd.UnsafeSet(p_back, int64(ret))
@@ -105,9 +103,7 @@ func New() Instance {
 func (class) _mix_resampled(impl func(ptr unsafe.Pointer, dst_buffer *AudioFrame, frame_count int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var dst_buffer = gd.UnsafeGet[*AudioFrame](p_args, 0)
-
 		var frame_count = gd.UnsafeGet[int64](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, dst_buffer, frame_count)
 		gd.UnsafeSet(p_back, ret)

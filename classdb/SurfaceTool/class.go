@@ -774,7 +774,7 @@ func (self class) AppendFrom(existing [1]gdclass.Mesh, surface int64, transform 
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(existing[0])[0])
 	callframe.Arg(frame, surface)
-	callframe.Arg(frame, transform)
+	callframe.Arg(frame, gd.Transposed(transform))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_append_from, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

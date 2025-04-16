@@ -210,7 +210,6 @@ func (Instance) _get_dependencies(impl func(ptr unsafe.Pointer, path string, add
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		var add_types = gd.UnsafeGet[bool](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String(), add_types)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
@@ -277,9 +276,7 @@ func (Instance) _load(impl func(ptr unsafe.Pointer, path string, original_path s
 		var original_path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
 		defer pointers.End(gd.InternalString(original_path))
 		var use_sub_threads = gd.UnsafeGet[bool](p_args, 2)
-
 		var cache_mode = gd.UnsafeGet[int64](p_args, 3)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String(), original_path.String(), use_sub_threads, int(cache_mode))
 		ptr, ok := pointers.End(gd.InternalVariant(variant.New(ret)))
@@ -415,7 +412,6 @@ func (class) _get_dependencies(impl func(ptr unsafe.Pointer, path String.Readabl
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		var add_types = gd.UnsafeGet[bool](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path, add_types)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
@@ -484,9 +480,7 @@ func (class) _load(impl func(ptr unsafe.Pointer, path String.Readable, original_
 		var original_path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
 		defer pointers.End(gd.InternalString(original_path))
 		var use_sub_threads = gd.UnsafeGet[bool](p_args, 2)
-
 		var cache_mode = gd.UnsafeGet[int64](p_args, 3)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path, original_path, use_sub_threads, cache_mode)
 		ptr, ok := pointers.End(gd.InternalVariant(ret))

@@ -94,19 +94,12 @@ func (self implementation) RestInfo(shape_rid RID.Any, transform Transform2D.Ori
 func (Instance) _intersect_ray(impl func(ptr unsafe.Pointer, from Vector2.XY, to Vector2.XY, collision_mask int, collide_with_bodies bool, collide_with_areas bool, hit_from_inside bool, result *PhysicsServer2DExtensionRayResult) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from = gd.UnsafeGet[Vector2.XY](p_args, 0)
-
 		var to = gd.UnsafeGet[Vector2.XY](p_args, 1)
-
 		var collision_mask = gd.UnsafeGet[int64](p_args, 2)
-
 		var collide_with_bodies = gd.UnsafeGet[bool](p_args, 3)
-
 		var collide_with_areas = gd.UnsafeGet[bool](p_args, 4)
-
 		var hit_from_inside = gd.UnsafeGet[bool](p_args, 5)
-
 		var result = gd.UnsafeGet[*PhysicsServer2DExtensionRayResult](p_args, 6)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, from, to, int(collision_mask), collide_with_bodies, collide_with_areas, hit_from_inside, result)
 		gd.UnsafeSet(p_back, ret)
@@ -115,19 +108,12 @@ func (Instance) _intersect_ray(impl func(ptr unsafe.Pointer, from Vector2.XY, to
 func (Instance) _intersect_point(impl func(ptr unsafe.Pointer, position Vector2.XY, canvas_instance_id int, collision_mask int, collide_with_bodies bool, collide_with_areas bool, results *PhysicsServer2DExtensionShapeResult, max_results int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var position = gd.UnsafeGet[Vector2.XY](p_args, 0)
-
 		var canvas_instance_id = gd.UnsafeGet[int64](p_args, 1)
-
 		var collision_mask = gd.UnsafeGet[int64](p_args, 2)
-
 		var collide_with_bodies = gd.UnsafeGet[bool](p_args, 3)
-
 		var collide_with_areas = gd.UnsafeGet[bool](p_args, 4)
-
 		var results = gd.UnsafeGet[*PhysicsServer2DExtensionShapeResult](p_args, 5)
-
 		var max_results = gd.UnsafeGet[int64](p_args, 6)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, position, int(canvas_instance_id), int(collision_mask), collide_with_bodies, collide_with_areas, results, int(max_results))
 		gd.UnsafeSet(p_back, int64(ret))
@@ -136,23 +122,14 @@ func (Instance) _intersect_point(impl func(ptr unsafe.Pointer, position Vector2.
 func (Instance) _intersect_shape(impl func(ptr unsafe.Pointer, shape_rid RID.Any, transform Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collision_mask int, collide_with_bodies bool, collide_with_areas bool, result *PhysicsServer2DExtensionShapeResult, max_results int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shape_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-
 		var transform = gd.UnsafeGet[Transform2D.OriginXY](p_args, 1)
-
 		var motion = gd.UnsafeGet[Vector2.XY](p_args, 2)
-
 		var margin = gd.UnsafeGet[float64](p_args, 3)
-
 		var collision_mask = gd.UnsafeGet[int64](p_args, 4)
-
 		var collide_with_bodies = gd.UnsafeGet[bool](p_args, 5)
-
 		var collide_with_areas = gd.UnsafeGet[bool](p_args, 6)
-
 		var result = gd.UnsafeGet[*PhysicsServer2DExtensionShapeResult](p_args, 7)
-
 		var max_results = gd.UnsafeGet[int64](p_args, 8)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shape_rid, transform, motion, Float.X(margin), int(collision_mask), collide_with_bodies, collide_with_areas, result, int(max_results))
 		gd.UnsafeSet(p_back, int64(ret))
@@ -161,23 +138,14 @@ func (Instance) _intersect_shape(impl func(ptr unsafe.Pointer, shape_rid RID.Any
 func (Instance) _cast_motion(impl func(ptr unsafe.Pointer, shape_rid RID.Any, transform Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collision_mask int, collide_with_bodies bool, collide_with_areas bool, closest_safe *float64, closest_unsafe *float64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shape_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-
 		var transform = gd.UnsafeGet[Transform2D.OriginXY](p_args, 1)
-
 		var motion = gd.UnsafeGet[Vector2.XY](p_args, 2)
-
 		var margin = gd.UnsafeGet[float64](p_args, 3)
-
 		var collision_mask = gd.UnsafeGet[int64](p_args, 4)
-
 		var collide_with_bodies = gd.UnsafeGet[bool](p_args, 5)
-
 		var collide_with_areas = gd.UnsafeGet[bool](p_args, 6)
-
 		var closest_safe = gd.UnsafeGet[*float64](p_args, 7)
-
 		var closest_unsafe = gd.UnsafeGet[*float64](p_args, 8)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shape_rid, transform, motion, Float.X(margin), int(collision_mask), collide_with_bodies, collide_with_areas, closest_safe, closest_unsafe)
 		gd.UnsafeSet(p_back, ret)
@@ -186,25 +154,15 @@ func (Instance) _cast_motion(impl func(ptr unsafe.Pointer, shape_rid RID.Any, tr
 func (Instance) _collide_shape(impl func(ptr unsafe.Pointer, shape_rid RID.Any, transform Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collision_mask int, collide_with_bodies bool, collide_with_areas bool, results unsafe.Pointer, max_results int, result_count *int32) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shape_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-
 		var transform = gd.UnsafeGet[Transform2D.OriginXY](p_args, 1)
-
 		var motion = gd.UnsafeGet[Vector2.XY](p_args, 2)
-
 		var margin = gd.UnsafeGet[float64](p_args, 3)
-
 		var collision_mask = gd.UnsafeGet[int64](p_args, 4)
-
 		var collide_with_bodies = gd.UnsafeGet[bool](p_args, 5)
-
 		var collide_with_areas = gd.UnsafeGet[bool](p_args, 6)
-
 		var results = gd.UnsafeGet[unsafe.Pointer](p_args, 7)
-
 		var max_results = gd.UnsafeGet[int64](p_args, 8)
-
 		var result_count = gd.UnsafeGet[*int32](p_args, 9)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shape_rid, transform, motion, Float.X(margin), int(collision_mask), collide_with_bodies, collide_with_areas, results, int(max_results), result_count)
 		gd.UnsafeSet(p_back, ret)
@@ -213,21 +171,13 @@ func (Instance) _collide_shape(impl func(ptr unsafe.Pointer, shape_rid RID.Any, 
 func (Instance) _rest_info(impl func(ptr unsafe.Pointer, shape_rid RID.Any, transform Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collision_mask int, collide_with_bodies bool, collide_with_areas bool, rest_info *PhysicsServer2DExtensionShapeRestInfo) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shape_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-
 		var transform = gd.UnsafeGet[Transform2D.OriginXY](p_args, 1)
-
 		var motion = gd.UnsafeGet[Vector2.XY](p_args, 2)
-
 		var margin = gd.UnsafeGet[float64](p_args, 3)
-
 		var collision_mask = gd.UnsafeGet[int64](p_args, 4)
-
 		var collide_with_bodies = gd.UnsafeGet[bool](p_args, 5)
-
 		var collide_with_areas = gd.UnsafeGet[bool](p_args, 6)
-
 		var rest_info = gd.UnsafeGet[*PhysicsServer2DExtensionShapeRestInfo](p_args, 7)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shape_rid, transform, motion, Float.X(margin), int(collision_mask), collide_with_bodies, collide_with_areas, rest_info)
 		gd.UnsafeSet(p_back, ret)
@@ -258,19 +208,12 @@ func New() Instance {
 func (class) _intersect_ray(impl func(ptr unsafe.Pointer, from Vector2.XY, to Vector2.XY, collision_mask int64, collide_with_bodies bool, collide_with_areas bool, hit_from_inside bool, result *PhysicsServer2DExtensionRayResult) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from = gd.UnsafeGet[Vector2.XY](p_args, 0)
-
 		var to = gd.UnsafeGet[Vector2.XY](p_args, 1)
-
 		var collision_mask = gd.UnsafeGet[int64](p_args, 2)
-
 		var collide_with_bodies = gd.UnsafeGet[bool](p_args, 3)
-
 		var collide_with_areas = gd.UnsafeGet[bool](p_args, 4)
-
 		var hit_from_inside = gd.UnsafeGet[bool](p_args, 5)
-
 		var result = gd.UnsafeGet[*PhysicsServer2DExtensionRayResult](p_args, 6)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, from, to, collision_mask, collide_with_bodies, collide_with_areas, hit_from_inside, result)
 		gd.UnsafeSet(p_back, ret)
@@ -280,19 +223,12 @@ func (class) _intersect_ray(impl func(ptr unsafe.Pointer, from Vector2.XY, to Ve
 func (class) _intersect_point(impl func(ptr unsafe.Pointer, position Vector2.XY, canvas_instance_id int64, collision_mask int64, collide_with_bodies bool, collide_with_areas bool, results *PhysicsServer2DExtensionShapeResult, max_results int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var position = gd.UnsafeGet[Vector2.XY](p_args, 0)
-
 		var canvas_instance_id = gd.UnsafeGet[int64](p_args, 1)
-
 		var collision_mask = gd.UnsafeGet[int64](p_args, 2)
-
 		var collide_with_bodies = gd.UnsafeGet[bool](p_args, 3)
-
 		var collide_with_areas = gd.UnsafeGet[bool](p_args, 4)
-
 		var results = gd.UnsafeGet[*PhysicsServer2DExtensionShapeResult](p_args, 5)
-
 		var max_results = gd.UnsafeGet[int64](p_args, 6)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, position, canvas_instance_id, collision_mask, collide_with_bodies, collide_with_areas, results, max_results)
 		gd.UnsafeSet(p_back, ret)
@@ -302,23 +238,14 @@ func (class) _intersect_point(impl func(ptr unsafe.Pointer, position Vector2.XY,
 func (class) _intersect_shape(impl func(ptr unsafe.Pointer, shape_rid RID.Any, transform Transform2D.OriginXY, motion Vector2.XY, margin float64, collision_mask int64, collide_with_bodies bool, collide_with_areas bool, result *PhysicsServer2DExtensionShapeResult, max_results int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shape_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-
 		var transform = gd.UnsafeGet[Transform2D.OriginXY](p_args, 1)
-
 		var motion = gd.UnsafeGet[Vector2.XY](p_args, 2)
-
 		var margin = gd.UnsafeGet[float64](p_args, 3)
-
 		var collision_mask = gd.UnsafeGet[int64](p_args, 4)
-
 		var collide_with_bodies = gd.UnsafeGet[bool](p_args, 5)
-
 		var collide_with_areas = gd.UnsafeGet[bool](p_args, 6)
-
 		var result = gd.UnsafeGet[*PhysicsServer2DExtensionShapeResult](p_args, 7)
-
 		var max_results = gd.UnsafeGet[int64](p_args, 8)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shape_rid, transform, motion, margin, collision_mask, collide_with_bodies, collide_with_areas, result, max_results)
 		gd.UnsafeSet(p_back, ret)
@@ -328,23 +255,14 @@ func (class) _intersect_shape(impl func(ptr unsafe.Pointer, shape_rid RID.Any, t
 func (class) _cast_motion(impl func(ptr unsafe.Pointer, shape_rid RID.Any, transform Transform2D.OriginXY, motion Vector2.XY, margin float64, collision_mask int64, collide_with_bodies bool, collide_with_areas bool, closest_safe *float64, closest_unsafe *float64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shape_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-
 		var transform = gd.UnsafeGet[Transform2D.OriginXY](p_args, 1)
-
 		var motion = gd.UnsafeGet[Vector2.XY](p_args, 2)
-
 		var margin = gd.UnsafeGet[float64](p_args, 3)
-
 		var collision_mask = gd.UnsafeGet[int64](p_args, 4)
-
 		var collide_with_bodies = gd.UnsafeGet[bool](p_args, 5)
-
 		var collide_with_areas = gd.UnsafeGet[bool](p_args, 6)
-
 		var closest_safe = gd.UnsafeGet[*float64](p_args, 7)
-
 		var closest_unsafe = gd.UnsafeGet[*float64](p_args, 8)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shape_rid, transform, motion, margin, collision_mask, collide_with_bodies, collide_with_areas, closest_safe, closest_unsafe)
 		gd.UnsafeSet(p_back, ret)
@@ -354,25 +272,15 @@ func (class) _cast_motion(impl func(ptr unsafe.Pointer, shape_rid RID.Any, trans
 func (class) _collide_shape(impl func(ptr unsafe.Pointer, shape_rid RID.Any, transform Transform2D.OriginXY, motion Vector2.XY, margin float64, collision_mask int64, collide_with_bodies bool, collide_with_areas bool, results unsafe.Pointer, max_results int64, result_count *int32) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shape_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-
 		var transform = gd.UnsafeGet[Transform2D.OriginXY](p_args, 1)
-
 		var motion = gd.UnsafeGet[Vector2.XY](p_args, 2)
-
 		var margin = gd.UnsafeGet[float64](p_args, 3)
-
 		var collision_mask = gd.UnsafeGet[int64](p_args, 4)
-
 		var collide_with_bodies = gd.UnsafeGet[bool](p_args, 5)
-
 		var collide_with_areas = gd.UnsafeGet[bool](p_args, 6)
-
 		var results = gd.UnsafeGet[unsafe.Pointer](p_args, 7)
-
 		var max_results = gd.UnsafeGet[int64](p_args, 8)
-
 		var result_count = gd.UnsafeGet[*int32](p_args, 9)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shape_rid, transform, motion, margin, collision_mask, collide_with_bodies, collide_with_areas, results, max_results, result_count)
 		gd.UnsafeSet(p_back, ret)
@@ -382,21 +290,13 @@ func (class) _collide_shape(impl func(ptr unsafe.Pointer, shape_rid RID.Any, tra
 func (class) _rest_info(impl func(ptr unsafe.Pointer, shape_rid RID.Any, transform Transform2D.OriginXY, motion Vector2.XY, margin float64, collision_mask int64, collide_with_bodies bool, collide_with_areas bool, rest_info *PhysicsServer2DExtensionShapeRestInfo) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shape_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-
 		var transform = gd.UnsafeGet[Transform2D.OriginXY](p_args, 1)
-
 		var motion = gd.UnsafeGet[Vector2.XY](p_args, 2)
-
 		var margin = gd.UnsafeGet[float64](p_args, 3)
-
 		var collision_mask = gd.UnsafeGet[int64](p_args, 4)
-
 		var collide_with_bodies = gd.UnsafeGet[bool](p_args, 5)
-
 		var collide_with_areas = gd.UnsafeGet[bool](p_args, 6)
-
 		var rest_info = gd.UnsafeGet[*PhysicsServer2DExtensionShapeRestInfo](p_args, 7)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, shape_rid, transform, motion, margin, collision_mask, collide_with_bodies, collide_with_areas, rest_info)
 		gd.UnsafeSet(p_back, ret)

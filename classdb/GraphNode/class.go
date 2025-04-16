@@ -82,13 +82,9 @@ func (self implementation) DrawPort(slot_index int, position Vector2i.XY, left b
 func (Instance) _draw_port(impl func(ptr unsafe.Pointer, slot_index int, position Vector2i.XY, left bool, color Color.RGBA)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var slot_index = gd.UnsafeGet[int64](p_args, 0)
-
 		var position = gd.UnsafeGet[Vector2i.XY](p_args, 1)
-
 		var left = gd.UnsafeGet[bool](p_args, 2)
-
 		var color = gd.UnsafeGet[Color.RGBA](p_args, 3)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(slot_index), position, left, color)
 	}
@@ -374,13 +370,9 @@ func (self Instance) SetIgnoreInvalidConnectionType(value bool) {
 func (class) _draw_port(impl func(ptr unsafe.Pointer, slot_index int64, position Vector2i.XY, left bool, color Color.RGBA)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var slot_index = gd.UnsafeGet[int64](p_args, 0)
-
 		var position = gd.UnsafeGet[Vector2i.XY](p_args, 1)
-
 		var left = gd.UnsafeGet[bool](p_args, 2)
-
 		var color = gd.UnsafeGet[Color.RGBA](p_args, 3)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, slot_index, position, left, color)
 	}

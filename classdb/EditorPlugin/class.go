@@ -713,7 +713,6 @@ Remember that you have to manage the visibility of all your editor controls manu
 func (Instance) _make_visible(impl func(ptr unsafe.Pointer, visible bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var visible = gd.UnsafeGet[bool](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, visible)
 	}
@@ -1744,7 +1743,6 @@ Remember that you have to manage the visibility of all your editor controls manu
 func (class) _make_visible(impl func(ptr unsafe.Pointer, visible bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var visible = gd.UnsafeGet[bool](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, visible)
 	}

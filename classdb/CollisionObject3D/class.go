@@ -94,11 +94,8 @@ func (Instance) _input_event(impl func(ptr unsafe.Pointer, camera [1]gdclass.Cam
 
 		defer pointers.End(event[0])
 		var event_position = gd.UnsafeGet[Vector3.XYZ](p_args, 2)
-
 		var normal = gd.UnsafeGet[Vector3.XYZ](p_args, 3)
-
 		var shape_idx = gd.UnsafeGet[int64](p_args, 4)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, camera, event, event_position, normal, int(shape_idx))
 	}
@@ -343,11 +340,8 @@ func (class) _input_event(impl func(ptr unsafe.Pointer, camera [1]gdclass.Camera
 
 		defer pointers.End(event[0])
 		var event_position = gd.UnsafeGet[Vector3.XYZ](p_args, 2)
-
 		var normal = gd.UnsafeGet[Vector3.XYZ](p_args, 3)
-
 		var shape_idx = gd.UnsafeGet[int64](p_args, 4)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, camera, event, event_position, normal, shape_idx)
 	}
@@ -600,7 +594,7 @@ Sets the [Transform3D] of the given shape owner.
 func (self class) ShapeOwnerSetTransform(owner_id int64, transform Transform3D.BasisOrigin) { //gd:CollisionObject3D.shape_owner_set_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, owner_id)
-	callframe.Arg(frame, transform)
+	callframe.Arg(frame, gd.Transposed(transform))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_shape_owner_set_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -615,7 +609,7 @@ func (self class) ShapeOwnerGetTransform(owner_id int64) Transform3D.BasisOrigin
 	callframe.Arg(frame, owner_id)
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_shape_owner_get_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }

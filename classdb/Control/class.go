@@ -243,7 +243,6 @@ If not overridden, default behavior is checking if the point is within control's
 func (Instance) _has_point(impl func(ptr unsafe.Pointer, point Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var point = gd.UnsafeGet[Vector2.XY](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, point)
 		gd.UnsafeSet(p_back, ret)
@@ -291,7 +290,6 @@ Virtual method to be implemented by the user. Returns the tooltip text for the p
 func (Instance) _get_tooltip(impl func(ptr unsafe.Pointer, at_position Vector2.XY) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, at_position)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
@@ -330,7 +328,6 @@ public override Variant _GetDragData(Vector2 atPosition)
 func (Instance) _get_drag_data(impl func(ptr unsafe.Pointer, at_position Vector2.XY) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, at_position)
 		ptr, ok := pointers.End(gd.InternalVariant(variant.New(ret)))
@@ -369,7 +366,6 @@ public override bool _CanDropData(Vector2 atPosition, Variant data)
 func (Instance) _can_drop_data(impl func(ptr unsafe.Pointer, at_position Vector2.XY, data any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
-
 		var data = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(data))
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -410,7 +406,6 @@ public override void _DropData(Vector2 atPosition, Variant data)
 func (Instance) _drop_data(impl func(ptr unsafe.Pointer, at_position Vector2.XY, data any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
-
 		var data = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(data))
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1719,7 +1714,6 @@ If not overridden, default behavior is checking if the point is within control's
 func (class) _has_point(impl func(ptr unsafe.Pointer, point Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var point = gd.UnsafeGet[Vector2.XY](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, point)
 		gd.UnsafeSet(p_back, ret)
@@ -1767,7 +1761,6 @@ Virtual method to be implemented by the user. Returns the tooltip text for the p
 func (class) _get_tooltip(impl func(ptr unsafe.Pointer, at_position Vector2.XY) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, at_position)
 		ptr, ok := pointers.End(gd.InternalString(ret))
@@ -1806,7 +1799,6 @@ public override Variant _GetDragData(Vector2 atPosition)
 func (class) _get_drag_data(impl func(ptr unsafe.Pointer, at_position Vector2.XY) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, at_position)
 		ptr, ok := pointers.End(gd.InternalVariant(ret))
@@ -1845,7 +1837,6 @@ public override bool _CanDropData(Vector2 atPosition, Variant data)
 func (class) _can_drop_data(impl func(ptr unsafe.Pointer, at_position Vector2.XY, data variant.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
-
 		var data = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(data))
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1886,7 +1877,6 @@ public override void _DropData(Vector2 atPosition, Variant data)
 func (class) _drop_data(impl func(ptr unsafe.Pointer, at_position Vector2.XY, data variant.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
-
 		var data = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(data))
 		self := reflect.ValueOf(class).UnsafePointer()

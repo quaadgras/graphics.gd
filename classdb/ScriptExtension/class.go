@@ -146,7 +146,6 @@ func (Instance) _editor_can_reload_from_file(impl func(ptr unsafe.Pointer) bool)
 func (Instance) _placeholder_erased(impl func(ptr unsafe.Pointer, placeholder unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var placeholder = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, placeholder)
 	}
@@ -261,7 +260,6 @@ func (Instance) _set_source_code(impl func(ptr unsafe.Pointer, code string)) (cb
 func (Instance) _reload(impl func(ptr unsafe.Pointer, keep_state bool) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var keep_state = gd.UnsafeGet[bool](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, keep_state)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
@@ -552,7 +550,6 @@ func (class) _editor_can_reload_from_file(impl func(ptr unsafe.Pointer) bool) (c
 func (class) _placeholder_erased(impl func(ptr unsafe.Pointer, placeholder unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var placeholder = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, placeholder)
 	}
@@ -679,7 +676,6 @@ func (class) _set_source_code(impl func(ptr unsafe.Pointer, code String.Readable
 func (class) _reload(impl func(ptr unsafe.Pointer, keep_state bool) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var keep_state = gd.UnsafeGet[bool](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, keep_state)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)

@@ -565,7 +565,7 @@ Performs a UV unwrap on the [ArrayMesh] to prepare the mesh for lightmapping.
 //go:nosplit
 func (self class) LightmapUnwrap(transform Transform3D.BasisOrigin, texel_size float64) Error.Code { //gd:ArrayMesh.lightmap_unwrap
 	var frame = callframe.New()
-	callframe.Arg(frame, transform)
+	callframe.Arg(frame, gd.Transposed(transform))
 	callframe.Arg(frame, texel_size)
 	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_lightmap_unwrap, self.AsObject(), frame.Array(0), r_ret.Addr())

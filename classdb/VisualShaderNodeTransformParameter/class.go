@@ -113,7 +113,7 @@ func (self class) IsDefaultValueEnabled() bool { //gd:VisualShaderNodeTransformP
 //go:nosplit
 func (self class) SetDefaultValue(value Transform3D.BasisOrigin) { //gd:VisualShaderNodeTransformParameter.set_default_value
 	var frame = callframe.New()
-	callframe.Arg(frame, value)
+	callframe.Arg(frame, gd.Transposed(value))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTransformParameter.Bind_set_default_value, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -124,7 +124,7 @@ func (self class) GetDefaultValue() Transform3D.BasisOrigin { //gd:VisualShaderN
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTransformParameter.Bind_get_default_value, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }

@@ -103,7 +103,6 @@ Override this method to customize what happens when the playback starts at the g
 func (Instance) _start(impl func(ptr unsafe.Pointer, from_pos Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_pos = gd.UnsafeGet[float64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, Float.X(from_pos))
 	}
@@ -158,7 +157,6 @@ Override this method to customize what happens when seeking this audio stream at
 func (Instance) _seek(impl func(ptr unsafe.Pointer, position Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var position = gd.UnsafeGet[float64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, Float.X(position))
 	}
@@ -171,11 +169,8 @@ Override this method to customize how the audio stream is mixed. This method is 
 func (Instance) _mix(impl func(ptr unsafe.Pointer, buffer *AudioFrame, rate_scale Float.X, frames int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var buffer = gd.UnsafeGet[*AudioFrame](p_args, 0)
-
 		var rate_scale = gd.UnsafeGet[float64](p_args, 1)
-
 		var frames = gd.UnsafeGet[int64](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, buffer, Float.X(rate_scale), int(frames))
 		gd.UnsafeSet(p_back, int64(ret))
@@ -328,7 +323,6 @@ Override this method to customize what happens when the playback starts at the g
 func (class) _start(impl func(ptr unsafe.Pointer, from_pos float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_pos = gd.UnsafeGet[float64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, from_pos)
 	}
@@ -383,7 +377,6 @@ Override this method to customize what happens when seeking this audio stream at
 func (class) _seek(impl func(ptr unsafe.Pointer, position float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var position = gd.UnsafeGet[float64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, position)
 	}
@@ -396,11 +389,8 @@ Override this method to customize how the audio stream is mixed. This method is 
 func (class) _mix(impl func(ptr unsafe.Pointer, buffer *AudioFrame, rate_scale float64, frames int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var buffer = gd.UnsafeGet[*AudioFrame](p_args, 0)
-
 		var rate_scale = gd.UnsafeGet[float64](p_args, 1)
-
 		var frames = gd.UnsafeGet[int64](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, buffer, rate_scale, frames)
 		gd.UnsafeSet(p_back, ret)

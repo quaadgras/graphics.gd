@@ -97,7 +97,6 @@ This virtual method can be implemented to handle context menu items not handled 
 func (Instance) _handle_menu_selected(impl func(ptr unsafe.Pointer, id int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(id))
 		gd.UnsafeSet(p_back, ret)
@@ -187,7 +186,6 @@ This virtual method can be implemented to handle context menu items not handled 
 func (class) _handle_menu_selected(impl func(ptr unsafe.Pointer, id int64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, id)
 		gd.UnsafeSet(p_back, ret)

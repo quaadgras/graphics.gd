@@ -82,9 +82,7 @@ Note that this function is hidden in the default [AStar2D] class.
 func (Instance) _estimate_cost(impl func(ptr unsafe.Pointer, from_id int, end_id int) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_id = gd.UnsafeGet[int64](p_args, 0)
-
 		var end_id = gd.UnsafeGet[int64](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(from_id), int(end_id))
 		gd.UnsafeSet(p_back, float64(ret))
@@ -98,9 +96,7 @@ Note that this function is hidden in the default [AStar2D] class.
 func (Instance) _compute_cost(impl func(ptr unsafe.Pointer, from_id int, to_id int) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_id = gd.UnsafeGet[int64](p_args, 0)
-
 		var to_id = gd.UnsafeGet[int64](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(from_id), int(to_id))
 		gd.UnsafeSet(p_back, float64(ret))
@@ -517,9 +513,7 @@ Note that this function is hidden in the default [AStar2D] class.
 func (class) _estimate_cost(impl func(ptr unsafe.Pointer, from_id int64, end_id int64) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_id = gd.UnsafeGet[int64](p_args, 0)
-
 		var end_id = gd.UnsafeGet[int64](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, from_id, end_id)
 		gd.UnsafeSet(p_back, ret)
@@ -533,9 +527,7 @@ Note that this function is hidden in the default [AStar2D] class.
 func (class) _compute_cost(impl func(ptr unsafe.Pointer, from_id int64, to_id int64) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_id = gd.UnsafeGet[int64](p_args, 0)
-
 		var to_id = gd.UnsafeGet[int64](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, from_id, to_id)
 		gd.UnsafeSet(p_back, ret)

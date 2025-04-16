@@ -262,9 +262,7 @@ func (Instance) _get_handle_name(impl func(ptr unsafe.Pointer, gizmo [1]gdclass.
 
 		defer pointers.End(gizmo[0])
 		var handle_id = gd.UnsafeGet[int64](p_args, 1)
-
 		var secondary = gd.UnsafeGet[bool](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, gizmo, int(handle_id), secondary)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
@@ -285,9 +283,7 @@ func (Instance) _is_handle_highlighted(impl func(ptr unsafe.Pointer, gizmo [1]gd
 
 		defer pointers.End(gizmo[0])
 		var handle_id = gd.UnsafeGet[int64](p_args, 1)
-
 		var secondary = gd.UnsafeGet[bool](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, gizmo, int(handle_id), secondary)
 		gd.UnsafeSet(p_back, ret)
@@ -305,9 +301,7 @@ func (Instance) _get_handle_value(impl func(ptr unsafe.Pointer, gizmo [1]gdclass
 
 		defer pointers.End(gizmo[0])
 		var handle_id = gd.UnsafeGet[int64](p_args, 1)
-
 		var secondary = gd.UnsafeGet[bool](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, gizmo, int(handle_id), secondary)
 		ptr, ok := pointers.End(gd.InternalVariant(variant.New(ret)))
@@ -324,9 +318,7 @@ func (Instance) _begin_handle_action(impl func(ptr unsafe.Pointer, gizmo [1]gdcl
 
 		defer pointers.End(gizmo[0])
 		var handle_id = gd.UnsafeGet[int64](p_args, 1)
-
 		var secondary = gd.UnsafeGet[bool](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, gizmo, int(handle_id), secondary)
 	}
@@ -343,14 +335,11 @@ func (Instance) _set_handle(impl func(ptr unsafe.Pointer, gizmo [1]gdclass.Edito
 
 		defer pointers.End(gizmo[0])
 		var handle_id = gd.UnsafeGet[int64](p_args, 1)
-
 		var secondary = gd.UnsafeGet[bool](p_args, 2)
-
 		var camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 3))})}
 
 		defer pointers.End(camera[0])
 		var screen_pos = gd.UnsafeGet[Vector2.XY](p_args, 4)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, gizmo, int(handle_id), secondary, camera, screen_pos)
 	}
@@ -368,13 +357,10 @@ func (Instance) _commit_handle(impl func(ptr unsafe.Pointer, gizmo [1]gdclass.Ed
 
 		defer pointers.End(gizmo[0])
 		var handle_id = gd.UnsafeGet[int64](p_args, 1)
-
 		var secondary = gd.UnsafeGet[bool](p_args, 2)
-
 		var restore = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 3))))
 		defer pointers.End(gd.InternalVariant(restore))
 		var cancel = gd.UnsafeGet[bool](p_args, 4)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, gizmo, int(handle_id), secondary, restore.Interface(), cancel)
 	}
@@ -392,7 +378,6 @@ func (Instance) _subgizmos_intersect_ray(impl func(ptr unsafe.Pointer, gizmo [1]
 
 		defer pointers.End(camera[0])
 		var screen_pos = gd.UnsafeGet[Vector2.XY](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, gizmo, camera, screen_pos)
 		gd.UnsafeSet(p_back, int64(ret))
@@ -432,10 +417,9 @@ func (Instance) _get_subgizmo_transform(impl func(ptr unsafe.Pointer, gizmo [1]g
 
 		defer pointers.End(gizmo[0])
 		var subgizmo_id = gd.UnsafeGet[int64](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, gizmo, int(subgizmo_id))
-		gd.UnsafeSet(p_back, Transform3D.BasisOrigin(ret))
+		gd.UnsafeSet(p_back, gd.Transposed(Transform3D.BasisOrigin(ret)))
 	}
 }
 
@@ -448,9 +432,7 @@ func (Instance) _set_subgizmo_transform(impl func(ptr unsafe.Pointer, gizmo [1]g
 
 		defer pointers.End(gizmo[0])
 		var subgizmo_id = gd.UnsafeGet[int64](p_args, 1)
-
-		var transform = gd.UnsafeGet[Transform3D.BasisOrigin](p_args, 2)
-
+		var transform = gd.Transposed(gd.UnsafeGet[Transform3D.BasisOrigin](p_args, 2))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, gizmo, int(subgizmo_id), transform)
 	}
@@ -470,7 +452,6 @@ func (Instance) _commit_subgizmos(impl func(ptr unsafe.Pointer, gizmo [1]gdclass
 		var restores = Array.Through(gd.ArrayProxy[Transform3D.BasisOrigin]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalArray(restores))
 		var cancel = gd.UnsafeGet[bool](p_args, 3)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, gizmo, slices.Collect(ids.Values()), gd.ArrayAs[[]Transform3D.BasisOrigin](gd.InternalArray(restores)), cancel)
 	}
@@ -665,9 +646,7 @@ func (class) _get_handle_name(impl func(ptr unsafe.Pointer, gizmo [1]gdclass.Edi
 
 		defer pointers.End(gizmo[0])
 		var handle_id = gd.UnsafeGet[int64](p_args, 1)
-
 		var secondary = gd.UnsafeGet[bool](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, gizmo, handle_id, secondary)
 		ptr, ok := pointers.End(gd.InternalString(ret))
@@ -688,9 +667,7 @@ func (class) _is_handle_highlighted(impl func(ptr unsafe.Pointer, gizmo [1]gdcla
 
 		defer pointers.End(gizmo[0])
 		var handle_id = gd.UnsafeGet[int64](p_args, 1)
-
 		var secondary = gd.UnsafeGet[bool](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, gizmo, handle_id, secondary)
 		gd.UnsafeSet(p_back, ret)
@@ -708,9 +685,7 @@ func (class) _get_handle_value(impl func(ptr unsafe.Pointer, gizmo [1]gdclass.Ed
 
 		defer pointers.End(gizmo[0])
 		var handle_id = gd.UnsafeGet[int64](p_args, 1)
-
 		var secondary = gd.UnsafeGet[bool](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, gizmo, handle_id, secondary)
 		ptr, ok := pointers.End(gd.InternalVariant(ret))
@@ -728,9 +703,7 @@ func (class) _begin_handle_action(impl func(ptr unsafe.Pointer, gizmo [1]gdclass
 
 		defer pointers.End(gizmo[0])
 		var handle_id = gd.UnsafeGet[int64](p_args, 1)
-
 		var secondary = gd.UnsafeGet[bool](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, gizmo, handle_id, secondary)
 	}
@@ -747,14 +720,11 @@ func (class) _set_handle(impl func(ptr unsafe.Pointer, gizmo [1]gdclass.EditorNo
 
 		defer pointers.End(gizmo[0])
 		var handle_id = gd.UnsafeGet[int64](p_args, 1)
-
 		var secondary = gd.UnsafeGet[bool](p_args, 2)
-
 		var camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 3))})}
 
 		defer pointers.End(camera[0])
 		var screen_pos = gd.UnsafeGet[Vector2.XY](p_args, 4)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, gizmo, handle_id, secondary, camera, screen_pos)
 	}
@@ -772,13 +742,10 @@ func (class) _commit_handle(impl func(ptr unsafe.Pointer, gizmo [1]gdclass.Edito
 
 		defer pointers.End(gizmo[0])
 		var handle_id = gd.UnsafeGet[int64](p_args, 1)
-
 		var secondary = gd.UnsafeGet[bool](p_args, 2)
-
 		var restore = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 3))))
 		defer pointers.End(gd.InternalVariant(restore))
 		var cancel = gd.UnsafeGet[bool](p_args, 4)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, gizmo, handle_id, secondary, restore, cancel)
 	}
@@ -796,7 +763,6 @@ func (class) _subgizmos_intersect_ray(impl func(ptr unsafe.Pointer, gizmo [1]gdc
 
 		defer pointers.End(camera[0])
 		var screen_pos = gd.UnsafeGet[Vector2.XY](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, gizmo, camera, screen_pos)
 		gd.UnsafeSet(p_back, ret)
@@ -836,10 +802,9 @@ func (class) _get_subgizmo_transform(impl func(ptr unsafe.Pointer, gizmo [1]gdcl
 
 		defer pointers.End(gizmo[0])
 		var subgizmo_id = gd.UnsafeGet[int64](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, gizmo, subgizmo_id)
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.Transposed(ret))
 	}
 }
 
@@ -852,9 +817,7 @@ func (class) _set_subgizmo_transform(impl func(ptr unsafe.Pointer, gizmo [1]gdcl
 
 		defer pointers.End(gizmo[0])
 		var subgizmo_id = gd.UnsafeGet[int64](p_args, 1)
-
-		var transform = gd.UnsafeGet[Transform3D.BasisOrigin](p_args, 2)
-
+		var transform = gd.Transposed(gd.UnsafeGet[Transform3D.BasisOrigin](p_args, 2))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, gizmo, subgizmo_id, transform)
 	}
@@ -874,7 +837,6 @@ func (class) _commit_subgizmos(impl func(ptr unsafe.Pointer, gizmo [1]gdclass.Ed
 		var restores = Array.Through(gd.ArrayProxy[Transform3D.BasisOrigin]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalArray(restores))
 		var cancel = gd.UnsafeGet[bool](p_args, 3)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, gizmo, ids, restores, cancel)
 	}

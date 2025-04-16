@@ -292,7 +292,7 @@ Sets the transform to apply to the item's mesh.
 func (self class) SetItemMeshTransform(id int64, mesh_transform Transform3D.BasisOrigin) { //gd:MeshLibrary.set_item_mesh_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
-	callframe.Arg(frame, mesh_transform)
+	callframe.Arg(frame, gd.Transposed(mesh_transform))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_set_item_mesh_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -331,7 +331,7 @@ Sets the transform to apply to the item's navigation mesh.
 func (self class) SetItemNavigationMeshTransform(id int64, navigation_mesh Transform3D.BasisOrigin) { //gd:MeshLibrary.set_item_navigation_mesh_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
-	callframe.Arg(frame, navigation_mesh)
+	callframe.Arg(frame, gd.Transposed(navigation_mesh))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_set_item_navigation_mesh_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -414,7 +414,7 @@ func (self class) GetItemMeshTransform(id int64) Transform3D.BasisOrigin { //gd:
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_get_item_mesh_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -456,7 +456,7 @@ func (self class) GetItemNavigationMeshTransform(id int64) Transform3D.BasisOrig
 	callframe.Arg(frame, id)
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_get_item_navigation_mesh_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }

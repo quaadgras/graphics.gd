@@ -251,7 +251,7 @@ func (self class) GetTipBone() String.Name { //gd:SkeletonIK3D.get_tip_bone
 //go:nosplit
 func (self class) SetTargetTransform(target Transform3D.BasisOrigin) { //gd:SkeletonIK3D.set_target_transform
 	var frame = callframe.New()
-	callframe.Arg(frame, target)
+	callframe.Arg(frame, gd.Transposed(target))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonIK3D.Bind_set_target_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -262,7 +262,7 @@ func (self class) GetTargetTransform() Transform3D.BasisOrigin { //gd:SkeletonIK
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonIK3D.Bind_get_target_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }

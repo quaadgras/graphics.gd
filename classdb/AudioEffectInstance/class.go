@@ -81,11 +81,8 @@ Called by the [AudioServer] to process this effect. When [method _process_silenc
 func (Instance) _process(impl func(ptr unsafe.Pointer, src_buffer unsafe.Pointer, dst_buffer *AudioFrame, frame_count int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var src_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
-
 		var dst_buffer = gd.UnsafeGet[*AudioFrame](p_args, 1)
-
 		var frame_count = gd.UnsafeGet[int64](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, src_buffer, dst_buffer, int(frame_count))
 	}
@@ -129,11 +126,8 @@ Called by the [AudioServer] to process this effect. When [method _process_silenc
 func (class) _process(impl func(ptr unsafe.Pointer, src_buffer unsafe.Pointer, dst_buffer *AudioFrame, frame_count int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var src_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
-
 		var dst_buffer = gd.UnsafeGet[*AudioFrame](p_args, 1)
-
 		var frame_count = gd.UnsafeGet[int64](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, src_buffer, dst_buffer, frame_count)
 	}

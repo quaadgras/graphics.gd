@@ -163,7 +163,6 @@ Called when the data for a layer in the [TextureLayered] is queried.
 func (Instance) _get_layer_data(impl func(ptr unsafe.Pointer, layer_index int) [1]gdclass.Image) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var layer_index = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(layer_index))
 		ptr, ok := pointers.End(ret[0])
@@ -315,7 +314,6 @@ Called when the data for a layer in the [TextureLayered] is queried.
 func (class) _get_layer_data(impl func(ptr unsafe.Pointer, layer_index int64) [1]gdclass.Image) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var layer_index = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, layer_index)
 		ptr, ok := pointers.End(ret[0])

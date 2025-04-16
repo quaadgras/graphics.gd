@@ -149,9 +149,7 @@ Called once before the engine starts writing video and audio data. [param movie_
 func (Instance) _write_begin(impl func(ptr unsafe.Pointer, movie_size Vector2i.XY, fps int, base_path string) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var movie_size = gd.UnsafeGet[Vector2i.XY](p_args, 0)
-
 		var fps = gd.UnsafeGet[int64](p_args, 1)
-
 		var base_path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalString(base_path))
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -174,7 +172,6 @@ func (Instance) _write_frame(impl func(ptr unsafe.Pointer, frame_image [1]gdclas
 
 		defer pointers.End(frame_image[0])
 		var audio_frame_block = gd.UnsafeGet[unsafe.Pointer](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, frame_image, audio_frame_block)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
@@ -273,9 +270,7 @@ Called once before the engine starts writing video and audio data. [param movie_
 func (class) _write_begin(impl func(ptr unsafe.Pointer, movie_size Vector2i.XY, fps int64, base_path String.Readable) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var movie_size = gd.UnsafeGet[Vector2i.XY](p_args, 0)
-
 		var fps = gd.UnsafeGet[int64](p_args, 1)
-
 		var base_path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalString(base_path))
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -298,7 +293,6 @@ func (class) _write_frame(impl func(ptr unsafe.Pointer, frame_image [1]gdclass.I
 
 		defer pointers.End(frame_image[0])
 		var audio_frame_block = gd.UnsafeGet[unsafe.Pointer](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, frame_image, audio_frame_block)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)

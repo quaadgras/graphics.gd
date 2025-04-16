@@ -354,13 +354,9 @@ func (Instance) _validate(impl func(ptr unsafe.Pointer, script string, path stri
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
 		defer pointers.End(gd.InternalString(path))
 		var validate_functions = gd.UnsafeGet[bool](p_args, 2)
-
 		var validate_errors = gd.UnsafeGet[bool](p_args, 3)
-
 		var validate_warnings = gd.UnsafeGet[bool](p_args, 4)
-
 		var validate_safe_lines = gd.UnsafeGet[bool](p_args, 5)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, script.String(), path.String(), validate_functions, validate_errors, validate_warnings, validate_safe_lines)
 		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
@@ -471,9 +467,7 @@ func (Instance) _open_in_external_editor(impl func(ptr unsafe.Pointer, script [1
 
 		defer pointers.End(script[0])
 		var line = gd.UnsafeGet[int64](p_args, 1)
-
 		var column = gd.UnsafeGet[int64](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, script, int(line), int(column))
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
@@ -541,9 +535,7 @@ func (Instance) _auto_indent_code(impl func(ptr unsafe.Pointer, code string, fro
 		var code = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(code))
 		var from_line = gd.UnsafeGet[int64](p_args, 1)
-
 		var to_line = gd.UnsafeGet[int64](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, code.String(), int(from_line), int(to_line))
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
@@ -616,7 +608,6 @@ func (Instance) _debug_get_stack_level_count(impl func(ptr unsafe.Pointer) int) 
 func (Instance) _debug_get_stack_level_line(impl func(ptr unsafe.Pointer, level int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var level = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(level))
 		gd.UnsafeSet(p_back, int64(ret))
@@ -625,7 +616,6 @@ func (Instance) _debug_get_stack_level_line(impl func(ptr unsafe.Pointer, level 
 func (Instance) _debug_get_stack_level_function(impl func(ptr unsafe.Pointer, level int) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var level = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(level))
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
@@ -643,7 +633,6 @@ Returns the source associated with a given debug stack position.
 func (Instance) _debug_get_stack_level_source(impl func(ptr unsafe.Pointer, level int) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var level = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(level))
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
@@ -657,11 +646,8 @@ func (Instance) _debug_get_stack_level_source(impl func(ptr unsafe.Pointer, leve
 func (Instance) _debug_get_stack_level_locals(impl func(ptr unsafe.Pointer, level int, max_subitems int, max_depth int) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var level = gd.UnsafeGet[int64](p_args, 0)
-
 		var max_subitems = gd.UnsafeGet[int64](p_args, 1)
-
 		var max_depth = gd.UnsafeGet[int64](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(level), int(max_subitems), int(max_depth))
 		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
@@ -675,11 +661,8 @@ func (Instance) _debug_get_stack_level_locals(impl func(ptr unsafe.Pointer, leve
 func (Instance) _debug_get_stack_level_members(impl func(ptr unsafe.Pointer, level int, max_subitems int, max_depth int) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var level = gd.UnsafeGet[int64](p_args, 0)
-
 		var max_subitems = gd.UnsafeGet[int64](p_args, 1)
-
 		var max_depth = gd.UnsafeGet[int64](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(level), int(max_subitems), int(max_depth))
 		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
@@ -693,7 +676,6 @@ func (Instance) _debug_get_stack_level_members(impl func(ptr unsafe.Pointer, lev
 func (Instance) _debug_get_stack_level_instance(impl func(ptr unsafe.Pointer, level int) unsafe.Pointer) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var level = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(level))
 		gd.UnsafeSet(p_back, ret)
@@ -702,9 +684,7 @@ func (Instance) _debug_get_stack_level_instance(impl func(ptr unsafe.Pointer, le
 func (Instance) _debug_get_globals(impl func(ptr unsafe.Pointer, max_subitems int, max_depth int) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var max_subitems = gd.UnsafeGet[int64](p_args, 0)
-
 		var max_depth = gd.UnsafeGet[int64](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(max_subitems), int(max_depth))
 		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
@@ -718,13 +698,10 @@ func (Instance) _debug_get_globals(impl func(ptr unsafe.Pointer, max_subitems in
 func (Instance) _debug_parse_stack_level_expression(impl func(ptr unsafe.Pointer, level int, expression string, max_subitems int, max_depth int) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var level = gd.UnsafeGet[int64](p_args, 0)
-
 		var expression = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
 		defer pointers.End(gd.InternalString(expression))
 		var max_subitems = gd.UnsafeGet[int64](p_args, 2)
-
 		var max_depth = gd.UnsafeGet[int64](p_args, 3)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(level), expression.String(), int(max_subitems), int(max_depth))
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
@@ -758,7 +735,6 @@ func (Instance) _reload_scripts(impl func(ptr unsafe.Pointer, scripts []any, sof
 		var scripts = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalArray(scripts))
 		var soft_reload = gd.UnsafeGet[bool](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, gd.ArrayAs[[]any](gd.InternalArray(scripts)), soft_reload)
 	}
@@ -769,7 +745,6 @@ func (Instance) _reload_tool_script(impl func(ptr unsafe.Pointer, script [1]gdcl
 
 		defer pointers.End(script[0])
 		var soft_reload = gd.UnsafeGet[bool](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, script, soft_reload)
 	}
@@ -837,7 +812,6 @@ func (Instance) _profiling_stop(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionC
 func (Instance) _profiling_set_save_native_calls(impl func(ptr unsafe.Pointer, enable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var enable = gd.UnsafeGet[bool](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, enable)
 	}
@@ -845,9 +819,7 @@ func (Instance) _profiling_set_save_native_calls(impl func(ptr unsafe.Pointer, e
 func (Instance) _profiling_get_accumulated_data(impl func(ptr unsafe.Pointer, info_array *ProfilingInfo, info_max int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var info_array = gd.UnsafeGet[*ProfilingInfo](p_args, 0)
-
 		var info_max = gd.UnsafeGet[int64](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, info_array, int(info_max))
 		gd.UnsafeSet(p_back, int64(ret))
@@ -856,9 +828,7 @@ func (Instance) _profiling_get_accumulated_data(impl func(ptr unsafe.Pointer, in
 func (Instance) _profiling_get_frame_data(impl func(ptr unsafe.Pointer, info_array *ProfilingInfo, info_max int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var info_array = gd.UnsafeGet[*ProfilingInfo](p_args, 0)
-
 		var info_max = gd.UnsafeGet[int64](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, info_array, int(info_max))
 		gd.UnsafeSet(p_back, int64(ret))
@@ -1076,13 +1046,9 @@ func (class) _validate(impl func(ptr unsafe.Pointer, script String.Readable, pat
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
 		defer pointers.End(gd.InternalString(path))
 		var validate_functions = gd.UnsafeGet[bool](p_args, 2)
-
 		var validate_errors = gd.UnsafeGet[bool](p_args, 3)
-
 		var validate_warnings = gd.UnsafeGet[bool](p_args, 4)
-
 		var validate_safe_lines = gd.UnsafeGet[bool](p_args, 5)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, script, path, validate_functions, validate_errors, validate_warnings, validate_safe_lines)
 		ptr, ok := pointers.End(gd.InternalDictionary(ret))
@@ -1202,9 +1168,7 @@ func (class) _open_in_external_editor(impl func(ptr unsafe.Pointer, script [1]gd
 
 		defer pointers.End(script[0])
 		var line = gd.UnsafeGet[int64](p_args, 1)
-
 		var column = gd.UnsafeGet[int64](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, script, line, column)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
@@ -1277,9 +1241,7 @@ func (class) _auto_indent_code(impl func(ptr unsafe.Pointer, code String.Readabl
 		var code = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(code))
 		var from_line = gd.UnsafeGet[int64](p_args, 1)
-
 		var to_line = gd.UnsafeGet[int64](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, code, from_line, to_line)
 		ptr, ok := pointers.End(gd.InternalString(ret))
@@ -1360,7 +1322,6 @@ func (class) _debug_get_stack_level_count(impl func(ptr unsafe.Pointer) int64) (
 func (class) _debug_get_stack_level_line(impl func(ptr unsafe.Pointer, level int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var level = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, level)
 		gd.UnsafeSet(p_back, ret)
@@ -1370,7 +1331,6 @@ func (class) _debug_get_stack_level_line(impl func(ptr unsafe.Pointer, level int
 func (class) _debug_get_stack_level_function(impl func(ptr unsafe.Pointer, level int64) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var level = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, level)
 		ptr, ok := pointers.End(gd.InternalString(ret))
@@ -1388,7 +1348,6 @@ Returns the source associated with a given debug stack position.
 func (class) _debug_get_stack_level_source(impl func(ptr unsafe.Pointer, level int64) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var level = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, level)
 		ptr, ok := pointers.End(gd.InternalString(ret))
@@ -1403,11 +1362,8 @@ func (class) _debug_get_stack_level_source(impl func(ptr unsafe.Pointer, level i
 func (class) _debug_get_stack_level_locals(impl func(ptr unsafe.Pointer, level int64, max_subitems int64, max_depth int64) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var level = gd.UnsafeGet[int64](p_args, 0)
-
 		var max_subitems = gd.UnsafeGet[int64](p_args, 1)
-
 		var max_depth = gd.UnsafeGet[int64](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, level, max_subitems, max_depth)
 		ptr, ok := pointers.End(gd.InternalDictionary(ret))
@@ -1422,11 +1378,8 @@ func (class) _debug_get_stack_level_locals(impl func(ptr unsafe.Pointer, level i
 func (class) _debug_get_stack_level_members(impl func(ptr unsafe.Pointer, level int64, max_subitems int64, max_depth int64) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var level = gd.UnsafeGet[int64](p_args, 0)
-
 		var max_subitems = gd.UnsafeGet[int64](p_args, 1)
-
 		var max_depth = gd.UnsafeGet[int64](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, level, max_subitems, max_depth)
 		ptr, ok := pointers.End(gd.InternalDictionary(ret))
@@ -1441,7 +1394,6 @@ func (class) _debug_get_stack_level_members(impl func(ptr unsafe.Pointer, level 
 func (class) _debug_get_stack_level_instance(impl func(ptr unsafe.Pointer, level int64) unsafe.Pointer) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var level = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, level)
 		gd.UnsafeSet(p_back, ret)
@@ -1451,9 +1403,7 @@ func (class) _debug_get_stack_level_instance(impl func(ptr unsafe.Pointer, level
 func (class) _debug_get_globals(impl func(ptr unsafe.Pointer, max_subitems int64, max_depth int64) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var max_subitems = gd.UnsafeGet[int64](p_args, 0)
-
 		var max_depth = gd.UnsafeGet[int64](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, max_subitems, max_depth)
 		ptr, ok := pointers.End(gd.InternalDictionary(ret))
@@ -1468,13 +1418,10 @@ func (class) _debug_get_globals(impl func(ptr unsafe.Pointer, max_subitems int64
 func (class) _debug_parse_stack_level_expression(impl func(ptr unsafe.Pointer, level int64, expression String.Readable, max_subitems int64, max_depth int64) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var level = gd.UnsafeGet[int64](p_args, 0)
-
 		var expression = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
 		defer pointers.End(gd.InternalString(expression))
 		var max_subitems = gd.UnsafeGet[int64](p_args, 2)
-
 		var max_depth = gd.UnsafeGet[int64](p_args, 3)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, level, expression, max_subitems, max_depth)
 		ptr, ok := pointers.End(gd.InternalString(ret))
@@ -1511,7 +1458,6 @@ func (class) _reload_scripts(impl func(ptr unsafe.Pointer, scripts Array.Any, so
 		var scripts = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalArray(scripts))
 		var soft_reload = gd.UnsafeGet[bool](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, scripts, soft_reload)
 	}
@@ -1523,7 +1469,6 @@ func (class) _reload_tool_script(impl func(ptr unsafe.Pointer, script [1]gdclass
 
 		defer pointers.End(script[0])
 		var soft_reload = gd.UnsafeGet[bool](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, script, soft_reload)
 	}
@@ -1598,7 +1543,6 @@ func (class) _profiling_stop(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClas
 func (class) _profiling_set_save_native_calls(impl func(ptr unsafe.Pointer, enable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var enable = gd.UnsafeGet[bool](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, enable)
 	}
@@ -1607,9 +1551,7 @@ func (class) _profiling_set_save_native_calls(impl func(ptr unsafe.Pointer, enab
 func (class) _profiling_get_accumulated_data(impl func(ptr unsafe.Pointer, info_array *ProfilingInfo, info_max int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var info_array = gd.UnsafeGet[*ProfilingInfo](p_args, 0)
-
 		var info_max = gd.UnsafeGet[int64](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, info_array, info_max)
 		gd.UnsafeSet(p_back, ret)
@@ -1619,9 +1561,7 @@ func (class) _profiling_get_accumulated_data(impl func(ptr unsafe.Pointer, info_
 func (class) _profiling_get_frame_data(impl func(ptr unsafe.Pointer, info_array *ProfilingInfo, info_max int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var info_array = gd.UnsafeGet[*ProfilingInfo](p_args, 0)
-
 		var info_max = gd.UnsafeGet[int64](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, info_array, info_max)
 		gd.UnsafeSet(p_back, ret)

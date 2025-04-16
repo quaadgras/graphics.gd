@@ -163,7 +163,6 @@ Corresponds to the [constant NOTIFICATION_PROCESS] notification in [method Objec
 func (Instance) _process(impl func(ptr unsafe.Pointer, delta Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var delta = gd.UnsafeGet[float64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, Float.X(delta))
 	}
@@ -180,7 +179,6 @@ Corresponds to the [constant NOTIFICATION_PHYSICS_PROCESS] notification in [meth
 func (Instance) _physics_process(impl func(ptr unsafe.Pointer, delta Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var delta = gd.UnsafeGet[float64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, Float.X(delta))
 	}
@@ -1505,7 +1503,6 @@ Corresponds to the [constant NOTIFICATION_PROCESS] notification in [method Objec
 func (class) _process(impl func(ptr unsafe.Pointer, delta float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var delta = gd.UnsafeGet[float64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, delta)
 	}
@@ -1522,7 +1519,6 @@ Corresponds to the [constant NOTIFICATION_PHYSICS_PROCESS] notification in [meth
 func (class) _physics_process(impl func(ptr unsafe.Pointer, delta float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var delta = gd.UnsafeGet[float64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, delta)
 	}

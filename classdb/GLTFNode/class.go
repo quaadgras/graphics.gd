@@ -282,7 +282,7 @@ func (self class) GetXform() Transform3D.BasisOrigin { //gd:GLTFNode.get_xform
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_get_xform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -290,7 +290,7 @@ func (self class) GetXform() Transform3D.BasisOrigin { //gd:GLTFNode.get_xform
 //go:nosplit
 func (self class) SetXform(xform Transform3D.BasisOrigin) { //gd:GLTFNode.set_xform
 	var frame = callframe.New()
-	callframe.Arg(frame, xform)
+	callframe.Arg(frame, gd.Transposed(xform))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFNode.Bind_set_xform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

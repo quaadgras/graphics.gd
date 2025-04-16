@@ -568,10 +568,10 @@ Returns the transform for a view/eye.
 func (self class) GetTransformForView(view int64, cam_transform Transform3D.BasisOrigin) Transform3D.BasisOrigin { //gd:XRInterface.get_transform_for_view
 	var frame = callframe.New()
 	callframe.Arg(frame, view)
-	callframe.Arg(frame, cam_transform)
+	callframe.Arg(frame, gd.Transposed(cam_transform))
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_transform_for_view, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }

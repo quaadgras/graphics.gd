@@ -154,7 +154,6 @@ Override this method to be notified whenever a new [EditorDebuggerSession] is cr
 func (Instance) _setup_session(impl func(ptr unsafe.Pointer, session_id int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var session_id = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(session_id))
 	}
@@ -183,7 +182,6 @@ func (Instance) _capture(impl func(ptr unsafe.Pointer, message string, data []an
 		var data = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
 		defer pointers.End(gd.InternalArray(data))
 		var session_id = gd.UnsafeGet[int64](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, message.String(), gd.ArrayAs[[]any](gd.InternalArray(data)), int(session_id))
 		gd.UnsafeSet(p_back, ret)
@@ -199,7 +197,6 @@ func (Instance) _goto_script_line(impl func(ptr unsafe.Pointer, script [1]gdclas
 
 		defer pointers.End(script[0])
 		var line = gd.UnsafeGet[int64](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, script, int(line))
 	}
@@ -224,9 +221,7 @@ func (Instance) _breakpoint_set_in_tree(impl func(ptr unsafe.Pointer, script [1]
 
 		defer pointers.End(script[0])
 		var line = gd.UnsafeGet[int64](p_args, 1)
-
 		var enabled = gd.UnsafeGet[bool](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, script, int(line), enabled)
 	}
@@ -272,7 +267,6 @@ Override this method to be notified whenever a new [EditorDebuggerSession] is cr
 func (class) _setup_session(impl func(ptr unsafe.Pointer, session_id int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var session_id = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, session_id)
 	}
@@ -301,7 +295,6 @@ func (class) _capture(impl func(ptr unsafe.Pointer, message String.Readable, dat
 		var data = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
 		defer pointers.End(gd.InternalArray(data))
 		var session_id = gd.UnsafeGet[int64](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, message, data, session_id)
 		gd.UnsafeSet(p_back, ret)
@@ -317,7 +310,6 @@ func (class) _goto_script_line(impl func(ptr unsafe.Pointer, script [1]gdclass.S
 
 		defer pointers.End(script[0])
 		var line = gd.UnsafeGet[int64](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, script, line)
 	}
@@ -342,9 +334,7 @@ func (class) _breakpoint_set_in_tree(impl func(ptr unsafe.Pointer, script [1]gdc
 
 		defer pointers.End(script[0])
 		var line = gd.UnsafeGet[int64](p_args, 1)
-
 		var enabled = gd.UnsafeGet[bool](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, script, line, enabled)
 	}

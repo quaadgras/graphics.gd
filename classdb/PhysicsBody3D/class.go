@@ -235,7 +235,7 @@ If [param recovery_as_collision] is [code]true[/code], any depenetration from th
 //go:nosplit
 func (self class) TestMove(from Transform3D.BasisOrigin, motion Vector3.XYZ, collision [1]gdclass.KinematicCollision3D, safe_margin float64, recovery_as_collision bool, max_collisions int64) bool { //gd:PhysicsBody3D.test_move
 	var frame = callframe.New()
-	callframe.Arg(frame, from)
+	callframe.Arg(frame, gd.Transposed(from))
 	callframe.Arg(frame, motion)
 	callframe.Arg(frame, pointers.Get(collision[0])[0])
 	callframe.Arg(frame, safe_margin)

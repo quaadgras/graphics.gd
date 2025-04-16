@@ -706,7 +706,7 @@ func (self class) GetBoneRest(bone_idx int64) Transform3D.BasisOrigin { //gd:Ske
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_rest, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -718,7 +718,7 @@ Sets the rest transform for bone [param bone_idx].
 func (self class) SetBoneRest(bone_idx int64, rest Transform3D.BasisOrigin) { //gd:Skeleton3D.set_bone_rest
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
-	callframe.Arg(frame, rest)
+	callframe.Arg(frame, gd.Transposed(rest))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_bone_rest, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -733,7 +733,7 @@ func (self class) GetBoneGlobalRest(bone_idx int64) Transform3D.BasisOrigin { //
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_global_rest, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -794,7 +794,7 @@ func (self class) GetBonePose(bone_idx int64) Transform3D.BasisOrigin { //gd:Ske
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -806,7 +806,7 @@ Sets the pose transform, [param pose], for the bone at [param bone_idx].
 func (self class) SetBonePose(bone_idx int64, pose Transform3D.BasisOrigin) { //gd:Skeleton3D.set_bone_pose
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
-	callframe.Arg(frame, pose)
+	callframe.Arg(frame, gd.Transposed(pose))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_bone_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -953,7 +953,7 @@ func (self class) GetBoneGlobalPose(bone_idx int64) Transform3D.BasisOrigin { //
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_global_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -966,7 +966,7 @@ Sets the global pose transform, [param pose], for the bone at [param bone_idx].
 func (self class) SetBoneGlobalPose(bone_idx int64, pose Transform3D.BasisOrigin) { //gd:Skeleton3D.set_bone_global_pose
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
-	callframe.Arg(frame, pose)
+	callframe.Arg(frame, gd.Transposed(pose))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_bone_global_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1072,7 +1072,7 @@ Sets the global pose transform, [param pose], for the bone at [param bone_idx].
 func (self class) SetBoneGlobalPoseOverride(bone_idx int64, pose Transform3D.BasisOrigin, amount float64, persistent bool) { //gd:Skeleton3D.set_bone_global_pose_override
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
-	callframe.Arg(frame, pose)
+	callframe.Arg(frame, gd.Transposed(pose))
 	callframe.Arg(frame, amount)
 	callframe.Arg(frame, persistent)
 	var r_ret = callframe.Nil
@@ -1089,7 +1089,7 @@ func (self class) GetBoneGlobalPoseOverride(bone_idx int64) Transform3D.BasisOri
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_global_pose_override, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -1103,7 +1103,7 @@ func (self class) GetBoneGlobalPoseNoOverride(bone_idx int64) Transform3D.BasisO
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_global_pose_no_override, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }

@@ -1750,7 +1750,7 @@ func (self class) AreaAddShape(area RID.Any, shape RID.Any, transform Transform3
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, shape)
-	callframe.Arg(frame, transform)
+	callframe.Arg(frame, gd.Transposed(transform))
 	callframe.Arg(frame, disabled)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_area_add_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -1779,7 +1779,7 @@ func (self class) AreaSetShapeTransform(area RID.Any, shape_idx int64, transform
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, shape_idx)
-	callframe.Arg(frame, transform)
+	callframe.Arg(frame, gd.Transposed(transform))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_area_set_shape_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1835,7 +1835,7 @@ func (self class) AreaGetShapeTransform(area RID.Any, shape_idx int64) Transform
 	callframe.Arg(frame, shape_idx)
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_area_get_shape_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -1940,7 +1940,7 @@ Sets the transform matrix for an area.
 func (self class) AreaSetTransform(area RID.Any, transform Transform3D.BasisOrigin) { //gd:PhysicsServer3D.area_set_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
-	callframe.Arg(frame, transform)
+	callframe.Arg(frame, gd.Transposed(transform))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_area_set_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -1970,7 +1970,7 @@ func (self class) AreaGetTransform(area RID.Any) Transform3D.BasisOrigin { //gd:
 	callframe.Arg(frame, area)
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_area_get_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -2220,7 +2220,7 @@ func (self class) BodyAddShape(body RID.Any, shape RID.Any, transform Transform3
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, shape)
-	callframe.Arg(frame, transform)
+	callframe.Arg(frame, gd.Transposed(transform))
 	callframe.Arg(frame, disabled)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_add_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
@@ -2249,7 +2249,7 @@ func (self class) BodySetShapeTransform(body RID.Any, shape_idx int64, transform
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, shape_idx)
-	callframe.Arg(frame, transform)
+	callframe.Arg(frame, gd.Transposed(transform))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_set_shape_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -2305,7 +2305,7 @@ func (self class) BodyGetShapeTransform(body RID.Any, shape_idx int64) Transform
 	callframe.Arg(frame, shape_idx)
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_get_shape_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -3041,7 +3041,7 @@ Sets the global transform of the given soft body.
 func (self class) SoftBodySetTransform(body RID.Any, transform Transform3D.BasisOrigin) { //gd:PhysicsServer3D.soft_body_set_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
-	callframe.Arg(frame, transform)
+	callframe.Arg(frame, gd.Transposed(transform))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_set_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -3414,9 +3414,9 @@ func (self class) JointMakeHinge(joint RID.Any, body_A RID.Any, hinge_A Transfor
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, body_A)
-	callframe.Arg(frame, hinge_A)
+	callframe.Arg(frame, gd.Transposed(hinge_A))
 	callframe.Arg(frame, body_B)
-	callframe.Arg(frame, hinge_B)
+	callframe.Arg(frame, gd.Transposed(hinge_B))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_joint_make_hinge, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -3485,9 +3485,9 @@ func (self class) JointMakeSlider(joint RID.Any, body_A RID.Any, local_ref_A Tra
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, body_A)
-	callframe.Arg(frame, local_ref_A)
+	callframe.Arg(frame, gd.Transposed(local_ref_A))
 	callframe.Arg(frame, body_B)
-	callframe.Arg(frame, local_ref_B)
+	callframe.Arg(frame, gd.Transposed(local_ref_B))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_joint_make_slider, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -3527,9 +3527,9 @@ func (self class) JointMakeConeTwist(joint RID.Any, body_A RID.Any, local_ref_A 
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, body_A)
-	callframe.Arg(frame, local_ref_A)
+	callframe.Arg(frame, gd.Transposed(local_ref_A))
 	callframe.Arg(frame, body_B)
-	callframe.Arg(frame, local_ref_B)
+	callframe.Arg(frame, gd.Transposed(local_ref_B))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_joint_make_cone_twist, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -3640,9 +3640,9 @@ func (self class) JointMakeGeneric6dof(joint RID.Any, body_A RID.Any, local_ref_
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, body_A)
-	callframe.Arg(frame, local_ref_A)
+	callframe.Arg(frame, gd.Transposed(local_ref_A))
 	callframe.Arg(frame, body_B)
-	callframe.Arg(frame, local_ref_B)
+	callframe.Arg(frame, gd.Transposed(local_ref_B))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_joint_make_generic_6dof, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

@@ -220,7 +220,7 @@ Sets the transform, linear velocity, angular velocity and tracking confidence fo
 func (self class) SetPose(name String.Name, transform Transform3D.BasisOrigin, linear_velocity Vector3.XYZ, angular_velocity Vector3.XYZ, tracking_confidence gdclass.XRPoseTrackingConfidence) { //gd:XRPositionalTracker.set_pose
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
-	callframe.Arg(frame, transform)
+	callframe.Arg(frame, gd.Transposed(transform))
 	callframe.Arg(frame, linear_velocity)
 	callframe.Arg(frame, angular_velocity)
 	callframe.Arg(frame, tracking_confidence)

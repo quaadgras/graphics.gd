@@ -84,7 +84,6 @@ Executes the given modification. This is where the modification performs whateve
 func (Instance) _execute(impl func(ptr unsafe.Pointer, delta Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var delta = gd.UnsafeGet[float64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, Float.X(delta))
 	}
@@ -197,7 +196,6 @@ Executes the given modification. This is where the modification performs whateve
 func (class) _execute(impl func(ptr unsafe.Pointer, delta float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var delta = gd.UnsafeGet[float64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, delta)
 	}

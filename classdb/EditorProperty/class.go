@@ -91,7 +91,6 @@ Called when the read-only status of the property is changed. It may be used to c
 func (Instance) _set_read_only(impl func(ptr unsafe.Pointer, read_only bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var read_only = gd.UnsafeGet[bool](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, read_only)
 	}
@@ -314,7 +313,6 @@ Called when the read-only status of the property is changed. It may be used to c
 func (class) _set_read_only(impl func(ptr unsafe.Pointer, read_only bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var read_only = gd.UnsafeGet[bool](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, read_only)
 	}

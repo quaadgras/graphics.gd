@@ -275,7 +275,6 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 				fmt.Fprintf(w, "\t\t}\n")
 				ret = "ptr"
 			}
-
 			fmt.Fprintf(w, "\t\t"+prefix+"UnsafeSet(p_back, %s)\n", ret)
 		}
 		fmt.Fprintf(w, "\t}\n")
@@ -376,7 +375,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 			fmt.Fprintf(w, "\tvar ret = %s\n", gdtype.Name(result).LoadFromRawPointerValue("r_ret.Get()"))
 		}
 	} else if result != "" {
-		fmt.Fprintf(w, "\tvar ret = r_ret.Get()\n")
+		fmt.Fprintf(w, "\tvar ret = %s\n", gdtype.Name(result).LoadFromRawPointerValue("r_ret.Get()"))
 	}
 	fmt.Fprintf(w, "\tframe.Free()\n")
 

@@ -181,25 +181,19 @@ func Euler(e Angle.Euler3D, order Angle.Order) XYZ { //gd:Basis.from_euler
 // The axis must be a normalized vector.
 func RotatesAxisAngle(axis Vector3.XYZ, angle Angle.Radians) XYZ { //gd:Basis(Vector3,float)
 	var rows XYZ
-	var axis_sq = Vector3.New(axis.X*axis.X, axis.Y*axis.Y, axis.Z*axis.Z)
-	var cosine = Angle.Cos(angle)
-	rows.X.X = axis_sq.X + cosine*(1.0-axis_sq.X)
-	rows.Y.Y = axis_sq.Y + cosine*(1.0-axis_sq.Y)
-	rows.Z.Z = axis_sq.Z + cosine*(1.0-axis_sq.Z)
-	var sine = Angle.Sin(angle)
-	var t = 1 - cosine
-	var xyzt = axis.X * axis.Y * t
-	var zyxs = axis.Z * sine
-	rows.X.Y = xyzt - zyxs
-	rows.Y.X = xyzt + zyxs
-	xyzt = axis.X * axis.Z * t
-	zyxs = axis.Y * sine
-	rows.X.Z = xyzt + zyxs
-	rows.Y.X = xyzt - zyxs
-	xyzt = axis.Y * axis.Z * t
-	zyxs = axis.X * sine
-	rows.Y.Z = xyzt - zyxs
-	rows.Z.Y = xyzt + zyxs
+	var c = Angle.Cos(angle)
+	var s = Angle.Sin(angle)
+	var t = 1 - c
+	var ux, uy, uz = axis.X, axis.Y, axis.Z
+	rows.X.X = c + ux*ux*t
+	rows.X.Y = uy*ux*t + uz*s
+	rows.X.Z = uz*ux*t - uy*s
+	rows.Y.X = ux*uy*t - uz*s
+	rows.Y.Y = c + uy*uy*t
+	rows.Y.Z = uz*uy*t + ux*s
+	rows.Z.X = ux*uz*t + uy*s
+	rows.Z.Y = uy*uz*t - ux*s
+	rows.Z.Z = c + uz*uz*t
 	return rows
 }
 
@@ -211,15 +205,10 @@ func RotatesAxisAngle(axis Vector3.XYZ, angle Angle.Radians) XYZ { //gd:Basis(Ve
 // If use_model_front is true, the +Z axis (asset front) is treated as forward (implies +X is left) and points toward the
 // target position. By default, the -Z axis (camera forward) is treated as forward (implies +X is right).
 func LookingAt(target, up Vector3.XYZ) XYZ { //gd:Basis.looking_at
-	const use_model_front = false
-	var v_z = Vector3.Normalized(target)
-	if !use_model_front {
-		v_z = Vector3.Neg(v_z)
-	}
-	var v_x = Vector3.Cross(up, v_z)
-	v_x = Vector3.Normalized(v_x)
-	var v_y = Vector3.Cross(v_z, v_x)
-	return XYZ{v_x, v_y, v_z}
+	vZ := Vector3.Normalized(target)                // Z column points to target
+	vX := Vector3.Normalized(Vector3.Cross(up, vZ)) // X column perpendicular
+	vY := Vector3.Cross(vZ, vX)                     // Y column completes the basis
+	return XYZ{X: vX, Y: vY, Z: vZ}
 }
 
 // RotatesScales returns the basis from the given rotation Quaternion with the
@@ -234,10 +223,10 @@ func RotatesScales(q quaternion, s Vector3.XYZ) XYZ {
 //
 // A negative determinant means the basis has a negative scale. A zero
 // determinant means the basis isn't invertible, and is usually considered invalid.
-func Determinant(b XYZ) Float.X { //gd:Basis.determinant
-	return b.X.X*(b.Y.Y*b.Y.Y-b.Z.Y*b.Y.Z) -
-		b.Y.X*(b.X.Y*b.Z.Z-b.Z.Y*b.X.Z) +
-		b.Z.X*(b.X.Y*b.Y.Z-b.Y.Y*b.X.Z)
+func Determinant(m XYZ) Float.X { //gd:Basis.determinant
+	return m.X.X*(m.Y.Y*m.Z.Z-m.Z.Y*m.Y.Z) -
+		m.Y.X*(m.X.Y*m.Z.Z-m.Z.Y*m.X.Z) +
+		m.Z.X*(m.X.Y*m.Y.Z-m.Y.Y*m.X.Z)
 }
 
 // AsEulerAngles returns the basis's rotation in the form of Euler angles. The Euler order depends
@@ -437,47 +426,39 @@ func AsEulerAngles(b XYZ, order Angle.Order) Angle.Euler3D { //gd:Basis.get_eule
 // Scale assuming that the matrix is the combination of a rotation and scaling, returns the absolute value
 // of scaling factors along each axis.
 func Scale(b XYZ) Vector3.XYZ { //gd:Basis.get_scale
-	// FIXME: We are assuming M = R.S (R is rotation and S is scaling), and use polar decomposition to extract R and S.
-	// A polar decomposition is M = O.P, where O is an orthogonal matrix (meaning rotation and reflection) and
-	// P is a positive semi-definite matrix (meaning it contains absolute values of scaling along its diagonal).
-	//
-	// Despite being different from what we want to achieve, we can nevertheless make use of polar decomposition
-	// here as follows. We can split O into a rotation and a reflection as O = R.Q, and obtain M = R.S where
-	// we defined S = Q.P. Now, R is a proper rotation matrix and S is a (signed) scaling matrix,
-	// which can involve negative scalings. However, there is a catch: unlike the polar decomposition of M = O.P,
-	// the decomposition of O into a rotation and reflection matrix as O = R.Q is not unique.
-	// Therefore, we are going to do this decomposition by sticking to a particular convention.
-	// This may lead to confusion for some users though.
-	//
-	// The convention we use here is to absorb the sign flip into the scaling matrix.
-	// The same convention is also used in other similar functions such as get_rotation_axis_angle, get_rotation, ...
-	//
-	// A proper way to get rid of this issue would be to store the scaling values (or at least their signs)
-	// as a part of Basis. However, if we go that path, we need to disable direct (write) access to the
-	// matrix elements.
-	//
-	// The rotation part of this decomposition is returned by get_rotation* functions.
-	var det_sign = Float.Sign(Determinant(b))
-	return Vector3.MulX(Vector3.XYZ{
-		Vector3.Length(Vector3.New(b.X.X, b.Y.X, b.Z.X)),
-		Vector3.Length(Vector3.New(b.X.Y, b.Y.Y, b.Z.Y)),
-		Vector3.Length(Vector3.New(b.X.Z, b.Y.Z, b.Z.Z)),
-	}, det_sign)
+	scale := Vector3.XYZ{
+		X: Vector3.Length(b.X),
+		Y: Vector3.Length(b.Y),
+		Z: Vector3.Length(b.Z),
+	}
+	if Determinant(b) < 0 {
+		scale.X = -scale.X // Adjust one axis for reflection
+	}
+	return scale
 }
 
 // Inverse returns the inverse of the matrix.
-func Inverse(b XYZ) XYZ { //gd:Basis.inverse
-	var co = Vector3.New(
-		cofac(b, 1, 1, 2, 2), cofac(b, 1, 2, 2, 0), cofac(b, 1, 0, 2, 1),
-	)
-	var det = b.X.X*co.X + b.X.Y*co.Y + b.X.Z*co.Z
+func Inverse(m XYZ) XYZ { //gd:Basis.inverse
+	var det = Determinant(m)
 	var (
-		s = 1.0 / det
+		invDet = 1.0 / det
 	)
 	return XYZ{
-		Vector3.New(co.X*s, cofac(b, 0, 2, 2, 1)*s, cofac(b, 0, 1, 1, 2)*s),
-		Vector3.New(co.Y*s, cofac(b, 0, 0, 2, 2)*s, cofac(b, 0, 2, 1, 0)*s),
-		Vector3.New(co.Z*s, cofac(b, 0, 1, 2, 0)*s, cofac(b, 0, 0, 1, 1)*s),
+		X: Vector3.XYZ{
+			X: (m.Y.Y*m.Z.Z - m.Z.Y*m.Y.Z) * invDet,
+			Y: (m.Z.Y*m.X.Z - m.X.Y*m.Z.Z) * invDet,
+			Z: (m.X.Y*m.Y.Z - m.Y.Y*m.X.Z) * invDet,
+		},
+		Y: Vector3.XYZ{
+			X: (m.Z.X*m.Y.Z - m.Y.X*m.Z.Z) * invDet,
+			Y: (m.X.X*m.Z.Z - m.Z.X*m.X.Z) * invDet,
+			Z: (m.Y.X*m.X.Z - m.X.X*m.Y.Z) * invDet,
+		},
+		Z: Vector3.XYZ{
+			X: (m.Y.X*m.Z.Y - m.Z.X*m.Y.Y) * invDet,
+			Y: (m.Z.X*m.X.Y - m.X.X*m.Z.Y) * invDet,
+			Z: (m.X.X*m.Y.Y - m.Y.X*m.X.Y) * invDet,
+		},
 	}
 }
 
@@ -524,7 +505,8 @@ func Orthonormalized(b XYZ) XYZ { //gd:Basis.orthonormalized
 // Rotated returns a copy of the basis rotated around the given axis by the given angle (in radians).
 // The axis must be a normalized vector.
 func Rotated(b XYZ, axis Vector3.XYZ, angle Angle.Radians) XYZ { //gd:Basis.rotated
-	return Mul(RotatesAxisAngle(axis, angle), b)
+	rotation := RotatesAxisAngle(axis, angle) // Assume this constructs a rotation matrix
+	return Mul(rotation, b)
 }
 
 // Scaled introduce an additional scaling specified by the given 3D scaling factor.
@@ -580,9 +562,9 @@ func Transposed(m XYZ) XYZ { //gd:Basis.transposed
 
 func Mul(a, b XYZ) XYZ { //gd:Basis*Basis
 	return XYZ{
-		Vector3.New(TransposedDotX(b, a.X), TransposedDotY(b, a.X), TransposedDotZ(b, a.X)),
-		Vector3.New(TransposedDotX(b, a.Y), TransposedDotY(b, a.Y), TransposedDotZ(b, a.Y)),
-		Vector3.New(TransposedDotX(b, a.Z), TransposedDotY(b, a.Z), TransposedDotZ(b, a.Z)),
+		X: Transform(b.X, a),
+		Y: Transform(b.Y, a),
+		Z: Transform(b.Z, a),
 	}
 }
 
@@ -706,8 +688,8 @@ func qAsBasis(q quaternion) XYZ {
 
 func Transform(v Vector3.XYZ, m XYZ) Vector3.XYZ { //gd:Basis*(right:Vector3)
 	return Vector3.XYZ{
-		Vector3.Dot(m.X, v),
-		Vector3.Dot(m.Y, v),
-		Vector3.Dot(m.Z, v),
+		X: m.X.X*v.X + m.Y.X*v.Y + m.Z.X*v.Z,
+		Y: m.X.Y*v.X + m.Y.Y*v.Y + m.Z.Y*v.Z,
+		Z: m.X.Z*v.X + m.Y.Z*v.Y + m.Z.Z*v.Z,
 	}
 }

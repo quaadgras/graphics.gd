@@ -152,17 +152,13 @@ func (Instance) _parse_property(impl func(ptr unsafe.Pointer, obj Object.Instanc
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
 		var atype = gd.UnsafeGet[variant.Type](p_args, 1)
-
 		var name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalString(name))
 		var hint_type = gd.UnsafeGet[PropertyHint](p_args, 3)
-
 		var hint_string = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 4))))
 		defer pointers.End(gd.InternalString(hint_string))
 		var usage_flags = gd.UnsafeGet[PropertyUsageFlags](p_args, 5)
-
 		var wide = gd.UnsafeGet[bool](p_args, 6)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, obj, atype, name.String(), hint_type, hint_string.String(), usage_flags, wide)
 		gd.UnsafeSet(p_back, ret)
@@ -293,17 +289,13 @@ func (class) _parse_property(impl func(ptr unsafe.Pointer, obj [1]gd.Object, aty
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(obj[0])
 		var atype = gd.UnsafeGet[variant.Type](p_args, 1)
-
 		var name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalString(name))
 		var hint_type = gd.UnsafeGet[PropertyHint](p_args, 3)
-
 		var hint_string = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 4))))
 		defer pointers.End(gd.InternalString(hint_string))
 		var usage_flags = gd.UnsafeGet[PropertyUsageFlags](p_args, 5)
-
 		var wide = gd.UnsafeGet[bool](p_args, 6)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, obj, atype, name, hint_type, hint_string, usage_flags, wide)
 		gd.UnsafeSet(p_back, ret)

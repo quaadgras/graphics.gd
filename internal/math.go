@@ -3,6 +3,7 @@
 package gd
 
 import (
+	basis "graphics.gd/variant/Basis"
 	float "graphics.gd/variant/Float"
 )
 
@@ -37,5 +38,12 @@ func NewTransform3D(a, b, c, d, e, f, g, h, i, j, k, l Float) Transform3D {
 			Vector3{float.X(g), float.X(h), float.X(i)},
 		},
 		Origin: Vector3{float.X(j), float.X(k), float.X(l)},
+	}
+}
+
+func Transposed(t Transform3D) Transform3D {
+	return Transform3D{
+		Basis:  basis.Transposed(t.Basis),
+		Origin: t.Origin,
 	}
 }

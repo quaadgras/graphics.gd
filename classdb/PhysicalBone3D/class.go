@@ -346,7 +346,7 @@ func (self class) GetJointType() gdclass.PhysicalBone3DJointType { //gd:Physical
 //go:nosplit
 func (self class) SetJointOffset(offset Transform3D.BasisOrigin) { //gd:PhysicalBone3D.set_joint_offset
 	var frame = callframe.New()
-	callframe.Arg(frame, offset)
+	callframe.Arg(frame, gd.Transposed(offset))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_set_joint_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -357,7 +357,7 @@ func (self class) GetJointOffset() Transform3D.BasisOrigin { //gd:PhysicalBone3D
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_get_joint_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -384,7 +384,7 @@ func (self class) GetJointRotation() Vector3.XYZ { //gd:PhysicalBone3D.get_joint
 //go:nosplit
 func (self class) SetBodyOffset(offset Transform3D.BasisOrigin) { //gd:PhysicalBone3D.set_body_offset
 	var frame = callframe.New()
-	callframe.Arg(frame, offset)
+	callframe.Arg(frame, gd.Transposed(offset))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_set_body_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -395,7 +395,7 @@ func (self class) GetBodyOffset() Transform3D.BasisOrigin { //gd:PhysicalBone3D.
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_get_body_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }

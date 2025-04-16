@@ -162,7 +162,7 @@ func (self Instance) SetInterior(value bool) {
 //go:nosplit
 func (self class) Allocate(to_cell_xform Transform3D.BasisOrigin, aabb AABB.PositionSize, octree_size Vector3.XYZ, octree_cells Packed.Bytes, data_cells Packed.Bytes, distance_field Packed.Bytes, level_counts Packed.Array[int32]) { //gd:VoxelGIData.allocate
 	var frame = callframe.New()
-	callframe.Arg(frame, to_cell_xform)
+	callframe.Arg(frame, gd.Transposed(to_cell_xform))
 	callframe.Arg(frame, aabb)
 	callframe.Arg(frame, octree_size)
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](octree_cells))))
@@ -203,7 +203,7 @@ func (self class) GetToCellXform() Transform3D.BasisOrigin { //gd:VoxelGIData.ge
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGIData.Bind_get_to_cell_xform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }

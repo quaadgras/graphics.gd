@@ -90,7 +90,6 @@ Override this method to define how the selected entry should be inserted. If [pa
 func (Instance) _confirm_code_completion(impl func(ptr unsafe.Pointer, replace bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var replace = gd.UnsafeGet[bool](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, replace)
 	}
@@ -102,7 +101,6 @@ Override this method to define what happens when the user requests code completi
 func (Instance) _request_code_completion(impl func(ptr unsafe.Pointer, force bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var force = gd.UnsafeGet[bool](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, force)
 	}
@@ -886,7 +884,6 @@ Override this method to define how the selected entry should be inserted. If [pa
 func (class) _confirm_code_completion(impl func(ptr unsafe.Pointer, replace bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var replace = gd.UnsafeGet[bool](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, replace)
 	}
@@ -898,7 +895,6 @@ Override this method to define what happens when the user requests code completi
 func (class) _request_code_completion(impl func(ptr unsafe.Pointer, force bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var force = gd.UnsafeGet[bool](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, force)
 	}

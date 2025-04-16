@@ -378,7 +378,7 @@ Sets the [Transform3D] for a specific instance.
 func (self class) SetInstanceTransform(instance int64, transform Transform3D.BasisOrigin) { //gd:MultiMesh.set_instance_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
-	callframe.Arg(frame, transform)
+	callframe.Arg(frame, gd.Transposed(transform))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiMesh.Bind_set_instance_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -406,7 +406,7 @@ func (self class) GetInstanceTransform(instance int64) Transform3D.BasisOrigin {
 	callframe.Arg(frame, instance)
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiMesh.Bind_get_instance_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }

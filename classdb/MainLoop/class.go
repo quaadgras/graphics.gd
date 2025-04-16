@@ -155,7 +155,6 @@ If implemented, the method must return a boolean value. [code]true[/code] ends t
 func (Instance) _physics_process(impl func(ptr unsafe.Pointer, delta Float.X) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var delta = gd.UnsafeGet[float64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, Float.X(delta))
 		gd.UnsafeSet(p_back, ret)
@@ -170,7 +169,6 @@ If implemented, the method must return a boolean value. [code]true[/code] ends t
 func (Instance) _process(impl func(ptr unsafe.Pointer, delta Float.X) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var delta = gd.UnsafeGet[float64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, Float.X(delta))
 		gd.UnsafeSet(p_back, ret)
@@ -223,7 +221,6 @@ If implemented, the method must return a boolean value. [code]true[/code] ends t
 func (class) _physics_process(impl func(ptr unsafe.Pointer, delta float64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var delta = gd.UnsafeGet[float64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, delta)
 		gd.UnsafeSet(p_back, ret)
@@ -238,7 +235,6 @@ If implemented, the method must return a boolean value. [code]true[/code] ends t
 func (class) _process(impl func(ptr unsafe.Pointer, delta float64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var delta = gd.UnsafeGet[float64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, delta)
 		gd.UnsafeSet(p_back, ret)

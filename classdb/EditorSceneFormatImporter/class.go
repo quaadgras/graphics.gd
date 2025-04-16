@@ -108,7 +108,6 @@ func (Instance) _import_scene(impl func(ptr unsafe.Pointer, path string, flags i
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		var flags = gd.UnsafeGet[int64](p_args, 1)
-
 		var options = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalDictionary(options))
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -144,7 +143,6 @@ func (Instance) _get_option_visibility(impl func(ptr unsafe.Pointer, path string
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		var for_animation = gd.UnsafeGet[bool](p_args, 1)
-
 		var option = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalString(option))
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -222,7 +220,6 @@ func (class) _import_scene(impl func(ptr unsafe.Pointer, path String.Readable, f
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		var flags = gd.UnsafeGet[int64](p_args, 1)
-
 		var options = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalDictionary(options))
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -258,7 +255,6 @@ func (class) _get_option_visibility(impl func(ptr unsafe.Pointer, path String.Re
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		var for_animation = gd.UnsafeGet[bool](p_args, 1)
-
 		var option = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalString(option))
 		self := reflect.ValueOf(class).UnsafePointer()

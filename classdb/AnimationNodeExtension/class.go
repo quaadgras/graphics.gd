@@ -83,7 +83,6 @@ func (Instance) _process_animation_node(impl func(ptr unsafe.Pointer, playback_i
 		var playback_info = Packed.Array[float64](Array.Through(gd.PackedProxy[gd.PackedFloat64Array, float64]{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
 		defer pointers.End(gd.InternalPacked[gd.PackedFloat64Array, float64](playback_info))
 		var test_only = gd.UnsafeGet[bool](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, slices.Collect(playback_info.Values()), test_only)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedFloat32Array, float32](Packed.New(ret...)))
@@ -140,7 +139,6 @@ func (class) _process_animation_node(impl func(ptr unsafe.Pointer, playback_info
 		var playback_info = Packed.Array[float64](Array.Through(gd.PackedProxy[gd.PackedFloat64Array, float64]{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
 		defer pointers.End(gd.InternalPacked[gd.PackedFloat64Array, float64](playback_info))
 		var test_only = gd.UnsafeGet[bool](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, playback_info, test_only)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedFloat32Array, float32](ret))

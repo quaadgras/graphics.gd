@@ -83,7 +83,6 @@ See [method get_line_syntax_highlighting] for more details.
 func (Instance) _get_line_syntax_highlighting(impl func(ptr unsafe.Pointer, line int) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var line = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(line))
 		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
@@ -185,7 +184,6 @@ See [method get_line_syntax_highlighting] for more details.
 func (class) _get_line_syntax_highlighting(impl func(ptr unsafe.Pointer, line int64) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var line = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, line)
 		ptr, ok := pointers.End(gd.InternalDictionary(ret))

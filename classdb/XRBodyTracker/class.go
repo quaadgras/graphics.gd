@@ -191,7 +191,7 @@ Sets the transform for the given body joint.
 func (self class) SetJointTransform(joint gdclass.XRBodyTrackerJoint, transform Transform3D.BasisOrigin) { //gd:XRBodyTracker.set_joint_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
-	callframe.Arg(frame, transform)
+	callframe.Arg(frame, gd.Transposed(transform))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRBodyTracker.Bind_set_joint_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -206,7 +206,7 @@ func (self class) GetJointTransform(joint gdclass.XRBodyTrackerJoint) Transform3
 	callframe.Arg(frame, joint)
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRBodyTracker.Bind_get_joint_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }

@@ -170,7 +170,7 @@ func (self class) GetName() String.Name { //gd:XRPose.get_name
 //go:nosplit
 func (self class) SetTransform(transform Transform3D.BasisOrigin) { //gd:XRPose.set_transform
 	var frame = callframe.New()
-	callframe.Arg(frame, transform)
+	callframe.Arg(frame, gd.Transposed(transform))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPose.Bind_set_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -181,7 +181,7 @@ func (self class) GetTransform() Transform3D.BasisOrigin { //gd:XRPose.get_trans
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPose.Bind_get_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -194,7 +194,7 @@ func (self class) GetAdjustedTransform() Transform3D.BasisOrigin { //gd:XRPose.g
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPose.Bind_get_adjusted_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }

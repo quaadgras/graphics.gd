@@ -105,7 +105,6 @@ Should return [code]true[/code] if the tile at coordinates [param coords] requir
 func (Instance) _use_tile_data_runtime_update(impl func(ptr unsafe.Pointer, coords Vector2i.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var coords = gd.UnsafeGet[Vector2i.XY](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, coords)
 		gd.UnsafeSet(p_back, ret)
@@ -121,7 +120,6 @@ This method is only called if [method _use_tile_data_runtime_update] is implemen
 func (Instance) _tile_data_runtime_update(impl func(ptr unsafe.Pointer, coords Vector2i.XY, tile_data [1]gdclass.TileData)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var coords = gd.UnsafeGet[Vector2i.XY](p_args, 0)
-
 		var tile_data = [1]gdclass.TileData{pointers.New[gdclass.TileData]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
 
 		defer pointers.End(tile_data[0])
@@ -145,7 +143,6 @@ func (Instance) _update_cells(impl func(ptr unsafe.Pointer, coords []Vector2i.XY
 		var coords = Array.Through(gd.ArrayProxy[Vector2i.XY]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalArray(coords))
 		var forced_cleanup = gd.UnsafeGet[bool](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, gd.ArrayAs[[]Vector2i.XY](gd.InternalArray(coords)), forced_cleanup)
 	}
@@ -541,7 +538,6 @@ Should return [code]true[/code] if the tile at coordinates [param coords] requir
 func (class) _use_tile_data_runtime_update(impl func(ptr unsafe.Pointer, coords Vector2i.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var coords = gd.UnsafeGet[Vector2i.XY](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, coords)
 		gd.UnsafeSet(p_back, ret)
@@ -557,7 +553,6 @@ This method is only called if [method _use_tile_data_runtime_update] is implemen
 func (class) _tile_data_runtime_update(impl func(ptr unsafe.Pointer, coords Vector2i.XY, tile_data [1]gdclass.TileData)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var coords = gd.UnsafeGet[Vector2i.XY](p_args, 0)
-
 		var tile_data = [1]gdclass.TileData{pointers.New[gdclass.TileData]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
 
 		defer pointers.End(tile_data[0])
@@ -581,7 +576,6 @@ func (class) _update_cells(impl func(ptr unsafe.Pointer, coords Array.Contains[V
 		var coords = Array.Through(gd.ArrayProxy[Vector2i.XY]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalArray(coords))
 		var forced_cleanup = gd.UnsafeGet[bool](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, coords, forced_cleanup)
 	}

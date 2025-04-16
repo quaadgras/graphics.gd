@@ -571,11 +571,9 @@ func (Instance) _export_object_model_property(impl func(ptr unsafe.Pointer, stat
 
 		defer pointers.End(godot_node[0])
 		var gltf_node_index = gd.UnsafeGet[int64](p_args, 3)
-
 		var target_object = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 4))})}
 		defer pointers.End(target_object[0])
 		var target_depth = gd.UnsafeGet[int64](p_args, 5)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state, node_path.String(), godot_node, int(gltf_node_index), target_object, int(target_depth))
 		ptr, ok := pointers.End(ret[0])
@@ -622,7 +620,6 @@ func (Instance) _serialize_image_to_bytes(impl func(ptr unsafe.Pointer, state [1
 		var image_format = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 3))))
 		defer pointers.End(gd.InternalString(image_format))
 		var lossy_quality = gd.UnsafeGet[float64](p_args, 4)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state, image, gd.DictionaryAs[map[any]any](image_dict), image_format.String(), Float.X(lossy_quality))
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](Packed.Bytes(Packed.New(ret...)))))
@@ -651,7 +648,6 @@ func (Instance) _save_image_at_path(impl func(ptr unsafe.Pointer, state [1]gdcla
 		var image_format = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 3))))
 		defer pointers.End(gd.InternalString(image_format))
 		var lossy_quality = gd.UnsafeGet[float64](p_args, 4)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state, image, file_path.String(), image_format.String(), Float.X(lossy_quality))
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
@@ -1134,11 +1130,9 @@ func (class) _export_object_model_property(impl func(ptr unsafe.Pointer, state [
 
 		defer pointers.End(godot_node[0])
 		var gltf_node_index = gd.UnsafeGet[int64](p_args, 3)
-
 		var target_object = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 4))})}
 		defer pointers.End(target_object[0])
 		var target_depth = gd.UnsafeGet[int64](p_args, 5)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state, node_path, godot_node, gltf_node_index, target_object, target_depth)
 		ptr, ok := pointers.End(ret[0])
@@ -1185,7 +1179,6 @@ func (class) _serialize_image_to_bytes(impl func(ptr unsafe.Pointer, state [1]gd
 		var image_format = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 3))))
 		defer pointers.End(gd.InternalString(image_format))
 		var lossy_quality = gd.UnsafeGet[float64](p_args, 4)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state, image, image_dict, image_format, lossy_quality)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](ret)))
@@ -1214,7 +1207,6 @@ func (class) _save_image_at_path(impl func(ptr unsafe.Pointer, state [1]gdclass.
 		var image_format = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 3))))
 		defer pointers.End(gd.InternalString(image_format))
 		var lossy_quality = gd.UnsafeGet[float64](p_args, 4)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, state, image, file_path, image_format, lossy_quality)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)

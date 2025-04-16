@@ -97,9 +97,7 @@ func (self implementation) GetBufferedAmount() (_ int)                          
 func (Instance) _get_packet(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, r_buffer_size *int32) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var r_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
-
 		var r_buffer_size = gd.UnsafeGet[*int32](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, r_buffer, r_buffer_size)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
@@ -113,9 +111,7 @@ func (Instance) _get_packet(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointe
 func (Instance) _put_packet(impl func(ptr unsafe.Pointer, p_buffer unsafe.Pointer, p_buffer_size int) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var p_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
-
 		var p_buffer_size = gd.UnsafeGet[int64](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, p_buffer, int(p_buffer_size))
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
@@ -161,7 +157,6 @@ func (Instance) _close(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallV
 func (Instance) _set_write_mode(impl func(ptr unsafe.Pointer, p_write_mode gdclass.WebRTCDataChannelWriteMode)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var p_write_mode = gd.UnsafeGet[gdclass.WebRTCDataChannelWriteMode](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, p_write_mode)
 	}
@@ -276,9 +271,7 @@ func New() Instance {
 func (class) _get_packet(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, r_buffer_size *int32) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var r_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
-
 		var r_buffer_size = gd.UnsafeGet[*int32](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, r_buffer, r_buffer_size)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
@@ -293,9 +286,7 @@ func (class) _get_packet(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, 
 func (class) _put_packet(impl func(ptr unsafe.Pointer, p_buffer unsafe.Pointer, p_buffer_size int64) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var p_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
-
 		var p_buffer_size = gd.UnsafeGet[int64](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, p_buffer, p_buffer_size)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
@@ -346,7 +337,6 @@ func (class) _close(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirt
 func (class) _set_write_mode(impl func(ptr unsafe.Pointer, p_write_mode gdclass.WebRTCDataChannelWriteMode)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var p_write_mode = gd.UnsafeGet[gdclass.WebRTCDataChannelWriteMode](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, p_write_mode)
 	}

@@ -524,7 +524,7 @@ func (self class) GetReferencePose(bone_idx int64) Transform3D.BasisOrigin { //g
 	callframe.Arg(frame, bone_idx)
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonProfile.Bind_get_reference_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -536,7 +536,7 @@ Sets the reference pose transform for bone [param bone_idx].
 func (self class) SetReferencePose(bone_idx int64, bone_name Transform3D.BasisOrigin) { //gd:SkeletonProfile.set_reference_pose
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
-	callframe.Arg(frame, bone_name)
+	callframe.Arg(frame, gd.Transposed(bone_name))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonProfile.Bind_set_reference_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

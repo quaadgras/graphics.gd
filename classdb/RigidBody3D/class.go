@@ -576,7 +576,7 @@ func (self class) GetInverseInertiaTensor() Basis.XYZ { //gd:RigidBody3D.get_inv
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Basis.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_inverse_inertia_tensor, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Basis.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }

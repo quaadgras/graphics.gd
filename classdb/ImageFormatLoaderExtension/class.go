@@ -102,9 +102,7 @@ func (Instance) _load_image(impl func(ptr unsafe.Pointer, image [1]gdclass.Image
 
 		defer pointers.End(fileaccess[0])
 		var flags = gd.UnsafeGet[gdclass.ImageFormatLoaderLoaderFlags](p_args, 2)
-
 		var scale = gd.UnsafeGet[float64](p_args, 3)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, image, fileaccess, flags, Float.X(scale))
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
@@ -177,9 +175,7 @@ func (class) _load_image(impl func(ptr unsafe.Pointer, image [1]gdclass.Image, f
 
 		defer pointers.End(fileaccess[0])
 		var flags = gd.UnsafeGet[gdclass.ImageFormatLoaderLoaderFlags](p_args, 2)
-
 		var scale = gd.UnsafeGet[float64](p_args, 3)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, image, fileaccess, flags, scale)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)

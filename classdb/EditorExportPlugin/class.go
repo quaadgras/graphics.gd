@@ -247,11 +247,9 @@ func (Instance) _export_begin(impl func(ptr unsafe.Pointer, features []string, i
 		var features = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
 		defer pointers.End(gd.InternalPackedStrings(features))
 		var is_debug = gd.UnsafeGet[bool](p_args, 1)
-
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalString(path))
 		var flags = gd.UnsafeGet[int64](p_args, 3)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, features.Strings(), is_debug, path.String(), int(flags))
 	}
@@ -509,7 +507,6 @@ func (Instance) _get_export_features(impl func(ptr unsafe.Pointer, platform [1]g
 
 		defer pointers.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
@@ -563,7 +560,6 @@ func (Instance) _get_android_dependencies(impl func(ptr unsafe.Pointer, platform
 
 		defer pointers.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
@@ -587,7 +583,6 @@ func (Instance) _get_android_dependencies_maven_repos(impl func(ptr unsafe.Point
 
 		defer pointers.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
@@ -610,7 +605,6 @@ func (Instance) _get_android_libraries(impl func(ptr unsafe.Pointer, platform [1
 
 		defer pointers.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
@@ -632,7 +626,6 @@ func (Instance) _get_android_manifest_activity_element_contents(impl func(ptr un
 
 		defer pointers.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
@@ -654,7 +647,6 @@ func (Instance) _get_android_manifest_application_element_contents(impl func(ptr
 
 		defer pointers.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
@@ -676,7 +668,6 @@ func (Instance) _get_android_manifest_element_contents(impl func(ptr unsafe.Poin
 
 		defer pointers.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
@@ -837,11 +828,9 @@ func (class) _export_begin(impl func(ptr unsafe.Pointer, features Packed.Strings
 		var features = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
 		defer pointers.End(gd.InternalPackedStrings(features))
 		var is_debug = gd.UnsafeGet[bool](p_args, 1)
-
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalString(path))
 		var flags = gd.UnsafeGet[int64](p_args, 3)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, features, is_debug, path, flags)
 	}
@@ -1099,7 +1088,6 @@ func (class) _get_export_features(impl func(ptr unsafe.Pointer, platform [1]gdcl
 
 		defer pointers.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
@@ -1153,7 +1141,6 @@ func (class) _get_android_dependencies(impl func(ptr unsafe.Pointer, platform [1
 
 		defer pointers.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
@@ -1177,7 +1164,6 @@ func (class) _get_android_dependencies_maven_repos(impl func(ptr unsafe.Pointer,
 
 		defer pointers.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
@@ -1200,7 +1186,6 @@ func (class) _get_android_libraries(impl func(ptr unsafe.Pointer, platform [1]gd
 
 		defer pointers.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
@@ -1222,7 +1207,6 @@ func (class) _get_android_manifest_activity_element_contents(impl func(ptr unsaf
 
 		defer pointers.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
 		ptr, ok := pointers.End(gd.InternalString(ret))
@@ -1244,7 +1228,6 @@ func (class) _get_android_manifest_application_element_contents(impl func(ptr un
 
 		defer pointers.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
 		ptr, ok := pointers.End(gd.InternalString(ret))
@@ -1266,7 +1249,6 @@ func (class) _get_android_manifest_element_contents(impl func(ptr unsafe.Pointer
 
 		defer pointers.End(platform[0])
 		var debug = gd.UnsafeGet[bool](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, debug)
 		ptr, ok := pointers.End(gd.InternalString(ret))

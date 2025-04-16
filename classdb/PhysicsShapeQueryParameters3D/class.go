@@ -186,7 +186,7 @@ func (self class) GetShapeRid() RID.Any { //gd:PhysicsShapeQueryParameters3D.get
 //go:nosplit
 func (self class) SetTransform(transform Transform3D.BasisOrigin) { //gd:PhysicsShapeQueryParameters3D.set_transform
 	var frame = callframe.New()
-	callframe.Arg(frame, transform)
+	callframe.Arg(frame, gd.Transposed(transform))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_set_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -197,7 +197,7 @@ func (self class) GetTransform() Transform3D.BasisOrigin { //gd:PhysicsShapeQuer
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_get_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }

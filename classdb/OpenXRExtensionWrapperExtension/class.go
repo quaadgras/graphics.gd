@@ -225,7 +225,6 @@ Adds additional data structures when querying OpenXR system abilities.
 func (Instance) _set_system_properties_and_get_next_pointer(impl func(ptr unsafe.Pointer, next_pointer unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, next_pointer)
 		gd.UnsafeSet(p_back, int64(ret))
@@ -238,7 +237,6 @@ Adds additional data structures when the OpenXR instance is created.
 func (Instance) _set_instance_create_info_and_get_next_pointer(impl func(ptr unsafe.Pointer, next_pointer unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, next_pointer)
 		gd.UnsafeSet(p_back, int64(ret))
@@ -251,7 +249,6 @@ Adds additional data structures when the OpenXR session is created.
 func (Instance) _set_session_create_and_get_next_pointer(impl func(ptr unsafe.Pointer, next_pointer unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, next_pointer)
 		gd.UnsafeSet(p_back, int64(ret))
@@ -264,7 +261,6 @@ Adds additional data structures when creating OpenXR swapchains.
 func (Instance) _set_swapchain_create_info_and_get_next_pointer(impl func(ptr unsafe.Pointer, next_pointer unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, next_pointer)
 		gd.UnsafeSet(p_back, int64(ret))
@@ -277,9 +273,7 @@ Adds additional data structures when each hand tracker is created.
 func (Instance) _set_hand_joint_locations_and_get_next_pointer(impl func(ptr unsafe.Pointer, hand_index int, next_pointer unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var hand_index = gd.UnsafeGet[int64](p_args, 0)
-
 		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(hand_index), next_pointer)
 		gd.UnsafeSet(p_back, int64(ret))
@@ -292,9 +286,7 @@ Adds additional data structures to the projection view of the given [param view_
 func (Instance) _set_projection_views_and_get_next_pointer(impl func(ptr unsafe.Pointer, view_index int, next_pointer unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var view_index = gd.UnsafeGet[int64](p_args, 0)
-
 		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(view_index), next_pointer)
 		gd.UnsafeSet(p_back, int64(ret))
@@ -320,7 +312,6 @@ This will only be called if the extension previously registered itself with [met
 func (Instance) _get_composition_layer(impl func(ptr unsafe.Pointer, index int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(index))
 		gd.UnsafeSet(p_back, int64(ret))
@@ -334,7 +325,6 @@ This will only be called if the extension previously registered itself with [met
 func (Instance) _get_composition_layer_order(impl func(ptr unsafe.Pointer, index int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(index))
 		gd.UnsafeSet(p_back, int64(ret))
@@ -384,7 +374,6 @@ Called right after the OpenXR instance is created.
 func (Instance) _on_instance_created(impl func(ptr unsafe.Pointer, instance int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var instance = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(instance))
 	}
@@ -406,7 +395,6 @@ Called right after the OpenXR session is created.
 func (Instance) _on_session_created(impl func(ptr unsafe.Pointer, session int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var session = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(session))
 	}
@@ -448,7 +436,6 @@ Called right before the given viewport is rendered.
 func (Instance) _on_pre_draw_viewport(impl func(ptr unsafe.Pointer, viewport RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var viewport = gd.UnsafeGet[RID.Any](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, viewport)
 	}
@@ -461,7 +448,6 @@ Called right after the given viewport is rendered.
 func (Instance) _on_post_draw_viewport(impl func(ptr unsafe.Pointer, viewport RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var viewport = gd.UnsafeGet[RID.Any](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, viewport)
 	}
@@ -563,7 +549,6 @@ Called when there is an OpenXR event to process. When implementing, return [code
 func (Instance) _on_event_polled(impl func(ptr unsafe.Pointer, event unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var event = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, event)
 		gd.UnsafeSet(p_back, ret)
@@ -578,11 +563,9 @@ Adds additional data structures to composition layers created by [OpenXRComposit
 func (Instance) _set_viewport_composition_layer_and_get_next_pointer(impl func(ptr unsafe.Pointer, layer unsafe.Pointer, property_values map[any]any, next_pointer unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var layer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
-
 		var property_values = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
 		defer pointers.End(gd.InternalDictionary(property_values))
 		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, layer, gd.DictionaryAs[map[any]any](property_values), next_pointer)
 		gd.UnsafeSet(p_back, int64(ret))
@@ -628,7 +611,6 @@ Called when a composition layer created via [OpenXRCompositionLayer] is destroye
 func (Instance) _on_viewport_composition_layer_destroyed(impl func(ptr unsafe.Pointer, layer unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var layer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, layer)
 	}
@@ -643,7 +625,6 @@ func (Instance) _set_android_surface_swapchain_create_info_and_get_next_pointer(
 		var property_values = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalDictionary(property_values))
 		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, gd.DictionaryAs[map[any]any](property_values), next_pointer)
 		gd.UnsafeSet(p_back, int64(ret))
@@ -706,7 +687,6 @@ Adds additional data structures when querying OpenXR system abilities.
 func (class) _set_system_properties_and_get_next_pointer(impl func(ptr unsafe.Pointer, next_pointer unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, next_pointer)
 		gd.UnsafeSet(p_back, ret)
@@ -719,7 +699,6 @@ Adds additional data structures when the OpenXR instance is created.
 func (class) _set_instance_create_info_and_get_next_pointer(impl func(ptr unsafe.Pointer, next_pointer unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, next_pointer)
 		gd.UnsafeSet(p_back, ret)
@@ -732,7 +711,6 @@ Adds additional data structures when the OpenXR session is created.
 func (class) _set_session_create_and_get_next_pointer(impl func(ptr unsafe.Pointer, next_pointer unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, next_pointer)
 		gd.UnsafeSet(p_back, ret)
@@ -745,7 +723,6 @@ Adds additional data structures when creating OpenXR swapchains.
 func (class) _set_swapchain_create_info_and_get_next_pointer(impl func(ptr unsafe.Pointer, next_pointer unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, next_pointer)
 		gd.UnsafeSet(p_back, ret)
@@ -758,9 +735,7 @@ Adds additional data structures when each hand tracker is created.
 func (class) _set_hand_joint_locations_and_get_next_pointer(impl func(ptr unsafe.Pointer, hand_index int64, next_pointer unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var hand_index = gd.UnsafeGet[int64](p_args, 0)
-
 		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, hand_index, next_pointer)
 		gd.UnsafeSet(p_back, ret)
@@ -773,9 +748,7 @@ Adds additional data structures to the projection view of the given [param view_
 func (class) _set_projection_views_and_get_next_pointer(impl func(ptr unsafe.Pointer, view_index int64, next_pointer unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var view_index = gd.UnsafeGet[int64](p_args, 0)
-
 		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, view_index, next_pointer)
 		gd.UnsafeSet(p_back, ret)
@@ -801,7 +774,6 @@ This will only be called if the extension previously registered itself with [met
 func (class) _get_composition_layer(impl func(ptr unsafe.Pointer, index int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, index)
 		gd.UnsafeSet(p_back, ret)
@@ -815,7 +787,6 @@ This will only be called if the extension previously registered itself with [met
 func (class) _get_composition_layer_order(impl func(ptr unsafe.Pointer, index int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, index)
 		gd.UnsafeSet(p_back, ret)
@@ -865,7 +836,6 @@ Called right after the OpenXR instance is created.
 func (class) _on_instance_created(impl func(ptr unsafe.Pointer, instance int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var instance = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, instance)
 	}
@@ -887,7 +857,6 @@ Called right after the OpenXR session is created.
 func (class) _on_session_created(impl func(ptr unsafe.Pointer, session int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var session = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, session)
 	}
@@ -929,7 +898,6 @@ Called right before the given viewport is rendered.
 func (class) _on_pre_draw_viewport(impl func(ptr unsafe.Pointer, viewport RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var viewport = gd.UnsafeGet[RID.Any](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, viewport)
 	}
@@ -942,7 +910,6 @@ Called right after the given viewport is rendered.
 func (class) _on_post_draw_viewport(impl func(ptr unsafe.Pointer, viewport RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var viewport = gd.UnsafeGet[RID.Any](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, viewport)
 	}
@@ -1044,7 +1011,6 @@ Called when there is an OpenXR event to process. When implementing, return [code
 func (class) _on_event_polled(impl func(ptr unsafe.Pointer, event unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var event = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, event)
 		gd.UnsafeSet(p_back, ret)
@@ -1059,11 +1025,9 @@ Adds additional data structures to composition layers created by [OpenXRComposit
 func (class) _set_viewport_composition_layer_and_get_next_pointer(impl func(ptr unsafe.Pointer, layer unsafe.Pointer, property_values Dictionary.Any, next_pointer unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var layer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
-
 		var property_values = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
 		defer pointers.End(gd.InternalDictionary(property_values))
 		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, layer, property_values, next_pointer)
 		gd.UnsafeSet(p_back, ret)
@@ -1109,7 +1073,6 @@ Called when a composition layer created via [OpenXRCompositionLayer] is destroye
 func (class) _on_viewport_composition_layer_destroyed(impl func(ptr unsafe.Pointer, layer unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var layer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, layer)
 	}
@@ -1124,7 +1087,6 @@ func (class) _set_android_surface_swapchain_create_info_and_get_next_pointer(imp
 		var property_values = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalDictionary(property_values))
 		var next_pointer = gd.UnsafeGet[unsafe.Pointer](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, property_values, next_pointer)
 		gd.UnsafeSet(p_back, ret)

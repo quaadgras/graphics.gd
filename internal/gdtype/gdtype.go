@@ -67,6 +67,12 @@ func (name Name) Underlying() string {
 }
 
 func (name Name) ToUnderlying(val string) string {
+	if name == "Basis.XYZ" {
+		return fmt.Sprintf("Basis.Transposed(%v)", val)
+	}
+	if name == "Transform3D.BasisOrigin" {
+		return fmt.Sprintf("gd.Transposed(%v)", val)
+	}
 	if name.Underlying() != string(name) {
 		return fmt.Sprintf("%v.%v()", val, strings.TrimPrefix(name.Underlying(), "gd."))
 	}
@@ -197,6 +203,10 @@ func (name Name) LoadFromRawPointerValue(val string) string {
 		return fmt.Sprintf("variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](%s)))", val)
 	case "Error.Code":
 		return fmt.Sprintf("Error.Code(%s)", val)
+	case "Basis.XYZ":
+		return fmt.Sprintf("Basis.Transposed(%v)", val)
+	case "Transform3D.BasisOrigin":
+		return fmt.Sprintf("gd.Transposed(%v)", val)
 	default:
 		_, argIsPtr := name.IsPointer()
 		if name == "Object" {
@@ -210,7 +220,7 @@ func (name Name) LoadFromRawPointerValue(val string) string {
 		if argIsPtr {
 			return fmt.Sprintf("pointers.New[%v](%v)", name, val)
 		} else {
-			return fmt.Sprintf("%v\n", val)
+			return fmt.Sprintf("%v", val)
 		}
 	}
 }
@@ -269,6 +279,10 @@ func (name Name) LoadOntoCallFrame(val string) string {
 		return fmt.Sprintf("\tcallframe.Arg(frame, pointers.Get(gd.InternalVariant(%v)))\n", val)
 	case "Error.Code":
 		return fmt.Sprintf("\tcallframe.Arg(frame, int64(%v))\n", val)
+	case "Basis.XYZ":
+		return fmt.Sprintf("\tcallframe.Arg(frame, Basis.Transposed(%v))\n", val)
+	case "Transform3D.BasisOrigin":
+		return fmt.Sprintf("\tcallframe.Arg(frame, gd.Transposed(%v))\n", val)
 	case "Signal.Any":
 		return fmt.Sprintf("\tcallframe.Arg(frame, pointers.Get(gd.InternalSignal(%v)))\n", val)
 	case "Array.Any":

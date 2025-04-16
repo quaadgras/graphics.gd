@@ -142,7 +142,7 @@ func (self class) GetFrom() Transform3D.BasisOrigin { //gd:PhysicsTestMotionPara
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsTestMotionParameters3D.Bind_get_from, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -150,7 +150,7 @@ func (self class) GetFrom() Transform3D.BasisOrigin { //gd:PhysicsTestMotionPara
 //go:nosplit
 func (self class) SetFrom(from Transform3D.BasisOrigin) { //gd:PhysicsTestMotionParameters3D.set_from
 	var frame = callframe.New()
-	callframe.Arg(frame, from)
+	callframe.Arg(frame, gd.Transposed(from))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsTestMotionParameters3D.Bind_set_from, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

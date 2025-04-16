@@ -509,7 +509,7 @@ func (self Instance) SetVisibilityParent(value string) {
 //go:nosplit
 func (self class) SetTransform(local Transform3D.BasisOrigin) { //gd:Node3D.set_transform
 	var frame = callframe.New()
-	callframe.Arg(frame, local)
+	callframe.Arg(frame, gd.Transposed(local))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -520,7 +520,7 @@ func (self class) GetTransform() Transform3D.BasisOrigin { //gd:Node3D.get_trans
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -661,7 +661,7 @@ func (self class) GetQuaternion() Quaternion.IJKX { //gd:Node3D.get_quaternion
 //go:nosplit
 func (self class) SetBasis(basis Basis.XYZ) { //gd:Node3D.set_basis
 	var frame = callframe.New()
-	callframe.Arg(frame, basis)
+	callframe.Arg(frame, Basis.Transposed(basis))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_basis, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -672,7 +672,7 @@ func (self class) GetBasis() Basis.XYZ { //gd:Node3D.get_basis
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Basis.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_basis, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Basis.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -680,7 +680,7 @@ func (self class) GetBasis() Basis.XYZ { //gd:Node3D.get_basis
 //go:nosplit
 func (self class) SetGlobalTransform(global Transform3D.BasisOrigin) { //gd:Node3D.set_global_transform
 	var frame = callframe.New()
-	callframe.Arg(frame, global)
+	callframe.Arg(frame, gd.Transposed(global))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_global_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -691,7 +691,7 @@ func (self class) GetGlobalTransform() Transform3D.BasisOrigin { //gd:Node3D.get
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_global_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -706,7 +706,7 @@ func (self class) GetGlobalTransformInterpolated() Transform3D.BasisOrigin { //g
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_global_transform_interpolated, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -733,7 +733,7 @@ func (self class) GetGlobalPosition() Vector3.XYZ { //gd:Node3D.get_global_posit
 //go:nosplit
 func (self class) SetGlobalBasis(basis Basis.XYZ) { //gd:Node3D.set_global_basis
 	var frame = callframe.New()
-	callframe.Arg(frame, basis)
+	callframe.Arg(frame, Basis.Transposed(basis))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_global_basis, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -744,7 +744,7 @@ func (self class) GetGlobalBasis() Basis.XYZ { //gd:Node3D.get_global_basis
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Basis.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_global_basis, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Basis.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -957,7 +957,7 @@ func (self class) SetSubgizmoSelection(gizmo [1]gdclass.Node3DGizmo, id int64, t
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gizmo[0])[0])
 	callframe.Arg(frame, id)
-	callframe.Arg(frame, transform)
+	callframe.Arg(frame, gd.Transposed(transform))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_subgizmo_selection, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

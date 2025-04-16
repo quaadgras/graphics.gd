@@ -240,7 +240,6 @@ func (Instance) _get_diff(impl func(ptr unsafe.Pointer, identifier string, area 
 		var identifier = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(identifier))
 		var area = gd.UnsafeGet[int64](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, identifier.String(), int(area))
 		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](ret)))
@@ -285,7 +284,6 @@ Returns an [Array] of [Dictionary] items (see [method create_commit]), each cont
 func (Instance) _get_previous_commits(impl func(ptr unsafe.Pointer, max_commits int) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var max_commits = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(max_commits))
 		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](ret)))
@@ -428,7 +426,6 @@ func (Instance) _push(impl func(ptr unsafe.Pointer, remote string, force bool)) 
 		var remote = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(remote))
 		var force = gd.UnsafeGet[bool](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, remote.String(), force)
 	}
@@ -645,7 +642,6 @@ func (class) _get_diff(impl func(ptr unsafe.Pointer, identifier String.Readable,
 		var identifier = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(identifier))
 		var area = gd.UnsafeGet[int64](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, identifier, area)
 		ptr, ok := pointers.End(gd.InternalArray(ret))
@@ -690,7 +686,6 @@ Returns an [Array] of [Dictionary] items (see [method create_commit]), each cont
 func (class) _get_previous_commits(impl func(ptr unsafe.Pointer, max_commits int64) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var max_commits = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, max_commits)
 		ptr, ok := pointers.End(gd.InternalArray(ret))
@@ -833,7 +828,6 @@ func (class) _push(impl func(ptr unsafe.Pointer, remote String.Readable, force b
 		var remote = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(remote))
 		var force = gd.UnsafeGet[bool](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, remote, force)
 	}

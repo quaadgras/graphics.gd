@@ -5552,7 +5552,7 @@ func (self class) MultimeshInstanceSetTransform(multimesh RID.Any, index int64, 
 	var frame = callframe.New()
 	callframe.Arg(frame, multimesh)
 	callframe.Arg(frame, index)
-	callframe.Arg(frame, transform)
+	callframe.Arg(frame, gd.Transposed(transform))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_instance_set_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -5665,7 +5665,7 @@ func (self class) MultimeshInstanceGetTransform(multimesh RID.Any, index int64) 
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_instance_get_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -5933,7 +5933,7 @@ func (self class) SkeletonBoneSetTransform(skeleton RID.Any, bone int64, transfo
 	var frame = callframe.New()
 	callframe.Arg(frame, skeleton)
 	callframe.Arg(frame, bone)
-	callframe.Arg(frame, transform)
+	callframe.Arg(frame, gd.Transposed(transform))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_skeleton_bone_set_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -5949,7 +5949,7 @@ func (self class) SkeletonBoneGetTransform(skeleton RID.Any, bone int64) Transfo
 	callframe.Arg(frame, bone)
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_skeleton_bone_get_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -6704,7 +6704,7 @@ func (self class) VoxelGiCreate() RID.Any { //gd:RenderingServer.voxel_gi_create
 func (self class) VoxelGiAllocateData(voxel_gi RID.Any, to_cell_xform Transform3D.BasisOrigin, aabb AABB.PositionSize, octree_size Vector3i.XYZ, octree_cells Packed.Bytes, data_cells Packed.Bytes, distance_field Packed.Bytes, level_counts Packed.Array[int32]) { //gd:RenderingServer.voxel_gi_allocate_data
 	var frame = callframe.New()
 	callframe.Arg(frame, voxel_gi)
-	callframe.Arg(frame, to_cell_xform)
+	callframe.Arg(frame, gd.Transposed(to_cell_xform))
 	callframe.Arg(frame, aabb)
 	callframe.Arg(frame, octree_size)
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](octree_cells))))
@@ -6777,7 +6777,7 @@ func (self class) VoxelGiGetToCellXform(voxel_gi RID.Any) Transform3D.BasisOrigi
 	callframe.Arg(frame, voxel_gi)
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_voxel_gi_get_to_cell_xform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -7401,7 +7401,7 @@ Manually emits particles from the [param particles] instance.
 func (self class) ParticlesEmit(particles RID.Any, transform Transform3D.BasisOrigin, velocity Vector3.XYZ, color Color.RGBA, custom Color.RGBA, emit_flags int64) { //gd:RenderingServer.particles_emit
 	var frame = callframe.New()
 	callframe.Arg(frame, particles)
-	callframe.Arg(frame, transform)
+	callframe.Arg(frame, gd.Transposed(transform))
 	callframe.Arg(frame, velocity)
 	callframe.Arg(frame, color)
 	callframe.Arg(frame, custom)
@@ -7472,7 +7472,7 @@ Sets the [Transform3D] that will be used by the particles when they first emit.
 func (self class) ParticlesSetEmissionTransform(particles RID.Any, transform Transform3D.BasisOrigin) { //gd:RenderingServer.particles_set_emission_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, particles)
-	callframe.Arg(frame, transform)
+	callframe.Arg(frame, gd.Transposed(transform))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_particles_set_emission_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -7822,7 +7822,7 @@ Sets [Transform3D] of camera.
 func (self class) CameraSetTransform(camera RID.Any, transform Transform3D.BasisOrigin) { //gd:RenderingServer.camera_set_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, camera)
-	callframe.Arg(frame, transform)
+	callframe.Arg(frame, gd.Transposed(transform))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_camera_set_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -8861,7 +8861,7 @@ Sets the rotation of the background [Sky] expressed as a [Basis]. Equivalent to 
 func (self class) EnvironmentSetSkyOrientation(env RID.Any, orientation Basis.XYZ) { //gd:RenderingServer.environment_set_sky_orientation
 	var frame = callframe.New()
 	callframe.Arg(frame, env)
-	callframe.Arg(frame, orientation)
+	callframe.Arg(frame, Basis.Transposed(orientation))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_environment_set_sky_orientation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -9520,7 +9520,7 @@ Sets the world space transform of the instance. Equivalent to [member Node3D.glo
 func (self class) InstanceSetTransform(instance RID.Any, transform Transform3D.BasisOrigin) { //gd:RenderingServer.instance_set_transform
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
-	callframe.Arg(frame, transform)
+	callframe.Arg(frame, gd.Transposed(transform))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_instance_set_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

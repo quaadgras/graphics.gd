@@ -631,7 +631,7 @@ func (self class) SampleBakedWithRotation(offset float64, cubic bool, apply_tilt
 	callframe.Arg(frame, apply_tilt)
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_sample_baked_with_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }

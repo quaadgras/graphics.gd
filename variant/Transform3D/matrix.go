@@ -247,8 +247,8 @@ func Mul(a, b BasisOrigin) BasisOrigin { //gd:Transform3D*BasisOrigin
 
 func Transform(v Vector3.XYZ, t BasisOrigin) Vector3.XYZ { //gd:Transform3D*Vector3
 	return Vector3.XYZ{
-		Vector3.Dot(t.Basis.X, v) + t.Origin.X,
-		Vector3.Dot(t.Basis.Y, v) + t.Origin.Y,
-		Vector3.Dot(t.Basis.Z, v) + t.Origin.Z,
+		X: t.Basis.X.X*v.X + t.Basis.Y.X*v.Y + t.Basis.Z.X*v.Z + t.Origin.X,
+		Y: t.Basis.X.Y*v.X + t.Basis.Y.Y*v.Y + t.Basis.Z.Y*v.Z + t.Origin.Y,
+		Z: t.Basis.X.Z*v.X + t.Basis.Y.Z*v.Y + t.Basis.Z.Z*v.Z + t.Origin.Z,
 	}
 }

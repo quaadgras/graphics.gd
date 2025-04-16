@@ -146,9 +146,7 @@ func (Instance) _is_in_input_hotzone(impl func(ptr unsafe.Pointer, in_node Objec
 		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(in_node[0])
 		var in_port = gd.UnsafeGet[int64](p_args, 1)
-
 		var mouse_position = gd.UnsafeGet[Vector2.XY](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, in_node, int(in_port), mouse_position)
 		gd.UnsafeSet(p_back, ret)
@@ -174,9 +172,7 @@ func (Instance) _is_in_output_hotzone(impl func(ptr unsafe.Pointer, in_node Obje
 		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(in_node[0])
 		var in_port = gd.UnsafeGet[int64](p_args, 1)
-
 		var mouse_position = gd.UnsafeGet[Vector2.XY](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, in_node, int(in_port), mouse_position)
 		gd.UnsafeSet(p_back, ret)
@@ -189,9 +185,7 @@ Virtual method which can be overridden to customize how connections are drawn.
 func (Instance) _get_connection_line(impl func(ptr unsafe.Pointer, from_position Vector2.XY, to_position Vector2.XY) []Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
-
 		var to_position = gd.UnsafeGet[Vector2.XY](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, from_position, to_position)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](Packed.New(ret...)))
@@ -229,11 +223,9 @@ func (Instance) _is_node_hover_valid(impl func(ptr unsafe.Pointer, from_node str
 		var from_node = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(from_node))
 		var from_port = gd.UnsafeGet[int64](p_args, 1)
-
 		var to_node = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2)))))
 		defer pointers.End(gd.InternalStringName(to_node))
 		var to_port = gd.UnsafeGet[int64](p_args, 3)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, from_node.String(), int(from_port), to_node.String(), int(to_port))
 		gd.UnsafeSet(p_back, ret)
@@ -708,9 +700,7 @@ func (class) _is_in_input_hotzone(impl func(ptr unsafe.Pointer, in_node [1]gd.Ob
 		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(in_node[0])
 		var in_port = gd.UnsafeGet[int64](p_args, 1)
-
 		var mouse_position = gd.UnsafeGet[Vector2.XY](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, in_node, in_port, mouse_position)
 		gd.UnsafeSet(p_back, ret)
@@ -736,9 +726,7 @@ func (class) _is_in_output_hotzone(impl func(ptr unsafe.Pointer, in_node [1]gd.O
 		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 		defer pointers.End(in_node[0])
 		var in_port = gd.UnsafeGet[int64](p_args, 1)
-
 		var mouse_position = gd.UnsafeGet[Vector2.XY](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, in_node, in_port, mouse_position)
 		gd.UnsafeSet(p_back, ret)
@@ -751,9 +739,7 @@ Virtual method which can be overridden to customize how connections are drawn.
 func (class) _get_connection_line(impl func(ptr unsafe.Pointer, from_position Vector2.XY, to_position Vector2.XY) Packed.Array[Vector2.XY]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
-
 		var to_position = gd.UnsafeGet[Vector2.XY](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, from_position, to_position)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](ret))
@@ -791,11 +777,9 @@ func (class) _is_node_hover_valid(impl func(ptr unsafe.Pointer, from_node String
 		var from_node = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(from_node))
 		var from_port = gd.UnsafeGet[int64](p_args, 1)
-
 		var to_node = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2)))))
 		defer pointers.End(gd.InternalStringName(to_node))
 		var to_port = gd.UnsafeGet[int64](p_args, 3)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, from_node, from_port, to_node, to_port)
 		gd.UnsafeSet(p_back, ret)

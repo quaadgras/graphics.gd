@@ -243,7 +243,7 @@ func (self class) GetWorldOrigin() Transform3D.BasisOrigin { //gd:XRServer.get_w
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_world_origin, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -251,7 +251,7 @@ func (self class) GetWorldOrigin() Transform3D.BasisOrigin { //gd:XRServer.get_w
 //go:nosplit
 func (self class) SetWorldOrigin(world_origin Transform3D.BasisOrigin) { //gd:XRServer.set_world_origin
 	var frame = callframe.New()
-	callframe.Arg(frame, world_origin)
+	callframe.Arg(frame, gd.Transposed(world_origin))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_set_world_origin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -265,7 +265,7 @@ func (self class) GetReferenceFrame() Transform3D.BasisOrigin { //gd:XRServer.ge
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_reference_frame, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -307,7 +307,7 @@ func (self class) GetHmdTransform() Transform3D.BasisOrigin { //gd:XRServer.get_
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_hmd_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }

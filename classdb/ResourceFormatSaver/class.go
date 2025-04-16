@@ -96,7 +96,6 @@ func (Instance) _save(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
 		defer pointers.End(gd.InternalString(path))
 		var flags = gd.UnsafeGet[int64](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, resource, path.String(), int(flags))
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
@@ -116,7 +115,6 @@ func (Instance) _set_uid(impl func(ptr unsafe.Pointer, path string, uid int) err
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		var uid = gd.UnsafeGet[int64](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String(), int(uid))
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
@@ -209,7 +207,6 @@ func (class) _save(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource, p
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
 		defer pointers.End(gd.InternalString(path))
 		var flags = gd.UnsafeGet[int64](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, resource, path, flags)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
@@ -229,7 +226,6 @@ func (class) _set_uid(impl func(ptr unsafe.Pointer, path String.Readable, uid in
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		var uid = gd.UnsafeGet[int64](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path, uid)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)

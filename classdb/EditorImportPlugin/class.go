@@ -309,7 +309,6 @@ Gets the name of the options preset at this index.
 func (Instance) _get_preset_name(impl func(ptr unsafe.Pointer, preset_index int) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var preset_index = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(preset_index))
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
@@ -345,7 +344,6 @@ func (Instance) _get_import_options(impl func(ptr unsafe.Pointer, path string, p
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		var preset_index = gd.UnsafeGet[int64](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path.String(), int(preset_index))
 		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](ret)))
@@ -588,7 +586,6 @@ Gets the name of the options preset at this index.
 func (class) _get_preset_name(impl func(ptr unsafe.Pointer, preset_index int64) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var preset_index = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, preset_index)
 		ptr, ok := pointers.End(gd.InternalString(ret))
@@ -624,7 +621,6 @@ func (class) _get_import_options(impl func(ptr unsafe.Pointer, path String.Reada
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		var preset_index = gd.UnsafeGet[int64](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, path, preset_index)
 		ptr, ok := pointers.End(gd.InternalArray(ret))

@@ -331,11 +331,11 @@ Correct the [param transform]. [param rotation_mode] implicitly specifies how po
 //go:nosplit
 func (self class) CorrectPosture(transform Transform3D.BasisOrigin, rotation_mode gdclass.PathFollow3DRotationMode) Transform3D.BasisOrigin { //gd:PathFollow3D.correct_posture
 	var frame = callframe.New()
-	callframe.Arg(frame, transform)
+	callframe.Arg(frame, gd.Transposed(transform))
 	callframe.Arg(frame, rotation_mode)
 	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow3D.Bind_correct_posture, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = gd.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }

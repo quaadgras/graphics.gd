@@ -83,13 +83,10 @@ func (Instance) _post_process_key_value(impl func(ptr unsafe.Pointer, animation 
 
 		defer pointers.End(animation[0])
 		var track = gd.UnsafeGet[int64](p_args, 1)
-
 		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))))
 		defer pointers.End(gd.InternalVariant(value))
 		var object_id = gd.UnsafeGet[int64](p_args, 3)
-
 		var object_sub_idx = gd.UnsafeGet[int64](p_args, 4)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, animation, int(track), value.Interface(), int(object_id), int(object_sub_idx))
 		ptr, ok := pointers.End(gd.InternalVariant(variant.New(ret)))
@@ -500,13 +497,10 @@ func (class) _post_process_key_value(impl func(ptr unsafe.Pointer, animation [1]
 
 		defer pointers.End(animation[0])
 		var track = gd.UnsafeGet[int64](p_args, 1)
-
 		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[[3]uint64](p_args, 2))))
 		defer pointers.End(gd.InternalVariant(value))
 		var object_id = gd.UnsafeGet[int64](p_args, 3)
-
 		var object_sub_idx = gd.UnsafeGet[int64](p_args, 4)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, animation, track, value, object_id, object_sub_idx)
 		ptr, ok := pointers.End(gd.InternalVariant(ret))

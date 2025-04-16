@@ -660,7 +660,7 @@ func (self class) GetCellItemBasis(position Vector3i.XYZ) Basis.XYZ { //gd:GridM
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Ret[Basis.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMap.Bind_get_cell_item_basis, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Basis.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -674,7 +674,7 @@ func (self class) GetBasisWithOrthogonalIndex(index int64) Basis.XYZ { //gd:Grid
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[Basis.XYZ](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMap.Bind_get_basis_with_orthogonal_index, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
+	var ret = Basis.Transposed(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -685,7 +685,7 @@ This function considers a discretization of rotations into 24 points on unit sph
 //go:nosplit
 func (self class) GetOrthogonalIndexFromBasis(basis Basis.XYZ) int64 { //gd:GridMap.get_orthogonal_index_from_basis
 	var frame = callframe.New()
-	callframe.Arg(frame, basis)
+	callframe.Arg(frame, Basis.Transposed(basis))
 	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GridMap.Bind_get_orthogonal_index_from_basis, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

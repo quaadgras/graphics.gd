@@ -100,7 +100,6 @@ func (Instance) _input_event(impl func(ptr unsafe.Pointer, viewport [1]gdclass.V
 
 		defer pointers.End(event[0])
 		var shape_idx = gd.UnsafeGet[int64](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, viewport, event, int(shape_idx))
 	}
@@ -132,7 +131,6 @@ Called when the mouse pointer enters any of this object's shapes or moves from o
 func (Instance) _mouse_shape_enter(impl func(ptr unsafe.Pointer, shape_idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shape_idx = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(shape_idx))
 	}
@@ -144,7 +142,6 @@ Called when the mouse pointer exits any of this object's shapes. [param shape_id
 func (Instance) _mouse_shape_exit(impl func(ptr unsafe.Pointer, shape_idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shape_idx = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, int(shape_idx))
 	}
@@ -389,7 +386,6 @@ func (class) _input_event(impl func(ptr unsafe.Pointer, viewport [1]gdclass.View
 
 		defer pointers.End(event[0])
 		var shape_idx = gd.UnsafeGet[int64](p_args, 2)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, viewport, event, shape_idx)
 	}
@@ -421,7 +417,6 @@ Called when the mouse pointer enters any of this object's shapes or moves from o
 func (class) _mouse_shape_enter(impl func(ptr unsafe.Pointer, shape_idx int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shape_idx = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, shape_idx)
 	}
@@ -433,7 +428,6 @@ Called when the mouse pointer exits any of this object's shapes. [param shape_id
 func (class) _mouse_shape_exit(impl func(ptr unsafe.Pointer, shape_idx int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shape_idx = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, shape_idx)
 	}

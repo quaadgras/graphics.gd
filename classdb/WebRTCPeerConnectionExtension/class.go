@@ -185,7 +185,6 @@ func (Instance) _add_ice_candidate(impl func(ptr unsafe.Pointer, p_sdp_mid_name 
 		var p_sdp_mid_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(p_sdp_mid_name))
 		var p_sdp_mline_index = gd.UnsafeGet[int64](p_args, 1)
-
 		var p_sdp_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalString(p_sdp_name))
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -344,7 +343,6 @@ func (class) _add_ice_candidate(impl func(ptr unsafe.Pointer, p_sdp_mid_name Str
 		var p_sdp_mid_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(p_sdp_mid_name))
 		var p_sdp_mline_index = gd.UnsafeGet[int64](p_args, 1)
-
 		var p_sdp_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalString(p_sdp_name))
 		self := reflect.ValueOf(class).UnsafePointer()

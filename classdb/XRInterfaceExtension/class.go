@@ -253,7 +253,6 @@ Returns [code]true[/code] if this interface supports this play area mode.
 func (Instance) _supports_play_area_mode(impl func(ptr unsafe.Pointer, mode gdclass.XRInterfacePlayAreaMode) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var mode = gd.UnsafeGet[gdclass.XRInterfacePlayAreaMode](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, mode)
 		gd.UnsafeSet(p_back, ret)
@@ -277,7 +276,6 @@ Set the play area mode for this interface.
 func (Instance) _set_play_area_mode(impl func(ptr unsafe.Pointer, mode gdclass.XRInterfacePlayAreaMode) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var mode = gd.UnsafeGet[gdclass.XRInterfacePlayAreaMode](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, mode)
 		gd.UnsafeSet(p_back, ret)
@@ -329,7 +327,7 @@ func (Instance) _get_camera_transform(impl func(ptr unsafe.Pointer) Transform3D.
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, Transform3D.BasisOrigin(ret))
+		gd.UnsafeSet(p_back, gd.Transposed(Transform3D.BasisOrigin(ret)))
 	}
 }
 
@@ -339,12 +337,10 @@ Returns a [Transform3D] for a given view.
 func (Instance) _get_transform_for_view(impl func(ptr unsafe.Pointer, view int, cam_transform Transform3D.BasisOrigin) Transform3D.BasisOrigin) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var view = gd.UnsafeGet[int64](p_args, 0)
-
-		var cam_transform = gd.UnsafeGet[Transform3D.BasisOrigin](p_args, 1)
-
+		var cam_transform = gd.Transposed(gd.UnsafeGet[Transform3D.BasisOrigin](p_args, 1))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(view), cam_transform)
-		gd.UnsafeSet(p_back, Transform3D.BasisOrigin(ret))
+		gd.UnsafeSet(p_back, gd.Transposed(Transform3D.BasisOrigin(ret)))
 	}
 }
 
@@ -354,13 +350,9 @@ Returns the projection matrix for the given view as a [PackedFloat64Array].
 func (Instance) _get_projection_for_view(impl func(ptr unsafe.Pointer, view int, aspect Float.X, z_near Float.X, z_far Float.X) []float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var view = gd.UnsafeGet[int64](p_args, 0)
-
 		var aspect = gd.UnsafeGet[float64](p_args, 1)
-
 		var z_near = gd.UnsafeGet[float64](p_args, 2)
-
 		var z_far = gd.UnsafeGet[float64](p_args, 3)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(view), Float.X(aspect), Float.X(z_near), Float.X(z_far))
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedFloat64Array, float64](Packed.New(ret...)))
@@ -405,7 +397,6 @@ Called if this is our primary [XRInterfaceExtension] before we start processing 
 func (Instance) _pre_draw_viewport(impl func(ptr unsafe.Pointer, render_target RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var render_target = gd.UnsafeGet[RID.Any](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, render_target)
 		gd.UnsafeSet(p_back, ret)
@@ -418,9 +409,7 @@ Called after the XR [Viewport] draw logic has completed.
 func (Instance) _post_draw_viewport(impl func(ptr unsafe.Pointer, render_target RID.Any, screen_rect Rect2.PositionSize)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var render_target = gd.UnsafeGet[RID.Any](p_args, 0)
-
 		var screen_rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, render_target, screen_rect)
 	}
@@ -491,13 +480,9 @@ func (Instance) _trigger_haptic_pulse(impl func(ptr unsafe.Pointer, action_name 
 		var tracker_name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1)))))
 		defer pointers.End(gd.InternalStringName(tracker_name))
 		var frequency = gd.UnsafeGet[float64](p_args, 2)
-
 		var amplitude = gd.UnsafeGet[float64](p_args, 3)
-
 		var duration_sec = gd.UnsafeGet[float64](p_args, 4)
-
 		var delay_sec = gd.UnsafeGet[float64](p_args, 5)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, action_name.String(), tracker_name.String(), Float.X(frequency), Float.X(amplitude), Float.X(duration_sec), Float.X(delay_sec))
 	}
@@ -520,7 +505,6 @@ Enables anchor detection on this interface if supported.
 func (Instance) _set_anchor_detection_is_enabled(impl func(ptr unsafe.Pointer, enabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var enabled = gd.UnsafeGet[bool](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, enabled)
 	}
@@ -693,7 +677,6 @@ Returns [code]true[/code] if this interface supports this play area mode.
 func (class) _supports_play_area_mode(impl func(ptr unsafe.Pointer, mode gdclass.XRInterfacePlayAreaMode) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var mode = gd.UnsafeGet[gdclass.XRInterfacePlayAreaMode](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, mode)
 		gd.UnsafeSet(p_back, ret)
@@ -717,7 +700,6 @@ Set the play area mode for this interface.
 func (class) _set_play_area_mode(impl func(ptr unsafe.Pointer, mode gdclass.XRInterfacePlayAreaMode) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var mode = gd.UnsafeGet[gdclass.XRInterfacePlayAreaMode](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, mode)
 		gd.UnsafeSet(p_back, ret)
@@ -769,7 +751,7 @@ func (class) _get_camera_transform(impl func(ptr unsafe.Pointer) Transform3D.Bas
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.Transposed(ret))
 	}
 }
 
@@ -779,12 +761,10 @@ Returns a [Transform3D] for a given view.
 func (class) _get_transform_for_view(impl func(ptr unsafe.Pointer, view int64, cam_transform Transform3D.BasisOrigin) Transform3D.BasisOrigin) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var view = gd.UnsafeGet[int64](p_args, 0)
-
-		var cam_transform = gd.UnsafeGet[Transform3D.BasisOrigin](p_args, 1)
-
+		var cam_transform = gd.Transposed(gd.UnsafeGet[Transform3D.BasisOrigin](p_args, 1))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, view, cam_transform)
-		gd.UnsafeSet(p_back, ret)
+		gd.UnsafeSet(p_back, gd.Transposed(ret))
 	}
 }
 
@@ -794,13 +774,9 @@ Returns the projection matrix for the given view as a [PackedFloat64Array].
 func (class) _get_projection_for_view(impl func(ptr unsafe.Pointer, view int64, aspect float64, z_near float64, z_far float64) Packed.Array[float64]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var view = gd.UnsafeGet[int64](p_args, 0)
-
 		var aspect = gd.UnsafeGet[float64](p_args, 1)
-
 		var z_near = gd.UnsafeGet[float64](p_args, 2)
-
 		var z_far = gd.UnsafeGet[float64](p_args, 3)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, view, aspect, z_near, z_far)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedFloat64Array, float64](ret))
@@ -846,7 +822,6 @@ Called if this is our primary [XRInterfaceExtension] before we start processing 
 func (class) _pre_draw_viewport(impl func(ptr unsafe.Pointer, render_target RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var render_target = gd.UnsafeGet[RID.Any](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, render_target)
 		gd.UnsafeSet(p_back, ret)
@@ -859,9 +834,7 @@ Called after the XR [Viewport] draw logic has completed.
 func (class) _post_draw_viewport(impl func(ptr unsafe.Pointer, render_target RID.Any, screen_rect Rect2.PositionSize)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var render_target = gd.UnsafeGet[RID.Any](p_args, 0)
-
 		var screen_rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, render_target, screen_rect)
 	}
@@ -932,13 +905,9 @@ func (class) _trigger_haptic_pulse(impl func(ptr unsafe.Pointer, action_name Str
 		var tracker_name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1)))))
 		defer pointers.End(gd.InternalStringName(tracker_name))
 		var frequency = gd.UnsafeGet[float64](p_args, 2)
-
 		var amplitude = gd.UnsafeGet[float64](p_args, 3)
-
 		var duration_sec = gd.UnsafeGet[float64](p_args, 4)
-
 		var delay_sec = gd.UnsafeGet[float64](p_args, 5)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, action_name, tracker_name, frequency, amplitude, duration_sec, delay_sec)
 	}
@@ -961,7 +930,6 @@ Enables anchor detection on this interface if supported.
 func (class) _set_anchor_detection_is_enabled(impl func(ptr unsafe.Pointer, enabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var enabled = gd.UnsafeGet[bool](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, enabled)
 	}

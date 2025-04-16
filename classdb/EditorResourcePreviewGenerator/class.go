@@ -117,7 +117,6 @@ func (Instance) _generate(impl func(ptr unsafe.Pointer, resource [1]gdclass.Reso
 
 		defer pointers.End(resource[0])
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
-
 		var metadata = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalDictionary(metadata))
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -142,7 +141,6 @@ func (Instance) _generate_from_path(impl func(ptr unsafe.Pointer, path string, s
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
-
 		var metadata = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalDictionary(metadata))
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -224,7 +222,6 @@ func (class) _generate(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resourc
 
 		defer pointers.End(resource[0])
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
-
 		var metadata = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalDictionary(metadata))
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -249,7 +246,6 @@ func (class) _generate_from_path(impl func(ptr unsafe.Pointer, path String.Reada
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
-
 		var metadata = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalDictionary(metadata))
 		self := reflect.ValueOf(class).UnsafePointer()

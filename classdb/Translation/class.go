@@ -84,7 +84,6 @@ func (Instance) _get_plural_message(impl func(ptr unsafe.Pointer, src_message st
 		var src_plural_message = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1)))))
 		defer pointers.End(gd.InternalStringName(src_plural_message))
 		var n = gd.UnsafeGet[int64](p_args, 2)
-
 		var context = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 3)))))
 		defer pointers.End(gd.InternalStringName(context))
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -252,7 +251,6 @@ func (class) _get_plural_message(impl func(ptr unsafe.Pointer, src_message Strin
 		var src_plural_message = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1)))))
 		defer pointers.End(gd.InternalStringName(src_plural_message))
 		var n = gd.UnsafeGet[int64](p_args, 2)
-
 		var context = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 3)))))
 		defer pointers.End(gd.InternalStringName(context))
 		self := reflect.ValueOf(class).UnsafePointer()

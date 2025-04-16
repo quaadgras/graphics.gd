@@ -191,13 +191,9 @@ This function should return the delta.
 func (Instance) _process(impl func(ptr unsafe.Pointer, time Float.X, seek bool, is_external_seeking bool, test_only bool) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var time = gd.UnsafeGet[float64](p_args, 0)
-
 		var seek = gd.UnsafeGet[bool](p_args, 1)
-
 		var is_external_seeking = gd.UnsafeGet[bool](p_args, 2)
-
 		var test_only = gd.UnsafeGet[bool](p_args, 3)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, Float.X(time), seek, is_external_seeking, test_only)
 		gd.UnsafeSet(p_back, float64(ret))
@@ -476,13 +472,9 @@ This function should return the delta.
 func (class) _process(impl func(ptr unsafe.Pointer, time float64, seek bool, is_external_seeking bool, test_only bool) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var time = gd.UnsafeGet[float64](p_args, 0)
-
 		var seek = gd.UnsafeGet[bool](p_args, 1)
-
 		var is_external_seeking = gd.UnsafeGet[bool](p_args, 2)
-
 		var test_only = gd.UnsafeGet[bool](p_args, 3)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, time, seek, is_external_seeking, test_only)
 		gd.UnsafeSet(p_back, ret)

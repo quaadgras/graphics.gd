@@ -253,7 +253,6 @@ Defining this method is [b]optional[/b], but recommended. If not overridden, inp
 func (Instance) _get_input_port_type(impl func(ptr unsafe.Pointer, port int) gdclass.VisualShaderNodePortType) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var port = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(port))
 		gd.UnsafeSet(p_back, ret)
@@ -267,7 +266,6 @@ Defining this method is [b]optional[/b], but recommended. If not overridden, inp
 func (Instance) _get_input_port_name(impl func(ptr unsafe.Pointer, port int) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var port = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(port))
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
@@ -286,7 +284,6 @@ Defining this method is [b]required[/b]. If not overridden, the node has no defa
 func (Instance) _get_input_port_default_value(impl func(ptr unsafe.Pointer, port int) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var port = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(port))
 		ptr, ok := pointers.End(gd.InternalVariant(variant.New(ret)))
@@ -305,7 +302,6 @@ Defining this method is [b]optional[/b]. If not overridden, the connection will 
 func (Instance) _get_default_input_port(impl func(ptr unsafe.Pointer, atype gdclass.VisualShaderNodePortType) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var atype = gd.UnsafeGet[gdclass.VisualShaderNodePortType](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, atype)
 		gd.UnsafeSet(p_back, int64(ret))
@@ -331,7 +327,6 @@ Defining this method is [b]optional[/b], but recommended. If not overridden, out
 func (Instance) _get_output_port_type(impl func(ptr unsafe.Pointer, port int) gdclass.VisualShaderNodePortType) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var port = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(port))
 		gd.UnsafeSet(p_back, ret)
@@ -345,7 +340,6 @@ Defining this method is [b]optional[/b], but recommended. If not overridden, out
 func (Instance) _get_output_port_name(impl func(ptr unsafe.Pointer, port int) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var port = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(port))
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
@@ -376,7 +370,6 @@ Defining this method is [b]optional[/b].
 func (Instance) _get_property_name(impl func(ptr unsafe.Pointer, index int) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(index))
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
@@ -395,7 +388,6 @@ Defining this method is [b]optional[/b].
 func (Instance) _get_property_default_index(impl func(ptr unsafe.Pointer, index int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(index))
 		gd.UnsafeSet(p_back, int64(ret))
@@ -409,7 +401,6 @@ Defining this method is [b]optional[/b].
 func (Instance) _get_property_options(impl func(ptr unsafe.Pointer, index int) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, int(index))
 		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
@@ -435,9 +426,7 @@ func (Instance) _get_code(impl func(ptr unsafe.Pointer, input_vars []string, out
 		var output_vars = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
 		defer pointers.End(gd.InternalArray(output_vars))
 		var mode = gd.UnsafeGet[gdclass.ShaderMode](p_args, 2)
-
 		var atype = gd.UnsafeGet[gdclass.VisualShaderType](p_args, 3)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, gd.ArrayAs[[]string](gd.InternalArray(input_vars)), gd.ArrayAs[[]string](gd.InternalArray(output_vars)), mode, atype)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
@@ -458,9 +447,7 @@ Defining this method is [b]optional[/b].
 func (Instance) _get_func_code(impl func(ptr unsafe.Pointer, mode gdclass.ShaderMode, atype gdclass.VisualShaderType) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var mode = gd.UnsafeGet[gdclass.ShaderMode](p_args, 0)
-
 		var atype = gd.UnsafeGet[gdclass.VisualShaderType](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, mode, atype)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
@@ -481,7 +468,6 @@ Defining this method is [b]optional[/b].
 func (Instance) _get_global_code(impl func(ptr unsafe.Pointer, mode gdclass.ShaderMode) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var mode = gd.UnsafeGet[gdclass.ShaderMode](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, mode)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
@@ -512,9 +498,7 @@ Defining this method is [b]optional[/b]. If not overridden, it's [code]true[/cod
 func (Instance) _is_available(impl func(ptr unsafe.Pointer, mode gdclass.ShaderMode, atype gdclass.VisualShaderType) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var mode = gd.UnsafeGet[gdclass.ShaderMode](p_args, 0)
-
 		var atype = gd.UnsafeGet[gdclass.VisualShaderType](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, mode, atype)
 		gd.UnsafeSet(p_back, ret)
@@ -629,7 +613,6 @@ Defining this method is [b]optional[/b], but recommended. If not overridden, inp
 func (class) _get_input_port_type(impl func(ptr unsafe.Pointer, port int64) gdclass.VisualShaderNodePortType) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var port = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, port)
 		gd.UnsafeSet(p_back, ret)
@@ -643,7 +626,6 @@ Defining this method is [b]optional[/b], but recommended. If not overridden, inp
 func (class) _get_input_port_name(impl func(ptr unsafe.Pointer, port int64) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var port = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, port)
 		ptr, ok := pointers.End(gd.InternalString(ret))
@@ -662,7 +644,6 @@ Defining this method is [b]required[/b]. If not overridden, the node has no defa
 func (class) _get_input_port_default_value(impl func(ptr unsafe.Pointer, port int64) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var port = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, port)
 		ptr, ok := pointers.End(gd.InternalVariant(ret))
@@ -681,7 +662,6 @@ Defining this method is [b]optional[/b]. If not overridden, the connection will 
 func (class) _get_default_input_port(impl func(ptr unsafe.Pointer, atype gdclass.VisualShaderNodePortType) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var atype = gd.UnsafeGet[gdclass.VisualShaderNodePortType](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, atype)
 		gd.UnsafeSet(p_back, ret)
@@ -707,7 +687,6 @@ Defining this method is [b]optional[/b], but recommended. If not overridden, out
 func (class) _get_output_port_type(impl func(ptr unsafe.Pointer, port int64) gdclass.VisualShaderNodePortType) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var port = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, port)
 		gd.UnsafeSet(p_back, ret)
@@ -721,7 +700,6 @@ Defining this method is [b]optional[/b], but recommended. If not overridden, out
 func (class) _get_output_port_name(impl func(ptr unsafe.Pointer, port int64) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var port = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, port)
 		ptr, ok := pointers.End(gd.InternalString(ret))
@@ -752,7 +730,6 @@ Defining this method is [b]optional[/b].
 func (class) _get_property_name(impl func(ptr unsafe.Pointer, index int64) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, index)
 		ptr, ok := pointers.End(gd.InternalString(ret))
@@ -771,7 +748,6 @@ Defining this method is [b]optional[/b].
 func (class) _get_property_default_index(impl func(ptr unsafe.Pointer, index int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, index)
 		gd.UnsafeSet(p_back, ret)
@@ -785,7 +761,6 @@ Defining this method is [b]optional[/b].
 func (class) _get_property_options(impl func(ptr unsafe.Pointer, index int64) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[int64](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, index)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
@@ -811,9 +786,7 @@ func (class) _get_code(impl func(ptr unsafe.Pointer, input_vars Array.Contains[S
 		var output_vars = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
 		defer pointers.End(gd.InternalArray(output_vars))
 		var mode = gd.UnsafeGet[gdclass.ShaderMode](p_args, 2)
-
 		var atype = gd.UnsafeGet[gdclass.VisualShaderType](p_args, 3)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, input_vars, output_vars, mode, atype)
 		ptr, ok := pointers.End(gd.InternalString(ret))
@@ -834,9 +807,7 @@ Defining this method is [b]optional[/b].
 func (class) _get_func_code(impl func(ptr unsafe.Pointer, mode gdclass.ShaderMode, atype gdclass.VisualShaderType) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var mode = gd.UnsafeGet[gdclass.ShaderMode](p_args, 0)
-
 		var atype = gd.UnsafeGet[gdclass.VisualShaderType](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, mode, atype)
 		ptr, ok := pointers.End(gd.InternalString(ret))
@@ -857,7 +828,6 @@ Defining this method is [b]optional[/b].
 func (class) _get_global_code(impl func(ptr unsafe.Pointer, mode gdclass.ShaderMode) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var mode = gd.UnsafeGet[gdclass.ShaderMode](p_args, 0)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, mode)
 		ptr, ok := pointers.End(gd.InternalString(ret))
@@ -888,9 +858,7 @@ Defining this method is [b]optional[/b]. If not overridden, it's [code]true[/cod
 func (class) _is_available(impl func(ptr unsafe.Pointer, mode gdclass.ShaderMode, atype gdclass.VisualShaderType) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var mode = gd.UnsafeGet[gdclass.ShaderMode](p_args, 0)
-
 		var atype = gd.UnsafeGet[gdclass.VisualShaderType](p_args, 1)
-
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, mode, atype)
 		gd.UnsafeSet(p_back, ret)

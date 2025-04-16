@@ -265,7 +265,7 @@ Adds the geometry data of a [Mesh] resource to the navigation mesh baking data. 
 func (self class) AddMesh(mesh [1]gdclass.Mesh, xform Transform3D.BasisOrigin) { //gd:NavigationMeshSourceGeometryData3D.add_mesh
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(mesh[0])[0])
-	callframe.Arg(frame, xform)
+	callframe.Arg(frame, gd.Transposed(xform))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshSourceGeometryData3D.Bind_add_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -278,7 +278,7 @@ Adds an [Array] the size of [constant Mesh.ARRAY_MAX] and with vertices at index
 func (self class) AddMeshArray(mesh_array Array.Any, xform Transform3D.BasisOrigin) { //gd:NavigationMeshSourceGeometryData3D.add_mesh_array
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(mesh_array)))
-	callframe.Arg(frame, xform)
+	callframe.Arg(frame, gd.Transposed(xform))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshSourceGeometryData3D.Bind_add_mesh_array, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -291,7 +291,7 @@ Adds an array of vertex positions to the geometry data for navigation mesh bakin
 func (self class) AddFaces(faces Packed.Array[Vector3.XYZ], xform Transform3D.BasisOrigin) { //gd:NavigationMeshSourceGeometryData3D.add_faces
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](faces)))
-	callframe.Arg(frame, xform)
+	callframe.Arg(frame, gd.Transposed(xform))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshSourceGeometryData3D.Bind_add_faces, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
