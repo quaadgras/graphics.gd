@@ -473,6 +473,9 @@ func Pin[T Generic[T, P], P Size](ptr T) T {
 		revision revision
 		checksum P
 	})(ptr)
+	if (p.revision == 0 && p.sentinal == 0) || p.revision.isPinned() {
+		return ptr
+	}
 	if p.revision == 0 {
 		panic("cannot pin a nil pointer")
 	}
