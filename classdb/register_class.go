@@ -538,6 +538,8 @@ func (instance *instanceImplementation) ToString() (gd.String, bool) {
 	switch onfree := instance.Value.(type) {
 	case interface{ ToString() string }:
 		return gd.NewString(onfree.ToString()), true
+	case interface{ String() string }:
+		return gd.NewString(onfree.String()), true
 	}
 	return gd.String{}, false
 }
