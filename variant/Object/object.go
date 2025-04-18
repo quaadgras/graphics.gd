@@ -13,13 +13,11 @@ import (
 )
 
 // ID uniquely and opaquely identifies an Object instance.
-type ID struct {
-	int64
-}
+type ID int64
 
 // Instance returns the Object instance identified by this ID.
 func (id ID) Instance() Instance {
-	return Instance(gd.Global.Object.GetInstanceFromID(gd.ObjectID(id.int64)))
+	return Instance(gd.Global.Object.GetInstanceFromID(gd.ObjectID(id)))
 }
 
 /*
@@ -92,7 +90,7 @@ func (obj Instance) CanTranslateMessages() bool {
 // ID returns the object's unique instance ID. This ID can be saved in EncodedObjectAsID, and can be used
 // to retrieve this object instance with [ID.Instance].
 func (obj Instance) ID() ID {
-	return ID{int64(obj[0].GetInstanceId())}
+	return ID(obj[0].GetInstanceId())
 }
 
 // ScriptInstance returns the object's Script instance, or false if no script is attached.
