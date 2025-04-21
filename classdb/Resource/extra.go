@@ -69,6 +69,9 @@ func Load[T Any, P string | Path.ToResource](path_to_resource P) T {
 		return placeholder
 	}
 	resource := Instance(ResourceLoader.Load(path.String(), ""))
+	if resource == (Instance{}) {
+		return [1]T{}[0]
+	}
 	result, ok := as[T](resource)
 	if !ok {
 		panic("Resource \"" + path.String() + "\" is " + resource.AsObject()[0].GetClass().String() + " not " + reflect.TypeFor[T]().String())
