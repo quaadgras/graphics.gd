@@ -36,16 +36,40 @@ func New(val any) Any {
 	rvalue := reflect.ValueOf(val)
 	rtype := rvalue.Type()
 	switch rtype.Kind() {
-	case reflect.Int16, reflect.Int32, reflect.Int64, reflect.Int:
+	case reflect.Int16:
+		*(*int16)(unsafe.Pointer(&local)) = int16(rvalue.Int())
+		return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
+	case reflect.Int32:
+		*(*int32)(unsafe.Pointer(&local)) = int32(rvalue.Int())
+		return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
+	case reflect.Int64:
 		*(*int64)(unsafe.Pointer(&local)) = rvalue.Int()
 		return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
-	case reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uint:
+	case reflect.Int:
+		*(*int)(unsafe.Pointer(&local)) = int(rvalue.Int())
+		return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
+	case reflect.Uint16:
+		*(*uint16)(unsafe.Pointer(&local)) = uint16(rvalue.Uint())
+		return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
+	case reflect.Uint32:
+		*(*uint32)(unsafe.Pointer(&local)) = uint32(rvalue.Uint())
+		return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
+	case reflect.Uint64:
 		*(*uint64)(unsafe.Pointer(&local)) = rvalue.Uint()
 		return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
-	case reflect.Float32, reflect.Float64:
+	case reflect.Uint:
+		*(*uint)(unsafe.Pointer(&local)) = uint(rvalue.Uint())
+		return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
+	case reflect.Float32:
+		*(*float32)(unsafe.Pointer(&local)) = float32(rvalue.Float())
+		return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
+	case reflect.Float64:
 		*(*float64)(unsafe.Pointer(&local)) = rvalue.Float()
 		return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
-	case reflect.Complex64, reflect.Complex128:
+	case reflect.Complex64:
+		*(*complex64)(unsafe.Pointer(&local)) = complex64(rvalue.Complex())
+		return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
+	case reflect.Complex128:
 		*(*complex128)(unsafe.Pointer(&local)) = rvalue.Complex()
 		return Any{value: reflect.Zero(reflect.PointerTo(rtype)).Interface(), local: local}
 	case reflect.String:

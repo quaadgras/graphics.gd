@@ -296,7 +296,7 @@ func (a Any) toString() string {
 }
 
 // Interface returns the value of the variant as an interface{}.
-func (a Any) Interface() interface{} {
+func (a Any) Interface() any {
 	if a == Nil {
 		return nil
 	}
