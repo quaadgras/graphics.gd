@@ -12,8 +12,11 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/InputEvent"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node2D"
+import "graphics.gd/classdb/Shape2D"
+import "graphics.gd/classdb/Viewport"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -65,7 +68,7 @@ type Any interface {
 type Interface interface {
 	//Accepts unhandled [InputEvent]s. [param shape_idx] is the child index of the clicked [Shape2D]. Connect to [signal input_event] to easily pick up these events.
 	//[b]Note:[/b] [method _input_event] requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set.
-	InputEvent(viewport [1]gdclass.Viewport, event [1]gdclass.InputEvent, shape_idx int)
+	InputEvent(viewport Viewport.Instance, event InputEvent.Instance, shape_idx int)
 	//Called when the mouse pointer enters any of this object's shapes. Requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set. Note that moving between different shapes within a single [CollisionObject2D] won't cause this function to be called.
 	MouseEnter()
 	//Called when the mouse pointer exits all this object's shapes. Requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set. Note that moving between different shapes within a single [CollisionObject2D] won't cause this function to be called.
@@ -81,7 +84,7 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) InputEvent(viewport [1]gdclass.Viewport, event [1]gdclass.InputEvent, shape_idx int) {
+func (self implementation) InputEvent(viewport Viewport.Instance, event InputEvent.Instance, shape_idx int) {
 	return
 }
 func (self implementation) MouseEnter()                   { return }
@@ -93,7 +96,7 @@ func (self implementation) MouseShapeExit(shape_idx int)  { return }
 Accepts unhandled [InputEvent]s. [param shape_idx] is the child index of the clicked [Shape2D]. Connect to [signal input_event] to easily pick up these events.
 [b]Note:[/b] [method _input_event] requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set.
 */
-func (Instance) _input_event(impl func(ptr unsafe.Pointer, viewport [1]gdclass.Viewport, event [1]gdclass.InputEvent, shape_idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _input_event(impl func(ptr unsafe.Pointer, viewport Viewport.Instance, event InputEvent.Instance, shape_idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var viewport = [1]gdclass.Viewport{pointers.New[gdclass.Viewport]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -271,7 +274,7 @@ func (self Instance) GetShapeOwnerOneWayCollisionMargin(owner_id int) Float.X { 
 /*
 Adds a [Shape2D] to the shape owner.
 */
-func (self Instance) ShapeOwnerAddShape(owner_id int, shape [1]gdclass.Shape2D) { //gd:CollisionObject2D.shape_owner_add_shape
+func (self Instance) ShapeOwnerAddShape(owner_id int, shape Shape2D.Instance) { //gd:CollisionObject2D.shape_owner_add_shape
 	Advanced(self).ShapeOwnerAddShape(int64(owner_id), shape)
 }
 
@@ -285,8 +288,8 @@ func (self Instance) ShapeOwnerGetShapeCount(owner_id int) int { //gd:CollisionO
 /*
 Returns the [Shape2D] with the given ID from the given shape owner.
 */
-func (self Instance) ShapeOwnerGetShape(owner_id int, shape_id int) [1]gdclass.Shape2D { //gd:CollisionObject2D.shape_owner_get_shape
-	return [1]gdclass.Shape2D(Advanced(self).ShapeOwnerGetShape(int64(owner_id), int64(shape_id)))
+func (self Instance) ShapeOwnerGetShape(owner_id int, shape_id int) Shape2D.Instance { //gd:CollisionObject2D.shape_owner_get_shape
+	return Shape2D.Instance(Advanced(self).ShapeOwnerGetShape(int64(owner_id), int64(shape_id)))
 }
 
 /*
@@ -853,7 +856,7 @@ func (self class) ShapeFindOwner(shape_index int64) int64 { //gd:CollisionObject
 	frame.Free()
 	return ret
 }
-func (self Instance) OnInputEvent(cb func(viewport [1]gdclass.Node, event [1]gdclass.InputEvent, shape_idx int)) {
+func (self Instance) OnInputEvent(cb func(viewport Node.Instance, event InputEvent.Instance, shape_idx int)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("input_event"), gd.NewCallable(cb), 0)
 }
 

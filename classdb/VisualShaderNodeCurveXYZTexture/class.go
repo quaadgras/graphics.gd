@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/CurveXYZTexture"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/VisualShaderNode"
 import "graphics.gd/classdb/VisualShaderNodeResizableBase"
@@ -76,11 +77,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Texture() [1]gdclass.CurveXYZTexture {
-	return [1]gdclass.CurveXYZTexture(class(self).GetTexture())
+func (self Instance) Texture() CurveXYZTexture.Instance {
+	return CurveXYZTexture.Instance(class(self).GetTexture())
 }
 
-func (self Instance) SetTexture(value [1]gdclass.CurveXYZTexture) {
+func (self Instance) SetTexture(value CurveXYZTexture.Instance) {
 	class(self).SetTexture(value)
 }
 

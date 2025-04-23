@@ -11,7 +11,15 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/CanvasLayer"
+import "graphics.gd/classdb/Font"
+import "graphics.gd/classdb/InputEvent"
+import "graphics.gd/classdb/Material"
+import "graphics.gd/classdb/Mesh"
+import "graphics.gd/classdb/MultiMesh"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Texture2D"
+import "graphics.gd/classdb/World2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -307,42 +315,42 @@ func (self Expanded) DrawCircle(position Vector2.XY, radius Float.X, color Color
 /*
 Draws a texture at a given position.
 */
-func (self Instance) DrawTexture(texture [1]gdclass.Texture2D, position Vector2.XY) { //gd:CanvasItem.draw_texture
+func (self Instance) DrawTexture(texture Texture2D.Instance, position Vector2.XY) { //gd:CanvasItem.draw_texture
 	Advanced(self).DrawTexture(texture, Vector2.XY(position), Color.RGBA(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Draws a texture at a given position.
 */
-func (self Expanded) DrawTexture(texture [1]gdclass.Texture2D, position Vector2.XY, modulate Color.RGBA) { //gd:CanvasItem.draw_texture
+func (self Expanded) DrawTexture(texture Texture2D.Instance, position Vector2.XY, modulate Color.RGBA) { //gd:CanvasItem.draw_texture
 	Advanced(self).DrawTexture(texture, Vector2.XY(position), Color.RGBA(modulate))
 }
 
 /*
 Draws a textured rectangle at a given position, optionally modulated by a color. If [param transpose] is [code]true[/code], the texture will have its X and Y coordinates swapped. See also [method draw_rect] and [method draw_texture_rect_region].
 */
-func (self Instance) DrawTextureRect(texture [1]gdclass.Texture2D, rect Rect2.PositionSize, tile bool) { //gd:CanvasItem.draw_texture_rect
+func (self Instance) DrawTextureRect(texture Texture2D.Instance, rect Rect2.PositionSize, tile bool) { //gd:CanvasItem.draw_texture_rect
 	Advanced(self).DrawTextureRect(texture, Rect2.PositionSize(rect), tile, Color.RGBA(gd.Color{1, 1, 1, 1}), false)
 }
 
 /*
 Draws a textured rectangle at a given position, optionally modulated by a color. If [param transpose] is [code]true[/code], the texture will have its X and Y coordinates swapped. See also [method draw_rect] and [method draw_texture_rect_region].
 */
-func (self Expanded) DrawTextureRect(texture [1]gdclass.Texture2D, rect Rect2.PositionSize, tile bool, modulate Color.RGBA, transpose bool) { //gd:CanvasItem.draw_texture_rect
+func (self Expanded) DrawTextureRect(texture Texture2D.Instance, rect Rect2.PositionSize, tile bool, modulate Color.RGBA, transpose bool) { //gd:CanvasItem.draw_texture_rect
 	Advanced(self).DrawTextureRect(texture, Rect2.PositionSize(rect), tile, Color.RGBA(modulate), transpose)
 }
 
 /*
 Draws a textured rectangle from a texture's region (specified by [param src_rect]) at a given position, optionally modulated by a color. If [param transpose] is [code]true[/code], the texture will have its X and Y coordinates swapped. See also [method draw_texture_rect].
 */
-func (self Instance) DrawTextureRectRegion(texture [1]gdclass.Texture2D, rect Rect2.PositionSize, src_rect Rect2.PositionSize) { //gd:CanvasItem.draw_texture_rect_region
+func (self Instance) DrawTextureRectRegion(texture Texture2D.Instance, rect Rect2.PositionSize, src_rect Rect2.PositionSize) { //gd:CanvasItem.draw_texture_rect_region
 	Advanced(self).DrawTextureRectRegion(texture, Rect2.PositionSize(rect), Rect2.PositionSize(src_rect), Color.RGBA(gd.Color{1, 1, 1, 1}), false, true)
 }
 
 /*
 Draws a textured rectangle from a texture's region (specified by [param src_rect]) at a given position, optionally modulated by a color. If [param transpose] is [code]true[/code], the texture will have its X and Y coordinates swapped. See also [method draw_texture_rect].
 */
-func (self Expanded) DrawTextureRectRegion(texture [1]gdclass.Texture2D, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool) { //gd:CanvasItem.draw_texture_rect_region
+func (self Expanded) DrawTextureRectRegion(texture Texture2D.Instance, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool) { //gd:CanvasItem.draw_texture_rect_region
 	Advanced(self).DrawTextureRectRegion(texture, Rect2.PositionSize(rect), Rect2.PositionSize(src_rect), Color.RGBA(modulate), transpose, clip_uv)
 }
 
@@ -351,7 +359,7 @@ Draws a textured rectangle region of the multi-channel signed distance field tex
 If [param outline] is positive, each alpha channel value of pixel in region is set to maximum value of true distance in the [param outline] radius.
 Value of the [param pixel_range] should the same that was used during distance field texture generation.
 */
-func (self Instance) DrawMsdfTextureRectRegion(texture [1]gdclass.Texture2D, rect Rect2.PositionSize, src_rect Rect2.PositionSize) { //gd:CanvasItem.draw_msdf_texture_rect_region
+func (self Instance) DrawMsdfTextureRectRegion(texture Texture2D.Instance, rect Rect2.PositionSize, src_rect Rect2.PositionSize) { //gd:CanvasItem.draw_msdf_texture_rect_region
 	Advanced(self).DrawMsdfTextureRectRegion(texture, Rect2.PositionSize(rect), Rect2.PositionSize(src_rect), Color.RGBA(gd.Color{1, 1, 1, 1}), float64(0.0), float64(4.0), float64(1.0))
 }
 
@@ -360,7 +368,7 @@ Draws a textured rectangle region of the multi-channel signed distance field tex
 If [param outline] is positive, each alpha channel value of pixel in region is set to maximum value of true distance in the [param outline] radius.
 Value of the [param pixel_range] should the same that was used during distance field texture generation.
 */
-func (self Expanded) DrawMsdfTextureRectRegion(texture [1]gdclass.Texture2D, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, outline Float.X, pixel_range Float.X, scale Float.X) { //gd:CanvasItem.draw_msdf_texture_rect_region
+func (self Expanded) DrawMsdfTextureRectRegion(texture Texture2D.Instance, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, outline Float.X, pixel_range Float.X, scale Float.X) { //gd:CanvasItem.draw_msdf_texture_rect_region
 	Advanced(self).DrawMsdfTextureRectRegion(texture, Rect2.PositionSize(rect), Rect2.PositionSize(src_rect), Color.RGBA(modulate), float64(outline), float64(pixel_range), float64(scale))
 }
 
@@ -374,7 +382,7 @@ dst.b = texture.b * modulate.b * modulate.a + dst.b * (1.0 - texture.b * modulat
 dst.a = modulate.a + dst.a * (1.0 - modulate.a);
 [/codeblock]
 */
-func (self Instance) DrawLcdTextureRectRegion(texture [1]gdclass.Texture2D, rect Rect2.PositionSize, src_rect Rect2.PositionSize) { //gd:CanvasItem.draw_lcd_texture_rect_region
+func (self Instance) DrawLcdTextureRectRegion(texture Texture2D.Instance, rect Rect2.PositionSize, src_rect Rect2.PositionSize) { //gd:CanvasItem.draw_lcd_texture_rect_region
 	Advanced(self).DrawLcdTextureRectRegion(texture, Rect2.PositionSize(rect), Rect2.PositionSize(src_rect), Color.RGBA(gd.Color{1, 1, 1, 1}))
 }
 
@@ -388,28 +396,21 @@ dst.b = texture.b * modulate.b * modulate.a + dst.b * (1.0 - texture.b * modulat
 dst.a = modulate.a + dst.a * (1.0 - modulate.a);
 [/codeblock]
 */
-func (self Expanded) DrawLcdTextureRectRegion(texture [1]gdclass.Texture2D, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA) { //gd:CanvasItem.draw_lcd_texture_rect_region
+func (self Expanded) DrawLcdTextureRectRegion(texture Texture2D.Instance, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA) { //gd:CanvasItem.draw_lcd_texture_rect_region
 	Advanced(self).DrawLcdTextureRectRegion(texture, Rect2.PositionSize(rect), Rect2.PositionSize(src_rect), Color.RGBA(modulate))
-}
-
-/*
-Draws a styled rectangle.
-*/
-func (self Instance) DrawStyleBox(style_box [1]gdclass.StyleBox, rect Rect2.PositionSize) { //gd:CanvasItem.draw_style_box
-	Advanced(self).DrawStyleBox(style_box, Rect2.PositionSize(rect))
 }
 
 /*
 Draws a custom primitive. 1 point for a point, 2 points for a line, 3 points for a triangle, and 4 points for a quad. If 0 points or more than 4 points are specified, nothing will be drawn and an error message will be printed. See also [method draw_line], [method draw_polyline], [method draw_polygon], and [method draw_rect].
 */
 func (self Instance) DrawPrimitive(points []Vector2.XY, colors []Color.RGBA, uvs []Vector2.XY) { //gd:CanvasItem.draw_primitive
-	Advanced(self).DrawPrimitive(Packed.New(points...), Packed.New(colors...), Packed.New(uvs...), [1][1]gdclass.Texture2D{}[0])
+	Advanced(self).DrawPrimitive(Packed.New(points...), Packed.New(colors...), Packed.New(uvs...), [1]Texture2D.Instance{}[0])
 }
 
 /*
 Draws a custom primitive. 1 point for a point, 2 points for a line, 3 points for a triangle, and 4 points for a quad. If 0 points or more than 4 points are specified, nothing will be drawn and an error message will be printed. See also [method draw_line], [method draw_polyline], [method draw_polygon], and [method draw_rect].
 */
-func (self Expanded) DrawPrimitive(points []Vector2.XY, colors []Color.RGBA, uvs []Vector2.XY, texture [1]gdclass.Texture2D) { //gd:CanvasItem.draw_primitive
+func (self Expanded) DrawPrimitive(points []Vector2.XY, colors []Color.RGBA, uvs []Vector2.XY, texture Texture2D.Instance) { //gd:CanvasItem.draw_primitive
 	Advanced(self).DrawPrimitive(Packed.New(points...), Packed.New(colors...), Packed.New(uvs...), texture)
 }
 
@@ -418,14 +419,14 @@ Draws a solid polygon of any number of points, convex or concave. Unlike [method
 [b]Note:[/b] If you frequently redraw the same polygon with a large number of vertices, consider pre-calculating the triangulation with [method Geometry2D.triangulate_polygon] and using [method draw_mesh], [method draw_multimesh], or [method RenderingServer.canvas_item_add_triangle_array].
 */
 func (self Instance) DrawPolygon(points []Vector2.XY, colors []Color.RGBA) { //gd:CanvasItem.draw_polygon
-	Advanced(self).DrawPolygon(Packed.New(points...), Packed.New(colors...), Packed.New[Vector2.XY](), [1][1]gdclass.Texture2D{}[0])
+	Advanced(self).DrawPolygon(Packed.New(points...), Packed.New(colors...), Packed.New[Vector2.XY](), [1]Texture2D.Instance{}[0])
 }
 
 /*
 Draws a solid polygon of any number of points, convex or concave. Unlike [method draw_colored_polygon], each point's color can be changed individually. See also [method draw_polyline] and [method draw_polyline_colors]. If you need more flexibility (such as being able to use bones), use [method RenderingServer.canvas_item_add_triangle_array] instead.
 [b]Note:[/b] If you frequently redraw the same polygon with a large number of vertices, consider pre-calculating the triangulation with [method Geometry2D.triangulate_polygon] and using [method draw_mesh], [method draw_multimesh], or [method RenderingServer.canvas_item_add_triangle_array].
 */
-func (self Expanded) DrawPolygon(points []Vector2.XY, colors []Color.RGBA, uvs []Vector2.XY, texture [1]gdclass.Texture2D) { //gd:CanvasItem.draw_polygon
+func (self Expanded) DrawPolygon(points []Vector2.XY, colors []Color.RGBA, uvs []Vector2.XY, texture Texture2D.Instance) { //gd:CanvasItem.draw_polygon
 	Advanced(self).DrawPolygon(Packed.New(points...), Packed.New(colors...), Packed.New(uvs...), texture)
 }
 
@@ -434,14 +435,14 @@ Draws a colored polygon of any number of points, convex or concave. Unlike [meth
 [b]Note:[/b] If you frequently redraw the same polygon with a large number of vertices, consider pre-calculating the triangulation with [method Geometry2D.triangulate_polygon] and using [method draw_mesh], [method draw_multimesh], or [method RenderingServer.canvas_item_add_triangle_array].
 */
 func (self Instance) DrawColoredPolygon(points []Vector2.XY, color Color.RGBA) { //gd:CanvasItem.draw_colored_polygon
-	Advanced(self).DrawColoredPolygon(Packed.New(points...), Color.RGBA(color), Packed.New[Vector2.XY](), [1][1]gdclass.Texture2D{}[0])
+	Advanced(self).DrawColoredPolygon(Packed.New(points...), Color.RGBA(color), Packed.New[Vector2.XY](), [1]Texture2D.Instance{}[0])
 }
 
 /*
 Draws a colored polygon of any number of points, convex or concave. Unlike [method draw_polygon], a single color must be specified for the whole polygon.
 [b]Note:[/b] If you frequently redraw the same polygon with a large number of vertices, consider pre-calculating the triangulation with [method Geometry2D.triangulate_polygon] and using [method draw_mesh], [method draw_multimesh], or [method RenderingServer.canvas_item_add_triangle_array].
 */
-func (self Expanded) DrawColoredPolygon(points []Vector2.XY, color Color.RGBA, uvs []Vector2.XY, texture [1]gdclass.Texture2D) { //gd:CanvasItem.draw_colored_polygon
+func (self Expanded) DrawColoredPolygon(points []Vector2.XY, color Color.RGBA, uvs []Vector2.XY, texture Texture2D.Instance) { //gd:CanvasItem.draw_colored_polygon
 	Advanced(self).DrawColoredPolygon(Packed.New(points...), Color.RGBA(color), Packed.New(uvs...), texture)
 }
 
@@ -468,7 +469,7 @@ DrawString(defaultFont, new Vector2(64, 64), "Hello world", HORIZONTAL_ALIGNMENT
 [/codeblocks]
 See also [method Font.draw_string].
 */
-func (self Instance) DrawString(font [1]gdclass.Font, pos Vector2.XY, text string) { //gd:CanvasItem.draw_string
+func (self Instance) DrawString(font Font.Instance, pos Vector2.XY, text string) { //gd:CanvasItem.draw_string
 	Advanced(self).DrawString(font, Vector2.XY(pos), String.New(text), 0, float64(-1), int64(16), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 0, 0)
 }
 
@@ -495,98 +496,98 @@ DrawString(defaultFont, new Vector2(64, 64), "Hello world", HORIZONTAL_ALIGNMENT
 [/codeblocks]
 See also [method Font.draw_string].
 */
-func (self Expanded) DrawString(font [1]gdclass.Font, pos Vector2.XY, text string, alignment HorizontalAlignment, width Float.X, font_size int, modulate Color.RGBA, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:CanvasItem.draw_string
+func (self Expanded) DrawString(font Font.Instance, pos Vector2.XY, text string, alignment HorizontalAlignment, width Float.X, font_size int, modulate Color.RGBA, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:CanvasItem.draw_string
 	Advanced(self).DrawString(font, Vector2.XY(pos), String.New(text), alignment, float64(width), int64(font_size), Color.RGBA(modulate), justification_flags, direction, orientation)
 }
 
 /*
 Breaks [param text] into lines and draws it using the specified [param font] at the [param pos] (top-left corner). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
 */
-func (self Instance) DrawMultilineString(font [1]gdclass.Font, pos Vector2.XY, text string) { //gd:CanvasItem.draw_multiline_string
+func (self Instance) DrawMultilineString(font Font.Instance, pos Vector2.XY, text string) { //gd:CanvasItem.draw_multiline_string
 	Advanced(self).DrawMultilineString(font, Vector2.XY(pos), String.New(text), 0, float64(-1), int64(16), int64(-1), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 3, 0, 0)
 }
 
 /*
 Breaks [param text] into lines and draws it using the specified [param font] at the [param pos] (top-left corner). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
 */
-func (self Expanded) DrawMultilineString(font [1]gdclass.Font, pos Vector2.XY, text string, alignment HorizontalAlignment, width Float.X, font_size int, max_lines int, modulate Color.RGBA, brk_flags gdclass.TextServerLineBreakFlag, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:CanvasItem.draw_multiline_string
+func (self Expanded) DrawMultilineString(font Font.Instance, pos Vector2.XY, text string, alignment HorizontalAlignment, width Float.X, font_size int, max_lines int, modulate Color.RGBA, brk_flags gdclass.TextServerLineBreakFlag, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:CanvasItem.draw_multiline_string
 	Advanced(self).DrawMultilineString(font, Vector2.XY(pos), String.New(text), alignment, float64(width), int64(font_size), int64(max_lines), Color.RGBA(modulate), brk_flags, justification_flags, direction, orientation)
 }
 
 /*
 Draws [param text] outline using the specified [param font] at the [param pos] (bottom-left corner using the baseline of the font). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
 */
-func (self Instance) DrawStringOutline(font [1]gdclass.Font, pos Vector2.XY, text string) { //gd:CanvasItem.draw_string_outline
+func (self Instance) DrawStringOutline(font Font.Instance, pos Vector2.XY, text string) { //gd:CanvasItem.draw_string_outline
 	Advanced(self).DrawStringOutline(font, Vector2.XY(pos), String.New(text), 0, float64(-1), int64(16), int64(1), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 0, 0)
 }
 
 /*
 Draws [param text] outline using the specified [param font] at the [param pos] (bottom-left corner using the baseline of the font). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
 */
-func (self Expanded) DrawStringOutline(font [1]gdclass.Font, pos Vector2.XY, text string, alignment HorizontalAlignment, width Float.X, font_size int, size int, modulate Color.RGBA, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:CanvasItem.draw_string_outline
+func (self Expanded) DrawStringOutline(font Font.Instance, pos Vector2.XY, text string, alignment HorizontalAlignment, width Float.X, font_size int, size int, modulate Color.RGBA, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:CanvasItem.draw_string_outline
 	Advanced(self).DrawStringOutline(font, Vector2.XY(pos), String.New(text), alignment, float64(width), int64(font_size), int64(size), Color.RGBA(modulate), justification_flags, direction, orientation)
 }
 
 /*
 Breaks [param text] to the lines and draws text outline using the specified [param font] at the [param pos] (top-left corner). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
 */
-func (self Instance) DrawMultilineStringOutline(font [1]gdclass.Font, pos Vector2.XY, text string) { //gd:CanvasItem.draw_multiline_string_outline
+func (self Instance) DrawMultilineStringOutline(font Font.Instance, pos Vector2.XY, text string) { //gd:CanvasItem.draw_multiline_string_outline
 	Advanced(self).DrawMultilineStringOutline(font, Vector2.XY(pos), String.New(text), 0, float64(-1), int64(16), int64(-1), int64(1), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 3, 0, 0)
 }
 
 /*
 Breaks [param text] to the lines and draws text outline using the specified [param font] at the [param pos] (top-left corner). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
 */
-func (self Expanded) DrawMultilineStringOutline(font [1]gdclass.Font, pos Vector2.XY, text string, alignment HorizontalAlignment, width Float.X, font_size int, max_lines int, size int, modulate Color.RGBA, brk_flags gdclass.TextServerLineBreakFlag, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:CanvasItem.draw_multiline_string_outline
+func (self Expanded) DrawMultilineStringOutline(font Font.Instance, pos Vector2.XY, text string, alignment HorizontalAlignment, width Float.X, font_size int, max_lines int, size int, modulate Color.RGBA, brk_flags gdclass.TextServerLineBreakFlag, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:CanvasItem.draw_multiline_string_outline
 	Advanced(self).DrawMultilineStringOutline(font, Vector2.XY(pos), String.New(text), alignment, float64(width), int64(font_size), int64(max_lines), int64(size), Color.RGBA(modulate), brk_flags, justification_flags, direction, orientation)
 }
 
 /*
 Draws a string first character using a custom font.
 */
-func (self Instance) DrawChar(font [1]gdclass.Font, pos Vector2.XY, char string) { //gd:CanvasItem.draw_char
+func (self Instance) DrawChar(font Font.Instance, pos Vector2.XY, char string) { //gd:CanvasItem.draw_char
 	Advanced(self).DrawChar(font, Vector2.XY(pos), String.New(char), int64(16), Color.RGBA(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Draws a string first character using a custom font.
 */
-func (self Expanded) DrawChar(font [1]gdclass.Font, pos Vector2.XY, char string, font_size int, modulate Color.RGBA) { //gd:CanvasItem.draw_char
+func (self Expanded) DrawChar(font Font.Instance, pos Vector2.XY, char string, font_size int, modulate Color.RGBA) { //gd:CanvasItem.draw_char
 	Advanced(self).DrawChar(font, Vector2.XY(pos), String.New(char), int64(font_size), Color.RGBA(modulate))
 }
 
 /*
 Draws a string first character outline using a custom font.
 */
-func (self Instance) DrawCharOutline(font [1]gdclass.Font, pos Vector2.XY, char string) { //gd:CanvasItem.draw_char_outline
+func (self Instance) DrawCharOutline(font Font.Instance, pos Vector2.XY, char string) { //gd:CanvasItem.draw_char_outline
 	Advanced(self).DrawCharOutline(font, Vector2.XY(pos), String.New(char), int64(16), int64(-1), Color.RGBA(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Draws a string first character outline using a custom font.
 */
-func (self Expanded) DrawCharOutline(font [1]gdclass.Font, pos Vector2.XY, char string, font_size int, size int, modulate Color.RGBA) { //gd:CanvasItem.draw_char_outline
+func (self Expanded) DrawCharOutline(font Font.Instance, pos Vector2.XY, char string, font_size int, size int, modulate Color.RGBA) { //gd:CanvasItem.draw_char_outline
 	Advanced(self).DrawCharOutline(font, Vector2.XY(pos), String.New(char), int64(font_size), int64(size), Color.RGBA(modulate))
 }
 
 /*
 Draws a [Mesh] in 2D, using the provided texture. See [MeshInstance2D] for related documentation.
 */
-func (self Instance) DrawMesh(mesh [1]gdclass.Mesh, texture [1]gdclass.Texture2D) { //gd:CanvasItem.draw_mesh
+func (self Instance) DrawMesh(mesh Mesh.Instance, texture Texture2D.Instance) { //gd:CanvasItem.draw_mesh
 	Advanced(self).DrawMesh(mesh, texture, Transform2D.OriginXY(gd.NewTransform2D(1, 0, 0, 1, 0, 0)), Color.RGBA(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Draws a [Mesh] in 2D, using the provided texture. See [MeshInstance2D] for related documentation.
 */
-func (self Expanded) DrawMesh(mesh [1]gdclass.Mesh, texture [1]gdclass.Texture2D, transform Transform2D.OriginXY, modulate Color.RGBA) { //gd:CanvasItem.draw_mesh
+func (self Expanded) DrawMesh(mesh Mesh.Instance, texture Texture2D.Instance, transform Transform2D.OriginXY, modulate Color.RGBA) { //gd:CanvasItem.draw_mesh
 	Advanced(self).DrawMesh(mesh, texture, Transform2D.OriginXY(transform), Color.RGBA(modulate))
 }
 
 /*
 Draws a [MultiMesh] in 2D with the provided texture. See [MultiMeshInstance2D] for related documentation.
 */
-func (self Instance) DrawMultimesh(multimesh [1]gdclass.MultiMesh, texture [1]gdclass.Texture2D) { //gd:CanvasItem.draw_multimesh
+func (self Instance) DrawMultimesh(multimesh MultiMesh.Instance, texture Texture2D.Instance) { //gd:CanvasItem.draw_multimesh
 	Advanced(self).DrawMultimesh(multimesh, texture)
 }
 
@@ -709,15 +710,15 @@ func (self Instance) GetCanvas() RID.Canvas { //gd:CanvasItem.get_canvas
 /*
 Returns the [CanvasLayer] that contains this node, or [code]null[/code] if the node is not in any [CanvasLayer].
 */
-func (self Instance) GetCanvasLayerNode() [1]gdclass.CanvasLayer { //gd:CanvasItem.get_canvas_layer_node
-	return [1]gdclass.CanvasLayer(Advanced(self).GetCanvasLayerNode())
+func (self Instance) GetCanvasLayerNode() CanvasLayer.Instance { //gd:CanvasItem.get_canvas_layer_node
+	return CanvasLayer.Instance(Advanced(self).GetCanvasLayerNode())
 }
 
 /*
 Returns the [World2D] where this item is in.
 */
-func (self Instance) GetWorld2d() [1]gdclass.World2D { //gd:CanvasItem.get_world_2d
-	return [1]gdclass.World2D(Advanced(self).GetWorld2d())
+func (self Instance) GetWorld2d() World2D.Instance { //gd:CanvasItem.get_world_2d
+	return World2D.Instance(Advanced(self).GetWorld2d())
 }
 
 /*
@@ -785,8 +786,8 @@ func (self Instance) MakeCanvasPositionLocal(viewport_point Vector2.XY) Vector2.
 /*
 Transformations issued by [param event]'s inputs are applied in local space instead of global space.
 */
-func (self Instance) MakeInputLocal(event [1]gdclass.InputEvent) [1]gdclass.InputEvent { //gd:CanvasItem.make_input_local
-	return [1]gdclass.InputEvent(Advanced(self).MakeInputLocal(event))
+func (self Instance) MakeInputLocal(event InputEvent.Instance) InputEvent.Instance { //gd:CanvasItem.make_input_local
+	return InputEvent.Instance(Advanced(self).MakeInputLocal(event))
 }
 
 /*
@@ -925,11 +926,11 @@ func (self Instance) SetTextureRepeat(value gdclass.CanvasItemTextureRepeat) {
 	class(self).SetTextureRepeat(value)
 }
 
-func (self Instance) Material() [1]gdclass.Material {
-	return [1]gdclass.Material(class(self).GetMaterial())
+func (self Instance) Material() Material.Instance {
+	return Material.Instance(class(self).GetMaterial())
 }
 
-func (self Instance) SetMaterial(value [1]gdclass.Material) {
+func (self Instance) SetMaterial(value Material.Instance) {
 	class(self).SetMaterial(value)
 }
 

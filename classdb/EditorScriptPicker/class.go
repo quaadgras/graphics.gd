@@ -80,11 +80,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) ScriptOwner() [1]gdclass.Node {
-	return [1]gdclass.Node(class(self).GetScriptOwner())
+func (self Instance) ScriptOwner() Node.Instance {
+	return Node.Instance(class(self).GetScriptOwner())
 }
 
-func (self Instance) SetScriptOwner(value [1]gdclass.Node) {
+func (self Instance) SetScriptOwner(value Node.Instance) {
 	class(self).SetScriptOwner(value)
 }
 

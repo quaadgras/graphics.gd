@@ -78,27 +78,27 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) DiffuseTexture() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetDiffuseTexture())
+func (self Instance) DiffuseTexture() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetDiffuseTexture())
 }
 
-func (self Instance) SetDiffuseTexture(value [1]gdclass.Texture2D) {
+func (self Instance) SetDiffuseTexture(value Texture2D.Instance) {
 	class(self).SetDiffuseTexture(value)
 }
 
-func (self Instance) NormalTexture() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetNormalTexture())
+func (self Instance) NormalTexture() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetNormalTexture())
 }
 
-func (self Instance) SetNormalTexture(value [1]gdclass.Texture2D) {
+func (self Instance) SetNormalTexture(value Texture2D.Instance) {
 	class(self).SetNormalTexture(value)
 }
 
-func (self Instance) SpecularTexture() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetSpecularTexture())
+func (self Instance) SpecularTexture() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetSpecularTexture())
 }
 
-func (self Instance) SetSpecularTexture(value [1]gdclass.Texture2D) {
+func (self Instance) SetSpecularTexture(value Texture2D.Instance) {
 	class(self).SetSpecularTexture(value)
 }
 

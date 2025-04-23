@@ -12,6 +12,8 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/RenderData"
+import "graphics.gd/classdb/RenderSceneBuffers"
+import "graphics.gd/classdb/RenderSceneData"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -60,9 +62,9 @@ type Any interface {
 }
 type Interface interface {
 	//Implement this in GDExtension to return the implementation's [RenderSceneBuffers] object.
-	GetRenderSceneBuffers() [1]gdclass.RenderSceneBuffers
+	GetRenderSceneBuffers() RenderSceneBuffers.Instance
 	//Implement this in GDExtension to return the implementation's [RenderSceneDataExtension] object.
-	GetRenderSceneData() [1]gdclass.RenderSceneData
+	GetRenderSceneData() RenderSceneData.Instance
 	//Implement this in GDExtension to return the [RID] of the implementation's environment object.
 	GetEnvironment() RID.Any
 	//Implement this in GDExtension to return the [RID] for the implementation's camera attributes object.
@@ -74,15 +76,15 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetRenderSceneBuffers() (_ [1]gdclass.RenderSceneBuffers) { return }
-func (self implementation) GetRenderSceneData() (_ [1]gdclass.RenderSceneData)       { return }
-func (self implementation) GetEnvironment() (_ RID.Any)                              { return }
-func (self implementation) GetCameraAttributes() (_ RID.Any)                         { return }
+func (self implementation) GetRenderSceneBuffers() (_ RenderSceneBuffers.Instance) { return }
+func (self implementation) GetRenderSceneData() (_ RenderSceneData.Instance)       { return }
+func (self implementation) GetEnvironment() (_ RID.Any)                            { return }
+func (self implementation) GetCameraAttributes() (_ RID.Any)                       { return }
 
 /*
 Implement this in GDExtension to return the implementation's [RenderSceneBuffers] object.
 */
-func (Instance) _get_render_scene_buffers(impl func(ptr unsafe.Pointer) [1]gdclass.RenderSceneBuffers) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_render_scene_buffers(impl func(ptr unsafe.Pointer) RenderSceneBuffers.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -98,7 +100,7 @@ func (Instance) _get_render_scene_buffers(impl func(ptr unsafe.Pointer) [1]gdcla
 /*
 Implement this in GDExtension to return the implementation's [RenderSceneDataExtension] object.
 */
-func (Instance) _get_render_scene_data(impl func(ptr unsafe.Pointer) [1]gdclass.RenderSceneData) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_render_scene_data(impl func(ptr unsafe.Pointer) RenderSceneData.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)

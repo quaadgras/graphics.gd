@@ -13,6 +13,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/Skeleton3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -59,8 +60,8 @@ type Any interface {
 /*
 Get parent or external [Skeleton3D] node if found.
 */
-func (self Instance) GetSkeleton() [1]gdclass.Skeleton3D { //gd:BoneAttachment3D.get_skeleton
-	return [1]gdclass.Skeleton3D(Advanced(self).GetSkeleton())
+func (self Instance) GetSkeleton() Skeleton3D.Instance { //gd:BoneAttachment3D.get_skeleton
+	return Skeleton3D.Instance(Advanced(self).GetSkeleton())
 }
 
 /*

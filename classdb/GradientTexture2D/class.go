@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Gradient"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/Texture"
 import "graphics.gd/classdb/Texture2D"
@@ -77,11 +78,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Gradient() [1]gdclass.Gradient {
-	return [1]gdclass.Gradient(class(self).GetGradient())
+func (self Instance) Gradient() Gradient.Instance {
+	return Gradient.Instance(class(self).GetGradient())
 }
 
-func (self Instance) SetGradient(value [1]gdclass.Gradient) {
+func (self Instance) SetGradient(value Gradient.Instance) {
 	class(self).SetGradient(value)
 }
 

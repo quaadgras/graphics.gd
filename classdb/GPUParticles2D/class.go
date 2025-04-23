@@ -12,8 +12,10 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Material"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node2D"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -110,7 +112,7 @@ func (self Instance) EmitParticle(xform Transform2D.OriginXY, velocity Vector2.X
 /*
 Sets this node's properties to match a given [CPUParticles2D] node.
 */
-func (self Instance) ConvertFromParticles(particles [1]gdclass.Node) { //gd:GPUParticles2D.convert_from_particles
+func (self Instance) ConvertFromParticles(particles Node.Instance) { //gd:GPUParticles2D.convert_from_particles
 	Advanced(self).ConvertFromParticles(particles)
 }
 
@@ -164,11 +166,11 @@ func (self Instance) SetSubEmitter(value string) {
 	class(self).SetSubEmitter(Path.ToNode(String.New(value)))
 }
 
-func (self Instance) Texture() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetTexture())
+func (self Instance) Texture() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetTexture())
 }
 
-func (self Instance) SetTexture(value [1]gdclass.Texture2D) {
+func (self Instance) SetTexture(value Texture2D.Instance) {
 	class(self).SetTexture(value)
 }
 
@@ -332,11 +334,11 @@ func (self Instance) SetTrailSectionSubdivisions(value int) {
 	class(self).SetTrailSectionSubdivisions(int64(value))
 }
 
-func (self Instance) ProcessMaterial() [1]gdclass.Material {
-	return [1]gdclass.Material(class(self).GetProcessMaterial())
+func (self Instance) ProcessMaterial() Material.Instance {
+	return Material.Instance(class(self).GetProcessMaterial())
 }
 
-func (self Instance) SetProcessMaterial(value [1]gdclass.Material) {
+func (self Instance) SetProcessMaterial(value Material.Instance) {
 	class(self).SetProcessMaterial(value)
 }
 

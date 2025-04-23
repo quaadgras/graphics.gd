@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/GDExtension"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -46,6 +47,8 @@ var _ = slices.Delete[[]struct{}, struct{}]
 The GDExtensionManager loads, initializes, and keeps track of all available [GDExtension] libraries in the project.
 [b]Note:[/b] Do not worry about GDExtension unless you know what you are doing.
 */
+type Instance [1]gdclass.GDExtensionManager
+
 var self [1]gdclass.GDExtensionManager
 var once sync.Once
 
@@ -98,9 +101,9 @@ func GetLoadedExtensions() []string { //gd:GDExtensionManager.get_loaded_extensi
 /*
 Returns the [GDExtension] at the given file [param path], or [code]null[/code] if it has not been loaded or does not exist.
 */
-func GetExtension(path string) [1]gdclass.GDExtension { //gd:GDExtensionManager.get_extension
+func GetExtension(path string) GDExtension.Instance { //gd:GDExtensionManager.get_extension
 	once.Do(singleton)
-	return [1]gdclass.GDExtension(Advanced().GetExtension(String.New(path)))
+	return GDExtension.Instance(Advanced().GetExtension(String.New(path)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -200,11 +203,11 @@ func OnExtensionsReloaded(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("extensions_reloaded"), gd.NewCallable(cb), 0)
 }
 
-func OnExtensionLoaded(cb func(extension [1]gdclass.GDExtension)) {
+func OnExtensionLoaded(cb func(extension GDExtension.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("extension_loaded"), gd.NewCallable(cb), 0)
 }
 
-func OnExtensionUnloading(cb func(extension [1]gdclass.GDExtension)) {
+func OnExtensionUnloading(cb func(extension GDExtension.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("extension_unloading"), gd.NewCallable(cb), 0)
 }
 

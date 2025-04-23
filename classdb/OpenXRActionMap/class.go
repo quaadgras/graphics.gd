@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/OpenXRActionSet"
+import "graphics.gd/classdb/OpenXRInteractionProfile"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -67,28 +69,28 @@ func (self Instance) GetActionSetCount() int { //gd:OpenXRActionMap.get_action_s
 /*
 Retrieve an action set by name.
 */
-func (self Instance) FindActionSet(name string) [1]gdclass.OpenXRActionSet { //gd:OpenXRActionMap.find_action_set
-	return [1]gdclass.OpenXRActionSet(Advanced(self).FindActionSet(String.New(name)))
+func (self Instance) FindActionSet(name string) OpenXRActionSet.Instance { //gd:OpenXRActionMap.find_action_set
+	return OpenXRActionSet.Instance(Advanced(self).FindActionSet(String.New(name)))
 }
 
 /*
 Retrieve the action set at this index.
 */
-func (self Instance) GetActionSet(idx int) [1]gdclass.OpenXRActionSet { //gd:OpenXRActionMap.get_action_set
-	return [1]gdclass.OpenXRActionSet(Advanced(self).GetActionSet(int64(idx)))
+func (self Instance) GetActionSet(idx int) OpenXRActionSet.Instance { //gd:OpenXRActionMap.get_action_set
+	return OpenXRActionSet.Instance(Advanced(self).GetActionSet(int64(idx)))
 }
 
 /*
 Add an action set.
 */
-func (self Instance) AddActionSet(action_set [1]gdclass.OpenXRActionSet) { //gd:OpenXRActionMap.add_action_set
+func (self Instance) AddActionSet(action_set OpenXRActionSet.Instance) { //gd:OpenXRActionMap.add_action_set
 	Advanced(self).AddActionSet(action_set)
 }
 
 /*
 Remove an action set.
 */
-func (self Instance) RemoveActionSet(action_set [1]gdclass.OpenXRActionSet) { //gd:OpenXRActionMap.remove_action_set
+func (self Instance) RemoveActionSet(action_set OpenXRActionSet.Instance) { //gd:OpenXRActionMap.remove_action_set
 	Advanced(self).RemoveActionSet(action_set)
 }
 
@@ -102,28 +104,28 @@ func (self Instance) GetInteractionProfileCount() int { //gd:OpenXRActionMap.get
 /*
 Find an interaction profile by its name (path).
 */
-func (self Instance) FindInteractionProfile(name string) [1]gdclass.OpenXRInteractionProfile { //gd:OpenXRActionMap.find_interaction_profile
-	return [1]gdclass.OpenXRInteractionProfile(Advanced(self).FindInteractionProfile(String.New(name)))
+func (self Instance) FindInteractionProfile(name string) OpenXRInteractionProfile.Instance { //gd:OpenXRActionMap.find_interaction_profile
+	return OpenXRInteractionProfile.Instance(Advanced(self).FindInteractionProfile(String.New(name)))
 }
 
 /*
 Get the interaction profile at this index.
 */
-func (self Instance) GetInteractionProfile(idx int) [1]gdclass.OpenXRInteractionProfile { //gd:OpenXRActionMap.get_interaction_profile
-	return [1]gdclass.OpenXRInteractionProfile(Advanced(self).GetInteractionProfile(int64(idx)))
+func (self Instance) GetInteractionProfile(idx int) OpenXRInteractionProfile.Instance { //gd:OpenXRActionMap.get_interaction_profile
+	return OpenXRInteractionProfile.Instance(Advanced(self).GetInteractionProfile(int64(idx)))
 }
 
 /*
 Add an interaction profile.
 */
-func (self Instance) AddInteractionProfile(interaction_profile [1]gdclass.OpenXRInteractionProfile) { //gd:OpenXRActionMap.add_interaction_profile
+func (self Instance) AddInteractionProfile(interaction_profile OpenXRInteractionProfile.Instance) { //gd:OpenXRActionMap.add_interaction_profile
 	Advanced(self).AddInteractionProfile(interaction_profile)
 }
 
 /*
 Remove an interaction profile.
 */
-func (self Instance) RemoveInteractionProfile(interaction_profile [1]gdclass.OpenXRInteractionProfile) { //gd:OpenXRActionMap.remove_interaction_profile
+func (self Instance) RemoveInteractionProfile(interaction_profile OpenXRInteractionProfile.Instance) { //gd:OpenXRActionMap.remove_interaction_profile
 	Advanced(self).RemoveInteractionProfile(interaction_profile)
 }
 

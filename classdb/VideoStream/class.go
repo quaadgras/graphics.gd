@@ -12,6 +12,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/VideoStreamPlayback"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -60,7 +61,7 @@ type Any interface {
 }
 type Interface interface {
 	//Called when the video starts playing, to initialize and return a subclass of [VideoStreamPlayback].
-	InstantiatePlayback() [1]gdclass.VideoStreamPlayback
+	InstantiatePlayback() VideoStreamPlayback.Instance
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -68,12 +69,12 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) InstantiatePlayback() (_ [1]gdclass.VideoStreamPlayback) { return }
+func (self implementation) InstantiatePlayback() (_ VideoStreamPlayback.Instance) { return }
 
 /*
 Called when the video starts playing, to initialize and return a subclass of [VideoStreamPlayback].
 */
-func (Instance) _instantiate_playback(impl func(ptr unsafe.Pointer) [1]gdclass.VideoStreamPlayback) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _instantiate_playback(impl func(ptr unsafe.Pointer) VideoStreamPlayback.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)

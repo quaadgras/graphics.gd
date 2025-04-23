@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -81,6 +82,8 @@ func _exit_tree():
 
 [/codeblock]
 */
+type Instance [1]gdclass.NativeMenu
+
 var self [1]gdclass.NativeMenu
 var once sync.Once
 
@@ -323,7 +326,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
-func AddIconItem(rid RID.NativeMenu, icon [1]gdclass.Texture2D, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key) int { //gd:NativeMenu.add_icon_item
+func AddIconItem(rid RID.NativeMenu, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key) int { //gd:NativeMenu.add_icon_item
 	once.Do(singleton)
 	return int(int(Advanced().AddIconItem(RID.Any(rid), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
 }
@@ -336,7 +339,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
-func AddIconItemOptions(rid RID.NativeMenu, icon [1]gdclass.Texture2D, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:NativeMenu.add_icon_item
+func AddIconItemOptions(rid RID.NativeMenu, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:NativeMenu.add_icon_item
 	once.Do(singleton)
 	return int(int(Advanced().AddIconItem(RID.Any(rid), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
@@ -349,7 +352,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
-func AddIconCheckItem(rid RID.NativeMenu, icon [1]gdclass.Texture2D, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key) int { //gd:NativeMenu.add_icon_check_item
+func AddIconCheckItem(rid RID.NativeMenu, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key) int { //gd:NativeMenu.add_icon_check_item
 	once.Do(singleton)
 	return int(int(Advanced().AddIconCheckItem(RID.Any(rid), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
 }
@@ -362,7 +365,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
-func AddIconCheckItemOptions(rid RID.NativeMenu, icon [1]gdclass.Texture2D, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:NativeMenu.add_icon_check_item
+func AddIconCheckItemOptions(rid RID.NativeMenu, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:NativeMenu.add_icon_check_item
 	once.Do(singleton)
 	return int(int(Advanced().AddIconCheckItem(RID.Any(rid), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
@@ -404,7 +407,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
-func AddIconRadioCheckItem(rid RID.NativeMenu, icon [1]gdclass.Texture2D, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key) int { //gd:NativeMenu.add_icon_radio_check_item
+func AddIconRadioCheckItem(rid RID.NativeMenu, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key) int { //gd:NativeMenu.add_icon_radio_check_item
 	once.Do(singleton)
 	return int(int(Advanced().AddIconRadioCheckItem(RID.Any(rid), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
 }
@@ -418,7 +421,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] On Windows, [param accelerator] and [param key_callback] are ignored.
 */
-func AddIconRadioCheckItemOptions(rid RID.NativeMenu, icon [1]gdclass.Texture2D, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:NativeMenu.add_icon_radio_check_item
+func AddIconRadioCheckItemOptions(rid RID.NativeMenu, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:NativeMenu.add_icon_radio_check_item
 	once.Do(singleton)
 	return int(int(Advanced().AddIconRadioCheckItem(RID.Any(rid), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
@@ -633,9 +636,9 @@ func GetItemMaxStates(rid RID.NativeMenu, idx int) int { //gd:NativeMenu.get_ite
 Returns the icon of the item at index [param idx].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func GetItemIcon(rid RID.NativeMenu, idx int) [1]gdclass.Texture2D { //gd:NativeMenu.get_item_icon
+func GetItemIcon(rid RID.NativeMenu, idx int) Texture2D.Instance { //gd:NativeMenu.get_item_icon
 	once.Do(singleton)
-	return [1]gdclass.Texture2D(Advanced().GetItemIcon(RID.Any(rid), int64(idx)))
+	return Texture2D.Instance(Advanced().GetItemIcon(RID.Any(rid), int64(idx)))
 }
 
 /*
@@ -791,7 +794,7 @@ Replaces the [Texture2D] icon of the specified [param idx].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] This method is not supported by macOS Dock menu items.
 */
-func SetItemIcon(rid RID.NativeMenu, idx int, icon [1]gdclass.Texture2D) { //gd:NativeMenu.set_item_icon
+func SetItemIcon(rid RID.NativeMenu, idx int, icon Texture2D.Instance) { //gd:NativeMenu.set_item_icon
 	once.Do(singleton)
 	Advanced().SetItemIcon(RID.Any(rid), int64(idx), icon)
 }

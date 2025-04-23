@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/FileAccess"
+import "graphics.gd/classdb/Image"
 import "graphics.gd/classdb/ImageFormatLoader"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -63,7 +65,7 @@ type Interface interface {
 	//Returns the list of file extensions for this image format. Files with the given extensions will be treated as image file and loaded using this class.
 	GetRecognizedExtensions() []string
 	//Loads the content of [param fileaccess] into the provided [param image].
-	LoadImage(image [1]gdclass.Image, fileaccess [1]gdclass.FileAccess, flags gdclass.ImageFormatLoaderLoaderFlags, scale Float.X) error
+	LoadImage(image Image.Instance, fileaccess FileAccess.Instance, flags gdclass.ImageFormatLoaderLoaderFlags, scale Float.X) error
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -72,7 +74,7 @@ type Implementation = implementation
 type implementation struct{}
 
 func (self implementation) GetRecognizedExtensions() (_ []string) { return }
-func (self implementation) LoadImage(image [1]gdclass.Image, fileaccess [1]gdclass.FileAccess, flags gdclass.ImageFormatLoaderLoaderFlags, scale Float.X) (_ error) {
+func (self implementation) LoadImage(image Image.Instance, fileaccess FileAccess.Instance, flags gdclass.ImageFormatLoaderLoaderFlags, scale Float.X) (_ error) {
 	return
 }
 
@@ -95,7 +97,7 @@ func (Instance) _get_recognized_extensions(impl func(ptr unsafe.Pointer) []strin
 /*
 Loads the content of [param fileaccess] into the provided [param image].
 */
-func (Instance) _load_image(impl func(ptr unsafe.Pointer, image [1]gdclass.Image, fileaccess [1]gdclass.FileAccess, flags gdclass.ImageFormatLoaderLoaderFlags, scale Float.X) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _load_image(impl func(ptr unsafe.Pointer, image Image.Instance, fileaccess FileAccess.Instance, flags gdclass.ImageFormatLoaderLoaderFlags, scale Float.X) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 

@@ -12,8 +12,10 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/MultiMesh"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node2D"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -76,19 +78,19 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Multimesh() [1]gdclass.MultiMesh {
-	return [1]gdclass.MultiMesh(class(self).GetMultimesh())
+func (self Instance) Multimesh() MultiMesh.Instance {
+	return MultiMesh.Instance(class(self).GetMultimesh())
 }
 
-func (self Instance) SetMultimesh(value [1]gdclass.MultiMesh) {
+func (self Instance) SetMultimesh(value MultiMesh.Instance) {
 	class(self).SetMultimesh(value)
 }
 
-func (self Instance) Texture() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetTexture())
+func (self Instance) Texture() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetTexture())
 }
 
-func (self Instance) SetTexture(value [1]gdclass.Texture2D) {
+func (self Instance) SetTexture(value Texture2D.Instance) {
 	class(self).SetTexture(value)
 }
 

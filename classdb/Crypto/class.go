@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/CryptoKey"
+import "graphics.gd/classdb/X509Certificate"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -131,8 +133,8 @@ func (self Instance) GenerateRandomBytes(size int) []byte { //gd:Crypto.generate
 /*
 Generates an RSA [CryptoKey] that can be used for creating self-signed certificates and passed to [method StreamPeerTLS.accept_stream].
 */
-func (self Instance) GenerateRsa(size int) [1]gdclass.CryptoKey { //gd:Crypto.generate_rsa
-	return [1]gdclass.CryptoKey(Advanced(self).GenerateRsa(int64(size)))
+func (self Instance) GenerateRsa(size int) CryptoKey.Instance { //gd:Crypto.generate_rsa
+	return CryptoKey.Instance(Advanced(self).GenerateRsa(int64(size)))
 }
 
 /*
@@ -155,8 +157,8 @@ X509Certificate cert = crypto.GenerateSelfSignedCertificate(key, "CN=mydomain.co
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) GenerateSelfSignedCertificate(key [1]gdclass.CryptoKey) [1]gdclass.X509Certificate { //gd:Crypto.generate_self_signed_certificate
-	return [1]gdclass.X509Certificate(Advanced(self).GenerateSelfSignedCertificate(key, String.New("CN=myserver,O=myorganisation,C=IT"), String.New("20140101000000"), String.New("20340101000000")))
+func (self Instance) GenerateSelfSignedCertificate(key CryptoKey.Instance) X509Certificate.Instance { //gd:Crypto.generate_self_signed_certificate
+	return X509Certificate.Instance(Advanced(self).GenerateSelfSignedCertificate(key, String.New("CN=myserver,O=myorganisation,C=IT"), String.New("20140101000000"), String.New("20340101000000")))
 }
 
 /*
@@ -179,21 +181,21 @@ X509Certificate cert = crypto.GenerateSelfSignedCertificate(key, "CN=mydomain.co
 [/csharp]
 [/codeblocks]
 */
-func (self Expanded) GenerateSelfSignedCertificate(key [1]gdclass.CryptoKey, issuer_name string, not_before string, not_after string) [1]gdclass.X509Certificate { //gd:Crypto.generate_self_signed_certificate
-	return [1]gdclass.X509Certificate(Advanced(self).GenerateSelfSignedCertificate(key, String.New(issuer_name), String.New(not_before), String.New(not_after)))
+func (self Expanded) GenerateSelfSignedCertificate(key CryptoKey.Instance, issuer_name string, not_before string, not_after string) X509Certificate.Instance { //gd:Crypto.generate_self_signed_certificate
+	return X509Certificate.Instance(Advanced(self).GenerateSelfSignedCertificate(key, String.New(issuer_name), String.New(not_before), String.New(not_after)))
 }
 
 /*
 Sign a given [param hash] of type [param hash_type] with the provided private [param key].
 */
-func (self Instance) Sign(hash_type gdclass.HashingContextHashType, hash []byte, key [1]gdclass.CryptoKey) []byte { //gd:Crypto.sign
+func (self Instance) Sign(hash_type gdclass.HashingContextHashType, hash []byte, key CryptoKey.Instance) []byte { //gd:Crypto.sign
 	return []byte(Advanced(self).Sign(hash_type, Packed.Bytes(Packed.New(hash...)), key).Bytes())
 }
 
 /*
 Verify that a given [param signature] for [param hash] of type [param hash_type] against the provided public [param key].
 */
-func (self Instance) Verify(hash_type gdclass.HashingContextHashType, hash []byte, signature []byte, key [1]gdclass.CryptoKey) bool { //gd:Crypto.verify
+func (self Instance) Verify(hash_type gdclass.HashingContextHashType, hash []byte, signature []byte, key CryptoKey.Instance) bool { //gd:Crypto.verify
 	return bool(Advanced(self).Verify(hash_type, Packed.Bytes(Packed.New(hash...)), Packed.Bytes(Packed.New(signature...)), key))
 }
 
@@ -201,7 +203,7 @@ func (self Instance) Verify(hash_type gdclass.HashingContextHashType, hash []byt
 Encrypt the given [param plaintext] with the provided public [param key].
 [b]Note:[/b] The maximum size of accepted plaintext is limited by the key size.
 */
-func (self Instance) Encrypt(key [1]gdclass.CryptoKey, plaintext []byte) []byte { //gd:Crypto.encrypt
+func (self Instance) Encrypt(key CryptoKey.Instance, plaintext []byte) []byte { //gd:Crypto.encrypt
 	return []byte(Advanced(self).Encrypt(key, Packed.Bytes(Packed.New(plaintext...))).Bytes())
 }
 
@@ -209,7 +211,7 @@ func (self Instance) Encrypt(key [1]gdclass.CryptoKey, plaintext []byte) []byte 
 Decrypt the given [param ciphertext] with the provided private [param key].
 [b]Note:[/b] The maximum size of accepted ciphertext is limited by the key size.
 */
-func (self Instance) Decrypt(key [1]gdclass.CryptoKey, ciphertext []byte) []byte { //gd:Crypto.decrypt
+func (self Instance) Decrypt(key CryptoKey.Instance, ciphertext []byte) []byte { //gd:Crypto.decrypt
 	return []byte(Advanced(self).Decrypt(key, Packed.Bytes(Packed.New(ciphertext...))).Bytes())
 }
 

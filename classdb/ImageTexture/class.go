@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Image"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/Texture"
 import "graphics.gd/classdb/Texture2D"
@@ -80,9 +81,9 @@ type Any interface {
 /*
 Creates a new [ImageTexture] and initializes it by allocating and setting the data from an [Image].
 */
-func CreateFromImage(image [1]gdclass.Image) [1]gdclass.ImageTexture { //gd:ImageTexture.create_from_image
+func CreateFromImage(image Image.Instance) Instance { //gd:ImageTexture.create_from_image
 	self := Instance{}
-	return [1]gdclass.ImageTexture(Advanced(self).CreateFromImage(image))
+	return Instance(Advanced(self).CreateFromImage(image))
 }
 
 /*
@@ -96,7 +97,7 @@ func (self Instance) GetFormat() gdclass.ImageFormat { //gd:ImageTexture.get_for
 Replaces the texture's data with a new [Image]. This will re-allocate new memory for the texture.
 If you want to update the image, but don't need to change its parameters (format, size), use [method update] instead for better performance.
 */
-func (self Instance) SetImage(image [1]gdclass.Image) { //gd:ImageTexture.set_image
+func (self Instance) SetImage(image Image.Instance) { //gd:ImageTexture.set_image
 	Advanced(self).SetImage(image)
 }
 
@@ -105,7 +106,7 @@ Replaces the texture's data with a new [Image].
 [b]Note:[/b] The texture has to be created using [method create_from_image] or initialized first with the [method set_image] method before it can be updated. The new image dimensions, format, and mipmaps configuration should match the existing texture's image configuration.
 Use this method over [method set_image] if you need to update the texture frequently, which is faster than allocating additional memory for a new texture each time.
 */
-func (self Instance) Update(image [1]gdclass.Image) { //gd:ImageTexture.update
+func (self Instance) Update(image Image.Instance) { //gd:ImageTexture.update
 	Advanced(self).Update(image)
 }
 

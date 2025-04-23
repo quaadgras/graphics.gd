@@ -11,6 +11,9 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Material"
+import "graphics.gd/classdb/NavigationPolygon"
+import "graphics.gd/classdb/OccluderPolygon2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -89,7 +92,7 @@ func (self Instance) RemoveOccluderPolygon(layer_id int, polygon_index int) { //
 /*
 Sets the occluder for polygon with index [param polygon_index] in the TileSet occlusion layer with index [param layer_id].
 */
-func (self Instance) SetOccluderPolygon(layer_id int, polygon_index int, polygon [1]gdclass.OccluderPolygon2D) { //gd:TileData.set_occluder_polygon
+func (self Instance) SetOccluderPolygon(layer_id int, polygon_index int, polygon OccluderPolygon2D.Instance) { //gd:TileData.set_occluder_polygon
 	Advanced(self).SetOccluderPolygon(int64(layer_id), int64(polygon_index), polygon)
 }
 
@@ -97,22 +100,22 @@ func (self Instance) SetOccluderPolygon(layer_id int, polygon_index int, polygon
 Returns the occluder polygon at index [param polygon_index] from the TileSet occlusion layer with index [param layer_id].
 The [param flip_h], [param flip_v], and [param transpose] parameters can be [code]true[/code] to transform the returned polygon.
 */
-func (self Instance) GetOccluderPolygon(layer_id int, polygon_index int) [1]gdclass.OccluderPolygon2D { //gd:TileData.get_occluder_polygon
-	return [1]gdclass.OccluderPolygon2D(Advanced(self).GetOccluderPolygon(int64(layer_id), int64(polygon_index), false, false, false))
+func (self Instance) GetOccluderPolygon(layer_id int, polygon_index int) OccluderPolygon2D.Instance { //gd:TileData.get_occluder_polygon
+	return OccluderPolygon2D.Instance(Advanced(self).GetOccluderPolygon(int64(layer_id), int64(polygon_index), false, false, false))
 }
 
 /*
 Returns the occluder polygon at index [param polygon_index] from the TileSet occlusion layer with index [param layer_id].
 The [param flip_h], [param flip_v], and [param transpose] parameters can be [code]true[/code] to transform the returned polygon.
 */
-func (self Expanded) GetOccluderPolygon(layer_id int, polygon_index int, flip_h bool, flip_v bool, transpose bool) [1]gdclass.OccluderPolygon2D { //gd:TileData.get_occluder_polygon
-	return [1]gdclass.OccluderPolygon2D(Advanced(self).GetOccluderPolygon(int64(layer_id), int64(polygon_index), flip_h, flip_v, transpose))
+func (self Expanded) GetOccluderPolygon(layer_id int, polygon_index int, flip_h bool, flip_v bool, transpose bool) OccluderPolygon2D.Instance { //gd:TileData.get_occluder_polygon
+	return OccluderPolygon2D.Instance(Advanced(self).GetOccluderPolygon(int64(layer_id), int64(polygon_index), flip_h, flip_v, transpose))
 }
 
 /*
 Sets the occluder for the TileSet occlusion layer with index [param layer_id].
 */
-func (self Instance) SetOccluder(layer_id int, occluder_polygon [1]gdclass.OccluderPolygon2D) { //gd:TileData.set_occluder
+func (self Instance) SetOccluder(layer_id int, occluder_polygon OccluderPolygon2D.Instance) { //gd:TileData.set_occluder
 	Advanced(self).SetOccluder(int64(layer_id), occluder_polygon)
 }
 
@@ -120,16 +123,16 @@ func (self Instance) SetOccluder(layer_id int, occluder_polygon [1]gdclass.Occlu
 Returns the occluder polygon of the tile for the TileSet occlusion layer with index [param layer_id].
 [param flip_h], [param flip_v], and [param transpose] allow transforming the returned polygon.
 */
-func (self Instance) GetOccluder(layer_id int) [1]gdclass.OccluderPolygon2D { //gd:TileData.get_occluder
-	return [1]gdclass.OccluderPolygon2D(Advanced(self).GetOccluder(int64(layer_id), false, false, false))
+func (self Instance) GetOccluder(layer_id int) OccluderPolygon2D.Instance { //gd:TileData.get_occluder
+	return OccluderPolygon2D.Instance(Advanced(self).GetOccluder(int64(layer_id), false, false, false))
 }
 
 /*
 Returns the occluder polygon of the tile for the TileSet occlusion layer with index [param layer_id].
 [param flip_h], [param flip_v], and [param transpose] allow transforming the returned polygon.
 */
-func (self Expanded) GetOccluder(layer_id int, flip_h bool, flip_v bool, transpose bool) [1]gdclass.OccluderPolygon2D { //gd:TileData.get_occluder
-	return [1]gdclass.OccluderPolygon2D(Advanced(self).GetOccluder(int64(layer_id), flip_h, flip_v, transpose))
+func (self Expanded) GetOccluder(layer_id int, flip_h bool, flip_v bool, transpose bool) OccluderPolygon2D.Instance { //gd:TileData.get_occluder
+	return OccluderPolygon2D.Instance(Advanced(self).GetOccluder(int64(layer_id), flip_h, flip_v, transpose))
 }
 
 /*
@@ -254,7 +257,7 @@ func (self Instance) IsValidTerrainPeeringBit(peering_bit gdclass.TileSetCellNei
 /*
 Sets the navigation polygon for the TileSet navigation layer with index [param layer_id].
 */
-func (self Instance) SetNavigationPolygon(layer_id int, navigation_polygon [1]gdclass.NavigationPolygon) { //gd:TileData.set_navigation_polygon
+func (self Instance) SetNavigationPolygon(layer_id int, navigation_polygon NavigationPolygon.Instance) { //gd:TileData.set_navigation_polygon
 	Advanced(self).SetNavigationPolygon(int64(layer_id), navigation_polygon)
 }
 
@@ -262,16 +265,16 @@ func (self Instance) SetNavigationPolygon(layer_id int, navigation_polygon [1]gd
 Returns the navigation polygon of the tile for the TileSet navigation layer with index [param layer_id].
 [param flip_h], [param flip_v], and [param transpose] allow transforming the returned polygon.
 */
-func (self Instance) GetNavigationPolygon(layer_id int) [1]gdclass.NavigationPolygon { //gd:TileData.get_navigation_polygon
-	return [1]gdclass.NavigationPolygon(Advanced(self).GetNavigationPolygon(int64(layer_id), false, false, false))
+func (self Instance) GetNavigationPolygon(layer_id int) NavigationPolygon.Instance { //gd:TileData.get_navigation_polygon
+	return NavigationPolygon.Instance(Advanced(self).GetNavigationPolygon(int64(layer_id), false, false, false))
 }
 
 /*
 Returns the navigation polygon of the tile for the TileSet navigation layer with index [param layer_id].
 [param flip_h], [param flip_v], and [param transpose] allow transforming the returned polygon.
 */
-func (self Expanded) GetNavigationPolygon(layer_id int, flip_h bool, flip_v bool, transpose bool) [1]gdclass.NavigationPolygon { //gd:TileData.get_navigation_polygon
-	return [1]gdclass.NavigationPolygon(Advanced(self).GetNavigationPolygon(int64(layer_id), flip_h, flip_v, transpose))
+func (self Expanded) GetNavigationPolygon(layer_id int, flip_h bool, flip_v bool, transpose bool) NavigationPolygon.Instance { //gd:TileData.get_navigation_polygon
+	return NavigationPolygon.Instance(Advanced(self).GetNavigationPolygon(int64(layer_id), flip_h, flip_v, transpose))
 }
 
 /*
@@ -367,11 +370,11 @@ func (self Instance) SetModulate(value Color.RGBA) {
 	class(self).SetModulate(Color.RGBA(value))
 }
 
-func (self Instance) Material() [1]gdclass.Material {
-	return [1]gdclass.Material(class(self).GetMaterial())
+func (self Instance) Material() Material.Instance {
+	return Material.Instance(class(self).GetMaterial())
 }
 
-func (self Instance) SetMaterial(value [1]gdclass.Material) {
+func (self Instance) SetMaterial(value Material.Instance) {
 	class(self).SetMaterial(value)
 }
 

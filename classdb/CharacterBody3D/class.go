@@ -12,6 +12,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/CollisionObject3D"
+import "graphics.gd/classdb/KinematicCollision3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/PhysicsBody3D"
@@ -195,15 +196,15 @@ func (self Instance) GetSlideCollisionCount() int { //gd:CharacterBody3D.get_sli
 /*
 Returns a [KinematicCollision3D], which contains information about a collision that occurred during the last call to [method move_and_slide]. Since the body can collide several times in a single call to [method move_and_slide], you must specify the index of the collision in the range 0 to ([method get_slide_collision_count] - 1).
 */
-func (self Instance) GetSlideCollision(slide_idx int) [1]gdclass.KinematicCollision3D { //gd:CharacterBody3D.get_slide_collision
-	return [1]gdclass.KinematicCollision3D(Advanced(self).GetSlideCollision(int64(slide_idx)))
+func (self Instance) GetSlideCollision(slide_idx int) KinematicCollision3D.Instance { //gd:CharacterBody3D.get_slide_collision
+	return KinematicCollision3D.Instance(Advanced(self).GetSlideCollision(int64(slide_idx)))
 }
 
 /*
 Returns a [KinematicCollision3D], which contains information about the latest collision that occurred during the last call to [method move_and_slide].
 */
-func (self Instance) GetLastSlideCollision() [1]gdclass.KinematicCollision3D { //gd:CharacterBody3D.get_last_slide_collision
-	return [1]gdclass.KinematicCollision3D(Advanced(self).GetLastSlideCollision())
+func (self Instance) GetLastSlideCollision() KinematicCollision3D.Instance { //gd:CharacterBody3D.get_last_slide_collision
+	return KinematicCollision3D.Instance(Advanced(self).GetLastSlideCollision())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

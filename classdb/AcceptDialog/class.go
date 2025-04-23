@@ -11,6 +11,9 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Button"
+import "graphics.gd/classdb/Label"
+import "graphics.gd/classdb/LineEdit"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Viewport"
 import "graphics.gd/classdb/Window"
@@ -62,16 +65,16 @@ type Any interface {
 Returns the OK [Button] instance.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
-func (self Instance) GetOkButton() [1]gdclass.Button { //gd:AcceptDialog.get_ok_button
-	return [1]gdclass.Button(Advanced(self).GetOkButton())
+func (self Instance) GetOkButton() Button.Instance { //gd:AcceptDialog.get_ok_button
+	return Button.Instance(Advanced(self).GetOkButton())
 }
 
 /*
 Returns the label used for built-in text.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
-func (self Instance) GetLabel() [1]gdclass.Label { //gd:AcceptDialog.get_label
-	return [1]gdclass.Label(Advanced(self).GetLabel())
+func (self Instance) GetLabel() Label.Instance { //gd:AcceptDialog.get_label
+	return Label.Instance(Advanced(self).GetLabel())
 }
 
 /*
@@ -79,8 +82,8 @@ Adds a button with label [param text] and a custom [param action] to the dialog 
 If [code]true[/code], [param right] will place the button to the right of any sibling buttons.
 You can use [method remove_button] method to remove a button created with this method from the dialog.
 */
-func (self Instance) AddButton(text string) [1]gdclass.Button { //gd:AcceptDialog.add_button
-	return [1]gdclass.Button(Advanced(self).AddButton(String.New(text), false, String.New("")))
+func (self Instance) AddButton(text string) Button.Instance { //gd:AcceptDialog.add_button
+	return Button.Instance(Advanced(self).AddButton(String.New(text), false, String.New("")))
 }
 
 /*
@@ -88,29 +91,29 @@ Adds a button with label [param text] and a custom [param action] to the dialog 
 If [code]true[/code], [param right] will place the button to the right of any sibling buttons.
 You can use [method remove_button] method to remove a button created with this method from the dialog.
 */
-func (self Expanded) AddButton(text string, right bool, action string) [1]gdclass.Button { //gd:AcceptDialog.add_button
-	return [1]gdclass.Button(Advanced(self).AddButton(String.New(text), right, String.New(action)))
+func (self Expanded) AddButton(text string, right bool, action string) Button.Instance { //gd:AcceptDialog.add_button
+	return Button.Instance(Advanced(self).AddButton(String.New(text), right, String.New(action)))
 }
 
 /*
 Adds a button with label [param name] and a cancel action to the dialog and returns the created button.
 You can use [method remove_button] method to remove a button created with this method from the dialog.
 */
-func (self Instance) AddCancelButton(name string) [1]gdclass.Button { //gd:AcceptDialog.add_cancel_button
-	return [1]gdclass.Button(Advanced(self).AddCancelButton(String.New(name)))
+func (self Instance) AddCancelButton(name string) Button.Instance { //gd:AcceptDialog.add_cancel_button
+	return Button.Instance(Advanced(self).AddCancelButton(String.New(name)))
 }
 
 /*
 Removes the [param button] from the dialog. Does NOT free the [param button]. The [param button] must be a [Button] added with [method add_button] or [method add_cancel_button] method. After removal, pressing the [param button] will no longer emit this dialog's [signal custom_action] or [signal canceled] signals.
 */
-func (self Instance) RemoveButton(button [1]gdclass.Button) { //gd:AcceptDialog.remove_button
+func (self Instance) RemoveButton(button Button.Instance) { //gd:AcceptDialog.remove_button
 	Advanced(self).RemoveButton(button)
 }
 
 /*
 Registers a [LineEdit] in the dialog. When the enter key is pressed, the dialog will be accepted.
 */
-func (self Instance) RegisterTextEnter(line_edit [1]gdclass.LineEdit) { //gd:AcceptDialog.register_text_enter
+func (self Instance) RegisterTextEnter(line_edit LineEdit.Instance) { //gd:AcceptDialog.register_text_enter
 	Advanced(self).RegisterTextEnter(line_edit)
 }
 

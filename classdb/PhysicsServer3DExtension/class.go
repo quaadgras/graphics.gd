@@ -11,6 +11,9 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/PhysicsDirectBodyState3D"
+import "graphics.gd/classdb/PhysicsDirectSpaceState3D"
+import "graphics.gd/classdb/PhysicsServer3DRenderingServerHandler"
 import "graphics.gd/variant/AABB"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -84,7 +87,7 @@ type Interface interface {
 	SpaceIsActive(space RID.Any) bool
 	SpaceSetParam(space RID.Any, param gdclass.PhysicsServer3DSpaceParameter, value Float.X)
 	SpaceGetParam(space RID.Any, param gdclass.PhysicsServer3DSpaceParameter) Float.X
-	SpaceGetDirectState(space RID.Any) [1]gdclass.PhysicsDirectSpaceState3D
+	SpaceGetDirectState(space RID.Any) PhysicsDirectSpaceState3D.Instance
 	SpaceSetDebugContacts(space RID.Any, max_contacts int)
 	SpaceGetContacts(space RID.Any) []Vector3.XYZ
 	SpaceGetContactCount(space RID.Any) int
@@ -174,9 +177,9 @@ type Interface interface {
 	BodySetForceIntegrationCallback(body RID.Any, callable Callable.Function, userdata any)
 	BodySetRayPickable(body RID.Any, enable bool)
 	BodyTestMotion(body RID.Any, from Transform3D.BasisOrigin, motion Vector3.XYZ, margin Float.X, max_collisions int, collide_separation_ray bool, recovery_as_collision bool, result *MotionResult) bool
-	BodyGetDirectState(body RID.Any) [1]gdclass.PhysicsDirectBodyState3D
+	BodyGetDirectState(body RID.Any) PhysicsDirectBodyState3D.Instance
 	SoftBodyCreate() RID.Any
-	SoftBodyUpdateRenderingServer(body RID.Any, rendering_server_handler [1]gdclass.PhysicsServer3DRenderingServerHandler)
+	SoftBodyUpdateRenderingServer(body RID.Any, rendering_server_handler PhysicsServer3DRenderingServerHandler.Instance)
 	SoftBodySetSpace(body RID.Any, space RID.Any)
 	SoftBodyGetSpace(body RID.Any) RID.Any
 	SoftBodySetRayPickable(body RID.Any, enable bool)
@@ -283,7 +286,7 @@ func (self implementation) SpaceSetParam(space RID.Any, param gdclass.PhysicsSer
 func (self implementation) SpaceGetParam(space RID.Any, param gdclass.PhysicsServer3DSpaceParameter) (_ Float.X) {
 	return
 }
-func (self implementation) SpaceGetDirectState(space RID.Any) (_ [1]gdclass.PhysicsDirectSpaceState3D) {
+func (self implementation) SpaceGetDirectState(space RID.Any) (_ PhysicsDirectSpaceState3D.Instance) {
 	return
 }
 func (self implementation) SpaceSetDebugContacts(space RID.Any, max_contacts int) { return }
@@ -419,11 +422,11 @@ func (self implementation) BodySetRayPickable(body RID.Any, enable bool) { retur
 func (self implementation) BodyTestMotion(body RID.Any, from Transform3D.BasisOrigin, motion Vector3.XYZ, margin Float.X, max_collisions int, collide_separation_ray bool, recovery_as_collision bool, result *MotionResult) (_ bool) {
 	return
 }
-func (self implementation) BodyGetDirectState(body RID.Any) (_ [1]gdclass.PhysicsDirectBodyState3D) {
+func (self implementation) BodyGetDirectState(body RID.Any) (_ PhysicsDirectBodyState3D.Instance) {
 	return
 }
 func (self implementation) SoftBodyCreate() (_ RID.Any) { return }
-func (self implementation) SoftBodyUpdateRenderingServer(body RID.Any, rendering_server_handler [1]gdclass.PhysicsServer3DRenderingServerHandler) {
+func (self implementation) SoftBodyUpdateRenderingServer(body RID.Any, rendering_server_handler PhysicsServer3DRenderingServerHandler.Instance) {
 	return
 }
 func (self implementation) SoftBodySetSpace(body RID.Any, space RID.Any)                  { return }
@@ -730,7 +733,7 @@ func (Instance) _space_get_param(impl func(ptr unsafe.Pointer, space RID.Any, pa
 		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
-func (Instance) _space_get_direct_state(impl func(ptr unsafe.Pointer, space RID.Any) [1]gdclass.PhysicsDirectSpaceState3D) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _space_get_direct_state(impl func(ptr unsafe.Pointer, space RID.Any) PhysicsDirectSpaceState3D.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var space = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1516,7 +1519,7 @@ func (Instance) _body_test_motion(impl func(ptr unsafe.Pointer, body RID.Any, fr
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _body_get_direct_state(impl func(ptr unsafe.Pointer, body RID.Any) [1]gdclass.PhysicsDirectBodyState3D) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_get_direct_state(impl func(ptr unsafe.Pointer, body RID.Any) PhysicsDirectBodyState3D.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1536,7 +1539,7 @@ func (Instance) _soft_body_create(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.
 		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
 }
-func (Instance) _soft_body_update_rendering_server(impl func(ptr unsafe.Pointer, body RID.Any, rendering_server_handler [1]gdclass.PhysicsServer3DRenderingServerHandler)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _soft_body_update_rendering_server(impl func(ptr unsafe.Pointer, body RID.Any, rendering_server_handler PhysicsServer3DRenderingServerHandler.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var rendering_server_handler = [1]gdclass.PhysicsServer3DRenderingServerHandler{pointers.New[gdclass.PhysicsServer3DRenderingServerHandler]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}

@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/CollisionObject3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/variant/Array"
@@ -146,7 +147,7 @@ func (self Instance) AddExceptionRid(rid RID.Body3D) { //gd:RayCast3D.add_except
 /*
 Adds a collision exception so the ray does not report collisions with the specified [CollisionObject3D] node.
 */
-func (self Instance) AddException(node [1]gdclass.CollisionObject3D) { //gd:RayCast3D.add_exception
+func (self Instance) AddException(node CollisionObject3D.Instance) { //gd:RayCast3D.add_exception
 	Advanced(self).AddException(node)
 }
 
@@ -160,7 +161,7 @@ func (self Instance) RemoveExceptionRid(rid RID.Body3D) { //gd:RayCast3D.remove_
 /*
 Removes a collision exception so the ray does report collisions with the specified [CollisionObject3D] node.
 */
-func (self Instance) RemoveException(node [1]gdclass.CollisionObject3D) { //gd:RayCast3D.remove_exception
+func (self Instance) RemoveException(node CollisionObject3D.Instance) { //gd:RayCast3D.remove_exception
 	Advanced(self).RemoveException(node)
 }
 

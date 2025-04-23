@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/StreamPeer"
+import "graphics.gd/classdb/TLSOptions"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -69,14 +71,14 @@ Connects to a host. This needs to be done before any requests are sent.
 If no [param port] is specified (or [code]-1[/code] is used), it is automatically set to 80 for HTTP and 443 for HTTPS. You can pass the optional [param tls_options] parameter to customize the trusted certification authorities, or the common name verification when using HTTPS. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
 func (self Instance) ConnectToHost(host string) error { //gd:HTTPClient.connect_to_host
-	return error(gd.ToError(Advanced(self).ConnectToHost(String.New(host), int64(-1), [1][1]gdclass.TLSOptions{}[0])))
+	return error(gd.ToError(Advanced(self).ConnectToHost(String.New(host), int64(-1), [1]TLSOptions.Instance{}[0])))
 }
 
 /*
 Connects to a host. This needs to be done before any requests are sent.
 If no [param port] is specified (or [code]-1[/code] is used), it is automatically set to 80 for HTTP and 443 for HTTPS. You can pass the optional [param tls_options] parameter to customize the trusted certification authorities, or the common name verification when using HTTPS. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
-func (self Expanded) ConnectToHost(host string, port int, tls_options [1]gdclass.TLSOptions) error { //gd:HTTPClient.connect_to_host
+func (self Expanded) ConnectToHost(host string, port int, tls_options TLSOptions.Instance) error { //gd:HTTPClient.connect_to_host
 	return error(gd.ToError(Advanced(self).ConnectToHost(String.New(host), int64(port), tls_options)))
 }
 
@@ -302,11 +304,11 @@ func (self Instance) SetBlockingModeEnabled(value bool) {
 	class(self).SetBlockingMode(value)
 }
 
-func (self Instance) Connection() [1]gdclass.StreamPeer {
-	return [1]gdclass.StreamPeer(class(self).GetConnection())
+func (self Instance) Connection() StreamPeer.Instance {
+	return StreamPeer.Instance(class(self).GetConnection())
 }
 
-func (self Instance) SetConnection(value [1]gdclass.StreamPeer) {
+func (self Instance) SetConnection(value StreamPeer.Instance) {
 	class(self).SetConnection(value)
 }
 

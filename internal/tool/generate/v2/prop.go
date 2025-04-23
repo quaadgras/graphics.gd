@@ -30,6 +30,9 @@ func (classDB ClassDB) properties(file io.Writer, class gdjson.Class, singleton 
 		var foundSetter bool
 		if prop.Getter != "" {
 			for _, method := range class.Methods {
+				if gdjson.Relocations[class.Name+"."+method.Name] != "" {
+					continue
+				}
 				if method.Name == prop.Getter {
 					ptype = classDB.convertTypeSimple(class, "", method.ReturnValue.Meta, method.ReturnValue.Type)
 					foundGetter = true
@@ -40,6 +43,9 @@ func (classDB ClassDB) properties(file io.Writer, class gdjson.Class, singleton 
 		}
 		if prop.Setter != "" {
 			for _, method := range class.Methods {
+				if gdjson.Relocations[class.Name+"."+method.Name] != "" {
+					continue
+				}
 				if method.Name == prop.Setter {
 					var i = 0
 					if prop.Index != nil {

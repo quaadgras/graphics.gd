@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/EditorFileSystemDirectory"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -59,8 +60,8 @@ type Any interface {
 /*
 Gets the root directory object.
 */
-func (self Instance) GetFilesystem() [1]gdclass.EditorFileSystemDirectory { //gd:EditorFileSystem.get_filesystem
-	return [1]gdclass.EditorFileSystemDirectory(Advanced(self).GetFilesystem())
+func (self Instance) GetFilesystem() EditorFileSystemDirectory.Instance { //gd:EditorFileSystem.get_filesystem
+	return EditorFileSystemDirectory.Instance(Advanced(self).GetFilesystem())
 }
 
 /*
@@ -102,8 +103,8 @@ func (self Instance) UpdateFile(path string) { //gd:EditorFileSystem.update_file
 /*
 Returns a view into the filesystem at [param path].
 */
-func (self Instance) GetFilesystemPath(path string) [1]gdclass.EditorFileSystemDirectory { //gd:EditorFileSystem.get_filesystem_path
-	return [1]gdclass.EditorFileSystemDirectory(Advanced(self).GetFilesystemPath(String.New(path)))
+func (self Instance) GetFilesystemPath(path string) EditorFileSystemDirectory.Instance { //gd:EditorFileSystem.get_filesystem_path
+	return EditorFileSystemDirectory.Instance(Advanced(self).GetFilesystemPath(String.New(path)))
 }
 
 /*

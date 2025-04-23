@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/OpenXRAction"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -66,14 +67,14 @@ func (self Instance) GetActionCount() int { //gd:OpenXRActionSet.get_action_coun
 /*
 Add an action to this action set.
 */
-func (self Instance) AddAction(action [1]gdclass.OpenXRAction) { //gd:OpenXRActionSet.add_action
+func (self Instance) AddAction(action OpenXRAction.Instance) { //gd:OpenXRActionSet.add_action
 	Advanced(self).AddAction(action)
 }
 
 /*
 Remove an action from this action set.
 */
-func (self Instance) RemoveAction(action [1]gdclass.OpenXRAction) { //gd:OpenXRActionSet.remove_action
+func (self Instance) RemoveAction(action OpenXRAction.Instance) { //gd:OpenXRActionSet.remove_action
 	Advanced(self).RemoveAction(action)
 }
 

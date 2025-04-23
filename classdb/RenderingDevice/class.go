@@ -11,6 +11,20 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/RDAttachmentFormat"
+import "graphics.gd/classdb/RDFramebufferPass"
+import "graphics.gd/classdb/RDPipelineColorBlendState"
+import "graphics.gd/classdb/RDPipelineDepthStencilState"
+import "graphics.gd/classdb/RDPipelineMultisampleState"
+import "graphics.gd/classdb/RDPipelineRasterizationState"
+import "graphics.gd/classdb/RDPipelineSpecializationConstant"
+import "graphics.gd/classdb/RDSamplerState"
+import "graphics.gd/classdb/RDShaderSPIRV"
+import "graphics.gd/classdb/RDShaderSource"
+import "graphics.gd/classdb/RDTextureFormat"
+import "graphics.gd/classdb/RDTextureView"
+import "graphics.gd/classdb/RDUniform"
+import "graphics.gd/classdb/RDVertexAttribute"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -68,7 +82,7 @@ Creates a new texture. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 [b]Note:[/b] Not to be confused with [method RenderingServer.texture_2d_create], which creates the Godot-specific [Texture2D] resource as opposed to the graphics API's own texture type.
 */
-func (self Instance) TextureCreate(format [1]gdclass.RDTextureFormat, view [1]gdclass.RDTextureView) RID.Texture { //gd:RenderingDevice.texture_create
+func (self Instance) TextureCreate(format RDTextureFormat.Instance, view RDTextureView.Instance) RID.Texture { //gd:RenderingDevice.texture_create
 	return RID.Texture(Advanced(self).TextureCreate(format, view, gd.ArrayFromSlice[Array.Contains[Packed.Bytes]]([1][][]byte{}[0])))
 }
 
@@ -77,14 +91,14 @@ Creates a new texture. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 [b]Note:[/b] Not to be confused with [method RenderingServer.texture_2d_create], which creates the Godot-specific [Texture2D] resource as opposed to the graphics API's own texture type.
 */
-func (self Expanded) TextureCreate(format [1]gdclass.RDTextureFormat, view [1]gdclass.RDTextureView, data [][]byte) RID.Texture { //gd:RenderingDevice.texture_create
+func (self Expanded) TextureCreate(format RDTextureFormat.Instance, view RDTextureView.Instance, data [][]byte) RID.Texture { //gd:RenderingDevice.texture_create
 	return RID.Texture(Advanced(self).TextureCreate(format, view, gd.ArrayFromSlice[Array.Contains[Packed.Bytes]](data)))
 }
 
 /*
 Creates a shared texture using the specified [param view] and the texture information from [param with_texture].
 */
-func (self Instance) TextureCreateShared(view [1]gdclass.RDTextureView, with_texture RID.Texture) RID.Texture { //gd:RenderingDevice.texture_create_shared
+func (self Instance) TextureCreateShared(view RDTextureView.Instance, with_texture RID.Texture) RID.Texture { //gd:RenderingDevice.texture_create_shared
 	return RID.Texture(Advanced(self).TextureCreateShared(view, RID.Any(with_texture)))
 }
 
@@ -93,7 +107,7 @@ Creates a shared texture using the specified [param view] and the texture inform
 For 2D textures (which only have one layer), [param layer] must be [code]0[/code].
 [b]Note:[/b] Layer slicing is only supported for 2D texture arrays, not 3D textures or cubemaps.
 */
-func (self Instance) TextureCreateSharedFromSlice(view [1]gdclass.RDTextureView, with_texture RID.Texture, layer int, mipmap int) RID.Texture { //gd:RenderingDevice.texture_create_shared_from_slice
+func (self Instance) TextureCreateSharedFromSlice(view RDTextureView.Instance, with_texture RID.Texture, layer int, mipmap int) RID.Texture { //gd:RenderingDevice.texture_create_shared_from_slice
 	return RID.Texture(Advanced(self).TextureCreateSharedFromSlice(view, RID.Any(with_texture), int64(layer), int64(mipmap), int64(1), 0))
 }
 
@@ -102,7 +116,7 @@ Creates a shared texture using the specified [param view] and the texture inform
 For 2D textures (which only have one layer), [param layer] must be [code]0[/code].
 [b]Note:[/b] Layer slicing is only supported for 2D texture arrays, not 3D textures or cubemaps.
 */
-func (self Expanded) TextureCreateSharedFromSlice(view [1]gdclass.RDTextureView, with_texture RID.Texture, layer int, mipmap int, mipmaps int, slice_type gdclass.RenderingDeviceTextureSliceType) RID.Texture { //gd:RenderingDevice.texture_create_shared_from_slice
+func (self Expanded) TextureCreateSharedFromSlice(view RDTextureView.Instance, with_texture RID.Texture, layer int, mipmap int, mipmaps int, slice_type gdclass.RenderingDeviceTextureSliceType) RID.Texture { //gd:RenderingDevice.texture_create_shared_from_slice
 	return RID.Texture(Advanced(self).TextureCreateSharedFromSlice(view, RID.Any(with_texture), int64(layer), int64(mipmap), int64(mipmaps), slice_type))
 }
 
@@ -225,8 +239,8 @@ func (self Instance) TextureResolveMultisample(from_texture RID.Texture, to_text
 /*
 Returns the data format used to create this texture.
 */
-func (self Instance) TextureGetFormat(texture RID.Texture) [1]gdclass.RDTextureFormat { //gd:RenderingDevice.texture_get_format
-	return [1]gdclass.RDTextureFormat(Advanced(self).TextureGetFormat(RID.Any(texture)))
+func (self Instance) TextureGetFormat(texture RID.Texture) RDTextureFormat.Instance { //gd:RenderingDevice.texture_get_format
+	return RDTextureFormat.Instance(Advanced(self).TextureGetFormat(RID.Any(texture)))
 }
 
 /*
@@ -241,7 +255,7 @@ func (self Instance) TextureGetNativeHandle(texture RID.Texture) int { //gd:Rend
 Creates a new framebuffer format with the specified [param attachments] and [param view_count]. Returns the new framebuffer's unique framebuffer format ID.
 If [param view_count] is greater than or equal to [code]2[/code], enables multiview which is used for VR rendering. This requires support for the Vulkan multiview extension.
 */
-func (self Instance) FramebufferFormatCreate(attachments [][1]gdclass.RDAttachmentFormat) int { //gd:RenderingDevice.framebuffer_format_create
+func (self Instance) FramebufferFormatCreate(attachments []RDAttachmentFormat.Instance) int { //gd:RenderingDevice.framebuffer_format_create
 	return int(int(Advanced(self).FramebufferFormatCreate(gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDAttachmentFormat]](attachments), int64(1))))
 }
 
@@ -249,21 +263,21 @@ func (self Instance) FramebufferFormatCreate(attachments [][1]gdclass.RDAttachme
 Creates a new framebuffer format with the specified [param attachments] and [param view_count]. Returns the new framebuffer's unique framebuffer format ID.
 If [param view_count] is greater than or equal to [code]2[/code], enables multiview which is used for VR rendering. This requires support for the Vulkan multiview extension.
 */
-func (self Expanded) FramebufferFormatCreate(attachments [][1]gdclass.RDAttachmentFormat, view_count int) int { //gd:RenderingDevice.framebuffer_format_create
+func (self Expanded) FramebufferFormatCreate(attachments []RDAttachmentFormat.Instance, view_count int) int { //gd:RenderingDevice.framebuffer_format_create
 	return int(int(Advanced(self).FramebufferFormatCreate(gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDAttachmentFormat]](attachments), int64(view_count))))
 }
 
 /*
 Creates a multipass framebuffer format with the specified [param attachments], [param passes] and [param view_count] and returns its ID. If [param view_count] is greater than or equal to [code]2[/code], enables multiview which is used for VR rendering. This requires support for the Vulkan multiview extension.
 */
-func (self Instance) FramebufferFormatCreateMultipass(attachments [][1]gdclass.RDAttachmentFormat, passes [][1]gdclass.RDFramebufferPass) int { //gd:RenderingDevice.framebuffer_format_create_multipass
+func (self Instance) FramebufferFormatCreateMultipass(attachments []RDAttachmentFormat.Instance, passes []RDFramebufferPass.Instance) int { //gd:RenderingDevice.framebuffer_format_create_multipass
 	return int(int(Advanced(self).FramebufferFormatCreateMultipass(gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDAttachmentFormat]](attachments), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDFramebufferPass]](passes), int64(1))))
 }
 
 /*
 Creates a multipass framebuffer format with the specified [param attachments], [param passes] and [param view_count] and returns its ID. If [param view_count] is greater than or equal to [code]2[/code], enables multiview which is used for VR rendering. This requires support for the Vulkan multiview extension.
 */
-func (self Expanded) FramebufferFormatCreateMultipass(attachments [][1]gdclass.RDAttachmentFormat, passes [][1]gdclass.RDFramebufferPass, view_count int) int { //gd:RenderingDevice.framebuffer_format_create_multipass
+func (self Expanded) FramebufferFormatCreateMultipass(attachments []RDAttachmentFormat.Instance, passes []RDFramebufferPass.Instance, view_count int) int { //gd:RenderingDevice.framebuffer_format_create_multipass
 	return int(int(Advanced(self).FramebufferFormatCreateMultipass(gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDAttachmentFormat]](attachments), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDFramebufferPass]](passes), int64(view_count))))
 }
 
@@ -315,7 +329,7 @@ func (self Expanded) FramebufferCreate(textures [][]RID.Texture, validate_with_f
 Creates a new multipass framebuffer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
-func (self Instance) FramebufferCreateMultipass(textures [][]RID.Texture, passes [][1]gdclass.RDFramebufferPass) RID.Framebuffer { //gd:RenderingDevice.framebuffer_create_multipass
+func (self Instance) FramebufferCreateMultipass(textures [][]RID.Texture, passes []RDFramebufferPass.Instance) RID.Framebuffer { //gd:RenderingDevice.framebuffer_create_multipass
 	return RID.Framebuffer(Advanced(self).FramebufferCreateMultipass(gd.ArrayFromSlice[Array.Contains[RID.Any]](textures), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDFramebufferPass]](passes), int64(-1), int64(1)))
 }
 
@@ -323,7 +337,7 @@ func (self Instance) FramebufferCreateMultipass(textures [][]RID.Texture, passes
 Creates a new multipass framebuffer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
-func (self Expanded) FramebufferCreateMultipass(textures [][]RID.Texture, passes [][1]gdclass.RDFramebufferPass, validate_with_format int, view_count int) RID.Framebuffer { //gd:RenderingDevice.framebuffer_create_multipass
+func (self Expanded) FramebufferCreateMultipass(textures [][]RID.Texture, passes []RDFramebufferPass.Instance, validate_with_format int, view_count int) RID.Framebuffer { //gd:RenderingDevice.framebuffer_create_multipass
 	return RID.Framebuffer(Advanced(self).FramebufferCreateMultipass(gd.ArrayFromSlice[Array.Contains[RID.Any]](textures), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDFramebufferPass]](passes), int64(validate_with_format), int64(view_count)))
 }
 
@@ -361,7 +375,7 @@ func (self Instance) FramebufferIsValid(framebuffer RID.Framebuffer) bool { //gd
 Creates a new sampler. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
-func (self Instance) SamplerCreate(state [1]gdclass.RDSamplerState) RID.Sampler { //gd:RenderingDevice.sampler_create
+func (self Instance) SamplerCreate(state RDSamplerState.Instance) RID.Sampler { //gd:RenderingDevice.sampler_create
 	return RID.Sampler(Advanced(self).SamplerCreate(state))
 }
 
@@ -391,7 +405,7 @@ func (self Expanded) VertexBufferCreate(size_bytes int, data []byte, creation_bi
 /*
 Creates a new vertex format with the specified [param vertex_descriptions]. Returns a unique vertex format ID corresponding to the newly created vertex format.
 */
-func (self Instance) VertexFormatCreate(vertex_descriptions [][1]gdclass.RDVertexAttribute) int { //gd:RenderingDevice.vertex_format_create
+func (self Instance) VertexFormatCreate(vertex_descriptions []RDVertexAttribute.Instance) int { //gd:RenderingDevice.vertex_format_create
 	return int(int(Advanced(self).VertexFormatCreate(gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDVertexAttribute]](vertex_descriptions))))
 }
 
@@ -437,23 +451,23 @@ func (self Instance) IndexArrayCreate(index_buffer RID.IndexBuffer, index_offset
 Compiles a SPIR-V from the shader source code in [param shader_source] and returns the SPIR-V as a [RDShaderSPIRV]. This intermediate language shader is portable across different GPU models and driver versions, but cannot be run directly by GPUs until compiled into a binary shader using [method shader_compile_binary_from_spirv].
 If [param allow_cache] is [code]true[/code], make use of the shader cache generated by Godot. This avoids a potentially lengthy shader compilation step if the shader is already in cache. If [param allow_cache] is [code]false[/code], Godot's shader cache is ignored and the shader will always be recompiled.
 */
-func (self Instance) ShaderCompileSpirvFromSource(shader_source [1]gdclass.RDShaderSource) [1]gdclass.RDShaderSPIRV { //gd:RenderingDevice.shader_compile_spirv_from_source
-	return [1]gdclass.RDShaderSPIRV(Advanced(self).ShaderCompileSpirvFromSource(shader_source, true))
+func (self Instance) ShaderCompileSpirvFromSource(shader_source RDShaderSource.Instance) RDShaderSPIRV.Instance { //gd:RenderingDevice.shader_compile_spirv_from_source
+	return RDShaderSPIRV.Instance(Advanced(self).ShaderCompileSpirvFromSource(shader_source, true))
 }
 
 /*
 Compiles a SPIR-V from the shader source code in [param shader_source] and returns the SPIR-V as a [RDShaderSPIRV]. This intermediate language shader is portable across different GPU models and driver versions, but cannot be run directly by GPUs until compiled into a binary shader using [method shader_compile_binary_from_spirv].
 If [param allow_cache] is [code]true[/code], make use of the shader cache generated by Godot. This avoids a potentially lengthy shader compilation step if the shader is already in cache. If [param allow_cache] is [code]false[/code], Godot's shader cache is ignored and the shader will always be recompiled.
 */
-func (self Expanded) ShaderCompileSpirvFromSource(shader_source [1]gdclass.RDShaderSource, allow_cache bool) [1]gdclass.RDShaderSPIRV { //gd:RenderingDevice.shader_compile_spirv_from_source
-	return [1]gdclass.RDShaderSPIRV(Advanced(self).ShaderCompileSpirvFromSource(shader_source, allow_cache))
+func (self Expanded) ShaderCompileSpirvFromSource(shader_source RDShaderSource.Instance, allow_cache bool) RDShaderSPIRV.Instance { //gd:RenderingDevice.shader_compile_spirv_from_source
+	return RDShaderSPIRV.Instance(Advanced(self).ShaderCompileSpirvFromSource(shader_source, allow_cache))
 }
 
 /*
 Compiles a binary shader from [param spirv_data] and returns the compiled binary data as a [PackedByteArray]. This compiled shader is specific to the GPU model and driver version used; it will not work on different GPU models or even different driver versions. See also [method shader_compile_spirv_from_source].
 [param name] is an optional human-readable name that can be given to the compiled shader for organizational purposes.
 */
-func (self Instance) ShaderCompileBinaryFromSpirv(spirv_data [1]gdclass.RDShaderSPIRV) []byte { //gd:RenderingDevice.shader_compile_binary_from_spirv
+func (self Instance) ShaderCompileBinaryFromSpirv(spirv_data RDShaderSPIRV.Instance) []byte { //gd:RenderingDevice.shader_compile_binary_from_spirv
 	return []byte(Advanced(self).ShaderCompileBinaryFromSpirv(spirv_data, String.New("")).Bytes())
 }
 
@@ -461,7 +475,7 @@ func (self Instance) ShaderCompileBinaryFromSpirv(spirv_data [1]gdclass.RDShader
 Compiles a binary shader from [param spirv_data] and returns the compiled binary data as a [PackedByteArray]. This compiled shader is specific to the GPU model and driver version used; it will not work on different GPU models or even different driver versions. See also [method shader_compile_spirv_from_source].
 [param name] is an optional human-readable name that can be given to the compiled shader for organizational purposes.
 */
-func (self Expanded) ShaderCompileBinaryFromSpirv(spirv_data [1]gdclass.RDShaderSPIRV, name string) []byte { //gd:RenderingDevice.shader_compile_binary_from_spirv
+func (self Expanded) ShaderCompileBinaryFromSpirv(spirv_data RDShaderSPIRV.Instance, name string) []byte { //gd:RenderingDevice.shader_compile_binary_from_spirv
 	return []byte(Advanced(self).ShaderCompileBinaryFromSpirv(spirv_data, String.New(name)).Bytes())
 }
 
@@ -469,7 +483,7 @@ func (self Expanded) ShaderCompileBinaryFromSpirv(spirv_data [1]gdclass.RDShader
 Creates a new shader instance from SPIR-V intermediate code. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method. See also [method shader_compile_spirv_from_source] and [method shader_create_from_bytecode].
 */
-func (self Instance) ShaderCreateFromSpirv(spirv_data [1]gdclass.RDShaderSPIRV) RID.Shader { //gd:RenderingDevice.shader_create_from_spirv
+func (self Instance) ShaderCreateFromSpirv(spirv_data RDShaderSPIRV.Instance) RID.Shader { //gd:RenderingDevice.shader_create_from_spirv
 	return RID.Shader(Advanced(self).ShaderCreateFromSpirv(spirv_data, String.New("")))
 }
 
@@ -477,7 +491,7 @@ func (self Instance) ShaderCreateFromSpirv(spirv_data [1]gdclass.RDShaderSPIRV) 
 Creates a new shader instance from SPIR-V intermediate code. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method. See also [method shader_compile_spirv_from_source] and [method shader_create_from_bytecode].
 */
-func (self Expanded) ShaderCreateFromSpirv(spirv_data [1]gdclass.RDShaderSPIRV, name string) RID.Shader { //gd:RenderingDevice.shader_create_from_spirv
+func (self Expanded) ShaderCreateFromSpirv(spirv_data RDShaderSPIRV.Instance, name string) RID.Shader { //gd:RenderingDevice.shader_create_from_spirv
 	return RID.Shader(Advanced(self).ShaderCreateFromSpirv(spirv_data, String.New(name)))
 }
 
@@ -563,7 +577,7 @@ func (self Expanded) TextureBufferCreate(size_bytes int, format gdclass.Renderin
 Creates a new uniform set. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
-func (self Instance) UniformSetCreate(uniforms [][1]gdclass.RDUniform, shader RID.Shader, shader_set int) RID.UniformSet { //gd:RenderingDevice.uniform_set_create
+func (self Instance) UniformSetCreate(uniforms []RDUniform.Instance, shader RID.Shader, shader_set int) RID.UniformSet { //gd:RenderingDevice.uniform_set_create
 	return RID.UniformSet(Advanced(self).UniformSetCreate(gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDUniform]](uniforms), RID.Any(shader), int64(shader_set)))
 }
 
@@ -672,15 +686,15 @@ func (self Instance) BufferGetDeviceAddress(buffer RID.Buffer) int { //gd:Render
 Creates a new render pipeline. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
-func (self Instance) RenderPipelineCreate(shader RID.Shader, framebuffer_format int, vertex_format int, primitive gdclass.RenderingDeviceRenderPrimitive, rasterization_state [1]gdclass.RDPipelineRasterizationState, multisample_state [1]gdclass.RDPipelineMultisampleState, stencil_state [1]gdclass.RDPipelineDepthStencilState, color_blend_state [1]gdclass.RDPipelineColorBlendState) RID.RenderPipeline { //gd:RenderingDevice.render_pipeline_create
-	return RID.RenderPipeline(Advanced(self).RenderPipelineCreate(RID.Any(shader), int64(framebuffer_format), int64(vertex_format), primitive, rasterization_state, multisample_state, stencil_state, color_blend_state, 0, int64(0), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDPipelineSpecializationConstant]]([1][][1]gdclass.RDPipelineSpecializationConstant{}[0])))
+func (self Instance) RenderPipelineCreate(shader RID.Shader, framebuffer_format int, vertex_format int, primitive gdclass.RenderingDeviceRenderPrimitive, rasterization_state RDPipelineRasterizationState.Instance, multisample_state RDPipelineMultisampleState.Instance, stencil_state RDPipelineDepthStencilState.Instance, color_blend_state RDPipelineColorBlendState.Instance) RID.RenderPipeline { //gd:RenderingDevice.render_pipeline_create
+	return RID.RenderPipeline(Advanced(self).RenderPipelineCreate(RID.Any(shader), int64(framebuffer_format), int64(vertex_format), primitive, rasterization_state, multisample_state, stencil_state, color_blend_state, 0, int64(0), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDPipelineSpecializationConstant]]([1][]RDPipelineSpecializationConstant.Instance{}[0])))
 }
 
 /*
 Creates a new render pipeline. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
-func (self Expanded) RenderPipelineCreate(shader RID.Shader, framebuffer_format int, vertex_format int, primitive gdclass.RenderingDeviceRenderPrimitive, rasterization_state [1]gdclass.RDPipelineRasterizationState, multisample_state [1]gdclass.RDPipelineMultisampleState, stencil_state [1]gdclass.RDPipelineDepthStencilState, color_blend_state [1]gdclass.RDPipelineColorBlendState, dynamic_state_flags gdclass.RenderingDevicePipelineDynamicStateFlags, for_render_pass int, specialization_constants [][1]gdclass.RDPipelineSpecializationConstant) RID.RenderPipeline { //gd:RenderingDevice.render_pipeline_create
+func (self Expanded) RenderPipelineCreate(shader RID.Shader, framebuffer_format int, vertex_format int, primitive gdclass.RenderingDeviceRenderPrimitive, rasterization_state RDPipelineRasterizationState.Instance, multisample_state RDPipelineMultisampleState.Instance, stencil_state RDPipelineDepthStencilState.Instance, color_blend_state RDPipelineColorBlendState.Instance, dynamic_state_flags gdclass.RenderingDevicePipelineDynamicStateFlags, for_render_pass int, specialization_constants []RDPipelineSpecializationConstant.Instance) RID.RenderPipeline { //gd:RenderingDevice.render_pipeline_create
 	return RID.RenderPipeline(Advanced(self).RenderPipelineCreate(RID.Any(shader), int64(framebuffer_format), int64(vertex_format), primitive, rasterization_state, multisample_state, stencil_state, color_blend_state, dynamic_state_flags, int64(for_render_pass), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDPipelineSpecializationConstant]](specialization_constants)))
 }
 
@@ -696,14 +710,14 @@ Creates a new compute pipeline. It can be accessed with the RID that is returned
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
 func (self Instance) ComputePipelineCreate(shader RID.Shader) RID.ComputePipeline { //gd:RenderingDevice.compute_pipeline_create
-	return RID.ComputePipeline(Advanced(self).ComputePipelineCreate(RID.Any(shader), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDPipelineSpecializationConstant]]([1][][1]gdclass.RDPipelineSpecializationConstant{}[0])))
+	return RID.ComputePipeline(Advanced(self).ComputePipelineCreate(RID.Any(shader), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDPipelineSpecializationConstant]]([1][]RDPipelineSpecializationConstant.Instance{}[0])))
 }
 
 /*
 Creates a new compute pipeline. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
-func (self Expanded) ComputePipelineCreate(shader RID.Shader, specialization_constants [][1]gdclass.RDPipelineSpecializationConstant) RID.ComputePipeline { //gd:RenderingDevice.compute_pipeline_create
+func (self Expanded) ComputePipelineCreate(shader RID.Shader, specialization_constants []RDPipelineSpecializationConstant.Instance) RID.ComputePipeline { //gd:RenderingDevice.compute_pipeline_create
 	return RID.ComputePipeline(Advanced(self).ComputePipelineCreate(RID.Any(shader), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDPipelineSpecializationConstant]](specialization_constants)))
 }
 
@@ -1158,8 +1172,8 @@ func (self Instance) FullBarrier() { //gd:RenderingDevice.full_barrier
 /*
 Create a new local [RenderingDevice]. This is most useful for performing compute operations on the GPU independently from the rest of the engine.
 */
-func (self Instance) CreateLocalDevice() [1]gdclass.RenderingDevice { //gd:RenderingDevice.create_local_device
-	return [1]gdclass.RenderingDevice(Advanced(self).CreateLocalDevice())
+func (self Instance) CreateLocalDevice() Instance { //gd:RenderingDevice.create_local_device
+	return Instance(Advanced(self).CreateLocalDevice())
 }
 
 /*

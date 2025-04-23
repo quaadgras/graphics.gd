@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Image"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/Texture"
 import "graphics.gd/variant/Array"
@@ -77,7 +78,7 @@ type Interface interface {
 	//Called when the presence of mipmaps in the [TextureLayered] is queried.
 	HasMipmaps() bool
 	//Called when the data for a layer in the [TextureLayered] is queried.
-	GetLayerData(layer_index int) [1]gdclass.Image
+	GetLayerData(layer_index int) Image.Instance
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -85,13 +86,13 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetFormat() (_ gdclass.ImageFormat)                { return }
-func (self implementation) GetLayeredType() (_ int)                           { return }
-func (self implementation) GetWidth() (_ int)                                 { return }
-func (self implementation) GetHeight() (_ int)                                { return }
-func (self implementation) GetLayers() (_ int)                                { return }
-func (self implementation) HasMipmaps() (_ bool)                              { return }
-func (self implementation) GetLayerData(layer_index int) (_ [1]gdclass.Image) { return }
+func (self implementation) GetFormat() (_ gdclass.ImageFormat)              { return }
+func (self implementation) GetLayeredType() (_ int)                         { return }
+func (self implementation) GetWidth() (_ int)                               { return }
+func (self implementation) GetHeight() (_ int)                              { return }
+func (self implementation) GetLayers() (_ int)                              { return }
+func (self implementation) HasMipmaps() (_ bool)                            { return }
+func (self implementation) GetLayerData(layer_index int) (_ Image.Instance) { return }
 
 /*
 Called when the [TextureLayered]'s format is queried.
@@ -162,7 +163,7 @@ func (Instance) _has_mipmaps(impl func(ptr unsafe.Pointer) bool) (cb gd.Extensio
 /*
 Called when the data for a layer in the [TextureLayered] is queried.
 */
-func (Instance) _get_layer_data(impl func(ptr unsafe.Pointer, layer_index int) [1]gdclass.Image) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_layer_data(impl func(ptr unsafe.Pointer, layer_index int) Image.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var layer_index = gd.UnsafeGet[int64](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -221,8 +222,8 @@ func (self Instance) HasMipmaps() bool { //gd:TextureLayered.has_mipmaps
 /*
 Returns an [Image] resource with the data from specified [param layer].
 */
-func (self Instance) GetLayerData(layer int) [1]gdclass.Image { //gd:TextureLayered.get_layer_data
-	return [1]gdclass.Image(Advanced(self).GetLayerData(int64(layer)))
+func (self Instance) GetLayerData(layer int) Image.Instance { //gd:TextureLayered.get_layer_data
+	return Image.Instance(Advanced(self).GetLayerData(int64(layer)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

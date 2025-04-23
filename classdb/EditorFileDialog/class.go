@@ -13,7 +13,10 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/AcceptDialog"
 import "graphics.gd/classdb/ConfirmationDialog"
+import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/LineEdit"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/VBoxContainer"
 import "graphics.gd/classdb/Viewport"
 import "graphics.gd/classdb/Window"
 import "graphics.gd/variant/Array"
@@ -168,29 +171,29 @@ func (self Instance) GetFilenameFilter() string { //gd:EditorFileDialog.get_file
 Returns the [VBoxContainer] used to display the file system.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
-func (self Instance) GetVbox() [1]gdclass.VBoxContainer { //gd:EditorFileDialog.get_vbox
-	return [1]gdclass.VBoxContainer(Advanced(self).GetVbox())
+func (self Instance) GetVbox() VBoxContainer.Instance { //gd:EditorFileDialog.get_vbox
+	return VBoxContainer.Instance(Advanced(self).GetVbox())
 }
 
 /*
 Returns the LineEdit for the selected file.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
-func (self Instance) GetLineEdit() [1]gdclass.LineEdit { //gd:EditorFileDialog.get_line_edit
-	return [1]gdclass.LineEdit(Advanced(self).GetLineEdit())
+func (self Instance) GetLineEdit() LineEdit.Instance { //gd:EditorFileDialog.get_line_edit
+	return LineEdit.Instance(Advanced(self).GetLineEdit())
 }
 
 /*
 Adds the given [param menu] to the side of the file dialog with the given [param title] text on top. Only one side menu is allowed.
 */
-func (self Instance) AddSideMenu(menu [1]gdclass.Control) { //gd:EditorFileDialog.add_side_menu
+func (self Instance) AddSideMenu(menu Control.Instance) { //gd:EditorFileDialog.add_side_menu
 	Advanced(self).AddSideMenu(menu, String.New(""))
 }
 
 /*
 Adds the given [param menu] to the side of the file dialog with the given [param title] text on top. Only one side menu is allowed.
 */
-func (self Expanded) AddSideMenu(menu [1]gdclass.Control, title string) { //gd:EditorFileDialog.add_side_menu
+func (self Expanded) AddSideMenu(menu Control.Instance, title string) { //gd:EditorFileDialog.add_side_menu
 	Advanced(self).AddSideMenu(menu, String.New(title))
 }
 

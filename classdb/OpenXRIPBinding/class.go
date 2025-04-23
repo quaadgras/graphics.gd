@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/OpenXRAction"
+import "graphics.gd/classdb/OpenXRActionBindingModifier"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -65,8 +67,8 @@ func (self Instance) GetBindingModifierCount() int { //gd:OpenXRIPBinding.get_bi
 /*
 Get the [OpenXRBindingModifier] at this index.
 */
-func (self Instance) GetBindingModifier(index int) [1]gdclass.OpenXRActionBindingModifier { //gd:OpenXRIPBinding.get_binding_modifier
-	return [1]gdclass.OpenXRActionBindingModifier(Advanced(self).GetBindingModifier(int64(index)))
+func (self Instance) GetBindingModifier(index int) OpenXRActionBindingModifier.Instance { //gd:OpenXRIPBinding.get_binding_modifier
+	return OpenXRActionBindingModifier.Instance(Advanced(self).GetBindingModifier(int64(index)))
 }
 
 /*
@@ -116,11 +118,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Action() [1]gdclass.OpenXRAction {
-	return [1]gdclass.OpenXRAction(class(self).GetAction())
+func (self Instance) Action() OpenXRAction.Instance {
+	return OpenXRAction.Instance(class(self).GetAction())
 }
 
-func (self Instance) SetAction(value [1]gdclass.OpenXRAction) {
+func (self Instance) SetAction(value OpenXRAction.Instance) {
 	class(self).SetAction(value)
 }
 

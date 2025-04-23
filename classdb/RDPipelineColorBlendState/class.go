@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/RDPipelineColorBlendStateAttachment"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -98,11 +99,11 @@ func (self Instance) SetBlendConstant(value Color.RGBA) {
 	class(self).SetBlendConstant(Color.RGBA(value))
 }
 
-func (self Instance) Attachments() [][1]gdclass.RDPipelineColorBlendStateAttachment {
-	return [][1]gdclass.RDPipelineColorBlendStateAttachment(gd.ArrayAs[[][1]gdclass.RDPipelineColorBlendStateAttachment](gd.InternalArray(class(self).GetAttachments())))
+func (self Instance) Attachments() []RDPipelineColorBlendStateAttachment.Instance {
+	return []RDPipelineColorBlendStateAttachment.Instance(gd.ArrayAs[[]RDPipelineColorBlendStateAttachment.Instance](gd.InternalArray(class(self).GetAttachments())))
 }
 
-func (self Instance) SetAttachments(value [][1]gdclass.RDPipelineColorBlendStateAttachment) {
+func (self Instance) SetAttachments(value []RDPipelineColorBlendStateAttachment.Instance) {
 	class(self).SetAttachments(gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDPipelineColorBlendStateAttachment]](value))
 }
 

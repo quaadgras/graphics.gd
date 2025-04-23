@@ -16,6 +16,7 @@ import "graphics.gd/classdb/Button"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/PopupMenu"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -64,8 +65,8 @@ type Any interface {
 Returns the [PopupMenu] contained in this button.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member Window.visible] property.
 */
-func (self Instance) GetPopup() [1]gdclass.PopupMenu { //gd:MenuButton.get_popup
-	return [1]gdclass.PopupMenu(Advanced(self).GetPopup())
+func (self Instance) GetPopup() PopupMenu.Instance { //gd:MenuButton.get_popup
+	return PopupMenu.Instance(Advanced(self).GetPopup())
 }
 
 /*

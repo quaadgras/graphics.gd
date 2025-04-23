@@ -73,7 +73,7 @@ type Interface interface {
 	//When inheriting from [AnimationRootNode], implement this virtual method to return a list of the properties on this animation node. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees. Format is similar to [method Object.get_property_list].
 	GetParameterList() []any
 	//When inheriting from [AnimationRootNode], implement this virtual method to return a child animation node by its [param name].
-	GetChildByName(name string) [1]gdclass.AnimationNode
+	GetChildByName(name string) Instance
 	//When inheriting from [AnimationRootNode], implement this virtual method to return the default value of a [param parameter]. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees.
 	GetParameterDefaultValue(parameter string) any
 	//When inheriting from [AnimationRootNode], implement this virtual method to return whether the [param parameter] is read-only. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees.
@@ -93,11 +93,11 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetChildNodes() (_ map[any]any)                          { return }
-func (self implementation) GetParameterList() (_ []any)                             { return }
-func (self implementation) GetChildByName(name string) (_ [1]gdclass.AnimationNode) { return }
-func (self implementation) GetParameterDefaultValue(parameter string) (_ any)       { return }
-func (self implementation) IsParameterReadOnly(parameter string) (_ bool)           { return }
+func (self implementation) GetChildNodes() (_ map[any]any)                    { return }
+func (self implementation) GetParameterList() (_ []any)                       { return }
+func (self implementation) GetChildByName(name string) (_ Instance)           { return }
+func (self implementation) GetParameterDefaultValue(parameter string) (_ any) { return }
+func (self implementation) IsParameterReadOnly(parameter string) (_ bool)     { return }
 func (self implementation) Process(time Float.X, seek bool, is_external_seeking bool, test_only bool) (_ Float.X) {
 	return
 }
@@ -139,7 +139,7 @@ func (Instance) _get_parameter_list(impl func(ptr unsafe.Pointer) []any) (cb gd.
 /*
 When inheriting from [AnimationRootNode], implement this virtual method to return a child animation node by its [param name].
 */
-func (Instance) _get_child_by_name(impl func(ptr unsafe.Pointer, name string) [1]gdclass.AnimationNode) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_child_by_name(impl func(ptr unsafe.Pointer, name string) Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(name))
@@ -319,14 +319,14 @@ func (self Expanded) BlendAnimation(animation string, time Float.X, delta Float.
 /*
 Blend another animation node (in case this animation node contains child animation nodes). This function is only useful if you inherit from [AnimationRootNode] instead, otherwise editors will not display your animation node for addition.
 */
-func (self Instance) BlendNode(name string, node [1]gdclass.AnimationNode, time Float.X, seek bool, is_external_seeking bool, blend Float.X) Float.X { //gd:AnimationNode.blend_node
+func (self Instance) BlendNode(name string, node Instance, time Float.X, seek bool, is_external_seeking bool, blend Float.X) Float.X { //gd:AnimationNode.blend_node
 	return Float.X(Float.X(Advanced(self).BlendNode(String.Name(String.New(name)), node, float64(time), seek, is_external_seeking, float64(blend), 0, true, false)))
 }
 
 /*
 Blend another animation node (in case this animation node contains child animation nodes). This function is only useful if you inherit from [AnimationRootNode] instead, otherwise editors will not display your animation node for addition.
 */
-func (self Expanded) BlendNode(name string, node [1]gdclass.AnimationNode, time Float.X, seek bool, is_external_seeking bool, blend Float.X, filter gdclass.AnimationNodeFilterAction, sync bool, test_only bool) Float.X { //gd:AnimationNode.blend_node
+func (self Expanded) BlendNode(name string, node Instance, time Float.X, seek bool, is_external_seeking bool, blend Float.X, filter gdclass.AnimationNodeFilterAction, sync bool, test_only bool) Float.X { //gd:AnimationNode.blend_node
 	return Float.X(Float.X(Advanced(self).BlendNode(String.Name(String.New(name)), node, float64(time), seek, is_external_seeking, float64(blend), filter, sync, test_only)))
 }
 

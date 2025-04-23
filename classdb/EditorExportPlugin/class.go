@@ -11,6 +11,10 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/EditorExportPlatform"
+import "graphics.gd/classdb/EditorExportPreset"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -68,7 +72,7 @@ type Interface interface {
 	ExportEnd()
 	//Return [code]true[/code] if this plugin will customize resources based on the platform and features used.
 	//When enabled, [method _get_customization_configuration_hash] and [method _customize_resource] will be called and must be implemented.
-	BeginCustomizeResources(platform [1]gdclass.EditorExportPlatform, features []string) bool
+	BeginCustomizeResources(platform EditorExportPlatform.Instance, features []string) bool
 	//Customize a resource. If changes are made to it, return the same or a new resource. Otherwise, return [code]null[/code]. When a new resource is returned, [param resource] will be replaced by a copy of the new resource.
 	//The [param path] argument is only used when customizing an actual file, otherwise this means that this resource is part of another one and it will be empty.
 	//Implementing this method is required if [method _begin_customize_resources] returns [code]true[/code].
@@ -79,14 +83,14 @@ type Interface interface {
 	//- [CompressedTexture2D]
 	//- [CompressedTexture2DArray]
 	//- [CompressedTexture3D]
-	CustomizeResource(resource [1]gdclass.Resource, path string) [1]gdclass.Resource
+	CustomizeResource(resource Resource.Instance, path string) Resource.Instance
 	//Return [code]true[/code] if this plugin will customize scenes based on the platform and features used.
 	//When enabled, [method _get_customization_configuration_hash] and [method _customize_scene] will be called and must be implemented.
 	//[b]Note:[/b] [method _customize_scene] will only be called for scenes that have been modified since the last export.
-	BeginCustomizeScenes(platform [1]gdclass.EditorExportPlatform, features []string) bool
+	BeginCustomizeScenes(platform EditorExportPlatform.Instance, features []string) bool
 	//Customize a scene. If changes are made to it, return the same or a new scene. Otherwise, return [code]null[/code]. If a new scene is returned, it is up to you to dispose of the old one.
 	//Implementing this method is required if [method _begin_customize_scenes] returns [code]true[/code].
-	CustomizeScene(scene [1]gdclass.Node, path string) [1]gdclass.Node
+	CustomizeScene(scene Node.Instance, path string) Node.Instance
 	//Return a hash based on the configuration passed (for both scenes and resources). This helps keep separate caches for separate export configurations.
 	//Implementing this method is required if [method _begin_customize_resources] returns [code]true[/code].
 	GetCustomizationConfigurationHash() int
@@ -99,7 +103,7 @@ type Interface interface {
 	//- [code]option[/code]: A dictionary with the structure documented by [method Object.get_property_list], but all keys are optional.
 	//- [code]default_value[/code]: The default value for this option.
 	//- [code]update_visibility[/code]: An optional boolean value. If set to [code]true[/code], the preset will emit [signal Object.property_list_changed] when the option is changed.
-	GetExportOptions(platform [1]gdclass.EditorExportPlatform) []map[any]any
+	GetExportOptions(platform EditorExportPlatform.Instance) []map[any]any
 	//Return a [Dictionary] of override values for export options, that will be used instead of user-provided values. Overridden options will be hidden from the user interface.
 	//[codeblock]
 	//class MyExportPlugin extends EditorExportPlugin:
@@ -118,44 +122,44 @@ type Interface interface {
 	//            "binary_format/embed_pck": true,
 	//        }
 	//[/codeblock]
-	GetExportOptionsOverrides(platform [1]gdclass.EditorExportPlatform) map[any]any
+	GetExportOptionsOverrides(platform EditorExportPlatform.Instance) map[any]any
 	//Return [code]true[/code], if the result of [method _get_export_options] has changed and the export options of preset corresponding to [param platform] should be updated.
-	ShouldUpdateExportOptions(platform [1]gdclass.EditorExportPlatform) bool
+	ShouldUpdateExportOptions(platform EditorExportPlatform.Instance) bool
 	//[b]Optional.[/b]
 	//Validates [param option] and returns the visibility for the specified [param platform]. The default implementation returns [code]true[/code] for all options.
-	GetExportOptionVisibility(platform [1]gdclass.EditorExportPlatform, option string) bool
+	GetExportOptionVisibility(platform EditorExportPlatform.Instance, option string) bool
 	//Check the requirements for the given [param option] and return a non-empty warning string if they are not met.
 	//[b]Note:[/b] Use [method get_option] to check the value of the export options.
-	GetExportOptionWarning(platform [1]gdclass.EditorExportPlatform, option string) string
+	GetExportOptionWarning(platform EditorExportPlatform.Instance, option string) string
 	//Return a [PackedStringArray] of additional features this preset, for the given [param platform], should have.
-	GetExportFeatures(platform [1]gdclass.EditorExportPlatform, debug bool) []string
+	GetExportFeatures(platform EditorExportPlatform.Instance, debug bool) []string
 	//Return the name identifier of this plugin (for future identification by the exporter). The plugins are sorted by name before exporting.
 	//Implementing this method is required.
 	GetName() string
 	//Return [code]true[/code] if the plugin supports the given [param platform].
-	SupportsPlatform(platform [1]gdclass.EditorExportPlatform) bool
+	SupportsPlatform(platform EditorExportPlatform.Instance) bool
 	//Virtual method to be overridden by the user. This is called to retrieve the set of Android dependencies provided by this plugin. Each returned Android dependency should have the format of an Android remote binary dependency: [code]org.godot.example:my-plugin:0.0.0[/code]
 	//For more information see [url=https://developer.android.com/build/dependencies?agpversion=4.1#dependency-types]Android documentation on dependencies[/url].
 	//[b]Note:[/b] Only supported on Android and requires [member EditorExportPlatformAndroid.gradle_build/use_gradle_build] to be enabled.
-	GetAndroidDependencies(platform [1]gdclass.EditorExportPlatform, debug bool) []string
+	GetAndroidDependencies(platform EditorExportPlatform.Instance, debug bool) []string
 	//Virtual method to be overridden by the user. This is called to retrieve the URLs of Maven repositories for the set of Android dependencies provided by this plugin.
 	//For more information see [url=https://docs.gradle.org/current/userguide/dependency_management.html#sec:maven_repo]Gradle documentation on dependency management[/url].
 	//[b]Note:[/b] Google's Maven repo and the Maven Central repo are already included by default.
 	//[b]Note:[/b] Only supported on Android and requires [member EditorExportPlatformAndroid.gradle_build/use_gradle_build] to be enabled.
-	GetAndroidDependenciesMavenRepos(platform [1]gdclass.EditorExportPlatform, debug bool) []string
+	GetAndroidDependenciesMavenRepos(platform EditorExportPlatform.Instance, debug bool) []string
 	//Virtual method to be overridden by the user. This is called to retrieve the local paths of the Android libraries archive (AAR) files provided by this plugin.
 	//[b]Note:[/b] Relative paths [b]must[/b] be relative to Godot's [code]res://addons/[/code] directory. For example, an AAR file located under [code]res://addons/hello_world_plugin/HelloWorld.release.aar[/code] can be returned as an absolute path using [code]res://addons/hello_world_plugin/HelloWorld.release.aar[/code] or a relative path using [code]hello_world_plugin/HelloWorld.release.aar[/code].
 	//[b]Note:[/b] Only supported on Android and requires [member EditorExportPlatformAndroid.gradle_build/use_gradle_build] to be enabled.
-	GetAndroidLibraries(platform [1]gdclass.EditorExportPlatform, debug bool) []string
+	GetAndroidLibraries(platform EditorExportPlatform.Instance, debug bool) []string
 	//Virtual method to be overridden by the user. This is used at export time to update the contents of the [code]activity[/code] element in the generated Android manifest.
 	//[b]Note:[/b] Only supported on Android and requires [member EditorExportPlatformAndroid.gradle_build/use_gradle_build] to be enabled.
-	GetAndroidManifestActivityElementContents(platform [1]gdclass.EditorExportPlatform, debug bool) string
+	GetAndroidManifestActivityElementContents(platform EditorExportPlatform.Instance, debug bool) string
 	//Virtual method to be overridden by the user. This is used at export time to update the contents of the [code]application[/code] element in the generated Android manifest.
 	//[b]Note:[/b] Only supported on Android and requires [member EditorExportPlatformAndroid.gradle_build/use_gradle_build] to be enabled.
-	GetAndroidManifestApplicationElementContents(platform [1]gdclass.EditorExportPlatform, debug bool) string
+	GetAndroidManifestApplicationElementContents(platform EditorExportPlatform.Instance, debug bool) string
 	//Virtual method to be overridden by the user. This is used at export time to update the contents of the [code]manifest[/code] element in the generated Android manifest.
 	//[b]Note:[/b] Only supported on Android and requires [member EditorExportPlatformAndroid.gradle_build/use_gradle_build] to be enabled.
-	GetAndroidManifestElementContents(platform [1]gdclass.EditorExportPlatform, debug bool) string
+	GetAndroidManifestElementContents(platform EditorExportPlatform.Instance, debug bool) string
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -168,59 +172,55 @@ func (self implementation) ExportBegin(features []string, is_debug bool, path st
 	return
 }
 func (self implementation) ExportEnd() { return }
-func (self implementation) BeginCustomizeResources(platform [1]gdclass.EditorExportPlatform, features []string) (_ bool) {
+func (self implementation) BeginCustomizeResources(platform EditorExportPlatform.Instance, features []string) (_ bool) {
 	return
 }
-func (self implementation) CustomizeResource(resource [1]gdclass.Resource, path string) (_ [1]gdclass.Resource) {
+func (self implementation) CustomizeResource(resource Resource.Instance, path string) (_ Resource.Instance) {
 	return
 }
-func (self implementation) BeginCustomizeScenes(platform [1]gdclass.EditorExportPlatform, features []string) (_ bool) {
+func (self implementation) BeginCustomizeScenes(platform EditorExportPlatform.Instance, features []string) (_ bool) {
 	return
 }
-func (self implementation) CustomizeScene(scene [1]gdclass.Node, path string) (_ [1]gdclass.Node) {
+func (self implementation) CustomizeScene(scene Node.Instance, path string) (_ Node.Instance) { return }
+func (self implementation) GetCustomizationConfigurationHash() (_ int)                        { return }
+func (self implementation) EndCustomizeScenes()                                               { return }
+func (self implementation) EndCustomizeResources()                                            { return }
+func (self implementation) GetExportOptions(platform EditorExportPlatform.Instance) (_ []map[any]any) {
 	return
 }
-func (self implementation) GetCustomizationConfigurationHash() (_ int) { return }
-func (self implementation) EndCustomizeScenes()                        { return }
-func (self implementation) EndCustomizeResources()                     { return }
-func (self implementation) GetExportOptions(platform [1]gdclass.EditorExportPlatform) (_ []map[any]any) {
+func (self implementation) GetExportOptionsOverrides(platform EditorExportPlatform.Instance) (_ map[any]any) {
 	return
 }
-func (self implementation) GetExportOptionsOverrides(platform [1]gdclass.EditorExportPlatform) (_ map[any]any) {
+func (self implementation) ShouldUpdateExportOptions(platform EditorExportPlatform.Instance) (_ bool) {
 	return
 }
-func (self implementation) ShouldUpdateExportOptions(platform [1]gdclass.EditorExportPlatform) (_ bool) {
+func (self implementation) GetExportOptionVisibility(platform EditorExportPlatform.Instance, option string) (_ bool) {
 	return
 }
-func (self implementation) GetExportOptionVisibility(platform [1]gdclass.EditorExportPlatform, option string) (_ bool) {
+func (self implementation) GetExportOptionWarning(platform EditorExportPlatform.Instance, option string) (_ string) {
 	return
 }
-func (self implementation) GetExportOptionWarning(platform [1]gdclass.EditorExportPlatform, option string) (_ string) {
+func (self implementation) GetExportFeatures(platform EditorExportPlatform.Instance, debug bool) (_ []string) {
 	return
 }
-func (self implementation) GetExportFeatures(platform [1]gdclass.EditorExportPlatform, debug bool) (_ []string) {
+func (self implementation) GetName() (_ string)                                              { return }
+func (self implementation) SupportsPlatform(platform EditorExportPlatform.Instance) (_ bool) { return }
+func (self implementation) GetAndroidDependencies(platform EditorExportPlatform.Instance, debug bool) (_ []string) {
 	return
 }
-func (self implementation) GetName() (_ string) { return }
-func (self implementation) SupportsPlatform(platform [1]gdclass.EditorExportPlatform) (_ bool) {
+func (self implementation) GetAndroidDependenciesMavenRepos(platform EditorExportPlatform.Instance, debug bool) (_ []string) {
 	return
 }
-func (self implementation) GetAndroidDependencies(platform [1]gdclass.EditorExportPlatform, debug bool) (_ []string) {
+func (self implementation) GetAndroidLibraries(platform EditorExportPlatform.Instance, debug bool) (_ []string) {
 	return
 }
-func (self implementation) GetAndroidDependenciesMavenRepos(platform [1]gdclass.EditorExportPlatform, debug bool) (_ []string) {
+func (self implementation) GetAndroidManifestActivityElementContents(platform EditorExportPlatform.Instance, debug bool) (_ string) {
 	return
 }
-func (self implementation) GetAndroidLibraries(platform [1]gdclass.EditorExportPlatform, debug bool) (_ []string) {
+func (self implementation) GetAndroidManifestApplicationElementContents(platform EditorExportPlatform.Instance, debug bool) (_ string) {
 	return
 }
-func (self implementation) GetAndroidManifestActivityElementContents(platform [1]gdclass.EditorExportPlatform, debug bool) (_ string) {
-	return
-}
-func (self implementation) GetAndroidManifestApplicationElementContents(platform [1]gdclass.EditorExportPlatform, debug bool) (_ string) {
-	return
-}
-func (self implementation) GetAndroidManifestElementContents(platform [1]gdclass.EditorExportPlatform, debug bool) (_ string) {
+func (self implementation) GetAndroidManifestElementContents(platform EditorExportPlatform.Instance, debug bool) (_ string) {
 	return
 }
 
@@ -271,7 +271,7 @@ func (Instance) _export_end(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClass
 Return [code]true[/code] if this plugin will customize resources based on the platform and features used.
 When enabled, [method _get_customization_configuration_hash] and [method _customize_resource] will be called and must be implemented.
 */
-func (Instance) _begin_customize_resources(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, features []string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _begin_customize_resources(impl func(ptr unsafe.Pointer, platform EditorExportPlatform.Instance, features []string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -296,7 +296,7 @@ Implementing this method is required if [method _begin_customize_resources] retu
 - [CompressedTexture2DArray]
 - [CompressedTexture3D]
 */
-func (Instance) _customize_resource(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource, path string) [1]gdclass.Resource) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _customize_resource(impl func(ptr unsafe.Pointer, resource Resource.Instance, path string) Resource.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -319,7 +319,7 @@ Return [code]true[/code] if this plugin will customize scenes based on the platf
 When enabled, [method _get_customization_configuration_hash] and [method _customize_scene] will be called and must be implemented.
 [b]Note:[/b] [method _customize_scene] will only be called for scenes that have been modified since the last export.
 */
-func (Instance) _begin_customize_scenes(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, features []string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _begin_customize_scenes(impl func(ptr unsafe.Pointer, platform EditorExportPlatform.Instance, features []string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -336,7 +336,7 @@ func (Instance) _begin_customize_scenes(impl func(ptr unsafe.Pointer, platform [
 Customize a scene. If changes are made to it, return the same or a new scene. Otherwise, return [code]null[/code]. If a new scene is returned, it is up to you to dispose of the old one.
 Implementing this method is required if [method _begin_customize_scenes] returns [code]true[/code].
 */
-func (Instance) _customize_scene(impl func(ptr unsafe.Pointer, scene [1]gdclass.Node, path string) [1]gdclass.Node) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _customize_scene(impl func(ptr unsafe.Pointer, scene Node.Instance, path string) Node.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var scene = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -393,7 +393,7 @@ Each element in the return value is a [Dictionary] with the following keys:
 - [code]default_value[/code]: The default value for this option.
 - [code]update_visibility[/code]: An optional boolean value. If set to [code]true[/code], the preset will emit [signal Object.property_list_changed] when the option is changed.
 */
-func (Instance) _get_export_options(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_export_options(impl func(ptr unsafe.Pointer, platform EditorExportPlatform.Instance) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -431,7 +431,7 @@ class MyExportPlugin extends EditorExportPlugin:
 
 [/codeblock]
 */
-func (Instance) _get_export_options_overrides(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_export_options_overrides(impl func(ptr unsafe.Pointer, platform EditorExportPlatform.Instance) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -450,7 +450,7 @@ func (Instance) _get_export_options_overrides(impl func(ptr unsafe.Pointer, plat
 /*
 Return [code]true[/code], if the result of [method _get_export_options] has changed and the export options of preset corresponding to [param platform] should be updated.
 */
-func (Instance) _should_update_export_options(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _should_update_export_options(impl func(ptr unsafe.Pointer, platform EditorExportPlatform.Instance) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -465,7 +465,7 @@ func (Instance) _should_update_export_options(impl func(ptr unsafe.Pointer, plat
 [b]Optional.[/b]
 Validates [param option] and returns the visibility for the specified [param platform]. The default implementation returns [code]true[/code] for all options.
 */
-func (Instance) _get_export_option_visibility(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, option string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_export_option_visibility(impl func(ptr unsafe.Pointer, platform EditorExportPlatform.Instance, option string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -482,7 +482,7 @@ func (Instance) _get_export_option_visibility(impl func(ptr unsafe.Pointer, plat
 Check the requirements for the given [param option] and return a non-empty warning string if they are not met.
 [b]Note:[/b] Use [method get_option] to check the value of the export options.
 */
-func (Instance) _get_export_option_warning(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, option string) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_export_option_warning(impl func(ptr unsafe.Pointer, platform EditorExportPlatform.Instance, option string) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -503,7 +503,7 @@ func (Instance) _get_export_option_warning(impl func(ptr unsafe.Pointer, platfor
 /*
 Return a [PackedStringArray] of additional features this preset, for the given [param platform], should have.
 */
-func (Instance) _get_export_features(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, debug bool) []string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_export_features(impl func(ptr unsafe.Pointer, platform EditorExportPlatform.Instance, debug bool) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -540,7 +540,7 @@ func (Instance) _get_name(impl func(ptr unsafe.Pointer) string) (cb gd.Extension
 /*
 Return [code]true[/code] if the plugin supports the given [param platform].
 */
-func (Instance) _supports_platform(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _supports_platform(impl func(ptr unsafe.Pointer, platform EditorExportPlatform.Instance) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -556,7 +556,7 @@ Virtual method to be overridden by the user. This is called to retrieve the set 
 For more information see [url=https://developer.android.com/build/dependencies?agpversion=4.1#dependency-types]Android documentation on dependencies[/url].
 [b]Note:[/b] Only supported on Android and requires [member EditorExportPlatformAndroid.gradle_build/use_gradle_build] to be enabled.
 */
-func (Instance) _get_android_dependencies(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, debug bool) []string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_android_dependencies(impl func(ptr unsafe.Pointer, platform EditorExportPlatform.Instance, debug bool) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -579,7 +579,7 @@ For more information see [url=https://docs.gradle.org/current/userguide/dependen
 [b]Note:[/b] Google's Maven repo and the Maven Central repo are already included by default.
 [b]Note:[/b] Only supported on Android and requires [member EditorExportPlatformAndroid.gradle_build/use_gradle_build] to be enabled.
 */
-func (Instance) _get_android_dependencies_maven_repos(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, debug bool) []string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_android_dependencies_maven_repos(impl func(ptr unsafe.Pointer, platform EditorExportPlatform.Instance, debug bool) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -601,7 +601,7 @@ Virtual method to be overridden by the user. This is called to retrieve the loca
 [b]Note:[/b] Relative paths [b]must[/b] be relative to Godot's [code]res://addons/[/code] directory. For example, an AAR file located under [code]res://addons/hello_world_plugin/HelloWorld.release.aar[/code] can be returned as an absolute path using [code]res://addons/hello_world_plugin/HelloWorld.release.aar[/code] or a relative path using [code]hello_world_plugin/HelloWorld.release.aar[/code].
 [b]Note:[/b] Only supported on Android and requires [member EditorExportPlatformAndroid.gradle_build/use_gradle_build] to be enabled.
 */
-func (Instance) _get_android_libraries(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, debug bool) []string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_android_libraries(impl func(ptr unsafe.Pointer, platform EditorExportPlatform.Instance, debug bool) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -622,7 +622,7 @@ func (Instance) _get_android_libraries(impl func(ptr unsafe.Pointer, platform [1
 Virtual method to be overridden by the user. This is used at export time to update the contents of the [code]activity[/code] element in the generated Android manifest.
 [b]Note:[/b] Only supported on Android and requires [member EditorExportPlatformAndroid.gradle_build/use_gradle_build] to be enabled.
 */
-func (Instance) _get_android_manifest_activity_element_contents(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, debug bool) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_android_manifest_activity_element_contents(impl func(ptr unsafe.Pointer, platform EditorExportPlatform.Instance, debug bool) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -643,7 +643,7 @@ func (Instance) _get_android_manifest_activity_element_contents(impl func(ptr un
 Virtual method to be overridden by the user. This is used at export time to update the contents of the [code]application[/code] element in the generated Android manifest.
 [b]Note:[/b] Only supported on Android and requires [member EditorExportPlatformAndroid.gradle_build/use_gradle_build] to be enabled.
 */
-func (Instance) _get_android_manifest_application_element_contents(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, debug bool) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_android_manifest_application_element_contents(impl func(ptr unsafe.Pointer, platform EditorExportPlatform.Instance, debug bool) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -664,7 +664,7 @@ func (Instance) _get_android_manifest_application_element_contents(impl func(ptr
 Virtual method to be overridden by the user. This is used at export time to update the contents of the [code]manifest[/code] element in the generated Android manifest.
 [b]Note:[/b] Only supported on Android and requires [member EditorExportPlatformAndroid.gradle_build/use_gradle_build] to be enabled.
 */
-func (Instance) _get_android_manifest_element_contents(impl func(ptr unsafe.Pointer, platform [1]gdclass.EditorExportPlatform, debug bool) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_android_manifest_element_contents(impl func(ptr unsafe.Pointer, platform EditorExportPlatform.Instance, debug bool) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -775,15 +775,15 @@ func (self Instance) GetOption(name string) any { //gd:EditorExportPlugin.get_op
 /*
 Returns currently used export preset.
 */
-func (self Instance) GetExportPreset() [1]gdclass.EditorExportPreset { //gd:EditorExportPlugin.get_export_preset
-	return [1]gdclass.EditorExportPreset(Advanced(self).GetExportPreset())
+func (self Instance) GetExportPreset() EditorExportPreset.Instance { //gd:EditorExportPlugin.get_export_preset
+	return EditorExportPreset.Instance(Advanced(self).GetExportPreset())
 }
 
 /*
 Returns currently used export platform.
 */
-func (self Instance) GetExportPlatform() [1]gdclass.EditorExportPlatform { //gd:EditorExportPlugin.get_export_platform
-	return [1]gdclass.EditorExportPlatform(Advanced(self).GetExportPlatform())
+func (self Instance) GetExportPlatform() EditorExportPlatform.Instance { //gd:EditorExportPlugin.get_export_platform
+	return EditorExportPlatform.Instance(Advanced(self).GetExportPlatform())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

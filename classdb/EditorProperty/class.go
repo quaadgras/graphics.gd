@@ -15,6 +15,7 @@ import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -122,14 +123,14 @@ func (self Instance) UpdateProperty() { //gd:EditorProperty.update_property
 /*
 If any of the controls added can gain keyboard focus, add it here. This ensures that focus will be restored if the inspector is refreshed.
 */
-func (self Instance) AddFocusable(control [1]gdclass.Control) { //gd:EditorProperty.add_focusable
+func (self Instance) AddFocusable(control Control.Instance) { //gd:EditorProperty.add_focusable
 	Advanced(self).AddFocusable(control)
 }
 
 /*
 Puts the [param editor] control below the property label. The control must be previously added using [method Node.add_child].
 */
-func (self Instance) SetBottomEditor(editor [1]gdclass.Control) { //gd:EditorProperty.set_bottom_editor
+func (self Instance) SetBottomEditor(editor Control.Instance) { //gd:EditorProperty.set_bottom_editor
 	Advanced(self).SetBottomEditor(editor)
 }
 
@@ -171,7 +172,7 @@ func (self Instance) SetObjectAndProperty(obj Object.Instance, property string) 
 /*
 Used by the inspector, set to a control that will be used as a reference to calculate the size of the label.
 */
-func (self Instance) SetLabelReference(control [1]gdclass.Control) { //gd:EditorProperty.set_label_reference
+func (self Instance) SetLabelReference(control Control.Instance) { //gd:EditorProperty.set_label_reference
 	Advanced(self).SetLabelReference(control)
 }
 
@@ -720,7 +721,7 @@ func (self Instance) OnPropertyCanRevertChanged(cb func(property string, can_rev
 	self[0].AsObject()[0].Connect(gd.NewStringName("property_can_revert_changed"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnResourceSelected(cb func(path string, resource [1]gdclass.Resource)) {
+func (self Instance) OnResourceSelected(cb func(path string, resource Resource.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("resource_selected"), gd.NewCallable(cb), 0)
 }
 

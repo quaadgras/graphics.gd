@@ -16,6 +16,8 @@ import "graphics.gd/classdb/CollisionObject2D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node2D"
 import "graphics.gd/classdb/PhysicsBody2D"
+import "graphics.gd/classdb/PhysicsDirectBodyState2D"
+import "graphics.gd/classdb/PhysicsMaterial"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -70,7 +72,7 @@ type Any interface {
 }
 type Interface interface {
 	//Called during physics processing, allowing you to read and safely modify the simulation state for the object. By default, it is called before the standard force integration, but the [member custom_integrator] property allows you to disable the standard force integration and do fully custom force integration for a body.
-	IntegrateForces(state [1]gdclass.PhysicsDirectBodyState2D)
+	IntegrateForces(state PhysicsDirectBodyState2D.Instance)
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -78,12 +80,12 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) IntegrateForces(state [1]gdclass.PhysicsDirectBodyState2D) { return }
+func (self implementation) IntegrateForces(state PhysicsDirectBodyState2D.Instance) { return }
 
 /*
 Called during physics processing, allowing you to read and safely modify the simulation state for the object. By default, it is called before the standard force integration, but the [member custom_integrator] property allows you to disable the standard force integration and do fully custom force integration for a body.
 */
-func (Instance) _integrate_forces(impl func(ptr unsafe.Pointer, state [1]gdclass.PhysicsDirectBodyState2D)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _integrate_forces(impl func(ptr unsafe.Pointer, state PhysicsDirectBodyState2D.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var state = [1]gdclass.PhysicsDirectBodyState2D{pointers.New[gdclass.PhysicsDirectBodyState2D]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -220,8 +222,8 @@ func (self Instance) AddConstantTorque(torque Float.X) { //gd:RigidBody2D.add_co
 Returns a list of the bodies colliding with this one. Requires [member contact_monitor] to be set to [code]true[/code] and [member max_contacts_reported] to be set high enough to detect all the collisions.
 [b]Note:[/b] The result of this test is not immediate after moving objects. For performance, list of collisions is updated once per frame and before the physics step. Consider using signals instead.
 */
-func (self Instance) GetCollidingBodies() [][1]gdclass.Node2D { //gd:RigidBody2D.get_colliding_bodies
-	return [][1]gdclass.Node2D(gd.ArrayAs[[][1]gdclass.Node2D](gd.InternalArray(Advanced(self).GetCollidingBodies())))
+func (self Instance) GetCollidingBodies() []Node2D.Instance { //gd:RigidBody2D.get_colliding_bodies
+	return []Node2D.Instance(gd.ArrayAs[[]Node2D.Instance](gd.InternalArray(Advanced(self).GetCollidingBodies())))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -250,11 +252,11 @@ func (self Instance) SetMass(value Float.X) {
 	class(self).SetMass(float64(value))
 }
 
-func (self Instance) PhysicsMaterialOverride() [1]gdclass.PhysicsMaterial {
-	return [1]gdclass.PhysicsMaterial(class(self).GetPhysicsMaterialOverride())
+func (self Instance) PhysicsMaterialOverride() PhysicsMaterial.Instance {
+	return PhysicsMaterial.Instance(class(self).GetPhysicsMaterialOverride())
 }
 
-func (self Instance) SetPhysicsMaterialOverride(value [1]gdclass.PhysicsMaterial) {
+func (self Instance) SetPhysicsMaterialOverride(value PhysicsMaterial.Instance) {
 	class(self).SetPhysicsMaterialOverride(value)
 }
 
@@ -1037,19 +1039,19 @@ func (self class) GetCollidingBodies() Array.Contains[[1]gdclass.Node2D] { //gd:
 	frame.Free()
 	return ret
 }
-func (self Instance) OnBodyShapeEntered(cb func(body_rid RID.Any, body [1]gdclass.Node, body_shape_index int, local_shape_index int)) {
+func (self Instance) OnBodyShapeEntered(cb func(body_rid RID.Any, body Node.Instance, body_shape_index int, local_shape_index int)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("body_shape_entered"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnBodyShapeExited(cb func(body_rid RID.Any, body [1]gdclass.Node, body_shape_index int, local_shape_index int)) {
+func (self Instance) OnBodyShapeExited(cb func(body_rid RID.Any, body Node.Instance, body_shape_index int, local_shape_index int)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("body_shape_exited"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnBodyEntered(cb func(body [1]gdclass.Node)) {
+func (self Instance) OnBodyEntered(cb func(body Node.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("body_entered"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnBodyExited(cb func(body [1]gdclass.Node)) {
+func (self Instance) OnBodyExited(cb func(body Node.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("body_exited"), gd.NewCallable(cb), 0)
 }
 

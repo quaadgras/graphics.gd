@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/ArrayMesh"
+import "graphics.gd/classdb/Material"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -116,21 +118,21 @@ func (self Instance) Clear() { //gd:MeshDataTool.clear
 Uses specified surface of given [Mesh] to populate data for MeshDataTool.
 Requires [Mesh] with primitive type [constant Mesh.PRIMITIVE_TRIANGLES].
 */
-func (self Instance) CreateFromSurface(mesh [1]gdclass.ArrayMesh, surface int) error { //gd:MeshDataTool.create_from_surface
+func (self Instance) CreateFromSurface(mesh ArrayMesh.Instance, surface int) error { //gd:MeshDataTool.create_from_surface
 	return error(gd.ToError(Advanced(self).CreateFromSurface(mesh, int64(surface))))
 }
 
 /*
 Adds a new surface to specified [Mesh] with edited data.
 */
-func (self Instance) CommitToSurface(mesh [1]gdclass.ArrayMesh) error { //gd:MeshDataTool.commit_to_surface
+func (self Instance) CommitToSurface(mesh ArrayMesh.Instance) error { //gd:MeshDataTool.commit_to_surface
 	return error(gd.ToError(Advanced(self).CommitToSurface(mesh, int64(0))))
 }
 
 /*
 Adds a new surface to specified [Mesh] with edited data.
 */
-func (self Expanded) CommitToSurface(mesh [1]gdclass.ArrayMesh, compression_flags int) error { //gd:MeshDataTool.commit_to_surface
+func (self Expanded) CommitToSurface(mesh ArrayMesh.Instance, compression_flags int) error { //gd:MeshDataTool.commit_to_surface
 	return error(gd.ToError(Advanced(self).CommitToSurface(mesh, int64(compression_flags))))
 }
 
@@ -383,15 +385,15 @@ func (self Instance) GetFaceNormal(idx int) Vector3.XYZ { //gd:MeshDataTool.get_
 /*
 Sets the material to be used by newly-constructed [Mesh].
 */
-func (self Instance) SetMaterial(material [1]gdclass.Material) { //gd:MeshDataTool.set_material
+func (self Instance) SetMaterial(material Material.Instance) { //gd:MeshDataTool.set_material
 	Advanced(self).SetMaterial(material)
 }
 
 /*
 Returns the material assigned to the [Mesh].
 */
-func (self Instance) GetMaterial() [1]gdclass.Material { //gd:MeshDataTool.get_material
-	return [1]gdclass.Material(Advanced(self).GetMaterial())
+func (self Instance) GetMaterial() Material.Instance { //gd:MeshDataTool.get_material
+	return Material.Instance(Advanced(self).GetMaterial())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

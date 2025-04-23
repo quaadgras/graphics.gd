@@ -13,6 +13,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -139,11 +140,11 @@ func (self Instance) SetLightVolumetricFogEnergy(value Float.X) {
 	class(self).SetParam(2, float64(value))
 }
 
-func (self Instance) LightProjector() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetProjector())
+func (self Instance) LightProjector() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetProjector())
 }
 
-func (self Instance) SetLightProjector(value [1]gdclass.Texture2D) {
+func (self Instance) SetLightProjector(value Texture2D.Instance) {
 	class(self).SetProjector(value)
 }
 

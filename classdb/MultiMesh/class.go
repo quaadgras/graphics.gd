@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Mesh"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/AABB"
 import "graphics.gd/variant/Array"
@@ -216,11 +217,11 @@ func (self Instance) SetVisibleInstanceCount(value int) {
 	class(self).SetVisibleInstanceCount(int64(value))
 }
 
-func (self Instance) Mesh() [1]gdclass.Mesh {
-	return [1]gdclass.Mesh(class(self).GetMesh())
+func (self Instance) Mesh() Mesh.Instance {
+	return Mesh.Instance(class(self).GetMesh())
 }
 
-func (self Instance) SetMesh(value [1]gdclass.Mesh) {
+func (self Instance) SetMesh(value Mesh.Instance) {
 	class(self).SetMesh(value)
 }
 

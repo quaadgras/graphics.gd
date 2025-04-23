@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/AudioStreamOggVorbis"
 import "graphics.gd/classdb/ResourceImporter"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -60,17 +61,17 @@ type Any interface {
 /*
 Creates a new [AudioStreamOggVorbis] instance from the given buffer. The buffer must contain Ogg Vorbis data.
 */
-func LoadFromBuffer(stream_data []byte) [1]gdclass.AudioStreamOggVorbis { //gd:ResourceImporterOggVorbis.load_from_buffer
+func LoadFromBuffer(stream_data []byte) AudioStreamOggVorbis.Instance { //gd:ResourceImporterOggVorbis.load_from_buffer
 	self := Instance{}
-	return [1]gdclass.AudioStreamOggVorbis(Advanced(self).LoadFromBuffer(Packed.Bytes(Packed.New(stream_data...))))
+	return AudioStreamOggVorbis.Instance(Advanced(self).LoadFromBuffer(Packed.Bytes(Packed.New(stream_data...))))
 }
 
 /*
 Creates a new [AudioStreamOggVorbis] instance from the given file path. The file must be in Ogg Vorbis format.
 */
-func LoadFromFile(path string) [1]gdclass.AudioStreamOggVorbis { //gd:ResourceImporterOggVorbis.load_from_file
+func LoadFromFile(path string) AudioStreamOggVorbis.Instance { //gd:ResourceImporterOggVorbis.load_from_file
 	self := Instance{}
-	return [1]gdclass.AudioStreamOggVorbis(Advanced(self).LoadFromFile(String.New(path)))
+	return AudioStreamOggVorbis.Instance(Advanced(self).LoadFromFile(String.New(path)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

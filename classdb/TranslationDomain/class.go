@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Translation"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -59,21 +60,21 @@ type Any interface {
 /*
 Returns the [Translation] instance that best matches [param locale]. Returns [code]null[/code] if there are no matches.
 */
-func (self Instance) GetTranslationObject(locale string) [1]gdclass.Translation { //gd:TranslationDomain.get_translation_object
-	return [1]gdclass.Translation(Advanced(self).GetTranslationObject(String.New(locale)))
+func (self Instance) GetTranslationObject(locale string) Translation.Instance { //gd:TranslationDomain.get_translation_object
+	return Translation.Instance(Advanced(self).GetTranslationObject(String.New(locale)))
 }
 
 /*
 Adds a translation.
 */
-func (self Instance) AddTranslation(translation [1]gdclass.Translation) { //gd:TranslationDomain.add_translation
+func (self Instance) AddTranslation(translation Translation.Instance) { //gd:TranslationDomain.add_translation
 	Advanced(self).AddTranslation(translation)
 }
 
 /*
 Removes the given translation.
 */
-func (self Instance) RemoveTranslation(translation [1]gdclass.Translation) { //gd:TranslationDomain.remove_translation
+func (self Instance) RemoveTranslation(translation Translation.Instance) { //gd:TranslationDomain.remove_translation
 	Advanced(self).RemoveTranslation(translation)
 }
 

@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Image"
 import "graphics.gd/classdb/TextServer"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -321,10 +322,10 @@ type Interface interface {
 	FontRemoveTexture(font_rid RID.Any, size Vector2i.XY, texture_index int)
 	//[b]Required.[/b]
 	//Sets font cache texture image data.
-	FontSetTextureImage(font_rid RID.Any, size Vector2i.XY, texture_index int, image [1]gdclass.Image)
+	FontSetTextureImage(font_rid RID.Any, size Vector2i.XY, texture_index int, image Image.Instance)
 	//[b]Required.[/b]
 	//Returns font cache texture image data.
-	FontGetTextureImage(font_rid RID.Any, size Vector2i.XY, texture_index int) [1]gdclass.Image
+	FontGetTextureImage(font_rid RID.Any, size Vector2i.XY, texture_index int) Image.Instance
 	//[b]Optional.[/b]
 	//Sets array containing glyph packing data.
 	FontSetTextureOffsets(font_rid RID.Any, size Vector2i.XY, texture_index int, offset []int32)
@@ -853,10 +854,10 @@ func (self implementation) FontClearTextures(font_rid RID.Any, size Vector2i.XY)
 func (self implementation) FontRemoveTexture(font_rid RID.Any, size Vector2i.XY, texture_index int) {
 	return
 }
-func (self implementation) FontSetTextureImage(font_rid RID.Any, size Vector2i.XY, texture_index int, image [1]gdclass.Image) {
+func (self implementation) FontSetTextureImage(font_rid RID.Any, size Vector2i.XY, texture_index int, image Image.Instance) {
 	return
 }
-func (self implementation) FontGetTextureImage(font_rid RID.Any, size Vector2i.XY, texture_index int) (_ [1]gdclass.Image) {
+func (self implementation) FontGetTextureImage(font_rid RID.Any, size Vector2i.XY, texture_index int) (_ Image.Instance) {
 	return
 }
 func (self implementation) FontSetTextureOffsets(font_rid RID.Any, size Vector2i.XY, texture_index int, offset []int32) {
@@ -2285,7 +2286,7 @@ func (Instance) _font_remove_texture(impl func(ptr unsafe.Pointer, font_rid RID.
 [b]Required.[/b]
 Sets font cache texture image data.
 */
-func (Instance) _font_set_texture_image(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, texture_index int, image [1]gdclass.Image)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_texture_image(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, texture_index int, image Image.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
@@ -2302,7 +2303,7 @@ func (Instance) _font_set_texture_image(impl func(ptr unsafe.Pointer, font_rid R
 [b]Required.[/b]
 Returns font cache texture image data.
 */
-func (Instance) _font_get_texture_image(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, texture_index int) [1]gdclass.Image) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_texture_image(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, texture_index int) Image.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)

@@ -13,6 +13,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/Skeleton3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -88,8 +89,8 @@ func (Instance) _process_modification(impl func(ptr unsafe.Pointer)) (cb gd.Exte
 /*
 Get parent [Skeleton3D] node if found.
 */
-func (self Instance) GetSkeleton() [1]gdclass.Skeleton3D { //gd:SkeletonModifier3D.get_skeleton
-	return [1]gdclass.Skeleton3D(Advanced(self).GetSkeleton())
+func (self Instance) GetSkeleton() Skeleton3D.Instance { //gd:SkeletonModifier3D.get_skeleton
+	return Skeleton3D.Instance(Advanced(self).GetSkeleton())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -540,7 +540,7 @@ func (self Instance) BezierTrackInterpolate(track_idx int, time Float.X) Float.X
 Inserts an Audio Track key at the given [param time] in seconds. The [param track_idx] must be the index of an Audio Track.
 [param stream] is the [AudioStream] resource to play. [param start_offset] is the number of seconds cut off at the beginning of the audio stream, while [param end_offset] is at the ending.
 */
-func (self Instance) AudioTrackInsertKey(track_idx int, time Float.X, stream [1]gdclass.Resource) int { //gd:Animation.audio_track_insert_key
+func (self Instance) AudioTrackInsertKey(track_idx int, time Float.X, stream Resource.Instance) int { //gd:Animation.audio_track_insert_key
 	return int(int(Advanced(self).AudioTrackInsertKey(int64(track_idx), float64(time), stream, float64(0), float64(0))))
 }
 
@@ -548,14 +548,14 @@ func (self Instance) AudioTrackInsertKey(track_idx int, time Float.X, stream [1]
 Inserts an Audio Track key at the given [param time] in seconds. The [param track_idx] must be the index of an Audio Track.
 [param stream] is the [AudioStream] resource to play. [param start_offset] is the number of seconds cut off at the beginning of the audio stream, while [param end_offset] is at the ending.
 */
-func (self Expanded) AudioTrackInsertKey(track_idx int, time Float.X, stream [1]gdclass.Resource, start_offset Float.X, end_offset Float.X) int { //gd:Animation.audio_track_insert_key
+func (self Expanded) AudioTrackInsertKey(track_idx int, time Float.X, stream Resource.Instance, start_offset Float.X, end_offset Float.X) int { //gd:Animation.audio_track_insert_key
 	return int(int(Advanced(self).AudioTrackInsertKey(int64(track_idx), float64(time), stream, float64(start_offset), float64(end_offset))))
 }
 
 /*
 Sets the stream of the key identified by [param key_idx] to value [param stream]. The [param track_idx] must be the index of an Audio Track.
 */
-func (self Instance) AudioTrackSetKeyStream(track_idx int, key_idx int, stream [1]gdclass.Resource) { //gd:Animation.audio_track_set_key_stream
+func (self Instance) AudioTrackSetKeyStream(track_idx int, key_idx int, stream Resource.Instance) { //gd:Animation.audio_track_set_key_stream
 	Advanced(self).AudioTrackSetKeyStream(int64(track_idx), int64(key_idx), stream)
 }
 
@@ -576,8 +576,8 @@ func (self Instance) AudioTrackSetKeyEndOffset(track_idx int, key_idx int, offse
 /*
 Returns the audio stream of the key identified by [param key_idx]. The [param track_idx] must be the index of an Audio Track.
 */
-func (self Instance) AudioTrackGetKeyStream(track_idx int, key_idx int) [1]gdclass.Resource { //gd:Animation.audio_track_get_key_stream
-	return [1]gdclass.Resource(Advanced(self).AudioTrackGetKeyStream(int64(track_idx), int64(key_idx)))
+func (self Instance) AudioTrackGetKeyStream(track_idx int, key_idx int) Resource.Instance { //gd:Animation.audio_track_get_key_stream
+	return Resource.Instance(Advanced(self).AudioTrackGetKeyStream(int64(track_idx), int64(key_idx)))
 }
 
 /*
@@ -711,7 +711,7 @@ func (self Instance) Clear() { //gd:Animation.clear
 /*
 Adds a new track to [param to_animation] that is a copy of the given track from this animation.
 */
-func (self Instance) CopyTrack(track_idx int, to_animation [1]gdclass.Animation) { //gd:Animation.copy_track
+func (self Instance) CopyTrack(track_idx int, to_animation Instance) { //gd:Animation.copy_track
 	Advanced(self).CopyTrack(int64(track_idx), to_animation)
 }
 

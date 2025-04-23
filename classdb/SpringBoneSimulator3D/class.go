@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Curve"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/SkeletonModifier3D"
@@ -258,15 +259,15 @@ func (self Instance) GetRotationAxis(index int) gdclass.SpringBoneSimulator3DRot
 /*
 Sets the joint radius damping curve of the bone chain.
 */
-func (self Instance) SetRadiusDampingCurve(index int, curve [1]gdclass.Curve) { //gd:SpringBoneSimulator3D.set_radius_damping_curve
+func (self Instance) SetRadiusDampingCurve(index int, curve Curve.Instance) { //gd:SpringBoneSimulator3D.set_radius_damping_curve
 	Advanced(self).SetRadiusDampingCurve(int64(index), curve)
 }
 
 /*
 Returns the joint radius damping curve of the bone chain.
 */
-func (self Instance) GetRadiusDampingCurve(index int) [1]gdclass.Curve { //gd:SpringBoneSimulator3D.get_radius_damping_curve
-	return [1]gdclass.Curve(Advanced(self).GetRadiusDampingCurve(int64(index)))
+func (self Instance) GetRadiusDampingCurve(index int) Curve.Instance { //gd:SpringBoneSimulator3D.get_radius_damping_curve
+	return Curve.Instance(Advanced(self).GetRadiusDampingCurve(int64(index)))
 }
 
 /*
@@ -288,15 +289,15 @@ func (self Instance) GetStiffness(index int) Float.X { //gd:SpringBoneSimulator3
 /*
 Sets the stiffness force damping curve of the bone chain.
 */
-func (self Instance) SetStiffnessDampingCurve(index int, curve [1]gdclass.Curve) { //gd:SpringBoneSimulator3D.set_stiffness_damping_curve
+func (self Instance) SetStiffnessDampingCurve(index int, curve Curve.Instance) { //gd:SpringBoneSimulator3D.set_stiffness_damping_curve
 	Advanced(self).SetStiffnessDampingCurve(int64(index), curve)
 }
 
 /*
 Returns the stiffness force damping curve of the bone chain.
 */
-func (self Instance) GetStiffnessDampingCurve(index int) [1]gdclass.Curve { //gd:SpringBoneSimulator3D.get_stiffness_damping_curve
-	return [1]gdclass.Curve(Advanced(self).GetStiffnessDampingCurve(int64(index)))
+func (self Instance) GetStiffnessDampingCurve(index int) Curve.Instance { //gd:SpringBoneSimulator3D.get_stiffness_damping_curve
+	return Curve.Instance(Advanced(self).GetStiffnessDampingCurve(int64(index)))
 }
 
 /*
@@ -317,15 +318,15 @@ func (self Instance) GetDrag(index int) Float.X { //gd:SpringBoneSimulator3D.get
 /*
 Sets the drag force damping curve of the bone chain.
 */
-func (self Instance) SetDragDampingCurve(index int, curve [1]gdclass.Curve) { //gd:SpringBoneSimulator3D.set_drag_damping_curve
+func (self Instance) SetDragDampingCurve(index int, curve Curve.Instance) { //gd:SpringBoneSimulator3D.set_drag_damping_curve
 	Advanced(self).SetDragDampingCurve(int64(index), curve)
 }
 
 /*
 Returns the drag force damping curve of the bone chain.
 */
-func (self Instance) GetDragDampingCurve(index int) [1]gdclass.Curve { //gd:SpringBoneSimulator3D.get_drag_damping_curve
-	return [1]gdclass.Curve(Advanced(self).GetDragDampingCurve(int64(index)))
+func (self Instance) GetDragDampingCurve(index int) Curve.Instance { //gd:SpringBoneSimulator3D.get_drag_damping_curve
+	return Curve.Instance(Advanced(self).GetDragDampingCurve(int64(index)))
 }
 
 /*
@@ -347,15 +348,15 @@ func (self Instance) GetGravity(index int) Float.X { //gd:SpringBoneSimulator3D.
 /*
 Sets the gravity amount damping curve of the bone chain.
 */
-func (self Instance) SetGravityDampingCurve(index int, curve [1]gdclass.Curve) { //gd:SpringBoneSimulator3D.set_gravity_damping_curve
+func (self Instance) SetGravityDampingCurve(index int, curve Curve.Instance) { //gd:SpringBoneSimulator3D.set_gravity_damping_curve
 	Advanced(self).SetGravityDampingCurve(int64(index), curve)
 }
 
 /*
 Returns the gravity amount damping curve of the bone chain.
 */
-func (self Instance) GetGravityDampingCurve(index int) [1]gdclass.Curve { //gd:SpringBoneSimulator3D.get_gravity_damping_curve
-	return [1]gdclass.Curve(Advanced(self).GetGravityDampingCurve(int64(index)))
+func (self Instance) GetGravityDampingCurve(index int) Curve.Instance { //gd:SpringBoneSimulator3D.get_gravity_damping_curve
+	return Curve.Instance(Advanced(self).GetGravityDampingCurve(int64(index)))
 }
 
 /*

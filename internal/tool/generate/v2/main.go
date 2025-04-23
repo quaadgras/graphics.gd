@@ -195,6 +195,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		}
 		fmt.Fprintln(file, "\n*/")
 	}
+	fmt.Fprintf(file, "type Instance [1]gdclass.%s\n", class.Name)
 	if singleton {
 		fmt.Fprintf(file, "var self [1]gdclass.%s\n", class.Name)
 		fmt.Fprintf(file, "var once sync.Once\n")
@@ -203,11 +204,26 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		fmt.Fprintf(file, "\tself = *(*[1]gdclass.%s)(unsafe.Pointer(&obj))\n", class.Name)
 		fmt.Fprintf(file, "}\n")
 	} else {
-		fmt.Fprintf(file, "type Instance [1]gdclass.%s\n", class.Name)
 		var hasDefaults bool
 		for _, method := range class.Methods {
 			for _, argument := range method.Arguments {
 				if argument.DefaultValue != nil && !singleton && !method.IsStatic {
+					hasDefaults = true
+				}
+			}
+		}
+		for _, peer_method := range gdjson.RelocationsReverse[class.Name] {
+			peer, method, _ := strings.Cut(peer_method, ".")
+			peerClass := classDB[peer]
+			peerMethod := gdjson.Method{}
+			for _, m := range peerClass.Methods {
+				if m.Name == method {
+					peerMethod = m
+					break
+				}
+			}
+			for _, argument := range peerMethod.Arguments {
+				if argument.DefaultValue != nil && !singleton && !peerMethod.IsStatic {
 					hasDefaults = true
 				}
 			}
@@ -276,6 +292,9 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		}
 	}
 	for _, method := range class.Methods {
+		if _, ok := gdjson.Relocations[class.Name+"."+method.Name]; ok {
+			continue // skip for now
+		}
 		if getter_setters[method.Name] {
 			continue
 		}
@@ -288,6 +307,49 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		}
 		if hasDefault {
 			classDB.simpleCall(file, class, method, singleton, false)
+		}
+	}
+	for name, peer_method := range gdjson.RelocationsReverse[class.Name] {
+		peer, method, _ := strings.Cut(peer_method, ".")
+		peerClass := classDB[peer]
+		var peerMethod gdjson.Method
+		for _, m := range peerClass.Methods {
+			if m.Name == method {
+				peerMethod = m
+				break
+			}
+		}
+		peerMethod.Name = name
+		if peerMethod.ReturnType == class.Name || peerMethod.ReturnValue.Type == class.Name {
+			peerMethod.IsStatic = true
+		}
+		peerMethod.Arguments = append([]gdjson.Argument{
+			{
+				Name: "peer",
+				Type: peerClass.Name,
+			},
+		}, peerMethod.Arguments...)
+		relocated_args := make([]gdjson.Argument, 0, len(peerMethod.Arguments))
+		for i, arg := range peerMethod.Arguments {
+			if arg.Name == "peer" {
+				continue
+			}
+			if !peerMethod.IsStatic && arg.Type == class.Name {
+				arg.Name = "self"
+				peerMethod.Arguments = slices.Concat(peerMethod.Arguments[:i], peerMethod.Arguments[i+1:])
+			}
+			relocated_args = append(relocated_args, arg)
+		}
+		peerMethod.ArgumentsRemapped = relocated_args
+		classDB.simpleRelocatedCall(file, class, peerMethod, peerClass, method, true)
+		var hasDefault bool
+		for _, argument := range peerMethod.Arguments {
+			if argument.DefaultValue != nil {
+				hasDefault = true
+			}
+		}
+		if hasDefault {
+			classDB.simpleRelocatedCall(file, class, peerMethod, peerClass, method, false)
 		}
 	}
 	fmt.Fprintf(file, `// Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.`)

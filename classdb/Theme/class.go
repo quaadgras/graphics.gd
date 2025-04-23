@@ -11,7 +11,10 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Font"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/StyleBox"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -61,7 +64,7 @@ type Any interface {
 /*
 Creates or changes the value of the icon property defined by [param name] and [param theme_type]. Use [method clear_icon] to remove the property.
 */
-func (self Instance) SetIcon(name string, theme_type string, texture [1]gdclass.Texture2D) { //gd:Theme.set_icon
+func (self Instance) SetIcon(name string, theme_type string, texture Texture2D.Instance) { //gd:Theme.set_icon
 	Advanced(self).SetIcon(String.Name(String.New(name)), String.Name(String.New(theme_type)), texture)
 }
 
@@ -69,8 +72,8 @@ func (self Instance) SetIcon(name string, theme_type string, texture [1]gdclass.
 Returns the icon property defined by [param name] and [param theme_type], if it exists.
 Returns the engine fallback icon value if the property doesn't exist (see [member ThemeDB.fallback_icon]). Use [method has_icon] to check for existence.
 */
-func (self Instance) GetIcon(name string, theme_type string) [1]gdclass.Texture2D { //gd:Theme.get_icon
-	return [1]gdclass.Texture2D(Advanced(self).GetIcon(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+func (self Instance) GetIcon(name string, theme_type string) Texture2D.Instance { //gd:Theme.get_icon
+	return Texture2D.Instance(Advanced(self).GetIcon(String.Name(String.New(name)), String.Name(String.New(theme_type))))
 }
 
 /*
@@ -114,7 +117,7 @@ func (self Instance) GetIconTypeList() []string { //gd:Theme.get_icon_type_list
 /*
 Creates or changes the value of the [StyleBox] property defined by [param name] and [param theme_type]. Use [method clear_stylebox] to remove the property.
 */
-func (self Instance) SetStylebox(name string, theme_type string, texture [1]gdclass.StyleBox) { //gd:Theme.set_stylebox
+func (self Instance) SetStylebox(name string, theme_type string, texture StyleBox.Instance) { //gd:Theme.set_stylebox
 	Advanced(self).SetStylebox(String.Name(String.New(name)), String.Name(String.New(theme_type)), texture)
 }
 
@@ -122,8 +125,8 @@ func (self Instance) SetStylebox(name string, theme_type string, texture [1]gdcl
 Returns the [StyleBox] property defined by [param name] and [param theme_type], if it exists.
 Returns the engine fallback stylebox value if the property doesn't exist (see [member ThemeDB.fallback_stylebox]). Use [method has_stylebox] to check for existence.
 */
-func (self Instance) GetStylebox(name string, theme_type string) [1]gdclass.StyleBox { //gd:Theme.get_stylebox
-	return [1]gdclass.StyleBox(Advanced(self).GetStylebox(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+func (self Instance) GetStylebox(name string, theme_type string) StyleBox.Instance { //gd:Theme.get_stylebox
+	return StyleBox.Instance(Advanced(self).GetStylebox(String.Name(String.New(name)), String.Name(String.New(theme_type))))
 }
 
 /*
@@ -167,7 +170,7 @@ func (self Instance) GetStyleboxTypeList() []string { //gd:Theme.get_stylebox_ty
 /*
 Creates or changes the value of the [Font] property defined by [param name] and [param theme_type]. Use [method clear_font] to remove the property.
 */
-func (self Instance) SetFont(name string, theme_type string, font [1]gdclass.Font) { //gd:Theme.set_font
+func (self Instance) SetFont(name string, theme_type string, font Font.Instance) { //gd:Theme.set_font
 	Advanced(self).SetFont(String.Name(String.New(name)), String.Name(String.New(theme_type)), font)
 }
 
@@ -176,8 +179,8 @@ Returns the [Font] property defined by [param name] and [param theme_type], if i
 Returns the default theme font if the property doesn't exist and the default theme font is set up (see [member default_font]). Use [method has_font] to check for existence of the property and [method has_default_font] to check for existence of the default theme font.
 Returns the engine fallback font value, if neither exist (see [member ThemeDB.fallback_font]).
 */
-func (self Instance) GetFont(name string, theme_type string) [1]gdclass.Font { //gd:Theme.get_font
-	return [1]gdclass.Font(Advanced(self).GetFont(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+func (self Instance) GetFont(name string, theme_type string) Font.Instance { //gd:Theme.get_font
+	return Font.Instance(Advanced(self).GetFont(String.Name(String.New(name)), String.Name(String.New(theme_type))))
 }
 
 /*
@@ -527,7 +530,7 @@ func (self Instance) GetTypeList() []string { //gd:Theme.get_type_list
 Adds missing and overrides existing definitions with values from the [param other] theme resource.
 [b]Note:[/b] This modifies the current theme. If you want to merge two themes together without modifying either one, create a new empty theme and merge the other two into it one after another.
 */
-func (self Instance) MergeWith(other [1]gdclass.Theme) { //gd:Theme.merge_with
+func (self Instance) MergeWith(other Instance) { //gd:Theme.merge_with
 	Advanced(self).MergeWith(other)
 }
 
@@ -565,11 +568,11 @@ func (self Instance) SetDefaultBaseScale(value Float.X) {
 	class(self).SetDefaultBaseScale(float64(value))
 }
 
-func (self Instance) DefaultFont() [1]gdclass.Font {
-	return [1]gdclass.Font(class(self).GetDefaultFont())
+func (self Instance) DefaultFont() Font.Instance {
+	return Font.Instance(class(self).GetDefaultFont())
 }
 
-func (self Instance) SetDefaultFont(value [1]gdclass.Font) {
+func (self Instance) SetDefaultFont(value Font.Instance) {
 	class(self).SetDefaultFont(value)
 }
 

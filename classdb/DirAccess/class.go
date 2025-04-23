@@ -119,9 +119,9 @@ type Any interface {
 Creates a new [DirAccess] object and opens an existing directory of the filesystem. The [param path] argument can be within the project tree ([code]res://folder[/code]), the user directory ([code]user://folder[/code]) or an absolute path of the user filesystem (e.g. [code]/tmp/folder[/code] or [code]C:\tmp\folder[/code]).
 Returns [code]null[/code] if opening the directory failed. You can use [method get_open_error] to check the error that occurred.
 */
-func Open(path string) [1]gdclass.DirAccess { //gd:DirAccess.open
+func Open(path string) Instance { //gd:DirAccess.open
 	self := Instance{}
-	return [1]gdclass.DirAccess(Advanced(self).Open(String.New(path)))
+	return Instance(Advanced(self).Open(String.New(path)))
 }
 
 /*
@@ -138,9 +138,9 @@ If [param prefix] is not empty, it will be prefixed to the directory name, separ
 If [param keep] is [code]true[/code], the directory is not deleted when the returned [DirAccess] is freed.
 Returns [code]null[/code] if opening the directory failed. You can use [method get_open_error] to check the error that occurred.
 */
-func CreateTemp(prefix string, keep bool) [1]gdclass.DirAccess { //gd:DirAccess.create_temp
+func CreateTemp(prefix string, keep bool) Instance { //gd:DirAccess.create_temp
 	self := Instance{}
-	return [1]gdclass.DirAccess(Advanced(self).CreateTemp(String.New(prefix), keep))
+	return Instance(Advanced(self).CreateTemp(String.New(prefix), keep))
 }
 
 /*
@@ -149,9 +149,9 @@ If [param prefix] is not empty, it will be prefixed to the directory name, separ
 If [param keep] is [code]true[/code], the directory is not deleted when the returned [DirAccess] is freed.
 Returns [code]null[/code] if opening the directory failed. You can use [method get_open_error] to check the error that occurred.
 */
-func CreateTempOptions(prefix string, keep bool) [1]gdclass.DirAccess { //gd:DirAccess.create_temp
+func CreateTempOptions(prefix string, keep bool) Instance { //gd:DirAccess.create_temp
 	self := Instance{}
-	return [1]gdclass.DirAccess(Advanced(self).CreateTemp(String.New(prefix), keep))
+	return Instance(Advanced(self).CreateTemp(String.New(prefix), keep))
 }
 
 /*

@@ -14,6 +14,7 @@ import "graphics.gd/variant"
 import "graphics.gd/classdb/GPUParticlesAttractor3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/Texture3D"
 import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -88,11 +89,11 @@ func (self Instance) SetSize(value Vector3.XYZ) {
 	class(self).SetSize(Vector3.XYZ(value))
 }
 
-func (self Instance) Texture() [1]gdclass.Texture3D {
-	return [1]gdclass.Texture3D(class(self).GetTexture())
+func (self Instance) Texture() Texture3D.Instance {
+	return Texture3D.Instance(class(self).GetTexture())
 }
 
-func (self Instance) SetTexture(value [1]gdclass.Texture3D) {
+func (self Instance) SetTexture(value Texture3D.Instance) {
 	class(self).SetTexture(value)
 }
 

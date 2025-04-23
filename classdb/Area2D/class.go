@@ -65,16 +65,16 @@ type Any interface {
 Returns a list of intersecting [PhysicsBody2D]s and [TileMap]s. The overlapping body's [member CollisionObject2D.collision_layer] must be part of this area's [member CollisionObject2D.collision_mask] in order to be detected.
 For performance reasons (collisions are all processed at the same time) this list is modified once during the physics step, not immediately after objects are moved. Consider using signals instead.
 */
-func (self Instance) GetOverlappingBodies() [][1]gdclass.Node2D { //gd:Area2D.get_overlapping_bodies
-	return [][1]gdclass.Node2D(gd.ArrayAs[[][1]gdclass.Node2D](gd.InternalArray(Advanced(self).GetOverlappingBodies())))
+func (self Instance) GetOverlappingBodies() []Node2D.Instance { //gd:Area2D.get_overlapping_bodies
+	return []Node2D.Instance(gd.ArrayAs[[]Node2D.Instance](gd.InternalArray(Advanced(self).GetOverlappingBodies())))
 }
 
 /*
 Returns a list of intersecting [Area2D]s. The overlapping area's [member CollisionObject2D.collision_layer] must be part of this area's [member CollisionObject2D.collision_mask] in order to be detected.
 For performance reasons (collisions are all processed at the same time) this list is modified once during the physics step, not immediately after objects are moved. Consider using signals instead.
 */
-func (self Instance) GetOverlappingAreas() [][1]gdclass.Area2D { //gd:Area2D.get_overlapping_areas
-	return [][1]gdclass.Area2D(gd.ArrayAs[[][1]gdclass.Area2D](gd.InternalArray(Advanced(self).GetOverlappingAreas())))
+func (self Instance) GetOverlappingAreas() []Instance { //gd:Area2D.get_overlapping_areas
+	return []Instance(gd.ArrayAs[[]Instance](gd.InternalArray(Advanced(self).GetOverlappingAreas())))
 }
 
 /*
@@ -98,7 +98,7 @@ Returns [code]true[/code] if the given physics body intersects or overlaps this 
 [b]Note:[/b] The result of this test is not immediate after moving objects. For performance, list of overlaps is updated once per frame and before the physics step. Consider using signals instead.
 The [param body] argument can either be a [PhysicsBody2D] or a [TileMap] instance. While TileMaps are not physics bodies themselves, they register their tiles with collision shapes as a virtual physics body.
 */
-func (self Instance) OverlapsBody(body [1]gdclass.Node) bool { //gd:Area2D.overlaps_body
+func (self Instance) OverlapsBody(body Node.Instance) bool { //gd:Area2D.overlaps_body
 	return bool(Advanced(self).OverlapsBody(body))
 }
 
@@ -106,7 +106,7 @@ func (self Instance) OverlapsBody(body [1]gdclass.Node) bool { //gd:Area2D.overl
 Returns [code]true[/code] if the given [Area2D] intersects or overlaps this [Area2D], [code]false[/code] otherwise.
 [b]Note:[/b] The result of this test is not immediate after moving objects. For performance, the list of overlaps is updated once per frame and before the physics step. Consider using signals instead.
 */
-func (self Instance) OverlapsArea(area [1]gdclass.Node) bool { //gd:Area2D.overlaps_area
+func (self Instance) OverlapsArea(area Node.Instance) bool { //gd:Area2D.overlaps_area
 	return bool(Advanced(self).OverlapsArea(area))
 }
 
@@ -619,35 +619,35 @@ func (self class) IsOverridingAudioBus() bool { //gd:Area2D.is_overriding_audio_
 	frame.Free()
 	return ret
 }
-func (self Instance) OnBodyShapeEntered(cb func(body_rid RID.Any, body [1]gdclass.Node2D, body_shape_index int, local_shape_index int)) {
+func (self Instance) OnBodyShapeEntered(cb func(body_rid RID.Any, body Node2D.Instance, body_shape_index int, local_shape_index int)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("body_shape_entered"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnBodyShapeExited(cb func(body_rid RID.Any, body [1]gdclass.Node2D, body_shape_index int, local_shape_index int)) {
+func (self Instance) OnBodyShapeExited(cb func(body_rid RID.Any, body Node2D.Instance, body_shape_index int, local_shape_index int)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("body_shape_exited"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnBodyEntered(cb func(body [1]gdclass.Node2D)) {
+func (self Instance) OnBodyEntered(cb func(body Node2D.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("body_entered"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnBodyExited(cb func(body [1]gdclass.Node2D)) {
+func (self Instance) OnBodyExited(cb func(body Node2D.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("body_exited"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnAreaShapeEntered(cb func(area_rid RID.Any, area [1]gdclass.Area2D, area_shape_index int, local_shape_index int)) {
+func (self Instance) OnAreaShapeEntered(cb func(area_rid RID.Any, area Instance, area_shape_index int, local_shape_index int)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("area_shape_entered"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnAreaShapeExited(cb func(area_rid RID.Any, area [1]gdclass.Area2D, area_shape_index int, local_shape_index int)) {
+func (self Instance) OnAreaShapeExited(cb func(area_rid RID.Any, area Instance, area_shape_index int, local_shape_index int)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("area_shape_exited"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnAreaEntered(cb func(area [1]gdclass.Area2D)) {
+func (self Instance) OnAreaEntered(cb func(area Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("area_entered"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnAreaExited(cb func(area [1]gdclass.Area2D)) {
+func (self Instance) OnAreaExited(cb func(area Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("area_exited"), gd.NewCallable(cb), 0)
 }
 

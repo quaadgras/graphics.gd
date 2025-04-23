@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -107,11 +108,11 @@ func (self Instance) SetMotion(value Vector3.XYZ) {
 	class(self).SetMotion(Vector3.XYZ(value))
 }
 
-func (self Instance) Shape() [1]gdclass.Resource {
-	return [1]gdclass.Resource(class(self).GetShape())
+func (self Instance) Shape() Resource.Instance {
+	return Resource.Instance(class(self).GetShape())
 }
 
-func (self Instance) SetShape(value [1]gdclass.Resource) {
+func (self Instance) SetShape(value Resource.Instance) {
 	class(self).SetShape(value)
 }
 

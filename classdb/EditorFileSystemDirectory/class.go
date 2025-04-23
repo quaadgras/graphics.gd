@@ -64,8 +64,8 @@ func (self Instance) GetSubdirCount() int { //gd:EditorFileSystemDirectory.get_s
 /*
 Returns the subdirectory at index [param idx].
 */
-func (self Instance) GetSubdir(idx int) [1]gdclass.EditorFileSystemDirectory { //gd:EditorFileSystemDirectory.get_subdir
-	return [1]gdclass.EditorFileSystemDirectory(Advanced(self).GetSubdir(int64(idx)))
+func (self Instance) GetSubdir(idx int) Instance { //gd:EditorFileSystemDirectory.get_subdir
+	return Instance(Advanced(self).GetSubdir(int64(idx)))
 }
 
 /*
@@ -134,8 +134,8 @@ func (self Instance) GetPath() string { //gd:EditorFileSystemDirectory.get_path
 /*
 Returns the parent directory for this directory or [code]null[/code] if called on a directory at [code]res://[/code] or [code]user://[/code].
 */
-func (self Instance) GetParent() [1]gdclass.EditorFileSystemDirectory { //gd:EditorFileSystemDirectory.get_parent
-	return [1]gdclass.EditorFileSystemDirectory(Advanced(self).GetParent())
+func (self Instance) GetParent() Instance { //gd:EditorFileSystemDirectory.get_parent
+	return Instance(Advanced(self).GetParent())
 }
 
 /*

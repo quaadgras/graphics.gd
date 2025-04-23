@@ -12,6 +12,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/SceneReplicationConfig"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -145,11 +146,11 @@ func (self Instance) SetDeltaInterval(value Float.X) {
 	class(self).SetDeltaInterval(float64(value))
 }
 
-func (self Instance) ReplicationConfig() [1]gdclass.SceneReplicationConfig {
-	return [1]gdclass.SceneReplicationConfig(class(self).GetReplicationConfig())
+func (self Instance) ReplicationConfig() SceneReplicationConfig.Instance {
+	return SceneReplicationConfig.Instance(class(self).GetReplicationConfig())
 }
 
-func (self Instance) SetReplicationConfig(value [1]gdclass.SceneReplicationConfig) {
+func (self Instance) SetReplicationConfig(value SceneReplicationConfig.Instance) {
 	class(self).SetReplicationConfig(value)
 }
 

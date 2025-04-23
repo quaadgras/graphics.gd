@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/ArrayMesh"
+import "graphics.gd/classdb/ConcavePolygonShape3D"
 import "graphics.gd/classdb/GeometryInstance3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
@@ -108,16 +110,16 @@ func (self Instance) GetMeshes() []any { //gd:CSGShape3D.get_meshes
 /*
 Returns a baked static [ArrayMesh] of this node's CSG operation result. Materials from involved CSG nodes are added as extra mesh surfaces. Returns an empty mesh if the node is not a CSG root node or has no valid geometry.
 */
-func (self Instance) BakeStaticMesh() [1]gdclass.ArrayMesh { //gd:CSGShape3D.bake_static_mesh
-	return [1]gdclass.ArrayMesh(Advanced(self).BakeStaticMesh())
+func (self Instance) BakeStaticMesh() ArrayMesh.Instance { //gd:CSGShape3D.bake_static_mesh
+	return ArrayMesh.Instance(Advanced(self).BakeStaticMesh())
 }
 
 /*
 Returns a baked physics [ConcavePolygonShape3D] of this node's CSG operation result. Returns an empty shape if the node is not a CSG root node or has no valid geometry.
 [b]Performance:[/b] If the CSG operation results in a very detailed geometry with many faces physics performance will be very slow. Concave shapes should in general only be used for static level geometry and not with dynamic objects that are moving.
 */
-func (self Instance) BakeCollisionShape() [1]gdclass.ConcavePolygonShape3D { //gd:CSGShape3D.bake_collision_shape
-	return [1]gdclass.ConcavePolygonShape3D(Advanced(self).BakeCollisionShape())
+func (self Instance) BakeCollisionShape() ConcavePolygonShape3D.Instance { //gd:CSGShape3D.bake_collision_shape
+	return ConcavePolygonShape3D.Instance(Advanced(self).BakeCollisionShape())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -14,6 +14,7 @@ import "graphics.gd/variant"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/TextEdit"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -563,7 +564,7 @@ Submits an item to the queue of potential candidates for the autocomplete menu. 
 [b]Note:[/b] This list will replace all current candidates.
 */
 func (self Instance) AddCodeCompletionOption(atype gdclass.CodeEditCodeCompletionKind, display_text string, insert_text string) { //gd:CodeEdit.add_code_completion_option
-	Advanced(self).AddCodeCompletionOption(atype, String.New(display_text), String.New(insert_text), Color.RGBA(gd.Color{1, 1, 1, 1}), [1][1]gdclass.Resource{}[0], variant.New([1]any{}[0]), int64(1024))
+	Advanced(self).AddCodeCompletionOption(atype, String.New(display_text), String.New(insert_text), Color.RGBA(gd.Color{1, 1, 1, 1}), [1]Resource.Instance{}[0], variant.New([1]any{}[0]), int64(1024))
 }
 
 /*
@@ -571,7 +572,7 @@ Submits an item to the queue of potential candidates for the autocomplete menu. 
 [param location] indicates location of the option relative to the location of the code completion query. See [enum CodeEdit.CodeCompletionLocation] for how to set this value.
 [b]Note:[/b] This list will replace all current candidates.
 */
-func (self Expanded) AddCodeCompletionOption(atype gdclass.CodeEditCodeCompletionKind, display_text string, insert_text string, text_color Color.RGBA, icon [1]gdclass.Resource, value any, location int) { //gd:CodeEdit.add_code_completion_option
+func (self Expanded) AddCodeCompletionOption(atype gdclass.CodeEditCodeCompletionKind, display_text string, insert_text string, text_color Color.RGBA, icon Resource.Instance, value any, location int) { //gd:CodeEdit.add_code_completion_option
 	Advanced(self).AddCodeCompletionOption(atype, String.New(display_text), String.New(insert_text), Color.RGBA(text_color), icon, variant.New(value), int64(location))
 }
 

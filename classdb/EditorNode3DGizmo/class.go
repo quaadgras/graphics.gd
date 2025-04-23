@@ -11,7 +11,14 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Camera3D"
+import "graphics.gd/classdb/Material"
+import "graphics.gd/classdb/Mesh"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Node3DGizmo"
+import "graphics.gd/classdb/SkinReference"
+import "graphics.gd/classdb/TriangleMesh"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -79,15 +86,15 @@ type Interface interface {
 	BeginHandleAction(id int, secondary bool)
 	//Override this method to update the node properties when the user drags a gizmo handle (previously added with [method add_handles]). The provided [param point] is the mouse position in screen coordinates and the [param camera] can be used to convert it to raycasts.
 	//The [param secondary] argument is [code]true[/code] when the edited handle is secondary (see [method add_handles] for more information).
-	SetHandle(id int, secondary bool, camera [1]gdclass.Camera3D, point Vector2.XY)
+	SetHandle(id int, secondary bool, camera Camera3D.Instance, point Vector2.XY)
 	//Override this method to commit a handle being edited (handles must have been previously added by [method add_handles]). This usually means creating an [UndoRedo] action for the change, using the current handle value as "do" and the [param restore] argument as "undo".
 	//If the [param cancel] argument is [code]true[/code], the [param restore] value should be directly set, without any [UndoRedo] action.
 	//The [param secondary] argument is [code]true[/code] when the committed handle is secondary (see [method add_handles] for more information).
 	CommitHandle(id int, secondary bool, restore any, cancel bool)
 	//Override this method to allow selecting subgizmos using mouse clicks. Given a [param camera] and a [param point] in screen coordinates, this method should return which subgizmo should be selected. The returned value should be a unique subgizmo identifier, which can have any non-negative value and will be used in other virtual methods like [method _get_subgizmo_transform] or [method _commit_subgizmos].
-	SubgizmosIntersectRay(camera [1]gdclass.Camera3D, point Vector2.XY) int
+	SubgizmosIntersectRay(camera Camera3D.Instance, point Vector2.XY) int
 	//Override this method to allow selecting subgizmos using mouse drag box selection. Given a [param camera] and a [param frustum], this method should return which subgizmos are contained within the frustum. The [param frustum] argument consists of an array with all the [Plane]s that make up the selection frustum. The returned value should contain a list of unique subgizmo identifiers, which can have any non-negative value and will be used in other virtual methods like [method _get_subgizmo_transform] or [method _commit_subgizmos].
-	SubgizmosIntersectFrustum(camera [1]gdclass.Camera3D, frustum []Plane.NormalD) []int32
+	SubgizmosIntersectFrustum(camera Camera3D.Instance, frustum []Plane.NormalD) []int32
 	//Override this method to update the node properties during subgizmo editing (see [method _subgizmos_intersect_ray] and [method _subgizmos_intersect_frustum]). The [param transform] is given in the [Node3D]'s local coordinate system.
 	SetSubgizmoTransform(id int, transform Transform3D.BasisOrigin)
 	//Override this method to return the current transform of a subgizmo. This transform will be requested at the start of an edit and used as the [code]restore[/code] argument in [method _commit_subgizmos].
@@ -107,14 +114,14 @@ func (self implementation) GetHandleName(id int, secondary bool) (_ string)     
 func (self implementation) IsHandleHighlighted(id int, secondary bool) (_ bool) { return }
 func (self implementation) GetHandleValue(id int, secondary bool) (_ any)       { return }
 func (self implementation) BeginHandleAction(id int, secondary bool)            { return }
-func (self implementation) SetHandle(id int, secondary bool, camera [1]gdclass.Camera3D, point Vector2.XY) {
+func (self implementation) SetHandle(id int, secondary bool, camera Camera3D.Instance, point Vector2.XY) {
 	return
 }
 func (self implementation) CommitHandle(id int, secondary bool, restore any, cancel bool) { return }
-func (self implementation) SubgizmosIntersectRay(camera [1]gdclass.Camera3D, point Vector2.XY) (_ int) {
+func (self implementation) SubgizmosIntersectRay(camera Camera3D.Instance, point Vector2.XY) (_ int) {
 	return
 }
-func (self implementation) SubgizmosIntersectFrustum(camera [1]gdclass.Camera3D, frustum []Plane.NormalD) (_ []int32) {
+func (self implementation) SubgizmosIntersectFrustum(camera Camera3D.Instance, frustum []Plane.NormalD) (_ []int32) {
 	return
 }
 func (self implementation) SetSubgizmoTransform(id int, transform Transform3D.BasisOrigin) { return }
@@ -197,7 +204,7 @@ func (Instance) _begin_handle_action(impl func(ptr unsafe.Pointer, id int, secon
 Override this method to update the node properties when the user drags a gizmo handle (previously added with [method add_handles]). The provided [param point] is the mouse position in screen coordinates and the [param camera] can be used to convert it to raycasts.
 The [param secondary] argument is [code]true[/code] when the edited handle is secondary (see [method add_handles] for more information).
 */
-func (Instance) _set_handle(impl func(ptr unsafe.Pointer, id int, secondary bool, camera [1]gdclass.Camera3D, point Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_handle(impl func(ptr unsafe.Pointer, id int, secondary bool, camera Camera3D.Instance, point Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
@@ -230,7 +237,7 @@ func (Instance) _commit_handle(impl func(ptr unsafe.Pointer, id int, secondary b
 /*
 Override this method to allow selecting subgizmos using mouse clicks. Given a [param camera] and a [param point] in screen coordinates, this method should return which subgizmo should be selected. The returned value should be a unique subgizmo identifier, which can have any non-negative value and will be used in other virtual methods like [method _get_subgizmo_transform] or [method _commit_subgizmos].
 */
-func (Instance) _subgizmos_intersect_ray(impl func(ptr unsafe.Pointer, camera [1]gdclass.Camera3D, point Vector2.XY) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _subgizmos_intersect_ray(impl func(ptr unsafe.Pointer, camera Camera3D.Instance, point Vector2.XY) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -245,7 +252,7 @@ func (Instance) _subgizmos_intersect_ray(impl func(ptr unsafe.Pointer, camera [1
 /*
 Override this method to allow selecting subgizmos using mouse drag box selection. Given a [param camera] and a [param frustum], this method should return which subgizmos are contained within the frustum. The [param frustum] argument consists of an array with all the [Plane]s that make up the selection frustum. The returned value should contain a list of unique subgizmo identifiers, which can have any non-negative value and will be used in other virtual methods like [method _get_subgizmo_transform] or [method _commit_subgizmos].
 */
-func (Instance) _subgizmos_intersect_frustum(impl func(ptr unsafe.Pointer, camera [1]gdclass.Camera3D, frustum []Plane.NormalD) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _subgizmos_intersect_frustum(impl func(ptr unsafe.Pointer, camera Camera3D.Instance, frustum []Plane.NormalD) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -306,28 +313,28 @@ func (Instance) _commit_subgizmos(impl func(ptr unsafe.Pointer, ids []int32, res
 /*
 Adds lines to the gizmo (as sets of 2 points), with a given material. The lines are used for visualizing the gizmo. Call this method during [method _redraw].
 */
-func (self Instance) AddLines(lines []Vector3.XYZ, material [1]gdclass.Material) { //gd:EditorNode3DGizmo.add_lines
+func (self Instance) AddLines(lines []Vector3.XYZ, material Material.Instance) { //gd:EditorNode3DGizmo.add_lines
 	Advanced(self).AddLines(Packed.New(lines...), material, false, Color.RGBA(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Adds lines to the gizmo (as sets of 2 points), with a given material. The lines are used for visualizing the gizmo. Call this method during [method _redraw].
 */
-func (self Expanded) AddLines(lines []Vector3.XYZ, material [1]gdclass.Material, billboard bool, modulate Color.RGBA) { //gd:EditorNode3DGizmo.add_lines
+func (self Expanded) AddLines(lines []Vector3.XYZ, material Material.Instance, billboard bool, modulate Color.RGBA) { //gd:EditorNode3DGizmo.add_lines
 	Advanced(self).AddLines(Packed.New(lines...), material, billboard, Color.RGBA(modulate))
 }
 
 /*
 Adds a mesh to the gizmo with the specified [param material], local [param transform] and [param skeleton]. Call this method during [method _redraw].
 */
-func (self Instance) AddMesh(mesh [1]gdclass.Mesh) { //gd:EditorNode3DGizmo.add_mesh
-	Advanced(self).AddMesh(mesh, [1][1]gdclass.Material{}[0], Transform3D.BasisOrigin(gd.NewTransform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)), [1][1]gdclass.SkinReference{}[0])
+func (self Instance) AddMesh(mesh Mesh.Instance) { //gd:EditorNode3DGizmo.add_mesh
+	Advanced(self).AddMesh(mesh, [1]Material.Instance{}[0], Transform3D.BasisOrigin(gd.NewTransform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)), [1]SkinReference.Instance{}[0])
 }
 
 /*
 Adds a mesh to the gizmo with the specified [param material], local [param transform] and [param skeleton]. Call this method during [method _redraw].
 */
-func (self Expanded) AddMesh(mesh [1]gdclass.Mesh, material [1]gdclass.Material, transform Transform3D.BasisOrigin, skeleton [1]gdclass.SkinReference) { //gd:EditorNode3DGizmo.add_mesh
+func (self Expanded) AddMesh(mesh Mesh.Instance, material Material.Instance, transform Transform3D.BasisOrigin, skeleton SkinReference.Instance) { //gd:EditorNode3DGizmo.add_mesh
 	Advanced(self).AddMesh(mesh, material, Transform3D.BasisOrigin(transform), skeleton)
 }
 
@@ -341,21 +348,21 @@ func (self Instance) AddCollisionSegments(segments []Vector3.XYZ) { //gd:EditorN
 /*
 Adds collision triangles to the gizmo for picking. A [TriangleMesh] can be generated from a regular [Mesh] too. Call this method during [method _redraw].
 */
-func (self Instance) AddCollisionTriangles(triangles [1]gdclass.TriangleMesh) { //gd:EditorNode3DGizmo.add_collision_triangles
+func (self Instance) AddCollisionTriangles(triangles TriangleMesh.Instance) { //gd:EditorNode3DGizmo.add_collision_triangles
 	Advanced(self).AddCollisionTriangles(triangles)
 }
 
 /*
 Adds an unscaled billboard for visualization and selection. Call this method during [method _redraw].
 */
-func (self Instance) AddUnscaledBillboard(material [1]gdclass.Material) { //gd:EditorNode3DGizmo.add_unscaled_billboard
+func (self Instance) AddUnscaledBillboard(material Material.Instance) { //gd:EditorNode3DGizmo.add_unscaled_billboard
 	Advanced(self).AddUnscaledBillboard(material, float64(1), Color.RGBA(gd.Color{1, 1, 1, 1}))
 }
 
 /*
 Adds an unscaled billboard for visualization and selection. Call this method during [method _redraw].
 */
-func (self Expanded) AddUnscaledBillboard(material [1]gdclass.Material, default_scale Float.X, modulate Color.RGBA) { //gd:EditorNode3DGizmo.add_unscaled_billboard
+func (self Expanded) AddUnscaledBillboard(material Material.Instance, default_scale Float.X, modulate Color.RGBA) { //gd:EditorNode3DGizmo.add_unscaled_billboard
 	Advanced(self).AddUnscaledBillboard(material, float64(default_scale), Color.RGBA(modulate))
 }
 
@@ -364,7 +371,7 @@ Adds a list of handles (points) which can be used to edit the properties of the 
 The [param secondary] argument marks the added handles as secondary, meaning they will normally have lower selection priority than regular handles. When the user is holding the shift key secondary handles will switch to have higher priority than regular handles. This change in priority can be used to place multiple handles at the same point while still giving the user control on their selection.
 There are virtual methods which will be called upon editing of these handles. Call this method during [method _redraw].
 */
-func (self Instance) AddHandles(handles []Vector3.XYZ, material [1]gdclass.Material, ids []int32) { //gd:EditorNode3DGizmo.add_handles
+func (self Instance) AddHandles(handles []Vector3.XYZ, material Material.Instance, ids []int32) { //gd:EditorNode3DGizmo.add_handles
 	Advanced(self).AddHandles(Packed.New(handles...), material, Packed.New(ids...), false, false)
 }
 
@@ -373,29 +380,22 @@ Adds a list of handles (points) which can be used to edit the properties of the 
 The [param secondary] argument marks the added handles as secondary, meaning they will normally have lower selection priority than regular handles. When the user is holding the shift key secondary handles will switch to have higher priority than regular handles. This change in priority can be used to place multiple handles at the same point while still giving the user control on their selection.
 There are virtual methods which will be called upon editing of these handles. Call this method during [method _redraw].
 */
-func (self Expanded) AddHandles(handles []Vector3.XYZ, material [1]gdclass.Material, ids []int32, billboard bool, secondary bool) { //gd:EditorNode3DGizmo.add_handles
+func (self Expanded) AddHandles(handles []Vector3.XYZ, material Material.Instance, ids []int32, billboard bool, secondary bool) { //gd:EditorNode3DGizmo.add_handles
 	Advanced(self).AddHandles(Packed.New(handles...), material, Packed.New(ids...), billboard, secondary)
 }
 
 /*
 Sets the reference [Node3D] node for the gizmo. [param node] must inherit from [Node3D].
 */
-func (self Instance) SetNode3d(node [1]gdclass.Node) { //gd:EditorNode3DGizmo.set_node_3d
+func (self Instance) SetNode3d(node Node.Instance) { //gd:EditorNode3DGizmo.set_node_3d
 	Advanced(self).SetNode3d(node)
 }
 
 /*
 Returns the [Node3D] node associated with this gizmo.
 */
-func (self Instance) GetNode3d() [1]gdclass.Node3D { //gd:EditorNode3DGizmo.get_node_3d
-	return [1]gdclass.Node3D(Advanced(self).GetNode3d())
-}
-
-/*
-Returns the [EditorNode3DGizmoPlugin] that owns this gizmo. It's useful to retrieve materials using [method EditorNode3DGizmoPlugin.get_material].
-*/
-func (self Instance) GetPlugin() [1]gdclass.EditorNode3DGizmoPlugin { //gd:EditorNode3DGizmo.get_plugin
-	return [1]gdclass.EditorNode3DGizmoPlugin(Advanced(self).GetPlugin())
+func (self Instance) GetNode3d() Node3D.Instance { //gd:EditorNode3DGizmo.get_node_3d
+	return Node3D.Instance(Advanced(self).GetNode3d())
 }
 
 /*

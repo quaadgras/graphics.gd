@@ -12,6 +12,10 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Font"
+import "graphics.gd/classdb/StyleBox"
+import "graphics.gd/classdb/Texture2D"
+import "graphics.gd/classdb/Theme"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -46,6 +50,8 @@ var _ = slices.Delete[[]struct{}, struct{}]
 This singleton provides access to static information about [Theme] resources used by the engine and by your projects. You can fetch the default engine theme, as well as your project configured theme.
 [ThemeDB] also contains fallback values for theme properties.
 */
+type Instance [1]gdclass.ThemeDB
+
 var self [1]gdclass.ThemeDB
 var once sync.Once
 
@@ -57,18 +63,18 @@ func singleton() {
 /*
 Returns a reference to the default engine [Theme]. This theme resource is responsible for the out-of-the-box look of [Control] nodes and cannot be overridden.
 */
-func GetDefaultTheme() [1]gdclass.Theme { //gd:ThemeDB.get_default_theme
+func GetDefaultTheme() Theme.Instance { //gd:ThemeDB.get_default_theme
 	once.Do(singleton)
-	return [1]gdclass.Theme(Advanced().GetDefaultTheme())
+	return Theme.Instance(Advanced().GetDefaultTheme())
 }
 
 /*
 Returns a reference to the custom project [Theme]. This theme resources allows to override the default engine theme for every control node in the project.
 To set the project theme, see [member ProjectSettings.gui/theme/custom].
 */
-func GetProjectTheme() [1]gdclass.Theme { //gd:ThemeDB.get_project_theme
+func GetProjectTheme() Theme.Instance { //gd:ThemeDB.get_project_theme
 	once.Do(singleton)
-	return [1]gdclass.Theme(Advanced().GetProjectTheme())
+	return Theme.Instance(Advanced().GetProjectTheme())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -91,12 +97,12 @@ func SetFallbackBaseScale(value Float.X) {
 	class(self).SetFallbackBaseScale(float64(value))
 }
 
-func FallbackFont() [1]gdclass.Font {
+func FallbackFont() Font.Instance {
 	once.Do(singleton)
-	return [1]gdclass.Font(class(self).GetFallbackFont())
+	return Font.Instance(class(self).GetFallbackFont())
 }
 
-func SetFallbackFont(value [1]gdclass.Font) {
+func SetFallbackFont(value Font.Instance) {
 	once.Do(singleton)
 	class(self).SetFallbackFont(value)
 }
@@ -111,22 +117,22 @@ func SetFallbackFontSize(value int) {
 	class(self).SetFallbackFontSize(int64(value))
 }
 
-func FallbackIcon() [1]gdclass.Texture2D {
+func FallbackIcon() Texture2D.Instance {
 	once.Do(singleton)
-	return [1]gdclass.Texture2D(class(self).GetFallbackIcon())
+	return Texture2D.Instance(class(self).GetFallbackIcon())
 }
 
-func SetFallbackIcon(value [1]gdclass.Texture2D) {
+func SetFallbackIcon(value Texture2D.Instance) {
 	once.Do(singleton)
 	class(self).SetFallbackIcon(value)
 }
 
-func FallbackStylebox() [1]gdclass.StyleBox {
+func FallbackStylebox() StyleBox.Instance {
 	once.Do(singleton)
-	return [1]gdclass.StyleBox(class(self).GetFallbackStylebox())
+	return StyleBox.Instance(class(self).GetFallbackStylebox())
 }
 
-func SetFallbackStylebox(value [1]gdclass.StyleBox) {
+func SetFallbackStylebox(value StyleBox.Instance) {
 	once.Do(singleton)
 	class(self).SetFallbackStylebox(value)
 }

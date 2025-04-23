@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/InputEvent"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -66,7 +67,7 @@ func (self Instance) HasValidEvent() bool { //gd:Shortcut.has_valid_event
 /*
 Returns whether any [InputEvent] in [member events] equals [param event]. This uses [method InputEvent.is_match] to compare events.
 */
-func (self Instance) MatchesEvent(event [1]gdclass.InputEvent) bool { //gd:Shortcut.matches_event
+func (self Instance) MatchesEvent(event InputEvent.Instance) bool { //gd:Shortcut.matches_event
 	return bool(Advanced(self).MatchesEvent(event))
 }
 

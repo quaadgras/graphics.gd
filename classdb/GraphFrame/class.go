@@ -15,6 +15,7 @@ import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/GraphElement"
+import "graphics.gd/classdb/HBoxContainer"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -65,8 +66,8 @@ type Any interface {
 Returns the [HBoxContainer] used for the title bar, only containing a [Label] for displaying the title by default.
 This can be used to add custom controls to the title bar such as option or close buttons.
 */
-func (self Instance) GetTitlebarHbox() [1]gdclass.HBoxContainer { //gd:GraphFrame.get_titlebar_hbox
-	return [1]gdclass.HBoxContainer(Advanced(self).GetTitlebarHbox())
+func (self Instance) GetTitlebarHbox() HBoxContainer.Instance { //gd:GraphFrame.get_titlebar_hbox
+	return HBoxContainer.Instance(Advanced(self).GetTitlebarHbox())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

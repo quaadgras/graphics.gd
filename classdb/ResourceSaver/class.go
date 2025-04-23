@@ -12,6 +12,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/ResourceFormatSaver"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -46,6 +48,8 @@ var _ = slices.Delete[[]struct{}, struct{}]
 A singleton for saving resource types to the filesystem.
 It uses the many [ResourceFormatSaver] classes registered in the engine (either built-in or from a plugin) to save resource data to text-based (e.g. [code].tres[/code] or [code].tscn[/code]) or binary files (e.g. [code].res[/code] or [code].scn[/code]).
 */
+type Instance [1]gdclass.ResourceSaver
+
 var self [1]gdclass.ResourceSaver
 var once sync.Once
 
@@ -60,7 +64,7 @@ The [param flags] bitmask can be specified to customize the save behavior using 
 Returns [constant OK] on success.
 [b]Note:[/b] When the project is running, any generated UID associated with the resource will not be saved as the required code is only executed in editor mode.
 */
-func Save(resource [1]gdclass.Resource, path string, flags gdclass.ResourceSaverSaverFlags) error { //gd:ResourceSaver.save
+func Save(resource Resource.Instance, path string, flags gdclass.ResourceSaverSaverFlags) error { //gd:ResourceSaver.save
 	once.Do(singleton)
 	return error(gd.ToError(Advanced().Save(resource, String.New(path), flags)))
 }
@@ -71,7 +75,7 @@ The [param flags] bitmask can be specified to customize the save behavior using 
 Returns [constant OK] on success.
 [b]Note:[/b] When the project is running, any generated UID associated with the resource will not be saved as the required code is only executed in editor mode.
 */
-func SaveOptions(resource [1]gdclass.Resource, path string, flags gdclass.ResourceSaverSaverFlags) error { //gd:ResourceSaver.save
+func SaveOptions(resource Resource.Instance, path string, flags gdclass.ResourceSaverSaverFlags) error { //gd:ResourceSaver.save
 	once.Do(singleton)
 	return error(gd.ToError(Advanced().Save(resource, String.New(path), flags)))
 }
@@ -79,7 +83,7 @@ func SaveOptions(resource [1]gdclass.Resource, path string, flags gdclass.Resour
 /*
 Returns the list of extensions available for saving a resource of a given type.
 */
-func GetRecognizedExtensions(atype [1]gdclass.Resource) []string { //gd:ResourceSaver.get_recognized_extensions
+func GetRecognizedExtensions(atype Resource.Instance) []string { //gd:ResourceSaver.get_recognized_extensions
 	once.Do(singleton)
 	return []string(Advanced().GetRecognizedExtensions(atype).Strings())
 }
@@ -88,7 +92,7 @@ func GetRecognizedExtensions(atype [1]gdclass.Resource) []string { //gd:Resource
 Registers a new [ResourceFormatSaver]. The ResourceSaver will use the ResourceFormatSaver as described in [method save].
 This method is performed implicitly for ResourceFormatSavers written in GDScript (see [ResourceFormatSaver] for more information).
 */
-func AddResourceFormatSaver(format_saver [1]gdclass.ResourceFormatSaver, at_front bool) { //gd:ResourceSaver.add_resource_format_saver
+func AddResourceFormatSaver(format_saver ResourceFormatSaver.Instance, at_front bool) { //gd:ResourceSaver.add_resource_format_saver
 	once.Do(singleton)
 	Advanced().AddResourceFormatSaver(format_saver, at_front)
 }
@@ -97,7 +101,7 @@ func AddResourceFormatSaver(format_saver [1]gdclass.ResourceFormatSaver, at_fron
 Registers a new [ResourceFormatSaver]. The ResourceSaver will use the ResourceFormatSaver as described in [method save].
 This method is performed implicitly for ResourceFormatSavers written in GDScript (see [ResourceFormatSaver] for more information).
 */
-func AddResourceFormatSaverOptions(format_saver [1]gdclass.ResourceFormatSaver, at_front bool) { //gd:ResourceSaver.add_resource_format_saver
+func AddResourceFormatSaverOptions(format_saver ResourceFormatSaver.Instance, at_front bool) { //gd:ResourceSaver.add_resource_format_saver
 	once.Do(singleton)
 	Advanced().AddResourceFormatSaver(format_saver, at_front)
 }
@@ -105,7 +109,7 @@ func AddResourceFormatSaverOptions(format_saver [1]gdclass.ResourceFormatSaver, 
 /*
 Unregisters the given [ResourceFormatSaver].
 */
-func RemoveResourceFormatSaver(format_saver [1]gdclass.ResourceFormatSaver) { //gd:ResourceSaver.remove_resource_format_saver
+func RemoveResourceFormatSaver(format_saver ResourceFormatSaver.Instance) { //gd:ResourceSaver.remove_resource_format_saver
 	once.Do(singleton)
 	Advanced().RemoveResourceFormatSaver(format_saver)
 }

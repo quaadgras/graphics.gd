@@ -49,6 +49,8 @@ You can add custom monitors using the [method add_custom_monitor] method. Custom
 [b]Note:[/b] Some of the built-in monitors are not updated in real-time for performance reasons, so there may be a delay of up to 1 second between changes.
 [b]Note:[/b] Custom monitors do not support negative values. Negative values are clamped to 0.
 */
+type Instance [1]gdclass.Performance
+
 var self [1]gdclass.Performance
 var once sync.Once
 

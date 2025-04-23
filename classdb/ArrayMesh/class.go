@@ -13,6 +13,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Mesh"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Shape3D"
 import "graphics.gd/variant/AABB"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -250,6 +251,13 @@ func (self Instance) LightmapUnwrap(transform Transform3D.BasisOrigin, texel_siz
 	return error(gd.ToError(Advanced(self).LightmapUnwrap(Transform3D.BasisOrigin(transform), float64(texel_size))))
 }
 
+/*
+Returns the [ArrayMesh] used to draw the debug collision for this [Shape3D].
+*/
+func GetDebug(peer Shape3D.Instance) Instance { //gd:Shape3D.get_debug_mesh
+	return Instance(Shape3D.Advanced(peer).GetDebugMesh())
+}
+
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.ArrayMesh
@@ -285,11 +293,11 @@ func (self Instance) SetCustomAabb(value AABB.PositionSize) {
 	class(self).SetCustomAabb(AABB.PositionSize(value))
 }
 
-func (self Instance) ShadowMesh() [1]gdclass.ArrayMesh {
-	return [1]gdclass.ArrayMesh(class(self).GetShadowMesh())
+func (self Instance) ShadowMesh() Instance {
+	return Instance(class(self).GetShadowMesh())
 }
 
-func (self Instance) SetShadowMesh(value [1]gdclass.ArrayMesh) {
+func (self Instance) SetShadowMesh(value Instance) {
 	class(self).SetShadowMesh(value)
 }
 

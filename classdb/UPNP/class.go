@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/UPNPDevice"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -119,21 +120,21 @@ func (self Instance) GetDeviceCount() int { //gd:UPNP.get_device_count
 /*
 Returns the [UPNPDevice] at the given [param index].
 */
-func (self Instance) GetDevice(index int) [1]gdclass.UPNPDevice { //gd:UPNP.get_device
-	return [1]gdclass.UPNPDevice(Advanced(self).GetDevice(int64(index)))
+func (self Instance) GetDevice(index int) UPNPDevice.Instance { //gd:UPNP.get_device
+	return UPNPDevice.Instance(Advanced(self).GetDevice(int64(index)))
 }
 
 /*
 Adds the given [UPNPDevice] to the list of discovered devices.
 */
-func (self Instance) AddDevice(device [1]gdclass.UPNPDevice) { //gd:UPNP.add_device
+func (self Instance) AddDevice(device UPNPDevice.Instance) { //gd:UPNP.add_device
 	Advanced(self).AddDevice(device)
 }
 
 /*
 Sets the device at [param index] from the list of discovered devices to [param device].
 */
-func (self Instance) SetDevice(index int, device [1]gdclass.UPNPDevice) { //gd:UPNP.set_device
+func (self Instance) SetDevice(index int, device UPNPDevice.Instance) { //gd:UPNP.set_device
 	Advanced(self).SetDevice(int64(index), device)
 }
 
@@ -154,8 +155,8 @@ func (self Instance) ClearDevices() { //gd:UPNP.clear_devices
 /*
 Returns the default gateway. That is the first discovered [UPNPDevice] that is also a valid IGD (InternetGatewayDevice).
 */
-func (self Instance) GetGateway() [1]gdclass.UPNPDevice { //gd:UPNP.get_gateway
-	return [1]gdclass.UPNPDevice(Advanced(self).GetGateway())
+func (self Instance) GetGateway() UPNPDevice.Instance { //gd:UPNP.get_gateway
+	return UPNPDevice.Instance(Advanced(self).GetGateway())
 }
 
 /*

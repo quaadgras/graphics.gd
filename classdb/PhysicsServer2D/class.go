@@ -12,6 +12,10 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/PhysicsDirectBodyState2D"
+import "graphics.gd/classdb/PhysicsDirectSpaceState2D"
+import "graphics.gd/classdb/PhysicsTestMotionParameters2D"
+import "graphics.gd/classdb/PhysicsTestMotionResult2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -54,6 +58,8 @@ PhysicsServer2D is the server responsible for all 2D physics. It can directly cr
 Physics objects in [PhysicsServer2D] may be created and manipulated independently; they do not have to be tied to nodes in the scene tree.
 [b]Note:[/b] All the 2D physics nodes use the physics server internally. Adding a physics node to the scene tree will cause a corresponding physics object to be created in the physics server. A rigid body node registers a callback that updates the node's transform with the transform of the respective body object in the physics server (every physics update). An area node registers a callback to inform the area node about overlaps with the respective area object in the physics server. The raycast node queries the direct state of the relevant space in the physics server.
 */
+type Instance [1]gdclass.PhysicsServer2D
+
 var self [1]gdclass.PhysicsServer2D
 var once sync.Once
 
@@ -202,9 +208,9 @@ func SpaceGetParam(space RID.Space2D, param gdclass.PhysicsServer2DSpaceParamete
 /*
 Returns the state of a space, a [PhysicsDirectSpaceState2D]. This object can be used for collision/intersection queries.
 */
-func SpaceGetDirectState(space RID.Space2D) [1]gdclass.PhysicsDirectSpaceState2D { //gd:PhysicsServer2D.space_get_direct_state
+func SpaceGetDirectState(space RID.Space2D) PhysicsDirectSpaceState2D.Instance { //gd:PhysicsServer2D.space_get_direct_state
 	once.Do(singleton)
-	return [1]gdclass.PhysicsDirectSpaceState2D(Advanced().SpaceGetDirectState(RID.Any(space)))
+	return PhysicsDirectSpaceState2D.Instance(Advanced().SpaceGetDirectState(RID.Any(space)))
 }
 
 /*
@@ -923,7 +929,7 @@ The function [param callable] will be called every physics frame, assuming that 
 The function [param callable] must take the following parameters:
 1. [code]state[/code]: a [PhysicsDirectBodyState2D], used to retrieve the body's state.
 */
-func BodySetStateSyncCallback(body RID.Body2D, callable func(state [1]gdclass.PhysicsDirectBodyState2D)) { //gd:PhysicsServer2D.body_set_state_sync_callback
+func BodySetStateSyncCallback(body RID.Body2D, callable func(state PhysicsDirectBodyState2D.Instance)) { //gd:PhysicsServer2D.body_set_state_sync_callback
 	once.Do(singleton)
 	Advanced().BodySetStateSyncCallback(RID.Any(body), Callable.New(callable))
 }
@@ -936,7 +942,7 @@ If [param userdata] is not [code]null[/code], the function [param callable] must
 2. [code skip-lint]userdata[/code]: a [Variant]; its value will be the [param userdata] passed into this method.
 If [param userdata] is [code]null[/code], then [param callable] must take only the [code]state[/code] parameter.
 */
-func BodySetForceIntegrationCallback(body RID.Body2D, callable func(state [1]gdclass.PhysicsDirectBodyState2D, userdata any), userdata any) { //gd:PhysicsServer2D.body_set_force_integration_callback
+func BodySetForceIntegrationCallback(body RID.Body2D, callable func(state PhysicsDirectBodyState2D.Instance, userdata any), userdata any) { //gd:PhysicsServer2D.body_set_force_integration_callback
 	once.Do(singleton)
 	Advanced().BodySetForceIntegrationCallback(RID.Any(body), Callable.New(callable), variant.New(userdata))
 }
@@ -949,7 +955,7 @@ If [param userdata] is not [code]null[/code], the function [param callable] must
 2. [code skip-lint]userdata[/code]: a [Variant]; its value will be the [param userdata] passed into this method.
 If [param userdata] is [code]null[/code], then [param callable] must take only the [code]state[/code] parameter.
 */
-func BodySetForceIntegrationCallbackOptions(body RID.Body2D, callable func(state [1]gdclass.PhysicsDirectBodyState2D, userdata any), userdata any) { //gd:PhysicsServer2D.body_set_force_integration_callback
+func BodySetForceIntegrationCallbackOptions(body RID.Body2D, callable func(state PhysicsDirectBodyState2D.Instance, userdata any), userdata any) { //gd:PhysicsServer2D.body_set_force_integration_callback
 	once.Do(singleton)
 	Advanced().BodySetForceIntegrationCallback(RID.Any(body), Callable.New(callable), variant.New(userdata))
 }
@@ -957,7 +963,7 @@ func BodySetForceIntegrationCallbackOptions(body RID.Body2D, callable func(state
 /*
 Returns [code]true[/code] if a collision would result from moving the body along a motion vector from a given point in space. See [PhysicsTestMotionParameters2D] for the available motion parameters. Optionally a [PhysicsTestMotionResult2D] object can be passed, which will be used to store the information about the resulting collision.
 */
-func BodyTestMotion(body RID.Body2D, parameters [1]gdclass.PhysicsTestMotionParameters2D, result [1]gdclass.PhysicsTestMotionResult2D) bool { //gd:PhysicsServer2D.body_test_motion
+func BodyTestMotion(body RID.Body2D, parameters PhysicsTestMotionParameters2D.Instance, result PhysicsTestMotionResult2D.Instance) bool { //gd:PhysicsServer2D.body_test_motion
 	once.Do(singleton)
 	return bool(Advanced().BodyTestMotion(RID.Any(body), parameters, result))
 }
@@ -965,7 +971,7 @@ func BodyTestMotion(body RID.Body2D, parameters [1]gdclass.PhysicsTestMotionPara
 /*
 Returns [code]true[/code] if a collision would result from moving the body along a motion vector from a given point in space. See [PhysicsTestMotionParameters2D] for the available motion parameters. Optionally a [PhysicsTestMotionResult2D] object can be passed, which will be used to store the information about the resulting collision.
 */
-func BodyTestMotionOptions(body RID.Body2D, parameters [1]gdclass.PhysicsTestMotionParameters2D, result [1]gdclass.PhysicsTestMotionResult2D) bool { //gd:PhysicsServer2D.body_test_motion
+func BodyTestMotionOptions(body RID.Body2D, parameters PhysicsTestMotionParameters2D.Instance, result PhysicsTestMotionResult2D.Instance) bool { //gd:PhysicsServer2D.body_test_motion
 	once.Do(singleton)
 	return bool(Advanced().BodyTestMotion(RID.Any(body), parameters, result))
 }
@@ -973,9 +979,9 @@ func BodyTestMotionOptions(body RID.Body2D, parameters [1]gdclass.PhysicsTestMot
 /*
 Returns the [PhysicsDirectBodyState2D] of the body. Returns [code]null[/code] if the body is destroyed or not assigned to a space.
 */
-func BodyGetDirectState(body RID.Body2D) [1]gdclass.PhysicsDirectBodyState2D { //gd:PhysicsServer2D.body_get_direct_state
+func BodyGetDirectState(body RID.Body2D) PhysicsDirectBodyState2D.Instance { //gd:PhysicsServer2D.body_get_direct_state
 	once.Do(singleton)
-	return [1]gdclass.PhysicsDirectBodyState2D(Advanced().BodyGetDirectState(RID.Any(body)))
+	return PhysicsDirectBodyState2D.Instance(Advanced().BodyGetDirectState(RID.Any(body)))
 }
 
 /*

@@ -11,7 +11,12 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Font"
+import "graphics.gd/classdb/InputEvent"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/StyleBox"
+import "graphics.gd/classdb/Texture2D"
+import "graphics.gd/classdb/Theme"
 import "graphics.gd/classdb/Viewport"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -271,7 +276,7 @@ func (self Instance) EndBulkThemeOverride() { //gd:Window.end_bulk_theme_overrid
 Creates a local override for a theme icon with the specified [param name]. Local overrides always take precedence when fetching theme items for the control. An override can be removed with [method remove_theme_icon_override].
 See also [method get_theme_icon].
 */
-func (self Instance) AddThemeIconOverride(name string, texture [1]gdclass.Texture2D) { //gd:Window.add_theme_icon_override
+func (self Instance) AddThemeIconOverride(name string, texture Texture2D.Instance) { //gd:Window.add_theme_icon_override
 	Advanced(self).AddThemeIconOverride(String.Name(String.New(name)), texture)
 }
 
@@ -279,7 +284,7 @@ func (self Instance) AddThemeIconOverride(name string, texture [1]gdclass.Textur
 Creates a local override for a theme [StyleBox] with the specified [param name]. Local overrides always take precedence when fetching theme items for the control. An override can be removed with [method remove_theme_stylebox_override].
 See also [method get_theme_stylebox] and [method Control.add_theme_stylebox_override] for more details.
 */
-func (self Instance) AddThemeStyleboxOverride(name string, stylebox [1]gdclass.StyleBox) { //gd:Window.add_theme_stylebox_override
+func (self Instance) AddThemeStyleboxOverride(name string, stylebox StyleBox.Instance) { //gd:Window.add_theme_stylebox_override
 	Advanced(self).AddThemeStyleboxOverride(String.Name(String.New(name)), stylebox)
 }
 
@@ -287,7 +292,7 @@ func (self Instance) AddThemeStyleboxOverride(name string, stylebox [1]gdclass.S
 Creates a local override for a theme [Font] with the specified [param name]. Local overrides always take precedence when fetching theme items for the control. An override can be removed with [method remove_theme_font_override].
 See also [method get_theme_font].
 */
-func (self Instance) AddThemeFontOverride(name string, font [1]gdclass.Font) { //gd:Window.add_theme_font_override
+func (self Instance) AddThemeFontOverride(name string, font Font.Instance) { //gd:Window.add_theme_font_override
 	Advanced(self).AddThemeFontOverride(String.Name(String.New(name)), font)
 }
 
@@ -361,48 +366,48 @@ func (self Instance) RemoveThemeConstantOverride(name string) { //gd:Window.remo
 Returns an icon from the first matching [Theme] in the tree if that [Theme] has an icon item with the specified [param name] and [param theme_type].
 See [method Control.get_theme_color] for details.
 */
-func (self Instance) GetThemeIcon(name string) [1]gdclass.Texture2D { //gd:Window.get_theme_icon
-	return [1]gdclass.Texture2D(Advanced(self).GetThemeIcon(String.Name(String.New(name)), String.Name(String.New(""))))
+func (self Instance) GetThemeIcon(name string) Texture2D.Instance { //gd:Window.get_theme_icon
+	return Texture2D.Instance(Advanced(self).GetThemeIcon(String.Name(String.New(name)), String.Name(String.New(""))))
 }
 
 /*
 Returns an icon from the first matching [Theme] in the tree if that [Theme] has an icon item with the specified [param name] and [param theme_type].
 See [method Control.get_theme_color] for details.
 */
-func (self Expanded) GetThemeIcon(name string, theme_type string) [1]gdclass.Texture2D { //gd:Window.get_theme_icon
-	return [1]gdclass.Texture2D(Advanced(self).GetThemeIcon(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+func (self Expanded) GetThemeIcon(name string, theme_type string) Texture2D.Instance { //gd:Window.get_theme_icon
+	return Texture2D.Instance(Advanced(self).GetThemeIcon(String.Name(String.New(name)), String.Name(String.New(theme_type))))
 }
 
 /*
 Returns a [StyleBox] from the first matching [Theme] in the tree if that [Theme] has a stylebox item with the specified [param name] and [param theme_type].
 See [method Control.get_theme_color] for details.
 */
-func (self Instance) GetThemeStylebox(name string) [1]gdclass.StyleBox { //gd:Window.get_theme_stylebox
-	return [1]gdclass.StyleBox(Advanced(self).GetThemeStylebox(String.Name(String.New(name)), String.Name(String.New(""))))
+func (self Instance) GetThemeStylebox(name string) StyleBox.Instance { //gd:Window.get_theme_stylebox
+	return StyleBox.Instance(Advanced(self).GetThemeStylebox(String.Name(String.New(name)), String.Name(String.New(""))))
 }
 
 /*
 Returns a [StyleBox] from the first matching [Theme] in the tree if that [Theme] has a stylebox item with the specified [param name] and [param theme_type].
 See [method Control.get_theme_color] for details.
 */
-func (self Expanded) GetThemeStylebox(name string, theme_type string) [1]gdclass.StyleBox { //gd:Window.get_theme_stylebox
-	return [1]gdclass.StyleBox(Advanced(self).GetThemeStylebox(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+func (self Expanded) GetThemeStylebox(name string, theme_type string) StyleBox.Instance { //gd:Window.get_theme_stylebox
+	return StyleBox.Instance(Advanced(self).GetThemeStylebox(String.Name(String.New(name)), String.Name(String.New(theme_type))))
 }
 
 /*
 Returns a [Font] from the first matching [Theme] in the tree if that [Theme] has a font item with the specified [param name] and [param theme_type].
 See [method Control.get_theme_color] for details.
 */
-func (self Instance) GetThemeFont(name string) [1]gdclass.Font { //gd:Window.get_theme_font
-	return [1]gdclass.Font(Advanced(self).GetThemeFont(String.Name(String.New(name)), String.Name(String.New(""))))
+func (self Instance) GetThemeFont(name string) Font.Instance { //gd:Window.get_theme_font
+	return Font.Instance(Advanced(self).GetThemeFont(String.Name(String.New(name)), String.Name(String.New(""))))
 }
 
 /*
 Returns a [Font] from the first matching [Theme] in the tree if that [Theme] has a font item with the specified [param name] and [param theme_type].
 See [method Control.get_theme_color] for details.
 */
-func (self Expanded) GetThemeFont(name string, theme_type string) [1]gdclass.Font { //gd:Window.get_theme_font
-	return [1]gdclass.Font(Advanced(self).GetThemeFont(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+func (self Expanded) GetThemeFont(name string, theme_type string) Font.Instance { //gd:Window.get_theme_font
+	return Font.Instance(Advanced(self).GetThemeFont(String.Name(String.New(name)), String.Name(String.New(theme_type))))
 }
 
 /*
@@ -609,8 +614,8 @@ func (self Instance) GetThemeDefaultBaseScale() Float.X { //gd:Window.get_theme_
 Returns the default font from the first matching [Theme] in the tree if that [Theme] has a valid [member Theme.default_font] value.
 See [method Control.get_theme_color] for details.
 */
-func (self Instance) GetThemeDefaultFont() [1]gdclass.Font { //gd:Window.get_theme_default_font
-	return [1]gdclass.Font(Advanced(self).GetThemeDefaultFont())
+func (self Instance) GetThemeDefaultFont() Font.Instance { //gd:Window.get_theme_default_font
+	return Font.Instance(Advanced(self).GetThemeDefaultFont())
 }
 
 /*
@@ -721,7 +726,7 @@ func (self Expanded) PopupCenteredClamped(minsize Vector2i.XY, fallback_ratio Fl
 Attempts to parent this dialog to the last exclusive window relative to [param from_node], and then calls [method Window.popup] on it. The dialog must have no current parent, otherwise the method fails.
 See also [method set_unparent_when_invisible] and [method Node.get_last_exclusive_window].
 */
-func (self Instance) PopupExclusive(from_node [1]gdclass.Node) { //gd:Window.popup_exclusive
+func (self Instance) PopupExclusive(from_node Node.Instance) { //gd:Window.popup_exclusive
 	Advanced(self).PopupExclusive(from_node, Rect2i.PositionSize(gd.NewRect2i(0, 0, 0, 0)))
 }
 
@@ -729,7 +734,7 @@ func (self Instance) PopupExclusive(from_node [1]gdclass.Node) { //gd:Window.pop
 Attempts to parent this dialog to the last exclusive window relative to [param from_node], and then calls [method Window.popup] on it. The dialog must have no current parent, otherwise the method fails.
 See also [method set_unparent_when_invisible] and [method Node.get_last_exclusive_window].
 */
-func (self Expanded) PopupExclusive(from_node [1]gdclass.Node, rect Rect2i.PositionSize) { //gd:Window.popup_exclusive
+func (self Expanded) PopupExclusive(from_node Node.Instance, rect Rect2i.PositionSize) { //gd:Window.popup_exclusive
 	Advanced(self).PopupExclusive(from_node, Rect2i.PositionSize(rect))
 }
 
@@ -737,7 +742,7 @@ func (self Expanded) PopupExclusive(from_node [1]gdclass.Node, rect Rect2i.Posit
 Attempts to parent this dialog to the last exclusive window relative to [param from_node], and then calls [method Window.popup_on_parent] on it. The dialog must have no current parent, otherwise the method fails.
 See also [method set_unparent_when_invisible] and [method Node.get_last_exclusive_window].
 */
-func (self Instance) PopupExclusiveOnParent(from_node [1]gdclass.Node, parent_rect Rect2i.PositionSize) { //gd:Window.popup_exclusive_on_parent
+func (self Instance) PopupExclusiveOnParent(from_node Node.Instance, parent_rect Rect2i.PositionSize) { //gd:Window.popup_exclusive_on_parent
 	Advanced(self).PopupExclusiveOnParent(from_node, Rect2i.PositionSize(parent_rect))
 }
 
@@ -745,7 +750,7 @@ func (self Instance) PopupExclusiveOnParent(from_node [1]gdclass.Node, parent_re
 Attempts to parent this dialog to the last exclusive window relative to [param from_node], and then calls [method Window.popup_centered] on it. The dialog must have no current parent, otherwise the method fails.
 See also [method set_unparent_when_invisible] and [method Node.get_last_exclusive_window].
 */
-func (self Instance) PopupExclusiveCentered(from_node [1]gdclass.Node) { //gd:Window.popup_exclusive_centered
+func (self Instance) PopupExclusiveCentered(from_node Node.Instance) { //gd:Window.popup_exclusive_centered
 	Advanced(self).PopupExclusiveCentered(from_node, Vector2i.XY(gd.Vector2i{0, 0}))
 }
 
@@ -753,7 +758,7 @@ func (self Instance) PopupExclusiveCentered(from_node [1]gdclass.Node) { //gd:Wi
 Attempts to parent this dialog to the last exclusive window relative to [param from_node], and then calls [method Window.popup_centered] on it. The dialog must have no current parent, otherwise the method fails.
 See also [method set_unparent_when_invisible] and [method Node.get_last_exclusive_window].
 */
-func (self Expanded) PopupExclusiveCentered(from_node [1]gdclass.Node, minsize Vector2i.XY) { //gd:Window.popup_exclusive_centered
+func (self Expanded) PopupExclusiveCentered(from_node Node.Instance, minsize Vector2i.XY) { //gd:Window.popup_exclusive_centered
 	Advanced(self).PopupExclusiveCentered(from_node, Vector2i.XY(minsize))
 }
 
@@ -761,7 +766,7 @@ func (self Expanded) PopupExclusiveCentered(from_node [1]gdclass.Node, minsize V
 Attempts to parent this dialog to the last exclusive window relative to [param from_node], and then calls [method Window.popup_centered_ratio] on it. The dialog must have no current parent, otherwise the method fails.
 See also [method set_unparent_when_invisible] and [method Node.get_last_exclusive_window].
 */
-func (self Instance) PopupExclusiveCenteredRatio(from_node [1]gdclass.Node) { //gd:Window.popup_exclusive_centered_ratio
+func (self Instance) PopupExclusiveCenteredRatio(from_node Node.Instance) { //gd:Window.popup_exclusive_centered_ratio
 	Advanced(self).PopupExclusiveCenteredRatio(from_node, float64(0.8))
 }
 
@@ -769,7 +774,7 @@ func (self Instance) PopupExclusiveCenteredRatio(from_node [1]gdclass.Node) { //
 Attempts to parent this dialog to the last exclusive window relative to [param from_node], and then calls [method Window.popup_centered_ratio] on it. The dialog must have no current parent, otherwise the method fails.
 See also [method set_unparent_when_invisible] and [method Node.get_last_exclusive_window].
 */
-func (self Expanded) PopupExclusiveCenteredRatio(from_node [1]gdclass.Node, ratio Float.X) { //gd:Window.popup_exclusive_centered_ratio
+func (self Expanded) PopupExclusiveCenteredRatio(from_node Node.Instance, ratio Float.X) { //gd:Window.popup_exclusive_centered_ratio
 	Advanced(self).PopupExclusiveCenteredRatio(from_node, float64(ratio))
 }
 
@@ -777,7 +782,7 @@ func (self Expanded) PopupExclusiveCenteredRatio(from_node [1]gdclass.Node, rati
 Attempts to parent this dialog to the last exclusive window relative to [param from_node], and then calls [method Window.popup_centered_clamped] on it. The dialog must have no current parent, otherwise the method fails.
 See also [method set_unparent_when_invisible] and [method Node.get_last_exclusive_window].
 */
-func (self Instance) PopupExclusiveCenteredClamped(from_node [1]gdclass.Node) { //gd:Window.popup_exclusive_centered_clamped
+func (self Instance) PopupExclusiveCenteredClamped(from_node Node.Instance) { //gd:Window.popup_exclusive_centered_clamped
 	Advanced(self).PopupExclusiveCenteredClamped(from_node, Vector2i.XY(gd.Vector2i{0, 0}), float64(0.75))
 }
 
@@ -785,8 +790,30 @@ func (self Instance) PopupExclusiveCenteredClamped(from_node [1]gdclass.Node) { 
 Attempts to parent this dialog to the last exclusive window relative to [param from_node], and then calls [method Window.popup_centered_clamped] on it. The dialog must have no current parent, otherwise the method fails.
 See also [method set_unparent_when_invisible] and [method Node.get_last_exclusive_window].
 */
-func (self Expanded) PopupExclusiveCenteredClamped(from_node [1]gdclass.Node, minsize Vector2i.XY, fallback_ratio Float.X) { //gd:Window.popup_exclusive_centered_clamped
+func (self Expanded) PopupExclusiveCenteredClamped(from_node Node.Instance, minsize Vector2i.XY, fallback_ratio Float.X) { //gd:Window.popup_exclusive_centered_clamped
 	Advanced(self).PopupExclusiveCenteredClamped(from_node, Vector2i.XY(minsize), float64(fallback_ratio))
+}
+
+/*
+Returns a list of the visible embedded [Window]s inside the viewport.
+[b]Note:[/b] [Window]s inside other viewports will not be listed.
+*/
+func (self Instance) GetEmbeddedInView(peer Viewport.Instance) []Instance { //gd:Viewport.get_embedded_subwindows
+	return []Instance(gd.ArrayAs[[]Instance](gd.InternalArray(Viewport.Advanced(peer).GetEmbeddedSubwindows())))
+}
+
+/*
+Returns the [Window] that contains this node. If the node is in the main window, this is equivalent to getting the root node ([code]get_tree().get_root()[/code]).
+*/
+func Get(peer Node.Instance) Instance { //gd:Node.get_window
+	return Instance(Node.Advanced(peer).GetWindow())
+}
+
+/*
+Returns the [Window] that contains this node, or the last exclusive child in a chain of windows starting with the one that contains this node.
+*/
+func GetLastExclusive(peer Node.Instance) Instance { //gd:Node.get_last_exclusive_window
+	return Instance(Node.Advanced(peer).GetLastExclusiveWindow())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -1063,11 +1090,11 @@ func (self Instance) SetAutoTranslate(value bool) {
 	class(self).SetAutoTranslate(value)
 }
 
-func (self Instance) Theme() [1]gdclass.Theme {
-	return [1]gdclass.Theme(class(self).GetTheme())
+func (self Instance) Theme() Theme.Instance {
+	return Theme.Instance(class(self).GetTheme())
 }
 
-func (self Instance) SetTheme(value [1]gdclass.Theme) {
+func (self Instance) SetTheme(value Theme.Instance) {
 	class(self).SetTheme(value)
 }
 
@@ -2530,7 +2557,7 @@ func (self class) PopupExclusiveCenteredClamped(from_node [1]gdclass.Node, minsi
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_popup_exclusive_centered_clamped, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
-func (self Instance) OnWindowInput(cb func(event [1]gdclass.InputEvent)) {
+func (self Instance) OnWindowInput(cb func(event InputEvent.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("window_input"), gd.NewCallable(cb), 0)
 }
 

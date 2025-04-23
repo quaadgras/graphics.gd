@@ -15,7 +15,9 @@ import "graphics.gd/classdb/BoxContainer"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/EditorResourceTooltipPlugin"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/VBoxContainer"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -71,14 +73,14 @@ func (self Instance) NavigateToPath(path string) { //gd:FileSystemDock.navigate_
 /*
 Registers a new [EditorResourceTooltipPlugin].
 */
-func (self Instance) AddResourceTooltipPlugin(plugin [1]gdclass.EditorResourceTooltipPlugin) { //gd:FileSystemDock.add_resource_tooltip_plugin
+func (self Instance) AddResourceTooltipPlugin(plugin EditorResourceTooltipPlugin.Instance) { //gd:FileSystemDock.add_resource_tooltip_plugin
 	Advanced(self).AddResourceTooltipPlugin(plugin)
 }
 
 /*
 Removes an [EditorResourceTooltipPlugin]. Fails if the plugin wasn't previously added.
 */
-func (self Instance) RemoveResourceTooltipPlugin(plugin [1]gdclass.EditorResourceTooltipPlugin) { //gd:FileSystemDock.remove_resource_tooltip_plugin
+func (self Instance) RemoveResourceTooltipPlugin(plugin EditorResourceTooltipPlugin.Instance) { //gd:FileSystemDock.remove_resource_tooltip_plugin
 	Advanced(self).RemoveResourceTooltipPlugin(plugin)
 }
 
@@ -143,7 +145,7 @@ func (self Instance) OnInstantiate(cb func(files []string)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("instantiate"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnResourceRemoved(cb func(resource [1]gdclass.Resource)) {
+func (self Instance) OnResourceRemoved(cb func(resource Resource.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("resource_removed"), gd.NewCallable(cb), 0)
 }
 

@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/NavigationMesh"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -124,8 +125,8 @@ func (self Instance) ClearPolygons() { //gd:NavigationPolygon.clear_polygons
 /*
 Returns the [NavigationMesh] resulting from this navigation polygon. This navigation mesh can be used to update the navigation mesh of a region with the [method NavigationServer3D.region_set_navigation_mesh] API directly (as 2D uses the 3D server behind the scene).
 */
-func (self Instance) GetNavigationMesh() [1]gdclass.NavigationMesh { //gd:NavigationPolygon.get_navigation_mesh
-	return [1]gdclass.NavigationMesh(Advanced(self).GetNavigationMesh())
+func (self Instance) GetNavigationMesh() NavigationMesh.Instance { //gd:NavigationPolygon.get_navigation_mesh
+	return NavigationMesh.Instance(Advanced(self).GetNavigationMesh())
 }
 
 /*

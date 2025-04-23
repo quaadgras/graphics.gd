@@ -11,8 +11,10 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/JavaObject"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/SubViewport"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -64,8 +66,8 @@ type Any interface {
 Returns a [JavaObject] representing an [code]android.view.Surface[/code] if [member use_android_surface] is enabled and OpenXR has created the surface. Otherwise, this will return [code]null[/code].
 [b]Note:[/b] The surface can only be created during an active OpenXR session. So, if [member use_android_surface] is enabled outside of an OpenXR session, it won't be created until a new session fully starts.
 */
-func (self Instance) GetAndroidSurface() [1]gdclass.JavaObject { //gd:OpenXRCompositionLayer.get_android_surface
-	return [1]gdclass.JavaObject(Advanced(self).GetAndroidSurface())
+func (self Instance) GetAndroidSurface() JavaObject.Instance { //gd:OpenXRCompositionLayer.get_android_surface
+	return JavaObject.Instance(Advanced(self).GetAndroidSurface())
 }
 
 /*
@@ -102,11 +104,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) LayerViewport() [1]gdclass.SubViewport {
-	return [1]gdclass.SubViewport(class(self).GetLayerViewport())
+func (self Instance) LayerViewport() SubViewport.Instance {
+	return SubViewport.Instance(class(self).GetLayerViewport())
 }
 
-func (self Instance) SetLayerViewport(value [1]gdclass.SubViewport) {
+func (self Instance) SetLayerViewport(value SubViewport.Instance) {
 	class(self).SetLayerViewport(value)
 }
 

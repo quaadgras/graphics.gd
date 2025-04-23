@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Animation"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -58,7 +59,7 @@ type Any interface {
 /*
 Adds the [param animation] to the library, accessible by the key [param name].
 */
-func (self Instance) AddAnimation(name string, animation [1]gdclass.Animation) error { //gd:AnimationLibrary.add_animation
+func (self Instance) AddAnimation(name string, animation Animation.Instance) error { //gd:AnimationLibrary.add_animation
 	return error(gd.ToError(Advanced(self).AddAnimation(String.Name(String.New(name)), animation)))
 }
 
@@ -86,8 +87,8 @@ func (self Instance) HasAnimation(name string) bool { //gd:AnimationLibrary.has_
 /*
 Returns the [Animation] with the key [param name]. If the animation does not exist, [code]null[/code] is returned and an error is logged.
 */
-func (self Instance) GetAnimation(name string) [1]gdclass.Animation { //gd:AnimationLibrary.get_animation
-	return [1]gdclass.Animation(Advanced(self).GetAnimation(String.Name(String.New(name))))
+func (self Instance) GetAnimation(name string) Animation.Instance { //gd:AnimationLibrary.get_animation
+	return Animation.Instance(Advanced(self).GetAnimation(String.Name(String.New(name))))
 }
 
 /*

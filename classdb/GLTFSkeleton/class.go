@@ -11,7 +11,9 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/BoneAttachment3D"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Skeleton3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -52,14 +54,14 @@ type Any interface {
 	AsGLTFSkeleton() Instance
 }
 
-func (self Instance) GetGodotSkeleton() [1]gdclass.Skeleton3D { //gd:GLTFSkeleton.get_godot_skeleton
-	return [1]gdclass.Skeleton3D(Advanced(self).GetGodotSkeleton())
+func (self Instance) GetGodotSkeleton() Skeleton3D.Instance { //gd:GLTFSkeleton.get_godot_skeleton
+	return Skeleton3D.Instance(Advanced(self).GetGodotSkeleton())
 }
 func (self Instance) GetBoneAttachmentCount() int { //gd:GLTFSkeleton.get_bone_attachment_count
 	return int(int(Advanced(self).GetBoneAttachmentCount()))
 }
-func (self Instance) GetBoneAttachment(idx int) [1]gdclass.BoneAttachment3D { //gd:GLTFSkeleton.get_bone_attachment
-	return [1]gdclass.BoneAttachment3D(Advanced(self).GetBoneAttachment(int64(idx)))
+func (self Instance) GetBoneAttachment(idx int) BoneAttachment3D.Instance { //gd:GLTFSkeleton.get_bone_attachment
+	return BoneAttachment3D.Instance(Advanced(self).GetBoneAttachment(int64(idx)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

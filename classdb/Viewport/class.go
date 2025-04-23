@@ -11,7 +11,17 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/AudioListener2D"
+import "graphics.gd/classdb/AudioListener3D"
+import "graphics.gd/classdb/Camera2D"
+import "graphics.gd/classdb/Camera3D"
+import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/InputEvent"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Texture2D"
+import "graphics.gd/classdb/ViewportTexture"
+import "graphics.gd/classdb/World2D"
+import "graphics.gd/classdb/World3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -66,8 +76,8 @@ type Any interface {
 /*
 Returns the first valid [World2D] for this viewport, searching the [member world_2d] property of itself and any Viewport ancestor.
 */
-func (self Instance) FindWorld2d() [1]gdclass.World2D { //gd:Viewport.find_world_2d
-	return [1]gdclass.World2D(Advanced(self).FindWorld2d())
+func (self Instance) FindWorld2d() World2D.Instance { //gd:Viewport.find_world_2d
+	return World2D.Instance(Advanced(self).FindWorld2d())
 }
 
 /*
@@ -118,8 +128,8 @@ func _ready():
 [/codeblock]
 [b]Note:[/b] When [member use_hdr_2d] is [code]true[/code] the returned texture will be an HDR image encoded in linear space.
 */
-func (self Instance) GetTexture() [1]gdclass.ViewportTexture { //gd:Viewport.get_texture
-	return [1]gdclass.ViewportTexture(Advanced(self).GetTexture())
+func (self Instance) GetTexture() ViewportTexture.Instance { //gd:Viewport.get_texture
+	return ViewportTexture.Instance(Advanced(self).GetTexture())
 }
 
 /*
@@ -149,7 +159,7 @@ Calling this method will propagate calls to child nodes for following methods in
 If an earlier method marks the input as handled via [method set_input_as_handled], any later method in this list will not be called.
 If none of the methods handle the event and [member physics_object_picking] is [code]true[/code], the event is used for physics object picking.
 */
-func (self Instance) PushInput(event [1]gdclass.InputEvent) { //gd:Viewport.push_input
+func (self Instance) PushInput(event InputEvent.Instance) { //gd:Viewport.push_input
 	Advanced(self).PushInput(event, false)
 }
 
@@ -166,7 +176,7 @@ Calling this method will propagate calls to child nodes for following methods in
 If an earlier method marks the input as handled via [method set_input_as_handled], any later method in this list will not be called.
 If none of the methods handle the event and [member physics_object_picking] is [code]true[/code], the event is used for physics object picking.
 */
-func (self Expanded) PushInput(event [1]gdclass.InputEvent, in_local_coords bool) { //gd:Viewport.push_input
+func (self Expanded) PushInput(event InputEvent.Instance, in_local_coords bool) { //gd:Viewport.push_input
 	Advanced(self).PushInput(event, in_local_coords)
 }
 
@@ -181,7 +191,7 @@ If an earlier method marks the input as handled via [method set_input_as_handled
 If none of the methods handle the event and [member physics_object_picking] is [code]true[/code], the event is used for physics object picking.
 [b]Note:[/b] This method doesn't propagate input events to embedded [Window]s or [SubViewport]s.
 */
-func (self Instance) PushUnhandledInput(event [1]gdclass.InputEvent) { //gd:Viewport.push_unhandled_input
+func (self Instance) PushUnhandledInput(event InputEvent.Instance) { //gd:Viewport.push_unhandled_input
 	Advanced(self).PushUnhandledInput(event, false)
 }
 
@@ -196,7 +206,7 @@ If an earlier method marks the input as handled via [method set_input_as_handled
 If none of the methods handle the event and [member physics_object_picking] is [code]true[/code], the event is used for physics object picking.
 [b]Note:[/b] This method doesn't propagate input events to embedded [Window]s or [SubViewport]s.
 */
-func (self Expanded) PushUnhandledInput(event [1]gdclass.InputEvent, in_local_coords bool) { //gd:Viewport.push_unhandled_input
+func (self Expanded) PushUnhandledInput(event InputEvent.Instance, in_local_coords bool) { //gd:Viewport.push_unhandled_input
 	Advanced(self).PushUnhandledInput(event, in_local_coords)
 }
 
@@ -277,16 +287,16 @@ func (self Instance) GuiReleaseFocus() { //gd:Viewport.gui_release_focus
 /*
 Returns the currently focused [Control] within this viewport. If no [Control] is focused, returns [code]null[/code].
 */
-func (self Instance) GuiGetFocusOwner() [1]gdclass.Control { //gd:Viewport.gui_get_focus_owner
-	return [1]gdclass.Control(Advanced(self).GuiGetFocusOwner())
+func (self Instance) GuiGetFocusOwner() Control.Instance { //gd:Viewport.gui_get_focus_owner
+	return Control.Instance(Advanced(self).GuiGetFocusOwner())
 }
 
 /*
 Returns the [Control] that the mouse is currently hovering over in this viewport. If no [Control] has the cursor, returns [code]null[/code].
 Typically the leaf [Control] node or deepest level of the subtree which claims hover. This is very useful when used together with [method Node.is_ancestor_of] to find if the mouse is within a control tree.
 */
-func (self Instance) GuiGetHoveredControl() [1]gdclass.Control { //gd:Viewport.gui_get_hovered_control
-	return [1]gdclass.Control(Advanced(self).GuiGetHoveredControl())
+func (self Instance) GuiGetHoveredControl() Control.Instance { //gd:Viewport.gui_get_hovered_control
+	return Control.Instance(Advanced(self).GuiGetHoveredControl())
 }
 
 /*
@@ -307,14 +317,6 @@ func (self Instance) IsInputHandled() bool { //gd:Viewport.is_input_handled
 }
 
 /*
-Returns a list of the visible embedded [Window]s inside the viewport.
-[b]Note:[/b] [Window]s inside other viewports will not be listed.
-*/
-func (self Instance) GetEmbeddedSubwindows() [][1]gdclass.Window { //gd:Viewport.get_embedded_subwindows
-	return [][1]gdclass.Window(gd.ArrayAs[[][1]gdclass.Window](gd.InternalArray(Advanced(self).GetEmbeddedSubwindows())))
-}
-
-/*
 Set/clear individual bits on the rendering layer mask. This simplifies editing this [Viewport]'s layers.
 */
 func (self Instance) SetCanvasCullMaskBit(layer int, enable bool) { //gd:Viewport.set_canvas_cull_mask_bit
@@ -331,36 +333,43 @@ func (self Instance) GetCanvasCullMaskBit(layer int) bool { //gd:Viewport.get_ca
 /*
 Returns the currently active 2D audio listener. Returns [code]null[/code] if there are no active 2D audio listeners, in which case the active 2D camera will be treated as listener.
 */
-func (self Instance) GetAudioListener2d() [1]gdclass.AudioListener2D { //gd:Viewport.get_audio_listener_2d
-	return [1]gdclass.AudioListener2D(Advanced(self).GetAudioListener2d())
+func (self Instance) GetAudioListener2d() AudioListener2D.Instance { //gd:Viewport.get_audio_listener_2d
+	return AudioListener2D.Instance(Advanced(self).GetAudioListener2d())
 }
 
 /*
 Returns the currently active 2D camera. Returns [code]null[/code] if there are no active cameras.
 */
-func (self Instance) GetCamera2d() [1]gdclass.Camera2D { //gd:Viewport.get_camera_2d
-	return [1]gdclass.Camera2D(Advanced(self).GetCamera2d())
+func (self Instance) GetCamera2d() Camera2D.Instance { //gd:Viewport.get_camera_2d
+	return Camera2D.Instance(Advanced(self).GetCamera2d())
 }
 
 /*
 Returns the first valid [World3D] for this viewport, searching the [member world_3d] property of itself and any Viewport ancestor.
 */
-func (self Instance) FindWorld3d() [1]gdclass.World3D { //gd:Viewport.find_world_3d
-	return [1]gdclass.World3D(Advanced(self).FindWorld3d())
+func (self Instance) FindWorld3d() World3D.Instance { //gd:Viewport.find_world_3d
+	return World3D.Instance(Advanced(self).FindWorld3d())
 }
 
 /*
 Returns the currently active 3D audio listener. Returns [code]null[/code] if there are no active 3D audio listeners, in which case the active 3D camera will be treated as listener.
 */
-func (self Instance) GetAudioListener3d() [1]gdclass.AudioListener3D { //gd:Viewport.get_audio_listener_3d
-	return [1]gdclass.AudioListener3D(Advanced(self).GetAudioListener3d())
+func (self Instance) GetAudioListener3d() AudioListener3D.Instance { //gd:Viewport.get_audio_listener_3d
+	return AudioListener3D.Instance(Advanced(self).GetAudioListener3d())
 }
 
 /*
 Returns the currently active 3D camera.
 */
-func (self Instance) GetCamera3d() [1]gdclass.Camera3D { //gd:Viewport.get_camera_3d
-	return [1]gdclass.Camera3D(Advanced(self).GetCamera3d())
+func (self Instance) GetCamera3d() Camera3D.Instance { //gd:Viewport.get_camera_3d
+	return Camera3D.Instance(Advanced(self).GetCamera3d())
+}
+
+/*
+Returns the node's closest [Viewport] ancestor, if the node is inside the tree. Otherwise, returns [code]null[/code].
+*/
+func Get(peer Node.Instance) Instance { //gd:Node.get_viewport
+	return Instance(Node.Advanced(peer).GetViewport())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -405,19 +414,19 @@ func (self Instance) SetOwnWorld3d(value bool) {
 	class(self).SetUseOwnWorld3d(value)
 }
 
-func (self Instance) World3d() [1]gdclass.World3D {
-	return [1]gdclass.World3D(class(self).GetWorld3d())
+func (self Instance) World3d() World3D.Instance {
+	return World3D.Instance(class(self).GetWorld3d())
 }
 
-func (self Instance) SetWorld3d(value [1]gdclass.World3D) {
+func (self Instance) SetWorld3d(value World3D.Instance) {
 	class(self).SetWorld3d(value)
 }
 
-func (self Instance) World2d() [1]gdclass.World2D {
-	return [1]gdclass.World2D(class(self).GetWorld2d())
+func (self Instance) World2d() World2D.Instance {
+	return World2D.Instance(class(self).GetWorld2d())
 }
 
-func (self Instance) SetWorld2d(value [1]gdclass.World2D) {
+func (self Instance) SetWorld2d(value World2D.Instance) {
 	class(self).SetWorld2d(value)
 }
 
@@ -581,11 +590,11 @@ func (self Instance) SetVrsUpdateMode(value gdclass.ViewportVRSUpdateMode) {
 	class(self).SetVrsUpdateMode(value)
 }
 
-func (self Instance) VrsTexture() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetVrsTexture())
+func (self Instance) VrsTexture() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetVrsTexture())
 }
 
-func (self Instance) SetVrsTexture(value [1]gdclass.Texture2D) {
+func (self Instance) SetVrsTexture(value Texture2D.Instance) {
 	class(self).SetVrsTexture(value)
 }
 
@@ -2057,7 +2066,7 @@ func (self Instance) OnSizeChanged(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("size_changed"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnGuiFocusChanged(cb func(node [1]gdclass.Control)) {
+func (self Instance) OnGuiFocusChanged(cb func(node Control.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("gui_focus_changed"), gd.NewCallable(cb), 0)
 }
 

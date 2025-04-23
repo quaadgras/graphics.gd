@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Font"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -77,14 +78,14 @@ func (self Instance) SetBidiOverride(override []any) { //gd:TextParagraph.set_bi
 /*
 Sets drop cap, overrides previously set drop cap. Drop cap (dropped capital) is a decorative element at the beginning of a paragraph that is larger than the rest of the text.
 */
-func (self Instance) SetDropcap(text string, font [1]gdclass.Font, font_size int) bool { //gd:TextParagraph.set_dropcap
+func (self Instance) SetDropcap(text string, font Font.Instance, font_size int) bool { //gd:TextParagraph.set_dropcap
 	return bool(Advanced(self).SetDropcap(String.New(text), font, int64(font_size), Rect2.PositionSize(gd.NewRect2(0, 0, 0, 0)), String.New("")))
 }
 
 /*
 Sets drop cap, overrides previously set drop cap. Drop cap (dropped capital) is a decorative element at the beginning of a paragraph that is larger than the rest of the text.
 */
-func (self Expanded) SetDropcap(text string, font [1]gdclass.Font, font_size int, dropcap_margins Rect2.PositionSize, language string) bool { //gd:TextParagraph.set_dropcap
+func (self Expanded) SetDropcap(text string, font Font.Instance, font_size int, dropcap_margins Rect2.PositionSize, language string) bool { //gd:TextParagraph.set_dropcap
 	return bool(Advanced(self).SetDropcap(String.New(text), font, int64(font_size), Rect2.PositionSize(dropcap_margins), String.New(language)))
 }
 
@@ -98,14 +99,14 @@ func (self Instance) ClearDropcap() { //gd:TextParagraph.clear_dropcap
 /*
 Adds text span and font to draw it.
 */
-func (self Instance) AddString(text string, font [1]gdclass.Font, font_size int) bool { //gd:TextParagraph.add_string
+func (self Instance) AddString(text string, font Font.Instance, font_size int) bool { //gd:TextParagraph.add_string
 	return bool(Advanced(self).AddString(String.New(text), font, int64(font_size), String.New(""), variant.New([1]any{}[0])))
 }
 
 /*
 Adds text span and font to draw it.
 */
-func (self Expanded) AddString(text string, font [1]gdclass.Font, font_size int, language string, meta any) bool { //gd:TextParagraph.add_string
+func (self Expanded) AddString(text string, font Font.Instance, font_size int, language string, meta any) bool { //gd:TextParagraph.add_string
 	return bool(Advanced(self).AddString(String.New(text), font, int64(font_size), String.New(language), variant.New(meta)))
 }
 

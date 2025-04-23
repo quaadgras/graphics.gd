@@ -13,6 +13,8 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/GraphFrame"
+import "graphics.gd/classdb/HBoxContainer"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -439,8 +441,8 @@ func (self Instance) DetachGraphElementFromFrame(element string) { //gd:GraphEdi
 /*
 Returns the [GraphFrame] that contains the [GraphElement] with the given name.
 */
-func (self Instance) GetElementFrame(element string) [1]gdclass.GraphFrame { //gd:GraphEdit.get_element_frame
-	return [1]gdclass.GraphFrame(Advanced(self).GetElementFrame(String.Name(String.New(element))))
+func (self Instance) GetElementFrame(element string) GraphFrame.Instance { //gd:GraphEdit.get_element_frame
+	return GraphFrame.Instance(Advanced(self).GetElementFrame(String.Name(String.New(element))))
 }
 
 /*
@@ -454,8 +456,8 @@ func (self Instance) GetAttachedNodesOfFrame(frame_ string) []string { //gd:Grap
 Gets the [HBoxContainer] that contains the zooming and grid snap controls in the top left of the graph. You can use this method to reposition the toolbar or to add your own custom controls to it.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
-func (self Instance) GetMenuHbox() [1]gdclass.HBoxContainer { //gd:GraphEdit.get_menu_hbox
-	return [1]gdclass.HBoxContainer(Advanced(self).GetMenuHbox())
+func (self Instance) GetMenuHbox() HBoxContainer.Instance { //gd:GraphEdit.get_menu_hbox
+	return HBoxContainer.Instance(Advanced(self).GetMenuHbox())
 }
 
 /*
@@ -468,7 +470,7 @@ func (self Instance) ArrangeNodes() { //gd:GraphEdit.arrange_nodes
 /*
 Sets the specified [param node] as the one selected.
 */
-func (self Instance) SetSelected(node [1]gdclass.Node) { //gd:GraphEdit.set_selected
+func (self Instance) SetSelected(node Node.Instance) { //gd:GraphEdit.set_selected
 	Advanced(self).SetSelected(node)
 }
 
@@ -1645,15 +1647,15 @@ func (self Instance) OnDeleteNodesRequest(cb func(nodes []string)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("delete_nodes_request"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnNodeSelected(cb func(node [1]gdclass.Node)) {
+func (self Instance) OnNodeSelected(cb func(node Node.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("node_selected"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnNodeDeselected(cb func(node [1]gdclass.Node)) {
+func (self Instance) OnNodeDeselected(cb func(node Node.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("node_deselected"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnFrameRectChanged(cb func(frame_ [1]gdclass.GraphFrame, new_rect Rect2.PositionSize)) {
+func (self Instance) OnFrameRectChanged(cb func(frame_ GraphFrame.Instance, new_rect Rect2.PositionSize)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("frame_rect_changed"), gd.NewCallable(cb), 0)
 }
 

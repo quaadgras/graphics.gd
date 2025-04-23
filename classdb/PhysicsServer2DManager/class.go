@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/PhysicsServer2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -46,6 +47,8 @@ var _ = slices.Delete[[]struct{}, struct{}]
 [PhysicsServer2DManager] is the API for registering [PhysicsServer2D] implementations and for setting the default implementation.
 [b]Note:[/b] It is not possible to switch physics servers at runtime. This class is only used on startup at the server initialization level, by Godot itself and possibly by GDExtensions.
 */
+type Instance [1]gdclass.PhysicsServer2DManager
+
 var self [1]gdclass.PhysicsServer2DManager
 var once sync.Once
 
@@ -57,7 +60,7 @@ func singleton() {
 /*
 Register a [PhysicsServer2D] implementation by passing a [param name] and a [Callable] that returns a [PhysicsServer2D] object.
 */
-func RegisterServer(name string, create_callback func() [1]gdclass.PhysicsServer2D) { //gd:PhysicsServer2DManager.register_server
+func RegisterServer(name string, create_callback func() PhysicsServer2D.Instance) { //gd:PhysicsServer2DManager.register_server
 	once.Do(singleton)
 	Advanced().RegisterServer(String.New(name), Callable.New(create_callback))
 }

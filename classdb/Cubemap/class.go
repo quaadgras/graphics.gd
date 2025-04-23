@@ -85,8 +85,8 @@ type Any interface {
 /*
 Creates a placeholder version of this resource ([PlaceholderCubemap]).
 */
-func (self Instance) CreatePlaceholder() [1]gdclass.Resource { //gd:Cubemap.create_placeholder
-	return [1]gdclass.Resource(Advanced(self).CreatePlaceholder())
+func (self Instance) CreatePlaceholder() Resource.Instance { //gd:Cubemap.create_placeholder
+	return Resource.Instance(Advanced(self).CreatePlaceholder())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

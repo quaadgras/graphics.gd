@@ -15,7 +15,9 @@ import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/GraphElement"
+import "graphics.gd/classdb/HBoxContainer"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -95,8 +97,8 @@ func (Instance) _draw_port(impl func(ptr unsafe.Pointer, slot_index int, positio
 /*
 Returns the [HBoxContainer] used for the title bar, only containing a [Label] for displaying the title by default. This can be used to add custom controls to the title bar such as option or close buttons.
 */
-func (self Instance) GetTitlebarHbox() [1]gdclass.HBoxContainer { //gd:GraphNode.get_titlebar_hbox
-	return [1]gdclass.HBoxContainer(Advanced(self).GetTitlebarHbox())
+func (self Instance) GetTitlebarHbox() HBoxContainer.Instance { //gd:GraphNode.get_titlebar_hbox
+	return HBoxContainer.Instance(Advanced(self).GetTitlebarHbox())
 }
 
 /*
@@ -109,7 +111,7 @@ Individual properties can also be set using one of the [code]set_slot_*[/code] m
 [b]Note:[/b] This method only sets properties of the slot. To create the slot itself, add a [Control]-derived child to the GraphNode.
 */
 func (self Instance) SetSlot(slot_index int, enable_left_port bool, type_left int, color_left Color.RGBA, enable_right_port bool, type_right int, color_right Color.RGBA) { //gd:GraphNode.set_slot
-	Advanced(self).SetSlot(int64(slot_index), enable_left_port, int64(type_left), Color.RGBA(color_left), enable_right_port, int64(type_right), Color.RGBA(color_right), [1][1]gdclass.Texture2D{}[0], [1][1]gdclass.Texture2D{}[0], true)
+	Advanced(self).SetSlot(int64(slot_index), enable_left_port, int64(type_left), Color.RGBA(color_left), enable_right_port, int64(type_right), Color.RGBA(color_right), [1]Texture2D.Instance{}[0], [1]Texture2D.Instance{}[0], true)
 }
 
 /*
@@ -121,7 +123,7 @@ Additionally, [param draw_stylebox] can be used to enable or disable drawing of 
 Individual properties can also be set using one of the [code]set_slot_*[/code] methods.
 [b]Note:[/b] This method only sets properties of the slot. To create the slot itself, add a [Control]-derived child to the GraphNode.
 */
-func (self Expanded) SetSlot(slot_index int, enable_left_port bool, type_left int, color_left Color.RGBA, enable_right_port bool, type_right int, color_right Color.RGBA, custom_icon_left [1]gdclass.Texture2D, custom_icon_right [1]gdclass.Texture2D, draw_stylebox bool) { //gd:GraphNode.set_slot
+func (self Expanded) SetSlot(slot_index int, enable_left_port bool, type_left int, color_left Color.RGBA, enable_right_port bool, type_right int, color_right Color.RGBA, custom_icon_left Texture2D.Instance, custom_icon_right Texture2D.Instance, draw_stylebox bool) { //gd:GraphNode.set_slot
 	Advanced(self).SetSlot(int64(slot_index), enable_left_port, int64(type_left), Color.RGBA(color_left), enable_right_port, int64(type_right), Color.RGBA(color_right), custom_icon_left, custom_icon_right, draw_stylebox)
 }
 
@@ -184,15 +186,15 @@ func (self Instance) GetSlotColorLeft(slot_index int) Color.RGBA { //gd:GraphNod
 /*
 Sets the custom [Texture2D] of the left (input) side of the slot with the given [param slot_index] to [param custom_icon].
 */
-func (self Instance) SetSlotCustomIconLeft(slot_index int, custom_icon [1]gdclass.Texture2D) { //gd:GraphNode.set_slot_custom_icon_left
+func (self Instance) SetSlotCustomIconLeft(slot_index int, custom_icon Texture2D.Instance) { //gd:GraphNode.set_slot_custom_icon_left
 	Advanced(self).SetSlotCustomIconLeft(int64(slot_index), custom_icon)
 }
 
 /*
 Returns the left (input) custom [Texture2D] of the slot with the given [param slot_index].
 */
-func (self Instance) GetSlotCustomIconLeft(slot_index int) [1]gdclass.Texture2D { //gd:GraphNode.get_slot_custom_icon_left
-	return [1]gdclass.Texture2D(Advanced(self).GetSlotCustomIconLeft(int64(slot_index)))
+func (self Instance) GetSlotCustomIconLeft(slot_index int) Texture2D.Instance { //gd:GraphNode.get_slot_custom_icon_left
+	return Texture2D.Instance(Advanced(self).GetSlotCustomIconLeft(int64(slot_index)))
 }
 
 /*
@@ -240,15 +242,15 @@ func (self Instance) GetSlotColorRight(slot_index int) Color.RGBA { //gd:GraphNo
 /*
 Sets the custom [Texture2D] of the right (output) side of the slot with the given [param slot_index] to [param custom_icon].
 */
-func (self Instance) SetSlotCustomIconRight(slot_index int, custom_icon [1]gdclass.Texture2D) { //gd:GraphNode.set_slot_custom_icon_right
+func (self Instance) SetSlotCustomIconRight(slot_index int, custom_icon Texture2D.Instance) { //gd:GraphNode.set_slot_custom_icon_right
 	Advanced(self).SetSlotCustomIconRight(int64(slot_index), custom_icon)
 }
 
 /*
 Returns the right (output) custom [Texture2D] of the slot with the given [param slot_index].
 */
-func (self Instance) GetSlotCustomIconRight(slot_index int) [1]gdclass.Texture2D { //gd:GraphNode.get_slot_custom_icon_right
-	return [1]gdclass.Texture2D(Advanced(self).GetSlotCustomIconRight(int64(slot_index)))
+func (self Instance) GetSlotCustomIconRight(slot_index int) Texture2D.Instance { //gd:GraphNode.get_slot_custom_icon_right
+	return Texture2D.Instance(Advanced(self).GetSlotCustomIconRight(int64(slot_index)))
 }
 
 /*

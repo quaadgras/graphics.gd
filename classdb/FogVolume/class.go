@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Material"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/VisualInstance3D"
@@ -94,11 +95,11 @@ func (self Instance) SetShape(value gdclass.RenderingServerFogVolumeShape) {
 	class(self).SetShape(value)
 }
 
-func (self Instance) Material() [1]gdclass.Material {
-	return [1]gdclass.Material(class(self).GetMaterial())
+func (self Instance) Material() Material.Instance {
+	return Material.Instance(class(self).GetMaterial())
 }
 
-func (self Instance) SetMaterial(value [1]gdclass.Material) {
+func (self Instance) SetMaterial(value Material.Instance) {
 	class(self).SetMaterial(value)
 }
 

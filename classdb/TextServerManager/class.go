@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/TextServer"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -46,6 +47,8 @@ var _ = slices.Delete[[]struct{}, struct{}]
 [TextServerManager] is the API backend for loading, enumerating, and switching [TextServer]s.
 [b]Note:[/b] Switching text server at runtime is possible, but will invalidate all fonts and text buffers. Make sure to unload all controls, fonts, and themes before doing so.
 */
+type Instance [1]gdclass.TextServerManager
+
 var self [1]gdclass.TextServerManager
 var once sync.Once
 
@@ -57,7 +60,7 @@ func singleton() {
 /*
 Registers a [TextServer] interface.
 */
-func AddInterface(intf [1]gdclass.TextServer) { //gd:TextServerManager.add_interface
+func AddInterface(intf TextServer.Instance) { //gd:TextServerManager.add_interface
 	once.Do(singleton)
 	Advanced().AddInterface(intf)
 }
@@ -73,7 +76,7 @@ func GetInterfaceCount() int { //gd:TextServerManager.get_interface_count
 /*
 Removes an interface. All fonts and shaped text caches should be freed before removing an interface.
 */
-func RemoveInterface(intf [1]gdclass.TextServer) { //gd:TextServerManager.remove_interface
+func RemoveInterface(intf TextServer.Instance) { //gd:TextServerManager.remove_interface
 	once.Do(singleton)
 	Advanced().RemoveInterface(intf)
 }
@@ -81,9 +84,9 @@ func RemoveInterface(intf [1]gdclass.TextServer) { //gd:TextServerManager.remove
 /*
 Returns the interface registered at a given index.
 */
-func GetInterface(idx int) [1]gdclass.TextServer { //gd:TextServerManager.get_interface
+func GetInterface(idx int) TextServer.Instance { //gd:TextServerManager.get_interface
 	once.Do(singleton)
-	return [1]gdclass.TextServer(Advanced().GetInterface(int64(idx)))
+	return TextServer.Instance(Advanced().GetInterface(int64(idx)))
 }
 
 /*
@@ -97,15 +100,15 @@ func GetInterfaces() []map[int]string { //gd:TextServerManager.get_interfaces
 /*
 Finds an interface by its [param name].
 */
-func FindInterface(name string) [1]gdclass.TextServer { //gd:TextServerManager.find_interface
+func FindInterface(name string) TextServer.Instance { //gd:TextServerManager.find_interface
 	once.Do(singleton)
-	return [1]gdclass.TextServer(Advanced().FindInterface(String.New(name)))
+	return TextServer.Instance(Advanced().FindInterface(String.New(name)))
 }
 
 /*
 Sets the primary [TextServer] interface.
 */
-func SetPrimaryInterface(index [1]gdclass.TextServer) { //gd:TextServerManager.set_primary_interface
+func SetPrimaryInterface(index TextServer.Instance) { //gd:TextServerManager.set_primary_interface
 	once.Do(singleton)
 	Advanced().SetPrimaryInterface(index)
 }
@@ -113,9 +116,9 @@ func SetPrimaryInterface(index [1]gdclass.TextServer) { //gd:TextServerManager.s
 /*
 Returns the primary [TextServer] interface currently in use.
 */
-func GetPrimaryInterface() [1]gdclass.TextServer { //gd:TextServerManager.get_primary_interface
+func GetPrimaryInterface() TextServer.Instance { //gd:TextServerManager.get_primary_interface
 	once.Do(singleton)
-	return [1]gdclass.TextServer(Advanced().GetPrimaryInterface())
+	return TextServer.Instance(Advanced().GetPrimaryInterface())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

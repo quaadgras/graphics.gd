@@ -13,7 +13,10 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/HScrollBar"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Texture2D"
+import "graphics.gd/classdb/VScrollBar"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -72,7 +75,7 @@ Specify an [param icon], or use [code]null[/code] as the [param icon] for a list
 If [param selectable] is [code]true[/code], the list item will be selectable.
 */
 func (self Instance) AddItem(text string) int { //gd:ItemList.add_item
-	return int(int(Advanced(self).AddItem(String.New(text), [1][1]gdclass.Texture2D{}[0], true)))
+	return int(int(Advanced(self).AddItem(String.New(text), [1]Texture2D.Instance{}[0], true)))
 }
 
 /*
@@ -80,21 +83,21 @@ Adds an item to the item list with specified text. Returns the index of an added
 Specify an [param icon], or use [code]null[/code] as the [param icon] for a list item with no icon.
 If [param selectable] is [code]true[/code], the list item will be selectable.
 */
-func (self Expanded) AddItem(text string, icon [1]gdclass.Texture2D, selectable bool) int { //gd:ItemList.add_item
+func (self Expanded) AddItem(text string, icon Texture2D.Instance, selectable bool) int { //gd:ItemList.add_item
 	return int(int(Advanced(self).AddItem(String.New(text), icon, selectable)))
 }
 
 /*
 Adds an item to the item list with no text, only an icon. Returns the index of an added item.
 */
-func (self Instance) AddIconItem(icon [1]gdclass.Texture2D) int { //gd:ItemList.add_icon_item
+func (self Instance) AddIconItem(icon Texture2D.Instance) int { //gd:ItemList.add_icon_item
 	return int(int(Advanced(self).AddIconItem(icon, true)))
 }
 
 /*
 Adds an item to the item list with no text, only an icon. Returns the index of an added item.
 */
-func (self Expanded) AddIconItem(icon [1]gdclass.Texture2D, selectable bool) int { //gd:ItemList.add_icon_item
+func (self Expanded) AddIconItem(icon Texture2D.Instance, selectable bool) int { //gd:ItemList.add_icon_item
 	return int(int(Advanced(self).AddIconItem(icon, selectable)))
 }
 
@@ -115,15 +118,15 @@ func (self Instance) GetItemText(idx int) string { //gd:ItemList.get_item_text
 /*
 Sets (or replaces) the icon's [Texture2D] associated with the specified index.
 */
-func (self Instance) SetItemIcon(idx int, icon [1]gdclass.Texture2D) { //gd:ItemList.set_item_icon
+func (self Instance) SetItemIcon(idx int, icon Texture2D.Instance) { //gd:ItemList.set_item_icon
 	Advanced(self).SetItemIcon(int64(idx), icon)
 }
 
 /*
 Returns the icon associated with the specified index.
 */
-func (self Instance) GetItemIcon(idx int) [1]gdclass.Texture2D { //gd:ItemList.get_item_icon
-	return [1]gdclass.Texture2D(Advanced(self).GetItemIcon(int64(idx)))
+func (self Instance) GetItemIcon(idx int) Texture2D.Instance { //gd:ItemList.get_item_icon
+	return Texture2D.Instance(Advanced(self).GetItemIcon(int64(idx)))
 }
 
 /*
@@ -434,16 +437,16 @@ func (self Instance) EnsureCurrentIsVisible() { //gd:ItemList.ensure_current_is_
 Returns the vertical scrollbar.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
-func (self Instance) GetVScrollBar() [1]gdclass.VScrollBar { //gd:ItemList.get_v_scroll_bar
-	return [1]gdclass.VScrollBar(Advanced(self).GetVScrollBar())
+func (self Instance) GetVScrollBar() VScrollBar.Instance { //gd:ItemList.get_v_scroll_bar
+	return VScrollBar.Instance(Advanced(self).GetVScrollBar())
 }
 
 /*
 Returns the horizontal scrollbar.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
-func (self Instance) GetHScrollBar() [1]gdclass.HScrollBar { //gd:ItemList.get_h_scroll_bar
-	return [1]gdclass.HScrollBar(Advanced(self).GetHScrollBar())
+func (self Instance) GetHScrollBar() HScrollBar.Instance { //gd:ItemList.get_h_scroll_bar
+	return HScrollBar.Instance(Advanced(self).GetHScrollBar())
 }
 
 /*

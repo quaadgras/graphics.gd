@@ -12,6 +12,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/PackedScene"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -77,16 +78,16 @@ func (self Expanded) GetStoredValues(with_order bool) map[string]interface{} { /
 Call this method to actually load in the node. The created node will be placed as a sibling [i]above[/i] the [InstancePlaceholder] in the scene tree. The [Node]'s reference is also returned for convenience.
 [b]Note:[/b] [method create_instance] is not thread-safe. Use [method Object.call_deferred] if calling from a thread.
 */
-func (self Instance) CreateInstance() [1]gdclass.Node { //gd:InstancePlaceholder.create_instance
-	return [1]gdclass.Node(Advanced(self).CreateInstance(false, [1][1]gdclass.PackedScene{}[0]))
+func (self Instance) CreateInstance() Node.Instance { //gd:InstancePlaceholder.create_instance
+	return Node.Instance(Advanced(self).CreateInstance(false, [1]PackedScene.Instance{}[0]))
 }
 
 /*
 Call this method to actually load in the node. The created node will be placed as a sibling [i]above[/i] the [InstancePlaceholder] in the scene tree. The [Node]'s reference is also returned for convenience.
 [b]Note:[/b] [method create_instance] is not thread-safe. Use [method Object.call_deferred] if calling from a thread.
 */
-func (self Expanded) CreateInstance(replace bool, custom_scene [1]gdclass.PackedScene) [1]gdclass.Node { //gd:InstancePlaceholder.create_instance
-	return [1]gdclass.Node(Advanced(self).CreateInstance(replace, custom_scene))
+func (self Expanded) CreateInstance(replace bool, custom_scene PackedScene.Instance) Node.Instance { //gd:InstancePlaceholder.create_instance
+	return Node.Instance(Advanced(self).CreateInstance(replace, custom_scene))
 }
 
 /*

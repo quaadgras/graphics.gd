@@ -12,6 +12,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/MultiplayerAPI"
+import "graphics.gd/classdb/MultiplayerPeer"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -142,9 +143,9 @@ type Interface interface {
 	//Callback for [method MultiplayerAPI.poll].
 	Poll() error
 	//Called when the [member MultiplayerAPI.multiplayer_peer] is set.
-	SetMultiplayerPeer(multiplayer_peer [1]gdclass.MultiplayerPeer)
+	SetMultiplayerPeer(multiplayer_peer MultiplayerPeer.Instance)
 	//Called when the [member MultiplayerAPI.multiplayer_peer] is retrieved.
-	GetMultiplayerPeer() [1]gdclass.MultiplayerPeer
+	GetMultiplayerPeer() MultiplayerPeer.Instance
 	//Callback for [method MultiplayerAPI.get_unique_id].
 	GetUniqueId() int
 	//Callback for [method MultiplayerAPI.get_peers].
@@ -164,11 +165,11 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) Poll() (_ error)                                                { return }
-func (self implementation) SetMultiplayerPeer(multiplayer_peer [1]gdclass.MultiplayerPeer) { return }
-func (self implementation) GetMultiplayerPeer() (_ [1]gdclass.MultiplayerPeer)             { return }
-func (self implementation) GetUniqueId() (_ int)                                           { return }
-func (self implementation) GetPeerIds() (_ []int32)                                        { return }
+func (self implementation) Poll() (_ error)                                              { return }
+func (self implementation) SetMultiplayerPeer(multiplayer_peer MultiplayerPeer.Instance) { return }
+func (self implementation) GetMultiplayerPeer() (_ MultiplayerPeer.Instance)             { return }
+func (self implementation) GetUniqueId() (_ int)                                         { return }
+func (self implementation) GetPeerIds() (_ []int32)                                      { return }
 func (self implementation) Rpc(peer int, obj Object.Instance, method string, args []any) (_ error) {
 	return
 }
@@ -199,7 +200,7 @@ func (Instance) _poll(impl func(ptr unsafe.Pointer) error) (cb gd.ExtensionClass
 /*
 Called when the [member MultiplayerAPI.multiplayer_peer] is set.
 */
-func (Instance) _set_multiplayer_peer(impl func(ptr unsafe.Pointer, multiplayer_peer [1]gdclass.MultiplayerPeer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_multiplayer_peer(impl func(ptr unsafe.Pointer, multiplayer_peer MultiplayerPeer.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var multiplayer_peer = [1]gdclass.MultiplayerPeer{pointers.New[gdclass.MultiplayerPeer]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -212,7 +213,7 @@ func (Instance) _set_multiplayer_peer(impl func(ptr unsafe.Pointer, multiplayer_
 /*
 Called when the [member MultiplayerAPI.multiplayer_peer] is retrieved.
 */
-func (Instance) _get_multiplayer_peer(impl func(ptr unsafe.Pointer) [1]gdclass.MultiplayerPeer) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_multiplayer_peer(impl func(ptr unsafe.Pointer) MultiplayerPeer.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)

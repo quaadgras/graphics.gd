@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/RenderSceneBuffersConfiguration"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -58,7 +59,7 @@ type Any interface {
 /*
 This method is called by the rendering server when the associated viewports configuration is changed. It will discard the old buffers and recreate the internal buffers used.
 */
-func (self Instance) Configure(config [1]gdclass.RenderSceneBuffersConfiguration) { //gd:RenderSceneBuffers.configure
+func (self Instance) Configure(config RenderSceneBuffersConfiguration.Instance) { //gd:RenderSceneBuffers.configure
 	Advanced(self).Configure(config)
 }
 

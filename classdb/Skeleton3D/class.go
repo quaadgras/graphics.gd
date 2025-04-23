@@ -13,6 +13,8 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/Skin"
+import "graphics.gd/classdb/SkinReference"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -200,15 +202,15 @@ Returns the global rest transform for [param bone_idx].
 func (self Instance) GetBoneGlobalRest(bone_idx int) Transform3D.BasisOrigin { //gd:Skeleton3D.get_bone_global_rest
 	return Transform3D.BasisOrigin(Advanced(self).GetBoneGlobalRest(int64(bone_idx)))
 }
-func (self Instance) CreateSkinFromRestTransforms() [1]gdclass.Skin { //gd:Skeleton3D.create_skin_from_rest_transforms
-	return [1]gdclass.Skin(Advanced(self).CreateSkinFromRestTransforms())
+func (self Instance) CreateSkinFromRestTransforms() Skin.Instance { //gd:Skeleton3D.create_skin_from_rest_transforms
+	return Skin.Instance(Advanced(self).CreateSkinFromRestTransforms())
 }
 
 /*
 Binds the given Skin to the Skeleton.
 */
-func (self Instance) RegisterSkin(skin [1]gdclass.Skin) [1]gdclass.SkinReference { //gd:Skeleton3D.register_skin
-	return [1]gdclass.SkinReference(Advanced(self).RegisterSkin(skin))
+func (self Instance) RegisterSkin(skin Skin.Instance) SkinReference.Instance { //gd:Skeleton3D.register_skin
+	return SkinReference.Instance(Advanced(self).RegisterSkin(skin))
 }
 
 /*

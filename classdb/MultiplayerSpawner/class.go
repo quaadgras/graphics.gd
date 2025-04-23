@@ -90,16 +90,16 @@ func (self Instance) ClearSpawnableScenes() { //gd:MultiplayerSpawner.clear_spaw
 Requests a custom spawn, with [param data] passed to [member spawn_function] on all peers. Returns the locally spawned node instance already inside the scene tree, and added as a child of the node pointed by [member spawn_path].
 [b]Note:[/b] Spawnable scenes are spawned automatically. [method spawn] is only needed for custom spawns.
 */
-func (self Instance) Spawn() [1]gdclass.Node { //gd:MultiplayerSpawner.spawn
-	return [1]gdclass.Node(Advanced(self).Spawn(variant.New([1]any{}[0])))
+func (self Instance) Spawn() Node.Instance { //gd:MultiplayerSpawner.spawn
+	return Node.Instance(Advanced(self).Spawn(variant.New([1]any{}[0])))
 }
 
 /*
 Requests a custom spawn, with [param data] passed to [member spawn_function] on all peers. Returns the locally spawned node instance already inside the scene tree, and added as a child of the node pointed by [member spawn_path].
 [b]Note:[/b] Spawnable scenes are spawned automatically. [method spawn] is only needed for custom spawns.
 */
-func (self Expanded) Spawn(data any) [1]gdclass.Node { //gd:MultiplayerSpawner.spawn
-	return [1]gdclass.Node(Advanced(self).Spawn(variant.New(data)))
+func (self Expanded) Spawn(data any) Node.Instance { //gd:MultiplayerSpawner.spawn
+	return Node.Instance(Advanced(self).Spawn(variant.New(data)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -265,11 +265,11 @@ func (self class) SetSpawnFunction(spawn_function Callable.Function) { //gd:Mult
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSpawner.Bind_set_spawn_function, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
-func (self Instance) OnDespawned(cb func(node [1]gdclass.Node)) {
+func (self Instance) OnDespawned(cb func(node Node.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("despawned"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnSpawned(cb func(node [1]gdclass.Node)) {
+func (self Instance) OnSpawned(cb func(node Node.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("spawned"), gd.NewCallable(cb), 0)
 }
 

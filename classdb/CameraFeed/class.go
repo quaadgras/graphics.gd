@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Image"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -134,14 +135,14 @@ func (self Instance) SetPosition(position gdclass.CameraFeedFeedPosition) { //gd
 /*
 Sets RGB image for this feed.
 */
-func (self Instance) SetRgbImage(rgb_image [1]gdclass.Image) { //gd:CameraFeed.set_rgb_image
+func (self Instance) SetRgbImage(rgb_image Image.Instance) { //gd:CameraFeed.set_rgb_image
 	Advanced(self).SetRgbImage(rgb_image)
 }
 
 /*
 Sets YCbCr image for this feed.
 */
-func (self Instance) SetYcbcrImage(ycbcr_image [1]gdclass.Image) { //gd:CameraFeed.set_ycbcr_image
+func (self Instance) SetYcbcrImage(ycbcr_image Image.Instance) { //gd:CameraFeed.set_ycbcr_image
 	Advanced(self).SetYcbcrImage(ycbcr_image)
 }
 

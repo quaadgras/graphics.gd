@@ -14,6 +14,7 @@ import "graphics.gd/variant"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Shortcut"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -184,19 +185,11 @@ func (self Instance) SetKeepPressedOutside(value bool) {
 	class(self).SetKeepPressedOutside(value)
 }
 
-func (self Instance) ButtonGroup() [1]gdclass.ButtonGroup {
-	return [1]gdclass.ButtonGroup(class(self).GetButtonGroup())
+func (self Instance) Shortcut() Shortcut.Instance {
+	return Shortcut.Instance(class(self).GetShortcut())
 }
 
-func (self Instance) SetButtonGroup(value [1]gdclass.ButtonGroup) {
-	class(self).SetButtonGroup(value)
-}
-
-func (self Instance) Shortcut() [1]gdclass.Shortcut {
-	return [1]gdclass.Shortcut(class(self).GetShortcut())
-}
-
-func (self Instance) SetShortcut(value [1]gdclass.Shortcut) {
+func (self Instance) SetShortcut(value Shortcut.Instance) {
 	class(self).SetShortcut(value)
 }
 

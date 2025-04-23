@@ -11,9 +11,11 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Font"
 import "graphics.gd/classdb/GeometryInstance3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/TriangleMesh"
 import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -63,8 +65,8 @@ type Any interface {
 /*
 Returns a [TriangleMesh] with the label's vertices following its current configuration (such as its [member pixel_size]).
 */
-func (self Instance) GenerateTriangleMesh() [1]gdclass.TriangleMesh { //gd:Label3D.generate_triangle_mesh
-	return [1]gdclass.TriangleMesh(Advanced(self).GenerateTriangleMesh())
+func (self Instance) GenerateTriangleMesh() TriangleMesh.Instance { //gd:Label3D.generate_triangle_mesh
+	return TriangleMesh.Instance(Advanced(self).GenerateTriangleMesh())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -229,11 +231,11 @@ func (self Instance) SetText(value string) {
 	class(self).SetText(String.New(value))
 }
 
-func (self Instance) Font() [1]gdclass.Font {
-	return [1]gdclass.Font(class(self).GetFont())
+func (self Instance) Font() Font.Instance {
+	return Font.Instance(class(self).GetFont())
 }
 
-func (self Instance) SetFont(value [1]gdclass.Font) {
+func (self Instance) SetFont(value Font.Instance) {
 	class(self).SetFont(value)
 }
 

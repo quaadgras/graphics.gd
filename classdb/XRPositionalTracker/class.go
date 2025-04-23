@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/XRPose"
 import "graphics.gd/classdb/XRTracker"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -70,8 +71,8 @@ func (self Instance) HasPose(name string) bool { //gd:XRPositionalTracker.has_po
 /*
 Returns the current [XRPose] state object for the bound [param name] pose.
 */
-func (self Instance) GetPose(name string) [1]gdclass.XRPose { //gd:XRPositionalTracker.get_pose
-	return [1]gdclass.XRPose(Advanced(self).GetPose(String.Name(String.New(name))))
+func (self Instance) GetPose(name string) XRPose.Instance { //gd:XRPositionalTracker.get_pose
+	return XRPose.Instance(Advanced(self).GetPose(String.Name(String.New(name))))
 }
 
 /*
@@ -257,11 +258,11 @@ func (self class) SetInput(name String.Name, value variant.Any) { //gd:XRPositio
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_set_input, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
-func (self Instance) OnPoseChanged(cb func(pose [1]gdclass.XRPose)) {
+func (self Instance) OnPoseChanged(cb func(pose XRPose.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("pose_changed"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnPoseLostTracking(cb func(pose [1]gdclass.XRPose)) {
+func (self Instance) OnPoseLostTracking(cb func(pose XRPose.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("pose_lost_tracking"), gd.NewCallable(cb), 0)
 }
 

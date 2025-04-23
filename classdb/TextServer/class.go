@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Image"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -671,15 +672,15 @@ func (self Instance) FontRemoveTexture(font_rid RID.Font, size Vector2i.XY, text
 /*
 Sets font cache texture image data.
 */
-func (self Instance) FontSetTextureImage(font_rid RID.Font, size Vector2i.XY, texture_index int, image [1]gdclass.Image) { //gd:TextServer.font_set_texture_image
+func (self Instance) FontSetTextureImage(font_rid RID.Font, size Vector2i.XY, texture_index int, image Image.Instance) { //gd:TextServer.font_set_texture_image
 	Advanced(self).FontSetTextureImage(RID.Any(font_rid), Vector2i.XY(size), int64(texture_index), image)
 }
 
 /*
 Returns font cache texture image data.
 */
-func (self Instance) FontGetTextureImage(font_rid RID.Font, size Vector2i.XY, texture_index int) [1]gdclass.Image { //gd:TextServer.font_get_texture_image
-	return [1]gdclass.Image(Advanced(self).FontGetTextureImage(RID.Any(font_rid), Vector2i.XY(size), int64(texture_index)))
+func (self Instance) FontGetTextureImage(font_rid RID.Font, size Vector2i.XY, texture_index int) Image.Instance { //gd:TextServer.font_get_texture_image
+	return Image.Instance(Advanced(self).FontGetTextureImage(RID.Any(font_rid), Vector2i.XY(size), int64(texture_index)))
 }
 
 /*

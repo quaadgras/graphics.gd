@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Skin"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -69,8 +70,8 @@ func (self Instance) GetSkeleton() RID.Skeleton { //gd:SkinReference.get_skeleto
 Returns the [Skin] connected to this SkinReference. In the case of [MeshInstance3D] with no [member MeshInstance3D.skin] assigned, this will reference an internal default [Skin] owned by that [MeshInstance3D].
 Note that a single [Skin] may have more than one [SkinReference] in the case that it is shared by meshes across multiple [Skeleton3D] nodes.
 */
-func (self Instance) GetSkin() [1]gdclass.Skin { //gd:SkinReference.get_skin
-	return [1]gdclass.Skin(Advanced(self).GetSkin())
+func (self Instance) GetSkin() Skin.Instance { //gd:SkinReference.get_skin
+	return Skin.Instance(Advanced(self).GetSkin())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

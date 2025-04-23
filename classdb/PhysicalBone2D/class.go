@@ -13,6 +13,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/CollisionObject2D"
+import "graphics.gd/classdb/Joint2D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node2D"
 import "graphics.gd/classdb/PhysicsBody2D"
@@ -65,8 +66,8 @@ type Any interface {
 /*
 Returns the first [Joint2D] child node, if one exists. This is mainly a helper function to make it easier to get the [Joint2D] that the [PhysicalBone2D] is autoconfiguring.
 */
-func (self Instance) GetJoint() [1]gdclass.Joint2D { //gd:PhysicalBone2D.get_joint
-	return [1]gdclass.Joint2D(Advanced(self).GetJoint())
+func (self Instance) GetJoint() Joint2D.Instance { //gd:PhysicalBone2D.get_joint
+	return Joint2D.Instance(Advanced(self).GetJoint())
 }
 
 /*

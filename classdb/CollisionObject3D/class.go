@@ -11,8 +11,11 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Camera3D"
+import "graphics.gd/classdb/InputEvent"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/Shape3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -65,7 +68,7 @@ type Any interface {
 type Interface interface {
 	//Receives unhandled [InputEvent]s. [param event_position] is the location in world space of the mouse pointer on the surface of the shape with index [param shape_idx] and [param normal] is the normal vector of the surface at that point. Connect to the [signal input_event] signal to easily pick up these events.
 	//[b]Note:[/b] [method _input_event] requires [member input_ray_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set.
-	InputEvent(camera [1]gdclass.Camera3D, event [1]gdclass.InputEvent, event_position Vector3.XYZ, normal Vector3.XYZ, shape_idx int)
+	InputEvent(camera Camera3D.Instance, event InputEvent.Instance, event_position Vector3.XYZ, normal Vector3.XYZ, shape_idx int)
 	//Called when the mouse pointer enters any of this object's shapes. Requires [member input_ray_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set. Note that moving between different shapes within a single [CollisionObject3D] won't cause this function to be called.
 	MouseEnter()
 	//Called when the mouse pointer exits all this object's shapes. Requires [member input_ray_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set. Note that moving between different shapes within a single [CollisionObject3D] won't cause this function to be called.
@@ -77,7 +80,7 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) InputEvent(camera [1]gdclass.Camera3D, event [1]gdclass.InputEvent, event_position Vector3.XYZ, normal Vector3.XYZ, shape_idx int) {
+func (self implementation) InputEvent(camera Camera3D.Instance, event InputEvent.Instance, event_position Vector3.XYZ, normal Vector3.XYZ, shape_idx int) {
 	return
 }
 func (self implementation) MouseEnter() { return }
@@ -87,7 +90,7 @@ func (self implementation) MouseExit()  { return }
 Receives unhandled [InputEvent]s. [param event_position] is the location in world space of the mouse pointer on the surface of the shape with index [param shape_idx] and [param normal] is the normal vector of the surface at that point. Connect to the [signal input_event] signal to easily pick up these events.
 [b]Note:[/b] [method _input_event] requires [member input_ray_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set.
 */
-func (Instance) _input_event(impl func(ptr unsafe.Pointer, camera [1]gdclass.Camera3D, event [1]gdclass.InputEvent, event_position Vector3.XYZ, normal Vector3.XYZ, shape_idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _input_event(impl func(ptr unsafe.Pointer, camera Camera3D.Instance, event InputEvent.Instance, event_position Vector3.XYZ, normal Vector3.XYZ, shape_idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -217,7 +220,7 @@ func (self Instance) IsShapeOwnerDisabled(owner_id int) bool { //gd:CollisionObj
 /*
 Adds a [Shape3D] to the shape owner.
 */
-func (self Instance) ShapeOwnerAddShape(owner_id int, shape [1]gdclass.Shape3D) { //gd:CollisionObject3D.shape_owner_add_shape
+func (self Instance) ShapeOwnerAddShape(owner_id int, shape Shape3D.Instance) { //gd:CollisionObject3D.shape_owner_add_shape
 	Advanced(self).ShapeOwnerAddShape(int64(owner_id), shape)
 }
 
@@ -231,8 +234,8 @@ func (self Instance) ShapeOwnerGetShapeCount(owner_id int) int { //gd:CollisionO
 /*
 Returns the [Shape3D] with the given ID from the given shape owner.
 */
-func (self Instance) ShapeOwnerGetShape(owner_id int, shape_id int) [1]gdclass.Shape3D { //gd:CollisionObject3D.shape_owner_get_shape
-	return [1]gdclass.Shape3D(Advanced(self).ShapeOwnerGetShape(int64(owner_id), int64(shape_id)))
+func (self Instance) ShapeOwnerGetShape(owner_id int, shape_id int) Shape3D.Instance { //gd:CollisionObject3D.shape_owner_get_shape
+	return Shape3D.Instance(Advanced(self).ShapeOwnerGetShape(int64(owner_id), int64(shape_id)))
 }
 
 /*
@@ -752,7 +755,7 @@ func (self class) ShapeFindOwner(shape_index int64) int64 { //gd:CollisionObject
 	frame.Free()
 	return ret
 }
-func (self Instance) OnInputEvent(cb func(camera [1]gdclass.Node, event [1]gdclass.InputEvent, event_position Vector3.XYZ, normal Vector3.XYZ, shape_idx int)) {
+func (self Instance) OnInputEvent(cb func(camera Node.Instance, event InputEvent.Instance, event_position Vector3.XYZ, normal Vector3.XYZ, shape_idx int)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("input_event"), gd.NewCallable(cb), 0)
 }
 

@@ -65,15 +65,15 @@ type Any interface {
 Assigns a [Texture2D] to the given frame. Frame IDs start at 0, so the first frame has ID 0, and the last frame of the animation has ID [member frames] - 1.
 You can define any number of textures up to [constant MAX_FRAMES], but keep in mind that only frames from 0 to [member frames] - 1 will be part of the animation.
 */
-func (self Instance) SetFrameTexture(frame_ int, texture [1]gdclass.Texture2D) { //gd:AnimatedTexture.set_frame_texture
+func (self Instance) SetFrameTexture(frame_ int, texture Texture2D.Instance) { //gd:AnimatedTexture.set_frame_texture
 	Advanced(self).SetFrameTexture(int64(frame_), texture)
 }
 
 /*
 Returns the given frame's [Texture2D].
 */
-func (self Instance) GetFrameTexture(frame_ int) [1]gdclass.Texture2D { //gd:AnimatedTexture.get_frame_texture
-	return [1]gdclass.Texture2D(Advanced(self).GetFrameTexture(int64(frame_)))
+func (self Instance) GetFrameTexture(frame_ int) Texture2D.Instance { //gd:AnimatedTexture.get_frame_texture
+	return Texture2D.Instance(Advanced(self).GetFrameTexture(int64(frame_)))
 }
 
 /*

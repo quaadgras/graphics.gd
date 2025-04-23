@@ -17,6 +17,8 @@ import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/HBoxContainer"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/OpenXRActionMap"
+import "graphics.gd/classdb/OpenXRInteractionProfile"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -63,7 +65,7 @@ type Any interface {
 /*
 Setup this editor for the provided [param action_map] and [param interaction_profile].
 */
-func (self Instance) Setup(action_map [1]gdclass.OpenXRActionMap, interaction_profile [1]gdclass.OpenXRInteractionProfile) { //gd:OpenXRInteractionProfileEditorBase.setup
+func (self Instance) Setup(action_map OpenXRActionMap.Instance, interaction_profile OpenXRInteractionProfile.Instance) { //gd:OpenXRInteractionProfileEditorBase.setup
 	Advanced(self).Setup(action_map, interaction_profile)
 }
 

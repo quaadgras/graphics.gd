@@ -11,9 +11,11 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/CameraAttributes"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/VisualInstance3D"
+import "graphics.gd/classdb/VoxelGIData"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -69,7 +71,7 @@ Bakes the effect from all [GeometryInstance3D]s marked with [constant GeometryIn
 [b]Note:[/b] [GeometryInstance3D]s and [Light3D]s must be fully ready before [method bake] is called. If you are procedurally creating those and some meshes or lights are missing from your baked [VoxelGI], use [code]call_deferred("bake")[/code] instead of calling [method bake] directly.
 */
 func (self Instance) Bake() { //gd:VoxelGI.bake
-	Advanced(self).Bake([1][1]gdclass.Node{}[0], false)
+	Advanced(self).Bake([1]Node.Instance{}[0], false)
 }
 
 /*
@@ -77,7 +79,7 @@ Bakes the effect from all [GeometryInstance3D]s marked with [constant GeometryIn
 [b]Note:[/b] [method bake] works from the editor and in exported projects. This makes it suitable for procedurally generated or user-built levels. Baking a [VoxelGI] node generally takes from 5 to 20 seconds in most scenes. Reducing [member subdiv] can speed up baking.
 [b]Note:[/b] [GeometryInstance3D]s and [Light3D]s must be fully ready before [method bake] is called. If you are procedurally creating those and some meshes or lights are missing from your baked [VoxelGI], use [code]call_deferred("bake")[/code] instead of calling [method bake] directly.
 */
-func (self Expanded) Bake(from_node [1]gdclass.Node, create_visual_debug bool) { //gd:VoxelGI.bake
+func (self Expanded) Bake(from_node Node.Instance, create_visual_debug bool) { //gd:VoxelGI.bake
 	Advanced(self).Bake(from_node, create_visual_debug)
 }
 
@@ -122,19 +124,19 @@ func (self Instance) SetSize(value Vector3.XYZ) {
 	class(self).SetSize(Vector3.XYZ(value))
 }
 
-func (self Instance) CameraAttributes() [1]gdclass.CameraAttributes {
-	return [1]gdclass.CameraAttributes(class(self).GetCameraAttributes())
+func (self Instance) CameraAttributes() CameraAttributes.Instance {
+	return CameraAttributes.Instance(class(self).GetCameraAttributes())
 }
 
-func (self Instance) SetCameraAttributes(value [1]gdclass.CameraAttributes) {
+func (self Instance) SetCameraAttributes(value CameraAttributes.Instance) {
 	class(self).SetCameraAttributes(value)
 }
 
-func (self Instance) Data() [1]gdclass.VoxelGIData {
-	return [1]gdclass.VoxelGIData(class(self).GetProbeData())
+func (self Instance) Data() VoxelGIData.Instance {
+	return VoxelGIData.Instance(class(self).GetProbeData())
 }
 
-func (self Instance) SetData(value [1]gdclass.VoxelGIData) {
+func (self Instance) SetData(value VoxelGIData.Instance) {
 	class(self).SetProbeData(value)
 }
 

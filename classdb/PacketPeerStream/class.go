@@ -12,6 +12,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/PacketPeer"
+import "graphics.gd/classdb/StreamPeer"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -91,11 +92,11 @@ func (self Instance) SetOutputBufferMaxSize(value int) {
 	class(self).SetOutputBufferMaxSize(int64(value))
 }
 
-func (self Instance) StreamPeer() [1]gdclass.StreamPeer {
-	return [1]gdclass.StreamPeer(class(self).GetStreamPeer())
+func (self Instance) StreamPeer() StreamPeer.Instance {
+	return StreamPeer.Instance(class(self).GetStreamPeer())
 }
 
-func (self Instance) SetStreamPeer(value [1]gdclass.StreamPeer) {
+func (self Instance) SetStreamPeer(value StreamPeer.Instance) {
 	class(self).SetStreamPeer(value)
 }
 

@@ -167,13 +167,6 @@ func (self Instance) GetRid() ID { //gd:Resource.get_rid
 }
 
 /*
-If [member resource_local_to_scene] is set to [code]true[/code] and the resource has been loaded from a [PackedScene] instantiation, returns the root [Node] of the scene where this resource is used. Otherwise, returns [code]null[/code].
-*/
-func (self Instance) GetLocalScene() [1]gdclass.Node { //gd:Resource.get_local_scene
-	return [1]gdclass.Node(Advanced(self).GetLocalScene())
-}
-
-/*
 Calls [method _setup_local_to_scene]. If [member resource_local_to_scene] is set to [code]true[/code], this method is automatically called from [method PackedScene.instantiate] by the newly duplicated resource within the scene instance.
 */
 func (self Instance) SetupLocalToScene() { //gd:Resource.setup_local_to_scene
@@ -244,8 +237,8 @@ If [param subresources] is [code]false[/code], a shallow copy is returned; neste
 - Subresources inside [Array] and [Dictionary] properties are never duplicated.
 [b]Note:[/b] For custom resources, this method will fail if [method Object._init] has been defined with required parameters.
 */
-func (self Instance) Duplicate() [1]gdclass.Resource { //gd:Resource.duplicate
-	return [1]gdclass.Resource(Advanced(self).Duplicate(false))
+func (self Instance) Duplicate() Instance { //gd:Resource.duplicate
+	return Instance(Advanced(self).Duplicate(false))
 }
 
 /*
@@ -257,8 +250,8 @@ If [param subresources] is [code]false[/code], a shallow copy is returned; neste
 - Subresources inside [Array] and [Dictionary] properties are never duplicated.
 [b]Note:[/b] For custom resources, this method will fail if [method Object._init] has been defined with required parameters.
 */
-func (self Expanded) Duplicate(subresources bool) [1]gdclass.Resource { //gd:Resource.duplicate
-	return [1]gdclass.Resource(Advanced(self).Duplicate(subresources))
+func (self Expanded) Duplicate(subresources bool) Instance { //gd:Resource.duplicate
+	return Instance(Advanced(self).Duplicate(subresources))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

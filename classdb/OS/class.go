@@ -46,6 +46,8 @@ var _ = slices.Delete[[]struct{}, struct{}]
 The [OS] class wraps the most common functionalities for communicating with the host operating system, such as the video driver, delays, environment variables, execution of binaries, command line, etc.
 [b]Note:[/b] In Godot 4, [OS] functions related to window management, clipboard, and TTS were moved to the [DisplayServer] singleton (and the [Window] class). Functions related to time were removed and are only available in the [Time] class.
 */
+type Instance [1]gdclass.OS
+
 var self [1]gdclass.OS
 var once sync.Once
 

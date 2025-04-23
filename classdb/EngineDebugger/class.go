@@ -12,6 +12,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/EngineProfiler"
+import "graphics.gd/classdb/ScriptLanguage"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -45,6 +47,8 @@ var _ = slices.Delete[[]struct{}, struct{}]
 /*
 [EngineDebugger] handles the communication between the editor and the running game. It is active in the running game. Messages can be sent/received through it. It also manages the profilers.
 */
+type Instance [1]gdclass.EngineDebugger
+
 var self [1]gdclass.EngineDebugger
 var once sync.Once
 
@@ -64,7 +68,7 @@ func IsActive() bool { //gd:EngineDebugger.is_active
 /*
 Registers a profiler with the given [param name]. See [EngineProfiler] for more information.
 */
-func RegisterProfiler(name string, profiler [1]gdclass.EngineProfiler) { //gd:EngineDebugger.register_profiler
+func RegisterProfiler(name string, profiler EngineProfiler.Instance) { //gd:EngineDebugger.register_profiler
 	once.Do(singleton)
 	Advanced().RegisterProfiler(String.Name(String.New(name)), profiler)
 }
@@ -178,7 +182,7 @@ func DebugOptions(can_continue bool, is_error_breakpoint bool) { //gd:EngineDebu
 /*
 Starts a debug break in script execution, optionally specifying whether the program can continue based on [param can_continue] and whether the break was due to a breakpoint.
 */
-func ScriptDebug(language [1]gdclass.ScriptLanguage, is_error_breakpoint bool) { //gd:EngineDebugger.script_debug
+func ScriptDebug(language ScriptLanguage.Instance, is_error_breakpoint bool) { //gd:EngineDebugger.script_debug
 	once.Do(singleton)
 	Advanced().ScriptDebug(language, true, is_error_breakpoint)
 }
@@ -186,7 +190,7 @@ func ScriptDebug(language [1]gdclass.ScriptLanguage, is_error_breakpoint bool) {
 /*
 Starts a debug break in script execution, optionally specifying whether the program can continue based on [param can_continue] and whether the break was due to a breakpoint.
 */
-func ScriptDebugOptions(language [1]gdclass.ScriptLanguage, can_continue bool, is_error_breakpoint bool) { //gd:EngineDebugger.script_debug
+func ScriptDebugOptions(language ScriptLanguage.Instance, can_continue bool, is_error_breakpoint bool) { //gd:EngineDebugger.script_debug
 	once.Do(singleton)
 	Advanced().ScriptDebug(language, can_continue, is_error_breakpoint)
 }

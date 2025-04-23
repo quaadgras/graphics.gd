@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/PhysicsDirectSpaceState3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Basis"
 import "graphics.gd/variant/Callable"
@@ -316,8 +317,8 @@ func (self Instance) IntegrateForces() { //gd:PhysicsDirectBodyState3D.integrate
 /*
 Returns the current state of the space, useful for queries.
 */
-func (self Instance) GetSpaceState() [1]gdclass.PhysicsDirectSpaceState3D { //gd:PhysicsDirectBodyState3D.get_space_state
-	return [1]gdclass.PhysicsDirectSpaceState3D(Advanced(self).GetSpaceState())
+func (self Instance) GetSpaceState() PhysicsDirectSpaceState3D.Instance { //gd:PhysicsDirectBodyState3D.get_space_state
+	return PhysicsDirectSpaceState3D.Instance(Advanced(self).GetSpaceState())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

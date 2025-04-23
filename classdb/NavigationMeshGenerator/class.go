@@ -12,6 +12,9 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/NavigationMesh"
+import "graphics.gd/classdb/NavigationMeshSourceGeometryData3D"
+import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -49,6 +52,8 @@ Navigation mesh baking happens in multiple steps and the result depends on 3D so
 The finalized navigation mesh is then returned and stored inside the [NavigationMesh] for use as a resource inside [NavigationRegion3D] nodes.
 [b]Note:[/b] Using meshes to not only define walkable surfaces but also obstruct navigation baking does not always work. The navigation baking has no concept of what is a geometry "inside" when dealing with mesh source geometry and this is intentional. Depending on current baking parameters, as soon as the obstructing mesh is large enough to fit a navigation mesh area inside, the baking will generate navigation mesh areas that are inside the obstructing source geometry mesh.
 */
+type Instance [1]gdclass.NavigationMeshGenerator
+
 var self [1]gdclass.NavigationMeshGenerator
 var once sync.Once
 
@@ -60,7 +65,7 @@ func singleton() {
 /*
 Bakes the [param navigation_mesh] with source geometry collected starting from the [param root_node].
 */
-func Bake(navigation_mesh [1]gdclass.NavigationMesh, root_node [1]gdclass.Node) { //gd:NavigationMeshGenerator.bake
+func Bake(navigation_mesh NavigationMesh.Instance, root_node Node.Instance) { //gd:NavigationMeshGenerator.bake
 	once.Do(singleton)
 	Advanced().Bake(navigation_mesh, root_node)
 }
@@ -68,7 +73,7 @@ func Bake(navigation_mesh [1]gdclass.NavigationMesh, root_node [1]gdclass.Node) 
 /*
 Removes all polygons and vertices from the provided [param navigation_mesh] resource.
 */
-func Clear(navigation_mesh [1]gdclass.NavigationMesh) { //gd:NavigationMeshGenerator.clear
+func Clear(navigation_mesh NavigationMesh.Instance) { //gd:NavigationMeshGenerator.clear
 	once.Do(singleton)
 	Advanced().Clear(navigation_mesh)
 }
@@ -78,7 +83,7 @@ Parses the [SceneTree] for source geometry according to the properties of [param
 [b]Note:[/b] This function needs to run on the main thread or with a deferred call as the SceneTree is not thread-safe.
 [b]Performance:[/b] While convenient, reading data arrays from [Mesh] resources can affect the frame rate negatively. The data needs to be received from the GPU, stalling the [RenderingServer] in the process. For performance prefer the use of e.g. collision shapes or creating the data arrays entirely in code.
 */
-func ParseSourceGeometryData(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, root_node [1]gdclass.Node, callback func()) { //gd:NavigationMeshGenerator.parse_source_geometry_data
+func ParseSourceGeometryData(navigation_mesh NavigationMesh.Instance, source_geometry_data NavigationMeshSourceGeometryData3D.Instance, root_node Node.Instance, callback func()) { //gd:NavigationMeshGenerator.parse_source_geometry_data
 	once.Do(singleton)
 	Advanced().ParseSourceGeometryData(navigation_mesh, source_geometry_data, root_node, Callable.New(callback))
 }
@@ -88,7 +93,7 @@ Parses the [SceneTree] for source geometry according to the properties of [param
 [b]Note:[/b] This function needs to run on the main thread or with a deferred call as the SceneTree is not thread-safe.
 [b]Performance:[/b] While convenient, reading data arrays from [Mesh] resources can affect the frame rate negatively. The data needs to be received from the GPU, stalling the [RenderingServer] in the process. For performance prefer the use of e.g. collision shapes or creating the data arrays entirely in code.
 */
-func ParseSourceGeometryDataOptions(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, root_node [1]gdclass.Node, callback func()) { //gd:NavigationMeshGenerator.parse_source_geometry_data
+func ParseSourceGeometryDataOptions(navigation_mesh NavigationMesh.Instance, source_geometry_data NavigationMeshSourceGeometryData3D.Instance, root_node Node.Instance, callback func()) { //gd:NavigationMeshGenerator.parse_source_geometry_data
 	once.Do(singleton)
 	Advanced().ParseSourceGeometryData(navigation_mesh, source_geometry_data, root_node, Callable.New(callback))
 }
@@ -96,7 +101,7 @@ func ParseSourceGeometryDataOptions(navigation_mesh [1]gdclass.NavigationMesh, s
 /*
 Bakes the provided [param navigation_mesh] with the data from the provided [param source_geometry_data]. After the process is finished the optional [param callback] will be called.
 */
-func BakeFromSourceGeometryData(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, callback func()) { //gd:NavigationMeshGenerator.bake_from_source_geometry_data
+func BakeFromSourceGeometryData(navigation_mesh NavigationMesh.Instance, source_geometry_data NavigationMeshSourceGeometryData3D.Instance, callback func()) { //gd:NavigationMeshGenerator.bake_from_source_geometry_data
 	once.Do(singleton)
 	Advanced().BakeFromSourceGeometryData(navigation_mesh, source_geometry_data, Callable.New(callback))
 }
@@ -104,7 +109,7 @@ func BakeFromSourceGeometryData(navigation_mesh [1]gdclass.NavigationMesh, sourc
 /*
 Bakes the provided [param navigation_mesh] with the data from the provided [param source_geometry_data]. After the process is finished the optional [param callback] will be called.
 */
-func BakeFromSourceGeometryDataOptions(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, callback func()) { //gd:NavigationMeshGenerator.bake_from_source_geometry_data
+func BakeFromSourceGeometryDataOptions(navigation_mesh NavigationMesh.Instance, source_geometry_data NavigationMeshSourceGeometryData3D.Instance, callback func()) { //gd:NavigationMeshGenerator.bake_from_source_geometry_data
 	once.Do(singleton)
 	Advanced().BakeFromSourceGeometryData(navigation_mesh, source_geometry_data, Callable.New(callback))
 }

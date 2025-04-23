@@ -14,6 +14,7 @@ import "graphics.gd/variant"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -141,15 +142,15 @@ func (self Instance) GetTabLanguage(tab_idx int) string { //gd:TabBar.get_tab_la
 /*
 Sets an [param icon] for the tab at index [param tab_idx].
 */
-func (self Instance) SetTabIcon(tab_idx int, icon [1]gdclass.Texture2D) { //gd:TabBar.set_tab_icon
+func (self Instance) SetTabIcon(tab_idx int, icon Texture2D.Instance) { //gd:TabBar.set_tab_icon
 	Advanced(self).SetTabIcon(int64(tab_idx), icon)
 }
 
 /*
 Returns the icon for the tab at index [param tab_idx] or [code]null[/code] if the tab has no icon.
 */
-func (self Instance) GetTabIcon(tab_idx int) [1]gdclass.Texture2D { //gd:TabBar.get_tab_icon
-	return [1]gdclass.Texture2D(Advanced(self).GetTabIcon(int64(tab_idx)))
+func (self Instance) GetTabIcon(tab_idx int) Texture2D.Instance { //gd:TabBar.get_tab_icon
+	return Texture2D.Instance(Advanced(self).GetTabIcon(int64(tab_idx)))
 }
 
 /*
@@ -169,15 +170,15 @@ func (self Instance) GetTabIconMaxWidth(tab_idx int) int { //gd:TabBar.get_tab_i
 /*
 Sets an [param icon] for the button of the tab at index [param tab_idx] (located to the right, before the close button), making it visible and clickable (See [signal tab_button_pressed]). Giving it a [code]null[/code] value will hide the button.
 */
-func (self Instance) SetTabButtonIcon(tab_idx int, icon [1]gdclass.Texture2D) { //gd:TabBar.set_tab_button_icon
+func (self Instance) SetTabButtonIcon(tab_idx int, icon Texture2D.Instance) { //gd:TabBar.set_tab_button_icon
 	Advanced(self).SetTabButtonIcon(int64(tab_idx), icon)
 }
 
 /*
 Returns the icon for the right button of the tab at index [param tab_idx] or [code]null[/code] if the right button has no icon.
 */
-func (self Instance) GetTabButtonIcon(tab_idx int) [1]gdclass.Texture2D { //gd:TabBar.get_tab_button_icon
-	return [1]gdclass.Texture2D(Advanced(self).GetTabButtonIcon(int64(tab_idx)))
+func (self Instance) GetTabButtonIcon(tab_idx int) Texture2D.Instance { //gd:TabBar.get_tab_button_icon
+	return Texture2D.Instance(Advanced(self).GetTabButtonIcon(int64(tab_idx)))
 }
 
 /*
@@ -233,13 +234,13 @@ func (self Instance) RemoveTab(tab_idx int) { //gd:TabBar.remove_tab
 Adds a new tab.
 */
 func (self Instance) AddTab() { //gd:TabBar.add_tab
-	Advanced(self).AddTab(String.New(""), [1][1]gdclass.Texture2D{}[0])
+	Advanced(self).AddTab(String.New(""), [1]Texture2D.Instance{}[0])
 }
 
 /*
 Adds a new tab.
 */
-func (self Expanded) AddTab(title string, icon [1]gdclass.Texture2D) { //gd:TabBar.add_tab
+func (self Expanded) AddTab(title string, icon Texture2D.Instance) { //gd:TabBar.add_tab
 	Advanced(self).AddTab(String.New(title), icon)
 }
 

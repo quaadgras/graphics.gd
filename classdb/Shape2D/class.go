@@ -64,7 +64,7 @@ type Any interface {
 Returns [code]true[/code] if this shape is colliding with another.
 This method needs the transformation matrix for this shape ([param local_xform]), the shape to check collisions with ([param with_shape]), and the transformation matrix of that shape ([param shape_xform]).
 */
-func (self Instance) Collide(local_xform Transform2D.OriginXY, with_shape [1]gdclass.Shape2D, shape_xform Transform2D.OriginXY) bool { //gd:Shape2D.collide
+func (self Instance) Collide(local_xform Transform2D.OriginXY, with_shape Instance, shape_xform Transform2D.OriginXY) bool { //gd:Shape2D.collide
 	return bool(Advanced(self).Collide(Transform2D.OriginXY(local_xform), with_shape, Transform2D.OriginXY(shape_xform)))
 }
 
@@ -72,7 +72,7 @@ func (self Instance) Collide(local_xform Transform2D.OriginXY, with_shape [1]gdc
 Returns whether this shape would collide with another, if a given movement was applied.
 This method needs the transformation matrix for this shape ([param local_xform]), the movement to test on this shape ([param local_motion]), the shape to check collisions with ([param with_shape]), the transformation matrix of that shape ([param shape_xform]), and the movement to test onto the other object ([param shape_motion]).
 */
-func (self Instance) CollideWithMotion(local_xform Transform2D.OriginXY, local_motion Vector2.XY, with_shape [1]gdclass.Shape2D, shape_xform Transform2D.OriginXY, shape_motion Vector2.XY) bool { //gd:Shape2D.collide_with_motion
+func (self Instance) CollideWithMotion(local_xform Transform2D.OriginXY, local_motion Vector2.XY, with_shape Instance, shape_xform Transform2D.OriginXY, shape_motion Vector2.XY) bool { //gd:Shape2D.collide_with_motion
 	return bool(Advanced(self).CollideWithMotion(Transform2D.OriginXY(local_xform), Vector2.XY(local_motion), with_shape, Transform2D.OriginXY(shape_xform), Vector2.XY(shape_motion)))
 }
 
@@ -82,7 +82,7 @@ If there are no collisions, the returned list is empty. Otherwise, the returned 
 A collision pair A, B can be used to calculate the collision normal with [code](B - A).normalized()[/code], and the collision depth with [code](B - A).length()[/code]. This information is typically used to separate shapes, particularly in collision solvers.
 This method needs the transformation matrix for this shape ([param local_xform]), the shape to check collisions with ([param with_shape]), and the transformation matrix of that shape ([param shape_xform]).
 */
-func (self Instance) CollideAndGetContacts(local_xform Transform2D.OriginXY, with_shape [1]gdclass.Shape2D, shape_xform Transform2D.OriginXY) []Vector2.XY { //gd:Shape2D.collide_and_get_contacts
+func (self Instance) CollideAndGetContacts(local_xform Transform2D.OriginXY, with_shape Instance, shape_xform Transform2D.OriginXY) []Vector2.XY { //gd:Shape2D.collide_and_get_contacts
 	return []Vector2.XY(slices.Collect(Advanced(self).CollideAndGetContacts(Transform2D.OriginXY(local_xform), with_shape, Transform2D.OriginXY(shape_xform)).Values()))
 }
 
@@ -92,7 +92,7 @@ If there would be no collisions, the returned list is empty. Otherwise, the retu
 A collision pair A, B can be used to calculate the collision normal with [code](B - A).normalized()[/code], and the collision depth with [code](B - A).length()[/code]. This information is typically used to separate shapes, particularly in collision solvers.
 This method needs the transformation matrix for this shape ([param local_xform]), the movement to test on this shape ([param local_motion]), the shape to check collisions with ([param with_shape]), the transformation matrix of that shape ([param shape_xform]), and the movement to test onto the other object ([param shape_motion]).
 */
-func (self Instance) CollideWithMotionAndGetContacts(local_xform Transform2D.OriginXY, local_motion Vector2.XY, with_shape [1]gdclass.Shape2D, shape_xform Transform2D.OriginXY, shape_motion Vector2.XY) []Vector2.XY { //gd:Shape2D.collide_with_motion_and_get_contacts
+func (self Instance) CollideWithMotionAndGetContacts(local_xform Transform2D.OriginXY, local_motion Vector2.XY, with_shape Instance, shape_xform Transform2D.OriginXY, shape_motion Vector2.XY) []Vector2.XY { //gd:Shape2D.collide_with_motion_and_get_contacts
 	return []Vector2.XY(slices.Collect(Advanced(self).CollideWithMotionAndGetContacts(Transform2D.OriginXY(local_xform), Vector2.XY(local_motion), with_shape, Transform2D.OriginXY(shape_xform), Vector2.XY(shape_motion)).Values()))
 }
 

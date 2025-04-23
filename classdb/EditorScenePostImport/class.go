@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -112,7 +113,7 @@ type Any interface {
 }
 type Interface interface {
 	//Called after the scene was imported. This method must return the modified version of the scene.
-	PostImport(scene [1]gdclass.Node) Object.Instance
+	PostImport(scene Node.Instance) Object.Instance
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -120,12 +121,12 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) PostImport(scene [1]gdclass.Node) (_ Object.Instance) { return }
+func (self implementation) PostImport(scene Node.Instance) (_ Object.Instance) { return }
 
 /*
 Called after the scene was imported. This method must return the modified version of the scene.
 */
-func (Instance) _post_import(impl func(ptr unsafe.Pointer, scene [1]gdclass.Node) Object.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _post_import(impl func(ptr unsafe.Pointer, scene Node.Instance) Object.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var scene = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 

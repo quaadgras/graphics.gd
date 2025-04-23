@@ -60,14 +60,14 @@ type Any interface {
 /*
 Insert a stream at the specified index. If the index is less than zero, the insertion occurs at the end of the underlying pool.
 */
-func (self Instance) AddStream(index int, stream [1]gdclass.AudioStream) { //gd:AudioStreamRandomizer.add_stream
+func (self Instance) AddStream(index int, stream AudioStream.Instance) { //gd:AudioStreamRandomizer.add_stream
 	Advanced(self).AddStream(int64(index), stream, float64(1.0))
 }
 
 /*
 Insert a stream at the specified index. If the index is less than zero, the insertion occurs at the end of the underlying pool.
 */
-func (self Expanded) AddStream(index int, stream [1]gdclass.AudioStream, weight Float.X) { //gd:AudioStreamRandomizer.add_stream
+func (self Expanded) AddStream(index int, stream AudioStream.Instance, weight Float.X) { //gd:AudioStreamRandomizer.add_stream
 	Advanced(self).AddStream(int64(index), stream, float64(weight))
 }
 
@@ -88,15 +88,15 @@ func (self Instance) RemoveStream(index int) { //gd:AudioStreamRandomizer.remove
 /*
 Set the AudioStream at the specified index.
 */
-func (self Instance) SetStream(index int, stream [1]gdclass.AudioStream) { //gd:AudioStreamRandomizer.set_stream
+func (self Instance) SetStream(index int, stream AudioStream.Instance) { //gd:AudioStreamRandomizer.set_stream
 	Advanced(self).SetStream(int64(index), stream)
 }
 
 /*
 Returns the stream at the specified index.
 */
-func (self Instance) GetStream(index int) [1]gdclass.AudioStream { //gd:AudioStreamRandomizer.get_stream
-	return [1]gdclass.AudioStream(Advanced(self).GetStream(int64(index)))
+func (self Instance) GetStream(index int) AudioStream.Instance { //gd:AudioStreamRandomizer.get_stream
+	return AudioStream.Instance(Advanced(self).GetStream(int64(index)))
 }
 
 /*

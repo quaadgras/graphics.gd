@@ -13,6 +13,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Material"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Shader"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -93,11 +94,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Shader() [1]gdclass.Shader {
-	return [1]gdclass.Shader(class(self).GetShader())
+func (self Instance) Shader() Shader.Instance {
+	return Shader.Instance(class(self).GetShader())
 }
 
-func (self Instance) SetShader(value [1]gdclass.Shader) {
+func (self Instance) SetShader(value Shader.Instance) {
 	class(self).SetShader(value)
 }
 

@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Expression"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -117,19 +118,19 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) GltfToGodotExpression() [1]gdclass.Expression {
-	return [1]gdclass.Expression(class(self).GetGltfToGodotExpression())
+func (self Instance) GltfToGodotExpression() Expression.Instance {
+	return Expression.Instance(class(self).GetGltfToGodotExpression())
 }
 
-func (self Instance) SetGltfToGodotExpression(value [1]gdclass.Expression) {
+func (self Instance) SetGltfToGodotExpression(value Expression.Instance) {
 	class(self).SetGltfToGodotExpression(value)
 }
 
-func (self Instance) GodotToGltfExpression() [1]gdclass.Expression {
-	return [1]gdclass.Expression(class(self).GetGodotToGltfExpression())
+func (self Instance) GodotToGltfExpression() Expression.Instance {
+	return Expression.Instance(class(self).GetGodotToGltfExpression())
 }
 
-func (self Instance) SetGodotToGltfExpression(value [1]gdclass.Expression) {
+func (self Instance) SetGodotToGltfExpression(value Expression.Instance) {
 	class(self).SetGodotToGltfExpression(value)
 }
 

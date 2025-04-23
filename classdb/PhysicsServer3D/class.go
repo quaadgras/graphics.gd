@@ -12,6 +12,11 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/PhysicsDirectBodyState3D"
+import "graphics.gd/classdb/PhysicsDirectSpaceState3D"
+import "graphics.gd/classdb/PhysicsServer3DRenderingServerHandler"
+import "graphics.gd/classdb/PhysicsTestMotionParameters3D"
+import "graphics.gd/classdb/PhysicsTestMotionResult3D"
 import "graphics.gd/variant/AABB"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -55,6 +60,8 @@ PhysicsServer3D is the server responsible for all 3D physics. It can directly cr
 Physics objects in [PhysicsServer3D] may be created and manipulated independently; they do not have to be tied to nodes in the scene tree.
 [b]Note:[/b] All the 3D physics nodes use the physics server internally. Adding a physics node to the scene tree will cause a corresponding physics object to be created in the physics server. A rigid body node registers a callback that updates the node's transform with the transform of the respective body object in the physics server (every physics update). An area node registers a callback to inform the area node about overlaps with the respective area object in the physics server. The raycast node queries the direct state of the relevant space in the physics server.
 */
+type Instance [1]gdclass.PhysicsServer3D
+
 var self [1]gdclass.PhysicsServer3D
 var once sync.Once
 
@@ -188,9 +195,9 @@ func SpaceGetParam(space RID.Space3D, param gdclass.PhysicsServer3DSpaceParamete
 /*
 Returns the state of a space, a [PhysicsDirectSpaceState3D]. This object can be used to make collision/intersection queries.
 */
-func SpaceGetDirectState(space RID.Space3D) [1]gdclass.PhysicsDirectSpaceState3D { //gd:PhysicsServer3D.space_get_direct_state
+func SpaceGetDirectState(space RID.Space3D) PhysicsDirectSpaceState3D.Instance { //gd:PhysicsServer3D.space_get_direct_state
 	once.Do(singleton)
-	return [1]gdclass.PhysicsDirectSpaceState3D(Advanced().SpaceGetDirectState(RID.Any(space)))
+	return PhysicsDirectSpaceState3D.Instance(Advanced().SpaceGetDirectState(RID.Any(space)))
 }
 
 /*
@@ -869,7 +876,7 @@ The function [param callable] will be called every physics frame, assuming that 
 The function [param callable] must take the following parameters:
 1. [code]state[/code]: a [PhysicsDirectBodyState3D], used to retrieve the body's state.
 */
-func BodySetStateSyncCallback(body RID.Body3D, callable func(state [1]gdclass.PhysicsDirectBodyState3D)) { //gd:PhysicsServer3D.body_set_state_sync_callback
+func BodySetStateSyncCallback(body RID.Body3D, callable func(state PhysicsDirectBodyState3D.Instance)) { //gd:PhysicsServer3D.body_set_state_sync_callback
 	once.Do(singleton)
 	Advanced().BodySetStateSyncCallback(RID.Any(body), Callable.New(callable))
 }
@@ -882,7 +889,7 @@ If [param userdata] is not [code]null[/code], the function [param callable] must
 2. [code skip-lint]userdata[/code]: a [Variant]; its value will be the [param userdata] passed into this method.
 If [param userdata] is [code]null[/code], then [param callable] must take only the [code]state[/code] parameter.
 */
-func BodySetForceIntegrationCallback(body RID.Body3D, callable func(state [1]gdclass.PhysicsDirectBodyState3D, userdata any), userdata any) { //gd:PhysicsServer3D.body_set_force_integration_callback
+func BodySetForceIntegrationCallback(body RID.Body3D, callable func(state PhysicsDirectBodyState3D.Instance, userdata any), userdata any) { //gd:PhysicsServer3D.body_set_force_integration_callback
 	once.Do(singleton)
 	Advanced().BodySetForceIntegrationCallback(RID.Any(body), Callable.New(callable), variant.New(userdata))
 }
@@ -895,7 +902,7 @@ If [param userdata] is not [code]null[/code], the function [param callable] must
 2. [code skip-lint]userdata[/code]: a [Variant]; its value will be the [param userdata] passed into this method.
 If [param userdata] is [code]null[/code], then [param callable] must take only the [code]state[/code] parameter.
 */
-func BodySetForceIntegrationCallbackOptions(body RID.Body3D, callable func(state [1]gdclass.PhysicsDirectBodyState3D, userdata any), userdata any) { //gd:PhysicsServer3D.body_set_force_integration_callback
+func BodySetForceIntegrationCallbackOptions(body RID.Body3D, callable func(state PhysicsDirectBodyState3D.Instance, userdata any), userdata any) { //gd:PhysicsServer3D.body_set_force_integration_callback
 	once.Do(singleton)
 	Advanced().BodySetForceIntegrationCallback(RID.Any(body), Callable.New(callable), variant.New(userdata))
 }
@@ -911,7 +918,7 @@ func BodySetRayPickable(body RID.Body3D, enable bool) { //gd:PhysicsServer3D.bod
 /*
 Returns [code]true[/code] if a collision would result from moving along a motion vector from a given point in space. [PhysicsTestMotionParameters3D] is passed to set motion parameters. [PhysicsTestMotionResult3D] can be passed to return additional information.
 */
-func BodyTestMotion(body RID.Body3D, parameters [1]gdclass.PhysicsTestMotionParameters3D, result [1]gdclass.PhysicsTestMotionResult3D) bool { //gd:PhysicsServer3D.body_test_motion
+func BodyTestMotion(body RID.Body3D, parameters PhysicsTestMotionParameters3D.Instance, result PhysicsTestMotionResult3D.Instance) bool { //gd:PhysicsServer3D.body_test_motion
 	once.Do(singleton)
 	return bool(Advanced().BodyTestMotion(RID.Any(body), parameters, result))
 }
@@ -919,7 +926,7 @@ func BodyTestMotion(body RID.Body3D, parameters [1]gdclass.PhysicsTestMotionPara
 /*
 Returns [code]true[/code] if a collision would result from moving along a motion vector from a given point in space. [PhysicsTestMotionParameters3D] is passed to set motion parameters. [PhysicsTestMotionResult3D] can be passed to return additional information.
 */
-func BodyTestMotionOptions(body RID.Body3D, parameters [1]gdclass.PhysicsTestMotionParameters3D, result [1]gdclass.PhysicsTestMotionResult3D) bool { //gd:PhysicsServer3D.body_test_motion
+func BodyTestMotionOptions(body RID.Body3D, parameters PhysicsTestMotionParameters3D.Instance, result PhysicsTestMotionResult3D.Instance) bool { //gd:PhysicsServer3D.body_test_motion
 	once.Do(singleton)
 	return bool(Advanced().BodyTestMotion(RID.Any(body), parameters, result))
 }
@@ -927,9 +934,9 @@ func BodyTestMotionOptions(body RID.Body3D, parameters [1]gdclass.PhysicsTestMot
 /*
 Returns the [PhysicsDirectBodyState3D] of the body. Returns [code]null[/code] if the body is destroyed or removed from the physics space.
 */
-func BodyGetDirectState(body RID.Body3D) [1]gdclass.PhysicsDirectBodyState3D { //gd:PhysicsServer3D.body_get_direct_state
+func BodyGetDirectState(body RID.Body3D) PhysicsDirectBodyState3D.Instance { //gd:PhysicsServer3D.body_get_direct_state
 	once.Do(singleton)
-	return [1]gdclass.PhysicsDirectBodyState3D(Advanced().BodyGetDirectState(RID.Any(body)))
+	return PhysicsDirectBodyState3D.Instance(Advanced().BodyGetDirectState(RID.Any(body)))
 }
 
 /*
@@ -943,7 +950,7 @@ func SoftBodyCreate() RID.SoftBody3D { //gd:PhysicsServer3D.soft_body_create
 /*
 Requests that the physics server updates the rendering server with the latest positions of the given soft body's points through the [param rendering_server_handler] interface.
 */
-func SoftBodyUpdateRenderingServer(body RID.SoftBody3D, rendering_server_handler [1]gdclass.PhysicsServer3DRenderingServerHandler) { //gd:PhysicsServer3D.soft_body_update_rendering_server
+func SoftBodyUpdateRenderingServer(body RID.SoftBody3D, rendering_server_handler PhysicsServer3DRenderingServerHandler.Instance) { //gd:PhysicsServer3D.soft_body_update_rendering_server
 	once.Do(singleton)
 	Advanced().SoftBodyUpdateRenderingServer(RID.Any(body), rendering_server_handler)
 }

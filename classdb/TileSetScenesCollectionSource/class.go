@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/PackedScene"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/TileSetSource"
 import "graphics.gd/variant/Array"
@@ -113,7 +114,7 @@ func (self Instance) HasSceneTileId(id int) bool { //gd:TileSetScenesCollectionS
 Creates a scene-based tile out of the given scene.
 Returns a newly generated unique ID.
 */
-func (self Instance) CreateSceneTile(packed_scene [1]gdclass.PackedScene) int { //gd:TileSetScenesCollectionSource.create_scene_tile
+func (self Instance) CreateSceneTile(packed_scene PackedScene.Instance) int { //gd:TileSetScenesCollectionSource.create_scene_tile
 	return int(int(Advanced(self).CreateSceneTile(packed_scene, int64(-1))))
 }
 
@@ -121,7 +122,7 @@ func (self Instance) CreateSceneTile(packed_scene [1]gdclass.PackedScene) int { 
 Creates a scene-based tile out of the given scene.
 Returns a newly generated unique ID.
 */
-func (self Expanded) CreateSceneTile(packed_scene [1]gdclass.PackedScene, id_override int) int { //gd:TileSetScenesCollectionSource.create_scene_tile
+func (self Expanded) CreateSceneTile(packed_scene PackedScene.Instance, id_override int) int { //gd:TileSetScenesCollectionSource.create_scene_tile
 	return int(int(Advanced(self).CreateSceneTile(packed_scene, int64(id_override))))
 }
 
@@ -135,15 +136,15 @@ func (self Instance) SetSceneTileId(id int, new_id int) { //gd:TileSetScenesColl
 /*
 Assigns a [PackedScene] resource to the scene tile with [param id]. This will fail if the scene does not extend CanvasItem, as positioning properties are needed to place the scene on the TileMap.
 */
-func (self Instance) SetSceneTileScene(id int, packed_scene [1]gdclass.PackedScene) { //gd:TileSetScenesCollectionSource.set_scene_tile_scene
+func (self Instance) SetSceneTileScene(id int, packed_scene PackedScene.Instance) { //gd:TileSetScenesCollectionSource.set_scene_tile_scene
 	Advanced(self).SetSceneTileScene(int64(id), packed_scene)
 }
 
 /*
 Returns the [PackedScene] resource of scene tile with [param id].
 */
-func (self Instance) GetSceneTileScene(id int) [1]gdclass.PackedScene { //gd:TileSetScenesCollectionSource.get_scene_tile_scene
-	return [1]gdclass.PackedScene(Advanced(self).GetSceneTileScene(int64(id)))
+func (self Instance) GetSceneTileScene(id int) PackedScene.Instance { //gd:TileSetScenesCollectionSource.get_scene_tile_scene
+	return PackedScene.Instance(Advanced(self).GetSceneTileScene(int64(id)))
 }
 
 /*

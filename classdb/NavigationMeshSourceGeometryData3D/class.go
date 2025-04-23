@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Mesh"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/AABB"
 import "graphics.gd/variant/Array"
@@ -82,7 +83,7 @@ func (self Instance) HasData() bool { //gd:NavigationMeshSourceGeometryData3D.ha
 /*
 Adds the geometry data of a [Mesh] resource to the navigation mesh baking data. The mesh must have valid triangulated mesh data to be considered. Since [NavigationMesh] resources have no transform, all vertex positions need to be offset by the node's transform using [param xform].
 */
-func (self Instance) AddMesh(mesh [1]gdclass.Mesh, xform Transform3D.BasisOrigin) { //gd:NavigationMeshSourceGeometryData3D.add_mesh
+func (self Instance) AddMesh(mesh Mesh.Instance, xform Transform3D.BasisOrigin) { //gd:NavigationMeshSourceGeometryData3D.add_mesh
 	Advanced(self).AddMesh(mesh, Transform3D.BasisOrigin(xform))
 }
 
@@ -103,7 +104,7 @@ func (self Instance) AddFaces(faces []Vector3.XYZ, xform Transform3D.BasisOrigin
 /*
 Adds the geometry data of another [NavigationMeshSourceGeometryData3D] to the navigation mesh baking data.
 */
-func (self Instance) Merge(other_geometry [1]gdclass.NavigationMeshSourceGeometryData3D) { //gd:NavigationMeshSourceGeometryData3D.merge
+func (self Instance) Merge(other_geometry Instance) { //gd:NavigationMeshSourceGeometryData3D.merge
 	Advanced(self).Merge(other_geometry)
 }
 

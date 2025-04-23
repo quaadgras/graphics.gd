@@ -11,9 +11,15 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/ArrayMesh"
 import "graphics.gd/classdb/GeometryInstance3D"
+import "graphics.gd/classdb/Material"
+import "graphics.gd/classdb/Mesh"
+import "graphics.gd/classdb/MeshConvexDecompositionSettings"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/Skin"
+import "graphics.gd/classdb/SkinReference"
 import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -62,8 +68,8 @@ type Any interface {
 /*
 Returns the internal [SkinReference] containing the skeleton's [RID] attached to this RID. See also [method Resource.get_rid], [method SkinReference.get_skeleton], and [method RenderingServer.instance_attach_skeleton].
 */
-func (self Instance) GetSkinReference() [1]gdclass.SkinReference { //gd:MeshInstance3D.get_skin_reference
-	return [1]gdclass.SkinReference(Advanced(self).GetSkinReference())
+func (self Instance) GetSkinReference() SkinReference.Instance { //gd:MeshInstance3D.get_skin_reference
+	return SkinReference.Instance(Advanced(self).GetSkinReference())
 }
 
 /*
@@ -77,7 +83,7 @@ func (self Instance) GetSurfaceOverrideMaterialCount() int { //gd:MeshInstance3D
 Sets the override [param material] for the specified [param surface] of the [Mesh] resource. This material is associated with this [MeshInstance3D] rather than with [member mesh].
 [b]Note:[/b] This assigns the [Material] associated to the [MeshInstance3D]'s Surface Material Override properties, not the material within the [Mesh] resource. To set the material within the [Mesh] resource, use [method Mesh.surface_set_material] instead.
 */
-func (self Instance) SetSurfaceOverrideMaterial(surface int, material [1]gdclass.Material) { //gd:MeshInstance3D.set_surface_override_material
+func (self Instance) SetSurfaceOverrideMaterial(surface int, material Material.Instance) { //gd:MeshInstance3D.set_surface_override_material
 	Advanced(self).SetSurfaceOverrideMaterial(int64(surface), material)
 }
 
@@ -85,16 +91,16 @@ func (self Instance) SetSurfaceOverrideMaterial(surface int, material [1]gdclass
 Returns the override [Material] for the specified [param surface] of the [Mesh] resource. See also [method get_surface_override_material_count].
 [b]Note:[/b] This returns the [Material] associated to the [MeshInstance3D]'s Surface Material Override properties, not the material within the [Mesh] resource. To get the material within the [Mesh] resource, use [method Mesh.surface_get_material] instead.
 */
-func (self Instance) GetSurfaceOverrideMaterial(surface int) [1]gdclass.Material { //gd:MeshInstance3D.get_surface_override_material
-	return [1]gdclass.Material(Advanced(self).GetSurfaceOverrideMaterial(int64(surface)))
+func (self Instance) GetSurfaceOverrideMaterial(surface int) Material.Instance { //gd:MeshInstance3D.get_surface_override_material
+	return Material.Instance(Advanced(self).GetSurfaceOverrideMaterial(int64(surface)))
 }
 
 /*
 Returns the [Material] that will be used by the [Mesh] when drawing. This can return the [member GeometryInstance3D.material_override], the surface override [Material] defined in this [MeshInstance3D], or the surface [Material] defined in the [member mesh]. For example, if [member GeometryInstance3D.material_override] is used, all surfaces will return the override material.
 Returns [code]null[/code] if no material is active, including when [member mesh] is [code]null[/code].
 */
-func (self Instance) GetActiveMaterial(surface int) [1]gdclass.Material { //gd:MeshInstance3D.get_active_material
-	return [1]gdclass.Material(Advanced(self).GetActiveMaterial(int64(surface)))
+func (self Instance) GetActiveMaterial(surface int) Material.Instance { //gd:MeshInstance3D.get_active_material
+	return Material.Instance(Advanced(self).GetActiveMaterial(int64(surface)))
 }
 
 /*
@@ -126,13 +132,13 @@ func (self Expanded) CreateConvexCollision(clean bool, simplify bool) { //gd:Mes
 This helper creates a [StaticBody3D] child node with multiple [ConvexPolygonShape3D] collision shapes calculated from the mesh geometry via convex decomposition. The convex decomposition operation can be controlled with parameters from the optional [param settings].
 */
 func (self Instance) CreateMultipleConvexCollisions() { //gd:MeshInstance3D.create_multiple_convex_collisions
-	Advanced(self).CreateMultipleConvexCollisions([1][1]gdclass.MeshConvexDecompositionSettings{}[0])
+	Advanced(self).CreateMultipleConvexCollisions([1]MeshConvexDecompositionSettings.Instance{}[0])
 }
 
 /*
 This helper creates a [StaticBody3D] child node with multiple [ConvexPolygonShape3D] collision shapes calculated from the mesh geometry via convex decomposition. The convex decomposition operation can be controlled with parameters from the optional [param settings].
 */
-func (self Expanded) CreateMultipleConvexCollisions(settings [1]gdclass.MeshConvexDecompositionSettings) { //gd:MeshInstance3D.create_multiple_convex_collisions
+func (self Expanded) CreateMultipleConvexCollisions(settings MeshConvexDecompositionSettings.Instance) { //gd:MeshInstance3D.create_multiple_convex_collisions
 	Advanced(self).CreateMultipleConvexCollisions(settings)
 }
 
@@ -175,32 +181,32 @@ func (self Instance) CreateDebugTangents() { //gd:MeshInstance3D.create_debug_ta
 Takes a snapshot from the current [ArrayMesh] with all blend shapes applied according to their current weights and bakes it to the provided [param existing] mesh. If no [param existing] mesh is provided a new [ArrayMesh] is created, baked and returned. Mesh surface materials are not copied.
 [b]Performance:[/b] [Mesh] data needs to be received from the GPU, stalling the [RenderingServer] in the process.
 */
-func (self Instance) BakeMeshFromCurrentBlendShapeMix() [1]gdclass.ArrayMesh { //gd:MeshInstance3D.bake_mesh_from_current_blend_shape_mix
-	return [1]gdclass.ArrayMesh(Advanced(self).BakeMeshFromCurrentBlendShapeMix([1][1]gdclass.ArrayMesh{}[0]))
+func (self Instance) BakeMeshFromCurrentBlendShapeMix() ArrayMesh.Instance { //gd:MeshInstance3D.bake_mesh_from_current_blend_shape_mix
+	return ArrayMesh.Instance(Advanced(self).BakeMeshFromCurrentBlendShapeMix([1]ArrayMesh.Instance{}[0]))
 }
 
 /*
 Takes a snapshot from the current [ArrayMesh] with all blend shapes applied according to their current weights and bakes it to the provided [param existing] mesh. If no [param existing] mesh is provided a new [ArrayMesh] is created, baked and returned. Mesh surface materials are not copied.
 [b]Performance:[/b] [Mesh] data needs to be received from the GPU, stalling the [RenderingServer] in the process.
 */
-func (self Expanded) BakeMeshFromCurrentBlendShapeMix(existing [1]gdclass.ArrayMesh) [1]gdclass.ArrayMesh { //gd:MeshInstance3D.bake_mesh_from_current_blend_shape_mix
-	return [1]gdclass.ArrayMesh(Advanced(self).BakeMeshFromCurrentBlendShapeMix(existing))
+func (self Expanded) BakeMeshFromCurrentBlendShapeMix(existing ArrayMesh.Instance) ArrayMesh.Instance { //gd:MeshInstance3D.bake_mesh_from_current_blend_shape_mix
+	return ArrayMesh.Instance(Advanced(self).BakeMeshFromCurrentBlendShapeMix(existing))
 }
 
 /*
 Takes a snapshot of the current animated skeleton pose of the skinned mesh and bakes it to the provided [param existing] mesh. If no [param existing] mesh is provided a new [ArrayMesh] is created, baked, and returned. Requires a skeleton with a registered skin to work. Blendshapes are ignored. Mesh surface materials are not copied.
 [b]Performance:[/b] [Mesh] data needs to be retrieved from the GPU, stalling the [RenderingServer] in the process.
 */
-func (self Instance) BakeMeshFromCurrentSkeletonPose() [1]gdclass.ArrayMesh { //gd:MeshInstance3D.bake_mesh_from_current_skeleton_pose
-	return [1]gdclass.ArrayMesh(Advanced(self).BakeMeshFromCurrentSkeletonPose([1][1]gdclass.ArrayMesh{}[0]))
+func (self Instance) BakeMeshFromCurrentSkeletonPose() ArrayMesh.Instance { //gd:MeshInstance3D.bake_mesh_from_current_skeleton_pose
+	return ArrayMesh.Instance(Advanced(self).BakeMeshFromCurrentSkeletonPose([1]ArrayMesh.Instance{}[0]))
 }
 
 /*
 Takes a snapshot of the current animated skeleton pose of the skinned mesh and bakes it to the provided [param existing] mesh. If no [param existing] mesh is provided a new [ArrayMesh] is created, baked, and returned. Requires a skeleton with a registered skin to work. Blendshapes are ignored. Mesh surface materials are not copied.
 [b]Performance:[/b] [Mesh] data needs to be retrieved from the GPU, stalling the [RenderingServer] in the process.
 */
-func (self Expanded) BakeMeshFromCurrentSkeletonPose(existing [1]gdclass.ArrayMesh) [1]gdclass.ArrayMesh { //gd:MeshInstance3D.bake_mesh_from_current_skeleton_pose
-	return [1]gdclass.ArrayMesh(Advanced(self).BakeMeshFromCurrentSkeletonPose(existing))
+func (self Expanded) BakeMeshFromCurrentSkeletonPose(existing ArrayMesh.Instance) ArrayMesh.Instance { //gd:MeshInstance3D.bake_mesh_from_current_skeleton_pose
+	return ArrayMesh.Instance(Advanced(self).BakeMeshFromCurrentSkeletonPose(existing))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -221,19 +227,19 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Mesh() [1]gdclass.Mesh {
-	return [1]gdclass.Mesh(class(self).GetMesh())
+func (self Instance) Mesh() Mesh.Instance {
+	return Mesh.Instance(class(self).GetMesh())
 }
 
-func (self Instance) SetMesh(value [1]gdclass.Mesh) {
+func (self Instance) SetMesh(value Mesh.Instance) {
 	class(self).SetMesh(value)
 }
 
-func (self Instance) Skin() [1]gdclass.Skin {
-	return [1]gdclass.Skin(class(self).GetSkin())
+func (self Instance) Skin() Skin.Instance {
+	return Skin.Instance(class(self).GetSkin())
 }
 
-func (self Instance) SetSkin(value [1]gdclass.Skin) {
+func (self Instance) SetSkin(value Skin.Instance) {
 	class(self).SetSkin(value)
 }
 

@@ -46,6 +46,8 @@ var _ = slices.Delete[[]struct{}, struct{}]
 Resource UIDs (Unique IDentifiers) allow the engine to keep references between resources intact, even if files are renamed or moved. They can be accessed with [code]uid://[/code].
 [ResourceUID] keeps track of all registered resource UIDs in a project, generates new UIDs, and converts between their string and integer representations.
 */
+type Instance [1]gdclass.ResourceUID
+
 var self [1]gdclass.ResourceUID
 var once sync.Once
 

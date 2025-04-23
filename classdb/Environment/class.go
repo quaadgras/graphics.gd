@@ -12,6 +12,8 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Sky"
+import "graphics.gd/classdb/Texture"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -142,11 +144,11 @@ func (self Instance) SetBackgroundCameraFeedId(value int) {
 	class(self).SetCameraFeedId(int64(value))
 }
 
-func (self Instance) Sky() [1]gdclass.Sky {
-	return [1]gdclass.Sky(class(self).GetSky())
+func (self Instance) Sky() Sky.Instance {
+	return Sky.Instance(class(self).GetSky())
 }
 
-func (self Instance) SetSky(value [1]gdclass.Sky) {
+func (self Instance) SetSky(value Sky.Instance) {
 	class(self).SetSky(value)
 }
 
@@ -566,11 +568,11 @@ func (self Instance) SetGlowMapStrength(value Float.X) {
 	class(self).SetGlowMapStrength(float64(value))
 }
 
-func (self Instance) GlowMap() [1]gdclass.Texture {
-	return [1]gdclass.Texture(class(self).GetGlowMap())
+func (self Instance) GlowMap() Texture.Instance {
+	return Texture.Instance(class(self).GetGlowMap())
 }
 
-func (self Instance) SetGlowMap(value [1]gdclass.Texture) {
+func (self Instance) SetGlowMap(value Texture.Instance) {
 	class(self).SetGlowMap(value)
 }
 
@@ -814,11 +816,11 @@ func (self Instance) SetAdjustmentSaturation(value Float.X) {
 	class(self).SetAdjustmentSaturation(float64(value))
 }
 
-func (self Instance) AdjustmentColorCorrection() [1]gdclass.Texture {
-	return [1]gdclass.Texture(class(self).GetAdjustmentColorCorrection())
+func (self Instance) AdjustmentColorCorrection() Texture.Instance {
+	return Texture.Instance(class(self).GetAdjustmentColorCorrection())
 }
 
-func (self Instance) SetAdjustmentColorCorrection(value [1]gdclass.Texture) {
+func (self Instance) SetAdjustmentColorCorrection(value Texture.Instance) {
 	class(self).SetAdjustmentColorCorrection(value)
 }
 

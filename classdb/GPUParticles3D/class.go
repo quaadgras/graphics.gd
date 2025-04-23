@@ -12,8 +12,11 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/GeometryInstance3D"
+import "graphics.gd/classdb/Material"
+import "graphics.gd/classdb/Mesh"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/Skin"
 import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/variant/AABB"
 import "graphics.gd/variant/Array"
@@ -101,7 +104,7 @@ func (self Instance) EmitParticle(xform Transform3D.BasisOrigin, velocity Vector
 /*
 Sets this node's properties to match a given [CPUParticles3D] node.
 */
-func (self Instance) ConvertFromParticles(particles [1]gdclass.Node) { //gd:GPUParticles3D.convert_from_particles
+func (self Instance) ConvertFromParticles(particles Node.Instance) { //gd:GPUParticles3D.convert_from_particles
 	Advanced(self).ConvertFromParticles(particles)
 }
 
@@ -315,11 +318,11 @@ func (self Instance) SetTrailLifetime(value Float.X) {
 	class(self).SetTrailLifetime(float64(value))
 }
 
-func (self Instance) ProcessMaterial() [1]gdclass.Material {
-	return [1]gdclass.Material(class(self).GetProcessMaterial())
+func (self Instance) ProcessMaterial() Material.Instance {
+	return Material.Instance(class(self).GetProcessMaterial())
 }
 
-func (self Instance) SetProcessMaterial(value [1]gdclass.Material) {
+func (self Instance) SetProcessMaterial(value Material.Instance) {
 	class(self).SetProcessMaterial(value)
 }
 
@@ -331,43 +334,43 @@ func (self Instance) SetDrawPasses(value int) {
 	class(self).SetDrawPasses(int64(value))
 }
 
-func (self Instance) DrawPass1() [1]gdclass.Mesh {
-	return [1]gdclass.Mesh(class(self).GetDrawPassMesh(0))
+func (self Instance) DrawPass1() Mesh.Instance {
+	return Mesh.Instance(class(self).GetDrawPassMesh(0))
 }
 
-func (self Instance) SetDrawPass1(value [1]gdclass.Mesh) {
+func (self Instance) SetDrawPass1(value Mesh.Instance) {
 	class(self).SetDrawPassMesh(0, value)
 }
 
-func (self Instance) DrawPass2() [1]gdclass.Mesh {
-	return [1]gdclass.Mesh(class(self).GetDrawPassMesh(1))
+func (self Instance) DrawPass2() Mesh.Instance {
+	return Mesh.Instance(class(self).GetDrawPassMesh(1))
 }
 
-func (self Instance) SetDrawPass2(value [1]gdclass.Mesh) {
+func (self Instance) SetDrawPass2(value Mesh.Instance) {
 	class(self).SetDrawPassMesh(1, value)
 }
 
-func (self Instance) DrawPass3() [1]gdclass.Mesh {
-	return [1]gdclass.Mesh(class(self).GetDrawPassMesh(2))
+func (self Instance) DrawPass3() Mesh.Instance {
+	return Mesh.Instance(class(self).GetDrawPassMesh(2))
 }
 
-func (self Instance) SetDrawPass3(value [1]gdclass.Mesh) {
+func (self Instance) SetDrawPass3(value Mesh.Instance) {
 	class(self).SetDrawPassMesh(2, value)
 }
 
-func (self Instance) DrawPass4() [1]gdclass.Mesh {
-	return [1]gdclass.Mesh(class(self).GetDrawPassMesh(3))
+func (self Instance) DrawPass4() Mesh.Instance {
+	return Mesh.Instance(class(self).GetDrawPassMesh(3))
 }
 
-func (self Instance) SetDrawPass4(value [1]gdclass.Mesh) {
+func (self Instance) SetDrawPass4(value Mesh.Instance) {
 	class(self).SetDrawPassMesh(3, value)
 }
 
-func (self Instance) DrawSkin() [1]gdclass.Skin {
-	return [1]gdclass.Skin(class(self).GetSkin())
+func (self Instance) DrawSkin() Skin.Instance {
+	return Skin.Instance(class(self).GetSkin())
 }
 
-func (self Instance) SetDrawSkin(value [1]gdclass.Skin) {
+func (self Instance) SetDrawSkin(value Skin.Instance) {
 	class(self).SetSkin(value)
 }
 

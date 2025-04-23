@@ -11,8 +11,11 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/CollisionObject3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Shape3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -63,7 +66,7 @@ type Any interface {
 /*
 This method does nothing.
 */
-func (self Instance) ResourceChanged(resource [1]gdclass.Resource) { //gd:ShapeCast3D.resource_changed
+func (self Instance) ResourceChanged(resource Resource.Instance) { //gd:ShapeCast3D.resource_changed
 	Advanced(self).ResourceChanged(resource)
 }
 
@@ -150,7 +153,7 @@ func (self Instance) AddExceptionRid(rid RID.Body3D) { //gd:ShapeCast3D.add_exce
 /*
 Adds a collision exception so the shape does not report collisions with the specified node.
 */
-func (self Instance) AddException(node [1]gdclass.CollisionObject3D) { //gd:ShapeCast3D.add_exception
+func (self Instance) AddException(node CollisionObject3D.Instance) { //gd:ShapeCast3D.add_exception
 	Advanced(self).AddException(node)
 }
 
@@ -164,7 +167,7 @@ func (self Instance) RemoveExceptionRid(rid RID.Body3D) { //gd:ShapeCast3D.remov
 /*
 Removes a collision exception so the shape does report collisions with the specified node.
 */
-func (self Instance) RemoveException(node [1]gdclass.CollisionObject3D) { //gd:ShapeCast3D.remove_exception
+func (self Instance) RemoveException(node CollisionObject3D.Instance) { //gd:ShapeCast3D.remove_exception
 	Advanced(self).RemoveException(node)
 }
 
@@ -215,11 +218,11 @@ func (self Instance) SetEnabled(value bool) {
 	class(self).SetEnabled(value)
 }
 
-func (self Instance) Shape() [1]gdclass.Shape3D {
-	return [1]gdclass.Shape3D(class(self).GetShape())
+func (self Instance) Shape() Shape3D.Instance {
+	return Shape3D.Instance(class(self).GetShape())
 }
 
-func (self Instance) SetShape(value [1]gdclass.Shape3D) {
+func (self Instance) SetShape(value Shape3D.Instance) {
 	class(self).SetShape(value)
 }
 

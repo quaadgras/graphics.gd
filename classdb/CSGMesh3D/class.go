@@ -14,6 +14,8 @@ import "graphics.gd/variant"
 import "graphics.gd/classdb/CSGPrimitive3D"
 import "graphics.gd/classdb/CSGShape3D"
 import "graphics.gd/classdb/GeometryInstance3D"
+import "graphics.gd/classdb/Material"
+import "graphics.gd/classdb/Mesh"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/VisualInstance3D"
@@ -79,19 +81,19 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Mesh() [1]gdclass.Mesh {
-	return [1]gdclass.Mesh(class(self).GetMesh())
+func (self Instance) Mesh() Mesh.Instance {
+	return Mesh.Instance(class(self).GetMesh())
 }
 
-func (self Instance) SetMesh(value [1]gdclass.Mesh) {
+func (self Instance) SetMesh(value Mesh.Instance) {
 	class(self).SetMesh(value)
 }
 
-func (self Instance) Material() [1]gdclass.Material {
-	return [1]gdclass.Material(class(self).GetMaterial())
+func (self Instance) Material() Material.Instance {
+	return Material.Instance(class(self).GetMaterial())
 }
 
-func (self Instance) SetMaterial(value [1]gdclass.Material) {
+func (self Instance) SetMaterial(value Material.Instance) {
 	class(self).SetMaterial(value)
 }
 

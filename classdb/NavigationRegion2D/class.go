@@ -12,6 +12,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/NavigationPolygon"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node2D"
 import "graphics.gd/variant/Array"
@@ -153,11 +154,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) NavigationPolygon() [1]gdclass.NavigationPolygon {
-	return [1]gdclass.NavigationPolygon(class(self).GetNavigationPolygon())
+func (self Instance) NavigationPolygon() NavigationPolygon.Instance {
+	return NavigationPolygon.Instance(class(self).GetNavigationPolygon())
 }
 
-func (self Instance) SetNavigationPolygon(value [1]gdclass.NavigationPolygon) {
+func (self Instance) SetNavigationPolygon(value NavigationPolygon.Instance) {
 	class(self).SetNavigationPolygon(value)
 }
 

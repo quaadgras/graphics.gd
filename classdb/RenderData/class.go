@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/RenderSceneBuffers"
+import "graphics.gd/classdb/RenderSceneData"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -58,15 +60,15 @@ type Any interface {
 /*
 Returns the [RenderSceneBuffers] object managing the scene buffers for rendering this viewport.
 */
-func (self Instance) GetRenderSceneBuffers() [1]gdclass.RenderSceneBuffers { //gd:RenderData.get_render_scene_buffers
-	return [1]gdclass.RenderSceneBuffers(Advanced(self).GetRenderSceneBuffers())
+func (self Instance) GetRenderSceneBuffers() RenderSceneBuffers.Instance { //gd:RenderData.get_render_scene_buffers
+	return RenderSceneBuffers.Instance(Advanced(self).GetRenderSceneBuffers())
 }
 
 /*
 Returns the [RenderSceneData] object managing this frames scene data.
 */
-func (self Instance) GetRenderSceneData() [1]gdclass.RenderSceneData { //gd:RenderData.get_render_scene_data
-	return [1]gdclass.RenderSceneData(Advanced(self).GetRenderSceneData())
+func (self Instance) GetRenderSceneData() RenderSceneData.Instance { //gd:RenderData.get_render_scene_data
+	return RenderSceneData.Instance(Advanced(self).GetRenderSceneData())
 }
 
 /*

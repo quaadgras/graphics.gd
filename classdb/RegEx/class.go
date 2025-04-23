@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/RegExMatch"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -106,17 +107,17 @@ type Any interface {
 /*
 Creates and compiles a new [RegEx] object. See also [method compile].
 */
-func CreateFromString(pattern string) [1]gdclass.RegEx { //gd:RegEx.create_from_string
+func CreateFromString(pattern string) Instance { //gd:RegEx.create_from_string
 	self := Instance{}
-	return [1]gdclass.RegEx(Advanced(self).CreateFromString(String.New(pattern), true))
+	return Instance(Advanced(self).CreateFromString(String.New(pattern), true))
 }
 
 /*
 Creates and compiles a new [RegEx] object. See also [method compile].
 */
-func CreateFromStringOptions(pattern string, show_error bool) [1]gdclass.RegEx { //gd:RegEx.create_from_string
+func CreateFromStringOptions(pattern string, show_error bool) Instance { //gd:RegEx.create_from_string
 	self := Instance{}
-	return [1]gdclass.RegEx(Advanced(self).CreateFromString(String.New(pattern), show_error))
+	return Instance(Advanced(self).CreateFromString(String.New(pattern), show_error))
 }
 
 /*
@@ -144,32 +145,32 @@ func (self Expanded) Compile(pattern string, show_error bool) error { //gd:RegEx
 Searches the text for the compiled pattern. Returns a [RegExMatch] container of the first matching result if found, otherwise [code]null[/code].
 The region to search within can be specified with [param offset] and [param end]. This is useful when searching for another match in the same [param subject] by calling this method again after a previous success. Note that setting these parameters differs from passing over a shortened string. For example, the start anchor [code]^[/code] is not affected by [param offset], and the character before [param offset] will be checked for the word boundary [code]\b[/code].
 */
-func (self Instance) Search(subject string) [1]gdclass.RegExMatch { //gd:RegEx.search
-	return [1]gdclass.RegExMatch(Advanced(self).Search(String.New(subject), int64(0), int64(-1)))
+func (self Instance) Search(subject string) RegExMatch.Instance { //gd:RegEx.search
+	return RegExMatch.Instance(Advanced(self).Search(String.New(subject), int64(0), int64(-1)))
 }
 
 /*
 Searches the text for the compiled pattern. Returns a [RegExMatch] container of the first matching result if found, otherwise [code]null[/code].
 The region to search within can be specified with [param offset] and [param end]. This is useful when searching for another match in the same [param subject] by calling this method again after a previous success. Note that setting these parameters differs from passing over a shortened string. For example, the start anchor [code]^[/code] is not affected by [param offset], and the character before [param offset] will be checked for the word boundary [code]\b[/code].
 */
-func (self Expanded) Search(subject string, offset int, end int) [1]gdclass.RegExMatch { //gd:RegEx.search
-	return [1]gdclass.RegExMatch(Advanced(self).Search(String.New(subject), int64(offset), int64(end)))
+func (self Expanded) Search(subject string, offset int, end int) RegExMatch.Instance { //gd:RegEx.search
+	return RegExMatch.Instance(Advanced(self).Search(String.New(subject), int64(offset), int64(end)))
 }
 
 /*
 Searches the text for the compiled pattern. Returns an array of [RegExMatch] containers for each non-overlapping result. If no results were found, an empty array is returned instead.
 The region to search within can be specified with [param offset] and [param end]. This is useful when searching for another match in the same [param subject] by calling this method again after a previous success. Note that setting these parameters differs from passing over a shortened string. For example, the start anchor [code]^[/code] is not affected by [param offset], and the character before [param offset] will be checked for the word boundary [code]\b[/code].
 */
-func (self Instance) SearchAll(subject string) [][1]gdclass.RegExMatch { //gd:RegEx.search_all
-	return [][1]gdclass.RegExMatch(gd.ArrayAs[[][1]gdclass.RegExMatch](gd.InternalArray(Advanced(self).SearchAll(String.New(subject), int64(0), int64(-1)))))
+func (self Instance) SearchAll(subject string) []RegExMatch.Instance { //gd:RegEx.search_all
+	return []RegExMatch.Instance(gd.ArrayAs[[]RegExMatch.Instance](gd.InternalArray(Advanced(self).SearchAll(String.New(subject), int64(0), int64(-1)))))
 }
 
 /*
 Searches the text for the compiled pattern. Returns an array of [RegExMatch] containers for each non-overlapping result. If no results were found, an empty array is returned instead.
 The region to search within can be specified with [param offset] and [param end]. This is useful when searching for another match in the same [param subject] by calling this method again after a previous success. Note that setting these parameters differs from passing over a shortened string. For example, the start anchor [code]^[/code] is not affected by [param offset], and the character before [param offset] will be checked for the word boundary [code]\b[/code].
 */
-func (self Expanded) SearchAll(subject string, offset int, end int) [][1]gdclass.RegExMatch { //gd:RegEx.search_all
-	return [][1]gdclass.RegExMatch(gd.ArrayAs[[][1]gdclass.RegExMatch](gd.InternalArray(Advanced(self).SearchAll(String.New(subject), int64(offset), int64(end)))))
+func (self Expanded) SearchAll(subject string, offset int, end int) []RegExMatch.Instance { //gd:RegEx.search_all
+	return []RegExMatch.Instance(gd.ArrayAs[[]RegExMatch.Instance](gd.InternalArray(Advanced(self).SearchAll(String.New(subject), int64(offset), int64(end)))))
 }
 
 /*

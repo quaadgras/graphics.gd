@@ -61,18 +61,18 @@ type Any interface {
 Creates a new [AudioStreamWAV] instance from the given buffer. The buffer must contain WAV data.
 The keys and values of [param options] match the properties of [ResourceImporterWAV]. The usage of [param options] is identical to [method AudioStreamWAV.load_from_file].
 */
-func LoadFromBuffer(stream_data []byte, options Options) [1]gdclass.AudioStreamWAV { //gd:AudioStreamWAV.load_from_buffer
+func LoadFromBuffer(stream_data []byte, options Options) Instance { //gd:AudioStreamWAV.load_from_buffer
 	self := Instance{}
-	return [1]gdclass.AudioStreamWAV(Advanced(self).LoadFromBuffer(Packed.Bytes(Packed.New(stream_data...)), gd.DictionaryFromMap(options)))
+	return Instance(Advanced(self).LoadFromBuffer(Packed.Bytes(Packed.New(stream_data...)), gd.DictionaryFromMap(options)))
 }
 
 /*
 Creates a new [AudioStreamWAV] instance from the given buffer. The buffer must contain WAV data.
 The keys and values of [param options] match the properties of [ResourceImporterWAV]. The usage of [param options] is identical to [method AudioStreamWAV.load_from_file].
 */
-func LoadFromBufferOptions(stream_data []byte, options Options) [1]gdclass.AudioStreamWAV { //gd:AudioStreamWAV.load_from_buffer
+func LoadFromBufferOptions(stream_data []byte, options Options) Instance { //gd:AudioStreamWAV.load_from_buffer
 	self := Instance{}
-	return [1]gdclass.AudioStreamWAV(Advanced(self).LoadFromBuffer(Packed.Bytes(Packed.New(stream_data...)), gd.DictionaryFromMap(options)))
+	return Instance(Advanced(self).LoadFromBuffer(Packed.Bytes(Packed.New(stream_data...)), gd.DictionaryFromMap(options)))
 }
 
 /*
@@ -97,9 +97,9 @@ func _on_files_dropped(files):
 
 [/codeblock]
 */
-func LoadFromFile(path string, options Options) [1]gdclass.AudioStreamWAV { //gd:AudioStreamWAV.load_from_file
+func LoadFromFile(path string, options Options) Instance { //gd:AudioStreamWAV.load_from_file
 	self := Instance{}
-	return [1]gdclass.AudioStreamWAV(Advanced(self).LoadFromFile(String.New(path), gd.DictionaryFromMap(options)))
+	return Instance(Advanced(self).LoadFromFile(String.New(path), gd.DictionaryFromMap(options)))
 }
 
 /*
@@ -124,9 +124,9 @@ func _on_files_dropped(files):
 
 [/codeblock]
 */
-func LoadFromFileOptions(path string, options Options) [1]gdclass.AudioStreamWAV { //gd:AudioStreamWAV.load_from_file
+func LoadFromFileOptions(path string, options Options) Instance { //gd:AudioStreamWAV.load_from_file
 	self := Instance{}
-	return [1]gdclass.AudioStreamWAV(Advanced(self).LoadFromFile(String.New(path), gd.DictionaryFromMap(options)))
+	return Instance(Advanced(self).LoadFromFile(String.New(path), gd.DictionaryFromMap(options)))
 }
 
 /*

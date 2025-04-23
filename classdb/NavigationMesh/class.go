@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Mesh"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/AABB"
 import "graphics.gd/variant/Array"
@@ -103,7 +104,7 @@ func (self Instance) ClearPolygons() { //gd:NavigationMesh.clear_polygons
 Initializes the navigation mesh by setting the vertices and indices according to a [Mesh].
 [b]Note:[/b] The given [param mesh] must be of type [constant Mesh.PRIMITIVE_TRIANGLES] and have an index array.
 */
-func (self Instance) CreateFromMesh(mesh [1]gdclass.Mesh) { //gd:NavigationMesh.create_from_mesh
+func (self Instance) CreateFromMesh(mesh Mesh.Instance) { //gd:NavigationMesh.create_from_mesh
 	Advanced(self).CreateFromMesh(mesh)
 }
 

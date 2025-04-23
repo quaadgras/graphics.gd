@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Light3D"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -59,24 +60,24 @@ type Any interface {
 /*
 Create a new GLTFLight instance from the given Godot [Light3D] node.
 */
-func FromNode(light_node [1]gdclass.Light3D) [1]gdclass.GLTFLight { //gd:GLTFLight.from_node
+func FromNode(light_node Light3D.Instance) Instance { //gd:GLTFLight.from_node
 	self := Instance{}
-	return [1]gdclass.GLTFLight(Advanced(self).FromNode(light_node))
+	return Instance(Advanced(self).FromNode(light_node))
 }
 
 /*
 Converts this GLTFLight instance into a Godot [Light3D] node.
 */
-func (self Instance) ToNode() [1]gdclass.Light3D { //gd:GLTFLight.to_node
-	return [1]gdclass.Light3D(Advanced(self).ToNode())
+func (self Instance) ToNode() Light3D.Instance { //gd:GLTFLight.to_node
+	return Light3D.Instance(Advanced(self).ToNode())
 }
 
 /*
 Creates a new GLTFLight instance by parsing the given [Dictionary].
 */
-func FromDictionary(dictionary Structure) [1]gdclass.GLTFLight { //gd:GLTFLight.from_dictionary
+func FromDictionary(dictionary Structure) Instance { //gd:GLTFLight.from_dictionary
 	self := Instance{}
-	return [1]gdclass.GLTFLight(Advanced(self).FromDictionary(gd.DictionaryFromMap(dictionary)))
+	return Instance(Advanced(self).FromDictionary(gd.DictionaryFromMap(dictionary)))
 }
 
 /*

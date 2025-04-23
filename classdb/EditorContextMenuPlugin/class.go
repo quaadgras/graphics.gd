@@ -11,6 +11,9 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/PopupMenu"
+import "graphics.gd/classdb/Shortcut"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -92,7 +95,7 @@ func _init():
 
 [/codeblock]
 */
-func (self Instance) AddMenuShortcut(shortcut [1]gdclass.Shortcut, callback func(array []any)) { //gd:EditorContextMenuPlugin.add_menu_shortcut
+func (self Instance) AddMenuShortcut(shortcut Shortcut.Instance, callback func(array []any)) { //gd:EditorContextMenuPlugin.add_menu_shortcut
 	Advanced(self).AddMenuShortcut(shortcut, Callable.New(callback))
 }
 
@@ -107,7 +110,7 @@ func _popup_menu(paths):
 If you want to assign shortcut to the menu item, use [method add_context_menu_item_from_shortcut] instead.
 */
 func (self Instance) AddContextMenuItem(name string, callback func(array []any)) { //gd:EditorContextMenuPlugin.add_context_menu_item
-	Advanced(self).AddContextMenuItem(String.New(name), Callable.New(callback), [1][1]gdclass.Texture2D{}[0])
+	Advanced(self).AddContextMenuItem(String.New(name), Callable.New(callback), [1]Texture2D.Instance{}[0])
 }
 
 /*
@@ -120,7 +123,7 @@ func _popup_menu(paths):
 [/codeblock]
 If you want to assign shortcut to the menu item, use [method add_context_menu_item_from_shortcut] instead.
 */
-func (self Expanded) AddContextMenuItem(name string, callback func(array []any), icon [1]gdclass.Texture2D) { //gd:EditorContextMenuPlugin.add_context_menu_item
+func (self Expanded) AddContextMenuItem(name string, callback func(array []any), icon Texture2D.Instance) { //gd:EditorContextMenuPlugin.add_context_menu_item
 	Advanced(self).AddContextMenuItem(String.New(name), Callable.New(callback), icon)
 }
 
@@ -137,8 +140,8 @@ func _popup_menu(paths):
 
 [/codeblock]
 */
-func (self Instance) AddContextMenuItemFromShortcut(name string, shortcut [1]gdclass.Shortcut) { //gd:EditorContextMenuPlugin.add_context_menu_item_from_shortcut
-	Advanced(self).AddContextMenuItemFromShortcut(String.New(name), shortcut, [1][1]gdclass.Texture2D{}[0])
+func (self Instance) AddContextMenuItemFromShortcut(name string, shortcut Shortcut.Instance) { //gd:EditorContextMenuPlugin.add_context_menu_item_from_shortcut
+	Advanced(self).AddContextMenuItemFromShortcut(String.New(name), shortcut, [1]Texture2D.Instance{}[0])
 }
 
 /*
@@ -154,7 +157,7 @@ func _popup_menu(paths):
 
 [/codeblock]
 */
-func (self Expanded) AddContextMenuItemFromShortcut(name string, shortcut [1]gdclass.Shortcut, icon [1]gdclass.Texture2D) { //gd:EditorContextMenuPlugin.add_context_menu_item_from_shortcut
+func (self Expanded) AddContextMenuItemFromShortcut(name string, shortcut Shortcut.Instance, icon Texture2D.Instance) { //gd:EditorContextMenuPlugin.add_context_menu_item_from_shortcut
 	Advanced(self).AddContextMenuItemFromShortcut(String.New(name), shortcut, icon)
 }
 
@@ -172,8 +175,8 @@ func _popup_menu(paths):
 
 [/codeblock]
 */
-func (self Instance) AddContextSubmenuItem(name string, menu [1]gdclass.PopupMenu) { //gd:EditorContextMenuPlugin.add_context_submenu_item
-	Advanced(self).AddContextSubmenuItem(String.New(name), menu, [1][1]gdclass.Texture2D{}[0])
+func (self Instance) AddContextSubmenuItem(name string, menu PopupMenu.Instance) { //gd:EditorContextMenuPlugin.add_context_submenu_item
+	Advanced(self).AddContextSubmenuItem(String.New(name), menu, [1]Texture2D.Instance{}[0])
 }
 
 /*
@@ -190,7 +193,7 @@ func _popup_menu(paths):
 
 [/codeblock]
 */
-func (self Expanded) AddContextSubmenuItem(name string, menu [1]gdclass.PopupMenu, icon [1]gdclass.Texture2D) { //gd:EditorContextMenuPlugin.add_context_submenu_item
+func (self Expanded) AddContextSubmenuItem(name string, menu PopupMenu.Instance, icon Texture2D.Instance) { //gd:EditorContextMenuPlugin.add_context_submenu_item
 	Advanced(self).AddContextSubmenuItem(String.New(name), menu, icon)
 }
 

@@ -17,6 +17,7 @@ import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/HBoxContainer"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -145,11 +146,11 @@ func (self Instance) SetBaseType(value string) {
 	class(self).SetBaseType(String.New(value))
 }
 
-func (self Instance) EditedResource() [1]gdclass.Resource {
-	return [1]gdclass.Resource(class(self).GetEditedResource())
+func (self Instance) EditedResource() Resource.Instance {
+	return Resource.Instance(class(self).GetEditedResource())
 }
 
-func (self Instance) SetEditedResource(value [1]gdclass.Resource) {
+func (self Instance) SetEditedResource(value Resource.Instance) {
 	class(self).SetEditedResource(value)
 }
 
@@ -294,11 +295,11 @@ func (self class) IsEditable() bool { //gd:EditorResourcePicker.is_editable
 	frame.Free()
 	return ret
 }
-func (self Instance) OnResourceSelected(cb func(resource [1]gdclass.Resource, inspect bool)) {
+func (self Instance) OnResourceSelected(cb func(resource Resource.Instance, inspect bool)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("resource_selected"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnResourceChanged(cb func(resource [1]gdclass.Resource)) {
+func (self Instance) OnResourceChanged(cb func(resource Resource.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("resource_changed"), gd.NewCallable(cb), 0)
 }
 

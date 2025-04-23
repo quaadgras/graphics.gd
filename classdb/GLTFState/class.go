@@ -11,7 +11,22 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/AnimationPlayer"
+import "graphics.gd/classdb/GLTFAccessor"
+import "graphics.gd/classdb/GLTFAnimation"
+import "graphics.gd/classdb/GLTFBufferView"
+import "graphics.gd/classdb/GLTFCamera"
+import "graphics.gd/classdb/GLTFLight"
+import "graphics.gd/classdb/GLTFMesh"
+import "graphics.gd/classdb/GLTFNode"
+import "graphics.gd/classdb/GLTFSkeleton"
+import "graphics.gd/classdb/GLTFSkin"
+import "graphics.gd/classdb/GLTFTexture"
+import "graphics.gd/classdb/GLTFTextureSampler"
+import "graphics.gd/classdb/Material"
+import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -47,6 +62,7 @@ Contains all nodes and resources of a glTF file. This is used by [GLTFDocument] 
 GLTFState can be populated by [GLTFDocument] reading a file or by converting a Godot scene. Then the data can either be used to create a Godot scene or save to a glTF file. The code that converts to/from a Godot scene can be intercepted at arbitrary points by [GLTFDocumentExtension] classes. This allows for custom data to be stored in the glTF file or for custom data to be converted to/from Godot nodes.
 */
 type Instance [1]gdclass.GLTFState
+type Expanded [1]gdclass.GLTFState
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -75,7 +91,7 @@ Append the given [GLTFNode] to the state, and return its new index. This can be 
 The [param godot_scene_node] parameter is the Godot scene node that corresponds to this glTF node. This is highly recommended to be set to a valid node, but may be [code]null[/code] if there is no corresponding Godot scene node. One Godot scene node may be used for multiple glTF nodes, so if exporting multiple glTF nodes for one Godot scene node, use the same Godot scene node for each.
 The [param parent_node_index] parameter is the index of the parent [GLTFNode] in the state. If [code]-1[/code], the node will be a root node, otherwise the new node will be added to the parent's list of children. The index will also be written to the [member GLTFNode.parent] property of the new node.
 */
-func (self Instance) AppendGltfNode(gltf_node [1]gdclass.GLTFNode, godot_scene_node [1]gdclass.Node, parent_node_index int) int { //gd:GLTFState.append_gltf_node
+func (self Instance) AppendGltfNode(gltf_node GLTFNode.Instance, godot_scene_node Node.Instance, parent_node_index int) int { //gd:GLTFState.append_gltf_node
 	return int(int(Advanced(self).AppendGltfNode(gltf_node, godot_scene_node, int64(parent_node_index))))
 }
 
@@ -89,23 +105,23 @@ func (self Instance) GetAnimationPlayersCount(idx int) int { //gd:GLTFState.get_
 /*
 Returns the [AnimationPlayer] node with the given index. These nodes are only used during the export process when converting Godot [AnimationPlayer] nodes to glTF animations.
 */
-func (self Instance) GetAnimationPlayer(idx int) [1]gdclass.AnimationPlayer { //gd:GLTFState.get_animation_player
-	return [1]gdclass.AnimationPlayer(Advanced(self).GetAnimationPlayer(int64(idx)))
+func (self Instance) GetAnimationPlayer(idx int) AnimationPlayer.Instance { //gd:GLTFState.get_animation_player
+	return AnimationPlayer.Instance(Advanced(self).GetAnimationPlayer(int64(idx)))
 }
 
 /*
 Returns the Godot scene node that corresponds to the same index as the [GLTFNode] it was generated from. This is the inverse of [method get_node_index]. Useful during the import process.
 [b]Note:[/b] Not every [GLTFNode] will have a scene node generated, and not every generated scene node will have a corresponding [GLTFNode]. If there is no scene node for this [GLTFNode] index, [code]null[/code] is returned.
 */
-func (self Instance) GetSceneNode(idx int) [1]gdclass.Node { //gd:GLTFState.get_scene_node
-	return [1]gdclass.Node(Advanced(self).GetSceneNode(int64(idx)))
+func (self Instance) GetSceneNode(idx int) Node.Instance { //gd:GLTFState.get_scene_node
+	return Node.Instance(Advanced(self).GetSceneNode(int64(idx)))
 }
 
 /*
 Returns the index of the [GLTFNode] corresponding to this Godot scene node. This is the inverse of [method get_scene_node]. Useful during the export process.
 [b]Note:[/b] Not every Godot scene node will have a corresponding [GLTFNode], and not every [GLTFNode] will have a scene node generated. If there is no [GLTFNode] index for this scene node, [code]-1[/code] is returned.
 */
-func (self Instance) GetNodeIndex(scene_node [1]gdclass.Node) int { //gd:GLTFState.get_node_index
+func (self Instance) GetNodeIndex(scene_node Node.Instance) int { //gd:GLTFState.get_node_index
 	return int(int(Advanced(self).GetNodeIndex(scene_node)))
 }
 
@@ -123,6 +139,29 @@ The first argument should be the [GLTFDocumentExtension] name (does not have to 
 */
 func (self Instance) SetAdditionalData(extension_name string, additional_data any) { //gd:GLTFState.set_additional_data
 	Advanced(self).SetAdditionalData(String.Name(String.New(extension_name)), variant.New(additional_data))
+}
+
+/*
+Returns the [NodePath] that this GLTF node will have in the Godot scene tree after being imported. This is useful when importing glTF object model pointers with [GLTFObjectModelProperty], for handling extensions such as [code]KHR_animation_pointer[/code] or [code]KHR_interactivity[/code].
+If [param handle_skeletons] is [code]true[/code], paths to skeleton bone glTF nodes will be resolved properly. For example, a path that would be [code]^"A/B/C/Bone1/Bone2/Bone3"[/code] if [code]false[/code] will become [code]^"A/B/C/Skeleton3D:Bone3"[/code].
+*/
+func (self Instance) GetSceneNodePath(peer GLTFNode.Instance) string { //gd:GLTFNode.get_scene_node_path
+	return string(GLTFNode.Advanced(peer).GetSceneNodePath(self, true).String())
+}
+
+/*
+Returns the [NodePath] that this GLTF node will have in the Godot scene tree after being imported. This is useful when importing glTF object model pointers with [GLTFObjectModelProperty], for handling extensions such as [code]KHR_animation_pointer[/code] or [code]KHR_interactivity[/code].
+If [param handle_skeletons] is [code]true[/code], paths to skeleton bone glTF nodes will be resolved properly. For example, a path that would be [code]^"A/B/C/Bone1/Bone2/Bone3"[/code] if [code]false[/code] will become [code]^"A/B/C/Skeleton3D:Bone3"[/code].
+*/
+func (self Expanded) GetSceneNodePath(peer GLTFNode.Instance, handle_skeletons bool) string { //gd:GLTFNode.get_scene_node_path
+	return string(GLTFNode.Advanced(peer).GetSceneNodePath(self, handle_skeletons).String())
+}
+
+/*
+Loads the buffer view data from the buffer referenced by this buffer view in the given [GLTFState]. Interleaved data with a byte stride is not yet supported by this method. The data is returned as a [PackedByteArray].
+*/
+func (self Instance) LoadBufferViewData(peer GLTFBufferView.Instance) []byte { //gd:GLTFBufferView.load_buffer_view_data
+	return []byte(GLTFBufferView.Advanced(peer).LoadBufferViewData(self).Bytes())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -192,11 +231,11 @@ func (self Instance) SetUseNamedSkinBinds(value bool) {
 	class(self).SetUseNamedSkinBinds(value)
 }
 
-func (self Instance) Nodes() [][1]gdclass.GLTFNode {
-	return [][1]gdclass.GLTFNode(gd.ArrayAs[[][1]gdclass.GLTFNode](gd.InternalArray(class(self).GetNodes())))
+func (self Instance) Nodes() []GLTFNode.Instance {
+	return []GLTFNode.Instance(gd.ArrayAs[[]GLTFNode.Instance](gd.InternalArray(class(self).GetNodes())))
 }
 
-func (self Instance) SetNodes(value [][1]gdclass.GLTFNode) {
+func (self Instance) SetNodes(value []GLTFNode.Instance) {
 	class(self).SetNodes(gd.ArrayFromSlice[Array.Contains[[1]gdclass.GLTFNode]](value))
 }
 
@@ -208,35 +247,35 @@ func (self Instance) SetBuffers(value [][]byte) {
 	class(self).SetBuffers(gd.ArrayFromSlice[Array.Contains[Packed.Bytes]](value))
 }
 
-func (self Instance) BufferViews() [][1]gdclass.GLTFBufferView {
-	return [][1]gdclass.GLTFBufferView(gd.ArrayAs[[][1]gdclass.GLTFBufferView](gd.InternalArray(class(self).GetBufferViews())))
+func (self Instance) BufferViews() []GLTFBufferView.Instance {
+	return []GLTFBufferView.Instance(gd.ArrayAs[[]GLTFBufferView.Instance](gd.InternalArray(class(self).GetBufferViews())))
 }
 
-func (self Instance) SetBufferViews(value [][1]gdclass.GLTFBufferView) {
+func (self Instance) SetBufferViews(value []GLTFBufferView.Instance) {
 	class(self).SetBufferViews(gd.ArrayFromSlice[Array.Contains[[1]gdclass.GLTFBufferView]](value))
 }
 
-func (self Instance) Accessors() [][1]gdclass.GLTFAccessor {
-	return [][1]gdclass.GLTFAccessor(gd.ArrayAs[[][1]gdclass.GLTFAccessor](gd.InternalArray(class(self).GetAccessors())))
+func (self Instance) Accessors() []GLTFAccessor.Instance {
+	return []GLTFAccessor.Instance(gd.ArrayAs[[]GLTFAccessor.Instance](gd.InternalArray(class(self).GetAccessors())))
 }
 
-func (self Instance) SetAccessors(value [][1]gdclass.GLTFAccessor) {
+func (self Instance) SetAccessors(value []GLTFAccessor.Instance) {
 	class(self).SetAccessors(gd.ArrayFromSlice[Array.Contains[[1]gdclass.GLTFAccessor]](value))
 }
 
-func (self Instance) Meshes() [][1]gdclass.GLTFMesh {
-	return [][1]gdclass.GLTFMesh(gd.ArrayAs[[][1]gdclass.GLTFMesh](gd.InternalArray(class(self).GetMeshes())))
+func (self Instance) Meshes() []GLTFMesh.Instance {
+	return []GLTFMesh.Instance(gd.ArrayAs[[]GLTFMesh.Instance](gd.InternalArray(class(self).GetMeshes())))
 }
 
-func (self Instance) SetMeshes(value [][1]gdclass.GLTFMesh) {
+func (self Instance) SetMeshes(value []GLTFMesh.Instance) {
 	class(self).SetMeshes(gd.ArrayFromSlice[Array.Contains[[1]gdclass.GLTFMesh]](value))
 }
 
-func (self Instance) Materials() [][1]gdclass.Material {
-	return [][1]gdclass.Material(gd.ArrayAs[[][1]gdclass.Material](gd.InternalArray(class(self).GetMaterials())))
+func (self Instance) Materials() []Material.Instance {
+	return []Material.Instance(gd.ArrayAs[[]Material.Instance](gd.InternalArray(class(self).GetMaterials())))
 }
 
-func (self Instance) SetMaterials(value [][1]gdclass.Material) {
+func (self Instance) SetMaterials(value []Material.Instance) {
 	class(self).SetMaterials(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Material]](value))
 }
 
@@ -272,51 +311,51 @@ func (self Instance) SetRootNodes(value []int32) {
 	class(self).SetRootNodes(Packed.New(value...))
 }
 
-func (self Instance) Textures() [][1]gdclass.GLTFTexture {
-	return [][1]gdclass.GLTFTexture(gd.ArrayAs[[][1]gdclass.GLTFTexture](gd.InternalArray(class(self).GetTextures())))
+func (self Instance) Textures() []GLTFTexture.Instance {
+	return []GLTFTexture.Instance(gd.ArrayAs[[]GLTFTexture.Instance](gd.InternalArray(class(self).GetTextures())))
 }
 
-func (self Instance) SetTextures(value [][1]gdclass.GLTFTexture) {
+func (self Instance) SetTextures(value []GLTFTexture.Instance) {
 	class(self).SetTextures(gd.ArrayFromSlice[Array.Contains[[1]gdclass.GLTFTexture]](value))
 }
 
-func (self Instance) TextureSamplers() [][1]gdclass.GLTFTextureSampler {
-	return [][1]gdclass.GLTFTextureSampler(gd.ArrayAs[[][1]gdclass.GLTFTextureSampler](gd.InternalArray(class(self).GetTextureSamplers())))
+func (self Instance) TextureSamplers() []GLTFTextureSampler.Instance {
+	return []GLTFTextureSampler.Instance(gd.ArrayAs[[]GLTFTextureSampler.Instance](gd.InternalArray(class(self).GetTextureSamplers())))
 }
 
-func (self Instance) SetTextureSamplers(value [][1]gdclass.GLTFTextureSampler) {
+func (self Instance) SetTextureSamplers(value []GLTFTextureSampler.Instance) {
 	class(self).SetTextureSamplers(gd.ArrayFromSlice[Array.Contains[[1]gdclass.GLTFTextureSampler]](value))
 }
 
-func (self Instance) Images() [][1]gdclass.Texture2D {
-	return [][1]gdclass.Texture2D(gd.ArrayAs[[][1]gdclass.Texture2D](gd.InternalArray(class(self).GetImages())))
+func (self Instance) Images() []Texture2D.Instance {
+	return []Texture2D.Instance(gd.ArrayAs[[]Texture2D.Instance](gd.InternalArray(class(self).GetImages())))
 }
 
-func (self Instance) SetImages(value [][1]gdclass.Texture2D) {
+func (self Instance) SetImages(value []Texture2D.Instance) {
 	class(self).SetImages(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Texture2D]](value))
 }
 
-func (self Instance) Skins() [][1]gdclass.GLTFSkin {
-	return [][1]gdclass.GLTFSkin(gd.ArrayAs[[][1]gdclass.GLTFSkin](gd.InternalArray(class(self).GetSkins())))
+func (self Instance) Skins() []GLTFSkin.Instance {
+	return []GLTFSkin.Instance(gd.ArrayAs[[]GLTFSkin.Instance](gd.InternalArray(class(self).GetSkins())))
 }
 
-func (self Instance) SetSkins(value [][1]gdclass.GLTFSkin) {
+func (self Instance) SetSkins(value []GLTFSkin.Instance) {
 	class(self).SetSkins(gd.ArrayFromSlice[Array.Contains[[1]gdclass.GLTFSkin]](value))
 }
 
-func (self Instance) Cameras() [][1]gdclass.GLTFCamera {
-	return [][1]gdclass.GLTFCamera(gd.ArrayAs[[][1]gdclass.GLTFCamera](gd.InternalArray(class(self).GetCameras())))
+func (self Instance) Cameras() []GLTFCamera.Instance {
+	return []GLTFCamera.Instance(gd.ArrayAs[[]GLTFCamera.Instance](gd.InternalArray(class(self).GetCameras())))
 }
 
-func (self Instance) SetCameras(value [][1]gdclass.GLTFCamera) {
+func (self Instance) SetCameras(value []GLTFCamera.Instance) {
 	class(self).SetCameras(gd.ArrayFromSlice[Array.Contains[[1]gdclass.GLTFCamera]](value))
 }
 
-func (self Instance) Lights() [][1]gdclass.GLTFLight {
-	return [][1]gdclass.GLTFLight(gd.ArrayAs[[][1]gdclass.GLTFLight](gd.InternalArray(class(self).GetLights())))
+func (self Instance) Lights() []GLTFLight.Instance {
+	return []GLTFLight.Instance(gd.ArrayAs[[]GLTFLight.Instance](gd.InternalArray(class(self).GetLights())))
 }
 
-func (self Instance) SetLights(value [][1]gdclass.GLTFLight) {
+func (self Instance) SetLights(value []GLTFLight.Instance) {
 	class(self).SetLights(gd.ArrayFromSlice[Array.Contains[[1]gdclass.GLTFLight]](value))
 }
 
@@ -336,11 +375,11 @@ func (self Instance) SetUniqueAnimationNames(value []string) {
 	class(self).SetUniqueAnimationNames(gd.ArrayFromSlice[Array.Contains[String.Readable]](value))
 }
 
-func (self Instance) Skeletons() [][1]gdclass.GLTFSkeleton {
-	return [][1]gdclass.GLTFSkeleton(gd.ArrayAs[[][1]gdclass.GLTFSkeleton](gd.InternalArray(class(self).GetSkeletons())))
+func (self Instance) Skeletons() []GLTFSkeleton.Instance {
+	return []GLTFSkeleton.Instance(gd.ArrayAs[[]GLTFSkeleton.Instance](gd.InternalArray(class(self).GetSkeletons())))
 }
 
-func (self Instance) SetSkeletons(value [][1]gdclass.GLTFSkeleton) {
+func (self Instance) SetSkeletons(value []GLTFSkeleton.Instance) {
 	class(self).SetSkeletons(gd.ArrayFromSlice[Array.Contains[[1]gdclass.GLTFSkeleton]](value))
 }
 
@@ -360,11 +399,11 @@ func (self Instance) SetImportAsSkeletonBones(value bool) {
 	class(self).SetImportAsSkeletonBones(value)
 }
 
-func (self Instance) Animations() [][1]gdclass.GLTFAnimation {
-	return [][1]gdclass.GLTFAnimation(gd.ArrayAs[[][1]gdclass.GLTFAnimation](gd.InternalArray(class(self).GetAnimations())))
+func (self Instance) Animations() []GLTFAnimation.Instance {
+	return []GLTFAnimation.Instance(gd.ArrayAs[[]GLTFAnimation.Instance](gd.InternalArray(class(self).GetAnimations())))
 }
 
-func (self Instance) SetAnimations(value [][1]gdclass.GLTFAnimation) {
+func (self Instance) SetAnimations(value []GLTFAnimation.Instance) {
 	class(self).SetAnimations(gd.ArrayFromSlice[Array.Contains[[1]gdclass.GLTFAnimation]](value))
 }
 

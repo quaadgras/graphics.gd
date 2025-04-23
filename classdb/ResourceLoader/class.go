@@ -12,6 +12,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/ResourceFormatLoader"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -48,6 +50,8 @@ It uses the many [ResourceFormatLoader] classes registered in the engine (either
 [b]Note:[/b] You have to import the files into the engine first to load them using [method load]. If you want to load [Image]s at run-time, you may use [method Image.load]. If you want to import audio files, you can use the snippet described in [member AudioStreamMP3.data].
 [b]Note:[/b] Non-resource files such as plain text files cannot be read using [ResourceLoader]. Use [FileAccess] for those files instead, and be aware that non-resource files are not exported by default (see notes in the [FileAccess] class description for instructions on exporting them).
 */
+type Instance [1]gdclass.ResourceLoader
+
 var self [1]gdclass.ResourceLoader
 var once sync.Once
 
@@ -98,9 +102,9 @@ func LoadThreadedGetStatusOptions(path string, progress []any) gdclass.ResourceL
 Returns the resource loaded by [method load_threaded_request].
 If this is called before the loading thread is done (i.e. [method load_threaded_get_status] is not [constant THREAD_LOAD_LOADED]), the calling thread will be blocked until the resource has finished loading. However, it's recommended to use [method load_threaded_get_status] to known when the load has actually completed.
 */
-func LoadThreadedGet(path string) [1]gdclass.Resource { //gd:ResourceLoader.load_threaded_get
+func LoadThreadedGet(path string) Resource.Instance { //gd:ResourceLoader.load_threaded_get
 	once.Do(singleton)
-	return [1]gdclass.Resource(Advanced().LoadThreadedGet(String.New(path)))
+	return Resource.Instance(Advanced().LoadThreadedGet(String.New(path)))
 }
 
 /*
@@ -113,9 +117,9 @@ GDScript has a simplified [method @GDScript.load] built-in method which can be u
 [b]Note:[/b] If [member ProjectSettings.editor/export/convert_text_resources_to_binary] is [code]true[/code], [method @GDScript.load] will not be able to read converted files in an exported project. If you rely on run-time loading of files present within the PCK, set [member ProjectSettings.editor/export/convert_text_resources_to_binary] to [code]false[/code].
 [b]Note:[/b] Relative paths will be prefixed with [code]"res://"[/code] before loading, to avoid unexpected results make sure your paths are absolute.
 */
-func Load(path string, type_hint string) [1]gdclass.Resource { //gd:ResourceLoader.load
+func Load(path string, type_hint string) Resource.Instance { //gd:ResourceLoader.load
 	once.Do(singleton)
-	return [1]gdclass.Resource(Advanced().Load(String.New(path), String.New(type_hint), 1))
+	return Resource.Instance(Advanced().Load(String.New(path), String.New(type_hint), 1))
 }
 
 /*
@@ -128,9 +132,9 @@ GDScript has a simplified [method @GDScript.load] built-in method which can be u
 [b]Note:[/b] If [member ProjectSettings.editor/export/convert_text_resources_to_binary] is [code]true[/code], [method @GDScript.load] will not be able to read converted files in an exported project. If you rely on run-time loading of files present within the PCK, set [member ProjectSettings.editor/export/convert_text_resources_to_binary] to [code]false[/code].
 [b]Note:[/b] Relative paths will be prefixed with [code]"res://"[/code] before loading, to avoid unexpected results make sure your paths are absolute.
 */
-func LoadOptions(path string, type_hint string, cache_mode gdclass.ResourceLoaderCacheMode) [1]gdclass.Resource { //gd:ResourceLoader.load
+func LoadOptions(path string, type_hint string, cache_mode gdclass.ResourceLoaderCacheMode) Resource.Instance { //gd:ResourceLoader.load
 	once.Do(singleton)
-	return [1]gdclass.Resource(Advanced().Load(String.New(path), String.New(type_hint), cache_mode))
+	return Resource.Instance(Advanced().Load(String.New(path), String.New(type_hint), cache_mode))
 }
 
 /*
@@ -145,7 +149,7 @@ func GetRecognizedExtensionsForType(atype string) []string { //gd:ResourceLoader
 Registers a new [ResourceFormatLoader]. The ResourceLoader will use the ResourceFormatLoader as described in [method load].
 This method is performed implicitly for ResourceFormatLoaders written in GDScript (see [ResourceFormatLoader] for more information).
 */
-func AddResourceFormatLoader(format_loader [1]gdclass.ResourceFormatLoader, at_front bool) { //gd:ResourceLoader.add_resource_format_loader
+func AddResourceFormatLoader(format_loader ResourceFormatLoader.Instance, at_front bool) { //gd:ResourceLoader.add_resource_format_loader
 	once.Do(singleton)
 	Advanced().AddResourceFormatLoader(format_loader, at_front)
 }
@@ -154,7 +158,7 @@ func AddResourceFormatLoader(format_loader [1]gdclass.ResourceFormatLoader, at_f
 Registers a new [ResourceFormatLoader]. The ResourceLoader will use the ResourceFormatLoader as described in [method load].
 This method is performed implicitly for ResourceFormatLoaders written in GDScript (see [ResourceFormatLoader] for more information).
 */
-func AddResourceFormatLoaderOptions(format_loader [1]gdclass.ResourceFormatLoader, at_front bool) { //gd:ResourceLoader.add_resource_format_loader
+func AddResourceFormatLoaderOptions(format_loader ResourceFormatLoader.Instance, at_front bool) { //gd:ResourceLoader.add_resource_format_loader
 	once.Do(singleton)
 	Advanced().AddResourceFormatLoader(format_loader, at_front)
 }
@@ -162,7 +166,7 @@ func AddResourceFormatLoaderOptions(format_loader [1]gdclass.ResourceFormatLoade
 /*
 Unregisters the given [ResourceFormatLoader].
 */
-func RemoveResourceFormatLoader(format_loader [1]gdclass.ResourceFormatLoader) { //gd:ResourceLoader.remove_resource_format_loader
+func RemoveResourceFormatLoader(format_loader ResourceFormatLoader.Instance) { //gd:ResourceLoader.remove_resource_format_loader
 	once.Do(singleton)
 	Advanced().RemoveResourceFormatLoader(format_loader)
 }
@@ -204,9 +208,9 @@ func HasCached(path string) bool { //gd:ResourceLoader.has_cached
 Returns the cached resource reference for the given [param path].
 [b]Note:[/b] If the resource is not cached, the returned [Resource] will be invalid.
 */
-func GetCachedRef(path string) [1]gdclass.Resource { //gd:ResourceLoader.get_cached_ref
+func GetCachedRef(path string) Resource.Instance { //gd:ResourceLoader.get_cached_ref
 	once.Do(singleton)
-	return [1]gdclass.Resource(Advanced().GetCachedRef(String.New(path)))
+	return Resource.Instance(Advanced().GetCachedRef(String.New(path)))
 }
 
 /*

@@ -149,7 +149,7 @@ func (self Instance) ToGlobal(local_point Vector2.XY) Vector2.XY { //gd:Node2D.t
 /*
 Returns the [Transform2D] relative to this node's parent.
 */
-func (self Instance) GetRelativeTransformToParent(parent [1]gdclass.Node) Transform2D.OriginXY { //gd:Node2D.get_relative_transform_to_parent
+func (self Instance) GetRelativeTransformToParent(parent Node.Instance) Transform2D.OriginXY { //gd:Node2D.get_relative_transform_to_parent
 	return Transform2D.OriginXY(Advanced(self).GetRelativeTransformToParent(parent))
 }
 

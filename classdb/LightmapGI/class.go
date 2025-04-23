@@ -11,8 +11,11 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/CameraAttributes"
+import "graphics.gd/classdb/LightmapGIData"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/Sky"
 import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -210,11 +213,11 @@ func (self Instance) SetEnvironmentMode(value gdclass.LightmapGIEnvironmentMode)
 	class(self).SetEnvironmentMode(value)
 }
 
-func (self Instance) EnvironmentCustomSky() [1]gdclass.Sky {
-	return [1]gdclass.Sky(class(self).GetEnvironmentCustomSky())
+func (self Instance) EnvironmentCustomSky() Sky.Instance {
+	return Sky.Instance(class(self).GetEnvironmentCustomSky())
 }
 
-func (self Instance) SetEnvironmentCustomSky(value [1]gdclass.Sky) {
+func (self Instance) SetEnvironmentCustomSky(value Sky.Instance) {
 	class(self).SetEnvironmentCustomSky(value)
 }
 
@@ -234,11 +237,11 @@ func (self Instance) SetEnvironmentCustomEnergy(value Float.X) {
 	class(self).SetEnvironmentCustomEnergy(float64(value))
 }
 
-func (self Instance) CameraAttributes() [1]gdclass.CameraAttributes {
-	return [1]gdclass.CameraAttributes(class(self).GetCameraAttributes())
+func (self Instance) CameraAttributes() CameraAttributes.Instance {
+	return CameraAttributes.Instance(class(self).GetCameraAttributes())
 }
 
-func (self Instance) SetCameraAttributes(value [1]gdclass.CameraAttributes) {
+func (self Instance) SetCameraAttributes(value CameraAttributes.Instance) {
 	class(self).SetCameraAttributes(value)
 }
 
@@ -250,11 +253,11 @@ func (self Instance) SetGenerateProbesSubdiv(value gdclass.LightmapGIGeneratePro
 	class(self).SetGenerateProbes(value)
 }
 
-func (self Instance) LightData() [1]gdclass.LightmapGIData {
-	return [1]gdclass.LightmapGIData(class(self).GetLightData())
+func (self Instance) LightData() LightmapGIData.Instance {
+	return LightmapGIData.Instance(class(self).GetLightData())
 }
 
-func (self Instance) SetLightData(value [1]gdclass.LightmapGIData) {
+func (self Instance) SetLightData(value LightmapGIData.Instance) {
 	class(self).SetLightData(value)
 }
 

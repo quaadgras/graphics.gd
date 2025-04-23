@@ -13,6 +13,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/Script"
+import "graphics.gd/classdb/ScriptLanguage"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -56,9 +57,9 @@ type Interface interface {
 	EditorCanReloadFromFile() bool
 	PlaceholderErased(placeholder unsafe.Pointer)
 	CanInstantiate() bool
-	GetBaseScript() [1]gdclass.Script
+	GetBaseScript() Script.Instance
 	GetGlobalName() string
-	InheritsScript(script [1]gdclass.Script) bool
+	InheritsScript(script Script.Instance) bool
 	GetInstanceBaseType() string
 	InstanceCreate(for_object Object.Instance) unsafe.Pointer
 	PlaceholderInstanceCreate(for_object Object.Instance) unsafe.Pointer
@@ -79,7 +80,7 @@ type Interface interface {
 	IsValid() bool
 	//Returns [code]true[/code] if the script is an abstract script. An abstract script does not have a constructor and cannot be instantiated.
 	IsAbstract() bool
-	GetLanguage() [1]gdclass.ScriptLanguage
+	GetLanguage() ScriptLanguage.Instance
 	HasScriptSignal(signal string) bool
 	GetScriptSignalList() []map[any]any
 	HasPropertyDefaultValue(property string) bool
@@ -102,9 +103,9 @@ type implementation struct{}
 func (self implementation) EditorCanReloadFromFile() (_ bool)                            { return }
 func (self implementation) PlaceholderErased(placeholder unsafe.Pointer)                 { return }
 func (self implementation) CanInstantiate() (_ bool)                                     { return }
-func (self implementation) GetBaseScript() (_ [1]gdclass.Script)                         { return }
+func (self implementation) GetBaseScript() (_ Script.Instance)                           { return }
 func (self implementation) GetGlobalName() (_ string)                                    { return }
-func (self implementation) InheritsScript(script [1]gdclass.Script) (_ bool)             { return }
+func (self implementation) InheritsScript(script Script.Instance) (_ bool)               { return }
 func (self implementation) GetInstanceBaseType() (_ string)                              { return }
 func (self implementation) InstanceCreate(for_object Object.Instance) (_ unsafe.Pointer) { return }
 func (self implementation) PlaceholderInstanceCreate(for_object Object.Instance) (_ unsafe.Pointer) {
@@ -125,7 +126,7 @@ func (self implementation) GetMethodInfo(method string) (_ map[any]any)        {
 func (self implementation) IsTool() (_ bool)                                   { return }
 func (self implementation) IsValid() (_ bool)                                  { return }
 func (self implementation) IsAbstract() (_ bool)                               { return }
-func (self implementation) GetLanguage() (_ [1]gdclass.ScriptLanguage)         { return }
+func (self implementation) GetLanguage() (_ ScriptLanguage.Instance)           { return }
 func (self implementation) HasScriptSignal(signal string) (_ bool)             { return }
 func (self implementation) GetScriptSignalList() (_ []map[any]any)             { return }
 func (self implementation) HasPropertyDefaultValue(property string) (_ bool)   { return }
@@ -159,7 +160,7 @@ func (Instance) _can_instantiate(impl func(ptr unsafe.Pointer) bool) (cb gd.Exte
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _get_base_script(impl func(ptr unsafe.Pointer) [1]gdclass.Script) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_base_script(impl func(ptr unsafe.Pointer) Script.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -183,7 +184,7 @@ func (Instance) _get_global_name(impl func(ptr unsafe.Pointer) string) (cb gd.Ex
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _inherits_script(impl func(ptr unsafe.Pointer, script [1]gdclass.Script) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _inherits_script(impl func(ptr unsafe.Pointer, script Script.Instance) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var script = [1]gdclass.Script{pointers.New[gdclass.Script]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -383,7 +384,7 @@ func (Instance) _is_abstract(impl func(ptr unsafe.Pointer) bool) (cb gd.Extensio
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _get_language(impl func(ptr unsafe.Pointer) [1]gdclass.ScriptLanguage) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_language(impl func(ptr unsafe.Pointer) ScriptLanguage.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)

@@ -56,13 +56,6 @@ type Any interface {
 	AsShape3D() Instance
 }
 
-/*
-Returns the [ArrayMesh] used to draw the debug collision for this [Shape3D].
-*/
-func (self Instance) GetDebugMesh() [1]gdclass.ArrayMesh { //gd:Shape3D.get_debug_mesh
-	return [1]gdclass.ArrayMesh(Advanced(self).GetDebugMesh())
-}
-
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.Shape3D

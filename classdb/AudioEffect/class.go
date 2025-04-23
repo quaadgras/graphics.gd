@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/AudioEffectInstance"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -73,7 +74,7 @@ type Interface interface {
 	//    return effect
 	//[/codeblock]
 	//[b]Note:[/b] It is recommended to keep a reference to the original [AudioEffect] in the new instance. Depending on the implementation this allows the effect instance to listen for changes at run-time and be modified accordingly.
-	Instantiate() [1]gdclass.AudioEffectInstance
+	Instantiate() AudioEffectInstance.Instance
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -81,7 +82,7 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) Instantiate() (_ [1]gdclass.AudioEffectInstance) { return }
+func (self implementation) Instantiate() (_ AudioEffectInstance.Instance) { return }
 
 /*
 Override this method to customize the [AudioEffectInstance] created when this effect is applied on a bus in the editor's Audio panel, or through [method AudioServer.add_bus_effect].
@@ -100,7 +101,7 @@ func _instantiate():
 [/codeblock]
 [b]Note:[/b] It is recommended to keep a reference to the original [AudioEffect] in the new instance. Depending on the implementation this allows the effect instance to listen for changes at run-time and be modified accordingly.
 */
-func (Instance) _instantiate(impl func(ptr unsafe.Pointer) [1]gdclass.AudioEffectInstance) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _instantiate(impl func(ptr unsafe.Pointer) AudioEffectInstance.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)

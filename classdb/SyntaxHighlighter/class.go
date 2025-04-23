@@ -12,6 +12,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/TextEdit"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -156,8 +157,14 @@ func (self Instance) ClearHighlightingCache() { //gd:SyntaxHighlighter.clear_hig
 /*
 Returns the associated [TextEdit] node.
 */
-func (self Instance) GetTextEdit() [1]gdclass.TextEdit { //gd:SyntaxHighlighter.get_text_edit
-	return [1]gdclass.TextEdit(Advanced(self).GetTextEdit())
+func (self Instance) GetTextEdit() TextEdit.Instance { //gd:SyntaxHighlighter.get_text_edit
+	return TextEdit.Instance(Advanced(self).GetTextEdit())
+}
+func Get(peer TextEdit.Instance) Instance { //gd:TextEdit.get_syntax_highlighter
+	return Instance(TextEdit.Advanced(peer).GetSyntaxHighlighter())
+}
+func (self Instance) Set(peer TextEdit.Instance) { //gd:TextEdit.set_syntax_highlighter
+	TextEdit.Advanced(peer).SetSyntaxHighlighter(self)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/CharFXTransform"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -72,7 +73,7 @@ type Any interface {
 }
 type Interface interface {
 	//Override this method to modify properties in [param char_fx]. The method must return [code]true[/code] if the character could be transformed successfully. If the method returns [code]false[/code], it will skip transformation to avoid displaying broken text.
-	ProcessCustomFx(char_fx [1]gdclass.CharFXTransform) bool
+	ProcessCustomFx(char_fx CharFXTransform.Instance) bool
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -80,12 +81,12 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) ProcessCustomFx(char_fx [1]gdclass.CharFXTransform) (_ bool) { return }
+func (self implementation) ProcessCustomFx(char_fx CharFXTransform.Instance) (_ bool) { return }
 
 /*
 Override this method to modify properties in [param char_fx]. The method must return [code]true[/code] if the character could be transformed successfully. If the method returns [code]false[/code], it will skip transformation to avoid displaying broken text.
 */
-func (Instance) _process_custom_fx(impl func(ptr unsafe.Pointer, char_fx [1]gdclass.CharFXTransform) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _process_custom_fx(impl func(ptr unsafe.Pointer, char_fx CharFXTransform.Instance) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var char_fx = [1]gdclass.CharFXTransform{pointers.New[gdclass.CharFXTransform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 

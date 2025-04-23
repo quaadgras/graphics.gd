@@ -13,6 +13,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/CollisionObject2D"
+import "graphics.gd/classdb/KinematicCollision2D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node2D"
 import "graphics.gd/classdb/PhysicsBody2D"
@@ -209,15 +210,15 @@ for (int i = 0; i < GetSlideCollisionCount(); i++)
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) GetSlideCollision(slide_idx int) [1]gdclass.KinematicCollision2D { //gd:CharacterBody2D.get_slide_collision
-	return [1]gdclass.KinematicCollision2D(Advanced(self).GetSlideCollision(int64(slide_idx)))
+func (self Instance) GetSlideCollision(slide_idx int) KinematicCollision2D.Instance { //gd:CharacterBody2D.get_slide_collision
+	return KinematicCollision2D.Instance(Advanced(self).GetSlideCollision(int64(slide_idx)))
 }
 
 /*
 Returns a [KinematicCollision2D], which contains information about the latest collision that occurred during the last call to [method move_and_slide].
 */
-func (self Instance) GetLastSlideCollision() [1]gdclass.KinematicCollision2D { //gd:CharacterBody2D.get_last_slide_collision
-	return [1]gdclass.KinematicCollision2D(Advanced(self).GetLastSlideCollision())
+func (self Instance) GetLastSlideCollision() KinematicCollision2D.Instance { //gd:CharacterBody2D.get_last_slide_collision
+	return KinematicCollision2D.Instance(Advanced(self).GetLastSlideCollision())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

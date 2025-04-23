@@ -12,8 +12,11 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Curve"
+import "graphics.gd/classdb/Gradient"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node2D"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -155,11 +158,11 @@ func (self Instance) SetWidth(value Float.X) {
 	class(self).SetWidth(float64(value))
 }
 
-func (self Instance) WidthCurve() [1]gdclass.Curve {
-	return [1]gdclass.Curve(class(self).GetCurve())
+func (self Instance) WidthCurve() Curve.Instance {
+	return Curve.Instance(class(self).GetCurve())
 }
 
-func (self Instance) SetWidthCurve(value [1]gdclass.Curve) {
+func (self Instance) SetWidthCurve(value Curve.Instance) {
 	class(self).SetCurve(value)
 }
 
@@ -171,19 +174,19 @@ func (self Instance) SetDefaultColor(value Color.RGBA) {
 	class(self).SetDefaultColor(Color.RGBA(value))
 }
 
-func (self Instance) Gradient() [1]gdclass.Gradient {
-	return [1]gdclass.Gradient(class(self).GetGradient())
+func (self Instance) Gradient() Gradient.Instance {
+	return Gradient.Instance(class(self).GetGradient())
 }
 
-func (self Instance) SetGradient(value [1]gdclass.Gradient) {
+func (self Instance) SetGradient(value Gradient.Instance) {
 	class(self).SetGradient(value)
 }
 
-func (self Instance) Texture() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetTexture())
+func (self Instance) Texture() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetTexture())
 }
 
-func (self Instance) SetTexture(value [1]gdclass.Texture2D) {
+func (self Instance) SetTexture(value Texture2D.Instance) {
 	class(self).SetTexture(value)
 }
 

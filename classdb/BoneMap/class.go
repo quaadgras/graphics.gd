@@ -12,6 +12,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/SkeletonProfile"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -99,11 +100,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Profile() [1]gdclass.SkeletonProfile {
-	return [1]gdclass.SkeletonProfile(class(self).GetProfile())
+func (self Instance) Profile() SkeletonProfile.Instance {
+	return SkeletonProfile.Instance(class(self).GetProfile())
 }
 
-func (self Instance) SetProfile(value [1]gdclass.SkeletonProfile) {
+func (self Instance) SetProfile(value SkeletonProfile.Instance) {
 	class(self).SetProfile(value)
 }
 

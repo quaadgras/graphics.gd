@@ -14,6 +14,9 @@ import "graphics.gd/variant"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node2D"
+import "graphics.gd/classdb/TileData"
+import "graphics.gd/classdb/TileMapPattern"
+import "graphics.gd/classdb/TileSet"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -77,7 +80,7 @@ type Interface interface {
 	//This method is only called if [method _use_tile_data_runtime_update] is implemented and returns [code]true[/code] for the given tile [param coords] and [param layer].
 	//[b]Warning:[/b] The [param tile_data] object's sub-resources are the same as the one in the TileSet. Modifying them might impact the whole TileSet. Instead, make sure to duplicate those resources.
 	//[b]Note:[/b] If the properties of [param tile_data] object should change over time, use [method notify_runtime_tile_data_update] to notify the TileMap it needs an update.
-	TileDataRuntimeUpdate(layer int, coords Vector2i.XY, tile_data [1]gdclass.TileData)
+	TileDataRuntimeUpdate(layer int, coords Vector2i.XY, tile_data TileData.Instance)
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -86,7 +89,7 @@ type Implementation = implementation
 type implementation struct{}
 
 func (self implementation) UseTileDataRuntimeUpdate(layer int, coords Vector2i.XY) (_ bool) { return }
-func (self implementation) TileDataRuntimeUpdate(layer int, coords Vector2i.XY, tile_data [1]gdclass.TileData) {
+func (self implementation) TileDataRuntimeUpdate(layer int, coords Vector2i.XY, tile_data TileData.Instance) {
 	return
 }
 
@@ -111,7 +114,7 @@ This method is only called if [method _use_tile_data_runtime_update] is implemen
 [b]Warning:[/b] The [param tile_data] object's sub-resources are the same as the one in the TileSet. Modifying them might impact the whole TileSet. Instead, make sure to duplicate those resources.
 [b]Note:[/b] If the properties of [param tile_data] object should change over time, use [method notify_runtime_tile_data_update] to notify the TileMap it needs an update.
 */
-func (Instance) _tile_data_runtime_update(impl func(ptr unsafe.Pointer, layer int, coords Vector2i.XY, tile_data [1]gdclass.TileData)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _tile_data_runtime_update(impl func(ptr unsafe.Pointer, layer int, coords Vector2i.XY, tile_data TileData.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var layer = gd.UnsafeGet[int64](p_args, 0)
 		var coords = gd.UnsafeGet[Vector2i.XY](p_args, 1)
@@ -413,8 +416,8 @@ func get_clicked_tile_power():
 [/codeblock]
 If [param use_proxies] is [code]false[/code], ignores the [TileSet]'s tile proxies. See [method TileSet.map_tile_proxy].
 */
-func (self Instance) GetCellTileData(layer int, coords Vector2i.XY) [1]gdclass.TileData { //gd:TileMap.get_cell_tile_data
-	return [1]gdclass.TileData(Advanced(self).GetCellTileData(int64(layer), Vector2i.XY(coords), false))
+func (self Instance) GetCellTileData(layer int, coords Vector2i.XY) TileData.Instance { //gd:TileMap.get_cell_tile_data
+	return TileData.Instance(Advanced(self).GetCellTileData(int64(layer), Vector2i.XY(coords), false))
 }
 
 /*
@@ -433,8 +436,8 @@ func get_clicked_tile_power():
 [/codeblock]
 If [param use_proxies] is [code]false[/code], ignores the [TileSet]'s tile proxies. See [method TileSet.map_tile_proxy].
 */
-func (self Expanded) GetCellTileData(layer int, coords Vector2i.XY, use_proxies bool) [1]gdclass.TileData { //gd:TileMap.get_cell_tile_data
-	return [1]gdclass.TileData(Advanced(self).GetCellTileData(int64(layer), Vector2i.XY(coords), use_proxies))
+func (self Expanded) GetCellTileData(layer int, coords Vector2i.XY, use_proxies bool) TileData.Instance { //gd:TileMap.get_cell_tile_data
+	return TileData.Instance(Advanced(self).GetCellTileData(int64(layer), Vector2i.XY(coords), use_proxies))
 }
 
 /*
@@ -497,14 +500,14 @@ func (self Instance) GetLayerForBodyRid(body RID.Body2D) int { //gd:TileMap.get_
 Creates a new [TileMapPattern] from the given layer and set of cells.
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) GetPattern(layer int, coords_array []Vector2i.XY) [1]gdclass.TileMapPattern { //gd:TileMap.get_pattern
-	return [1]gdclass.TileMapPattern(Advanced(self).GetPattern(int64(layer), gd.ArrayFromSlice[Array.Contains[Vector2i.XY]](coords_array)))
+func (self Instance) GetPattern(layer int, coords_array []Vector2i.XY) TileMapPattern.Instance { //gd:TileMap.get_pattern
+	return TileMapPattern.Instance(Advanced(self).GetPattern(int64(layer), gd.ArrayFromSlice[Array.Contains[Vector2i.XY]](coords_array)))
 }
 
 /*
 Returns for the given coordinate [param coords_in_pattern] in a [TileMapPattern] the corresponding cell coordinates if the pattern was pasted at the [param position_in_tilemap] coordinates (see [method set_pattern]). This mapping is required as in half-offset tile shapes, the mapping might not work by calculating [code]position_in_tile_map + coords_in_pattern[/code].
 */
-func (self Instance) MapPattern(position_in_tilemap Vector2i.XY, coords_in_pattern Vector2i.XY, pattern [1]gdclass.TileMapPattern) Vector2i.XY { //gd:TileMap.map_pattern
+func (self Instance) MapPattern(position_in_tilemap Vector2i.XY, coords_in_pattern Vector2i.XY, pattern TileMapPattern.Instance) Vector2i.XY { //gd:TileMap.map_pattern
 	return Vector2i.XY(Advanced(self).MapPattern(Vector2i.XY(position_in_tilemap), Vector2i.XY(coords_in_pattern), pattern))
 }
 
@@ -512,7 +515,7 @@ func (self Instance) MapPattern(position_in_tilemap Vector2i.XY, coords_in_patte
 Paste the given [TileMapPattern] at the given [param position] and [param layer] in the tile map.
 If [param layer] is negative, the layers are accessed from the last one.
 */
-func (self Instance) SetPattern(layer int, position Vector2i.XY, pattern [1]gdclass.TileMapPattern) { //gd:TileMap.set_pattern
+func (self Instance) SetPattern(layer int, position Vector2i.XY, pattern TileMapPattern.Instance) { //gd:TileMap.set_pattern
 	Advanced(self).SetPattern(int64(layer), Vector2i.XY(position), pattern)
 }
 
@@ -689,11 +692,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) TileSet() [1]gdclass.TileSet {
-	return [1]gdclass.TileSet(class(self).GetTileset())
+func (self Instance) TileSet() TileSet.Instance {
+	return TileSet.Instance(class(self).GetTileset())
 }
 
-func (self Instance) SetTileSet(value [1]gdclass.TileSet) {
+func (self Instance) SetTileSet(value TileSet.Instance) {
 	class(self).SetTileset(value)
 }
 

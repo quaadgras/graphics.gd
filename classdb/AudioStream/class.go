@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/AudioSample"
+import "graphics.gd/classdb/AudioStreamPlayback"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -60,7 +62,7 @@ type Any interface {
 }
 type Interface interface {
 	//Override this method to customize the returned value of [method instantiate_playback]. Should return a new [AudioStreamPlayback] created when the stream is played (such as by an [AudioStreamPlayer]).
-	InstantiatePlayback() [1]gdclass.AudioStreamPlayback
+	InstantiatePlayback() AudioStreamPlayback.Instance
 	//Override this method to customize the name assigned to this audio stream. Unused by the engine.
 	GetStreamName() string
 	//Override this method to customize the returned value of [method get_length]. Should return the length of this audio stream, in seconds.
@@ -86,20 +88,20 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) InstantiatePlayback() (_ [1]gdclass.AudioStreamPlayback) { return }
-func (self implementation) GetStreamName() (_ string)                               { return }
-func (self implementation) GetLength() (_ Float.X)                                  { return }
-func (self implementation) IsMonophonic() (_ bool)                                  { return }
-func (self implementation) GetBpm() (_ Float.X)                                     { return }
-func (self implementation) GetBeatCount() (_ int)                                   { return }
-func (self implementation) GetParameterList() (_ []map[any]any)                     { return }
-func (self implementation) HasLoop() (_ bool)                                       { return }
-func (self implementation) GetBarBeats() (_ int)                                    { return }
+func (self implementation) InstantiatePlayback() (_ AudioStreamPlayback.Instance) { return }
+func (self implementation) GetStreamName() (_ string)                             { return }
+func (self implementation) GetLength() (_ Float.X)                                { return }
+func (self implementation) IsMonophonic() (_ bool)                                { return }
+func (self implementation) GetBpm() (_ Float.X)                                   { return }
+func (self implementation) GetBeatCount() (_ int)                                 { return }
+func (self implementation) GetParameterList() (_ []map[any]any)                   { return }
+func (self implementation) HasLoop() (_ bool)                                     { return }
+func (self implementation) GetBarBeats() (_ int)                                  { return }
 
 /*
 Override this method to customize the returned value of [method instantiate_playback]. Should return a new [AudioStreamPlayback] created when the stream is played (such as by an [AudioStreamPlayer]).
 */
-func (Instance) _instantiate_playback(impl func(ptr unsafe.Pointer) [1]gdclass.AudioStreamPlayback) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _instantiate_playback(impl func(ptr unsafe.Pointer) AudioStreamPlayback.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -229,8 +231,8 @@ func (self Instance) IsMonophonic() bool { //gd:AudioStream.is_monophonic
 /*
 Returns a newly created [AudioStreamPlayback] intended to play this audio stream. Useful for when you want to extend [method _instantiate_playback] but call [method instantiate_playback] from an internally held AudioStream subresource. An example of this can be found in the source code for [code]AudioStreamRandomPitch::instantiate_playback[/code].
 */
-func (self Instance) InstantiatePlayback() [1]gdclass.AudioStreamPlayback { //gd:AudioStream.instantiate_playback
-	return [1]gdclass.AudioStreamPlayback(Advanced(self).InstantiatePlayback())
+func (self Instance) InstantiatePlayback() AudioStreamPlayback.Instance { //gd:AudioStream.instantiate_playback
+	return AudioStreamPlayback.Instance(Advanced(self).InstantiatePlayback())
 }
 
 /*
@@ -243,8 +245,8 @@ func (self Instance) CanBeSampled() bool { //gd:AudioStream.can_be_sampled
 /*
 Generates an [AudioSample] based on the current stream.
 */
-func (self Instance) GenerateSample() [1]gdclass.AudioSample { //gd:AudioStream.generate_sample
-	return [1]gdclass.AudioSample(Advanced(self).GenerateSample())
+func (self Instance) GenerateSample() AudioSample.Instance { //gd:AudioStream.generate_sample
+	return AudioSample.Instance(Advanced(self).GenerateSample())
 }
 
 /*

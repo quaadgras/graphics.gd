@@ -93,7 +93,7 @@ func (self Instance) SetValueNoSignal(value Float.X) { //gd:Range.set_value_no_s
 /*
 Binds two [Range]s together along with any ranges previously grouped with either of them. When any of range's member variables change, it will share the new value with all other ranges in its group.
 */
-func (self Instance) Share(with [1]gdclass.Node) { //gd:Range.share
+func (self Instance) Share(with Node.Instance) { //gd:Range.share
 	Advanced(self).Share(with)
 }
 

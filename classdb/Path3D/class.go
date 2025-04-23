@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Curve3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/variant/Array"
@@ -75,11 +76,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Curve() [1]gdclass.Curve3D {
-	return [1]gdclass.Curve3D(class(self).GetCurve())
+func (self Instance) Curve() Curve3D.Instance {
+	return Curve3D.Instance(class(self).GetCurve())
 }
 
-func (self Instance) SetCurve(value [1]gdclass.Curve3D) {
+func (self Instance) SetCurve(value Curve3D.Instance) {
 	class(self).SetCurve(value)
 }
 

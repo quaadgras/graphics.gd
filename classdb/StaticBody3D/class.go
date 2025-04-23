@@ -15,6 +15,7 @@ import "graphics.gd/classdb/CollisionObject3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/PhysicsBody3D"
+import "graphics.gd/classdb/PhysicsMaterial"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -79,11 +80,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) PhysicsMaterialOverride() [1]gdclass.PhysicsMaterial {
-	return [1]gdclass.PhysicsMaterial(class(self).GetPhysicsMaterialOverride())
+func (self Instance) PhysicsMaterialOverride() PhysicsMaterial.Instance {
+	return PhysicsMaterial.Instance(class(self).GetPhysicsMaterialOverride())
 }
 
-func (self Instance) SetPhysicsMaterialOverride(value [1]gdclass.PhysicsMaterial) {
+func (self Instance) SetPhysicsMaterialOverride(value PhysicsMaterial.Instance) {
 	class(self).SetPhysicsMaterialOverride(value)
 }
 

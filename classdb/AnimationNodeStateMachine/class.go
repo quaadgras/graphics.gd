@@ -12,6 +12,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/AnimationNode"
+import "graphics.gd/classdb/AnimationNodeStateMachineTransition"
 import "graphics.gd/classdb/AnimationRootNode"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
@@ -72,29 +73,29 @@ type Any interface {
 /*
 Adds a new animation node to the graph. The [param position] is used for display in the editor.
 */
-func (self Instance) AddNode(name string, node [1]gdclass.AnimationNode) { //gd:AnimationNodeStateMachine.add_node
+func (self Instance) AddNode(name string, node AnimationNode.Instance) { //gd:AnimationNodeStateMachine.add_node
 	Advanced(self).AddNode(String.Name(String.New(name)), node, Vector2.XY(gd.Vector2{0, 0}))
 }
 
 /*
 Adds a new animation node to the graph. The [param position] is used for display in the editor.
 */
-func (self Expanded) AddNode(name string, node [1]gdclass.AnimationNode, position Vector2.XY) { //gd:AnimationNodeStateMachine.add_node
+func (self Expanded) AddNode(name string, node AnimationNode.Instance, position Vector2.XY) { //gd:AnimationNodeStateMachine.add_node
 	Advanced(self).AddNode(String.Name(String.New(name)), node, Vector2.XY(position))
 }
 
 /*
 Replaces the given animation node with a new animation node.
 */
-func (self Instance) ReplaceNode(name string, node [1]gdclass.AnimationNode) { //gd:AnimationNodeStateMachine.replace_node
+func (self Instance) ReplaceNode(name string, node AnimationNode.Instance) { //gd:AnimationNodeStateMachine.replace_node
 	Advanced(self).ReplaceNode(String.Name(String.New(name)), node)
 }
 
 /*
 Returns the animation node with the given name.
 */
-func (self Instance) GetNode(name string) [1]gdclass.AnimationNode { //gd:AnimationNodeStateMachine.get_node
-	return [1]gdclass.AnimationNode(Advanced(self).GetNode(String.Name(String.New(name))))
+func (self Instance) GetNode(name string) AnimationNode.Instance { //gd:AnimationNodeStateMachine.get_node
+	return AnimationNode.Instance(Advanced(self).GetNode(String.Name(String.New(name))))
 }
 
 /*
@@ -121,7 +122,7 @@ func (self Instance) HasNode(name string) bool { //gd:AnimationNodeStateMachine.
 /*
 Returns the given animation node's name.
 */
-func (self Instance) GetNodeName(node [1]gdclass.AnimationNode) string { //gd:AnimationNodeStateMachine.get_node_name
+func (self Instance) GetNodeName(node AnimationNode.Instance) string { //gd:AnimationNodeStateMachine.get_node_name
 	return string(Advanced(self).GetNodeName(node).String())
 }
 
@@ -149,15 +150,15 @@ func (self Instance) HasTransition(from string, to string) bool { //gd:Animation
 /*
 Adds a transition between the given animation nodes.
 */
-func (self Instance) AddTransition(from string, to string, transition [1]gdclass.AnimationNodeStateMachineTransition) { //gd:AnimationNodeStateMachine.add_transition
+func (self Instance) AddTransition(from string, to string, transition AnimationNodeStateMachineTransition.Instance) { //gd:AnimationNodeStateMachine.add_transition
 	Advanced(self).AddTransition(String.Name(String.New(from)), String.Name(String.New(to)), transition)
 }
 
 /*
 Returns the given transition.
 */
-func (self Instance) GetTransition(idx int) [1]gdclass.AnimationNodeStateMachineTransition { //gd:AnimationNodeStateMachine.get_transition
-	return [1]gdclass.AnimationNodeStateMachineTransition(Advanced(self).GetTransition(int64(idx)))
+func (self Instance) GetTransition(idx int) AnimationNodeStateMachineTransition.Instance { //gd:AnimationNodeStateMachine.get_transition
+	return AnimationNodeStateMachineTransition.Instance(Advanced(self).GetTransition(int64(idx)))
 }
 
 /*

@@ -12,6 +12,10 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/AudioBusLayout"
+import "graphics.gd/classdb/AudioEffect"
+import "graphics.gd/classdb/AudioEffectInstance"
+import "graphics.gd/classdb/AudioStream"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -45,6 +49,8 @@ var _ = slices.Delete[[]struct{}, struct{}]
 /*
 [AudioServer] is a low-level server interface for audio access. It is in charge of creating sample data (playable audio) as well as its playback via a voice interface.
 */
+type Instance [1]gdclass.AudioServer
+
 var self [1]gdclass.AudioServer
 var once sync.Once
 
@@ -218,7 +224,7 @@ func IsBusBypassingEffects(bus_idx int) bool { //gd:AudioServer.is_bus_bypassing
 /*
 Adds an [AudioEffect] effect to the bus [param bus_idx] at [param at_position].
 */
-func AddBusEffect(bus_idx int, effect [1]gdclass.AudioEffect) { //gd:AudioServer.add_bus_effect
+func AddBusEffect(bus_idx int, effect AudioEffect.Instance) { //gd:AudioServer.add_bus_effect
 	once.Do(singleton)
 	Advanced().AddBusEffect(int64(bus_idx), effect, int64(-1))
 }
@@ -226,7 +232,7 @@ func AddBusEffect(bus_idx int, effect [1]gdclass.AudioEffect) { //gd:AudioServer
 /*
 Adds an [AudioEffect] effect to the bus [param bus_idx] at [param at_position].
 */
-func AddBusEffectOptions(bus_idx int, effect [1]gdclass.AudioEffect, at_position int) { //gd:AudioServer.add_bus_effect
+func AddBusEffectOptions(bus_idx int, effect AudioEffect.Instance, at_position int) { //gd:AudioServer.add_bus_effect
 	once.Do(singleton)
 	Advanced().AddBusEffect(int64(bus_idx), effect, int64(at_position))
 }
@@ -250,25 +256,25 @@ func GetBusEffectCount(bus_idx int) int { //gd:AudioServer.get_bus_effect_count
 /*
 Returns the [AudioEffect] at position [param effect_idx] in bus [param bus_idx].
 */
-func GetBusEffect(bus_idx int, effect_idx int) [1]gdclass.AudioEffect { //gd:AudioServer.get_bus_effect
+func GetBusEffect(bus_idx int, effect_idx int) AudioEffect.Instance { //gd:AudioServer.get_bus_effect
 	once.Do(singleton)
-	return [1]gdclass.AudioEffect(Advanced().GetBusEffect(int64(bus_idx), int64(effect_idx)))
+	return AudioEffect.Instance(Advanced().GetBusEffect(int64(bus_idx), int64(effect_idx)))
 }
 
 /*
 Returns the [AudioEffectInstance] assigned to the given bus and effect indices (and optionally channel).
 */
-func GetBusEffectInstance(bus_idx int, effect_idx int, channel int) [1]gdclass.AudioEffectInstance { //gd:AudioServer.get_bus_effect_instance
+func GetBusEffectInstance(bus_idx int, effect_idx int, channel int) AudioEffectInstance.Instance { //gd:AudioServer.get_bus_effect_instance
 	once.Do(singleton)
-	return [1]gdclass.AudioEffectInstance(Advanced().GetBusEffectInstance(int64(bus_idx), int64(effect_idx), int64(channel)))
+	return AudioEffectInstance.Instance(Advanced().GetBusEffectInstance(int64(bus_idx), int64(effect_idx), int64(channel)))
 }
 
 /*
 Returns the [AudioEffectInstance] assigned to the given bus and effect indices (and optionally channel).
 */
-func GetBusEffectInstanceOptions(bus_idx int, effect_idx int, channel int) [1]gdclass.AudioEffectInstance { //gd:AudioServer.get_bus_effect_instance
+func GetBusEffectInstanceOptions(bus_idx int, effect_idx int, channel int) AudioEffectInstance.Instance { //gd:AudioServer.get_bus_effect_instance
 	once.Do(singleton)
-	return [1]gdclass.AudioEffectInstance(Advanced().GetBusEffectInstance(int64(bus_idx), int64(effect_idx), int64(channel)))
+	return AudioEffectInstance.Instance(Advanced().GetBusEffectInstance(int64(bus_idx), int64(effect_idx), int64(channel)))
 }
 
 /*
@@ -405,7 +411,7 @@ func GetInputDeviceList() []string { //gd:AudioServer.get_input_device_list
 /*
 Overwrites the currently used [AudioBusLayout].
 */
-func SetBusLayout(bus_layout [1]gdclass.AudioBusLayout) { //gd:AudioServer.set_bus_layout
+func SetBusLayout(bus_layout AudioBusLayout.Instance) { //gd:AudioServer.set_bus_layout
 	once.Do(singleton)
 	Advanced().SetBusLayout(bus_layout)
 }
@@ -413,9 +419,9 @@ func SetBusLayout(bus_layout [1]gdclass.AudioBusLayout) { //gd:AudioServer.set_b
 /*
 Generates an [AudioBusLayout] using the available buses and effects.
 */
-func GenerateBusLayout() [1]gdclass.AudioBusLayout { //gd:AudioServer.generate_bus_layout
+func GenerateBusLayout() AudioBusLayout.Instance { //gd:AudioServer.generate_bus_layout
 	once.Do(singleton)
-	return [1]gdclass.AudioBusLayout(Advanced().GenerateBusLayout())
+	return AudioBusLayout.Instance(Advanced().GenerateBusLayout())
 }
 
 /*
@@ -431,7 +437,7 @@ func SetEnableTaggingUsedAudioStreams(enable bool) { //gd:AudioServer.set_enable
 If [code]true[/code], the stream is registered as a sample. The engine will not have to register it before playing the sample.
 If [code]false[/code], the stream will have to be registered before playing it. To prevent lag spikes, register the stream as sample with [method register_stream_as_sample].
 */
-func IsStreamRegisteredAsSample(stream [1]gdclass.AudioStream) bool { //gd:AudioServer.is_stream_registered_as_sample
+func IsStreamRegisteredAsSample(stream AudioStream.Instance) bool { //gd:AudioServer.is_stream_registered_as_sample
 	once.Do(singleton)
 	return bool(Advanced().IsStreamRegisteredAsSample(stream))
 }
@@ -440,7 +446,7 @@ func IsStreamRegisteredAsSample(stream [1]gdclass.AudioStream) bool { //gd:Audio
 Forces the registration of a stream as a sample.
 [b]Note:[/b] Lag spikes may occur when calling this method, especially on single-threaded builds. It is suggested to call this method while loading assets, where the lag spike could be masked, instead of registering the sample right before it needs to be played.
 */
-func RegisterStreamAsSample(stream [1]gdclass.AudioStream) { //gd:AudioServer.register_stream_as_sample
+func RegisterStreamAsSample(stream AudioStream.Instance) { //gd:AudioServer.register_stream_as_sample
 	once.Do(singleton)
 	Advanced().RegisterStreamAsSample(stream)
 }

@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/EditorDebuggerSession"
+import "graphics.gd/classdb/Script"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -129,11 +131,11 @@ type Interface interface {
 	//Override this method to process incoming messages. The [param session_id] is the ID of the [EditorDebuggerSession] that received the [param message]. Use [method get_session] to retrieve the session. This method should return [code]true[/code] if the message is recognized.
 	Capture(message string, data []any, session_id int) bool
 	//Override this method to be notified when a breakpoint line has been clicked in the debugger breakpoint panel.
-	GotoScriptLine(script [1]gdclass.Script, line int)
+	GotoScriptLine(script Script.Instance, line int)
 	//Override this method to be notified when all breakpoints are cleared in the editor.
 	BreakpointsClearedInTree()
 	//Override this method to be notified when a breakpoint is set in the editor.
-	BreakpointSetInTree(script [1]gdclass.Script, line int, enabled bool)
+	BreakpointSetInTree(script Script.Instance, line int, enabled bool)
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -144,9 +146,9 @@ type implementation struct{}
 func (self implementation) SetupSession(session_id int)                                 { return }
 func (self implementation) HasCapture(capture string) (_ bool)                          { return }
 func (self implementation) Capture(message string, data []any, session_id int) (_ bool) { return }
-func (self implementation) GotoScriptLine(script [1]gdclass.Script, line int)           { return }
+func (self implementation) GotoScriptLine(script Script.Instance, line int)             { return }
 func (self implementation) BreakpointsClearedInTree()                                   { return }
-func (self implementation) BreakpointSetInTree(script [1]gdclass.Script, line int, enabled bool) {
+func (self implementation) BreakpointSetInTree(script Script.Instance, line int, enabled bool) {
 	return
 }
 
@@ -193,7 +195,7 @@ func (Instance) _capture(impl func(ptr unsafe.Pointer, message string, data []an
 /*
 Override this method to be notified when a breakpoint line has been clicked in the debugger breakpoint panel.
 */
-func (Instance) _goto_script_line(impl func(ptr unsafe.Pointer, script [1]gdclass.Script, line int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _goto_script_line(impl func(ptr unsafe.Pointer, script Script.Instance, line int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var script = [1]gdclass.Script{pointers.New[gdclass.Script]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -217,7 +219,7 @@ func (Instance) _breakpoints_cleared_in_tree(impl func(ptr unsafe.Pointer)) (cb 
 /*
 Override this method to be notified when a breakpoint is set in the editor.
 */
-func (Instance) _breakpoint_set_in_tree(impl func(ptr unsafe.Pointer, script [1]gdclass.Script, line int, enabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _breakpoint_set_in_tree(impl func(ptr unsafe.Pointer, script Script.Instance, line int, enabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var script = [1]gdclass.Script{pointers.New[gdclass.Script]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -232,8 +234,8 @@ func (Instance) _breakpoint_set_in_tree(impl func(ptr unsafe.Pointer, script [1]
 /*
 Returns the [EditorDebuggerSession] with the given [param id].
 */
-func (self Instance) GetSession(id int) [1]gdclass.EditorDebuggerSession { //gd:EditorDebuggerPlugin.get_session
-	return [1]gdclass.EditorDebuggerSession(Advanced(self).GetSession(int64(id)))
+func (self Instance) GetSession(id int) EditorDebuggerSession.Instance { //gd:EditorDebuggerPlugin.get_session
+	return EditorDebuggerSession.Instance(Advanced(self).GetSession(int64(id)))
 }
 
 /*

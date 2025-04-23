@@ -46,6 +46,8 @@ var _ = slices.Delete[[]struct{}, struct{}]
 /*
 IP contains support functions for the Internet Protocol (IP). TCP/IP support is in different classes (see [StreamPeerTCP] and [TCPServer]). IP provides DNS hostname resolution support, both blocking and threaded.
 */
+type Instance [1]gdclass.IP
+
 var self [1]gdclass.IP
 var once sync.Once
 

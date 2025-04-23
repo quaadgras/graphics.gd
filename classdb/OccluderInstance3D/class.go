@@ -13,6 +13,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/Occluder3D"
 import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -94,11 +95,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Occluder() [1]gdclass.Occluder3D {
-	return [1]gdclass.Occluder3D(class(self).GetOccluder())
+func (self Instance) Occluder() Occluder3D.Instance {
+	return Occluder3D.Instance(class(self).GetOccluder())
 }
 
-func (self Instance) SetOccluder(value [1]gdclass.Occluder3D) {
+func (self Instance) SetOccluder(value Occluder3D.Instance) {
 	class(self).SetOccluder(value)
 }
 

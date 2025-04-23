@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Control"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -182,7 +183,7 @@ func (Instance) _parse_end(impl func(ptr unsafe.Pointer, obj Object.Instance)) (
 /*
 Adds a custom control, which is not necessarily a property editor.
 */
-func (self Instance) AddCustomControl(control [1]gdclass.Control) { //gd:EditorInspectorPlugin.add_custom_control
+func (self Instance) AddCustomControl(control Control.Instance) { //gd:EditorInspectorPlugin.add_custom_control
 	Advanced(self).AddCustomControl(control)
 }
 
@@ -191,7 +192,7 @@ Adds a property editor for an individual property. The [param editor] control mu
 There can be multiple property editors for a property. If [param add_to_end] is [code]true[/code], this newly added editor will be displayed after all the other editors of the property whose [param add_to_end] is [code]false[/code]. For example, the editor uses this parameter to add an "Edit Region" button for [member Sprite2D.region_rect] below the regular [Rect2] editor.
 [param label] can be used to choose a custom label for the property editor in the inspector. If left empty, the label is computed from the name of the property instead.
 */
-func (self Instance) AddPropertyEditor(property string, editor [1]gdclass.Control) { //gd:EditorInspectorPlugin.add_property_editor
+func (self Instance) AddPropertyEditor(property string, editor Control.Instance) { //gd:EditorInspectorPlugin.add_property_editor
 	Advanced(self).AddPropertyEditor(String.New(property), editor, false, String.New(""))
 }
 
@@ -200,14 +201,14 @@ Adds a property editor for an individual property. The [param editor] control mu
 There can be multiple property editors for a property. If [param add_to_end] is [code]true[/code], this newly added editor will be displayed after all the other editors of the property whose [param add_to_end] is [code]false[/code]. For example, the editor uses this parameter to add an "Edit Region" button for [member Sprite2D.region_rect] below the regular [Rect2] editor.
 [param label] can be used to choose a custom label for the property editor in the inspector. If left empty, the label is computed from the name of the property instead.
 */
-func (self Expanded) AddPropertyEditor(property string, editor [1]gdclass.Control, add_to_end bool, label string) { //gd:EditorInspectorPlugin.add_property_editor
+func (self Expanded) AddPropertyEditor(property string, editor Control.Instance, add_to_end bool, label string) { //gd:EditorInspectorPlugin.add_property_editor
 	Advanced(self).AddPropertyEditor(String.New(property), editor, add_to_end, String.New(label))
 }
 
 /*
 Adds an editor that allows modifying multiple properties. The [param editor] control must extend [EditorProperty].
 */
-func (self Instance) AddPropertyEditorForMultipleProperties(label string, properties []string, editor [1]gdclass.Control) { //gd:EditorInspectorPlugin.add_property_editor_for_multiple_properties
+func (self Instance) AddPropertyEditorForMultipleProperties(label string, properties []string, editor Control.Instance) { //gd:EditorInspectorPlugin.add_property_editor_for_multiple_properties
 	Advanced(self).AddPropertyEditorForMultipleProperties(String.New(label), Packed.MakeStrings(properties...), editor)
 }
 

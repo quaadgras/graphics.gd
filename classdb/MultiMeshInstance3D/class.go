@@ -12,6 +12,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/GeometryInstance3D"
+import "graphics.gd/classdb/MultiMesh"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/VisualInstance3D"
@@ -77,11 +78,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Multimesh() [1]gdclass.MultiMesh {
-	return [1]gdclass.MultiMesh(class(self).GetMultimesh())
+func (self Instance) Multimesh() MultiMesh.Instance {
+	return MultiMesh.Instance(class(self).GetMultimesh())
 }
 
-func (self Instance) SetMultimesh(value [1]gdclass.MultiMesh) {
+func (self Instance) SetMultimesh(value MultiMesh.Instance) {
 	class(self).SetMultimesh(value)
 }
 

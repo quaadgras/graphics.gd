@@ -11,6 +11,10 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/InputEvent"
+import "graphics.gd/classdb/MultiplayerAPI"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Tween"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -116,26 +120,26 @@ type Interface interface {
 	//To consume the input event and stop it propagating further to other nodes, [method Viewport.set_input_as_handled] can be called.
 	//For gameplay input, [method _unhandled_input] and [method _unhandled_key_input] are usually a better fit as they allow the GUI to intercept the events first.
 	//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
-	Input(event [1]gdclass.InputEvent)
+	Input(event InputEvent.Instance)
 	//Called when an [InputEventKey], [InputEventShortcut], or [InputEventJoypadButton] hasn't been consumed by [method _input] or any GUI [Control] item. It is called before [method _unhandled_key_input] and [method _unhandled_input]. The input event propagates up through the node tree until a node consumes it.
 	//It is only called if shortcut processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_process_shortcut_input].
 	//To consume the input event and stop it propagating further to other nodes, [method Viewport.set_input_as_handled] can be called.
 	//This method can be used to handle shortcuts. For generic GUI events, use [method _input] instead. Gameplay events should usually be handled with either [method _unhandled_input] or [method _unhandled_key_input].
 	//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not orphan).
-	ShortcutInput(event [1]gdclass.InputEvent)
+	ShortcutInput(event InputEvent.Instance)
 	//Called when an [InputEvent] hasn't been consumed by [method _input] or any GUI [Control] item. It is called after [method _shortcut_input] and after [method _unhandled_key_input]. The input event propagates up through the node tree until a node consumes it.
 	//It is only called if unhandled input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_process_unhandled_input].
 	//To consume the input event and stop it propagating further to other nodes, [method Viewport.set_input_as_handled] can be called.
 	//For gameplay input, this method is usually a better fit than [method _input], as GUI events need a higher priority. For keyboard shortcuts, consider using [method _shortcut_input] instead, as it is called before this method. Finally, to handle keyboard events, consider using [method _unhandled_key_input] for performance reasons.
 	//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
-	UnhandledInput(event [1]gdclass.InputEvent)
+	UnhandledInput(event InputEvent.Instance)
 	//Called when an [InputEventKey] hasn't been consumed by [method _input] or any GUI [Control] item. It is called after [method _shortcut_input] but before [method _unhandled_input]. The input event propagates up through the node tree until a node consumes it.
 	//It is only called if unhandled key input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_process_unhandled_key_input].
 	//To consume the input event and stop it propagating further to other nodes, [method Viewport.set_input_as_handled] can be called.
 	//This method can be used to handle Unicode character input with [kbd]Alt[/kbd], [kbd]Alt + Ctrl[/kbd], and [kbd]Alt + Shift[/kbd] modifiers, after shortcuts were handled.
 	//For gameplay input, this and [method _unhandled_input] are usually a better fit than [method _input], as GUI events should be handled first. This method also performs better than [method _unhandled_input], since unrelated events such as [InputEventMouseMotion] are automatically filtered. For shortcuts, consider using [method _shortcut_input] instead.
 	//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
-	UnhandledKeyInput(event [1]gdclass.InputEvent)
+	UnhandledKeyInput(event InputEvent.Instance)
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -143,16 +147,16 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) Process(delta Float.X)                         { return }
-func (self implementation) PhysicsProcess(delta Float.X)                  { return }
-func (self implementation) EnterTree()                                    { return }
-func (self implementation) ExitTree()                                     { return }
-func (self implementation) Ready()                                        { return }
-func (self implementation) GetConfigurationWarnings() (_ []string)        { return }
-func (self implementation) Input(event [1]gdclass.InputEvent)             { return }
-func (self implementation) ShortcutInput(event [1]gdclass.InputEvent)     { return }
-func (self implementation) UnhandledInput(event [1]gdclass.InputEvent)    { return }
-func (self implementation) UnhandledKeyInput(event [1]gdclass.InputEvent) { return }
+func (self implementation) Process(delta Float.X)                       { return }
+func (self implementation) PhysicsProcess(delta Float.X)                { return }
+func (self implementation) EnterTree()                                  { return }
+func (self implementation) ExitTree()                                   { return }
+func (self implementation) Ready()                                      { return }
+func (self implementation) GetConfigurationWarnings() (_ []string)      { return }
+func (self implementation) Input(event InputEvent.Instance)             { return }
+func (self implementation) ShortcutInput(event InputEvent.Instance)     { return }
+func (self implementation) UnhandledInput(event InputEvent.Instance)    { return }
+func (self implementation) UnhandledKeyInput(event InputEvent.Instance) { return }
 
 /*
 Called during the processing step of the main loop. Processing happens at every frame and as fast as possible, so the [param delta] time since the previous frame is not constant. [param delta] is in seconds.
@@ -261,7 +265,7 @@ To consume the input event and stop it propagating further to other nodes, [meth
 For gameplay input, [method _unhandled_input] and [method _unhandled_key_input] are usually a better fit as they allow the GUI to intercept the events first.
 [b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 */
-func (Instance) _input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _input(impl func(ptr unsafe.Pointer, event InputEvent.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -278,7 +282,7 @@ To consume the input event and stop it propagating further to other nodes, [meth
 This method can be used to handle shortcuts. For generic GUI events, use [method _input] instead. Gameplay events should usually be handled with either [method _unhandled_input] or [method _unhandled_key_input].
 [b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not orphan).
 */
-func (Instance) _shortcut_input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shortcut_input(impl func(ptr unsafe.Pointer, event InputEvent.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -295,7 +299,7 @@ To consume the input event and stop it propagating further to other nodes, [meth
 For gameplay input, this method is usually a better fit than [method _input], as GUI events need a higher priority. For keyboard shortcuts, consider using [method _shortcut_input] instead, as it is called before this method. Finally, to handle keyboard events, consider using [method _unhandled_key_input] for performance reasons.
 [b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 */
-func (Instance) _unhandled_input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _unhandled_input(impl func(ptr unsafe.Pointer, event InputEvent.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -313,7 +317,7 @@ This method can be used to handle Unicode character input with [kbd]Alt[/kbd], [
 For gameplay input, this and [method _unhandled_input] are usually a better fit than [method _input], as GUI events should be handled first. This method also performs better than [method _unhandled_input], since unrelated events such as [InputEventMouseMotion] are automatically filtered. For shortcuts, consider using [method _shortcut_input] instead.
 [b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 */
-func (Instance) _unhandled_key_input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _unhandled_key_input(impl func(ptr unsafe.Pointer, event InputEvent.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -338,7 +342,7 @@ If [param force_readable_name] is [code]true[/code], improves the readability of
 Use [method add_child] instead of this method if you don't need the child node to be added below a specific node in the list of children.
 [b]Note:[/b] If this node is internal, the added sibling will be internal too (see [method add_child]'s [code]internal[/code] parameter).
 */
-func (self Instance) AddSibling(sibling [1]gdclass.Node) { //gd:Node.add_sibling
+func (self Instance) AddSibling(sibling Instance) { //gd:Node.add_sibling
 	Advanced(self).AddSibling(sibling, false)
 }
 
@@ -348,7 +352,7 @@ If [param force_readable_name] is [code]true[/code], improves the readability of
 Use [method add_child] instead of this method if you don't need the child node to be added below a specific node in the list of children.
 [b]Note:[/b] If this node is internal, the added sibling will be internal too (see [method add_child]'s [code]internal[/code] parameter).
 */
-func (self Expanded) AddSibling(sibling [1]gdclass.Node, force_readable_name bool) { //gd:Node.add_sibling
+func (self Expanded) AddSibling(sibling Instance, force_readable_name bool) { //gd:Node.add_sibling
 	Advanced(self).AddSibling(sibling, force_readable_name)
 }
 
@@ -380,7 +384,7 @@ AddChild(childNode);
 If you need the child node to be added below a specific node in the list of children, use [method add_sibling] instead of this method.
 [b]Note:[/b] If you want a child to be persisted to a [PackedScene], you must set [member owner] in addition to calling [method add_child]. This is typically relevant for [url=$DOCS_URL/tutorials/plugins/running_code_in_the_editor.html]tool scripts[/url] and [url=$DOCS_URL/tutorials/plugins/editor/index.html]editor plugins[/url]. If [method add_child] is called without setting [member owner], the newly added [Node] will not be visible in the scene tree, though it will be visible in the 2D/3D view.
 */
-func (self Instance) AddChild(node [1]gdclass.Node) { //gd:Node.add_child
+func (self Instance) AddChild(node Instance) { //gd:Node.add_child
 	Advanced(self).AddChild(node, false, 0)
 }
 
@@ -412,7 +416,7 @@ AddChild(childNode);
 If you need the child node to be added below a specific node in the list of children, use [method add_sibling] instead of this method.
 [b]Note:[/b] If you want a child to be persisted to a [PackedScene], you must set [member owner] in addition to calling [method add_child]. This is typically relevant for [url=$DOCS_URL/tutorials/plugins/running_code_in_the_editor.html]tool scripts[/url] and [url=$DOCS_URL/tutorials/plugins/editor/index.html]editor plugins[/url]. If [method add_child] is called without setting [member owner], the newly added [Node] will not be visible in the scene tree, though it will be visible in the 2D/3D view.
 */
-func (self Expanded) AddChild(node [1]gdclass.Node, force_readable_name bool, internal_ gdclass.NodeInternalMode) { //gd:Node.add_child
+func (self Expanded) AddChild(node Instance, force_readable_name bool, internal_ gdclass.NodeInternalMode) { //gd:Node.add_child
 	Advanced(self).AddChild(node, force_readable_name, internal_)
 }
 
@@ -420,7 +424,7 @@ func (self Expanded) AddChild(node [1]gdclass.Node, force_readable_name bool, in
 Removes a child [param node]. The [param node], along with its children, are [b]not[/b] deleted. To delete a node, see [method queue_free].
 [b]Note:[/b] When this node is inside the tree, this method sets the [member owner] of the removed [param node] (or its descendants) to [code]null[/code], if their [member owner] is no longer an ancestor (see [method is_ancestor_of]).
 */
-func (self Instance) RemoveChild(node [1]gdclass.Node) { //gd:Node.remove_child
+func (self Instance) RemoveChild(node Instance) { //gd:Node.remove_child
 	Advanced(self).RemoveChild(node)
 }
 
@@ -428,7 +432,7 @@ func (self Instance) RemoveChild(node [1]gdclass.Node) { //gd:Node.remove_child
 Changes the parent of this [Node] to the [param new_parent]. The node needs to already have a parent. The node's [member owner] is preserved if its owner is still reachable from the new location (i.e., the node is still a descendant of the new parent after the operation).
 If [param keep_global_transform] is [code]true[/code], the node's global transform will be preserved if supported. [Node2D], [Node3D] and [Control] support this argument (but [Control] keeps only position).
 */
-func (self Instance) Reparent(new_parent [1]gdclass.Node) { //gd:Node.reparent
+func (self Instance) Reparent(new_parent Instance) { //gd:Node.reparent
 	Advanced(self).Reparent(new_parent, true)
 }
 
@@ -436,7 +440,7 @@ func (self Instance) Reparent(new_parent [1]gdclass.Node) { //gd:Node.reparent
 Changes the parent of this [Node] to the [param new_parent]. The node needs to already have a parent. The node's [member owner] is preserved if its owner is still reachable from the new location (i.e., the node is still a descendant of the new parent after the operation).
 If [param keep_global_transform] is [code]true[/code], the node's global transform will be preserved if supported. [Node2D], [Node3D] and [Control] support this argument (but [Control] keeps only position).
 */
-func (self Expanded) Reparent(new_parent [1]gdclass.Node, keep_global_transform bool) { //gd:Node.reparent
+func (self Expanded) Reparent(new_parent Instance, keep_global_transform bool) { //gd:Node.reparent
 	Advanced(self).Reparent(new_parent, keep_global_transform)
 }
 
@@ -460,16 +464,16 @@ func (self Expanded) GetChildCount(include_internal bool) int { //gd:Node.get_ch
 Returns all children of this node inside an [Array].
 If [param include_internal] is [code]false[/code], excludes internal children from the returned array (see [method add_child]'s [code]internal[/code] parameter).
 */
-func (self Instance) GetChildren() [][1]gdclass.Node { //gd:Node.get_children
-	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](gd.InternalArray(Advanced(self).GetChildren(false))))
+func (self Instance) GetChildren() []Instance { //gd:Node.get_children
+	return []Instance(gd.ArrayAs[[]Instance](gd.InternalArray(Advanced(self).GetChildren(false))))
 }
 
 /*
 Returns all children of this node inside an [Array].
 If [param include_internal] is [code]false[/code], excludes internal children from the returned array (see [method add_child]'s [code]internal[/code] parameter).
 */
-func (self Expanded) GetChildren(include_internal bool) [][1]gdclass.Node { //gd:Node.get_children
-	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](gd.InternalArray(Advanced(self).GetChildren(include_internal))))
+func (self Expanded) GetChildren(include_internal bool) []Instance { //gd:Node.get_children
+	return []Instance(gd.ArrayAs[[]Instance](gd.InternalArray(Advanced(self).GetChildren(include_internal))))
 }
 
 /*
@@ -486,8 +490,8 @@ var c = get_child(-1).name # c is "Last"
 [/codeblock]
 [b]Note:[/b] To fetch a node by [NodePath], use [method get_node].
 */
-func (self Instance) GetChild(idx int) [1]gdclass.Node { //gd:Node.get_child
-	return [1]gdclass.Node(Advanced(self).GetChild(int64(idx), false))
+func (self Instance) GetChild(idx int) Instance { //gd:Node.get_child
+	return Instance(Advanced(self).GetChild(int64(idx), false))
 }
 
 /*
@@ -504,8 +508,8 @@ var c = get_child(-1).name # c is "Last"
 [/codeblock]
 [b]Note:[/b] To fetch a node by [NodePath], use [method get_node].
 */
-func (self Expanded) GetChild(idx int, include_internal bool) [1]gdclass.Node { //gd:Node.get_child
-	return [1]gdclass.Node(Advanced(self).GetChild(int64(idx), include_internal))
+func (self Expanded) GetChild(idx int, include_internal bool) Instance { //gd:Node.get_child
+	return Instance(Advanced(self).GetChild(int64(idx), include_internal))
 }
 
 /*
@@ -549,22 +553,22 @@ GetNode("/root/MyGame");
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) GetNode(path string) [1]gdclass.Node { //gd:Node.get_node
-	return [1]gdclass.Node(Advanced(self).GetNode(Path.ToNode(String.New(path))))
+func (self Instance) GetNode(path string) Instance { //gd:Node.get_node
+	return Instance(Advanced(self).GetNode(Path.ToNode(String.New(path))))
 }
 
 /*
 Fetches a node by [NodePath]. Similar to [method get_node], but does not generate an error if [param path] does not point to a valid node.
 */
-func (self Instance) GetNodeOrNull(path string) [1]gdclass.Node { //gd:Node.get_node_or_null
-	return [1]gdclass.Node(Advanced(self).GetNodeOrNull(Path.ToNode(String.New(path))))
+func (self Instance) GetNodeOrNull(path string) Instance { //gd:Node.get_node_or_null
+	return Instance(Advanced(self).GetNodeOrNull(Path.ToNode(String.New(path))))
 }
 
 /*
 Returns this node's parent node, or [code]null[/code] if the node doesn't have a parent.
 */
-func (self Instance) GetParent() [1]gdclass.Node { //gd:Node.get_parent
-	return [1]gdclass.Node(Advanced(self).GetParent())
+func (self Instance) GetParent() Instance { //gd:Node.get_parent
+	return Instance(Advanced(self).GetParent())
 }
 
 /*
@@ -574,8 +578,8 @@ If [param owned] is [code]true[/code], only descendants with a valid [member own
 [b]Note:[/b] This method can be very slow. Consider storing a reference to the found node in a variable. Alternatively, use [method get_node] with unique names (see [member unique_name_in_owner]).
 [b]Note:[/b] To find all descendant nodes matching a pattern or a class type, see [method find_children].
 */
-func (self Instance) FindChild(pattern string) [1]gdclass.Node { //gd:Node.find_child
-	return [1]gdclass.Node(Advanced(self).FindChild(String.New(pattern), true, true))
+func (self Instance) FindChild(pattern string) Instance { //gd:Node.find_child
+	return Instance(Advanced(self).FindChild(String.New(pattern), true, true))
 }
 
 /*
@@ -585,8 +589,8 @@ If [param owned] is [code]true[/code], only descendants with a valid [member own
 [b]Note:[/b] This method can be very slow. Consider storing a reference to the found node in a variable. Alternatively, use [method get_node] with unique names (see [member unique_name_in_owner]).
 [b]Note:[/b] To find all descendant nodes matching a pattern or a class type, see [method find_children].
 */
-func (self Expanded) FindChild(pattern string, recursive bool, owned bool) [1]gdclass.Node { //gd:Node.find_child
-	return [1]gdclass.Node(Advanced(self).FindChild(String.New(pattern), recursive, owned))
+func (self Expanded) FindChild(pattern string, recursive bool, owned bool) Instance { //gd:Node.find_child
+	return Instance(Advanced(self).FindChild(String.New(pattern), recursive, owned))
 }
 
 /*
@@ -597,8 +601,8 @@ If [param owned] is [code]true[/code], only descendants with a valid [member own
 [b]Note:[/b] This method can be very slow. Consider storing references to the found nodes in a variable.
 [b]Note:[/b] To find a single descendant node matching a pattern, see [method find_child].
 */
-func (self Instance) FindChildren(pattern string) [][1]gdclass.Node { //gd:Node.find_children
-	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](gd.InternalArray(Advanced(self).FindChildren(String.New(pattern), String.New(""), true, true))))
+func (self Instance) FindChildren(pattern string) []Instance { //gd:Node.find_children
+	return []Instance(gd.ArrayAs[[]Instance](gd.InternalArray(Advanced(self).FindChildren(String.New(pattern), String.New(""), true, true))))
 }
 
 /*
@@ -609,16 +613,16 @@ If [param owned] is [code]true[/code], only descendants with a valid [member own
 [b]Note:[/b] This method can be very slow. Consider storing references to the found nodes in a variable.
 [b]Note:[/b] To find a single descendant node matching a pattern, see [method find_child].
 */
-func (self Expanded) FindChildren(pattern string, atype string, recursive bool, owned bool) [][1]gdclass.Node { //gd:Node.find_children
-	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](gd.InternalArray(Advanced(self).FindChildren(String.New(pattern), String.New(atype), recursive, owned))))
+func (self Expanded) FindChildren(pattern string, atype string, recursive bool, owned bool) []Instance { //gd:Node.find_children
+	return []Instance(gd.ArrayAs[[]Instance](gd.InternalArray(Advanced(self).FindChildren(String.New(pattern), String.New(atype), recursive, owned))))
 }
 
 /*
 Finds the first ancestor of this node whose [member name] matches [param pattern], returning [code]null[/code] if no match is found. The matching is done through [method String.match]. As such, it is case-sensitive, [code]"*"[/code] matches zero or more characters, and [code]"?"[/code] matches any single character. See also [method find_child] and [method find_children].
 [b]Note:[/b] As this method walks upwards in the scene tree, it can be slow in large, deeply nested nodes. Consider storing a reference to the found node in a variable. Alternatively, use [method get_node] with unique names (see [member unique_name_in_owner]).
 */
-func (self Instance) FindParent(pattern string) [1]gdclass.Node { //gd:Node.find_parent
-	return [1]gdclass.Node(Advanced(self).FindParent(String.New(pattern)))
+func (self Instance) FindParent(pattern string) Instance { //gd:Node.find_parent
+	return Instance(Advanced(self).FindParent(String.New(pattern)))
 }
 
 /*
@@ -690,14 +694,14 @@ func (self Instance) IsPartOfEditedScene() bool { //gd:Node.is_part_of_edited_sc
 /*
 Returns [code]true[/code] if the given [param node] is a direct or indirect child of this node.
 */
-func (self Instance) IsAncestorOf(node [1]gdclass.Node) bool { //gd:Node.is_ancestor_of
+func (self Instance) IsAncestorOf(node Instance) bool { //gd:Node.is_ancestor_of
 	return bool(Advanced(self).IsAncestorOf(node))
 }
 
 /*
 Returns [code]true[/code] if the given [param node] occurs later in the scene hierarchy than this node. A node occurring later is usually processed last.
 */
-func (self Instance) IsGreaterThan(node [1]gdclass.Node) bool { //gd:Node.is_greater_than
+func (self Instance) IsGreaterThan(node Instance) bool { //gd:Node.is_greater_than
 	return bool(Advanced(self).IsGreaterThan(node))
 }
 
@@ -713,7 +717,7 @@ Returns the relative [NodePath] from this node to the specified [param node]. Bo
 If [param use_unique_path] is [code]true[/code], returns the shortest path accounting for this node's unique name (see [member unique_name_in_owner]).
 [b]Note:[/b] If you get a relative path which starts from a unique node, the path may be longer than a normal relative path, due to the addition of the unique node's name.
 */
-func (self Instance) GetPathTo(node [1]gdclass.Node) string { //gd:Node.get_path_to
+func (self Instance) GetPathTo(node Instance) string { //gd:Node.get_path_to
 	return string(Advanced(self).GetPathTo(node, false).String())
 }
 
@@ -722,7 +726,7 @@ Returns the relative [NodePath] from this node to the specified [param node]. Bo
 If [param use_unique_path] is [code]true[/code], returns the shortest path accounting for this node's unique name (see [member unique_name_in_owner]).
 [b]Note:[/b] If you get a relative path which starts from a unique node, the path may be longer than a normal relative path, due to the addition of the unique node's name.
 */
-func (self Expanded) GetPathTo(node [1]gdclass.Node, use_unique_path bool) string { //gd:Node.get_path_to
+func (self Expanded) GetPathTo(node Instance, use_unique_path bool) string { //gd:Node.get_path_to
 	return string(Advanced(self).GetPathTo(node, use_unique_path).String())
 }
 
@@ -764,7 +768,7 @@ func (self Instance) IsInGroup(group string) bool { //gd:Node.is_in_group
 Moves [param child_node] to the given index. A node's index is the order among its siblings. If [param to_index] is negative, the index is counted from the end of the list. See also [method get_child] and [method get_index].
 [b]Note:[/b] The processing order of several engine callbacks ([method _ready], [method _process], etc.) and notifications sent through [method propagate_notification] is affected by tree order. [CanvasItem] nodes are also rendered in tree order. See also [member process_priority].
 */
-func (self Instance) MoveChild(child_node [1]gdclass.Node, to_index int) { //gd:Node.move_child
+func (self Instance) MoveChild(child_node Instance, to_index int) { //gd:Node.move_child
 	Advanced(self).MoveChild(child_node, int64(to_index))
 }
 
@@ -1106,27 +1110,6 @@ func (self Instance) SetTranslationDomainInherited() { //gd:Node.set_translation
 }
 
 /*
-Returns the [Window] that contains this node. If the node is in the main window, this is equivalent to getting the root node ([code]get_tree().get_root()[/code]).
-*/
-func (self Instance) GetWindow() [1]gdclass.Window { //gd:Node.get_window
-	return [1]gdclass.Window(Advanced(self).GetWindow())
-}
-
-/*
-Returns the [Window] that contains this node, or the last exclusive child in a chain of windows starting with the one that contains this node.
-*/
-func (self Instance) GetLastExclusiveWindow() [1]gdclass.Window { //gd:Node.get_last_exclusive_window
-	return [1]gdclass.Window(Advanced(self).GetLastExclusiveWindow())
-}
-
-/*
-Returns the [SceneTree] that contains this node. If this node is not inside the tree, generates an error and returns [code]null[/code]. See also [method is_inside_tree].
-*/
-func (self Instance) GetTree() [1]gdclass.SceneTree { //gd:Node.get_tree
-	return [1]gdclass.SceneTree(Advanced(self).GetTree())
-}
-
-/*
 Creates a new [Tween] and binds it to this node.
 This is the equivalent of doing:
 [codeblocks]
@@ -1140,24 +1123,24 @@ GetTree().CreateTween().BindNode(this);
 The Tween will start automatically on the next process frame or physics frame (depending on [enum Tween.TweenProcessMode]). See [method Tween.bind_node] for more info on Tweens bound to nodes.
 [b]Note:[/b] The method can still be used when the node is not inside [SceneTree]. It can fail in an unlikely case of using a custom [MainLoop].
 */
-func (self Instance) CreateTween() [1]gdclass.Tween { //gd:Node.create_tween
-	return [1]gdclass.Tween(Advanced(self).CreateTween())
+func (self Instance) CreateTween() Tween.Instance { //gd:Node.create_tween
+	return Tween.Instance(Advanced(self).CreateTween())
 }
 
 /*
 Duplicates the node, returning a new node with all of its properties, signals, groups, and children copied from the original. The behavior can be tweaked through the [param flags] (see [enum DuplicateFlags]).
 [b]Note:[/b] For nodes with a [Script] attached, if [method Object._init] has been defined with required parameters, the duplicated node will not have a [Script].
 */
-func (self Instance) Duplicate() [1]gdclass.Node { //gd:Node.duplicate
-	return [1]gdclass.Node(Advanced(self).Duplicate(int64(15)))
+func (self Instance) Duplicate() Instance { //gd:Node.duplicate
+	return Instance(Advanced(self).Duplicate(int64(15)))
 }
 
 /*
 Duplicates the node, returning a new node with all of its properties, signals, groups, and children copied from the original. The behavior can be tweaked through the [param flags] (see [enum DuplicateFlags]).
 [b]Note:[/b] For nodes with a [Script] attached, if [method Object._init] has been defined with required parameters, the duplicated node will not have a [Script].
 */
-func (self Expanded) Duplicate(flags int) [1]gdclass.Node { //gd:Node.duplicate
-	return [1]gdclass.Node(Advanced(self).Duplicate(int64(flags)))
+func (self Expanded) Duplicate(flags int) Instance { //gd:Node.duplicate
+	return Instance(Advanced(self).Duplicate(int64(flags)))
 }
 
 /*
@@ -1165,7 +1148,7 @@ Replaces this node by the given [param node]. All children of this node are move
 If [param keep_groups] is [code]true[/code], the [param node] is added to the same groups that the replaced node is in (see [method add_to_group]).
 [b]Warning:[/b] The replaced node is removed from the tree, but it is [b]not[/b] deleted. To prevent memory leaks, store a reference to the node in a variable, or use [method Object.free].
 */
-func (self Instance) ReplaceBy(node [1]gdclass.Node) { //gd:Node.replace_by
+func (self Instance) ReplaceBy(node Instance) { //gd:Node.replace_by
 	Advanced(self).ReplaceBy(node, false)
 }
 
@@ -1174,7 +1157,7 @@ Replaces this node by the given [param node]. All children of this node are move
 If [param keep_groups] is [code]true[/code], the [param node] is added to the same groups that the replaced node is in (see [method add_to_group]).
 [b]Warning:[/b] The replaced node is removed from the tree, but it is [b]not[/b] deleted. To prevent memory leaks, store a reference to the node in a variable, or use [method Object.free].
 */
-func (self Expanded) ReplaceBy(node [1]gdclass.Node, keep_groups bool) { //gd:Node.replace_by
+func (self Expanded) ReplaceBy(node Instance, keep_groups bool) { //gd:Node.replace_by
 	Advanced(self).ReplaceBy(node, keep_groups)
 }
 
@@ -1195,22 +1178,15 @@ func (self Instance) GetSceneInstanceLoadPlaceholder() bool { //gd:Node.get_scen
 /*
 Set to [code]true[/code] to allow all nodes owned by [param node] to be available, and editable, in the Scene dock, even if their [member owner] is not the scene root. This method is intended to be used in editor plugins and tools, but it also works in release builds. See also [method is_editable_instance].
 */
-func (self Instance) SetEditableInstance(node [1]gdclass.Node, is_editable bool) { //gd:Node.set_editable_instance
+func (self Instance) SetEditableInstance(node Instance, is_editable bool) { //gd:Node.set_editable_instance
 	Advanced(self).SetEditableInstance(node, is_editable)
 }
 
 /*
 Returns [code]true[/code] if [param node] has editable children enabled relative to this node. This method is intended to be used in editor plugins and tools. See also [method set_editable_instance].
 */
-func (self Instance) IsEditableInstance(node [1]gdclass.Node) bool { //gd:Node.is_editable_instance
+func (self Instance) IsEditableInstance(node Instance) bool { //gd:Node.is_editable_instance
 	return bool(Advanced(self).IsEditableInstance(node))
-}
-
-/*
-Returns the node's closest [Viewport] ancestor, if the node is inside the tree. Otherwise, returns [code]null[/code].
-*/
-func (self Instance) GetViewport() [1]gdclass.Viewport { //gd:Node.get_viewport
-	return [1]gdclass.Viewport(Advanced(self).GetViewport())
 }
 
 /*
@@ -1415,6 +1391,21 @@ func (self Instance) NotifyThreadSafe(what int) { //gd:Node.notify_thread_safe
 	Advanced(self).NotifyThreadSafe(int64(what))
 }
 
+/*
+If [member resource_local_to_scene] is set to [code]true[/code] and the resource has been loaded from a [PackedScene] instantiation, returns the root [Node] of the scene where this resource is used. Otherwise, returns [code]null[/code].
+*/
+func ResourceLocalScene(peer Resource.Instance) Instance { //gd:Resource.get_local_scene
+	return Instance(Resource.Advanced(peer).GetLocalScene())
+}
+
+/*
+Binds this [Tween] with the given [param node]. [Tween]s are processed directly by the [SceneTree], so they run independently of the animated nodes. When you bind a [Node] with the [Tween], the [Tween] will halt the animation when the object is not inside tree and the [Tween] will be automatically killed when the bound object is freed. Also [constant TWEEN_PAUSE_BOUND] will make the pausing behavior dependent on the bound node.
+For a shorter way to create and bind a [Tween], you can use [method Node.create_tween].
+*/
+func (self Instance) BindTween(peer Tween.Instance) Tween.Instance { //gd:Tween.bind_node
+	return Tween.Instance(Tween.Advanced(peer).BindNode(self))
+}
+
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.Node
@@ -1457,16 +1448,16 @@ func (self Instance) SetSceneFilePath(value string) {
 	class(self).SetSceneFilePath(String.New(value))
 }
 
-func (self Instance) Owner() [1]gdclass.Node {
-	return [1]gdclass.Node(class(self).GetOwner())
+func (self Instance) Owner() Instance {
+	return Instance(class(self).GetOwner())
 }
 
-func (self Instance) SetOwner(value [1]gdclass.Node) {
+func (self Instance) SetOwner(value Instance) {
 	class(self).SetOwner(value)
 }
 
-func (self Instance) Multiplayer() [1]gdclass.MultiplayerAPI {
-	return [1]gdclass.MultiplayerAPI(class(self).GetMultiplayer())
+func (self Instance) Multiplayer() MultiplayerAPI.Instance {
+	return MultiplayerAPI.Instance(class(self).GetMultiplayer())
 }
 
 func (self Instance) ProcessMode() gdclass.NodeProcessMode {
@@ -3408,11 +3399,11 @@ func (self Instance) OnTreeExited(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("tree_exited"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnChildEnteredTree(cb func(node [1]gdclass.Node)) {
+func (self Instance) OnChildEnteredTree(cb func(node Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("child_entered_tree"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnChildExitingTree(cb func(node [1]gdclass.Node)) {
+func (self Instance) OnChildExitingTree(cb func(node Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("child_exiting_tree"), gd.NewCallable(cb), 0)
 }
 
@@ -3420,11 +3411,11 @@ func (self Instance) OnChildOrderChanged(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("child_order_changed"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnReplacingBy(cb func(node [1]gdclass.Node)) {
+func (self Instance) OnReplacingBy(cb func(node Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("replacing_by"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnEditorDescriptionChanged(cb func(node [1]gdclass.Node)) {
+func (self Instance) OnEditorDescriptionChanged(cb func(node Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("editor_description_changed"), gd.NewCallable(cb), 0)
 }
 

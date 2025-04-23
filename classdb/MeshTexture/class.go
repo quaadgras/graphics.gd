@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Mesh"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/Texture"
 import "graphics.gd/classdb/Texture2D"
@@ -77,19 +78,19 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Mesh() [1]gdclass.Mesh {
-	return [1]gdclass.Mesh(class(self).GetMesh())
+func (self Instance) Mesh() Mesh.Instance {
+	return Mesh.Instance(class(self).GetMesh())
 }
 
-func (self Instance) SetMesh(value [1]gdclass.Mesh) {
+func (self Instance) SetMesh(value Mesh.Instance) {
 	class(self).SetMesh(value)
 }
 
-func (self Instance) BaseTexture() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetBaseTexture())
+func (self Instance) BaseTexture() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetBaseTexture())
 }
 
-func (self Instance) SetBaseTexture(value [1]gdclass.Texture2D) {
+func (self Instance) SetBaseTexture(value Texture2D.Instance) {
 	class(self).SetBaseTexture(value)
 }
 

@@ -12,6 +12,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/AudioEffect"
+import "graphics.gd/classdb/AudioStreamWAV"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -76,8 +77,8 @@ func (self Instance) IsRecordingActive() bool { //gd:AudioEffectRecord.is_record
 /*
 Returns the recorded sample.
 */
-func (self Instance) GetRecording() [1]gdclass.AudioStreamWAV { //gd:AudioEffectRecord.get_recording
-	return [1]gdclass.AudioStreamWAV(Advanced(self).GetRecording())
+func (self Instance) GetRecording() AudioStreamWAV.Instance { //gd:AudioEffectRecord.get_recording
+	return AudioStreamWAV.Instance(Advanced(self).GetRecording())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

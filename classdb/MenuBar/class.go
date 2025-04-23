@@ -14,6 +14,7 @@ import "graphics.gd/variant"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/PopupMenu"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -137,8 +138,8 @@ func (self Instance) IsMenuHidden(menu int) bool { //gd:MenuBar.is_menu_hidden
 /*
 Returns [PopupMenu] associated with menu item.
 */
-func (self Instance) GetMenuPopup(menu int) [1]gdclass.PopupMenu { //gd:MenuBar.get_menu_popup
-	return [1]gdclass.PopupMenu(Advanced(self).GetMenuPopup(int64(menu)))
+func (self Instance) GetMenuPopup(menu int) PopupMenu.Instance { //gd:MenuBar.get_menu_popup
+	return PopupMenu.Instance(Advanced(self).GetMenuPopup(int64(menu)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

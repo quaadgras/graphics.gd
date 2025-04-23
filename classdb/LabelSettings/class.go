@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Font"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -92,11 +93,11 @@ func (self Instance) SetParagraphSpacing(value Float.X) {
 	class(self).SetParagraphSpacing(float64(value))
 }
 
-func (self Instance) Font() [1]gdclass.Font {
-	return [1]gdclass.Font(class(self).GetFont())
+func (self Instance) Font() Font.Instance {
+	return Font.Instance(class(self).GetFont())
 }
 
-func (self Instance) SetFont(value [1]gdclass.Font) {
+func (self Instance) SetFont(value Font.Instance) {
 	class(self).SetFont(value)
 }
 

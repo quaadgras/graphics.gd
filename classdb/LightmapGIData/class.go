@@ -12,6 +12,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/TextureLayered"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -103,19 +104,19 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) LightmapTextures() [][1]gdclass.TextureLayered {
-	return [][1]gdclass.TextureLayered(gd.ArrayAs[[][1]gdclass.TextureLayered](gd.InternalArray(class(self).GetLightmapTextures())))
+func (self Instance) LightmapTextures() []TextureLayered.Instance {
+	return []TextureLayered.Instance(gd.ArrayAs[[]TextureLayered.Instance](gd.InternalArray(class(self).GetLightmapTextures())))
 }
 
-func (self Instance) SetLightmapTextures(value [][1]gdclass.TextureLayered) {
+func (self Instance) SetLightmapTextures(value []TextureLayered.Instance) {
 	class(self).SetLightmapTextures(gd.ArrayFromSlice[Array.Contains[[1]gdclass.TextureLayered]](value))
 }
 
-func (self Instance) ShadowmaskTextures() [][1]gdclass.TextureLayered {
-	return [][1]gdclass.TextureLayered(gd.ArrayAs[[][1]gdclass.TextureLayered](gd.InternalArray(class(self).GetShadowmaskTextures())))
+func (self Instance) ShadowmaskTextures() []TextureLayered.Instance {
+	return []TextureLayered.Instance(gd.ArrayAs[[]TextureLayered.Instance](gd.InternalArray(class(self).GetShadowmaskTextures())))
 }
 
-func (self Instance) SetShadowmaskTextures(value [][1]gdclass.TextureLayered) {
+func (self Instance) SetShadowmaskTextures(value []TextureLayered.Instance) {
 	class(self).SetShadowmaskTextures(gd.ArrayFromSlice[Array.Contains[[1]gdclass.TextureLayered]](value))
 }
 
@@ -127,11 +128,11 @@ func (self Instance) SetUsesSphericalHarmonics(value bool) {
 	class(self).SetUsesSphericalHarmonics(value)
 }
 
-func (self Instance) LightTexture() [1]gdclass.TextureLayered {
-	return [1]gdclass.TextureLayered(class(self).GetLightTexture())
+func (self Instance) LightTexture() TextureLayered.Instance {
+	return TextureLayered.Instance(class(self).GetLightTexture())
 }
 
-func (self Instance) SetLightTexture(value [1]gdclass.TextureLayered) {
+func (self Instance) SetLightTexture(value TextureLayered.Instance) {
 	class(self).SetLightTexture(value)
 }
 

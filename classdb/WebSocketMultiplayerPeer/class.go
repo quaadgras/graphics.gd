@@ -13,6 +13,8 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/MultiplayerPeer"
 import "graphics.gd/classdb/PacketPeer"
+import "graphics.gd/classdb/TLSOptions"
+import "graphics.gd/classdb/WebSocketPeer"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -63,14 +65,14 @@ Starts a new multiplayer client connecting to the given [param url]. TLS certifi
 [b]Note:[/b] It is recommended to specify the scheme part of the URL, i.e. the [param url] should start with either [code]ws://[/code] or [code]wss://[/code].
 */
 func (self Instance) CreateClient(url string) error { //gd:WebSocketMultiplayerPeer.create_client
-	return error(gd.ToError(Advanced(self).CreateClient(String.New(url), [1][1]gdclass.TLSOptions{}[0])))
+	return error(gd.ToError(Advanced(self).CreateClient(String.New(url), [1]TLSOptions.Instance{}[0])))
 }
 
 /*
 Starts a new multiplayer client connecting to the given [param url]. TLS certificates will be verified against the hostname when connecting using the [code]wss://[/code] protocol. You can pass the optional [param tls_client_options] parameter to customize the trusted certification authorities, or disable the common name verification. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 [b]Note:[/b] It is recommended to specify the scheme part of the URL, i.e. the [param url] should start with either [code]ws://[/code] or [code]wss://[/code].
 */
-func (self Expanded) CreateClient(url string, tls_client_options [1]gdclass.TLSOptions) error { //gd:WebSocketMultiplayerPeer.create_client
+func (self Expanded) CreateClient(url string, tls_client_options TLSOptions.Instance) error { //gd:WebSocketMultiplayerPeer.create_client
 	return error(gd.ToError(Advanced(self).CreateClient(String.New(url), tls_client_options)))
 }
 
@@ -78,21 +80,21 @@ func (self Expanded) CreateClient(url string, tls_client_options [1]gdclass.TLSO
 Starts a new multiplayer server listening on the given [param port]. You can optionally specify a [param bind_address], and provide valid [param tls_server_options] to use TLS. See [method TLSOptions.server].
 */
 func (self Instance) CreateServer(port int) error { //gd:WebSocketMultiplayerPeer.create_server
-	return error(gd.ToError(Advanced(self).CreateServer(int64(port), String.New("*"), [1][1]gdclass.TLSOptions{}[0])))
+	return error(gd.ToError(Advanced(self).CreateServer(int64(port), String.New("*"), [1]TLSOptions.Instance{}[0])))
 }
 
 /*
 Starts a new multiplayer server listening on the given [param port]. You can optionally specify a [param bind_address], and provide valid [param tls_server_options] to use TLS. See [method TLSOptions.server].
 */
-func (self Expanded) CreateServer(port int, bind_address string, tls_server_options [1]gdclass.TLSOptions) error { //gd:WebSocketMultiplayerPeer.create_server
+func (self Expanded) CreateServer(port int, bind_address string, tls_server_options TLSOptions.Instance) error { //gd:WebSocketMultiplayerPeer.create_server
 	return error(gd.ToError(Advanced(self).CreateServer(int64(port), String.New(bind_address), tls_server_options)))
 }
 
 /*
 Returns the [WebSocketPeer] associated to the given [param peer_id].
 */
-func (self Instance) GetPeer(peer_id int) [1]gdclass.WebSocketPeer { //gd:WebSocketMultiplayerPeer.get_peer
-	return [1]gdclass.WebSocketPeer(Advanced(self).GetPeer(int64(peer_id)))
+func (self Instance) GetPeer(peer_id int) WebSocketPeer.Instance { //gd:WebSocketMultiplayerPeer.get_peer
+	return WebSocketPeer.Instance(Advanced(self).GetPeer(int64(peer_id)))
 }
 
 /*

@@ -12,6 +12,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/InputEvent"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -48,6 +50,8 @@ var _ = slices.Delete[[]struct{}, struct{}]
 The [Input] singleton handles key presses, mouse buttons and movement, gamepads, and input actions. Actions and their events can be set in the [b]Input Map[/b] tab in [b]Project > Project Settings[/b], or with the [InputMap] class.
 [b]Note:[/b] [Input]'s methods reflect the global input state and are not affected by [method Control.accept_event] or [method Viewport.set_input_as_handled], as those methods only deal with the way input is propagated in the [SceneTree].
 */
+type Instance [1]gdclass.Input
+
 var self [1]gdclass.Input
 var once sync.Once
 
@@ -581,7 +585,7 @@ Sets a custom mouse cursor image, which is only visible inside the game window. 
 [b]Note:[/b] The [b]Lossless[/b], [b]Lossy[/b] or [b]Uncompressed[/b] compression modes are recommended. The [b]Video RAM[/b] compression mode can be used, but it will be decompressed on the CPU, which means loading times are slowed down and no memory is saved compared to lossless modes.
 [b]Note:[/b] On the web platform, the maximum allowed cursor image size is 128×128. Cursor images larger than 32×32 will also only be displayed if the mouse cursor image is entirely located within the page for [url=https://chromestatus.com/feature/5825971391299584]security reasons[/url].
 */
-func SetCustomMouseCursor(image [1]gdclass.Resource, shape gdclass.InputCursorShape, hotspot Vector2.XY) { //gd:Input.set_custom_mouse_cursor
+func SetCustomMouseCursor(image Resource.Instance, shape gdclass.InputCursorShape, hotspot Vector2.XY) { //gd:Input.set_custom_mouse_cursor
 	once.Do(singleton)
 	Advanced().SetCustomMouseCursor(image, shape, Vector2.XY(hotspot))
 }
@@ -594,7 +598,7 @@ Sets a custom mouse cursor image, which is only visible inside the game window. 
 [b]Note:[/b] The [b]Lossless[/b], [b]Lossy[/b] or [b]Uncompressed[/b] compression modes are recommended. The [b]Video RAM[/b] compression mode can be used, but it will be decompressed on the CPU, which means loading times are slowed down and no memory is saved compared to lossless modes.
 [b]Note:[/b] On the web platform, the maximum allowed cursor image size is 128×128. Cursor images larger than 32×32 will also only be displayed if the mouse cursor image is entirely located within the page for [url=https://chromestatus.com/feature/5825971391299584]security reasons[/url].
 */
-func SetCustomMouseCursorOptions(image [1]gdclass.Resource, shape gdclass.InputCursorShape, hotspot Vector2.XY) { //gd:Input.set_custom_mouse_cursor
+func SetCustomMouseCursorOptions(image Resource.Instance, shape gdclass.InputCursorShape, hotspot Vector2.XY) { //gd:Input.set_custom_mouse_cursor
 	once.Do(singleton)
 	Advanced().SetCustomMouseCursor(image, shape, Vector2.XY(hotspot))
 }
@@ -617,7 +621,7 @@ Input.ParseInputEvent(cancelEvent);
 [/codeblocks]
 [b]Note:[/b] Calling this function has no influence on the operating system. So for example sending an [InputEventMouseMotion] will not move the OS mouse cursor to the specified position (use [method warp_mouse] instead) and sending [kbd]Alt/Cmd + Tab[/kbd] as [InputEventKey] won't toggle between active windows.
 */
-func ParseInputEvent(event [1]gdclass.InputEvent) { //gd:Input.parse_input_event
+func ParseInputEvent(event InputEvent.Instance) { //gd:Input.parse_input_event
 	once.Do(singleton)
 	Advanced().ParseInputEvent(event)
 }

@@ -11,6 +11,9 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/PacketPeerDTLS"
+import "graphics.gd/classdb/PacketPeerUDP"
+import "graphics.gd/classdb/TLSOptions"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -207,7 +210,7 @@ type Any interface {
 /*
 Setup the DTLS server to use the given [param server_options]. See [method TLSOptions.server].
 */
-func (self Instance) Setup(server_options [1]gdclass.TLSOptions) error { //gd:DTLSServer.setup
+func (self Instance) Setup(server_options TLSOptions.Instance) error { //gd:DTLSServer.setup
 	return error(gd.ToError(Advanced(self).Setup(server_options)))
 }
 
@@ -215,8 +218,8 @@ func (self Instance) Setup(server_options [1]gdclass.TLSOptions) error { //gd:DT
 Try to initiate the DTLS handshake with the given [param udp_peer] which must be already connected (see [method PacketPeerUDP.connect_to_host]).
 [b]Note:[/b] You must check that the state of the return PacketPeerUDP is [constant PacketPeerDTLS.STATUS_HANDSHAKING], as it is normal that 50% of the new connections will be invalid due to cookie exchange.
 */
-func (self Instance) TakeConnection(udp_peer [1]gdclass.PacketPeerUDP) [1]gdclass.PacketPeerDTLS { //gd:DTLSServer.take_connection
-	return [1]gdclass.PacketPeerDTLS(Advanced(self).TakeConnection(udp_peer))
+func (self Instance) TakeConnection(udp_peer PacketPeerUDP.Instance) PacketPeerDTLS.Instance { //gd:DTLSServer.take_connection
+	return PacketPeerDTLS.Instance(Advanced(self).TakeConnection(udp_peer))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

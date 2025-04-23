@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/ImporterMesh"
+import "graphics.gd/classdb/Material"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -98,11 +100,11 @@ func (self Instance) SetOriginalName(value string) {
 	class(self).SetOriginalName(String.New(value))
 }
 
-func (self Instance) Mesh() [1]gdclass.ImporterMesh {
-	return [1]gdclass.ImporterMesh(class(self).GetMesh())
+func (self Instance) Mesh() ImporterMesh.Instance {
+	return ImporterMesh.Instance(class(self).GetMesh())
 }
 
-func (self Instance) SetMesh(value [1]gdclass.ImporterMesh) {
+func (self Instance) SetMesh(value ImporterMesh.Instance) {
 	class(self).SetMesh(value)
 }
 
@@ -114,11 +116,11 @@ func (self Instance) SetBlendWeights(value []float32) {
 	class(self).SetBlendWeights(Packed.New(value...))
 }
 
-func (self Instance) InstanceMaterials() [][1]gdclass.Material {
-	return [][1]gdclass.Material(gd.ArrayAs[[][1]gdclass.Material](gd.InternalArray(class(self).GetInstanceMaterials())))
+func (self Instance) InstanceMaterials() []Material.Instance {
+	return []Material.Instance(gd.ArrayAs[[]Material.Instance](gd.InternalArray(class(self).GetInstanceMaterials())))
 }
 
-func (self Instance) SetInstanceMaterials(value [][1]gdclass.Material) {
+func (self Instance) SetInstanceMaterials(value []Material.Instance) {
 	class(self).SetInstanceMaterials(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Material]](value))
 }
 

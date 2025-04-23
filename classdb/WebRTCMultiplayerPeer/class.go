@@ -13,6 +13,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/MultiplayerPeer"
 import "graphics.gd/classdb/PacketPeer"
+import "graphics.gd/classdb/WebRTCPeerConnection"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -110,7 +111,7 @@ func (self Expanded) CreateMesh(peer_id int, channels_config []any) error { //gd
 Add a new peer to the mesh with the given [param peer_id]. The [WebRTCPeerConnection] must be in state [constant WebRTCPeerConnection.STATE_NEW].
 Three channels will be created for reliable, unreliable, and ordered transport. The value of [param unreliable_lifetime] will be passed to the [code]"maxPacketLifetime"[/code] option when creating unreliable and ordered channels (see [method WebRTCPeerConnection.create_data_channel]).
 */
-func (self Instance) AddPeer(peer [1]gdclass.WebRTCPeerConnection, peer_id int) error { //gd:WebRTCMultiplayerPeer.add_peer
+func (self Instance) AddPeer(peer WebRTCPeerConnection.Instance, peer_id int) error { //gd:WebRTCMultiplayerPeer.add_peer
 	return error(gd.ToError(Advanced(self).AddPeer(peer, int64(peer_id), int64(1))))
 }
 
@@ -118,7 +119,7 @@ func (self Instance) AddPeer(peer [1]gdclass.WebRTCPeerConnection, peer_id int) 
 Add a new peer to the mesh with the given [param peer_id]. The [WebRTCPeerConnection] must be in state [constant WebRTCPeerConnection.STATE_NEW].
 Three channels will be created for reliable, unreliable, and ordered transport. The value of [param unreliable_lifetime] will be passed to the [code]"maxPacketLifetime"[/code] option when creating unreliable and ordered channels (see [method WebRTCPeerConnection.create_data_channel]).
 */
-func (self Expanded) AddPeer(peer [1]gdclass.WebRTCPeerConnection, peer_id int, unreliable_lifetime int) error { //gd:WebRTCMultiplayerPeer.add_peer
+func (self Expanded) AddPeer(peer WebRTCPeerConnection.Instance, peer_id int, unreliable_lifetime int) error { //gd:WebRTCMultiplayerPeer.add_peer
 	return error(gd.ToError(Advanced(self).AddPeer(peer, int64(peer_id), int64(unreliable_lifetime))))
 }
 

@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Image"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/Texture"
 import "graphics.gd/variant/Array"
@@ -73,7 +74,7 @@ type Interface interface {
 	//Called when the presence of mipmaps in the [Texture3D] is queried.
 	HasMipmaps() bool
 	//Called when the [Texture3D]'s data is queried.
-	GetData() [][1]gdclass.Image
+	GetData() []Image.Instance
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -86,7 +87,7 @@ func (self implementation) GetWidth() (_ int)                  { return }
 func (self implementation) GetHeight() (_ int)                 { return }
 func (self implementation) GetDepth() (_ int)                  { return }
 func (self implementation) HasMipmaps() (_ bool)               { return }
-func (self implementation) GetData() (_ [][1]gdclass.Image)    { return }
+func (self implementation) GetData() (_ []Image.Instance)      { return }
 
 /*
 Called when the [Texture3D]'s format is queried.
@@ -146,7 +147,7 @@ func (Instance) _has_mipmaps(impl func(ptr unsafe.Pointer) bool) (cb gd.Extensio
 /*
 Called when the [Texture3D]'s data is queried.
 */
-func (Instance) _get_data(impl func(ptr unsafe.Pointer) [][1]gdclass.Image) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_data(impl func(ptr unsafe.Pointer) []Image.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -197,15 +198,15 @@ func (self Instance) HasMipmaps() bool { //gd:Texture3D.has_mipmaps
 /*
 Returns the [Texture3D]'s data as an array of [Image]s. Each [Image] represents a [i]slice[/i] of the [Texture3D], with different slices mapping to different depth (Z axis) levels.
 */
-func (self Instance) GetData() [][1]gdclass.Image { //gd:Texture3D.get_data
-	return [][1]gdclass.Image(gd.ArrayAs[[][1]gdclass.Image](gd.InternalArray(Advanced(self).GetData())))
+func (self Instance) GetData() []Image.Instance { //gd:Texture3D.get_data
+	return []Image.Instance(gd.ArrayAs[[]Image.Instance](gd.InternalArray(Advanced(self).GetData())))
 }
 
 /*
 Creates a placeholder version of this resource ([PlaceholderTexture3D]).
 */
-func (self Instance) CreatePlaceholder() [1]gdclass.Resource { //gd:Texture3D.create_placeholder
-	return [1]gdclass.Resource(Advanced(self).CreatePlaceholder())
+func (self Instance) CreatePlaceholder() Resource.Instance { //gd:Texture3D.create_placeholder
+	return Resource.Instance(Advanced(self).CreatePlaceholder())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

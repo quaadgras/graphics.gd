@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/CollisionObject3D"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Basis"
@@ -61,24 +62,24 @@ type Any interface {
 /*
 Creates a new GLTFPhysicsBody instance from the given Godot [CollisionObject3D] node.
 */
-func FromNode(body_node [1]gdclass.CollisionObject3D) [1]gdclass.GLTFPhysicsBody { //gd:GLTFPhysicsBody.from_node
+func FromNode(body_node CollisionObject3D.Instance) Instance { //gd:GLTFPhysicsBody.from_node
 	self := Instance{}
-	return [1]gdclass.GLTFPhysicsBody(Advanced(self).FromNode(body_node))
+	return Instance(Advanced(self).FromNode(body_node))
 }
 
 /*
 Converts this GLTFPhysicsBody instance into a Godot [CollisionObject3D] node.
 */
-func (self Instance) ToNode() [1]gdclass.CollisionObject3D { //gd:GLTFPhysicsBody.to_node
-	return [1]gdclass.CollisionObject3D(Advanced(self).ToNode())
+func (self Instance) ToNode() CollisionObject3D.Instance { //gd:GLTFPhysicsBody.to_node
+	return CollisionObject3D.Instance(Advanced(self).ToNode())
 }
 
 /*
 Creates a new GLTFPhysicsBody instance by parsing the given [Dictionary] in the [code]OMI_physics_body[/code] glTF extension format.
 */
-func FromDictionary(dictionary Structure) [1]gdclass.GLTFPhysicsBody { //gd:GLTFPhysicsBody.from_dictionary
+func FromDictionary(dictionary Structure) Instance { //gd:GLTFPhysicsBody.from_dictionary
 	self := Instance{}
-	return [1]gdclass.GLTFPhysicsBody(Advanced(self).FromDictionary(gd.DictionaryFromMap(dictionary)))
+	return Instance(Advanced(self).FromDictionary(gd.DictionaryFromMap(dictionary)))
 }
 
 /*

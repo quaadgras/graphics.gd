@@ -13,6 +13,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -90,35 +91,35 @@ func (self Instance) SetSize(value Vector3.XYZ) {
 	class(self).SetSize(Vector3.XYZ(value))
 }
 
-func (self Instance) TextureAlbedo() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetTexture(0))
+func (self Instance) TextureAlbedo() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetTexture(0))
 }
 
-func (self Instance) SetTextureAlbedo(value [1]gdclass.Texture2D) {
+func (self Instance) SetTextureAlbedo(value Texture2D.Instance) {
 	class(self).SetTexture(0, value)
 }
 
-func (self Instance) TextureNormal() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetTexture(1))
+func (self Instance) TextureNormal() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetTexture(1))
 }
 
-func (self Instance) SetTextureNormal(value [1]gdclass.Texture2D) {
+func (self Instance) SetTextureNormal(value Texture2D.Instance) {
 	class(self).SetTexture(1, value)
 }
 
-func (self Instance) TextureOrm() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetTexture(2))
+func (self Instance) TextureOrm() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetTexture(2))
 }
 
-func (self Instance) SetTextureOrm(value [1]gdclass.Texture2D) {
+func (self Instance) SetTextureOrm(value Texture2D.Instance) {
 	class(self).SetTexture(2, value)
 }
 
-func (self Instance) TextureEmission() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetTexture(3))
+func (self Instance) TextureEmission() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetTexture(3))
 }
 
-func (self Instance) SetTextureEmission(value [1]gdclass.Texture2D) {
+func (self Instance) SetTextureEmission(value Texture2D.Instance) {
 	class(self).SetTexture(3, value)
 }
 

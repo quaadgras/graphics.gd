@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/TextureRect"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -73,7 +75,7 @@ type Interface interface {
 	//    base.add_child(t_rect) # The TextureRect will appear at the bottom of the tooltip.
 	//    return base
 	//[/codeblock]
-	MakeTooltipForPath(path string, metadata map[any]any, base [1]gdclass.Control) [1]gdclass.Control
+	MakeTooltipForPath(path string, metadata map[any]any, base Control.Instance) Control.Instance
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -82,7 +84,7 @@ type Implementation = implementation
 type implementation struct{}
 
 func (self implementation) Handles(atype string) (_ bool) { return }
-func (self implementation) MakeTooltipForPath(path string, metadata map[any]any, base [1]gdclass.Control) (_ [1]gdclass.Control) {
+func (self implementation) MakeTooltipForPath(path string, metadata map[any]any, base Control.Instance) (_ Control.Instance) {
 	return
 }
 
@@ -115,7 +117,7 @@ func _make_tooltip_for_path(path, metadata, base):
 
 [/codeblock]
 */
-func (Instance) _make_tooltip_for_path(impl func(ptr unsafe.Pointer, path string, metadata map[any]any, base [1]gdclass.Control) [1]gdclass.Control) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _make_tooltip_for_path(impl func(ptr unsafe.Pointer, path string, metadata map[any]any, base Control.Instance) Control.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
@@ -138,7 +140,7 @@ func (Instance) _make_tooltip_for_path(impl func(ptr unsafe.Pointer, path string
 /*
 Requests a thumbnail for the given [TextureRect]. The thumbnail is created asynchronously by [EditorResourcePreview] and automatically set when available.
 */
-func (self Instance) RequestThumbnail(path string, control [1]gdclass.TextureRect) { //gd:EditorResourceTooltipPlugin.request_thumbnail
+func (self Instance) RequestThumbnail(path string, control TextureRect.Instance) { //gd:EditorResourceTooltipPlugin.request_thumbnail
 	Advanced(self).RequestThumbnail(String.New(path), control)
 }
 

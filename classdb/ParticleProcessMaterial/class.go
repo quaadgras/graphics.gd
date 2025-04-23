@@ -13,6 +13,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Material"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -158,27 +159,27 @@ func (self Instance) SetEmissionBoxExtents(value Vector3.XYZ) {
 	class(self).SetEmissionBoxExtents(Vector3.XYZ(value))
 }
 
-func (self Instance) EmissionPointTexture() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetEmissionPointTexture())
+func (self Instance) EmissionPointTexture() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetEmissionPointTexture())
 }
 
-func (self Instance) SetEmissionPointTexture(value [1]gdclass.Texture2D) {
+func (self Instance) SetEmissionPointTexture(value Texture2D.Instance) {
 	class(self).SetEmissionPointTexture(value)
 }
 
-func (self Instance) EmissionNormalTexture() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetEmissionNormalTexture())
+func (self Instance) EmissionNormalTexture() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetEmissionNormalTexture())
 }
 
-func (self Instance) SetEmissionNormalTexture(value [1]gdclass.Texture2D) {
+func (self Instance) SetEmissionNormalTexture(value Texture2D.Instance) {
 	class(self).SetEmissionNormalTexture(value)
 }
 
-func (self Instance) EmissionColorTexture() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetEmissionColorTexture())
+func (self Instance) EmissionColorTexture() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetEmissionColorTexture())
 }
 
-func (self Instance) SetEmissionColorTexture(value [1]gdclass.Texture2D) {
+func (self Instance) SetEmissionColorTexture(value Texture2D.Instance) {
 	class(self).SetEmissionColorTexture(value)
 }
 
@@ -254,11 +255,11 @@ func (self Instance) SetAngleMax(value Float.X) {
 	class(self).SetParamMax(7, float64(value))
 }
 
-func (self Instance) AngleCurve() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetParamTexture(7))
+func (self Instance) AngleCurve() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetParamTexture(7))
 }
 
-func (self Instance) SetAngleCurve(value [1]gdclass.Texture2D) {
+func (self Instance) SetAngleCurve(value Texture2D.Instance) {
 	class(self).SetParamTexture(7, value)
 }
 
@@ -350,11 +351,11 @@ func (self Instance) SetAngularVelocityMax(value Float.X) {
 	class(self).SetParamMax(1, float64(value))
 }
 
-func (self Instance) AngularVelocityCurve() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetParamTexture(1))
+func (self Instance) AngularVelocityCurve() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetParamTexture(1))
 }
 
-func (self Instance) SetAngularVelocityCurve(value [1]gdclass.Texture2D) {
+func (self Instance) SetAngularVelocityCurve(value Texture2D.Instance) {
 	class(self).SetParamTexture(1, value)
 }
 
@@ -382,11 +383,11 @@ func (self Instance) SetDirectionalVelocityMax(value Float.X) {
 	class(self).SetParamMax(16, float64(value))
 }
 
-func (self Instance) DirectionalVelocityCurve() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetParamTexture(16))
+func (self Instance) DirectionalVelocityCurve() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetParamTexture(16))
 }
 
-func (self Instance) SetDirectionalVelocityCurve(value [1]gdclass.Texture2D) {
+func (self Instance) SetDirectionalVelocityCurve(value Texture2D.Instance) {
 	class(self).SetParamTexture(16, value)
 }
 
@@ -414,11 +415,11 @@ func (self Instance) SetOrbitVelocityMax(value Float.X) {
 	class(self).SetParamMax(2, float64(value))
 }
 
-func (self Instance) OrbitVelocityCurve() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetParamTexture(2))
+func (self Instance) OrbitVelocityCurve() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetParamTexture(2))
 }
 
-func (self Instance) SetOrbitVelocityCurve(value [1]gdclass.Texture2D) {
+func (self Instance) SetOrbitVelocityCurve(value Texture2D.Instance) {
 	class(self).SetParamTexture(2, value)
 }
 
@@ -446,19 +447,19 @@ func (self Instance) SetRadialVelocityMax(value Float.X) {
 	class(self).SetParamMax(15, float64(value))
 }
 
-func (self Instance) RadialVelocityCurve() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetParamTexture(15))
+func (self Instance) RadialVelocityCurve() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetParamTexture(15))
 }
 
-func (self Instance) SetRadialVelocityCurve(value [1]gdclass.Texture2D) {
+func (self Instance) SetRadialVelocityCurve(value Texture2D.Instance) {
 	class(self).SetParamTexture(15, value)
 }
 
-func (self Instance) VelocityLimitCurve() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetVelocityLimitCurve())
+func (self Instance) VelocityLimitCurve() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetVelocityLimitCurve())
 }
 
-func (self Instance) SetVelocityLimitCurve(value [1]gdclass.Texture2D) {
+func (self Instance) SetVelocityLimitCurve(value Texture2D.Instance) {
 	class(self).SetVelocityLimitCurve(value)
 }
 
@@ -494,11 +495,11 @@ func (self Instance) SetLinearAccelMax(value Float.X) {
 	class(self).SetParamMax(3, float64(value))
 }
 
-func (self Instance) LinearAccelCurve() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetParamTexture(3))
+func (self Instance) LinearAccelCurve() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetParamTexture(3))
 }
 
-func (self Instance) SetLinearAccelCurve(value [1]gdclass.Texture2D) {
+func (self Instance) SetLinearAccelCurve(value Texture2D.Instance) {
 	class(self).SetParamTexture(3, value)
 }
 
@@ -526,11 +527,11 @@ func (self Instance) SetRadialAccelMax(value Float.X) {
 	class(self).SetParamMax(4, float64(value))
 }
 
-func (self Instance) RadialAccelCurve() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetParamTexture(4))
+func (self Instance) RadialAccelCurve() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetParamTexture(4))
 }
 
-func (self Instance) SetRadialAccelCurve(value [1]gdclass.Texture2D) {
+func (self Instance) SetRadialAccelCurve(value Texture2D.Instance) {
 	class(self).SetParamTexture(4, value)
 }
 
@@ -558,11 +559,11 @@ func (self Instance) SetTangentialAccelMax(value Float.X) {
 	class(self).SetParamMax(5, float64(value))
 }
 
-func (self Instance) TangentialAccelCurve() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetParamTexture(5))
+func (self Instance) TangentialAccelCurve() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetParamTexture(5))
 }
 
-func (self Instance) SetTangentialAccelCurve(value [1]gdclass.Texture2D) {
+func (self Instance) SetTangentialAccelCurve(value Texture2D.Instance) {
 	class(self).SetParamTexture(5, value)
 }
 
@@ -590,11 +591,11 @@ func (self Instance) SetDampingMax(value Float.X) {
 	class(self).SetParamMax(6, float64(value))
 }
 
-func (self Instance) DampingCurve() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetParamTexture(6))
+func (self Instance) DampingCurve() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetParamTexture(6))
 }
 
-func (self Instance) SetDampingCurve(value [1]gdclass.Texture2D) {
+func (self Instance) SetDampingCurve(value Texture2D.Instance) {
 	class(self).SetParamTexture(6, value)
 }
 
@@ -630,11 +631,11 @@ func (self Instance) SetScaleMax(value Float.X) {
 	class(self).SetParamMax(8, float64(value))
 }
 
-func (self Instance) ScaleCurve() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetParamTexture(8))
+func (self Instance) ScaleCurve() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetParamTexture(8))
 }
 
-func (self Instance) SetScaleCurve(value [1]gdclass.Texture2D) {
+func (self Instance) SetScaleCurve(value Texture2D.Instance) {
 	class(self).SetParamTexture(8, value)
 }
 
@@ -662,11 +663,11 @@ func (self Instance) SetScaleOverVelocityMax(value Float.X) {
 	class(self).SetParamMax(17, float64(value))
 }
 
-func (self Instance) ScaleOverVelocityCurve() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetParamTexture(17))
+func (self Instance) ScaleOverVelocityCurve() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetParamTexture(17))
 }
 
-func (self Instance) SetScaleOverVelocityCurve(value [1]gdclass.Texture2D) {
+func (self Instance) SetScaleOverVelocityCurve(value Texture2D.Instance) {
 	class(self).SetParamTexture(17, value)
 }
 
@@ -678,35 +679,35 @@ func (self Instance) SetColor(value Color.RGBA) {
 	class(self).SetColor(Color.RGBA(value))
 }
 
-func (self Instance) ColorRamp() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetColorRamp())
+func (self Instance) ColorRamp() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetColorRamp())
 }
 
-func (self Instance) SetColorRamp(value [1]gdclass.Texture2D) {
+func (self Instance) SetColorRamp(value Texture2D.Instance) {
 	class(self).SetColorRamp(value)
 }
 
-func (self Instance) ColorInitialRamp() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetColorInitialRamp())
+func (self Instance) ColorInitialRamp() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetColorInitialRamp())
 }
 
-func (self Instance) SetColorInitialRamp(value [1]gdclass.Texture2D) {
+func (self Instance) SetColorInitialRamp(value Texture2D.Instance) {
 	class(self).SetColorInitialRamp(value)
 }
 
-func (self Instance) AlphaCurve() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetAlphaCurve())
+func (self Instance) AlphaCurve() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetAlphaCurve())
 }
 
-func (self Instance) SetAlphaCurve(value [1]gdclass.Texture2D) {
+func (self Instance) SetAlphaCurve(value Texture2D.Instance) {
 	class(self).SetAlphaCurve(value)
 }
 
-func (self Instance) EmissionCurve() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetEmissionCurve())
+func (self Instance) EmissionCurve() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetEmissionCurve())
 }
 
-func (self Instance) SetEmissionCurve(value [1]gdclass.Texture2D) {
+func (self Instance) SetEmissionCurve(value Texture2D.Instance) {
 	class(self).SetEmissionCurve(value)
 }
 
@@ -734,11 +735,11 @@ func (self Instance) SetHueVariationMax(value Float.X) {
 	class(self).SetParamMax(9, float64(value))
 }
 
-func (self Instance) HueVariationCurve() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetParamTexture(9))
+func (self Instance) HueVariationCurve() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetParamTexture(9))
 }
 
-func (self Instance) SetHueVariationCurve(value [1]gdclass.Texture2D) {
+func (self Instance) SetHueVariationCurve(value Texture2D.Instance) {
 	class(self).SetParamTexture(9, value)
 }
 
@@ -766,11 +767,11 @@ func (self Instance) SetAnimSpeedMax(value Float.X) {
 	class(self).SetParamMax(10, float64(value))
 }
 
-func (self Instance) AnimSpeedCurve() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetParamTexture(10))
+func (self Instance) AnimSpeedCurve() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetParamTexture(10))
 }
 
-func (self Instance) SetAnimSpeedCurve(value [1]gdclass.Texture2D) {
+func (self Instance) SetAnimSpeedCurve(value Texture2D.Instance) {
 	class(self).SetParamTexture(10, value)
 }
 
@@ -798,11 +799,11 @@ func (self Instance) SetAnimOffsetMax(value Float.X) {
 	class(self).SetParamMax(11, float64(value))
 }
 
-func (self Instance) AnimOffsetCurve() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetParamTexture(11))
+func (self Instance) AnimOffsetCurve() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetParamTexture(11))
 }
 
-func (self Instance) SetAnimOffsetCurve(value [1]gdclass.Texture2D) {
+func (self Instance) SetAnimOffsetCurve(value Texture2D.Instance) {
 	class(self).SetParamTexture(11, value)
 }
 
@@ -894,11 +895,11 @@ func (self Instance) SetTurbulenceInitialDisplacementMax(value Float.X) {
 	class(self).SetParamMax(14, float64(value))
 }
 
-func (self Instance) TurbulenceInfluenceOverLife() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetParamTexture(12))
+func (self Instance) TurbulenceInfluenceOverLife() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetParamTexture(12))
 }
 
-func (self Instance) SetTurbulenceInfluenceOverLife(value [1]gdclass.Texture2D) {
+func (self Instance) SetTurbulenceInfluenceOverLife(value Texture2D.Instance) {
 	class(self).SetParamTexture(12, value)
 }
 

@@ -15,6 +15,7 @@ import "graphics.gd/classdb/GeometryInstance3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/SpriteBase3D"
+import "graphics.gd/classdb/SpriteFrames"
 import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -156,11 +157,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) SpriteFrames() [1]gdclass.SpriteFrames {
-	return [1]gdclass.SpriteFrames(class(self).GetSpriteFrames())
+func (self Instance) SpriteFrames() SpriteFrames.Instance {
+	return SpriteFrames.Instance(class(self).GetSpriteFrames())
 }
 
-func (self Instance) SetSpriteFrames(value [1]gdclass.SpriteFrames) {
+func (self Instance) SetSpriteFrames(value SpriteFrames.Instance) {
 	class(self).SetSpriteFrames(value)
 }
 

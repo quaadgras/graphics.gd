@@ -11,7 +11,9 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/EditorResourcePreviewGenerator"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -68,21 +70,21 @@ func (self Instance) QueueResourcePreview(path string, receiver Object.Instance,
 Queue the [param resource] being edited for preview. Once the preview is ready, the [param receiver]'s [param receiver_func] will be called. The [param receiver_func] must take the following four arguments: [String] path, [Texture2D] preview, [Texture2D] thumbnail_preview, [Variant] userdata. [param userdata] can be anything, and will be returned when [param receiver_func] is called.
 [b]Note:[/b] If it was not possible to create the preview the [param receiver_func] will still be called, but the preview will be [code]null[/code].
 */
-func (self Instance) QueueEditedResourcePreview(resource [1]gdclass.Resource, receiver Object.Instance, receiver_func string, userdata any) { //gd:EditorResourcePreview.queue_edited_resource_preview
+func (self Instance) QueueEditedResourcePreview(resource Resource.Instance, receiver Object.Instance, receiver_func string, userdata any) { //gd:EditorResourcePreview.queue_edited_resource_preview
 	Advanced(self).QueueEditedResourcePreview(resource, receiver, String.Name(String.New(receiver_func)), variant.New(userdata))
 }
 
 /*
 Create an own, custom preview generator.
 */
-func (self Instance) AddPreviewGenerator(generator [1]gdclass.EditorResourcePreviewGenerator) { //gd:EditorResourcePreview.add_preview_generator
+func (self Instance) AddPreviewGenerator(generator EditorResourcePreviewGenerator.Instance) { //gd:EditorResourcePreview.add_preview_generator
 	Advanced(self).AddPreviewGenerator(generator)
 }
 
 /*
 Removes a custom preview generator.
 */
-func (self Instance) RemovePreviewGenerator(generator [1]gdclass.EditorResourcePreviewGenerator) { //gd:EditorResourcePreview.remove_preview_generator
+func (self Instance) RemovePreviewGenerator(generator EditorResourcePreviewGenerator.Instance) { //gd:EditorResourcePreview.remove_preview_generator
 	Advanced(self).RemovePreviewGenerator(generator)
 }
 

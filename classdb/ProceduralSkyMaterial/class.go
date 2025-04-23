@@ -13,6 +13,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Material"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -110,11 +111,11 @@ func (self Instance) SetSkyEnergyMultiplier(value Float.X) {
 	class(self).SetSkyEnergyMultiplier(float64(value))
 }
 
-func (self Instance) SkyCover() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetSkyCover())
+func (self Instance) SkyCover() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetSkyCover())
 }
 
-func (self Instance) SetSkyCover(value [1]gdclass.Texture2D) {
+func (self Instance) SetSkyCover(value Texture2D.Instance) {
 	class(self).SetSkyCover(value)
 }
 

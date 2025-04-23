@@ -12,6 +12,8 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/PacketPeer"
+import "graphics.gd/classdb/StreamPeer"
+import "graphics.gd/classdb/TLSOptions"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -93,7 +95,7 @@ Connects to the given URL. TLS certificates will be verified against the hostnam
 [b]Note:[/b] To avoid mixed content warnings or errors in Web, you may have to use a [param url] that starts with [code]wss://[/code] (secure) instead of [code]ws://[/code]. When doing so, make sure to use the fully qualified domain name that matches the one defined in the server's TLS certificate. Do not connect directly via the IP address for [code]wss://[/code] connections, as it won't match with the TLS certificate.
 */
 func (self Instance) ConnectToUrl(url string) error { //gd:WebSocketPeer.connect_to_url
-	return error(gd.ToError(Advanced(self).ConnectToUrl(String.New(url), [1][1]gdclass.TLSOptions{}[0])))
+	return error(gd.ToError(Advanced(self).ConnectToUrl(String.New(url), [1]TLSOptions.Instance{}[0])))
 }
 
 /*
@@ -101,7 +103,7 @@ Connects to the given URL. TLS certificates will be verified against the hostnam
 [b]Note:[/b] This method is non-blocking, and will return [constant OK] before the connection is established as long as the provided parameters are valid and the peer is not in an invalid state (e.g. already connected). Regularly call [method poll] (e.g. during [Node] process) and check the result of [method get_ready_state] to know whether the connection succeeds or fails.
 [b]Note:[/b] To avoid mixed content warnings or errors in Web, you may have to use a [param url] that starts with [code]wss://[/code] (secure) instead of [code]ws://[/code]. When doing so, make sure to use the fully qualified domain name that matches the one defined in the server's TLS certificate. Do not connect directly via the IP address for [code]wss://[/code] connections, as it won't match with the TLS certificate.
 */
-func (self Expanded) ConnectToUrl(url string, tls_client_options [1]gdclass.TLSOptions) error { //gd:WebSocketPeer.connect_to_url
+func (self Expanded) ConnectToUrl(url string, tls_client_options TLSOptions.Instance) error { //gd:WebSocketPeer.connect_to_url
 	return error(gd.ToError(Advanced(self).ConnectToUrl(String.New(url), tls_client_options)))
 }
 
@@ -109,7 +111,7 @@ func (self Expanded) ConnectToUrl(url string, tls_client_options [1]gdclass.TLSO
 Accepts a peer connection performing the HTTP handshake as a WebSocket server. The [param stream] must be a valid TCP stream retrieved via [method TCPServer.take_connection], or a TLS stream accepted via [method StreamPeerTLS.accept_stream].
 [b]Note:[/b] Not supported in Web exports due to browsers' restrictions.
 */
-func (self Instance) AcceptStream(stream [1]gdclass.StreamPeer) error { //gd:WebSocketPeer.accept_stream
+func (self Instance) AcceptStream(stream StreamPeer.Instance) error { //gd:WebSocketPeer.accept_stream
 	return error(gd.ToError(Advanced(self).AcceptStream(stream)))
 }
 

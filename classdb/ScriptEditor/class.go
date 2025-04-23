@@ -14,8 +14,11 @@ import "graphics.gd/variant"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/EditorSyntaxHighlighter"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/PanelContainer"
+import "graphics.gd/classdb/Script"
+import "graphics.gd/classdb/ScriptEditorBase"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -63,15 +66,15 @@ type Any interface {
 /*
 Returns the [ScriptEditorBase] object that the user is currently editing.
 */
-func (self Instance) GetCurrentEditor() [1]gdclass.ScriptEditorBase { //gd:ScriptEditor.get_current_editor
-	return [1]gdclass.ScriptEditorBase(Advanced(self).GetCurrentEditor())
+func (self Instance) GetCurrentEditor() ScriptEditorBase.Instance { //gd:ScriptEditor.get_current_editor
+	return ScriptEditorBase.Instance(Advanced(self).GetCurrentEditor())
 }
 
 /*
 Returns an array with all [ScriptEditorBase] objects which are currently open in editor.
 */
-func (self Instance) GetOpenScriptEditors() [][1]gdclass.ScriptEditorBase { //gd:ScriptEditor.get_open_script_editors
-	return [][1]gdclass.ScriptEditorBase(gd.ArrayAs[[][1]gdclass.ScriptEditorBase](gd.InternalArray(Advanced(self).GetOpenScriptEditors())))
+func (self Instance) GetOpenScriptEditors() []ScriptEditorBase.Instance { //gd:ScriptEditor.get_open_script_editors
+	return []ScriptEditorBase.Instance(gd.ArrayAs[[]ScriptEditorBase.Instance](gd.InternalArray(Advanced(self).GetOpenScriptEditors())))
 }
 
 /*
@@ -85,7 +88,7 @@ func (self Instance) GetBreakpoints() []string { //gd:ScriptEditor.get_breakpoin
 Registers the [EditorSyntaxHighlighter] to the editor, the [EditorSyntaxHighlighter] will be available on all open scripts.
 [b]Note:[/b] Does not apply to scripts that are already opened.
 */
-func (self Instance) RegisterSyntaxHighlighter(syntax_highlighter [1]gdclass.EditorSyntaxHighlighter) { //gd:ScriptEditor.register_syntax_highlighter
+func (self Instance) RegisterSyntaxHighlighter(syntax_highlighter EditorSyntaxHighlighter.Instance) { //gd:ScriptEditor.register_syntax_highlighter
 	Advanced(self).RegisterSyntaxHighlighter(syntax_highlighter)
 }
 
@@ -93,7 +96,7 @@ func (self Instance) RegisterSyntaxHighlighter(syntax_highlighter [1]gdclass.Edi
 Unregisters the [EditorSyntaxHighlighter] from the editor.
 [b]Note:[/b] The [EditorSyntaxHighlighter] will still be applied to scripts that are already opened.
 */
-func (self Instance) UnregisterSyntaxHighlighter(syntax_highlighter [1]gdclass.EditorSyntaxHighlighter) { //gd:ScriptEditor.unregister_syntax_highlighter
+func (self Instance) UnregisterSyntaxHighlighter(syntax_highlighter EditorSyntaxHighlighter.Instance) { //gd:ScriptEditor.unregister_syntax_highlighter
 	Advanced(self).UnregisterSyntaxHighlighter(syntax_highlighter)
 }
 
@@ -107,15 +110,15 @@ func (self Instance) GotoLine(line_number int) { //gd:ScriptEditor.goto_line
 /*
 Returns a [Script] that is currently active in editor.
 */
-func (self Instance) GetCurrentScript() [1]gdclass.Script { //gd:ScriptEditor.get_current_script
-	return [1]gdclass.Script(Advanced(self).GetCurrentScript())
+func (self Instance) GetCurrentScript() Script.Instance { //gd:ScriptEditor.get_current_script
+	return Script.Instance(Advanced(self).GetCurrentScript())
 }
 
 /*
 Returns an array with all [Script] objects which are currently open in editor.
 */
-func (self Instance) GetOpenScripts() [][1]gdclass.Script { //gd:ScriptEditor.get_open_scripts
-	return [][1]gdclass.Script(gd.ArrayAs[[][1]gdclass.Script](gd.InternalArray(Advanced(self).GetOpenScripts())))
+func (self Instance) GetOpenScripts() []Script.Instance { //gd:ScriptEditor.get_open_scripts
+	return []Script.Instance(gd.ArrayAs[[]Script.Instance](gd.InternalArray(Advanced(self).GetOpenScripts())))
 }
 
 /*
@@ -157,7 +160,7 @@ func (self Instance) GotoHelp(topic string) { //gd:ScriptEditor.goto_help
 Updates the documentation for the given [param script] if the script's documentation is currently open.
 [b]Note:[/b] This should be called whenever the script is changed to keep the open documentation state up to date.
 */
-func (self Instance) UpdateDocsFromScript(script [1]gdclass.Script) { //gd:ScriptEditor.update_docs_from_script
+func (self Instance) UpdateDocsFromScript(script Script.Instance) { //gd:ScriptEditor.update_docs_from_script
 	Advanced(self).UpdateDocsFromScript(script)
 }
 
@@ -340,11 +343,11 @@ func (self class) UpdateDocsFromScript(script [1]gdclass.Script) { //gd:ScriptEd
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditor.Bind_update_docs_from_script, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
-func (self Instance) OnEditorScriptChanged(cb func(script [1]gdclass.Script)) {
+func (self Instance) OnEditorScriptChanged(cb func(script Script.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("editor_script_changed"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnScriptClose(cb func(script [1]gdclass.Script)) {
+func (self Instance) OnScriptClose(cb func(script Script.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("script_close"), gd.NewCallable(cb), 0)
 }
 

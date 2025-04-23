@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/NavigationPathQueryResult3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -118,8 +119,8 @@ func (self Instance) DistanceToTarget() Float.X { //gd:NavigationAgent3D.distanc
 /*
 Returns the path query result for the path the agent is currently following.
 */
-func (self Instance) GetCurrentNavigationResult() [1]gdclass.NavigationPathQueryResult3D { //gd:NavigationAgent3D.get_current_navigation_result
-	return [1]gdclass.NavigationPathQueryResult3D(Advanced(self).GetCurrentNavigationResult())
+func (self Instance) GetCurrentNavigationResult() NavigationPathQueryResult3D.Instance { //gd:NavigationAgent3D.get_current_navigation_result
+	return NavigationPathQueryResult3D.Instance(Advanced(self).GetCurrentNavigationResult())
 }
 
 /*

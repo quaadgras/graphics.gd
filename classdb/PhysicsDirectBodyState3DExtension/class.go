@@ -12,6 +12,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/PhysicsDirectBodyState3D"
+import "graphics.gd/classdb/PhysicsDirectSpaceState3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Basis"
 import "graphics.gd/variant/Callable"
@@ -108,7 +109,7 @@ type Interface interface {
 	GetContactColliderVelocityAtPosition(contact_idx int) Vector3.XYZ
 	GetStep() Float.X
 	IntegrateForces()
-	GetSpaceState() [1]gdclass.PhysicsDirectSpaceState3D
+	GetSpaceState() PhysicsDirectSpaceState3D.Instance
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -163,9 +164,9 @@ func (self implementation) GetContactColliderShape(contact_idx int) (_ int)     
 func (self implementation) GetContactColliderVelocityAtPosition(contact_idx int) (_ Vector3.XYZ) {
 	return
 }
-func (self implementation) GetStep() (_ Float.X)                                    { return }
-func (self implementation) IntegrateForces()                                        { return }
-func (self implementation) GetSpaceState() (_ [1]gdclass.PhysicsDirectSpaceState3D) { return }
+func (self implementation) GetStep() (_ Float.X)                                  { return }
+func (self implementation) IntegrateForces()                                      { return }
+func (self implementation) GetSpaceState() (_ PhysicsDirectSpaceState3D.Instance) { return }
 func (Instance) _get_total_gravity(impl func(ptr unsafe.Pointer) Vector3.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -500,7 +501,7 @@ func (Instance) _integrate_forces(impl func(ptr unsafe.Pointer)) (cb gd.Extensio
 		impl(self)
 	}
 }
-func (Instance) _get_space_state(impl func(ptr unsafe.Pointer) [1]gdclass.PhysicsDirectSpaceState3D) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_space_state(impl func(ptr unsafe.Pointer) PhysicsDirectSpaceState3D.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)

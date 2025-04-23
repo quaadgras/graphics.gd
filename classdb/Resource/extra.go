@@ -3,10 +3,12 @@ package Resource
 import (
 	"reflect"
 	"strings"
+	"sync"
 	"unsafe"
 
-	"graphics.gd/classdb/ResourceLoader"
 	gd "graphics.gd/internal"
+	"graphics.gd/internal/callframe"
+	"graphics.gd/internal/gdclass"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Path"
@@ -56,7 +58,7 @@ func Load[T Any, P string | Path.ToResource](path_to_resource P) T {
 		*(*gd.Object)(unsafe.Pointer(&placeholder)) = pointers.Add[gd.Object]([3]uint64{})
 		preloaded_resources = append(preloaded_resources, *(*gd.RefCounted)(unsafe.Pointer(&placeholder)))
 		startup = append(startup, func() {
-			resource := Instance(ResourceLoader.Load(path.String(), ""))
+			resource := Instance(load(String.Readable(path), String.New(""), 1))
 			result, ok := as[T](resource)
 			if !ok {
 				panic("Resource \"" + path.String() + "\" is " + resource.AsObject()[0].GetClass().String() + " not " + reflect.TypeFor[T]().String())
@@ -68,7 +70,7 @@ func Load[T Any, P string | Path.ToResource](path_to_resource P) T {
 		})
 		return placeholder
 	}
-	resource := Instance(ResourceLoader.Load(path.String(), ""))
+	resource := Instance(load(String.Readable(path), String.New(""), 1))
 	if resource == (Instance{}) {
 		return [1]T{}[0]
 	}
@@ -77,6 +79,26 @@ func Load[T Any, P string | Path.ToResource](path_to_resource P) T {
 		panic("Resource \"" + path.String() + "\" is " + resource.AsObject()[0].GetClass().String() + " not " + reflect.TypeFor[T]().String())
 	}
 	return result
+}
+
+var once sync.Once
+var self [1]gdclass.ResourceLoader
+
+func singleton() {
+	obj := gd.Global.Object.GetSingleton(gd.Global.Singletons.ResourceLoader)
+	self = *(*[1]gdclass.ResourceLoader)(unsafe.Pointer(&obj))
+}
+
+func load(path String.Readable, type_hint String.Readable, cache_mode gdclass.ResourceLoaderCacheMode) [1]gdclass.Resource { //gd:ResourceLoader.load
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(type_hint)))
+	callframe.Arg(frame, cache_mode)
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_load, self[0].AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret.Get())}
+	frame.Free()
+	return ret
 }
 
 // As attempts to cast the given class to T, returning true

@@ -14,7 +14,9 @@ import "graphics.gd/variant"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/HScrollBar"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/VScrollBar"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -62,16 +64,16 @@ type Any interface {
 Returns the horizontal scrollbar [HScrollBar] of this [ScrollContainer].
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to disable or hide a scrollbar, you can use [member horizontal_scroll_mode].
 */
-func (self Instance) GetHScrollBar() [1]gdclass.HScrollBar { //gd:ScrollContainer.get_h_scroll_bar
-	return [1]gdclass.HScrollBar(Advanced(self).GetHScrollBar())
+func (self Instance) GetHScrollBar() HScrollBar.Instance { //gd:ScrollContainer.get_h_scroll_bar
+	return HScrollBar.Instance(Advanced(self).GetHScrollBar())
 }
 
 /*
 Returns the vertical scrollbar [VScrollBar] of this [ScrollContainer].
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to disable or hide a scrollbar, you can use [member vertical_scroll_mode].
 */
-func (self Instance) GetVScrollBar() [1]gdclass.VScrollBar { //gd:ScrollContainer.get_v_scroll_bar
-	return [1]gdclass.VScrollBar(Advanced(self).GetVScrollBar())
+func (self Instance) GetVScrollBar() VScrollBar.Instance { //gd:ScrollContainer.get_v_scroll_bar
+	return VScrollBar.Instance(Advanced(self).GetVScrollBar())
 }
 
 /*
@@ -83,7 +85,7 @@ await get_tree().process_frame
 ensure_control_visible(child_node)
 [/codeblock]
 */
-func (self Instance) EnsureControlVisible(control [1]gdclass.Control) { //gd:ScrollContainer.ensure_control_visible
+func (self Instance) EnsureControlVisible(control Control.Instance) { //gd:ScrollContainer.ensure_control_visible
 	Advanced(self).EnsureControlVisible(control)
 }
 

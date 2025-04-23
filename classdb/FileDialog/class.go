@@ -13,7 +13,9 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/AcceptDialog"
 import "graphics.gd/classdb/ConfirmationDialog"
+import "graphics.gd/classdb/LineEdit"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/VBoxContainer"
 import "graphics.gd/classdb/Viewport"
 import "graphics.gd/classdb/Window"
 import "graphics.gd/variant/Array"
@@ -154,16 +156,16 @@ Returns the vertical box container of the dialog, custom controls can be added t
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 [b]Note:[/b] Changes to this node are ignored by native file dialogs, use [method add_option] to add custom elements to the dialog instead.
 */
-func (self Instance) GetVbox() [1]gdclass.VBoxContainer { //gd:FileDialog.get_vbox
-	return [1]gdclass.VBoxContainer(Advanced(self).GetVbox())
+func (self Instance) GetVbox() VBoxContainer.Instance { //gd:FileDialog.get_vbox
+	return VBoxContainer.Instance(Advanced(self).GetVbox())
 }
 
 /*
 Returns the LineEdit for the selected file.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
-func (self Instance) GetLineEdit() [1]gdclass.LineEdit { //gd:FileDialog.get_line_edit
-	return [1]gdclass.LineEdit(Advanced(self).GetLineEdit())
+func (self Instance) GetLineEdit() LineEdit.Instance { //gd:FileDialog.get_line_edit
+	return LineEdit.Instance(Advanced(self).GetLineEdit())
 }
 
 /*

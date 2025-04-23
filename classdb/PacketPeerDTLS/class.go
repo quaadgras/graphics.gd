@@ -12,6 +12,8 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/PacketPeer"
+import "graphics.gd/classdb/PacketPeerUDP"
+import "graphics.gd/classdb/TLSOptions"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -68,14 +70,14 @@ func (self Instance) Poll() { //gd:PacketPeerDTLS.poll
 /*
 Connects a [param packet_peer] beginning the DTLS handshake using the underlying [PacketPeerUDP] which must be connected (see [method PacketPeerUDP.connect_to_host]). You can optionally specify the [param client_options] to be used while verifying the TLS connections. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
-func (self Instance) ConnectToPeer(packet_peer [1]gdclass.PacketPeerUDP, hostname string) error { //gd:PacketPeerDTLS.connect_to_peer
-	return error(gd.ToError(Advanced(self).ConnectToPeer(packet_peer, String.New(hostname), [1][1]gdclass.TLSOptions{}[0])))
+func (self Instance) ConnectToPeer(packet_peer PacketPeerUDP.Instance, hostname string) error { //gd:PacketPeerDTLS.connect_to_peer
+	return error(gd.ToError(Advanced(self).ConnectToPeer(packet_peer, String.New(hostname), [1]TLSOptions.Instance{}[0])))
 }
 
 /*
 Connects a [param packet_peer] beginning the DTLS handshake using the underlying [PacketPeerUDP] which must be connected (see [method PacketPeerUDP.connect_to_host]). You can optionally specify the [param client_options] to be used while verifying the TLS connections. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
-func (self Expanded) ConnectToPeer(packet_peer [1]gdclass.PacketPeerUDP, hostname string, client_options [1]gdclass.TLSOptions) error { //gd:PacketPeerDTLS.connect_to_peer
+func (self Expanded) ConnectToPeer(packet_peer PacketPeerUDP.Instance, hostname string, client_options TLSOptions.Instance) error { //gd:PacketPeerDTLS.connect_to_peer
 	return error(gd.ToError(Advanced(self).ConnectToPeer(packet_peer, String.New(hostname), client_options)))
 }
 

@@ -59,15 +59,15 @@ type Any interface {
 /*
 Set one of the synchronized streams, by index.
 */
-func (self Instance) SetSyncStream(stream_index int, audio_stream [1]gdclass.AudioStream) { //gd:AudioStreamSynchronized.set_sync_stream
+func (self Instance) SetSyncStream(stream_index int, audio_stream AudioStream.Instance) { //gd:AudioStreamSynchronized.set_sync_stream
 	Advanced(self).SetSyncStream(int64(stream_index), audio_stream)
 }
 
 /*
 Get one of the synchronized streams, by index.
 */
-func (self Instance) GetSyncStream(stream_index int) [1]gdclass.AudioStream { //gd:AudioStreamSynchronized.get_sync_stream
-	return [1]gdclass.AudioStream(Advanced(self).GetSyncStream(int64(stream_index)))
+func (self Instance) GetSyncStream(stream_index int) AudioStream.Instance { //gd:AudioStreamSynchronized.get_sync_stream
+	return AudioStream.Instance(Advanced(self).GetSyncStream(int64(stream_index)))
 }
 
 /*

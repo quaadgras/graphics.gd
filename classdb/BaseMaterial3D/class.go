@@ -13,6 +13,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Material"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -213,11 +214,11 @@ func (self Instance) SetAlbedoColor(value Color.RGBA) {
 	class(self).SetAlbedo(Color.RGBA(value))
 }
 
-func (self Instance) AlbedoTexture() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetTexture(0))
+func (self Instance) AlbedoTexture() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetTexture(0))
 }
 
-func (self Instance) SetAlbedoTexture(value [1]gdclass.Texture2D) {
+func (self Instance) SetAlbedoTexture(value Texture2D.Instance) {
 	class(self).SetTexture(0, value)
 }
 
@@ -237,11 +238,11 @@ func (self Instance) SetAlbedoTextureMsdf(value bool) {
 	class(self).SetFlag(20, value)
 }
 
-func (self Instance) OrmTexture() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetTexture(17))
+func (self Instance) OrmTexture() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetTexture(17))
 }
 
-func (self Instance) SetOrmTexture(value [1]gdclass.Texture2D) {
+func (self Instance) SetOrmTexture(value Texture2D.Instance) {
 	class(self).SetTexture(17, value)
 }
 
@@ -261,11 +262,11 @@ func (self Instance) SetMetallicSpecular(value Float.X) {
 	class(self).SetSpecular(float64(value))
 }
 
-func (self Instance) MetallicTexture() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetTexture(1))
+func (self Instance) MetallicTexture() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetTexture(1))
 }
 
-func (self Instance) SetMetallicTexture(value [1]gdclass.Texture2D) {
+func (self Instance) SetMetallicTexture(value Texture2D.Instance) {
 	class(self).SetTexture(1, value)
 }
 
@@ -285,11 +286,11 @@ func (self Instance) SetRoughness(value Float.X) {
 	class(self).SetRoughness(float64(value))
 }
 
-func (self Instance) RoughnessTexture() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetTexture(2))
+func (self Instance) RoughnessTexture() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetTexture(2))
 }
 
-func (self Instance) SetRoughnessTexture(value [1]gdclass.Texture2D) {
+func (self Instance) SetRoughnessTexture(value Texture2D.Instance) {
 	class(self).SetTexture(2, value)
 }
 
@@ -349,11 +350,11 @@ func (self Instance) SetEmissionOnUv2(value bool) {
 	class(self).SetFlag(11, value)
 }
 
-func (self Instance) EmissionTexture() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetTexture(3))
+func (self Instance) EmissionTexture() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetTexture(3))
 }
 
-func (self Instance) SetEmissionTexture(value [1]gdclass.Texture2D) {
+func (self Instance) SetEmissionTexture(value Texture2D.Instance) {
 	class(self).SetTexture(3, value)
 }
 
@@ -373,11 +374,11 @@ func (self Instance) SetNormalScale(value Float.X) {
 	class(self).SetNormalScale(float64(value))
 }
 
-func (self Instance) NormalTexture() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetTexture(4))
+func (self Instance) NormalTexture() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetTexture(4))
 }
 
-func (self Instance) SetNormalTexture(value [1]gdclass.Texture2D) {
+func (self Instance) SetNormalTexture(value Texture2D.Instance) {
 	class(self).SetTexture(4, value)
 }
 
@@ -405,11 +406,11 @@ func (self Instance) SetRimTint(value Float.X) {
 	class(self).SetRimTint(float64(value))
 }
 
-func (self Instance) RimTexture() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetTexture(5))
+func (self Instance) RimTexture() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetTexture(5))
 }
 
-func (self Instance) SetRimTexture(value [1]gdclass.Texture2D) {
+func (self Instance) SetRimTexture(value Texture2D.Instance) {
 	class(self).SetTexture(5, value)
 }
 
@@ -437,11 +438,11 @@ func (self Instance) SetClearcoatRoughness(value Float.X) {
 	class(self).SetClearcoatRoughness(float64(value))
 }
 
-func (self Instance) ClearcoatTexture() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetTexture(6))
+func (self Instance) ClearcoatTexture() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetTexture(6))
 }
 
-func (self Instance) SetClearcoatTexture(value [1]gdclass.Texture2D) {
+func (self Instance) SetClearcoatTexture(value Texture2D.Instance) {
 	class(self).SetTexture(6, value)
 }
 
@@ -461,11 +462,11 @@ func (self Instance) SetAnisotropy(value Float.X) {
 	class(self).SetAnisotropy(float64(value))
 }
 
-func (self Instance) AnisotropyFlowmap() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetTexture(7))
+func (self Instance) AnisotropyFlowmap() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetTexture(7))
 }
 
-func (self Instance) SetAnisotropyFlowmap(value [1]gdclass.Texture2D) {
+func (self Instance) SetAnisotropyFlowmap(value Texture2D.Instance) {
 	class(self).SetTexture(7, value)
 }
 
@@ -485,11 +486,11 @@ func (self Instance) SetAoLightAffect(value Float.X) {
 	class(self).SetAoLightAffect(float64(value))
 }
 
-func (self Instance) AoTexture() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetTexture(8))
+func (self Instance) AoTexture() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetTexture(8))
 }
 
-func (self Instance) SetAoTexture(value [1]gdclass.Texture2D) {
+func (self Instance) SetAoTexture(value Texture2D.Instance) {
 	class(self).SetTexture(8, value)
 }
 
@@ -565,11 +566,11 @@ func (self Instance) SetHeightmapFlipBinormal(value bool) {
 	class(self).SetHeightmapDeepParallaxFlipBinormal(value)
 }
 
-func (self Instance) HeightmapTexture() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetTexture(9))
+func (self Instance) HeightmapTexture() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetTexture(9))
 }
 
-func (self Instance) SetHeightmapTexture(value [1]gdclass.Texture2D) {
+func (self Instance) SetHeightmapTexture(value Texture2D.Instance) {
 	class(self).SetTexture(9, value)
 }
 
@@ -605,11 +606,11 @@ func (self Instance) SetSubsurfScatterSkinMode(value bool) {
 	class(self).SetFlag(18, value)
 }
 
-func (self Instance) SubsurfScatterTexture() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetTexture(10))
+func (self Instance) SubsurfScatterTexture() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetTexture(10))
 }
 
-func (self Instance) SetSubsurfScatterTexture(value [1]gdclass.Texture2D) {
+func (self Instance) SetSubsurfScatterTexture(value Texture2D.Instance) {
 	class(self).SetTexture(10, value)
 }
 
@@ -629,11 +630,11 @@ func (self Instance) SetSubsurfScatterTransmittanceColor(value Color.RGBA) {
 	class(self).SetTransmittanceColor(Color.RGBA(value))
 }
 
-func (self Instance) SubsurfScatterTransmittanceTexture() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetTexture(11))
+func (self Instance) SubsurfScatterTransmittanceTexture() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetTexture(11))
 }
 
-func (self Instance) SetSubsurfScatterTransmittanceTexture(value [1]gdclass.Texture2D) {
+func (self Instance) SetSubsurfScatterTransmittanceTexture(value Texture2D.Instance) {
 	class(self).SetTexture(11, value)
 }
 
@@ -669,11 +670,11 @@ func (self Instance) SetBacklight(value Color.RGBA) {
 	class(self).SetBacklight(Color.RGBA(value))
 }
 
-func (self Instance) BacklightTexture() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetTexture(12))
+func (self Instance) BacklightTexture() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetTexture(12))
 }
 
-func (self Instance) SetBacklightTexture(value [1]gdclass.Texture2D) {
+func (self Instance) SetBacklightTexture(value Texture2D.Instance) {
 	class(self).SetTexture(12, value)
 }
 
@@ -693,11 +694,11 @@ func (self Instance) SetRefractionScale(value Float.X) {
 	class(self).SetRefraction(float64(value))
 }
 
-func (self Instance) RefractionTexture() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetTexture(13))
+func (self Instance) RefractionTexture() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetTexture(13))
 }
 
-func (self Instance) SetRefractionTexture(value [1]gdclass.Texture2D) {
+func (self Instance) SetRefractionTexture(value Texture2D.Instance) {
 	class(self).SetTexture(13, value)
 }
 
@@ -717,11 +718,11 @@ func (self Instance) SetDetailEnabled(value bool) {
 	class(self).SetFeature(11, value)
 }
 
-func (self Instance) DetailMask() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetTexture(14))
+func (self Instance) DetailMask() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetTexture(14))
 }
 
-func (self Instance) SetDetailMask(value [1]gdclass.Texture2D) {
+func (self Instance) SetDetailMask(value Texture2D.Instance) {
 	class(self).SetTexture(14, value)
 }
 
@@ -741,19 +742,19 @@ func (self Instance) SetDetailUvLayer(value gdclass.BaseMaterial3DDetailUV) {
 	class(self).SetDetailUv(value)
 }
 
-func (self Instance) DetailAlbedo() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetTexture(15))
+func (self Instance) DetailAlbedo() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetTexture(15))
 }
 
-func (self Instance) SetDetailAlbedo(value [1]gdclass.Texture2D) {
+func (self Instance) SetDetailAlbedo(value Texture2D.Instance) {
 	class(self).SetTexture(15, value)
 }
 
-func (self Instance) DetailNormal() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetTexture(16))
+func (self Instance) DetailNormal() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetTexture(16))
 }
 
-func (self Instance) SetDetailNormal(value [1]gdclass.Texture2D) {
+func (self Instance) SetDetailNormal(value Texture2D.Instance) {
 	class(self).SetTexture(16, value)
 }
 

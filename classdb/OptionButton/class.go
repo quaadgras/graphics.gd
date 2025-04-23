@@ -16,6 +16,8 @@ import "graphics.gd/classdb/Button"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/PopupMenu"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -80,14 +82,14 @@ func (self Expanded) AddItem(label string, id int) { //gd:OptionButton.add_item
 /*
 Adds an item, with a [param texture] icon, text [param label] and (optionally) [param id]. If no [param id] is passed, the item index will be used as the item's ID. New items are appended at the end.
 */
-func (self Instance) AddIconItem(texture [1]gdclass.Texture2D, label string) { //gd:OptionButton.add_icon_item
+func (self Instance) AddIconItem(texture Texture2D.Instance, label string) { //gd:OptionButton.add_icon_item
 	Advanced(self).AddIconItem(texture, String.New(label), int64(-1))
 }
 
 /*
 Adds an item, with a [param texture] icon, text [param label] and (optionally) [param id]. If no [param id] is passed, the item index will be used as the item's ID. New items are appended at the end.
 */
-func (self Expanded) AddIconItem(texture [1]gdclass.Texture2D, label string, id int) { //gd:OptionButton.add_icon_item
+func (self Expanded) AddIconItem(texture Texture2D.Instance, label string, id int) { //gd:OptionButton.add_icon_item
 	Advanced(self).AddIconItem(texture, String.New(label), int64(id))
 }
 
@@ -101,7 +103,7 @@ func (self Instance) SetItemText(idx int, text string) { //gd:OptionButton.set_i
 /*
 Sets the icon of the item at index [param idx].
 */
-func (self Instance) SetItemIcon(idx int, texture [1]gdclass.Texture2D) { //gd:OptionButton.set_item_icon
+func (self Instance) SetItemIcon(idx int, texture Texture2D.Instance) { //gd:OptionButton.set_item_icon
 	Advanced(self).SetItemIcon(int64(idx), texture)
 }
 
@@ -144,8 +146,8 @@ func (self Instance) GetItemText(idx int) string { //gd:OptionButton.get_item_te
 /*
 Returns the icon of the item at index [param idx].
 */
-func (self Instance) GetItemIcon(idx int) [1]gdclass.Texture2D { //gd:OptionButton.get_item_icon
-	return [1]gdclass.Texture2D(Advanced(self).GetItemIcon(int64(idx)))
+func (self Instance) GetItemIcon(idx int) Texture2D.Instance { //gd:OptionButton.get_item_icon
+	return Texture2D.Instance(Advanced(self).GetItemIcon(int64(idx)))
 }
 
 /*
@@ -244,8 +246,8 @@ func (self Instance) RemoveItem(idx int) { //gd:OptionButton.remove_item
 Returns the [PopupMenu] contained in this button.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member Window.visible] property.
 */
-func (self Instance) GetPopup() [1]gdclass.PopupMenu { //gd:OptionButton.get_popup
-	return [1]gdclass.PopupMenu(Advanced(self).GetPopup())
+func (self Instance) GetPopup() PopupMenu.Instance { //gd:OptionButton.get_popup
+	return PopupMenu.Instance(Advanced(self).GetPopup())
 }
 
 /*

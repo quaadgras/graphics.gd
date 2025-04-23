@@ -11,6 +11,9 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/PhysicsPointQueryParameters3D"
+import "graphics.gd/classdb/PhysicsRayQueryParameters3D"
+import "graphics.gd/classdb/PhysicsShapeQueryParameters3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -64,7 +67,7 @@ Checks whether a point is inside any solid shape. Position and other parameters 
 [code]shape[/code]: The shape index of the colliding shape.
 The number of intersections can be limited with the [param max_results] parameter, to reduce the processing time.
 */
-func (self Instance) IntersectPoint(parameters [1]gdclass.PhysicsPointQueryParameters3D) []PhysicsDirectSpaceState3D_Intersection { //gd:PhysicsDirectSpaceState3D.intersect_point
+func (self Instance) IntersectPoint(parameters PhysicsPointQueryParameters3D.Instance) []PhysicsDirectSpaceState3D_Intersection { //gd:PhysicsDirectSpaceState3D.intersect_point
 	return []PhysicsDirectSpaceState3D_Intersection(gd.ArrayAs[[]PhysicsDirectSpaceState3D_Intersection](gd.InternalArray(Advanced(self).IntersectPoint(parameters, int64(32)))))
 }
 
@@ -76,7 +79,7 @@ Checks whether a point is inside any solid shape. Position and other parameters 
 [code]shape[/code]: The shape index of the colliding shape.
 The number of intersections can be limited with the [param max_results] parameter, to reduce the processing time.
 */
-func (self Expanded) IntersectPoint(parameters [1]gdclass.PhysicsPointQueryParameters3D, max_results int) []PhysicsDirectSpaceState3D_Intersection { //gd:PhysicsDirectSpaceState3D.intersect_point
+func (self Expanded) IntersectPoint(parameters PhysicsPointQueryParameters3D.Instance, max_results int) []PhysicsDirectSpaceState3D_Intersection { //gd:PhysicsDirectSpaceState3D.intersect_point
 	return []PhysicsDirectSpaceState3D_Intersection(gd.ArrayAs[[]PhysicsDirectSpaceState3D_Intersection](gd.InternalArray(Advanced(self).IntersectPoint(parameters, int64(max_results)))))
 }
 
@@ -92,7 +95,7 @@ Intersects a ray in a given space. Ray position and other parameters are defined
 [code]shape[/code]: The shape index of the colliding shape.
 If the ray did not intersect anything, then an empty dictionary is returned instead.
 */
-func (self Instance) IntersectRay(parameters [1]gdclass.PhysicsRayQueryParameters3D) PhysicsDirectSpaceState3D_Intersection { //gd:PhysicsDirectSpaceState3D.intersect_ray
+func (self Instance) IntersectRay(parameters PhysicsRayQueryParameters3D.Instance) PhysicsDirectSpaceState3D_Intersection { //gd:PhysicsDirectSpaceState3D.intersect_ray
 	return PhysicsDirectSpaceState3D_Intersection(gd.DictionaryAs[PhysicsDirectSpaceState3D_Intersection](Advanced(self).IntersectRay(parameters)))
 }
 
@@ -105,7 +108,7 @@ Checks the intersections of a shape, given through a [PhysicsShapeQueryParameter
 The number of intersections can be limited with the [param max_results] parameter, to reduce the processing time.
 [b]Note:[/b] This method does not take into account the [code]motion[/code] property of the object.
 */
-func (self Instance) IntersectShape(parameters [1]gdclass.PhysicsShapeQueryParameters3D) []PhysicsDirectSpaceState3D_Intersection { //gd:PhysicsDirectSpaceState3D.intersect_shape
+func (self Instance) IntersectShape(parameters PhysicsShapeQueryParameters3D.Instance) []PhysicsDirectSpaceState3D_Intersection { //gd:PhysicsDirectSpaceState3D.intersect_shape
 	return []PhysicsDirectSpaceState3D_Intersection(gd.ArrayAs[[]PhysicsDirectSpaceState3D_Intersection](gd.InternalArray(Advanced(self).IntersectShape(parameters, int64(32)))))
 }
 
@@ -118,7 +121,7 @@ Checks the intersections of a shape, given through a [PhysicsShapeQueryParameter
 The number of intersections can be limited with the [param max_results] parameter, to reduce the processing time.
 [b]Note:[/b] This method does not take into account the [code]motion[/code] property of the object.
 */
-func (self Expanded) IntersectShape(parameters [1]gdclass.PhysicsShapeQueryParameters3D, max_results int) []PhysicsDirectSpaceState3D_Intersection { //gd:PhysicsDirectSpaceState3D.intersect_shape
+func (self Expanded) IntersectShape(parameters PhysicsShapeQueryParameters3D.Instance, max_results int) []PhysicsDirectSpaceState3D_Intersection { //gd:PhysicsDirectSpaceState3D.intersect_shape
 	return []PhysicsDirectSpaceState3D_Intersection(gd.ArrayAs[[]PhysicsDirectSpaceState3D_Intersection](gd.InternalArray(Advanced(self).IntersectShape(parameters, int64(max_results)))))
 }
 
@@ -127,7 +130,7 @@ Checks how far a [Shape3D] can move without colliding. All the parameters for th
 Returns an array with the safe and unsafe proportions (between 0 and 1) of the motion. The safe proportion is the maximum fraction of the motion that can be made without a collision. The unsafe proportion is the minimum fraction of the distance that must be moved for a collision. If no collision is detected a result of [code][1.0, 1.0][/code] will be returned.
 [b]Note:[/b] Any [Shape3D]s that the shape is already colliding with e.g. inside of, will be ignored. Use [method collide_shape] to determine the [Shape3D]s that the shape is already colliding with.
 */
-func (self Instance) CastMotion(parameters [1]gdclass.PhysicsShapeQueryParameters3D) []float32 { //gd:PhysicsDirectSpaceState3D.cast_motion
+func (self Instance) CastMotion(parameters PhysicsShapeQueryParameters3D.Instance) []float32 { //gd:PhysicsDirectSpaceState3D.cast_motion
 	return []float32(slices.Collect(Advanced(self).CastMotion(parameters).Values()))
 }
 
@@ -136,7 +139,7 @@ Checks the intersections of a shape, given through a [PhysicsShapeQueryParameter
 Returned points are a list of pairs of contact points. For each pair the first one is in the shape passed in [PhysicsShapeQueryParameters3D] object, second one is in the collided shape from the physics space.
 [b]Note:[/b] This method does not take into account the [code]motion[/code] property of the object.
 */
-func (self Instance) CollideShape(parameters [1]gdclass.PhysicsShapeQueryParameters3D) []Vector3.XYZ { //gd:PhysicsDirectSpaceState3D.collide_shape
+func (self Instance) CollideShape(parameters PhysicsShapeQueryParameters3D.Instance) []Vector3.XYZ { //gd:PhysicsDirectSpaceState3D.collide_shape
 	return []Vector3.XYZ(gd.ArrayAs[[]Vector3.XYZ](gd.InternalArray(Advanced(self).CollideShape(parameters, int64(32)))))
 }
 
@@ -145,7 +148,7 @@ Checks the intersections of a shape, given through a [PhysicsShapeQueryParameter
 Returned points are a list of pairs of contact points. For each pair the first one is in the shape passed in [PhysicsShapeQueryParameters3D] object, second one is in the collided shape from the physics space.
 [b]Note:[/b] This method does not take into account the [code]motion[/code] property of the object.
 */
-func (self Expanded) CollideShape(parameters [1]gdclass.PhysicsShapeQueryParameters3D, max_results int) []Vector3.XYZ { //gd:PhysicsDirectSpaceState3D.collide_shape
+func (self Expanded) CollideShape(parameters PhysicsShapeQueryParameters3D.Instance, max_results int) []Vector3.XYZ { //gd:PhysicsDirectSpaceState3D.collide_shape
 	return []Vector3.XYZ(gd.ArrayAs[[]Vector3.XYZ](gd.InternalArray(Advanced(self).CollideShape(parameters, int64(max_results)))))
 }
 
@@ -160,7 +163,7 @@ Checks the intersections of a shape, given through a [PhysicsShapeQueryParameter
 If the shape did not intersect anything, then an empty dictionary is returned instead.
 [b]Note:[/b] This method does not take into account the [code]motion[/code] property of the object.
 */
-func (self Instance) GetRestInfo(parameters [1]gdclass.PhysicsShapeQueryParameters3D) PhysicsDirectSpaceState3D_RestInfo { //gd:PhysicsDirectSpaceState3D.get_rest_info
+func (self Instance) GetRestInfo(parameters PhysicsShapeQueryParameters3D.Instance) PhysicsDirectSpaceState3D_RestInfo { //gd:PhysicsDirectSpaceState3D.get_rest_info
 	return PhysicsDirectSpaceState3D_RestInfo(gd.DictionaryAs[PhysicsDirectSpaceState3D_RestInfo](Advanced(self).GetRestInfo(parameters)))
 }
 

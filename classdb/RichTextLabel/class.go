@@ -13,7 +13,12 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/Font"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/PopupMenu"
+import "graphics.gd/classdb/RichTextEffect"
+import "graphics.gd/classdb/Texture2D"
+import "graphics.gd/classdb/VScrollBar"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -89,7 +94,7 @@ If [param width] and [param height] are not set, but [param region] is, the regi
 If [param pad] is set, and the image is smaller than the size specified by [param width] and [param height], the image padding is added to match the size instead of upscaling.
 If [param size_in_percent] is set, [param width] and [param height] values are percentages of the control width instead of pixels.
 */
-func (self Instance) AddImage(image [1]gdclass.Texture2D) { //gd:RichTextLabel.add_image
+func (self Instance) AddImage(image Texture2D.Instance) { //gd:RichTextLabel.add_image
 	Advanced(self).AddImage(image, int64(0), int64(0), Color.RGBA(gd.Color{1, 1, 1, 1}), 5, Rect2.PositionSize(gd.NewRect2(0, 0, 0, 0)), variant.New([1]any{}[0]), false, String.New(""), false)
 }
 
@@ -101,21 +106,21 @@ If [param width] and [param height] are not set, but [param region] is, the regi
 If [param pad] is set, and the image is smaller than the size specified by [param width] and [param height], the image padding is added to match the size instead of upscaling.
 If [param size_in_percent] is set, [param width] and [param height] values are percentages of the control width instead of pixels.
 */
-func (self Expanded) AddImage(image [1]gdclass.Texture2D, width int, height int, color Color.RGBA, inline_align InlineAlignment, region Rect2.PositionSize, key any, pad bool, tooltip string, size_in_percent bool) { //gd:RichTextLabel.add_image
+func (self Expanded) AddImage(image Texture2D.Instance, width int, height int, color Color.RGBA, inline_align InlineAlignment, region Rect2.PositionSize, key any, pad bool, tooltip string, size_in_percent bool) { //gd:RichTextLabel.add_image
 	Advanced(self).AddImage(image, int64(width), int64(height), Color.RGBA(color), inline_align, Rect2.PositionSize(region), variant.New(key), pad, String.New(tooltip), size_in_percent)
 }
 
 /*
 Updates the existing images with the key [param key]. Only properties specified by [param mask] bits are updated. See [method add_image].
 */
-func (self Instance) UpdateImage(key any, mask gdclass.RichTextLabelImageUpdateMask, image [1]gdclass.Texture2D) { //gd:RichTextLabel.update_image
+func (self Instance) UpdateImage(key any, mask gdclass.RichTextLabelImageUpdateMask, image Texture2D.Instance) { //gd:RichTextLabel.update_image
 	Advanced(self).UpdateImage(variant.New(key), mask, image, int64(0), int64(0), Color.RGBA(gd.Color{1, 1, 1, 1}), 5, Rect2.PositionSize(gd.NewRect2(0, 0, 0, 0)), false, String.New(""), false)
 }
 
 /*
 Updates the existing images with the key [param key]. Only properties specified by [param mask] bits are updated. See [method add_image].
 */
-func (self Expanded) UpdateImage(key any, mask gdclass.RichTextLabelImageUpdateMask, image [1]gdclass.Texture2D, width int, height int, color Color.RGBA, inline_align InlineAlignment, region Rect2.PositionSize, pad bool, tooltip string, size_in_percent bool) { //gd:RichTextLabel.update_image
+func (self Expanded) UpdateImage(key any, mask gdclass.RichTextLabelImageUpdateMask, image Texture2D.Instance, width int, height int, color Color.RGBA, inline_align InlineAlignment, region Rect2.PositionSize, pad bool, tooltip string, size_in_percent bool) { //gd:RichTextLabel.update_image
 	Advanced(self).UpdateImage(variant.New(key), mask, image, int64(width), int64(height), Color.RGBA(color), inline_align, Rect2.PositionSize(region), pad, String.New(tooltip), size_in_percent)
 }
 
@@ -155,7 +160,7 @@ func (self Instance) InvalidateParagraph(paragraph int) bool { //gd:RichTextLabe
 Adds a [code skip-lint][font][/code] tag to the tag stack. Overrides default fonts for its duration.
 Passing [code]0[/code] to [param font_size] will use the existing default font size.
 */
-func (self Instance) PushFont(font [1]gdclass.Font) { //gd:RichTextLabel.push_font
+func (self Instance) PushFont(font Font.Instance) { //gd:RichTextLabel.push_font
 	Advanced(self).PushFont(font, int64(0))
 }
 
@@ -163,7 +168,7 @@ func (self Instance) PushFont(font [1]gdclass.Font) { //gd:RichTextLabel.push_fo
 Adds a [code skip-lint][font][/code] tag to the tag stack. Overrides default fonts for its duration.
 Passing [code]0[/code] to [param font_size] will use the existing default font size.
 */
-func (self Expanded) PushFont(font [1]gdclass.Font, font_size int) { //gd:RichTextLabel.push_font
+func (self Expanded) PushFont(font Font.Instance, font_size int) { //gd:RichTextLabel.push_font
 	Advanced(self).PushFont(font, int64(font_size))
 }
 
@@ -328,14 +333,14 @@ func (self Expanded) PushTable(columns int, inline_align InlineAlignment, align_
 /*
 Adds a [code skip-lint][dropcap][/code] tag to the tag stack. Drop cap (dropped capital) is a decorative element at the beginning of a paragraph that is larger than the rest of the text.
 */
-func (self Instance) PushDropcap(s string, font [1]gdclass.Font, size int) { //gd:RichTextLabel.push_dropcap
+func (self Instance) PushDropcap(s string, font Font.Instance, size int) { //gd:RichTextLabel.push_dropcap
 	Advanced(self).PushDropcap(String.New(s), font, int64(size), Rect2.PositionSize(gd.NewRect2(0, 0, 0, 0)), Color.RGBA(gd.Color{1, 1, 1, 1}), int64(0), Color.RGBA(gd.Color{0, 0, 0, 0}))
 }
 
 /*
 Adds a [code skip-lint][dropcap][/code] tag to the tag stack. Drop cap (dropped capital) is a decorative element at the beginning of a paragraph that is larger than the rest of the text.
 */
-func (self Expanded) PushDropcap(s string, font [1]gdclass.Font, size int, dropcap_margins Rect2.PositionSize, color Color.RGBA, outline_size int, outline_color Color.RGBA) { //gd:RichTextLabel.push_dropcap
+func (self Expanded) PushDropcap(s string, font Font.Instance, size int, dropcap_margins Rect2.PositionSize, color Color.RGBA, outline_size int, outline_color Color.RGBA) { //gd:RichTextLabel.push_dropcap
 	Advanced(self).PushDropcap(String.New(s), font, int64(size), Rect2.PositionSize(dropcap_margins), Color.RGBA(color), int64(outline_size), Color.RGBA(outline_color))
 }
 
@@ -409,7 +414,7 @@ func (self Instance) PushBgcolor(bgcolor Color.RGBA) { //gd:RichTextLabel.push_b
 /*
 Adds a custom effect tag to the tag stack. The effect does not need to be in [member custom_effects]. The environment is directly passed to the effect.
 */
-func (self Instance) PushCustomfx(effect [1]gdclass.RichTextEffect, env map[string]interface{}) { //gd:RichTextLabel.push_customfx
+func (self Instance) PushCustomfx(effect RichTextEffect.Instance, env map[string]interface{}) { //gd:RichTextLabel.push_customfx
 	Advanced(self).PushCustomfx(effect, gd.DictionaryFromMap(env))
 }
 
@@ -453,8 +458,8 @@ func (self Instance) Clear() { //gd:RichTextLabel.clear
 Returns the vertical scrollbar.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
-func (self Instance) GetVScrollBar() [1]gdclass.VScrollBar { //gd:RichTextLabel.get_v_scroll_bar
-	return [1]gdclass.VScrollBar(Advanced(self).GetVScrollBar())
+func (self Instance) GetVScrollBar() VScrollBar.Instance { //gd:RichTextLabel.get_v_scroll_bar
+	return VScrollBar.Instance(Advanced(self).GetVScrollBar())
 }
 
 /*
@@ -732,8 +737,8 @@ public void OnItemPressed(int id)
 [/codeblocks]
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member Window.visible] property.
 */
-func (self Instance) GetMenu() [1]gdclass.PopupMenu { //gd:RichTextLabel.get_menu
-	return [1]gdclass.PopupMenu(Advanced(self).GetMenu())
+func (self Instance) GetMenu() PopupMenu.Instance { //gd:RichTextLabel.get_menu
+	return PopupMenu.Instance(Advanced(self).GetMenu())
 }
 
 /*

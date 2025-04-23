@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/InputEvent"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -204,7 +205,7 @@ func (self Instance) GetRecentDirs() []string { //gd:EditorSettings.get_recent_d
 /*
 Overrides the built-in editor action [param name] with the input actions defined in [param actions_list].
 */
-func (self Instance) SetBuiltinActionOverride(name string, actions_list [][1]gdclass.InputEvent) { //gd:EditorSettings.set_builtin_action_override
+func (self Instance) SetBuiltinActionOverride(name string, actions_list []InputEvent.Instance) { //gd:EditorSettings.set_builtin_action_override
 	Advanced(self).SetBuiltinActionOverride(String.New(name), gd.ArrayFromSlice[Array.Contains[[1]gdclass.InputEvent]](actions_list))
 }
 

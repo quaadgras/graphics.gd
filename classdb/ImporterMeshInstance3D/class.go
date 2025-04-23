@@ -11,8 +11,10 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/ImporterMesh"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/Skin"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -71,19 +73,19 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Mesh() [1]gdclass.ImporterMesh {
-	return [1]gdclass.ImporterMesh(class(self).GetMesh())
+func (self Instance) Mesh() ImporterMesh.Instance {
+	return ImporterMesh.Instance(class(self).GetMesh())
 }
 
-func (self Instance) SetMesh(value [1]gdclass.ImporterMesh) {
+func (self Instance) SetMesh(value ImporterMesh.Instance) {
 	class(self).SetMesh(value)
 }
 
-func (self Instance) Skin() [1]gdclass.Skin {
-	return [1]gdclass.Skin(class(self).GetSkin())
+func (self Instance) Skin() Skin.Instance {
+	return Skin.Instance(class(self).GetSkin())
 }
 
-func (self Instance) SetSkin(value [1]gdclass.Skin) {
+func (self Instance) SetSkin(value Skin.Instance) {
 	class(self).SetSkin(value)
 }
 

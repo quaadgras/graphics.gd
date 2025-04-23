@@ -12,6 +12,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/EditorPlugin"
+import "graphics.gd/classdb/GridMap"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/AABB"
 import "graphics.gd/variant/Array"
@@ -61,8 +62,8 @@ type Any interface {
 /*
 Returns the [GridMap] node currently edited by the grid map editor.
 */
-func (self Instance) GetCurrentGridMap() [1]gdclass.GridMap { //gd:GridMapEditorPlugin.get_current_grid_map
-	return [1]gdclass.GridMap(Advanced(self).GetCurrentGridMap())
+func (self Instance) GetCurrentGridMap() GridMap.Instance { //gd:GridMapEditorPlugin.get_current_grid_map
+	return GridMap.Instance(Advanced(self).GetCurrentGridMap())
 }
 
 /*

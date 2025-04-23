@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/PackedScene"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -118,8 +119,8 @@ func (self Instance) GetNodeInstancePlaceholder(idx int) string { //gd:SceneStat
 /*
 Returns a [PackedScene] for the node at [param idx] (i.e. the whole branch starting at this node, with its child nodes and resources), or [code]null[/code] if the node is not an instance.
 */
-func (self Instance) GetNodeInstance(idx int) [1]gdclass.PackedScene { //gd:SceneState.get_node_instance
-	return [1]gdclass.PackedScene(Advanced(self).GetNodeInstance(int64(idx)))
+func (self Instance) GetNodeInstance(idx int) PackedScene.Instance { //gd:SceneState.get_node_instance
+	return PackedScene.Instance(Advanced(self).GetNodeInstance(int64(idx)))
 }
 
 /*
@@ -213,6 +214,13 @@ Returns the number of unbound parameters for the signal at [param idx].
 */
 func (self Instance) GetConnectionUnbinds(idx int) int { //gd:SceneState.get_connection_unbinds
 	return int(int(Advanced(self).GetConnectionUnbinds(int64(idx))))
+}
+
+/*
+Returns the [SceneState] representing the scene file contents.
+*/
+func Get(peer PackedScene.Instance) Instance { //gd:PackedScene.get_state
+	return Instance(PackedScene.Advanced(peer).GetState())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

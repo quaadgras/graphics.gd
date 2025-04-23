@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Curve"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/Texture"
 import "graphics.gd/classdb/Texture2D"
@@ -81,27 +82,27 @@ func (self Instance) SetWidth(value int) {
 	class(self).SetWidth(int64(value))
 }
 
-func (self Instance) CurveX() [1]gdclass.Curve {
-	return [1]gdclass.Curve(class(self).GetCurveX())
+func (self Instance) CurveX() Curve.Instance {
+	return Curve.Instance(class(self).GetCurveX())
 }
 
-func (self Instance) SetCurveX(value [1]gdclass.Curve) {
+func (self Instance) SetCurveX(value Curve.Instance) {
 	class(self).SetCurveX(value)
 }
 
-func (self Instance) CurveY() [1]gdclass.Curve {
-	return [1]gdclass.Curve(class(self).GetCurveY())
+func (self Instance) CurveY() Curve.Instance {
+	return Curve.Instance(class(self).GetCurveY())
 }
 
-func (self Instance) SetCurveY(value [1]gdclass.Curve) {
+func (self Instance) SetCurveY(value Curve.Instance) {
 	class(self).SetCurveY(value)
 }
 
-func (self Instance) CurveZ() [1]gdclass.Curve {
-	return [1]gdclass.Curve(class(self).GetCurveZ())
+func (self Instance) CurveZ() Curve.Instance {
+	return Curve.Instance(class(self).GetCurveZ())
 }
 
-func (self Instance) SetCurveZ(value [1]gdclass.Curve) {
+func (self Instance) SetCurveZ(value Curve.Instance) {
 	class(self).SetCurveZ(value)
 }
 

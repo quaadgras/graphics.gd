@@ -12,6 +12,8 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node3DGizmo"
+import "graphics.gd/classdb/World3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Basis"
 import "graphics.gd/variant/Callable"
@@ -76,8 +78,8 @@ func (self Instance) GetGlobalTransformInterpolated() Transform3D.BasisOrigin { 
 Returns the parent [Node3D], or [code]null[/code] if no parent exists, the parent is not of type [Node3D], or [member top_level] is [code]true[/code].
 [b]Note:[/b] Calling this method is not equivalent to [code]get_parent() as Node3D[/code], which does not take [member top_level] into account.
 */
-func (self Instance) GetParentNode3d() [1]gdclass.Node3D { //gd:Node3D.get_parent_node_3d
-	return [1]gdclass.Node3D(Advanced(self).GetParentNode3d())
+func (self Instance) GetParentNode3d() Instance { //gd:Node3D.get_parent_node_3d
+	return Instance(Advanced(self).GetParentNode3d())
 }
 
 /*
@@ -104,8 +106,8 @@ func (self Instance) IsScaleDisabled() bool { //gd:Node3D.is_scale_disabled
 /*
 Returns the current [World3D] resource this [Node3D] node is registered to.
 */
-func (self Instance) GetWorld3d() [1]gdclass.World3D { //gd:Node3D.get_world_3d
-	return [1]gdclass.World3D(Advanced(self).GetWorld3d())
+func (self Instance) GetWorld3d() World3D.Instance { //gd:Node3D.get_world_3d
+	return World3D.Instance(Advanced(self).GetWorld3d())
 }
 
 /*
@@ -126,15 +128,15 @@ func (self Instance) UpdateGizmos() { //gd:Node3D.update_gizmos
 Attach an editor gizmo to this [Node3D].
 [b]Note:[/b] The gizmo object would typically be an instance of [EditorNode3DGizmo], but the argument type is kept generic to avoid creating a dependency on editor classes in [Node3D].
 */
-func (self Instance) AddGizmo(gizmo [1]gdclass.Node3DGizmo) { //gd:Node3D.add_gizmo
+func (self Instance) AddGizmo(gizmo Node3DGizmo.Instance) { //gd:Node3D.add_gizmo
 	Advanced(self).AddGizmo(gizmo)
 }
 
 /*
 Returns all the gizmos attached to this [Node3D].
 */
-func (self Instance) GetGizmos() [][1]gdclass.Node3DGizmo { //gd:Node3D.get_gizmos
-	return [][1]gdclass.Node3DGizmo(gd.ArrayAs[[][1]gdclass.Node3DGizmo](gd.InternalArray(Advanced(self).GetGizmos())))
+func (self Instance) GetGizmos() []Node3DGizmo.Instance { //gd:Node3D.get_gizmos
+	return []Node3DGizmo.Instance(gd.ArrayAs[[]Node3DGizmo.Instance](gd.InternalArray(Advanced(self).GetGizmos())))
 }
 
 /*
@@ -148,7 +150,7 @@ func (self Instance) ClearGizmos() { //gd:Node3D.clear_gizmos
 Set subgizmo selection for this node in the editor.
 [b]Note:[/b] The gizmo object would typically be an instance of [EditorNode3DGizmo], but the argument type is kept generic to avoid creating a dependency on editor classes in [Node3D].
 */
-func (self Instance) SetSubgizmoSelection(gizmo [1]gdclass.Node3DGizmo, id int, transform Transform3D.BasisOrigin) { //gd:Node3D.set_subgizmo_selection
+func (self Instance) SetSubgizmoSelection(gizmo Node3DGizmo.Instance, id int, transform Transform3D.BasisOrigin) { //gd:Node3D.set_subgizmo_selection
 	Advanced(self).SetSubgizmoSelection(gizmo, int64(id), Transform3D.BasisOrigin(transform))
 }
 

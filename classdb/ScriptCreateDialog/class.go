@@ -14,6 +14,7 @@ import "graphics.gd/variant"
 import "graphics.gd/classdb/AcceptDialog"
 import "graphics.gd/classdb/ConfirmationDialog"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Script"
 import "graphics.gd/classdb/Viewport"
 import "graphics.gd/classdb/Window"
 import "graphics.gd/variant/Array"
@@ -128,7 +129,7 @@ func (self class) Config(inherits String.Readable, path String.Readable, built_i
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptCreateDialog.Bind_config, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
-func (self Instance) OnScriptCreated(cb func(script [1]gdclass.Script)) {
+func (self Instance) OnScriptCreated(cb func(script Script.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("script_created"), gd.NewCallable(cb), 0)
 }
 

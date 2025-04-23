@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Camera3D"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -58,24 +59,24 @@ type Any interface {
 /*
 Create a new GLTFCamera instance from the given Godot [Camera3D] node.
 */
-func FromNode(camera_node [1]gdclass.Camera3D) [1]gdclass.GLTFCamera { //gd:GLTFCamera.from_node
+func FromNode(camera_node Camera3D.Instance) Instance { //gd:GLTFCamera.from_node
 	self := Instance{}
-	return [1]gdclass.GLTFCamera(Advanced(self).FromNode(camera_node))
+	return Instance(Advanced(self).FromNode(camera_node))
 }
 
 /*
 Converts this GLTFCamera instance into a Godot [Camera3D] node.
 */
-func (self Instance) ToNode() [1]gdclass.Camera3D { //gd:GLTFCamera.to_node
-	return [1]gdclass.Camera3D(Advanced(self).ToNode())
+func (self Instance) ToNode() Camera3D.Instance { //gd:GLTFCamera.to_node
+	return Camera3D.Instance(Advanced(self).ToNode())
 }
 
 /*
 Creates a new GLTFCamera instance by parsing the given [Dictionary].
 */
-func FromDictionary(dictionary Structure) [1]gdclass.GLTFCamera { //gd:GLTFCamera.from_dictionary
+func FromDictionary(dictionary Structure) Instance { //gd:GLTFCamera.from_dictionary
 	self := Instance{}
-	return [1]gdclass.GLTFCamera(Advanced(self).FromDictionary(gd.DictionaryFromMap(dictionary)))
+	return Instance(Advanced(self).FromDictionary(gd.DictionaryFromMap(dictionary)))
 }
 
 /*

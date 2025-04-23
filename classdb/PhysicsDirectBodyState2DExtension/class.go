@@ -12,6 +12,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/PhysicsDirectBodyState2D"
+import "graphics.gd/classdb/PhysicsDirectSpaceState2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -149,7 +150,7 @@ type Interface interface {
 	//Overridable version of [method PhysicsDirectBodyState2D.integrate_forces].
 	IntegrateForces()
 	//Overridable version of [method PhysicsDirectBodyState2D.get_space_state].
-	GetSpaceState() [1]gdclass.PhysicsDirectSpaceState2D
+	GetSpaceState() PhysicsDirectSpaceState2D.Instance
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -201,10 +202,10 @@ func (self implementation) GetContactColliderShape(contact_idx int) (_ int)     
 func (self implementation) GetContactColliderVelocityAtPosition(contact_idx int) (_ Vector2.XY) {
 	return
 }
-func (self implementation) GetContactImpulse(contact_idx int) (_ Vector2.XY)        { return }
-func (self implementation) GetStep() (_ Float.X)                                    { return }
-func (self implementation) IntegrateForces()                                        { return }
-func (self implementation) GetSpaceState() (_ [1]gdclass.PhysicsDirectSpaceState2D) { return }
+func (self implementation) GetContactImpulse(contact_idx int) (_ Vector2.XY)      { return }
+func (self implementation) GetStep() (_ Float.X)                                  { return }
+func (self implementation) IntegrateForces()                                      { return }
+func (self implementation) GetSpaceState() (_ PhysicsDirectSpaceState2D.Instance) { return }
 
 /*
 Implement to override the behavior of [member PhysicsDirectBodyState2D.total_gravity] and its respective getter.
@@ -701,7 +702,7 @@ func (Instance) _integrate_forces(impl func(ptr unsafe.Pointer)) (cb gd.Extensio
 /*
 Overridable version of [method PhysicsDirectBodyState2D.get_space_state].
 */
-func (Instance) _get_space_state(impl func(ptr unsafe.Pointer) [1]gdclass.PhysicsDirectSpaceState2D) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_space_state(impl func(ptr unsafe.Pointer) PhysicsDirectSpaceState2D.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)

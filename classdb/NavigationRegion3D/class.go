@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/NavigationMesh"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/variant/AABB"
@@ -152,11 +153,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) NavigationMesh() [1]gdclass.NavigationMesh {
-	return [1]gdclass.NavigationMesh(class(self).GetNavigationMesh())
+func (self Instance) NavigationMesh() NavigationMesh.Instance {
+	return NavigationMesh.Instance(class(self).GetNavigationMesh())
 }
 
-func (self Instance) SetNavigationMesh(value [1]gdclass.NavigationMesh) {
+func (self Instance) SetNavigationMesh(value NavigationMesh.Instance) {
 	class(self).SetNavigationMesh(value)
 }
 

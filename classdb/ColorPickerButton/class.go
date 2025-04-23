@@ -14,8 +14,10 @@ import "graphics.gd/variant"
 import "graphics.gd/classdb/BaseButton"
 import "graphics.gd/classdb/Button"
 import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/ColorPicker"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/PopupPanel"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -66,16 +68,16 @@ type Any interface {
 Returns the [ColorPicker] that this node toggles.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
-func (self Instance) GetPicker() [1]gdclass.ColorPicker { //gd:ColorPickerButton.get_picker
-	return [1]gdclass.ColorPicker(Advanced(self).GetPicker())
+func (self Instance) GetPicker() ColorPicker.Instance { //gd:ColorPickerButton.get_picker
+	return ColorPicker.Instance(Advanced(self).GetPicker())
 }
 
 /*
 Returns the control's [PopupPanel] which allows you to connect to popup signals. This allows you to handle events when the ColorPicker is shown or hidden.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member Window.visible] property.
 */
-func (self Instance) GetPopup() [1]gdclass.PopupPanel { //gd:ColorPickerButton.get_popup
-	return [1]gdclass.PopupPanel(Advanced(self).GetPopup())
+func (self Instance) GetPopup() PopupPanel.Instance { //gd:ColorPickerButton.get_popup
+	return PopupPanel.Instance(Advanced(self).GetPopup())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

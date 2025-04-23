@@ -12,6 +12,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/classdb/VisualShaderNode"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -83,11 +84,11 @@ func (self Instance) SetSource(value gdclass.VisualShaderNodeTextureSource) {
 	class(self).SetSource(value)
 }
 
-func (self Instance) Texture() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetTexture())
+func (self Instance) Texture() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetTexture())
 }
 
-func (self Instance) SetTexture(value [1]gdclass.Texture2D) {
+func (self Instance) SetTexture(value Texture2D.Instance) {
 	class(self).SetTexture(value)
 }
 

@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -145,18 +146,10 @@ func (self Instance) GetOffset() Vector2.XY { //gd:StyleBox.get_offset
 }
 
 /*
-Draws this stylebox using a canvas item identified by the given [RID].
-The [RID] value can either be the result of [method CanvasItem.get_canvas_item] called on an existing [CanvasItem]-derived node, or directly from creating a canvas item in the [RenderingServer] with [method RenderingServer.canvas_item_create].
-*/
-func (self Instance) Draw(canvas_item RID.CanvasItem, rect Rect2.PositionSize) { //gd:StyleBox.draw
-	Advanced(self).Draw(RID.Any(canvas_item), Rect2.PositionSize(rect))
-}
-
-/*
 Returns the [CanvasItem] that handles its [constant CanvasItem.NOTIFICATION_DRAW] or [method CanvasItem._draw] callback at this moment.
 */
-func (self Instance) GetCurrentItemDrawn() [1]gdclass.CanvasItem { //gd:StyleBox.get_current_item_drawn
-	return [1]gdclass.CanvasItem(Advanced(self).GetCurrentItemDrawn())
+func (self Instance) GetCurrentItemDrawn() CanvasItem.Instance { //gd:StyleBox.get_current_item_drawn
+	return CanvasItem.Instance(Advanced(self).GetCurrentItemDrawn())
 }
 
 /*
@@ -164,6 +157,13 @@ Test a position in a rectangle, return whether it passes the mask test.
 */
 func (self Instance) TestMask(point Vector2.XY, rect Rect2.PositionSize) bool { //gd:StyleBox.test_mask
 	return bool(Advanced(self).TestMask(Vector2.XY(point), Rect2.PositionSize(rect)))
+}
+
+/*
+Draws a styled rectangle.
+*/
+func (self Instance) Draw(peer CanvasItem.Instance, rect Rect2.PositionSize) { //gd:CanvasItem.draw_style_box
+	CanvasItem.Advanced(peer).DrawStyleBox(self, Rect2.PositionSize(rect))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

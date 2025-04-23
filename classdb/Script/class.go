@@ -97,8 +97,8 @@ func (self Expanded) Reload(keep_state bool) error { //gd:Script.reload
 /*
 Returns the script directly inherited by this script.
 */
-func (self Instance) GetBaseScript() [1]gdclass.Script { //gd:Script.get_base_script
-	return [1]gdclass.Script(Advanced(self).GetBaseScript())
+func (self Instance) GetBaseScript() Instance { //gd:Script.get_base_script
+	return Instance(Advanced(self).GetBaseScript())
 }
 
 /*

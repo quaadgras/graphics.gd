@@ -12,8 +12,10 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/CollisionObject2D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node2D"
+import "graphics.gd/classdb/Shape2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -143,7 +145,7 @@ func (self Instance) AddExceptionRid(rid RID.Body2D) { //gd:ShapeCast2D.add_exce
 /*
 Adds a collision exception so the shape does not report collisions with the specified node.
 */
-func (self Instance) AddException(node [1]gdclass.CollisionObject2D) { //gd:ShapeCast2D.add_exception
+func (self Instance) AddException(node CollisionObject2D.Instance) { //gd:ShapeCast2D.add_exception
 	Advanced(self).AddException(node)
 }
 
@@ -157,7 +159,7 @@ func (self Instance) RemoveExceptionRid(rid RID.Body2D) { //gd:ShapeCast2D.remov
 /*
 Removes a collision exception so the shape does report collisions with the specified node.
 */
-func (self Instance) RemoveException(node [1]gdclass.CollisionObject2D) { //gd:ShapeCast2D.remove_exception
+func (self Instance) RemoveException(node CollisionObject2D.Instance) { //gd:ShapeCast2D.remove_exception
 	Advanced(self).RemoveException(node)
 }
 
@@ -208,11 +210,11 @@ func (self Instance) SetEnabled(value bool) {
 	class(self).SetEnabled(value)
 }
 
-func (self Instance) Shape() [1]gdclass.Shape2D {
-	return [1]gdclass.Shape2D(class(self).GetShape())
+func (self Instance) Shape() Shape2D.Instance {
+	return Shape2D.Instance(class(self).GetShape())
 }
 
-func (self Instance) SetShape(value [1]gdclass.Shape2D) {
+func (self Instance) SetShape(value Shape2D.Instance) {
 	class(self).SetShape(value)
 }
 

@@ -13,6 +13,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/OpenXRActionBindingModifier"
 import "graphics.gd/classdb/OpenXRBindingModifier"
+import "graphics.gd/classdb/OpenXRHapticBase"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -93,19 +94,19 @@ func (self Instance) SetOffThreshold(value Float.X) {
 	class(self).SetOffThreshold(float64(value))
 }
 
-func (self Instance) OnHaptic() [1]gdclass.OpenXRHapticBase {
-	return [1]gdclass.OpenXRHapticBase(class(self).GetOnHaptic())
+func (self Instance) OnHaptic() OpenXRHapticBase.Instance {
+	return OpenXRHapticBase.Instance(class(self).GetOnHaptic())
 }
 
-func (self Instance) SetOnHaptic(value [1]gdclass.OpenXRHapticBase) {
+func (self Instance) SetOnHaptic(value OpenXRHapticBase.Instance) {
 	class(self).SetOnHaptic(value)
 }
 
-func (self Instance) OffHaptic() [1]gdclass.OpenXRHapticBase {
-	return [1]gdclass.OpenXRHapticBase(class(self).GetOffHaptic())
+func (self Instance) OffHaptic() OpenXRHapticBase.Instance {
+	return OpenXRHapticBase.Instance(class(self).GetOffHaptic())
 }
 
-func (self Instance) SetOffHaptic(value [1]gdclass.OpenXRHapticBase) {
+func (self Instance) SetOffHaptic(value OpenXRHapticBase.Instance) {
 	class(self).SetOffHaptic(value)
 }
 

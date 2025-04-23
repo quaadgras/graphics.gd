@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/CameraFeed"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -47,6 +48,8 @@ The [CameraServer] keeps track of different cameras accessible in Godot. These a
 It is notably used to provide AR modules with a video feed from the camera.
 [b]Note:[/b] This class is currently only implemented on Linux, macOS, and iOS. On other platforms no [CameraFeed]s will be available. To get a [CameraFeed] on iOS, the camera plugin from [url=https://github.com/godotengine/godot-ios-plugins]godot-ios-plugins[/url] is required.
 */
+type Instance [1]gdclass.CameraServer
+
 var self [1]gdclass.CameraServer
 var once sync.Once
 
@@ -58,9 +61,9 @@ func singleton() {
 /*
 Returns the [CameraFeed] corresponding to the camera with the given [param index].
 */
-func GetFeed(index int) [1]gdclass.CameraFeed { //gd:CameraServer.get_feed
+func GetFeed(index int) CameraFeed.Instance { //gd:CameraServer.get_feed
 	once.Do(singleton)
-	return [1]gdclass.CameraFeed(Advanced().GetFeed(int64(index)))
+	return CameraFeed.Instance(Advanced().GetFeed(int64(index)))
 }
 
 /*
@@ -74,15 +77,15 @@ func GetFeedCount() int { //gd:CameraServer.get_feed_count
 /*
 Returns an array of [CameraFeed]s.
 */
-func Feeds() [][1]gdclass.CameraFeed { //gd:CameraServer.feeds
+func Feeds() []CameraFeed.Instance { //gd:CameraServer.feeds
 	once.Do(singleton)
-	return [][1]gdclass.CameraFeed(gd.ArrayAs[[][1]gdclass.CameraFeed](gd.InternalArray(Advanced().Feeds())))
+	return []CameraFeed.Instance(gd.ArrayAs[[]CameraFeed.Instance](gd.InternalArray(Advanced().Feeds())))
 }
 
 /*
 Adds the camera [param feed] to the camera server.
 */
-func AddFeed(feed [1]gdclass.CameraFeed) { //gd:CameraServer.add_feed
+func AddFeed(feed CameraFeed.Instance) { //gd:CameraServer.add_feed
 	once.Do(singleton)
 	Advanced().AddFeed(feed)
 }
@@ -90,7 +93,7 @@ func AddFeed(feed [1]gdclass.CameraFeed) { //gd:CameraServer.add_feed
 /*
 Removes the specified camera [param feed].
 */
-func RemoveFeed(feed [1]gdclass.CameraFeed) { //gd:CameraServer.remove_feed
+func RemoveFeed(feed CameraFeed.Instance) { //gd:CameraServer.remove_feed
 	once.Do(singleton)
 	Advanced().RemoveFeed(feed)
 }

@@ -14,6 +14,7 @@ import "graphics.gd/variant"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/TreeItem"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -103,8 +104,8 @@ Creates an item in the tree and adds it as a child of [param parent], which can 
 If [param parent] is [code]null[/code], the root item will be the parent, or the new item will be the root itself if the tree is empty.
 The new item will be the [param index]-th child of parent, or it will be the last child if there are not enough siblings.
 */
-func (self Instance) CreateItem() [1]gdclass.TreeItem { //gd:Tree.create_item
-	return [1]gdclass.TreeItem(Advanced(self).CreateItem([1][1]gdclass.TreeItem{}[0], int64(-1)))
+func (self Instance) CreateItem() TreeItem.Instance { //gd:Tree.create_item
+	return TreeItem.Instance(Advanced(self).CreateItem([1]TreeItem.Instance{}[0], int64(-1)))
 }
 
 /*
@@ -112,15 +113,15 @@ Creates an item in the tree and adds it as a child of [param parent], which can 
 If [param parent] is [code]null[/code], the root item will be the parent, or the new item will be the root itself if the tree is empty.
 The new item will be the [param index]-th child of parent, or it will be the last child if there are not enough siblings.
 */
-func (self Expanded) CreateItem(parent [1]gdclass.TreeItem, index int) [1]gdclass.TreeItem { //gd:Tree.create_item
-	return [1]gdclass.TreeItem(Advanced(self).CreateItem(parent, int64(index)))
+func (self Expanded) CreateItem(parent TreeItem.Instance, index int) TreeItem.Instance { //gd:Tree.create_item
+	return TreeItem.Instance(Advanced(self).CreateItem(parent, int64(index)))
 }
 
 /*
 Returns the tree's root item, or [code]null[/code] if the tree is empty.
 */
-func (self Instance) GetRoot() [1]gdclass.TreeItem { //gd:Tree.get_root
-	return [1]gdclass.TreeItem(Advanced(self).GetRoot())
+func (self Instance) GetRoot() TreeItem.Instance { //gd:Tree.get_root
+	return TreeItem.Instance(Advanced(self).GetRoot())
 }
 
 /*
@@ -183,8 +184,8 @@ func (self Instance) GetColumnWidth(column int) int { //gd:Tree.get_column_width
 Returns the next selected [TreeItem] after the given one, or [code]null[/code] if the end is reached.
 If [param from] is [code]null[/code], this returns the first selected item.
 */
-func (self Instance) GetNextSelected(from [1]gdclass.TreeItem) [1]gdclass.TreeItem { //gd:Tree.get_next_selected
-	return [1]gdclass.TreeItem(Advanced(self).GetNextSelected(from))
+func (self Instance) GetNextSelected(from TreeItem.Instance) TreeItem.Instance { //gd:Tree.get_next_selected
+	return TreeItem.Instance(Advanced(self).GetNextSelected(from))
 }
 
 /*
@@ -192,14 +193,14 @@ Returns the currently focused item, or [code]null[/code] if no item is focused.
 In [constant SELECT_ROW] and [constant SELECT_SINGLE] modes, the focused item is same as the selected item. In [constant SELECT_MULTI] mode, the focused item is the item under the focus cursor, not necessarily selected.
 To get the currently selected item(s), use [method get_next_selected].
 */
-func (self Instance) GetSelected() [1]gdclass.TreeItem { //gd:Tree.get_selected
-	return [1]gdclass.TreeItem(Advanced(self).GetSelected())
+func (self Instance) GetSelected() TreeItem.Instance { //gd:Tree.get_selected
+	return TreeItem.Instance(Advanced(self).GetSelected())
 }
 
 /*
 Selects the specified [TreeItem] and column.
 */
-func (self Instance) SetSelected(item [1]gdclass.TreeItem, column int) { //gd:Tree.set_selected
+func (self Instance) SetSelected(item TreeItem.Instance, column int) { //gd:Tree.set_selected
 	Advanced(self).SetSelected(item, int64(column))
 }
 
@@ -255,8 +256,8 @@ public void OnTreeItemEdited()
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) GetEdited() [1]gdclass.TreeItem { //gd:Tree.get_edited
-	return [1]gdclass.TreeItem(Advanced(self).GetEdited())
+func (self Instance) GetEdited() TreeItem.Instance { //gd:Tree.get_edited
+	return TreeItem.Instance(Advanced(self).GetEdited())
 }
 
 /*
@@ -294,22 +295,22 @@ func (self Instance) GetCustomPopupRect() Rect2.PositionSize { //gd:Tree.get_cus
 /*
 Returns the rectangle area for the specified [TreeItem]. If [param column] is specified, only get the position and size of that column, otherwise get the rectangle containing all columns. If a button index is specified, the rectangle of that button will be returned.
 */
-func (self Instance) GetItemAreaRect(item [1]gdclass.TreeItem) Rect2.PositionSize { //gd:Tree.get_item_area_rect
+func (self Instance) GetItemAreaRect(item TreeItem.Instance) Rect2.PositionSize { //gd:Tree.get_item_area_rect
 	return Rect2.PositionSize(Advanced(self).GetItemAreaRect(item, int64(-1), int64(-1)))
 }
 
 /*
 Returns the rectangle area for the specified [TreeItem]. If [param column] is specified, only get the position and size of that column, otherwise get the rectangle containing all columns. If a button index is specified, the rectangle of that button will be returned.
 */
-func (self Expanded) GetItemAreaRect(item [1]gdclass.TreeItem, column int, button_index int) Rect2.PositionSize { //gd:Tree.get_item_area_rect
+func (self Expanded) GetItemAreaRect(item TreeItem.Instance, column int, button_index int) Rect2.PositionSize { //gd:Tree.get_item_area_rect
 	return Rect2.PositionSize(Advanced(self).GetItemAreaRect(item, int64(column), int64(button_index)))
 }
 
 /*
 Returns the tree item at the specified position (relative to the tree origin position).
 */
-func (self Instance) GetItemAtPosition(position Vector2.XY) [1]gdclass.TreeItem { //gd:Tree.get_item_at_position
-	return [1]gdclass.TreeItem(Advanced(self).GetItemAtPosition(Vector2.XY(position)))
+func (self Instance) GetItemAtPosition(position Vector2.XY) TreeItem.Instance { //gd:Tree.get_item_at_position
+	return TreeItem.Instance(Advanced(self).GetItemAtPosition(Vector2.XY(position)))
 }
 
 /*
@@ -410,15 +411,22 @@ func (self Instance) GetScroll() Vector2.XY { //gd:Tree.get_scroll
 /*
 Causes the [Tree] to jump to the specified [TreeItem].
 */
-func (self Instance) ScrollToItem(item [1]gdclass.TreeItem) { //gd:Tree.scroll_to_item
+func (self Instance) ScrollToItem(item TreeItem.Instance) { //gd:Tree.scroll_to_item
 	Advanced(self).ScrollToItem(item, false)
 }
 
 /*
 Causes the [Tree] to jump to the specified [TreeItem].
 */
-func (self Expanded) ScrollToItem(item [1]gdclass.TreeItem, center_on_item bool) { //gd:Tree.scroll_to_item
+func (self Expanded) ScrollToItem(item TreeItem.Instance, center_on_item bool) { //gd:Tree.scroll_to_item
 	Advanced(self).ScrollToItem(item, center_on_item)
+}
+
+/*
+Returns the [Tree] that owns this TreeItem.
+*/
+func Get(peer TreeItem.Instance) Instance { //gd:TreeItem.get_tree
+	return Instance(TreeItem.Advanced(peer).GetTree())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -1324,7 +1332,7 @@ func (self Instance) OnCellSelected(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("cell_selected"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnMultiSelected(cb func(item [1]gdclass.TreeItem, column int, selected bool)) {
+func (self Instance) OnMultiSelected(cb func(item TreeItem.Instance, column int, selected bool)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("multi_selected"), gd.NewCallable(cb), 0)
 }
 
@@ -1348,15 +1356,15 @@ func (self Instance) OnItemIconDoubleClicked(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("item_icon_double_clicked"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnItemCollapsed(cb func(item [1]gdclass.TreeItem)) {
+func (self Instance) OnItemCollapsed(cb func(item TreeItem.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("item_collapsed"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnCheckPropagatedToItem(cb func(item [1]gdclass.TreeItem, column int)) {
+func (self Instance) OnCheckPropagatedToItem(cb func(item TreeItem.Instance, column int)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("check_propagated_to_item"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnButtonClicked(cb func(item [1]gdclass.TreeItem, column int, id int, mouse_button_index int)) {
+func (self Instance) OnButtonClicked(cb func(item TreeItem.Instance, column int, id int, mouse_button_index int)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("button_clicked"), gd.NewCallable(cb), 0)
 }
 

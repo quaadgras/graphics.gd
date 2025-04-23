@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Curve"
 import "graphics.gd/classdb/Mesh"
 import "graphics.gd/classdb/PrimitiveMesh"
 import "graphics.gd/classdb/Resource"
@@ -133,11 +134,11 @@ func (self Instance) SetCapBottom(value bool) {
 	class(self).SetCapBottom(value)
 }
 
-func (self Instance) Curve() [1]gdclass.Curve {
-	return [1]gdclass.Curve(class(self).GetCurve())
+func (self Instance) Curve() Curve.Instance {
+	return Curve.Instance(class(self).GetCurve())
 }
 
-func (self Instance) SetCurve(value [1]gdclass.Curve) {
+func (self Instance) SetCurve(value Curve.Instance) {
 	class(self).SetCurve(value)
 }
 

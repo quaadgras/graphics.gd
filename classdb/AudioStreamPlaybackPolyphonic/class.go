@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/AudioStream"
 import "graphics.gd/classdb/AudioStreamPlayback"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -62,7 +63,7 @@ The return value is a unique integer ID that is associated to this playback stre
 This ID becomes invalid when the stream ends (if it does not loop), when the [AudioStreamPlaybackPolyphonic] is stopped, or when [method stop_stream] is called.
 This function returns [constant INVALID_ID] if the amount of streams currently playing equals [member AudioStreamPolyphonic.polyphony]. If you need a higher amount of maximum polyphony, raise this value.
 */
-func (self Instance) PlayStream(stream [1]gdclass.AudioStream) int { //gd:AudioStreamPlaybackPolyphonic.play_stream
+func (self Instance) PlayStream(stream AudioStream.Instance) int { //gd:AudioStreamPlaybackPolyphonic.play_stream
 	return int(int(Advanced(self).PlayStream(stream, float64(0), float64(0), float64(1.0), 0, String.Name(String.New("Master")))))
 }
 
@@ -72,7 +73,7 @@ The return value is a unique integer ID that is associated to this playback stre
 This ID becomes invalid when the stream ends (if it does not loop), when the [AudioStreamPlaybackPolyphonic] is stopped, or when [method stop_stream] is called.
 This function returns [constant INVALID_ID] if the amount of streams currently playing equals [member AudioStreamPolyphonic.polyphony]. If you need a higher amount of maximum polyphony, raise this value.
 */
-func (self Expanded) PlayStream(stream [1]gdclass.AudioStream, from_offset Float.X, volume_db Float.X, pitch_scale Float.X, playback_type gdclass.AudioServerPlaybackType, bus string) int { //gd:AudioStreamPlaybackPolyphonic.play_stream
+func (self Expanded) PlayStream(stream AudioStream.Instance, from_offset Float.X, volume_db Float.X, pitch_scale Float.X, playback_type gdclass.AudioServerPlaybackType, bus string) int { //gd:AudioStreamPlaybackPolyphonic.play_stream
 	return int(int(Advanced(self).PlayStream(stream, float64(from_offset), float64(volume_db), float64(pitch_scale), playback_type, String.Name(String.New(bus)))))
 }
 

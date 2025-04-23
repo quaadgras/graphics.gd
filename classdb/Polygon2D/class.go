@@ -14,6 +14,7 @@ import "graphics.gd/variant"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node2D"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -157,11 +158,11 @@ func (self Instance) SetAntialiased(value bool) {
 	class(self).SetAntialiased(value)
 }
 
-func (self Instance) Texture() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetTexture())
+func (self Instance) Texture() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetTexture())
 }
 
-func (self Instance) SetTexture(value [1]gdclass.Texture2D) {
+func (self Instance) SetTexture(value Texture2D.Instance) {
 	class(self).SetTexture(value)
 }
 

@@ -154,11 +154,11 @@ func (self Instance) SetTransform(value Transform2D.OriginXY) {
 	class(self).SetTransform(Transform2D.OriginXY(value))
 }
 
-func (self Instance) CustomViewport() [1]gdclass.Node {
-	return [1]gdclass.Node(class(self).GetCustomViewport())
+func (self Instance) CustomViewport() Node.Instance {
+	return Node.Instance(class(self).GetCustomViewport())
 }
 
-func (self Instance) SetCustomViewport(value [1]gdclass.Node) {
+func (self Instance) SetCustomViewport(value Node.Instance) {
 	class(self).SetCustomViewport(value)
 }
 

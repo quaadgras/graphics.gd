@@ -15,6 +15,9 @@ import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Popup"
+import "graphics.gd/classdb/TabBar"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -91,23 +94,23 @@ func (self Instance) SelectNextAvailable() bool { //gd:TabContainer.select_next_
 /*
 Returns the child [Control] node located at the active tab index.
 */
-func (self Instance) GetCurrentTabControl() [1]gdclass.Control { //gd:TabContainer.get_current_tab_control
-	return [1]gdclass.Control(Advanced(self).GetCurrentTabControl())
+func (self Instance) GetCurrentTabControl() Control.Instance { //gd:TabContainer.get_current_tab_control
+	return Control.Instance(Advanced(self).GetCurrentTabControl())
 }
 
 /*
 Returns the [TabBar] contained in this container.
 [b]Warning:[/b] This is a required internal node, removing and freeing it or editing its tabs may cause a crash. If you wish to edit the tabs, use the methods provided in [TabContainer].
 */
-func (self Instance) GetTabBar() [1]gdclass.TabBar { //gd:TabContainer.get_tab_bar
-	return [1]gdclass.TabBar(Advanced(self).GetTabBar())
+func (self Instance) GetTabBar() TabBar.Instance { //gd:TabContainer.get_tab_bar
+	return TabBar.Instance(Advanced(self).GetTabBar())
 }
 
 /*
 Returns the [Control] node from the tab at index [param tab_idx].
 */
-func (self Instance) GetTabControl(tab_idx int) [1]gdclass.Control { //gd:TabContainer.get_tab_control
-	return [1]gdclass.Control(Advanced(self).GetTabControl(int64(tab_idx)))
+func (self Instance) GetTabControl(tab_idx int) Control.Instance { //gd:TabContainer.get_tab_control
+	return Control.Instance(Advanced(self).GetTabControl(int64(tab_idx)))
 }
 
 /*
@@ -142,15 +145,15 @@ func (self Instance) GetTabTooltip(tab_idx int) string { //gd:TabContainer.get_t
 /*
 Sets an icon for the tab at index [param tab_idx].
 */
-func (self Instance) SetTabIcon(tab_idx int, icon [1]gdclass.Texture2D) { //gd:TabContainer.set_tab_icon
+func (self Instance) SetTabIcon(tab_idx int, icon Texture2D.Instance) { //gd:TabContainer.set_tab_icon
 	Advanced(self).SetTabIcon(int64(tab_idx), icon)
 }
 
 /*
 Returns the [Texture2D] for the tab at index [param tab_idx] or [code]null[/code] if the tab has no [Texture2D].
 */
-func (self Instance) GetTabIcon(tab_idx int) [1]gdclass.Texture2D { //gd:TabContainer.get_tab_icon
-	return [1]gdclass.Texture2D(Advanced(self).GetTabIcon(int64(tab_idx)))
+func (self Instance) GetTabIcon(tab_idx int) Texture2D.Instance { //gd:TabContainer.get_tab_icon
+	return Texture2D.Instance(Advanced(self).GetTabIcon(int64(tab_idx)))
 }
 
 /*
@@ -212,15 +215,15 @@ func (self Instance) GetTabMetadata(tab_idx int) any { //gd:TabContainer.get_tab
 /*
 Sets the button icon from the tab at index [param tab_idx].
 */
-func (self Instance) SetTabButtonIcon(tab_idx int, icon [1]gdclass.Texture2D) { //gd:TabContainer.set_tab_button_icon
+func (self Instance) SetTabButtonIcon(tab_idx int, icon Texture2D.Instance) { //gd:TabContainer.set_tab_button_icon
 	Advanced(self).SetTabButtonIcon(int64(tab_idx), icon)
 }
 
 /*
 Returns the button icon from the tab at index [param tab_idx].
 */
-func (self Instance) GetTabButtonIcon(tab_idx int) [1]gdclass.Texture2D { //gd:TabContainer.get_tab_button_icon
-	return [1]gdclass.Texture2D(Advanced(self).GetTabButtonIcon(int64(tab_idx)))
+func (self Instance) GetTabButtonIcon(tab_idx int) Texture2D.Instance { //gd:TabContainer.get_tab_button_icon
+	return Texture2D.Instance(Advanced(self).GetTabButtonIcon(int64(tab_idx)))
 }
 
 /*
@@ -233,14 +236,14 @@ func (self Instance) GetTabIdxAtPoint(point Vector2.XY) int { //gd:TabContainer.
 /*
 Returns the index of the tab tied to the given [param control]. The control must be a child of the [TabContainer].
 */
-func (self Instance) GetTabIdxFromControl(control [1]gdclass.Control) int { //gd:TabContainer.get_tab_idx_from_control
+func (self Instance) GetTabIdxFromControl(control Control.Instance) int { //gd:TabContainer.get_tab_idx_from_control
 	return int(int(Advanced(self).GetTabIdxFromControl(control)))
 }
 
 /*
 If set on a [Popup] node instance, a popup menu icon appears in the top-right corner of the [TabContainer] (setting it to [code]null[/code] will make it go away). Clicking it will expand the [Popup] node.
 */
-func (self Instance) SetPopup(popup [1]gdclass.Node) { //gd:TabContainer.set_popup
+func (self Instance) SetPopup(popup Node.Instance) { //gd:TabContainer.set_popup
 	Advanced(self).SetPopup(popup)
 }
 
@@ -248,8 +251,8 @@ func (self Instance) SetPopup(popup [1]gdclass.Node) { //gd:TabContainer.set_pop
 Returns the [Popup] node instance if one has been set already with [method set_popup].
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member Window.visible] property.
 */
-func (self Instance) GetPopup() [1]gdclass.Popup { //gd:TabContainer.get_popup
-	return [1]gdclass.Popup(Advanced(self).GetPopup())
+func (self Instance) GetPopup() Popup.Instance { //gd:TabContainer.get_popup
+	return Popup.Instance(Advanced(self).GetPopup())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

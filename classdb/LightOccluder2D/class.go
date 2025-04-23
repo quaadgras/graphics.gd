@@ -14,6 +14,7 @@ import "graphics.gd/variant"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node2D"
+import "graphics.gd/classdb/OccluderPolygon2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -75,11 +76,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Occluder() [1]gdclass.OccluderPolygon2D {
-	return [1]gdclass.OccluderPolygon2D(class(self).GetOccluderPolygon())
+func (self Instance) Occluder() OccluderPolygon2D.Instance {
+	return OccluderPolygon2D.Instance(class(self).GetOccluderPolygon())
 }
 
-func (self Instance) SetOccluder(value [1]gdclass.OccluderPolygon2D) {
+func (self Instance) SetOccluder(value OccluderPolygon2D.Instance) {
 	class(self).SetOccluderPolygon(value)
 }
 

@@ -14,7 +14,9 @@ import "graphics.gd/variant"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/EditorProperty"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/ScrollContainer"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -89,17 +91,17 @@ func (self Instance) GetEditedObject() Object.Instance { //gd:EditorInspector.ge
 /*
 Creates a property editor that can be used by plugin UI to edit the specified property of an [param object].
 */
-func InstantiatePropertyEditor(obj Object.Instance, atype variant.Type, path string, hint PropertyHint, hint_text string, usage int, wide bool) [1]gdclass.EditorProperty { //gd:EditorInspector.instantiate_property_editor
+func InstantiatePropertyEditor(obj Object.Instance, atype variant.Type, path string, hint PropertyHint, hint_text string, usage int, wide bool) EditorProperty.Instance { //gd:EditorInspector.instantiate_property_editor
 	self := Instance{}
-	return [1]gdclass.EditorProperty(Advanced(self).InstantiatePropertyEditor(obj, atype, String.New(path), hint, String.New(hint_text), int64(usage), wide))
+	return EditorProperty.Instance(Advanced(self).InstantiatePropertyEditor(obj, atype, String.New(path), hint, String.New(hint_text), int64(usage), wide))
 }
 
 /*
 Creates a property editor that can be used by plugin UI to edit the specified property of an [param object].
 */
-func InstantiatePropertyEditorOptions(obj Object.Instance, atype variant.Type, path string, hint PropertyHint, hint_text string, usage int, wide bool) [1]gdclass.EditorProperty { //gd:EditorInspector.instantiate_property_editor
+func InstantiatePropertyEditorOptions(obj Object.Instance, atype variant.Type, path string, hint PropertyHint, hint_text string, usage int, wide bool) EditorProperty.Instance { //gd:EditorInspector.instantiate_property_editor
 	self := Instance{}
-	return [1]gdclass.EditorProperty(Advanced(self).InstantiatePropertyEditor(obj, atype, String.New(path), hint, String.New(hint_text), int64(usage), wide))
+	return EditorProperty.Instance(Advanced(self).InstantiatePropertyEditor(obj, atype, String.New(path), hint, String.New(hint_text), int64(usage), wide))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -190,7 +192,7 @@ func (self Instance) OnPropertyDeleted(cb func(property string)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("property_deleted"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnResourceSelected(cb func(resource [1]gdclass.Resource, path string)) {
+func (self Instance) OnResourceSelected(cb func(resource Resource.Instance, path string)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("resource_selected"), gd.NewCallable(cb), 0)
 }
 

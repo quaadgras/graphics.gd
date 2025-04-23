@@ -11,7 +11,10 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/PhysicsMaterial"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/TileMapPattern"
+import "graphics.gd/classdb/TileSetSource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -75,7 +78,7 @@ Adds a [TileSetSource] to the TileSet. If [param atlas_source_id_override] is no
 The function returns the added source ID or -1 if the source could not be added.
 [b]Warning:[/b] A source cannot belong to two TileSets at the same time. If the added source was attached to another [TileSet], it will be removed from that one.
 */
-func (self Instance) AddSource(source [1]gdclass.TileSetSource) int { //gd:TileSet.add_source
+func (self Instance) AddSource(source TileSetSource.Instance) int { //gd:TileSet.add_source
 	return int(int(Advanced(self).AddSource(source, int64(-1))))
 }
 
@@ -84,7 +87,7 @@ Adds a [TileSetSource] to the TileSet. If [param atlas_source_id_override] is no
 The function returns the added source ID or -1 if the source could not be added.
 [b]Warning:[/b] A source cannot belong to two TileSets at the same time. If the added source was attached to another [TileSet], it will be removed from that one.
 */
-func (self Expanded) AddSource(source [1]gdclass.TileSetSource, atlas_source_id_override int) int { //gd:TileSet.add_source
+func (self Expanded) AddSource(source TileSetSource.Instance, atlas_source_id_override int) int { //gd:TileSet.add_source
 	return int(int(Advanced(self).AddSource(source, int64(atlas_source_id_override))))
 }
 
@@ -126,8 +129,8 @@ func (self Instance) HasSource(source_id int) bool { //gd:TileSet.has_source
 /*
 Returns the [TileSetSource] with ID [param source_id].
 */
-func (self Instance) GetSource(source_id int) [1]gdclass.TileSetSource { //gd:TileSet.get_source
-	return [1]gdclass.TileSetSource(Advanced(self).GetSource(int64(source_id)))
+func (self Instance) GetSource(source_id int) TileSetSource.Instance { //gd:TileSet.get_source
+	return TileSetSource.Instance(Advanced(self).GetSource(int64(source_id)))
 }
 
 /*
@@ -277,15 +280,15 @@ func (self Instance) GetPhysicsLayerCollisionPriority(layer_index int) Float.X {
 /*
 Sets the physics material for bodies in the given TileSet physics layer.
 */
-func (self Instance) SetPhysicsLayerPhysicsMaterial(layer_index int, physics_material [1]gdclass.PhysicsMaterial) { //gd:TileSet.set_physics_layer_physics_material
+func (self Instance) SetPhysicsLayerPhysicsMaterial(layer_index int, physics_material PhysicsMaterial.Instance) { //gd:TileSet.set_physics_layer_physics_material
 	Advanced(self).SetPhysicsLayerPhysicsMaterial(int64(layer_index), physics_material)
 }
 
 /*
 Returns the physics material of bodies on the given TileSet's physics layer.
 */
-func (self Instance) GetPhysicsLayerPhysicsMaterial(layer_index int) [1]gdclass.PhysicsMaterial { //gd:TileSet.get_physics_layer_physics_material
-	return [1]gdclass.PhysicsMaterial(Advanced(self).GetPhysicsLayerPhysicsMaterial(int64(layer_index)))
+func (self Instance) GetPhysicsLayerPhysicsMaterial(layer_index int) PhysicsMaterial.Instance { //gd:TileSet.get_physics_layer_physics_material
+	return PhysicsMaterial.Instance(Advanced(self).GetPhysicsLayerPhysicsMaterial(int64(layer_index)))
 }
 
 /*
@@ -663,29 +666,29 @@ func (self Instance) ClearTileProxies() { //gd:TileSet.clear_tile_proxies
 /*
 Adds a [TileMapPattern] to be stored in the TileSet resource. If provided, insert it at the given [param index].
 */
-func (self Instance) AddPattern(pattern [1]gdclass.TileMapPattern) int { //gd:TileSet.add_pattern
+func (self Instance) AddPattern(pattern TileMapPattern.Instance) int { //gd:TileSet.add_pattern
 	return int(int(Advanced(self).AddPattern(pattern, int64(-1))))
 }
 
 /*
 Adds a [TileMapPattern] to be stored in the TileSet resource. If provided, insert it at the given [param index].
 */
-func (self Expanded) AddPattern(pattern [1]gdclass.TileMapPattern, index int) int { //gd:TileSet.add_pattern
+func (self Expanded) AddPattern(pattern TileMapPattern.Instance, index int) int { //gd:TileSet.add_pattern
 	return int(int(Advanced(self).AddPattern(pattern, int64(index))))
 }
 
 /*
 Returns the [TileMapPattern] at the given [param index].
 */
-func (self Instance) GetPattern() [1]gdclass.TileMapPattern { //gd:TileSet.get_pattern
-	return [1]gdclass.TileMapPattern(Advanced(self).GetPattern(int64(-1)))
+func (self Instance) GetPattern() TileMapPattern.Instance { //gd:TileSet.get_pattern
+	return TileMapPattern.Instance(Advanced(self).GetPattern(int64(-1)))
 }
 
 /*
 Returns the [TileMapPattern] at the given [param index].
 */
-func (self Expanded) GetPattern(index int) [1]gdclass.TileMapPattern { //gd:TileSet.get_pattern
-	return [1]gdclass.TileMapPattern(Advanced(self).GetPattern(int64(index)))
+func (self Expanded) GetPattern(index int) TileMapPattern.Instance { //gd:TileSet.get_pattern
+	return TileMapPattern.Instance(Advanced(self).GetPattern(int64(index)))
 }
 
 /*

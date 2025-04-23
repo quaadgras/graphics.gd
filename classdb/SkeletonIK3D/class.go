@@ -13,6 +13,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/Skeleton3D"
 import "graphics.gd/classdb/SkeletonModifier3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -82,8 +83,8 @@ type Any interface {
 /*
 Returns the parent [Skeleton3D] node that was present when SkeletonIK entered the scene tree. Returns [code]null[/code] if the parent node was not a [Skeleton3D] node when SkeletonIK3D entered the scene tree.
 */
-func (self Instance) GetParentSkeleton() [1]gdclass.Skeleton3D { //gd:SkeletonIK3D.get_parent_skeleton
-	return [1]gdclass.Skeleton3D(Advanced(self).GetParentSkeleton())
+func (self Instance) GetParentSkeleton() Skeleton3D.Instance { //gd:SkeletonIK3D.get_parent_skeleton
+	return Skeleton3D.Instance(Advanced(self).GetParentSkeleton())
 }
 
 /*

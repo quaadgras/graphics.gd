@@ -73,8 +73,8 @@ $BarnacleButton.reparent($SplitContainer.get_drag_area_control())
 [b]Note:[/b] The drag area [Control] is drawn over the [SplitContainer]'s children, so [CanvasItem] draw objects called from the [Control] and children added to the [Control] will also appear over the [SplitContainer]'s children. Try setting [member Control.mouse_filter] of custom children to [constant Control.MOUSE_FILTER_IGNORE] to prevent blocking the mouse from dragging if desired.
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash.
 */
-func (self Instance) GetDragAreaControl() [1]gdclass.Control { //gd:SplitContainer.get_drag_area_control
-	return [1]gdclass.Control(Advanced(self).GetDragAreaControl())
+func (self Instance) GetDragAreaControl() Control.Instance { //gd:SplitContainer.get_drag_area_control
+	return Control.Instance(Advanced(self).GetDragAreaControl())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

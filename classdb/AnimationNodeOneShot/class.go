@@ -13,6 +13,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/AnimationNode"
 import "graphics.gd/classdb/AnimationNodeSync"
+import "graphics.gd/classdb/Curve"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -137,11 +138,11 @@ func (self Instance) SetFadeinTime(value Float.X) {
 	class(self).SetFadeinTime(float64(value))
 }
 
-func (self Instance) FadeinCurve() [1]gdclass.Curve {
-	return [1]gdclass.Curve(class(self).GetFadeinCurve())
+func (self Instance) FadeinCurve() Curve.Instance {
+	return Curve.Instance(class(self).GetFadeinCurve())
 }
 
-func (self Instance) SetFadeinCurve(value [1]gdclass.Curve) {
+func (self Instance) SetFadeinCurve(value Curve.Instance) {
 	class(self).SetFadeinCurve(value)
 }
 
@@ -153,11 +154,11 @@ func (self Instance) SetFadeoutTime(value Float.X) {
 	class(self).SetFadeoutTime(float64(value))
 }
 
-func (self Instance) FadeoutCurve() [1]gdclass.Curve {
-	return [1]gdclass.Curve(class(self).GetFadeoutCurve())
+func (self Instance) FadeoutCurve() Curve.Instance {
+	return Curve.Instance(class(self).GetFadeoutCurve())
 }
 
-func (self Instance) SetFadeoutCurve(value [1]gdclass.Curve) {
+func (self Instance) SetFadeoutCurve(value Curve.Instance) {
 	class(self).SetFadeoutCurve(value)
 }
 

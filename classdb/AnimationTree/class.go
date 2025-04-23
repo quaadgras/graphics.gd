@@ -12,6 +12,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/AnimationMixer"
+import "graphics.gd/classdb/AnimationRootNode"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -89,11 +90,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) TreeRoot() [1]gdclass.AnimationRootNode {
-	return [1]gdclass.AnimationRootNode(class(self).GetTreeRoot())
+func (self Instance) TreeRoot() AnimationRootNode.Instance {
+	return AnimationRootNode.Instance(class(self).GetTreeRoot())
 }
 
-func (self Instance) SetTreeRoot(value [1]gdclass.AnimationRootNode) {
+func (self Instance) SetTreeRoot(value AnimationRootNode.Instance) {
 	class(self).SetTreeRoot(value)
 }
 

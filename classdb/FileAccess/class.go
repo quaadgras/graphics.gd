@@ -96,9 +96,9 @@ type Any interface {
 Creates a new [FileAccess] object and opens the file for writing or reading, depending on the flags.
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
-func Open(path string, flags gdclass.FileAccessModeFlags) [1]gdclass.FileAccess { //gd:FileAccess.open
+func Open(path string, flags gdclass.FileAccessModeFlags) Instance { //gd:FileAccess.open
 	self := Instance{}
-	return [1]gdclass.FileAccess(Advanced(self).Open(String.New(path), flags))
+	return Instance(Advanced(self).Open(String.New(path), flags))
 }
 
 /*
@@ -106,9 +106,9 @@ Creates a new [FileAccess] object and opens an encrypted file in write or read m
 [b]Note:[/b] The provided key must be 32 bytes long.
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
-func OpenEncrypted(path string, mode_flags gdclass.FileAccessModeFlags, key []byte, iv []byte) [1]gdclass.FileAccess { //gd:FileAccess.open_encrypted
+func OpenEncrypted(path string, mode_flags gdclass.FileAccessModeFlags, key []byte, iv []byte) Instance { //gd:FileAccess.open_encrypted
 	self := Instance{}
-	return [1]gdclass.FileAccess(Advanced(self).OpenEncrypted(String.New(path), mode_flags, Packed.Bytes(Packed.New(key...)), Packed.Bytes(Packed.New(iv...))))
+	return Instance(Advanced(self).OpenEncrypted(String.New(path), mode_flags, Packed.Bytes(Packed.New(key...)), Packed.Bytes(Packed.New(iv...))))
 }
 
 /*
@@ -116,18 +116,18 @@ Creates a new [FileAccess] object and opens an encrypted file in write or read m
 [b]Note:[/b] The provided key must be 32 bytes long.
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
-func OpenEncryptedOptions(path string, mode_flags gdclass.FileAccessModeFlags, key []byte, iv []byte) [1]gdclass.FileAccess { //gd:FileAccess.open_encrypted
+func OpenEncryptedOptions(path string, mode_flags gdclass.FileAccessModeFlags, key []byte, iv []byte) Instance { //gd:FileAccess.open_encrypted
 	self := Instance{}
-	return [1]gdclass.FileAccess(Advanced(self).OpenEncrypted(String.New(path), mode_flags, Packed.Bytes(Packed.New(key...)), Packed.Bytes(Packed.New(iv...))))
+	return Instance(Advanced(self).OpenEncrypted(String.New(path), mode_flags, Packed.Bytes(Packed.New(key...)), Packed.Bytes(Packed.New(iv...))))
 }
 
 /*
 Creates a new [FileAccess] object and opens an encrypted file in write or read mode. You need to pass a password to encrypt/decrypt it.
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
-func OpenEncryptedWithPass(path string, mode_flags gdclass.FileAccessModeFlags, pass string) [1]gdclass.FileAccess { //gd:FileAccess.open_encrypted_with_pass
+func OpenEncryptedWithPass(path string, mode_flags gdclass.FileAccessModeFlags, pass string) Instance { //gd:FileAccess.open_encrypted_with_pass
 	self := Instance{}
-	return [1]gdclass.FileAccess(Advanced(self).OpenEncryptedWithPass(String.New(path), mode_flags, String.New(pass)))
+	return Instance(Advanced(self).OpenEncryptedWithPass(String.New(path), mode_flags, String.New(pass)))
 }
 
 /*
@@ -135,9 +135,9 @@ Creates a new [FileAccess] object and opens a compressed file for reading or wri
 [b]Note:[/b] [method open_compressed] can only read files that were saved by Godot, not third-party compression formats. See [url=https://github.com/godotengine/godot/issues/28999]GitHub issue #28999[/url] for a workaround.
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
-func OpenCompressed(path string, mode_flags gdclass.FileAccessModeFlags, compression_mode gdclass.FileAccessCompressionMode) [1]gdclass.FileAccess { //gd:FileAccess.open_compressed
+func OpenCompressed(path string, mode_flags gdclass.FileAccessModeFlags, compression_mode gdclass.FileAccessCompressionMode) Instance { //gd:FileAccess.open_compressed
 	self := Instance{}
-	return [1]gdclass.FileAccess(Advanced(self).OpenCompressed(String.New(path), mode_flags, compression_mode))
+	return Instance(Advanced(self).OpenCompressed(String.New(path), mode_flags, compression_mode))
 }
 
 /*
@@ -145,9 +145,9 @@ Creates a new [FileAccess] object and opens a compressed file for reading or wri
 [b]Note:[/b] [method open_compressed] can only read files that were saved by Godot, not third-party compression formats. See [url=https://github.com/godotengine/godot/issues/28999]GitHub issue #28999[/url] for a workaround.
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
-func OpenCompressedOptions(path string, mode_flags gdclass.FileAccessModeFlags, compression_mode gdclass.FileAccessCompressionMode) [1]gdclass.FileAccess { //gd:FileAccess.open_compressed
+func OpenCompressedOptions(path string, mode_flags gdclass.FileAccessModeFlags, compression_mode gdclass.FileAccessCompressionMode) Instance { //gd:FileAccess.open_compressed
 	self := Instance{}
-	return [1]gdclass.FileAccess(Advanced(self).OpenCompressed(String.New(path), mode_flags, compression_mode))
+	return Instance(Advanced(self).OpenCompressed(String.New(path), mode_flags, compression_mode))
 }
 
 /*
@@ -165,9 +165,9 @@ If [param extension] is not empty, it will be appended to the temporary file nam
 If [param keep] is [code]true[/code], the file is not deleted when the returned [FileAccess] is freed.
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
-func CreateTemp(mode_flags int, prefix string, extension string, keep bool) [1]gdclass.FileAccess { //gd:FileAccess.create_temp
+func CreateTemp(mode_flags int, prefix string, extension string, keep bool) Instance { //gd:FileAccess.create_temp
 	self := Instance{}
-	return [1]gdclass.FileAccess(Advanced(self).CreateTemp(int64(mode_flags), String.New(prefix), String.New(extension), keep))
+	return Instance(Advanced(self).CreateTemp(int64(mode_flags), String.New(prefix), String.New(extension), keep))
 }
 
 /*
@@ -177,9 +177,9 @@ If [param extension] is not empty, it will be appended to the temporary file nam
 If [param keep] is [code]true[/code], the file is not deleted when the returned [FileAccess] is freed.
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
-func CreateTempOptions(mode_flags int, prefix string, extension string, keep bool) [1]gdclass.FileAccess { //gd:FileAccess.create_temp
+func CreateTempOptions(mode_flags int, prefix string, extension string, keep bool) Instance { //gd:FileAccess.create_temp
 	self := Instance{}
-	return [1]gdclass.FileAccess(Advanced(self).CreateTemp(int64(mode_flags), String.New(prefix), String.New(extension), keep))
+	return Instance(Advanced(self).CreateTemp(int64(mode_flags), String.New(prefix), String.New(extension), keep))
 }
 
 /*

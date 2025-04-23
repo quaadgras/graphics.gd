@@ -15,6 +15,7 @@ import "graphics.gd/classdb/CollisionObject3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/PhysicsBody3D"
+import "graphics.gd/classdb/PhysicsDirectBodyState3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -67,7 +68,7 @@ type Any interface {
 }
 type Interface interface {
 	//Called during physics processing, allowing you to read and safely modify the simulation state for the object. By default, it is called before the standard force integration, but the [member custom_integrator] property allows you to disable the standard force integration and do fully custom force integration for a body.
-	IntegrateForces(state [1]gdclass.PhysicsDirectBodyState3D)
+	IntegrateForces(state PhysicsDirectBodyState3D.Instance)
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -75,12 +76,12 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) IntegrateForces(state [1]gdclass.PhysicsDirectBodyState3D) { return }
+func (self implementation) IntegrateForces(state PhysicsDirectBodyState3D.Instance) { return }
 
 /*
 Called during physics processing, allowing you to read and safely modify the simulation state for the object. By default, it is called before the standard force integration, but the [member custom_integrator] property allows you to disable the standard force integration and do fully custom force integration for a body.
 */
-func (Instance) _integrate_forces(impl func(ptr unsafe.Pointer, state [1]gdclass.PhysicsDirectBodyState3D)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _integrate_forces(impl func(ptr unsafe.Pointer, state PhysicsDirectBodyState3D.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var state = [1]gdclass.PhysicsDirectBodyState3D{pointers.New[gdclass.PhysicsDirectBodyState3D]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 

@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Control"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -108,14 +109,14 @@ func (self Instance) IsActive() bool { //gd:EditorDebuggerSession.is_active
 /*
 Adds the given [param control] to the debug session UI in the debugger bottom panel. The [param control]'s node name will be used as the tab title.
 */
-func (self Instance) AddSessionTab(control [1]gdclass.Control) { //gd:EditorDebuggerSession.add_session_tab
+func (self Instance) AddSessionTab(control Control.Instance) { //gd:EditorDebuggerSession.add_session_tab
 	Advanced(self).AddSessionTab(control)
 }
 
 /*
 Removes the given [param control] from the debug session UI in the debugger bottom panel.
 */
-func (self Instance) RemoveSessionTab(control [1]gdclass.Control) { //gd:EditorDebuggerSession.remove_session_tab
+func (self Instance) RemoveSessionTab(control Control.Instance) { //gd:EditorDebuggerSession.remove_session_tab
 	Advanced(self).RemoveSessionTab(control)
 }
 

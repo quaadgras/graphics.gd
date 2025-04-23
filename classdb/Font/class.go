@@ -464,11 +464,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Fallbacks() [][1]gdclass.Font {
-	return [][1]gdclass.Font(gd.ArrayAs[[][1]gdclass.Font](gd.InternalArray(class(self).GetFallbacks())))
+func (self Instance) Fallbacks() []Instance {
+	return []Instance(gd.ArrayAs[[]Instance](gd.InternalArray(class(self).GetFallbacks())))
 }
 
-func (self Instance) SetFallbacks(value [][1]gdclass.Font) {
+func (self Instance) SetFallbacks(value []Instance) {
 	class(self).SetFallbacks(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Font]](value))
 }
 

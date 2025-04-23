@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Image"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/Shape3D"
 import "graphics.gd/variant/Array"
@@ -89,7 +90,7 @@ Updates [member map_data] with data read from an [Image] reference. Automaticall
 The image needs to be in either [constant Image.FORMAT_RF] (32 bit), [constant Image.FORMAT_RH] (16 bit), or [constant Image.FORMAT_R8] (8 bit).
 Each image pixel is read in as a float on the range from [code]0.0[/code] (black pixel) to [code]1.0[/code] (white pixel). This range value gets remapped to [param height_min] and [param height_max] to form the final height value.
 */
-func (self Instance) UpdateMapDataFromImage(image [1]gdclass.Image, height_min Float.X, height_max Float.X) { //gd:HeightMapShape3D.update_map_data_from_image
+func (self Instance) UpdateMapDataFromImage(image Image.Instance, height_min Float.X, height_max Float.X) { //gd:HeightMapShape3D.update_map_data_from_image
 	Advanced(self).UpdateMapDataFromImage(image, float64(height_min), float64(height_max))
 }
 

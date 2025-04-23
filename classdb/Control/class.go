@@ -12,7 +12,12 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Font"
+import "graphics.gd/classdb/InputEvent"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/StyleBox"
+import "graphics.gd/classdb/Texture2D"
+import "graphics.gd/classdb/Theme"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -219,7 +224,7 @@ type Interface interface {
 	//- the control's parent has [member clip_contents] enabled and the [param event]'s position is outside the parent's rectangle;
 	//- the [param event]'s position is outside the control (see [method _has_point]).
 	//[b]Note:[/b] The [param event]'s position is relative to this control's origin.
-	GuiInput(event [1]gdclass.InputEvent)
+	GuiInput(event InputEvent.Instance)
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -235,7 +240,7 @@ func (self implementation) GetDragData(at_position Vector2.XY) (_ any)          
 func (self implementation) CanDropData(at_position Vector2.XY, data any) (_ bool)           { return }
 func (self implementation) DropData(at_position Vector2.XY, data any)                       { return }
 func (self implementation) MakeCustomTooltip(for_text string) (_ Object.Instance)           { return }
-func (self implementation) GuiInput(event [1]gdclass.InputEvent)                            { return }
+func (self implementation) GuiInput(event InputEvent.Instance)                              { return }
 
 /*
 Virtual method to be implemented by the user. Returns whether the given [param point] is inside this control.
@@ -515,7 +520,7 @@ If the [param event] inherits [InputEventMouse], this method will [b]not[/b] be 
 - the [param event]'s position is outside the control (see [method _has_point]).
 [b]Note:[/b] The [param event]'s position is relative to this control's origin.
 */
-func (Instance) _gui_input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _gui_input(impl func(ptr unsafe.Pointer, event InputEvent.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -774,23 +779,23 @@ func (self Instance) ReleaseFocus() { //gd:Control.release_focus
 /*
 Finds the previous (above in the tree) [Control] that can receive the focus.
 */
-func (self Instance) FindPrevValidFocus() [1]gdclass.Control { //gd:Control.find_prev_valid_focus
-	return [1]gdclass.Control(Advanced(self).FindPrevValidFocus())
+func (self Instance) FindPrevValidFocus() Instance { //gd:Control.find_prev_valid_focus
+	return Instance(Advanced(self).FindPrevValidFocus())
 }
 
 /*
 Finds the next (below in the tree) [Control] that can receive the focus.
 */
-func (self Instance) FindNextValidFocus() [1]gdclass.Control { //gd:Control.find_next_valid_focus
-	return [1]gdclass.Control(Advanced(self).FindNextValidFocus())
+func (self Instance) FindNextValidFocus() Instance { //gd:Control.find_next_valid_focus
+	return Instance(Advanced(self).FindNextValidFocus())
 }
 
 /*
 Finds the next [Control] that can receive the focus on the specified [enum Side].
 [b]Note:[/b] This is different from [method get_focus_neighbor], which returns the path of a specified focus neighbor.
 */
-func (self Instance) FindValidFocusNeighbor(side Side) [1]gdclass.Control { //gd:Control.find_valid_focus_neighbor
-	return [1]gdclass.Control(Advanced(self).FindValidFocusNeighbor(side))
+func (self Instance) FindValidFocusNeighbor(side Side) Instance { //gd:Control.find_valid_focus_neighbor
+	return Instance(Advanced(self).FindValidFocusNeighbor(side))
 }
 
 /*
@@ -811,7 +816,7 @@ func (self Instance) EndBulkThemeOverride() { //gd:Control.end_bulk_theme_overri
 Creates a local override for a theme icon with the specified [param name]. Local overrides always take precedence when fetching theme items for the control. An override can be removed with [method remove_theme_icon_override].
 See also [method get_theme_icon].
 */
-func (self Instance) AddThemeIconOverride(name string, texture [1]gdclass.Texture2D) { //gd:Control.add_theme_icon_override
+func (self Instance) AddThemeIconOverride(name string, texture Texture2D.Instance) { //gd:Control.add_theme_icon_override
 	Advanced(self).AddThemeIconOverride(String.Name(String.New(name)), texture)
 }
 
@@ -844,7 +849,7 @@ GetNode<Button>("MyButton").RemoveThemeStyleboxOverride("normal");
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) AddThemeStyleboxOverride(name string, stylebox [1]gdclass.StyleBox) { //gd:Control.add_theme_stylebox_override
+func (self Instance) AddThemeStyleboxOverride(name string, stylebox StyleBox.Instance) { //gd:Control.add_theme_stylebox_override
 	Advanced(self).AddThemeStyleboxOverride(String.Name(String.New(name)), stylebox)
 }
 
@@ -852,7 +857,7 @@ func (self Instance) AddThemeStyleboxOverride(name string, stylebox [1]gdclass.S
 Creates a local override for a theme [Font] with the specified [param name]. Local overrides always take precedence when fetching theme items for the control. An override can be removed with [method remove_theme_font_override].
 See also [method get_theme_font].
 */
-func (self Instance) AddThemeFontOverride(name string, font [1]gdclass.Font) { //gd:Control.add_theme_font_override
+func (self Instance) AddThemeFontOverride(name string, font Font.Instance) { //gd:Control.add_theme_font_override
 	Advanced(self).AddThemeFontOverride(String.Name(String.New(name)), font)
 }
 
@@ -945,48 +950,48 @@ func (self Instance) RemoveThemeConstantOverride(name string) { //gd:Control.rem
 Returns an icon from the first matching [Theme] in the tree if that [Theme] has an icon item with the specified [param name] and [param theme_type].
 See [method get_theme_color] for details.
 */
-func (self Instance) GetThemeIcon(name string) [1]gdclass.Texture2D { //gd:Control.get_theme_icon
-	return [1]gdclass.Texture2D(Advanced(self).GetThemeIcon(String.Name(String.New(name)), String.Name(String.New(""))))
+func (self Instance) GetThemeIcon(name string) Texture2D.Instance { //gd:Control.get_theme_icon
+	return Texture2D.Instance(Advanced(self).GetThemeIcon(String.Name(String.New(name)), String.Name(String.New(""))))
 }
 
 /*
 Returns an icon from the first matching [Theme] in the tree if that [Theme] has an icon item with the specified [param name] and [param theme_type].
 See [method get_theme_color] for details.
 */
-func (self Expanded) GetThemeIcon(name string, theme_type string) [1]gdclass.Texture2D { //gd:Control.get_theme_icon
-	return [1]gdclass.Texture2D(Advanced(self).GetThemeIcon(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+func (self Expanded) GetThemeIcon(name string, theme_type string) Texture2D.Instance { //gd:Control.get_theme_icon
+	return Texture2D.Instance(Advanced(self).GetThemeIcon(String.Name(String.New(name)), String.Name(String.New(theme_type))))
 }
 
 /*
 Returns a [StyleBox] from the first matching [Theme] in the tree if that [Theme] has a stylebox item with the specified [param name] and [param theme_type].
 See [method get_theme_color] for details.
 */
-func (self Instance) GetThemeStylebox(name string) [1]gdclass.StyleBox { //gd:Control.get_theme_stylebox
-	return [1]gdclass.StyleBox(Advanced(self).GetThemeStylebox(String.Name(String.New(name)), String.Name(String.New(""))))
+func (self Instance) GetThemeStylebox(name string) StyleBox.Instance { //gd:Control.get_theme_stylebox
+	return StyleBox.Instance(Advanced(self).GetThemeStylebox(String.Name(String.New(name)), String.Name(String.New(""))))
 }
 
 /*
 Returns a [StyleBox] from the first matching [Theme] in the tree if that [Theme] has a stylebox item with the specified [param name] and [param theme_type].
 See [method get_theme_color] for details.
 */
-func (self Expanded) GetThemeStylebox(name string, theme_type string) [1]gdclass.StyleBox { //gd:Control.get_theme_stylebox
-	return [1]gdclass.StyleBox(Advanced(self).GetThemeStylebox(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+func (self Expanded) GetThemeStylebox(name string, theme_type string) StyleBox.Instance { //gd:Control.get_theme_stylebox
+	return StyleBox.Instance(Advanced(self).GetThemeStylebox(String.Name(String.New(name)), String.Name(String.New(theme_type))))
 }
 
 /*
 Returns a [Font] from the first matching [Theme] in the tree if that [Theme] has a font item with the specified [param name] and [param theme_type].
 See [method get_theme_color] for details.
 */
-func (self Instance) GetThemeFont(name string) [1]gdclass.Font { //gd:Control.get_theme_font
-	return [1]gdclass.Font(Advanced(self).GetThemeFont(String.Name(String.New(name)), String.Name(String.New(""))))
+func (self Instance) GetThemeFont(name string) Font.Instance { //gd:Control.get_theme_font
+	return Font.Instance(Advanced(self).GetThemeFont(String.Name(String.New(name)), String.Name(String.New(""))))
 }
 
 /*
 Returns a [Font] from the first matching [Theme] in the tree if that [Theme] has a font item with the specified [param name] and [param theme_type].
 See [method get_theme_color] for details.
 */
-func (self Expanded) GetThemeFont(name string, theme_type string) [1]gdclass.Font { //gd:Control.get_theme_font
-	return [1]gdclass.Font(Advanced(self).GetThemeFont(String.Name(String.New(name)), String.Name(String.New(theme_type))))
+func (self Expanded) GetThemeFont(name string, theme_type string) Font.Instance { //gd:Control.get_theme_font
+	return Font.Instance(Advanced(self).GetThemeFont(String.Name(String.New(name)), String.Name(String.New(theme_type))))
 }
 
 /*
@@ -1237,8 +1242,8 @@ func (self Instance) GetThemeDefaultBaseScale() Float.X { //gd:Control.get_theme
 Returns the default font from the first matching [Theme] in the tree if that [Theme] has a valid [member Theme.default_font] value.
 See [method get_theme_color] for details.
 */
-func (self Instance) GetThemeDefaultFont() [1]gdclass.Font { //gd:Control.get_theme_default_font
-	return [1]gdclass.Font(Advanced(self).GetThemeDefaultFont())
+func (self Instance) GetThemeDefaultFont() Font.Instance { //gd:Control.get_theme_default_font
+	return Font.Instance(Advanced(self).GetThemeDefaultFont())
 }
 
 /*
@@ -1252,8 +1257,8 @@ func (self Instance) GetThemeDefaultFontSize() int { //gd:Control.get_theme_defa
 /*
 Returns the parent control node.
 */
-func (self Instance) GetParentControl() [1]gdclass.Control { //gd:Control.get_parent_control
-	return [1]gdclass.Control(Advanced(self).GetParentControl())
+func (self Instance) GetParentControl() Instance { //gd:Control.get_parent_control
+	return Instance(Advanced(self).GetParentControl())
 }
 
 /*
@@ -1292,7 +1297,7 @@ func (self Expanded) GetCursorShape(position Vector2.XY) gdclass.ControlCursorSh
 Forces drag and bypasses [method _get_drag_data] and [method set_drag_preview] by passing [param data] and [param preview]. Drag will start even if the mouse is neither over nor pressed on this control.
 The methods [method _can_drop_data] and [method _drop_data] must be implemented on controls that want to receive drop data.
 */
-func (self Instance) ForceDrag(data any, preview [1]gdclass.Control) { //gd:Control.force_drag
+func (self Instance) ForceDrag(data any, preview Instance) { //gd:Control.force_drag
 	Advanced(self).ForceDrag(variant.New(data), preview)
 }
 
@@ -1364,7 +1369,7 @@ public override Variant _GetDragData(Vector2 atPosition)
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) SetDragPreview(control [1]gdclass.Control) { //gd:Control.set_drag_preview
+func (self Instance) SetDragPreview(control Instance) { //gd:Control.set_drag_preview
 	Advanced(self).SetDragPreview(control)
 }
 
@@ -1684,19 +1689,19 @@ func (self Instance) SetMouseDefaultCursorShape(value gdclass.ControlCursorShape
 	class(self).SetDefaultCursorShape(value)
 }
 
-func (self Instance) ShortcutContext() [1]gdclass.Node {
-	return [1]gdclass.Node(class(self).GetShortcutContext())
+func (self Instance) ShortcutContext() Node.Instance {
+	return Node.Instance(class(self).GetShortcutContext())
 }
 
-func (self Instance) SetShortcutContext(value [1]gdclass.Node) {
+func (self Instance) SetShortcutContext(value Node.Instance) {
 	class(self).SetShortcutContext(value)
 }
 
-func (self Instance) Theme() [1]gdclass.Theme {
-	return [1]gdclass.Theme(class(self).GetTheme())
+func (self Instance) Theme() Theme.Instance {
+	return Theme.Instance(class(self).GetTheme())
 }
 
-func (self Instance) SetTheme(value [1]gdclass.Theme) {
+func (self Instance) SetTheme(value Theme.Instance) {
 	class(self).SetTheme(value)
 }
 
@@ -3682,7 +3687,7 @@ func (self Instance) OnResized(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("resized"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnGuiInput(cb func(event [1]gdclass.InputEvent)) {
+func (self Instance) OnGuiInput(cb func(event InputEvent.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("gui_input"), gd.NewCallable(cb), 0)
 }
 

@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -61,16 +62,16 @@ type Any interface {
 type Interface interface {
 	//Saves the given resource object to a file at the target [param path]. [param flags] is a bitmask composed with [enum ResourceSaver.SaverFlags] constants.
 	//Returns [constant OK] on success, or an [enum Error] constant in case of failure.
-	Save(resource [1]gdclass.Resource, path string, flags int) error
+	Save(resource Resource.Instance, path string, flags int) error
 	//Sets a new UID for the resource at the given [param path]. Returns [constant OK] on success, or an [enum Error] constant in case of failure.
 	SetUid(path string, uid int) error
 	//Returns whether the given resource object can be saved by this saver.
-	Recognize(resource [1]gdclass.Resource) bool
+	Recognize(resource Resource.Instance) bool
 	//Returns the list of extensions available for saving the resource object, provided it is recognized (see [method _recognize]).
-	GetRecognizedExtensions(resource [1]gdclass.Resource) []string
+	GetRecognizedExtensions(resource Resource.Instance) []string
 	//Returns [code]true[/code] if this saver handles a given save path and [code]false[/code] otherwise.
 	//If this method is not implemented, the default behavior returns whether the path's extension is within the ones provided by [method _get_recognized_extensions].
-	RecognizePath(resource [1]gdclass.Resource, path string) bool
+	RecognizePath(resource Resource.Instance, path string) bool
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -78,19 +79,17 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) Save(resource [1]gdclass.Resource, path string, flags int) (_ error) {
-	return
-}
+func (self implementation) Save(resource Resource.Instance, path string, flags int) (_ error) { return }
 func (self implementation) SetUid(path string, uid int) (_ error)                             { return }
-func (self implementation) Recognize(resource [1]gdclass.Resource) (_ bool)                   { return }
-func (self implementation) GetRecognizedExtensions(resource [1]gdclass.Resource) (_ []string) { return }
-func (self implementation) RecognizePath(resource [1]gdclass.Resource, path string) (_ bool)  { return }
+func (self implementation) Recognize(resource Resource.Instance) (_ bool)                     { return }
+func (self implementation) GetRecognizedExtensions(resource Resource.Instance) (_ []string)   { return }
+func (self implementation) RecognizePath(resource Resource.Instance, path string) (_ bool)    { return }
 
 /*
 Saves the given resource object to a file at the target [param path]. [param flags] is a bitmask composed with [enum ResourceSaver.SaverFlags] constants.
 Returns [constant OK] on success, or an [enum Error] constant in case of failure.
 */
-func (Instance) _save(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource, path string, flags int) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _save(impl func(ptr unsafe.Pointer, resource Resource.Instance, path string, flags int) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -131,7 +130,7 @@ func (Instance) _set_uid(impl func(ptr unsafe.Pointer, path string, uid int) err
 /*
 Returns whether the given resource object can be saved by this saver.
 */
-func (Instance) _recognize(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _recognize(impl func(ptr unsafe.Pointer, resource Resource.Instance) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -145,7 +144,7 @@ func (Instance) _recognize(impl func(ptr unsafe.Pointer, resource [1]gdclass.Res
 /*
 Returns the list of extensions available for saving the resource object, provided it is recognized (see [method _recognize]).
 */
-func (Instance) _get_recognized_extensions(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource) []string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_recognized_extensions(impl func(ptr unsafe.Pointer, resource Resource.Instance) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -165,7 +164,7 @@ func (Instance) _get_recognized_extensions(impl func(ptr unsafe.Pointer, resourc
 Returns [code]true[/code] if this saver handles a given save path and [code]false[/code] otherwise.
 If this method is not implemented, the default behavior returns whether the path's extension is within the ones provided by [method _get_recognized_extensions].
 */
-func (Instance) _recognize_path(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource, path string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _recognize_path(impl func(ptr unsafe.Pointer, resource Resource.Instance, path string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 

@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Image"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -69,14 +70,14 @@ func (self Instance) Create(size Vector2i.XY) { //gd:BitMap.create
 /*
 Creates a bitmap that matches the given image dimensions, every element of the bitmap is set to [code]false[/code] if the alpha value of the image at that position is equal to [param threshold] or less, and [code]true[/code] in other case.
 */
-func (self Instance) CreateFromImageAlpha(image [1]gdclass.Image) { //gd:BitMap.create_from_image_alpha
+func (self Instance) CreateFromImageAlpha(image Image.Instance) { //gd:BitMap.create_from_image_alpha
 	Advanced(self).CreateFromImageAlpha(image, float64(0.1))
 }
 
 /*
 Creates a bitmap that matches the given image dimensions, every element of the bitmap is set to [code]false[/code] if the alpha value of the image at that position is equal to [param threshold] or less, and [code]true[/code] in other case.
 */
-func (self Expanded) CreateFromImageAlpha(image [1]gdclass.Image, threshold Float.X) { //gd:BitMap.create_from_image_alpha
+func (self Expanded) CreateFromImageAlpha(image Image.Instance, threshold Float.X) { //gd:BitMap.create_from_image_alpha
 	Advanced(self).CreateFromImageAlpha(image, float64(threshold))
 }
 
@@ -146,8 +147,8 @@ func (self Instance) GrowMask(pixels int, rect Rect2i.PositionSize) { //gd:BitMa
 /*
 Returns an image of the same size as the bitmap and with a [enum Image.Format] of type [constant Image.FORMAT_L8]. [code]true[/code] bits of the bitmap are being converted into white pixels, and [code]false[/code] bits into black.
 */
-func (self Instance) ConvertToImage() [1]gdclass.Image { //gd:BitMap.convert_to_image
-	return [1]gdclass.Image(Advanced(self).ConvertToImage())
+func (self Instance) ConvertToImage() Image.Instance { //gd:BitMap.convert_to_image
+	return Image.Instance(Advanced(self).ConvertToImage())
 }
 
 /*

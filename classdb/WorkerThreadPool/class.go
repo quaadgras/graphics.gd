@@ -87,6 +87,8 @@ public override void _Process(double delta)
 The above code relies on the number of elements in the [code]enemies[/code] array remaining constant during the multithreaded part.
 [b]Note:[/b] Using this singleton could affect performance negatively if the task being distributed between threads is not computationally expensive.
 */
+type Instance [1]gdclass.WorkerThreadPool
+
 var self [1]gdclass.WorkerThreadPool
 var once sync.Once
 

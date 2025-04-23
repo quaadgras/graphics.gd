@@ -12,6 +12,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/XRInterface"
+import "graphics.gd/classdb/XRTracker"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -46,6 +48,8 @@ var _ = slices.Delete[[]struct{}, struct{}]
 /*
 The AR/VR server is the heart of our Advanced and Virtual Reality solution and handles all the processing.
 */
+type Instance [1]gdclass.XRServer
+
 var self [1]gdclass.XRServer
 var once sync.Once
 
@@ -94,7 +98,7 @@ func GetHmdTransform() Transform3D.BasisOrigin { //gd:XRServer.get_hmd_transform
 /*
 Registers an [XRInterface] object.
 */
-func AddInterface(intf [1]gdclass.XRInterface) { //gd:XRServer.add_interface
+func AddInterface(intf XRInterface.Instance) { //gd:XRServer.add_interface
 	once.Do(singleton)
 	Advanced().AddInterface(intf)
 }
@@ -110,7 +114,7 @@ func GetInterfaceCount() int { //gd:XRServer.get_interface_count
 /*
 Removes this [param interface].
 */
-func RemoveInterface(intf [1]gdclass.XRInterface) { //gd:XRServer.remove_interface
+func RemoveInterface(intf XRInterface.Instance) { //gd:XRServer.remove_interface
 	once.Do(singleton)
 	Advanced().RemoveInterface(intf)
 }
@@ -118,9 +122,9 @@ func RemoveInterface(intf [1]gdclass.XRInterface) { //gd:XRServer.remove_interfa
 /*
 Returns the interface registered at the given [param idx] index in the list of interfaces.
 */
-func GetInterface(idx int) [1]gdclass.XRInterface { //gd:XRServer.get_interface
+func GetInterface(idx int) XRInterface.Instance { //gd:XRServer.get_interface
 	once.Do(singleton)
-	return [1]gdclass.XRInterface(Advanced().GetInterface(int64(idx)))
+	return XRInterface.Instance(Advanced().GetInterface(int64(idx)))
 }
 
 /*
@@ -134,15 +138,15 @@ func GetInterfaces() []map[int]string { //gd:XRServer.get_interfaces
 /*
 Finds an interface by its [param name]. For example, if your project uses capabilities of an AR/VR platform, you can find the interface for that platform by name and initialize it.
 */
-func FindInterface(name string) [1]gdclass.XRInterface { //gd:XRServer.find_interface
+func FindInterface(name string) XRInterface.Instance { //gd:XRServer.find_interface
 	once.Do(singleton)
-	return [1]gdclass.XRInterface(Advanced().FindInterface(String.New(name)))
+	return XRInterface.Instance(Advanced().FindInterface(String.New(name)))
 }
 
 /*
 Registers a new [XRTracker] that tracks a physical object.
 */
-func AddTracker(tracker [1]gdclass.XRTracker) { //gd:XRServer.add_tracker
+func AddTracker(tracker XRTracker.Instance) { //gd:XRServer.add_tracker
 	once.Do(singleton)
 	Advanced().AddTracker(tracker)
 }
@@ -150,7 +154,7 @@ func AddTracker(tracker [1]gdclass.XRTracker) { //gd:XRServer.add_tracker
 /*
 Removes this [param tracker].
 */
-func RemoveTracker(tracker [1]gdclass.XRTracker) { //gd:XRServer.remove_tracker
+func RemoveTracker(tracker XRTracker.Instance) { //gd:XRServer.remove_tracker
 	once.Do(singleton)
 	Advanced().RemoveTracker(tracker)
 }
@@ -166,9 +170,9 @@ func GetTrackers(tracker_types int) map[interface{}]interface{} { //gd:XRServer.
 /*
 Returns the positional tracker with the given [param tracker_name].
 */
-func GetTracker(tracker_name string) [1]gdclass.XRTracker { //gd:XRServer.get_tracker
+func GetTracker(tracker_name string) XRTracker.Instance { //gd:XRServer.get_tracker
 	once.Do(singleton)
-	return [1]gdclass.XRTracker(Advanced().GetTracker(String.Name(String.New(tracker_name))))
+	return XRTracker.Instance(Advanced().GetTracker(String.Name(String.New(tracker_name))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -211,12 +215,12 @@ func SetCameraLockedToOrigin(value bool) {
 	class(self).SetCameraLockedToOrigin(value)
 }
 
-func PrimaryInterface() [1]gdclass.XRInterface {
+func PrimaryInterface() XRInterface.Instance {
 	once.Do(singleton)
-	return [1]gdclass.XRInterface(class(self).GetPrimaryInterface())
+	return XRInterface.Instance(class(self).GetPrimaryInterface())
 }
 
-func SetPrimaryInterface(value [1]gdclass.XRInterface) {
+func SetPrimaryInterface(value XRInterface.Instance) {
 	once.Do(singleton)
 	class(self).SetPrimaryInterface(value)
 }

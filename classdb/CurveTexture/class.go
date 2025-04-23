@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Curve"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/Texture"
 import "graphics.gd/classdb/Texture2D"
@@ -89,11 +90,11 @@ func (self Instance) SetTextureMode(value gdclass.CurveTextureTextureMode) {
 	class(self).SetTextureMode(value)
 }
 
-func (self Instance) Curve() [1]gdclass.Curve {
-	return [1]gdclass.Curve(class(self).GetCurve())
+func (self Instance) Curve() Curve.Instance {
+	return Curve.Instance(class(self).GetCurve())
 }
 
-func (self Instance) SetCurve(value [1]gdclass.Curve) {
+func (self Instance) SetCurve(value Curve.Instance) {
 	class(self).SetCurve(value)
 }
 

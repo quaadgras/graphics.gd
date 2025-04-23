@@ -45,6 +45,8 @@ var _ = slices.Delete[[]struct{}, struct{}]
 /*
 Provides data transformation and encoding utility functions.
 */
+type Instance [1]gdclass.Marshalls
+
 var self [1]gdclass.Marshalls
 var once sync.Once
 

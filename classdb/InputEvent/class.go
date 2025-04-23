@@ -166,7 +166,7 @@ Returns [code]true[/code] if the specified [param event] matches this event. Onl
 If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
 [b]Note:[/b] Only considers the event configuration (such as the keyboard key or joypad axis), not state information like [method is_pressed], [method is_released], [method is_echo], or [method is_canceled].
 */
-func (self Instance) IsMatch(event [1]gdclass.InputEvent) bool { //gd:InputEvent.is_match
+func (self Instance) IsMatch(event Instance) bool { //gd:InputEvent.is_match
 	return bool(Advanced(self).IsMatch(event, true))
 }
 
@@ -175,7 +175,7 @@ Returns [code]true[/code] if the specified [param event] matches this event. Onl
 If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
 [b]Note:[/b] Only considers the event configuration (such as the keyboard key or joypad axis), not state information like [method is_pressed], [method is_released], [method is_echo], or [method is_canceled].
 */
-func (self Expanded) IsMatch(event [1]gdclass.InputEvent, exact_match bool) bool { //gd:InputEvent.is_match
+func (self Expanded) IsMatch(event Instance, exact_match bool) bool { //gd:InputEvent.is_match
 	return bool(Advanced(self).IsMatch(event, exact_match))
 }
 
@@ -190,22 +190,22 @@ func (self Instance) IsActionType() bool { //gd:InputEvent.is_action_type
 Returns [code]true[/code] if the given input event and this input event can be added together (only for events of type [InputEventMouseMotion]).
 The given input event's position, global position and speed will be copied. The resulting [code]relative[/code] is a sum of both events. Both events' modifiers have to be identical.
 */
-func (self Instance) Accumulate(with_event [1]gdclass.InputEvent) bool { //gd:InputEvent.accumulate
+func (self Instance) Accumulate(with_event Instance) bool { //gd:InputEvent.accumulate
 	return bool(Advanced(self).Accumulate(with_event))
 }
 
 /*
 Returns a copy of the given input event which has been offset by [param local_ofs] and transformed by [param xform]. Relevant for events of type [InputEventMouseButton], [InputEventMouseMotion], [InputEventScreenTouch], [InputEventScreenDrag], [InputEventMagnifyGesture] and [InputEventPanGesture].
 */
-func (self Instance) XformedBy(xform Transform2D.OriginXY) [1]gdclass.InputEvent { //gd:InputEvent.xformed_by
-	return [1]gdclass.InputEvent(Advanced(self).XformedBy(Transform2D.OriginXY(xform), Vector2.XY(gd.Vector2{0, 0})))
+func (self Instance) XformedBy(xform Transform2D.OriginXY) Instance { //gd:InputEvent.xformed_by
+	return Instance(Advanced(self).XformedBy(Transform2D.OriginXY(xform), Vector2.XY(gd.Vector2{0, 0})))
 }
 
 /*
 Returns a copy of the given input event which has been offset by [param local_ofs] and transformed by [param xform]. Relevant for events of type [InputEventMouseButton], [InputEventMouseMotion], [InputEventScreenTouch], [InputEventScreenDrag], [InputEventMagnifyGesture] and [InputEventPanGesture].
 */
-func (self Expanded) XformedBy(xform Transform2D.OriginXY, local_ofs Vector2.XY) [1]gdclass.InputEvent { //gd:InputEvent.xformed_by
-	return [1]gdclass.InputEvent(Advanced(self).XformedBy(Transform2D.OriginXY(xform), Vector2.XY(local_ofs)))
+func (self Expanded) XformedBy(xform Transform2D.OriginXY, local_ofs Vector2.XY) Instance { //gd:InputEvent.xformed_by
+	return Instance(Advanced(self).XformedBy(Transform2D.OriginXY(xform), Vector2.XY(local_ofs)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -83,9 +84,9 @@ type Interface interface {
 	//Returns the class name of the target type of [Resource] that this plugin converts source resources to.
 	ConvertsTo() string
 	//Called to determine whether a particular [Resource] can be converted to the target resource type by this plugin.
-	Handles(resource [1]gdclass.Resource) bool
+	Handles(resource Resource.Instance) bool
 	//Takes an input [Resource] and converts it to the type given in [method _converts_to]. The returned [Resource] is the result of the conversion, and the input [Resource] remains unchanged.
-	Convert(resource [1]gdclass.Resource) [1]gdclass.Resource
+	Convert(resource Resource.Instance) Resource.Instance
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -93,9 +94,9 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) ConvertsTo() (_ string)                                       { return }
-func (self implementation) Handles(resource [1]gdclass.Resource) (_ bool)                { return }
-func (self implementation) Convert(resource [1]gdclass.Resource) (_ [1]gdclass.Resource) { return }
+func (self implementation) ConvertsTo() (_ string)                                   { return }
+func (self implementation) Handles(resource Resource.Instance) (_ bool)              { return }
+func (self implementation) Convert(resource Resource.Instance) (_ Resource.Instance) { return }
 
 /*
 Returns the class name of the target type of [Resource] that this plugin converts source resources to.
@@ -116,7 +117,7 @@ func (Instance) _converts_to(impl func(ptr unsafe.Pointer) string) (cb gd.Extens
 /*
 Called to determine whether a particular [Resource] can be converted to the target resource type by this plugin.
 */
-func (Instance) _handles(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _handles(impl func(ptr unsafe.Pointer, resource Resource.Instance) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -130,7 +131,7 @@ func (Instance) _handles(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resou
 /*
 Takes an input [Resource] and converts it to the type given in [method _converts_to]. The returned [Resource] is the result of the conversion, and the input [Resource] remains unchanged.
 */
-func (Instance) _convert(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource) [1]gdclass.Resource) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _convert(impl func(ptr unsafe.Pointer, resource Resource.Instance) Resource.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 

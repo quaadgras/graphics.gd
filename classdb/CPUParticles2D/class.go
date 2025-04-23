@@ -12,8 +12,11 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Curve"
+import "graphics.gd/classdb/Gradient"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node2D"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -88,7 +91,7 @@ func (self Expanded) Restart(keep_seed bool) { //gd:CPUParticles2D.restart
 /*
 Sets this node's properties to match a given [GPUParticles2D] node with an assigned [ParticleProcessMaterial].
 */
-func (self Instance) ConvertFromParticles(particles [1]gdclass.Node) { //gd:CPUParticles2D.convert_from_particles
+func (self Instance) ConvertFromParticles(particles Node.Instance) { //gd:CPUParticles2D.convert_from_particles
 	Advanced(self).ConvertFromParticles(particles)
 }
 
@@ -126,11 +129,11 @@ func (self Instance) SetAmount(value int) {
 	class(self).SetAmount(int64(value))
 }
 
-func (self Instance) Texture() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetTexture())
+func (self Instance) Texture() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetTexture())
 }
 
-func (self Instance) SetTexture(value [1]gdclass.Texture2D) {
+func (self Instance) SetTexture(value Texture2D.Instance) {
 	class(self).SetTexture(value)
 }
 
@@ -350,11 +353,11 @@ func (self Instance) SetAngularVelocityMax(value Float.X) {
 	class(self).SetParamMax(1, float64(value))
 }
 
-func (self Instance) AngularVelocityCurve() [1]gdclass.Curve {
-	return [1]gdclass.Curve(class(self).GetParamCurve(1))
+func (self Instance) AngularVelocityCurve() Curve.Instance {
+	return Curve.Instance(class(self).GetParamCurve(1))
 }
 
-func (self Instance) SetAngularVelocityCurve(value [1]gdclass.Curve) {
+func (self Instance) SetAngularVelocityCurve(value Curve.Instance) {
 	class(self).SetParamCurve(1, value)
 }
 
@@ -374,11 +377,11 @@ func (self Instance) SetOrbitVelocityMax(value Float.X) {
 	class(self).SetParamMax(2, float64(value))
 }
 
-func (self Instance) OrbitVelocityCurve() [1]gdclass.Curve {
-	return [1]gdclass.Curve(class(self).GetParamCurve(2))
+func (self Instance) OrbitVelocityCurve() Curve.Instance {
+	return Curve.Instance(class(self).GetParamCurve(2))
 }
 
-func (self Instance) SetOrbitVelocityCurve(value [1]gdclass.Curve) {
+func (self Instance) SetOrbitVelocityCurve(value Curve.Instance) {
 	class(self).SetParamCurve(2, value)
 }
 
@@ -398,11 +401,11 @@ func (self Instance) SetLinearAccelMax(value Float.X) {
 	class(self).SetParamMax(3, float64(value))
 }
 
-func (self Instance) LinearAccelCurve() [1]gdclass.Curve {
-	return [1]gdclass.Curve(class(self).GetParamCurve(3))
+func (self Instance) LinearAccelCurve() Curve.Instance {
+	return Curve.Instance(class(self).GetParamCurve(3))
 }
 
-func (self Instance) SetLinearAccelCurve(value [1]gdclass.Curve) {
+func (self Instance) SetLinearAccelCurve(value Curve.Instance) {
 	class(self).SetParamCurve(3, value)
 }
 
@@ -422,11 +425,11 @@ func (self Instance) SetRadialAccelMax(value Float.X) {
 	class(self).SetParamMax(4, float64(value))
 }
 
-func (self Instance) RadialAccelCurve() [1]gdclass.Curve {
-	return [1]gdclass.Curve(class(self).GetParamCurve(4))
+func (self Instance) RadialAccelCurve() Curve.Instance {
+	return Curve.Instance(class(self).GetParamCurve(4))
 }
 
-func (self Instance) SetRadialAccelCurve(value [1]gdclass.Curve) {
+func (self Instance) SetRadialAccelCurve(value Curve.Instance) {
 	class(self).SetParamCurve(4, value)
 }
 
@@ -446,11 +449,11 @@ func (self Instance) SetTangentialAccelMax(value Float.X) {
 	class(self).SetParamMax(5, float64(value))
 }
 
-func (self Instance) TangentialAccelCurve() [1]gdclass.Curve {
-	return [1]gdclass.Curve(class(self).GetParamCurve(5))
+func (self Instance) TangentialAccelCurve() Curve.Instance {
+	return Curve.Instance(class(self).GetParamCurve(5))
 }
 
-func (self Instance) SetTangentialAccelCurve(value [1]gdclass.Curve) {
+func (self Instance) SetTangentialAccelCurve(value Curve.Instance) {
 	class(self).SetParamCurve(5, value)
 }
 
@@ -470,11 +473,11 @@ func (self Instance) SetDampingMax(value Float.X) {
 	class(self).SetParamMax(6, float64(value))
 }
 
-func (self Instance) DampingCurve() [1]gdclass.Curve {
-	return [1]gdclass.Curve(class(self).GetParamCurve(6))
+func (self Instance) DampingCurve() Curve.Instance {
+	return Curve.Instance(class(self).GetParamCurve(6))
 }
 
-func (self Instance) SetDampingCurve(value [1]gdclass.Curve) {
+func (self Instance) SetDampingCurve(value Curve.Instance) {
 	class(self).SetParamCurve(6, value)
 }
 
@@ -494,11 +497,11 @@ func (self Instance) SetAngleMax(value Float.X) {
 	class(self).SetParamMax(7, float64(value))
 }
 
-func (self Instance) AngleCurve() [1]gdclass.Curve {
-	return [1]gdclass.Curve(class(self).GetParamCurve(7))
+func (self Instance) AngleCurve() Curve.Instance {
+	return Curve.Instance(class(self).GetParamCurve(7))
 }
 
-func (self Instance) SetAngleCurve(value [1]gdclass.Curve) {
+func (self Instance) SetAngleCurve(value Curve.Instance) {
 	class(self).SetParamCurve(7, value)
 }
 
@@ -518,11 +521,11 @@ func (self Instance) SetScaleAmountMax(value Float.X) {
 	class(self).SetParamMax(8, float64(value))
 }
 
-func (self Instance) ScaleAmountCurve() [1]gdclass.Curve {
-	return [1]gdclass.Curve(class(self).GetParamCurve(8))
+func (self Instance) ScaleAmountCurve() Curve.Instance {
+	return Curve.Instance(class(self).GetParamCurve(8))
 }
 
-func (self Instance) SetScaleAmountCurve(value [1]gdclass.Curve) {
+func (self Instance) SetScaleAmountCurve(value Curve.Instance) {
 	class(self).SetParamCurve(8, value)
 }
 
@@ -534,19 +537,19 @@ func (self Instance) SetSplitScale(value bool) {
 	class(self).SetSplitScale(value)
 }
 
-func (self Instance) ScaleCurveX() [1]gdclass.Curve {
-	return [1]gdclass.Curve(class(self).GetScaleCurveX())
+func (self Instance) ScaleCurveX() Curve.Instance {
+	return Curve.Instance(class(self).GetScaleCurveX())
 }
 
-func (self Instance) SetScaleCurveX(value [1]gdclass.Curve) {
+func (self Instance) SetScaleCurveX(value Curve.Instance) {
 	class(self).SetScaleCurveX(value)
 }
 
-func (self Instance) ScaleCurveY() [1]gdclass.Curve {
-	return [1]gdclass.Curve(class(self).GetScaleCurveY())
+func (self Instance) ScaleCurveY() Curve.Instance {
+	return Curve.Instance(class(self).GetScaleCurveY())
 }
 
-func (self Instance) SetScaleCurveY(value [1]gdclass.Curve) {
+func (self Instance) SetScaleCurveY(value Curve.Instance) {
 	class(self).SetScaleCurveY(value)
 }
 
@@ -558,19 +561,19 @@ func (self Instance) SetColor(value Color.RGBA) {
 	class(self).SetColor(Color.RGBA(value))
 }
 
-func (self Instance) ColorRamp() [1]gdclass.Gradient {
-	return [1]gdclass.Gradient(class(self).GetColorRamp())
+func (self Instance) ColorRamp() Gradient.Instance {
+	return Gradient.Instance(class(self).GetColorRamp())
 }
 
-func (self Instance) SetColorRamp(value [1]gdclass.Gradient) {
+func (self Instance) SetColorRamp(value Gradient.Instance) {
 	class(self).SetColorRamp(value)
 }
 
-func (self Instance) ColorInitialRamp() [1]gdclass.Gradient {
-	return [1]gdclass.Gradient(class(self).GetColorInitialRamp())
+func (self Instance) ColorInitialRamp() Gradient.Instance {
+	return Gradient.Instance(class(self).GetColorInitialRamp())
 }
 
-func (self Instance) SetColorInitialRamp(value [1]gdclass.Gradient) {
+func (self Instance) SetColorInitialRamp(value Gradient.Instance) {
 	class(self).SetColorInitialRamp(value)
 }
 
@@ -590,11 +593,11 @@ func (self Instance) SetHueVariationMax(value Float.X) {
 	class(self).SetParamMax(9, float64(value))
 }
 
-func (self Instance) HueVariationCurve() [1]gdclass.Curve {
-	return [1]gdclass.Curve(class(self).GetParamCurve(9))
+func (self Instance) HueVariationCurve() Curve.Instance {
+	return Curve.Instance(class(self).GetParamCurve(9))
 }
 
-func (self Instance) SetHueVariationCurve(value [1]gdclass.Curve) {
+func (self Instance) SetHueVariationCurve(value Curve.Instance) {
 	class(self).SetParamCurve(9, value)
 }
 
@@ -614,11 +617,11 @@ func (self Instance) SetAnimSpeedMax(value Float.X) {
 	class(self).SetParamMax(10, float64(value))
 }
 
-func (self Instance) AnimSpeedCurve() [1]gdclass.Curve {
-	return [1]gdclass.Curve(class(self).GetParamCurve(10))
+func (self Instance) AnimSpeedCurve() Curve.Instance {
+	return Curve.Instance(class(self).GetParamCurve(10))
 }
 
-func (self Instance) SetAnimSpeedCurve(value [1]gdclass.Curve) {
+func (self Instance) SetAnimSpeedCurve(value Curve.Instance) {
 	class(self).SetParamCurve(10, value)
 }
 
@@ -638,11 +641,11 @@ func (self Instance) SetAnimOffsetMax(value Float.X) {
 	class(self).SetParamMax(11, float64(value))
 }
 
-func (self Instance) AnimOffsetCurve() [1]gdclass.Curve {
-	return [1]gdclass.Curve(class(self).GetParamCurve(11))
+func (self Instance) AnimOffsetCurve() Curve.Instance {
+	return Curve.Instance(class(self).GetParamCurve(11))
 }
 
-func (self Instance) SetAnimOffsetCurve(value [1]gdclass.Curve) {
+func (self Instance) SetAnimOffsetCurve(value Curve.Instance) {
 	class(self).SetParamCurve(11, value)
 }
 

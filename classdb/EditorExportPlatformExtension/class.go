@@ -12,6 +12,9 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/EditorExportPlatform"
+import "graphics.gd/classdb/EditorExportPreset"
+import "graphics.gd/classdb/ImageTexture"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -62,7 +65,7 @@ type Any interface {
 type Interface interface {
 	//[b]Required.[/b]
 	//Returns array of platform specific features for the specified [param preset].
-	GetPresetFeatures(preset [1]gdclass.EditorExportPreset) []string
+	GetPresetFeatures(preset EditorExportPreset.Instance) []string
 	//[b]Optional.[/b]
 	//Returns [code]true[/code] if specified file is a valid executable (native executable or script) for the target platform.
 	IsExecutable(path string) bool
@@ -83,10 +86,10 @@ type Interface interface {
 	ShouldUpdateExportOptions() bool
 	//[b]Optional.[/b]
 	//Validates [param option] and returns visibility for the specified [param preset]. Default implementation return [code]true[/code] for all options.
-	GetExportOptionVisibility(preset [1]gdclass.EditorExportPreset, option string) bool
+	GetExportOptionVisibility(preset EditorExportPreset.Instance, option string) bool
 	//[b]Optional.[/b]
 	//Validates [param option] and returns warning message for the specified [param preset]. Default implementation return empty string for all options.
-	GetExportOptionWarning(preset [1]gdclass.EditorExportPreset, option string) string
+	GetExportOptionWarning(preset EditorExportPreset.Instance, option string) string
 	//[b]Required.[/b]
 	//Returns target OS name.
 	GetOsName() string
@@ -95,7 +98,7 @@ type Interface interface {
 	GetName() string
 	//[b]Required.[/b]
 	//Returns platform logo displayed in the export dialog, logo should be 32x32 adjusted to the current editor scale, see [method EditorInterface.get_editor_scale].
-	GetLogo() [1]gdclass.Texture2D
+	GetLogo() Texture2D.Instance
 	//[b]Optional.[/b]
 	//Returns [code]true[/code] if one-click deploy options are changed and editor interface should be updated.
 	PollExport() bool
@@ -107,7 +110,7 @@ type Interface interface {
 	GetOptionsTooltip() string
 	//[b]Optional.[/b]
 	//Returns one-click deploy menu item icon for the specified [param device], icon should be 16x16 adjusted to the current editor scale, see [method EditorInterface.get_editor_scale].
-	GetOptionIcon(device int) [1]gdclass.ImageTexture
+	GetOptionIcon(device int) ImageTexture.Instance
 	//[b]Optional.[/b]
 	//Returns one-click deploy menu item label for the specified [param device].
 	GetOptionLabel(device int) string
@@ -123,46 +126,46 @@ type Interface interface {
 	//[b]Optional.[/b]
 	//This method is called when [param device] one-click deploy menu option is selected.
 	//Implementation should export project to a temporary location, upload and run it on the specific [param device], or perform another action associated with the menu item.
-	Run(preset [1]gdclass.EditorExportPreset, device int, debug_flags gdclass.EditorExportPlatformDebugFlags) error
+	Run(preset EditorExportPreset.Instance, device int, debug_flags gdclass.EditorExportPlatformDebugFlags) error
 	//[b]Optional.[/b]
 	//Returns icon of the one-click deploy menu button, icon should be 16x16 adjusted to the current editor scale, see [method EditorInterface.get_editor_scale].
-	GetRunIcon() [1]gdclass.Texture2D
+	GetRunIcon() Texture2D.Instance
 	//[b]Optional.[/b]
 	//Returns [code]true[/code], if specified [param preset] is valid and can be exported. Use [method set_config_error] and [method set_config_missing_templates] to set error details.
 	//Usual implementation can call [method _has_valid_export_configuration] and [method _has_valid_project_configuration] to determine if export is possible.
-	CanExport(preset [1]gdclass.EditorExportPreset, debug bool) bool
+	CanExport(preset EditorExportPreset.Instance, debug bool) bool
 	//[b]Required.[/b]
 	//Returns [code]true[/code] if export configuration is valid.
-	HasValidExportConfiguration(preset [1]gdclass.EditorExportPreset, debug bool) bool
+	HasValidExportConfiguration(preset EditorExportPreset.Instance, debug bool) bool
 	//[b]Required.[/b]
 	//Returns [code]true[/code] if project configuration is valid.
-	HasValidProjectConfiguration(preset [1]gdclass.EditorExportPreset) bool
+	HasValidProjectConfiguration(preset EditorExportPreset.Instance) bool
 	//[b]Required.[/b]
 	//Returns array of supported binary extensions for the full project export.
-	GetBinaryExtensions(preset [1]gdclass.EditorExportPreset) []string
+	GetBinaryExtensions(preset EditorExportPreset.Instance) []string
 	//[b]Required.[/b]
 	//Creates a full project at [param path] for the specified [param preset].
 	//This method is called when "Export" button is pressed in the export dialog.
 	//This method implementation can call [method EditorExportPlatform.save_pack] or [method EditorExportPlatform.save_zip] to use default PCK/ZIP export process, or calls [method EditorExportPlatform.export_project_files] and implement custom callback for processing each exported file.
-	ExportProject(preset [1]gdclass.EditorExportPreset, debug bool, path string, flags gdclass.EditorExportPlatformDebugFlags) error
+	ExportProject(preset EditorExportPreset.Instance, debug bool, path string, flags gdclass.EditorExportPlatformDebugFlags) error
 	//[b]Optional.[/b]
 	//Creates a PCK archive at [param path] for the specified [param preset].
 	//This method is called when "Export PCK/ZIP" button is pressed in the export dialog, with "Export as Patch" disabled, and PCK is selected as a file type.
-	ExportPack(preset [1]gdclass.EditorExportPreset, debug bool, path string, flags gdclass.EditorExportPlatformDebugFlags) error
+	ExportPack(preset EditorExportPreset.Instance, debug bool, path string, flags gdclass.EditorExportPlatformDebugFlags) error
 	//[b]Optional.[/b]
 	//Create a ZIP archive at [param path] for the specified [param preset].
 	//This method is called when "Export PCK/ZIP" button is pressed in the export dialog, with "Export as Patch" disabled, and ZIP is selected as a file type.
-	ExportZip(preset [1]gdclass.EditorExportPreset, debug bool, path string, flags gdclass.EditorExportPlatformDebugFlags) error
+	ExportZip(preset EditorExportPreset.Instance, debug bool, path string, flags gdclass.EditorExportPlatformDebugFlags) error
 	//[b]Optional.[/b]
 	//Creates a patch PCK archive at [param path] for the specified [param preset], containing only the files that have changed since the last patch.
 	//This method is called when "Export PCK/ZIP" button is pressed in the export dialog, with "Export as Patch" enabled, and PCK is selected as a file type.
 	//[b]Note:[/b] The patches provided in [param patches] have already been loaded when this method is called and are merely provided as context. When empty the patches defined in the export preset have been loaded instead.
-	ExportPackPatch(preset [1]gdclass.EditorExportPreset, debug bool, path string, patches []string, flags gdclass.EditorExportPlatformDebugFlags) error
+	ExportPackPatch(preset EditorExportPreset.Instance, debug bool, path string, patches []string, flags gdclass.EditorExportPlatformDebugFlags) error
 	//[b]Optional.[/b]
 	//Create a ZIP archive at [param path] for the specified [param preset], containing only the files that have changed since the last patch.
 	//This method is called when "Export PCK/ZIP" button is pressed in the export dialog, with "Export as Patch" enabled, and ZIP is selected as a file type.
 	//[b]Note:[/b] The patches provided in [param patches] have already been loaded when this method is called and are merely provided as context. When empty the patches defined in the export preset have been loaded instead.
-	ExportZipPatch(preset [1]gdclass.EditorExportPreset, debug bool, path string, patches []string, flags gdclass.EditorExportPlatformDebugFlags) error
+	ExportZipPatch(preset EditorExportPreset.Instance, debug bool, path string, patches []string, flags gdclass.EditorExportPlatformDebugFlags) error
 	//[b]Required.[/b]
 	//Returns array of platform specific features.
 	GetPlatformFeatures() []string
@@ -176,58 +179,54 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetPresetFeatures(preset [1]gdclass.EditorExportPreset) (_ []string) {
+func (self implementation) GetPresetFeatures(preset EditorExportPreset.Instance) (_ []string) { return }
+func (self implementation) IsExecutable(path string) (_ bool)                                 { return }
+func (self implementation) GetExportOptions() (_ []map[any]any)                               { return }
+func (self implementation) ShouldUpdateExportOptions() (_ bool)                               { return }
+func (self implementation) GetExportOptionVisibility(preset EditorExportPreset.Instance, option string) (_ bool) {
 	return
 }
-func (self implementation) IsExecutable(path string) (_ bool)   { return }
-func (self implementation) GetExportOptions() (_ []map[any]any) { return }
-func (self implementation) ShouldUpdateExportOptions() (_ bool) { return }
-func (self implementation) GetExportOptionVisibility(preset [1]gdclass.EditorExportPreset, option string) (_ bool) {
+func (self implementation) GetExportOptionWarning(preset EditorExportPreset.Instance, option string) (_ string) {
 	return
 }
-func (self implementation) GetExportOptionWarning(preset [1]gdclass.EditorExportPreset, option string) (_ string) {
+func (self implementation) GetOsName() (_ string)                              { return }
+func (self implementation) GetName() (_ string)                                { return }
+func (self implementation) GetLogo() (_ Texture2D.Instance)                    { return }
+func (self implementation) PollExport() (_ bool)                               { return }
+func (self implementation) GetOptionsCount() (_ int)                           { return }
+func (self implementation) GetOptionsTooltip() (_ string)                      { return }
+func (self implementation) GetOptionIcon(device int) (_ ImageTexture.Instance) { return }
+func (self implementation) GetOptionLabel(device int) (_ string)               { return }
+func (self implementation) GetOptionTooltip(device int) (_ string)             { return }
+func (self implementation) GetDeviceArchitecture(device int) (_ string)        { return }
+func (self implementation) Cleanup()                                           { return }
+func (self implementation) Run(preset EditorExportPreset.Instance, device int, debug_flags gdclass.EditorExportPlatformDebugFlags) (_ error) {
 	return
 }
-func (self implementation) GetOsName() (_ string)                                { return }
-func (self implementation) GetName() (_ string)                                  { return }
-func (self implementation) GetLogo() (_ [1]gdclass.Texture2D)                    { return }
-func (self implementation) PollExport() (_ bool)                                 { return }
-func (self implementation) GetOptionsCount() (_ int)                             { return }
-func (self implementation) GetOptionsTooltip() (_ string)                        { return }
-func (self implementation) GetOptionIcon(device int) (_ [1]gdclass.ImageTexture) { return }
-func (self implementation) GetOptionLabel(device int) (_ string)                 { return }
-func (self implementation) GetOptionTooltip(device int) (_ string)               { return }
-func (self implementation) GetDeviceArchitecture(device int) (_ string)          { return }
-func (self implementation) Cleanup()                                             { return }
-func (self implementation) Run(preset [1]gdclass.EditorExportPreset, device int, debug_flags gdclass.EditorExportPlatformDebugFlags) (_ error) {
+func (self implementation) GetRunIcon() (_ Texture2D.Instance)                                { return }
+func (self implementation) CanExport(preset EditorExportPreset.Instance, debug bool) (_ bool) { return }
+func (self implementation) HasValidExportConfiguration(preset EditorExportPreset.Instance, debug bool) (_ bool) {
 	return
 }
-func (self implementation) GetRunIcon() (_ [1]gdclass.Texture2D) { return }
-func (self implementation) CanExport(preset [1]gdclass.EditorExportPreset, debug bool) (_ bool) {
+func (self implementation) HasValidProjectConfiguration(preset EditorExportPreset.Instance) (_ bool) {
 	return
 }
-func (self implementation) HasValidExportConfiguration(preset [1]gdclass.EditorExportPreset, debug bool) (_ bool) {
+func (self implementation) GetBinaryExtensions(preset EditorExportPreset.Instance) (_ []string) {
 	return
 }
-func (self implementation) HasValidProjectConfiguration(preset [1]gdclass.EditorExportPreset) (_ bool) {
+func (self implementation) ExportProject(preset EditorExportPreset.Instance, debug bool, path string, flags gdclass.EditorExportPlatformDebugFlags) (_ error) {
 	return
 }
-func (self implementation) GetBinaryExtensions(preset [1]gdclass.EditorExportPreset) (_ []string) {
+func (self implementation) ExportPack(preset EditorExportPreset.Instance, debug bool, path string, flags gdclass.EditorExportPlatformDebugFlags) (_ error) {
 	return
 }
-func (self implementation) ExportProject(preset [1]gdclass.EditorExportPreset, debug bool, path string, flags gdclass.EditorExportPlatformDebugFlags) (_ error) {
+func (self implementation) ExportZip(preset EditorExportPreset.Instance, debug bool, path string, flags gdclass.EditorExportPlatformDebugFlags) (_ error) {
 	return
 }
-func (self implementation) ExportPack(preset [1]gdclass.EditorExportPreset, debug bool, path string, flags gdclass.EditorExportPlatformDebugFlags) (_ error) {
+func (self implementation) ExportPackPatch(preset EditorExportPreset.Instance, debug bool, path string, patches []string, flags gdclass.EditorExportPlatformDebugFlags) (_ error) {
 	return
 }
-func (self implementation) ExportZip(preset [1]gdclass.EditorExportPreset, debug bool, path string, flags gdclass.EditorExportPlatformDebugFlags) (_ error) {
-	return
-}
-func (self implementation) ExportPackPatch(preset [1]gdclass.EditorExportPreset, debug bool, path string, patches []string, flags gdclass.EditorExportPlatformDebugFlags) (_ error) {
-	return
-}
-func (self implementation) ExportZipPatch(preset [1]gdclass.EditorExportPreset, debug bool, path string, patches []string, flags gdclass.EditorExportPlatformDebugFlags) (_ error) {
+func (self implementation) ExportZipPatch(preset EditorExportPreset.Instance, debug bool, path string, patches []string, flags gdclass.EditorExportPlatformDebugFlags) (_ error) {
 	return
 }
 func (self implementation) GetPlatformFeatures() (_ []string) { return }
@@ -237,7 +236,7 @@ func (self implementation) GetDebugProtocol() (_ string)      { return }
 [b]Required.[/b]
 Returns array of platform specific features for the specified [param preset].
 */
-func (Instance) _get_preset_features(impl func(ptr unsafe.Pointer, preset [1]gdclass.EditorExportPreset) []string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_preset_features(impl func(ptr unsafe.Pointer, preset EditorExportPreset.Instance) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -309,7 +308,7 @@ func (Instance) _should_update_export_options(impl func(ptr unsafe.Pointer) bool
 [b]Optional.[/b]
 Validates [param option] and returns visibility for the specified [param preset]. Default implementation return [code]true[/code] for all options.
 */
-func (Instance) _get_export_option_visibility(impl func(ptr unsafe.Pointer, preset [1]gdclass.EditorExportPreset, option string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_export_option_visibility(impl func(ptr unsafe.Pointer, preset EditorExportPreset.Instance, option string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -326,7 +325,7 @@ func (Instance) _get_export_option_visibility(impl func(ptr unsafe.Pointer, pres
 [b]Optional.[/b]
 Validates [param option] and returns warning message for the specified [param preset]. Default implementation return empty string for all options.
 */
-func (Instance) _get_export_option_warning(impl func(ptr unsafe.Pointer, preset [1]gdclass.EditorExportPreset, option string) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_export_option_warning(impl func(ptr unsafe.Pointer, preset EditorExportPreset.Instance, option string) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -382,7 +381,7 @@ func (Instance) _get_name(impl func(ptr unsafe.Pointer) string) (cb gd.Extension
 [b]Required.[/b]
 Returns platform logo displayed in the export dialog, logo should be 32x32 adjusted to the current editor scale, see [method EditorInterface.get_editor_scale].
 */
-func (Instance) _get_logo(impl func(ptr unsafe.Pointer) [1]gdclass.Texture2D) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_logo(impl func(ptr unsafe.Pointer) Texture2D.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -440,7 +439,7 @@ func (Instance) _get_options_tooltip(impl func(ptr unsafe.Pointer) string) (cb g
 [b]Optional.[/b]
 Returns one-click deploy menu item icon for the specified [param device], icon should be 16x16 adjusted to the current editor scale, see [method EditorInterface.get_editor_scale].
 */
-func (Instance) _get_option_icon(impl func(ptr unsafe.Pointer, device int) [1]gdclass.ImageTexture) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_option_icon(impl func(ptr unsafe.Pointer, device int) ImageTexture.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var device = gd.UnsafeGet[int64](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -524,7 +523,7 @@ func (Instance) _cleanup(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCal
 This method is called when [param device] one-click deploy menu option is selected.
 Implementation should export project to a temporary location, upload and run it on the specific [param device], or perform another action associated with the menu item.
 */
-func (Instance) _run(impl func(ptr unsafe.Pointer, preset [1]gdclass.EditorExportPreset, device int, debug_flags gdclass.EditorExportPlatformDebugFlags) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _run(impl func(ptr unsafe.Pointer, preset EditorExportPreset.Instance, device int, debug_flags gdclass.EditorExportPlatformDebugFlags) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -546,7 +545,7 @@ func (Instance) _run(impl func(ptr unsafe.Pointer, preset [1]gdclass.EditorExpor
 [b]Optional.[/b]
 Returns icon of the one-click deploy menu button, icon should be 16x16 adjusted to the current editor scale, see [method EditorInterface.get_editor_scale].
 */
-func (Instance) _get_run_icon(impl func(ptr unsafe.Pointer) [1]gdclass.Texture2D) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_run_icon(impl func(ptr unsafe.Pointer) Texture2D.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -564,7 +563,7 @@ func (Instance) _get_run_icon(impl func(ptr unsafe.Pointer) [1]gdclass.Texture2D
 Returns [code]true[/code], if specified [param preset] is valid and can be exported. Use [method set_config_error] and [method set_config_missing_templates] to set error details.
 Usual implementation can call [method _has_valid_export_configuration] and [method _has_valid_project_configuration] to determine if export is possible.
 */
-func (Instance) _can_export(impl func(ptr unsafe.Pointer, preset [1]gdclass.EditorExportPreset, debug bool) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _can_export(impl func(ptr unsafe.Pointer, preset EditorExportPreset.Instance, debug bool) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -580,7 +579,7 @@ func (Instance) _can_export(impl func(ptr unsafe.Pointer, preset [1]gdclass.Edit
 [b]Required.[/b]
 Returns [code]true[/code] if export configuration is valid.
 */
-func (Instance) _has_valid_export_configuration(impl func(ptr unsafe.Pointer, preset [1]gdclass.EditorExportPreset, debug bool) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _has_valid_export_configuration(impl func(ptr unsafe.Pointer, preset EditorExportPreset.Instance, debug bool) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -596,7 +595,7 @@ func (Instance) _has_valid_export_configuration(impl func(ptr unsafe.Pointer, pr
 [b]Required.[/b]
 Returns [code]true[/code] if project configuration is valid.
 */
-func (Instance) _has_valid_project_configuration(impl func(ptr unsafe.Pointer, preset [1]gdclass.EditorExportPreset) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _has_valid_project_configuration(impl func(ptr unsafe.Pointer, preset EditorExportPreset.Instance) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -611,7 +610,7 @@ func (Instance) _has_valid_project_configuration(impl func(ptr unsafe.Pointer, p
 [b]Required.[/b]
 Returns array of supported binary extensions for the full project export.
 */
-func (Instance) _get_binary_extensions(impl func(ptr unsafe.Pointer, preset [1]gdclass.EditorExportPreset) []string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_binary_extensions(impl func(ptr unsafe.Pointer, preset EditorExportPreset.Instance) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -633,7 +632,7 @@ Creates a full project at [param path] for the specified [param preset].
 This method is called when "Export" button is pressed in the export dialog.
 This method implementation can call [method EditorExportPlatform.save_pack] or [method EditorExportPlatform.save_zip] to use default PCK/ZIP export process, or calls [method EditorExportPlatform.export_project_files] and implement custom callback for processing each exported file.
 */
-func (Instance) _export_project(impl func(ptr unsafe.Pointer, preset [1]gdclass.EditorExportPreset, debug bool, path string, flags gdclass.EditorExportPlatformDebugFlags) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _export_project(impl func(ptr unsafe.Pointer, preset EditorExportPreset.Instance, debug bool, path string, flags gdclass.EditorExportPlatformDebugFlags) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -658,7 +657,7 @@ func (Instance) _export_project(impl func(ptr unsafe.Pointer, preset [1]gdclass.
 Creates a PCK archive at [param path] for the specified [param preset].
 This method is called when "Export PCK/ZIP" button is pressed in the export dialog, with "Export as Patch" disabled, and PCK is selected as a file type.
 */
-func (Instance) _export_pack(impl func(ptr unsafe.Pointer, preset [1]gdclass.EditorExportPreset, debug bool, path string, flags gdclass.EditorExportPlatformDebugFlags) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _export_pack(impl func(ptr unsafe.Pointer, preset EditorExportPreset.Instance, debug bool, path string, flags gdclass.EditorExportPlatformDebugFlags) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -683,7 +682,7 @@ func (Instance) _export_pack(impl func(ptr unsafe.Pointer, preset [1]gdclass.Edi
 Create a ZIP archive at [param path] for the specified [param preset].
 This method is called when "Export PCK/ZIP" button is pressed in the export dialog, with "Export as Patch" disabled, and ZIP is selected as a file type.
 */
-func (Instance) _export_zip(impl func(ptr unsafe.Pointer, preset [1]gdclass.EditorExportPreset, debug bool, path string, flags gdclass.EditorExportPlatformDebugFlags) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _export_zip(impl func(ptr unsafe.Pointer, preset EditorExportPreset.Instance, debug bool, path string, flags gdclass.EditorExportPlatformDebugFlags) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -709,7 +708,7 @@ Creates a patch PCK archive at [param path] for the specified [param preset], co
 This method is called when "Export PCK/ZIP" button is pressed in the export dialog, with "Export as Patch" enabled, and PCK is selected as a file type.
 [b]Note:[/b] The patches provided in [param patches] have already been loaded when this method is called and are merely provided as context. When empty the patches defined in the export preset have been loaded instead.
 */
-func (Instance) _export_pack_patch(impl func(ptr unsafe.Pointer, preset [1]gdclass.EditorExportPreset, debug bool, path string, patches []string, flags gdclass.EditorExportPlatformDebugFlags) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _export_pack_patch(impl func(ptr unsafe.Pointer, preset EditorExportPreset.Instance, debug bool, path string, patches []string, flags gdclass.EditorExportPlatformDebugFlags) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -737,7 +736,7 @@ Create a ZIP archive at [param path] for the specified [param preset], containin
 This method is called when "Export PCK/ZIP" button is pressed in the export dialog, with "Export as Patch" enabled, and ZIP is selected as a file type.
 [b]Note:[/b] The patches provided in [param patches] have already been loaded when this method is called and are merely provided as context. When empty the patches defined in the export preset have been loaded instead.
 */
-func (Instance) _export_zip_patch(impl func(ptr unsafe.Pointer, preset [1]gdclass.EditorExportPreset, debug bool, path string, patches []string, flags gdclass.EditorExportPlatformDebugFlags) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _export_zip_patch(impl func(ptr unsafe.Pointer, preset EditorExportPreset.Instance, debug bool, path string, patches []string, flags gdclass.EditorExportPlatformDebugFlags) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 

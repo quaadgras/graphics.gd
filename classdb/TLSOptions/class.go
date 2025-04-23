@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/CryptoKey"
+import "graphics.gd/classdb/X509Certificate"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -72,9 +74,9 @@ Creates a TLS client configuration which validates certificates and their common
 You can specify a custom [param trusted_chain] of certification authorities (the default CA list will be used if [code]null[/code]), and optionally provide a [param common_name_override] if you expect the certificate to have a common name other than the server FQDN.
 [b]Note:[/b] On the Web platform, TLS verification is always enforced against the CA list of the web browser. This is considered a security feature.
 */
-func Client(trusted_chain [1]gdclass.X509Certificate, common_name_override string) [1]gdclass.TLSOptions { //gd:TLSOptions.client
+func Client(trusted_chain X509Certificate.Instance, common_name_override string) Instance { //gd:TLSOptions.client
 	self := Instance{}
-	return [1]gdclass.TLSOptions(Advanced(self).Client(trusted_chain, String.New(common_name_override)))
+	return Instance(Advanced(self).Client(trusted_chain, String.New(common_name_override)))
 }
 
 /*
@@ -82,36 +84,36 @@ Creates a TLS client configuration which validates certificates and their common
 You can specify a custom [param trusted_chain] of certification authorities (the default CA list will be used if [code]null[/code]), and optionally provide a [param common_name_override] if you expect the certificate to have a common name other than the server FQDN.
 [b]Note:[/b] On the Web platform, TLS verification is always enforced against the CA list of the web browser. This is considered a security feature.
 */
-func ClientOptions(trusted_chain [1]gdclass.X509Certificate, common_name_override string) [1]gdclass.TLSOptions { //gd:TLSOptions.client
+func ClientOptions(trusted_chain X509Certificate.Instance, common_name_override string) Instance { //gd:TLSOptions.client
 	self := Instance{}
-	return [1]gdclass.TLSOptions(Advanced(self).Client(trusted_chain, String.New(common_name_override)))
+	return Instance(Advanced(self).Client(trusted_chain, String.New(common_name_override)))
 }
 
 /*
 Creates an [b]unsafe[/b] TLS client configuration where certificate validation is optional. You can optionally provide a valid [param trusted_chain], but the common name of the certificates will never be checked. Using this configuration for purposes other than testing [b]is not recommended[/b].
 [b]Note:[/b] On the Web platform, TLS verification is always enforced against the CA list of the web browser. This is considered a security feature.
 */
-func ClientUnsafe(trusted_chain [1]gdclass.X509Certificate) [1]gdclass.TLSOptions { //gd:TLSOptions.client_unsafe
+func ClientUnsafe(trusted_chain X509Certificate.Instance) Instance { //gd:TLSOptions.client_unsafe
 	self := Instance{}
-	return [1]gdclass.TLSOptions(Advanced(self).ClientUnsafe(trusted_chain))
+	return Instance(Advanced(self).ClientUnsafe(trusted_chain))
 }
 
 /*
 Creates an [b]unsafe[/b] TLS client configuration where certificate validation is optional. You can optionally provide a valid [param trusted_chain], but the common name of the certificates will never be checked. Using this configuration for purposes other than testing [b]is not recommended[/b].
 [b]Note:[/b] On the Web platform, TLS verification is always enforced against the CA list of the web browser. This is considered a security feature.
 */
-func ClientUnsafeOptions(trusted_chain [1]gdclass.X509Certificate) [1]gdclass.TLSOptions { //gd:TLSOptions.client_unsafe
+func ClientUnsafeOptions(trusted_chain X509Certificate.Instance) Instance { //gd:TLSOptions.client_unsafe
 	self := Instance{}
-	return [1]gdclass.TLSOptions(Advanced(self).ClientUnsafe(trusted_chain))
+	return Instance(Advanced(self).ClientUnsafe(trusted_chain))
 }
 
 /*
 Creates a TLS server configuration using the provided [param key] and [param certificate].
 [b]Note:[/b] The [param certificate] should include the full certificate chain up to the signing CA (certificates file can be concatenated using a general purpose text editor).
 */
-func Server(key [1]gdclass.CryptoKey, certificate [1]gdclass.X509Certificate) [1]gdclass.TLSOptions { //gd:TLSOptions.server
+func Server(key CryptoKey.Instance, certificate X509Certificate.Instance) Instance { //gd:TLSOptions.server
 	self := Instance{}
-	return [1]gdclass.TLSOptions(Advanced(self).Server(key, certificate))
+	return Instance(Advanced(self).Server(key, certificate))
 }
 
 /*
@@ -138,22 +140,22 @@ func (self Instance) GetCommonNameOverride() string { //gd:TLSOptions.get_common
 /*
 Returns the CA [X509Certificate] chain specified when creating with [method TLSOptions.client] or [method TLSOptions.client_unsafe].
 */
-func (self Instance) GetTrustedCaChain() [1]gdclass.X509Certificate { //gd:TLSOptions.get_trusted_ca_chain
-	return [1]gdclass.X509Certificate(Advanced(self).GetTrustedCaChain())
+func (self Instance) GetTrustedCaChain() X509Certificate.Instance { //gd:TLSOptions.get_trusted_ca_chain
+	return X509Certificate.Instance(Advanced(self).GetTrustedCaChain())
 }
 
 /*
 Returns the [CryptoKey] specified when creating with [method TLSOptions.server].
 */
-func (self Instance) GetPrivateKey() [1]gdclass.CryptoKey { //gd:TLSOptions.get_private_key
-	return [1]gdclass.CryptoKey(Advanced(self).GetPrivateKey())
+func (self Instance) GetPrivateKey() CryptoKey.Instance { //gd:TLSOptions.get_private_key
+	return CryptoKey.Instance(Advanced(self).GetPrivateKey())
 }
 
 /*
 Returns the [X509Certificate] specified when creating with [method TLSOptions.server].
 */
-func (self Instance) GetOwnCertificate() [1]gdclass.X509Certificate { //gd:TLSOptions.get_own_certificate
-	return [1]gdclass.X509Certificate(Advanced(self).GetOwnCertificate())
+func (self Instance) GetOwnCertificate() X509Certificate.Instance { //gd:TLSOptions.get_own_certificate
+	return X509Certificate.Instance(Advanced(self).GetOwnCertificate())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/OpenXRIPBinding"
+import "graphics.gd/classdb/OpenXRIPBindingModifier"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -66,8 +68,8 @@ func (self Instance) GetBindingCount() int { //gd:OpenXRInteractionProfile.get_b
 /*
 Retrieve the binding at this index.
 */
-func (self Instance) GetBinding(index int) [1]gdclass.OpenXRIPBinding { //gd:OpenXRInteractionProfile.get_binding
-	return [1]gdclass.OpenXRIPBinding(Advanced(self).GetBinding(int64(index)))
+func (self Instance) GetBinding(index int) OpenXRIPBinding.Instance { //gd:OpenXRInteractionProfile.get_binding
+	return OpenXRIPBinding.Instance(Advanced(self).GetBinding(int64(index)))
 }
 
 /*
@@ -80,8 +82,8 @@ func (self Instance) GetBindingModifierCount() int { //gd:OpenXRInteractionProfi
 /*
 Get the [OpenXRBindingModifier] at this index.
 */
-func (self Instance) GetBindingModifier(index int) [1]gdclass.OpenXRIPBindingModifier { //gd:OpenXRInteractionProfile.get_binding_modifier
-	return [1]gdclass.OpenXRIPBindingModifier(Advanced(self).GetBindingModifier(int64(index)))
+func (self Instance) GetBindingModifier(index int) OpenXRIPBindingModifier.Instance { //gd:OpenXRInteractionProfile.get_binding_modifier
+	return OpenXRIPBindingModifier.Instance(Advanced(self).GetBindingModifier(int64(index)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

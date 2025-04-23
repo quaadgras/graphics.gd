@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/ArrayMesh"
+import "graphics.gd/classdb/Material"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -103,7 +105,7 @@ The [param flags] argument is the bitwise OR of, as required: One value of [enum
 [b]Note:[/b] When using indices, it is recommended to only use points, lines, or triangles.
 */
 func (self Instance) AddSurface(primitive gdclass.MeshPrimitiveType, arrays []any) { //gd:ImporterMesh.add_surface
-	Advanced(self).AddSurface(primitive, gd.EngineArrayFromSlice(arrays), gd.ArrayFromSlice[Array.Contains[Array.Any]]([1][][]any{}[0]), Dictionary.Nil, [1][1]gdclass.Material{}[0], String.New(""), int64(0))
+	Advanced(self).AddSurface(primitive, gd.EngineArrayFromSlice(arrays), gd.ArrayFromSlice[Array.Contains[Array.Any]]([1][][]any{}[0]), Dictionary.Nil, [1]Material.Instance{}[0], String.New(""), int64(0))
 }
 
 /*
@@ -115,7 +117,7 @@ The [param lods] argument is a dictionary with [float] keys and [PackedInt32Arra
 The [param flags] argument is the bitwise OR of, as required: One value of [enum Mesh.ArrayCustomFormat] left shifted by [code]ARRAY_FORMAT_CUSTOMn_SHIFT[/code] for each custom channel in use, [constant Mesh.ARRAY_FLAG_USE_DYNAMIC_UPDATE], [constant Mesh.ARRAY_FLAG_USE_8_BONE_WEIGHTS], or [constant Mesh.ARRAY_FLAG_USES_EMPTY_VERTEX_ARRAY].
 [b]Note:[/b] When using indices, it is recommended to only use points, lines, or triangles.
 */
-func (self Expanded) AddSurface(primitive gdclass.MeshPrimitiveType, arrays []any, blend_shapes [][]any, lods map[float32][]int32, material [1]gdclass.Material, name string, flags int) { //gd:ImporterMesh.add_surface
+func (self Expanded) AddSurface(primitive gdclass.MeshPrimitiveType, arrays []any, blend_shapes [][]any, lods map[float32][]int32, material Material.Instance, name string, flags int) { //gd:ImporterMesh.add_surface
 	Advanced(self).AddSurface(primitive, gd.EngineArrayFromSlice(arrays), gd.ArrayFromSlice[Array.Contains[Array.Any]](blend_shapes), gd.DictionaryFromMap(lods), material, String.New(name), int64(flags))
 }
 
@@ -178,8 +180,8 @@ func (self Instance) GetSurfaceLodIndices(surface_idx int, lod_idx int) []int32 
 /*
 Returns a [Material] in a given surface. Surface is rendered using this material.
 */
-func (self Instance) GetSurfaceMaterial(surface_idx int) [1]gdclass.Material { //gd:ImporterMesh.get_surface_material
-	return [1]gdclass.Material(Advanced(self).GetSurfaceMaterial(int64(surface_idx)))
+func (self Instance) GetSurfaceMaterial(surface_idx int) Material.Instance { //gd:ImporterMesh.get_surface_material
+	return Material.Instance(Advanced(self).GetSurfaceMaterial(int64(surface_idx)))
 }
 
 /*
@@ -199,7 +201,7 @@ func (self Instance) SetSurfaceName(surface_idx int, name string) { //gd:Importe
 /*
 Sets a [Material] for a given surface. Surface will be rendered using this material.
 */
-func (self Instance) SetSurfaceMaterial(surface_idx int, material [1]gdclass.Material) { //gd:ImporterMesh.set_surface_material
+func (self Instance) SetSurfaceMaterial(surface_idx int, material Material.Instance) { //gd:ImporterMesh.set_surface_material
 	Advanced(self).SetSurfaceMaterial(int64(surface_idx), material)
 }
 
@@ -219,8 +221,8 @@ Returns the mesh data represented by this [ImporterMesh] as a usable [ArrayMesh]
 This method caches the returned mesh, and subsequent calls will return the cached data until [method clear] is called.
 If not yet cached and [param base_mesh] is provided, [param base_mesh] will be used and mutated.
 */
-func (self Instance) GetMesh() [1]gdclass.ArrayMesh { //gd:ImporterMesh.get_mesh
-	return [1]gdclass.ArrayMesh(Advanced(self).GetMesh([1][1]gdclass.ArrayMesh{}[0]))
+func (self Instance) GetMesh() ArrayMesh.Instance { //gd:ImporterMesh.get_mesh
+	return ArrayMesh.Instance(Advanced(self).GetMesh([1]ArrayMesh.Instance{}[0]))
 }
 
 /*
@@ -228,8 +230,8 @@ Returns the mesh data represented by this [ImporterMesh] as a usable [ArrayMesh]
 This method caches the returned mesh, and subsequent calls will return the cached data until [method clear] is called.
 If not yet cached and [param base_mesh] is provided, [param base_mesh] will be used and mutated.
 */
-func (self Expanded) GetMesh(base_mesh [1]gdclass.ArrayMesh) [1]gdclass.ArrayMesh { //gd:ImporterMesh.get_mesh
-	return [1]gdclass.ArrayMesh(Advanced(self).GetMesh(base_mesh))
+func (self Expanded) GetMesh(base_mesh ArrayMesh.Instance) ArrayMesh.Instance { //gd:ImporterMesh.get_mesh
+	return ArrayMesh.Instance(Advanced(self).GetMesh(base_mesh))
 }
 
 /*

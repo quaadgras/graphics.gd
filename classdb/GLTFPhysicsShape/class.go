@@ -11,7 +11,10 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/CollisionShape3D"
+import "graphics.gd/classdb/ImporterMesh"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Shape3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -60,53 +63,53 @@ type Any interface {
 /*
 Creates a new GLTFPhysicsShape instance from the given Godot [CollisionShape3D] node.
 */
-func FromNode(shape_node [1]gdclass.CollisionShape3D) [1]gdclass.GLTFPhysicsShape { //gd:GLTFPhysicsShape.from_node
+func FromNode(shape_node CollisionShape3D.Instance) Instance { //gd:GLTFPhysicsShape.from_node
 	self := Instance{}
-	return [1]gdclass.GLTFPhysicsShape(Advanced(self).FromNode(shape_node))
+	return Instance(Advanced(self).FromNode(shape_node))
 }
 
 /*
 Converts this GLTFPhysicsShape instance into a Godot [CollisionShape3D] node.
 */
-func (self Instance) ToNode() [1]gdclass.CollisionShape3D { //gd:GLTFPhysicsShape.to_node
-	return [1]gdclass.CollisionShape3D(Advanced(self).ToNode(false))
+func (self Instance) ToNode() CollisionShape3D.Instance { //gd:GLTFPhysicsShape.to_node
+	return CollisionShape3D.Instance(Advanced(self).ToNode(false))
 }
 
 /*
 Converts this GLTFPhysicsShape instance into a Godot [CollisionShape3D] node.
 */
-func (self Expanded) ToNode(cache_shapes bool) [1]gdclass.CollisionShape3D { //gd:GLTFPhysicsShape.to_node
-	return [1]gdclass.CollisionShape3D(Advanced(self).ToNode(cache_shapes))
+func (self Expanded) ToNode(cache_shapes bool) CollisionShape3D.Instance { //gd:GLTFPhysicsShape.to_node
+	return CollisionShape3D.Instance(Advanced(self).ToNode(cache_shapes))
 }
 
 /*
 Creates a new GLTFPhysicsShape instance from the given Godot [Shape3D] resource.
 */
-func FromResource(shape_resource [1]gdclass.Shape3D) [1]gdclass.GLTFPhysicsShape { //gd:GLTFPhysicsShape.from_resource
+func FromResource(shape_resource Shape3D.Instance) Instance { //gd:GLTFPhysicsShape.from_resource
 	self := Instance{}
-	return [1]gdclass.GLTFPhysicsShape(Advanced(self).FromResource(shape_resource))
+	return Instance(Advanced(self).FromResource(shape_resource))
 }
 
 /*
 Converts this GLTFPhysicsShape instance into a Godot [Shape3D] resource.
 */
-func (self Instance) ToResource() [1]gdclass.Shape3D { //gd:GLTFPhysicsShape.to_resource
-	return [1]gdclass.Shape3D(Advanced(self).ToResource(false))
+func (self Instance) ToResource() Shape3D.Instance { //gd:GLTFPhysicsShape.to_resource
+	return Shape3D.Instance(Advanced(self).ToResource(false))
 }
 
 /*
 Converts this GLTFPhysicsShape instance into a Godot [Shape3D] resource.
 */
-func (self Expanded) ToResource(cache_shapes bool) [1]gdclass.Shape3D { //gd:GLTFPhysicsShape.to_resource
-	return [1]gdclass.Shape3D(Advanced(self).ToResource(cache_shapes))
+func (self Expanded) ToResource(cache_shapes bool) Shape3D.Instance { //gd:GLTFPhysicsShape.to_resource
+	return Shape3D.Instance(Advanced(self).ToResource(cache_shapes))
 }
 
 /*
 Creates a new GLTFPhysicsShape instance by parsing the given [Dictionary].
 */
-func FromDictionary(dictionary Structure) [1]gdclass.GLTFPhysicsShape { //gd:GLTFPhysicsShape.from_dictionary
+func FromDictionary(dictionary Structure) Instance { //gd:GLTFPhysicsShape.from_dictionary
 	self := Instance{}
-	return [1]gdclass.GLTFPhysicsShape(Advanced(self).FromDictionary(gd.DictionaryFromMap(dictionary)))
+	return Instance(Advanced(self).FromDictionary(gd.DictionaryFromMap(dictionary)))
 }
 
 /*
@@ -183,11 +186,11 @@ func (self Instance) SetMeshIndex(value int) {
 	class(self).SetMeshIndex(int64(value))
 }
 
-func (self Instance) ImporterMesh() [1]gdclass.ImporterMesh {
-	return [1]gdclass.ImporterMesh(class(self).GetImporterMesh())
+func (self Instance) ImporterMesh() ImporterMesh.Instance {
+	return ImporterMesh.Instance(class(self).GetImporterMesh())
 }
 
-func (self Instance) SetImporterMesh(value [1]gdclass.ImporterMesh) {
+func (self Instance) SetImporterMesh(value ImporterMesh.Instance) {
 	class(self).SetImporterMesh(value)
 }
 

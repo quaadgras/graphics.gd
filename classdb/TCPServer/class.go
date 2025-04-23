@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/StreamPeerTCP"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -100,8 +101,8 @@ func (self Instance) GetLocalPort() int { //gd:TCPServer.get_local_port
 /*
 If a connection is available, returns a StreamPeerTCP with the connection.
 */
-func (self Instance) TakeConnection() [1]gdclass.StreamPeerTCP { //gd:TCPServer.take_connection
-	return [1]gdclass.StreamPeerTCP(Advanced(self).TakeConnection())
+func (self Instance) TakeConnection() StreamPeerTCP.Instance { //gd:TCPServer.take_connection
+	return StreamPeerTCP.Instance(Advanced(self).TakeConnection())
 }
 
 /*

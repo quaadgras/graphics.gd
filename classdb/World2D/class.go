@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/PhysicsDirectSpaceState2D"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -86,8 +87,8 @@ func (self Instance) NavigationMap() RID.Any {
 	return RID.Any(class(self).GetNavigationMap())
 }
 
-func (self Instance) DirectSpaceState() [1]gdclass.PhysicsDirectSpaceState2D {
-	return [1]gdclass.PhysicsDirectSpaceState2D(class(self).GetDirectSpaceState())
+func (self Instance) DirectSpaceState() PhysicsDirectSpaceState2D.Instance {
+	return PhysicsDirectSpaceState2D.Instance(class(self).GetDirectSpaceState())
 }
 
 //go:nosplit

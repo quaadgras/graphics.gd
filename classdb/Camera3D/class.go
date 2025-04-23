@@ -11,6 +11,9 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/CameraAttributes"
+import "graphics.gd/classdb/Compositor"
+import "graphics.gd/classdb/Environment"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/variant/Array"
@@ -244,27 +247,27 @@ func (self Instance) SetCullMask(value int) {
 	class(self).SetCullMask(int64(value))
 }
 
-func (self Instance) Environment() [1]gdclass.Environment {
-	return [1]gdclass.Environment(class(self).GetEnvironment())
+func (self Instance) Environment() Environment.Instance {
+	return Environment.Instance(class(self).GetEnvironment())
 }
 
-func (self Instance) SetEnvironment(value [1]gdclass.Environment) {
+func (self Instance) SetEnvironment(value Environment.Instance) {
 	class(self).SetEnvironment(value)
 }
 
-func (self Instance) Attributes() [1]gdclass.CameraAttributes {
-	return [1]gdclass.CameraAttributes(class(self).GetAttributes())
+func (self Instance) Attributes() CameraAttributes.Instance {
+	return CameraAttributes.Instance(class(self).GetAttributes())
 }
 
-func (self Instance) SetAttributes(value [1]gdclass.CameraAttributes) {
+func (self Instance) SetAttributes(value CameraAttributes.Instance) {
 	class(self).SetAttributes(value)
 }
 
-func (self Instance) Compositor() [1]gdclass.Compositor {
-	return [1]gdclass.Compositor(class(self).GetCompositor())
+func (self Instance) Compositor() Compositor.Instance {
+	return Compositor.Instance(class(self).GetCompositor())
 }
 
-func (self Instance) SetCompositor(value [1]gdclass.Compositor) {
+func (self Instance) SetCompositor(value Compositor.Instance) {
 	class(self).SetCompositor(value)
 }
 

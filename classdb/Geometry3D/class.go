@@ -47,6 +47,8 @@ var _ = slices.Delete[[]struct{}, struct{}]
 /*
 Provides a set of helper functions to create geometric shapes, compute intersections between shapes, and process various other geometric operations in 3D.
 */
+type Instance [1]gdclass.Geometry3D
+
 var self [1]gdclass.Geometry3D
 var once sync.Once
 

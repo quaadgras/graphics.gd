@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Material"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/VisualInstance3D"
@@ -93,19 +94,19 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) MaterialOverride() [1]gdclass.Material {
-	return [1]gdclass.Material(class(self).GetMaterialOverride())
+func (self Instance) MaterialOverride() Material.Instance {
+	return Material.Instance(class(self).GetMaterialOverride())
 }
 
-func (self Instance) SetMaterialOverride(value [1]gdclass.Material) {
+func (self Instance) SetMaterialOverride(value Material.Instance) {
 	class(self).SetMaterialOverride(value)
 }
 
-func (self Instance) MaterialOverlay() [1]gdclass.Material {
-	return [1]gdclass.Material(class(self).GetMaterialOverlay())
+func (self Instance) MaterialOverlay() Material.Instance {
+	return Material.Instance(class(self).GetMaterialOverlay())
 }
 
-func (self Instance) SetMaterialOverlay(value [1]gdclass.Material) {
+func (self Instance) SetMaterialOverlay(value Material.Instance) {
 	class(self).SetMaterialOverlay(value)
 }
 

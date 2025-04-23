@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Material"
 import "graphics.gd/classdb/Mesh"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
@@ -85,13 +86,13 @@ type Any interface {
 Begin a new surface.
 */
 func (self Instance) SurfaceBegin(primitive gdclass.MeshPrimitiveType) { //gd:ImmediateMesh.surface_begin
-	Advanced(self).SurfaceBegin(primitive, [1][1]gdclass.Material{}[0])
+	Advanced(self).SurfaceBegin(primitive, [1]Material.Instance{}[0])
 }
 
 /*
 Begin a new surface.
 */
-func (self Expanded) SurfaceBegin(primitive gdclass.MeshPrimitiveType, material [1]gdclass.Material) { //gd:ImmediateMesh.surface_begin
+func (self Expanded) SurfaceBegin(primitive gdclass.MeshPrimitiveType, material Material.Instance) { //gd:ImmediateMesh.surface_begin
 	Advanced(self).SurfaceBegin(primitive, material)
 }
 

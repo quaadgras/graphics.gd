@@ -13,6 +13,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Material"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Texture3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -117,11 +118,11 @@ func (self Instance) SetEdgeFade(value Float.X) {
 	class(self).SetEdgeFade(float64(value))
 }
 
-func (self Instance) DensityTexture() [1]gdclass.Texture3D {
-	return [1]gdclass.Texture3D(class(self).GetDensityTexture())
+func (self Instance) DensityTexture() Texture3D.Instance {
+	return Texture3D.Instance(class(self).GetDensityTexture())
 }
 
-func (self Instance) SetDensityTexture(value [1]gdclass.Texture3D) {
+func (self Instance) SetDensityTexture(value Texture3D.Instance) {
 	class(self).SetDensityTexture(value)
 }
 

@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/WebRTCDataChannel"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -137,8 +138,8 @@ Valid [param options] are:
 [/codeblock]
 [b]Note:[/b] You must keep a reference to channels created this way, or it will be closed.
 */
-func (self Instance) CreateDataChannel(label string) [1]gdclass.WebRTCDataChannel { //gd:WebRTCPeerConnection.create_data_channel
-	return [1]gdclass.WebRTCDataChannel(Advanced(self).CreateDataChannel(String.New(label), Dictionary.Nil))
+func (self Instance) CreateDataChannel(label string) WebRTCDataChannel.Instance { //gd:WebRTCPeerConnection.create_data_channel
+	return WebRTCDataChannel.Instance(Advanced(self).CreateDataChannel(String.New(label), Dictionary.Nil))
 }
 
 /*
@@ -162,8 +163,8 @@ Valid [param options] are:
 [/codeblock]
 [b]Note:[/b] You must keep a reference to channels created this way, or it will be closed.
 */
-func (self Expanded) CreateDataChannel(label string, options Options) [1]gdclass.WebRTCDataChannel { //gd:WebRTCPeerConnection.create_data_channel
-	return [1]gdclass.WebRTCDataChannel(Advanced(self).CreateDataChannel(String.New(label), gd.DictionaryFromMap(options)))
+func (self Expanded) CreateDataChannel(label string, options Options) WebRTCDataChannel.Instance { //gd:WebRTCPeerConnection.create_data_channel
+	return WebRTCDataChannel.Instance(Advanced(self).CreateDataChannel(String.New(label), gd.DictionaryFromMap(options)))
 }
 
 /*
@@ -459,7 +460,7 @@ func (self Instance) OnIceCandidateCreated(cb func(media string, index int, name
 	self[0].AsObject()[0].Connect(gd.NewStringName("ice_candidate_created"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnDataChannelReceived(cb func(channel [1]gdclass.WebRTCDataChannel)) {
+func (self Instance) OnDataChannelReceived(cb func(channel WebRTCDataChannel.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("data_channel_received"), gd.NewCallable(cb), 0)
 }
 

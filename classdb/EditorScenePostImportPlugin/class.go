@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -66,16 +68,16 @@ type Interface interface {
 	//Should return [code]true[/code] if the 3D view of the import dialog needs to update when changing the given option.
 	GetInternalOptionUpdateViewRequired(category int, option string) any
 	//Process a specific node or resource for a given category.
-	InternalProcess(category int, base_node [1]gdclass.Node, node [1]gdclass.Node, resource [1]gdclass.Resource)
+	InternalProcess(category int, base_node Node.Instance, node Node.Instance, resource Resource.Instance)
 	//Override to add general import options. These will appear in the main import dock on the editor. Add options via [method add_import_option] and [method add_import_option_advanced].
 	GetImportOptions(path string)
 	//Should return [code]true[/code] to show the given option, [code]false[/code] to hide the given option, or [code]null[/code] to ignore.
 	GetOptionVisibility(path string, for_animation bool, option string) any
 	//Pre Process the scene. This function is called right after the scene format loader loaded the scene and no changes have been made.
 	//Pre process may be used to adjust internal import options in the [code]"nodes"[/code], [code]"meshes"[/code], [code]"animations"[/code] or [code]"materials"[/code] keys inside [code]get_option_value("_subresources")[/code].
-	PreProcess(scene [1]gdclass.Node)
+	PreProcess(scene Node.Instance)
 	//Post process the scene. This function is called after the final scene has been configured.
-	PostProcess(scene [1]gdclass.Node)
+	PostProcess(scene Node.Instance)
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -90,15 +92,15 @@ func (self implementation) GetInternalOptionVisibility(category int, for_animati
 func (self implementation) GetInternalOptionUpdateViewRequired(category int, option string) (_ any) {
 	return
 }
-func (self implementation) InternalProcess(category int, base_node [1]gdclass.Node, node [1]gdclass.Node, resource [1]gdclass.Resource) {
+func (self implementation) InternalProcess(category int, base_node Node.Instance, node Node.Instance, resource Resource.Instance) {
 	return
 }
 func (self implementation) GetImportOptions(path string) { return }
 func (self implementation) GetOptionVisibility(path string, for_animation bool, option string) (_ any) {
 	return
 }
-func (self implementation) PreProcess(scene [1]gdclass.Node)  { return }
-func (self implementation) PostProcess(scene [1]gdclass.Node) { return }
+func (self implementation) PreProcess(scene Node.Instance)  { return }
+func (self implementation) PostProcess(scene Node.Instance) { return }
 
 /*
 Override to add internal import options. These will appear in the 3D scene import dialog. Add options via [method add_import_option] and [method add_import_option_advanced].
@@ -153,7 +155,7 @@ func (Instance) _get_internal_option_update_view_required(impl func(ptr unsafe.P
 /*
 Process a specific node or resource for a given category.
 */
-func (Instance) _internal_process(impl func(ptr unsafe.Pointer, category int, base_node [1]gdclass.Node, node [1]gdclass.Node, resource [1]gdclass.Resource)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _internal_process(impl func(ptr unsafe.Pointer, category int, base_node Node.Instance, node Node.Instance, resource Resource.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var category = gd.UnsafeGet[int64](p_args, 0)
 		var base_node = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
@@ -207,7 +209,7 @@ func (Instance) _get_option_visibility(impl func(ptr unsafe.Pointer, path string
 Pre Process the scene. This function is called right after the scene format loader loaded the scene and no changes have been made.
 Pre process may be used to adjust internal import options in the [code]"nodes"[/code], [code]"meshes"[/code], [code]"animations"[/code] or [code]"materials"[/code] keys inside [code]get_option_value("_subresources")[/code].
 */
-func (Instance) _pre_process(impl func(ptr unsafe.Pointer, scene [1]gdclass.Node)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _pre_process(impl func(ptr unsafe.Pointer, scene Node.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var scene = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -220,7 +222,7 @@ func (Instance) _pre_process(impl func(ptr unsafe.Pointer, scene [1]gdclass.Node
 /*
 Post process the scene. This function is called after the final scene has been configured.
 */
-func (Instance) _post_process(impl func(ptr unsafe.Pointer, scene [1]gdclass.Node)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _post_process(impl func(ptr unsafe.Pointer, scene Node.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var scene = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 

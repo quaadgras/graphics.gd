@@ -15,6 +15,7 @@ import "graphics.gd/classdb/BaseButton"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -119,11 +120,11 @@ func (self Instance) SetText(value string) {
 	class(self).SetText(String.New(value))
 }
 
-func (self Instance) Icon() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetButtonIcon())
+func (self Instance) Icon() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetButtonIcon())
 }
 
-func (self Instance) SetIcon(value [1]gdclass.Texture2D) {
+func (self Instance) SetIcon(value Texture2D.Instance) {
 	class(self).SetButtonIcon(value)
 }
 

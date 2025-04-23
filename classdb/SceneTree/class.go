@@ -12,6 +12,12 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/MainLoop"
+import "graphics.gd/classdb/MultiplayerAPI"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/PackedScene"
+import "graphics.gd/classdb/SceneTreeTimer"
+import "graphics.gd/classdb/Tween"
+import "graphics.gd/classdb/Window"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -93,8 +99,8 @@ public async Task SomeFunction()
 [/codeblocks]
 [b]Note:[/b] The timer is always updated [i]after[/i] all of the nodes in the tree. A node's [method Node._process] method would be called before the timer updates (or [method Node._physics_process] if [param process_in_physics] is set to [code]true[/code]).
 */
-func (self Instance) CreateTimer(time_sec Float.X) [1]gdclass.SceneTreeTimer { //gd:SceneTree.create_timer
-	return [1]gdclass.SceneTreeTimer(Advanced(self).CreateTimer(float64(time_sec), true, false, false))
+func (self Instance) CreateTimer(time_sec Float.X) SceneTreeTimer.Instance { //gd:SceneTree.create_timer
+	return SceneTreeTimer.Instance(Advanced(self).CreateTimer(float64(time_sec), true, false, false))
 }
 
 /*
@@ -125,23 +131,23 @@ public async Task SomeFunction()
 [/codeblocks]
 [b]Note:[/b] The timer is always updated [i]after[/i] all of the nodes in the tree. A node's [method Node._process] method would be called before the timer updates (or [method Node._physics_process] if [param process_in_physics] is set to [code]true[/code]).
 */
-func (self Expanded) CreateTimer(time_sec Float.X, process_always bool, process_in_physics bool, ignore_time_scale bool) [1]gdclass.SceneTreeTimer { //gd:SceneTree.create_timer
-	return [1]gdclass.SceneTreeTimer(Advanced(self).CreateTimer(float64(time_sec), process_always, process_in_physics, ignore_time_scale))
+func (self Expanded) CreateTimer(time_sec Float.X, process_always bool, process_in_physics bool, ignore_time_scale bool) SceneTreeTimer.Instance { //gd:SceneTree.create_timer
+	return SceneTreeTimer.Instance(Advanced(self).CreateTimer(float64(time_sec), process_always, process_in_physics, ignore_time_scale))
 }
 
 /*
 Creates and returns a new [Tween] processed in this tree. The Tween will start automatically on the next process frame or physics frame (depending on its [enum Tween.TweenProcessMode]).
 [b]Note:[/b] A [Tween] created using this method is not bound to any [Node]. It may keep working until there is nothing left to animate. If you want the [Tween] to be automatically killed when the [Node] is freed, use [method Node.create_tween] or [method Tween.bind_node].
 */
-func (self Instance) CreateTween() [1]gdclass.Tween { //gd:SceneTree.create_tween
-	return [1]gdclass.Tween(Advanced(self).CreateTween())
+func (self Instance) CreateTween() Tween.Instance { //gd:SceneTree.create_tween
+	return Tween.Instance(Advanced(self).CreateTween())
 }
 
 /*
 Returns an [Array] of currently existing [Tween]s in the tree, including paused tweens.
 */
-func (self Instance) GetProcessedTweens() [][1]gdclass.Tween { //gd:SceneTree.get_processed_tweens
-	return [][1]gdclass.Tween(gd.ArrayAs[[][1]gdclass.Tween](gd.InternalArray(Advanced(self).GetProcessedTweens())))
+func (self Instance) GetProcessedTweens() []Tween.Instance { //gd:SceneTree.get_processed_tweens
+	return []Tween.Instance(gd.ArrayAs[[]Tween.Instance](gd.InternalArray(Advanced(self).GetProcessedTweens())))
 }
 
 /*
@@ -251,15 +257,15 @@ func (self Instance) SetGroup(group string, property string, value any) { //gd:S
 /*
 Returns an [Array] containing all nodes inside this tree, that have been added to the given [param group], in scene hierarchy order.
 */
-func (self Instance) GetNodesInGroup(group string) [][1]gdclass.Node { //gd:SceneTree.get_nodes_in_group
-	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](gd.InternalArray(Advanced(self).GetNodesInGroup(String.Name(String.New(group))))))
+func (self Instance) GetNodesInGroup(group string) []Node.Instance { //gd:SceneTree.get_nodes_in_group
+	return []Node.Instance(gd.ArrayAs[[]Node.Instance](gd.InternalArray(Advanced(self).GetNodesInGroup(String.Name(String.New(group))))))
 }
 
 /*
 Returns the first [Node] found inside the tree, that has been added to the given [param group], in scene hierarchy order. Returns [code]null[/code] if no match is found. See also [method get_nodes_in_group].
 */
-func (self Instance) GetFirstNodeInGroup(group string) [1]gdclass.Node { //gd:SceneTree.get_first_node_in_group
-	return [1]gdclass.Node(Advanced(self).GetFirstNodeInGroup(String.Name(String.New(group))))
+func (self Instance) GetFirstNodeInGroup(group string) Node.Instance { //gd:SceneTree.get_first_node_in_group
+	return Node.Instance(Advanced(self).GetFirstNodeInGroup(String.Name(String.New(group))))
 }
 
 /*
@@ -286,7 +292,7 @@ Returns [constant OK] on success, [constant ERR_CANT_CREATE] if the scene cannot
 2. At the end of the frame, the formerly current scene, already removed from the tree, will be deleted (freed from memory) and then the new scene will be instantiated and added to the tree. [method Node.get_tree] and [member current_scene] will be back to working as usual.
 This ensures that both scenes aren't running at the same time, while still freeing the previous scene in a safe way similar to [method Node.queue_free].
 */
-func (self Instance) ChangeSceneToPacked(packed_scene [1]gdclass.PackedScene) error { //gd:SceneTree.change_scene_to_packed
+func (self Instance) ChangeSceneToPacked(packed_scene PackedScene.Instance) error { //gd:SceneTree.change_scene_to_packed
 	return error(gd.ToError(Advanced(self).ChangeSceneToPacked(packed_scene)))
 }
 
@@ -309,7 +315,7 @@ func (self Instance) UnloadCurrentScene() { //gd:SceneTree.unload_current_scene
 Sets a custom [MultiplayerAPI] with the given [param root_path] (controlling also the relative subpaths), or override the default one if [param root_path] is empty.
 [b]Note:[/b] No [MultiplayerAPI] must be configured for the subpath containing [param root_path], nested custom multiplayers are not allowed. I.e. if one is configured for [code]"/root/Foo"[/code] setting one for [code]"/root/Foo/Bar"[/code] will cause an error.
 */
-func (self Instance) SetMultiplayer(multiplayer [1]gdclass.MultiplayerAPI) { //gd:SceneTree.set_multiplayer
+func (self Instance) SetMultiplayer(multiplayer MultiplayerAPI.Instance) { //gd:SceneTree.set_multiplayer
 	Advanced(self).SetMultiplayer(multiplayer, Path.ToNode(String.New("")))
 }
 
@@ -317,22 +323,29 @@ func (self Instance) SetMultiplayer(multiplayer [1]gdclass.MultiplayerAPI) { //g
 Sets a custom [MultiplayerAPI] with the given [param root_path] (controlling also the relative subpaths), or override the default one if [param root_path] is empty.
 [b]Note:[/b] No [MultiplayerAPI] must be configured for the subpath containing [param root_path], nested custom multiplayers are not allowed. I.e. if one is configured for [code]"/root/Foo"[/code] setting one for [code]"/root/Foo/Bar"[/code] will cause an error.
 */
-func (self Expanded) SetMultiplayer(multiplayer [1]gdclass.MultiplayerAPI, root_path string) { //gd:SceneTree.set_multiplayer
+func (self Expanded) SetMultiplayer(multiplayer MultiplayerAPI.Instance, root_path string) { //gd:SceneTree.set_multiplayer
 	Advanced(self).SetMultiplayer(multiplayer, Path.ToNode(String.New(root_path)))
 }
 
 /*
 Searches for the [MultiplayerAPI] configured for the given path, if one does not exist it searches the parent paths until one is found. If the path is empty, or none is found, the default one is returned. See [method set_multiplayer].
 */
-func (self Instance) GetMultiplayer() [1]gdclass.MultiplayerAPI { //gd:SceneTree.get_multiplayer
-	return [1]gdclass.MultiplayerAPI(Advanced(self).GetMultiplayer(Path.ToNode(String.New(""))))
+func (self Instance) GetMultiplayer() MultiplayerAPI.Instance { //gd:SceneTree.get_multiplayer
+	return MultiplayerAPI.Instance(Advanced(self).GetMultiplayer(Path.ToNode(String.New(""))))
 }
 
 /*
 Searches for the [MultiplayerAPI] configured for the given path, if one does not exist it searches the parent paths until one is found. If the path is empty, or none is found, the default one is returned. See [method set_multiplayer].
 */
-func (self Expanded) GetMultiplayer(for_path string) [1]gdclass.MultiplayerAPI { //gd:SceneTree.get_multiplayer
-	return [1]gdclass.MultiplayerAPI(Advanced(self).GetMultiplayer(Path.ToNode(String.New(for_path))))
+func (self Expanded) GetMultiplayer(for_path string) MultiplayerAPI.Instance { //gd:SceneTree.get_multiplayer
+	return MultiplayerAPI.Instance(Advanced(self).GetMultiplayer(Path.ToNode(String.New(for_path))))
+}
+
+/*
+Returns the [SceneTree] that contains this node. If this node is not inside the tree, generates an error and returns [code]null[/code]. See also [method is_inside_tree].
+*/
+func Get(peer Node.Instance) Instance { //gd:Node.get_tree
+	return Instance(Node.Advanced(peer).GetTree())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -401,24 +414,24 @@ func (self Instance) SetPaused(value bool) {
 	class(self).SetPause(value)
 }
 
-func (self Instance) EditedSceneRoot() [1]gdclass.Node {
-	return [1]gdclass.Node(class(self).GetEditedSceneRoot())
+func (self Instance) EditedSceneRoot() Node.Instance {
+	return Node.Instance(class(self).GetEditedSceneRoot())
 }
 
-func (self Instance) SetEditedSceneRoot(value [1]gdclass.Node) {
+func (self Instance) SetEditedSceneRoot(value Node.Instance) {
 	class(self).SetEditedSceneRoot(value)
 }
 
-func (self Instance) CurrentScene() [1]gdclass.Node {
-	return [1]gdclass.Node(class(self).GetCurrentScene())
+func (self Instance) CurrentScene() Node.Instance {
+	return Node.Instance(class(self).GetCurrentScene())
 }
 
-func (self Instance) SetCurrentScene(value [1]gdclass.Node) {
+func (self Instance) SetCurrentScene(value Node.Instance) {
 	class(self).SetCurrentScene(value)
 }
 
-func (self Instance) Root() [1]gdclass.Window {
-	return [1]gdclass.Window(class(self).GetRoot())
+func (self Instance) Root() Window.Instance {
+	return Window.Instance(class(self).GetRoot())
 }
 
 func (self Instance) MultiplayerPoll() bool {
@@ -1004,19 +1017,19 @@ func (self Instance) OnTreeProcessModeChanged(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("tree_process_mode_changed"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnNodeAdded(cb func(node [1]gdclass.Node)) {
+func (self Instance) OnNodeAdded(cb func(node Node.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("node_added"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnNodeRemoved(cb func(node [1]gdclass.Node)) {
+func (self Instance) OnNodeRemoved(cb func(node Node.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("node_removed"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnNodeRenamed(cb func(node [1]gdclass.Node)) {
+func (self Instance) OnNodeRenamed(cb func(node Node.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("node_renamed"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnNodeConfigurationWarningChanged(cb func(node [1]gdclass.Node)) {
+func (self Instance) OnNodeConfigurationWarningChanged(cb func(node Node.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("node_configuration_warning_changed"), gd.NewCallable(cb), 0)
 }
 

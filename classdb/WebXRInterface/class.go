@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/XRControllerTracker"
 import "graphics.gd/classdb/XRInterface"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -176,8 +177,8 @@ Use this method to get information about the input source that triggered one of 
 - [signal squeeze]
 - [signal squeezestart]
 */
-func (self Instance) GetInputSourceTracker(input_source_id int) [1]gdclass.XRControllerTracker { //gd:WebXRInterface.get_input_source_tracker
-	return [1]gdclass.XRControllerTracker(Advanced(self).GetInputSourceTracker(int64(input_source_id)))
+func (self Instance) GetInputSourceTracker(input_source_id int) XRControllerTracker.Instance { //gd:WebXRInterface.get_input_source_tracker
+	return XRControllerTracker.Instance(Advanced(self).GetInputSourceTracker(int64(input_source_id)))
 }
 
 /*

@@ -213,25 +213,25 @@ func (self Instance) ClearMipmaps() { //gd:Image.clear_mipmaps
 /*
 Creates an empty image of given size and format. See [enum Format] constants. If [param use_mipmaps] is [code]true[/code], then generate mipmaps for this image. See the [method generate_mipmaps].
 */
-func Create(width int, height int, use_mipmaps bool, format gdclass.ImageFormat) [1]gdclass.Image { //gd:Image.create
+func Create(width int, height int, use_mipmaps bool, format gdclass.ImageFormat) Instance { //gd:Image.create
 	self := Instance{}
-	return [1]gdclass.Image(Advanced(self).Create(int64(width), int64(height), use_mipmaps, format))
+	return Instance(Advanced(self).Create(int64(width), int64(height), use_mipmaps, format))
 }
 
 /*
 Creates an empty image of given size and format. See [enum Format] constants. If [param use_mipmaps] is [code]true[/code], then generate mipmaps for this image. See the [method generate_mipmaps].
 */
-func CreateEmpty(width int, height int, use_mipmaps bool, format gdclass.ImageFormat) [1]gdclass.Image { //gd:Image.create_empty
+func CreateEmpty(width int, height int, use_mipmaps bool, format gdclass.ImageFormat) Instance { //gd:Image.create_empty
 	self := Instance{}
-	return [1]gdclass.Image(Advanced(self).CreateEmpty(int64(width), int64(height), use_mipmaps, format))
+	return Instance(Advanced(self).CreateEmpty(int64(width), int64(height), use_mipmaps, format))
 }
 
 /*
 Creates a new image of given size and format. See [enum Format] constants. Fills the image with the given raw data. If [param use_mipmaps] is [code]true[/code] then loads mipmaps for this image from [param data]. See [method generate_mipmaps].
 */
-func CreateFromData(width int, height int, use_mipmaps bool, format gdclass.ImageFormat, data []byte) [1]gdclass.Image { //gd:Image.create_from_data
+func CreateFromData(width int, height int, use_mipmaps bool, format gdclass.ImageFormat, data []byte) Instance { //gd:Image.create_from_data
 	self := Instance{}
-	return [1]gdclass.Image(Advanced(self).CreateFromData(int64(width), int64(height), use_mipmaps, format, Packed.Bytes(Packed.New(data...))))
+	return Instance(Advanced(self).CreateFromData(int64(width), int64(height), use_mipmaps, format, Packed.Bytes(Packed.New(data...))))
 }
 
 /*
@@ -260,9 +260,9 @@ func (self Instance) Load(path string) error { //gd:Image.load
 /*
 Creates a new [Image] and loads data from the specified file.
 */
-func LoadFromFile(path string) [1]gdclass.Image { //gd:Image.load_from_file
+func LoadFromFile(path string) Instance { //gd:Image.load_from_file
 	self := Instance{}
-	return [1]gdclass.Image(Advanced(self).LoadFromFile(String.New(path)))
+	return Instance(Advanced(self).LoadFromFile(String.New(path)))
 }
 
 /*
@@ -506,8 +506,8 @@ func (self Instance) NormalMapToXy() { //gd:Image.normal_map_to_xy
 /*
 Converts a standard RGBE (Red Green Blue Exponent) image to an sRGB image.
 */
-func (self Instance) RgbeToSrgb() [1]gdclass.Image { //gd:Image.rgbe_to_srgb
-	return [1]gdclass.Image(Advanced(self).RgbeToSrgb())
+func (self Instance) RgbeToSrgb() Instance { //gd:Image.rgbe_to_srgb
+	return Instance(Advanced(self).RgbeToSrgb())
 }
 
 /*
@@ -528,7 +528,7 @@ func (self Expanded) BumpMapToNormalMap(bump_scale Float.X) { //gd:Image.bump_ma
 Compute image metrics on the current image and the compared image.
 The dictionary contains [code]max[/code], [code]mean[/code], [code]mean_squared[/code], [code]root_mean_squared[/code] and [code]peak_snr[/code].
 */
-func (self Instance) ComputeImageMetrics(compared_image [1]gdclass.Image, use_luma bool) Metrics { //gd:Image.compute_image_metrics
+func (self Instance) ComputeImageMetrics(compared_image Instance, use_luma bool) Metrics { //gd:Image.compute_image_metrics
 	return Metrics(gd.DictionaryAs[Metrics](Advanced(self).ComputeImageMetrics(compared_image, use_luma)))
 }
 
@@ -536,28 +536,28 @@ func (self Instance) ComputeImageMetrics(compared_image [1]gdclass.Image, use_lu
 Copies [param src_rect] from [param src] image to this image at coordinates [param dst], clipped accordingly to both image bounds. This image and [param src] image [b]must[/b] have the same format. [param src_rect] with non-positive size is treated as empty.
 [b]Note:[/b] The alpha channel data in [param src] will overwrite the corresponding data in this image at the target position. To blend alpha channels, use [method blend_rect] instead.
 */
-func (self Instance) BlitRect(src [1]gdclass.Image, src_rect Rect2i.PositionSize, dst Vector2i.XY) { //gd:Image.blit_rect
+func (self Instance) BlitRect(src Instance, src_rect Rect2i.PositionSize, dst Vector2i.XY) { //gd:Image.blit_rect
 	Advanced(self).BlitRect(src, Rect2i.PositionSize(src_rect), Vector2i.XY(dst))
 }
 
 /*
 Blits [param src_rect] area from [param src] image to this image at the coordinates given by [param dst], clipped accordingly to both image bounds. [param src] pixel is copied onto [param dst] if the corresponding [param mask] pixel's alpha value is not 0. This image and [param src] image [b]must[/b] have the same format. [param src] image and [param mask] image [b]must[/b] have the same size (width and height) but they can have different formats. [param src_rect] with non-positive size is treated as empty.
 */
-func (self Instance) BlitRectMask(src [1]gdclass.Image, mask [1]gdclass.Image, src_rect Rect2i.PositionSize, dst Vector2i.XY) { //gd:Image.blit_rect_mask
+func (self Instance) BlitRectMask(src Instance, mask Instance, src_rect Rect2i.PositionSize, dst Vector2i.XY) { //gd:Image.blit_rect_mask
 	Advanced(self).BlitRectMask(src, mask, Rect2i.PositionSize(src_rect), Vector2i.XY(dst))
 }
 
 /*
 Alpha-blends [param src_rect] from [param src] image to this image at coordinates [param dst], clipped accordingly to both image bounds. This image and [param src] image [b]must[/b] have the same format. [param src_rect] with non-positive size is treated as empty.
 */
-func (self Instance) BlendRect(src [1]gdclass.Image, src_rect Rect2i.PositionSize, dst Vector2i.XY) { //gd:Image.blend_rect
+func (self Instance) BlendRect(src Instance, src_rect Rect2i.PositionSize, dst Vector2i.XY) { //gd:Image.blend_rect
 	Advanced(self).BlendRect(src, Rect2i.PositionSize(src_rect), Vector2i.XY(dst))
 }
 
 /*
 Alpha-blends [param src_rect] from [param src] image to this image using [param mask] image at coordinates [param dst], clipped accordingly to both image bounds. Alpha channels are required for both [param src] and [param mask]. [param dst] pixels and [param src] pixels will blend if the corresponding mask pixel's alpha value is not 0. This image and [param src] image [b]must[/b] have the same format. [param src] image and [param mask] image [b]must[/b] have the same size (width and height) but they can have different formats. [param src_rect] with non-positive size is treated as empty.
 */
-func (self Instance) BlendRectMask(src [1]gdclass.Image, mask [1]gdclass.Image, src_rect Rect2i.PositionSize, dst Vector2i.XY) { //gd:Image.blend_rect_mask
+func (self Instance) BlendRectMask(src Instance, mask Instance, src_rect Rect2i.PositionSize, dst Vector2i.XY) { //gd:Image.blend_rect_mask
 	Advanced(self).BlendRectMask(src, mask, Rect2i.PositionSize(src_rect), Vector2i.XY(dst))
 }
 
@@ -585,14 +585,14 @@ func (self Instance) GetUsedRect() Rect2i.PositionSize { //gd:Image.get_used_rec
 /*
 Returns a new [Image] that is a copy of this [Image]'s area specified with [param region].
 */
-func (self Instance) GetRegion(region Rect2i.PositionSize) [1]gdclass.Image { //gd:Image.get_region
-	return [1]gdclass.Image(Advanced(self).GetRegion(Rect2i.PositionSize(region)))
+func (self Instance) GetRegion(region Rect2i.PositionSize) Instance { //gd:Image.get_region
+	return Instance(Advanced(self).GetRegion(Rect2i.PositionSize(region)))
 }
 
 /*
 Copies [param src] image to this image.
 */
-func (self Instance) CopyFrom(src [1]gdclass.Image) { //gd:Image.copy_from
+func (self Instance) CopyFrom(src Instance) { //gd:Image.copy_from
 	Advanced(self).CopyFrom(src)
 }
 

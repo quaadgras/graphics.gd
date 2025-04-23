@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/PhysicsDirectBodyState2D"
+import "graphics.gd/classdb/PhysicsDirectSpaceState2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -103,7 +105,7 @@ type Interface interface {
 	//Overridable version of [method PhysicsServer2D.space_get_param].
 	SpaceGetParam(space RID.Any, param gdclass.PhysicsServer2DSpaceParameter) Float.X
 	//Overridable version of [method PhysicsServer2D.space_get_direct_state].
-	SpaceGetDirectState(space RID.Any) [1]gdclass.PhysicsDirectSpaceState2D
+	SpaceGetDirectState(space RID.Any) PhysicsDirectSpaceState2D.Instance
 	//Used internally to allow the given [param space] to store contact points, up to [param max_contacts]. This is automatically set for the main [World2D]'s space when [member SceneTree.debug_collisions_hint] is [code]true[/code], or by checking "Visible Collision Shapes" in the editor. Only works in debug builds.
 	//Overridable version of [PhysicsServer2D]'s internal [code]space_set_debug_contacts[/code] method.
 	SpaceSetDebugContacts(space RID.Any, max_contacts int)
@@ -295,7 +297,7 @@ type Interface interface {
 	//Overridable version of [PhysicsServer2D]'s internal [code]body_set_pickable[/code] method. Corresponds to [member CollisionObject2D.input_pickable].
 	BodySetPickable(body RID.Any, pickable bool)
 	//Overridable version of [method PhysicsServer2D.body_get_direct_state].
-	BodyGetDirectState(body RID.Any) [1]gdclass.PhysicsDirectBodyState2D
+	BodyGetDirectState(body RID.Any) PhysicsDirectBodyState2D.Instance
 	//Overridable version of [method PhysicsServer2D.body_test_motion]. Unlike the exposed implementation, this method does not receive all of the arguments inside a [PhysicsTestMotionParameters2D].
 	BodyTestMotion(body RID.Any, from Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collide_separation_ray bool, recovery_as_collision bool, result *MotionResult) bool
 	//Overridable version of [method PhysicsServer2D.joint_create].
@@ -389,7 +391,7 @@ func (self implementation) SpaceSetParam(space RID.Any, param gdclass.PhysicsSer
 func (self implementation) SpaceGetParam(space RID.Any, param gdclass.PhysicsServer2DSpaceParameter) (_ Float.X) {
 	return
 }
-func (self implementation) SpaceGetDirectState(space RID.Any) (_ [1]gdclass.PhysicsDirectSpaceState2D) {
+func (self implementation) SpaceGetDirectState(space RID.Any) (_ PhysicsDirectSpaceState2D.Instance) {
 	return
 }
 func (self implementation) SpaceSetDebugContacts(space RID.Any, max_contacts int) { return }
@@ -526,7 +528,7 @@ func (self implementation) BodyCollideShape(body RID.Any, body_shape int, shape 
 	return
 }
 func (self implementation) BodySetPickable(body RID.Any, pickable bool) { return }
-func (self implementation) BodyGetDirectState(body RID.Any) (_ [1]gdclass.PhysicsDirectBodyState2D) {
+func (self implementation) BodyGetDirectState(body RID.Any) (_ PhysicsDirectBodyState2D.Instance) {
 	return
 }
 func (self implementation) BodyTestMotion(body RID.Any, from Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collide_separation_ray bool, recovery_as_collision bool, result *MotionResult) (_ bool) {
@@ -824,7 +826,7 @@ func (Instance) _space_get_param(impl func(ptr unsafe.Pointer, space RID.Any, pa
 /*
 Overridable version of [method PhysicsServer2D.space_get_direct_state].
 */
-func (Instance) _space_get_direct_state(impl func(ptr unsafe.Pointer, space RID.Any) [1]gdclass.PhysicsDirectSpaceState2D) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _space_get_direct_state(impl func(ptr unsafe.Pointer, space RID.Any) PhysicsDirectSpaceState2D.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var space = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1992,7 +1994,7 @@ func (Instance) _body_set_pickable(impl func(ptr unsafe.Pointer, body RID.Any, p
 /*
 Overridable version of [method PhysicsServer2D.body_get_direct_state].
 */
-func (Instance) _body_get_direct_state(impl func(ptr unsafe.Pointer, body RID.Any) [1]gdclass.PhysicsDirectBodyState2D) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_get_direct_state(impl func(ptr unsafe.Pointer, body RID.Any) PhysicsDirectBodyState2D.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()

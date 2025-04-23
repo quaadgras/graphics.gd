@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Image"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -75,11 +76,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) DiffuseImg() [1]gdclass.Image {
-	return [1]gdclass.Image(class(self).GetDiffuseImg())
+func (self Instance) DiffuseImg() Image.Instance {
+	return Image.Instance(class(self).GetDiffuseImg())
 }
 
-func (self Instance) SetDiffuseImg(value [1]gdclass.Image) {
+func (self Instance) SetDiffuseImg(value Image.Instance) {
 	class(self).SetDiffuseImg(value)
 }
 
@@ -107,11 +108,11 @@ func (self Instance) SetSpecularFactor(value Color.RGBA) {
 	class(self).SetSpecularFactor(Color.RGBA(value))
 }
 
-func (self Instance) SpecGlossImg() [1]gdclass.Image {
-	return [1]gdclass.Image(class(self).GetSpecGlossImg())
+func (self Instance) SpecGlossImg() Image.Instance {
+	return Image.Instance(class(self).GetSpecGlossImg())
 }
 
-func (self Instance) SetSpecGlossImg(value [1]gdclass.Image) {
+func (self Instance) SetSpecGlossImg(value Image.Instance) {
 	class(self).SetSpecGlossImg(value)
 }
 

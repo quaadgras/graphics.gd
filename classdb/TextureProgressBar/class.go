@@ -15,6 +15,7 @@ import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Range"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -150,27 +151,27 @@ func (self Instance) SetStretchMarginBottom(value int) {
 	class(self).SetStretchMargin(3, int64(value))
 }
 
-func (self Instance) TextureUnder() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetUnderTexture())
+func (self Instance) TextureUnder() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetUnderTexture())
 }
 
-func (self Instance) SetTextureUnder(value [1]gdclass.Texture2D) {
+func (self Instance) SetTextureUnder(value Texture2D.Instance) {
 	class(self).SetUnderTexture(value)
 }
 
-func (self Instance) TextureOver() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetOverTexture())
+func (self Instance) TextureOver() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetOverTexture())
 }
 
-func (self Instance) SetTextureOver(value [1]gdclass.Texture2D) {
+func (self Instance) SetTextureOver(value Texture2D.Instance) {
 	class(self).SetOverTexture(value)
 }
 
-func (self Instance) TextureProgress() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetProgressTexture())
+func (self Instance) TextureProgress() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetProgressTexture())
 }
 
-func (self Instance) SetTextureProgress(value [1]gdclass.Texture2D) {
+func (self Instance) SetTextureProgress(value Texture2D.Instance) {
 	class(self).SetProgressTexture(value)
 }
 

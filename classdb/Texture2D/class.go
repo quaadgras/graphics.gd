@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Image"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/Texture"
 import "graphics.gd/variant/Array"
@@ -274,15 +275,15 @@ Returns an [Image] that is a copy of data from this [Texture2D] (a new [Image] i
 [b]Note:[/b] This will return [code]null[/code] if this [Texture2D] is invalid.
 [b]Note:[/b] This will fetch the texture data from the GPU, which might cause performance problems when overused. Avoid calling [method get_image] every frame, especially on large textures.
 */
-func (self Instance) GetImage() [1]gdclass.Image { //gd:Texture2D.get_image
-	return [1]gdclass.Image(Advanced(self).GetImage())
+func (self Instance) GetImage() Image.Instance { //gd:Texture2D.get_image
+	return Image.Instance(Advanced(self).GetImage())
 }
 
 /*
 Creates a placeholder version of this resource ([PlaceholderTexture2D]).
 */
-func (self Instance) CreatePlaceholder() [1]gdclass.Resource { //gd:Texture2D.create_placeholder
-	return [1]gdclass.Resource(Advanced(self).CreatePlaceholder())
+func (self Instance) CreatePlaceholder() Resource.Instance { //gd:Texture2D.create_placeholder
+	return Resource.Instance(Advanced(self).CreatePlaceholder())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

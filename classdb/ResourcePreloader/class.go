@@ -12,6 +12,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -59,7 +60,7 @@ type Any interface {
 /*
 Adds a resource to the preloader with the given [param name]. If a resource with the given [param name] already exists, the new resource will be renamed to "[param name] N" where N is an incrementing number starting from 2.
 */
-func (self Instance) AddResource(name string, resource [1]gdclass.Resource) { //gd:ResourcePreloader.add_resource
+func (self Instance) AddResource(name string, resource Resource.Instance) { //gd:ResourcePreloader.add_resource
 	Advanced(self).AddResource(String.Name(String.New(name)), resource)
 }
 
@@ -87,8 +88,8 @@ func (self Instance) HasResource(name string) bool { //gd:ResourcePreloader.has_
 /*
 Returns the resource associated to [param name].
 */
-func (self Instance) GetResource(name string) [1]gdclass.Resource { //gd:ResourcePreloader.get_resource
-	return [1]gdclass.Resource(Advanced(self).GetResource(String.Name(String.New(name))))
+func (self Instance) GetResource(name string) Resource.Instance { //gd:ResourcePreloader.get_resource
+	return Resource.Instance(Advanced(self).GetResource(String.Name(String.New(name))))
 }
 
 /*

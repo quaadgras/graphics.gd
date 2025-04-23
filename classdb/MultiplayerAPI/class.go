@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/MultiplayerPeer"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -153,9 +154,9 @@ func GetDefaultInterface() string { //gd:MultiplayerAPI.get_default_interface
 /*
 Returns a new instance of the default MultiplayerAPI.
 */
-func CreateDefaultInterface() [1]gdclass.MultiplayerAPI { //gd:MultiplayerAPI.create_default_interface
+func CreateDefaultInterface() Instance { //gd:MultiplayerAPI.create_default_interface
 	self := Instance{}
-	return [1]gdclass.MultiplayerAPI(Advanced(self).CreateDefaultInterface())
+	return Instance(Advanced(self).CreateDefaultInterface())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -177,11 +178,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) MultiplayerPeer() [1]gdclass.MultiplayerPeer {
-	return [1]gdclass.MultiplayerPeer(class(self).GetMultiplayerPeer())
+func (self Instance) MultiplayerPeer() MultiplayerPeer.Instance {
+	return MultiplayerPeer.Instance(class(self).GetMultiplayerPeer())
 }
 
-func (self Instance) SetMultiplayerPeer(value [1]gdclass.MultiplayerPeer) {
+func (self Instance) SetMultiplayerPeer(value MultiplayerPeer.Instance) {
 	class(self).SetMultiplayerPeer(value)
 }
 

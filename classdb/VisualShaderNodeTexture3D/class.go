@@ -12,6 +12,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Texture3D"
 import "graphics.gd/classdb/VisualShaderNode"
 import "graphics.gd/classdb/VisualShaderNodeSample3D"
 import "graphics.gd/variant/Array"
@@ -76,11 +77,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Texture() [1]gdclass.Texture3D {
-	return [1]gdclass.Texture3D(class(self).GetTexture())
+func (self Instance) Texture() Texture3D.Instance {
+	return Texture3D.Instance(class(self).GetTexture())
 }
 
-func (self Instance) SetTexture(value [1]gdclass.Texture3D) {
+func (self Instance) SetTexture(value Texture3D.Instance) {
 	class(self).SetTexture(value)
 }
 

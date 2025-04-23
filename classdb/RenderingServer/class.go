@@ -12,6 +12,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Image"
+import "graphics.gd/classdb/RenderingDevice"
 import "graphics.gd/variant/AABB"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Basis"
@@ -64,6 +66,8 @@ Similarly, in 2D, a canvas is needed to draw all canvas items.
 [b]2D:[/b] In 2D, all visible objects are some form of canvas item. In order to be visible, a canvas item needs to be the child of a canvas attached to a viewport, or it needs to be the child of another canvas item that is eventually attached to the canvas. 2D-specific RenderingServer methods generally start with [code]canvas_*[/code].
 [b]Headless mode:[/b] Starting the engine with the [code]--headless[/code] [url=$DOCS_URL/tutorials/editor/command_line_tutorial.html]command line argument[/url] disables all rendering and window management functions. Most functions from [RenderingServer] will return dummy values in this case.
 */
+type Instance [1]gdclass.RenderingServer
+
 var self [1]gdclass.RenderingServer
 var once sync.Once
 
@@ -78,7 +82,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 [b]Note:[/b] The equivalent resource is [Texture2D].
 [b]Note:[/b] Not to be confused with [method RenderingDevice.texture_create], which creates the graphics API's own texture type as opposed to the Godot-specific [Texture2D] resource.
 */
-func Texture2dCreate(image [1]gdclass.Image) RID.Texture2D { //gd:RenderingServer.texture_2d_create
+func Texture2dCreate(image Image.Instance) RID.Texture2D { //gd:RenderingServer.texture_2d_create
 	once.Do(singleton)
 	return RID.Texture2D(Advanced().Texture2dCreate(image))
 }
@@ -88,7 +92,7 @@ Creates a 2-dimensional layered texture and adds it to the RenderingServer. It c
 Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] method.
 [b]Note:[/b] The equivalent resource is [TextureLayered].
 */
-func Texture2dLayeredCreate(layers [][1]gdclass.Image, layered_type gdclass.RenderingServerTextureLayeredType) RID.Texture2D { //gd:RenderingServer.texture_2d_layered_create
+func Texture2dLayeredCreate(layers []Image.Instance, layered_type gdclass.RenderingServerTextureLayeredType) RID.Texture2D { //gd:RenderingServer.texture_2d_layered_create
 	once.Do(singleton)
 	return RID.Texture2D(Advanced().Texture2dLayeredCreate(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Image]](layers), layered_type))
 }
@@ -96,7 +100,7 @@ func Texture2dLayeredCreate(layers [][1]gdclass.Image, layered_type gdclass.Rend
 /*
 [b]Note:[/b] The equivalent resource is [Texture3D].
 */
-func Texture3dCreate(format gdclass.ImageFormat, width int, height int, depth int, mipmaps bool, data [][1]gdclass.Image) RID.Texture3D { //gd:RenderingServer.texture_3d_create
+func Texture3dCreate(format gdclass.ImageFormat, width int, height int, depth int, mipmaps bool, data []Image.Instance) RID.Texture3D { //gd:RenderingServer.texture_3d_create
 	once.Do(singleton)
 	return RID.Texture3D(Advanced().Texture3dCreate(format, int64(width), int64(height), int64(depth), mipmaps, gd.ArrayFromSlice[Array.Contains[[1]gdclass.Image]](data)))
 }
@@ -131,7 +135,7 @@ func TextureCreateFromNativeHandleOptions(atype gdclass.RenderingServerTextureTy
 Updates the texture specified by the [param texture] [RID] with the data in [param image]. A [param layer] must also be specified, which should be [code]0[/code] when updating a single-layer texture ([Texture2D]).
 [b]Note:[/b] The [param image] must have the same width, height and format as the current [param texture] data. Otherwise, an error will be printed and the original texture won't be modified. If you need to use different width, height or format, use [method texture_replace] instead.
 */
-func Texture2dUpdate(texture RID.Texture2D, image [1]gdclass.Image, layer int) { //gd:RenderingServer.texture_2d_update
+func Texture2dUpdate(texture RID.Texture2D, image Image.Instance, layer int) { //gd:RenderingServer.texture_2d_update
 	once.Do(singleton)
 	Advanced().Texture2dUpdate(RID.Any(texture), image, int64(layer))
 }
@@ -140,7 +144,7 @@ func Texture2dUpdate(texture RID.Texture2D, image [1]gdclass.Image, layer int) {
 Updates the texture specified by the [param texture] [RID]'s data with the data in [param data]. All the texture's layers must be replaced at once.
 [b]Note:[/b] The [param texture] must have the same width, height, depth and format as the current texture data. Otherwise, an error will be printed and the original texture won't be modified. If you need to use different width, height, depth or format, use [method texture_replace] instead.
 */
-func Texture3dUpdate(texture RID.Texture3D, data [][1]gdclass.Image) { //gd:RenderingServer.texture_3d_update
+func Texture3dUpdate(texture RID.Texture3D, data []Image.Instance) { //gd:RenderingServer.texture_3d_update
 	once.Do(singleton)
 	Advanced().Texture3dUpdate(RID.Any(texture), gd.ArrayFromSlice[Array.Contains[[1]gdclass.Image]](data))
 }
@@ -191,25 +195,25 @@ var texture = ImageTexture.create_from_image(RenderingServer.texture_2d_get(text
 $Sprite2D.texture = texture
 [/codeblock]
 */
-func Texture2dGet(texture RID.Texture2D) [1]gdclass.Image { //gd:RenderingServer.texture_2d_get
+func Texture2dGet(texture RID.Texture2D) Image.Instance { //gd:RenderingServer.texture_2d_get
 	once.Do(singleton)
-	return [1]gdclass.Image(Advanced().Texture2dGet(RID.Any(texture)))
+	return Image.Instance(Advanced().Texture2dGet(RID.Any(texture)))
 }
 
 /*
 Returns an [Image] instance from the given [param texture] [RID] and [param layer].
 */
-func Texture2dLayerGet(texture RID.Texture2D, layer int) [1]gdclass.Image { //gd:RenderingServer.texture_2d_layer_get
+func Texture2dLayerGet(texture RID.Texture2D, layer int) Image.Instance { //gd:RenderingServer.texture_2d_layer_get
 	once.Do(singleton)
-	return [1]gdclass.Image(Advanced().Texture2dLayerGet(RID.Any(texture), int64(layer)))
+	return Image.Instance(Advanced().Texture2dLayerGet(RID.Any(texture), int64(layer)))
 }
 
 /*
 Returns 3D texture data as an array of [Image]s for the specified texture [RID].
 */
-func Texture3dGet(texture RID.Texture3D) [][1]gdclass.Image { //gd:RenderingServer.texture_3d_get
+func Texture3dGet(texture RID.Texture3D) []Image.Instance { //gd:RenderingServer.texture_3d_get
 	once.Do(singleton)
-	return [][1]gdclass.Image(gd.ArrayAs[[][1]gdclass.Image](gd.InternalArray(Advanced().Texture3dGet(RID.Any(texture)))))
+	return []Image.Instance(gd.ArrayAs[[]Image.Instance](gd.InternalArray(Advanced().Texture3dGet(RID.Any(texture)))))
 }
 
 /*
@@ -2575,9 +2579,9 @@ Generates and returns an [Image] containing the radiance map for the specified [
 [b]Note:[/b] The image is saved in linear color space without any tonemapping performed, which means it will look too dark if viewed directly in an image editor. [param energy] values above [code]1.0[/code] can be used to brighten the resulting image.
 [b]Note:[/b] [param size] should be a 2:1 aspect ratio for the generated panorama to have square pixels. For radiance maps, there is no point in using a height greater than [member Sky.radiance_size], as it won't increase detail. Irradiance maps only contain low-frequency data, so there is usually no point in going past a size of 128×64 pixels when saving an irradiance map.
 */
-func SkyBakePanorama(sky RID.Sky, energy Float.X, bake_irradiance bool, size Vector2i.XY) [1]gdclass.Image { //gd:RenderingServer.sky_bake_panorama
+func SkyBakePanorama(sky RID.Sky, energy Float.X, bake_irradiance bool, size Vector2i.XY) Image.Instance { //gd:RenderingServer.sky_bake_panorama
 	once.Do(singleton)
-	return [1]gdclass.Image(Advanced().SkyBakePanorama(RID.Any(sky), float64(energy), bake_irradiance, Vector2i.XY(size)))
+	return Image.Instance(Advanced().SkyBakePanorama(RID.Any(sky), float64(energy), bake_irradiance, Vector2i.XY(size)))
 }
 
 /*
@@ -2865,9 +2869,9 @@ Generates and returns an [Image] containing the radiance map for the specified [
 [b]Note:[/b] The image is saved in linear color space without any tonemapping performed, which means it will look too dark if viewed directly in an image editor.
 [b]Note:[/b] [param size] should be a 2:1 aspect ratio for the generated panorama to have square pixels. For radiance maps, there is no point in using a height greater than [member Sky.radiance_size], as it won't increase detail. Irradiance maps only contain low-frequency data, so there is usually no point in going past a size of 128×64 pixels when saving an irradiance map.
 */
-func EnvironmentBakePanorama(environment RID.Environment, bake_irradiance bool, size Vector2i.XY) [1]gdclass.Image { //gd:RenderingServer.environment_bake_panorama
+func EnvironmentBakePanorama(environment RID.Environment, bake_irradiance bool, size Vector2i.XY) Image.Instance { //gd:RenderingServer.environment_bake_panorama
 	once.Do(singleton)
-	return [1]gdclass.Image(Advanced().EnvironmentBakePanorama(RID.Any(environment), bake_irradiance, Vector2i.XY(size)))
+	return Image.Instance(Advanced().EnvironmentBakePanorama(RID.Any(environment), bake_irradiance, Vector2i.XY(size)))
 }
 
 /*
@@ -3306,9 +3310,9 @@ func InstancesCullConvexOptions(convex []Plane.NormalD, scenario RID.Scenario) [
 /*
 Bakes the material data of the Mesh passed in the [param base] parameter with optional [param material_overrides] to a set of [Image]s of size [param image_size]. Returns an array of [Image]s containing material properties as specified in [enum BakeChannels].
 */
-func BakeRenderUv2(base RID.Mesh, material_overrides [][]RID.Material, image_size Vector2i.XY) [][1]gdclass.Image { //gd:RenderingServer.bake_render_uv2
+func BakeRenderUv2(base RID.Mesh, material_overrides [][]RID.Material, image_size Vector2i.XY) []Image.Instance { //gd:RenderingServer.bake_render_uv2
 	once.Do(singleton)
-	return [][1]gdclass.Image(gd.ArrayAs[[][1]gdclass.Image](gd.InternalArray(Advanced().BakeRenderUv2(RID.Any(base), gd.ArrayFromSlice[Array.Contains[RID.Any]](material_overrides), Vector2i.XY(image_size)))))
+	return []Image.Instance(gd.ArrayAs[[]Image.Instance](gd.InternalArray(Advanced().BakeRenderUv2(RID.Any(base), gd.ArrayFromSlice[Array.Contains[RID.Any]](material_overrides), Vector2i.XY(image_size)))))
 }
 
 /*
@@ -4457,7 +4461,7 @@ func GetWhiteTexture() RID.Texture { //gd:RenderingServer.get_white_texture
 /*
 Sets a boot image. The color defines the background color. If [param scale] is [code]true[/code], the image will be scaled to fit the screen size. If [param use_filter] is [code]true[/code], the image will be scaled with linear interpolation. If [param use_filter] is [code]false[/code], the image will be scaled with nearest-neighbor interpolation.
 */
-func SetBootImage(image [1]gdclass.Image, color Color.RGBA, scale bool) { //gd:RenderingServer.set_boot_image
+func SetBootImage(image Image.Instance, color Color.RGBA, scale bool) { //gd:RenderingServer.set_boot_image
 	once.Do(singleton)
 	Advanced().SetBootImage(image, Color.RGBA(color), scale, true)
 }
@@ -4465,7 +4469,7 @@ func SetBootImage(image [1]gdclass.Image, color Color.RGBA, scale bool) { //gd:R
 /*
 Sets a boot image. The color defines the background color. If [param scale] is [code]true[/code], the image will be scaled to fit the screen size. If [param use_filter] is [code]true[/code], the image will be scaled with linear interpolation. If [param use_filter] is [code]false[/code], the image will be scaled with nearest-neighbor interpolation.
 */
-func SetBootImageOptions(image [1]gdclass.Image, color Color.RGBA, scale bool, use_filter bool) { //gd:RenderingServer.set_boot_image
+func SetBootImageOptions(image Image.Instance, color Color.RGBA, scale bool, use_filter bool) { //gd:RenderingServer.set_boot_image
 	once.Do(singleton)
 	Advanced().SetBootImage(image, Color.RGBA(color), scale, use_filter)
 }
@@ -4539,18 +4543,18 @@ func ForceDrawOptions(swap_buffers bool, frame_step Float.X) { //gd:RenderingSer
 Returns the global RenderingDevice.
 [b]Note:[/b] When using the OpenGL rendering driver or when running in headless mode, this function always returns [code]null[/code].
 */
-func GetRenderingDevice() [1]gdclass.RenderingDevice { //gd:RenderingServer.get_rendering_device
+func GetRenderingDevice() RenderingDevice.Instance { //gd:RenderingServer.get_rendering_device
 	once.Do(singleton)
-	return [1]gdclass.RenderingDevice(Advanced().GetRenderingDevice())
+	return RenderingDevice.Instance(Advanced().GetRenderingDevice())
 }
 
 /*
 Creates a RenderingDevice that can be used to do draw and compute operations on a separate thread. Cannot draw to the screen nor share data with the global RenderingDevice.
 [b]Note:[/b] When using the OpenGL rendering driver or when running in headless mode, this function always returns [code]null[/code].
 */
-func CreateLocalRenderingDevice() [1]gdclass.RenderingDevice { //gd:RenderingServer.create_local_rendering_device
+func CreateLocalRenderingDevice() RenderingDevice.Instance { //gd:RenderingServer.create_local_rendering_device
 	once.Do(singleton)
-	return [1]gdclass.RenderingDevice(Advanced().CreateLocalRenderingDevice())
+	return RenderingDevice.Instance(Advanced().CreateLocalRenderingDevice())
 }
 
 /*

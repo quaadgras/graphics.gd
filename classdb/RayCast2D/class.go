@@ -12,6 +12,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/CollisionObject2D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node2D"
 import "graphics.gd/variant/Array"
@@ -138,7 +139,7 @@ func (self Instance) AddExceptionRid(rid RID.Body2D) { //gd:RayCast2D.add_except
 /*
 Adds a collision exception so the ray does not report collisions with the specified [CollisionObject2D] node.
 */
-func (self Instance) AddException(node [1]gdclass.CollisionObject2D) { //gd:RayCast2D.add_exception
+func (self Instance) AddException(node CollisionObject2D.Instance) { //gd:RayCast2D.add_exception
 	Advanced(self).AddException(node)
 }
 
@@ -152,7 +153,7 @@ func (self Instance) RemoveExceptionRid(rid RID.Body2D) { //gd:RayCast2D.remove_
 /*
 Removes a collision exception so the ray does report collisions with the specified [CollisionObject2D] node.
 */
-func (self Instance) RemoveException(node [1]gdclass.CollisionObject2D) { //gd:RayCast2D.remove_exception
+func (self Instance) RemoveException(node CollisionObject2D.Instance) { //gd:RayCast2D.remove_exception
 	Advanced(self).RemoveException(node)
 }
 

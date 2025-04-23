@@ -11,8 +11,11 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/InputEvent"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Popup"
+import "graphics.gd/classdb/Shortcut"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/classdb/Viewport"
 import "graphics.gd/classdb/Window"
 import "graphics.gd/variant/Array"
@@ -69,7 +72,7 @@ Checks the provided [param event] against the [PopupMenu]'s shortcuts and accele
 Returns [code]true[/code] if an item was successfully activated.
 [b]Note:[/b] Certain [Control]s, such as [MenuButton], will call this method automatically.
 */
-func (self Instance) ActivateItemByEvent(event [1]gdclass.InputEvent) bool { //gd:PopupMenu.activate_item_by_event
+func (self Instance) ActivateItemByEvent(event InputEvent.Instance) bool { //gd:PopupMenu.activate_item_by_event
 	return bool(Advanced(self).ActivateItemByEvent(event, false))
 }
 
@@ -78,7 +81,7 @@ Checks the provided [param event] against the [PopupMenu]'s shortcuts and accele
 Returns [code]true[/code] if an item was successfully activated.
 [b]Note:[/b] Certain [Control]s, such as [MenuButton], will call this method automatically.
 */
-func (self Expanded) ActivateItemByEvent(event [1]gdclass.InputEvent, for_global_only bool) bool { //gd:PopupMenu.activate_item_by_event
+func (self Expanded) ActivateItemByEvent(event InputEvent.Instance, for_global_only bool) bool { //gd:PopupMenu.activate_item_by_event
 	return bool(Advanced(self).ActivateItemByEvent(event, for_global_only))
 }
 
@@ -111,7 +114,7 @@ func (self Expanded) AddItem(label string, id int, accel Key) { //gd:PopupMenu.a
 Adds a new item with text [param label] and icon [param texture].
 An [param id] can optionally be provided, as well as an accelerator ([param accel]). If no [param id] is provided, one will be created from the index. If no [param accel] is provided, then the default value of 0 (corresponding to [constant @GlobalScope.KEY_NONE]) will be assigned to the item (which means it won't have any accelerator). See [method get_item_accelerator] for more info on accelerators.
 */
-func (self Instance) AddIconItem(texture [1]gdclass.Texture2D, label string) { //gd:PopupMenu.add_icon_item
+func (self Instance) AddIconItem(texture Texture2D.Instance, label string) { //gd:PopupMenu.add_icon_item
 	Advanced(self).AddIconItem(texture, String.New(label), int64(-1), 0)
 }
 
@@ -119,7 +122,7 @@ func (self Instance) AddIconItem(texture [1]gdclass.Texture2D, label string) { /
 Adds a new item with text [param label] and icon [param texture].
 An [param id] can optionally be provided, as well as an accelerator ([param accel]). If no [param id] is provided, one will be created from the index. If no [param accel] is provided, then the default value of 0 (corresponding to [constant @GlobalScope.KEY_NONE]) will be assigned to the item (which means it won't have any accelerator). See [method get_item_accelerator] for more info on accelerators.
 */
-func (self Expanded) AddIconItem(texture [1]gdclass.Texture2D, label string, id int, accel Key) { //gd:PopupMenu.add_icon_item
+func (self Expanded) AddIconItem(texture Texture2D.Instance, label string, id int, accel Key) { //gd:PopupMenu.add_icon_item
 	Advanced(self).AddIconItem(texture, String.New(label), int64(id), accel)
 }
 
@@ -146,7 +149,7 @@ Adds a new checkable item with text [param label] and icon [param texture].
 An [param id] can optionally be provided, as well as an accelerator ([param accel]). If no [param id] is provided, one will be created from the index. If no [param accel] is provided, then the default value of 0 (corresponding to [constant @GlobalScope.KEY_NONE]) will be assigned to the item (which means it won't have any accelerator). See [method get_item_accelerator] for more info on accelerators.
 [b]Note:[/b] Checkable items just display a checkmark, but don't have any built-in checking behavior and must be checked/unchecked manually. See [method set_item_checked] for more info on how to control it.
 */
-func (self Instance) AddIconCheckItem(texture [1]gdclass.Texture2D, label string) { //gd:PopupMenu.add_icon_check_item
+func (self Instance) AddIconCheckItem(texture Texture2D.Instance, label string) { //gd:PopupMenu.add_icon_check_item
 	Advanced(self).AddIconCheckItem(texture, String.New(label), int64(-1), 0)
 }
 
@@ -155,7 +158,7 @@ Adds a new checkable item with text [param label] and icon [param texture].
 An [param id] can optionally be provided, as well as an accelerator ([param accel]). If no [param id] is provided, one will be created from the index. If no [param accel] is provided, then the default value of 0 (corresponding to [constant @GlobalScope.KEY_NONE]) will be assigned to the item (which means it won't have any accelerator). See [method get_item_accelerator] for more info on accelerators.
 [b]Note:[/b] Checkable items just display a checkmark, but don't have any built-in checking behavior and must be checked/unchecked manually. See [method set_item_checked] for more info on how to control it.
 */
-func (self Expanded) AddIconCheckItem(texture [1]gdclass.Texture2D, label string, id int, accel Key) { //gd:PopupMenu.add_icon_check_item
+func (self Expanded) AddIconCheckItem(texture Texture2D.Instance, label string, id int, accel Key) { //gd:PopupMenu.add_icon_check_item
 	Advanced(self).AddIconCheckItem(texture, String.New(label), int64(id), accel)
 }
 
@@ -180,14 +183,14 @@ func (self Expanded) AddRadioCheckItem(label string, id int, accel Key) { //gd:P
 /*
 Same as [method add_icon_check_item], but uses a radio check button.
 */
-func (self Instance) AddIconRadioCheckItem(texture [1]gdclass.Texture2D, label string) { //gd:PopupMenu.add_icon_radio_check_item
+func (self Instance) AddIconRadioCheckItem(texture Texture2D.Instance, label string) { //gd:PopupMenu.add_icon_radio_check_item
 	Advanced(self).AddIconRadioCheckItem(texture, String.New(label), int64(-1), 0)
 }
 
 /*
 Same as [method add_icon_check_item], but uses a radio check button.
 */
-func (self Expanded) AddIconRadioCheckItem(texture [1]gdclass.Texture2D, label string, id int, accel Key) { //gd:PopupMenu.add_icon_radio_check_item
+func (self Expanded) AddIconRadioCheckItem(texture Texture2D.Instance, label string, id int, accel Key) { //gd:PopupMenu.add_icon_radio_check_item
 	Advanced(self).AddIconRadioCheckItem(texture, String.New(label), int64(id), accel)
 }
 
@@ -250,7 +253,7 @@ Adds a [Shortcut].
 An [param id] can optionally be provided. If no [param id] is provided, one will be created from the index.
 If [param allow_echo] is [code]true[/code], the shortcut can be activated with echo events.
 */
-func (self Instance) AddShortcut(shortcut [1]gdclass.Shortcut) { //gd:PopupMenu.add_shortcut
+func (self Instance) AddShortcut(shortcut Shortcut.Instance) { //gd:PopupMenu.add_shortcut
 	Advanced(self).AddShortcut(shortcut, int64(-1), false, false)
 }
 
@@ -259,7 +262,7 @@ Adds a [Shortcut].
 An [param id] can optionally be provided. If no [param id] is provided, one will be created from the index.
 If [param allow_echo] is [code]true[/code], the shortcut can be activated with echo events.
 */
-func (self Expanded) AddShortcut(shortcut [1]gdclass.Shortcut, id int, global bool, allow_echo bool) { //gd:PopupMenu.add_shortcut
+func (self Expanded) AddShortcut(shortcut Shortcut.Instance, id int, global bool, allow_echo bool) { //gd:PopupMenu.add_shortcut
 	Advanced(self).AddShortcut(shortcut, int64(id), global, allow_echo)
 }
 
@@ -268,7 +271,7 @@ Adds a new item and assigns the specified [Shortcut] and icon [param texture] to
 An [param id] can optionally be provided. If no [param id] is provided, one will be created from the index.
 If [param allow_echo] is [code]true[/code], the shortcut can be activated with echo events.
 */
-func (self Instance) AddIconShortcut(texture [1]gdclass.Texture2D, shortcut [1]gdclass.Shortcut) { //gd:PopupMenu.add_icon_shortcut
+func (self Instance) AddIconShortcut(texture Texture2D.Instance, shortcut Shortcut.Instance) { //gd:PopupMenu.add_icon_shortcut
 	Advanced(self).AddIconShortcut(texture, shortcut, int64(-1), false, false)
 }
 
@@ -277,7 +280,7 @@ Adds a new item and assigns the specified [Shortcut] and icon [param texture] to
 An [param id] can optionally be provided. If no [param id] is provided, one will be created from the index.
 If [param allow_echo] is [code]true[/code], the shortcut can be activated with echo events.
 */
-func (self Expanded) AddIconShortcut(texture [1]gdclass.Texture2D, shortcut [1]gdclass.Shortcut, id int, global bool, allow_echo bool) { //gd:PopupMenu.add_icon_shortcut
+func (self Expanded) AddIconShortcut(texture Texture2D.Instance, shortcut Shortcut.Instance, id int, global bool, allow_echo bool) { //gd:PopupMenu.add_icon_shortcut
 	Advanced(self).AddIconShortcut(texture, shortcut, int64(id), global, allow_echo)
 }
 
@@ -286,7 +289,7 @@ Adds a new checkable item and assigns the specified [Shortcut] to it. Sets the l
 An [param id] can optionally be provided. If no [param id] is provided, one will be created from the index.
 [b]Note:[/b] Checkable items just display a checkmark, but don't have any built-in checking behavior and must be checked/unchecked manually. See [method set_item_checked] for more info on how to control it.
 */
-func (self Instance) AddCheckShortcut(shortcut [1]gdclass.Shortcut) { //gd:PopupMenu.add_check_shortcut
+func (self Instance) AddCheckShortcut(shortcut Shortcut.Instance) { //gd:PopupMenu.add_check_shortcut
 	Advanced(self).AddCheckShortcut(shortcut, int64(-1), false)
 }
 
@@ -295,7 +298,7 @@ Adds a new checkable item and assigns the specified [Shortcut] to it. Sets the l
 An [param id] can optionally be provided. If no [param id] is provided, one will be created from the index.
 [b]Note:[/b] Checkable items just display a checkmark, but don't have any built-in checking behavior and must be checked/unchecked manually. See [method set_item_checked] for more info on how to control it.
 */
-func (self Expanded) AddCheckShortcut(shortcut [1]gdclass.Shortcut, id int, global bool) { //gd:PopupMenu.add_check_shortcut
+func (self Expanded) AddCheckShortcut(shortcut Shortcut.Instance, id int, global bool) { //gd:PopupMenu.add_check_shortcut
 	Advanced(self).AddCheckShortcut(shortcut, int64(id), global)
 }
 
@@ -304,7 +307,7 @@ Adds a new checkable item and assigns the specified [Shortcut] and icon [param t
 An [param id] can optionally be provided. If no [param id] is provided, one will be created from the index.
 [b]Note:[/b] Checkable items just display a checkmark, but don't have any built-in checking behavior and must be checked/unchecked manually. See [method set_item_checked] for more info on how to control it.
 */
-func (self Instance) AddIconCheckShortcut(texture [1]gdclass.Texture2D, shortcut [1]gdclass.Shortcut) { //gd:PopupMenu.add_icon_check_shortcut
+func (self Instance) AddIconCheckShortcut(texture Texture2D.Instance, shortcut Shortcut.Instance) { //gd:PopupMenu.add_icon_check_shortcut
 	Advanced(self).AddIconCheckShortcut(texture, shortcut, int64(-1), false)
 }
 
@@ -313,7 +316,7 @@ Adds a new checkable item and assigns the specified [Shortcut] and icon [param t
 An [param id] can optionally be provided. If no [param id] is provided, one will be created from the index.
 [b]Note:[/b] Checkable items just display a checkmark, but don't have any built-in checking behavior and must be checked/unchecked manually. See [method set_item_checked] for more info on how to control it.
 */
-func (self Expanded) AddIconCheckShortcut(texture [1]gdclass.Texture2D, shortcut [1]gdclass.Shortcut, id int, global bool) { //gd:PopupMenu.add_icon_check_shortcut
+func (self Expanded) AddIconCheckShortcut(texture Texture2D.Instance, shortcut Shortcut.Instance, id int, global bool) { //gd:PopupMenu.add_icon_check_shortcut
 	Advanced(self).AddIconCheckShortcut(texture, shortcut, int64(id), global)
 }
 
@@ -322,7 +325,7 @@ Adds a new radio check button and assigns a [Shortcut] to it. Sets the label of 
 An [param id] can optionally be provided. If no [param id] is provided, one will be created from the index.
 [b]Note:[/b] Checkable items just display a checkmark, but don't have any built-in checking behavior and must be checked/unchecked manually. See [method set_item_checked] for more info on how to control it.
 */
-func (self Instance) AddRadioCheckShortcut(shortcut [1]gdclass.Shortcut) { //gd:PopupMenu.add_radio_check_shortcut
+func (self Instance) AddRadioCheckShortcut(shortcut Shortcut.Instance) { //gd:PopupMenu.add_radio_check_shortcut
 	Advanced(self).AddRadioCheckShortcut(shortcut, int64(-1), false)
 }
 
@@ -331,21 +334,21 @@ Adds a new radio check button and assigns a [Shortcut] to it. Sets the label of 
 An [param id] can optionally be provided. If no [param id] is provided, one will be created from the index.
 [b]Note:[/b] Checkable items just display a checkmark, but don't have any built-in checking behavior and must be checked/unchecked manually. See [method set_item_checked] for more info on how to control it.
 */
-func (self Expanded) AddRadioCheckShortcut(shortcut [1]gdclass.Shortcut, id int, global bool) { //gd:PopupMenu.add_radio_check_shortcut
+func (self Expanded) AddRadioCheckShortcut(shortcut Shortcut.Instance, id int, global bool) { //gd:PopupMenu.add_radio_check_shortcut
 	Advanced(self).AddRadioCheckShortcut(shortcut, int64(id), global)
 }
 
 /*
 Same as [method add_icon_check_shortcut], but uses a radio check button.
 */
-func (self Instance) AddIconRadioCheckShortcut(texture [1]gdclass.Texture2D, shortcut [1]gdclass.Shortcut) { //gd:PopupMenu.add_icon_radio_check_shortcut
+func (self Instance) AddIconRadioCheckShortcut(texture Texture2D.Instance, shortcut Shortcut.Instance) { //gd:PopupMenu.add_icon_radio_check_shortcut
 	Advanced(self).AddIconRadioCheckShortcut(texture, shortcut, int64(-1), false)
 }
 
 /*
 Same as [method add_icon_check_shortcut], but uses a radio check button.
 */
-func (self Expanded) AddIconRadioCheckShortcut(texture [1]gdclass.Texture2D, shortcut [1]gdclass.Shortcut, id int, global bool) { //gd:PopupMenu.add_icon_radio_check_shortcut
+func (self Expanded) AddIconRadioCheckShortcut(texture Texture2D.Instance, shortcut Shortcut.Instance, id int, global bool) { //gd:PopupMenu.add_icon_radio_check_shortcut
 	Advanced(self).AddIconRadioCheckShortcut(texture, shortcut, int64(id), global)
 }
 
@@ -370,7 +373,7 @@ Adds an item that will act as a submenu of the parent [PopupMenu] node when clic
 [param submenu] must be either child of this [PopupMenu] or has no parent node (in which case it will be automatically added as a child). If the [param submenu] popup has another parent, this method will fail.
 An [param id] can optionally be provided. If no [param id] is provided, one will be created from the index.
 */
-func (self Instance) AddSubmenuNodeItem(label string, submenu [1]gdclass.PopupMenu) { //gd:PopupMenu.add_submenu_node_item
+func (self Instance) AddSubmenuNodeItem(label string, submenu Instance) { //gd:PopupMenu.add_submenu_node_item
 	Advanced(self).AddSubmenuNodeItem(String.New(label), submenu, int64(-1))
 }
 
@@ -379,7 +382,7 @@ Adds an item that will act as a submenu of the parent [PopupMenu] node when clic
 [param submenu] must be either child of this [PopupMenu] or has no parent node (in which case it will be automatically added as a child). If the [param submenu] popup has another parent, this method will fail.
 An [param id] can optionally be provided. If no [param id] is provided, one will be created from the index.
 */
-func (self Expanded) AddSubmenuNodeItem(label string, submenu [1]gdclass.PopupMenu, id int) { //gd:PopupMenu.add_submenu_node_item
+func (self Expanded) AddSubmenuNodeItem(label string, submenu Instance, id int) { //gd:PopupMenu.add_submenu_node_item
 	Advanced(self).AddSubmenuNodeItem(String.New(label), submenu, int64(id))
 }
 
@@ -407,7 +410,7 @@ func (self Instance) SetItemLanguage(index int, language string) { //gd:PopupMen
 /*
 Replaces the [Texture2D] icon of the item at the given [param index].
 */
-func (self Instance) SetItemIcon(index int, icon [1]gdclass.Texture2D) { //gd:PopupMenu.set_item_icon
+func (self Instance) SetItemIcon(index int, icon Texture2D.Instance) { //gd:PopupMenu.set_item_icon
 	Advanced(self).SetItemIcon(int64(index), icon)
 }
 
@@ -471,7 +474,7 @@ func (self Instance) SetItemSubmenu(index int, submenu string) { //gd:PopupMenu.
 /*
 Sets the submenu of the item at the given [param index]. The submenu is a [PopupMenu] node that would be shown when the item is clicked. It must either be a child of this [PopupMenu] or has no parent (in which case it will be automatically added as a child). If the [param submenu] popup has another parent, this method will fail.
 */
-func (self Instance) SetItemSubmenuNode(index int, submenu [1]gdclass.PopupMenu) { //gd:PopupMenu.set_item_submenu_node
+func (self Instance) SetItemSubmenuNode(index int, submenu Instance) { //gd:PopupMenu.set_item_submenu_node
 	Advanced(self).SetItemSubmenuNode(int64(index), submenu)
 }
 
@@ -507,14 +510,14 @@ func (self Instance) SetItemTooltip(index int, tooltip string) { //gd:PopupMenu.
 /*
 Sets a [Shortcut] for the item at the given [param index].
 */
-func (self Instance) SetItemShortcut(index int, shortcut [1]gdclass.Shortcut) { //gd:PopupMenu.set_item_shortcut
+func (self Instance) SetItemShortcut(index int, shortcut Shortcut.Instance) { //gd:PopupMenu.set_item_shortcut
 	Advanced(self).SetItemShortcut(int64(index), shortcut, false)
 }
 
 /*
 Sets a [Shortcut] for the item at the given [param index].
 */
-func (self Expanded) SetItemShortcut(index int, shortcut [1]gdclass.Shortcut, global bool) { //gd:PopupMenu.set_item_shortcut
+func (self Expanded) SetItemShortcut(index int, shortcut Shortcut.Instance, global bool) { //gd:PopupMenu.set_item_shortcut
 	Advanced(self).SetItemShortcut(int64(index), shortcut, global)
 }
 
@@ -584,8 +587,8 @@ func (self Instance) GetItemLanguage(index int) string { //gd:PopupMenu.get_item
 /*
 Returns the icon of the item at the given [param index].
 */
-func (self Instance) GetItemIcon(index int) [1]gdclass.Texture2D { //gd:PopupMenu.get_item_icon
-	return [1]gdclass.Texture2D(Advanced(self).GetItemIcon(int64(index)))
+func (self Instance) GetItemIcon(index int) Texture2D.Instance { //gd:PopupMenu.get_item_icon
+	return Texture2D.Instance(Advanced(self).GetItemIcon(int64(index)))
 }
 
 /*
@@ -655,8 +658,8 @@ func (self Instance) GetItemSubmenu(index int) string { //gd:PopupMenu.get_item_
 /*
 Returns the submenu of the item at the given [param index], or [code]null[/code] if no submenu was added. See [method add_submenu_node_item] for more info on how to add a submenu.
 */
-func (self Instance) GetItemSubmenuNode(index int) [1]gdclass.PopupMenu { //gd:PopupMenu.get_item_submenu_node
-	return [1]gdclass.PopupMenu(Advanced(self).GetItemSubmenuNode(int64(index)))
+func (self Instance) GetItemSubmenuNode(index int) Instance { //gd:PopupMenu.get_item_submenu_node
+	return Instance(Advanced(self).GetItemSubmenuNode(int64(index)))
 }
 
 /*
@@ -699,8 +702,8 @@ func (self Instance) GetItemTooltip(index int) string { //gd:PopupMenu.get_item_
 /*
 Returns the [Shortcut] associated with the item at the given [param index].
 */
-func (self Instance) GetItemShortcut(index int) [1]gdclass.Shortcut { //gd:PopupMenu.get_item_shortcut
-	return [1]gdclass.Shortcut(Advanced(self).GetItemShortcut(int64(index)))
+func (self Instance) GetItemShortcut(index int) Shortcut.Instance { //gd:PopupMenu.get_item_shortcut
+	return Shortcut.Instance(Advanced(self).GetItemShortcut(int64(index)))
 }
 
 /*

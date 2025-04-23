@@ -11,9 +11,11 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Bone2D"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node2D"
+import "graphics.gd/classdb/SkeletonModificationStack2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -69,8 +71,8 @@ func (self Instance) GetBoneCount() int { //gd:Skeleton2D.get_bone_count
 /*
 Returns a [Bone2D] from the node hierarchy parented by Skeleton2D. The object to return is identified by the parameter [param idx]. Bones are indexed by descending the node hierarchy from top to bottom, adding the children of each branch before moving to the next sibling.
 */
-func (self Instance) GetBone(idx int) [1]gdclass.Bone2D { //gd:Skeleton2D.get_bone
-	return [1]gdclass.Bone2D(Advanced(self).GetBone(int64(idx)))
+func (self Instance) GetBone(idx int) Bone2D.Instance { //gd:Skeleton2D.get_bone
+	return Bone2D.Instance(Advanced(self).GetBone(int64(idx)))
 }
 
 /*
@@ -83,15 +85,15 @@ func (self Instance) GetSkeleton() RID.Skeleton { //gd:Skeleton2D.get_skeleton
 /*
 Sets the [SkeletonModificationStack2D] attached to this skeleton.
 */
-func (self Instance) SetModificationStack(modification_stack [1]gdclass.SkeletonModificationStack2D) { //gd:Skeleton2D.set_modification_stack
+func (self Instance) SetModificationStack(modification_stack SkeletonModificationStack2D.Instance) { //gd:Skeleton2D.set_modification_stack
 	Advanced(self).SetModificationStack(modification_stack)
 }
 
 /*
 Returns the [SkeletonModificationStack2D] attached to this skeleton, if one exists.
 */
-func (self Instance) GetModificationStack() [1]gdclass.SkeletonModificationStack2D { //gd:Skeleton2D.get_modification_stack
-	return [1]gdclass.SkeletonModificationStack2D(Advanced(self).GetModificationStack())
+func (self Instance) GetModificationStack() SkeletonModificationStack2D.Instance { //gd:Skeleton2D.get_modification_stack
+	return SkeletonModificationStack2D.Instance(Advanced(self).GetModificationStack())
 }
 
 /*
@@ -115,6 +117,13 @@ Returns the local pose override transform for [param bone_idx].
 */
 func (self Instance) GetBoneLocalPoseOverride(bone_idx int) Transform2D.OriginXY { //gd:Skeleton2D.get_bone_local_pose_override
 	return Transform2D.OriginXY(Advanced(self).GetBoneLocalPoseOverride(int64(bone_idx)))
+}
+
+/*
+Returns the [Skeleton2D] node that the SkeletonModificationStack2D is bound to.
+*/
+func Get(peer SkeletonModificationStack2D.Instance) Instance { //gd:SkeletonModificationStack2D.get_skeleton
+	return Instance(SkeletonModificationStack2D.Advanced(peer).GetSkeleton())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

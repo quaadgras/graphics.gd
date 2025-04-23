@@ -45,6 +45,8 @@ var _ = slices.Delete[[]struct{}, struct{}]
 /*
 Provides access to metadata stored for every available class.
 */
+type Instance [1]gdclass.ClassDB
+
 var self [1]gdclass.ClassDB
 var once sync.Once
 

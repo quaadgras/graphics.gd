@@ -100,11 +100,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) BaseFont() [1]gdclass.Font {
-	return [1]gdclass.Font(class(self).GetBaseFont())
+func (self Instance) BaseFont() Font.Instance {
+	return Font.Instance(class(self).GetBaseFont())
 }
 
-func (self Instance) SetBaseFont(value [1]gdclass.Font) {
+func (self Instance) SetBaseFont(value Font.Instance) {
 	class(self).SetBaseFont(value)
 }
 

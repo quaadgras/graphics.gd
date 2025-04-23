@@ -12,6 +12,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/JavaClass"
+import "graphics.gd/classdb/JavaObject"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -56,6 +58,8 @@ print(datetime.format(formatter))
 [/codeblock]
 [b]Warning:[/b] When calling Java methods, be sure to check [method JavaClassWrapper.get_exception] to check if the method threw an exception.
 */
+type Instance [1]gdclass.JavaClassWrapper
+
 var self [1]gdclass.JavaClassWrapper
 var once sync.Once
 
@@ -68,18 +72,18 @@ func singleton() {
 Wraps a class defined in Java, and returns it as a [JavaClass] [Object] type that Godot can interact with.
 [b]Note:[/b] This method only works on Android. On every other platform, this method does nothing and returns an empty [JavaClass].
 */
-func Wrap(name string) [1]gdclass.JavaClass { //gd:JavaClassWrapper.wrap
+func Wrap(name string) JavaClass.Instance { //gd:JavaClassWrapper.wrap
 	once.Do(singleton)
-	return [1]gdclass.JavaClass(Advanced().Wrap(String.New(name)))
+	return JavaClass.Instance(Advanced().Wrap(String.New(name)))
 }
 
 /*
 Returns the Java exception from the last call into a Java class. If there was no exception, it will return [code]null[/code].
 [b]Note:[/b] This method only works on Android. On every other platform, this method will always return [code]null[/code].
 */
-func GetException() [1]gdclass.JavaObject { //gd:JavaClassWrapper.get_exception
+func GetException() JavaObject.Instance { //gd:JavaClassWrapper.get_exception
 	once.Do(singleton)
-	return [1]gdclass.JavaObject(Advanced().GetException())
+	return JavaObject.Instance(Advanced().GetException())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

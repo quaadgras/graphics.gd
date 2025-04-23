@@ -13,6 +13,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/XRPose"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -73,8 +74,8 @@ func (self Instance) GetHasTrackingData() bool { //gd:XRNode3D.get_has_tracking_
 /*
 Returns the [XRPose] containing the current state of the pose being tracked. This gives access to additional properties of this pose.
 */
-func (self Instance) GetPose() [1]gdclass.XRPose { //gd:XRNode3D.get_pose
-	return [1]gdclass.XRPose(Advanced(self).GetPose())
+func (self Instance) GetPose() XRPose.Instance { //gd:XRNode3D.get_pose
+	return XRPose.Instance(Advanced(self).GetPose())
 }
 
 /*

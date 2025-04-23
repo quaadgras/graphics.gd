@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/RDFramebufferPass"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -57,7 +58,7 @@ type Any interface {
 /*
 Creates, or obtains a cached, framebuffer. [param textures] lists textures accessed. [param passes] defines the subpasses and texture allocation, if left empty a single pass is created and textures are allocated depending on their usage flags. [param views] defines the number of views used when rendering.
 */
-func GetCacheMultipass(textures [][]RID.Texture, passes [][1]gdclass.RDFramebufferPass, views int) RID.Framebuffer { //gd:FramebufferCacheRD.get_cache_multipass
+func GetCacheMultipass(textures [][]RID.Texture, passes []RDFramebufferPass.Instance, views int) RID.Framebuffer { //gd:FramebufferCacheRD.get_cache_multipass
 	self := Instance{}
 	return RID.Framebuffer(Advanced(self).GetCacheMultipass(gd.ArrayFromSlice[Array.Contains[RID.Any]](textures), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDFramebufferPass]](passes), int64(views)))
 }

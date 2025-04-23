@@ -12,6 +12,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Translation"
+import "graphics.gd/classdb/TranslationDomain"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -46,6 +48,8 @@ var _ = slices.Delete[[]struct{}, struct{}]
 The translation server is the API backend that manages all language translations.
 Translations are stored in [TranslationDomain]s, which can be accessed by name. The most commonly used translation domain is the main translation domain. It always exists and can be accessed using an empty [StringName]. The translation server provides wrapper methods for accessing the main translation domain directly, without having to fetch the translation domain first. Custom translation domains are mainly for advanced usages like editor plugins. Names starting with [code]godot.[/code] are reserved for engine internals.
 */
+type Instance [1]gdclass.TranslationServer
+
 var self [1]gdclass.TranslationServer
 var once sync.Once
 
@@ -202,7 +206,7 @@ func TranslatePluralOptions(message string, plural_message string, n int, contex
 /*
 Adds a translation to the main translation domain.
 */
-func AddTranslation(translation [1]gdclass.Translation) { //gd:TranslationServer.add_translation
+func AddTranslation(translation Translation.Instance) { //gd:TranslationServer.add_translation
 	once.Do(singleton)
 	Advanced().AddTranslation(translation)
 }
@@ -210,7 +214,7 @@ func AddTranslation(translation [1]gdclass.Translation) { //gd:TranslationServer
 /*
 Removes the given translation from the main translation domain.
 */
-func RemoveTranslation(translation [1]gdclass.Translation) { //gd:TranslationServer.remove_translation
+func RemoveTranslation(translation Translation.Instance) { //gd:TranslationServer.remove_translation
 	once.Do(singleton)
 	Advanced().RemoveTranslation(translation)
 }
@@ -218,9 +222,9 @@ func RemoveTranslation(translation [1]gdclass.Translation) { //gd:TranslationSer
 /*
 Returns the [Translation] instance that best matches [param locale] in the main translation domain. Returns [code]null[/code] if there are no matches.
 */
-func GetTranslationObject(locale string) [1]gdclass.Translation { //gd:TranslationServer.get_translation_object
+func GetTranslationObject(locale string) Translation.Instance { //gd:TranslationServer.get_translation_object
 	once.Do(singleton)
-	return [1]gdclass.Translation(Advanced().GetTranslationObject(String.New(locale)))
+	return Translation.Instance(Advanced().GetTranslationObject(String.New(locale)))
 }
 
 /*
@@ -234,9 +238,9 @@ func HasDomain(domain string) bool { //gd:TranslationServer.has_domain
 /*
 Returns the translation domain with the specified name. An empty translation domain will be created and added if it does not exist.
 */
-func GetOrAddDomain(domain string) [1]gdclass.TranslationDomain { //gd:TranslationServer.get_or_add_domain
+func GetOrAddDomain(domain string) TranslationDomain.Instance { //gd:TranslationServer.get_or_add_domain
 	once.Do(singleton)
-	return [1]gdclass.TranslationDomain(Advanced().GetOrAddDomain(String.Name(String.New(domain))))
+	return TranslationDomain.Instance(Advanced().GetOrAddDomain(String.Name(String.New(domain))))
 }
 
 /*

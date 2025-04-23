@@ -64,14 +64,14 @@ type Any interface {
 /*
 Adds a new point that represents a [param node] at the position set by [param pos]. You can insert it at a specific index using the [param at_index] argument. If you use the default value for [param at_index], the point is inserted at the end of the blend points array.
 */
-func (self Instance) AddBlendPoint(node [1]gdclass.AnimationRootNode, pos Vector2.XY) { //gd:AnimationNodeBlendSpace2D.add_blend_point
+func (self Instance) AddBlendPoint(node AnimationRootNode.Instance, pos Vector2.XY) { //gd:AnimationNodeBlendSpace2D.add_blend_point
 	Advanced(self).AddBlendPoint(node, Vector2.XY(pos), int64(-1))
 }
 
 /*
 Adds a new point that represents a [param node] at the position set by [param pos]. You can insert it at a specific index using the [param at_index] argument. If you use the default value for [param at_index], the point is inserted at the end of the blend points array.
 */
-func (self Expanded) AddBlendPoint(node [1]gdclass.AnimationRootNode, pos Vector2.XY, at_index int) { //gd:AnimationNodeBlendSpace2D.add_blend_point
+func (self Expanded) AddBlendPoint(node AnimationRootNode.Instance, pos Vector2.XY, at_index int) { //gd:AnimationNodeBlendSpace2D.add_blend_point
 	Advanced(self).AddBlendPoint(node, Vector2.XY(pos), int64(at_index))
 }
 
@@ -92,15 +92,15 @@ func (self Instance) GetBlendPointPosition(point int) Vector2.XY { //gd:Animatio
 /*
 Changes the [AnimationNode] referenced by the point at index [param point].
 */
-func (self Instance) SetBlendPointNode(point int, node [1]gdclass.AnimationRootNode) { //gd:AnimationNodeBlendSpace2D.set_blend_point_node
+func (self Instance) SetBlendPointNode(point int, node AnimationRootNode.Instance) { //gd:AnimationNodeBlendSpace2D.set_blend_point_node
 	Advanced(self).SetBlendPointNode(int64(point), node)
 }
 
 /*
 Returns the [AnimationRootNode] referenced by the point at index [param point].
 */
-func (self Instance) GetBlendPointNode(point int) [1]gdclass.AnimationRootNode { //gd:AnimationNodeBlendSpace2D.get_blend_point_node
-	return [1]gdclass.AnimationRootNode(Advanced(self).GetBlendPointNode(int64(point)))
+func (self Instance) GetBlendPointNode(point int) AnimationRootNode.Instance { //gd:AnimationNodeBlendSpace2D.get_blend_point_node
+	return AnimationRootNode.Instance(Advanced(self).GetBlendPointNode(int64(point)))
 }
 
 /*

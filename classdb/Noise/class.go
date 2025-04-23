@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Image"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -99,64 +100,64 @@ func (self Instance) GetNoise3dv(v Vector3.XYZ) Float.X { //gd:Noise.get_noise_3
 Returns an [Image] containing 2D noise values.
 [b]Note:[/b] With [param normalize] set to [code]false[/code], the default implementation expects the noise generator to return values in the range [code]-1.0[/code] to [code]1.0[/code].
 */
-func (self Instance) GetImage(width int, height int) [1]gdclass.Image { //gd:Noise.get_image
-	return [1]gdclass.Image(Advanced(self).GetImage(int64(width), int64(height), false, false, true))
+func (self Instance) GetImage(width int, height int) Image.Instance { //gd:Noise.get_image
+	return Image.Instance(Advanced(self).GetImage(int64(width), int64(height), false, false, true))
 }
 
 /*
 Returns an [Image] containing 2D noise values.
 [b]Note:[/b] With [param normalize] set to [code]false[/code], the default implementation expects the noise generator to return values in the range [code]-1.0[/code] to [code]1.0[/code].
 */
-func (self Expanded) GetImage(width int, height int, invert bool, in_3d_space bool, normalize bool) [1]gdclass.Image { //gd:Noise.get_image
-	return [1]gdclass.Image(Advanced(self).GetImage(int64(width), int64(height), invert, in_3d_space, normalize))
+func (self Expanded) GetImage(width int, height int, invert bool, in_3d_space bool, normalize bool) Image.Instance { //gd:Noise.get_image
+	return Image.Instance(Advanced(self).GetImage(int64(width), int64(height), invert, in_3d_space, normalize))
 }
 
 /*
 Returns an [Image] containing seamless 2D noise values.
 [b]Note:[/b] With [param normalize] set to [code]false[/code], the default implementation expects the noise generator to return values in the range [code]-1.0[/code] to [code]1.0[/code].
 */
-func (self Instance) GetSeamlessImage(width int, height int) [1]gdclass.Image { //gd:Noise.get_seamless_image
-	return [1]gdclass.Image(Advanced(self).GetSeamlessImage(int64(width), int64(height), false, false, float64(0.1), true))
+func (self Instance) GetSeamlessImage(width int, height int) Image.Instance { //gd:Noise.get_seamless_image
+	return Image.Instance(Advanced(self).GetSeamlessImage(int64(width), int64(height), false, false, float64(0.1), true))
 }
 
 /*
 Returns an [Image] containing seamless 2D noise values.
 [b]Note:[/b] With [param normalize] set to [code]false[/code], the default implementation expects the noise generator to return values in the range [code]-1.0[/code] to [code]1.0[/code].
 */
-func (self Expanded) GetSeamlessImage(width int, height int, invert bool, in_3d_space bool, skirt Float.X, normalize bool) [1]gdclass.Image { //gd:Noise.get_seamless_image
-	return [1]gdclass.Image(Advanced(self).GetSeamlessImage(int64(width), int64(height), invert, in_3d_space, float64(skirt), normalize))
+func (self Expanded) GetSeamlessImage(width int, height int, invert bool, in_3d_space bool, skirt Float.X, normalize bool) Image.Instance { //gd:Noise.get_seamless_image
+	return Image.Instance(Advanced(self).GetSeamlessImage(int64(width), int64(height), invert, in_3d_space, float64(skirt), normalize))
 }
 
 /*
 Returns an [Array] of [Image]s containing 3D noise values for use with [method ImageTexture3D.create].
 [b]Note:[/b] With [param normalize] set to [code]false[/code], the default implementation expects the noise generator to return values in the range [code]-1.0[/code] to [code]1.0[/code].
 */
-func (self Instance) GetImage3d(width int, height int, depth int) [][1]gdclass.Image { //gd:Noise.get_image_3d
-	return [][1]gdclass.Image(gd.ArrayAs[[][1]gdclass.Image](gd.InternalArray(Advanced(self).GetImage3d(int64(width), int64(height), int64(depth), false, true))))
+func (self Instance) GetImage3d(width int, height int, depth int) []Image.Instance { //gd:Noise.get_image_3d
+	return []Image.Instance(gd.ArrayAs[[]Image.Instance](gd.InternalArray(Advanced(self).GetImage3d(int64(width), int64(height), int64(depth), false, true))))
 }
 
 /*
 Returns an [Array] of [Image]s containing 3D noise values for use with [method ImageTexture3D.create].
 [b]Note:[/b] With [param normalize] set to [code]false[/code], the default implementation expects the noise generator to return values in the range [code]-1.0[/code] to [code]1.0[/code].
 */
-func (self Expanded) GetImage3d(width int, height int, depth int, invert bool, normalize bool) [][1]gdclass.Image { //gd:Noise.get_image_3d
-	return [][1]gdclass.Image(gd.ArrayAs[[][1]gdclass.Image](gd.InternalArray(Advanced(self).GetImage3d(int64(width), int64(height), int64(depth), invert, normalize))))
+func (self Expanded) GetImage3d(width int, height int, depth int, invert bool, normalize bool) []Image.Instance { //gd:Noise.get_image_3d
+	return []Image.Instance(gd.ArrayAs[[]Image.Instance](gd.InternalArray(Advanced(self).GetImage3d(int64(width), int64(height), int64(depth), invert, normalize))))
 }
 
 /*
 Returns an [Array] of [Image]s containing seamless 3D noise values for use with [method ImageTexture3D.create].
 [b]Note:[/b] With [param normalize] set to [code]false[/code], the default implementation expects the noise generator to return values in the range [code]-1.0[/code] to [code]1.0[/code].
 */
-func (self Instance) GetSeamlessImage3d(width int, height int, depth int) [][1]gdclass.Image { //gd:Noise.get_seamless_image_3d
-	return [][1]gdclass.Image(gd.ArrayAs[[][1]gdclass.Image](gd.InternalArray(Advanced(self).GetSeamlessImage3d(int64(width), int64(height), int64(depth), false, float64(0.1), true))))
+func (self Instance) GetSeamlessImage3d(width int, height int, depth int) []Image.Instance { //gd:Noise.get_seamless_image_3d
+	return []Image.Instance(gd.ArrayAs[[]Image.Instance](gd.InternalArray(Advanced(self).GetSeamlessImage3d(int64(width), int64(height), int64(depth), false, float64(0.1), true))))
 }
 
 /*
 Returns an [Array] of [Image]s containing seamless 3D noise values for use with [method ImageTexture3D.create].
 [b]Note:[/b] With [param normalize] set to [code]false[/code], the default implementation expects the noise generator to return values in the range [code]-1.0[/code] to [code]1.0[/code].
 */
-func (self Expanded) GetSeamlessImage3d(width int, height int, depth int, invert bool, skirt Float.X, normalize bool) [][1]gdclass.Image { //gd:Noise.get_seamless_image_3d
-	return [][1]gdclass.Image(gd.ArrayAs[[][1]gdclass.Image](gd.InternalArray(Advanced(self).GetSeamlessImage3d(int64(width), int64(height), int64(depth), invert, float64(skirt), normalize))))
+func (self Expanded) GetSeamlessImage3d(width int, height int, depth int, invert bool, skirt Float.X, normalize bool) []Image.Instance { //gd:Noise.get_seamless_image_3d
+	return []Image.Instance(gd.ArrayAs[[]Image.Instance](gd.InternalArray(Advanced(self).GetSeamlessImage3d(int64(width), int64(height), int64(depth), invert, float64(skirt), normalize))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

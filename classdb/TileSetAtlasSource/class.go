@@ -12,6 +12,8 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Texture2D"
+import "graphics.gd/classdb/TileData"
 import "graphics.gd/classdb/TileSetSource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -127,7 +129,7 @@ func (self Expanded) HasRoomForTile(atlas_coords Vector2i.XY, size Vector2i.XY, 
 /*
 Returns an array of tiles coordinates ID that will be automatically removed when modifying one or several of those properties: [param texture], [param margins], [param separation] or [param texture_region_size]. This can be used to undo changes that would have caused tiles data loss.
 */
-func (self Instance) GetTilesToBeRemovedOnChange(texture [1]gdclass.Texture2D, margins Vector2i.XY, separation Vector2i.XY, texture_region_size Vector2i.XY) []Vector2.XY { //gd:TileSetAtlasSource.get_tiles_to_be_removed_on_change
+func (self Instance) GetTilesToBeRemovedOnChange(texture Texture2D.Instance, margins Vector2i.XY, separation Vector2i.XY, texture_region_size Vector2i.XY) []Vector2.XY { //gd:TileSetAtlasSource.get_tiles_to_be_removed_on_change
 	return []Vector2.XY(slices.Collect(Advanced(self).GetTilesToBeRemovedOnChange(texture, Vector2i.XY(margins), Vector2i.XY(separation), Vector2i.XY(texture_region_size)).Values()))
 }
 
@@ -285,8 +287,8 @@ func (self Instance) GetNextAlternativeTileId(atlas_coords Vector2i.XY) int { //
 /*
 Returns the [TileData] object for the given atlas coordinates and alternative ID.
 */
-func (self Instance) GetTileData(atlas_coords Vector2i.XY, alternative_tile int) [1]gdclass.TileData { //gd:TileSetAtlasSource.get_tile_data
-	return [1]gdclass.TileData(Advanced(self).GetTileData(Vector2i.XY(atlas_coords), int64(alternative_tile)))
+func (self Instance) GetTileData(atlas_coords Vector2i.XY, alternative_tile int) TileData.Instance { //gd:TileSetAtlasSource.get_tile_data
+	return TileData.Instance(Advanced(self).GetTileData(Vector2i.XY(atlas_coords), int64(alternative_tile)))
 }
 
 /*
@@ -313,8 +315,8 @@ func (self Expanded) GetTileTextureRegion(atlas_coords Vector2i.XY, frame_ int) 
 /*
 If [member use_texture_padding] is [code]false[/code], returns [member texture]. Otherwise, returns and internal [ImageTexture] created that includes the padding.
 */
-func (self Instance) GetRuntimeTexture() [1]gdclass.Texture2D { //gd:TileSetAtlasSource.get_runtime_texture
-	return [1]gdclass.Texture2D(Advanced(self).GetRuntimeTexture())
+func (self Instance) GetRuntimeTexture() Texture2D.Instance { //gd:TileSetAtlasSource.get_runtime_texture
+	return Texture2D.Instance(Advanced(self).GetRuntimeTexture())
 }
 
 /*
@@ -344,11 +346,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Texture() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetTexture())
+func (self Instance) Texture() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetTexture())
 }
 
-func (self Instance) SetTexture(value [1]gdclass.Texture2D) {
+func (self Instance) SetTexture(value Texture2D.Instance) {
 	class(self).SetTexture(value)
 }
 

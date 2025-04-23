@@ -13,6 +13,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Material"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -77,11 +78,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Panorama() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetPanorama())
+func (self Instance) Panorama() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetPanorama())
 }
 
-func (self Instance) SetPanorama(value [1]gdclass.Texture2D) {
+func (self Instance) SetPanorama(value Texture2D.Instance) {
 	class(self).SetPanorama(value)
 }
 

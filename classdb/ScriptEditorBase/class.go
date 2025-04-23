@@ -15,6 +15,7 @@ import "graphics.gd/classdb/BoxContainer"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/EditorSyntaxHighlighter"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/VBoxContainer"
 import "graphics.gd/variant/Array"
@@ -63,14 +64,14 @@ type Any interface {
 /*
 Returns the underlying [Control] used for editing scripts. For text scripts, this is a [CodeEdit].
 */
-func (self Instance) GetBaseEditor() [1]gdclass.Control { //gd:ScriptEditorBase.get_base_editor
-	return [1]gdclass.Control(Advanced(self).GetBaseEditor())
+func (self Instance) GetBaseEditor() Control.Instance { //gd:ScriptEditorBase.get_base_editor
+	return Control.Instance(Advanced(self).GetBaseEditor())
 }
 
 /*
 Adds a [EditorSyntaxHighlighter] to the open script.
 */
-func (self Instance) AddSyntaxHighlighter(highlighter [1]gdclass.EditorSyntaxHighlighter) { //gd:ScriptEditorBase.add_syntax_highlighter
+func (self Instance) AddSyntaxHighlighter(highlighter EditorSyntaxHighlighter.Instance) { //gd:ScriptEditorBase.add_syntax_highlighter
 	Advanced(self).AddSyntaxHighlighter(highlighter)
 }
 

@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/ENetPacketPeer"
+import "graphics.gd/classdb/TLSOptions"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -100,16 +102,16 @@ func (self Instance) Destroy() { //gd:ENetConnection.destroy
 Initiates a connection to a foreign [param address] using the specified [param port] and allocating the requested [param channels]. Optional [param data] can be passed during connection in the form of a 32 bit integer.
 [b]Note:[/b] You must call either [method create_host] or [method create_host_bound] on both ends before calling this method.
 */
-func (self Instance) ConnectToHost(address string, port int) [1]gdclass.ENetPacketPeer { //gd:ENetConnection.connect_to_host
-	return [1]gdclass.ENetPacketPeer(Advanced(self).ConnectToHost(String.New(address), int64(port), int64(0), int64(0)))
+func (self Instance) ConnectToHost(address string, port int) ENetPacketPeer.Instance { //gd:ENetConnection.connect_to_host
+	return ENetPacketPeer.Instance(Advanced(self).ConnectToHost(String.New(address), int64(port), int64(0), int64(0)))
 }
 
 /*
 Initiates a connection to a foreign [param address] using the specified [param port] and allocating the requested [param channels]. Optional [param data] can be passed during connection in the form of a 32 bit integer.
 [b]Note:[/b] You must call either [method create_host] or [method create_host_bound] on both ends before calling this method.
 */
-func (self Expanded) ConnectToHost(address string, port int, channels int, data int) [1]gdclass.ENetPacketPeer { //gd:ENetConnection.connect_to_host
-	return [1]gdclass.ENetPacketPeer(Advanced(self).ConnectToHost(String.New(address), int64(port), int64(channels), int64(data)))
+func (self Expanded) ConnectToHost(address string, port int, channels int, data int) ENetPacketPeer.Instance { //gd:ENetConnection.connect_to_host
+	return ENetPacketPeer.Instance(Advanced(self).ConnectToHost(String.New(address), int64(port), int64(channels), int64(data)))
 }
 
 /*
@@ -177,7 +179,7 @@ func (self Instance) Compress(mode gdclass.ENetConnectionCompressionMode) { //gd
 /*
 Configure this ENetHost to use the custom Godot extension allowing DTLS encryption for ENet servers. Call this right after [method create_host_bound] to have ENet expect peers to connect using DTLS. See [method TLSOptions.server].
 */
-func (self Instance) DtlsServerSetup(server_options [1]gdclass.TLSOptions) error { //gd:ENetConnection.dtls_server_setup
+func (self Instance) DtlsServerSetup(server_options TLSOptions.Instance) error { //gd:ENetConnection.dtls_server_setup
 	return error(gd.ToError(Advanced(self).DtlsServerSetup(server_options)))
 }
 
@@ -185,13 +187,13 @@ func (self Instance) DtlsServerSetup(server_options [1]gdclass.TLSOptions) error
 Configure this ENetHost to use the custom Godot extension allowing DTLS encryption for ENet clients. Call this before [method connect_to_host] to have ENet connect using DTLS validating the server certificate against [param hostname]. You can pass the optional [param client_options] parameter to customize the trusted certification authorities, or disable the common name verification. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
 func (self Instance) DtlsClientSetup(hostname string) error { //gd:ENetConnection.dtls_client_setup
-	return error(gd.ToError(Advanced(self).DtlsClientSetup(String.New(hostname), [1][1]gdclass.TLSOptions{}[0])))
+	return error(gd.ToError(Advanced(self).DtlsClientSetup(String.New(hostname), [1]TLSOptions.Instance{}[0])))
 }
 
 /*
 Configure this ENetHost to use the custom Godot extension allowing DTLS encryption for ENet clients. Call this before [method connect_to_host] to have ENet connect using DTLS validating the server certificate against [param hostname]. You can pass the optional [param client_options] parameter to customize the trusted certification authorities, or disable the common name verification. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
-func (self Expanded) DtlsClientSetup(hostname string, client_options [1]gdclass.TLSOptions) error { //gd:ENetConnection.dtls_client_setup
+func (self Expanded) DtlsClientSetup(hostname string, client_options TLSOptions.Instance) error { //gd:ENetConnection.dtls_client_setup
 	return error(gd.ToError(Advanced(self).DtlsClientSetup(String.New(hostname), client_options)))
 }
 
@@ -228,8 +230,8 @@ func (self Instance) GetLocalPort() int { //gd:ENetConnection.get_local_port
 Returns the list of peers associated with this host.
 [b]Note:[/b] This list might include some peers that are not fully connected or are still being disconnected.
 */
-func (self Instance) GetPeers() [][1]gdclass.ENetPacketPeer { //gd:ENetConnection.get_peers
-	return [][1]gdclass.ENetPacketPeer(gd.ArrayAs[[][1]gdclass.ENetPacketPeer](gd.InternalArray(Advanced(self).GetPeers())))
+func (self Instance) GetPeers() []ENetPacketPeer.Instance { //gd:ENetConnection.get_peers
+	return []ENetPacketPeer.Instance(gd.ArrayAs[[]ENetPacketPeer.Instance](gd.InternalArray(Advanced(self).GetPeers())))
 }
 
 /*

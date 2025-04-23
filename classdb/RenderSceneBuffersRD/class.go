@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/RDTextureFormat"
+import "graphics.gd/classdb/RDTextureView"
 import "graphics.gd/classdb/RenderSceneBuffers"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -77,14 +79,14 @@ func (self Instance) CreateTexture(context string, name string, data_format gdcl
 /*
 Create a new texture using the given format and view and cache this under the given name. Will return the existing texture if it already exists.
 */
-func (self Instance) CreateTextureFromFormat(context string, name string, format [1]gdclass.RDTextureFormat, view [1]gdclass.RDTextureView, unique bool) RID.Texture { //gd:RenderSceneBuffersRD.create_texture_from_format
+func (self Instance) CreateTextureFromFormat(context string, name string, format RDTextureFormat.Instance, view RDTextureView.Instance, unique bool) RID.Texture { //gd:RenderSceneBuffersRD.create_texture_from_format
 	return RID.Texture(Advanced(self).CreateTextureFromFormat(String.Name(String.New(context)), String.Name(String.New(name)), format, view, unique))
 }
 
 /*
 Create a new texture view for an existing texture and cache this under the given [param view_name]. Will return the existing texture view if it already exists. Will error if the source texture doesn't exist.
 */
-func (self Instance) CreateTextureView(context string, name string, view_name string, view [1]gdclass.RDTextureView) RID.Texture { //gd:RenderSceneBuffersRD.create_texture_view
+func (self Instance) CreateTextureView(context string, name string, view_name string, view RDTextureView.Instance) RID.Texture { //gd:RenderSceneBuffersRD.create_texture_view
 	return RID.Texture(Advanced(self).CreateTextureView(String.Name(String.New(context)), String.Name(String.New(name)), String.Name(String.New(view_name)), view))
 }
 
@@ -98,8 +100,8 @@ func (self Instance) GetTexture(context string, name string) RID.Texture { //gd:
 /*
 Returns the texture format information with which a cached texture was created.
 */
-func (self Instance) GetTextureFormat(context string, name string) [1]gdclass.RDTextureFormat { //gd:RenderSceneBuffersRD.get_texture_format
-	return [1]gdclass.RDTextureFormat(Advanced(self).GetTextureFormat(String.Name(String.New(context)), String.Name(String.New(name))))
+func (self Instance) GetTextureFormat(context string, name string) RDTextureFormat.Instance { //gd:RenderSceneBuffersRD.get_texture_format
+	return RDTextureFormat.Instance(Advanced(self).GetTextureFormat(String.Name(String.New(context)), String.Name(String.New(name))))
 }
 
 /*
@@ -112,7 +114,7 @@ func (self Instance) GetTextureSlice(context string, name string, layer int, mip
 /*
 Returns a specific view of a slice (layer or mipmap) for a cached texture.
 */
-func (self Instance) GetTextureSliceView(context string, name string, layer int, mipmap int, layers int, mipmaps int, view [1]gdclass.RDTextureView) RID.Texture { //gd:RenderSceneBuffersRD.get_texture_slice_view
+func (self Instance) GetTextureSliceView(context string, name string, layer int, mipmap int, layers int, mipmaps int, view RDTextureView.Instance) RID.Texture { //gd:RenderSceneBuffersRD.get_texture_slice_view
 	return RID.Texture(Advanced(self).GetTextureSliceView(String.Name(String.New(context)), String.Name(String.New(name)), int64(layer), int64(mipmap), int64(layers), int64(mipmaps), view))
 }
 

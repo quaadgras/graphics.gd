@@ -11,9 +11,12 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/BitMap"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node2D"
+import "graphics.gd/classdb/Shape2D"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -84,35 +87,35 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) TextureNormal() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetTextureNormal())
+func (self Instance) TextureNormal() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetTextureNormal())
 }
 
-func (self Instance) SetTextureNormal(value [1]gdclass.Texture2D) {
+func (self Instance) SetTextureNormal(value Texture2D.Instance) {
 	class(self).SetTextureNormal(value)
 }
 
-func (self Instance) TexturePressed() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetTexturePressed())
+func (self Instance) TexturePressed() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetTexturePressed())
 }
 
-func (self Instance) SetTexturePressed(value [1]gdclass.Texture2D) {
+func (self Instance) SetTexturePressed(value Texture2D.Instance) {
 	class(self).SetTexturePressed(value)
 }
 
-func (self Instance) Bitmask() [1]gdclass.BitMap {
-	return [1]gdclass.BitMap(class(self).GetBitmask())
+func (self Instance) Bitmask() BitMap.Instance {
+	return BitMap.Instance(class(self).GetBitmask())
 }
 
-func (self Instance) SetBitmask(value [1]gdclass.BitMap) {
+func (self Instance) SetBitmask(value BitMap.Instance) {
 	class(self).SetBitmask(value)
 }
 
-func (self Instance) Shape() [1]gdclass.Shape2D {
-	return [1]gdclass.Shape2D(class(self).GetShape())
+func (self Instance) Shape() Shape2D.Instance {
+	return Shape2D.Instance(class(self).GetShape())
 }
 
-func (self Instance) SetShape(value [1]gdclass.Shape2D) {
+func (self Instance) SetShape(value Shape2D.Instance) {
 	class(self).SetShape(value)
 }
 

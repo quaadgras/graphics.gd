@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/RDShaderSPIRV"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -60,29 +61,29 @@ type Any interface {
 /*
 Sets the SPIR-V [param bytecode] that will be compiled for the specified [param version].
 */
-func (self Instance) SetBytecode(bytecode [1]gdclass.RDShaderSPIRV) { //gd:RDShaderFile.set_bytecode
+func (self Instance) SetBytecode(bytecode RDShaderSPIRV.Instance) { //gd:RDShaderFile.set_bytecode
 	Advanced(self).SetBytecode(bytecode, String.Name(String.New("")))
 }
 
 /*
 Sets the SPIR-V [param bytecode] that will be compiled for the specified [param version].
 */
-func (self Expanded) SetBytecode(bytecode [1]gdclass.RDShaderSPIRV, version string) { //gd:RDShaderFile.set_bytecode
+func (self Expanded) SetBytecode(bytecode RDShaderSPIRV.Instance, version string) { //gd:RDShaderFile.set_bytecode
 	Advanced(self).SetBytecode(bytecode, String.Name(String.New(version)))
 }
 
 /*
 Returns the SPIR-V intermediate representation for the specified shader [param version].
 */
-func (self Instance) GetSpirv() [1]gdclass.RDShaderSPIRV { //gd:RDShaderFile.get_spirv
-	return [1]gdclass.RDShaderSPIRV(Advanced(self).GetSpirv(String.Name(String.New(""))))
+func (self Instance) GetSpirv() RDShaderSPIRV.Instance { //gd:RDShaderFile.get_spirv
+	return RDShaderSPIRV.Instance(Advanced(self).GetSpirv(String.Name(String.New(""))))
 }
 
 /*
 Returns the SPIR-V intermediate representation for the specified shader [param version].
 */
-func (self Expanded) GetSpirv(version string) [1]gdclass.RDShaderSPIRV { //gd:RDShaderFile.get_spirv
-	return [1]gdclass.RDShaderSPIRV(Advanced(self).GetSpirv(String.Name(String.New(version))))
+func (self Expanded) GetSpirv(version string) RDShaderSPIRV.Instance { //gd:RDShaderFile.get_spirv
+	return RDShaderSPIRV.Instance(Advanced(self).GetSpirv(String.Name(String.New(version))))
 }
 
 /*

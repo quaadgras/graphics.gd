@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Image"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/Texture"
 import "graphics.gd/classdb/TextureLayered"
@@ -95,7 +96,7 @@ cubemap_array.create_from_images(images)
 ResourceSaver.save(cubemap_array, "res://cubemap_array.res", ResourceSaver.FLAG_COMPRESS)
 [/codeblock]
 */
-func (self Instance) CreateFromImages(images [][1]gdclass.Image) error { //gd:ImageTextureLayered.create_from_images
+func (self Instance) CreateFromImages(images []Image.Instance) error { //gd:ImageTextureLayered.create_from_images
 	return error(gd.ToError(Advanced(self).CreateFromImages(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Image]](images))))
 }
 
@@ -105,7 +106,7 @@ The given [Image] must have the same width, height, image format, and mipmapping
 If the image format is unsupported, it will be decompressed and converted to a similar and supported [enum Image.Format].
 The update is immediate: it's synchronized with drawing.
 */
-func (self Instance) UpdateLayer(image [1]gdclass.Image, layer int) { //gd:ImageTextureLayered.update_layer
+func (self Instance) UpdateLayer(image Image.Instance, layer int) { //gd:ImageTextureLayered.update_layer
 	Advanced(self).UpdateLayer(image, int64(layer))
 }
 

@@ -12,6 +12,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/RenderSceneBuffers"
+import "graphics.gd/classdb/RenderSceneBuffersConfiguration"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -60,7 +61,7 @@ type Any interface {
 }
 type Interface interface {
 	//Implement this in GDExtension to handle the (re)sizing of a viewport.
-	Configure(config [1]gdclass.RenderSceneBuffersConfiguration)
+	Configure(config RenderSceneBuffersConfiguration.Instance)
 	//Implement this in GDExtension to record a new FSR sharpness value.
 	SetFsrSharpness(fsr_sharpness Float.X)
 	//Implement this in GDExtension to change the texture mipmap bias.
@@ -76,7 +77,7 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) Configure(config [1]gdclass.RenderSceneBuffersConfiguration)  { return }
+func (self implementation) Configure(config RenderSceneBuffersConfiguration.Instance)    { return }
 func (self implementation) SetFsrSharpness(fsr_sharpness Float.X)                        { return }
 func (self implementation) SetTextureMipmapBias(texture_mipmap_bias Float.X)             { return }
 func (self implementation) SetAnisotropicFilteringLevel(anisotropic_filtering_level int) { return }
@@ -85,7 +86,7 @@ func (self implementation) SetUseDebanding(use_debanding bool)                  
 /*
 Implement this in GDExtension to handle the (re)sizing of a viewport.
 */
-func (Instance) _configure(impl func(ptr unsafe.Pointer, config [1]gdclass.RenderSceneBuffersConfiguration)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _configure(impl func(ptr unsafe.Pointer, config RenderSceneBuffersConfiguration.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var config = [1]gdclass.RenderSceneBuffersConfiguration{pointers.New[gdclass.RenderSceneBuffersConfiguration]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 

@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Font"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -76,14 +77,14 @@ func (self Instance) SetBidiOverride(override []any) { //gd:TextLine.set_bidi_ov
 /*
 Adds text span and font to draw it.
 */
-func (self Instance) AddString(text string, font [1]gdclass.Font, font_size int) bool { //gd:TextLine.add_string
+func (self Instance) AddString(text string, font Font.Instance, font_size int) bool { //gd:TextLine.add_string
 	return bool(Advanced(self).AddString(String.New(text), font, int64(font_size), String.New(""), variant.New([1]any{}[0])))
 }
 
 /*
 Adds text span and font to draw it.
 */
-func (self Expanded) AddString(text string, font [1]gdclass.Font, font_size int, language string, meta any) bool { //gd:TextLine.add_string
+func (self Expanded) AddString(text string, font Font.Instance, font_size int, language string, meta any) bool { //gd:TextLine.add_string
 	return bool(Advanced(self).AddString(String.New(text), font, int64(font_size), String.New(language), variant.New(meta)))
 }
 

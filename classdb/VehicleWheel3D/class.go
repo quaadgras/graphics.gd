@@ -69,8 +69,8 @@ func (self Instance) IsInContact() bool { //gd:VehicleWheel3D.is_in_contact
 Returns the contacting body node if valid in the tree, as [Node3D]. At the moment, [GridMap] is not supported so the node will be always of type [PhysicsBody3D].
 Returns [code]null[/code] if the wheel is not in contact with a surface, or the contact body is not a [PhysicsBody3D].
 */
-func (self Instance) GetContactBody() [1]gdclass.Node3D { //gd:VehicleWheel3D.get_contact_body
-	return [1]gdclass.Node3D(Advanced(self).GetContactBody())
+func (self Instance) GetContactBody() Node3D.Instance { //gd:VehicleWheel3D.get_contact_body
+	return Node3D.Instance(Advanced(self).GetContactBody())
 }
 
 /*

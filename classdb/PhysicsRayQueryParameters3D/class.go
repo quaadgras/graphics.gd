@@ -62,9 +62,9 @@ var query = PhysicsRayQueryParameters3D.create(position, position + Vector3(0, -
 var collision = get_world_3d().direct_space_state.intersect_ray(query)
 [/codeblock]
 */
-func Create(from Vector3.XYZ, to Vector3.XYZ, exclude [][]RID.Body3D) [1]gdclass.PhysicsRayQueryParameters3D { //gd:PhysicsRayQueryParameters3D.create
+func Create(from Vector3.XYZ, to Vector3.XYZ, exclude [][]RID.Body3D) Instance { //gd:PhysicsRayQueryParameters3D.create
 	self := Instance{}
-	return [1]gdclass.PhysicsRayQueryParameters3D(Advanced(self).Create(Vector3.XYZ(from), Vector3.XYZ(to), int64(4294967295), gd.ArrayFromSlice[Array.Contains[RID.Any]](exclude)))
+	return Instance(Advanced(self).Create(Vector3.XYZ(from), Vector3.XYZ(to), int64(4294967295), gd.ArrayFromSlice[Array.Contains[RID.Any]](exclude)))
 }
 
 /*
@@ -74,9 +74,9 @@ var query = PhysicsRayQueryParameters3D.create(position, position + Vector3(0, -
 var collision = get_world_3d().direct_space_state.intersect_ray(query)
 [/codeblock]
 */
-func CreateOptions(from Vector3.XYZ, to Vector3.XYZ, collision_mask int, exclude [][]RID.Body3D) [1]gdclass.PhysicsRayQueryParameters3D { //gd:PhysicsRayQueryParameters3D.create
+func CreateOptions(from Vector3.XYZ, to Vector3.XYZ, collision_mask int, exclude [][]RID.Body3D) Instance { //gd:PhysicsRayQueryParameters3D.create
 	self := Instance{}
-	return [1]gdclass.PhysicsRayQueryParameters3D(Advanced(self).Create(Vector3.XYZ(from), Vector3.XYZ(to), int64(collision_mask), gd.ArrayFromSlice[Array.Contains[RID.Any]](exclude)))
+	return Instance(Advanced(self).Create(Vector3.XYZ(from), Vector3.XYZ(to), int64(collision_mask), gd.ArrayFromSlice[Array.Contains[RID.Any]](exclude)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

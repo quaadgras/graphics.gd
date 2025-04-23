@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Material"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -74,11 +75,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) SkyMaterial() [1]gdclass.Material {
-	return [1]gdclass.Material(class(self).GetMaterial())
+func (self Instance) SkyMaterial() Material.Instance {
+	return Material.Instance(class(self).GetMaterial())
 }
 
-func (self Instance) SetSkyMaterial(value [1]gdclass.Material) {
+func (self Instance) SetSkyMaterial(value Material.Instance) {
 	class(self).SetMaterial(value)
 }
 

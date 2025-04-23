@@ -11,7 +11,10 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Mesh"
+import "graphics.gd/classdb/NavigationMesh"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -75,7 +78,7 @@ func (self Instance) SetItemName(id int, name string) { //gd:MeshLibrary.set_ite
 /*
 Sets the item's mesh.
 */
-func (self Instance) SetItemMesh(id int, mesh [1]gdclass.Mesh) { //gd:MeshLibrary.set_item_mesh
+func (self Instance) SetItemMesh(id int, mesh Mesh.Instance) { //gd:MeshLibrary.set_item_mesh
 	Advanced(self).SetItemMesh(int64(id), mesh)
 }
 
@@ -96,7 +99,7 @@ func (self Instance) SetItemMeshCastShadow(id int, shadow_casting_setting gdclas
 /*
 Sets the item's navigation mesh.
 */
-func (self Instance) SetItemNavigationMesh(id int, navigation_mesh [1]gdclass.NavigationMesh) { //gd:MeshLibrary.set_item_navigation_mesh
+func (self Instance) SetItemNavigationMesh(id int, navigation_mesh NavigationMesh.Instance) { //gd:MeshLibrary.set_item_navigation_mesh
 	Advanced(self).SetItemNavigationMesh(int64(id), navigation_mesh)
 }
 
@@ -125,7 +128,7 @@ func (self Instance) SetItemShapes(id int, shapes []any) { //gd:MeshLibrary.set_
 /*
 Sets a texture to use as the item's preview icon in the editor.
 */
-func (self Instance) SetItemPreview(id int, texture [1]gdclass.Texture2D) { //gd:MeshLibrary.set_item_preview
+func (self Instance) SetItemPreview(id int, texture Texture2D.Instance) { //gd:MeshLibrary.set_item_preview
 	Advanced(self).SetItemPreview(int64(id), texture)
 }
 
@@ -139,8 +142,8 @@ func (self Instance) GetItemName(id int) string { //gd:MeshLibrary.get_item_name
 /*
 Returns the item's mesh.
 */
-func (self Instance) GetItemMesh(id int) [1]gdclass.Mesh { //gd:MeshLibrary.get_item_mesh
-	return [1]gdclass.Mesh(Advanced(self).GetItemMesh(int64(id)))
+func (self Instance) GetItemMesh(id int) Mesh.Instance { //gd:MeshLibrary.get_item_mesh
+	return Mesh.Instance(Advanced(self).GetItemMesh(int64(id)))
 }
 
 /*
@@ -160,8 +163,8 @@ func (self Instance) GetItemMeshCastShadow(id int) gdclass.RenderingServerShadow
 /*
 Returns the item's navigation mesh.
 */
-func (self Instance) GetItemNavigationMesh(id int) [1]gdclass.NavigationMesh { //gd:MeshLibrary.get_item_navigation_mesh
-	return [1]gdclass.NavigationMesh(Advanced(self).GetItemNavigationMesh(int64(id)))
+func (self Instance) GetItemNavigationMesh(id int) NavigationMesh.Instance { //gd:MeshLibrary.get_item_navigation_mesh
+	return NavigationMesh.Instance(Advanced(self).GetItemNavigationMesh(int64(id)))
 }
 
 /*
@@ -189,8 +192,8 @@ func (self Instance) GetItemShapes(id int) []any { //gd:MeshLibrary.get_item_sha
 /*
 When running in the editor, returns a generated item preview (a 3D rendering in isometric perspective). When used in a running project, returns the manually-defined item preview which can be set using [method set_item_preview]. Returns an empty [Texture2D] if no preview was manually set in a running project.
 */
-func (self Instance) GetItemPreview(id int) [1]gdclass.Texture2D { //gd:MeshLibrary.get_item_preview
-	return [1]gdclass.Texture2D(Advanced(self).GetItemPreview(int64(id)))
+func (self Instance) GetItemPreview(id int) Texture2D.Instance { //gd:MeshLibrary.get_item_preview
+	return Texture2D.Instance(Advanced(self).GetItemPreview(int64(id)))
 }
 
 /*

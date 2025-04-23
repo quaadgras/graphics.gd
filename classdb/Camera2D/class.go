@@ -171,11 +171,11 @@ func (self Instance) SetZoom(value Vector2.XY) {
 	class(self).SetZoom(Vector2.XY(value))
 }
 
-func (self Instance) CustomViewport() [1]gdclass.Node {
-	return [1]gdclass.Node(class(self).GetCustomViewport())
+func (self Instance) CustomViewport() Node.Instance {
+	return Node.Instance(class(self).GetCustomViewport())
 }
 
-func (self Instance) SetCustomViewport(value [1]gdclass.Node) {
+func (self Instance) SetCustomViewport(value Node.Instance) {
 	class(self).SetCustomViewport(value)
 }
 

@@ -40,8 +40,30 @@ func ImportsForClass(class gdjson.Class) iter.Seq[string] {
 			imports["net/netip"] = true
 		}
 		for _, method := range class.Methods {
-			if method.IsVararg {
+			if _, ok := gdjson.Relocations[class.Name+"."+method.Name]; ok {
 				continue
+			}
+			for _, arg := range method.Arguments {
+				for pkg := range importsForEngineType(class, class.Name+"."+method.Name+"."+arg.Name, arg.Type) {
+					if !imports[pkg] {
+						imports[pkg] = true
+					}
+				}
+			}
+			for pkg := range importsForEngineType(class, "", method.ReturnValue.Type) {
+				imports[pkg] = true
+			}
+		}
+		for _, peer_method := range gdjson.RelocationsReverse[class.Name] {
+			peer, method_name, _ := strings.Cut(peer_method, ".")
+			imports["graphics.gd/classdb/"+peer] = true
+			peerClass := ClassDB[peer]
+			method := gdjson.Method{}
+			for _, peerMethod := range peerClass.Methods {
+				if peerMethod.Name == method_name {
+					method = peerMethod
+					break
+				}
 			}
 			for _, arg := range method.Arguments {
 				for pkg := range importsForEngineType(class, class.Name+"."+method.Name+"."+arg.Name, arg.Type) {
@@ -79,6 +101,11 @@ func importsForEngineType(class gdjson.Class, identifier, s string) iter.Seq[str
 				}
 			}
 			return
+		}
+		if _, ok := ClassDB[s]; ok && s != "Object" && s != class.Name {
+			if !yield("graphics.gd/classdb/" + s) {
+				return
+			}
 		}
 		switch s {
 		case "Vector2", "Vector2i", "Rect2", "Rect2i", "Vector3", "Vector3i", "Transform2D", "Vector4", "Vector4i",

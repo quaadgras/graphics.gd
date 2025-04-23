@@ -39,12 +39,14 @@ type Method struct {
 		Type string `json:"type"`
 		Meta string `json:"meta"`
 	} `json:"return_value,omitempty"`
-	Arguments []struct {
-		Name         string  `json:"name"`
-		Type         string  `json:"type"`
-		Meta         string  `json:"meta"`
-		DefaultValue *string `json:"default_value"`
-	} `json:"arguments,omitempty"`
+	Arguments         []Argument `json:"arguments,omitempty"`
+	ArgumentsRemapped []Argument
+}
+type Argument struct {
+	Name         string  `json:"name"`
+	Type         string  `json:"type"`
+	Meta         string  `json:"meta"`
+	DefaultValue *string `json:"default_value"`
 }
 
 type Class struct {

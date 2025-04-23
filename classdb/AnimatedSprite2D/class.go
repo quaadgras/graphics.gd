@@ -14,6 +14,7 @@ import "graphics.gd/variant"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node2D"
+import "graphics.gd/classdb/SpriteFrames"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -155,11 +156,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) SpriteFrames() [1]gdclass.SpriteFrames {
-	return [1]gdclass.SpriteFrames(class(self).GetSpriteFrames())
+func (self Instance) SpriteFrames() SpriteFrames.Instance {
+	return SpriteFrames.Instance(class(self).GetSpriteFrames())
 }
 
-func (self Instance) SetSpriteFrames(value [1]gdclass.SpriteFrames) {
+func (self Instance) SetSpriteFrames(value SpriteFrames.Instance) {
 	class(self).SetSpriteFrames(value)
 }
 

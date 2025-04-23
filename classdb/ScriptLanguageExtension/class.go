@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Script"
 import "graphics.gd/classdb/ScriptLanguage"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -62,7 +63,7 @@ type Interface interface {
 	GetCommentDelimiters() []string
 	GetDocCommentDelimiters() []string
 	GetStringDelimiters() []string
-	MakeTemplate(template string, class_name string, base_class_name string) [1]gdclass.Script
+	MakeTemplate(template string, class_name string, base_class_name string) Script.Instance
 	GetBuiltInTemplates(obj string) []map[any]any
 	IsUsingTemplates() bool
 	Validate(script string, path string, validate_functions bool, validate_errors bool, validate_warnings bool, validate_safe_lines bool) map[any]any
@@ -76,7 +77,7 @@ type Interface interface {
 	FindFunction(function string, code string) int
 	MakeFunction(class_name string, function_name string, function_args []string) string
 	CanMakeFunction() bool
-	OpenInExternalEditor(script [1]gdclass.Script, line int, column int) error
+	OpenInExternalEditor(script Script.Instance, line int, column int) error
 	OverridesExternalEditor() bool
 	PreferredFileNameCasing() gdclass.ScriptLanguageScriptNameCasing
 	CompleteCode(code string, path string, owner Object.Instance) map[any]any
@@ -101,7 +102,7 @@ type Interface interface {
 	DebugGetCurrentStackInfo() []map[any]any
 	ReloadAllScripts()
 	ReloadScripts(scripts []any, soft_reload bool)
-	ReloadToolScript(script [1]gdclass.Script, soft_reload bool)
+	ReloadToolScript(script Script.Instance, soft_reload bool)
 	GetRecognizedExtensions() []string
 	GetPublicFunctions() []map[any]any
 	GetPublicConstants() map[any]any
@@ -131,7 +132,7 @@ func (self implementation) IsControlFlowKeyword(keyword string) (_ bool) { retur
 func (self implementation) GetCommentDelimiters() (_ []string)           { return }
 func (self implementation) GetDocCommentDelimiters() (_ []string)        { return }
 func (self implementation) GetStringDelimiters() (_ []string)            { return }
-func (self implementation) MakeTemplate(template string, class_name string, base_class_name string) (_ [1]gdclass.Script) {
+func (self implementation) MakeTemplate(template string, class_name string, base_class_name string) (_ Script.Instance) {
 	return
 }
 func (self implementation) GetBuiltInTemplates(obj string) (_ []map[any]any) { return }
@@ -150,7 +151,7 @@ func (self implementation) MakeFunction(class_name string, function_name string,
 	return
 }
 func (self implementation) CanMakeFunction() (_ bool) { return }
-func (self implementation) OpenInExternalEditor(script [1]gdclass.Script, line int, column int) (_ error) {
+func (self implementation) OpenInExternalEditor(script Script.Instance, line int, column int) (_ error) {
 	return
 }
 func (self implementation) OverridesExternalEditor() (_ bool) { return }
@@ -185,17 +186,17 @@ func (self implementation) DebugGetGlobals(max_subitems int, max_depth int) (_ m
 func (self implementation) DebugParseStackLevelExpression(level int, expression string, max_subitems int, max_depth int) (_ string) {
 	return
 }
-func (self implementation) DebugGetCurrentStackInfo() (_ []map[any]any)                 { return }
-func (self implementation) ReloadAllScripts()                                           { return }
-func (self implementation) ReloadScripts(scripts []any, soft_reload bool)               { return }
-func (self implementation) ReloadToolScript(script [1]gdclass.Script, soft_reload bool) { return }
-func (self implementation) GetRecognizedExtensions() (_ []string)                       { return }
-func (self implementation) GetPublicFunctions() (_ []map[any]any)                       { return }
-func (self implementation) GetPublicConstants() (_ map[any]any)                         { return }
-func (self implementation) GetPublicAnnotations() (_ []map[any]any)                     { return }
-func (self implementation) ProfilingStart()                                             { return }
-func (self implementation) ProfilingStop()                                              { return }
-func (self implementation) ProfilingSetSaveNativeCalls(enable bool)                     { return }
+func (self implementation) DebugGetCurrentStackInfo() (_ []map[any]any)               { return }
+func (self implementation) ReloadAllScripts()                                         { return }
+func (self implementation) ReloadScripts(scripts []any, soft_reload bool)             { return }
+func (self implementation) ReloadToolScript(script Script.Instance, soft_reload bool) { return }
+func (self implementation) GetRecognizedExtensions() (_ []string)                     { return }
+func (self implementation) GetPublicFunctions() (_ []map[any]any)                     { return }
+func (self implementation) GetPublicConstants() (_ map[any]any)                       { return }
+func (self implementation) GetPublicAnnotations() (_ []map[any]any)                   { return }
+func (self implementation) ProfilingStart()                                           { return }
+func (self implementation) ProfilingStop()                                            { return }
+func (self implementation) ProfilingSetSaveNativeCalls(enable bool)                   { return }
 func (self implementation) ProfilingGetAccumulatedData(info_array *ProfilingInfo, info_max int) (_ int) {
 	return
 }
@@ -310,7 +311,7 @@ func (Instance) _get_string_delimiters(impl func(ptr unsafe.Pointer) []string) (
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _make_template(impl func(ptr unsafe.Pointer, template string, class_name string, base_class_name string) [1]gdclass.Script) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _make_template(impl func(ptr unsafe.Pointer, template string, class_name string, base_class_name string) Script.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var template = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(template))
@@ -463,7 +464,7 @@ func (Instance) _can_make_function(impl func(ptr unsafe.Pointer) bool) (cb gd.Ex
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _open_in_external_editor(impl func(ptr unsafe.Pointer, script [1]gdclass.Script, line int, column int) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _open_in_external_editor(impl func(ptr unsafe.Pointer, script Script.Instance, line int, column int) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var script = [1]gdclass.Script{pointers.New[gdclass.Script]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -741,7 +742,7 @@ func (Instance) _reload_scripts(impl func(ptr unsafe.Pointer, scripts []any, sof
 		impl(self, gd.ArrayAs[[]any](gd.InternalArray(scripts)), soft_reload)
 	}
 }
-func (Instance) _reload_tool_script(impl func(ptr unsafe.Pointer, script [1]gdclass.Script, soft_reload bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _reload_tool_script(impl func(ptr unsafe.Pointer, script Script.Instance, soft_reload bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var script = [1]gdclass.Script{pointers.New[gdclass.Script]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 

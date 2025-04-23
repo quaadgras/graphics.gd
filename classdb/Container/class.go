@@ -122,7 +122,7 @@ func (self Instance) QueueSort() { //gd:Container.queue_sort
 /*
 Fit a child control in a given rect. This is mainly a helper for creating custom container classes.
 */
-func (self Instance) FitChildInRect(child [1]gdclass.Control, rect Rect2.PositionSize) { //gd:Container.fit_child_in_rect
+func (self Instance) FitChildInRect(child Control.Instance, rect Rect2.PositionSize) { //gd:Container.fit_child_in_rect
 	Advanced(self).FitChildInRect(child, Rect2.PositionSize(rect))
 }
 

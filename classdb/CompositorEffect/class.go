@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/RenderData"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -60,7 +61,7 @@ type Any interface {
 }
 type Interface interface {
 	//Implement this function with your custom rendering code. [param effect_callback_type] should always match the effect callback type you've specified in [member effect_callback_type]. [param render_data] provides access to the rendering state, it is only valid during rendering and should not be stored.
-	RenderCallback(effect_callback_type int, render_data [1]gdclass.RenderData)
+	RenderCallback(effect_callback_type int, render_data RenderData.Instance)
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -68,14 +69,14 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) RenderCallback(effect_callback_type int, render_data [1]gdclass.RenderData) {
+func (self implementation) RenderCallback(effect_callback_type int, render_data RenderData.Instance) {
 	return
 }
 
 /*
 Implement this function with your custom rendering code. [param effect_callback_type] should always match the effect callback type you've specified in [member effect_callback_type]. [param render_data] provides access to the rendering state, it is only valid during rendering and should not be stored.
 */
-func (Instance) _render_callback(impl func(ptr unsafe.Pointer, effect_callback_type int, render_data [1]gdclass.RenderData)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _render_callback(impl func(ptr unsafe.Pointer, effect_callback_type int, render_data RenderData.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var effect_callback_type = gd.UnsafeGet[int64](p_args, 0)
 		var render_data = [1]gdclass.RenderData{pointers.New[gdclass.RenderData]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}

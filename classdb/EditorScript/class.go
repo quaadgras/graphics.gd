@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/EditorInterface"
+import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -111,22 +113,22 @@ func (Instance) _run(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVir
 /*
 Makes [param node] root of the currently opened scene. Only works if the scene is empty. If the [param node] is a scene instance, an inheriting scene will be created.
 */
-func (self Instance) AddRootNode(node [1]gdclass.Node) { //gd:EditorScript.add_root_node
+func (self Instance) AddRootNode(node Node.Instance) { //gd:EditorScript.add_root_node
 	Advanced(self).AddRootNode(node)
 }
 
 /*
 Returns the edited (current) scene's root [Node]. Equivalent of [method EditorInterface.get_edited_scene_root].
 */
-func (self Instance) GetScene() [1]gdclass.Node { //gd:EditorScript.get_scene
-	return [1]gdclass.Node(Advanced(self).GetScene())
+func (self Instance) GetScene() Node.Instance { //gd:EditorScript.get_scene
+	return Node.Instance(Advanced(self).GetScene())
 }
 
 /*
 Returns the [EditorInterface] singleton instance.
 */
-func (self Instance) GetEditorInterface() [1]gdclass.EditorInterface { //gd:EditorScript.get_editor_interface
-	return [1]gdclass.EditorInterface(Advanced(self).GetEditorInterface())
+func (self Instance) GetEditorInterface() EditorInterface.Instance { //gd:EditorScript.get_editor_interface
+	return EditorInterface.Instance(Advanced(self).GetEditorInterface())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

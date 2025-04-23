@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/ENetConnection"
+import "graphics.gd/classdb/ENetPacketPeer"
 import "graphics.gd/classdb/MultiplayerPeer"
 import "graphics.gd/classdb/PacketPeer"
 import "graphics.gd/variant/Array"
@@ -97,7 +99,7 @@ func (self Instance) CreateMesh(unique_id int) error { //gd:ENetMultiplayerPeer.
 Add a new remote peer with the given [param peer_id] connected to the given [param host].
 [b]Note:[/b] The [param host] must have exactly one peer in the [constant ENetPacketPeer.STATE_CONNECTED] state.
 */
-func (self Instance) AddMeshPeer(peer_id int, host [1]gdclass.ENetConnection) error { //gd:ENetMultiplayerPeer.add_mesh_peer
+func (self Instance) AddMeshPeer(peer_id int, host ENetConnection.Instance) error { //gd:ENetMultiplayerPeer.add_mesh_peer
 	return error(gd.ToError(Advanced(self).AddMeshPeer(int64(peer_id), host)))
 }
 
@@ -111,8 +113,8 @@ func (self Instance) SetBindIp(ip string) { //gd:ENetMultiplayerPeer.set_bind_ip
 /*
 Returns the [ENetPacketPeer] associated to the given [param id].
 */
-func (self Instance) GetPeer(id int) [1]gdclass.ENetPacketPeer { //gd:ENetMultiplayerPeer.get_peer
-	return [1]gdclass.ENetPacketPeer(Advanced(self).GetPeer(int64(id)))
+func (self Instance) GetPeer(id int) ENetPacketPeer.Instance { //gd:ENetMultiplayerPeer.get_peer
+	return ENetPacketPeer.Instance(Advanced(self).GetPeer(int64(id)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -134,8 +136,8 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Host() [1]gdclass.ENetConnection {
-	return [1]gdclass.ENetConnection(class(self).GetHost())
+func (self Instance) Host() ENetConnection.Instance {
+	return ENetConnection.Instance(class(self).GetHost())
 }
 
 /*

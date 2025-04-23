@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/InputEvent"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -45,6 +46,8 @@ var _ = slices.Delete[[]struct{}, struct{}]
 /*
 Manages all [InputEventAction] which can be created/modified from the project settings menu [b]Project > Project Settings > Input Map[/b] or in code with [method add_action] and [method action_add_event]. See [method Node._input].
 */
+type Instance [1]gdclass.InputMap
+
 var self [1]gdclass.InputMap
 var once sync.Once
 
@@ -114,7 +117,7 @@ func ActionGetDeadzone(action string) Float.X { //gd:InputMap.action_get_deadzon
 /*
 Adds an [InputEvent] to an action. This [InputEvent] will trigger the action.
 */
-func ActionAddEvent(action string, event [1]gdclass.InputEvent) { //gd:InputMap.action_add_event
+func ActionAddEvent(action string, event InputEvent.Instance) { //gd:InputMap.action_add_event
 	once.Do(singleton)
 	Advanced().ActionAddEvent(String.Name(String.New(action)), event)
 }
@@ -122,7 +125,7 @@ func ActionAddEvent(action string, event [1]gdclass.InputEvent) { //gd:InputMap.
 /*
 Returns [code]true[/code] if the action has the given [InputEvent] associated with it.
 */
-func ActionHasEvent(action string, event [1]gdclass.InputEvent) bool { //gd:InputMap.action_has_event
+func ActionHasEvent(action string, event InputEvent.Instance) bool { //gd:InputMap.action_has_event
 	once.Do(singleton)
 	return bool(Advanced().ActionHasEvent(String.Name(String.New(action)), event))
 }
@@ -130,7 +133,7 @@ func ActionHasEvent(action string, event [1]gdclass.InputEvent) bool { //gd:Inpu
 /*
 Removes an [InputEvent] from an action.
 */
-func ActionEraseEvent(action string, event [1]gdclass.InputEvent) { //gd:InputMap.action_erase_event
+func ActionEraseEvent(action string, event InputEvent.Instance) { //gd:InputMap.action_erase_event
 	once.Do(singleton)
 	Advanced().ActionEraseEvent(String.Name(String.New(action)), event)
 }
@@ -147,16 +150,16 @@ func ActionEraseEvents(action string) { //gd:InputMap.action_erase_events
 Returns an array of [InputEvent]s associated with a given action.
 [b]Note:[/b] When used in the editor (e.g. a tool script or [EditorPlugin]), this method will return events for the editor action. If you want to access your project's input binds from the editor, read the [code]input/*[/code] settings from [ProjectSettings].
 */
-func ActionGetEvents(action string) [][1]gdclass.InputEvent { //gd:InputMap.action_get_events
+func ActionGetEvents(action string) []InputEvent.Instance { //gd:InputMap.action_get_events
 	once.Do(singleton)
-	return [][1]gdclass.InputEvent(gd.ArrayAs[[][1]gdclass.InputEvent](gd.InternalArray(Advanced().ActionGetEvents(String.Name(String.New(action))))))
+	return []InputEvent.Instance(gd.ArrayAs[[]InputEvent.Instance](gd.InternalArray(Advanced().ActionGetEvents(String.Name(String.New(action))))))
 }
 
 /*
 Returns [code]true[/code] if the given event is part of an existing action. This method ignores keyboard modifiers if the given [InputEvent] is not pressed (for proper release detection). See [method action_has_event] if you don't want this behavior.
 If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
 */
-func EventIsAction(event [1]gdclass.InputEvent, action string, exact_match bool) bool { //gd:InputMap.event_is_action
+func EventIsAction(event InputEvent.Instance, action string, exact_match bool) bool { //gd:InputMap.event_is_action
 	once.Do(singleton)
 	return bool(Advanced().EventIsAction(event, String.Name(String.New(action)), exact_match))
 }
@@ -165,7 +168,7 @@ func EventIsAction(event [1]gdclass.InputEvent, action string, exact_match bool)
 Returns [code]true[/code] if the given event is part of an existing action. This method ignores keyboard modifiers if the given [InputEvent] is not pressed (for proper release detection). See [method action_has_event] if you don't want this behavior.
 If [param exact_match] is [code]false[/code], it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
 */
-func EventIsActionOptions(event [1]gdclass.InputEvent, action string, exact_match bool) bool { //gd:InputMap.event_is_action
+func EventIsActionOptions(event InputEvent.Instance, action string, exact_match bool) bool { //gd:InputMap.event_is_action
 	once.Do(singleton)
 	return bool(Advanced().EventIsAction(event, String.Name(String.New(action)), exact_match))
 }

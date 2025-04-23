@@ -14,6 +14,8 @@ import "graphics.gd/variant"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/PopupMenu"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -319,8 +321,8 @@ public void OnItemPressed(int id)
 [/codeblocks]
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member Window.visible] property.
 */
-func (self Instance) GetMenu() [1]gdclass.PopupMenu { //gd:LineEdit.get_menu
-	return [1]gdclass.PopupMenu(Advanced(self).GetMenu())
+func (self Instance) GetMenu() PopupMenu.Instance { //gd:LineEdit.get_menu
+	return PopupMenu.Instance(Advanced(self).GetMenu())
 }
 
 /*
@@ -484,11 +486,11 @@ func (self Instance) SetDragAndDropSelectionEnabled(value bool) {
 	class(self).SetDragAndDropSelectionEnabled(value)
 }
 
-func (self Instance) RightIcon() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetRightIcon())
+func (self Instance) RightIcon() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetRightIcon())
 }
 
-func (self Instance) SetRightIcon(value [1]gdclass.Texture2D) {
+func (self Instance) SetRightIcon(value Texture2D.Instance) {
 	class(self).SetRightIcon(value)
 }
 

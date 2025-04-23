@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/PhysicsDirectSpaceState2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -306,8 +307,8 @@ func (self Instance) IntegrateForces() { //gd:PhysicsDirectBodyState2D.integrate
 /*
 Returns the current state of the space, useful for queries.
 */
-func (self Instance) GetSpaceState() [1]gdclass.PhysicsDirectSpaceState2D { //gd:PhysicsDirectBodyState2D.get_space_state
-	return [1]gdclass.PhysicsDirectSpaceState2D(Advanced(self).GetSpaceState())
+func (self Instance) GetSpaceState() PhysicsDirectSpaceState2D.Instance { //gd:PhysicsDirectBodyState2D.get_space_state
+	return PhysicsDirectSpaceState2D.Instance(Advanced(self).GetSpaceState())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

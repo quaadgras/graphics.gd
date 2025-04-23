@@ -11,8 +11,11 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/MeshLibrary"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/PhysicsMaterial"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Basis"
 import "graphics.gd/variant/Callable"
@@ -177,7 +180,7 @@ func (self Instance) MapToLocal(map_position Vector3i.XYZ) Vector3.XYZ { //gd:Gr
 /*
 This method does nothing.
 */
-func (self Instance) ResourceChanged(resource [1]gdclass.Resource) { //gd:GridMap.resource_changed
+func (self Instance) ResourceChanged(resource Resource.Instance) { //gd:GridMap.resource_changed
 	Advanced(self).ResourceChanged(resource)
 }
 
@@ -262,19 +265,19 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) MeshLibrary() [1]gdclass.MeshLibrary {
-	return [1]gdclass.MeshLibrary(class(self).GetMeshLibrary())
+func (self Instance) MeshLibrary() MeshLibrary.Instance {
+	return MeshLibrary.Instance(class(self).GetMeshLibrary())
 }
 
-func (self Instance) SetMeshLibrary(value [1]gdclass.MeshLibrary) {
+func (self Instance) SetMeshLibrary(value MeshLibrary.Instance) {
 	class(self).SetMeshLibrary(value)
 }
 
-func (self Instance) PhysicsMaterial() [1]gdclass.PhysicsMaterial {
-	return [1]gdclass.PhysicsMaterial(class(self).GetPhysicsMaterial())
+func (self Instance) PhysicsMaterial() PhysicsMaterial.Instance {
+	return PhysicsMaterial.Instance(class(self).GetPhysicsMaterial())
 }
 
-func (self Instance) SetPhysicsMaterial(value [1]gdclass.PhysicsMaterial) {
+func (self Instance) SetPhysicsMaterial(value PhysicsMaterial.Instance) {
 	class(self).SetPhysicsMaterial(value)
 }
 

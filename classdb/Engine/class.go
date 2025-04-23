@@ -12,6 +12,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/MainLoop"
+import "graphics.gd/classdb/ScriptLanguage"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -45,6 +47,8 @@ var _ = slices.Delete[[]struct{}, struct{}]
 /*
 The [Engine] singleton allows you to query and modify the project's run-time parameters, such as frames per second, time scale, and others. It also stores information about the current build of Godot, such as the current version.
 */
+type Instance [1]gdclass.Engine
+
 var self [1]gdclass.Engine
 var once sync.Once
 
@@ -144,9 +148,9 @@ func GetProcessFrames() int { //gd:Engine.get_process_frames
 Returns the instance of the [MainLoop]. This is usually the main [SceneTree] and is the same as [method Node.get_tree].
 [b]Note:[/b] The type instantiated as the main loop can changed with [member ProjectSettings.application/run/main_loop_type].
 */
-func GetMainLoop() [1]gdclass.MainLoop { //gd:Engine.get_main_loop
+func GetMainLoop() MainLoop.Instance { //gd:Engine.get_main_loop
 	once.Do(singleton)
-	return [1]gdclass.MainLoop(Advanced().GetMainLoop())
+	return MainLoop.Instance(Advanced().GetMainLoop())
 }
 
 /*
@@ -336,7 +340,7 @@ Returns:
 - [constant ERR_UNAVAILABLE] if [code]ScriptServer[/code] has reached the limit and cannot register any new language;
 - [constant ERR_ALREADY_EXISTS] if [code]ScriptServer[/code] already contains a language with similar extension/name/type.
 */
-func RegisterScriptLanguage(language [1]gdclass.ScriptLanguage) error { //gd:Engine.register_script_language
+func RegisterScriptLanguage(language ScriptLanguage.Instance) error { //gd:Engine.register_script_language
 	once.Do(singleton)
 	return error(gd.ToError(Advanced().RegisterScriptLanguage(language)))
 }
@@ -347,7 +351,7 @@ Returns:
 - [constant OK] on success;
 - [constant ERR_DOES_NOT_EXIST] if the language is not registered in [code]ScriptServer[/code].
 */
-func UnregisterScriptLanguage(language [1]gdclass.ScriptLanguage) error { //gd:Engine.unregister_script_language
+func UnregisterScriptLanguage(language ScriptLanguage.Instance) error { //gd:Engine.unregister_script_language
 	once.Do(singleton)
 	return error(gd.ToError(Advanced().UnregisterScriptLanguage(language)))
 }
@@ -363,9 +367,9 @@ func GetScriptLanguageCount() int { //gd:Engine.get_script_language_count
 /*
 Returns an instance of a [ScriptLanguage] with the given [param index].
 */
-func GetScriptLanguage(index int) [1]gdclass.ScriptLanguage { //gd:Engine.get_script_language
+func GetScriptLanguage(index int) ScriptLanguage.Instance { //gd:Engine.get_script_language
 	once.Do(singleton)
-	return [1]gdclass.ScriptLanguage(Advanced().GetScriptLanguage(int64(index)))
+	return ScriptLanguage.Instance(Advanced().GetScriptLanguage(int64(index)))
 }
 
 /*

@@ -60,17 +60,17 @@ type Any interface {
 /*
 Creates a new [AudioStreamMP3] instance from the given buffer. The buffer must contain MP3 data.
 */
-func LoadFromBuffer(stream_data []byte) [1]gdclass.AudioStreamMP3 { //gd:AudioStreamMP3.load_from_buffer
+func LoadFromBuffer(stream_data []byte) Instance { //gd:AudioStreamMP3.load_from_buffer
 	self := Instance{}
-	return [1]gdclass.AudioStreamMP3(Advanced(self).LoadFromBuffer(Packed.Bytes(Packed.New(stream_data...))))
+	return Instance(Advanced(self).LoadFromBuffer(Packed.Bytes(Packed.New(stream_data...))))
 }
 
 /*
 Creates a new [AudioStreamMP3] instance from the given file path. The file must be in MP3 format.
 */
-func LoadFromFile(path string) [1]gdclass.AudioStreamMP3 { //gd:AudioStreamMP3.load_from_file
+func LoadFromFile(path string) Instance { //gd:AudioStreamMP3.load_from_file
 	self := Instance{}
-	return [1]gdclass.AudioStreamMP3(Advanced(self).LoadFromFile(String.New(path)))
+	return Instance(Advanced(self).LoadFromFile(String.New(path)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

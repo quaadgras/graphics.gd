@@ -12,6 +12,12 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/NavigationMesh"
+import "graphics.gd/classdb/NavigationMeshSourceGeometryData3D"
+import "graphics.gd/classdb/NavigationPathQueryParameters3D"
+import "graphics.gd/classdb/NavigationPathQueryResult3D"
+import "graphics.gd/classdb/NavigationPolygon"
+import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/AABB"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -55,6 +61,8 @@ To use the collision avoidance system, you may use agents. You can set an agent'
 [b]Note:[/b] The collision avoidance system ignores regions. Using the modified velocity directly may move an agent outside of the traversable area. This is a limitation of the collision avoidance system, any more complex situation may require the use of the physics engine.
 This server keeps tracks of any call and executes them during the sync phase. This means that you can request any change to the map, using any thread, without worrying.
 */
+type Instance [1]gdclass.NavigationServer3D
+
 var self [1]gdclass.NavigationServer3D
 var once sync.Once
 
@@ -346,7 +354,7 @@ func MapGetRandomPoint(mapping RID.NavigationMap3D, navigation_layers int, unifo
 /*
 Queries a path in a given navigation map. Start and target position and other parameters are defined through [NavigationPathQueryParameters3D]. Updates the provided [NavigationPathQueryResult3D] result object with the path among other results requested by the query. After the process is finished the optional [param callback] will be called.
 */
-func QueryPath(parameters [1]gdclass.NavigationPathQueryParameters3D, result [1]gdclass.NavigationPathQueryResult3D, callback func()) { //gd:NavigationServer3D.query_path
+func QueryPath(parameters NavigationPathQueryParameters3D.Instance, result NavigationPathQueryResult3D.Instance, callback func()) { //gd:NavigationServer3D.query_path
 	once.Do(singleton)
 	Advanced().QueryPath(parameters, result, Callable.New(callback))
 }
@@ -354,7 +362,7 @@ func QueryPath(parameters [1]gdclass.NavigationPathQueryParameters3D, result [1]
 /*
 Queries a path in a given navigation map. Start and target position and other parameters are defined through [NavigationPathQueryParameters3D]. Updates the provided [NavigationPathQueryResult3D] result object with the path among other results requested by the query. After the process is finished the optional [param callback] will be called.
 */
-func QueryPathOptions(parameters [1]gdclass.NavigationPathQueryParameters3D, result [1]gdclass.NavigationPathQueryResult3D, callback func()) { //gd:NavigationServer3D.query_path
+func QueryPathOptions(parameters NavigationPathQueryParameters3D.Instance, result NavigationPathQueryResult3D.Instance, callback func()) { //gd:NavigationServer3D.query_path
 	once.Do(singleton)
 	Advanced().QueryPath(parameters, result, Callable.New(callback))
 }
@@ -508,7 +516,7 @@ func RegionGetTransform(region RID.NavigationRegion3D) Transform3D.BasisOrigin {
 /*
 Sets the navigation mesh for the region.
 */
-func RegionSetNavigationMesh(region RID.NavigationRegion3D, navigation_mesh [1]gdclass.NavigationMesh) { //gd:NavigationServer3D.region_set_navigation_mesh
+func RegionSetNavigationMesh(region RID.NavigationRegion3D, navigation_mesh NavigationMesh.Instance) { //gd:NavigationServer3D.region_set_navigation_mesh
 	once.Do(singleton)
 	Advanced().RegionSetNavigationMesh(RID.Any(region), navigation_mesh)
 }
@@ -516,7 +524,7 @@ func RegionSetNavigationMesh(region RID.NavigationRegion3D, navigation_mesh [1]g
 /*
 Bakes the [param navigation_mesh] with bake source geometry collected starting from the [param root_node].
 */
-func RegionBakeNavigationMesh(navigation_mesh [1]gdclass.NavigationMesh, root_node [1]gdclass.Node) { //gd:NavigationServer3D.region_bake_navigation_mesh
+func RegionBakeNavigationMesh(navigation_mesh NavigationMesh.Instance, root_node Node.Instance) { //gd:NavigationServer3D.region_bake_navigation_mesh
 	once.Do(singleton)
 	Advanced().RegionBakeNavigationMesh(navigation_mesh, root_node)
 }
@@ -1222,7 +1230,7 @@ Parses the [SceneTree] for source geometry according to the properties of [param
 [b]Note:[/b] This function needs to run on the main thread or with a deferred call as the SceneTree is not thread-safe.
 [b]Performance:[/b] While convenient, reading data arrays from [Mesh] resources can affect the frame rate negatively. The data needs to be received from the GPU, stalling the [RenderingServer] in the process. For performance prefer the use of e.g. collision shapes or creating the data arrays entirely in code.
 */
-func ParseSourceGeometryData(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, root_node [1]gdclass.Node, callback func()) { //gd:NavigationServer3D.parse_source_geometry_data
+func ParseSourceGeometryData(navigation_mesh NavigationMesh.Instance, source_geometry_data NavigationMeshSourceGeometryData3D.Instance, root_node Node.Instance, callback func()) { //gd:NavigationServer3D.parse_source_geometry_data
 	once.Do(singleton)
 	Advanced().ParseSourceGeometryData(navigation_mesh, source_geometry_data, root_node, Callable.New(callback))
 }
@@ -1232,7 +1240,7 @@ Parses the [SceneTree] for source geometry according to the properties of [param
 [b]Note:[/b] This function needs to run on the main thread or with a deferred call as the SceneTree is not thread-safe.
 [b]Performance:[/b] While convenient, reading data arrays from [Mesh] resources can affect the frame rate negatively. The data needs to be received from the GPU, stalling the [RenderingServer] in the process. For performance prefer the use of e.g. collision shapes or creating the data arrays entirely in code.
 */
-func ParseSourceGeometryDataOptions(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, root_node [1]gdclass.Node, callback func()) { //gd:NavigationServer3D.parse_source_geometry_data
+func ParseSourceGeometryDataOptions(navigation_mesh NavigationMesh.Instance, source_geometry_data NavigationMeshSourceGeometryData3D.Instance, root_node Node.Instance, callback func()) { //gd:NavigationServer3D.parse_source_geometry_data
 	once.Do(singleton)
 	Advanced().ParseSourceGeometryData(navigation_mesh, source_geometry_data, root_node, Callable.New(callback))
 }
@@ -1240,7 +1248,7 @@ func ParseSourceGeometryDataOptions(navigation_mesh [1]gdclass.NavigationMesh, s
 /*
 Bakes the provided [param navigation_mesh] with the data from the provided [param source_geometry_data]. After the process is finished the optional [param callback] will be called.
 */
-func BakeFromSourceGeometryData(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, callback func()) { //gd:NavigationServer3D.bake_from_source_geometry_data
+func BakeFromSourceGeometryData(navigation_mesh NavigationMesh.Instance, source_geometry_data NavigationMeshSourceGeometryData3D.Instance, callback func()) { //gd:NavigationServer3D.bake_from_source_geometry_data
 	once.Do(singleton)
 	Advanced().BakeFromSourceGeometryData(navigation_mesh, source_geometry_data, Callable.New(callback))
 }
@@ -1248,7 +1256,7 @@ func BakeFromSourceGeometryData(navigation_mesh [1]gdclass.NavigationMesh, sourc
 /*
 Bakes the provided [param navigation_mesh] with the data from the provided [param source_geometry_data]. After the process is finished the optional [param callback] will be called.
 */
-func BakeFromSourceGeometryDataOptions(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, callback func()) { //gd:NavigationServer3D.bake_from_source_geometry_data
+func BakeFromSourceGeometryDataOptions(navigation_mesh NavigationMesh.Instance, source_geometry_data NavigationMeshSourceGeometryData3D.Instance, callback func()) { //gd:NavigationServer3D.bake_from_source_geometry_data
 	once.Do(singleton)
 	Advanced().BakeFromSourceGeometryData(navigation_mesh, source_geometry_data, Callable.New(callback))
 }
@@ -1256,7 +1264,7 @@ func BakeFromSourceGeometryDataOptions(navigation_mesh [1]gdclass.NavigationMesh
 /*
 Bakes the provided [param navigation_mesh] with the data from the provided [param source_geometry_data] as an async task running on a background thread. After the process is finished the optional [param callback] will be called.
 */
-func BakeFromSourceGeometryDataAsync(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, callback func()) { //gd:NavigationServer3D.bake_from_source_geometry_data_async
+func BakeFromSourceGeometryDataAsync(navigation_mesh NavigationMesh.Instance, source_geometry_data NavigationMeshSourceGeometryData3D.Instance, callback func()) { //gd:NavigationServer3D.bake_from_source_geometry_data_async
 	once.Do(singleton)
 	Advanced().BakeFromSourceGeometryDataAsync(navigation_mesh, source_geometry_data, Callable.New(callback))
 }
@@ -1264,7 +1272,7 @@ func BakeFromSourceGeometryDataAsync(navigation_mesh [1]gdclass.NavigationMesh, 
 /*
 Bakes the provided [param navigation_mesh] with the data from the provided [param source_geometry_data] as an async task running on a background thread. After the process is finished the optional [param callback] will be called.
 */
-func BakeFromSourceGeometryDataAsyncOptions(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, callback func()) { //gd:NavigationServer3D.bake_from_source_geometry_data_async
+func BakeFromSourceGeometryDataAsyncOptions(navigation_mesh NavigationMesh.Instance, source_geometry_data NavigationMeshSourceGeometryData3D.Instance, callback func()) { //gd:NavigationServer3D.bake_from_source_geometry_data_async
 	once.Do(singleton)
 	Advanced().BakeFromSourceGeometryDataAsync(navigation_mesh, source_geometry_data, Callable.New(callback))
 }
@@ -1272,7 +1280,7 @@ func BakeFromSourceGeometryDataAsyncOptions(navigation_mesh [1]gdclass.Navigatio
 /*
 Returns [code]true[/code] when the provided navigation mesh is being baked on a background thread.
 */
-func IsBakingNavigationMesh(navigation_mesh [1]gdclass.NavigationMesh) bool { //gd:NavigationServer3D.is_baking_navigation_mesh
+func IsBakingNavigationMesh(navigation_mesh NavigationMesh.Instance) bool { //gd:NavigationServer3D.is_baking_navigation_mesh
 	once.Do(singleton)
 	return bool(Advanced().IsBakingNavigationMesh(navigation_mesh))
 }
@@ -1291,7 +1299,7 @@ Sets the [param callback] [Callable] for the specific source geometry [param par
 - [code]source_geometry_data[/code] - The [NavigationMeshSourceGeometryData3D] reference. Add custom source geometry for navigation mesh baking to this object.
 - [code]node[/code] - The [Node] that is parsed.
 */
-func SourceGeometryParserSetCallback(parser RID.NavigationSourceGeometryParser3D, callback func(navigation_mesh [1]gdclass.NavigationPolygon, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, node [1]gdclass.Node)) { //gd:NavigationServer3D.source_geometry_parser_set_callback
+func SourceGeometryParserSetCallback(parser RID.NavigationSourceGeometryParser3D, callback func(navigation_mesh NavigationPolygon.Instance, source_geometry_data NavigationMeshSourceGeometryData3D.Instance, node Node.Instance)) { //gd:NavigationServer3D.source_geometry_parser_set_callback
 	once.Do(singleton)
 	Advanced().SourceGeometryParserSetCallback(RID.Any(parser), Callable.New(callback))
 }

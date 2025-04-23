@@ -12,6 +12,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Font"
+import "graphics.gd/classdb/Image"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -319,15 +320,15 @@ func (self Instance) RemoveTexture(cache_index int, size Vector2i.XY, texture_in
 /*
 Sets font cache texture image.
 */
-func (self Instance) SetTextureImage(cache_index int, size Vector2i.XY, texture_index int, image [1]gdclass.Image) { //gd:FontFile.set_texture_image
+func (self Instance) SetTextureImage(cache_index int, size Vector2i.XY, texture_index int, image Image.Instance) { //gd:FontFile.set_texture_image
 	Advanced(self).SetTextureImage(int64(cache_index), Vector2i.XY(size), int64(texture_index), image)
 }
 
 /*
 Returns a copy of the font cache texture image.
 */
-func (self Instance) GetTextureImage(cache_index int, size Vector2i.XY, texture_index int) [1]gdclass.Image { //gd:FontFile.get_texture_image
-	return [1]gdclass.Image(Advanced(self).GetTextureImage(int64(cache_index), Vector2i.XY(size), int64(texture_index)))
+func (self Instance) GetTextureImage(cache_index int, size Vector2i.XY, texture_index int) Image.Instance { //gd:FontFile.get_texture_image
+	return Image.Instance(Advanced(self).GetTextureImage(int64(cache_index), Vector2i.XY(size), int64(texture_index)))
 }
 
 /*

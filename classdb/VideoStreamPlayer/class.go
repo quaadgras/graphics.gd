@@ -14,6 +14,8 @@ import "graphics.gd/variant"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Texture2D"
+import "graphics.gd/classdb/VideoStream"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -100,8 +102,8 @@ func (self Instance) GetStreamLength() Float.X { //gd:VideoStreamPlayer.get_stre
 /*
 Returns the current frame as a [Texture2D].
 */
-func (self Instance) GetVideoTexture() [1]gdclass.Texture2D { //gd:VideoStreamPlayer.get_video_texture
-	return [1]gdclass.Texture2D(Advanced(self).GetVideoTexture())
+func (self Instance) GetVideoTexture() Texture2D.Instance { //gd:VideoStreamPlayer.get_video_texture
+	return Texture2D.Instance(Advanced(self).GetVideoTexture())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -130,11 +132,11 @@ func (self Instance) SetAudioTrack(value int) {
 	class(self).SetAudioTrack(int64(value))
 }
 
-func (self Instance) Stream() [1]gdclass.VideoStream {
-	return [1]gdclass.VideoStream(class(self).GetStream())
+func (self Instance) Stream() VideoStream.Instance {
+	return VideoStream.Instance(class(self).GetStream())
 }
 
-func (self Instance) SetStream(value [1]gdclass.VideoStream) {
+func (self Instance) SetStream(value VideoStream.Instance) {
 	class(self).SetStream(value)
 }
 

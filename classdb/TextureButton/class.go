@@ -12,9 +12,11 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/BaseButton"
+import "graphics.gd/classdb/BitMap"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -78,51 +80,51 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) TextureNormal() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetTextureNormal())
+func (self Instance) TextureNormal() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetTextureNormal())
 }
 
-func (self Instance) SetTextureNormal(value [1]gdclass.Texture2D) {
+func (self Instance) SetTextureNormal(value Texture2D.Instance) {
 	class(self).SetTextureNormal(value)
 }
 
-func (self Instance) TexturePressed() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetTexturePressed())
+func (self Instance) TexturePressed() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetTexturePressed())
 }
 
-func (self Instance) SetTexturePressed(value [1]gdclass.Texture2D) {
+func (self Instance) SetTexturePressed(value Texture2D.Instance) {
 	class(self).SetTexturePressed(value)
 }
 
-func (self Instance) TextureHover() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetTextureHover())
+func (self Instance) TextureHover() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetTextureHover())
 }
 
-func (self Instance) SetTextureHover(value [1]gdclass.Texture2D) {
+func (self Instance) SetTextureHover(value Texture2D.Instance) {
 	class(self).SetTextureHover(value)
 }
 
-func (self Instance) TextureDisabled() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetTextureDisabled())
+func (self Instance) TextureDisabled() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetTextureDisabled())
 }
 
-func (self Instance) SetTextureDisabled(value [1]gdclass.Texture2D) {
+func (self Instance) SetTextureDisabled(value Texture2D.Instance) {
 	class(self).SetTextureDisabled(value)
 }
 
-func (self Instance) TextureFocused() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetTextureFocused())
+func (self Instance) TextureFocused() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetTextureFocused())
 }
 
-func (self Instance) SetTextureFocused(value [1]gdclass.Texture2D) {
+func (self Instance) SetTextureFocused(value Texture2D.Instance) {
 	class(self).SetTextureFocused(value)
 }
 
-func (self Instance) TextureClickMask() [1]gdclass.BitMap {
-	return [1]gdclass.BitMap(class(self).GetClickMask())
+func (self Instance) TextureClickMask() BitMap.Instance {
+	return BitMap.Instance(class(self).GetClickMask())
 }
 
-func (self Instance) SetTextureClickMask(value [1]gdclass.BitMap) {
+func (self Instance) SetTextureClickMask(value BitMap.Instance) {
 	class(self).SetClickMask(value)
 }
 

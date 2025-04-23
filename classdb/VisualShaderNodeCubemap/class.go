@@ -12,6 +12,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/TextureLayered"
 import "graphics.gd/classdb/VisualShaderNode"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -83,11 +84,11 @@ func (self Instance) SetSource(value gdclass.VisualShaderNodeCubemapSource) {
 	class(self).SetSource(value)
 }
 
-func (self Instance) CubeMap() [1]gdclass.TextureLayered {
-	return [1]gdclass.TextureLayered(class(self).GetCubeMap())
+func (self Instance) CubeMap() TextureLayered.Instance {
+	return TextureLayered.Instance(class(self).GetCubeMap())
 }
 
-func (self Instance) SetCubeMap(value [1]gdclass.TextureLayered) {
+func (self Instance) SetCubeMap(value TextureLayered.Instance) {
 	class(self).SetCubeMap(value)
 }
 

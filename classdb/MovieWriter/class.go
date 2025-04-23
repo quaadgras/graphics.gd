@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Image"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -80,7 +81,7 @@ type Interface interface {
 	//Called once before the engine starts writing video and audio data. [param movie_size] is the width and height of the video to save. [param fps] is the number of frames per second specified in the project settings or using the [code]--fixed-fps <fps>[/code] [url=$DOCS_URL/tutorials/editor/command_line_tutorial.html]command line argument[/url].
 	WriteBegin(movie_size Vector2i.XY, fps int, base_path string) error
 	//Called at the end of every rendered frame. The [param frame_image] and [param audio_frame_block] function arguments should be written to.
-	WriteFrame(frame_image [1]gdclass.Image, audio_frame_block unsafe.Pointer) error
+	WriteFrame(frame_image Image.Instance, audio_frame_block unsafe.Pointer) error
 	//Called when the engine finishes writing. This occurs when the engine quits by pressing the window manager's close button, or when [method SceneTree.quit] is called.
 	//[b]Note:[/b] Pressing [kbd]Ctrl + C[/kbd] on the terminal running the editor/project does [i]not[/i] result in [method _write_end] being called.
 	WriteEnd()
@@ -97,7 +98,7 @@ func (self implementation) HandlesFile(path string) (_ bool)                    
 func (self implementation) WriteBegin(movie_size Vector2i.XY, fps int, base_path string) (_ error) {
 	return
 }
-func (self implementation) WriteFrame(frame_image [1]gdclass.Image, audio_frame_block unsafe.Pointer) (_ error) {
+func (self implementation) WriteFrame(frame_image Image.Instance, audio_frame_block unsafe.Pointer) (_ error) {
 	return
 }
 func (self implementation) WriteEnd() { return }
@@ -168,7 +169,7 @@ func (Instance) _write_begin(impl func(ptr unsafe.Pointer, movie_size Vector2i.X
 /*
 Called at the end of every rendered frame. The [param frame_image] and [param audio_frame_block] function arguments should be written to.
 */
-func (Instance) _write_frame(impl func(ptr unsafe.Pointer, frame_image [1]gdclass.Image, audio_frame_block unsafe.Pointer) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _write_frame(impl func(ptr unsafe.Pointer, frame_image Image.Instance, audio_frame_block unsafe.Pointer) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var frame_image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -200,7 +201,7 @@ func (Instance) _write_end(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassC
 Adds a writer to be usable by the engine. The supported file extensions can be set by overriding [method _handles_file].
 [b]Note:[/b] [method add_writer] must be called early enough in the engine initialization to work, as movie writing is designed to start at the same time as the rest of the engine.
 */
-func AddWriter(writer [1]gdclass.MovieWriter) { //gd:MovieWriter.add_writer
+func AddWriter(writer Instance) { //gd:MovieWriter.add_writer
 	self := Instance{}
 	Advanced(self).AddWriter(writer)
 }

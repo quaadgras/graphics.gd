@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Gradient"
+import "graphics.gd/classdb/Noise"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/Texture"
 import "graphics.gd/classdb/Texture2D"
@@ -156,19 +158,19 @@ func (self Instance) SetNormalize(value bool) {
 	class(self).SetNormalize(value)
 }
 
-func (self Instance) ColorRamp() [1]gdclass.Gradient {
-	return [1]gdclass.Gradient(class(self).GetColorRamp())
+func (self Instance) ColorRamp() Gradient.Instance {
+	return Gradient.Instance(class(self).GetColorRamp())
 }
 
-func (self Instance) SetColorRamp(value [1]gdclass.Gradient) {
+func (self Instance) SetColorRamp(value Gradient.Instance) {
 	class(self).SetColorRamp(value)
 }
 
-func (self Instance) Noise() [1]gdclass.Noise {
-	return [1]gdclass.Noise(class(self).GetNoise())
+func (self Instance) Noise() Noise.Instance {
+	return Noise.Instance(class(self).GetNoise())
 }
 
-func (self Instance) SetNoise(value [1]gdclass.Noise) {
+func (self Instance) SetNoise(value Noise.Instance) {
 	class(self).SetNoise(value)
 }
 

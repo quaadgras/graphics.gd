@@ -13,7 +13,11 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/HScrollBar"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/PopupMenu"
+import "graphics.gd/classdb/Texture2D"
+import "graphics.gd/classdb/VScrollBar"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -1222,15 +1226,15 @@ func (self Instance) GetLineWrappedText(line int) []string { //gd:TextEdit.get_l
 /*
 Returns the [VScrollBar] of the [TextEdit].
 */
-func (self Instance) GetVScrollBar() [1]gdclass.VScrollBar { //gd:TextEdit.get_v_scroll_bar
-	return [1]gdclass.VScrollBar(Advanced(self).GetVScrollBar())
+func (self Instance) GetVScrollBar() VScrollBar.Instance { //gd:TextEdit.get_v_scroll_bar
+	return VScrollBar.Instance(Advanced(self).GetVScrollBar())
 }
 
 /*
 Returns the [HScrollBar] used by [TextEdit].
 */
-func (self Instance) GetHScrollBar() [1]gdclass.HScrollBar { //gd:TextEdit.get_h_scroll_bar
-	return [1]gdclass.HScrollBar(Advanced(self).GetHScrollBar())
+func (self Instance) GetHScrollBar() HScrollBar.Instance { //gd:TextEdit.get_h_scroll_bar
+	return HScrollBar.Instance(Advanced(self).GetHScrollBar())
 }
 
 /*
@@ -1530,15 +1534,15 @@ func (self Instance) GetLineGutterText(line int, gutter int) string { //gd:TextE
 /*
 Sets the icon for [param gutter] on [param line] to [param icon]. This only works when the gutter type is [constant GUTTER_TYPE_ICON] (see [method set_gutter_type]).
 */
-func (self Instance) SetLineGutterIcon(line int, gutter int, icon [1]gdclass.Texture2D) { //gd:TextEdit.set_line_gutter_icon
+func (self Instance) SetLineGutterIcon(line int, gutter int, icon Texture2D.Instance) { //gd:TextEdit.set_line_gutter_icon
 	Advanced(self).SetLineGutterIcon(int64(line), int64(gutter), icon)
 }
 
 /*
 Returns the icon currently in [param gutter] at [param line]. This only works when the gutter type is [constant GUTTER_TYPE_ICON] (see [method set_gutter_type]).
 */
-func (self Instance) GetLineGutterIcon(line int, gutter int) [1]gdclass.Texture2D { //gd:TextEdit.get_line_gutter_icon
-	return [1]gdclass.Texture2D(Advanced(self).GetLineGutterIcon(int64(line), int64(gutter)))
+func (self Instance) GetLineGutterIcon(line int, gutter int) Texture2D.Instance { //gd:TextEdit.get_line_gutter_icon
+	return Texture2D.Instance(Advanced(self).GetLineGutterIcon(int64(line), int64(gutter)))
 }
 
 /*
@@ -1632,8 +1636,8 @@ public void OnItemPressed(int id)
 [/codeblocks]
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member Window.visible] property.
 */
-func (self Instance) GetMenu() [1]gdclass.PopupMenu { //gd:TextEdit.get_menu
-	return [1]gdclass.PopupMenu(Advanced(self).GetMenu())
+func (self Instance) GetMenu() PopupMenu.Instance { //gd:TextEdit.get_menu
+	return PopupMenu.Instance(Advanced(self).GetMenu())
 }
 
 /*
@@ -1980,14 +1984,6 @@ func (self Instance) CustomWordSeparators() string {
 
 func (self Instance) SetCustomWordSeparators(value string) {
 	class(self).SetCustomWordSeparators(String.New(value))
-}
-
-func (self Instance) SyntaxHighlighter() [1]gdclass.SyntaxHighlighter {
-	return [1]gdclass.SyntaxHighlighter(class(self).GetSyntaxHighlighter())
-}
-
-func (self Instance) SetSyntaxHighlighter(value [1]gdclass.SyntaxHighlighter) {
-	class(self).SetSyntaxHighlighter(value)
 }
 
 func (self Instance) HighlightAllOccurrences() bool {

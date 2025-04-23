@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"sort"
 
 	"graphics.gd/internal/gdjson"
 	"runtime.link/api/xray"
@@ -10,12 +11,23 @@ import (
 // Graph represents a directed graph using an adjacency list.
 type Graph map[string][]string
 
-// AddEdge adds a directed edge from u to v.
+// AddEdge adds a directed edge from u to v, ensuring no duplicates.
 func (g Graph) AddEdge(u, v string) {
 	if g[u] == nil {
 		g[u] = []string{}
 	}
+	// Check for duplicates
+	for _, neighbor := range g[u] {
+		if neighbor == v {
+			return
+		}
+	}
 	g[u] = append(g[u], v)
+}
+
+// getOutdegree returns the number of outgoing edges for a node.
+func (g Graph) getOutdegree(node string) int {
+	return len(g[node])
 }
 
 // topologicalSort attempts a topological sort and detects cycles.
@@ -34,12 +46,14 @@ func (g Graph) topologicalSort() ([]string, []string) {
 		for _, neighbor := range g[node] {
 			if !visited[neighbor] {
 				if dfs(neighbor) {
-					cycle = append(cycle, neighbor)
+					if len(cycle) == 0 || cycle[0] != node {
+						cycle = append(cycle, neighbor)
+					}
 					return true
 				}
 			} else if recStack[neighbor] {
 				// Cycle detected
-				cycle = append(cycle, neighbor, node)
+				cycle = append([]string{neighbor, node}, cycle...)
 				return true
 			}
 		}
@@ -60,7 +74,8 @@ func (g Graph) topologicalSort() ([]string, []string) {
 	return order, nil
 }
 
-// ResolveCircularDependencies finds the edges to remove to eliminate cycles.
+// ResolveCircularDependencies finds the edges to remove to eliminate cycles,
+// prioritizing edges where the source node has fewer outgoing edges.
 func (g Graph) ResolveCircularDependencies() []string {
 	edgesToRemove := []string{}
 
@@ -71,12 +86,32 @@ func (g Graph) ResolveCircularDependencies() []string {
 			break
 		}
 
-		// Choose an edge to remove from the cycle (e.g., first edge)
-		u := cycle[1] // Node in cycle pointing to...
-		v := cycle[0] // ...the node it loops back to
+		// Find the edge in the cycle with the source node having the smallest outdegree
+		var edgeToRemove struct {
+			u, v   string
+			degree int
+		}
+		minDegree := -1
+
+		// Cycle is a list of nodes forming a loop (e.g., [A, B, C, A])
+		for i := 0; i < len(cycle)-1; i++ {
+			u := cycle[i+1]
+			v := cycle[i]
+			degree := g.getOutdegree(u)
+			if minDegree == -1 || degree < minDegree {
+				minDegree = degree
+				edgeToRemove = struct {
+					u, v   string
+					degree int
+				}{u, v, degree}
+			}
+		}
+
+		// Remove the chosen edge
+		u, v := edgeToRemove.u, edgeToRemove.v
 		edgesToRemove = append(edgesToRemove, fmt.Sprintf("%s -> %s", u, v))
 
-		// Remove the edge from the graph
+		// Update the graph by removing the edge
 		for i, neighbor := range g[u] {
 			if neighbor == v {
 				g[u] = append(g[u][:i], g[u][i+1:]...)
@@ -85,6 +120,8 @@ func (g Graph) ResolveCircularDependencies() []string {
 		}
 	}
 
+	// Sort edges for consistent output
+	sort.Strings(edgesToRemove)
 	return edgesToRemove
 }
 
@@ -100,6 +137,9 @@ func main() {
 	}
 	for _, class := range spec.Classes {
 		for _, method := range class.Methods {
+			if gdjson.Relocations[class.Name+"."+method.Name] != "" {
+				continue
+			}
 			for _, arg := range method.Arguments {
 				if classdb[arg.Type] && arg.Type != class.Name {
 					dependency.AddEdge(class.Name, arg.Type)

@@ -13,6 +13,8 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Shape3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -61,7 +63,7 @@ type Any interface {
 /*
 This method does nothing.
 */
-func (self Instance) ResourceChanged(resource [1]gdclass.Resource) { //gd:CollisionShape3D.resource_changed
+func (self Instance) ResourceChanged(resource Resource.Instance) { //gd:CollisionShape3D.resource_changed
 	Advanced(self).ResourceChanged(resource)
 }
 
@@ -90,11 +92,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Shape() [1]gdclass.Shape3D {
-	return [1]gdclass.Shape3D(class(self).GetShape())
+func (self Instance) Shape() Shape3D.Instance {
+	return Shape3D.Instance(class(self).GetShape())
 }
 
-func (self Instance) SetShape(value [1]gdclass.Shape3D) {
+func (self Instance) SetShape(value Shape3D.Instance) {
 	class(self).SetShape(value)
 }
 

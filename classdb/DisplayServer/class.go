@@ -12,6 +12,10 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Image"
+import "graphics.gd/classdb/InputEvent"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -52,6 +56,8 @@ var _ = slices.Delete[[]struct{}, struct{}]
 [DisplayServer] handles everything related to window management. It is separated from [OS] as a single operating system may support multiple display servers.
 [b]Headless mode:[/b] Starting the engine with the [code]--headless[/code] [url=$DOCS_URL/tutorials/editor/command_line_tutorial.html]command line argument[/url] disables all rendering and window management functions. Most functions from [DisplayServer] will return dummy values in this case.
 */
+type Instance [1]gdclass.DisplayServer
+
 var self [1]gdclass.DisplayServer
 var once sync.Once
 
@@ -227,7 +233,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddIconItem(menu_root string, icon [1]gdclass.Texture2D, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key) int { //gd:DisplayServer.global_menu_add_icon_item
+func GlobalMenuAddIconItem(menu_root string, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key) int { //gd:DisplayServer.global_menu_add_icon_item
 	once.Do(singleton)
 	return int(int(Advanced().GlobalMenuAddIconItem(String.New(menu_root), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
 }
@@ -247,7 +253,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddIconItemOptions(menu_root string, icon [1]gdclass.Texture2D, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:DisplayServer.global_menu_add_icon_item
+func GlobalMenuAddIconItemOptions(menu_root string, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:DisplayServer.global_menu_add_icon_item
 	once.Do(singleton)
 	return int(int(Advanced().GlobalMenuAddIconItem(String.New(menu_root), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
@@ -267,7 +273,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddIconCheckItem(menu_root string, icon [1]gdclass.Texture2D, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key) int { //gd:DisplayServer.global_menu_add_icon_check_item
+func GlobalMenuAddIconCheckItem(menu_root string, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key) int { //gd:DisplayServer.global_menu_add_icon_check_item
 	once.Do(singleton)
 	return int(int(Advanced().GlobalMenuAddIconCheckItem(String.New(menu_root), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
 }
@@ -287,7 +293,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddIconCheckItemOptions(menu_root string, icon [1]gdclass.Texture2D, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:DisplayServer.global_menu_add_icon_check_item
+func GlobalMenuAddIconCheckItemOptions(menu_root string, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:DisplayServer.global_menu_add_icon_check_item
 	once.Do(singleton)
 	return int(int(Advanced().GlobalMenuAddIconCheckItem(String.New(menu_root), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
@@ -350,7 +356,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddIconRadioCheckItem(menu_root string, icon [1]gdclass.Texture2D, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key) int { //gd:DisplayServer.global_menu_add_icon_radio_check_item
+func GlobalMenuAddIconRadioCheckItem(menu_root string, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key) int { //gd:DisplayServer.global_menu_add_icon_radio_check_item
 	once.Do(singleton)
 	return int(int(Advanced().GlobalMenuAddIconRadioCheckItem(String.New(menu_root), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
 }
@@ -371,7 +377,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddIconRadioCheckItemOptions(menu_root string, icon [1]gdclass.Texture2D, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:DisplayServer.global_menu_add_icon_radio_check_item
+func GlobalMenuAddIconRadioCheckItemOptions(menu_root string, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:DisplayServer.global_menu_add_icon_radio_check_item
 	once.Do(singleton)
 	return int(int(Advanced().GlobalMenuAddIconRadioCheckItem(String.New(menu_root), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
@@ -607,9 +613,9 @@ func GlobalMenuGetItemMaxStates(menu_root string, idx int) int { //gd:DisplaySer
 Returns the icon of the item at index [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuGetItemIcon(menu_root string, idx int) [1]gdclass.Texture2D { //gd:DisplayServer.global_menu_get_item_icon
+func GlobalMenuGetItemIcon(menu_root string, idx int) Texture2D.Instance { //gd:DisplayServer.global_menu_get_item_icon
 	once.Do(singleton)
-	return [1]gdclass.Texture2D(Advanced().GlobalMenuGetItemIcon(String.New(menu_root), int64(idx)))
+	return Texture2D.Instance(Advanced().GlobalMenuGetItemIcon(String.New(menu_root), int64(idx)))
 }
 
 /*
@@ -765,7 +771,7 @@ Replaces the [Texture2D] icon of the specified [param idx].
 [b]Note:[/b] This method is implemented only on macOS.
 [b]Note:[/b] This method is not supported by macOS "_dock" menu items.
 */
-func GlobalMenuSetItemIcon(menu_root string, idx int, icon [1]gdclass.Texture2D) { //gd:DisplayServer.global_menu_set_item_icon
+func GlobalMenuSetItemIcon(menu_root string, idx int, icon Texture2D.Instance) { //gd:DisplayServer.global_menu_set_item_icon
 	once.Do(singleton)
 	Advanced().GlobalMenuSetItemIcon(String.New(menu_root), int64(idx), icon)
 }
@@ -1052,9 +1058,9 @@ func ClipboardGet() string { //gd:DisplayServer.clipboard_get
 Returns the user's clipboard as an image if possible.
 [b]Note:[/b] This method uses the copied pixel data, e.g. from a image editing software or a web browser, not an image file copied from file explorer.
 */
-func ClipboardGetImage() [1]gdclass.Image { //gd:DisplayServer.clipboard_get_image
+func ClipboardGetImage() Image.Instance { //gd:DisplayServer.clipboard_get_image
 	once.Do(singleton)
-	return [1]gdclass.Image(Advanced().ClipboardGetImage())
+	return Image.Instance(Advanced().ClipboardGetImage())
 }
 
 /*
@@ -1342,9 +1348,9 @@ Returns screenshot of the [param screen].
 [b]Note:[/b] This method is implemented on Linux (X11), macOS, and Windows.
 [b]Note:[/b] On macOS, this method requires "Screen Recording" permission, if permission is not granted it will return desktop wallpaper color.
 */
-func ScreenGetImage() [1]gdclass.Image { //gd:DisplayServer.screen_get_image
+func ScreenGetImage() Image.Instance { //gd:DisplayServer.screen_get_image
 	once.Do(singleton)
-	return [1]gdclass.Image(Advanced().ScreenGetImage(int64(-1)))
+	return Image.Instance(Advanced().ScreenGetImage(int64(-1)))
 }
 
 /*
@@ -1352,9 +1358,9 @@ Returns screenshot of the [param screen].
 [b]Note:[/b] This method is implemented on Linux (X11), macOS, and Windows.
 [b]Note:[/b] On macOS, this method requires "Screen Recording" permission, if permission is not granted it will return desktop wallpaper color.
 */
-func ScreenGetImageOptions(screen int) [1]gdclass.Image { //gd:DisplayServer.screen_get_image
+func ScreenGetImageOptions(screen int) Image.Instance { //gd:DisplayServer.screen_get_image
 	once.Do(singleton)
-	return [1]gdclass.Image(Advanced().ScreenGetImage(int64(screen)))
+	return Image.Instance(Advanced().ScreenGetImage(int64(screen)))
 }
 
 /*
@@ -1362,9 +1368,9 @@ Returns screenshot of the screen [param rect].
 [b]Note:[/b] This method is implemented on macOS and Windows.
 [b]Note:[/b] On macOS, this method requires "Screen Recording" permission, if permission is not granted it will return desktop wallpaper color.
 */
-func ScreenGetImageRect(rect Rect2i.PositionSize) [1]gdclass.Image { //gd:DisplayServer.screen_get_image_rect
+func ScreenGetImageRect(rect Rect2i.PositionSize) Image.Instance { //gd:DisplayServer.screen_get_image_rect
 	once.Do(singleton)
-	return [1]gdclass.Image(Advanced().ScreenGetImageRect(Rect2i.PositionSize(rect)))
+	return Image.Instance(Advanced().ScreenGetImageRect(Rect2i.PositionSize(rect)))
 }
 
 /*
@@ -1769,7 +1775,7 @@ func WindowSetWindowEventCallbackOptions(callback func(event gdclass.DisplayServ
 Sets the [param callback] that should be called when any [InputEvent] is sent to the window specified by [param window_id].
 [b]Warning:[/b] Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
 */
-func WindowSetInputEventCallback(callback func(event [1]gdclass.InputEvent), window_id int) { //gd:DisplayServer.window_set_input_event_callback
+func WindowSetInputEventCallback(callback func(event InputEvent.Instance), window_id int) { //gd:DisplayServer.window_set_input_event_callback
 	once.Do(singleton)
 	Advanced().WindowSetInputEventCallback(Callable.New(callback), int64(window_id))
 }
@@ -1778,7 +1784,7 @@ func WindowSetInputEventCallback(callback func(event [1]gdclass.InputEvent), win
 Sets the [param callback] that should be called when any [InputEvent] is sent to the window specified by [param window_id].
 [b]Warning:[/b] Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
 */
-func WindowSetInputEventCallbackOptions(callback func(event [1]gdclass.InputEvent), window_id int) { //gd:DisplayServer.window_set_input_event_callback
+func WindowSetInputEventCallbackOptions(callback func(event InputEvent.Instance), window_id int) { //gd:DisplayServer.window_set_input_event_callback
 	once.Do(singleton)
 	Advanced().WindowSetInputEventCallback(Callable.New(callback), int64(window_id))
 }
@@ -2346,7 +2352,7 @@ func CursorGetShape() gdclass.DisplayServerCursorShape { //gd:DisplayServer.curs
 Sets a custom mouse cursor image for the given [param shape]. This means the user's operating system and mouse cursor theme will no longer influence the mouse cursor's appearance.
 [param cursor] can be either a [Texture2D] or an [Image], and it should not be larger than 256×256 to display correctly. Optionally, [param hotspot] can be set to offset the image's position relative to the click point. By default, [param hotspot] is set to the top-left corner of the image. See also [method cursor_set_shape].
 */
-func CursorSetCustomImage(cursor [1]gdclass.Resource, shape gdclass.DisplayServerCursorShape, hotspot Vector2.XY) { //gd:DisplayServer.cursor_set_custom_image
+func CursorSetCustomImage(cursor Resource.Instance, shape gdclass.DisplayServerCursorShape, hotspot Vector2.XY) { //gd:DisplayServer.cursor_set_custom_image
 	once.Do(singleton)
 	Advanced().CursorSetCustomImage(cursor, shape, Vector2.XY(hotspot))
 }
@@ -2355,7 +2361,7 @@ func CursorSetCustomImage(cursor [1]gdclass.Resource, shape gdclass.DisplayServe
 Sets a custom mouse cursor image for the given [param shape]. This means the user's operating system and mouse cursor theme will no longer influence the mouse cursor's appearance.
 [param cursor] can be either a [Texture2D] or an [Image], and it should not be larger than 256×256 to display correctly. Optionally, [param hotspot] can be set to offset the image's position relative to the click point. By default, [param hotspot] is set to the top-left corner of the image. See also [method cursor_set_shape].
 */
-func CursorSetCustomImageOptions(cursor [1]gdclass.Resource, shape gdclass.DisplayServerCursorShape, hotspot Vector2.XY) { //gd:DisplayServer.cursor_set_custom_image
+func CursorSetCustomImageOptions(cursor Resource.Instance, shape gdclass.DisplayServerCursorShape, hotspot Vector2.XY) { //gd:DisplayServer.cursor_set_custom_image
 	once.Do(singleton)
 	Advanced().CursorSetCustomImage(cursor, shape, Vector2.XY(hotspot))
 }
@@ -2543,7 +2549,7 @@ func SetNativeIcon(filename string) { //gd:DisplayServer.set_native_icon
 Sets the window icon (usually displayed in the top-left corner) with an [Image]. To use icons in the operating system's native format, use [method set_native_icon] instead.
 [b]Note:[/b] Requires support for [constant FEATURE_ICON].
 */
-func SetIcon(image [1]gdclass.Image) { //gd:DisplayServer.set_icon
+func SetIcon(image Image.Instance) { //gd:DisplayServer.set_icon
 	once.Do(singleton)
 	Advanced().SetIcon(image)
 }
@@ -2552,7 +2558,7 @@ func SetIcon(image [1]gdclass.Image) { //gd:DisplayServer.set_icon
 Creates a new application status indicator with the specified icon, tooltip, and activation callback.
 [param callback] should take two arguments: the pressed mouse button (one of the [enum MouseButton] constants) and the click position in screen coordinates (a [Vector2i]).
 */
-func CreateStatusIndicator(icon [1]gdclass.Texture2D, tooltip string, callback func(button MouseButton, click_position Vector2i.XY)) int { //gd:DisplayServer.create_status_indicator
+func CreateStatusIndicator(icon Texture2D.Instance, tooltip string, callback func(button MouseButton, click_position Vector2i.XY)) int { //gd:DisplayServer.create_status_indicator
 	once.Do(singleton)
 	return int(int(Advanced().CreateStatusIndicator(icon, String.New(tooltip), Callable.New(callback))))
 }
@@ -2561,7 +2567,7 @@ func CreateStatusIndicator(icon [1]gdclass.Texture2D, tooltip string, callback f
 Sets the application status indicator icon.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func StatusIndicatorSetIcon(id int, icon [1]gdclass.Texture2D) { //gd:DisplayServer.status_indicator_set_icon
+func StatusIndicatorSetIcon(id int, icon Texture2D.Instance) { //gd:DisplayServer.status_indicator_set_icon
 	once.Do(singleton)
 	Advanced().StatusIndicatorSetIcon(int64(id), icon)
 }

@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -66,29 +67,29 @@ func (self Instance) Clear() { //gd:EditorSelection.clear
 Adds a node to the selection.
 [b]Note:[/b] The newly selected node will not be automatically edited in the inspector. If you want to edit a node, use [method EditorInterface.edit_node].
 */
-func (self Instance) AddNode(node [1]gdclass.Node) { //gd:EditorSelection.add_node
+func (self Instance) AddNode(node Node.Instance) { //gd:EditorSelection.add_node
 	Advanced(self).AddNode(node)
 }
 
 /*
 Removes a node from the selection.
 */
-func (self Instance) RemoveNode(node [1]gdclass.Node) { //gd:EditorSelection.remove_node
+func (self Instance) RemoveNode(node Node.Instance) { //gd:EditorSelection.remove_node
 	Advanced(self).RemoveNode(node)
 }
 
 /*
 Returns the list of selected nodes.
 */
-func (self Instance) GetSelectedNodes() [][1]gdclass.Node { //gd:EditorSelection.get_selected_nodes
-	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](gd.InternalArray(Advanced(self).GetSelectedNodes())))
+func (self Instance) GetSelectedNodes() []Node.Instance { //gd:EditorSelection.get_selected_nodes
+	return []Node.Instance(gd.ArrayAs[[]Node.Instance](gd.InternalArray(Advanced(self).GetSelectedNodes())))
 }
 
 /*
 Returns the list of selected nodes, optimized for transform operations (i.e. moving them, rotating, etc.). This list can be used to avoid situations where a node is selected and is also a child/grandchild.
 */
-func (self Instance) GetTransformableSelectedNodes() [][1]gdclass.Node { //gd:EditorSelection.get_transformable_selected_nodes
-	return [][1]gdclass.Node(gd.ArrayAs[[][1]gdclass.Node](gd.InternalArray(Advanced(self).GetTransformableSelectedNodes())))
+func (self Instance) GetTransformableSelectedNodes() []Node.Instance { //gd:EditorSelection.get_transformable_selected_nodes
+	return []Node.Instance(gd.ArrayAs[[]Node.Instance](gd.InternalArray(Advanced(self).GetTransformableSelectedNodes())))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

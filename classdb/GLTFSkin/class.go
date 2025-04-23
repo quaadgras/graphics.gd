@@ -12,6 +12,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Skin"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -144,11 +145,11 @@ func (self Instance) SetJointIToName(value map[any]any) {
 	class(self).SetJointIToName(gd.DictionaryFromMap(value))
 }
 
-func (self Instance) GodotSkin() [1]gdclass.Skin {
-	return [1]gdclass.Skin(class(self).GetGodotSkin())
+func (self Instance) GodotSkin() Skin.Instance {
+	return Skin.Instance(class(self).GetGodotSkin())
 }
 
-func (self Instance) SetGodotSkin(value [1]gdclass.Skin) {
+func (self Instance) SetGodotSkin(value Skin.Instance) {
 	class(self).SetGodotSkin(value)
 }
 

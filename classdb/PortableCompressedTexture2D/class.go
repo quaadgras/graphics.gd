@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Image"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/Texture"
 import "graphics.gd/classdb/Texture2D"
@@ -68,7 +69,7 @@ Initializes the compressed texture from a base image. The compression mode must 
 [param normal_map] is recommended to ensure optimum quality if this image will be used as a normal map.
 If lossy compression is requested, the quality setting can optionally be provided. This maps to Lossy WebP compression quality.
 */
-func (self Instance) CreateFromImage(image [1]gdclass.Image, compression_mode gdclass.PortableCompressedTexture2DCompressionMode) { //gd:PortableCompressedTexture2D.create_from_image
+func (self Instance) CreateFromImage(image Image.Instance, compression_mode gdclass.PortableCompressedTexture2DCompressionMode) { //gd:PortableCompressedTexture2D.create_from_image
 	Advanced(self).CreateFromImage(image, compression_mode, false, float64(0.8))
 }
 
@@ -77,7 +78,7 @@ Initializes the compressed texture from a base image. The compression mode must 
 [param normal_map] is recommended to ensure optimum quality if this image will be used as a normal map.
 If lossy compression is requested, the quality setting can optionally be provided. This maps to Lossy WebP compression quality.
 */
-func (self Expanded) CreateFromImage(image [1]gdclass.Image, compression_mode gdclass.PortableCompressedTexture2DCompressionMode, normal_map bool, lossy_quality Float.X) { //gd:PortableCompressedTexture2D.create_from_image
+func (self Expanded) CreateFromImage(image Image.Instance, compression_mode gdclass.PortableCompressedTexture2DCompressionMode, normal_map bool, lossy_quality Float.X) { //gd:PortableCompressedTexture2D.create_from_image
 	Advanced(self).CreateFromImage(image, compression_mode, normal_map, float64(lossy_quality))
 }
 

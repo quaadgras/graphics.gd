@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/OpenXRExtensionWrapperExtension"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -217,28 +218,28 @@ func (self Instance) GetHandTracker(hand_index int) int { //gd:OpenXRAPIExtensio
 /*
 Registers the given extension as a composition layer provider.
 */
-func (self Instance) RegisterCompositionLayerProvider(extension [1]gdclass.OpenXRExtensionWrapperExtension) { //gd:OpenXRAPIExtension.register_composition_layer_provider
+func (self Instance) RegisterCompositionLayerProvider(extension OpenXRExtensionWrapperExtension.Instance) { //gd:OpenXRAPIExtension.register_composition_layer_provider
 	Advanced(self).RegisterCompositionLayerProvider(extension)
 }
 
 /*
 Unregisters the given extension as a composition layer provider.
 */
-func (self Instance) UnregisterCompositionLayerProvider(extension [1]gdclass.OpenXRExtensionWrapperExtension) { //gd:OpenXRAPIExtension.unregister_composition_layer_provider
+func (self Instance) UnregisterCompositionLayerProvider(extension OpenXRExtensionWrapperExtension.Instance) { //gd:OpenXRAPIExtension.unregister_composition_layer_provider
 	Advanced(self).UnregisterCompositionLayerProvider(extension)
 }
 
 /*
 Registers the given extension as a provider of additional data structures to projections views.
 */
-func (self Instance) RegisterProjectionViewsExtension(extension [1]gdclass.OpenXRExtensionWrapperExtension) { //gd:OpenXRAPIExtension.register_projection_views_extension
+func (self Instance) RegisterProjectionViewsExtension(extension OpenXRExtensionWrapperExtension.Instance) { //gd:OpenXRAPIExtension.register_projection_views_extension
 	Advanced(self).RegisterProjectionViewsExtension(extension)
 }
 
 /*
 Unregisters the given extension as a provider of additional data structures to projections views.
 */
-func (self Instance) UnregisterProjectionViewsExtension(extension [1]gdclass.OpenXRExtensionWrapperExtension) { //gd:OpenXRAPIExtension.unregister_projection_views_extension
+func (self Instance) UnregisterProjectionViewsExtension(extension OpenXRExtensionWrapperExtension.Instance) { //gd:OpenXRAPIExtension.unregister_projection_views_extension
 	Advanced(self).UnregisterProjectionViewsExtension(extension)
 }
 
@@ -355,6 +356,13 @@ Returns [enum OpenXRAPIExtension.OpenXRAlphaBlendModeSupport] denoting if [const
 */
 func (self Instance) IsEnvironmentBlendModeAlphaSupported() gdclass.OpenXRAPIExtensionOpenXRAlphaBlendModeSupport { //gd:OpenXRAPIExtension.is_environment_blend_mode_alpha_supported
 	return gdclass.OpenXRAPIExtensionOpenXRAlphaBlendModeSupport(Advanced(self).IsEnvironmentBlendModeAlphaSupported())
+}
+
+/*
+Returns the created [OpenXRAPIExtension], which can be used to access the OpenXR API.
+*/
+func GetFromWrapperExtension(peer OpenXRExtensionWrapperExtension.Instance) Instance { //gd:OpenXRExtensionWrapperExtension.get_openxr_api
+	return Instance(OpenXRExtensionWrapperExtension.Advanced(peer).GetOpenxrApi())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -80,20 +80,6 @@ func (self Instance) EnableAllModifications(enabled bool) { //gd:SkeletonModific
 }
 
 /*
-Returns the [SkeletonModification2D] at the passed-in index, [param mod_idx].
-*/
-func (self Instance) GetModification(mod_idx int) [1]gdclass.SkeletonModification2D { //gd:SkeletonModificationStack2D.get_modification
-	return [1]gdclass.SkeletonModification2D(Advanced(self).GetModification(int64(mod_idx)))
-}
-
-/*
-Adds the passed-in [SkeletonModification2D] to the stack.
-*/
-func (self Instance) AddModification(modification [1]gdclass.SkeletonModification2D) { //gd:SkeletonModificationStack2D.add_modification
-	Advanced(self).AddModification(modification)
-}
-
-/*
 Deletes the [SkeletonModification2D] at the index position [param mod_idx], if it exists.
 */
 func (self Instance) DeleteModification(mod_idx int) { //gd:SkeletonModificationStack2D.delete_modification
@@ -101,24 +87,10 @@ func (self Instance) DeleteModification(mod_idx int) { //gd:SkeletonModification
 }
 
 /*
-Sets the modification at [param mod_idx] to the passed-in modification, [param modification].
-*/
-func (self Instance) SetModification(mod_idx int, modification [1]gdclass.SkeletonModification2D) { //gd:SkeletonModificationStack2D.set_modification
-	Advanced(self).SetModification(int64(mod_idx), modification)
-}
-
-/*
 Returns a boolean that indicates whether the modification stack is setup and can execute.
 */
 func (self Instance) GetIsSetup() bool { //gd:SkeletonModificationStack2D.get_is_setup
 	return bool(Advanced(self).GetIsSetup())
-}
-
-/*
-Returns the [Skeleton2D] node that the SkeletonModificationStack2D is bound to.
-*/
-func (self Instance) GetSkeleton() [1]gdclass.Skeleton2D { //gd:SkeletonModificationStack2D.get_skeleton
-	return [1]gdclass.Skeleton2D(Advanced(self).GetSkeleton())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

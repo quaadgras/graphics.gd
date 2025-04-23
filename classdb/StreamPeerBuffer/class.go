@@ -94,8 +94,8 @@ func (self Instance) Clear() { //gd:StreamPeerBuffer.clear
 /*
 Returns a new [StreamPeerBuffer] with the same [member data_array] content.
 */
-func (self Instance) Duplicate() [1]gdclass.StreamPeerBuffer { //gd:StreamPeerBuffer.duplicate
-	return [1]gdclass.StreamPeerBuffer(Advanced(self).Duplicate())
+func (self Instance) Duplicate() Instance { //gd:StreamPeerBuffer.duplicate
+	return Instance(Advanced(self).Duplicate())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

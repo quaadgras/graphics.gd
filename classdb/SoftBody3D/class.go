@@ -15,6 +15,7 @@ import "graphics.gd/classdb/GeometryInstance3D"
 import "graphics.gd/classdb/MeshInstance3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/PhysicsBody3D"
 import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -101,21 +102,21 @@ func (self Instance) GetCollisionLayerValue(layer_number int) bool { //gd:SoftBo
 /*
 Returns an array of nodes that were added as collision exceptions for this body.
 */
-func (self Instance) GetCollisionExceptions() [][1]gdclass.PhysicsBody3D { //gd:SoftBody3D.get_collision_exceptions
-	return [][1]gdclass.PhysicsBody3D(gd.ArrayAs[[][1]gdclass.PhysicsBody3D](gd.InternalArray(Advanced(self).GetCollisionExceptions())))
+func (self Instance) GetCollisionExceptions() []PhysicsBody3D.Instance { //gd:SoftBody3D.get_collision_exceptions
+	return []PhysicsBody3D.Instance(gd.ArrayAs[[]PhysicsBody3D.Instance](gd.InternalArray(Advanced(self).GetCollisionExceptions())))
 }
 
 /*
 Adds a body to the list of bodies that this body can't collide with.
 */
-func (self Instance) AddCollisionExceptionWith(body [1]gdclass.Node) { //gd:SoftBody3D.add_collision_exception_with
+func (self Instance) AddCollisionExceptionWith(body Node.Instance) { //gd:SoftBody3D.add_collision_exception_with
 	Advanced(self).AddCollisionExceptionWith(body)
 }
 
 /*
 Removes a body from the list of bodies that this body can't collide with.
 */
-func (self Instance) RemoveCollisionExceptionWith(body [1]gdclass.Node) { //gd:SoftBody3D.remove_collision_exception_with
+func (self Instance) RemoveCollisionExceptionWith(body Node.Instance) { //gd:SoftBody3D.remove_collision_exception_with
 	Advanced(self).RemoveCollisionExceptionWith(body)
 }
 

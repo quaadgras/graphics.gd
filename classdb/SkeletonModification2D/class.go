@@ -12,6 +12,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/SkeletonModificationStack2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -63,7 +64,7 @@ type Interface interface {
 	//Executes the given modification. This is where the modification performs whatever function it is designed to do.
 	Execute(delta Float.X)
 	//Called when the modification is setup. This is where the modification performs initialization.
-	SetupModification(modification_stack [1]gdclass.SkeletonModificationStack2D)
+	SetupModification(modification_stack SkeletonModificationStack2D.Instance)
 	//Used for drawing [b]editor-only[/b] modification gizmos. This function will only be called in the Godot editor and can be overridden to draw custom gizmos.
 	//[b]Note:[/b] You will need to use the Skeleton2D from [method SkeletonModificationStack2D.get_skeleton] and it's draw functions, as the [SkeletonModification2D] resource cannot draw on its own.
 	DrawEditorGizmo()
@@ -75,7 +76,7 @@ type Implementation = implementation
 type implementation struct{}
 
 func (self implementation) Execute(delta Float.X) { return }
-func (self implementation) SetupModification(modification_stack [1]gdclass.SkeletonModificationStack2D) {
+func (self implementation) SetupModification(modification_stack SkeletonModificationStack2D.Instance) {
 	return
 }
 func (self implementation) DrawEditorGizmo() { return }
@@ -94,7 +95,7 @@ func (Instance) _execute(impl func(ptr unsafe.Pointer, delta Float.X)) (cb gd.Ex
 /*
 Called when the modification is setup. This is where the modification performs initialization.
 */
-func (Instance) _setup_modification(impl func(ptr unsafe.Pointer, modification_stack [1]gdclass.SkeletonModificationStack2D)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _setup_modification(impl func(ptr unsafe.Pointer, modification_stack SkeletonModificationStack2D.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var modification_stack = [1]gdclass.SkeletonModificationStack2D{pointers.New[gdclass.SkeletonModificationStack2D]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -118,8 +119,8 @@ func (Instance) _draw_editor_gizmo(impl func(ptr unsafe.Pointer)) (cb gd.Extensi
 /*
 Returns the [SkeletonModificationStack2D] that this modification is bound to. Through the modification stack, you can access the Skeleton2D the modification is operating on.
 */
-func (self Instance) GetModificationStack() [1]gdclass.SkeletonModificationStack2D { //gd:SkeletonModification2D.get_modification_stack
-	return [1]gdclass.SkeletonModificationStack2D(Advanced(self).GetModificationStack())
+func (self Instance) GetModificationStack() SkeletonModificationStack2D.Instance { //gd:SkeletonModification2D.get_modification_stack
+	return SkeletonModificationStack2D.Instance(Advanced(self).GetModificationStack())
 }
 
 /*
@@ -155,6 +156,27 @@ Returns whether this modification will call [method _draw_editor_gizmo] in the G
 */
 func (self Instance) GetEditorDrawGizmo() bool { //gd:SkeletonModification2D.get_editor_draw_gizmo
 	return bool(Advanced(self).GetEditorDrawGizmo())
+}
+
+/*
+Sets the modification at [param mod_idx] to the passed-in modification, [param modification].
+*/
+func (self Instance) Set(peer SkeletonModificationStack2D.Instance, mod_idx int) { //gd:SkeletonModificationStack2D.set_modification
+	SkeletonModificationStack2D.Advanced(peer).SetModification(int64(mod_idx), self)
+}
+
+/*
+Returns the [SkeletonModification2D] at the passed-in index, [param mod_idx].
+*/
+func Get(peer SkeletonModificationStack2D.Instance, mod_idx int) Instance { //gd:SkeletonModificationStack2D.get_modification
+	return Instance(SkeletonModificationStack2D.Advanced(peer).GetModification(int64(mod_idx)))
+}
+
+/*
+Adds the passed-in [SkeletonModification2D] to the stack.
+*/
+func (self Instance) Add(peer SkeletonModificationStack2D.Instance) { //gd:SkeletonModificationStack2D.add_modification
+	SkeletonModificationStack2D.Advanced(peer).AddModification(self)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

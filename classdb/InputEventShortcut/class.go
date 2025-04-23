@@ -13,6 +13,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/InputEvent"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Shortcut"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -75,11 +76,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Shortcut() [1]gdclass.Shortcut {
-	return [1]gdclass.Shortcut(class(self).GetShortcut())
+func (self Instance) Shortcut() Shortcut.Instance {
+	return Shortcut.Instance(class(self).GetShortcut())
 }
 
-func (self Instance) SetShortcut(value [1]gdclass.Shortcut) {
+func (self Instance) SetShortcut(value Shortcut.Instance) {
 	class(self).SetShortcut(value)
 }
 

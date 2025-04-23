@@ -241,6 +241,13 @@ func (classDB ClassDB) convertTypeSimple(class gdjson.Class, lookup, meta string
 		}
 		return ftype
 	default:
+		object, ok := classDB[gdType]
+		if ok {
+			if class.Name == object.Name {
+				return "Instance"
+			}
+			return object.Name + ".Instance"
+		}
 		return gdtype.EngineTypeAsGoType(class.Name, meta, gdType)
 	}
 }

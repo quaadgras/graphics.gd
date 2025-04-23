@@ -169,6 +169,130 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 	fmt.Fprintf(w, "\n}\n")
 }
 
+func (classDB ClassDB) simpleRelocatedCall(w io.Writer, class gdjson.Class, method gdjson.Method, relocated_from gdjson.Class, original_name string, defaults bool) {
+	switch class.Name {
+	case "Float", "Int", "Vector2", "Vector2i", "Rect2", "Rect2i", "Vector3", "Vector3i",
+		"Transform2D", "Vector4", "Vector4i", "Plane", "Quaternion", "AABB", "Basis", "Transform3D",
+		"RID", "Projection", "Color":
+		return
+	}
+	if method.Description != "" {
+		fmt.Fprintln(w, "\n/*")
+		fmt.Fprint(w, method.Description)
+		fmt.Fprintln(w, "\n*/")
+	}
+	if method.IsVirtual {
+		classDB.simpleVirtualCall(w, class, method)
+		return
+	}
+	resultSimple := classDB.convertTypeSimple(class, class.Name+"."+method.Name+".", method.ReturnValue.Meta, method.ReturnValue.Type)
+	resultExpert := gdtype.EngineTypeAsGoType(class.Name, method.ReturnValue.Meta, method.ReturnValue.Type)
+	if method.IsStatic {
+		if defaults {
+			fmt.Fprintf(w, "func %v(", convertName(method.Name))
+		} else {
+			fmt.Fprintf(w, "func %vOptions(", convertName(method.Name))
+		}
+	} else {
+		if defaults {
+			fmt.Fprintf(w, "func (self Instance) %v(", convertName(method.Name))
+		} else {
+			fmt.Fprintf(w, "func (self Expanded) %v(", convertName(method.Name))
+		}
+	}
+	var first = true
+	for _, arg := range method.Arguments {
+		if !defaults || arg.DefaultValue == nil || (method.IsStatic && arg.DefaultValue != nil && gdjson.IsTheDefaultValueZero(*arg.DefaultValue)) {
+			if !first {
+				fmt.Fprint(w, ", ")
+			}
+			fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertTypeSimple(class, class.Name+"."+method.Name+"."+arg.Name, arg.Meta, arg.Type))
+			first = false
+		}
+	}
+	if method.IsVararg {
+		if !first {
+			fmt.Fprint(w, ", ")
+		}
+		fmt.Fprint(w, "args ...any")
+	}
+	fmt.Fprint(w, ") ")
+	if method.ReturnValue.Type != "" {
+		fmt.Fprintf(w, "%v ", resultSimple)
+	}
+	fmt.Fprintf(w, "{ //gd:%s.%s\n\t", relocated_from.Name, original_name)
+	if method.IsVararg {
+		fmt.Fprint(w, "var converted_variants = make([]gd.Variant, len(args))\n")
+		fmt.Fprint(w, "for i, arg := range args {\n")
+		fmt.Fprint(w, "\tconverted_variants[i] = gd.NewVariant(arg)\n")
+		fmt.Fprint(w, "}\n")
+	}
+	if method.ReturnValue.Type != "" {
+		fmt.Fprintf(w, "return %s(", resultSimple)
+	}
+	var call strings.Builder
+	fmt.Fprintf(&call, "%s.Advanced(peer).%v(", relocated_from.Name, convertName(original_name))
+	for i, arg := range method.ArgumentsRemapped {
+		if i > 0 {
+			fmt.Fprint(&call, ", ")
+		}
+		val := fixReserved(arg.Name)
+		if arg.DefaultValue != nil && defaults && !((method.IsStatic) && gdjson.IsTheDefaultValueZero(*arg.DefaultValue)) {
+			switch arg.Type {
+			case "Array":
+				val = "Array.Nil"
+			case "Callable":
+				val = "Callable.Nil"
+			case "Dictionary":
+				val = "Dictionary.Nil"
+			default:
+				val = *arg.DefaultValue
+				val = strings.TrimPrefix(val, "&")
+				if val == "null" || val == "[]" || val == "{}" || strings.HasSuffix(val, "()") || strings.HasSuffix(val, "[])") {
+					if arg.Type == "Callable" {
+						val = "nil"
+					} else {
+						val = "([1]" + classDB.convertTypeSimple(class, "", arg.Meta, arg.Type) + "{}[0])"
+					}
+				} else {
+					if strings.Contains(val, "(") {
+						switch {
+						case strings.HasPrefix(val, "Rect2("), strings.HasPrefix(val, "Rect2i("), strings.HasPrefix(val, "Transform2D("),
+							strings.HasPrefix(val, "Transform3D("):
+							val = "gd.New" + val
+						case strings.HasPrefix(val, "StringName(\""):
+							val = strings.TrimSuffix(strings.TrimPrefix(val, "StringName(\""), "\")")
+						case strings.HasPrefix(val, "NodePath(\""):
+							val = strings.TrimSuffix(strings.TrimPrefix(val, "NodePath(\""), "\")")
+							if val == "" {
+								val = `""`
+							}
+						default:
+							val = "gd." + strings.ReplaceAll(strings.ReplaceAll(val, "(", "{"), ")", "}")
+						}
+					}
+				}
+			}
+			if gdtype.Name(gdtype.EngineTypeAsGoType(class.Name, arg.Meta, arg.Type)) == "gd.Variant" {
+				val = `gd.NewVariant(` + val + `)`
+			}
+		}
+		fmt.Fprint(&call, gdtype.Name(gdtype.EngineTypeAsGoType(class.Name, arg.Meta, arg.Type)).ConvertToSimple(val))
+	}
+	if method.IsVararg {
+		if len(method.Arguments) > 0 {
+			fmt.Fprint(&call, ", ")
+		}
+		fmt.Fprint(&call, "converted_variants...")
+	}
+	fmt.Fprint(&call, ")")
+	fmt.Fprint(w, gdtype.Name(resultExpert).ConvertToGo(call.String(), resultSimple))
+	if method.ReturnValue.Type != "" {
+		fmt.Fprint(w, ")")
+	}
+	fmt.Fprintf(w, "\n}\n")
+}
+
 func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method gdjson.Method) {
 	resultSimple := classDB.convertTypeSimple(class, "", method.ReturnValue.Meta, method.ReturnValue.Type)
 	resultExpert := gdtype.EngineTypeAsGoType(class.Name, method.ReturnValue.Meta, method.ReturnValue.Type)

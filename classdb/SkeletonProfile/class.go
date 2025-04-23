@@ -12,6 +12,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -75,14 +76,14 @@ func (self Instance) SetGroupName(group_idx int, group_name string) { //gd:Skele
 /*
 Returns the texture of the group at [param group_idx] that will be the drawing group background image in the [BoneMap] editor.
 */
-func (self Instance) GetTexture(group_idx int) [1]gdclass.Texture2D { //gd:SkeletonProfile.get_texture
-	return [1]gdclass.Texture2D(Advanced(self).GetTexture(int64(group_idx)))
+func (self Instance) GetTexture(group_idx int) Texture2D.Instance { //gd:SkeletonProfile.get_texture
+	return Texture2D.Instance(Advanced(self).GetTexture(int64(group_idx)))
 }
 
 /*
 Sets the texture of the group at [param group_idx] that will be the drawing group background image in the [BoneMap] editor.
 */
-func (self Instance) SetTexture(group_idx int, texture [1]gdclass.Texture2D) { //gd:SkeletonProfile.set_texture
+func (self Instance) SetTexture(group_idx int, texture Texture2D.Instance) { //gd:SkeletonProfile.set_texture
 	Advanced(self).SetTexture(int64(group_idx), texture)
 }
 

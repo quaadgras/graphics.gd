@@ -12,6 +12,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/AudioStream"
+import "graphics.gd/classdb/OggPacketSequence"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -59,17 +60,17 @@ type Any interface {
 /*
 Creates a new [AudioStreamOggVorbis] instance from the given buffer. The buffer must contain Ogg Vorbis data.
 */
-func LoadFromBuffer(stream_data []byte) [1]gdclass.AudioStreamOggVorbis { //gd:AudioStreamOggVorbis.load_from_buffer
+func LoadFromBuffer(stream_data []byte) Instance { //gd:AudioStreamOggVorbis.load_from_buffer
 	self := Instance{}
-	return [1]gdclass.AudioStreamOggVorbis(Advanced(self).LoadFromBuffer(Packed.Bytes(Packed.New(stream_data...))))
+	return Instance(Advanced(self).LoadFromBuffer(Packed.Bytes(Packed.New(stream_data...))))
 }
 
 /*
 Creates a new [AudioStreamOggVorbis] instance from the given file path. The file must be in Ogg Vorbis format.
 */
-func LoadFromFile(path string) [1]gdclass.AudioStreamOggVorbis { //gd:AudioStreamOggVorbis.load_from_file
+func LoadFromFile(path string) Instance { //gd:AudioStreamOggVorbis.load_from_file
 	self := Instance{}
-	return [1]gdclass.AudioStreamOggVorbis(Advanced(self).LoadFromFile(String.New(path)))
+	return Instance(Advanced(self).LoadFromFile(String.New(path)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -91,11 +92,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) PacketSequence() [1]gdclass.OggPacketSequence {
-	return [1]gdclass.OggPacketSequence(class(self).GetPacketSequence())
+func (self Instance) PacketSequence() OggPacketSequence.Instance {
+	return OggPacketSequence.Instance(class(self).GetPacketSequence())
 }
 
-func (self Instance) SetPacketSequence(value [1]gdclass.OggPacketSequence) {
+func (self Instance) SetPacketSequence(value OggPacketSequence.Instance) {
 	class(self).SetPacketSequence(value)
 }
 

@@ -13,6 +13,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/AnimationNode"
 import "graphics.gd/classdb/AnimationNodeSync"
+import "graphics.gd/classdb/Curve"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -156,11 +157,11 @@ func (self Instance) SetXfadeTime(value Float.X) {
 	class(self).SetXfadeTime(float64(value))
 }
 
-func (self Instance) XfadeCurve() [1]gdclass.Curve {
-	return [1]gdclass.Curve(class(self).GetXfadeCurve())
+func (self Instance) XfadeCurve() Curve.Instance {
+	return Curve.Instance(class(self).GetXfadeCurve())
 }
 
-func (self Instance) SetXfadeCurve(value [1]gdclass.Curve) {
+func (self Instance) SetXfadeCurve(value Curve.Instance) {
 	class(self).SetXfadeCurve(value)
 }
 

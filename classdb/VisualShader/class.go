@@ -13,6 +13,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/Shader"
+import "graphics.gd/classdb/VisualShaderNode"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -67,15 +68,15 @@ func (self Instance) SetMode(mode gdclass.ShaderMode) { //gd:VisualShader.set_mo
 /*
 Adds the specified [param node] to the shader.
 */
-func (self Instance) AddNode(atype gdclass.VisualShaderType, node [1]gdclass.VisualShaderNode, position Vector2.XY, id int) { //gd:VisualShader.add_node
+func (self Instance) AddNode(atype gdclass.VisualShaderType, node VisualShaderNode.Instance, position Vector2.XY, id int) { //gd:VisualShader.add_node
 	Advanced(self).AddNode(atype, node, Vector2.XY(position), int64(id))
 }
 
 /*
 Returns the shader node instance with specified [param type] and [param id].
 */
-func (self Instance) GetNode(atype gdclass.VisualShaderType, id int) [1]gdclass.VisualShaderNode { //gd:VisualShader.get_node
-	return [1]gdclass.VisualShaderNode(Advanced(self).GetNode(atype, int64(id)))
+func (self Instance) GetNode(atype gdclass.VisualShaderType, id int) VisualShaderNode.Instance { //gd:VisualShader.get_node
+	return VisualShaderNode.Instance(Advanced(self).GetNode(atype, int64(id)))
 }
 
 /*

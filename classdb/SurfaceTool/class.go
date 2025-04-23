@@ -11,6 +11,9 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/ArrayMesh"
+import "graphics.gd/classdb/Material"
+import "graphics.gd/classdb/Mesh"
 import "graphics.gd/variant/AABB"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -288,7 +291,7 @@ func (self Expanded) GenerateLod(nd_threshold Float.X, target_index_count int) [
 /*
 Sets [Material] to be used by the [Mesh] you are constructing.
 */
-func (self Instance) SetMaterial(material [1]gdclass.Material) { //gd:SurfaceTool.set_material
+func (self Instance) SetMaterial(material Material.Instance) { //gd:SurfaceTool.set_material
 	Advanced(self).SetMaterial(material)
 }
 
@@ -309,7 +312,7 @@ func (self Instance) Clear() { //gd:SurfaceTool.clear
 /*
 Creates a vertex array from an existing [Mesh].
 */
-func (self Instance) CreateFrom(existing [1]gdclass.Mesh, surface int) { //gd:SurfaceTool.create_from
+func (self Instance) CreateFrom(existing Mesh.Instance, surface int) { //gd:SurfaceTool.create_from
 	Advanced(self).CreateFrom(existing, int64(surface))
 }
 
@@ -330,14 +333,14 @@ func (self Expanded) CreateFromArrays(arrays []any, primitive_type gdclass.MeshP
 /*
 Creates a vertex array from the specified blend shape of an existing [Mesh]. This can be used to extract a specific pose from a blend shape.
 */
-func (self Instance) CreateFromBlendShape(existing [1]gdclass.Mesh, surface int, blend_shape string) { //gd:SurfaceTool.create_from_blend_shape
+func (self Instance) CreateFromBlendShape(existing Mesh.Instance, surface int, blend_shape string) { //gd:SurfaceTool.create_from_blend_shape
 	Advanced(self).CreateFromBlendShape(existing, int64(surface), String.New(blend_shape))
 }
 
 /*
 Append vertices from a given [Mesh] surface onto the current vertex array with specified [Transform3D].
 */
-func (self Instance) AppendFrom(existing [1]gdclass.Mesh, surface int, transform Transform3D.BasisOrigin) { //gd:SurfaceTool.append_from
+func (self Instance) AppendFrom(existing Mesh.Instance, surface int, transform Transform3D.BasisOrigin) { //gd:SurfaceTool.append_from
 	Advanced(self).AppendFrom(existing, int64(surface), Transform3D.BasisOrigin(transform))
 }
 
@@ -345,16 +348,16 @@ func (self Instance) AppendFrom(existing [1]gdclass.Mesh, surface int, transform
 Returns a constructed [ArrayMesh] from current information passed in. If an existing [ArrayMesh] is passed in as an argument, will add an extra surface to the existing [ArrayMesh].
 The [param flags] argument can be the bitwise OR of [constant Mesh.ARRAY_FLAG_USE_DYNAMIC_UPDATE], [constant Mesh.ARRAY_FLAG_USE_8_BONE_WEIGHTS], or [constant Mesh.ARRAY_FLAG_USES_EMPTY_VERTEX_ARRAY].
 */
-func (self Instance) Commit() [1]gdclass.ArrayMesh { //gd:SurfaceTool.commit
-	return [1]gdclass.ArrayMesh(Advanced(self).Commit([1][1]gdclass.ArrayMesh{}[0], int64(0)))
+func (self Instance) Commit() ArrayMesh.Instance { //gd:SurfaceTool.commit
+	return ArrayMesh.Instance(Advanced(self).Commit([1]ArrayMesh.Instance{}[0], int64(0)))
 }
 
 /*
 Returns a constructed [ArrayMesh] from current information passed in. If an existing [ArrayMesh] is passed in as an argument, will add an extra surface to the existing [ArrayMesh].
 The [param flags] argument can be the bitwise OR of [constant Mesh.ARRAY_FLAG_USE_DYNAMIC_UPDATE], [constant Mesh.ARRAY_FLAG_USE_8_BONE_WEIGHTS], or [constant Mesh.ARRAY_FLAG_USES_EMPTY_VERTEX_ARRAY].
 */
-func (self Expanded) Commit(existing [1]gdclass.ArrayMesh, flags int) [1]gdclass.ArrayMesh { //gd:SurfaceTool.commit
-	return [1]gdclass.ArrayMesh(Advanced(self).Commit(existing, int64(flags)))
+func (self Expanded) Commit(existing ArrayMesh.Instance, flags int) ArrayMesh.Instance { //gd:SurfaceTool.commit
+	return ArrayMesh.Instance(Advanced(self).Commit(existing, int64(flags)))
 }
 
 /*

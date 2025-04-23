@@ -13,6 +13,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/SkeletonModification2D"
+import "graphics.gd/classdb/SkeletonModificationStack2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -60,15 +61,15 @@ type Any interface {
 /*
 Sets the [SkeletonModificationStack2D] that this modification is holding. This modification stack will then be executed when this modification is executed.
 */
-func (self Instance) SetHeldModificationStack(held_modification_stack [1]gdclass.SkeletonModificationStack2D) { //gd:SkeletonModification2DStackHolder.set_held_modification_stack
+func (self Instance) SetHeldModificationStack(held_modification_stack SkeletonModificationStack2D.Instance) { //gd:SkeletonModification2DStackHolder.set_held_modification_stack
 	Advanced(self).SetHeldModificationStack(held_modification_stack)
 }
 
 /*
 Returns the [SkeletonModificationStack2D] that this modification is holding.
 */
-func (self Instance) GetHeldModificationStack() [1]gdclass.SkeletonModificationStack2D { //gd:SkeletonModification2DStackHolder.get_held_modification_stack
-	return [1]gdclass.SkeletonModificationStack2D(Advanced(self).GetHeldModificationStack())
+func (self Instance) GetHeldModificationStack() SkeletonModificationStack2D.Instance { //gd:SkeletonModification2DStackHolder.get_held_modification_stack
+	return SkeletonModificationStack2D.Instance(Advanced(self).GetHeldModificationStack())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

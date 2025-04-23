@@ -11,7 +11,11 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/ConcavePolygonShape3D"
+import "graphics.gd/classdb/ConvexPolygonShape3D"
+import "graphics.gd/classdb/Material"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/TriangleMesh"
 import "graphics.gd/variant/AABB"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -80,9 +84,9 @@ type Interface interface {
 	//Virtual method to override the surface primitive type for a custom class extending [Mesh].
 	SurfaceGetPrimitiveType(index int) int
 	//Virtual method to override the setting of a [param material] at the given [param index] for a custom class extending [Mesh].
-	SurfaceSetMaterial(index int, material [1]gdclass.Material)
+	SurfaceSetMaterial(index int, material Material.Instance)
 	//Virtual method to override the surface material for a custom class extending [Mesh].
-	SurfaceGetMaterial(index int) [1]gdclass.Material
+	SurfaceGetMaterial(index int) Material.Instance
 	//Virtual method to override the number of blend shapes for a custom class extending [Mesh].
 	GetBlendShapeCount() int
 	//Virtual method to override the retrieval of blend shape names for a custom class extending [Mesh].
@@ -98,20 +102,20 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetSurfaceCount() (_ int)                                   { return }
-func (self implementation) SurfaceGetArrayLen(index int) (_ int)                       { return }
-func (self implementation) SurfaceGetArrayIndexLen(index int) (_ int)                  { return }
-func (self implementation) SurfaceGetArrays(index int) (_ []any)                       { return }
-func (self implementation) SurfaceGetBlendShapeArrays(index int) (_ [][]any)           { return }
-func (self implementation) SurfaceGetLods(index int) (_ map[any]any)                   { return }
-func (self implementation) SurfaceGetFormat(index int) (_ int)                         { return }
-func (self implementation) SurfaceGetPrimitiveType(index int) (_ int)                  { return }
-func (self implementation) SurfaceSetMaterial(index int, material [1]gdclass.Material) { return }
-func (self implementation) SurfaceGetMaterial(index int) (_ [1]gdclass.Material)       { return }
-func (self implementation) GetBlendShapeCount() (_ int)                                { return }
-func (self implementation) GetBlendShapeName(index int) (_ string)                     { return }
-func (self implementation) SetBlendShapeName(index int, name string)                   { return }
-func (self implementation) GetAabb() (_ AABB.PositionSize)                             { return }
+func (self implementation) GetSurfaceCount() (_ int)                                 { return }
+func (self implementation) SurfaceGetArrayLen(index int) (_ int)                     { return }
+func (self implementation) SurfaceGetArrayIndexLen(index int) (_ int)                { return }
+func (self implementation) SurfaceGetArrays(index int) (_ []any)                     { return }
+func (self implementation) SurfaceGetBlendShapeArrays(index int) (_ [][]any)         { return }
+func (self implementation) SurfaceGetLods(index int) (_ map[any]any)                 { return }
+func (self implementation) SurfaceGetFormat(index int) (_ int)                       { return }
+func (self implementation) SurfaceGetPrimitiveType(index int) (_ int)                { return }
+func (self implementation) SurfaceSetMaterial(index int, material Material.Instance) { return }
+func (self implementation) SurfaceGetMaterial(index int) (_ Material.Instance)       { return }
+func (self implementation) GetBlendShapeCount() (_ int)                              { return }
+func (self implementation) GetBlendShapeName(index int) (_ string)                   { return }
+func (self implementation) SetBlendShapeName(index int, name string)                 { return }
+func (self implementation) GetAabb() (_ AABB.PositionSize)                           { return }
 
 /*
 Virtual method to override the surface count for a custom class extending [Mesh].
@@ -226,7 +230,7 @@ func (Instance) _surface_get_primitive_type(impl func(ptr unsafe.Pointer, index 
 /*
 Virtual method to override the setting of a [param material] at the given [param index] for a custom class extending [Mesh].
 */
-func (Instance) _surface_set_material(impl func(ptr unsafe.Pointer, index int, material [1]gdclass.Material)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _surface_set_material(impl func(ptr unsafe.Pointer, index int, material Material.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[int64](p_args, 0)
 		var material = [1]gdclass.Material{pointers.New[gdclass.Material]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
@@ -240,7 +244,7 @@ func (Instance) _surface_set_material(impl func(ptr unsafe.Pointer, index int, m
 /*
 Virtual method to override the surface material for a custom class extending [Mesh].
 */
-func (Instance) _surface_get_material(impl func(ptr unsafe.Pointer, index int) [1]gdclass.Material) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _surface_get_material(impl func(ptr unsafe.Pointer, index int) Material.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var index = gd.UnsafeGet[int64](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -346,7 +350,7 @@ func (self Instance) SurfaceGetBlendShapeArrays(surf_idx int) [][]any { //gd:Mes
 Sets a [Material] for a given surface. Surface will be rendered using this material.
 [b]Note:[/b] This assigns the material within the [Mesh] resource, not the [Material] associated to the [MeshInstance3D]'s Surface Material Override properties. To set the [Material] associated to the [MeshInstance3D]'s Surface Material Override properties, use [method MeshInstance3D.set_surface_override_material] instead.
 */
-func (self Instance) SurfaceSetMaterial(surf_idx int, material [1]gdclass.Material) { //gd:Mesh.surface_set_material
+func (self Instance) SurfaceSetMaterial(surf_idx int, material Material.Instance) { //gd:Mesh.surface_set_material
 	Advanced(self).SurfaceSetMaterial(int64(surf_idx), material)
 }
 
@@ -354,22 +358,22 @@ func (self Instance) SurfaceSetMaterial(surf_idx int, material [1]gdclass.Materi
 Returns a [Material] in a given surface. Surface is rendered using this material.
 [b]Note:[/b] This returns the material within the [Mesh] resource, not the [Material] associated to the [MeshInstance3D]'s Surface Material Override properties. To get the [Material] associated to the [MeshInstance3D]'s Surface Material Override properties, use [method MeshInstance3D.get_surface_override_material] instead.
 */
-func (self Instance) SurfaceGetMaterial(surf_idx int) [1]gdclass.Material { //gd:Mesh.surface_get_material
-	return [1]gdclass.Material(Advanced(self).SurfaceGetMaterial(int64(surf_idx)))
+func (self Instance) SurfaceGetMaterial(surf_idx int) Material.Instance { //gd:Mesh.surface_get_material
+	return Material.Instance(Advanced(self).SurfaceGetMaterial(int64(surf_idx)))
 }
 
 /*
 Creates a placeholder version of this resource ([PlaceholderMesh]).
 */
-func (self Instance) CreatePlaceholder() [1]gdclass.Resource { //gd:Mesh.create_placeholder
-	return [1]gdclass.Resource(Advanced(self).CreatePlaceholder())
+func (self Instance) CreatePlaceholder() Resource.Instance { //gd:Mesh.create_placeholder
+	return Resource.Instance(Advanced(self).CreatePlaceholder())
 }
 
 /*
 Calculate a [ConcavePolygonShape3D] from the mesh.
 */
-func (self Instance) CreateTrimeshShape() [1]gdclass.ConcavePolygonShape3D { //gd:Mesh.create_trimesh_shape
-	return [1]gdclass.ConcavePolygonShape3D(Advanced(self).CreateTrimeshShape())
+func (self Instance) CreateTrimeshShape() ConcavePolygonShape3D.Instance { //gd:Mesh.create_trimesh_shape
+	return ConcavePolygonShape3D.Instance(Advanced(self).CreateTrimeshShape())
 }
 
 /*
@@ -377,8 +381,8 @@ Calculate a [ConvexPolygonShape3D] from the mesh.
 If [param clean] is [code]true[/code] (default), duplicate and interior vertices are removed automatically. You can set it to [code]false[/code] to make the process faster if not needed.
 If [param simplify] is [code]true[/code], the geometry can be further simplified to reduce the number of vertices. Disabled by default.
 */
-func (self Instance) CreateConvexShape() [1]gdclass.ConvexPolygonShape3D { //gd:Mesh.create_convex_shape
-	return [1]gdclass.ConvexPolygonShape3D(Advanced(self).CreateConvexShape(true, false))
+func (self Instance) CreateConvexShape() ConvexPolygonShape3D.Instance { //gd:Mesh.create_convex_shape
+	return ConvexPolygonShape3D.Instance(Advanced(self).CreateConvexShape(true, false))
 }
 
 /*
@@ -386,23 +390,23 @@ Calculate a [ConvexPolygonShape3D] from the mesh.
 If [param clean] is [code]true[/code] (default), duplicate and interior vertices are removed automatically. You can set it to [code]false[/code] to make the process faster if not needed.
 If [param simplify] is [code]true[/code], the geometry can be further simplified to reduce the number of vertices. Disabled by default.
 */
-func (self Expanded) CreateConvexShape(clean bool, simplify bool) [1]gdclass.ConvexPolygonShape3D { //gd:Mesh.create_convex_shape
-	return [1]gdclass.ConvexPolygonShape3D(Advanced(self).CreateConvexShape(clean, simplify))
+func (self Expanded) CreateConvexShape(clean bool, simplify bool) ConvexPolygonShape3D.Instance { //gd:Mesh.create_convex_shape
+	return ConvexPolygonShape3D.Instance(Advanced(self).CreateConvexShape(clean, simplify))
 }
 
 /*
 Calculate an outline mesh at a defined offset (margin) from the original mesh.
 [b]Note:[/b] This method typically returns the vertices in reverse order (e.g. clockwise to counterclockwise).
 */
-func (self Instance) CreateOutline(margin Float.X) [1]gdclass.Mesh { //gd:Mesh.create_outline
-	return [1]gdclass.Mesh(Advanced(self).CreateOutline(float64(margin)))
+func (self Instance) CreateOutline(margin Float.X) Instance { //gd:Mesh.create_outline
+	return Instance(Advanced(self).CreateOutline(float64(margin)))
 }
 
 /*
 Generate a [TriangleMesh] from the mesh. Considers only surfaces using one of these primitive types: [constant PRIMITIVE_TRIANGLES], [constant PRIMITIVE_TRIANGLE_STRIP].
 */
-func (self Instance) GenerateTriangleMesh() [1]gdclass.TriangleMesh { //gd:Mesh.generate_triangle_mesh
-	return [1]gdclass.TriangleMesh(Advanced(self).GenerateTriangleMesh())
+func (self Instance) GenerateTriangleMesh() TriangleMesh.Instance { //gd:Mesh.generate_triangle_mesh
+	return TriangleMesh.Instance(Advanced(self).GenerateTriangleMesh())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

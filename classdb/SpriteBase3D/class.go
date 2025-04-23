@@ -14,6 +14,7 @@ import "graphics.gd/variant"
 import "graphics.gd/classdb/GeometryInstance3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/TriangleMesh"
 import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -71,8 +72,8 @@ func (self Instance) GetItemRect() Rect2.PositionSize { //gd:SpriteBase3D.get_it
 /*
 Returns a [TriangleMesh] with the sprite's vertices following its current configuration (such as its [member axis] and [member pixel_size]).
 */
-func (self Instance) GenerateTriangleMesh() [1]gdclass.TriangleMesh { //gd:SpriteBase3D.generate_triangle_mesh
-	return [1]gdclass.TriangleMesh(Advanced(self).GenerateTriangleMesh())
+func (self Instance) GenerateTriangleMesh() TriangleMesh.Instance { //gd:SpriteBase3D.generate_triangle_mesh
+	return TriangleMesh.Instance(Advanced(self).GenerateTriangleMesh())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -12,6 +12,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -129,28 +130,28 @@ func (self Instance) GetAnimationLoop(anim string) bool { //gd:SpriteFrames.get_
 /*
 Adds a frame to the [param anim] animation. If [param at_position] is [code]-1[/code], the frame will be added to the end of the animation. [param duration] specifies the relative duration, see [method get_frame_duration] for details.
 */
-func (self Instance) AddFrame(anim string, texture [1]gdclass.Texture2D) { //gd:SpriteFrames.add_frame
+func (self Instance) AddFrame(anim string, texture Texture2D.Instance) { //gd:SpriteFrames.add_frame
 	Advanced(self).AddFrame(String.Name(String.New(anim)), texture, float64(1.0), int64(-1))
 }
 
 /*
 Adds a frame to the [param anim] animation. If [param at_position] is [code]-1[/code], the frame will be added to the end of the animation. [param duration] specifies the relative duration, see [method get_frame_duration] for details.
 */
-func (self Expanded) AddFrame(anim string, texture [1]gdclass.Texture2D, duration Float.X, at_position int) { //gd:SpriteFrames.add_frame
+func (self Expanded) AddFrame(anim string, texture Texture2D.Instance, duration Float.X, at_position int) { //gd:SpriteFrames.add_frame
 	Advanced(self).AddFrame(String.Name(String.New(anim)), texture, float64(duration), int64(at_position))
 }
 
 /*
 Sets the [param texture] and the [param duration] of the frame [param idx] in the [param anim] animation. [param duration] specifies the relative duration, see [method get_frame_duration] for details.
 */
-func (self Instance) SetFrame(anim string, idx int, texture [1]gdclass.Texture2D) { //gd:SpriteFrames.set_frame
+func (self Instance) SetFrame(anim string, idx int, texture Texture2D.Instance) { //gd:SpriteFrames.set_frame
 	Advanced(self).SetFrame(String.Name(String.New(anim)), int64(idx), texture, float64(1.0))
 }
 
 /*
 Sets the [param texture] and the [param duration] of the frame [param idx] in the [param anim] animation. [param duration] specifies the relative duration, see [method get_frame_duration] for details.
 */
-func (self Expanded) SetFrame(anim string, idx int, texture [1]gdclass.Texture2D, duration Float.X) { //gd:SpriteFrames.set_frame
+func (self Expanded) SetFrame(anim string, idx int, texture Texture2D.Instance, duration Float.X) { //gd:SpriteFrames.set_frame
 	Advanced(self).SetFrame(String.Name(String.New(anim)), int64(idx), texture, float64(duration))
 }
 
@@ -171,8 +172,8 @@ func (self Instance) GetFrameCount(anim string) int { //gd:SpriteFrames.get_fram
 /*
 Returns the texture of the frame [param idx] in the [param anim] animation.
 */
-func (self Instance) GetFrameTexture(anim string, idx int) [1]gdclass.Texture2D { //gd:SpriteFrames.get_frame_texture
-	return [1]gdclass.Texture2D(Advanced(self).GetFrameTexture(String.Name(String.New(anim)), int64(idx)))
+func (self Instance) GetFrameTexture(anim string, idx int) Texture2D.Instance { //gd:SpriteFrames.get_frame_texture
+	return Texture2D.Instance(Advanced(self).GetFrameTexture(String.Name(String.New(anim)), int64(idx)))
 }
 
 /*

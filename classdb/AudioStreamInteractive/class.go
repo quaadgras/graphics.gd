@@ -75,15 +75,15 @@ func (self Instance) GetClipName(clip_index int) string { //gd:AudioStreamIntera
 /*
 Set the [AudioStream] associated with the current clip.
 */
-func (self Instance) SetClipStream(clip_index int, stream [1]gdclass.AudioStream) { //gd:AudioStreamInteractive.set_clip_stream
+func (self Instance) SetClipStream(clip_index int, stream AudioStream.Instance) { //gd:AudioStreamInteractive.set_clip_stream
 	Advanced(self).SetClipStream(int64(clip_index), stream)
 }
 
 /*
 Return the [AudioStream] associated with a clip.
 */
-func (self Instance) GetClipStream(clip_index int) [1]gdclass.AudioStream { //gd:AudioStreamInteractive.get_clip_stream
-	return [1]gdclass.AudioStream(Advanced(self).GetClipStream(int64(clip_index)))
+func (self Instance) GetClipStream(clip_index int) AudioStream.Instance { //gd:AudioStreamInteractive.get_clip_stream
+	return AudioStream.Instance(Advanced(self).GetClipStream(int64(clip_index)))
 }
 
 /*

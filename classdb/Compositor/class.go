@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/CompositorEffect"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -74,11 +75,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) CompositorEffects() [][1]gdclass.CompositorEffect {
-	return [][1]gdclass.CompositorEffect(gd.ArrayAs[[][1]gdclass.CompositorEffect](gd.InternalArray(class(self).GetCompositorEffects())))
+func (self Instance) CompositorEffects() []CompositorEffect.Instance {
+	return []CompositorEffect.Instance(gd.ArrayAs[[]CompositorEffect.Instance](gd.InternalArray(class(self).GetCompositorEffects())))
 }
 
-func (self Instance) SetCompositorEffects(value [][1]gdclass.CompositorEffect) {
+func (self Instance) SetCompositorEffects(value []CompositorEffect.Instance) {
 	class(self).SetCompositorEffects(gd.ArrayFromSlice[Array.Contains[[1]gdclass.CompositorEffect]](value))
 }
 

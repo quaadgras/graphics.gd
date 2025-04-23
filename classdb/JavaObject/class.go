@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/JavaClass"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -59,8 +60,8 @@ type Any interface {
 /*
 Returns the [JavaClass] that this object is an instance of.
 */
-func (self Instance) GetJavaClass() [1]gdclass.JavaClass { //gd:JavaObject.get_java_class
-	return [1]gdclass.JavaClass(Advanced(self).GetJavaClass())
+func (self Instance) GetJavaClass() JavaClass.Instance { //gd:JavaObject.get_java_class
+	return JavaClass.Instance(Advanced(self).GetJavaClass())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

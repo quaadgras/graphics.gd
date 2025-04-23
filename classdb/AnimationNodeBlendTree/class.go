@@ -63,22 +63,22 @@ type Any interface {
 /*
 Adds an [AnimationNode] at the given [param position]. The [param name] is used to identify the created sub animation node later.
 */
-func (self Instance) AddNode(name string, node [1]gdclass.AnimationNode) { //gd:AnimationNodeBlendTree.add_node
+func (self Instance) AddNode(name string, node AnimationNode.Instance) { //gd:AnimationNodeBlendTree.add_node
 	Advanced(self).AddNode(String.Name(String.New(name)), node, Vector2.XY(gd.Vector2{0, 0}))
 }
 
 /*
 Adds an [AnimationNode] at the given [param position]. The [param name] is used to identify the created sub animation node later.
 */
-func (self Expanded) AddNode(name string, node [1]gdclass.AnimationNode, position Vector2.XY) { //gd:AnimationNodeBlendTree.add_node
+func (self Expanded) AddNode(name string, node AnimationNode.Instance, position Vector2.XY) { //gd:AnimationNodeBlendTree.add_node
 	Advanced(self).AddNode(String.Name(String.New(name)), node, Vector2.XY(position))
 }
 
 /*
 Returns the sub animation node with the specified [param name].
 */
-func (self Instance) GetNode(name string) [1]gdclass.AnimationNode { //gd:AnimationNodeBlendTree.get_node
-	return [1]gdclass.AnimationNode(Advanced(self).GetNode(String.Name(String.New(name))))
+func (self Instance) GetNode(name string) AnimationNode.Instance { //gd:AnimationNodeBlendTree.get_node
+	return AnimationNode.Instance(Advanced(self).GetNode(String.Name(String.New(name))))
 }
 
 /*

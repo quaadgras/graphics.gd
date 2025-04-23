@@ -12,6 +12,11 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/NavigationMeshSourceGeometryData2D"
+import "graphics.gd/classdb/NavigationPathQueryParameters2D"
+import "graphics.gd/classdb/NavigationPathQueryResult2D"
+import "graphics.gd/classdb/NavigationPolygon"
+import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -55,6 +60,8 @@ To use the collision avoidance system, you may use agents. You can set an agent'
 [b]Note:[/b] The collision avoidance system ignores regions. Using the modified velocity directly may move an agent outside of the traversable area. This is a limitation of the collision avoidance system, any more complex situation may require the use of the physics engine.
 This server keeps tracks of any call and executes them during the sync phase. This means that you can request any change to the map, using any thread, without worrying.
 */
+type Instance [1]gdclass.NavigationServer2D
+
 var self [1]gdclass.NavigationServer2D
 var once sync.Once
 
@@ -272,7 +279,7 @@ func MapGetRandomPoint(mapping RID.NavigationMap2D, navigation_layers int, unifo
 /*
 Queries a path in a given navigation map. Start and target position and other parameters are defined through [NavigationPathQueryParameters2D]. Updates the provided [NavigationPathQueryResult2D] result object with the path among other results requested by the query. After the process is finished the optional [param callback] will be called.
 */
-func QueryPath(parameters [1]gdclass.NavigationPathQueryParameters2D, result [1]gdclass.NavigationPathQueryResult2D, callback func()) { //gd:NavigationServer2D.query_path
+func QueryPath(parameters NavigationPathQueryParameters2D.Instance, result NavigationPathQueryResult2D.Instance, callback func()) { //gd:NavigationServer2D.query_path
 	once.Do(singleton)
 	Advanced().QueryPath(parameters, result, Callable.New(callback))
 }
@@ -280,7 +287,7 @@ func QueryPath(parameters [1]gdclass.NavigationPathQueryParameters2D, result [1]
 /*
 Queries a path in a given navigation map. Start and target position and other parameters are defined through [NavigationPathQueryParameters2D]. Updates the provided [NavigationPathQueryResult2D] result object with the path among other results requested by the query. After the process is finished the optional [param callback] will be called.
 */
-func QueryPathOptions(parameters [1]gdclass.NavigationPathQueryParameters2D, result [1]gdclass.NavigationPathQueryResult2D, callback func()) { //gd:NavigationServer2D.query_path
+func QueryPathOptions(parameters NavigationPathQueryParameters2D.Instance, result NavigationPathQueryResult2D.Instance, callback func()) { //gd:NavigationServer2D.query_path
 	once.Do(singleton)
 	Advanced().QueryPath(parameters, result, Callable.New(callback))
 }
@@ -434,7 +441,7 @@ func RegionGetTransform(region RID.NavigationRegion2D) Transform2D.OriginXY { //
 /*
 Sets the [param navigation_polygon] for the region.
 */
-func RegionSetNavigationPolygon(region RID.NavigationRegion2D, navigation_polygon [1]gdclass.NavigationPolygon) { //gd:NavigationServer2D.region_set_navigation_polygon
+func RegionSetNavigationPolygon(region RID.NavigationRegion2D, navigation_polygon NavigationPolygon.Instance) { //gd:NavigationServer2D.region_set_navigation_polygon
 	once.Do(singleton)
 	Advanced().RegionSetNavigationPolygon(RID.Any(region), navigation_polygon)
 }
@@ -1048,7 +1055,7 @@ Parses the [SceneTree] for source geometry according to the properties of [param
 [b]Note:[/b] This function needs to run on the main thread or with a deferred call as the SceneTree is not thread-safe.
 [b]Performance:[/b] While convenient, reading data arrays from [Mesh] resources can affect the frame rate negatively. The data needs to be received from the GPU, stalling the [RenderingServer] in the process. For performance prefer the use of e.g. collision shapes or creating the data arrays entirely in code.
 */
-func ParseSourceGeometryData(navigation_polygon [1]gdclass.NavigationPolygon, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData2D, root_node [1]gdclass.Node, callback func()) { //gd:NavigationServer2D.parse_source_geometry_data
+func ParseSourceGeometryData(navigation_polygon NavigationPolygon.Instance, source_geometry_data NavigationMeshSourceGeometryData2D.Instance, root_node Node.Instance, callback func()) { //gd:NavigationServer2D.parse_source_geometry_data
 	once.Do(singleton)
 	Advanced().ParseSourceGeometryData(navigation_polygon, source_geometry_data, root_node, Callable.New(callback))
 }
@@ -1058,7 +1065,7 @@ Parses the [SceneTree] for source geometry according to the properties of [param
 [b]Note:[/b] This function needs to run on the main thread or with a deferred call as the SceneTree is not thread-safe.
 [b]Performance:[/b] While convenient, reading data arrays from [Mesh] resources can affect the frame rate negatively. The data needs to be received from the GPU, stalling the [RenderingServer] in the process. For performance prefer the use of e.g. collision shapes or creating the data arrays entirely in code.
 */
-func ParseSourceGeometryDataOptions(navigation_polygon [1]gdclass.NavigationPolygon, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData2D, root_node [1]gdclass.Node, callback func()) { //gd:NavigationServer2D.parse_source_geometry_data
+func ParseSourceGeometryDataOptions(navigation_polygon NavigationPolygon.Instance, source_geometry_data NavigationMeshSourceGeometryData2D.Instance, root_node Node.Instance, callback func()) { //gd:NavigationServer2D.parse_source_geometry_data
 	once.Do(singleton)
 	Advanced().ParseSourceGeometryData(navigation_polygon, source_geometry_data, root_node, Callable.New(callback))
 }
@@ -1066,7 +1073,7 @@ func ParseSourceGeometryDataOptions(navigation_polygon [1]gdclass.NavigationPoly
 /*
 Bakes the provided [param navigation_polygon] with the data from the provided [param source_geometry_data]. After the process is finished the optional [param callback] will be called.
 */
-func BakeFromSourceGeometryData(navigation_polygon [1]gdclass.NavigationPolygon, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData2D, callback func()) { //gd:NavigationServer2D.bake_from_source_geometry_data
+func BakeFromSourceGeometryData(navigation_polygon NavigationPolygon.Instance, source_geometry_data NavigationMeshSourceGeometryData2D.Instance, callback func()) { //gd:NavigationServer2D.bake_from_source_geometry_data
 	once.Do(singleton)
 	Advanced().BakeFromSourceGeometryData(navigation_polygon, source_geometry_data, Callable.New(callback))
 }
@@ -1074,7 +1081,7 @@ func BakeFromSourceGeometryData(navigation_polygon [1]gdclass.NavigationPolygon,
 /*
 Bakes the provided [param navigation_polygon] with the data from the provided [param source_geometry_data]. After the process is finished the optional [param callback] will be called.
 */
-func BakeFromSourceGeometryDataOptions(navigation_polygon [1]gdclass.NavigationPolygon, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData2D, callback func()) { //gd:NavigationServer2D.bake_from_source_geometry_data
+func BakeFromSourceGeometryDataOptions(navigation_polygon NavigationPolygon.Instance, source_geometry_data NavigationMeshSourceGeometryData2D.Instance, callback func()) { //gd:NavigationServer2D.bake_from_source_geometry_data
 	once.Do(singleton)
 	Advanced().BakeFromSourceGeometryData(navigation_polygon, source_geometry_data, Callable.New(callback))
 }
@@ -1082,7 +1089,7 @@ func BakeFromSourceGeometryDataOptions(navigation_polygon [1]gdclass.NavigationP
 /*
 Bakes the provided [param navigation_polygon] with the data from the provided [param source_geometry_data] as an async task running on a background thread. After the process is finished the optional [param callback] will be called.
 */
-func BakeFromSourceGeometryDataAsync(navigation_polygon [1]gdclass.NavigationPolygon, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData2D, callback func()) { //gd:NavigationServer2D.bake_from_source_geometry_data_async
+func BakeFromSourceGeometryDataAsync(navigation_polygon NavigationPolygon.Instance, source_geometry_data NavigationMeshSourceGeometryData2D.Instance, callback func()) { //gd:NavigationServer2D.bake_from_source_geometry_data_async
 	once.Do(singleton)
 	Advanced().BakeFromSourceGeometryDataAsync(navigation_polygon, source_geometry_data, Callable.New(callback))
 }
@@ -1090,7 +1097,7 @@ func BakeFromSourceGeometryDataAsync(navigation_polygon [1]gdclass.NavigationPol
 /*
 Bakes the provided [param navigation_polygon] with the data from the provided [param source_geometry_data] as an async task running on a background thread. After the process is finished the optional [param callback] will be called.
 */
-func BakeFromSourceGeometryDataAsyncOptions(navigation_polygon [1]gdclass.NavigationPolygon, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData2D, callback func()) { //gd:NavigationServer2D.bake_from_source_geometry_data_async
+func BakeFromSourceGeometryDataAsyncOptions(navigation_polygon NavigationPolygon.Instance, source_geometry_data NavigationMeshSourceGeometryData2D.Instance, callback func()) { //gd:NavigationServer2D.bake_from_source_geometry_data_async
 	once.Do(singleton)
 	Advanced().BakeFromSourceGeometryDataAsync(navigation_polygon, source_geometry_data, Callable.New(callback))
 }
@@ -1098,7 +1105,7 @@ func BakeFromSourceGeometryDataAsyncOptions(navigation_polygon [1]gdclass.Naviga
 /*
 Returns [code]true[/code] when the provided navigation polygon is being baked on a background thread.
 */
-func IsBakingNavigationPolygon(navigation_polygon [1]gdclass.NavigationPolygon) bool { //gd:NavigationServer2D.is_baking_navigation_polygon
+func IsBakingNavigationPolygon(navigation_polygon NavigationPolygon.Instance) bool { //gd:NavigationServer2D.is_baking_navigation_polygon
 	once.Do(singleton)
 	return bool(Advanced().IsBakingNavigationPolygon(navigation_polygon))
 }
@@ -1117,7 +1124,7 @@ Sets the [param callback] [Callable] for the specific source geometry [param par
 - [code]source_geometry_data[/code] - The [NavigationMeshSourceGeometryData2D] reference. Add custom source geometry for navigation mesh baking to this object.
 - [code]node[/code] - The [Node] that is parsed.
 */
-func SourceGeometryParserSetCallback(parser RID.NavigationSourceGeometryParser2D, callback func(navigation_mesh [1]gdclass.NavigationPolygon, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData2D, node [1]gdclass.Node)) { //gd:NavigationServer2D.source_geometry_parser_set_callback
+func SourceGeometryParserSetCallback(parser RID.NavigationSourceGeometryParser2D, callback func(navigation_mesh NavigationPolygon.Instance, source_geometry_data NavigationMeshSourceGeometryData2D.Instance, node Node.Instance)) { //gd:NavigationServer2D.source_geometry_parser_set_callback
 	once.Do(singleton)
 	Advanced().SourceGeometryParserSetCallback(RID.Any(parser), Callable.New(callback))
 }

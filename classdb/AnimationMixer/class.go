@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Animation"
+import "graphics.gd/classdb/AnimationLibrary"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -64,7 +66,7 @@ type Any interface {
 }
 type Interface interface {
 	//A virtual function for processing after getting a key during playback.
-	PostProcessKeyValue(animation [1]gdclass.Animation, track int, value any, object_id int, object_sub_idx int) any
+	PostProcessKeyValue(animation Animation.Instance, track int, value any, object_id int, object_sub_idx int) any
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -72,14 +74,14 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) PostProcessKeyValue(animation [1]gdclass.Animation, track int, value any, object_id int, object_sub_idx int) (_ any) {
+func (self implementation) PostProcessKeyValue(animation Animation.Instance, track int, value any, object_id int, object_sub_idx int) (_ any) {
 	return
 }
 
 /*
 A virtual function for processing after getting a key during playback.
 */
-func (Instance) _post_process_key_value(impl func(ptr unsafe.Pointer, animation [1]gdclass.Animation, track int, value any, object_id int, object_sub_idx int) any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _post_process_key_value(impl func(ptr unsafe.Pointer, animation Animation.Instance, track int, value any, object_id int, object_sub_idx int) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var animation = [1]gdclass.Animation{pointers.New[gdclass.Animation]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -110,7 +112,7 @@ global_library.add_animation("animation_name", animation_resource)
 [/gdscript]
 [/codeblocks]
 */
-func (self Instance) AddAnimationLibrary(name string, library [1]gdclass.AnimationLibrary) error { //gd:AnimationMixer.add_animation_library
+func (self Instance) AddAnimationLibrary(name string, library AnimationLibrary.Instance) error { //gd:AnimationMixer.add_animation_library
 	return error(gd.ToError(Advanced(self).AddAnimationLibrary(String.Name(String.New(name)), library)))
 }
 
@@ -139,8 +141,8 @@ func (self Instance) HasAnimationLibrary(name string) bool { //gd:AnimationMixer
 Returns the first [AnimationLibrary] with key [param name] or [code]null[/code] if not found.
 To get the [AnimationMixer]'s global animation library, use [code]get_animation_library("")[/code].
 */
-func (self Instance) GetAnimationLibrary(name string) [1]gdclass.AnimationLibrary { //gd:AnimationMixer.get_animation_library
-	return [1]gdclass.AnimationLibrary(Advanced(self).GetAnimationLibrary(String.Name(String.New(name))))
+func (self Instance) GetAnimationLibrary(name string) AnimationLibrary.Instance { //gd:AnimationMixer.get_animation_library
+	return AnimationLibrary.Instance(Advanced(self).GetAnimationLibrary(String.Name(String.New(name))))
 }
 
 /*
@@ -160,8 +162,8 @@ func (self Instance) HasAnimation(name string) bool { //gd:AnimationMixer.has_an
 /*
 Returns the [Animation] with the key [param name]. If the animation does not exist, [code]null[/code] is returned and an error is logged.
 */
-func (self Instance) GetAnimation(name string) [1]gdclass.Animation { //gd:AnimationMixer.get_animation
-	return [1]gdclass.Animation(Advanced(self).GetAnimation(String.Name(String.New(name))))
+func (self Instance) GetAnimation(name string) Animation.Instance { //gd:AnimationMixer.get_animation
+	return Animation.Instance(Advanced(self).GetAnimation(String.Name(String.New(name))))
 }
 
 /*
@@ -381,14 +383,14 @@ func (self Expanded) Capture(name string, duration Float.X, trans_type gdclass.T
 /*
 Returns the key of [param animation] or an empty [StringName] if not found.
 */
-func (self Instance) FindAnimation(animation [1]gdclass.Animation) string { //gd:AnimationMixer.find_animation
+func (self Instance) FindAnimation(animation Animation.Instance) string { //gd:AnimationMixer.find_animation
 	return string(Advanced(self).FindAnimation(animation).String())
 }
 
 /*
 Returns the key for the [AnimationLibrary] that contains [param animation] or an empty [StringName] if not found.
 */
-func (self Instance) FindAnimationLibrary(animation [1]gdclass.Animation) string { //gd:AnimationMixer.find_animation_library
+func (self Instance) FindAnimationLibrary(animation Animation.Instance) string { //gd:AnimationMixer.find_animation_library
 	return string(Advanced(self).FindAnimationLibrary(animation).String())
 }
 

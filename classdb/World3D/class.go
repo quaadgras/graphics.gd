@@ -11,6 +11,9 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/CameraAttributes"
+import "graphics.gd/classdb/Environment"
+import "graphics.gd/classdb/PhysicsDirectSpaceState3D"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -74,27 +77,27 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Environment() [1]gdclass.Environment {
-	return [1]gdclass.Environment(class(self).GetEnvironment())
+func (self Instance) Environment() Environment.Instance {
+	return Environment.Instance(class(self).GetEnvironment())
 }
 
-func (self Instance) SetEnvironment(value [1]gdclass.Environment) {
+func (self Instance) SetEnvironment(value Environment.Instance) {
 	class(self).SetEnvironment(value)
 }
 
-func (self Instance) FallbackEnvironment() [1]gdclass.Environment {
-	return [1]gdclass.Environment(class(self).GetFallbackEnvironment())
+func (self Instance) FallbackEnvironment() Environment.Instance {
+	return Environment.Instance(class(self).GetFallbackEnvironment())
 }
 
-func (self Instance) SetFallbackEnvironment(value [1]gdclass.Environment) {
+func (self Instance) SetFallbackEnvironment(value Environment.Instance) {
 	class(self).SetFallbackEnvironment(value)
 }
 
-func (self Instance) CameraAttributes() [1]gdclass.CameraAttributes {
-	return [1]gdclass.CameraAttributes(class(self).GetCameraAttributes())
+func (self Instance) CameraAttributes() CameraAttributes.Instance {
+	return CameraAttributes.Instance(class(self).GetCameraAttributes())
 }
 
-func (self Instance) SetCameraAttributes(value [1]gdclass.CameraAttributes) {
+func (self Instance) SetCameraAttributes(value CameraAttributes.Instance) {
 	class(self).SetCameraAttributes(value)
 }
 
@@ -110,8 +113,8 @@ func (self Instance) Scenario() RID.Any {
 	return RID.Any(class(self).GetScenario())
 }
 
-func (self Instance) DirectSpaceState() [1]gdclass.PhysicsDirectSpaceState3D {
-	return [1]gdclass.PhysicsDirectSpaceState3D(class(self).GetDirectSpaceState())
+func (self Instance) DirectSpaceState() PhysicsDirectSpaceState3D.Instance {
+	return PhysicsDirectSpaceState3D.Instance(class(self).GetDirectSpaceState())
 }
 
 //go:nosplit

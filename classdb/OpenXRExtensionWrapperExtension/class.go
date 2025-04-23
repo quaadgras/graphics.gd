@@ -634,13 +634,6 @@ func (Instance) _set_android_surface_swapchain_create_info_and_get_next_pointer(
 }
 
 /*
-Returns the created [OpenXRAPIExtension], which can be used to access the OpenXR API.
-*/
-func (self Instance) GetOpenxrApi() [1]gdclass.OpenXRAPIExtension { //gd:OpenXRExtensionWrapperExtension.get_openxr_api
-	return [1]gdclass.OpenXRAPIExtension(Advanced(self).GetOpenxrApi())
-}
-
-/*
 Registers the extension. This should happen at core module initialization level.
 */
 func (self Instance) RegisterExtensionWrapper() { //gd:OpenXRExtensionWrapperExtension.register_extension_wrapper

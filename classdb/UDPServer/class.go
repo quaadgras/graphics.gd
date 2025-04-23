@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/PacketPeerUDP"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -226,8 +227,8 @@ func (self Instance) IsListening() bool { //gd:UDPServer.is_listening
 /*
 Returns the first pending connection (connected to the appropriate address/port). Will return [code]null[/code] if no new connection is available. See also [method is_connection_available], [method PacketPeerUDP.connect_to_host].
 */
-func (self Instance) TakeConnection() [1]gdclass.PacketPeerUDP { //gd:UDPServer.take_connection
-	return [1]gdclass.PacketPeerUDP(Advanced(self).TakeConnection())
+func (self Instance) TakeConnection() PacketPeerUDP.Instance { //gd:UDPServer.take_connection
+	return PacketPeerUDP.Instance(Advanced(self).TakeConnection())
 }
 
 /*

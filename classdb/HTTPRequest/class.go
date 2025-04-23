@@ -12,6 +12,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/TLSOptions"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -260,7 +261,7 @@ func (self Instance) CancelRequest() { //gd:HTTPRequest.cancel_request
 /*
 Sets the [TLSOptions] to be used when connecting to an HTTPS server. See [method TLSOptions.client].
 */
-func (self Instance) SetTlsOptions(client_options [1]gdclass.TLSOptions) { //gd:HTTPRequest.set_tls_options
+func (self Instance) SetTlsOptions(client_options TLSOptions.Instance) { //gd:HTTPRequest.set_tls_options
 	Advanced(self).SetTlsOptions(client_options)
 }
 

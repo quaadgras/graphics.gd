@@ -12,6 +12,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -79,7 +80,7 @@ type Interface interface {
 	//Select the audio track [param idx]. Called when playback starts, and in response to the [member VideoStreamPlayer.audio_track] setter.
 	SetAudioTrack(idx int)
 	//Allocates a [Texture2D] in which decoded video frames will be drawn.
-	GetTexture() [1]gdclass.Texture2D
+	GetTexture() Texture2D.Instance
 	//Ticks video playback for [param delta] seconds. Called every frame as long as both [method _is_paused] and [method _is_playing] return [code]true[/code].
 	Update(delta Float.X)
 	//Returns the number of audio channels.
@@ -93,19 +94,19 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) Stop()                                { return }
-func (self implementation) Play()                                { return }
-func (self implementation) IsPlaying() (_ bool)                  { return }
-func (self implementation) SetPaused(paused bool)                { return }
-func (self implementation) IsPaused() (_ bool)                   { return }
-func (self implementation) GetLength() (_ Float.X)               { return }
-func (self implementation) GetPlaybackPosition() (_ Float.X)     { return }
-func (self implementation) Seek(time Float.X)                    { return }
-func (self implementation) SetAudioTrack(idx int)                { return }
-func (self implementation) GetTexture() (_ [1]gdclass.Texture2D) { return }
-func (self implementation) Update(delta Float.X)                 { return }
-func (self implementation) GetChannels() (_ int)                 { return }
-func (self implementation) GetMixRate() (_ int)                  { return }
+func (self implementation) Stop()                              { return }
+func (self implementation) Play()                              { return }
+func (self implementation) IsPlaying() (_ bool)                { return }
+func (self implementation) SetPaused(paused bool)              { return }
+func (self implementation) IsPaused() (_ bool)                 { return }
+func (self implementation) GetLength() (_ Float.X)             { return }
+func (self implementation) GetPlaybackPosition() (_ Float.X)   { return }
+func (self implementation) Seek(time Float.X)                  { return }
+func (self implementation) SetAudioTrack(idx int)              { return }
+func (self implementation) GetTexture() (_ Texture2D.Instance) { return }
+func (self implementation) Update(delta Float.X)               { return }
+func (self implementation) GetChannels() (_ int)               { return }
+func (self implementation) GetMixRate() (_ int)                { return }
 
 /*
 Stops playback. May be called multiple times before [method _play], or in response to [method VideoStreamPlayer.stop]. [method _is_playing] should return [code]false[/code] once stopped.
@@ -207,7 +208,7 @@ func (Instance) _set_audio_track(impl func(ptr unsafe.Pointer, idx int)) (cb gd.
 /*
 Allocates a [Texture2D] in which decoded video frames will be drawn.
 */
-func (Instance) _get_texture(impl func(ptr unsafe.Pointer) [1]gdclass.Texture2D) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_texture(impl func(ptr unsafe.Pointer) Texture2D.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)

@@ -12,6 +12,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/StreamPeer"
+import "graphics.gd/classdb/TLSOptions"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -67,21 +68,21 @@ func (self Instance) Poll() { //gd:StreamPeerTLS.poll
 /*
 Accepts a peer connection as a server using the given [param server_options]. See [method TLSOptions.server].
 */
-func (self Instance) AcceptStream(stream [1]gdclass.StreamPeer, server_options [1]gdclass.TLSOptions) error { //gd:StreamPeerTLS.accept_stream
+func (self Instance) AcceptStream(stream StreamPeer.Instance, server_options TLSOptions.Instance) error { //gd:StreamPeerTLS.accept_stream
 	return error(gd.ToError(Advanced(self).AcceptStream(stream, server_options)))
 }
 
 /*
 Connects to a peer using an underlying [StreamPeer] [param stream] and verifying the remote certificate is correctly signed for the given [param common_name]. You can pass the optional [param client_options] parameter to customize the trusted certification authorities, or disable the common name verification. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
-func (self Instance) ConnectToStream(stream [1]gdclass.StreamPeer, common_name string) error { //gd:StreamPeerTLS.connect_to_stream
-	return error(gd.ToError(Advanced(self).ConnectToStream(stream, String.New(common_name), [1][1]gdclass.TLSOptions{}[0])))
+func (self Instance) ConnectToStream(stream StreamPeer.Instance, common_name string) error { //gd:StreamPeerTLS.connect_to_stream
+	return error(gd.ToError(Advanced(self).ConnectToStream(stream, String.New(common_name), [1]TLSOptions.Instance{}[0])))
 }
 
 /*
 Connects to a peer using an underlying [StreamPeer] [param stream] and verifying the remote certificate is correctly signed for the given [param common_name]. You can pass the optional [param client_options] parameter to customize the trusted certification authorities, or disable the common name verification. See [method TLSOptions.client] and [method TLSOptions.client_unsafe].
 */
-func (self Expanded) ConnectToStream(stream [1]gdclass.StreamPeer, common_name string, client_options [1]gdclass.TLSOptions) error { //gd:StreamPeerTLS.connect_to_stream
+func (self Expanded) ConnectToStream(stream StreamPeer.Instance, common_name string, client_options TLSOptions.Instance) error { //gd:StreamPeerTLS.connect_to_stream
 	return error(gd.ToError(Advanced(self).ConnectToStream(stream, String.New(common_name), client_options)))
 }
 
@@ -95,8 +96,8 @@ func (self Instance) GetStatus() gdclass.StreamPeerTLSStatus { //gd:StreamPeerTL
 /*
 Returns the underlying [StreamPeer] connection, used in [method accept_stream] or [method connect_to_stream].
 */
-func (self Instance) GetStream() [1]gdclass.StreamPeer { //gd:StreamPeerTLS.get_stream
-	return [1]gdclass.StreamPeer(Advanced(self).GetStream())
+func (self Instance) GetStream() StreamPeer.Instance { //gd:StreamPeerTLS.get_stream
+	return StreamPeer.Instance(Advanced(self).GetStream())
 }
 
 /*

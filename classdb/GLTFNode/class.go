@@ -83,22 +83,6 @@ func (self Instance) SetAdditionalData(extension_name string, additional_data an
 	Advanced(self).SetAdditionalData(String.Name(String.New(extension_name)), variant.New(additional_data))
 }
 
-/*
-Returns the [NodePath] that this GLTF node will have in the Godot scene tree after being imported. This is useful when importing glTF object model pointers with [GLTFObjectModelProperty], for handling extensions such as [code]KHR_animation_pointer[/code] or [code]KHR_interactivity[/code].
-If [param handle_skeletons] is [code]true[/code], paths to skeleton bone glTF nodes will be resolved properly. For example, a path that would be [code]^"A/B/C/Bone1/Bone2/Bone3"[/code] if [code]false[/code] will become [code]^"A/B/C/Skeleton3D:Bone3"[/code].
-*/
-func (self Instance) GetSceneNodePath(gltf_state [1]gdclass.GLTFState) string { //gd:GLTFNode.get_scene_node_path
-	return string(Advanced(self).GetSceneNodePath(gltf_state, true).String())
-}
-
-/*
-Returns the [NodePath] that this GLTF node will have in the Godot scene tree after being imported. This is useful when importing glTF object model pointers with [GLTFObjectModelProperty], for handling extensions such as [code]KHR_animation_pointer[/code] or [code]KHR_interactivity[/code].
-If [param handle_skeletons] is [code]true[/code], paths to skeleton bone glTF nodes will be resolved properly. For example, a path that would be [code]^"A/B/C/Bone1/Bone2/Bone3"[/code] if [code]false[/code] will become [code]^"A/B/C/Skeleton3D:Bone3"[/code].
-*/
-func (self Expanded) GetSceneNodePath(gltf_state [1]gdclass.GLTFState, handle_skeletons bool) string { //gd:GLTFNode.get_scene_node_path
-	return string(Advanced(self).GetSceneNodePath(gltf_state, handle_skeletons).String())
-}
-
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.GLTFNode

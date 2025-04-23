@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/WebRTCDataChannel"
 import "graphics.gd/classdb/WebRTCPeerConnection"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -56,7 +57,7 @@ type Interface interface {
 	GetGatheringState() gdclass.WebRTCPeerConnectionGatheringState
 	GetSignalingState() gdclass.WebRTCPeerConnectionSignalingState
 	Initialize(p_config map[any]any) error
-	CreateDataChannel(p_label string, p_config map[any]any) [1]gdclass.WebRTCDataChannel
+	CreateDataChannel(p_label string, p_config map[any]any) WebRTCDataChannel.Instance
 	CreateOffer() error
 	SetRemoteDescription(p_type string, p_sdp string) error
 	SetLocalDescription(p_type string, p_sdp string) error
@@ -76,7 +77,7 @@ func (self implementation) GetConnectionState() (_ gdclass.WebRTCPeerConnectionC
 func (self implementation) GetGatheringState() (_ gdclass.WebRTCPeerConnectionGatheringState) { return }
 func (self implementation) GetSignalingState() (_ gdclass.WebRTCPeerConnectionSignalingState) { return }
 func (self implementation) Initialize(p_config map[any]any) (_ error)                         { return }
-func (self implementation) CreateDataChannel(p_label string, p_config map[any]any) (_ [1]gdclass.WebRTCDataChannel) {
+func (self implementation) CreateDataChannel(p_label string, p_config map[any]any) (_ WebRTCDataChannel.Instance) {
 	return
 }
 func (self implementation) CreateOffer() (_ error)                                     { return }
@@ -122,7 +123,7 @@ func (Instance) _initialize(impl func(ptr unsafe.Pointer, p_config map[any]any) 
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _create_data_channel(impl func(ptr unsafe.Pointer, p_label string, p_config map[any]any) [1]gdclass.WebRTCDataChannel) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _create_data_channel(impl func(ptr unsafe.Pointer, p_label string, p_config map[any]any) WebRTCDataChannel.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var p_label = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(p_label))

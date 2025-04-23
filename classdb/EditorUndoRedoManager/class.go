@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/UndoRedo"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -177,8 +178,8 @@ Returns the [UndoRedo] object associated with the given history [param id].
 [param id] above [code]0[/code] are mapped to the opened scene tabs (but it doesn't match their order). [param id] of [code]0[/code] or lower have special meaning (see [enum SpecialHistory]).
 Best used with [method get_object_history_id]. This method is only provided in case you need some more advanced methods of [UndoRedo] (but keep in mind that directly operating on the [UndoRedo] object might affect editor's stability).
 */
-func (self Instance) GetHistoryUndoRedo(id int) [1]gdclass.UndoRedo { //gd:EditorUndoRedoManager.get_history_undo_redo
-	return [1]gdclass.UndoRedo(Advanced(self).GetHistoryUndoRedo(int64(id)))
+func (self Instance) GetHistoryUndoRedo(id int) UndoRedo.Instance { //gd:EditorUndoRedoManager.get_history_undo_redo
+	return UndoRedo.Instance(Advanced(self).GetHistoryUndoRedo(int64(id)))
 }
 
 /*

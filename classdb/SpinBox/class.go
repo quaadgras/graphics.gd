@@ -13,6 +13,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/LineEdit"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Range"
 import "graphics.gd/variant/Array"
@@ -90,8 +91,8 @@ func (self Instance) Apply() { //gd:SpinBox.apply
 Returns the [LineEdit] instance from this [SpinBox]. You can use it to access properties and methods of [LineEdit].
 [b]Warning:[/b] This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member CanvasItem.visible] property.
 */
-func (self Instance) GetLineEdit() [1]gdclass.LineEdit { //gd:SpinBox.get_line_edit
-	return [1]gdclass.LineEdit(Advanced(self).GetLineEdit())
+func (self Instance) GetLineEdit() LineEdit.Instance { //gd:SpinBox.get_line_edit
+	return LineEdit.Instance(Advanced(self).GetLineEdit())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

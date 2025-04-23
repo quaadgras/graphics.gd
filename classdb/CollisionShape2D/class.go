@@ -14,6 +14,7 @@ import "graphics.gd/variant"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node2D"
+import "graphics.gd/classdb/Shape2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -76,11 +77,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Shape() [1]gdclass.Shape2D {
-	return [1]gdclass.Shape2D(class(self).GetShape())
+func (self Instance) Shape() Shape2D.Instance {
+	return Shape2D.Instance(class(self).GetShape())
 }
 
-func (self Instance) SetShape(value [1]gdclass.Shape2D) {
+func (self Instance) SetShape(value Shape2D.Instance) {
 	class(self).SetShape(value)
 }
 

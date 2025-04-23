@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/AudioStream"
+import "graphics.gd/classdb/AudioStreamPlayback"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/variant/Array"
@@ -105,8 +107,8 @@ func (self Instance) HasStreamPlayback() bool { //gd:AudioStreamPlayer3D.has_str
 /*
 Returns the [AudioStreamPlayback] object associated with this [AudioStreamPlayer3D].
 */
-func (self Instance) GetStreamPlayback() [1]gdclass.AudioStreamPlayback { //gd:AudioStreamPlayer3D.get_stream_playback
-	return [1]gdclass.AudioStreamPlayback(Advanced(self).GetStreamPlayback())
+func (self Instance) GetStreamPlayback() AudioStreamPlayback.Instance { //gd:AudioStreamPlayer3D.get_stream_playback
+	return AudioStreamPlayback.Instance(Advanced(self).GetStreamPlayback())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -127,11 +129,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Stream() [1]gdclass.AudioStream {
-	return [1]gdclass.AudioStream(class(self).GetStream())
+func (self Instance) Stream() AudioStream.Instance {
+	return AudioStream.Instance(class(self).GetStream())
 }
 
-func (self Instance) SetStream(value [1]gdclass.AudioStream) {
+func (self Instance) SetStream(value AudioStream.Instance) {
 	class(self).SetStream(value)
 }
 

@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/EditorExportPreset"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -66,8 +67,8 @@ func (self Instance) GetOsName() string { //gd:EditorExportPlatform.get_os_name
 /*
 Create a new preset for this platform.
 */
-func (self Instance) CreatePreset() [1]gdclass.EditorExportPreset { //gd:EditorExportPlatform.create_preset
-	return [1]gdclass.EditorExportPreset(Advanced(self).CreatePreset())
+func (self Instance) CreatePreset() EditorExportPreset.Instance { //gd:EditorExportPlatform.create_preset
+	return EditorExportPreset.Instance(Advanced(self).CreatePreset())
 }
 
 /*
@@ -88,7 +89,7 @@ func (self Instance) GetCurrentPresets() []any { //gd:EditorExportPlatform.get_c
 Saves PCK archive and returns [Dictionary] with the following keys: [code]result: Error[/code], [code]so_files: Array[/code] (array of the shared/static objects which contains dictionaries with the following keys: [code]path: String[/code], [code]tags: PackedStringArray[/code], and [code]target_folder: String[/code]).
 If [param embed] is [code]true[/code], PCK content is appended to the end of [param path] file and return [Dictionary] additionally include following keys: [code]embedded_start: int[/code] (embedded PCK offset) and [code]embedded_size: int[/code] (embedded PCK size).
 */
-func (self Instance) SavePack(preset [1]gdclass.EditorExportPreset, debug bool, path string) Report { //gd:EditorExportPlatform.save_pack
+func (self Instance) SavePack(preset EditorExportPreset.Instance, debug bool, path string) Report { //gd:EditorExportPlatform.save_pack
 	return Report(gd.DictionaryAs[Report](Advanced(self).SavePack(preset, debug, String.New(path), false)))
 }
 
@@ -96,28 +97,28 @@ func (self Instance) SavePack(preset [1]gdclass.EditorExportPreset, debug bool, 
 Saves PCK archive and returns [Dictionary] with the following keys: [code]result: Error[/code], [code]so_files: Array[/code] (array of the shared/static objects which contains dictionaries with the following keys: [code]path: String[/code], [code]tags: PackedStringArray[/code], and [code]target_folder: String[/code]).
 If [param embed] is [code]true[/code], PCK content is appended to the end of [param path] file and return [Dictionary] additionally include following keys: [code]embedded_start: int[/code] (embedded PCK offset) and [code]embedded_size: int[/code] (embedded PCK size).
 */
-func (self Expanded) SavePack(preset [1]gdclass.EditorExportPreset, debug bool, path string, embed bool) Report { //gd:EditorExportPlatform.save_pack
+func (self Expanded) SavePack(preset EditorExportPreset.Instance, debug bool, path string, embed bool) Report { //gd:EditorExportPlatform.save_pack
 	return Report(gd.DictionaryAs[Report](Advanced(self).SavePack(preset, debug, String.New(path), embed)))
 }
 
 /*
 Saves ZIP archive and returns [Dictionary] with the following keys: [code]result: Error[/code], [code]so_files: Array[/code] (array of the shared/static objects which contains dictionaries with the following keys: [code]path: String[/code], [code]tags: PackedStringArray[/code], and [code]target_folder: String[/code]).
 */
-func (self Instance) SaveZip(preset [1]gdclass.EditorExportPreset, debug bool, path string) Report { //gd:EditorExportPlatform.save_zip
+func (self Instance) SaveZip(preset EditorExportPreset.Instance, debug bool, path string) Report { //gd:EditorExportPlatform.save_zip
 	return Report(gd.DictionaryAs[Report](Advanced(self).SaveZip(preset, debug, String.New(path))))
 }
 
 /*
 Saves patch PCK archive and returns [Dictionary] with the following keys: [code]result: Error[/code], [code]so_files: Array[/code] (array of the shared/static objects which contains dictionaries with the following keys: [code]path: String[/code], [code]tags: PackedStringArray[/code], and [code]target_folder: String[/code]).
 */
-func (self Instance) SavePackPatch(preset [1]gdclass.EditorExportPreset, debug bool, path string) Report { //gd:EditorExportPlatform.save_pack_patch
+func (self Instance) SavePackPatch(preset EditorExportPreset.Instance, debug bool, path string) Report { //gd:EditorExportPlatform.save_pack_patch
 	return Report(gd.DictionaryAs[Report](Advanced(self).SavePackPatch(preset, debug, String.New(path))))
 }
 
 /*
 Saves patch ZIP archive and returns [Dictionary] with the following keys: [code]result: Error[/code], [code]so_files: Array[/code] (array of the shared/static objects which contains dictionaries with the following keys: [code]path: String[/code], [code]tags: PackedStringArray[/code], and [code]target_folder: String[/code]).
 */
-func (self Instance) SaveZipPatch(preset [1]gdclass.EditorExportPreset, debug bool, path string) Report { //gd:EditorExportPlatform.save_zip_patch
+func (self Instance) SaveZipPatch(preset EditorExportPreset.Instance, debug bool, path string) Report { //gd:EditorExportPlatform.save_zip_patch
 	return Report(gd.DictionaryAs[Report](Advanced(self).SaveZipPatch(preset, debug, String.New(path))))
 }
 
@@ -134,7 +135,7 @@ Exports project files for the specified preset. This method can be used to imple
 [param shared_cb] is called for exported native shared/static libraries and have the following arguments: [code]file_path: String[/code], [code]tags: PackedStringArray[/code], [code]target_folder: String[/code].
 [b]Note:[/b] [code]file_index[/code] and [code]file_count[/code] are intended for progress tracking only and aren't necessarily unique and precise.
 */
-func (self Instance) ExportProjectFiles(preset [1]gdclass.EditorExportPreset, debug bool, save_cb func(file_path string, file_data []byte, file_index int, file_count int, encryption_include_filters []string, encryption_exclude_filters []string, encryption_key []byte)) error { //gd:EditorExportPlatform.export_project_files
+func (self Instance) ExportProjectFiles(preset EditorExportPreset.Instance, debug bool, save_cb func(file_path string, file_data []byte, file_index int, file_count int, encryption_include_filters []string, encryption_exclude_filters []string, encryption_key []byte)) error { //gd:EditorExportPlatform.export_project_files
 	return error(gd.ToError(Advanced(self).ExportProjectFiles(preset, debug, Callable.New(save_cb), Callable.New(Callable.Nil))))
 }
 
@@ -144,49 +145,49 @@ Exports project files for the specified preset. This method can be used to imple
 [param shared_cb] is called for exported native shared/static libraries and have the following arguments: [code]file_path: String[/code], [code]tags: PackedStringArray[/code], [code]target_folder: String[/code].
 [b]Note:[/b] [code]file_index[/code] and [code]file_count[/code] are intended for progress tracking only and aren't necessarily unique and precise.
 */
-func (self Expanded) ExportProjectFiles(preset [1]gdclass.EditorExportPreset, debug bool, save_cb func(file_path string, file_data []byte, file_index int, file_count int, encryption_include_filters []string, encryption_exclude_filters []string, encryption_key []byte), shared_cb func(file_path string, tags []string, target_folder string)) error { //gd:EditorExportPlatform.export_project_files
+func (self Expanded) ExportProjectFiles(preset EditorExportPreset.Instance, debug bool, save_cb func(file_path string, file_data []byte, file_index int, file_count int, encryption_include_filters []string, encryption_exclude_filters []string, encryption_key []byte), shared_cb func(file_path string, tags []string, target_folder string)) error { //gd:EditorExportPlatform.export_project_files
 	return error(gd.ToError(Advanced(self).ExportProjectFiles(preset, debug, Callable.New(save_cb), Callable.New(shared_cb))))
 }
 
 /*
 Creates a full project at [param path] for the specified [param preset].
 */
-func (self Instance) ExportProject(preset [1]gdclass.EditorExportPreset, debug bool, path string) error { //gd:EditorExportPlatform.export_project
+func (self Instance) ExportProject(preset EditorExportPreset.Instance, debug bool, path string) error { //gd:EditorExportPlatform.export_project
 	return error(gd.ToError(Advanced(self).ExportProject(preset, debug, String.New(path), 0)))
 }
 
 /*
 Creates a full project at [param path] for the specified [param preset].
 */
-func (self Expanded) ExportProject(preset [1]gdclass.EditorExportPreset, debug bool, path string, flags gdclass.EditorExportPlatformDebugFlags) error { //gd:EditorExportPlatform.export_project
+func (self Expanded) ExportProject(preset EditorExportPreset.Instance, debug bool, path string, flags gdclass.EditorExportPlatformDebugFlags) error { //gd:EditorExportPlatform.export_project
 	return error(gd.ToError(Advanced(self).ExportProject(preset, debug, String.New(path), flags)))
 }
 
 /*
 Creates a PCK archive at [param path] for the specified [param preset].
 */
-func (self Instance) ExportPack(preset [1]gdclass.EditorExportPreset, debug bool, path string) error { //gd:EditorExportPlatform.export_pack
+func (self Instance) ExportPack(preset EditorExportPreset.Instance, debug bool, path string) error { //gd:EditorExportPlatform.export_pack
 	return error(gd.ToError(Advanced(self).ExportPack(preset, debug, String.New(path), 0)))
 }
 
 /*
 Creates a PCK archive at [param path] for the specified [param preset].
 */
-func (self Expanded) ExportPack(preset [1]gdclass.EditorExportPreset, debug bool, path string, flags gdclass.EditorExportPlatformDebugFlags) error { //gd:EditorExportPlatform.export_pack
+func (self Expanded) ExportPack(preset EditorExportPreset.Instance, debug bool, path string, flags gdclass.EditorExportPlatformDebugFlags) error { //gd:EditorExportPlatform.export_pack
 	return error(gd.ToError(Advanced(self).ExportPack(preset, debug, String.New(path), flags)))
 }
 
 /*
 Create a ZIP archive at [param path] for the specified [param preset].
 */
-func (self Instance) ExportZip(preset [1]gdclass.EditorExportPreset, debug bool, path string) error { //gd:EditorExportPlatform.export_zip
+func (self Instance) ExportZip(preset EditorExportPreset.Instance, debug bool, path string) error { //gd:EditorExportPlatform.export_zip
 	return error(gd.ToError(Advanced(self).ExportZip(preset, debug, String.New(path), 0)))
 }
 
 /*
 Create a ZIP archive at [param path] for the specified [param preset].
 */
-func (self Expanded) ExportZip(preset [1]gdclass.EditorExportPreset, debug bool, path string, flags gdclass.EditorExportPlatformDebugFlags) error { //gd:EditorExportPlatform.export_zip
+func (self Expanded) ExportZip(preset EditorExportPreset.Instance, debug bool, path string, flags gdclass.EditorExportPlatformDebugFlags) error { //gd:EditorExportPlatform.export_zip
 	return error(gd.ToError(Advanced(self).ExportZip(preset, debug, String.New(path), flags)))
 }
 
@@ -194,7 +195,7 @@ func (self Expanded) ExportZip(preset [1]gdclass.EditorExportPreset, debug bool,
 Creates a patch PCK archive at [param path] for the specified [param preset], containing only the files that have changed since the last patch.
 [b]Note:[/b] [param patches] is an optional override of the set of patches defined in the export preset. When empty the patches defined in the export preset will be used instead.
 */
-func (self Instance) ExportPackPatch(preset [1]gdclass.EditorExportPreset, debug bool, path string) error { //gd:EditorExportPlatform.export_pack_patch
+func (self Instance) ExportPackPatch(preset EditorExportPreset.Instance, debug bool, path string) error { //gd:EditorExportPlatform.export_pack_patch
 	return error(gd.ToError(Advanced(self).ExportPackPatch(preset, debug, String.New(path), Packed.MakeStrings([1][]string{}[0]...), 0)))
 }
 
@@ -202,7 +203,7 @@ func (self Instance) ExportPackPatch(preset [1]gdclass.EditorExportPreset, debug
 Creates a patch PCK archive at [param path] for the specified [param preset], containing only the files that have changed since the last patch.
 [b]Note:[/b] [param patches] is an optional override of the set of patches defined in the export preset. When empty the patches defined in the export preset will be used instead.
 */
-func (self Expanded) ExportPackPatch(preset [1]gdclass.EditorExportPreset, debug bool, path string, patches []string, flags gdclass.EditorExportPlatformDebugFlags) error { //gd:EditorExportPlatform.export_pack_patch
+func (self Expanded) ExportPackPatch(preset EditorExportPreset.Instance, debug bool, path string, patches []string, flags gdclass.EditorExportPlatformDebugFlags) error { //gd:EditorExportPlatform.export_pack_patch
 	return error(gd.ToError(Advanced(self).ExportPackPatch(preset, debug, String.New(path), Packed.MakeStrings(patches...), flags)))
 }
 
@@ -210,7 +211,7 @@ func (self Expanded) ExportPackPatch(preset [1]gdclass.EditorExportPreset, debug
 Create a patch ZIP archive at [param path] for the specified [param preset], containing only the files that have changed since the last patch.
 [b]Note:[/b] [param patches] is an optional override of the set of patches defined in the export preset. When empty the patches defined in the export preset will be used instead.
 */
-func (self Instance) ExportZipPatch(preset [1]gdclass.EditorExportPreset, debug bool, path string) error { //gd:EditorExportPlatform.export_zip_patch
+func (self Instance) ExportZipPatch(preset EditorExportPreset.Instance, debug bool, path string) error { //gd:EditorExportPlatform.export_zip_patch
 	return error(gd.ToError(Advanced(self).ExportZipPatch(preset, debug, String.New(path), Packed.MakeStrings([1][]string{}[0]...), 0)))
 }
 
@@ -218,7 +219,7 @@ func (self Instance) ExportZipPatch(preset [1]gdclass.EditorExportPreset, debug 
 Create a patch ZIP archive at [param path] for the specified [param preset], containing only the files that have changed since the last patch.
 [b]Note:[/b] [param patches] is an optional override of the set of patches defined in the export preset. When empty the patches defined in the export preset will be used instead.
 */
-func (self Expanded) ExportZipPatch(preset [1]gdclass.EditorExportPreset, debug bool, path string, patches []string, flags gdclass.EditorExportPlatformDebugFlags) error { //gd:EditorExportPlatform.export_zip_patch
+func (self Expanded) ExportZipPatch(preset EditorExportPreset.Instance, debug bool, path string, patches []string, flags gdclass.EditorExportPlatformDebugFlags) error { //gd:EditorExportPlatform.export_zip_patch
 	return error(gd.ToError(Advanced(self).ExportZipPatch(preset, debug, String.New(path), Packed.MakeStrings(patches...), flags)))
 }
 
@@ -309,7 +310,7 @@ func (self Instance) SshPushToRemote(host string, port string, scp_args []string
 /*
 Returns additional files that should always be exported regardless of preset configuration, and are not part of the project source. The returned [Dictionary] contains filename keys ([String]) and their corresponding raw data ([PackedByteArray]).
 */
-func (self Instance) GetInternalExportFiles(preset [1]gdclass.EditorExportPreset, debug bool) map[string][]uint8 { //gd:EditorExportPlatform.get_internal_export_files
+func (self Instance) GetInternalExportFiles(preset EditorExportPreset.Instance, debug bool) map[string][]uint8 { //gd:EditorExportPlatform.get_internal_export_files
 	return map[string][]uint8(gd.DictionaryAs[map[string][]uint8](Advanced(self).GetInternalExportFiles(preset, debug)))
 }
 

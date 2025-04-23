@@ -15,6 +15,8 @@ import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/OpenXRActionMap"
+import "graphics.gd/classdb/OpenXRBindingModifier"
 import "graphics.gd/classdb/PanelContainer"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -62,14 +64,14 @@ type Any interface {
 /*
 Returns the [OpenXRBindingModifier] currently being edited.
 */
-func (self Instance) GetBindingModifier() [1]gdclass.OpenXRBindingModifier { //gd:OpenXRBindingModifierEditor.get_binding_modifier
-	return [1]gdclass.OpenXRBindingModifier(Advanced(self).GetBindingModifier())
+func (self Instance) GetBindingModifier() OpenXRBindingModifier.Instance { //gd:OpenXRBindingModifierEditor.get_binding_modifier
+	return OpenXRBindingModifier.Instance(Advanced(self).GetBindingModifier())
 }
 
 /*
 Setup this editor for the provided [param action_map] and [param binding_modifier].
 */
-func (self Instance) Setup(action_map [1]gdclass.OpenXRActionMap, binding_modifier [1]gdclass.OpenXRBindingModifier) { //gd:OpenXRBindingModifierEditor.setup
+func (self Instance) Setup(action_map OpenXRActionMap.Instance, binding_modifier OpenXRBindingModifier.Instance) { //gd:OpenXRBindingModifierEditor.setup
 	Advanced(self).Setup(action_map, binding_modifier)
 }
 

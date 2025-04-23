@@ -12,6 +12,27 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/EditorCommandPalette"
+import "graphics.gd/classdb/EditorFileSystem"
+import "graphics.gd/classdb/EditorInspector"
+import "graphics.gd/classdb/EditorPaths"
+import "graphics.gd/classdb/EditorResourcePreview"
+import "graphics.gd/classdb/EditorSelection"
+import "graphics.gd/classdb/EditorSettings"
+import "graphics.gd/classdb/EditorToaster"
+import "graphics.gd/classdb/EditorUndoRedoManager"
+import "graphics.gd/classdb/FileSystemDock"
+import "graphics.gd/classdb/Mesh"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Script"
+import "graphics.gd/classdb/ScriptEditor"
+import "graphics.gd/classdb/SubViewport"
+import "graphics.gd/classdb/Texture2D"
+import "graphics.gd/classdb/Theme"
+import "graphics.gd/classdb/VBoxContainer"
+import "graphics.gd/classdb/Window"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -57,6 +78,8 @@ EditorSettings settings = EditorInterface.Singleton.GetEditorSettings();
 [/csharp]
 [/codeblocks]
 */
+type Instance [1]gdclass.EditorInterface
+
 var self [1]gdclass.EditorInterface
 var once sync.Once
 
@@ -85,73 +108,73 @@ func RestartEditorOptions(save bool) { //gd:EditorInterface.restart_editor
 Returns the editor's [EditorCommandPalette] instance.
 [b]Warning:[/b] Removing and freeing this node will render a part of the editor useless and may cause a crash.
 */
-func GetCommandPalette() [1]gdclass.EditorCommandPalette { //gd:EditorInterface.get_command_palette
+func GetCommandPalette() EditorCommandPalette.Instance { //gd:EditorInterface.get_command_palette
 	once.Do(singleton)
-	return [1]gdclass.EditorCommandPalette(Advanced().GetCommandPalette())
+	return EditorCommandPalette.Instance(Advanced().GetCommandPalette())
 }
 
 /*
 Returns the editor's [EditorFileSystem] instance.
 */
-func GetResourceFilesystem() [1]gdclass.EditorFileSystem { //gd:EditorInterface.get_resource_filesystem
+func GetResourceFilesystem() EditorFileSystem.Instance { //gd:EditorInterface.get_resource_filesystem
 	once.Do(singleton)
-	return [1]gdclass.EditorFileSystem(Advanced().GetResourceFilesystem())
+	return EditorFileSystem.Instance(Advanced().GetResourceFilesystem())
 }
 
 /*
 Returns the [EditorPaths] singleton.
 */
-func GetEditorPaths() [1]gdclass.EditorPaths { //gd:EditorInterface.get_editor_paths
+func GetEditorPaths() EditorPaths.Instance { //gd:EditorInterface.get_editor_paths
 	once.Do(singleton)
-	return [1]gdclass.EditorPaths(Advanced().GetEditorPaths())
+	return EditorPaths.Instance(Advanced().GetEditorPaths())
 }
 
 /*
 Returns the editor's [EditorResourcePreview] instance.
 */
-func GetResourcePreviewer() [1]gdclass.EditorResourcePreview { //gd:EditorInterface.get_resource_previewer
+func GetResourcePreviewer() EditorResourcePreview.Instance { //gd:EditorInterface.get_resource_previewer
 	once.Do(singleton)
-	return [1]gdclass.EditorResourcePreview(Advanced().GetResourcePreviewer())
+	return EditorResourcePreview.Instance(Advanced().GetResourcePreviewer())
 }
 
 /*
 Returns the editor's [EditorSelection] instance.
 */
-func GetSelection() [1]gdclass.EditorSelection { //gd:EditorInterface.get_selection
+func GetSelection() EditorSelection.Instance { //gd:EditorInterface.get_selection
 	once.Do(singleton)
-	return [1]gdclass.EditorSelection(Advanced().GetSelection())
+	return EditorSelection.Instance(Advanced().GetSelection())
 }
 
 /*
 Returns the editor's [EditorSettings] instance.
 */
-func GetEditorSettings() [1]gdclass.EditorSettings { //gd:EditorInterface.get_editor_settings
+func GetEditorSettings() EditorSettings.Instance { //gd:EditorInterface.get_editor_settings
 	once.Do(singleton)
-	return [1]gdclass.EditorSettings(Advanced().GetEditorSettings())
+	return EditorSettings.Instance(Advanced().GetEditorSettings())
 }
 
 /*
 Returns the editor's [EditorToaster].
 */
-func GetEditorToaster() [1]gdclass.EditorToaster { //gd:EditorInterface.get_editor_toaster
+func GetEditorToaster() EditorToaster.Instance { //gd:EditorInterface.get_editor_toaster
 	once.Do(singleton)
-	return [1]gdclass.EditorToaster(Advanced().GetEditorToaster())
+	return EditorToaster.Instance(Advanced().GetEditorToaster())
 }
 
 /*
 Returns the editor's [EditorUndoRedoManager].
 */
-func GetEditorUndoRedo() [1]gdclass.EditorUndoRedoManager { //gd:EditorInterface.get_editor_undo_redo
+func GetEditorUndoRedo() EditorUndoRedoManager.Instance { //gd:EditorInterface.get_editor_undo_redo
 	once.Do(singleton)
-	return [1]gdclass.EditorUndoRedoManager(Advanced().GetEditorUndoRedo())
+	return EditorUndoRedoManager.Instance(Advanced().GetEditorUndoRedo())
 }
 
 /*
 Returns mesh previews rendered at the given size as an [Array] of [Texture2D]s.
 */
-func MakeMeshPreviews(meshes [][1]gdclass.Mesh, preview_size int) [][1]gdclass.Texture2D { //gd:EditorInterface.make_mesh_previews
+func MakeMeshPreviews(meshes []Mesh.Instance, preview_size int) []Texture2D.Instance { //gd:EditorInterface.make_mesh_previews
 	once.Do(singleton)
-	return [][1]gdclass.Texture2D(gd.ArrayAs[[][1]gdclass.Texture2D](gd.InternalArray(Advanced().MakeMeshPreviews(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Mesh]](meshes), int64(preview_size)))))
+	return []Texture2D.Instance(gd.ArrayAs[[]Texture2D.Instance](gd.InternalArray(Advanced().MakeMeshPreviews(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Mesh]](meshes), int64(preview_size)))))
 }
 
 /*
@@ -174,18 +197,18 @@ func IsPluginEnabled(plugin string) bool { //gd:EditorInterface.is_plugin_enable
 Returns the editor's [Theme].
 [b]Note:[/b] When creating custom editor UI, prefer accessing theme items directly from your GUI nodes using the [code]get_theme_*[/code] methods.
 */
-func GetEditorTheme() [1]gdclass.Theme { //gd:EditorInterface.get_editor_theme
+func GetEditorTheme() Theme.Instance { //gd:EditorInterface.get_editor_theme
 	once.Do(singleton)
-	return [1]gdclass.Theme(Advanced().GetEditorTheme())
+	return Theme.Instance(Advanced().GetEditorTheme())
 }
 
 /*
 Returns the main container of Godot editor's window. For example, you can use it to retrieve the size of the container and place your controls accordingly.
 [b]Warning:[/b] Removing and freeing this node will render the editor useless and may cause a crash.
 */
-func GetBaseControl() [1]gdclass.Control { //gd:EditorInterface.get_base_control
+func GetBaseControl() Control.Instance { //gd:EditorInterface.get_base_control
 	once.Do(singleton)
-	return [1]gdclass.Control(Advanced().GetBaseControl())
+	return Control.Instance(Advanced().GetBaseControl())
 }
 
 /*
@@ -193,42 +216,42 @@ Returns the editor control responsible for main screen plugins and tools. Use it
 [b]Note:[/b] This node is a [VBoxContainer], which means that if you add a [Control] child to it, you need to set the child's [member Control.size_flags_vertical] to [constant Control.SIZE_EXPAND_FILL] to make it use the full available space.
 [b]Warning:[/b] Removing and freeing this node will render a part of the editor useless and may cause a crash.
 */
-func GetEditorMainScreen() [1]gdclass.VBoxContainer { //gd:EditorInterface.get_editor_main_screen
+func GetEditorMainScreen() VBoxContainer.Instance { //gd:EditorInterface.get_editor_main_screen
 	once.Do(singleton)
-	return [1]gdclass.VBoxContainer(Advanced().GetEditorMainScreen())
+	return VBoxContainer.Instance(Advanced().GetEditorMainScreen())
 }
 
 /*
 Returns the editor's [ScriptEditor] instance.
 [b]Warning:[/b] Removing and freeing this node will render a part of the editor useless and may cause a crash.
 */
-func GetScriptEditor() [1]gdclass.ScriptEditor { //gd:EditorInterface.get_script_editor
+func GetScriptEditor() ScriptEditor.Instance { //gd:EditorInterface.get_script_editor
 	once.Do(singleton)
-	return [1]gdclass.ScriptEditor(Advanced().GetScriptEditor())
+	return ScriptEditor.Instance(Advanced().GetScriptEditor())
 }
 
 /*
 Returns the 2D editor [SubViewport]. It does not have a camera. Instead, the view transforms are done directly and can be accessed with [member Viewport.global_canvas_transform].
 */
-func GetEditorViewport2d() [1]gdclass.SubViewport { //gd:EditorInterface.get_editor_viewport_2d
+func GetEditorViewport2d() SubViewport.Instance { //gd:EditorInterface.get_editor_viewport_2d
 	once.Do(singleton)
-	return [1]gdclass.SubViewport(Advanced().GetEditorViewport2d())
+	return SubViewport.Instance(Advanced().GetEditorViewport2d())
 }
 
 /*
 Returns the specified 3D editor [SubViewport], from [code]0[/code] to [code]3[/code]. The viewport can be used to access the active editor cameras with [method Viewport.get_camera_3d].
 */
-func GetEditorViewport3d(idx int) [1]gdclass.SubViewport { //gd:EditorInterface.get_editor_viewport_3d
+func GetEditorViewport3d(idx int) SubViewport.Instance { //gd:EditorInterface.get_editor_viewport_3d
 	once.Do(singleton)
-	return [1]gdclass.SubViewport(Advanced().GetEditorViewport3d(int64(idx)))
+	return SubViewport.Instance(Advanced().GetEditorViewport3d(int64(idx)))
 }
 
 /*
 Returns the specified 3D editor [SubViewport], from [code]0[/code] to [code]3[/code]. The viewport can be used to access the active editor cameras with [method Viewport.get_camera_3d].
 */
-func GetEditorViewport3dOptions(idx int) [1]gdclass.SubViewport { //gd:EditorInterface.get_editor_viewport_3d
+func GetEditorViewport3dOptions(idx int) SubViewport.Instance { //gd:EditorInterface.get_editor_viewport_3d
 	once.Do(singleton)
-	return [1]gdclass.SubViewport(Advanced().GetEditorViewport3d(int64(idx)))
+	return SubViewport.Instance(Advanced().GetEditorViewport3d(int64(idx)))
 }
 
 /*
@@ -263,7 +286,7 @@ func GetEditorScale() Float.X { //gd:EditorInterface.get_editor_scale
 Pops up the [param dialog] in the editor UI with [method Window.popup_exclusive]. The dialog must have no current parent, otherwise the method fails.
 See also [method Window.set_unparent_when_invisible].
 */
-func PopupDialog(dialog [1]gdclass.Window, rect Rect2i.PositionSize) { //gd:EditorInterface.popup_dialog
+func PopupDialog(dialog Window.Instance, rect Rect2i.PositionSize) { //gd:EditorInterface.popup_dialog
 	once.Do(singleton)
 	Advanced().PopupDialog(dialog, Rect2i.PositionSize(rect))
 }
@@ -272,7 +295,7 @@ func PopupDialog(dialog [1]gdclass.Window, rect Rect2i.PositionSize) { //gd:Edit
 Pops up the [param dialog] in the editor UI with [method Window.popup_exclusive]. The dialog must have no current parent, otherwise the method fails.
 See also [method Window.set_unparent_when_invisible].
 */
-func PopupDialogOptions(dialog [1]gdclass.Window, rect Rect2i.PositionSize) { //gd:EditorInterface.popup_dialog
+func PopupDialogOptions(dialog Window.Instance, rect Rect2i.PositionSize) { //gd:EditorInterface.popup_dialog
 	once.Do(singleton)
 	Advanced().PopupDialog(dialog, Rect2i.PositionSize(rect))
 }
@@ -281,7 +304,7 @@ func PopupDialogOptions(dialog [1]gdclass.Window, rect Rect2i.PositionSize) { //
 Pops up the [param dialog] in the editor UI with [method Window.popup_exclusive_centered]. The dialog must have no current parent, otherwise the method fails.
 See also [method Window.set_unparent_when_invisible].
 */
-func PopupDialogCentered(dialog [1]gdclass.Window, minsize Vector2i.XY) { //gd:EditorInterface.popup_dialog_centered
+func PopupDialogCentered(dialog Window.Instance, minsize Vector2i.XY) { //gd:EditorInterface.popup_dialog_centered
 	once.Do(singleton)
 	Advanced().PopupDialogCentered(dialog, Vector2i.XY(minsize))
 }
@@ -290,7 +313,7 @@ func PopupDialogCentered(dialog [1]gdclass.Window, minsize Vector2i.XY) { //gd:E
 Pops up the [param dialog] in the editor UI with [method Window.popup_exclusive_centered]. The dialog must have no current parent, otherwise the method fails.
 See also [method Window.set_unparent_when_invisible].
 */
-func PopupDialogCenteredOptions(dialog [1]gdclass.Window, minsize Vector2i.XY) { //gd:EditorInterface.popup_dialog_centered
+func PopupDialogCenteredOptions(dialog Window.Instance, minsize Vector2i.XY) { //gd:EditorInterface.popup_dialog_centered
 	once.Do(singleton)
 	Advanced().PopupDialogCentered(dialog, Vector2i.XY(minsize))
 }
@@ -299,7 +322,7 @@ func PopupDialogCenteredOptions(dialog [1]gdclass.Window, minsize Vector2i.XY) {
 Pops up the [param dialog] in the editor UI with [method Window.popup_exclusive_centered_ratio]. The dialog must have no current parent, otherwise the method fails.
 See also [method Window.set_unparent_when_invisible].
 */
-func PopupDialogCenteredRatio(dialog [1]gdclass.Window) { //gd:EditorInterface.popup_dialog_centered_ratio
+func PopupDialogCenteredRatio(dialog Window.Instance) { //gd:EditorInterface.popup_dialog_centered_ratio
 	once.Do(singleton)
 	Advanced().PopupDialogCenteredRatio(dialog, float64(0.8))
 }
@@ -308,7 +331,7 @@ func PopupDialogCenteredRatio(dialog [1]gdclass.Window) { //gd:EditorInterface.p
 Pops up the [param dialog] in the editor UI with [method Window.popup_exclusive_centered_ratio]. The dialog must have no current parent, otherwise the method fails.
 See also [method Window.set_unparent_when_invisible].
 */
-func PopupDialogCenteredRatioOptions(dialog [1]gdclass.Window, ratio Float.X) { //gd:EditorInterface.popup_dialog_centered_ratio
+func PopupDialogCenteredRatioOptions(dialog Window.Instance, ratio Float.X) { //gd:EditorInterface.popup_dialog_centered_ratio
 	once.Do(singleton)
 	Advanced().PopupDialogCenteredRatio(dialog, float64(ratio))
 }
@@ -317,7 +340,7 @@ func PopupDialogCenteredRatioOptions(dialog [1]gdclass.Window, ratio Float.X) { 
 Pops up the [param dialog] in the editor UI with [method Window.popup_exclusive_centered_clamped]. The dialog must have no current parent, otherwise the method fails.
 See also [method Window.set_unparent_when_invisible].
 */
-func PopupDialogCenteredClamped(dialog [1]gdclass.Window, minsize Vector2i.XY) { //gd:EditorInterface.popup_dialog_centered_clamped
+func PopupDialogCenteredClamped(dialog Window.Instance, minsize Vector2i.XY) { //gd:EditorInterface.popup_dialog_centered_clamped
 	once.Do(singleton)
 	Advanced().PopupDialogCenteredClamped(dialog, Vector2i.XY(minsize), float64(0.75))
 }
@@ -326,7 +349,7 @@ func PopupDialogCenteredClamped(dialog [1]gdclass.Window, minsize Vector2i.XY) {
 Pops up the [param dialog] in the editor UI with [method Window.popup_exclusive_centered_clamped]. The dialog must have no current parent, otherwise the method fails.
 See also [method Window.set_unparent_when_invisible].
 */
-func PopupDialogCenteredClampedOptions(dialog [1]gdclass.Window, minsize Vector2i.XY, fallback_ratio Float.X) { //gd:EditorInterface.popup_dialog_centered_clamped
+func PopupDialogCenteredClampedOptions(dialog Window.Instance, minsize Vector2i.XY, fallback_ratio Float.X) { //gd:EditorInterface.popup_dialog_centered_clamped
 	once.Do(singleton)
 	Advanced().PopupDialogCenteredClamped(dialog, Vector2i.XY(minsize), float64(fallback_ratio))
 }
@@ -369,7 +392,7 @@ func _on_node_selected(node_path):
 
 [/codeblock]
 */
-func PopupNodeSelector(callback func(selected string), valid_types []string, current_value [1]gdclass.Node) { //gd:EditorInterface.popup_node_selector
+func PopupNodeSelector(callback func(selected string), valid_types []string, current_value Node.Instance) { //gd:EditorInterface.popup_node_selector
 	once.Do(singleton)
 	Advanced().PopupNodeSelector(Callable.New(callback), gd.ArrayFromSlice[Array.Contains[String.Name]](valid_types), current_value)
 }
@@ -392,7 +415,7 @@ func _on_node_selected(node_path):
 
 [/codeblock]
 */
-func PopupNodeSelectorOptions(callback func(selected string), valid_types []string, current_value [1]gdclass.Node) { //gd:EditorInterface.popup_node_selector
+func PopupNodeSelectorOptions(callback func(selected string), valid_types []string, current_value Node.Instance) { //gd:EditorInterface.popup_node_selector
 	once.Do(singleton)
 	Advanced().PopupNodeSelector(Callable.New(callback), gd.ArrayFromSlice[Array.Contains[String.Name]](valid_types), current_value)
 }
@@ -505,9 +528,9 @@ func PopupCreateDialogOptions(callback func(selected string), base_type string, 
 Returns the editor's [FileSystemDock] instance.
 [b]Warning:[/b] Removing and freeing this node will render a part of the editor useless and may cause a crash.
 */
-func GetFileSystemDock() [1]gdclass.FileSystemDock { //gd:EditorInterface.get_file_system_dock
+func GetFileSystemDock() FileSystemDock.Instance { //gd:EditorInterface.get_file_system_dock
 	once.Do(singleton)
-	return [1]gdclass.FileSystemDock(Advanced().GetFileSystemDock())
+	return FileSystemDock.Instance(Advanced().GetFileSystemDock())
 }
 
 /*
@@ -546,9 +569,9 @@ func GetCurrentDirectory() string { //gd:EditorInterface.get_current_directory
 Returns the editor's [EditorInspector] instance.
 [b]Warning:[/b] Removing and freeing this node will render a part of the editor useless and may cause a crash.
 */
-func GetInspector() [1]gdclass.EditorInspector { //gd:EditorInterface.get_inspector
+func GetInspector() EditorInspector.Instance { //gd:EditorInterface.get_inspector
 	once.Do(singleton)
-	return [1]gdclass.EditorInspector(Advanced().GetInspector())
+	return EditorInspector.Instance(Advanced().GetInspector())
 }
 
 /*
@@ -570,7 +593,7 @@ func InspectObjectOptions(obj Object.Instance, for_property string, inspector_on
 /*
 Edits the given [Resource]. If the resource is a [Script] you can also edit it with [method edit_script] to specify the line and column position.
 */
-func EditResource(resource [1]gdclass.Resource) { //gd:EditorInterface.edit_resource
+func EditResource(resource Resource.Instance) { //gd:EditorInterface.edit_resource
 	once.Do(singleton)
 	Advanced().EditResource(resource)
 }
@@ -578,7 +601,7 @@ func EditResource(resource [1]gdclass.Resource) { //gd:EditorInterface.edit_reso
 /*
 Edits the given [Node]. The node will be also selected if it's inside the scene tree.
 */
-func EditNode(node [1]gdclass.Node) { //gd:EditorInterface.edit_node
+func EditNode(node Node.Instance) { //gd:EditorInterface.edit_node
 	once.Do(singleton)
 	Advanced().EditNode(node)
 }
@@ -586,7 +609,7 @@ func EditNode(node [1]gdclass.Node) { //gd:EditorInterface.edit_node
 /*
 Edits the given [Script]. The line and column on which to open the script can also be specified. The script will be open with the user-configured editor for the script's language which may be an external editor.
 */
-func EditScript(script [1]gdclass.Script, column int) { //gd:EditorInterface.edit_script
+func EditScript(script Script.Instance, column int) { //gd:EditorInterface.edit_script
 	once.Do(singleton)
 	Advanced().EditScript(script, int64(-1), int64(column), true)
 }
@@ -594,7 +617,7 @@ func EditScript(script [1]gdclass.Script, column int) { //gd:EditorInterface.edi
 /*
 Edits the given [Script]. The line and column on which to open the script can also be specified. The script will be open with the user-configured editor for the script's language which may be an external editor.
 */
-func EditScriptOptions(script [1]gdclass.Script, line int, column int, grab_focus bool) { //gd:EditorInterface.edit_script
+func EditScriptOptions(script Script.Instance, line int, column int, grab_focus bool) { //gd:EditorInterface.edit_script
 	once.Do(singleton)
 	Advanced().EditScript(script, int64(line), int64(column), grab_focus)
 }
@@ -634,9 +657,9 @@ func GetOpenScenes() []string { //gd:EditorInterface.get_open_scenes
 /*
 Returns the edited (current) scene's root [Node].
 */
-func GetEditedSceneRoot() [1]gdclass.Node { //gd:EditorInterface.get_edited_scene_root
+func GetEditedSceneRoot() Node.Instance { //gd:EditorInterface.get_edited_scene_root
 	once.Do(singleton)
-	return [1]gdclass.Node(Advanced().GetEditedSceneRoot())
+	return Node.Instance(Advanced().GetEditedSceneRoot())
 }
 
 /*

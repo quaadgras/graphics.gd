@@ -73,8 +73,8 @@ func (self Instance) GetJavaMethodList() []PropertyInfo { //gd:JavaClass.get_jav
 /*
 Returns a [JavaClass] representing the Java parent class of this class.
 */
-func (self Instance) GetJavaParentClass() [1]gdclass.JavaClass { //gd:JavaClass.get_java_parent_class
-	return [1]gdclass.JavaClass(Advanced(self).GetJavaParentClass())
+func (self Instance) GetJavaParentClass() Instance { //gd:JavaClass.get_java_parent_class
+	return Instance(Advanced(self).GetJavaParentClass())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/BaseButton"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -59,15 +60,21 @@ type Any interface {
 /*
 Returns the current pressed button.
 */
-func (self Instance) GetPressedButton() [1]gdclass.BaseButton { //gd:ButtonGroup.get_pressed_button
-	return [1]gdclass.BaseButton(Advanced(self).GetPressedButton())
+func (self Instance) GetPressedButton() BaseButton.Instance { //gd:ButtonGroup.get_pressed_button
+	return BaseButton.Instance(Advanced(self).GetPressedButton())
 }
 
 /*
 Returns an [Array] of [Button]s who have this as their [ButtonGroup] (see [member BaseButton.button_group]).
 */
-func (self Instance) GetButtons() [][1]gdclass.BaseButton { //gd:ButtonGroup.get_buttons
-	return [][1]gdclass.BaseButton(gd.ArrayAs[[][1]gdclass.BaseButton](gd.InternalArray(Advanced(self).GetButtons())))
+func (self Instance) GetButtons() []BaseButton.Instance { //gd:ButtonGroup.get_buttons
+	return []BaseButton.Instance(gd.ArrayAs[[]BaseButton.Instance](gd.InternalArray(Advanced(self).GetButtons())))
+}
+func Get(peer BaseButton.Instance) Instance { //gd:BaseButton.get_button_group
+	return Instance(BaseButton.Advanced(peer).GetButtonGroup())
+}
+func (self Instance) Set(peer BaseButton.Instance) { //gd:BaseButton.set_button_group
+	BaseButton.Advanced(peer).SetButtonGroup(self)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -141,7 +148,7 @@ func (self class) IsAllowUnpress() bool { //gd:ButtonGroup.is_allow_unpress
 	frame.Free()
 	return ret
 }
-func (self Instance) OnPressed(cb func(button [1]gdclass.BaseButton)) {
+func (self Instance) OnPressed(cb func(button BaseButton.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("pressed"), gd.NewCallable(cb), 0)
 }
 

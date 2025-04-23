@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/Font"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -261,29 +263,29 @@ func (self Instance) GetSuffix(column int) string { //gd:TreeItem.get_suffix
 /*
 Sets the given cell's icon [Texture2D]. If the cell is in [constant CELL_MODE_ICON] mode, the icon is displayed in the center of the cell. Otherwise, the icon is displayed before the cell's text. [constant CELL_MODE_RANGE] does not display an icon.
 */
-func (self Instance) SetIcon(column int, texture [1]gdclass.Texture2D) { //gd:TreeItem.set_icon
+func (self Instance) SetIcon(column int, texture Texture2D.Instance) { //gd:TreeItem.set_icon
 	Advanced(self).SetIcon(int64(column), texture)
 }
 
 /*
 Returns the given column's icon [Texture2D]. Error if no icon is set.
 */
-func (self Instance) GetIcon(column int) [1]gdclass.Texture2D { //gd:TreeItem.get_icon
-	return [1]gdclass.Texture2D(Advanced(self).GetIcon(int64(column)))
+func (self Instance) GetIcon(column int) Texture2D.Instance { //gd:TreeItem.get_icon
+	return Texture2D.Instance(Advanced(self).GetIcon(int64(column)))
 }
 
 /*
 Sets the given cell's icon overlay [Texture2D]. The cell has to be in [constant CELL_MODE_ICON] mode, and icon has to be set. Overlay is drawn on top of icon, in the bottom left corner.
 */
-func (self Instance) SetIconOverlay(column int, texture [1]gdclass.Texture2D) { //gd:TreeItem.set_icon_overlay
+func (self Instance) SetIconOverlay(column int, texture Texture2D.Instance) { //gd:TreeItem.set_icon_overlay
 	Advanced(self).SetIconOverlay(int64(column), texture)
 }
 
 /*
 Returns the given column's icon overlay [Texture2D].
 */
-func (self Instance) GetIconOverlay(column int) [1]gdclass.Texture2D { //gd:TreeItem.get_icon_overlay
-	return [1]gdclass.Texture2D(Advanced(self).GetIconOverlay(int64(column)))
+func (self Instance) GetIconOverlay(column int) Texture2D.Instance { //gd:TreeItem.get_icon_overlay
+	return Texture2D.Instance(Advanced(self).GetIconOverlay(int64(column)))
 }
 
 /*
@@ -391,7 +393,7 @@ func (self Instance) SetCustomDraw(column int, obj Object.Instance, callback str
 Sets the given column's custom draw callback. Use an empty [Callable] ([code skip-lint]Callable()[/code]) to clear the custom callback. The cell has to be in [constant CELL_MODE_CUSTOM] to use this feature.
 The [param callback] should accept two arguments: the [TreeItem] that is drawn and its position and size as a [Rect2].
 */
-func (self Instance) SetCustomDrawCallback(column int, callback func(item [1]gdclass.TreeItem, rect Rect2.PositionSize)) { //gd:TreeItem.set_custom_draw_callback
+func (self Instance) SetCustomDrawCallback(column int, callback func(item Instance, rect Rect2.PositionSize)) { //gd:TreeItem.set_custom_draw_callback
 	Advanced(self).SetCustomDrawCallback(int64(column), Callable.New(callback))
 }
 
@@ -512,15 +514,15 @@ func (self Instance) ClearCustomColor(column int) { //gd:TreeItem.clear_custom_c
 /*
 Sets custom font used to draw text in the given [param column].
 */
-func (self Instance) SetCustomFont(column int, font [1]gdclass.Font) { //gd:TreeItem.set_custom_font
+func (self Instance) SetCustomFont(column int, font Font.Instance) { //gd:TreeItem.set_custom_font
 	Advanced(self).SetCustomFont(int64(column), font)
 }
 
 /*
 Returns custom font used to draw text in the column [param column].
 */
-func (self Instance) GetCustomFont(column int) [1]gdclass.Font { //gd:TreeItem.get_custom_font
-	return [1]gdclass.Font(Advanced(self).GetCustomFont(int64(column)))
+func (self Instance) GetCustomFont(column int) Font.Instance { //gd:TreeItem.get_custom_font
+	return Font.Instance(Advanced(self).GetCustomFont(int64(column)))
 }
 
 /*
@@ -589,14 +591,14 @@ func (self Instance) ClearButtons() { //gd:TreeItem.clear_buttons
 /*
 Adds a button with [Texture2D] [param button] to the end of the cell at column [param column]. The [param id] is used to identify the button in the according [signal Tree.button_clicked] signal and can be different from the buttons index. If not specified, the next available index is used, which may be retrieved by calling [method get_button_count] immediately before this method. Optionally, the button can be [param disabled] and have a [param tooltip_text].
 */
-func (self Instance) AddButton(column int, button [1]gdclass.Texture2D) { //gd:TreeItem.add_button
+func (self Instance) AddButton(column int, button Texture2D.Instance) { //gd:TreeItem.add_button
 	Advanced(self).AddButton(int64(column), button, int64(-1), false, String.New(""))
 }
 
 /*
 Adds a button with [Texture2D] [param button] to the end of the cell at column [param column]. The [param id] is used to identify the button in the according [signal Tree.button_clicked] signal and can be different from the buttons index. If not specified, the next available index is used, which may be retrieved by calling [method get_button_count] immediately before this method. Optionally, the button can be [param disabled] and have a [param tooltip_text].
 */
-func (self Expanded) AddButton(column int, button [1]gdclass.Texture2D, id int, disabled bool, tooltip_text string) { //gd:TreeItem.add_button
+func (self Expanded) AddButton(column int, button Texture2D.Instance, id int, disabled bool, tooltip_text string) { //gd:TreeItem.add_button
 	Advanced(self).AddButton(int64(column), button, int64(id), disabled, String.New(tooltip_text))
 }
 
@@ -638,8 +640,8 @@ func (self Instance) GetButtonColor(column int, id int) Color.RGBA { //gd:TreeIt
 /*
 Returns the [Texture2D] of the button at index [param button_index] in column [param column].
 */
-func (self Instance) GetButton(column int, button_index int) [1]gdclass.Texture2D { //gd:TreeItem.get_button
-	return [1]gdclass.Texture2D(Advanced(self).GetButton(int64(column), int64(button_index)))
+func (self Instance) GetButton(column int, button_index int) Texture2D.Instance { //gd:TreeItem.get_button
+	return Texture2D.Instance(Advanced(self).GetButton(int64(column), int64(button_index)))
 }
 
 /*
@@ -652,7 +654,7 @@ func (self Instance) SetButtonTooltipText(column int, button_index int, tooltip 
 /*
 Sets the given column's button [Texture2D] at index [param button_index] to [param button].
 */
-func (self Instance) SetButton(column int, button_index int, button [1]gdclass.Texture2D) { //gd:TreeItem.set_button
+func (self Instance) SetButton(column int, button_index int, button Texture2D.Instance) { //gd:TreeItem.set_button
 	Advanced(self).SetButton(int64(column), int64(button_index), button)
 }
 
@@ -730,22 +732,22 @@ func (self Instance) GetExpandRight(column int) bool { //gd:TreeItem.get_expand_
 Creates an item and adds it as a child.
 The new item will be inserted as position [param index] (the default value [code]-1[/code] means the last position), or it will be the last child if [param index] is higher than the child count.
 */
-func (self Instance) CreateChild() [1]gdclass.TreeItem { //gd:TreeItem.create_child
-	return [1]gdclass.TreeItem(Advanced(self).CreateChild(int64(-1)))
+func (self Instance) CreateChild() Instance { //gd:TreeItem.create_child
+	return Instance(Advanced(self).CreateChild(int64(-1)))
 }
 
 /*
 Creates an item and adds it as a child.
 The new item will be inserted as position [param index] (the default value [code]-1[/code] means the last position), or it will be the last child if [param index] is higher than the child count.
 */
-func (self Expanded) CreateChild(index int) [1]gdclass.TreeItem { //gd:TreeItem.create_child
-	return [1]gdclass.TreeItem(Advanced(self).CreateChild(int64(index)))
+func (self Expanded) CreateChild(index int) Instance { //gd:TreeItem.create_child
+	return Instance(Advanced(self).CreateChild(int64(index)))
 }
 
 /*
 Adds a previously unparented [TreeItem] as a direct child of this one. The [param child] item must not be a part of any [Tree] or parented to any [TreeItem]. See also [method remove_child].
 */
-func (self Instance) AddChild(child [1]gdclass.TreeItem) { //gd:TreeItem.add_child
+func (self Instance) AddChild(child Instance) { //gd:TreeItem.add_child
 	Advanced(self).AddChild(child)
 }
 
@@ -753,115 +755,108 @@ func (self Instance) AddChild(child [1]gdclass.TreeItem) { //gd:TreeItem.add_chi
 Removes the given child [TreeItem] and all its children from the [Tree]. Note that it doesn't free the item from memory, so it can be reused later (see [method add_child]). To completely remove a [TreeItem] use [method Object.free].
 [b]Note:[/b] If you want to move a child from one [Tree] to another, then instead of removing and adding it manually you can use [method move_before] or [method move_after].
 */
-func (self Instance) RemoveChild(child [1]gdclass.TreeItem) { //gd:TreeItem.remove_child
+func (self Instance) RemoveChild(child Instance) { //gd:TreeItem.remove_child
 	Advanced(self).RemoveChild(child)
-}
-
-/*
-Returns the [Tree] that owns this TreeItem.
-*/
-func (self Instance) GetTree() [1]gdclass.Tree { //gd:TreeItem.get_tree
-	return [1]gdclass.Tree(Advanced(self).GetTree())
 }
 
 /*
 Returns the next sibling TreeItem in the tree or a [code]null[/code] object if there is none.
 */
-func (self Instance) GetNext() [1]gdclass.TreeItem { //gd:TreeItem.get_next
-	return [1]gdclass.TreeItem(Advanced(self).GetNext())
+func (self Instance) GetNext() Instance { //gd:TreeItem.get_next
+	return Instance(Advanced(self).GetNext())
 }
 
 /*
 Returns the previous sibling TreeItem in the tree or a [code]null[/code] object if there is none.
 */
-func (self Instance) GetPrev() [1]gdclass.TreeItem { //gd:TreeItem.get_prev
-	return [1]gdclass.TreeItem(Advanced(self).GetPrev())
+func (self Instance) GetPrev() Instance { //gd:TreeItem.get_prev
+	return Instance(Advanced(self).GetPrev())
 }
 
 /*
 Returns the parent TreeItem or a [code]null[/code] object if there is none.
 */
-func (self Instance) GetParent() [1]gdclass.TreeItem { //gd:TreeItem.get_parent
-	return [1]gdclass.TreeItem(Advanced(self).GetParent())
+func (self Instance) GetParent() Instance { //gd:TreeItem.get_parent
+	return Instance(Advanced(self).GetParent())
 }
 
 /*
 Returns the TreeItem's first child.
 */
-func (self Instance) GetFirstChild() [1]gdclass.TreeItem { //gd:TreeItem.get_first_child
-	return [1]gdclass.TreeItem(Advanced(self).GetFirstChild())
+func (self Instance) GetFirstChild() Instance { //gd:TreeItem.get_first_child
+	return Instance(Advanced(self).GetFirstChild())
 }
 
 /*
 Returns the next TreeItem in the tree (in the context of a depth-first search) or a [code]null[/code] object if there is none.
 If [param wrap] is enabled, the method will wrap around to the first element in the tree when called on the last element, otherwise it returns [code]null[/code].
 */
-func (self Instance) GetNextInTree() [1]gdclass.TreeItem { //gd:TreeItem.get_next_in_tree
-	return [1]gdclass.TreeItem(Advanced(self).GetNextInTree(false))
+func (self Instance) GetNextInTree() Instance { //gd:TreeItem.get_next_in_tree
+	return Instance(Advanced(self).GetNextInTree(false))
 }
 
 /*
 Returns the next TreeItem in the tree (in the context of a depth-first search) or a [code]null[/code] object if there is none.
 If [param wrap] is enabled, the method will wrap around to the first element in the tree when called on the last element, otherwise it returns [code]null[/code].
 */
-func (self Expanded) GetNextInTree(wrap bool) [1]gdclass.TreeItem { //gd:TreeItem.get_next_in_tree
-	return [1]gdclass.TreeItem(Advanced(self).GetNextInTree(wrap))
+func (self Expanded) GetNextInTree(wrap bool) Instance { //gd:TreeItem.get_next_in_tree
+	return Instance(Advanced(self).GetNextInTree(wrap))
 }
 
 /*
 Returns the previous TreeItem in the tree (in the context of a depth-first search) or a [code]null[/code] object if there is none.
 If [param wrap] is enabled, the method will wrap around to the last element in the tree when called on the first visible element, otherwise it returns [code]null[/code].
 */
-func (self Instance) GetPrevInTree() [1]gdclass.TreeItem { //gd:TreeItem.get_prev_in_tree
-	return [1]gdclass.TreeItem(Advanced(self).GetPrevInTree(false))
+func (self Instance) GetPrevInTree() Instance { //gd:TreeItem.get_prev_in_tree
+	return Instance(Advanced(self).GetPrevInTree(false))
 }
 
 /*
 Returns the previous TreeItem in the tree (in the context of a depth-first search) or a [code]null[/code] object if there is none.
 If [param wrap] is enabled, the method will wrap around to the last element in the tree when called on the first visible element, otherwise it returns [code]null[/code].
 */
-func (self Expanded) GetPrevInTree(wrap bool) [1]gdclass.TreeItem { //gd:TreeItem.get_prev_in_tree
-	return [1]gdclass.TreeItem(Advanced(self).GetPrevInTree(wrap))
+func (self Expanded) GetPrevInTree(wrap bool) Instance { //gd:TreeItem.get_prev_in_tree
+	return Instance(Advanced(self).GetPrevInTree(wrap))
 }
 
 /*
 Returns the next visible TreeItem in the tree (in the context of a depth-first search) or a [code]null[/code] object if there is none.
 If [param wrap] is enabled, the method will wrap around to the first visible element in the tree when called on the last visible element, otherwise it returns [code]null[/code].
 */
-func (self Instance) GetNextVisible() [1]gdclass.TreeItem { //gd:TreeItem.get_next_visible
-	return [1]gdclass.TreeItem(Advanced(self).GetNextVisible(false))
+func (self Instance) GetNextVisible() Instance { //gd:TreeItem.get_next_visible
+	return Instance(Advanced(self).GetNextVisible(false))
 }
 
 /*
 Returns the next visible TreeItem in the tree (in the context of a depth-first search) or a [code]null[/code] object if there is none.
 If [param wrap] is enabled, the method will wrap around to the first visible element in the tree when called on the last visible element, otherwise it returns [code]null[/code].
 */
-func (self Expanded) GetNextVisible(wrap bool) [1]gdclass.TreeItem { //gd:TreeItem.get_next_visible
-	return [1]gdclass.TreeItem(Advanced(self).GetNextVisible(wrap))
+func (self Expanded) GetNextVisible(wrap bool) Instance { //gd:TreeItem.get_next_visible
+	return Instance(Advanced(self).GetNextVisible(wrap))
 }
 
 /*
 Returns the previous visible sibling TreeItem in the tree (in the context of a depth-first search) or a [code]null[/code] object if there is none.
 If [param wrap] is enabled, the method will wrap around to the last visible element in the tree when called on the first visible element, otherwise it returns [code]null[/code].
 */
-func (self Instance) GetPrevVisible() [1]gdclass.TreeItem { //gd:TreeItem.get_prev_visible
-	return [1]gdclass.TreeItem(Advanced(self).GetPrevVisible(false))
+func (self Instance) GetPrevVisible() Instance { //gd:TreeItem.get_prev_visible
+	return Instance(Advanced(self).GetPrevVisible(false))
 }
 
 /*
 Returns the previous visible sibling TreeItem in the tree (in the context of a depth-first search) or a [code]null[/code] object if there is none.
 If [param wrap] is enabled, the method will wrap around to the last visible element in the tree when called on the first visible element, otherwise it returns [code]null[/code].
 */
-func (self Expanded) GetPrevVisible(wrap bool) [1]gdclass.TreeItem { //gd:TreeItem.get_prev_visible
-	return [1]gdclass.TreeItem(Advanced(self).GetPrevVisible(wrap))
+func (self Expanded) GetPrevVisible(wrap bool) Instance { //gd:TreeItem.get_prev_visible
+	return Instance(Advanced(self).GetPrevVisible(wrap))
 }
 
 /*
 Returns a child item by its [param index] (see [method get_child_count]). This method is often used for iterating all children of an item.
 Negative indices access the children from the last one.
 */
-func (self Instance) GetChild(index int) [1]gdclass.TreeItem { //gd:TreeItem.get_child
-	return [1]gdclass.TreeItem(Advanced(self).GetChild(int64(index)))
+func (self Instance) GetChild(index int) Instance { //gd:TreeItem.get_child
+	return Instance(Advanced(self).GetChild(int64(index)))
 }
 
 /*
@@ -874,8 +869,8 @@ func (self Instance) GetChildCount() int { //gd:TreeItem.get_child_count
 /*
 Returns an array of references to the item's children.
 */
-func (self Instance) GetChildren() [][1]gdclass.TreeItem { //gd:TreeItem.get_children
-	return [][1]gdclass.TreeItem(gd.ArrayAs[[][1]gdclass.TreeItem](gd.InternalArray(Advanced(self).GetChildren())))
+func (self Instance) GetChildren() []Instance { //gd:TreeItem.get_children
+	return []Instance(gd.ArrayAs[[]Instance](gd.InternalArray(Advanced(self).GetChildren())))
 }
 
 /*
@@ -889,7 +884,7 @@ func (self Instance) GetIndex() int { //gd:TreeItem.get_index
 Moves this TreeItem right before the given [param item].
 [b]Note:[/b] You can't move to the root or move the root.
 */
-func (self Instance) MoveBefore(item [1]gdclass.TreeItem) { //gd:TreeItem.move_before
+func (self Instance) MoveBefore(item Instance) { //gd:TreeItem.move_before
 	Advanced(self).MoveBefore(item)
 }
 
@@ -897,7 +892,7 @@ func (self Instance) MoveBefore(item [1]gdclass.TreeItem) { //gd:TreeItem.move_b
 Moves this TreeItem right after the given [param item].
 [b]Note:[/b] You can't move to the root or move the root.
 */
-func (self Instance) MoveAfter(item [1]gdclass.TreeItem) { //gd:TreeItem.move_after
+func (self Instance) MoveAfter(item Instance) { //gd:TreeItem.move_after
 	Advanced(self).MoveAfter(item)
 }
 

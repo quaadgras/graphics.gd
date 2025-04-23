@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/AudioSamplePlayback"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -224,15 +225,15 @@ func (Instance) _get_parameter(impl func(ptr unsafe.Pointer, name string) any) (
 /*
 Associates [AudioSamplePlayback] to this [AudioStreamPlayback] for playing back the audio sample of this stream.
 */
-func (self Instance) SetSamplePlayback(playback_sample [1]gdclass.AudioSamplePlayback) { //gd:AudioStreamPlayback.set_sample_playback
+func (self Instance) SetSamplePlayback(playback_sample AudioSamplePlayback.Instance) { //gd:AudioStreamPlayback.set_sample_playback
 	Advanced(self).SetSamplePlayback(playback_sample)
 }
 
 /*
 Returns the [AudioSamplePlayback] associated with this [AudioStreamPlayback] for playing back the audio sample of this stream.
 */
-func (self Instance) GetSamplePlayback() [1]gdclass.AudioSamplePlayback { //gd:AudioStreamPlayback.get_sample_playback
-	return [1]gdclass.AudioSamplePlayback(Advanced(self).GetSamplePlayback())
+func (self Instance) GetSamplePlayback() AudioSamplePlayback.Instance { //gd:AudioStreamPlayback.get_sample_playback
+	return AudioSamplePlayback.Instance(Advanced(self).GetSamplePlayback())
 }
 
 /*

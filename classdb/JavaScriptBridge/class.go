@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/JavaScriptObject"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -46,6 +47,8 @@ var _ = slices.Delete[[]struct{}, struct{}]
 The JavaScriptBridge singleton is implemented only in the Web export. It's used to access the browser's JavaScript context. This allows interaction with embedding pages or calling third-party JavaScript APIs.
 [b]Note:[/b] This singleton can be disabled at build-time to improve security. By default, the JavaScriptBridge singleton is enabled. Official export templates also have the JavaScriptBridge singleton enabled. See [url=$DOCS_URL/contributing/development/compiling/compiling_for_web.html]Compiling for the Web[/url] in the documentation for more information.
 */
+type Instance [1]gdclass.JavaScriptBridge
+
 var self [1]gdclass.JavaScriptBridge
 var once sync.Once
 
@@ -75,24 +78,24 @@ func EvalOptions(code string, use_global_execution_context bool) any { //gd:Java
 /*
 Returns an interface to a JavaScript object that can be used by scripts. The [param interface] must be a valid property of the JavaScript [code]window[/code]. The callback must accept a single [Array] argument, which will contain the JavaScript [code]arguments[/code]. See [JavaScriptObject] for usage.
 */
-func GetInterface(intf string) [1]gdclass.JavaScriptObject { //gd:JavaScriptBridge.get_interface
+func GetInterface(intf string) JavaScriptObject.Instance { //gd:JavaScriptBridge.get_interface
 	once.Do(singleton)
-	return [1]gdclass.JavaScriptObject(Advanced().GetInterface(String.New(intf)))
+	return JavaScriptObject.Instance(Advanced().GetInterface(String.New(intf)))
 }
 
 /*
 Creates a reference to a [Callable] that can be used as a callback by JavaScript. The reference must be kept until the callback happens, or it won't be called at all. See [JavaScriptObject] for usage.
 [b]Note:[/b] The callback function must take exactly one [Array] argument, which is going to be the JavaScript [url=https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments]arguments object[/url] converted to an array.
 */
-func CreateCallback(callable Callable.Function) [1]gdclass.JavaScriptObject { //gd:JavaScriptBridge.create_callback
+func CreateCallback(callable Callable.Function) JavaScriptObject.Instance { //gd:JavaScriptBridge.create_callback
 	once.Do(singleton)
-	return [1]gdclass.JavaScriptObject(Advanced().CreateCallback(Callable.New(callable)))
+	return JavaScriptObject.Instance(Advanced().CreateCallback(Callable.New(callable)))
 }
 
 /*
 Returns [code]true[/code] if the given [param javascript_object] is of type [url=https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer][code]ArrayBuffer[/code][/url], [url=https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView][code]DataView[/code][/url], or one of the many [url=https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray]typed array objects[/url].
 */
-func IsJsBuffer(javascript_object [1]gdclass.JavaScriptObject) bool { //gd:JavaScriptBridge.is_js_buffer
+func IsJsBuffer(javascript_object JavaScriptObject.Instance) bool { //gd:JavaScriptBridge.is_js_buffer
 	once.Do(singleton)
 	return bool(Advanced().IsJsBuffer(javascript_object))
 }
@@ -100,7 +103,7 @@ func IsJsBuffer(javascript_object [1]gdclass.JavaScriptObject) bool { //gd:JavaS
 /*
 Returns a copy of [param javascript_buffer]'s contents as a [PackedByteArray]. See also [method is_js_buffer].
 */
-func JsBufferToPackedByteArray(javascript_buffer [1]gdclass.JavaScriptObject) []byte { //gd:JavaScriptBridge.js_buffer_to_packed_byte_array
+func JsBufferToPackedByteArray(javascript_buffer JavaScriptObject.Instance) []byte { //gd:JavaScriptBridge.js_buffer_to_packed_byte_array
 	once.Do(singleton)
 	return []byte(Advanced().JsBufferToPackedByteArray(javascript_buffer).Bytes())
 }

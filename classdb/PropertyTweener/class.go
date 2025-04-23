@@ -71,8 +71,8 @@ tween.TweenProperty(this, "position", new Vector2(200.0f, 100.0f), 1.0f).From(ne
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) From(value any) [1]gdclass.PropertyTweener { //gd:PropertyTweener.from
-	return [1]gdclass.PropertyTweener(Advanced(self).From(variant.New(value)))
+func (self Instance) From(value any) Instance { //gd:PropertyTweener.from
+	return Instance(Advanced(self).From(variant.New(value)))
 }
 
 /*
@@ -88,8 +88,8 @@ tween.TweenProperty(this, "position", new Vector2(200.0f, 100.0f), 1.0f).FromCur
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) FromCurrent() [1]gdclass.PropertyTweener { //gd:PropertyTweener.from_current
-	return [1]gdclass.PropertyTweener(Advanced(self).FromCurrent())
+func (self Instance) FromCurrent() Instance { //gd:PropertyTweener.from_current
+	return Instance(Advanced(self).FromCurrent())
 }
 
 /*
@@ -106,22 +106,22 @@ tween.TweenProperty(this, "position", Vector2.Right * 100.0f, 1.0f).AsRelative()
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) AsRelative() [1]gdclass.PropertyTweener { //gd:PropertyTweener.as_relative
-	return [1]gdclass.PropertyTweener(Advanced(self).AsRelative())
+func (self Instance) AsRelative() Instance { //gd:PropertyTweener.as_relative
+	return Instance(Advanced(self).AsRelative())
 }
 
 /*
 Sets the type of used transition from [enum Tween.TransitionType]. If not set, the default transition is used from the [Tween] that contains this Tweener.
 */
-func (self Instance) SetTrans(trans gdclass.TweenTransitionType) [1]gdclass.PropertyTweener { //gd:PropertyTweener.set_trans
-	return [1]gdclass.PropertyTweener(Advanced(self).SetTrans(trans))
+func (self Instance) SetTrans(trans gdclass.TweenTransitionType) Instance { //gd:PropertyTweener.set_trans
+	return Instance(Advanced(self).SetTrans(trans))
 }
 
 /*
 Sets the type of used easing from [enum Tween.EaseType]. If not set, the default easing is used from the [Tween] that contains this Tweener.
 */
-func (self Instance) SetEase(ease gdclass.TweenEaseType) [1]gdclass.PropertyTweener { //gd:PropertyTweener.set_ease
-	return [1]gdclass.PropertyTweener(Advanced(self).SetEase(ease))
+func (self Instance) SetEase(ease gdclass.TweenEaseType) Instance { //gd:PropertyTweener.set_ease
+	return Instance(Advanced(self).SetEase(ease))
 }
 
 /*
@@ -163,15 +163,15 @@ private float TweenCurve(float value)
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) SetCustomInterpolator(interpolator_method func(Float.X) Float.X) [1]gdclass.PropertyTweener { //gd:PropertyTweener.set_custom_interpolator
-	return [1]gdclass.PropertyTweener(Advanced(self).SetCustomInterpolator(Callable.New(interpolator_method)))
+func (self Instance) SetCustomInterpolator(interpolator_method func(Float.X) Float.X) Instance { //gd:PropertyTweener.set_custom_interpolator
+	return Instance(Advanced(self).SetCustomInterpolator(Callable.New(interpolator_method)))
 }
 
 /*
 Sets the time in seconds after which the [PropertyTweener] will start interpolating. By default there's no delay.
 */
-func (self Instance) SetDelay(delay Float.X) [1]gdclass.PropertyTweener { //gd:PropertyTweener.set_delay
-	return [1]gdclass.PropertyTweener(Advanced(self).SetDelay(float64(delay)))
+func (self Instance) SetDelay(delay Float.X) Instance { //gd:PropertyTweener.set_delay
+	return Instance(Advanced(self).SetDelay(float64(delay)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -79,11 +79,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Atlas() [1]gdclass.Texture2D {
-	return [1]gdclass.Texture2D(class(self).GetAtlas())
+func (self Instance) Atlas() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetAtlas())
 }
 
-func (self Instance) SetAtlas(value [1]gdclass.Texture2D) {
+func (self Instance) SetAtlas(value Texture2D.Instance) {
 	class(self).SetAtlas(value)
 }
 

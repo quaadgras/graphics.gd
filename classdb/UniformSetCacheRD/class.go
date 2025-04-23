@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/classdb/RDUniform"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -57,7 +58,7 @@ type Any interface {
 /*
 Creates/returns a cached uniform set based on the provided uniforms for a given shader.
 */
-func GetCache(shader RID.Shader, set int, uniforms [][1]gdclass.RDUniform) RID.UniformSet { //gd:UniformSetCacheRD.get_cache
+func GetCache(shader RID.Shader, set int, uniforms []RDUniform.Instance) RID.UniformSet { //gd:UniformSetCacheRD.get_cache
 	self := Instance{}
 	return RID.UniformSet(Advanced(self).GetCache(RID.Any(shader), int64(set), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDUniform]](uniforms)))
 }
