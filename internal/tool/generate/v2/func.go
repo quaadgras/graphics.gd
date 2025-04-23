@@ -341,7 +341,15 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 	if method.IsVararg {
 		fmt.Fprintf(w, "\tif len(args) > 0 { panic(`varargs not supported for class methods yet`); }\n")
 	}
-	fmt.Fprintf(w, "\tgd.Global.Object.MethodBindPointerCall(gd.Global.Methods.%v.Bind_%v, self.AsObject(), frame.Array(0), r_ret.Addr())\n", class.Name, method.Name)
+	var static = ""
+	if method.IsStatic {
+		static = "Static"
+	}
+	var self = " self.AsObject(),"
+	if method.IsStatic {
+		self = ""
+	}
+	fmt.Fprintf(w, "\tgd.Global.Object.MethodBindPointerCall%s(gd.Global.Methods.%v.Bind_%v,%s frame.Array(0), r_ret.Addr())\n", static, class.Name, method.Name, self)
 
 	if isPtr {
 		_, ok := classDB[strings.TrimPrefix(result, "[1]gdclass.")]

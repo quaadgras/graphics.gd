@@ -167,7 +167,7 @@ func (self class) FromNode(light_node [1]gdclass.Light3D) [1]gdclass.GLTFLight {
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(light_node[0])[0])
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFLight.Bind_from_node, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.GLTFLight.Bind_from_node, frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.GLTFLight{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFLight](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -194,7 +194,7 @@ func (self class) FromDictionary(dictionary Dictionary.Any) [1]gdclass.GLTFLight
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(dictionary)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFLight.Bind_from_dictionary, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.GLTFLight.Bind_from_dictionary, frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.GLTFLight{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFLight](r_ret.Get())}
 	frame.Free()
 	return ret

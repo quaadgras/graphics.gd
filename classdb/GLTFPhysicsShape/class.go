@@ -199,7 +199,7 @@ func (self class) FromNode(shape_node [1]gdclass.CollisionShape3D) [1]gdclass.GL
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(shape_node[0])[0])
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsShape.Bind_from_node, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.GLTFPhysicsShape.Bind_from_node, frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.GLTFPhysicsShape{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFPhysicsShape](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -227,7 +227,7 @@ func (self class) FromResource(shape_resource [1]gdclass.Shape3D) [1]gdclass.GLT
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(shape_resource[0])[0])
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsShape.Bind_from_resource, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.GLTFPhysicsShape.Bind_from_resource, frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.GLTFPhysicsShape{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFPhysicsShape](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -255,7 +255,7 @@ func (self class) FromDictionary(dictionary Dictionary.Any) [1]gdclass.GLTFPhysi
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(dictionary)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsShape.Bind_from_dictionary, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.GLTFPhysicsShape.Bind_from_dictionary, frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.GLTFPhysicsShape{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFPhysicsShape](r_ret.Get())}
 	frame.Free()
 	return ret

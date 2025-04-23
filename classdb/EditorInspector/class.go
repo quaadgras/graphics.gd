@@ -173,7 +173,7 @@ func (self class) InstantiatePropertyEditor(obj [1]gd.Object, atype variant.Type
 	callframe.Arg(frame, usage)
 	callframe.Arg(frame, wide)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInspector.Bind_instantiate_property_editor, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.EditorInspector.Bind_instantiate_property_editor, frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.EditorProperty{gd.PointerMustAssertInstanceID[gdclass.EditorProperty](r_ret.Get())}
 	frame.Free()
 	return ret

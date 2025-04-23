@@ -1007,7 +1007,7 @@ func (self class) Create(width int64, height int64, use_mipmaps bool, format gdc
 	callframe.Arg(frame, use_mipmaps)
 	callframe.Arg(frame, format)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_create, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.Image.Bind_create, frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -1024,7 +1024,7 @@ func (self class) CreateEmpty(width int64, height int64, use_mipmaps bool, forma
 	callframe.Arg(frame, use_mipmaps)
 	callframe.Arg(frame, format)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_create_empty, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.Image.Bind_create_empty, frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -1042,7 +1042,7 @@ func (self class) CreateFromData(width int64, height int64, use_mipmaps bool, fo
 	callframe.Arg(frame, format)
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_create_from_data, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.Image.Bind_create_from_data, frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -1101,7 +1101,7 @@ func (self class) LoadFromFile(path String.Readable) [1]gdclass.Image { //gd:Ima
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load_from_file, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.Image.Bind_load_from_file, frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
 	frame.Free()
 	return ret

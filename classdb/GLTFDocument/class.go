@@ -395,7 +395,7 @@ func (self class) ImportObjectModelProperty(state [1]gdclass.GLTFState, json_poi
 	callframe.Arg(frame, pointers.Get(state[0])[0])
 	callframe.Arg(frame, pointers.Get(gd.InternalString(json_pointer)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFDocument.Bind_import_object_model_property, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.GLTFDocument.Bind_import_object_model_property, frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.GLTFObjectModelProperty{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFObjectModelProperty](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -412,7 +412,7 @@ func (self class) ExportObjectModelProperty(state [1]gdclass.GLTFState, node_pat
 	callframe.Arg(frame, pointers.Get(godot_node[0])[0])
 	callframe.Arg(frame, gltf_node_index)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFDocument.Bind_export_object_model_property, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.GLTFDocument.Bind_export_object_model_property, frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.GLTFObjectModelProperty{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFObjectModelProperty](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -428,7 +428,7 @@ func (self class) RegisterGltfDocumentExtension(extension [1]gdclass.GLTFDocumen
 	callframe.Arg(frame, pointers.Get(extension[0])[0])
 	callframe.Arg(frame, first_priority)
 	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFDocument.Bind_register_gltf_document_extension, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.GLTFDocument.Bind_register_gltf_document_extension, frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -440,7 +440,7 @@ func (self class) UnregisterGltfDocumentExtension(extension [1]gdclass.GLTFDocum
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(extension[0])[0])
 	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFDocument.Bind_unregister_gltf_document_extension, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.GLTFDocument.Bind_unregister_gltf_document_extension, frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -452,7 +452,7 @@ Returns a list of all support glTF extensions, including extensions supported di
 func (self class) GetSupportedGltfExtensions() Packed.Strings { //gd:GLTFDocument.get_supported_gltf_extensions
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFDocument.Bind_get_supported_gltf_extensions, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.GLTFDocument.Bind_get_supported_gltf_extensions, frame.Array(0), r_ret.Addr())
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret

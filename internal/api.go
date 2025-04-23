@@ -136,18 +136,19 @@ type API struct {
 		SetIndex func(dict Dictionary, key, val Variant)
 	}
 	Object struct {
-		MethodBindCall        func(method MethodBind, obj [1]Object, arg ...Variant) (Variant, error)
-		MethodBindPointerCall func(method MethodBind, obj [1]Object, arg callframe.Args, ret callframe.Addr)
-		Destroy               func([1]Object)
-		GetSingleton          func(name StringName) [1]Object
-		GetInstanceBinding    func([1]Object, ExtensionToken, InstanceBindingType) any
-		SetInstanceBinding    func([1]Object, ExtensionToken, any, InstanceBindingType)
-		FreeInstanceBinding   func([1]Object, ExtensionToken)
-		SetInstance           func([1]Object, StringName, ObjectInterface)
-		GetClassName          func([1]Object, ExtensionToken) String
-		CastTo                func([1]Object, ClassTag) [1]Object
-		GetInstanceID         func([1]Object) ObjectID
-		GetInstanceFromID     func(ObjectID) [1]Object
+		MethodBindCall              func(method MethodBind, obj [1]Object, arg ...Variant) (Variant, error)
+		MethodBindPointerCall       func(method MethodBind, obj [1]Object, arg callframe.Args, ret callframe.Addr)
+		MethodBindPointerCallStatic func(method MethodBind, arg callframe.Args, ret callframe.Addr)
+		Destroy                     func([1]Object)
+		GetSingleton                func(name StringName) [1]Object
+		GetInstanceBinding          func([1]Object, ExtensionToken, InstanceBindingType) any
+		SetInstanceBinding          func([1]Object, ExtensionToken, any, InstanceBindingType)
+		FreeInstanceBinding         func([1]Object, ExtensionToken)
+		SetInstance                 func([1]Object, StringName, ObjectInterface)
+		GetClassName                func([1]Object, ExtensionToken) String
+		CastTo                      func([1]Object, ClassTag) [1]Object
+		GetInstanceID               func([1]Object) ObjectID
+		GetInstanceFromID           func(ObjectID) [1]Object
 	}
 	RefCounted struct {
 		GetObject func([1]Object) [1]Object

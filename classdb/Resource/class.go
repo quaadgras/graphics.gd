@@ -544,7 +544,7 @@ Generates a unique identifier for a resource to be contained inside a [PackedSce
 func (self class) GenerateSceneUniqueId() String.Readable { //gd:Resource.generate_scene_unique_id
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Resource.Bind_generate_scene_unique_id, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.Resource.Bind_generate_scene_unique_id, frame.Array(0), r_ret.Addr())
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret

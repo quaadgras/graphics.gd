@@ -244,7 +244,7 @@ func (self class) CreateFromString(pattern String.Readable, show_error bool) [1]
 	callframe.Arg(frame, pointers.Get(gd.InternalString(pattern)))
 	callframe.Arg(frame, show_error)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RegEx.Bind_create_from_string, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.RegEx.Bind_create_from_string, frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.RegEx{gd.PointerWithOwnershipTransferredToGo[gdclass.RegEx](r_ret.Get())}
 	frame.Free()
 	return ret

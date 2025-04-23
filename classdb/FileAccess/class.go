@@ -759,7 +759,7 @@ func (self class) Open(path String.Readable, flags gdclass.FileAccessModeFlags) 
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_open, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.FileAccess.Bind_open, frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.FileAccess{gd.PointerWithOwnershipTransferredToGo[gdclass.FileAccess](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -778,7 +778,7 @@ func (self class) OpenEncrypted(path String.Readable, mode_flags gdclass.FileAcc
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key))))
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](iv))))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_open_encrypted, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.FileAccess.Bind_open_encrypted, frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.FileAccess{gd.PointerWithOwnershipTransferredToGo[gdclass.FileAccess](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -795,7 +795,7 @@ func (self class) OpenEncryptedWithPass(path String.Readable, mode_flags gdclass
 	callframe.Arg(frame, mode_flags)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(pass)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_open_encrypted_with_pass, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.FileAccess.Bind_open_encrypted_with_pass, frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.FileAccess{gd.PointerWithOwnershipTransferredToGo[gdclass.FileAccess](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -813,7 +813,7 @@ func (self class) OpenCompressed(path String.Readable, mode_flags gdclass.FileAc
 	callframe.Arg(frame, mode_flags)
 	callframe.Arg(frame, compression_mode)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_open_compressed, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.FileAccess.Bind_open_compressed, frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.FileAccess{gd.PointerWithOwnershipTransferredToGo[gdclass.FileAccess](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -826,7 +826,7 @@ Returns the result of the last [method open] call in the current thread.
 func (self class) GetOpenError() Error.Code { //gd:FileAccess.get_open_error
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_open_error, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.FileAccess.Bind_get_open_error, frame.Array(0), r_ret.Addr())
 	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
@@ -847,7 +847,7 @@ func (self class) CreateTemp(mode_flags int64, prefix String.Readable, extension
 	callframe.Arg(frame, pointers.Get(gd.InternalString(extension)))
 	callframe.Arg(frame, keep)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_create_temp, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.FileAccess.Bind_create_temp, frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.FileAccess{gd.PointerWithOwnershipTransferredToGo[gdclass.FileAccess](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -862,7 +862,7 @@ func (self class) GetFileAsBytes(path String.Readable) Packed.Bytes { //gd:FileA
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_file_as_bytes, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.FileAccess.Bind_get_file_as_bytes, frame.Array(0), r_ret.Addr())
 	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
@@ -877,7 +877,7 @@ func (self class) GetFileAsString(path String.Readable) String.Readable { //gd:F
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_file_as_string, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.FileAccess.Bind_get_file_as_string, frame.Array(0), r_ret.Addr())
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
@@ -1202,7 +1202,7 @@ func (self class) GetMd5(path String.Readable) String.Readable { //gd:FileAccess
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_md5, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.FileAccess.Bind_get_md5, frame.Array(0), r_ret.Addr())
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
@@ -1216,7 +1216,7 @@ func (self class) GetSha256(path String.Readable) String.Readable { //gd:FileAcc
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_sha256, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.FileAccess.Bind_get_sha256, frame.Array(0), r_ret.Addr())
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
@@ -1561,7 +1561,7 @@ func (self class) FileExists(path String.Readable) bool { //gd:FileAccess.file_e
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_file_exists, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.FileAccess.Bind_file_exists, frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1575,7 +1575,7 @@ func (self class) GetModifiedTime(file String.Readable) int64 { //gd:FileAccess.
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(file)))
 	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_modified_time, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.FileAccess.Bind_get_modified_time, frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1590,7 +1590,7 @@ func (self class) GetUnixPermissions(file String.Readable) gdclass.FileAccessUni
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(file)))
 	var r_ret = callframe.Ret[gdclass.FileAccessUnixPermissionFlags](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_unix_permissions, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.FileAccess.Bind_get_unix_permissions, frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1606,7 +1606,7 @@ func (self class) SetUnixPermissions(file String.Readable, permissions gdclass.F
 	callframe.Arg(frame, pointers.Get(gd.InternalString(file)))
 	callframe.Arg(frame, permissions)
 	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_set_unix_permissions, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.FileAccess.Bind_set_unix_permissions, frame.Array(0), r_ret.Addr())
 	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
@@ -1621,7 +1621,7 @@ func (self class) GetHiddenAttribute(file String.Readable) bool { //gd:FileAcces
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(file)))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_hidden_attribute, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.FileAccess.Bind_get_hidden_attribute, frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1637,7 +1637,7 @@ func (self class) SetHiddenAttribute(file String.Readable, hidden bool) Error.Co
 	callframe.Arg(frame, pointers.Get(gd.InternalString(file)))
 	callframe.Arg(frame, hidden)
 	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_set_hidden_attribute, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.FileAccess.Bind_set_hidden_attribute, frame.Array(0), r_ret.Addr())
 	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
@@ -1653,7 +1653,7 @@ func (self class) SetReadOnlyAttribute(file String.Readable, ro bool) Error.Code
 	callframe.Arg(frame, pointers.Get(gd.InternalString(file)))
 	callframe.Arg(frame, ro)
 	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_set_read_only_attribute, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.FileAccess.Bind_set_read_only_attribute, frame.Array(0), r_ret.Addr())
 	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
@@ -1668,7 +1668,7 @@ func (self class) GetReadOnlyAttribute(file String.Readable) bool { //gd:FileAcc
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(file)))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_read_only_attribute, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.FileAccess.Bind_get_read_only_attribute, frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

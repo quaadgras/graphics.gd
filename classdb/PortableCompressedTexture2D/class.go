@@ -235,7 +235,7 @@ func (self class) SetKeepAllCompressedBuffers(keep bool) { //gd:PortableCompress
 	var frame = callframe.New()
 	callframe.Arg(frame, keep)
 	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PortableCompressedTexture2D.Bind_set_keep_all_compressed_buffers, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.PortableCompressedTexture2D.Bind_set_keep_all_compressed_buffers, frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -246,7 +246,7 @@ Return whether the flag is overridden for all textures of this type.
 func (self class) IsKeepingAllCompressedBuffers() bool { //gd:PortableCompressedTexture2D.is_keeping_all_compressed_buffers
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PortableCompressedTexture2D.Bind_is_keeping_all_compressed_buffers, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.PortableCompressedTexture2D.Bind_is_keeping_all_compressed_buffers, frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

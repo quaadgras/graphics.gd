@@ -177,7 +177,7 @@ func (self class) Create(from Vector3.XYZ, to Vector3.XYZ, collision_mask int64,
 	callframe.Arg(frame, collision_mask)
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(exclude)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_create, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_create, frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.PhysicsRayQueryParameters3D{gd.PointerWithOwnershipTransferredToGo[gdclass.PhysicsRayQueryParameters3D](r_ret.Get())}
 	frame.Free()
 	return ret

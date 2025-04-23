@@ -222,7 +222,7 @@ func (self class) LoadFromBuffer(stream_data Packed.Bytes, options Dictionary.An
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](stream_data))))
 	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(options)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamWAV.Bind_load_from_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.AudioStreamWAV.Bind_load_from_buffer, frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.AudioStreamWAV{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamWAV](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -253,7 +253,7 @@ func (self class) LoadFromFile(path String.Readable, options Dictionary.Any) [1]
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(options)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamWAV.Bind_load_from_file, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.AudioStreamWAV.Bind_load_from_file, frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.AudioStreamWAV{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamWAV](r_ret.Get())}
 	frame.Free()
 	return ret

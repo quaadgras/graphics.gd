@@ -284,9 +284,15 @@ func linkJS(API *gd.API) {
 	}
 	object_method_bind_call := dlsym("object_bind_method_call")
 	API.Object.MethodBindCall = func(method gd.MethodBind, obj [1]gd.Object, arg ...gd.Variant) (gd.Variant, error) {
+		if obj == [1]gd.Object{} {
+			panic("nil gd.Object dereference")
+		}
 		var self uint32
 		if obj != ([1]gd.Object{}) {
 			self = uint32(pointers.Get(obj[0])[0])
+		}
+		if self == 0 {
+			panic("nil gd.Object dereference")
 		}
 		for i, v := range arg {
 			raw := pointers.Get(v)
@@ -310,6 +316,11 @@ func linkJS(API *gd.API) {
 		}
 		writeCallFrameArguments(0, arg)
 		object_method_bind_ptrcall.Invoke(uint32(method), self)
+		readCallFrameResult(0, ret)
+	}
+	API.Object.MethodBindPointerCallStatic = func(method gd.MethodBind, arg callframe.Args, ret callframe.Addr) {
+		writeCallFrameArguments(0, arg)
+		object_method_bind_ptrcall.Invoke(uint32(method), 0)
 		readCallFrameResult(0, ret)
 	}
 	global_get_singleton := dlsym("global_get_singleton")

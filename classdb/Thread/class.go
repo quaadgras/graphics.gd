@@ -231,7 +231,7 @@ func (self class) SetThreadSafetyChecksEnabled(enabled bool) { //gd:Thread.set_t
 	var frame = callframe.New()
 	callframe.Arg(frame, enabled)
 	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Thread.Bind_set_thread_safety_checks_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.Thread.Bind_set_thread_safety_checks_enabled, frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) AsThread() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

@@ -492,7 +492,7 @@ func (self class) Open(path String.Readable) [1]gdclass.DirAccess { //gd:DirAcce
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_open, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.DirAccess.Bind_open, frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.DirAccess{gd.PointerWithOwnershipTransferredToGo[gdclass.DirAccess](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -505,7 +505,7 @@ Returns the result of the last [method open] call in the current thread.
 func (self class) GetOpenError() Error.Code { //gd:DirAccess.get_open_error
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_get_open_error, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.DirAccess.Bind_get_open_error, frame.Array(0), r_ret.Addr())
 	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
@@ -523,7 +523,7 @@ func (self class) CreateTemp(prefix String.Readable, keep bool) [1]gdclass.DirAc
 	callframe.Arg(frame, pointers.Get(gd.InternalString(prefix)))
 	callframe.Arg(frame, keep)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_create_temp, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.DirAccess.Bind_create_temp, frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.DirAccess{gd.PointerWithOwnershipTransferredToGo[gdclass.DirAccess](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -607,7 +607,7 @@ func (self class) GetFilesAt(path String.Readable) Packed.Strings { //gd:DirAcce
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_get_files_at, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.DirAccess.Bind_get_files_at, frame.Array(0), r_ret.Addr())
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
@@ -638,7 +638,7 @@ func (self class) GetDirectoriesAt(path String.Readable) Packed.Strings { //gd:D
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_get_directories_at, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.DirAccess.Bind_get_directories_at, frame.Array(0), r_ret.Addr())
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
@@ -654,7 +654,7 @@ On other platforms, the method returns 0.
 func (self class) GetDriveCount() int64 { //gd:DirAccess.get_drive_count
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_get_drive_count, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.DirAccess.Bind_get_drive_count, frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -671,7 +671,7 @@ func (self class) GetDriveName(idx int64) String.Readable { //gd:DirAccess.get_d
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_get_drive_name, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.DirAccess.Bind_get_drive_name, frame.Array(0), r_ret.Addr())
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
@@ -743,7 +743,7 @@ func (self class) MakeDirAbsolute(path String.Readable) Error.Code { //gd:DirAcc
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_make_dir_absolute, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.DirAccess.Bind_make_dir_absolute, frame.Array(0), r_ret.Addr())
 	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
@@ -772,7 +772,7 @@ func (self class) MakeDirRecursiveAbsolute(path String.Readable) Error.Code { //
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_make_dir_recursive_absolute, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.DirAccess.Bind_make_dir_recursive_absolute, frame.Array(0), r_ret.Addr())
 	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
@@ -818,7 +818,7 @@ func (self class) DirExistsAbsolute(path String.Readable) bool { //gd:DirAccess.
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_dir_exists_absolute, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.DirAccess.Bind_dir_exists_absolute, frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -865,7 +865,7 @@ func (self class) CopyAbsolute(from String.Readable, to String.Readable, chmod_f
 	callframe.Arg(frame, pointers.Get(gd.InternalString(to)))
 	callframe.Arg(frame, chmod_flags)
 	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_copy_absolute, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.DirAccess.Bind_copy_absolute, frame.Array(0), r_ret.Addr())
 	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
@@ -896,7 +896,7 @@ func (self class) RenameAbsolute(from String.Readable, to String.Readable) Error
 	callframe.Arg(frame, pointers.Get(gd.InternalString(from)))
 	callframe.Arg(frame, pointers.Get(gd.InternalString(to)))
 	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_rename_absolute, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.DirAccess.Bind_rename_absolute, frame.Array(0), r_ret.Addr())
 	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
@@ -926,7 +926,7 @@ func (self class) RemoveAbsolute(path String.Readable) Error.Code { //gd:DirAcce
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_remove_absolute, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.DirAccess.Bind_remove_absolute, frame.Array(0), r_ret.Addr())
 	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret

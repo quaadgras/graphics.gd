@@ -160,7 +160,7 @@ func (self class) IsLooping(node_info Packed.Array[float32]) bool { //gd:Animati
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](node_info)))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeExtension.Bind_is_looping, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.AnimationNodeExtension.Bind_is_looping, frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -175,7 +175,7 @@ func (self class) GetRemainingTime(node_info Packed.Array[float32], break_loop b
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](node_info)))
 	callframe.Arg(frame, break_loop)
 	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeExtension.Bind_get_remaining_time, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.AnimationNodeExtension.Bind_get_remaining_time, frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

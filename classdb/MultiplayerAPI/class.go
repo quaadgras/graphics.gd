@@ -342,7 +342,7 @@ func (self class) SetDefaultInterface(interface_name String.Name) { //gd:Multipl
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(interface_name)))
 	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_set_default_interface, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.MultiplayerAPI.Bind_set_default_interface, frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -353,7 +353,7 @@ Returns the default MultiplayerAPI implementation class name. This is usually [c
 func (self class) GetDefaultInterface() String.Name { //gd:MultiplayerAPI.get_default_interface
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_get_default_interface, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.MultiplayerAPI.Bind_get_default_interface, frame.Array(0), r_ret.Addr())
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
 	frame.Free()
 	return ret
@@ -366,7 +366,7 @@ Returns a new instance of the default MultiplayerAPI.
 func (self class) CreateDefaultInterface() [1]gdclass.MultiplayerAPI { //gd:MultiplayerAPI.create_default_interface
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerAPI.Bind_create_default_interface, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.MultiplayerAPI.Bind_create_default_interface, frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.MultiplayerAPI{gd.PointerWithOwnershipTransferredToGo[gdclass.MultiplayerAPI](r_ret.Get())}
 	frame.Free()
 	return ret

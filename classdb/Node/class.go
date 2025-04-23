@@ -1671,7 +1671,7 @@ Prints all orphan nodes (nodes outside the [SceneTree]). Useful for debugging.
 func (self class) PrintOrphanNodes() { //gd:Node.print_orphan_nodes
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_print_orphan_nodes, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.Node.Bind_print_orphan_nodes, frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 

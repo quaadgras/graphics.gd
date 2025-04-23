@@ -377,7 +377,7 @@ func (self class) Stringify(data variant.Any, indent String.Readable, sort_keys 
 	callframe.Arg(frame, sort_keys)
 	callframe.Arg(frame, full_precision)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_stringify, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.JSON.Bind_stringify, frame.Array(0), r_ret.Addr())
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
@@ -391,7 +391,7 @@ func (self class) ParseString(json_string String.Readable) variant.Any { //gd:JS
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(json_string)))
 	var r_ret = callframe.Ret[[3]uint64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_parse_string, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.JSON.Bind_parse_string, frame.Array(0), r_ret.Addr())
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
@@ -488,7 +488,7 @@ func (self class) FromNative(v variant.Any, full_objects bool) variant.Any { //g
 	callframe.Arg(frame, pointers.Get(gd.InternalVariant(v)))
 	callframe.Arg(frame, full_objects)
 	var r_ret = callframe.Ret[[3]uint64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_from_native, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.JSON.Bind_from_native, frame.Array(0), r_ret.Addr())
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
@@ -509,7 +509,7 @@ func (self class) ToNative(json variant.Any, allow_objects bool) variant.Any { /
 	callframe.Arg(frame, pointers.Get(gd.InternalVariant(json)))
 	callframe.Arg(frame, allow_objects)
 	var r_ret = callframe.Ret[[3]uint64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSON.Bind_to_native, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.JSON.Bind_to_native, frame.Array(0), r_ret.Addr())
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret

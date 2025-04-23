@@ -143,7 +143,7 @@ func (self class) CreateFromImage(image [1]gdclass.Image) [1]gdclass.ImageTextur
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(image[0])[0])
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTexture.Bind_create_from_image, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.ImageTexture.Bind_create_from_image, frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.ImageTexture{gd.PointerWithOwnershipTransferredToGo[gdclass.ImageTexture](r_ret.Get())}
 	frame.Free()
 	return ret

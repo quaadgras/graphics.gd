@@ -90,7 +90,7 @@ func (self class) GetCacheMultipass(textures Array.Contains[RID.Any], passes Arr
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(passes)))
 	callframe.Arg(frame, views)
 	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FramebufferCacheRD.Bind_get_cache_multipass, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.FramebufferCacheRD.Bind_get_cache_multipass, frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

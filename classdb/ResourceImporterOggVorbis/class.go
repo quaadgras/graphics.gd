@@ -100,7 +100,7 @@ func (self class) LoadFromBuffer(stream_data Packed.Bytes) [1]gdclass.AudioStrea
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](stream_data))))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceImporterOggVorbis.Bind_load_from_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.ResourceImporterOggVorbis.Bind_load_from_buffer, frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.AudioStreamOggVorbis{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamOggVorbis](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -114,7 +114,7 @@ func (self class) LoadFromFile(path String.Readable) [1]gdclass.AudioStreamOggVo
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceImporterOggVorbis.Bind_load_from_file, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.ResourceImporterOggVorbis.Bind_load_from_file, frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.AudioStreamOggVorbis{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamOggVorbis](r_ret.Get())}
 	frame.Free()
 	return ret

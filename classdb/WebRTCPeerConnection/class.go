@@ -261,7 +261,7 @@ func (self class) SetDefaultExtension(extension_class String.Name) { //gd:WebRTC
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(extension_class)))
 	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_set_default_extension, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.WebRTCPeerConnection.Bind_set_default_extension, frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 

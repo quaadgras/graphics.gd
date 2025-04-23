@@ -453,7 +453,7 @@ func (self class) OpenxrIsEnabled(check_run_in_editor bool) bool { //gd:OpenXRAP
 	var frame = callframe.New()
 	callframe.Arg(frame, check_run_in_editor)
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_openxr_is_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.OpenXRAPIExtension.Bind_openxr_is_enabled, frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

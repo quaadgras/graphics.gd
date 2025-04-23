@@ -103,7 +103,7 @@ Returns a list of built-in include files that are currently registered.
 func (self class) ListBuiltInIncludeFiles() Packed.Strings { //gd:ShaderIncludeDB.list_built_in_include_files
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShaderIncludeDB.Bind_list_built_in_include_files, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.ShaderIncludeDB.Bind_list_built_in_include_files, frame.Array(0), r_ret.Addr())
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
@@ -117,7 +117,7 @@ func (self class) HasBuiltInIncludeFile(filename String.Readable) bool { //gd:Sh
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(filename)))
 	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShaderIncludeDB.Bind_has_built_in_include_file, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.ShaderIncludeDB.Bind_has_built_in_include_file, frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -131,7 +131,7 @@ func (self class) GetBuiltInIncludeFile(filename String.Readable) String.Readabl
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(filename)))
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShaderIncludeDB.Bind_get_built_in_include_file, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.ShaderIncludeDB.Bind_get_built_in_include_file, frame.Array(0), r_ret.Addr())
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
