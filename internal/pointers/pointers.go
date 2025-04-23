@@ -255,7 +255,7 @@ func malloc[T Generic[T, P], P Size](ptr P, free func(T)) T {
 			// relies on specific assumptions on how static function pointers
 			// are represented by the Go compiler. Tests should catch when
 			// this assumption breaks. We do this to avoid allocations and
-			// to avoid any Go runtime from pointer-scanning our [tables].
+			// to avoid the Go runtime from pointer-scanning our [tables].
 			//
 			var (
 				free = free
