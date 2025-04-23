@@ -256,6 +256,18 @@ func ClassGetMethodListOptions(class_ string, no_inheritance bool) []PropertyInf
 }
 
 /*
+Calls a static method on a class.
+*/
+func ClassCallStatic(class_ string, method string, args ...any) any { //gd:ClassDB.class_call_static
+	once.Do(singleton)
+	var converted_variants = make([]gd.Variant, len(args))
+	for i, arg := range args {
+		converted_variants[i] = gd.NewVariant(arg)
+	}
+	return any(Advanced().ClassCallStatic(String.Name(String.New(class_)), String.Name(String.New(method)), converted_variants...).Interface())
+}
+
+/*
 Returns an array with the names all the integer constants of [param class] or its ancestry.
 */
 func ClassGetIntegerConstantList(class_ string, no_inheritance bool) []string { //gd:ClassDB.class_get_integer_constant_list
@@ -679,6 +691,21 @@ func (self class) ClassGetMethodList(class_ String.Name, no_inheritance bool) Ar
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
+}
+
+/*
+Calls a static method on a class.
+*/
+//go:nosplit
+func (self class) ClassCallStatic(class_ String.Name, method String.Name, args ...gd.Variant) variant.Any { //gd:ClassDB.class_call_static
+	var frame = callframe.New()
+	defer frame.Free()
+	var fixed = [...]gd.Variant{gd.NewVariant(class_), gd.NewVariant(method)}
+	ret, err := gd.Global.Object.MethodBindCall(gd.Global.Methods.ClassDB.Bind_class_call_static, self.AsObject(), append(fixed[:], args...)...)
+	if err != nil {
+		panic(err)
+	}
+	return gd.VariantAs[variant.Any](ret)
 }
 
 /*

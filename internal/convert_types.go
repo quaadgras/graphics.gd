@@ -53,6 +53,12 @@ func convertVariantToDesiredGoType(value Variant, rtype reflect.Type) (reflect.V
 }
 
 func VariantAs[T any](value Variant) T {
+	switch reflect.TypeFor[T]() {
+	case reflect.TypeFor[VariantPkg.Any]():
+		return any(VariantPkg.New(value.Interface())).(T)
+	case reflect.TypeFor[any]():
+		return value.Interface().(T)
+	}
 	result, err := ConvertToDesiredGoType(value, reflect.TypeFor[T]())
 	if err != nil {
 		panic(fmt.Sprintf("cannot convert %T to %s: %v", value, reflect.TypeFor[T](), err))

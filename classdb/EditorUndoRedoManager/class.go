@@ -112,6 +112,30 @@ func (self Instance) ForceFixedHistory() { //gd:EditorUndoRedoManager.force_fixe
 }
 
 /*
+Register a method that will be called when the action is committed (i.e. the "do" action).
+If this is the first operation, the [param object] will be used to deduce target undo history.
+*/
+func (self Instance) AddDoMethod(obj Object.Instance, method string, args ...any) { //gd:EditorUndoRedoManager.add_do_method
+	var converted_variants = make([]gd.Variant, len(args))
+	for i, arg := range args {
+		converted_variants[i] = gd.NewVariant(arg)
+	}
+	Advanced(self).AddDoMethod(obj, String.Name(String.New(method)), converted_variants...)
+}
+
+/*
+Register a method that will be called when the action is undone (i.e. the "undo" action).
+If this is the first operation, the [param object] will be used to deduce target undo history.
+*/
+func (self Instance) AddUndoMethod(obj Object.Instance, method string, args ...any) { //gd:EditorUndoRedoManager.add_undo_method
+	var converted_variants = make([]gd.Variant, len(args))
+	for i, arg := range args {
+		converted_variants[i] = gd.NewVariant(arg)
+	}
+	Advanced(self).AddUndoMethod(obj, String.Name(String.New(method)), converted_variants...)
+}
+
+/*
 Register a property value change for "do".
 If this is the first operation, the [param object] will be used to deduce target undo history.
 */
@@ -256,6 +280,38 @@ func (self class) ForceFixedHistory() { //gd:EditorUndoRedoManager.force_fixed_h
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorUndoRedoManager.Bind_force_fixed_history, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
+}
+
+/*
+Register a method that will be called when the action is committed (i.e. the "do" action).
+If this is the first operation, the [param object] will be used to deduce target undo history.
+*/
+//go:nosplit
+func (self class) AddDoMethod(obj [1]gd.Object, method String.Name, args ...gd.Variant) { //gd:EditorUndoRedoManager.add_do_method
+	var frame = callframe.New()
+	defer frame.Free()
+	var fixed = [...]gd.Variant{gd.NewVariant(obj), gd.NewVariant(method)}
+	ret, err := gd.Global.Object.MethodBindCall(gd.Global.Methods.EditorUndoRedoManager.Bind_add_do_method, self.AsObject(), append(fixed[:], args...)...)
+	if err != nil {
+		panic(err)
+	}
+	_ = ret
+}
+
+/*
+Register a method that will be called when the action is undone (i.e. the "undo" action).
+If this is the first operation, the [param object] will be used to deduce target undo history.
+*/
+//go:nosplit
+func (self class) AddUndoMethod(obj [1]gd.Object, method String.Name, args ...gd.Variant) { //gd:EditorUndoRedoManager.add_undo_method
+	var frame = callframe.New()
+	defer frame.Free()
+	var fixed = [...]gd.Variant{gd.NewVariant(obj), gd.NewVariant(method)}
+	ret, err := gd.Global.Object.MethodBindCall(gd.Global.Methods.EditorUndoRedoManager.Bind_add_undo_method, self.AsObject(), append(fixed[:], args...)...)
+	if err != nil {
+		panic(err)
+	}
+	_ = ret
 }
 
 /*

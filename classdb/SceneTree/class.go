@@ -184,6 +184,26 @@ func (self Instance) QueueDelete(obj Object.Instance) { //gd:SceneTree.queue_del
 }
 
 /*
+Calls the given [param method] on each node inside this tree added to the given [param group]. Use [param flags] to customize this method's behavior (see [enum GroupCallFlags]). Additional arguments for [param method] can be passed at the end of this method. Nodes that cannot call [param method] (either because the method doesn't exist or the arguments do not match) are ignored.
+[codeblock]
+# Calls "hide" to all nodes of the "enemies" group, at the end of the frame and in reverse tree order.
+get_tree().call_group_flags(
+
+	SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_REVERSE,
+	"enemies", "hide")
+
+[/codeblock]
+[b]Note:[/b] In C#, [param method] must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the [code]MethodName[/code] class to avoid allocating a new [StringName] on each call.
+*/
+func (self Instance) CallGroupFlags(flags int, group string, method string, args ...any) { //gd:SceneTree.call_group_flags
+	var converted_variants = make([]gd.Variant, len(args))
+	for i, arg := range args {
+		converted_variants[i] = gd.NewVariant(arg)
+	}
+	Advanced(self).CallGroupFlags(int64(flags), String.Name(String.New(group)), String.Name(String.New(method)), converted_variants...)
+}
+
+/*
 Calls [method Object.notification] with the given [param notification] to all nodes inside this tree added to the [param group]. Use [param call_flags] to customize this method's behavior (see [enum GroupCallFlags]).
 */
 func (self Instance) NotifyGroupFlags(call_flags int, group string, notification int) { //gd:SceneTree.notify_group_flags
@@ -196,6 +216,19 @@ Sets the given [param property] to [param value] on all nodes inside this tree a
 */
 func (self Instance) SetGroupFlags(call_flags int, group string, property string, value any) { //gd:SceneTree.set_group_flags
 	Advanced(self).SetGroupFlags(int64(call_flags), String.Name(String.New(group)), String.New(property), variant.New(value))
+}
+
+/*
+Calls [param method] on each node inside this tree added to the given [param group]. You can pass arguments to [param method] by specifying them at the end of this method call. Nodes that cannot call [param method] (either because the method doesn't exist or the arguments do not match) are ignored. See also [method set_group] and [method notify_group].
+[b]Note:[/b] This method acts immediately on all selected nodes at once, which may cause stuttering in some performance-intensive situations.
+[b]Note:[/b] In C#, [param method] must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the [code]MethodName[/code] class to avoid allocating a new [StringName] on each call.
+*/
+func (self Instance) CallGroup(group string, method string, args ...any) { //gd:SceneTree.call_group
+	var converted_variants = make([]gd.Variant, len(args))
+	for i, arg := range args {
+		converted_variants[i] = gd.NewVariant(arg)
+	}
+	Advanced(self).CallGroup(String.Name(String.New(group)), String.Name(String.New(method)), converted_variants...)
 }
 
 /*
@@ -698,6 +731,28 @@ func (self class) QueueDelete(obj [1]gd.Object) { //gd:SceneTree.queue_delete
 }
 
 /*
+Calls the given [param method] on each node inside this tree added to the given [param group]. Use [param flags] to customize this method's behavior (see [enum GroupCallFlags]). Additional arguments for [param method] can be passed at the end of this method. Nodes that cannot call [param method] (either because the method doesn't exist or the arguments do not match) are ignored.
+[codeblock]
+# Calls "hide" to all nodes of the "enemies" group, at the end of the frame and in reverse tree order.
+get_tree().call_group_flags(
+        SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_REVERSE,
+        "enemies", "hide")
+[/codeblock]
+[b]Note:[/b] In C#, [param method] must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the [code]MethodName[/code] class to avoid allocating a new [StringName] on each call.
+*/
+//go:nosplit
+func (self class) CallGroupFlags(flags int64, group String.Name, method String.Name, args ...gd.Variant) { //gd:SceneTree.call_group_flags
+	var frame = callframe.New()
+	defer frame.Free()
+	var fixed = [...]gd.Variant{gd.NewVariant(flags), gd.NewVariant(group), gd.NewVariant(method)}
+	ret, err := gd.Global.Object.MethodBindCall(gd.Global.Methods.SceneTree.Bind_call_group_flags, self.AsObject(), append(fixed[:], args...)...)
+	if err != nil {
+		panic(err)
+	}
+	_ = ret
+}
+
+/*
 Calls [method Object.notification] with the given [param notification] to all nodes inside this tree added to the [param group]. Use [param call_flags] to customize this method's behavior (see [enum GroupCallFlags]).
 */
 //go:nosplit
@@ -725,6 +780,23 @@ func (self class) SetGroupFlags(call_flags int64, group String.Name, property St
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneTree.Bind_set_group_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
+}
+
+/*
+Calls [param method] on each node inside this tree added to the given [param group]. You can pass arguments to [param method] by specifying them at the end of this method call. Nodes that cannot call [param method] (either because the method doesn't exist or the arguments do not match) are ignored. See also [method set_group] and [method notify_group].
+[b]Note:[/b] This method acts immediately on all selected nodes at once, which may cause stuttering in some performance-intensive situations.
+[b]Note:[/b] In C#, [param method] must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the [code]MethodName[/code] class to avoid allocating a new [StringName] on each call.
+*/
+//go:nosplit
+func (self class) CallGroup(group String.Name, method String.Name, args ...gd.Variant) { //gd:SceneTree.call_group
+	var frame = callframe.New()
+	defer frame.Free()
+	var fixed = [...]gd.Variant{gd.NewVariant(group), gd.NewVariant(method)}
+	ret, err := gd.Global.Object.MethodBindCall(gd.Global.Methods.SceneTree.Bind_call_group, self.AsObject(), append(fixed[:], args...)...)
+	if err != nil {
+		panic(err)
+	}
+	_ = ret
 }
 
 /*

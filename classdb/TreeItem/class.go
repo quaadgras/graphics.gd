@@ -901,6 +901,17 @@ func (self Instance) MoveAfter(item [1]gdclass.TreeItem) { //gd:TreeItem.move_af
 	Advanced(self).MoveAfter(item)
 }
 
+/*
+Calls the [param method] on the actual TreeItem and its children recursively. Pass parameters as a comma separated list.
+*/
+func (self Instance) CallRecursive(method string, args ...any) { //gd:TreeItem.call_recursive
+	var converted_variants = make([]gd.Variant, len(args))
+	for i, arg := range args {
+		converted_variants[i] = gd.NewVariant(arg)
+	}
+	Advanced(self).CallRecursive(String.Name(String.New(method)), converted_variants...)
+}
+
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.TreeItem
@@ -2485,6 +2496,22 @@ func (self class) MoveAfter(item [1]gdclass.TreeItem) { //gd:TreeItem.move_after
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_move_after, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
+
+/*
+Calls the [param method] on the actual TreeItem and its children recursively. Pass parameters as a comma separated list.
+*/
+//go:nosplit
+func (self class) CallRecursive(method String.Name, args ...gd.Variant) { //gd:TreeItem.call_recursive
+	var frame = callframe.New()
+	defer frame.Free()
+	var fixed = [...]gd.Variant{gd.NewVariant(method)}
+	ret, err := gd.Global.Object.MethodBindCall(gd.Global.Methods.TreeItem.Bind_call_recursive, self.AsObject(), append(fixed[:], args...)...)
+	if err != nil {
+		panic(err)
+	}
+	_ = ret
+}
+
 func (self class) AsTreeItem() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsTreeItem() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
 

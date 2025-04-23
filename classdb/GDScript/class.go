@@ -58,6 +58,22 @@ type Any interface {
 	AsGDScript() Instance
 }
 
+/*
+Returns a new instance of the script.
+[codeblock]
+var MyClass = load("myclass.gd")
+var instance = MyClass.new()
+print(instance.get_script() == MyClass) # Prints true
+[/codeblock]
+*/
+func (self Instance) New(args ...any) any { //gd:GDScript.new
+	var converted_variants = make([]gd.Variant, len(args))
+	for i, arg := range args {
+		converted_variants[i] = gd.NewVariant(arg)
+	}
+	return any(Advanced(self).New(converted_variants...).Interface())
+}
+
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.GDScript
@@ -75,6 +91,26 @@ func New() Instance {
 	casted := Instance{*(*gdclass.GDScript)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	return casted
+}
+
+/*
+Returns a new instance of the script.
+[codeblock]
+var MyClass = load("myclass.gd")
+var instance = MyClass.new()
+print(instance.get_script() == MyClass) # Prints true
+[/codeblock]
+*/
+//go:nosplit
+func (self class) New(args ...gd.Variant) variant.Any { //gd:GDScript.new
+	var frame = callframe.New()
+	defer frame.Free()
+	var fixed = [...]gd.Variant{}
+	ret, err := gd.Global.Object.MethodBindCall(gd.Global.Methods.GDScript.Bind_new, self.AsObject(), append(fixed[:], args...)...)
+	if err != nil {
+		panic(err)
+	}
+	return gd.VariantAs[variant.Any](ret)
 }
 
 func (self class) AsGDScript() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

@@ -1334,10 +1334,46 @@ func (self Expanded) AtrN(message string, plural_message string, n int, context 
 }
 
 /*
+Sends a remote procedure call request for the given [param method] to peers on the network (and locally), sending additional arguments to the method called by the RPC. The call request will only be received by nodes with the same [NodePath], including the exact same [member name]. Behavior depends on the RPC configuration for the given [param method] (see [method rpc_config] and [annotation @GDScript.@rpc]). By default, methods are not exposed to RPCs.
+May return [constant OK] if the call is successful, [constant ERR_INVALID_PARAMETER] if the arguments passed in the [param method] do not match, [constant ERR_UNCONFIGURED] if the node's [member multiplayer] cannot be fetched (such as when the node is not inside the tree), [constant ERR_CONNECTION_ERROR] if [member multiplayer]'s connection is not available.
+[b]Note:[/b] You can only safely use RPCs on clients after you received the [signal MultiplayerAPI.connected_to_server] signal from the [MultiplayerAPI]. You also need to keep track of the connection state, either by the [MultiplayerAPI] signals like [signal MultiplayerAPI.server_disconnected] or by checking ([code]get_multiplayer().peer.get_connection_status() == CONNECTION_CONNECTED[/code]).
+*/
+func (self Instance) Rpc(method string, args ...any) error { //gd:Node.rpc
+	var converted_variants = make([]gd.Variant, len(args))
+	for i, arg := range args {
+		converted_variants[i] = gd.NewVariant(arg)
+	}
+	return error(gd.ToError(Advanced(self).Rpc(String.Name(String.New(method)), converted_variants...)))
+}
+
+/*
+Sends a [method rpc] to a specific peer identified by [param peer_id] (see [method MultiplayerPeer.set_target_peer]).
+May return [constant OK] if the call is successful, [constant ERR_INVALID_PARAMETER] if the arguments passed in the [param method] do not match, [constant ERR_UNCONFIGURED] if the node's [member multiplayer] cannot be fetched (such as when the node is not inside the tree), [constant ERR_CONNECTION_ERROR] if [member multiplayer]'s connection is not available.
+*/
+func (self Instance) RpcId(peer_id int, method string, args ...any) error { //gd:Node.rpc_id
+	var converted_variants = make([]gd.Variant, len(args))
+	for i, arg := range args {
+		converted_variants[i] = gd.NewVariant(arg)
+	}
+	return error(gd.ToError(Advanced(self).RpcId(int64(peer_id), String.Name(String.New(method)), converted_variants...)))
+}
+
+/*
 Refreshes the warnings displayed for this node in the Scene dock. Use [method _get_configuration_warnings] to customize the warning messages to display.
 */
 func (self Instance) UpdateConfigurationWarnings() { //gd:Node.update_configuration_warnings
 	Advanced(self).UpdateConfigurationWarnings()
+}
+
+/*
+This function is similar to [method Object.call_deferred] except that the call will take place when the node thread group is processed. If the node thread group processes in sub-threads, then the call will be done on that thread, right before [constant NOTIFICATION_PROCESS] or [constant NOTIFICATION_PHYSICS_PROCESS], the [method _process] or [method _physics_process] or their internal versions are called.
+*/
+func (self Instance) CallDeferredThreadGroup(method string, args ...any) any { //gd:Node.call_deferred_thread_group
+	var converted_variants = make([]gd.Variant, len(args))
+	for i, arg := range args {
+		converted_variants[i] = gd.NewVariant(arg)
+	}
+	return any(Advanced(self).CallDeferredThreadGroup(String.Name(String.New(method)), converted_variants...).Interface())
 }
 
 /*
@@ -1352,6 +1388,17 @@ Similar to [method call_deferred_thread_group], but for notifications.
 */
 func (self Instance) NotifyDeferredThreadGroup(what int) { //gd:Node.notify_deferred_thread_group
 	Advanced(self).NotifyDeferredThreadGroup(int64(what))
+}
+
+/*
+This function ensures that the calling of this function will succeed, no matter whether it's being done from a thread or not. If called from a thread that is not allowed to call the function, the call will become deferred. Otherwise, the call will go through directly.
+*/
+func (self Instance) CallThreadSafe(method string, args ...any) any { //gd:Node.call_thread_safe
+	var converted_variants = make([]gd.Variant, len(args))
+	for i, arg := range args {
+		converted_variants[i] = gd.NewVariant(arg)
+	}
+	return any(Advanced(self).CallThreadSafe(String.Name(String.New(method)), converted_variants...).Interface())
 }
 
 /*
@@ -3219,6 +3266,39 @@ func (self class) AtrN(message String.Readable, plural_message String.Name, n in
 }
 
 /*
+Sends a remote procedure call request for the given [param method] to peers on the network (and locally), sending additional arguments to the method called by the RPC. The call request will only be received by nodes with the same [NodePath], including the exact same [member name]. Behavior depends on the RPC configuration for the given [param method] (see [method rpc_config] and [annotation @GDScript.@rpc]). By default, methods are not exposed to RPCs.
+May return [constant OK] if the call is successful, [constant ERR_INVALID_PARAMETER] if the arguments passed in the [param method] do not match, [constant ERR_UNCONFIGURED] if the node's [member multiplayer] cannot be fetched (such as when the node is not inside the tree), [constant ERR_CONNECTION_ERROR] if [member multiplayer]'s connection is not available.
+[b]Note:[/b] You can only safely use RPCs on clients after you received the [signal MultiplayerAPI.connected_to_server] signal from the [MultiplayerAPI]. You also need to keep track of the connection state, either by the [MultiplayerAPI] signals like [signal MultiplayerAPI.server_disconnected] or by checking ([code]get_multiplayer().peer.get_connection_status() == CONNECTION_CONNECTED[/code]).
+*/
+//go:nosplit
+func (self class) Rpc(method String.Name, args ...gd.Variant) Error.Code { //gd:Node.rpc
+	var frame = callframe.New()
+	defer frame.Free()
+	var fixed = [...]gd.Variant{gd.NewVariant(method)}
+	ret, err := gd.Global.Object.MethodBindCall(gd.Global.Methods.Node.Bind_rpc, self.AsObject(), append(fixed[:], args...)...)
+	if err != nil {
+		panic(err)
+	}
+	return gd.VariantAs[Error.Code](ret)
+}
+
+/*
+Sends a [method rpc] to a specific peer identified by [param peer_id] (see [method MultiplayerPeer.set_target_peer]).
+May return [constant OK] if the call is successful, [constant ERR_INVALID_PARAMETER] if the arguments passed in the [param method] do not match, [constant ERR_UNCONFIGURED] if the node's [member multiplayer] cannot be fetched (such as when the node is not inside the tree), [constant ERR_CONNECTION_ERROR] if [member multiplayer]'s connection is not available.
+*/
+//go:nosplit
+func (self class) RpcId(peer_id int64, method String.Name, args ...gd.Variant) Error.Code { //gd:Node.rpc_id
+	var frame = callframe.New()
+	defer frame.Free()
+	var fixed = [...]gd.Variant{gd.NewVariant(peer_id), gd.NewVariant(method)}
+	ret, err := gd.Global.Object.MethodBindCall(gd.Global.Methods.Node.Bind_rpc_id, self.AsObject(), append(fixed[:], args...)...)
+	if err != nil {
+		panic(err)
+	}
+	return gd.VariantAs[Error.Code](ret)
+}
+
+/*
 Refreshes the warnings displayed for this node in the Scene dock. Use [method _get_configuration_warnings] to customize the warning messages to display.
 */
 //go:nosplit
@@ -3227,6 +3307,21 @@ func (self class) UpdateConfigurationWarnings() { //gd:Node.update_configuration
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_update_configuration_warnings, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
+}
+
+/*
+This function is similar to [method Object.call_deferred] except that the call will take place when the node thread group is processed. If the node thread group processes in sub-threads, then the call will be done on that thread, right before [constant NOTIFICATION_PROCESS] or [constant NOTIFICATION_PHYSICS_PROCESS], the [method _process] or [method _physics_process] or their internal versions are called.
+*/
+//go:nosplit
+func (self class) CallDeferredThreadGroup(method String.Name, args ...gd.Variant) variant.Any { //gd:Node.call_deferred_thread_group
+	var frame = callframe.New()
+	defer frame.Free()
+	var fixed = [...]gd.Variant{gd.NewVariant(method)}
+	ret, err := gd.Global.Object.MethodBindCall(gd.Global.Methods.Node.Bind_call_deferred_thread_group, self.AsObject(), append(fixed[:], args...)...)
+	if err != nil {
+		panic(err)
+	}
+	return gd.VariantAs[variant.Any](ret)
 }
 
 /*
@@ -3252,6 +3347,21 @@ func (self class) NotifyDeferredThreadGroup(what int64) { //gd:Node.notify_defer
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_notify_deferred_thread_group, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
+}
+
+/*
+This function ensures that the calling of this function will succeed, no matter whether it's being done from a thread or not. If called from a thread that is not allowed to call the function, the call will become deferred. Otherwise, the call will go through directly.
+*/
+//go:nosplit
+func (self class) CallThreadSafe(method String.Name, args ...gd.Variant) variant.Any { //gd:Node.call_thread_safe
+	var frame = callframe.New()
+	defer frame.Free()
+	var fixed = [...]gd.Variant{gd.NewVariant(method)}
+	ret, err := gd.Global.Object.MethodBindCall(gd.Global.Methods.Node.Bind_call_thread_safe, self.AsObject(), append(fixed[:], args...)...)
+	if err != nil {
+		panic(err)
+	}
+	return gd.VariantAs[variant.Any](ret)
 }
 
 /*

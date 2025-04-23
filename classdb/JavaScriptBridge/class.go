@@ -106,6 +106,18 @@ func JsBufferToPackedByteArray(javascript_buffer [1]gdclass.JavaScriptObject) []
 }
 
 /*
+Creates a new JavaScript object using the [code]new[/code] constructor. The [param object] must a valid property of the JavaScript [code]window[/code]. See [JavaScriptObject] for usage.
+*/
+func CreateObject(obj string, args ...any) any { //gd:JavaScriptBridge.create_object
+	once.Do(singleton)
+	var converted_variants = make([]gd.Variant, len(args))
+	for i, arg := range args {
+		converted_variants[i] = gd.NewVariant(arg)
+	}
+	return any(Advanced().CreateObject(String.New(obj), converted_variants...).Interface())
+}
+
+/*
 Prompts the user to download a file containing the specified [param buffer]. The file will have the given [param name] and [param mime] type.
 [b]Note:[/b] The browser may override the [url=https://en.wikipedia.org/wiki/Media_type]MIME type[/url] provided based on the file [param name]'s extension.
 [b]Note:[/b] Browsers might block the download if [method download_buffer] is not being called from a user interaction (e.g. button click).
@@ -236,6 +248,21 @@ func (self class) JsBufferToPackedByteArray(javascript_buffer [1]gdclass.JavaScr
 	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
+}
+
+/*
+Creates a new JavaScript object using the [code]new[/code] constructor. The [param object] must a valid property of the JavaScript [code]window[/code]. See [JavaScriptObject] for usage.
+*/
+//go:nosplit
+func (self class) CreateObject(obj String.Readable, args ...gd.Variant) variant.Any { //gd:JavaScriptBridge.create_object
+	var frame = callframe.New()
+	defer frame.Free()
+	var fixed = [...]gd.Variant{gd.NewVariant(obj)}
+	ret, err := gd.Global.Object.MethodBindCall(gd.Global.Methods.JavaScriptBridge.Bind_create_object, self.AsObject(), append(fixed[:], args...)...)
+	if err != nil {
+		panic(err)
+	}
+	return gd.VariantAs[variant.Any](ret)
 }
 
 /*

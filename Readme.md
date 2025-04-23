@@ -188,7 +188,6 @@ repo. All examples are designed to be run with `gd run` without any additional s
 
 ## Known Limitations
 
-* No support for calling classdb methods that accept a variable number of arguments.
 * No support for Go 'scripts'.
 * 64bit only (arm64 && amd64).
 * No console support, will likely be achieved in the future with WASM.

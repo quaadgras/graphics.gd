@@ -15,6 +15,7 @@ const (
 	callDefault callType = iota
 	callBuiltin
 	callUtility
+	callVarargs
 )
 
 func (classDB ClassDB) signalCall(w io.Writer, class gdjson.Class, signal gdjson.Signal, singleton bool) {
@@ -35,9 +36,6 @@ func (classDB ClassDB) signalCall(w io.Writer, class gdjson.Class, signal gdjson
 }
 
 func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson.Method, singleton, defaults bool) {
-	if method.IsVararg {
-		return
-	}
 	switch class.Name {
 	case "Float", "Int", "Vector2", "Vector2i", "Rect2", "Rect2i", "Vector3", "Vector3i",
 		"Transform2D", "Vector4", "Vector4i", "Plane", "Quaternion", "AABB", "Basis", "Transform3D",
@@ -78,6 +76,12 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 			first = false
 		}
 	}
+	if method.IsVararg {
+		if !first {
+			fmt.Fprint(w, ", ")
+		}
+		fmt.Fprint(w, "args ...any")
+	}
 	fmt.Fprint(w, ") ")
 	if method.ReturnValue.Type != "" {
 		fmt.Fprintf(w, "%v ", resultSimple)
@@ -88,6 +92,12 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 	}
 	if method.IsStatic {
 		fmt.Fprintf(w, "self := Instance{}\n")
+	}
+	if method.IsVararg {
+		fmt.Fprint(w, "var converted_variants = make([]gd.Variant, len(args))\n")
+		fmt.Fprint(w, "for i, arg := range args {\n")
+		fmt.Fprint(w, "\tconverted_variants[i] = gd.NewVariant(arg)\n")
+		fmt.Fprint(w, "}\n")
 	}
 	if method.ReturnValue.Type != "" {
 		fmt.Fprintf(w, "return %s(", resultSimple)
@@ -144,6 +154,12 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 			}
 		}
 		fmt.Fprint(&call, gdtype.Name(gdtype.EngineTypeAsGoType(class.Name, arg.Meta, arg.Type)).ConvertToSimple(val))
+	}
+	if method.IsVararg {
+		if len(method.Arguments) > 0 {
+			fmt.Fprint(&call, ", ")
+		}
+		fmt.Fprint(&call, "converted_variants...")
 	}
 	fmt.Fprint(&call, ")")
 	fmt.Fprint(w, gdtype.Name(resultExpert).ConvertToGo(call.String(), resultSimple))
@@ -209,7 +225,7 @@ func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method
 
 func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, method gdjson.Method, ctype callType) {
 	if ctype == callDefault && method.IsVararg {
-		return
+		ctype = callVarargs
 	}
 	switch class.Name {
 	case "Float", "Int", "Vector2", "Vector2i", "Rect2", "Rect2i", "Vector3", "Vector3i",
@@ -304,10 +320,43 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 		if len(method.Arguments) > 0 {
 			fmt.Fprint(w, ", ")
 		}
-		fmt.Fprintf(w, "args ..."+prefix+"Variant")
+		fmt.Fprintf(w, "args ...%sVariant", prefix)
 	}
 	fmt.Fprintf(w, ") %v { //gd:%s.%s\n", result, class.Name, method.Name)
 	fmt.Fprintf(w, "\tvar frame = callframe.New()\n")
+
+	var static = ""
+	if method.IsStatic {
+		static = "Static"
+	}
+	var self = " self.AsObject(),"
+	if method.IsStatic {
+		self = ""
+	}
+
+	if ctype == callVarargs {
+		fmt.Fprintf(w, "\tdefer frame.Free()\n")
+		fmt.Fprintf(w, "var fixed = [...]gd.Variant{")
+		for i, arg := range method.Arguments {
+			if i > 0 {
+				fmt.Fprint(w, ", ")
+			}
+			fmt.Fprintf(w, "gd.NewVariant(%s)", fixReserved(arg.Name))
+		}
+		fmt.Fprint(w, "}\n")
+		fmt.Fprintf(w, "\tret, err := gd.Global.Object.MethodBindCall%s(gd.Global.Methods.%v.Bind_%v,%s append(fixed[:], args...)...)\n", static, class.Name, method.Name, self)
+		fmt.Fprintf(w, "\tif err != nil {\n")
+		fmt.Fprintf(w, "\t\tpanic(err)\n")
+		fmt.Fprintf(w, "\t}\n")
+		if result != "" {
+			fmt.Fprintf(w, "\treturn gd.VariantAs[%s](ret)\n", result)
+		} else {
+			fmt.Fprintf(w, "\t_ = ret\n")
+		}
+		fmt.Fprintf(w, "}\n")
+		return
+	}
+
 	for _, arg := range method.Arguments {
 		_, ok := classDB[arg.Type]
 		if ok {
@@ -340,14 +389,6 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 	}
 	if method.IsVararg {
 		fmt.Fprintf(w, "\tif len(args) > 0 { panic(`varargs not supported for class methods yet`); }\n")
-	}
-	var static = ""
-	if method.IsStatic {
-		static = "Static"
-	}
-	var self = " self.AsObject(),"
-	if method.IsStatic {
-		self = ""
 	}
 	fmt.Fprintf(w, "\tgd.Global.Object.MethodBindPointerCall%s(gd.Global.Methods.%v.Bind_%v,%s frame.Array(0), r_ret.Addr())\n", static, class.Name, method.Name, self)
 
