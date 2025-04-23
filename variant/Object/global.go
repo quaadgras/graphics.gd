@@ -37,6 +37,5 @@ func Call(object Any, method string, args ...any) any { //gd:Object.call
 	for _, arg := range args {
 		array.PushBack(gd.NewVariant(arg))
 	}
-
-	return object.AsObject()[0].Callv(gd.NewStringName(method), array)
+	return object.AsObject()[0].Callv(gd.NewStringName(method), array).Interface()
 }
