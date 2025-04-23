@@ -19,3 +19,4 @@ example/bin/
 /gdextension/internal
 /go.work.sum
 .idea
+internal/extension_api.json
