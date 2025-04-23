@@ -111,18 +111,17 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 	rvalue := reflect.ValueOf(instance.Value).Elem()
 	field := rvalue.FieldByName(sname)
 	if !field.IsValid() {
-		for i := 0; i < rvalue.NumField(); i++ {
-			rfield := rvalue.Type().Field(i)
+		for _, rfield := range reflect.VisibleFields(rvalue.Type()) {
 			if !rfield.IsExported() {
 				continue
 			}
 			tag, hasTag := rfield.Tag.Lookup("gd")
 			if hasTag && !rfield.Anonymous && tag == sname {
-				field = rvalue.Field(i)
+				field = rvalue.FieldByIndex(rfield.Index)
 				break
 			}
 			if !hasTag && String.ToSnakeCase(rfield.Name) == sname {
-				field = rvalue.Field(i)
+				field = rvalue.FieldByIndex(rfield.Index)
 				break
 			}
 		}
@@ -199,18 +198,17 @@ func (instance *instanceImplementation) Get(name gd.StringName) (gd.Variant, boo
 	rvalue := reflect.ValueOf(instance.Value).Elem()
 	field := rvalue.FieldByName(String.ToPascalCase(sname))
 	if !field.IsValid() {
-		for i := 0; i < rvalue.NumField(); i++ {
-			rfield := rvalue.Type().Field(i)
+		for _, rfield := range reflect.VisibleFields(rvalue.Type()) {
 			if !rfield.IsExported() {
 				continue
 			}
 			tag, hasTag := rfield.Tag.Lookup("gd")
 			if hasTag && !rfield.Anonymous && tag == sname {
-				field = rvalue.Field(i)
+				field = rvalue.FieldByIndex(rfield.Index)
 				break
 			}
 			if !hasTag && String.ToSnakeCase(rfield.Name) == sname {
-				field = rvalue.Field(i)
+				field = rvalue.FieldByIndex(rfield.Index)
 				break
 			}
 		}
@@ -264,9 +262,9 @@ func (instance *instanceImplementation) PropertyCanRevert(name gd.StringName) bo
 	rtype := reflect.TypeOf(instance.Value).Elem()
 	field, ok := rtype.FieldByName(sname)
 	if !ok {
-		for i := 0; i < rtype.NumField(); i++ {
-			if rtype.Field(i).Tag.Get("gd") == sname {
-				field = rtype.Field(i)
+		for _, rfield := range reflect.VisibleFields(rtype) {
+			if rfield.Tag.Get("gd") == sname {
+				field = rtype.FieldByIndex(rfield.Index)
 				ok = true
 				break
 			}
@@ -289,9 +287,9 @@ func (instance *instanceImplementation) PropertyGetRevert(name gd.StringName) (g
 	rtype := reflect.TypeOf(instance.Value).Elem()
 	field, ok := rtype.FieldByName(sname)
 	if !ok {
-		for i := 0; i < rtype.NumField(); i++ {
-			if rtype.Field(i).Tag.Get("gd") == sname {
-				field = rtype.Field(i)
+		for _, rfield := range reflect.VisibleFields(rtype) {
+			if rfield.Tag.Get("gd") == sname {
+				field = rtype.FieldByIndex(rfield.Index)
 				ok = true
 				break
 			}

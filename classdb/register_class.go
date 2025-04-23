@@ -308,8 +308,7 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 		class.BriefDescription = brief
 		class.Description = whole
 	}
-	for i := 1; i < rtype.NumField(); i++ {
-		field := rtype.Field(i)
+	for _, field := range reflect.VisibleFields(rtype) {
 		if !field.IsExported() || field.Anonymous || field.Name == "Object" {
 			continue
 		}
@@ -423,13 +422,12 @@ func (class classImplementation) reloadInstance(value reflect.Value, super [1]gd
 	// TODO cache this check
 	var signals []signalChan
 	var chSignals []signalChan
-	for i := 0; i < value.NumField(); i++ {
-		var field = value.Type().Field(i)
+	for _, field := range reflect.VisibleFields(value.Type()) {
 		if !field.IsExported() || field.Name == "Object" {
 			continue
 		}
 		var (
-			rvalue = value.Field(i).Addr()
+			rvalue = value.FieldByIndex(field.Index).Addr()
 		)
 		name := field.Name
 		if tag := field.Tag.Get("gd"); tag != "" {
@@ -529,6 +527,8 @@ func (instance *instanceImplementation) Notification(what int32, reversed bool) 
 		switch notify := instance.Value.(type) {
 		case interface{ Notification(gd.NotificationType) }:
 			notify.Notification(gd.NotificationType(what))
+		case interface{ Notification(int, bool) }:
+			notify.Notification(int(what), reversed)
 		default:
 		}
 	}
@@ -563,8 +563,7 @@ func (instance *instanceImplementation) Free() {
 		signal.signal.Free()
 	}
 	rvalue := reflect.ValueOf(instance.Value).Elem()
-	for i := range rvalue.NumField() {
-		field := rvalue.Type().Field(i)
+	for _, field := range reflect.VisibleFields(rvalue.Type()) {
 		if !field.IsExported() || field.Name == "Extension" {
 			continue
 		}
@@ -576,10 +575,10 @@ func (instance *instanceImplementation) Free() {
 			continue
 		}
 		if field.Type.Implements(reflect.TypeFor[interface{ Free() }]()) {
-			rvalue.Field(i).Interface().(interface{ Free() }).Free()
+			rvalue.FieldByIndex(field.Index).Interface().(interface{ Free() }).Free()
 		}
 		if field.Type.Kind() == reflect.Array && field.Type.Len() == 1 && field.Type.Elem().Implements(reflect.TypeFor[interface{ Free() }]()) {
-			rvalue.Field(i).Index(0).Interface().(interface{ Free() }).Free()
+			rvalue.FieldByIndex(field.Index).Index(0).Interface().(interface{ Free() }).Free()
 		}
 	}
 	gd.ExtensionInstances.Delete(instance.object)
@@ -600,12 +599,11 @@ func (instance *instanceImplementation) ready() {
 		return
 	}
 	var rvalue = reflect.ValueOf(instance.Value).Elem()
-	for i := range rvalue.NumField() {
-		field := rvalue.Type().Field(i)
+	for _, field := range reflect.VisibleFields(rvalue.Type()) {
 		if !field.IsExported() || field.Name == "Extension" {
 			continue
 		}
-		instance.assertChild(rvalue.Field(i).Addr().Interface(), field, parent, parent)
+		instance.assertChild(rvalue.FieldByIndex(field.Index).Addr().Interface(), field, parent, parent)
 	}
 	if !instance.isEditor {
 		switch ready := instance.Value.(type) {
@@ -634,12 +632,11 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 	if rvalue.Elem().Kind() == reflect.Struct {
 		defer func() {
 			rvalue := rvalue.Elem()
-			for i := 0; i < rvalue.NumField(); i++ {
-				field := rvalue.Type().Field(i)
+			for _, field := range reflect.VisibleFields(rvalue.Type()) {
 				if !field.IsExported() || field.Name == "Class" || field.Anonymous {
 					continue
 				}
-				instance.assertChild(rvalue.Field(i).Addr().Interface(), field, class.AsNode(), owner)
+				instance.assertChild(rvalue.FieldByIndex(field.Index).Addr().Interface(), field, class.AsNode(), owner)
 			}
 		}()
 	}

@@ -15,8 +15,7 @@ import (
 // emittable by the class, when the class is instantiated, the signal field needs to injected into the field
 // so that it can be used and emitted.
 func registerSignals(class gd.StringName, rtype reflect.Type) {
-	for i := 0; i < rtype.NumField(); i++ {
-		field := rtype.Field(i)
+	for _, field := range reflect.VisibleFields(rtype) {
 		name := String.ToSnakeCase(field.Name)
 		if !field.IsExported() {
 			continue
@@ -81,9 +80,9 @@ func registerSignals(class gd.StringName, rtype reflect.Type) {
 			} else if !(etype.Kind() == reflect.Struct && etype.NumField() == 0) {
 				vtype, ok := gd.VariantTypeOf(etype)
 				if ok {
-					name := fmt.Sprintf("event", i)
-					if i-1 < len(argNames) {
-						name = argNames[i-1]
+					name := fmt.Sprintf("event")
+					if len(argNames) > 0 {
+						name = argNames[0]
 					}
 					args = append(args, gd.PropertyInfo{
 						Type:      vtype,
