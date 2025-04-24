@@ -90,6 +90,7 @@ func singleton() {
 }
 
 func load(path String.Readable, type_hint String.Readable, cache_mode gdclass.ResourceLoaderCacheMode) [1]gdclass.Resource { //gd:ResourceLoader.load
+	once.Do(singleton)
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, pointers.Get(gd.InternalString(type_hint)))
