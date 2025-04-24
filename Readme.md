@@ -114,6 +114,8 @@ Ctrl+F in the project for a specific `//gd:symbol` to find the matching Go symbo
 * Utility Functions      -> `//gd:utility_function_name`
 * Enum                   -> `//gd:ClassName.EnumName`
 ```
+_NOTE_ in order to avoid circular dependencies, some functions have moved packages,
+for example `Node.get_tree()` (GDScript) has moved to `SceneTree.Get()` (Go).
 
 ## Variant Type Table
 
