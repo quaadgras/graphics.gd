@@ -21,3 +21,5 @@ func Cleanups() []func() {
 
 var StartupFunctions []func()
 var PostStartupFunctions []func()
+
+var EditorStartupFunctions []func()

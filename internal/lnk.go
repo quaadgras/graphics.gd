@@ -29,6 +29,9 @@ func (Godot *API) Init(level GDExtensionInitializationLevel) {
 	}
 	if level == GDExtensionInitializationLevelEditor {
 		Godot.linkMethods(true)
+		for _, fn := range EditorStartupFunctions {
+			fn()
+		}
 	}
 }
 

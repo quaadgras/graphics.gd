@@ -140,6 +140,8 @@ If the Struct extends [EditorPluginClass] then it will be added
 to the editor as a plugin.
 */
 func Register[T Class](exports ...any) {
+	var superType = ([1]T{})[0].superType()
+	var super = reflect.New(superType).Elem().Interface()
 	register := func() {
 		var classType = reflect.TypeFor[T]()
 		var base = classType
@@ -152,13 +154,12 @@ func Register[T Class](exports ...any) {
 		if !base.Implements(reflect.TypeFor[Class]()) {
 			panic("gdextension.RegisterClass: Class type must embed a gd.Extension field as the first field")
 		}
-		var superType = ([1]T{})[0].superType()
+
 		if classType.Kind() != reflect.Struct || classType.Name() == "" {
 			panic("gdextension.RegisterClass: Class type must be a named struct")
 		}
 		var rename = nameOf(classType) // support 'gd' tag for renaming the class within Godot.
 		var tool = false
-		var super = reflect.New(superType).Elem().Interface()
 		switch super.(type) {
 		case interface{ AsScript() ScriptClass.Instance },
 			interface {
@@ -261,11 +262,28 @@ func Register[T Class](exports ...any) {
 		if registrator, ok := any(reference).(interface{ OnRegister() }); ok {
 			registrator.OnRegister()
 		}
+		if EngineClass.IsEditorHint() {
+			switch super.(type) {
+			case EditorPluginClass.Any:
+				gd.Global.EditorPlugins.Add(className)
+			}
+		}
 	}
-	if gd.Linked {
-		register()
-	} else {
-		gd.StartupFunctions = append(gd.StartupFunctions, register)
+	switch super.(type) {
+	case interface{ AsScript() ScriptClass.Instance },
+		interface {
+			AsEditorPlugin() EditorPluginClass.Instance
+		},
+		interface {
+			AsScriptLanguage() ScriptLanguageClass.Instance
+		}:
+		gd.EditorStartupFunctions = append(gd.EditorStartupFunctions, register)
+	default:
+		if gd.Linked {
+			register()
+		} else {
+			gd.StartupFunctions = append(gd.StartupFunctions, register)
+		}
 	}
 }
 
