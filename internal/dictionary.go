@@ -41,8 +41,12 @@ func InternalDictionary[K comparable, V any](dict DictionaryType.Map[K, V]) Dict
 	return pointers.Load[Dictionary](state)
 }
 
-func DictionaryFromMap[T any](val T) DictionaryType.Any {
-	return NewVariant(val).Interface().(DictionaryType.Any)
+func DictionaryFromMap[V any](val V) DictionaryType.Any {
+	converted := NewVariant(val).Interface()
+	if converted == nil {
+		return DictionaryType.New[VariantPkg.Any, VariantPkg.Any]()
+	}
+	return converted.(DictionaryType.Any)
 }
 
 func NewDictionaryProxy[K comparable, V any]() (DictionaryProxy[K, V], complex128) {
