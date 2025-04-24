@@ -4,8 +4,10 @@ package startup
 
 import (
 	"errors"
+	"fmt"
 	"iter"
 	"os"
+	"runtime/debug"
 	"unsafe"
 
 	internal "graphics.gd/internal"
@@ -57,6 +59,12 @@ func main()
 // and after startup.
 func call_main_in_steps() iter.Seq[bool] {
 	return func(yield func(bool) bool) {
+		defer func() {
+			if r := recover(); r != nil {
+				fmt.Println(r)
+				debug.PrintStack()
+			}
+		}()
 		pause_main = yield
 		main()
 	}
