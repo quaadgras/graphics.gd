@@ -68,7 +68,7 @@ func ArrayFromSlice[T ArrayVariant.Contains[A], A, B any](slice []B) T {
 	var array = ArrayVariant.Through(NewArrayProxy[A]())
 	array.Resize(len(slice))
 	for i, value := range slice {
-		array.SetIndex(i, VariantPkg.New(value).Interface().(A))
+		array.SetIndex(i, VariantAs[A](NewVariant(VariantPkg.New(value))))
 	}
 	return T(array)
 }
