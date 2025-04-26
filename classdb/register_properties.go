@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"reflect"
 
+	EngineClass "graphics.gd/classdb/Engine"
 	ResourceClass "graphics.gd/classdb/Resource"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/pointers"
@@ -157,6 +158,7 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 		var err error
 		converted, err = gd.ConvertToDesiredGoType(value, field.Type())
 		if err != nil {
+			EngineClass.Raise(err)
 			return false
 		}
 	}
