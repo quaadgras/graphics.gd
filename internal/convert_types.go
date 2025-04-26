@@ -204,12 +204,12 @@ func convertToGoMap(rtype reflect.Type, value any) (reflect.Value, error) {
 	switch dictionary := value.(type) {
 	case DictionaryType.Any:
 		var mapValue = reflect.MakeMap(rtype)
-		for _, key := range dictionary.Iter() {
+		for key, val := range dictionary.Iter() {
 			keyValue, err := convertVariantToDesiredGoType(NewVariant(key), rtype.Key())
 			if err != nil {
 				return reflect.Value{}, xray.New(err)
 			}
-			valueValue, err := convertVariantToDesiredGoType(NewVariant(dictionary.Index(key)), rtype.Elem())
+			valueValue, err := convertVariantToDesiredGoType(NewVariant(val), rtype.Elem())
 			if err != nil {
 				return reflect.Value{}, xray.New(err)
 			}

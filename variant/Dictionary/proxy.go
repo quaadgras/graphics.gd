@@ -54,6 +54,9 @@ func As[P Proxy[K, V], K comparable, V any](dict Map[K, V], alloc func() (P, com
 	if !ok {
 		view, ok := any(dict.proxy).(anyView)
 		if ok {
+			if _, state, ok := view.lift(); ok {
+				return [1]P{}[0], state
+			}
 			proxy, state := alloc()
 			for key, val := range view.Iter(0) {
 				proxy.SetIndex(state, variant.As[K](key), variant.As[V](val))
@@ -272,6 +275,12 @@ func (p *localFirst[K, V]) pass(proxy Proxy[variant.Any, variant.Any], state com
 	p.order = nil
 	p.value = nil
 }
+func (p *localFirst[K, V]) lift() (complex128, bool) {
+	if p.proxy != nil {
+		return p.state, true
+	}
+	return 0, false
+}
 
 type typedView[K comparable, V any] struct {
 	Proxy[variant.Any, variant.Any]
@@ -329,6 +338,7 @@ type anyView struct {
 		Any(complex128) Any
 		SortAny(complex128, func(variant.Any, variant.Any) bool)
 		pass(Proxy[variant.Any, variant.Any], complex128)
+		lift() (complex128, bool)
 	}
 }
 
@@ -363,4 +373,11 @@ func (a anyView) IsReadOnly(state complex128) bool {
 func (a anyView) MakeReadOnly(state complex128) { a.localFirst.MakeReadOnly(state) }
 func (a anyView) pass(proxy Proxy[variant.Any, variant.Any], state complex128) {
 	a.localFirst.pass(proxy, state)
+}
+func (a anyView) lift() (Proxy[variant.Any, variant.Any], complex128, bool) {
+	state, ok := a.localFirst.lift()
+	if ok {
+		return a, state, true
+	}
+	return nil, 0, false
 }
