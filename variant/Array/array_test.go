@@ -110,3 +110,15 @@ func TestSortFunc(t *testing.T) {
 	Array.SortFunc(sort_ascending, my_items)
 	gdtests.Print(t, `[["Rice", 4], ["Tomato", 5], ["Apple", 9]]`, my_items) // Prints [["Rice", 4], ["Tomato", 5], ["Apple", 9]]
 }
+
+func TestArrayFilter(t *testing.T) {
+	arr := Array.New[int]()
+	arr.PushFront(1)
+	arr.PushFront(2)
+	arr = Array.Filter(func(itemID int) bool {
+		return itemID == 2
+	}, arr)
+	if arr.Len() != 1 {
+		t.Errorf("Expected length 1, got %d", arr.Len())
+	}
+}

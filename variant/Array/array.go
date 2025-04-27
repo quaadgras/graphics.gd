@@ -267,7 +267,7 @@ func Filter[T any](fn func(T) bool, array Contains[T]) Contains[T] { //gd:Array.
 	var result = New[T]()
 	for i := range array.Len() {
 		if fn(array.Index(i)) {
-			array.Append(array.Index(i))
+			result.Append(array.Index(i))
 		}
 	}
 	return result
