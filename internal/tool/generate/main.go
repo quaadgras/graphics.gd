@@ -749,7 +749,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 			fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertType(pkg, arg.Meta, arg.Type))
 		}
 		fmt.Fprintf(w, ") %v, api *"+prefix+"API) (cb "+prefix+"ExtensionClassCallVirtualFunc) {\n", result)
-		fmt.Fprintf(w, "\treturn func(class "+prefix+"ExtensionClass, p_args "+prefix+"Address, p_back "+prefix+"Address) {\n")
+		fmt.Fprint(w, "\treturn func(class "+prefix+"ExtensionClass, p_args "+prefix+"Address, p_back "+prefix+"Address) {\n")
 		for i, arg := range method.Arguments {
 			var argType = classDB.convertType(pkg, arg.Meta, arg.Type)
 
@@ -815,7 +815,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 		if len(method.Arguments) > 0 {
 			fmt.Fprint(w, ", ")
 		}
-		fmt.Fprintf(w, "args ..."+prefix+"Variant")
+		fmt.Fprint(w, "args ..."+prefix+"Variant")
 	}
 	fmt.Fprintf(w, ") %v {\n", result)
 	fmt.Fprintf(w, "\tvar frame = callframe.New()\n")

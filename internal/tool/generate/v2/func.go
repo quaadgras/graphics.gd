@@ -382,7 +382,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 			fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), gdtype.EngineTypeAsGoType(class.Name, arg.Meta, arg.Type))
 		}
 		fmt.Fprintf(w, ") %v) (cb "+prefix+"ExtensionClassCallVirtualFunc) {\n", result)
-		fmt.Fprintf(w, "\treturn func(class any, p_args "+prefix+"Address, p_back "+prefix+"Address) {\n")
+		fmt.Fprint(w, "\treturn func(class any, p_args "+prefix+"Address, p_back "+prefix+"Address) {\n")
 		for i, arg := range method.Arguments {
 			var argType = gdtype.EngineTypeAsGoType(class.Name, arg.Meta, arg.Type)
 			pointerKind, argIsPtr := gdtype.Name(argType).IsPointer()

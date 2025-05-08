@@ -191,7 +191,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		fmt.Fprint(file, strings.Replace(class.Description, "*/", "", -1))
 		fmt.Fprintln(file)
 		if hasVirtual {
-			fmt.Fprintf(file, "\t See [Interface] for methods that can be overridden by a [Class] that extends it.\n", class.Name)
+			fmt.Fprintf(file, "\t See [Interface] for methods that can be overridden by a [Class] that extends it.\n")
 		}
 		fmt.Fprintln(file, "\n*/")
 	}
