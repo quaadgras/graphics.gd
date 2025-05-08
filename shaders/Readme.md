@@ -21,10 +21,11 @@ import (
 	"graphics.gd/shaders/vec2"
 	"graphics.gd/shaders/vec4"
 	"graphics.gd/shaders/rgba"
+	"graphics.gd/shaders/pipeline/CanvasItem"
 )
 
 type MyShader struct {
-	shaders.Type2D
+	CanvasItem.Shader
 
 	MyUniform vec2.XY `gd:"my_uniform"`
 }
@@ -33,15 +34,15 @@ type MyShader struct {
 // input.
 
 // Fragment returns a fragment for the given vertex (also known as a vertex shader).
-func (MyShader) Fragment(vertex shaders.Vertex2D) shaders.Fragment2D {
-	return shaders.Fragment2D{
+func (MyShader) Fragment(vertex CanvasItem.Vertex) CanvasItem.Fragment {
+	return CanvasItem.Fragment{
 		Position: vertex.Position,
 	}
 }
 
 // Material returns a material for the given fragment (also known as a fragment shader).
-func (MyShader) Material(fragment shaders.Fragment2D) shaders.Material2D {
-	return shaders.Material2D{
+func (MyShader) Material(fragment CanvasItem.Fragment) CanvasItem.Material {
+	return CanvasItem.Material{
 		Color: rgba.New(1, 0, 0, 1),
 	}
 }
