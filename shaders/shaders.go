@@ -57,40 +57,27 @@ import (
 	dsl "graphics.gd/shaders/internal/gpu"
 	"graphics.gd/shaders/vec2"
 	"graphics.gd/shaders/vec4"
-	"runtime.link/xyz"
 )
 
-type RenderingOption2D xyz.Switch[string, struct {
-	BlendingModeMix            RenderingOption2D `json:"blend_mix"`             // Mix blend mode (alpha is transparency), default.
-	BlendingModeAdd            RenderingOption2D `json:"blend_add"`             // Additive blend mode.
-	BlendingModeSub            RenderingOption2D `json:"blend_sub"`             // Subtractive blend mode.
-	BlendingModeMul            RenderingOption2D `json:"blend_mul"`             // Multiplicative blend mode.
-	BlendingPremultipliedAlpha RenderingOption2D `json:"blend_premul_alpha"`    // Pre-multiplied alpha blend mode.
-	BlendingDisabled           RenderingOption2D `json:"blend_disabled"`        // Disable blending, values (including alpha) are written as-is.
-	Unshaded                   RenderingOption2D `json:"unshaded"`              // Result is just albedo. No lighting/shading happens in material.
-	LightOnly                  RenderingOption2D `json:"light_only"`            // Only draw on light pass.
-	SkipVertexTransform        RenderingOption2D `json:"skip_vertex_transform"` // VERTEX needs to be transformed manually in vertex function.
-	WorldVertexCoordinates     RenderingOption2D `json:"world_vertex_coords"`   // VERTEX is modified in world coordinates instead of local.
-}]
+// Globals are available everywhere, including custom functions.
+var (
+	Time = gpu.NewFloatExpression(gpu.New(gpu.Identifier("TIME")))
+	PI   = gpu.NewFloatExpression(gpu.New(gpu.Identifier("PI")))
+	TAU  = gpu.NewFloatExpression(gpu.New(gpu.Identifier("TAU")))
+	E    = gpu.NewFloatExpression(gpu.New(gpu.Identifier("E")))
+)
 
-var RenderingOptions2D = xyz.AccessorFor(RenderingOption2D.Values)
-
-type Program[V, F, M, L any, RM ~string] interface {
+type Program[Vertex, Fragment, Material, Lighting any, RenderMode ~string] interface {
 	Super() ShaderMaterial.Instance
 
 	ShaderType() string
-	RenderMode() []RM
+	RenderMode() []RenderMode
 
-	Fragment(V) F
-	Material(F) M
-	Lighting(M) L
-}
+	Pipeline() [3]string
 
-type Globals struct {
-	// Global time since the engine has started, in seconds. It repeats after every 3,600 seconds (which can be changed with
-	// the rollover setting). It's not affected by time_scale or pausing. If you need a TIME variable that can be scaled or
-	// paused, add your own global shader uniform and update it each frame.
-	Time vec1.X `gd:"TIME"`
+	Fragment(Vertex) Fragment
+	Material(Fragment) Material
+	Lighting(Material) Lighting
 }
 
 func Compile[V, F, M, L comparable, RM ~string](prog Program[V, F, M, L, RM]) {
@@ -112,6 +99,8 @@ func Compile[V, F, M, L comparable, RM ~string](prog Program[V, F, M, L, RM]) {
 		fmt.Fprintf(&writer, ";\n")
 	}
 
+	pipeline := prog.Pipeline()
+
 	linkup(prog)
 	var vertices V
 	linkup(&vertices)
@@ -121,14 +110,14 @@ func Compile[V, F, M, L comparable, RM ~string](prog Program[V, F, M, L, RM]) {
 	linkup(&material)
 
 	compileUniforms(&writer, prog)
-	if frag := prog.Fragment(vertices); frag != [1]F{}[0] {
-		compileFragmentShader(&writer, frag)
+	if frag := prog.Fragment(vertices); frag != [1]F{}[0] && pipeline[0] != "" {
+		compileFunction(&writer, frag, pipeline[0])
 	}
-	if matl := prog.Material(fragment); matl != [1]M{}[0] {
-		compileMaterialShader(&writer, matl)
+	if matl := prog.Material(fragment); matl != [1]M{}[0] && pipeline[1] != "" {
+		compileFunction(&writer, matl, pipeline[1])
 	}
-	if lght := prog.Lighting(material); lght != [1]L{}[0] {
-		compileLightingShader(&writer, lght)
+	if lght := prog.Lighting(material); lght != [1]L{}[0] && pipeline[2] != "" {
+		compileFunction(&writer, lght, pipeline[2])
 	}
 	fmt.Println(writer.String())
 	shader.SetCode(writer.String())
@@ -175,41 +164,9 @@ func compileUniforms(w io.Writer, uniforms any) {
 	fmt.Fprintln(w)
 }
 
-func compileFragmentShader(w io.Writer, vertices any) {
-	fmt.Fprintf(w, "void vertex() {\n")
-	value := reflect.ValueOf(vertices)
-	rtype := value.Type()
-	for i := range rtype.NumField() {
-		field := rtype.Field(i)
-		expr, ok := value.Field(i).Interface().(dsl.Evaluator)
-		if ok && !value.Field(i).IsZero() {
-			fmt.Fprintf(w, "\t%s = ", field.Tag.Get("gd"))
-			compileExpression(w, expr)
-			fmt.Fprintf(w, ";\n")
-		}
-	}
-	fmt.Fprintf(w, "}\n")
-}
-
-func compileMaterialShader(w io.Writer, material any) {
-	fmt.Fprintf(w, "void fragment() {\n")
-	value := reflect.ValueOf(material)
-	rtype := value.Type()
-	for i := range rtype.NumField() {
-		field := rtype.Field(i)
-		expr, ok := value.Field(i).Interface().(dsl.Evaluator)
-		if ok && !value.Field(i).IsZero() {
-			fmt.Fprintf(w, "\t%s = ", field.Tag.Get("gd"))
-			compileExpression(w, expr)
-			fmt.Fprintf(w, ";\n")
-		}
-	}
-	fmt.Fprintf(w, "}\n")
-}
-
-func compileLightingShader(w io.Writer, light any) {
-	fmt.Fprintf(w, "void light() {\n")
-	value := reflect.ValueOf(light)
+func compileFunction(w io.Writer, data any, name string) {
+	fmt.Fprintf(w, "void %s() {\n", name)
+	value := reflect.ValueOf(data)
 	rtype := value.Type()
 	for i := range rtype.NumField() {
 		field := rtype.Field(i)

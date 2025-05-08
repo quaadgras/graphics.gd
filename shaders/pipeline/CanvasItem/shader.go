@@ -2,8 +2,6 @@
 package CanvasItem
 
 import (
-	"graphics.gd/classdb"
-	"graphics.gd/classdb/ShaderMaterial"
 	"graphics.gd/shaders/bool"
 	"graphics.gd/shaders/float"
 	"graphics.gd/shaders/int"
@@ -22,11 +20,16 @@ CanvasItem shaders contain fewer built-in variables and functionality than Spati
 structure with vertex, fragment, and light processor functions.
 */
 type Shader struct {
-	classdb.Extension[internal.Shader, ShaderMaterial.Instance]
+	shader
 }
+
+type shader = internal.Shader
 
 func (Shader) ShaderType() string       { return "canvas_item" }
 func (Shader) RenderMode() []RenderMode { return nil }
+func (Shader) Pipeline() [3]string {
+	return [3]string{"vertex", "fragment", "light"}
+}
 
 func (Shader) Fragment(vertex Vertex) Fragment     { return Fragment{} }
 func (Shader) Material(fragment Fragment) Material { return Material{} }
@@ -45,14 +48,6 @@ const (
 	LightOnly           RenderMode = "light_only"            // Only draw on light pass.
 	SkipVertexTransform RenderMode = "skip_vertex_transform" // VERTEX needs to be transformed manually in the vertex() function.
 	WorldVertexCoords   RenderMode = "world_vertex_coords"   // VERTEX is modified in world coordinates instead of local.
-)
-
-// Globals are available everywhere, including custom functions.
-var (
-	Time = gpu.NewFloatExpression(gpu.New(gpu.Identifier("TIME")))
-	PI   = gpu.NewFloatExpression(gpu.New(gpu.Identifier("PI")))
-	TAU  = gpu.NewFloatExpression(gpu.New(gpu.Identifier("TAU")))
-	E    = gpu.NewFloatExpression(gpu.New(gpu.Identifier("E")))
 )
 
 type Vertex struct {

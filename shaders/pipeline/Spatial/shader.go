@@ -2,8 +2,6 @@
 package Spatial
 
 import (
-	"graphics.gd/classdb"
-	"graphics.gd/classdb/ShaderMaterial"
 	"graphics.gd/shaders/float"
 	"graphics.gd/shaders/int"
 	"graphics.gd/shaders/internal"
@@ -23,11 +21,16 @@ Scattering, Transmission, Ambient Occlusion, Rim lighting etc). Users can option
 and light processor functions to affect how objects are drawn.
 */
 type Shader struct {
-	classdb.Extension[internal.Shader, ShaderMaterial.Instance]
+	shader
 }
+
+type shader = internal.Shader
 
 func (Shader) ShaderType() string       { return "spatial" }
 func (Shader) RenderMode() []RenderMode { return nil }
+func (Shader) Pipeline() [3]string {
+	return [3]string{"vertex", "fragment", "light"}
+}
 
 func (Shader) Fragment(vertex Vertex) Fragment     { return Fragment{} }
 func (Shader) Material(fragment Fragment) Material { return Material{} }
@@ -75,10 +78,6 @@ const (
 
 // Globals are available everywhere, including custom functions.
 var (
-	Time         = gpu.NewFloatExpression(gpu.New(gpu.Identifier("TIME")))
-	PI           = gpu.NewFloatExpression(gpu.New(gpu.Identifier("PI")))
-	TAU          = gpu.NewFloatExpression(gpu.New(gpu.Identifier("TAU")))
-	E            = gpu.NewFloatExpression(gpu.New(gpu.Identifier("E")))
 	OutputIsSRGB = gpu.NewBoolExpression(gpu.New(gpu.Identifier("OUTPUT_IS_SRGB")))
 	ClipSpaceFar = gpu.NewFloatExpression(gpu.New(gpu.Identifier("CLIP_SPACE_FAR")))
 )
