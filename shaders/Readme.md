@@ -48,7 +48,9 @@ func (MyShader) Material(fragment CanvasItem.Fragment) CanvasItem.Material {
 }
 
 // Lighting calculates the lighting for the given material (also known as a lighting pass).
-func (MyShader) Lighting(material shaders.Material2D) vec4.RGBA {
-	return material.Color
+func (MyShader) Lighting(material CanvasItem.Material) CanvasItem.Lighting {
+	return CanvasItem.Lighting{
+		Color: material.Color,
+	}
 }
 ```
