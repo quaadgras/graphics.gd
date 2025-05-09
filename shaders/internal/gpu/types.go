@@ -1,11 +1,104 @@
 package gpu
 
-import "reflect"
+import (
+	"reflect"
+
+	"graphics.gd/classdb/Cubemap"
+	"graphics.gd/classdb/Texture2D"
+	"graphics.gd/classdb/Texture2DArray"
+	"graphics.gd/classdb/Texture3D"
+	"graphics.gd/variant/Basis"
+	"graphics.gd/variant/Color"
+	FloatVariant "graphics.gd/variant/Float"
+	"graphics.gd/variant/Projection"
+	"graphics.gd/variant/Transform2D"
+	"graphics.gd/variant/Vector2"
+	"graphics.gd/variant/Vector2i"
+	"graphics.gd/variant/Vector3"
+	"graphics.gd/variant/Vector3i"
+	"graphics.gd/variant/Vector4"
+)
 
 type internalExpression = Expression
 
+type isEquivalentTo[T any] interface {
+	equivalentTo(T)
+}
+
+type Sampler2D[T any] struct {
+	internalExpression
+	isEquivalentTo[Texture2D.Instance]
+}
+
+func (Sampler2D[T]) sampler2D() reflect.Type { return reflect.TypeFor[T]() }
+
+type IsSampler2D interface {
+	sampler2D() reflect.Type
+}
+
+type Sampler3D[T any] struct {
+	internalExpression
+	isEquivalentTo[Texture3D.Instance]
+}
+
+func (Sampler3D[T]) sampler3D() reflect.Type { return reflect.TypeFor[T]() }
+
+type IsSampler3D interface {
+	sampler3D() reflect.Type
+}
+
+type ArraySampler2D[T any] struct {
+	internalExpression
+	isEquivalentTo[Texture2DArray.Instance]
+}
+
+func (ArraySampler2D[T]) arraySampler2D() reflect.Type { return reflect.TypeFor[T]() }
+
+type IsArraySampler2D interface {
+	arraySampler2D() reflect.Type
+}
+
+type ArraySampler3D[T any] struct {
+	internalExpression
+}
+
+func (ArraySampler3D[T]) arraySampler3D() reflect.Type { return reflect.TypeFor[T]() }
+
+type IsArraySampler3D interface {
+	arraySampler3D() reflect.Type
+}
+
+type CubeSampler[T any] struct {
+	internalExpression
+	isEquivalentTo[Cubemap.Instance]
+}
+
+func (CubeSampler[T]) cubeSampler() reflect.Type { return reflect.TypeFor[T]() }
+
+type IsCubeSampler interface {
+	cubeSampler() reflect.Type
+}
+
+func SamplerType(val any) reflect.Type {
+	switch v := val.(type) {
+	case IsSampler2D:
+		return v.sampler2D()
+	case IsSampler3D:
+		return v.sampler3D()
+	case IsArraySampler2D:
+		return v.arraySampler2D()
+	case IsArraySampler3D:
+		return v.arraySampler3D()
+	case IsCubeSampler:
+		return v.cubeSampler()
+	default:
+		panic("unsupported sampler type " + reflect.TypeOf(v).String())
+	}
+}
+
 type Bool = struct {
 	internalExpression
+	isEquivalentTo[bool]
 
 	X bool
 }
@@ -26,6 +119,7 @@ func NewBoolExpression(e Expression) Bool { return Bool{internalExpression: e} }
 
 type Int = struct {
 	internalExpression
+	isEquivalentTo[int32]
 
 	X int
 }
@@ -45,6 +139,7 @@ func NewIntExpression(e Expression) Int { return Int{internalExpression: e} }
 
 type Uint = struct {
 	internalExpression
+	isEquivalentTo[uint32]
 
 	X uint
 }
@@ -64,6 +159,7 @@ func NewUintExpression(e Expression) Uint { return Uint{internalExpression: e} }
 
 type Float = struct {
 	internalExpression
+	isEquivalentTo[FloatVariant.X]
 
 	X float64
 }
@@ -83,6 +179,7 @@ func NewFloatExpression(e Expression) Float { return Float{internalExpression: e
 
 type Vec2b = struct {
 	internalExpression
+	isEquivalentTo[[2]bool]
 
 	X, Y Bool
 }
@@ -92,6 +189,7 @@ func NewVec2bExpression(e Expression) Vec2b { return Vec2b{internalExpression: e
 
 type Vec3b = struct {
 	internalExpression
+	isEquivalentTo[[3]bool]
 
 	X, Y, Z Bool
 }
@@ -103,6 +201,7 @@ func NewVec3bExpression(e Expression) Vec3b { return Vec3b{internalExpression: e
 
 type Vec4b = struct {
 	internalExpression
+	isEquivalentTo[[4]bool]
 
 	X, Y, Z, W Bool
 }
@@ -114,6 +213,7 @@ func NewVec4bExpression(e Expression) Vec4b { return Vec4b{internalExpression: e
 
 type Vec2i = struct {
 	internalExpression
+	isEquivalentTo[Vector2i.XY]
 
 	X, Y Int
 }
@@ -123,6 +223,7 @@ func NewVec2iExpression(e Expression) Vec2i { return Vec2i{internalExpression: e
 
 type Vec3i = struct {
 	internalExpression
+	isEquivalentTo[Vector3i.XYZ]
 
 	X, Y, Z Int
 }
@@ -134,6 +235,7 @@ func NewVec3iExpression(e Expression) Vec3i { return Vec3i{internalExpression: e
 
 type Vec4i = struct {
 	internalExpression
+	isEquivalentTo[[4]int32]
 
 	X, Y, Z, W Int
 }
@@ -145,6 +247,7 @@ func NewVec4iExpression(e Expression) Vec4i { return Vec4i{internalExpression: e
 
 type Vec2u = struct {
 	internalExpression
+	isEquivalentTo[[2]uint32]
 
 	X, Y Uint
 }
@@ -154,6 +257,7 @@ func NewVec2uExpression(e Expression) Vec2u { return Vec2u{internalExpression: e
 
 type Vec3u = struct {
 	internalExpression
+	isEquivalentTo[[3]uint32]
 
 	X, Y, Z Uint
 }
@@ -165,6 +269,7 @@ func NewVec3uExpression(e Expression) Vec3u { return Vec3u{internalExpression: e
 
 type Vec4u = struct {
 	internalExpression
+	isEquivalentTo[[4]uint32]
 
 	X, Y, Z, W Uint
 }
@@ -176,6 +281,7 @@ func NewVec4uExpression(e Expression) Vec4u { return Vec4u{internalExpression: e
 
 type Vec2 = struct {
 	internalExpression
+	isEquivalentTo[Vector2.XY]
 
 	X, Y Float
 }
@@ -185,6 +291,7 @@ func NewVec2Expression(e Expression) Vec2  { return Vec2{internalExpression: e} 
 
 type Vec3 = struct {
 	internalExpression
+	isEquivalentTo[Vector3.XYZ]
 
 	X, Y, Z Float
 }
@@ -196,6 +303,7 @@ func NewVec3Expression(e Expression) Vec3 { return Vec3{internalExpression: e} }
 
 type Vec4 = struct {
 	internalExpression
+	isEquivalentTo[Vector4.XYZW]
 
 	X, Y, Z, W Float
 }
@@ -207,6 +315,7 @@ func NewVec4Expression(e Expression) Vec4 { return Vec4{internalExpression: e} }
 
 type RGBA = struct {
 	internalExpression
+	isEquivalentTo[Color.RGBA]
 
 	R, G, B, A Float
 }
@@ -218,6 +327,7 @@ func NewRGBAExpression(e Expression) RGBA { return RGBA{internalExpression: e} }
 
 type RGB = struct {
 	internalExpression
+	isEquivalentTo[Color.RGB]
 
 	R, G, B Float
 }
@@ -249,6 +359,7 @@ func NewQuadExpression[Q Quad](expr Expression) Q {
 
 type Mat2 = struct {
 	internalExpression
+	isEquivalentTo[Transform2D.OriginXY]
 
 	Columns [2][2]Float
 }
@@ -263,6 +374,7 @@ func NewMat2Expression(e Expression) Mat2 { return Mat2{internalExpression: e} }
 
 type Mat3 = struct {
 	internalExpression
+	isEquivalentTo[Basis.XYZ]
 
 	Columns [3][3]Float
 }
@@ -279,6 +391,7 @@ func NewMat3Expression(e Expression) Mat3 { return Mat3{internalExpression: e} }
 
 type Mat4 = struct {
 	internalExpression
+	isEquivalentTo[Projection.XYZW]
 
 	Columns [4][4]Float
 }

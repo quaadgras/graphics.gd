@@ -10,9 +10,7 @@ type AnyData interface {
 	~gpu.RGBA | ~gpu.Vec4 | ~gpu.Vec4i | ~gpu.Vec4u
 }
 
-type Sampler2D[T AnyData] struct {
-	expression
-}
+type Sampler2D[T AnyData] gpu.Sampler2D[T]
 
 func (s Sampler2D[T]) TextureSize(lod gpu.Int) gpu.Vec2i { //glsl:textureSize(sampler2D,int)ivec2
 	return gpu.NewVec2iExpression(gpu.Fn("textureSize", s, lod))
@@ -98,9 +96,7 @@ func (s Sampler2D[T]) TexelFetchOffset(p gpu.Vec2i, lod gpu.Int, offset gpu.Vec2
 	return gpu.NewQuadExpression[T](gpu.Fn("texelFetchOffset", s, p, lod, offset))
 }
 
-type Sampler3D[T AnyData] struct {
-	expression
-}
+type Sampler3D[T AnyData] gpu.Sampler3D[T]
 
 func (s Sampler3D[T]) TextureSize(lod gpu.Int) gpu.Vec3i { //glsl:textureSize(sampler3D,int)ivec3
 	return gpu.NewVec3iExpression(gpu.Fn("textureSize", s, lod))
@@ -162,9 +158,7 @@ func (s Sampler3D[T]) TexelFetchOffset(p gpu.Vec3i, lod gpu.Int, offset gpu.Vec3
 	return gpu.NewQuadExpression[T](gpu.Fn("texelFetchOffset", s, p, lod, offset))
 }
 
-type ArraySampler2D[T AnyData] struct {
-	expression
-}
+type ArraySampler2D[T AnyData] gpu.ArraySampler2D[T]
 
 func (s ArraySampler2D[T]) TextureSize(lod gpu.Int) gpu.Vec3i { //glsl:textureSize(sampler2DArray,int)ivec3
 	return gpu.NewVec3iExpression(gpu.Fn("textureSize", s, lod))
@@ -196,13 +190,9 @@ func (s ArraySampler2D[T]) TexelFetchOffset(p gpu.Vec3i, lod gpu.Int, offset gpu
 	return gpu.NewQuadExpression[T](gpu.Fn("texelFetchOffset", s, p, lod, offset))
 }
 
-type ArraySampler3D[T float64 | int | uint] struct {
-	expression
-}
+type ArraySampler3D[T float64 | int | uint] gpu.ArraySampler3D[T]
 
-type CubeSampler[T AnyData] struct {
-	expression
-}
+type CubeSampler[T AnyData] gpu.CubeSampler[T]
 
 func (s CubeSampler[T]) Texture(uv gpu.Vec3) T { //glsl:texture(samplerCube,vec3)rgba
 	return gpu.NewQuadExpression[T](gpu.Fn("texture", s, uv))

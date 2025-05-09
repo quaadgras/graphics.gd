@@ -8,31 +8,35 @@ To create a new 2D shader in Go, define a struct that embeds shaders.Type2D and 
 pipeline methods you would like to overide. For example:
 
 	type MyShader struct {
-		shaders.Type2D
-
-		MyUniform vec2.XY `gd:"my_uniform"`
+		CanvasItem.Shader
 	}
 
 	// The pipeline functions are named after what they return, not what they accept as
 	// input.
 
-	// Fragment returns a fragment for the given vertex (also known as a vertex shader).
-	func (MyShader) Fragment(vertex shaders.Vertex2D) shaders.Fragment2D {
-		return shaders.Fragment2D{
+	// Fragment runs for each point/vertex of the shape/mesh being rendered, should return
+	// fragment parameters for each point (also known as a vertex shader).
+	func (MyShader) Fragment(vertex CanvasItem.Vertex) CanvasItem.Fragment {
+		return CanvasItem.Fragment{
 			Position: vertex.Position,
 		}
 	}
 
-	// Material returns a material for the given fragment (also known as a fragment shader).
-	func (MyShader) Material(fragment shaders.Fragment2D) shaders.Material2D {
-		return shaders.Material2D{
+	// Material runs for each pixel on each face of the shape being rendered, should return
+	// the surface parameters for each pixel (also known as a fragment shader). The input
+	// fragment is a blend of each contributing vertex point.
+	func (MyShader) Material(fragment CanvasItem.Fragment) CanvasItem.Material {
+		return CanvasItem.Material{
 			Color: rgba.New(1, 0, 0, 1),
 		}
 	}
 
-	// Lighting calculates the lighting for the given material (also known as a lighting pass).
-	func (MyShader) Lighting(material shaders.Material2D) vec4.RGBA {
-		return material.Color
+	// Lighting runs for each light, per pixel for each face of the shape being rendered, should
+	// return the final color for each pixel (also known as a lighting pass).
+	func (MyShader) Lighting(material CanvasItem.Material) CanvasItem.Lighting {
+		return CanvasItem.Lighting{
+			Color: material.Color,
+		}
 	}
 
 Each sub-package provides GPU-specific shader types that can be used within a shader pipeline.
@@ -41,6 +45,24 @@ calls or branches will only take affect during compilation and not when renderin
 
 All for loops will be unrolled. The shaders package does not currently support non-constant
 loops.
+
+# Uniforms
+
+Uniforms are added as fields to the shader struct. They can be written with [Set] and read with
+[Get]. Uniforms wrapped inside the [PerInstance] generic type need to be accessed through the
+RenderingServer/GeometryInstance3D packages.
+
+	type MyShader struct {
+		CanvasItem.Shader
+
+		MyUniform vec2.XY `gd:"my_uniform"`
+
+		Color shaders.PerInstance[vec4.XYZW] `gd:"color"`
+	}
+
+	var shader = new(MyShader)
+	shaders.Compile(&shader)
+	shaders.Set(&shader.MyUniform, Vector2.New(1, 2))
 */
 package shaders
 
@@ -50,13 +72,14 @@ import (
 	"reflect"
 	"strings"
 
+	"graphics.gd/classdb/Engine"
 	"graphics.gd/classdb/Shader"
 	"graphics.gd/classdb/ShaderMaterial"
-	vec1 "graphics.gd/shaders/float"
+	gd "graphics.gd/internal"
+	"graphics.gd/shaders/internal"
 	"graphics.gd/shaders/internal/gpu"
 	dsl "graphics.gd/shaders/internal/gpu"
 	"graphics.gd/shaders/vec2"
-	"graphics.gd/shaders/vec4"
 )
 
 // Globals are available everywhere, including custom functions.
@@ -67,7 +90,31 @@ var (
 	E    = gpu.NewFloatExpression(gpu.New(gpu.Identifier("E")))
 )
 
+// PerInstance uniforms can be added inside a shader struct.
+type PerInstance[T gpu.Evaluator] struct {
+	value T
+}
+
+// Value returns the value of the uniform for the current instance.
+func (p PerInstance[T]) Value() T { return p.value }
+
+// Set sets the value of a uniform.
+func Set[T gpu.EquivalentTo[G], G any](uniform *T, value G) {
+	gpu.Shader(gpu.EquivalentTo[G](*uniform)).Super().SetShaderParameter(string(gpu.Evaluate(gpu.EquivalentTo[G](*uniform)).(gpu.Identifier)), value)
+}
+
+// Get gets the value of a uniform.
+func Get[T gpu.EquivalentTo[G], G any](uniform *T) G {
+	rvalue, err := gd.ConvertToDesiredGoType(gpu.Shader(gpu.EquivalentTo[G](*uniform)).Super().GetShaderParameter(string(gpu.Evaluate(gpu.EquivalentTo[G](*uniform)).(gpu.Identifier))), reflect.TypeFor[G]())
+	if err != nil {
+		Engine.Raise(err)
+	}
+	return rvalue.Interface().(G)
+}
+
 type Program[Vertex, Fragment, Material, Lighting any, RenderMode ~string] interface {
+	internal.ShaderPointer
+
 	Super() ShaderMaterial.Instance
 
 	ShaderType() string
@@ -78,6 +125,14 @@ type Program[Vertex, Fragment, Material, Lighting any, RenderMode ~string] inter
 	Fragment(Vertex) Fragment
 	Material(Fragment) Material
 	Lighting(Material) Lighting
+}
+
+type Any interface {
+	internal.ShaderPointer
+
+	Super() ShaderMaterial.Instance
+	ShaderType() string
+	Pipeline() [3]string
 }
 
 func Compile[V, F, M, L comparable, RM ~string](prog Program[V, F, M, L, RM]) {
@@ -101,7 +156,6 @@ func Compile[V, F, M, L comparable, RM ~string](prog Program[V, F, M, L, RM]) {
 
 	pipeline := prog.Pipeline()
 
-	linkup(prog)
 	var vertices V
 	linkup(&vertices)
 	var fragment F
@@ -143,25 +197,99 @@ func linkup(in any) {
 	}
 }
 
-func compileUniforms(w io.Writer, uniforms any) {
-	value := reflect.ValueOf(uniforms).Elem()
+func compileUniforms[V, F, M, L comparable, RM ~string](w io.Writer, prog Program[V, F, M, L, RM]) {
+	value := reflect.ValueOf(prog).Elem()
 	rtype := value.Type()
 	for i := range rtype.NumField() {
 		if tag := rtype.Field(i).Tag.Get("gd"); tag != "" {
-			fmt.Fprintf(w, "uniform ")
-			switch field := rtype.Field(i); reflect.Zero(field.Type).Interface().(type) {
-			case vec2.XY:
-				fmt.Fprintf(w, "vec2 %s;\n", tag)
-			case vec4.RGBA:
-				fmt.Fprintf(w, "vec4 %s;\n", tag)
-			case vec1.X:
-				fmt.Fprintf(w, "float %s;\n", tag)
-			default:
-				panic(fmt.Sprintf("unsupported uniform type %s", field.Type))
-			}
+			field := rtype.Field(i)
+			fmt.Fprintf(w, "uniform %s %s;\n", glslTypeFor(field.Type), tag)
+			dsl.Set(value.Field(i).Addr().Interface().(dsl.Pointer), gpu.Uniform(tag, internal.Pointer(prog)))
 		}
 	}
 	fmt.Fprintln(w)
+}
+
+func glslTypeFor(t reflect.Type) string {
+	switch {
+	case t.ConvertibleTo(reflect.TypeFor[gpu.Bool]()):
+		return "bool"
+	case t.ConvertibleTo(reflect.TypeFor[gpu.Vec2b]()):
+		return "bvec2"
+	case t.ConvertibleTo(reflect.TypeFor[gpu.Vec3b]()):
+		return "bvec3"
+	case t.ConvertibleTo(reflect.TypeFor[gpu.Vec4b]()):
+		return "bvec4"
+	case t.ConvertibleTo(reflect.TypeFor[gpu.Float]()):
+		return "float"
+	case t.ConvertibleTo(reflect.TypeFor[gpu.Int]()):
+		return "int"
+	case t.ConvertibleTo(reflect.TypeFor[gpu.Vec2i]()):
+		return "ivec2"
+	case t.ConvertibleTo(reflect.TypeFor[gpu.Vec3i]()):
+		return "ivec3"
+	case t.ConvertibleTo(reflect.TypeFor[gpu.Vec4i]()):
+		return "ivec4"
+	case t.ConvertibleTo(reflect.TypeFor[gpu.Mat2]()):
+		return "mat2"
+	case t.ConvertibleTo(reflect.TypeFor[gpu.Mat3]()):
+		return "mat3"
+	case t.ConvertibleTo(reflect.TypeFor[gpu.Mat4]()):
+		return "mat4"
+	case t.ConvertibleTo(reflect.TypeFor[gpu.Vec2]()):
+		return "vec2"
+	case t.ConvertibleTo(reflect.TypeFor[gpu.Vec3]()):
+		return "vec3"
+	case t.ConvertibleTo(reflect.TypeFor[gpu.Vec4]()):
+		return "vec4"
+	case t.ConvertibleTo(reflect.TypeFor[gpu.Uint]()):
+		return "uint"
+	case t.ConvertibleTo(reflect.TypeFor[gpu.Vec2u]()):
+		return "uvec2"
+	case t.ConvertibleTo(reflect.TypeFor[gpu.Vec3u]()):
+		return "uvec3"
+	case t.ConvertibleTo(reflect.TypeFor[gpu.Vec4u]()):
+		return "uvec4"
+	case t.ConvertibleTo(reflect.TypeFor[gpu.Vec2]()):
+		return "vec2"
+	case t.ConvertibleTo(reflect.TypeFor[gpu.Vec3]()):
+		return "vec3"
+	case t.ConvertibleTo(reflect.TypeFor[gpu.Vec4]()):
+		return "vec4"
+	case t.Implements(reflect.TypeFor[gpu.IsSampler2D]()):
+		elem := gpu.SamplerType(reflect.Zero(t).Interface().(gpu.IsSampler2D))
+		switch {
+		case elem.ConvertibleTo(reflect.TypeFor[gpu.Vec4]()):
+			return "sampler2D"
+		case elem.ConvertibleTo(reflect.TypeFor[gpu.Vec4i]()):
+			return "isampler2D"
+		case elem.ConvertibleTo(reflect.TypeFor[gpu.Vec4u]()):
+			return "usampler2D"
+		}
+	case t.Implements(reflect.TypeFor[gpu.IsSampler3D]()):
+		elem := gpu.SamplerType(reflect.Zero(t).Interface().(gpu.IsSampler3D))
+		switch {
+		case elem.ConvertibleTo(reflect.TypeFor[gpu.Vec4]()):
+			return "sampler3D"
+		case elem.ConvertibleTo(reflect.TypeFor[gpu.Vec4i]()):
+			return "isampler3D"
+		case elem.ConvertibleTo(reflect.TypeFor[gpu.Vec4u]()):
+			return "usampler3D"
+		}
+	case t.Implements(reflect.TypeFor[gpu.IsArraySampler2D]()):
+		elem := gpu.SamplerType(reflect.Zero(t).Interface().(gpu.IsArraySampler2D))
+		switch {
+		case elem.ConvertibleTo(reflect.TypeFor[gpu.Vec4]()):
+			return "sampler2DArray"
+		case elem.ConvertibleTo(reflect.TypeFor[gpu.Vec4i]()):
+			return "isampler2DArray"
+		case elem.ConvertibleTo(reflect.TypeFor[gpu.Vec4u]()):
+			return "usampler2DArray"
+		}
+	case t.Implements(reflect.TypeFor[gpu.IsCubeSampler]()):
+		return "samplerCube"
+	}
+	panic(fmt.Sprintf("unsupported GPU type %s", t))
 }
 
 func compileFunction(w io.Writer, data any, name string) {
