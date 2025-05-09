@@ -76,5 +76,5 @@ RenderingServer/GeometryInstance3D packages.
 
 	var shader = new(MyShader)
 	shaders.Compile(&shader)
-	shaders.Set(&shader, &shader.MyUniform, Vector2.New(1, 2))
+	shaders.Set(&shader.MyUniform, Vector2.New(1, 2))
 ```
