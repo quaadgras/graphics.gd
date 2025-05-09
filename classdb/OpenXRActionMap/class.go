@@ -45,11 +45,21 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 OpenXR uses an action system similar to Godots Input map system to bind inputs and outputs on various types of XR controllers to named actions. OpenXR specifies more detail on these inputs and outputs than Godot supports.
 Another important distinction is that OpenXR offers no control over these bindings. The bindings we register are suggestions, it is up to the XR runtime to offer users the ability to change these bindings. This allows the XR runtime to fill in the gaps if new hardware becomes available.
 The action map therefore needs to be loaded at startup and can't be changed afterwards. This resource is a container for the entire action map.
 */
 type Instance [1]gdclass.OpenXRActionMap
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance

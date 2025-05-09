@@ -46,11 +46,21 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 An Omnidirectional light is a type of [Light3D] that emits light in all directions. The light is attenuated by distance and this attenuation can be configured by changing its energy, radius, and attenuation parameters.
 [b]Note:[/b] When using the Mobile rendering method, only 8 omni lights can be displayed on each mesh resource. Attempting to display more than 8 omni lights on a single mesh resource will result in omni lights flickering in and out as the camera moves. When using the Compatibility rendering method, only 8 omni lights can be displayed on each mesh resource by default, but this can be increased by adjusting [member ProjectSettings.rendering/limits/opengl/max_lights_per_object].
 [b]Note:[/b] When using the Mobile or Compatibility rendering methods, omni lights will only correctly affect meshes whose visibility AABB intersects with the light's AABB. If using a shader to deform the mesh in a way that makes it go outside its AABB, [member GeometryInstance3D.extra_cull_margin] must be increased on the mesh. Otherwise, the light may not be visible on the mesh.
 */
 type Instance [1]gdclass.OmniLight3D
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance

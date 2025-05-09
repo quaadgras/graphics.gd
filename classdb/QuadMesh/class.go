@@ -46,9 +46,19 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 Class representing a square [PrimitiveMesh]. This flat mesh does not have a thickness. By default, this mesh is aligned on the X and Y axes; this rotation is more suited for use with billboarded materials. A [QuadMesh] is equivalent to a [PlaneMesh] except its default [member PlaneMesh.orientation] is [constant PlaneMesh.FACE_Z].
 */
 type Instance [1]gdclass.QuadMesh
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance

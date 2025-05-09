@@ -46,10 +46,20 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 This [Control] node is used in the editor's Inspector dock to allow editing of numeric values. Can be used with [EditorInspectorPlugin] to recreate the same behavior.
 If the [member Range.step] value is [code]1[/code], the [EditorSpinSlider] will display up/down arrows, similar to [SpinBox]. If the [member Range.step] value is not [code]1[/code], a slider will be displayed instead.
 */
 type Instance [1]gdclass.EditorSpinSlider
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance

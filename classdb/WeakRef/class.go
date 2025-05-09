@@ -42,9 +42,19 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 A weakref can hold a [RefCounted] without contributing to the reference counter. A weakref can be created from an [Object] using [method @GlobalScope.weakref]. If this object is not a reference, weakref still works, however, it does not have any effect on the object. Weakrefs are useful in cases where multiple classes have variables that refer to each other. Without weakrefs, using these classes could lead to memory leaks, since both references keep each other from being released. Making part of the variables a weakref can prevent this cyclic dependency, and allows the references to be released.
 */
 type Instance [1]gdclass.WeakRef
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance

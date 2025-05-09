@@ -54,15 +54,24 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 A multiline text editor. It also has limited facilities for editing code, such as syntax highlighting support. For more advanced facilities for editing code, see [CodeEdit].
 [b]Note:[/b] Most viewport, caret, and edit methods contain a [code]caret_index[/code] argument for [member caret_multiple] support. The argument should be one of the following: [code]-1[/code] for all carets, [code]0[/code] for the main caret, or greater than [code]0[/code] for secondary carets in the order they were created.
 [b]Note:[/b] When holding down [kbd]Alt[/kbd], the vertical scroll wheel will scroll 5 times as fast as it would normally do. This also works in the Godot script editor.
 
 	See [Interface] for methods that can be overridden by a [Class] that extends it.
-
-%!(EXTRA string=TextEdit)
 */
 type Instance [1]gdclass.TextEdit
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
+
 type Expanded [1]gdclass.TextEdit
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.

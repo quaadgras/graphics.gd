@@ -45,10 +45,21 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 This class describes a Bézier curve in 2D space. It is mainly used to give a shape to a [Path2D], but can be manually sampled for other purposes.
 It keeps a cache of precalculated points along the curve, to speed up further calculations.
 */
 type Instance [1]gdclass.Curve2D
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
+
 type Expanded [1]gdclass.Curve2D
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.

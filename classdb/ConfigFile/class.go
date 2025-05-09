@@ -42,6 +42,14 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 This helper class can be used to store [Variant] values on the filesystem using INI-style formatting. The stored values are identified by a section and a key:
 [codeblock lang=text]
 [section]
@@ -134,6 +142,9 @@ ConfigFiles can also contain manually written comment lines starting with a semi
 [b]Note:[/b] The file extension given to a ConfigFile does not have any impact on its formatting or behavior. By convention, the [code].cfg[/code] extension is used here, but any other extension such as [code].ini[/code] is also valid. Since neither [code].cfg[/code] nor [code].ini[/code] are standardized, Godot's ConfigFile formatting may differ from files written by other programs.
 */
 type Instance [1]gdclass.ConfigFile
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
+
 type Expanded [1]gdclass.ConfigFile
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.

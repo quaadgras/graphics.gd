@@ -50,11 +50,22 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 This node draws a 2D polyline, i.e. a shape consisting of several points connected by segments. [Line2D] is not a mathematical polyline, i.e. the segments are not infinitely thin. It is intended for rendering and it can be colored and optionally textured.
 [b]Warning:[/b] Certain configurations may be impossible to draw nicely, such as very sharp angles. In these situations, the node uses fallback drawing logic to look decent.
 [b]Note:[/b] [Line2D] is drawn using a 2D mesh.
 */
 type Instance [1]gdclass.Line2D
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
+
 type Expanded [1]gdclass.Line2D
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.

@@ -46,6 +46,14 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 A texture array that is loaded from a [code].ctexarray[/code] file. This file format is internal to Godot; it is created by importing other image formats with the import system. [CompressedTexture2DArray] can use one of 4 compression methods:
 - Lossless (WebP or PNG, uncompressed on the GPU)
 - Lossy (WebP, uncompressed on the GPU)
@@ -57,6 +65,8 @@ Using [b]VRAM Compressed[/b] also improves loading times, as VRAM-compressed tex
 See [Texture2DArray] for a general description of texture arrays.
 */
 type Instance [1]gdclass.CompressedTexture2DArray
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance

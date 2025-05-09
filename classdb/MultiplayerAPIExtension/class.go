@@ -44,6 +44,14 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 This class can be used to extend or replace the default [MultiplayerAPI] implementation via script or extensions.
 The following example extend the default implementation ([SceneMultiplayer]) by logging every RPC being made, and every object being configured for replication.
 [codeblocks]
@@ -127,10 +135,10 @@ func _enter_tree():
 Native extensions can alternatively use the [method MultiplayerAPI.set_default_interface] method during initialization to configure themselves as the default implementation.
 
 	See [Interface] for methods that can be overridden by a [Class] that extends it.
-
-%!(EXTRA string=MultiplayerAPIExtension)
 */
 type Instance [1]gdclass.MultiplayerAPIExtension
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance

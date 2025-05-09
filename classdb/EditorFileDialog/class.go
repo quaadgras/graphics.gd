@@ -50,10 +50,21 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 [EditorFileDialog] is an enhanced version of [FileDialog] available only to editor plugins. Additional features include list of favorited/recent files and the ability to see files as thumbnails grid instead of list.
 Unlike [FileDialog], [EditorFileDialog] does not have a property for using native dialogs. Instead, native dialogs can be enabled globally via the [member EditorSettings.interface/editor/use_native_file_dialogs] editor setting. They are also enabled automatically when running in sandbox (e.g. on macOS).
 */
 type Instance [1]gdclass.EditorFileDialog
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
+
 type Expanded [1]gdclass.EditorFileDialog
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.

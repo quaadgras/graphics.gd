@@ -45,6 +45,14 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 Base class for [ImageTextureLayered] and [CompressedTextureLayered]. Cannot be used directly, but contains all the functions necessary for accessing the derived resource types. See also [Texture3D].
 Data is set on a per-layer basis. For [Texture2DArray]s, the layer specifies the array layer.
 All images need to have the same width, height and number of mipmap levels.
@@ -52,10 +60,10 @@ A [TextureLayered] can be loaded with [method ResourceLoader.load].
 Internally, Godot maps these files to their respective counterparts in the target rendering driver (Vulkan, OpenGL3).
 
 	See [Interface] for methods that can be overridden by a [Class] that extends it.
-
-%!(EXTRA string=TextureLayered)
 */
 type Instance [1]gdclass.TextureLayered
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance

@@ -47,6 +47,14 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 [LineEdit] provides an input field for editing a single line of text.
 - When the [LineEdit] control is focused using the keyboard arrow keys, it will only gain focus and not enter edit mode.
 - To enter edit mode, click on the control with the mouse, see also [member keep_editing_on_text_submit].
@@ -79,6 +87,9 @@ On macOS, some extra keyboard shortcuts are available:
 [b]Note:[/b] Caret movement shortcuts listed above are not affected by [member shortcut_keys_enabled].
 */
 type Instance [1]gdclass.LineEdit
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
+
 type Expanded [1]gdclass.LineEdit
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.

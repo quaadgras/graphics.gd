@@ -44,6 +44,14 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 A simplified interface to a scene file. Provides access to operations and checks that can be performed on the scene resource itself.
 Can be used to save a node to a file. When saving, the node as well as all the nodes it owns get saved (see [member Node.owner] property).
 [b]Note:[/b] The node doesn't need to own itself.
@@ -117,6 +125,9 @@ if (result == Error.Ok)
 [/codeblocks]
 */
 type Instance [1]gdclass.PackedScene
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
+
 type Expanded [1]gdclass.PackedScene
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.

@@ -47,6 +47,14 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 This class allows storing compressed textures as self contained (not imported) resources.
 For 2D usage (compressed on disk, uncompressed on VRAM), the lossy and lossless modes are recommended. For 3D usage (compressed on VRAM) it depends on the target platform.
 If you intend to only use desktop, S3TC or BPTC are recommended. For only mobile, ETC2 is recommended.
@@ -54,6 +62,9 @@ For portable, self contained 3D textures that work on both desktop and mobile, B
 This resource is intended to be created from code.
 */
 type Instance [1]gdclass.PortableCompressedTexture2D
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
+
 type Expanded [1]gdclass.PortableCompressedTexture2D
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.

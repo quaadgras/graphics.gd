@@ -42,6 +42,14 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 This class implements a writer that allows storing the multiple blobs in a ZIP archive. See also [ZIPReader] and [PCKPacker].
 [codeblock]
 # Create a ZIP archive with a single file at its root.
@@ -61,6 +69,9 @@ func write_zip_file():
 [/codeblock]
 */
 type Instance [1]gdclass.ZIPPacker
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
+
 type Expanded [1]gdclass.ZIPPacker
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.

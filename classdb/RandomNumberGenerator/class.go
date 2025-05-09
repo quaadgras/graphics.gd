@@ -42,6 +42,14 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 RandomNumberGenerator is a class for generating pseudo-random numbers. It currently uses [url=https://www.pcg-random.org/]PCG32[/url].
 [b]Note:[/b] The underlying algorithm is an implementation detail and should not be depended upon.
 To generate a random float number (within a given range) based on a time-dependent seed:
@@ -54,6 +62,9 @@ func _ready():
 [/codeblock]
 */
 type Instance [1]gdclass.RandomNumberGenerator
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
+
 type Expanded [1]gdclass.RandomNumberGenerator
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.

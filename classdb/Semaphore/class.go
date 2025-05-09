@@ -42,6 +42,14 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 A synchronization semaphore that can be used to synchronize multiple [Thread]s. Initialized to zero on creation. For a binary version, see [Mutex].
 [b]Warning:[/b] Semaphores must be used carefully to avoid deadlocks.
 [b]Warning:[/b] To guarantee that the operating system is able to perform proper cleanup (no crashes, no deadlocks), these conditions must be met:
@@ -49,6 +57,9 @@ A synchronization semaphore that can be used to synchronize multiple [Thread]s. 
 - When a [Thread]'s reference count reaches zero and it is therefore destroyed, it must not be waiting on any semaphore.
 */
 type Instance [1]gdclass.Semaphore
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
+
 type Expanded [1]gdclass.Semaphore
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.

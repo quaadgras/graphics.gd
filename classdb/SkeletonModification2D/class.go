@@ -44,14 +44,22 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 This resource provides an interface that can be expanded so code that operates on [Bone2D] nodes in a [Skeleton2D] can be mixed and matched together to create complex interactions.
 This is used to provide Godot with a flexible and powerful Inverse Kinematics solution that can be adapted for many different uses.
 
 	See [Interface] for methods that can be overridden by a [Class] that extends it.
-
-%!(EXTRA string=SkeletonModification2D)
 */
 type Instance [1]gdclass.SkeletonModification2D
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -166,17 +174,17 @@ func (self Instance) Set(peer SkeletonModificationStack2D.Instance, mod_idx int)
 }
 
 /*
-Returns the [SkeletonModification2D] at the passed-in index, [param mod_idx].
-*/
-func Get(peer SkeletonModificationStack2D.Instance, mod_idx int) Instance { //gd:SkeletonModificationStack2D.get_modification
-	return Instance(SkeletonModificationStack2D.Advanced(peer).GetModification(int64(mod_idx)))
-}
-
-/*
 Adds the passed-in [SkeletonModification2D] to the stack.
 */
 func (self Instance) Add(peer SkeletonModificationStack2D.Instance) { //gd:SkeletonModificationStack2D.add_modification
 	SkeletonModificationStack2D.Advanced(peer).AddModification(self)
+}
+
+/*
+Returns the [SkeletonModification2D] at the passed-in index, [param mod_idx].
+*/
+func Get(peer SkeletonModificationStack2D.Instance, mod_idx int) Instance { //gd:SkeletonModificationStack2D.get_modification
+	return Instance(SkeletonModificationStack2D.Advanced(peer).GetModification(int64(mod_idx)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

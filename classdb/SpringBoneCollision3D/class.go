@@ -47,12 +47,22 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 A collision can be a child of [SpringBoneSimulator3D]. If it is not a child of [SpringBoneSimulator3D], it has no effect.
 The colliding and sliding are done in the [SpringBoneSimulator3D]'s modification process in order of its collision list which is set by [method SpringBoneSimulator3D.set_collision_path]. If [method SpringBoneSimulator3D.are_all_child_collisions_enabled] is [code]true[/code], the order matches [SceneTree].
 If [member bone] is set, it synchronizes with the bone pose of the ancestor [Skeleton3D], which is done in before the [SpringBoneSimulator3D]'s modification process as the pre-process.
 [b]Warning:[/b] A scaled [SpringBoneCollision3D] will likely not behave as expected. Make sure that the parent [Skeleton3D] and its bones are not scaled.
 */
 type Instance [1]gdclass.SpringBoneCollision3D
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance

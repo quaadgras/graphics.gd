@@ -43,6 +43,14 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 A regular expression (or regex) is a compact language that can be used to recognize strings that follow a specific pattern, such as URLs, email addresses, complete sentences, etc. For example, a regex of [code]ab[0-9][/code] would find any string that is [code]ab[/code] followed by any number from [code]0[/code] to [code]9[/code]. For a more in-depth look, you can easily find various tutorials and detailed explanations on the Internet.
 To begin, the RegEx object needs to be compiled with the search pattern using [method compile] before it can be used.
 [codeblock]
@@ -94,6 +102,9 @@ for result in regex.search_all("One  Two \n\tThree"):
 [b]Tip:[/b] You can use [url=https://regexr.com/]Regexr[/url] to test regular expressions online.
 */
 type Instance [1]gdclass.RegEx
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
+
 type Expanded [1]gdclass.RegEx
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.

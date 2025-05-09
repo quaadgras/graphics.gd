@@ -43,10 +43,21 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 [TranslationDomain] is a self-contained collection of [Translation] resources. Translations can be added to or removed from it.
 If you're working with the main translation domain, it is more convenient to use the wrap methods on [TranslationServer].
 */
 type Instance [1]gdclass.TranslationDomain
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
+
 type Expanded [1]gdclass.TranslationDomain
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.

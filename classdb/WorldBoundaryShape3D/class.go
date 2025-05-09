@@ -45,10 +45,20 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 A 3D world boundary shape, intended for use in physics. [WorldBoundaryShape3D] works like an infinite plane that forces all physics bodies to stay above it. The [member plane]'s normal determines which direction is considered as "above" and in the editor, the line over the plane represents this direction. It can for example be used for endless flat floors.
 [b]Note:[/b] When the physics engine is set to [b]Jolt Physics[/b] in the project settings ([member ProjectSettings.physics/3d/physics_engine]), [WorldBoundaryShape3D] has a finite size (centered at the shape's origin). It can be adjusted by changing [member ProjectSettings.physics/jolt_physics_3d/limits/world_boundary_shape_size].
 */
 type Instance [1]gdclass.WorldBoundaryShape3D
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance

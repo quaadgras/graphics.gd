@@ -49,6 +49,14 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 [FontFile] contains a set of glyphs to represent Unicode characters imported from a font file, as well as a cache of rasterized glyphs, and a set of fallback [Font]s to use.
 Use [FontVariation] to access specific OpenType variation of the font, create simulated bold / slanted version, and draw lines of text.
 For more complex text processing, use [FontVariation] in conjunction with [TextLine] or [TextParagraph].
@@ -73,6 +81,8 @@ GetNode("Label").AddThemeFontSizeOverride("font_size", 64);
 [/codeblocks]
 */
 type Instance [1]gdclass.FontFile
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance

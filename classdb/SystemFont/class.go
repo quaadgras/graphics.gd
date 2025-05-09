@@ -44,6 +44,14 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 [SystemFont] loads a font from a system font with the first matching name from [member font_names].
 It will attempt to match font style, but it's not guaranteed.
 The returned font might be part of a font collection or be a variable font with OpenType "weight", "width" and/or "italic" features set.
@@ -51,6 +59,8 @@ You can create [FontVariation] of the system font for precise control over its f
 [b]Note:[/b] This class is implemented on iOS, Linux, macOS and Windows, on other platforms it will fallback to default theme font.
 */
 type Instance [1]gdclass.SystemFont
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance

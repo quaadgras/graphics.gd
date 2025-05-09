@@ -46,6 +46,14 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 A cubemap is made of 6 textures organized in layers. They are typically used for faking reflections in 3D rendering (see [ReflectionProbe]). It can be used to make an object look as if it's reflecting its surroundings. This usually delivers much better performance than other reflection methods.
 This resource is typically used as a uniform in custom shaders. Few core Godot methods make use of [Cubemap] resources.
 To create such a texture file yourself, reimport your image files using the Godot Editor import presets. To create a Cubemap from code, use [method ImageTextureLayered.create_from_images] on an instance of the Cubemap class.
@@ -73,6 +81,8 @@ After replacing the shader code and saving, specify the imported Cubemap resourc
 Alternatively, you can use [url=https://danilw.github.io/GLSL-howto/cubemap_to_panorama_js/cubemap_to_panorama.html]this tool[/url] to convert a cubemap to an equirectangular sky map and use [PanoramaSkyMaterial] as usual.
 */
 type Instance [1]gdclass.Cubemap
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance

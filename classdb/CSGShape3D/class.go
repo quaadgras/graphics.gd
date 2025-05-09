@@ -48,6 +48,14 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 This is the CSG base class that provides CSG operation support to the various CSG nodes in Godot.
 [b]Performance:[/b] CSG nodes are only intended for prototyping as they have a significant CPU performance cost.
 Consider baking final CSG operation results into static geometry that replaces the CSG nodes.
@@ -56,6 +64,8 @@ Individual CSG root nodes can also be baked to static resources with scripts by 
 Entire scenes of CSG nodes can be baked to static geometry and exported with the editor gltf scene exporter.
 */
 type Instance [1]gdclass.CSGShape3D
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance

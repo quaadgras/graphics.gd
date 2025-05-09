@@ -56,6 +56,14 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 A [Viewport] creates a different view into the screen, or a sub-view inside another viewport. Child 2D nodes will display on it, and child Camera3D 3D nodes will render on it too.
 Optionally, a viewport can have its own 2D or 3D world, so it doesn't share what it draws with other viewports.
 Viewports can also choose to be audio listeners, so they generate positional audio depending on a 2D or 3D camera child of it.
@@ -63,6 +71,9 @@ Also, viewports can be assigned to different screens in case the devices have mu
 Finally, viewports can also behave as render targets, in which case they will not be visible unless the associated texture is used to draw.
 */
 type Instance [1]gdclass.Viewport
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
+
 type Expanded [1]gdclass.Viewport
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.

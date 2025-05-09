@@ -43,11 +43,21 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 GLTFObjectModelProperty defines a mapping between a property in the glTF object model and a NodePath in the Godot scene tree. This can be used to animate properties in a glTF file using the [code]KHR_animation_pointer[/code] extension, or to access them through an engine-agnostic script such as a behavior graph as defined by the [code]KHR_interactivity[/code] extension.
 The glTF property is identified by JSON pointer(s) stored in [member json_pointers], while the Godot property it maps to is defined by [member node_paths]. In most cases [member json_pointers] and [member node_paths] will each only have one item, but in some cases a single glTF JSON pointer will map to multiple Godot properties, or a single Godot property will be mapped to multiple glTF JSON pointers, or it might be a many-to-many relationship.
 [Expression] objects can be used to define conversions between the data, such as when glTF defines an angle in radians and Godot uses degrees. The [member object_model_type] property defines the type of data stored in the glTF file as defined by the object model, see [enum GLTFObjectModelType] for possible values.
 */
 type Instance [1]gdclass.GLTFObjectModelProperty
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance

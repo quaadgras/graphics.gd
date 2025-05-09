@@ -48,6 +48,14 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 A TileSet is a library of tiles for a [TileMapLayer]. A TileSet handles a list of [TileSetSource], each of them storing a set of tiles.
 Tiles can either be from a [TileSetAtlasSource], which renders tiles out of a texture with support for physics, navigation, etc., or from a [TileSetScenesCollectionSource], which exposes scene-based tiles.
 Tiles are referenced by using three IDs: their source ID, their atlas coordinates ID, and their alternative tile ID.
@@ -56,6 +64,9 @@ For example, adding a physics layer allows giving collision shapes to your tiles
 See the functions to add new layers for more information.
 */
 type Instance [1]gdclass.TileSet
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
+
 type Expanded [1]gdclass.TileSet
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.

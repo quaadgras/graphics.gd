@@ -45,9 +45,20 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 Node that can be the parent of [PhysicalBone3D] and can apply the simulation results to [Skeleton3D].
 */
 type Instance [1]gdclass.PhysicalBoneSimulator3D
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
+
 type Expanded [1]gdclass.PhysicalBoneSimulator3D
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.

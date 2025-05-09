@@ -44,6 +44,14 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 The Crypto class provides access to advanced cryptographic functionalities.
 Currently, this includes asymmetric key encryption/decryption, signing/verification, and generating cryptographically secure random bytes, RSA keys, HMAC digests, and self-signed [X509Certificate]s.
 [codeblocks]
@@ -113,6 +121,9 @@ Debug.Assert(data.ToUtf8Buffer() == decrypted);
 [/codeblocks]
 */
 type Instance [1]gdclass.Crypto
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
+
 type Expanded [1]gdclass.Crypto
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.

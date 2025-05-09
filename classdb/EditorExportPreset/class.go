@@ -42,9 +42,20 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 Export preset configuration. Instances of [EditorExportPreset] by editor UI and intended to be used a read-only configuration passed to the [EditorExportPlatform] methods when exporting the project.
 */
 type Instance [1]gdclass.EditorExportPreset
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
+
 type Expanded [1]gdclass.EditorExportPreset
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.

@@ -44,10 +44,20 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 A group of [BaseButton]-derived buttons. The buttons in a [ButtonGroup] are treated like radio buttons: No more than one button can be pressed at a time. Some types of buttons (such as [CheckBox]) may have a special appearance in this state.
 Every member of a [ButtonGroup] should have [member BaseButton.toggle_mode] set to [code]true[/code].
 */
 type Instance [1]gdclass.ButtonGroup
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -70,11 +80,11 @@ Returns an [Array] of [Button]s who have this as their [ButtonGroup] (see [membe
 func (self Instance) GetButtons() []BaseButton.Instance { //gd:ButtonGroup.get_buttons
 	return []BaseButton.Instance(gd.ArrayAs[[]BaseButton.Instance](gd.InternalArray(Advanced(self).GetButtons())))
 }
-func Get(peer BaseButton.Instance) Instance { //gd:BaseButton.get_button_group
-	return Instance(BaseButton.Advanced(peer).GetButtonGroup())
-}
 func (self Instance) Set(peer BaseButton.Instance) { //gd:BaseButton.set_button_group
 	BaseButton.Advanced(peer).SetButtonGroup(self)
+}
+func Get(peer BaseButton.Instance) Instance { //gd:BaseButton.get_button_group
+	return Instance(BaseButton.Advanced(peer).GetButtonGroup())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

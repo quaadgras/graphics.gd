@@ -44,6 +44,14 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 A node with the ability to send HTTP requests. Uses [HTTPClient] internally.
 Can be used to make HTTP requests, i.e. download or upload files or web content via HTTP.
 [b]Warning:[/b] See the notes and warnings on [HTTPClient] for limitations, especially regarding TLS security.
@@ -205,6 +213,9 @@ private void HttpRequestCompleted(long result, long responseCode, string[] heade
 [b]Note:[/b] [HTTPRequest] nodes will automatically handle decompression of response bodies. A [code]Accept-Encoding[/code] header will be automatically added to each of your requests, unless one is already specified. Any response with a [code]Content-Encoding: gzip[/code] header will automatically be decompressed and delivered to you as uncompressed bytes.
 */
 type Instance [1]gdclass.HTTPRequest
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
+
 type Expanded [1]gdclass.HTTPRequest
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.

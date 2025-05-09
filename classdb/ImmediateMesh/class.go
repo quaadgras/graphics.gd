@@ -49,6 +49,14 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 A mesh type optimized for creating geometry manually, similar to OpenGL 1.x immediate mode.
 Here's a sample on how to generate a triangular face:
 [codeblocks]
@@ -72,6 +80,9 @@ mesh.SurfaceEnd();
 [b]Note:[/b] Generating complex geometries with [ImmediateMesh] is highly inefficient. Instead, it is designed to generate simple geometry that changes often.
 */
 type Instance [1]gdclass.ImmediateMesh
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
+
 type Expanded [1]gdclass.ImmediateMesh
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.

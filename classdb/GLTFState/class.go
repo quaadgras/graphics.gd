@@ -58,10 +58,21 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 Contains all nodes and resources of a glTF file. This is used by [GLTFDocument] as data storage, which allows [GLTFDocument] and all [GLTFDocumentExtension] classes to remain stateless.
 GLTFState can be populated by [GLTFDocument] reading a file or by converting a Godot scene. Then the data can either be used to create a Godot scene or save to a glTF file. The code that converts to/from a Godot scene can be intercepted at arbitrary points by [GLTFDocumentExtension] classes. This allows for custom data to be stored in the glTF file or for custom data to be converted to/from Godot nodes.
 */
 type Instance [1]gdclass.GLTFState
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
+
 type Expanded [1]gdclass.GLTFState
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -142,6 +153,13 @@ func (self Instance) SetAdditionalData(extension_name string, additional_data an
 }
 
 /*
+Loads the buffer view data from the buffer referenced by this buffer view in the given [GLTFState]. Interleaved data with a byte stride is not yet supported by this method. The data is returned as a [PackedByteArray].
+*/
+func (self Instance) LoadBufferViewData(peer GLTFBufferView.Instance) []byte { //gd:GLTFBufferView.load_buffer_view_data
+	return []byte(GLTFBufferView.Advanced(peer).LoadBufferViewData(self).Bytes())
+}
+
+/*
 Returns the [NodePath] that this GLTF node will have in the Godot scene tree after being imported. This is useful when importing glTF object model pointers with [GLTFObjectModelProperty], for handling extensions such as [code]KHR_animation_pointer[/code] or [code]KHR_interactivity[/code].
 If [param handle_skeletons] is [code]true[/code], paths to skeleton bone glTF nodes will be resolved properly. For example, a path that would be [code]^"A/B/C/Bone1/Bone2/Bone3"[/code] if [code]false[/code] will become [code]^"A/B/C/Skeleton3D:Bone3"[/code].
 */
@@ -155,13 +173,6 @@ If [param handle_skeletons] is [code]true[/code], paths to skeleton bone glTF no
 */
 func (self Expanded) GetSceneNodePath(peer GLTFNode.Instance, handle_skeletons bool) string { //gd:GLTFNode.get_scene_node_path
 	return string(GLTFNode.Advanced(peer).GetSceneNodePath(self, handle_skeletons).String())
-}
-
-/*
-Loads the buffer view data from the buffer referenced by this buffer view in the given [GLTFState]. Interleaved data with a byte stride is not yet supported by this method. The data is returned as a [PackedByteArray].
-*/
-func (self Instance) LoadBufferViewData(peer GLTFBufferView.Instance) []byte { //gd:GLTFBufferView.load_buffer_view_data
-	return []byte(GLTFBufferView.Advanced(peer).LoadBufferViewData(self).Bytes())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

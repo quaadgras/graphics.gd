@@ -186,6 +186,14 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 			break
 		}
 	}
+	if class.Name != "Resource" {
+		fmt.Fprintf(file, "/*\n")
+		fmt.Fprintf(file, "ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with\n")
+		fmt.Fprintf(file, "unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.\n")
+		fmt.Fprintf(file, "*/\n")
+		fmt.Fprintf(file, "type ID Object.ID\n")
+		fmt.Fprintf(file, "func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }\n")
+	}
 	if class.Description != "" {
 		fmt.Fprintln(file, "/*")
 		fmt.Fprint(file, strings.Replace(class.Description, "*/", "", -1))
@@ -196,6 +204,9 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		fmt.Fprintln(file, "\n*/")
 	}
 	fmt.Fprintf(file, "type Instance [1]gdclass.%s\n", class.Name)
+	if class.Name != "Resource" {
+		fmt.Fprintf(file, "func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }\n")
+	}
 	if singleton {
 		fmt.Fprintf(file, "var self [1]gdclass.%s\n", class.Name)
 		fmt.Fprintf(file, "var once sync.Once\n")
@@ -361,10 +372,8 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	fmt.Fprintf(file, "type class [1]gdclass.%s\n", class.Name)
 	fmt.Fprintln(file, "func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }")
 	fmt.Fprintf(file, "\n\n//go:nosplit\nfunc (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }\n")
-	if !singleton {
-		fmt.Fprintln(file, "func (self Instance) AsObject() [1]gd.Object { return self[0].AsObject() }")
-		fmt.Fprintf(file, "\n\n//go:nosplit\nfunc (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }\n")
-	}
+	fmt.Fprintln(file, "func (self Instance) AsObject() [1]gd.Object { return self[0].AsObject() }")
+	fmt.Fprintf(file, "\n\n//go:nosplit\nfunc (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }\n")
 	if !singleton {
 		classDB.new(file, class)
 	}
@@ -404,9 +413,6 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		}
 	}
 	for _, self := range []string{"class", "Instance"} {
-		if self == "Instance" && singleton {
-			continue
-		}
 		fmt.Fprintf(file, "\nfunc (self %s) Virtual(name string) reflect.Value {\n", self)
 		fmt.Fprintf(file, "\tswitch name {\n")
 		for _, method := range class.Methods {

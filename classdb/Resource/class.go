@@ -48,8 +48,6 @@ The engine keeps a global cache of all loaded resources, referenced by paths (se
 [b]Note:[/b] In C#, resources will not be freed instantly after they are no longer in use. Instead, garbage collection will run periodically and will free resources that are no longer in use. This means that unused resources will remain in memory for a while before being removed.
 
 	See [Interface] for methods that can be overridden by a [Class] that extends it.
-
-%!(EXTRA string=Resource)
 */
 type Instance [1]gdclass.Resource
 type Expanded [1]gdclass.Resource

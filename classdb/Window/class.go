@@ -53,14 +53,23 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 A node that creates a window. The window can either be a native system window or embedded inside another [Window] (see [member Viewport.gui_embed_subwindows]).
 At runtime, [Window]s will not close automatically when requested. You need to handle it manually using the [signal close_requested] signal (this applies both to pressing the close button and clicking outside of a popup).
 
 	See [Interface] for methods that can be overridden by a [Class] that extends it.
-
-%!(EXTRA string=Window)
 */
 type Instance [1]gdclass.Window
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
+
 type Expanded [1]gdclass.Window
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -795,18 +804,18 @@ func (self Expanded) PopupExclusiveCenteredClamped(from_node Node.Instance, mins
 }
 
 /*
+Returns the [Window] that contains this node. If the node is in the main window, this is equivalent to getting the root node ([code]get_tree().get_root()[/code]).
+*/
+func Get(peer Node.Instance) Instance { //gd:Node.get_window
+	return Instance(Node.Advanced(peer).GetWindow())
+}
+
+/*
 Returns a list of the visible embedded [Window]s inside the viewport.
 [b]Note:[/b] [Window]s inside other viewports will not be listed.
 */
 func (self Instance) GetEmbeddedInView(peer Viewport.Instance) []Instance { //gd:Viewport.get_embedded_subwindows
 	return []Instance(gd.ArrayAs[[]Instance](gd.InternalArray(Viewport.Advanced(peer).GetEmbeddedSubwindows())))
-}
-
-/*
-Returns the [Window] that contains this node. If the node is in the main window, this is equivalent to getting the root node ([code]get_tree().get_root()[/code]).
-*/
-func Get(peer Node.Instance) Instance { //gd:Node.get_window
-	return Instance(Node.Advanced(peer).GetWindow())
 }
 
 /*

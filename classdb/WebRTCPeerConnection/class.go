@@ -43,6 +43,14 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+ID is a typed object ID (reference) to an instance of this class, use it to store references to objects with
+unknown lifetimes, as an ID will not panic on use if the underlying object has been destroyed.
+*/
+type ID Object.ID
+
+func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
+
+/*
 A WebRTC connection between the local computer and a remote peer. Provides an interface to connect, maintain and monitor the connection.
 Setting up a WebRTC connection between two peers may not seem a trivial task, but it can be broken down into 3 main steps:
 - The peer that wants to initiate the connection ([code]A[/code] from now on) creates an offer and send it to the other peer ([code]B[/code] from now on).
@@ -51,6 +59,9 @@ Setting up a WebRTC connection between two peers may not seem a trivial task, bu
 After these steps, the connection should become connected. Keep on reading or look into the tutorial for more information.
 */
 type Instance [1]gdclass.WebRTCPeerConnection
+
+func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
+
 type Expanded [1]gdclass.WebRTCPeerConnection
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
