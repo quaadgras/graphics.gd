@@ -173,7 +173,6 @@ func Compile[V, F, M, L comparable, RM ~string](prog Program[V, F, M, L, RM]) {
 	if lght := prog.Lighting(material); lght != [1]L{}[0] && pipeline[2] != "" {
 		compileFunction(&writer, lght, pipeline[2])
 	}
-	fmt.Println(writer.String())
 	shader.SetCode(writer.String())
 	super.SetShader(shader)
 }

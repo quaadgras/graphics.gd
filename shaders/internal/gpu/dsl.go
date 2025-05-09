@@ -1,19 +1,17 @@
 package gpu
 
 import (
-	"weak"
-
 	"graphics.gd/shaders/internal"
 )
 
 type Expression struct {
 	indirect Evaluator
 	uniform  string
-	shader   weak.Pointer[internal.Shader]
+	shader   *internal.Shader
 }
 
 func Uniform(name string, shader *internal.Shader) Evaluator {
-	return Expression{uniform: name, shader: weak.Make(shader)}
+	return Expression{uniform: name, shader: shader}
 }
 
 func New(e Evaluator) Expression {
@@ -43,7 +41,7 @@ func (e *Expression) set(val Evaluator) {
 }
 
 func (e Expression) getShader() *internal.Shader {
-	return e.shader.Value()
+	return e.shader
 }
 
 func Shader(ptr HasShader) *internal.Shader {
