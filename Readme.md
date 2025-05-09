@@ -124,7 +124,7 @@ for example `Node.get_tree()` (GDScript) has moved to `SceneTree.Get()` (Go).
 | Variant            | `any`                     | `variant.Any`                   |
 | bool               | `bool`                    | `bool`                          |
 | int                | `int`                     | `int64`                         |
-| float              | `Float.X`                 | `Float.X`                       |
+| float              | `Float.X`                 | `float64`                       |
 | String             | `string`                  | `String.Readable`               |
 | Vector2            | `Vector2.XY`              | `Vector2.XY`                    |
 | Vector2i           | `Vector2i.XY`             | `Vector2i.XY`                   |
@@ -155,7 +155,7 @@ for example `Node.get_tree()` (GDScript) has moved to `SceneTree.Get()` (Go).
 | PackedInt64Array   | `[]int64`                 | `Packed.Array[int64]`           |
 | PackedFloat32Array | `[]float32`               | `Packed.Array[float32]`         |
 | PackedFloat64Array | `[]float64`               | `Packed.Array[float64]`         |
-| PackedStringArray  | `[]string`                | `Packed.Array[String.Readable]` |
+| PackedStringArray  | `[]string`                | `Packed.Strings`                |
 | PackedVector2Array | `[]Vector2.XY`            | `Packed.Array[Vector2.XY]`      |
 | PackedVector3Array | `[]Vector3.XYZ`           | `Packed.Array[Vector3.XYZ]`     |
 | PackedColorArray   | `[]Color.RGBA`            | `Packed.Array[Color.RGBA]`      |
