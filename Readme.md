@@ -1,7 +1,7 @@
 # Graphics GD [![Go Reference](https://pkg.go.dev/badge/graphics.gd.svg)](https://pkg.go.dev/graphics.gd)
 
 A safe performant way to work with graphics and game development in Go via
-the GDExtension interface of any supported graphics/game engine (ie. Godot 4.4).
+a GDExtension host (ie. Godot 4.4).
 
 _Why use graphics.gd?_
 
