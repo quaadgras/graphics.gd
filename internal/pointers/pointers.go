@@ -331,6 +331,9 @@ func Get[T Generic[T, P], P Size](ptr T) P {
 		panic("expired pointer")
 	}
 	if !rev.isActive() {
+		if live, ok := any(T(p)).(Liveness[P]); ok && !live.IsAlive(*(*P)(unsafe.Pointer(&ptrs))) {
+			panic("dead pointer")
+		}
 		arr[addr+offsetRevision].CompareAndSwap(uint64(rev), uint64(rev.active()))
 	}
 	return *(*P)(unsafe.Pointer(&ptrs))
@@ -577,7 +580,12 @@ type Generic[T any, S Size] interface {
 		revision revision
 		checksum S
 	}
+
 	Free()
+}
+
+type Liveness[S Size] interface {
+	IsAlive(raw S) bool
 }
 
 // End the lifetime of the pointer, returning the underlying pointer value

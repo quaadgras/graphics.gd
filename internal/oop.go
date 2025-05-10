@@ -79,6 +79,10 @@ func (self RefCounted) Free() {
 	}
 }
 
+func (self Object) IsAlive(raw [3]uint64) bool {
+	return raw[1] == 0 || Global.Object.GetInstanceFromID(ObjectID(raw[1])) != [1]Object{}
+}
+
 func (self Object) Free() {
 	raw, ok := pointers.End(self)
 	if !ok {
