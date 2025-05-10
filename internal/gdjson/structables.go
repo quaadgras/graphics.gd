@@ -470,6 +470,7 @@ var Structables = map[string]reflect.Type{
 	"Script.get_script_property_list.":                                  reflect.TypeFor[PropertyInfo](),
 	"Script.get_script_method_list.":                                    reflect.TypeFor[PropertyInfo](),
 	"Script.get_script_signal_list.":                                    reflect.TypeFor[SignalInfo](),
+	"ShapeCast3D.collision_result":                                      reflect.TypeFor[[]PhysicsDirectSpaceState3D_RestInfo](),
 	"SyntaxHighlighter.get_line_syntax_highlighting.":                   reflect.TypeFor[map[int]Entry](),
 	"TextServer.font_get_ot_name_strings.":                              reflect.TypeFor[map[string]string](), // FIXME
 	"TextServer.font_set_variation_coordinates.variation_coordinates":   reflect.TypeFor[map[string]Float.X](),

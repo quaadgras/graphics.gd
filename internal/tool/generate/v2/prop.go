@@ -24,7 +24,7 @@ func (classDB ClassDB) properties(file io.Writer, class gdjson.Class, singleton 
 		return
 	}
 	for _, prop := range class.Properties {
-		ptype := classDB.convertTypeSimple(class, "", "", prop.Type)
+		ptype := classDB.convertTypeSimple(class, class.Name+"."+prop.Name, "", prop.Type)
 		expert := gdtype.EngineTypeAsGoType(class.Name, "", prop.Type)
 		var foundGetter bool
 		var foundSetter bool
@@ -34,7 +34,7 @@ func (classDB ClassDB) properties(file io.Writer, class gdjson.Class, singleton 
 					continue
 				}
 				if method.Name == prop.Getter {
-					ptype = classDB.convertTypeSimple(class, "", method.ReturnValue.Meta, method.ReturnValue.Type)
+					ptype = classDB.convertTypeSimple(class, class.Name+"."+prop.Name, method.ReturnValue.Meta, method.ReturnValue.Type)
 					foundGetter = true
 					expert = gdtype.EngineTypeAsGoType(class.Name, method.ReturnValue.Meta, method.ReturnValue.Type)
 					break
@@ -51,7 +51,7 @@ func (classDB ClassDB) properties(file io.Writer, class gdjson.Class, singleton 
 					if prop.Index != nil {
 						i = 1
 					}
-					ptype = classDB.convertTypeSimple(class, "", method.Arguments[i].Meta, method.Arguments[i].Type)
+					ptype = classDB.convertTypeSimple(class, class.Name+"."+prop.Name, method.Arguments[i].Meta, method.Arguments[i].Type)
 					expert = gdtype.EngineTypeAsGoType(class.Name, method.Arguments[i].Meta, method.Arguments[i].Type)
 					foundSetter = true
 					break
@@ -94,7 +94,7 @@ func (classDB ClassDB) properties(file io.Writer, class gdjson.Class, singleton 
 					if prop.Index != nil {
 						i = 1
 					}
-					ptype = classDB.convertTypeSimple(class, "", method.Arguments[i].Meta, method.Arguments[i].Type)
+					ptype = classDB.convertTypeSimple(class, class.Name+"."+prop.Name, method.Arguments[i].Meta, method.Arguments[i].Type)
 					expert = gdtype.EngineTypeAsGoType(class.Name, method.Arguments[i].Meta, method.Arguments[i].Type)
 					found = true
 					break

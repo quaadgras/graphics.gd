@@ -213,7 +213,15 @@ func (classDB ClassDB) convertTypeSimple(class gdjson.Class, lookup, meta string
 		}
 		return strings.Replace(rtype.Name(), "gdjson.", "", -1)
 	case "Array":
-		return "[]any"
+		rtype, ok := gdjson.Structables[lookup]
+		if !ok {
+			return "[]any"
+		}
+		registerStructables(rtype)
+		if rtype.Name() == "" {
+			return strings.Replace(rtype.String(), "gdjson.", "", -1)
+		}
+		return strings.Replace(rtype.Name(), "gdjson.", "", -1)
 	case "Variant":
 		return "any"
 	case "Object":

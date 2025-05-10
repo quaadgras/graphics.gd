@@ -80,11 +80,11 @@ Returns an [Array] of [Button]s who have this as their [ButtonGroup] (see [membe
 func (self Instance) GetButtons() []BaseButton.Instance { //gd:ButtonGroup.get_buttons
 	return []BaseButton.Instance(gd.ArrayAs[[]BaseButton.Instance](gd.InternalArray(Advanced(self).GetButtons())))
 }
-func (self Instance) Set(peer BaseButton.Instance) { //gd:BaseButton.set_button_group
-	BaseButton.Advanced(peer).SetButtonGroup(self)
-}
 func Get(peer BaseButton.Instance) Instance { //gd:BaseButton.get_button_group
 	return Instance(BaseButton.Advanced(peer).GetButtonGroup())
+}
+func (self Instance) Set(peer BaseButton.Instance) { //gd:BaseButton.set_button_group
+	BaseButton.Advanced(peer).SetButtonGroup(self)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

@@ -804,10 +804,10 @@ func (self Expanded) PopupExclusiveCenteredClamped(from_node Node.Instance, mins
 }
 
 /*
-Returns the [Window] that contains this node. If the node is in the main window, this is equivalent to getting the root node ([code]get_tree().get_root()[/code]).
+Returns the [Window] that contains this node, or the last exclusive child in a chain of windows starting with the one that contains this node.
 */
-func Get(peer Node.Instance) Instance { //gd:Node.get_window
-	return Instance(Node.Advanced(peer).GetWindow())
+func GetLastExclusive(peer Node.Instance) Instance { //gd:Node.get_last_exclusive_window
+	return Instance(Node.Advanced(peer).GetLastExclusiveWindow())
 }
 
 /*
@@ -819,10 +819,10 @@ func (self Instance) GetEmbeddedInView(peer Viewport.Instance) []Instance { //gd
 }
 
 /*
-Returns the [Window] that contains this node, or the last exclusive child in a chain of windows starting with the one that contains this node.
+Returns the [Window] that contains this node. If the node is in the main window, this is equivalent to getting the root node ([code]get_tree().get_root()[/code]).
 */
-func GetLastExclusive(peer Node.Instance) Instance { //gd:Node.get_last_exclusive_window
-	return Instance(Node.Advanced(peer).GetLastExclusiveWindow())
+func Get(peer Node.Instance) Instance { //gd:Node.get_window
+	return Instance(Node.Advanced(peer).GetWindow())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

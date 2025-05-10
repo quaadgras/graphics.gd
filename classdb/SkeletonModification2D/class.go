@@ -167,17 +167,17 @@ func (self Instance) GetEditorDrawGizmo() bool { //gd:SkeletonModification2D.get
 }
 
 /*
-Sets the modification at [param mod_idx] to the passed-in modification, [param modification].
-*/
-func (self Instance) Set(peer SkeletonModificationStack2D.Instance, mod_idx int) { //gd:SkeletonModificationStack2D.set_modification
-	SkeletonModificationStack2D.Advanced(peer).SetModification(int64(mod_idx), self)
-}
-
-/*
 Adds the passed-in [SkeletonModification2D] to the stack.
 */
 func (self Instance) Add(peer SkeletonModificationStack2D.Instance) { //gd:SkeletonModificationStack2D.add_modification
 	SkeletonModificationStack2D.Advanced(peer).AddModification(self)
+}
+
+/*
+Sets the modification at [param mod_idx] to the passed-in modification, [param modification].
+*/
+func (self Instance) Set(peer SkeletonModificationStack2D.Instance, mod_idx int) { //gd:SkeletonModificationStack2D.set_modification
+	SkeletonModificationStack2D.Advanced(peer).SetModification(int64(mod_idx), self)
 }
 
 /*
