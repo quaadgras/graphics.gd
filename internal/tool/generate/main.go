@@ -659,6 +659,7 @@ func generate() error {
 		if class.Name != "Object" && class.Name != "RefCounted" {
 			fmt.Fprintf(w, "type %[1]v pointers.Trio[%[1]v]\n", class.Name, classDB.nameOf(pkg, class.Inherits))
 			fmt.Fprintf(w, "func (self %[1]v) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }\n", class.Name)
+			fmt.Fprintf(w, "func (self %[1]v) IsAlive(raw [3]uint64) bool { return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw) }\n", class.Name)
 		}
 		if class.Inherits != "" {
 			fmt.Fprintf(w, "\n\n//go:nosplit\nfunc (self %[1]v) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }\n", class.Name)
