@@ -2,6 +2,7 @@
 package Callable
 
 import (
+	"fmt"
 	"math"
 	"reflect"
 	"runtime"
@@ -73,7 +74,8 @@ func (l *local) Args(complex128) (int, Array.Any) {
 func (l *local) Call(_ complex128, args ...variant.Any) variant.Any {
 	argc, binds := l.Args(0)
 	if len(args)-binds.Len() != argc {
-		panic("invalid number of arguments")
+		panic(fmt.Sprintf("%s: invalid number of arguments, expected %d, found %d",
+			runtime.FuncForPC(reflect.ValueOf(l.value).Pointer()).Name(), argc, len(args)-binds.Len()))
 	}
 	if reflect.TypeOf(l.value).Kind() == reflect.Func {
 		ftype := reflect.TypeOf(l.value)

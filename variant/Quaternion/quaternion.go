@@ -376,6 +376,12 @@ func AsBasis(q IJKX) Basis.XYZ { //gd:Basis(Quaternion)
 	}
 }
 
+func Rotate(vec Vector3.XYZ, quat IJKX) Vector3.XYZ { //gd:Quaternion*(right:Vector3)
+	var u = Vector3.New(quat.I, quat.J, quat.K)
+	var uv = Vector3.Cross(u, vec)
+	return Vector3.Add(vec, Vector3.MulX(Vector3.Add(Vector3.MulX(uv, quat.X), Vector3.Cross(u, uv)), 2))
+}
+
 func Mul(a, b IJKX) IJKX { //gd:Quaternion*(right:Quaternion)
 	return IJKX{
 		a.I*b.X + a.X*b.I + a.J*b.K - a.K*b.J,

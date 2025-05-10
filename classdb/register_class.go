@@ -635,13 +635,20 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 	type isNode interface {
 		AsNode() NodeClass.Instance
 	}
-	nodeType := reflect.TypeOf([0]isNode{}).Elem()
-	if !field.Type.Implements(nodeType) && !reflect.PointerTo(field.Type).Implements(nodeType) {
-		return
-	}
 	var (
 		rvalue = reflect.ValueOf(value)
 	)
+	nodeType := reflect.TypeOf([0]isNode{}).Elem()
+	if !field.Type.Implements(nodeType) && !reflect.PointerTo(field.Type).Implements(nodeType) {
+		if field.Type.Kind() == reflect.Struct {
+			for _, field := range reflect.VisibleFields(field.Type) {
+				if field.IsExported() {
+					instance.assertChild(rvalue.Elem().FieldByIndex(field.Index).Addr().Interface(), field, parent, owner)
+				}
+			}
+		}
+		return
+	}
 	if rvalue.Elem().Kind() == reflect.Pointer {
 		rvalue.Elem().Set(reflect.New(rvalue.Elem().Type().Elem()))
 		value = rvalue.Elem().Interface()

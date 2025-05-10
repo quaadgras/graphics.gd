@@ -127,7 +127,11 @@ type Void struct {
 
 // Emit the signal to all connected signal handlers. Safe to call from any goroutine.
 // This function is safe to call from any goroutine.
-func (signal Void) Emit() { Callable.Defer(Callable.New(signal.Any.Emit)) }
+func (signal Void) Emit() {
+	Callable.Defer(Callable.New(func() {
+		signal.Any.Emit()
+	}))
+}
 
 // Solo value that can be signaled, add this as a field inside a [classdb.Extension]
 // to register it as a signal.

@@ -28,6 +28,10 @@ func Is[T gd.IsClass](value gd.IsClass) bool {
 // As attempts to cast the given class to T, returning true
 // if the cast was successful.
 func As[T gd.IsClass](value gd.IsClass) (T, bool) {
+	if value.AsObject() == ([1]gd.Object{}) || value == nil {
+		var zero T
+		return zero, false
+	}
 	ext, ok := gd.ExtensionInstances.Load(pointers.Get(value.AsObject()[0])[0])
 	if ok {
 		if ref, ok := ext.(T); ok {

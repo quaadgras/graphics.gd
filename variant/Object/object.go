@@ -17,6 +17,9 @@ type ID uint64
 
 // Instance returns the Object instance identified by this ID.
 func (id ID) Instance() Instance {
+	if id == 0 {
+		return Nil
+	}
 	return Instance(gd.Global.Object.GetInstanceFromID(gd.ObjectID(id)))
 }
 
@@ -44,6 +47,9 @@ Each [Interface] method can be overidden independently:
 	}
 */
 type Instance [1]gdclass.Object
+
+// Nil is a nil Object instance. Useful for comparisons.
+var Nil Instance
 
 type Interface interface {
 	Get(property string) any
