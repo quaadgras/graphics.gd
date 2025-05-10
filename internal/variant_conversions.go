@@ -468,7 +468,7 @@ func (variant Variant) Interface() any {
 	case TypeRID:
 		return variantAsValueType[RID](variant, vtype)
 	case TypeObject:
-		var obj = variantAsPointerType[Object](variant, vtype)
+		var obj = variantAsObject(variant)
 		return ObjectAs(obj.GetClass().String(), obj)
 	case TypeCallable:
 		callable := variantAsPointerType[Callable](variant, vtype)
@@ -533,6 +533,15 @@ func variantAsPointerType[T pointers.Generic[T, Size], Size pointers.Size](varia
 	var ret = r_ret.Get()
 	frame.Free()
 	return pointers.New[T](ret)
+}
+
+func variantAsObject(variant Variant) Object {
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[3]uint64](frame)
+	Global.variant.IntoType[TypeObject](r_ret.Addr(), callframe.Arg(frame, pointers.Get(variant)))
+	var ret = r_ret.Get()
+	frame.Free()
+	return PointerMustAssertInstanceID[Object](ret[0])
 }
 
 func LetVariantAsPointerType[T pointers.Generic[T, Size], Size pointers.Size](variant Variant, vtype VariantType) T {
