@@ -5,6 +5,7 @@ import (
 	"reflect"
 
 	EngineClass "graphics.gd/classdb/Engine"
+	NodeClass "graphics.gd/classdb/Node"
 	ResourceClass "graphics.gd/classdb/Resource"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/pointers"
@@ -25,55 +26,66 @@ func propertyOf(class gd.StringName, field reflect.StructField) (gd.PropertyInfo
 	var hint PropertyHint
 	var hintString = nameOf(field.Type)
 	var enum = registerEnumsFor(class, field.Type)
-	switch {
-	case enum != nil:
-		vtype = gd.TypeInt
-		hint |= PropertyHintEnum
-		hintString = ""
-		var first = true
-		for name, value := range enum {
-			if !first {
-				hintString += ","
-			}
-			hintString += fmt.Sprintf("%s:%d", name, value)
-			first = false
-		}
-	case field.Type.Kind() == reflect.Pointer && field.Type.Implements(reflect.TypeOf([0]interface{ Super() ResourceClass.Instance }{}).Elem()):
+	var className = nameOf(field.Type)
+	if instance, ok := field.Type.MethodByName("Instance"); ok && instance.Type.NumOut() == 2 && field.Type.Name() == "ID" {
 		vtype = gd.TypeObject
-		hint |= PropertyHintResourceType
-		hintString = nameOf(field.Type.Elem())
-	default:
-		vtype, ok = gd.VariantTypeOf(field.Type)
-		if !ok {
-			return gd.PropertyInfo{}, false
-		}
-		if vtype == gd.TypeArray && (field.Type.Kind() == reflect.Array || field.Type.Kind() == reflect.Slice) {
-			elem := field.Type.Elem()
-			etype, ok := gd.VariantTypeOf(elem)
+		className = nameOf(instance.Type.Out(0))
+		hintString = className
+		field.Type = instance.Type.Out(0)
+	} else {
+		switch {
+		case enum != nil:
+			vtype = gd.TypeInt
+			hint |= PropertyHintEnum
+			hintString = ""
+			var first = true
+			for name, value := range enum {
+				if !first {
+					hintString += ","
+				}
+				hintString += fmt.Sprintf("%s:%d", name, value)
+				first = false
+			}
+		case field.Type.Kind() == reflect.Pointer && field.Type.Implements(reflect.TypeOf([0]interface{ Super() ResourceClass.Instance }{}).Elem()):
+			vtype = gd.TypeObject
+			hint |= PropertyHintResourceType
+			hintString = nameOf(field.Type.Elem())
+		default:
+			vtype, ok = gd.VariantTypeOf(field.Type)
 			if !ok {
 				return gd.PropertyInfo{}, false
 			}
-			if elem.Implements(reflect.TypeFor[ResourceClass.Any]()) {
-				hintString = fmt.Sprintf("%d/%d:%s", gd.TypeObject, PropertyHintResourceType, nameOf(elem)) // MAKE_RESOURCE_TYPE_HINT
-			} else if etype != gd.TypeNil {
-				hint |= PropertyHintArrayType
-				hintString = etype.String()
+			if vtype == gd.TypeArray && (field.Type.Kind() == reflect.Array || field.Type.Kind() == reflect.Slice) {
+				elem := field.Type.Elem()
+				etype, ok := gd.VariantTypeOf(elem)
+				if !ok {
+					return gd.PropertyInfo{}, false
+				}
+				if elem.Implements(reflect.TypeFor[ResourceClass.Any]()) {
+					hintString = fmt.Sprintf("%d/%d:%s", gd.TypeObject, PropertyHintResourceType, nameOf(elem)) // MAKE_RESOURCE_TYPE_HINT
+				} else if etype != gd.TypeNil {
+					hint |= PropertyHintArrayType
+					hintString = etype.String()
+				}
 			}
-		}
-		if vtype == gd.TypeArray && field.Type.Implements(reflect.TypeFor[Array.Interface]()) {
-			elem := reflect.Zero(field.Type).Interface().(Array.Interface).ElemType()
-			etype, ok := gd.VariantTypeOf(elem)
-			if !ok {
-				return gd.PropertyInfo{}, false
-			}
-			if etype != gd.TypeNil {
-				hint |= PropertyHintArrayType
-				hintString = etype.String()
+			if vtype == gd.TypeArray && field.Type.Implements(reflect.TypeFor[Array.Interface]()) {
+				elem := reflect.Zero(field.Type).Interface().(Array.Interface).ElemType()
+				etype, ok := gd.VariantTypeOf(elem)
+				if !ok {
+					return gd.PropertyInfo{}, false
+				}
+				if etype != gd.TypeNil {
+					hint |= PropertyHintArrayType
+					hintString = etype.String()
+				}
 			}
 		}
 	}
 	if field.Type.Implements(reflect.TypeOf([0]interface{ AsResource() ResourceClass.Instance }{}).Elem()) {
 		hint |= PropertyHintResourceType
+	}
+	if field.Type.Implements(reflect.TypeOf([0]interface{ AsNode() NodeClass.Instance }{}).Elem()) {
+		hint |= PropertyHintNodeType
 	}
 	var usage = PropertyUsageStorage | PropertyUsageEditor
 	if vtype == gd.TypeNil {
@@ -86,7 +98,7 @@ func propertyOf(class gd.StringName, field reflect.StructField) (gd.PropertyInfo
 	return gd.PropertyInfo{
 		Type:       vtype,
 		Name:       gd.NewStringName(name),
-		ClassName:  gd.NewStringName(nameOf(field.Type)),
+		ClassName:  gd.NewStringName(className),
 		Hint:       int64(hint),
 		HintString: gd.NewString(hintString),
 		Usage:      int64(usage),

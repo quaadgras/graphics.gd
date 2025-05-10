@@ -95,7 +95,23 @@ func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error
 		switch value := value.(type) {
 		case RID, Int, Float:
 			return reflect.ValueOf(value).Convert(rtype), nil
+		case Object:
+			if rtype.Name() == "ID" {
+				return reflect.ValueOf(Global.Object.GetInstanceID([1]Object{value})).Convert(rtype), nil
+			}
+			return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
+		case IsClass:
+			if rtype.Name() == "ID" {
+				return reflect.ValueOf(Global.Object.GetInstanceID(value.AsObject())).Convert(rtype), nil
+			}
+			return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
 		default:
+			rvalue := reflect.ValueOf(value)
+			if rvalue.Kind() == reflect.Array && rvalue.Type().Elem().Implements(reflect.TypeFor[IsClass]()) {
+				if rtype.Name() == "ID" {
+					return reflect.ValueOf(Global.Object.GetInstanceID(rvalue.Index(0).Interface().(IsClass).AsObject())).Convert(rtype), nil
+				}
+			}
 			return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
 		}
 	case reflect.Float32, reflect.Float64:

@@ -44,8 +44,21 @@ func NewVariant(v any) Variant {
 		var arg = callframe.Arg(frame, Int(value.Uint()))
 		Global.variant.FromType[TypeInt](ret, arg.Addr())
 	case reflect.Uint64:
-		var arg = callframe.Arg(frame, RID(value.Uint()))
-		Global.variant.FromType[TypeRID](ret, arg.Addr())
+		if instance := value.MethodByName("Instance"); instance.IsValid() && instance.Type().NumOut() == 2 && instance.Type().NumIn() == 0 {
+			result := instance.Call(nil)
+			if !result[1].Bool() {
+				return Global.Variants.NewNil()
+			}
+			obj := result[0].Interface().(IsClass).AsObject()
+			if pointers.Get(obj[0]) == ([3]uint64{}) {
+				return Global.Variants.NewNil()
+			}
+			var arg = callframe.Arg(frame, pointers.Get(obj[0]))
+			Global.variant.FromType[TypeObject](ret, arg.Addr())
+		} else {
+			var arg = callframe.Arg(frame, RID(value.Uint()))
+			Global.variant.FromType[TypeRID](ret, arg.Addr())
+		}
 	case reflect.Float32, reflect.Float64:
 		var arg = callframe.Arg(frame, Float(value.Float()))
 		Global.variant.FromType[TypeFloat](ret, arg.Addr())

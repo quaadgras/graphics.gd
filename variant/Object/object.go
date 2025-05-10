@@ -13,7 +13,7 @@ import (
 )
 
 // ID uniquely and opaquely identifies an Object instance.
-type ID int64
+type ID uint64
 
 // Instance returns the Object instance identified by this ID.
 func (id ID) Instance() Instance {
