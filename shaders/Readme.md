@@ -25,7 +25,7 @@ import (
 )
 
 type MyShader struct {
-	CanvasItem.Shader
+	CanvasItem.Shader[MyShader]
 }
 
 // The pipeline functions are named after what they return, not what they accept as
@@ -65,7 +65,7 @@ RenderingServer/GeometryInstance3D packages.
 
 ```go
 	type MyShader struct {
-		CanvasItem.Shader
+		CanvasItem.Shader[MyShader]
 
 		MyUniform vec2.XY `gd:"my_uniform"`
 
@@ -75,6 +75,5 @@ RenderingServer/GeometryInstance3D packages.
 	ms.Color.Value()
 
 	var shader = new(MyShader)
-	shaders.Compile(&shader)
 	shaders.Set(&shader.MyUniform, Vector2.New(1, 2))
 ```
