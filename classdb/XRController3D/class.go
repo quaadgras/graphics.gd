@@ -54,6 +54,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 This is a helper 3D node that is linked to the tracking of controllers. It also offers several handy passthroughs to the state of buttons and such on the controllers.
 Controllers are linked by their ID. You can create controller nodes before the controllers are available. If your game always uses two controllers (one for each hand), you can predefine the controllers with ID 1 and 2; they will become active as soon as the controllers are identified. If you expect additional controllers to be used, you should react to the signals and add XRController3D nodes to your scene.
 The position of the controller node is automatically updated by the [XRServer]. This makes this node ideal to add child nodes to visualize the controller.
@@ -118,6 +123,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("XRController3D"))
 	casted := Instance{*(*gdclass.XRController3D)(unsafe.Pointer(&object))}
@@ -212,18 +218,22 @@ func (self Instance) OnProfileChanged(cb func(role string)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("profile_changed"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsXRController3D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsXRController3D() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsXRController3D() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsXRController3D() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsXRController3D() Instance { return self.Super().AsXRController3D() }
 func (self class) AsXRNode3D() XRNode3D.Advanced {
 	return *((*XRNode3D.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsXRNode3D() XRNode3D.Instance { return self.Super().AsXRNode3D() }
 func (self Instance) AsXRNode3D() XRNode3D.Instance {
 	return *((*XRNode3D.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsNode3D() Node3D.Advanced    { return *((*Node3D.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode3D() Node3D.Instance { return *((*Node3D.Instance)(unsafe.Pointer(&self))) }
-func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode3D() Node3D.Advanced        { return *((*Node3D.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode3D() Node3D.Instance { return self.Super().AsNode3D() }
+func (self Instance) AsNode3D() Node3D.Instance     { return *((*Node3D.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced            { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode() Node.Instance     { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance         { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

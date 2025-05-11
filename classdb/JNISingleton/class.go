@@ -50,6 +50,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 The JNISingleton is implemented only in the Android export. It's used to call methods and connect signals from an Android plugin written in Java or Kotlin. Methods and signals can be called and connected to the JNISingleton as if it is a Node. See [url=https://en.wikipedia.org/wiki/Java_Native_Interface]Java Native Interface - Wikipedia[/url] for more information.
 */
 type Instance [1]gdclass.JNISingleton
@@ -76,14 +81,16 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("JNISingleton"))
 	casted := Instance{*(*gdclass.JNISingleton)(unsafe.Pointer(&object))}
 	return casted
 }
 
-func (self class) AsJNISingleton() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsJNISingleton() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsJNISingleton() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsJNISingleton() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsJNISingleton() Instance { return self.Super().AsJNISingleton() }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

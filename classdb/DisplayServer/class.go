@@ -61,6 +61,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 [DisplayServer] handles everything related to window management. It is separated from [OS] as a single operating system may support multiple display servers.
 [b]Headless mode:[/b] Starting the engine with the [code]--headless[/code] [url=$DOCS_URL/tutorials/editor/command_line_tutorial.html]command line argument[/url] disables all rendering and window management functions. Most functions from [DisplayServer] will return dummy values in this case.
 */
@@ -2714,6 +2719,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 
 /*
 Returns [code]true[/code] if the specified [param feature] is supported by the current [DisplayServer], [code]false[/code] otherwise.

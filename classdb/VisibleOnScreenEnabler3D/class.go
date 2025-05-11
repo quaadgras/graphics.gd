@@ -54,6 +54,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 [VisibleOnScreenEnabler3D] contains a box-shaped region of 3D space and a target node. The target node will be automatically enabled (via its [member Node.process_mode] property) when any part of this region becomes visible on the screen, and automatically disabled otherwise. This can for example be used to activate enemies only when the player approaches them.
 See [VisibleOnScreenNotifier3D] if you only want to be notified when the region is visible on screen.
 [b]Note:[/b] [VisibleOnScreenEnabler3D] uses an approximate heuristic that doesn't take walls and other occlusion into account, unless occlusion culling is used. It also won't function unless [member Node3D.visible] is set to [code]true[/code].
@@ -82,6 +87,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisibleOnScreenEnabler3D"))
 	casted := Instance{*(*gdclass.VisibleOnScreenEnabler3D)(unsafe.Pointer(&object))}
@@ -145,8 +151,14 @@ func (self class) AsVisibleOnScreenEnabler3D() Advanced { return *((*Advanced)(u
 func (self Instance) AsVisibleOnScreenEnabler3D() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsVisibleOnScreenEnabler3D() Instance {
+	return self.Super().AsVisibleOnScreenEnabler3D()
+}
 func (self class) AsVisibleOnScreenNotifier3D() VisibleOnScreenNotifier3D.Advanced {
 	return *((*VisibleOnScreenNotifier3D.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsVisibleOnScreenNotifier3D() VisibleOnScreenNotifier3D.Instance {
+	return self.Super().AsVisibleOnScreenNotifier3D()
 }
 func (self Instance) AsVisibleOnScreenNotifier3D() VisibleOnScreenNotifier3D.Instance {
 	return *((*VisibleOnScreenNotifier3D.Instance)(unsafe.Pointer(&self)))
@@ -154,13 +166,18 @@ func (self Instance) AsVisibleOnScreenNotifier3D() VisibleOnScreenNotifier3D.Ins
 func (self class) AsVisualInstance3D() VisualInstance3D.Advanced {
 	return *((*VisualInstance3D.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsVisualInstance3D() VisualInstance3D.Instance {
+	return self.Super().AsVisualInstance3D()
+}
 func (self Instance) AsVisualInstance3D() VisualInstance3D.Instance {
 	return *((*VisualInstance3D.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsNode3D() Node3D.Advanced    { return *((*Node3D.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode3D() Node3D.Instance { return *((*Node3D.Instance)(unsafe.Pointer(&self))) }
-func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode3D() Node3D.Advanced        { return *((*Node3D.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode3D() Node3D.Instance { return self.Super().AsNode3D() }
+func (self Instance) AsNode3D() Node3D.Instance     { return *((*Node3D.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced            { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode() Node.Instance     { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance         { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

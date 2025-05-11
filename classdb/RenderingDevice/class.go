@@ -68,6 +68,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 [RenderingDevice] is an abstraction for working with modern low-level graphics APIs such as Vulkan. Compared to [RenderingServer] (which works with Godot's own rendering subsystems), [RenderingDevice] is much lower-level and allows working more directly with the underlying graphics APIs. [RenderingDevice] is used in Godot to provide support for several modern low-level graphics APIs while reducing the amount of code duplication required. [RenderingDevice] can also be used in your own projects to perform things that are not exposed by [RenderingServer] or high-level nodes, such as using compute shaders.
 On startup, Godot creates a global [RenderingDevice] which can be retrieved using [method RenderingServer.get_rendering_device]. This global [RenderingDevice] performs drawing to the screen.
 [b]Local RenderingDevices:[/b] Using [method RenderingServer.create_local_rendering_device], you can create "secondary" rendering devices to perform drawing and GPU compute operations on separate threads.
@@ -1380,6 +1385,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RenderingDevice"))
 	casted := Instance{*(*gdclass.RenderingDevice)(unsafe.Pointer(&object))}
@@ -3255,8 +3261,9 @@ func (self class) GetDeviceAllocsByObjectType(atype int64) int64 { //gd:Renderin
 	frame.Free()
 	return ret
 }
-func (self class) AsRenderingDevice() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsRenderingDevice() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsRenderingDevice() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsRenderingDevice() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsRenderingDevice() Instance { return self.Super().AsRenderingDevice() }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

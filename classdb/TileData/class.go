@@ -56,6 +56,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 [TileData] object represents a single tile in a [TileSet]. It is usually edited using the tileset editor, but it can be modified at runtime using [method TileMap._tile_data_runtime_update].
 */
 type Instance [1]gdclass.TileData
@@ -335,6 +340,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TileData"))
 	casted := Instance{*(*gdclass.TileData)(unsafe.Pointer(&object))}
@@ -1090,8 +1096,9 @@ func (self Instance) OnChanged(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("changed"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsTileData() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsTileData() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsTileData() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsTileData() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsTileData() Instance { return self.Super().AsTileData() }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

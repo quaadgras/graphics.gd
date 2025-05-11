@@ -51,6 +51,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 This imports a collection of textures from a PNG image into an [AtlasTexture] or 2D [ArrayMesh]. This can be used to save memory when importing 2D animations from spritesheets. Texture atlases are only supported in 2D rendering, not 3D. See also [ResourceImporterTexture] and [ResourceImporterLayeredTexture].
 [b]Note:[/b] [ResourceImporterTextureAtlas] does not handle importing [TileSetAtlasSource], which is created using the [TileSet] editor instead.
 */
@@ -78,6 +83,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ResourceImporterTextureAtlas"))
 	casted := Instance{*(*gdclass.ResourceImporterTextureAtlas)(unsafe.Pointer(&object))}
@@ -91,8 +97,14 @@ func (self class) AsResourceImporterTextureAtlas() Advanced {
 func (self Instance) AsResourceImporterTextureAtlas() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResourceImporterTextureAtlas() Instance {
+	return self.Super().AsResourceImporterTextureAtlas()
+}
 func (self class) AsResourceImporter() ResourceImporter.Advanced {
 	return *((*ResourceImporter.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsResourceImporter() ResourceImporter.Instance {
+	return self.Super().AsResourceImporter()
 }
 func (self Instance) AsResourceImporter() ResourceImporter.Instance {
 	return *((*ResourceImporter.Instance)(unsafe.Pointer(&self)))
@@ -100,6 +112,7 @@ func (self Instance) AsResourceImporter() ResourceImporter.Instance {
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

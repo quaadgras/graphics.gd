@@ -52,6 +52,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 By inheriting this class you can create a custom [VisualShader] script addon which will be automatically added to the Visual Shader Editor. The [VisualShaderNode]'s behavior is defined by overriding the provided virtual methods.
 In order for the node to be registered as an editor addon, you must use the [code]@tool[/code] annotation and provide a [code]class_name[/code] for your custom script. For example:
 [codeblock]
@@ -534,6 +539,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeCustom"))
 	casted := Instance{*(*gdclass.VisualShaderNodeCustom)(unsafe.Pointer(&object))}
@@ -892,8 +898,14 @@ func (self class) AsVisualShaderNodeCustom() Advanced { return *((*Advanced)(uns
 func (self Instance) AsVisualShaderNodeCustom() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsVisualShaderNodeCustom() Instance {
+	return self.Super().AsVisualShaderNodeCustom()
+}
 func (self class) AsVisualShaderNode() VisualShaderNode.Advanced {
 	return *((*VisualShaderNode.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsVisualShaderNode() VisualShaderNode.Instance {
+	return self.Super().AsVisualShaderNode()
 }
 func (self Instance) AsVisualShaderNode() VisualShaderNode.Instance {
 	return *((*VisualShaderNode.Instance)(unsafe.Pointer(&self)))
@@ -901,12 +913,14 @@ func (self Instance) AsVisualShaderNode() VisualShaderNode.Instance {
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

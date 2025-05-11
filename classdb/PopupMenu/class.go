@@ -58,6 +58,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 [PopupMenu] is a modal window used to display a list of options. Useful for toolbars and context menus.
 The size of a [PopupMenu] can be limited by using [member Window.max_size]. If the height of the list of items is larger than the maximum height of the [PopupMenu], a [ScrollContainer] within the popup will allow the user to scroll the contents. If no maximum size is set, or if it is set to [code]0[/code], the [PopupMenu] height will be limited by its parent rect.
 All [code]set_*[/code] methods allow negative item indices, i.e. [code]-1[/code] to access the last item, [code]-2[/code] to select the second-to-last item, and so on.
@@ -817,6 +822,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PopupMenu"))
 	casted := Instance{*(*gdclass.PopupMenu)(unsafe.Pointer(&object))}
@@ -2072,20 +2078,25 @@ func (self Instance) OnMenuChanged(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("menu_changed"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsPopupMenu() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsPopupMenu() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self class) AsPopup() Popup.Advanced      { return *((*Popup.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsPopup() Popup.Instance   { return *((*Popup.Instance)(unsafe.Pointer(&self))) }
-func (self class) AsWindow() Window.Advanced    { return *((*Window.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsWindow() Window.Instance { return *((*Window.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsPopupMenu() Advanced            { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsPopupMenu() Instance         { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsPopupMenu() Instance     { return self.Super().AsPopupMenu() }
+func (self class) AsPopup() Popup.Advanced          { return *((*Popup.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsPopup() Popup.Instance   { return self.Super().AsPopup() }
+func (self Instance) AsPopup() Popup.Instance       { return *((*Popup.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsWindow() Window.Advanced        { return *((*Window.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsWindow() Window.Instance { return self.Super().AsWindow() }
+func (self Instance) AsWindow() Window.Instance     { return *((*Window.Instance)(unsafe.Pointer(&self))) }
 func (self class) AsViewport() Viewport.Advanced {
 	return *((*Viewport.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsViewport() Viewport.Instance { return self.Super().AsViewport() }
 func (self Instance) AsViewport() Viewport.Instance {
 	return *((*Viewport.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsNode() Node.Advanced    { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

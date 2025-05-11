@@ -56,6 +56,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A TileSet is a library of tiles for a [TileMapLayer]. A TileSet handles a list of [TileSetSource], each of them storing a set of tiles.
 Tiles can either be from a [TileSetAtlasSource], which renders tiles out of a texture with support for physics, navigation, etc., or from a [TileSetScenesCollectionSource], which exposes scene-based tiles.
 Tiles are referenced by using three IDs: their source ID, their atlas coordinates ID, and their alternative tile ID.
@@ -728,6 +733,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TileSet"))
 	casted := Instance{*(*gdclass.TileSet)(unsafe.Pointer(&object))}
@@ -1949,17 +1955,20 @@ func (self class) GetPatternsCount() int64 { //gd:TileSet.get_patterns_count
 	frame.Free()
 	return ret
 }
-func (self class) AsTileSet() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsTileSet() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsTileSet() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsTileSet() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsTileSet() Instance { return self.Super().AsTileSet() }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

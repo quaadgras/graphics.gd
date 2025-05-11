@@ -54,6 +54,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 [Area3D] is a region of 3D space defined by one or multiple [CollisionShape3D] or [CollisionPolygon3D] child nodes. It detects when other [CollisionObject3D]s enter or exit it, and it also keeps track of which collision objects haven't exited it yet (i.e. which one are overlapping it).
 This node can also locally alter or override physics parameters (gravity, damping) and route audio to custom audio buses.
 [b]Note:[/b] Areas and bodies created with [PhysicsServer3D] might not interact as expected with [Area3D]s, and might not emit signals or track objects correctly.
@@ -132,6 +137,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Area3D"))
 	casted := Instance{*(*gdclass.Area3D)(unsafe.Pointer(&object))}
@@ -850,18 +856,24 @@ func (self Instance) OnAreaExited(cb func(area Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("area_exited"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsArea3D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsArea3D() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsArea3D() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsArea3D() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsArea3D() Instance { return self.Super().AsArea3D() }
 func (self class) AsCollisionObject3D() CollisionObject3D.Advanced {
 	return *((*CollisionObject3D.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsCollisionObject3D() CollisionObject3D.Instance {
+	return self.Super().AsCollisionObject3D()
 }
 func (self Instance) AsCollisionObject3D() CollisionObject3D.Instance {
 	return *((*CollisionObject3D.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsNode3D() Node3D.Advanced    { return *((*Node3D.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode3D() Node3D.Instance { return *((*Node3D.Instance)(unsafe.Pointer(&self))) }
-func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode3D() Node3D.Advanced        { return *((*Node3D.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode3D() Node3D.Instance { return self.Super().AsNode3D() }
+func (self Instance) AsNode3D() Node3D.Instance     { return *((*Node3D.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced            { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode() Node.Instance     { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance         { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

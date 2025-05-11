@@ -53,6 +53,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 An obstacle needs a navigation map and outline [member vertices] defined to work correctly. The outlines can not cross or overlap and are restricted to a plane projection. This means the y-axis of the vertices is ignored, instead the obstacle's global y-axis position is used for placement. The projected shape is extruded by the obstacles height along the y-axis.
 Obstacles can be included in the navigation mesh baking process when [member affect_navigation_mesh] is enabled. They do not add walkable geometry, instead their role is to discard other source geometry inside the shape. This can be used to prevent navigation mesh from appearing in unwanted places, e.g. inside "solid" geometry or on top of it. If [member carve_navigation_mesh] is enabled the baked shape will not be affected by offsets of the navigation mesh baking, e.g. the agent radius.
 With [member avoidance_enabled] the obstacle can constrain the avoidance velocities of avoidance using agents. If the obstacle's vertices are wound in clockwise order, avoidance agents will be pushed in by the obstacle, otherwise, avoidance agents will be pushed out. Obstacles using vertices and avoidance can warp to a new position but should not be moved every single frame as each change requires a rebuild of the avoidance map.
@@ -116,6 +121,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("NavigationObstacle3D"))
 	casted := Instance{*(*gdclass.NavigationObstacle3D)(unsafe.Pointer(&object))}
@@ -431,10 +437,15 @@ func (self class) GetCarveNavigationMesh() bool { //gd:NavigationObstacle3D.get_
 }
 func (self class) AsNavigationObstacle3D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsNavigationObstacle3D() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self class) AsNode3D() Node3D.Advanced           { return *((*Node3D.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode3D() Node3D.Instance        { return *((*Node3D.Instance)(unsafe.Pointer(&self))) }
-func (self class) AsNode() Node.Advanced               { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Node.Instance            { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNavigationObstacle3D() Instance {
+	return self.Super().AsNavigationObstacle3D()
+}
+func (self class) AsNode3D() Node3D.Advanced        { return *((*Node3D.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode3D() Node3D.Instance { return self.Super().AsNode3D() }
+func (self Instance) AsNode3D() Node3D.Instance     { return *((*Node3D.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced            { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode() Node.Instance     { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance         { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

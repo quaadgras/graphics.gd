@@ -55,6 +55,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 This physics body implements all the physics logic needed to simulate a car. It is based on the raycast vehicle system commonly found in physics engines. Aside from a [CollisionShape3D] for the main body of the vehicle, you must also add a [VehicleWheel3D] node for each wheel. You should also add a [MeshInstance3D] to this node for the 3D model of the vehicle, but this model should generally not include meshes for the wheels. You can control the vehicle by using the [member brake], [member engine_force], and [member steering] properties. The position or orientation of this node shouldn't be changed directly.
 [b]Note:[/b] The origin point of your VehicleBody3D will determine the center of gravity of your vehicle. To make the vehicle more grounded, the origin point is usually kept low, moving the [CollisionShape3D] and [MeshInstance3D] upwards.
 [b]Note:[/b] This class has known issues and isn't designed to provide realistic 3D vehicle physics. If you want advanced vehicle physics, you may have to write your own physics integration using [CharacterBody3D] or [RigidBody3D].
@@ -83,6 +88,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VehicleBody3D"))
 	casted := Instance{*(*gdclass.VehicleBody3D)(unsafe.Pointer(&object))}
@@ -169,16 +175,21 @@ func (self class) GetSteering() float64 { //gd:VehicleBody3D.get_steering
 	frame.Free()
 	return ret
 }
-func (self class) AsVehicleBody3D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsVehicleBody3D() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsVehicleBody3D() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsVehicleBody3D() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsVehicleBody3D() Instance { return self.Super().AsVehicleBody3D() }
 func (self class) AsRigidBody3D() RigidBody3D.Advanced {
 	return *((*RigidBody3D.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRigidBody3D() RigidBody3D.Instance { return self.Super().AsRigidBody3D() }
 func (self Instance) AsRigidBody3D() RigidBody3D.Instance {
 	return *((*RigidBody3D.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsPhysicsBody3D() PhysicsBody3D.Advanced {
 	return *((*PhysicsBody3D.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsPhysicsBody3D() PhysicsBody3D.Instance {
+	return self.Super().AsPhysicsBody3D()
 }
 func (self Instance) AsPhysicsBody3D() PhysicsBody3D.Instance {
 	return *((*PhysicsBody3D.Instance)(unsafe.Pointer(&self)))
@@ -186,13 +197,18 @@ func (self Instance) AsPhysicsBody3D() PhysicsBody3D.Instance {
 func (self class) AsCollisionObject3D() CollisionObject3D.Advanced {
 	return *((*CollisionObject3D.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsCollisionObject3D() CollisionObject3D.Instance {
+	return self.Super().AsCollisionObject3D()
+}
 func (self Instance) AsCollisionObject3D() CollisionObject3D.Instance {
 	return *((*CollisionObject3D.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsNode3D() Node3D.Advanced    { return *((*Node3D.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode3D() Node3D.Instance { return *((*Node3D.Instance)(unsafe.Pointer(&self))) }
-func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode3D() Node3D.Advanced        { return *((*Node3D.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode3D() Node3D.Instance { return self.Super().AsNode3D() }
+func (self Instance) AsNode3D() Node3D.Instance     { return *((*Node3D.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced            { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode() Node.Instance     { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance         { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

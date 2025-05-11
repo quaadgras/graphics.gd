@@ -53,6 +53,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 [StandardMaterial3D]'s properties are inherited from [BaseMaterial3D]. [StandardMaterial3D] uses separate textures for ambient occlusion, roughness and metallic maps. To use a single ORM map for all 3 textures, use an [ORMMaterial3D] instead.
 */
 type Instance [1]gdclass.StandardMaterial3D
@@ -79,6 +84,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("StandardMaterial3D"))
 	casted := Instance{*(*gdclass.StandardMaterial3D)(unsafe.Pointer(&object))}
@@ -86,10 +92,14 @@ func New() Instance {
 	return casted
 }
 
-func (self class) AsStandardMaterial3D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsStandardMaterial3D() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsStandardMaterial3D() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsStandardMaterial3D() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsStandardMaterial3D() Instance { return self.Super().AsStandardMaterial3D() }
 func (self class) AsBaseMaterial3D() BaseMaterial3D.Advanced {
 	return *((*BaseMaterial3D.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsBaseMaterial3D() BaseMaterial3D.Instance {
+	return self.Super().AsBaseMaterial3D()
 }
 func (self Instance) AsBaseMaterial3D() BaseMaterial3D.Instance {
 	return *((*BaseMaterial3D.Instance)(unsafe.Pointer(&self)))
@@ -97,18 +107,21 @@ func (self Instance) AsBaseMaterial3D() BaseMaterial3D.Instance {
 func (self class) AsMaterial() Material.Advanced {
 	return *((*Material.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsMaterial() Material.Instance { return self.Super().AsMaterial() }
 func (self Instance) AsMaterial() Material.Instance {
 	return *((*Material.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

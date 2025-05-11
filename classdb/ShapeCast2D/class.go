@@ -56,6 +56,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 Shape casting allows to detect collision objects by sweeping its [member shape] along the cast direction determined by [member target_position]. This is similar to [RayCast2D], but it allows for sweeping a region of space, rather than just a straight line. [ShapeCast2D] can detect multiple collision objects. It is useful for things like wide laser beams or snapping a simple shape to a floor.
 Immediate collision overlaps can be done with the [member target_position] set to [code]Vector2(0, 0)[/code] and by calling [method force_shapecast_update] within the same physics frame. This helps to overcome some limitations of [Area2D] when used as an instantaneous detection area, as collision information isn't immediately available to it.
 [b]Note:[/b] Shape casting is more computationally expensive than ray casting.
@@ -206,6 +211,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ShapeCast2D"))
 	casted := Instance{*(*gdclass.ShapeCast2D)(unsafe.Pointer(&object))}
@@ -690,18 +696,22 @@ func (self class) GetCollisionResult() Array.Any { //gd:ShapeCast2D.get_collisio
 	frame.Free()
 	return ret
 }
-func (self class) AsShapeCast2D() Advanced      { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsShapeCast2D() Instance   { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self class) AsNode2D() Node2D.Advanced    { return *((*Node2D.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode2D() Node2D.Instance { return *((*Node2D.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsShapeCast2D() Advanced          { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsShapeCast2D() Instance       { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsShapeCast2D() Instance   { return self.Super().AsShapeCast2D() }
+func (self class) AsNode2D() Node2D.Advanced        { return *((*Node2D.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode2D() Node2D.Instance { return self.Super().AsNode2D() }
+func (self Instance) AsNode2D() Node2D.Instance     { return *((*Node2D.Instance)(unsafe.Pointer(&self))) }
 func (self class) AsCanvasItem() CanvasItem.Advanced {
 	return *((*CanvasItem.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
 func (self Instance) AsCanvasItem() CanvasItem.Instance {
 	return *((*CanvasItem.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsNode() Node.Advanced    { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

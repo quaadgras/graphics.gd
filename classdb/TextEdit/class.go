@@ -62,6 +62,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A multiline text editor. It also has limited facilities for editing code, such as syntax highlighting support. For more advanced facilities for editing code, see [CodeEdit].
 [b]Note:[/b] Most viewport, caret, and edit methods contain a [code]caret_index[/code] argument for [member caret_multiple] support. The argument should be one of the following: [code]-1[/code] for all carets, [code]0[/code] for the main caret, or greater than [code]0[/code] for secondary carets in the order they were created.
 [b]Note:[/b] When holding down [kbd]Alt[/kbd], the vertical scroll wheel will scroll 5 times as fast as it would normally do. This also works in the Godot script editor.
@@ -1717,6 +1722,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TextEdit"))
 	casted := Instance{*(*gdclass.TextEdit)(unsafe.Pointer(&object))}
@@ -5123,20 +5129,24 @@ func (self Instance) OnGutterRemoved(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("gutter_removed"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsTextEdit() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsTextEdit() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self class) AsControl() Control.Advanced { return *((*Control.Advanced)(unsafe.Pointer(&self))) }
+func (self class) AsTextEdit() Advanced               { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsTextEdit() Instance            { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsTextEdit() Instance        { return self.Super().AsTextEdit() }
+func (self class) AsControl() Control.Advanced        { return *((*Control.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsControl() Control.Instance { return self.Super().AsControl() }
 func (self Instance) AsControl() Control.Instance {
 	return *((*Control.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsCanvasItem() CanvasItem.Advanced {
 	return *((*CanvasItem.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
 func (self Instance) AsCanvasItem() CanvasItem.Instance {
 	return *((*CanvasItem.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsNode() Node.Advanced    { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

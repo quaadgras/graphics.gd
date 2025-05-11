@@ -52,6 +52,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 [EditorDebuggerPlugin] provides functions related to the editor side of the debugger.
 To interact with the debugger, an instance of this class must be added to the editor via [method EditorPlugin.add_debugger_plugin].
 Once added, the [method _setup_session] callback will be called for every [EditorDebuggerSession] available to the plugin, and when new ones are created (the sessions may be inactive during this stage).
@@ -266,6 +271,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorDebuggerPlugin"))
 	casted := Instance{*(*gdclass.EditorDebuggerPlugin)(unsafe.Pointer(&object))}
@@ -381,9 +387,13 @@ func (self class) GetSessions() Array.Any { //gd:EditorDebuggerPlugin.get_sessio
 }
 func (self class) AsEditorDebuggerPlugin() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsEditorDebuggerPlugin() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsEditorDebuggerPlugin() Instance {
+	return self.Super().AsEditorDebuggerPlugin()
+}
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

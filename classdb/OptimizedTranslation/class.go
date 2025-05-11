@@ -52,6 +52,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 An optimized translation, used by default for CSV Translations. Uses real-time compressed translations, which results in very small dictionaries.
 */
 type Instance [1]gdclass.OptimizedTranslation
@@ -86,6 +91,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("OptimizedTranslation"))
 	casted := Instance{*(*gdclass.OptimizedTranslation)(unsafe.Pointer(&object))}
@@ -107,21 +113,27 @@ func (self class) Generate(from [1]gdclass.Translation) { //gd:OptimizedTranslat
 }
 func (self class) AsOptimizedTranslation() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsOptimizedTranslation() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsOptimizedTranslation() Instance {
+	return self.Super().AsOptimizedTranslation()
+}
 func (self class) AsTranslation() Translation.Advanced {
 	return *((*Translation.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsTranslation() Translation.Instance { return self.Super().AsTranslation() }
 func (self Instance) AsTranslation() Translation.Instance {
 	return *((*Translation.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

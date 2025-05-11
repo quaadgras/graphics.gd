@@ -51,6 +51,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 An instance of this object represents a tracked face and its corresponding blend shapes. The blend shapes come from the [url=https://docs.vrcft.io/docs/tutorial-avatars/tutorial-avatars-extras/unified-blendshapes]Unified Expressions[/url] standard, and contain extended details and visuals for each blend shape. Additionally the [url=https://docs.vrcft.io/docs/tutorial-avatars/tutorial-avatars-extras/compatibility/overview]Tracking Standard Comparison[/url] page documents the relationship between Unified Expressions and other standards.
 As face trackers are turned on they are registered with the [XRServer].
 */
@@ -92,6 +97,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("XRFaceTracker"))
 	casted := Instance{*(*gdclass.XRFaceTracker)(unsafe.Pointer(&object))}
@@ -152,17 +158,20 @@ func (self class) SetBlendShapes(weights Packed.Array[float32]) { //gd:XRFaceTra
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRFaceTracker.Bind_set_blend_shapes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
-func (self class) AsXRFaceTracker() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsXRFaceTracker() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsXRFaceTracker() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsXRFaceTracker() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsXRFaceTracker() Instance { return self.Super().AsXRFaceTracker() }
 func (self class) AsXRTracker() XRTracker.Advanced {
 	return *((*XRTracker.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsXRTracker() XRTracker.Instance { return self.Super().AsXRTracker() }
 func (self Instance) AsXRTracker() XRTracker.Instance {
 	return *((*XRTracker.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

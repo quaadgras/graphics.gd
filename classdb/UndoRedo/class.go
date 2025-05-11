@@ -50,6 +50,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 UndoRedo works by registering methods and property changes inside "actions". You can create an action, then provide ways to do and undo this action using function calls and property changes, then commit the action.
 When an action is committed, all of the [code]do_*[/code] methods will run. If the [method undo] method is used, the [code]undo_*[/code] methods will run. If the [method redo] method is used, once again, all of the [code]do_*[/code] methods will run.
 Here's an example on how to add an action:
@@ -363,6 +368,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("UndoRedo"))
 	casted := Instance{*(*gdclass.UndoRedo)(unsafe.Pointer(&object))}
@@ -688,8 +694,9 @@ func (self Instance) OnVersionChanged(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("version_changed"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsUndoRedo() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsUndoRedo() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsUndoRedo() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsUndoRedo() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsUndoRedo() Instance { return self.Super().AsUndoRedo() }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

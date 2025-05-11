@@ -56,6 +56,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A texture works by registering an image in the video hardware, which then can be used in 3D models or 2D [Sprite2D] or GUI [Control].
 Textures are often created by loading them from a file. See [method @GDScript.load].
 [Texture2D] is a base for other resources. It cannot be used directly.
@@ -307,6 +312,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Texture2D"))
 	casted := Instance{*(*gdclass.Texture2D)(unsafe.Pointer(&object))}
@@ -535,21 +541,25 @@ func (self class) CreatePlaceholder() [1]gdclass.Resource { //gd:Texture2D.creat
 	frame.Free()
 	return ret
 }
-func (self class) AsTexture2D() Advanced       { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsTexture2D() Instance    { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self class) AsTexture() Texture.Advanced { return *((*Texture.Advanced)(unsafe.Pointer(&self))) }
+func (self class) AsTexture2D() Advanced              { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsTexture2D() Instance           { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsTexture2D() Instance       { return self.Super().AsTexture2D() }
+func (self class) AsTexture() Texture.Advanced        { return *((*Texture.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsTexture() Texture.Instance { return self.Super().AsTexture() }
 func (self Instance) AsTexture() Texture.Instance {
 	return *((*Texture.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

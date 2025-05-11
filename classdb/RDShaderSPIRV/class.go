@@ -51,6 +51,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 [RDShaderSPIRV] represents a [RDShaderFile]'s [url=https://www.khronos.org/spir/]SPIR-V[/url] code for various shader stages, as well as possible compilation error messages. SPIR-V is a low-level intermediate shader representation. This intermediate representation is not used directly by GPUs for rendering, but it can be compiled into binary shaders that GPUs can understand. Unlike compiled shaders, SPIR-V is portable across GPU models and driver versions.
 This object is used by [RenderingDevice].
 */
@@ -78,6 +83,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RDShaderSPIRV"))
 	casted := Instance{*(*gdclass.RDShaderSPIRV)(unsafe.Pointer(&object))}
@@ -218,17 +224,20 @@ func (self class) GetStageCompileError(stage gdclass.RenderingDeviceShaderStage)
 	frame.Free()
 	return ret
 }
-func (self class) AsRDShaderSPIRV() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsRDShaderSPIRV() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsRDShaderSPIRV() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsRDShaderSPIRV() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsRDShaderSPIRV() Instance { return self.Super().AsRDShaderSPIRV() }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

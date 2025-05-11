@@ -54,6 +54,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 Node for back-buffering the currently-displayed screen. The region defined in the [BackBufferCopy] node is buffered with the content of the screen it covers, or the entire screen according to the [member copy_mode]. It can be accessed in shader scripts using the screen texture (i.e. a uniform sampler with [code]hint_screen_texture[/code]).
 [b]Note:[/b] Since this node inherits from [Node2D] (and not [Control]), anchors and margins won't apply to child [Control]-derived nodes. This can be problematic when resizing the window. To avoid this, add [Control]-derived nodes as [i]siblings[/i] to the [BackBufferCopy] node instead of adding them as children.
 */
@@ -81,6 +86,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("BackBufferCopy"))
 	casted := Instance{*(*gdclass.BackBufferCopy)(unsafe.Pointer(&object))}
@@ -140,18 +146,22 @@ func (self class) GetCopyMode() gdclass.BackBufferCopyCopyMode { //gd:BackBuffer
 	frame.Free()
 	return ret
 }
-func (self class) AsBackBufferCopy() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsBackBufferCopy() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self class) AsNode2D() Node2D.Advanced     { return *((*Node2D.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode2D() Node2D.Instance  { return *((*Node2D.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsBackBufferCopy() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsBackBufferCopy() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsBackBufferCopy() Instance { return self.Super().AsBackBufferCopy() }
+func (self class) AsNode2D() Node2D.Advanced         { return *((*Node2D.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode2D() Node2D.Instance  { return self.Super().AsNode2D() }
+func (self Instance) AsNode2D() Node2D.Instance      { return *((*Node2D.Instance)(unsafe.Pointer(&self))) }
 func (self class) AsCanvasItem() CanvasItem.Advanced {
 	return *((*CanvasItem.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
 func (self Instance) AsCanvasItem() CanvasItem.Instance {
 	return *((*CanvasItem.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsNode() Node.Advanced    { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

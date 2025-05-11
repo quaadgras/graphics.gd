@@ -51,6 +51,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 By changing various properties of this object, such as the start and target position, you can configure path queries to the [NavigationServer2D].
 */
 type Instance [1]gdclass.NavigationPathQueryParameters2D
@@ -77,6 +82,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("NavigationPathQueryParameters2D"))
 	casted := Instance{*(*gdclass.NavigationPathQueryParameters2D)(unsafe.Pointer(&object))}
@@ -332,9 +338,13 @@ func (self class) AsNavigationPathQueryParameters2D() Advanced {
 func (self Instance) AsNavigationPathQueryParameters2D() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsNavigationPathQueryParameters2D() Instance {
+	return self.Super().AsNavigationPathQueryParameters2D()
+}
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

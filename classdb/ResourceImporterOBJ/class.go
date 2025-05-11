@@ -51,6 +51,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 Unlike [ResourceImporterScene], [ResourceImporterOBJ] will import a single [Mesh] resource by default instead of importing a [PackedScene]. This makes it easier to use the [Mesh] resource in nodes that expect direct [Mesh] resources, such as [GridMap], [GPUParticles3D] or [CPUParticles3D]. Note that it is still possible to save mesh resources from 3D scenes using the [b]Advanced Import Settings[/b] dialog, regardless of the source format.
 See also [ResourceImporterScene], which is used for more advanced 3D formats such as glTF.
 */
@@ -78,6 +83,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ResourceImporterOBJ"))
 	casted := Instance{*(*gdclass.ResourceImporterOBJ)(unsafe.Pointer(&object))}
@@ -87,8 +93,14 @@ func New() Instance {
 
 func (self class) AsResourceImporterOBJ() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsResourceImporterOBJ() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsResourceImporterOBJ() Instance {
+	return self.Super().AsResourceImporterOBJ()
+}
 func (self class) AsResourceImporter() ResourceImporter.Advanced {
 	return *((*ResourceImporter.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsResourceImporter() ResourceImporter.Instance {
+	return self.Super().AsResourceImporter()
 }
 func (self Instance) AsResourceImporter() ResourceImporter.Instance {
 	return *((*ResourceImporter.Instance)(unsafe.Pointer(&self)))
@@ -96,6 +108,7 @@ func (self Instance) AsResourceImporter() ResourceImporter.Instance {
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

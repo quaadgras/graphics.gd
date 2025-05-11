@@ -52,6 +52,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 This [SkeletonModification2D] rotates a bone to look a target. This is extremely helpful for moving character's head to look at the player, rotating a turret to look at a target, or any other case where you want to make a bone rotate towards something quickly and easily.
 */
 type Instance [1]gdclass.SkeletonModification2DLookAt
@@ -149,6 +154,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SkeletonModification2DLookAt"))
 	casted := Instance{*(*gdclass.SkeletonModification2DLookAt)(unsafe.Pointer(&object))}
@@ -368,8 +374,14 @@ func (self class) AsSkeletonModification2DLookAt() Advanced {
 func (self Instance) AsSkeletonModification2DLookAt() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsSkeletonModification2DLookAt() Instance {
+	return self.Super().AsSkeletonModification2DLookAt()
+}
 func (self class) AsSkeletonModification2D() SkeletonModification2D.Advanced {
 	return *((*SkeletonModification2D.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsSkeletonModification2D() SkeletonModification2D.Instance {
+	return self.Super().AsSkeletonModification2D()
 }
 func (self Instance) AsSkeletonModification2D() SkeletonModification2D.Instance {
 	return *((*SkeletonModification2D.Instance)(unsafe.Pointer(&self)))
@@ -377,12 +389,14 @@ func (self Instance) AsSkeletonModification2D() SkeletonModification2D.Instance 
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

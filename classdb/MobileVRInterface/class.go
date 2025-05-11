@@ -52,6 +52,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 This is a generic mobile VR implementation where you need to provide details about the phone and HMD used. It does not rely on any existing framework. This is the most basic interface we have. For the best effect, you need a mobile phone with a gyroscope and accelerometer.
 Note that even though there is no positional tracking, the camera will assume the headset is at a height of 1.85 meters. You can change this by setting [member eye_height].
 You can initialize this interface as follows:
@@ -88,6 +93,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MobileVRInterface"))
 	casted := Instance{*(*gdclass.MobileVRInterface)(unsafe.Pointer(&object))}
@@ -364,17 +370,20 @@ func (self class) SetVrsStrength(strength float64) { //gd:MobileVRInterface.set_
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_set_vrs_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
-func (self class) AsMobileVRInterface() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsMobileVRInterface() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsMobileVRInterface() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsMobileVRInterface() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsMobileVRInterface() Instance { return self.Super().AsMobileVRInterface() }
 func (self class) AsXRInterface() XRInterface.Advanced {
 	return *((*XRInterface.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsXRInterface() XRInterface.Instance { return self.Super().AsXRInterface() }
 func (self Instance) AsXRInterface() XRInterface.Instance {
 	return *((*XRInterface.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

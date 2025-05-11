@@ -56,6 +56,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A box-shaped attractor with varying directions and strengths defined in it that influences particles from [GPUParticles3D] nodes.
 Unlike [GPUParticlesAttractorBox3D], [GPUParticlesAttractorVectorField3D] uses a [member texture] to affect attraction strength within the box. This can be used to create complex attraction scenarios where particles travel in different directions depending on their location. This can be useful for weather effects such as sandstorms.
 Particle attractors work in real-time and can be moved, rotated and scaled during gameplay. Unlike collision shapes, non-uniform scaling of attractors is also supported.
@@ -85,6 +90,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GPUParticlesAttractorVectorField3D"))
 	casted := Instance{*(*gdclass.GPUParticlesAttractorVectorField3D)(unsafe.Pointer(&object))}
@@ -150,8 +156,14 @@ func (self class) AsGPUParticlesAttractorVectorField3D() Advanced {
 func (self Instance) AsGPUParticlesAttractorVectorField3D() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsGPUParticlesAttractorVectorField3D() Instance {
+	return self.Super().AsGPUParticlesAttractorVectorField3D()
+}
 func (self class) AsGPUParticlesAttractor3D() GPUParticlesAttractor3D.Advanced {
 	return *((*GPUParticlesAttractor3D.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsGPUParticlesAttractor3D() GPUParticlesAttractor3D.Instance {
+	return self.Super().AsGPUParticlesAttractor3D()
 }
 func (self Instance) AsGPUParticlesAttractor3D() GPUParticlesAttractor3D.Instance {
 	return *((*GPUParticlesAttractor3D.Instance)(unsafe.Pointer(&self)))
@@ -159,13 +171,18 @@ func (self Instance) AsGPUParticlesAttractor3D() GPUParticlesAttractor3D.Instanc
 func (self class) AsVisualInstance3D() VisualInstance3D.Advanced {
 	return *((*VisualInstance3D.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsVisualInstance3D() VisualInstance3D.Instance {
+	return self.Super().AsVisualInstance3D()
+}
 func (self Instance) AsVisualInstance3D() VisualInstance3D.Instance {
 	return *((*VisualInstance3D.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsNode3D() Node3D.Advanced    { return *((*Node3D.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode3D() Node3D.Instance { return *((*Node3D.Instance)(unsafe.Pointer(&self))) }
-func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode3D() Node3D.Advanced        { return *((*Node3D.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode3D() Node3D.Instance { return self.Super().AsNode3D() }
+func (self Instance) AsNode3D() Node3D.Instance     { return *((*Node3D.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced            { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode() Node.Instance     { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance         { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

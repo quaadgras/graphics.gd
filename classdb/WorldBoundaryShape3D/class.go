@@ -53,6 +53,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A 3D world boundary shape, intended for use in physics. [WorldBoundaryShape3D] works like an infinite plane that forces all physics bodies to stay above it. The [member plane]'s normal determines which direction is considered as "above" and in the editor, the line over the plane represents this direction. It can for example be used for endless flat floors.
 [b]Note:[/b] When the physics engine is set to [b]Jolt Physics[/b] in the project settings ([member ProjectSettings.physics/3d/physics_engine]), [WorldBoundaryShape3D] has a finite size (centered at the shape's origin). It can be adjusted by changing [member ProjectSettings.physics/jolt_physics_3d/limits/world_boundary_shape_size].
 */
@@ -80,6 +85,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("WorldBoundaryShape3D"))
 	casted := Instance{*(*gdclass.WorldBoundaryShape3D)(unsafe.Pointer(&object))}
@@ -115,19 +121,25 @@ func (self class) GetPlane() Plane.NormalD { //gd:WorldBoundaryShape3D.get_plane
 }
 func (self class) AsWorldBoundaryShape3D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsWorldBoundaryShape3D() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self class) AsShape3D() Shape3D.Advanced         { return *((*Shape3D.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsWorldBoundaryShape3D() Instance {
+	return self.Super().AsWorldBoundaryShape3D()
+}
+func (self class) AsShape3D() Shape3D.Advanced        { return *((*Shape3D.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsShape3D() Shape3D.Instance { return self.Super().AsShape3D() }
 func (self Instance) AsShape3D() Shape3D.Instance {
 	return *((*Shape3D.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

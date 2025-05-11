@@ -54,6 +54,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 Provides direct access to a physics space in the [PhysicsServer2D]. It's used mainly to do queries against objects and areas residing in a given space.
 */
 type Instance [1]gdclass.PhysicsDirectSpaceState2D
@@ -185,6 +190,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PhysicsDirectSpaceState2D"))
 	casted := Instance{*(*gdclass.PhysicsDirectSpaceState2D)(unsafe.Pointer(&object))}
@@ -310,6 +316,9 @@ func (self class) AsPhysicsDirectSpaceState2D() Advanced {
 }
 func (self Instance) AsPhysicsDirectSpaceState2D() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsPhysicsDirectSpaceState2D() Instance {
+	return self.Super().AsPhysicsDirectSpaceState2D()
 }
 
 func (self class) Virtual(name string) reflect.Value {

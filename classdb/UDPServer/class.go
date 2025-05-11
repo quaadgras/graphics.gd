@@ -51,6 +51,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A simple server that opens a UDP socket and returns connected [PacketPeerUDP] upon receiving new packets. See also [method PacketPeerUDP.connect_to_host].
 After starting the server ([method listen]), you will need to [method poll] it at regular intervals (e.g. inside [method Node._process]) for it to process new packets, delivering them to the appropriate [PacketPeerUDP], and taking new connections.
 Below a small example of how it can be used:
@@ -261,6 +266,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("UDPServer"))
 	casted := Instance{*(*gdclass.UDPServer)(unsafe.Pointer(&object))}
@@ -385,11 +391,13 @@ func (self class) GetMaxPendingConnections() int64 { //gd:UDPServer.get_max_pend
 	frame.Free()
 	return ret
 }
-func (self class) AsUDPServer() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsUDPServer() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsUDPServer() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsUDPServer() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsUDPServer() Instance { return self.Super().AsUDPServer() }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

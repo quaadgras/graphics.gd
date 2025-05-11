@@ -75,6 +75,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 Plugins are used by the editor to extend functionality. The most common types of plugins are those which edit a given node or resource type, import plugins and export plugins. See also [EditorScript] to add functions to the editor.
 [b]Note:[/b] Some names in this class contain "left" or "right" (e.g. [constant DOCK_SLOT_LEFT_UL]). These APIs assume left-to-right layout, and would be backwards when using right-to-left layout. These names are kept for compatibility reasons.
 
@@ -1426,6 +1431,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorPlugin"))
 	casted := Instance{*(*gdclass.EditorPlugin)(unsafe.Pointer(&object))}
@@ -2686,10 +2692,12 @@ func (self Instance) OnProjectSettingsChanged(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("project_settings_changed"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsEditorPlugin() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsEditorPlugin() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self class) AsNode() Node.Advanced       { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Node.Instance    { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsEditorPlugin() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsEditorPlugin() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsEditorPlugin() Instance { return self.Super().AsEditorPlugin() }
+func (self class) AsNode() Node.Advanced           { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode() Node.Instance    { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance        { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

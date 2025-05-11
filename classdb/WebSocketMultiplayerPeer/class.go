@@ -54,6 +54,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 Base class for WebSocket server and client, allowing them to be used as multiplayer peer for the [MultiplayerAPI].
 [b]Note:[/b] When exporting to Android, make sure to enable the [code]INTERNET[/code] permission in the Android export preset before exporting the project or using one-click deploy. Otherwise, network communication of any kind will be blocked by Android.
 */
@@ -134,6 +139,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("WebSocketMultiplayerPeer"))
 	casted := Instance{*(*gdclass.WebSocketMultiplayerPeer)(unsafe.Pointer(&object))}
@@ -380,8 +386,14 @@ func (self class) AsWebSocketMultiplayerPeer() Advanced { return *((*Advanced)(u
 func (self Instance) AsWebSocketMultiplayerPeer() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsWebSocketMultiplayerPeer() Instance {
+	return self.Super().AsWebSocketMultiplayerPeer()
+}
 func (self class) AsMultiplayerPeer() MultiplayerPeer.Advanced {
 	return *((*MultiplayerPeer.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsMultiplayerPeer() MultiplayerPeer.Instance {
+	return self.Super().AsMultiplayerPeer()
 }
 func (self Instance) AsMultiplayerPeer() MultiplayerPeer.Instance {
 	return *((*MultiplayerPeer.Instance)(unsafe.Pointer(&self)))
@@ -389,12 +401,14 @@ func (self Instance) AsMultiplayerPeer() MultiplayerPeer.Instance {
 func (self class) AsPacketPeer() PacketPeer.Advanced {
 	return *((*PacketPeer.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsPacketPeer() PacketPeer.Instance { return self.Super().AsPacketPeer() }
 func (self Instance) AsPacketPeer() PacketPeer.Instance {
 	return *((*PacketPeer.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

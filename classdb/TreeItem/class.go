@@ -54,6 +54,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A single item of a [Tree] control. It can contain other [TreeItem]s as children, which allows it to create a hierarchy. It can also contain text and buttons. [TreeItem] is not a [Node], it is internal to the [Tree].
 To create a [TreeItem], use [method Tree.create_item] or [method TreeItem.create_child]. To remove a [TreeItem], use [method Object.free].
 [b]Note:[/b] The ID values used for buttons are 32-bit, unlike [int] which is always 64-bit. They go from [code]-2147483648[/code] to [code]2147483647[/code].
@@ -930,6 +935,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TreeItem"))
 	casted := Instance{*(*gdclass.TreeItem)(unsafe.Pointer(&object))}
@@ -2518,8 +2524,9 @@ func (self class) CallRecursive(method String.Name, args ...gd.Variant) { //gd:T
 	_ = ret
 }
 
-func (self class) AsTreeItem() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsTreeItem() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsTreeItem() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsTreeItem() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsTreeItem() Instance { return self.Super().AsTreeItem() }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

@@ -58,6 +58,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A node that displays a 2D texture in a 3D environment. The texture displayed can be a region from a larger atlas texture, or a frame from a sprite sheet animation. See also [SpriteBase3D] where properties such as the billboard mode are defined.
 */
 type Instance [1]gdclass.Sprite3D
@@ -84,6 +89,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Sprite3D"))
 	casted := Instance{*(*gdclass.Sprite3D)(unsafe.Pointer(&object))}
@@ -286,16 +292,21 @@ func (self Instance) OnTextureChanged(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("texture_changed"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsSprite3D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsSprite3D() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsSprite3D() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsSprite3D() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsSprite3D() Instance { return self.Super().AsSprite3D() }
 func (self class) AsSpriteBase3D() SpriteBase3D.Advanced {
 	return *((*SpriteBase3D.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsSpriteBase3D() SpriteBase3D.Instance { return self.Super().AsSpriteBase3D() }
 func (self Instance) AsSpriteBase3D() SpriteBase3D.Instance {
 	return *((*SpriteBase3D.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsGeometryInstance3D() GeometryInstance3D.Advanced {
 	return *((*GeometryInstance3D.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsGeometryInstance3D() GeometryInstance3D.Instance {
+	return self.Super().AsGeometryInstance3D()
 }
 func (self Instance) AsGeometryInstance3D() GeometryInstance3D.Instance {
 	return *((*GeometryInstance3D.Instance)(unsafe.Pointer(&self)))
@@ -303,13 +314,18 @@ func (self Instance) AsGeometryInstance3D() GeometryInstance3D.Instance {
 func (self class) AsVisualInstance3D() VisualInstance3D.Advanced {
 	return *((*VisualInstance3D.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsVisualInstance3D() VisualInstance3D.Instance {
+	return self.Super().AsVisualInstance3D()
+}
 func (self Instance) AsVisualInstance3D() VisualInstance3D.Instance {
 	return *((*VisualInstance3D.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsNode3D() Node3D.Advanced    { return *((*Node3D.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode3D() Node3D.Instance { return *((*Node3D.Instance)(unsafe.Pointer(&self))) }
-func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode3D() Node3D.Advanced        { return *((*Node3D.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode3D() Node3D.Instance { return self.Super().AsNode3D() }
+func (self Instance) AsNode3D() Node3D.Instance     { return *((*Node3D.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced            { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode() Node.Instance     { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance         { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

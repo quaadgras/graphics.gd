@@ -52,6 +52,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A camera feed gives you access to a single physical camera attached to your device. When enabled, Godot will start capturing frames from the camera which can then be used. See also [CameraServer].
 [b]Note:[/b] Many cameras will return YCbCr images which are split into two textures and need to be combined in a shader. Godot does this automatically for you if you set the environment to show the camera image in the background.
 [b]Note:[/b] This class is currently only implemented on Linux, macOS, and iOS. On other platforms no [CameraFeed]s will be available. To get a [CameraFeed] on iOS, the camera plugin from [url=https://github.com/godotengine/godot-ios-plugins]godot-ios-plugins[/url] is required.
@@ -197,6 +202,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CameraFeed"))
 	casted := Instance{*(*gdclass.CameraFeed)(unsafe.Pointer(&object))}
@@ -445,11 +451,13 @@ func (self Instance) OnFormatChanged(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("format_changed"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsCameraFeed() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsCameraFeed() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsCameraFeed() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsCameraFeed() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsCameraFeed() Instance { return self.Super().AsCameraFeed() }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

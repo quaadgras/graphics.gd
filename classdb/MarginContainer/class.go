@@ -54,6 +54,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 [MarginContainer] adds an adjustable margin on each side of its child controls. The margins are added around all children, not around each individual one. To control the [MarginContainer]'s margins, use the [code]margin_*[/code] theme properties listed below.
 [b]Note:[/b] The margin sizes are theme overrides, not normal properties. This is an example of how to change them in code:
 [codeblocks]
@@ -99,32 +104,38 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MarginContainer"))
 	casted := Instance{*(*gdclass.MarginContainer)(unsafe.Pointer(&object))}
 	return casted
 }
 
-func (self class) AsMarginContainer() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsMarginContainer() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsMarginContainer() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsMarginContainer() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsMarginContainer() Instance { return self.Super().AsMarginContainer() }
 func (self class) AsContainer() Container.Advanced {
 	return *((*Container.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsContainer() Container.Instance { return self.Super().AsContainer() }
 func (self Instance) AsContainer() Container.Instance {
 	return *((*Container.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsControl() Control.Advanced { return *((*Control.Advanced)(unsafe.Pointer(&self))) }
+func (self class) AsControl() Control.Advanced        { return *((*Control.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsControl() Control.Instance { return self.Super().AsControl() }
 func (self Instance) AsControl() Control.Instance {
 	return *((*Control.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsCanvasItem() CanvasItem.Advanced {
 	return *((*CanvasItem.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
 func (self Instance) AsCanvasItem() CanvasItem.Instance {
 	return *((*CanvasItem.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsNode() Node.Advanced    { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

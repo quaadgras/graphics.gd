@@ -51,6 +51,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 This class cannot be directly instantiated and must be retrieved via a [EditorDebuggerPlugin].
 You can add tabs to the session UI via [method add_session_tab], send messages via [method send_message], and toggle [EngineProfiler]s via [method toggle_profiler].
 */
@@ -150,6 +155,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorDebuggerSession"))
 	casted := Instance{*(*gdclass.EditorDebuggerSession)(unsafe.Pointer(&object))}
@@ -278,9 +284,13 @@ func (self Instance) OnContinued(cb func()) {
 
 func (self class) AsEditorDebuggerSession() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsEditorDebuggerSession() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsEditorDebuggerSession() Instance {
+	return self.Super().AsEditorDebuggerSession()
+}
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

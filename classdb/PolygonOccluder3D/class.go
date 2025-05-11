@@ -53,6 +53,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 [PolygonOccluder3D] stores a polygon shape that can be used by the engine's occlusion culling system. When an [OccluderInstance3D] with a [PolygonOccluder3D] is selected in the editor, an editor will appear at the top of the 3D viewport so you can add/remove points. All points must be placed on the same 2D plane, which means it is not possible to create arbitrary 3D shapes with a single [PolygonOccluder3D]. To use arbitrary 3D shapes as occluders, use [ArrayOccluder3D] or [OccluderInstance3D]'s baking feature instead.
 See [OccluderInstance3D]'s documentation for instructions on setting up occlusion culling.
 */
@@ -80,6 +85,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PolygonOccluder3D"))
 	casted := Instance{*(*gdclass.PolygonOccluder3D)(unsafe.Pointer(&object))}
@@ -113,23 +119,27 @@ func (self class) GetPolygon() Packed.Array[Vector2.XY] { //gd:PolygonOccluder3D
 	frame.Free()
 	return ret
 }
-func (self class) AsPolygonOccluder3D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsPolygonOccluder3D() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsPolygonOccluder3D() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsPolygonOccluder3D() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsPolygonOccluder3D() Instance { return self.Super().AsPolygonOccluder3D() }
 func (self class) AsOccluder3D() Occluder3D.Advanced {
 	return *((*Occluder3D.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsOccluder3D() Occluder3D.Instance { return self.Super().AsOccluder3D() }
 func (self Instance) AsOccluder3D() Occluder3D.Instance {
 	return *((*Occluder3D.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

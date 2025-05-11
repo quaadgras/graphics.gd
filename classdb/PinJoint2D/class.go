@@ -54,6 +54,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A physics joint that attaches two 2D physics bodies at a single point, allowing them to freely rotate. For example, a [RigidBody2D] can be attached to a [StaticBody2D] to create a pendulum or a seesaw.
 */
 type Instance [1]gdclass.PinJoint2D
@@ -80,6 +85,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PinJoint2D"))
 	casted := Instance{*(*gdclass.PinJoint2D)(unsafe.Pointer(&object))}
@@ -247,22 +253,27 @@ func (self class) IsAngularLimitEnabled() bool { //gd:PinJoint2D.is_angular_limi
 	frame.Free()
 	return ret
 }
-func (self class) AsPinJoint2D() Advanced      { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsPinJoint2D() Instance   { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self class) AsJoint2D() Joint2D.Advanced { return *((*Joint2D.Advanced)(unsafe.Pointer(&self))) }
+func (self class) AsPinJoint2D() Advanced             { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsPinJoint2D() Instance          { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsPinJoint2D() Instance      { return self.Super().AsPinJoint2D() }
+func (self class) AsJoint2D() Joint2D.Advanced        { return *((*Joint2D.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsJoint2D() Joint2D.Instance { return self.Super().AsJoint2D() }
 func (self Instance) AsJoint2D() Joint2D.Instance {
 	return *((*Joint2D.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsNode2D() Node2D.Advanced    { return *((*Node2D.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode2D() Node2D.Instance { return *((*Node2D.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode2D() Node2D.Advanced        { return *((*Node2D.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode2D() Node2D.Instance { return self.Super().AsNode2D() }
+func (self Instance) AsNode2D() Node2D.Instance     { return *((*Node2D.Instance)(unsafe.Pointer(&self))) }
 func (self class) AsCanvasItem() CanvasItem.Advanced {
 	return *((*CanvasItem.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
 func (self Instance) AsCanvasItem() CanvasItem.Instance {
 	return *((*CanvasItem.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsNode() Node.Advanced    { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

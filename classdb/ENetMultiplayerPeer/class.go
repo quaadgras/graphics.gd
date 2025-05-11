@@ -54,6 +54,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A MultiplayerPeer implementation that should be passed to [member MultiplayerAPI.multiplayer_peer] after being initialized as either a client, server, or mesh. Events can then be handled by connecting to [MultiplayerAPI] signals. See [ENetConnection] for more information on the ENet library wrapper.
 [b]Note:[/b] ENet only uses UDP, not TCP. When forwarding the server port to make your server accessible on the public Internet, you only need to forward the server port in UDP. You can use the [UPNP] class to try to forward the server port automatically when starting the server.
 */
@@ -140,6 +145,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ENetMultiplayerPeer"))
 	casted := Instance{*(*gdclass.ENetMultiplayerPeer)(unsafe.Pointer(&object))}
@@ -255,8 +261,14 @@ func (self class) GetPeer(id int64) [1]gdclass.ENetPacketPeer { //gd:ENetMultipl
 }
 func (self class) AsENetMultiplayerPeer() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsENetMultiplayerPeer() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsENetMultiplayerPeer() Instance {
+	return self.Super().AsENetMultiplayerPeer()
+}
 func (self class) AsMultiplayerPeer() MultiplayerPeer.Advanced {
 	return *((*MultiplayerPeer.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsMultiplayerPeer() MultiplayerPeer.Instance {
+	return self.Super().AsMultiplayerPeer()
 }
 func (self Instance) AsMultiplayerPeer() MultiplayerPeer.Instance {
 	return *((*MultiplayerPeer.Instance)(unsafe.Pointer(&self)))
@@ -264,12 +276,14 @@ func (self Instance) AsMultiplayerPeer() MultiplayerPeer.Instance {
 func (self class) AsPacketPeer() PacketPeer.Advanced {
 	return *((*PacketPeer.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsPacketPeer() PacketPeer.Instance { return self.Super().AsPacketPeer() }
 func (self Instance) AsPacketPeer() PacketPeer.Instance {
 	return *((*PacketPeer.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

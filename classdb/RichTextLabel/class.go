@@ -62,6 +62,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A control for displaying text that can contain custom fonts, images, and basic formatting. [RichTextLabel] manages these as an internal tag stack. It also adapts itself to given width/heights.
 [b]Note:[/b] [method newline], [method push_paragraph], [code]"\n"[/code], [code]"\r\n"[/code], [code]p[/code] tag, and alignment tags start a new paragraph. Each paragraph is processed independently, in its own BiDi context. If you want to force line wrapping within paragraph, any other line breaking character can be used, for example, Form Feed (U+000C), Next Line (U+0085), Line Separator (U+2028).
 [b]Note:[/b] Assignments to [member text] clear the tag stack and reconstruct it from the property's contents. Any edits made to [member text] will erase previous edits made from other manual sources such as [method append_text] and the [code]push_*[/code] / [method pop] methods.
@@ -778,6 +783,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RichTextLabel"))
 	casted := Instance{*(*gdclass.RichTextLabel)(unsafe.Pointer(&object))}
@@ -2569,20 +2575,24 @@ func (self Instance) OnFinished(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("finished"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsRichTextLabel() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsRichTextLabel() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self class) AsControl() Control.Advanced  { return *((*Control.Advanced)(unsafe.Pointer(&self))) }
+func (self class) AsRichTextLabel() Advanced          { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsRichTextLabel() Instance       { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsRichTextLabel() Instance   { return self.Super().AsRichTextLabel() }
+func (self class) AsControl() Control.Advanced        { return *((*Control.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsControl() Control.Instance { return self.Super().AsControl() }
 func (self Instance) AsControl() Control.Instance {
 	return *((*Control.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsCanvasItem() CanvasItem.Advanced {
 	return *((*CanvasItem.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
 func (self Instance) AsCanvasItem() CanvasItem.Instance {
 	return *((*CanvasItem.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsNode() Node.Advanced    { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

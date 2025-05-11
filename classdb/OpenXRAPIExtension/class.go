@@ -54,6 +54,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 [OpenXRAPIExtension] makes OpenXR available for GDExtension. It provides the OpenXR API to GDExtension through the [method get_instance_proc_addr] method, and the OpenXR instance through [method get_instance].
 It also provides methods for querying the status of OpenXR initialization, and helper methods for ease of use of the API with GDExtension.
 */
@@ -387,6 +392,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("OpenXRAPIExtension"))
 	casted := Instance{*(*gdclass.OpenXRAPIExtension)(unsafe.Pointer(&object))}
@@ -949,11 +955,13 @@ func (self class) IsEnvironmentBlendModeAlphaSupported() gdclass.OpenXRAPIExtens
 	frame.Free()
 	return ret
 }
-func (self class) AsOpenXRAPIExtension() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsOpenXRAPIExtension() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsOpenXRAPIExtension() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsOpenXRAPIExtension() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsOpenXRAPIExtension() Instance { return self.Super().AsOpenXRAPIExtension() }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

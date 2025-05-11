@@ -50,6 +50,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A synchronization semaphore that can be used to synchronize multiple [Thread]s. Initialized to zero on creation. For a binary version, see [Mutex].
 [b]Warning:[/b] Semaphores must be used carefully to avoid deadlocks.
 [b]Warning:[/b] To guarantee that the operating system is able to perform proper cleanup (no crashes, no deadlocks), these conditions must be met:
@@ -110,6 +115,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Semaphore"))
 	casted := Instance{*(*gdclass.Semaphore)(unsafe.Pointer(&object))}
@@ -152,11 +158,13 @@ func (self class) Post(count int64) { //gd:Semaphore.post
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Semaphore.Bind_post, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
-func (self class) AsSemaphore() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsSemaphore() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsSemaphore() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsSemaphore() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsSemaphore() Instance { return self.Super().AsSemaphore() }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

@@ -52,6 +52,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 The [ColorPalette] resource is designed to store and manage a collection of colors. This resource is useful in scenarios where a predefined set of colors is required, such as for creating themes, designing user interfaces, or managing game assets. The built-in [ColorPicker] control can also make use of [ColorPalette] without additional code.
 */
 type Instance [1]gdclass.ColorPalette
@@ -78,6 +83,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ColorPalette"))
 	casted := Instance{*(*gdclass.ColorPalette)(unsafe.Pointer(&object))}
@@ -111,17 +117,20 @@ func (self class) GetColors() Packed.Array[Color.RGBA] { //gd:ColorPalette.get_c
 	frame.Free()
 	return ret
 }
-func (self class) AsColorPalette() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsColorPalette() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsColorPalette() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsColorPalette() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsColorPalette() Instance { return self.Super().AsColorPalette() }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

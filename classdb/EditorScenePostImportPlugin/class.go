@@ -52,6 +52,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 This plugin type exists to modify the process of importing scenes, allowing to change the content as well as add importer options at every stage of the process.
 
 	See [Interface] for methods that can be overridden by a [Class] that extends it.
@@ -281,6 +286,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorScenePostImportPlugin"))
 	casted := Instance{*(*gdclass.EditorScenePostImportPlugin)(unsafe.Pointer(&object))}
@@ -467,9 +473,13 @@ func (self class) AsEditorScenePostImportPlugin() Advanced {
 func (self Instance) AsEditorScenePostImportPlugin() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsEditorScenePostImportPlugin() Instance {
+	return self.Super().AsEditorScenePostImportPlugin()
+}
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

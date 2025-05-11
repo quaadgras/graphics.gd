@@ -54,6 +54,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A rectangular frame that can be used to group visual shader nodes together to improve organization.
 Nodes attached to the frame will move with it when it is dragged and it can automatically resize to enclose all attached nodes.
 Its title, description and color can be customized.
@@ -96,6 +101,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeFrame"))
 	casted := Instance{*(*gdclass.VisualShaderNodeFrame)(unsafe.Pointer(&object))}
@@ -263,8 +269,14 @@ func (self class) GetAttachedNodes() Packed.Array[int32] { //gd:VisualShaderNode
 }
 func (self class) AsVisualShaderNodeFrame() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsVisualShaderNodeFrame() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsVisualShaderNodeFrame() Instance {
+	return self.Super().AsVisualShaderNodeFrame()
+}
 func (self class) AsVisualShaderNodeResizableBase() VisualShaderNodeResizableBase.Advanced {
 	return *((*VisualShaderNodeResizableBase.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsVisualShaderNodeResizableBase() VisualShaderNodeResizableBase.Instance {
+	return self.Super().AsVisualShaderNodeResizableBase()
 }
 func (self Instance) AsVisualShaderNodeResizableBase() VisualShaderNodeResizableBase.Instance {
 	return *((*VisualShaderNodeResizableBase.Instance)(unsafe.Pointer(&self)))
@@ -272,18 +284,23 @@ func (self Instance) AsVisualShaderNodeResizableBase() VisualShaderNodeResizable
 func (self class) AsVisualShaderNode() VisualShaderNode.Advanced {
 	return *((*VisualShaderNode.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsVisualShaderNode() VisualShaderNode.Instance {
+	return self.Super().AsVisualShaderNode()
+}
 func (self Instance) AsVisualShaderNode() VisualShaderNode.Instance {
 	return *((*VisualShaderNode.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

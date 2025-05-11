@@ -48,6 +48,14 @@ Each [Interface] method can be overidden independently:
 */
 type Instance [1]gdclass.Object
 
+// Extension can be embedded in a struct to create a new class. T should be the type of the struct
+// that embeds this Extension.
+type Extension[T gdclass.Interface] struct {
+	gdclass.Extension[T, Instance]
+}
+
+func (class *Extension[T]) AsObject() [1]gdclass.Object { return class.Super() }
+
 // Nil is a nil Object instance. Useful for comparisons.
 var Nil Instance
 

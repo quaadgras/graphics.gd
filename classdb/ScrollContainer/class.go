@@ -56,6 +56,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A container used to provide a child control with scrollbars when needed. Scrollbars will automatically be drawn at the right (for vertical) or bottom (for horizontal) and will enable dragging to move the viewable Control (and its children) within the ScrollContainer. Scrollbars will also automatically resize the grabber based on the [member Control.custom_minimum_size] of the Control relative to the ScrollContainer.
 */
 type Instance [1]gdclass.ScrollContainer
@@ -111,6 +116,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ScrollContainer"))
 	casted := Instance{*(*gdclass.ScrollContainer)(unsafe.Pointer(&object))}
@@ -413,26 +419,31 @@ func (self Instance) OnScrollEnded(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("scroll_ended"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsScrollContainer() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsScrollContainer() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsScrollContainer() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsScrollContainer() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsScrollContainer() Instance { return self.Super().AsScrollContainer() }
 func (self class) AsContainer() Container.Advanced {
 	return *((*Container.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsContainer() Container.Instance { return self.Super().AsContainer() }
 func (self Instance) AsContainer() Container.Instance {
 	return *((*Container.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsControl() Control.Advanced { return *((*Control.Advanced)(unsafe.Pointer(&self))) }
+func (self class) AsControl() Control.Advanced        { return *((*Control.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsControl() Control.Instance { return self.Super().AsControl() }
 func (self Instance) AsControl() Control.Instance {
 	return *((*Control.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsCanvasItem() CanvasItem.Advanced {
 	return *((*CanvasItem.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
 func (self Instance) AsCanvasItem() CanvasItem.Instance {
 	return *((*CanvasItem.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsNode() Node.Advanced    { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

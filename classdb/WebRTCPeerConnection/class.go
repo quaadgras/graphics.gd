@@ -51,6 +51,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A WebRTC connection between the local computer and a remote peer. Provides an interface to connect, maintain and monitor the connection.
 Setting up a WebRTC connection between two peers may not seem a trivial task, but it can be broken down into 3 main steps:
 - The peer that wants to initiate the connection ([code]A[/code] from now on) creates an offer and send it to the other peer ([code]B[/code] from now on).
@@ -258,6 +263,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("WebRTCPeerConnection"))
 	casted := Instance{*(*gdclass.WebRTCPeerConnection)(unsafe.Pointer(&object))}
@@ -477,9 +483,13 @@ func (self Instance) OnDataChannelReceived(cb func(channel WebRTCDataChannel.Ins
 
 func (self class) AsWebRTCPeerConnection() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsWebRTCPeerConnection() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsWebRTCPeerConnection() Instance {
+	return self.Super().AsWebRTCPeerConnection()
+}
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

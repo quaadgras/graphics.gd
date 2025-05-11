@@ -54,6 +54,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 [EditorExportPlugin]s are automatically invoked whenever the user exports the project. Their most common use is to determine what files are being included in the exported project. For each plugin, [method _export_begin] is called at the beginning of the export process and then [method _export_file] is called for each exported file.
 To use [EditorExportPlugin], register it using the [method EditorPlugin.add_export_plugin] method first.
 
@@ -806,6 +811,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorExportPlugin"))
 	casted := Instance{*(*gdclass.EditorExportPlugin)(unsafe.Pointer(&object))}
@@ -1451,11 +1457,13 @@ func (self class) GetExportPlatform() [1]gdclass.EditorExportPlatform { //gd:Edi
 	frame.Free()
 	return ret
 }
-func (self class) AsEditorExportPlugin() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsEditorExportPlugin() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsEditorExportPlugin() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsEditorExportPlugin() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsEditorExportPlugin() Instance { return self.Super().AsEditorExportPlugin() }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

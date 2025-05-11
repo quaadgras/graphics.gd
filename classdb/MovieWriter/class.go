@@ -52,6 +52,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 Godot can record videos with non-real-time simulation. Like the [code]--fixed-fps[/code] [url=$DOCS_URL/tutorials/editor/command_line_tutorial.html]command line argument[/url], this forces the reported [code]delta[/code] in [method Node._process] functions to be identical across frames, regardless of how long it actually took to render the frame. This can be used to record high-quality videos with perfect frame pacing regardless of your hardware's capabilities.
 Godot has 2 built-in [MovieWriter]s:
 - AVI container with MJPEG for video and uncompressed audio ([code].avi[/code] file extension). Lossy compression, medium file sizes, fast encoding. The lossy compression quality can be adjusted by changing [member ProjectSettings.editor/movie_writer/mjpeg_quality]. The resulting file can be viewed in most video players, but it must be converted to another format for viewing on the web or by Godot with [VideoStreamPlayer]. MJPEG does not support transparency. AVI output is currently limited to a file of 4 GB in size at most.
@@ -226,6 +231,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MovieWriter"))
 	casted := Instance{*(*gdclass.MovieWriter)(unsafe.Pointer(&object))}
@@ -338,8 +344,9 @@ func (self class) AddWriter(writer [1]gdclass.MovieWriter) { //gd:MovieWriter.ad
 	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.MovieWriter.Bind_add_writer, frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
-func (self class) AsMovieWriter() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsMovieWriter() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsMovieWriter() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsMovieWriter() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsMovieWriter() Instance { return self.Super().AsMovieWriter() }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

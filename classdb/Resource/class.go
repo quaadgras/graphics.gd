@@ -42,6 +42,11 @@ var _ Float.X
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 Resource is the base class for all Godot-specific resource types, serving primarily as data containers. Since they inherit from [RefCounted], resources are reference-counted and freed when no longer in use. They can also be nested within other resources, and saved on disk. [PackedScene], one of the most common [Object]s in a Godot project, is also a resource, uniquely capable of storing and instantiating the [Node]s it contains as many times as desired.
 In GDScript, resources can loaded from disk by their [member resource_path] using [method @GDScript.load] or [method @GDScript.preload].
 The engine keeps a global cache of all loaded resources, referenced by paths (see [method ResourceLoader.has_cached]). A resource will be cached when loaded for the first time and removed from cache once all references are released. When a resource is cached, subsequent loads using its path will return the cached reference.
@@ -264,6 +269,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Resource"))
 	casted := Instance{*(*gdclass.Resource)(unsafe.Pointer(&object))}
@@ -606,11 +612,13 @@ func (self Instance) OnSetupLocalToSceneRequested(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("setup_local_to_scene_requested"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsResource() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsResource() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsResource() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsResource() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsResource() Instance { return self.Super().AsResource() }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

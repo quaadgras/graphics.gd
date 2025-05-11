@@ -64,6 +64,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A [Viewport] creates a different view into the screen, or a sub-view inside another viewport. Child 2D nodes will display on it, and child Camera3D 3D nodes will render on it too.
 Optionally, a viewport can have its own 2D or 3D world, so it doesn't share what it draws with other viewports.
 Viewports can also choose to be audio listeners, so they generate positional audio depending on a 2D or 3D camera child of it.
@@ -395,6 +400,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Viewport"))
 	casted := Instance{*(*gdclass.Viewport)(unsafe.Pointer(&object))}
@@ -2081,10 +2087,12 @@ func (self Instance) OnGuiFocusChanged(cb func(node Control.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("gui_focus_changed"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsViewport() Advanced     { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsViewport() Instance  { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self class) AsNode() Node.Advanced    { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsViewport() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsViewport() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsViewport() Instance  { return self.Super().AsViewport() }
+func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

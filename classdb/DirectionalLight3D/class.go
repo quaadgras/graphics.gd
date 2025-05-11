@@ -54,6 +54,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A directional light is a type of [Light3D] node that models an infinite number of parallel rays covering the entire scene. It is used for lights with strong intensity that are located far away from the scene to model sunlight or moonlight. The worldspace location of the DirectionalLight3D transform (origin) is ignored. Only the basis is used to determine light direction.
 */
 type Instance [1]gdclass.DirectionalLight3D
@@ -80,6 +85,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("DirectionalLight3D"))
 	casted := Instance{*(*gdclass.DirectionalLight3D)(unsafe.Pointer(&object))}
@@ -166,22 +172,29 @@ func (self class) GetSkyMode() gdclass.DirectionalLight3DSkyMode { //gd:Directio
 	frame.Free()
 	return ret
 }
-func (self class) AsDirectionalLight3D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsDirectionalLight3D() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self class) AsLight3D() Light3D.Advanced       { return *((*Light3D.Advanced)(unsafe.Pointer(&self))) }
+func (self class) AsDirectionalLight3D() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsDirectionalLight3D() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsDirectionalLight3D() Instance { return self.Super().AsDirectionalLight3D() }
+func (self class) AsLight3D() Light3D.Advanced           { return *((*Light3D.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsLight3D() Light3D.Instance    { return self.Super().AsLight3D() }
 func (self Instance) AsLight3D() Light3D.Instance {
 	return *((*Light3D.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsVisualInstance3D() VisualInstance3D.Advanced {
 	return *((*VisualInstance3D.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsVisualInstance3D() VisualInstance3D.Instance {
+	return self.Super().AsVisualInstance3D()
+}
 func (self Instance) AsVisualInstance3D() VisualInstance3D.Instance {
 	return *((*VisualInstance3D.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsNode3D() Node3D.Advanced    { return *((*Node3D.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode3D() Node3D.Instance { return *((*Node3D.Instance)(unsafe.Pointer(&self))) }
-func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode3D() Node3D.Advanced        { return *((*Node3D.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode3D() Node3D.Instance { return self.Super().AsNode3D() }
+func (self Instance) AsNode3D() Node3D.Instance     { return *((*Node3D.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced            { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode() Node.Instance     { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance         { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

@@ -51,6 +51,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 Base class for high-level multiplayer API implementations. See also [MultiplayerPeer].
 By default, [SceneTree] has a reference to an implementation of this class and uses it to provide multiplayer capabilities (i.e. RPCs) across the whole scene.
 It is possible to override the MultiplayerAPI instance used by specific tree branches by calling the [method SceneTree.set_multiplayer] method, effectively allowing to run both client and server in the same scene.
@@ -182,6 +187,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MultiplayerAPI"))
 	casted := Instance{*(*gdclass.MultiplayerAPI)(unsafe.Pointer(&object))}
@@ -403,11 +409,13 @@ func (self Instance) OnServerDisconnected(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("server_disconnected"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsMultiplayerAPI() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsMultiplayerAPI() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsMultiplayerAPI() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsMultiplayerAPI() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsMultiplayerAPI() Instance { return self.Super().AsMultiplayerAPI() }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

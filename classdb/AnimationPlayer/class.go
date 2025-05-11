@@ -52,6 +52,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 An animation player is used for general-purpose playback of animations. It contains a dictionary of [AnimationLibrary] resources and custom blend times between animation transitions.
 Some methods and properties use a single key to reference an animation directly. These keys are formatted as the key for the library, followed by a forward slash, then the key for the animation within the library, for example [code]"movement/run"[/code]. If the library's key is an empty string (known as the default library), the forward slash is omitted, being the same key used by the library.
 [AnimationPlayer] is better-suited than [Tween] for more complex animations, for example ones with non-trivial timings. It can also be used over [Tween] if the animation track editor is more convenient than doing it in code.
@@ -422,6 +427,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AnimationPlayer"))
 	casted := Instance{*(*gdclass.AnimationPlayer)(unsafe.Pointer(&object))}
@@ -1173,16 +1179,21 @@ func (self Instance) OnAnimationChanged(cb func(old_name string, new_name string
 	self[0].AsObject()[0].Connect(gd.NewStringName("animation_changed"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsAnimationPlayer() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsAnimationPlayer() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsAnimationPlayer() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsAnimationPlayer() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsAnimationPlayer() Instance { return self.Super().AsAnimationPlayer() }
 func (self class) AsAnimationMixer() AnimationMixer.Advanced {
 	return *((*AnimationMixer.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsAnimationMixer() AnimationMixer.Instance {
+	return self.Super().AsAnimationMixer()
 }
 func (self Instance) AsAnimationMixer() AnimationMixer.Instance {
 	return *((*AnimationMixer.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsNode() Node.Advanced    { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

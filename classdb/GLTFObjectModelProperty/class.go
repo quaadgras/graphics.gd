@@ -51,6 +51,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 GLTFObjectModelProperty defines a mapping between a property in the glTF object model and a NodePath in the Godot scene tree. This can be used to animate properties in a glTF file using the [code]KHR_animation_pointer[/code] extension, or to access them through an engine-agnostic script such as a behavior graph as defined by the [code]KHR_interactivity[/code] extension.
 The glTF property is identified by JSON pointer(s) stored in [member json_pointers], while the Godot property it maps to is defined by [member node_paths]. In most cases [member json_pointers] and [member node_paths] will each only have one item, but in some cases a single glTF JSON pointer will map to multiple Godot properties, or a single Godot property will be mapped to multiple glTF JSON pointers, or it might be a many-to-many relationship.
 [Expression] objects can be used to define conversions between the data, such as when glTF defines an angle in radians and Godot uses degrees. The [member object_model_type] property defines the type of data stored in the glTF file as defined by the object model, see [enum GLTFObjectModelType] for possible values.
@@ -121,6 +126,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GLTFObjectModelProperty"))
 	casted := Instance{*(*gdclass.GLTFObjectModelProperty)(unsafe.Pointer(&object))}
@@ -370,9 +376,13 @@ func (self class) AsGLTFObjectModelProperty() Advanced { return *((*Advanced)(un
 func (self Instance) AsGLTFObjectModelProperty() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsGLTFObjectModelProperty() Instance {
+	return self.Super().AsGLTFObjectModelProperty()
+}
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

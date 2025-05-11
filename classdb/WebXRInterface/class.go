@@ -52,6 +52,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 WebXR is an open standard that allows creating VR and AR applications that run in the web browser.
 As such, this interface is only available when running in Web exports.
 WebXR supports a wide range of devices, from the very capable (like Valve Index, HTC Vive, Oculus Rift and Quest) down to the much less capable (like Google Cardboard, Oculus Go, GearVR, or plain smartphones).
@@ -232,6 +237,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("WebXRInterface"))
 	casted := Instance{*(*gdclass.WebXRInterface)(unsafe.Pointer(&object))}
@@ -543,17 +549,20 @@ func (self Instance) OnDisplayRefreshRateChanged(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("display_refresh_rate_changed"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsWebXRInterface() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsWebXRInterface() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsWebXRInterface() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsWebXRInterface() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsWebXRInterface() Instance { return self.Super().AsWebXRInterface() }
 func (self class) AsXRInterface() XRInterface.Advanced {
 	return *((*XRInterface.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsXRInterface() XRInterface.Instance { return self.Super().AsXRInterface() }
 func (self Instance) AsXRInterface() XRInterface.Instance {
 	return *((*XRInterface.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

@@ -51,6 +51,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 [TranslationDomain] is a self-contained collection of [Translation] resources. Translations can be added to or removed from it.
 If you're working with the main translation domain, it is more convenient to use the wrap methods on [TranslationServer].
 */
@@ -145,6 +150,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TranslationDomain"))
 	casted := Instance{*(*gdclass.TranslationDomain)(unsafe.Pointer(&object))}
@@ -490,11 +496,13 @@ func (self class) Pseudolocalize(message String.Name) String.Name { //gd:Transla
 	frame.Free()
 	return ret
 }
-func (self class) AsTranslationDomain() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsTranslationDomain() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsTranslationDomain() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsTranslationDomain() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsTranslationDomain() Instance { return self.Super().AsTranslationDomain() }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

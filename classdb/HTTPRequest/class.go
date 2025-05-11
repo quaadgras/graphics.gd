@@ -52,6 +52,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A node with the ability to send HTTP requests. Uses [HTTPClient] internally.
 Can be used to make HTTP requests, i.e. download or upload files or web content via HTTP.
 [b]Warning:[/b] See the notes and warnings on [HTTPClient] for limitations, especially regarding TLS security.
@@ -326,6 +331,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("HTTPRequest"))
 	casted := Instance{*(*gdclass.HTTPRequest)(unsafe.Pointer(&object))}
@@ -653,10 +659,12 @@ func (self Instance) OnRequestCompleted(cb func(result int, response_code int, h
 	self[0].AsObject()[0].Connect(gd.NewStringName("request_completed"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsHTTPRequest() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsHTTPRequest() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self class) AsNode() Node.Advanced      { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Node.Instance   { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsHTTPRequest() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsHTTPRequest() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsHTTPRequest() Instance { return self.Super().AsHTTPRequest() }
+func (self class) AsNode() Node.Advanced          { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode() Node.Instance   { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance       { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

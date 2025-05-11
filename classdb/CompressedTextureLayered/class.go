@@ -53,6 +53,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 Base class for [CompressedTexture2DArray] and [CompressedTexture3D]. Cannot be used directly, but contains all the functions necessary for accessing the derived resource types. See also [TextureLayered].
 */
 type Instance [1]gdclass.CompressedTextureLayered
@@ -79,6 +84,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CompressedTextureLayered"))
 	casted := Instance{*(*gdclass.CompressedTextureLayered)(unsafe.Pointer(&object))}
@@ -121,25 +127,34 @@ func (self class) AsCompressedTextureLayered() Advanced { return *((*Advanced)(u
 func (self Instance) AsCompressedTextureLayered() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsCompressedTextureLayered() Instance {
+	return self.Super().AsCompressedTextureLayered()
+}
 func (self class) AsTextureLayered() TextureLayered.Advanced {
 	return *((*TextureLayered.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsTextureLayered() TextureLayered.Instance {
+	return self.Super().AsTextureLayered()
 }
 func (self Instance) AsTextureLayered() TextureLayered.Instance {
 	return *((*TextureLayered.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsTexture() Texture.Advanced { return *((*Texture.Advanced)(unsafe.Pointer(&self))) }
+func (self class) AsTexture() Texture.Advanced        { return *((*Texture.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsTexture() Texture.Instance { return self.Super().AsTexture() }
 func (self Instance) AsTexture() Texture.Instance {
 	return *((*Texture.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

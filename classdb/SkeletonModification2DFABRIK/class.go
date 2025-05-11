@@ -53,6 +53,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 This [SkeletonModification2D] uses an algorithm called Forward And Backward Reaching Inverse Kinematics, or FABRIK, to rotate a bone chain so that it reaches a target.
 FABRIK works by knowing the positions and lengths of a series of bones, typically called a "bone chain". It first starts by running a forward pass, which places the final bone at the target's position. Then all other bones are moved towards the tip bone, so they stay at the defined bone length away. Then a backwards pass is performed, where the root/first bone in the FABRIK chain is placed back at the origin. Then all other bones are moved so they stay at the defined bone length away. This positions the bone chain so that it reaches the target when possible, but all of the bones stay the correct length away from each other.
 Because of how FABRIK works, it often gives more natural results than those seen in [SkeletonModification2DCCDIK]. FABRIK also supports angle constraints, which are fully taken into account when solving.
@@ -140,6 +145,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SkeletonModification2DFABRIK"))
 	casted := Instance{*(*gdclass.SkeletonModification2DFABRIK)(unsafe.Pointer(&object))}
@@ -315,8 +321,14 @@ func (self class) AsSkeletonModification2DFABRIK() Advanced {
 func (self Instance) AsSkeletonModification2DFABRIK() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsSkeletonModification2DFABRIK() Instance {
+	return self.Super().AsSkeletonModification2DFABRIK()
+}
 func (self class) AsSkeletonModification2D() SkeletonModification2D.Advanced {
 	return *((*SkeletonModification2D.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsSkeletonModification2D() SkeletonModification2D.Instance {
+	return self.Super().AsSkeletonModification2D()
 }
 func (self Instance) AsSkeletonModification2D() SkeletonModification2D.Instance {
 	return *((*SkeletonModification2D.Instance)(unsafe.Pointer(&self)))
@@ -324,12 +336,14 @@ func (self Instance) AsSkeletonModification2D() SkeletonModification2D.Instance 
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

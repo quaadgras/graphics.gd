@@ -54,6 +54,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 [TubeTrailMesh] represents a straight tube-shaped mesh with variable width. The tube is composed of a number of cylindrical sections, each with the same [member section_length] and number of [member section_rings]. A [member curve] is sampled along the total length of the tube, meaning that the curve determines the radius of the tube along its length.
 This primitive mesh is usually used for particle trails.
 */
@@ -81,6 +86,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TubeTrailMesh"))
 	casted := Instance{*(*gdclass.TubeTrailMesh)(unsafe.Pointer(&object))}
@@ -303,25 +309,32 @@ func (self class) GetCurve() [1]gdclass.Curve { //gd:TubeTrailMesh.get_curve
 	frame.Free()
 	return ret
 }
-func (self class) AsTubeTrailMesh() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsTubeTrailMesh() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsTubeTrailMesh() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsTubeTrailMesh() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsTubeTrailMesh() Instance { return self.Super().AsTubeTrailMesh() }
 func (self class) AsPrimitiveMesh() PrimitiveMesh.Advanced {
 	return *((*PrimitiveMesh.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsPrimitiveMesh() PrimitiveMesh.Instance {
+	return self.Super().AsPrimitiveMesh()
 }
 func (self Instance) AsPrimitiveMesh() PrimitiveMesh.Instance {
 	return *((*PrimitiveMesh.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsMesh() Mesh.Advanced    { return *((*Mesh.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsMesh() Mesh.Instance { return *((*Mesh.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsMesh() Mesh.Advanced        { return *((*Mesh.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsMesh() Mesh.Instance { return self.Super().AsMesh() }
+func (self Instance) AsMesh() Mesh.Instance     { return *((*Mesh.Instance)(unsafe.Pointer(&self))) }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

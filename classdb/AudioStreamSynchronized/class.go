@@ -52,6 +52,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 This is a stream that can be fitted with sub-streams, which will be played in-sync. The streams begin at exactly the same time when play is pressed, and will end when the last of them ends. If one of the sub-streams loops, then playback will continue.
 */
 type Instance [1]gdclass.AudioStreamSynchronized
@@ -106,6 +111,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioStreamSynchronized"))
 	casted := Instance{*(*gdclass.AudioStreamSynchronized)(unsafe.Pointer(&object))}
@@ -197,21 +203,27 @@ func (self class) AsAudioStreamSynchronized() Advanced { return *((*Advanced)(un
 func (self Instance) AsAudioStreamSynchronized() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsAudioStreamSynchronized() Instance {
+	return self.Super().AsAudioStreamSynchronized()
+}
 func (self class) AsAudioStream() AudioStream.Advanced {
 	return *((*AudioStream.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsAudioStream() AudioStream.Instance { return self.Super().AsAudioStream() }
 func (self Instance) AsAudioStream() AudioStream.Instance {
 	return *((*AudioStream.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

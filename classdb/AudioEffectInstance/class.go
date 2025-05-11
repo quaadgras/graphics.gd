@@ -50,6 +50,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 An audio effect instance manipulates the audio it receives for a given effect. This instance is automatically created by an [AudioEffect] when it is added to a bus, and should usually not be created directly. If necessary, it can be fetched at run-time with [method AudioServer.get_bus_effect_instance].
 
 	See [Interface] for methods that can be overridden by a [Class] that extends it.
@@ -122,6 +127,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioEffectInstance"))
 	casted := Instance{*(*gdclass.AudioEffectInstance)(unsafe.Pointer(&object))}
@@ -157,9 +163,13 @@ func (class) _process_silence(impl func(ptr unsafe.Pointer) bool) (cb gd.Extensi
 
 func (self class) AsAudioEffectInstance() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsAudioEffectInstance() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsAudioEffectInstance() Instance {
+	return self.Super().AsAudioEffectInstance()
+}
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

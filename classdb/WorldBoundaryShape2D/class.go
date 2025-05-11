@@ -53,6 +53,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A 2D world boundary shape, intended for use in physics. [WorldBoundaryShape2D] works like an infinite straight line that forces all physics bodies to stay above it. The line's normal determines which direction is considered as "above" and in the editor, the smaller line over it represents this direction. It can for example be used for endless flat floors.
 */
 type Instance [1]gdclass.WorldBoundaryShape2D
@@ -79,6 +84,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("WorldBoundaryShape2D"))
 	casted := Instance{*(*gdclass.WorldBoundaryShape2D)(unsafe.Pointer(&object))}
@@ -141,19 +147,25 @@ func (self class) GetDistance() float64 { //gd:WorldBoundaryShape2D.get_distance
 }
 func (self class) AsWorldBoundaryShape2D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsWorldBoundaryShape2D() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self class) AsShape2D() Shape2D.Advanced         { return *((*Shape2D.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsWorldBoundaryShape2D() Instance {
+	return self.Super().AsWorldBoundaryShape2D()
+}
+func (self class) AsShape2D() Shape2D.Advanced        { return *((*Shape2D.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsShape2D() Shape2D.Instance { return self.Super().AsShape2D() }
 func (self Instance) AsShape2D() Shape2D.Instance {
 	return *((*Shape2D.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

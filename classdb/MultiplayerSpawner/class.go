@@ -51,6 +51,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 Spawnable scenes can be configured in the editor or through code (see [method add_spawnable_scene]).
 Also supports custom node spawns through [method spawn], calling [member spawn_function] on all peers.
 Internally, [MultiplayerSpawner] uses [method MultiplayerAPI.object_configuration_add] to notify spawns passing the spawned node as the [code]object[/code] and itself as the [code]configuration[/code], and [method MultiplayerAPI.object_configuration_remove] to notify despawns in a similar way.
@@ -125,6 +130,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MultiplayerSpawner"))
 	casted := Instance{*(*gdclass.MultiplayerSpawner)(unsafe.Pointer(&object))}
@@ -284,10 +290,12 @@ func (self Instance) OnSpawned(cb func(node Node.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("spawned"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsMultiplayerSpawner() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsMultiplayerSpawner() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self class) AsNode() Node.Advanced             { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Node.Instance          { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsMultiplayerSpawner() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsMultiplayerSpawner() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsMultiplayerSpawner() Instance { return self.Super().AsMultiplayerSpawner() }
+func (self class) AsNode() Node.Advanced                 { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode() Node.Instance          { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance              { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

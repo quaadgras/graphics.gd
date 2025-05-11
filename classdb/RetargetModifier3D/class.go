@@ -54,6 +54,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 Retrieves the pose (or global pose) relative to the parent Skeleton's rest in model space and transfers it to the child Skeleton.
 This modifier rewrites the pose of the child skeleton directly in the parent skeleton's update process. This means that it overwrites the mapped bone pose set in the normal process on the target skeleton. If you want to set the target skeleton bone pose after retargeting, you will need to add a [SkeletonModifier3D] child to the target skeleton and thereby modify the pose.
 [b]Note:[/b] When the [member use_global_pose] is enabled, even if it is an unmapped bone, it can cause visual problems because the global pose is applied ignoring the parent bone's pose [b]if it has mapped bone children[/b]. See also [member use_global_pose].
@@ -124,6 +129,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RetargetModifier3D"))
 	casted := Instance{*(*gdclass.RetargetModifier3D)(unsafe.Pointer(&object))}
@@ -285,18 +291,24 @@ func (self class) IsScaleEnabled() bool { //gd:RetargetModifier3D.is_scale_enabl
 	frame.Free()
 	return ret
 }
-func (self class) AsRetargetModifier3D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsRetargetModifier3D() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsRetargetModifier3D() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsRetargetModifier3D() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsRetargetModifier3D() Instance { return self.Super().AsRetargetModifier3D() }
 func (self class) AsSkeletonModifier3D() SkeletonModifier3D.Advanced {
 	return *((*SkeletonModifier3D.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsSkeletonModifier3D() SkeletonModifier3D.Instance {
+	return self.Super().AsSkeletonModifier3D()
 }
 func (self Instance) AsSkeletonModifier3D() SkeletonModifier3D.Instance {
 	return *((*SkeletonModifier3D.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsNode3D() Node3D.Advanced    { return *((*Node3D.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode3D() Node3D.Instance { return *((*Node3D.Instance)(unsafe.Pointer(&self))) }
-func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode3D() Node3D.Advanced        { return *((*Node3D.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode3D() Node3D.Instance { return self.Super().AsNode3D() }
+func (self Instance) AsNode3D() Node3D.Instance     { return *((*Node3D.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced            { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode() Node.Instance     { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance         { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

@@ -53,6 +53,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 Provides direct access to a physics body in the [PhysicsServer2D], allowing safe changes to physics properties. This object is passed via the direct state callback of [RigidBody2D], and is intended for changing the direct state of that body. See [method RigidBody2D._integrate_forces].
 */
 type Instance [1]gdclass.PhysicsDirectBodyState2D
@@ -334,6 +339,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PhysicsDirectBodyState2D"))
 	casted := Instance{*(*gdclass.PhysicsDirectBodyState2D)(unsafe.Pointer(&object))}
@@ -944,6 +950,9 @@ func (self class) GetSpaceState() [1]gdclass.PhysicsDirectSpaceState2D { //gd:Ph
 func (self class) AsPhysicsDirectBodyState2D() Advanced { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsPhysicsDirectBodyState2D() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsPhysicsDirectBodyState2D() Instance {
+	return self.Super().AsPhysicsDirectBodyState2D()
 }
 
 func (self class) Virtual(name string) reflect.Value {

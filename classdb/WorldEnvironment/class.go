@@ -54,6 +54,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 The [WorldEnvironment] node is used to configure the default [Environment] for the scene.
 The parameters defined in the [WorldEnvironment] can be overridden by an [Environment] node set on the current [Camera3D]. Additionally, only one [WorldEnvironment] may be instantiated in a given scene at a time.
 The [WorldEnvironment] allows the user to specify default lighting parameters (e.g. ambient lighting), various post-processing effects (e.g. SSAO, DOF, Tonemapping), and how to draw the background (e.g. solid color, skybox). Usually, these are added in order to improve the realism/color balance of the scene.
@@ -82,6 +87,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("WorldEnvironment"))
 	casted := Instance{*(*gdclass.WorldEnvironment)(unsafe.Pointer(&object))}
@@ -168,10 +174,12 @@ func (self class) GetCompositor() [1]gdclass.Compositor { //gd:WorldEnvironment.
 	frame.Free()
 	return ret
 }
-func (self class) AsWorldEnvironment() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsWorldEnvironment() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self class) AsNode() Node.Advanced           { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Node.Instance        { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsWorldEnvironment() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsWorldEnvironment() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsWorldEnvironment() Instance { return self.Super().AsWorldEnvironment() }
+func (self class) AsNode() Node.Advanced               { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode() Node.Instance        { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance            { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

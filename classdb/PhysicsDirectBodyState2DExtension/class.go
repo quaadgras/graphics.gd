@@ -54,6 +54,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 This class extends [PhysicsDirectBodyState2D] by providing additional virtual methods that can be overridden. When these methods are overridden, they will be called instead of the internal methods of the physics server.
 Intended for use with GDExtension to create custom implementations of [PhysicsDirectBodyState2D].
 
@@ -735,6 +740,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PhysicsDirectBodyState2DExtension"))
 	casted := Instance{*(*gdclass.PhysicsDirectBodyState2DExtension)(unsafe.Pointer(&object))}
@@ -1255,8 +1261,14 @@ func (self class) AsPhysicsDirectBodyState2DExtension() Advanced {
 func (self Instance) AsPhysicsDirectBodyState2DExtension() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsPhysicsDirectBodyState2DExtension() Instance {
+	return self.Super().AsPhysicsDirectBodyState2DExtension()
+}
 func (self class) AsPhysicsDirectBodyState2D() PhysicsDirectBodyState2D.Advanced {
 	return *((*PhysicsDirectBodyState2D.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsPhysicsDirectBodyState2D() PhysicsDirectBodyState2D.Instance {
+	return self.Super().AsPhysicsDirectBodyState2D()
 }
 func (self Instance) AsPhysicsDirectBodyState2D() PhysicsDirectBodyState2D.Instance {
 	return *((*PhysicsDirectBodyState2D.Instance)(unsafe.Pointer(&self)))

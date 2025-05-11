@@ -54,6 +54,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A Texture2DArray is different from a Texture3D: The Texture2DArray does not support trilinear interpolation between the [Image]s, i.e. no blending. See also [Cubemap] and [CubemapArray], which are texture arrays with specialized cubemap functions.
 A Texture2DArray is also different from an [AtlasTexture]: In a Texture2DArray, all images are treated separately. In an atlas, the regions (i.e. the single images) can be of different sizes. Furthermore, you usually need to add a padding around the regions, to prevent accidental UV mapping to more than one region. The same goes for mipmapping: Mipmap chains are handled separately for each layer. In an atlas, the slicing has to be done manually in the fragment shader.
 To create such a texture file yourself, reimport your image files using the Godot Editor import presets. To create a Texture2DArray from code, use [method ImageTextureLayered.create_from_images] on an instance of the Texture2DArray class.
@@ -89,6 +94,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Texture2DArray"))
 	casted := Instance{*(*gdclass.Texture2DArray)(unsafe.Pointer(&object))}
@@ -108,10 +114,14 @@ func (self class) CreatePlaceholder() [1]gdclass.Resource { //gd:Texture2DArray.
 	frame.Free()
 	return ret
 }
-func (self class) AsTexture2DArray() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsTexture2DArray() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsTexture2DArray() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsTexture2DArray() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsTexture2DArray() Instance { return self.Super().AsTexture2DArray() }
 func (self class) AsImageTextureLayered() ImageTextureLayered.Advanced {
 	return *((*ImageTextureLayered.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsImageTextureLayered() ImageTextureLayered.Instance {
+	return self.Super().AsImageTextureLayered()
 }
 func (self Instance) AsImageTextureLayered() ImageTextureLayered.Instance {
 	return *((*ImageTextureLayered.Instance)(unsafe.Pointer(&self)))
@@ -119,22 +129,28 @@ func (self Instance) AsImageTextureLayered() ImageTextureLayered.Instance {
 func (self class) AsTextureLayered() TextureLayered.Advanced {
 	return *((*TextureLayered.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsTextureLayered() TextureLayered.Instance {
+	return self.Super().AsTextureLayered()
+}
 func (self Instance) AsTextureLayered() TextureLayered.Instance {
 	return *((*TextureLayered.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsTexture() Texture.Advanced { return *((*Texture.Advanced)(unsafe.Pointer(&self))) }
+func (self class) AsTexture() Texture.Advanced        { return *((*Texture.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsTexture() Texture.Instance { return self.Super().AsTexture() }
 func (self Instance) AsTexture() Texture.Instance {
 	return *((*Texture.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

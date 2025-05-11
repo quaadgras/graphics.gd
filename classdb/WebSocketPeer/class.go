@@ -53,6 +53,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 This class represents WebSocket connection, and can be used as a WebSocket client (RFC 6455-compliant) or as a remote peer of a WebSocket server.
 You can send WebSocket binary frames using [method PacketPeer.put_packet], and WebSocket text frames using [method send] (prefer text frames when interacting with text-based API). You can check the frame type of the last packet via [method was_string_packet].
 To start a WebSocket client, first call [method connect_to_url], then regularly call [method poll] (e.g. during [Node] process). You can query the socket state via [method get_ready_state], get the number of pending packets using [method PacketPeer.get_available_packet_count], and retrieve them via [method PacketPeer.get_packet].
@@ -257,6 +262,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("WebSocketPeer"))
 	casted := Instance{*(*gdclass.WebSocketPeer)(unsafe.Pointer(&object))}
@@ -644,17 +650,20 @@ func (self class) GetHeartbeatInterval() float64 { //gd:WebSocketPeer.get_heartb
 	frame.Free()
 	return ret
 }
-func (self class) AsWebSocketPeer() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsWebSocketPeer() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsWebSocketPeer() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsWebSocketPeer() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsWebSocketPeer() Instance { return self.Super().AsWebSocketPeer() }
 func (self class) AsPacketPeer() PacketPeer.Advanced {
 	return *((*PacketPeer.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsPacketPeer() PacketPeer.Instance { return self.Super().AsPacketPeer() }
 func (self Instance) AsPacketPeer() PacketPeer.Instance {
 	return *((*PacketPeer.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

@@ -50,6 +50,10 @@ type ID Object.ID
 
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
+/*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 type Instance [1]gdclass.AudioStreamPlaybackPlaylist
 
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -74,6 +78,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioStreamPlaybackPlaylist"))
 	casted := Instance{*(*gdclass.AudioStreamPlaybackPlaylist)(unsafe.Pointer(&object))}
@@ -87,8 +92,14 @@ func (self class) AsAudioStreamPlaybackPlaylist() Advanced {
 func (self Instance) AsAudioStreamPlaybackPlaylist() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsAudioStreamPlaybackPlaylist() Instance {
+	return self.Super().AsAudioStreamPlaybackPlaylist()
+}
 func (self class) AsAudioStreamPlayback() AudioStreamPlayback.Advanced {
 	return *((*AudioStreamPlayback.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsAudioStreamPlayback() AudioStreamPlayback.Instance {
+	return self.Super().AsAudioStreamPlayback()
 }
 func (self Instance) AsAudioStreamPlayback() AudioStreamPlayback.Instance {
 	return *((*AudioStreamPlayback.Instance)(unsafe.Pointer(&self)))
@@ -96,6 +107,7 @@ func (self Instance) AsAudioStreamPlayback() AudioStreamPlayback.Instance {
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

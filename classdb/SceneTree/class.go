@@ -57,6 +57,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 As one of the most important classes, the [SceneTree] manages the hierarchy of nodes in a scene, as well as scenes themselves. Nodes can be added, fetched and removed. The whole scene tree (and thus the current scene) can be paused. Scenes can be loaded, switched and reloaded.
 You can also use the [SceneTree] to organize your nodes into [b]groups[/b]: every node can be added to as many groups as you want to create, e.g. an "enemy" group. You can then iterate these groups or even call methods and set properties on all the nodes belonging to any given group.
 [SceneTree] is the default [MainLoop] implementation used by the engine, and is thus in charge of the game loop.
@@ -371,6 +376,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SceneTree"))
 	casted := Instance{*(*gdclass.SceneTree)(unsafe.Pointer(&object))}
@@ -1052,11 +1058,13 @@ func (self Instance) OnPhysicsFrame(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("physics_frame"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsSceneTree() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsSceneTree() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsSceneTree() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsSceneTree() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsSceneTree() Instance { return self.Super().AsSceneTree() }
 func (self class) AsMainLoop() MainLoop.Advanced {
 	return *((*MainLoop.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsMainLoop() MainLoop.Instance { return self.Super().AsMainLoop() }
 func (self Instance) AsMainLoop() MainLoop.Instance {
 	return *((*MainLoop.Instance)(unsafe.Pointer(&self)))
 }

@@ -52,6 +52,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A node created automatically in an [AnimationNodeBlendTree] that outputs the final animation.
 */
 type Instance [1]gdclass.AnimationNodeOutput
@@ -78,6 +83,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AnimationNodeOutput"))
 	casted := Instance{*(*gdclass.AnimationNodeOutput)(unsafe.Pointer(&object))}
@@ -87,8 +93,14 @@ func New() Instance {
 
 func (self class) AsAnimationNodeOutput() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsAnimationNodeOutput() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsAnimationNodeOutput() Instance {
+	return self.Super().AsAnimationNodeOutput()
+}
 func (self class) AsAnimationNode() AnimationNode.Advanced {
 	return *((*AnimationNode.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsAnimationNode() AnimationNode.Instance {
+	return self.Super().AsAnimationNode()
 }
 func (self Instance) AsAnimationNode() AnimationNode.Instance {
 	return *((*AnimationNode.Instance)(unsafe.Pointer(&self)))
@@ -96,12 +108,14 @@ func (self Instance) AsAnimationNode() AnimationNode.Instance {
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

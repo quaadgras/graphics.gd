@@ -54,6 +54,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A control that displays a texture, for example an icon inside a GUI. The texture's placement can be controlled with the [member stretch_mode] property. It can scale, tile, or stay centered inside its bounding rectangle.
 */
 type Instance [1]gdclass.TextureRect
@@ -80,6 +85,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TextureRect"))
 	casted := Instance{*(*gdclass.TextureRect)(unsafe.Pointer(&object))}
@@ -220,20 +226,24 @@ func (self class) GetStretchMode() gdclass.TextureRectStretchMode { //gd:Texture
 	frame.Free()
 	return ret
 }
-func (self class) AsTextureRect() Advanced     { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsTextureRect() Instance  { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self class) AsControl() Control.Advanced { return *((*Control.Advanced)(unsafe.Pointer(&self))) }
+func (self class) AsTextureRect() Advanced            { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsTextureRect() Instance         { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsTextureRect() Instance     { return self.Super().AsTextureRect() }
+func (self class) AsControl() Control.Advanced        { return *((*Control.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsControl() Control.Instance { return self.Super().AsControl() }
 func (self Instance) AsControl() Control.Instance {
 	return *((*Control.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsCanvasItem() CanvasItem.Advanced {
 	return *((*CanvasItem.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
 func (self Instance) AsCanvasItem() CanvasItem.Instance {
 	return *((*CanvasItem.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsNode() Node.Advanced    { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

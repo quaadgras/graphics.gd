@@ -54,6 +54,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 Generate an axis-aligned box [PrimitiveMesh].
 The box's UV layout is arranged in a 3×2 layout that allows texturing each face individually. To apply the same texture on all faces, change the material's UV property to [code]Vector3(3, 2, 1)[/code]. This is equivalent to adding [code]UV *= vec2(3.0, 2.0)[/code] in a vertex shader.
 [b]Note:[/b] When using a large textured [BoxMesh] (e.g. as a floor), you may stumble upon UV jittering issues depending on the camera angle. To solve this, increase [member subdivide_depth], [member subdivide_height] and [member subdivide_width] until you no longer notice UV jittering.
@@ -82,6 +87,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("BoxMesh"))
 	casted := Instance{*(*gdclass.BoxMesh)(unsafe.Pointer(&object))}
@@ -196,25 +202,32 @@ func (self class) GetSubdivideDepth() int64 { //gd:BoxMesh.get_subdivide_depth
 	frame.Free()
 	return ret
 }
-func (self class) AsBoxMesh() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsBoxMesh() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsBoxMesh() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsBoxMesh() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsBoxMesh() Instance { return self.Super().AsBoxMesh() }
 func (self class) AsPrimitiveMesh() PrimitiveMesh.Advanced {
 	return *((*PrimitiveMesh.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsPrimitiveMesh() PrimitiveMesh.Instance {
+	return self.Super().AsPrimitiveMesh()
 }
 func (self Instance) AsPrimitiveMesh() PrimitiveMesh.Instance {
 	return *((*PrimitiveMesh.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsMesh() Mesh.Advanced    { return *((*Mesh.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsMesh() Mesh.Instance { return *((*Mesh.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsMesh() Mesh.Advanced        { return *((*Mesh.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsMesh() Mesh.Instance { return self.Super().AsMesh() }
+func (self Instance) AsMesh() Mesh.Instance     { return *((*Mesh.Instance)(unsafe.Pointer(&self))) }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

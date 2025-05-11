@@ -55,6 +55,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 [FogVolume]s are used to add localized fog into the global volumetric fog effect. [FogVolume]s can also remove volumetric fog from specific areas if using a [FogMaterial] with a negative [member FogMaterial.density].
 Performance of [FogVolume]s is directly related to their relative size on the screen and the complexity of their attached [FogMaterial]. It is best to keep [FogVolume]s relatively small and simple where possible.
 [b]Note:[/b] [FogVolume]s only have a visible effect if [member Environment.volumetric_fog_enabled] is [code]true[/code]. If you don't want fog to be globally visible (but only within [FogVolume] nodes), set [member Environment.volumetric_fog_density] to [code]0.0[/code].
@@ -83,6 +88,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("FogVolume"))
 	casted := Instance{*(*gdclass.FogVolume)(unsafe.Pointer(&object))}
@@ -169,18 +175,24 @@ func (self class) GetMaterial() [1]gdclass.Material { //gd:FogVolume.get_materia
 	frame.Free()
 	return ret
 }
-func (self class) AsFogVolume() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsFogVolume() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsFogVolume() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsFogVolume() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsFogVolume() Instance { return self.Super().AsFogVolume() }
 func (self class) AsVisualInstance3D() VisualInstance3D.Advanced {
 	return *((*VisualInstance3D.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsVisualInstance3D() VisualInstance3D.Instance {
+	return self.Super().AsVisualInstance3D()
 }
 func (self Instance) AsVisualInstance3D() VisualInstance3D.Instance {
 	return *((*VisualInstance3D.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsNode3D() Node3D.Advanced    { return *((*Node3D.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode3D() Node3D.Instance { return *((*Node3D.Instance)(unsafe.Pointer(&self))) }
-func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode3D() Node3D.Advanced        { return *((*Node3D.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode3D() Node3D.Instance { return self.Super().AsNode3D() }
+func (self Instance) AsNode3D() Node3D.Instance     { return *((*Node3D.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced            { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode() Node.Instance     { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance         { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

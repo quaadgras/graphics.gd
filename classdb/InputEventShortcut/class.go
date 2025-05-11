@@ -53,6 +53,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 InputEventShortcut is a special event that can be received in [method Node._input], [method Node._shortcut_input], and [method Node._unhandled_input]. It is typically sent by the editor's Command Palette to trigger actions, but can also be sent manually using [method Viewport.push_input].
 */
 type Instance [1]gdclass.InputEventShortcut
@@ -79,6 +84,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("InputEventShortcut"))
 	casted := Instance{*(*gdclass.InputEventShortcut)(unsafe.Pointer(&object))}
@@ -112,23 +118,27 @@ func (self class) GetShortcut() [1]gdclass.Shortcut { //gd:InputEventShortcut.ge
 	frame.Free()
 	return ret
 }
-func (self class) AsInputEventShortcut() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsInputEventShortcut() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsInputEventShortcut() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsInputEventShortcut() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsInputEventShortcut() Instance { return self.Super().AsInputEventShortcut() }
 func (self class) AsInputEvent() InputEvent.Advanced {
 	return *((*InputEvent.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsInputEvent() InputEvent.Instance { return self.Super().AsInputEvent() }
 func (self Instance) AsInputEvent() InputEvent.Instance {
 	return *((*InputEvent.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

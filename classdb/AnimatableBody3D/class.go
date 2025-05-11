@@ -55,6 +55,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 An animatable 3D physics body. It can't be moved by external forces or contacts, but can be moved manually by other means such as code, [AnimationMixer]s (with [member AnimationMixer.callback_mode_process] set to [constant AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_PHYSICS]), and [RemoteTransform3D].
 When [AnimatableBody3D] is moved, its linear and angular velocity are estimated and used to affect other physics bodies in its path. This makes it useful for moving platforms, doors, and other moving objects.
 */
@@ -82,6 +87,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AnimatableBody3D"))
 	casted := Instance{*(*gdclass.AnimatableBody3D)(unsafe.Pointer(&object))}
@@ -114,16 +120,21 @@ func (self class) IsSyncToPhysicsEnabled() bool { //gd:AnimatableBody3D.is_sync_
 	frame.Free()
 	return ret
 }
-func (self class) AsAnimatableBody3D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsAnimatableBody3D() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsAnimatableBody3D() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsAnimatableBody3D() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsAnimatableBody3D() Instance { return self.Super().AsAnimatableBody3D() }
 func (self class) AsStaticBody3D() StaticBody3D.Advanced {
 	return *((*StaticBody3D.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsStaticBody3D() StaticBody3D.Instance { return self.Super().AsStaticBody3D() }
 func (self Instance) AsStaticBody3D() StaticBody3D.Instance {
 	return *((*StaticBody3D.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsPhysicsBody3D() PhysicsBody3D.Advanced {
 	return *((*PhysicsBody3D.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsPhysicsBody3D() PhysicsBody3D.Instance {
+	return self.Super().AsPhysicsBody3D()
 }
 func (self Instance) AsPhysicsBody3D() PhysicsBody3D.Instance {
 	return *((*PhysicsBody3D.Instance)(unsafe.Pointer(&self)))
@@ -131,13 +142,18 @@ func (self Instance) AsPhysicsBody3D() PhysicsBody3D.Instance {
 func (self class) AsCollisionObject3D() CollisionObject3D.Advanced {
 	return *((*CollisionObject3D.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsCollisionObject3D() CollisionObject3D.Instance {
+	return self.Super().AsCollisionObject3D()
+}
 func (self Instance) AsCollisionObject3D() CollisionObject3D.Instance {
 	return *((*CollisionObject3D.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsNode3D() Node3D.Advanced    { return *((*Node3D.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode3D() Node3D.Instance { return *((*Node3D.Instance)(unsafe.Pointer(&self))) }
-func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode3D() Node3D.Advanced        { return *((*Node3D.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode3D() Node3D.Instance { return self.Super().AsNode3D() }
+func (self Instance) AsNode3D() Node3D.Instance     { return *((*Node3D.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced            { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode() Node.Instance     { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance         { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

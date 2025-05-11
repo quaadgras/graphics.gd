@@ -54,6 +54,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 [CubemapArray]s are made of an array of [Cubemap]s. Like [Cubemap]s, they are made of multiple textures, the amount of which must be divisible by 6 (one for each face of the cube).
 The primary benefit of [CubemapArray]s is that they can be accessed in shader code using a single texture reference. In other words, you can pass multiple [Cubemap]s into a shader using a single [CubemapArray]. [Cubemap]s are allocated in adjacent cache regions on the GPU, which makes [CubemapArray]s the most efficient way to store multiple [Cubemap]s.
 Godot uses [CubemapArray]s internally for many effects, including the [Sky] if you set [member ProjectSettings.rendering/reflections/sky_reflections/texture_array_reflections] to [code]true[/code].
@@ -97,6 +102,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CubemapArray"))
 	casted := Instance{*(*gdclass.CubemapArray)(unsafe.Pointer(&object))}
@@ -116,10 +122,14 @@ func (self class) CreatePlaceholder() [1]gdclass.Resource { //gd:CubemapArray.cr
 	frame.Free()
 	return ret
 }
-func (self class) AsCubemapArray() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsCubemapArray() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsCubemapArray() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsCubemapArray() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsCubemapArray() Instance { return self.Super().AsCubemapArray() }
 func (self class) AsImageTextureLayered() ImageTextureLayered.Advanced {
 	return *((*ImageTextureLayered.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsImageTextureLayered() ImageTextureLayered.Instance {
+	return self.Super().AsImageTextureLayered()
 }
 func (self Instance) AsImageTextureLayered() ImageTextureLayered.Instance {
 	return *((*ImageTextureLayered.Instance)(unsafe.Pointer(&self)))
@@ -127,22 +137,28 @@ func (self Instance) AsImageTextureLayered() ImageTextureLayered.Instance {
 func (self class) AsTextureLayered() TextureLayered.Advanced {
 	return *((*TextureLayered.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsTextureLayered() TextureLayered.Instance {
+	return self.Super().AsTextureLayered()
+}
 func (self Instance) AsTextureLayered() TextureLayered.Instance {
 	return *((*TextureLayered.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsTexture() Texture.Advanced { return *((*Texture.Advanced)(unsafe.Pointer(&self))) }
+func (self class) AsTexture() Texture.Advanced        { return *((*Texture.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsTexture() Texture.Instance { return self.Super().AsTexture() }
 func (self Instance) AsTexture() Texture.Instance {
 	return *((*Texture.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

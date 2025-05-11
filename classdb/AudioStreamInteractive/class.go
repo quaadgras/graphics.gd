@@ -52,6 +52,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 This is an audio stream that can playback music interactively, combining clips and a transition table. Clips must be added first, and then the transition rules via the [method add_transition]. Additionally, this stream exports a property parameter to control the playback via [AudioStreamPlayer], [AudioStreamPlayer2D], or [AudioStreamPlayer3D].
 The way this is used is by filling a number of clips, then configuring the transition table. From there, clips are selected for playback and the music will smoothly go from the current to the new one while using the corresponding transition rule defined in the transition table.
 */
@@ -235,6 +240,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioStreamInteractive"))
 	casted := Instance{*(*gdclass.AudioStreamInteractive)(unsafe.Pointer(&object))}
@@ -580,21 +586,27 @@ func (self class) AsAudioStreamInteractive() Advanced { return *((*Advanced)(uns
 func (self Instance) AsAudioStreamInteractive() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsAudioStreamInteractive() Instance {
+	return self.Super().AsAudioStreamInteractive()
+}
 func (self class) AsAudioStream() AudioStream.Advanced {
 	return *((*AudioStream.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsAudioStream() AudioStream.Instance { return self.Super().AsAudioStream() }
 func (self Instance) AsAudioStream() AudioStream.Instance {
 	return *((*AudioStream.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

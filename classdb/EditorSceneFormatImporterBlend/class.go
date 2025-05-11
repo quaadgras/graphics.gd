@@ -51,6 +51,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 Imports Blender scenes in the [code].blend[/code] file format through the glTF 2.0 3D import pipeline. This importer requires Blender to be installed by the user, so that it can be used to export the scene as glTF 2.0.
 The location of the Blender binary is set via the [code]filesystem/import/blender/blender_path[/code] editor setting.
 This importer is only used if [member ProjectSettings.filesystem/import/blender/enabled] is enabled, otherwise [code].blend[/code] files present in the project folder are not imported.
@@ -81,6 +86,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorSceneFormatImporterBlend"))
 	casted := Instance{*(*gdclass.EditorSceneFormatImporterBlend)(unsafe.Pointer(&object))}
@@ -94,8 +100,14 @@ func (self class) AsEditorSceneFormatImporterBlend() Advanced {
 func (self Instance) AsEditorSceneFormatImporterBlend() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsEditorSceneFormatImporterBlend() Instance {
+	return self.Super().AsEditorSceneFormatImporterBlend()
+}
 func (self class) AsEditorSceneFormatImporter() EditorSceneFormatImporter.Advanced {
 	return *((*EditorSceneFormatImporter.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsEditorSceneFormatImporter() EditorSceneFormatImporter.Instance {
+	return self.Super().AsEditorSceneFormatImporter()
 }
 func (self Instance) AsEditorSceneFormatImporter() EditorSceneFormatImporter.Instance {
 	return *((*EditorSceneFormatImporter.Instance)(unsafe.Pointer(&self)))
@@ -103,6 +115,7 @@ func (self Instance) AsEditorSceneFormatImporter() EditorSceneFormatImporter.Ins
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

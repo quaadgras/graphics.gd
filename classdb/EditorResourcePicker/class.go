@@ -57,6 +57,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 This [Control] node is used in the editor's Inspector dock to allow editing of [Resource] type properties. It provides options for creating, loading, saving and converting resources. Can be used with [EditorInspectorPlugin] to recreate the same behavior.
 [b]Note:[/b] This [Control] does not include any editor for the resource, as editing is controlled by the Inspector dock itself or sub-Inspectors.
 
@@ -140,6 +145,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorResourcePicker"))
 	casted := Instance{*(*gdclass.EditorResourcePicker)(unsafe.Pointer(&object))}
@@ -313,8 +319,14 @@ func (self Instance) OnResourceChanged(cb func(resource Resource.Instance)) {
 
 func (self class) AsEditorResourcePicker() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsEditorResourcePicker() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsEditorResourcePicker() Instance {
+	return self.Super().AsEditorResourcePicker()
+}
 func (self class) AsHBoxContainer() HBoxContainer.Advanced {
 	return *((*HBoxContainer.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsHBoxContainer() HBoxContainer.Instance {
+	return self.Super().AsHBoxContainer()
 }
 func (self Instance) AsHBoxContainer() HBoxContainer.Instance {
 	return *((*HBoxContainer.Instance)(unsafe.Pointer(&self)))
@@ -322,27 +334,32 @@ func (self Instance) AsHBoxContainer() HBoxContainer.Instance {
 func (self class) AsBoxContainer() BoxContainer.Advanced {
 	return *((*BoxContainer.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsBoxContainer() BoxContainer.Instance { return self.Super().AsBoxContainer() }
 func (self Instance) AsBoxContainer() BoxContainer.Instance {
 	return *((*BoxContainer.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsContainer() Container.Advanced {
 	return *((*Container.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsContainer() Container.Instance { return self.Super().AsContainer() }
 func (self Instance) AsContainer() Container.Instance {
 	return *((*Container.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsControl() Control.Advanced { return *((*Control.Advanced)(unsafe.Pointer(&self))) }
+func (self class) AsControl() Control.Advanced        { return *((*Control.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsControl() Control.Instance { return self.Super().AsControl() }
 func (self Instance) AsControl() Control.Instance {
 	return *((*Control.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsCanvasItem() CanvasItem.Advanced {
 	return *((*CanvasItem.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
 func (self Instance) AsCanvasItem() CanvasItem.Instance {
 	return *((*CanvasItem.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsNode() Node.Advanced    { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

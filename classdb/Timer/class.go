@@ -51,6 +51,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 The [Timer] node is a countdown timer and is the simplest way to handle time-based logic in the engine. When a timer reaches the end of its [member wait_time], it will emit the [signal timeout] signal.
 After a timer enters the tree, it can be manually started with [method start]. A timer node is also started automatically if [member autostart] is [code]true[/code].
 Without requiring much code, a timer node can be added and configured in the editor. The [signal timeout] signal it emits can also be connected through the Node dock in the editor:
@@ -119,6 +124,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Timer"))
 	casted := Instance{*(*gdclass.Timer)(unsafe.Pointer(&object))}
@@ -341,10 +347,12 @@ func (self Instance) OnTimeout(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("timeout"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsTimer() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsTimer() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self class) AsNode() Node.Advanced    { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsTimer() Advanced            { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsTimer() Instance         { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsTimer() Instance     { return self.Super().AsTimer() }
+func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

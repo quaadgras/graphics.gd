@@ -50,6 +50,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 This is the base class for Godot's resource importers. To implement your own resource importers using editor plugins, see [EditorImportPlugin].
 */
 type Instance [1]gdclass.ResourceImporter
@@ -76,6 +81,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ResourceImporter"))
 	casted := Instance{*(*gdclass.ResourceImporter)(unsafe.Pointer(&object))}
@@ -83,11 +89,13 @@ func New() Instance {
 	return casted
 }
 
-func (self class) AsResourceImporter() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsResourceImporter() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsResourceImporter() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsResourceImporter() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsResourceImporter() Instance { return self.Super().AsResourceImporter() }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

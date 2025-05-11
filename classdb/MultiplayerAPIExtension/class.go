@@ -52,6 +52,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 This class can be used to extend or replace the default [MultiplayerAPI] implementation via script or extensions.
 The following example extend the default implementation ([SceneMultiplayer]) by logging every RPC being made, and every object being configured for replication.
 [codeblocks]
@@ -347,6 +352,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MultiplayerAPIExtension"))
 	casted := Instance{*(*gdclass.MultiplayerAPIExtension)(unsafe.Pointer(&object))}
@@ -504,8 +510,14 @@ func (self class) AsMultiplayerAPIExtension() Advanced { return *((*Advanced)(un
 func (self Instance) AsMultiplayerAPIExtension() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsMultiplayerAPIExtension() Instance {
+	return self.Super().AsMultiplayerAPIExtension()
+}
 func (self class) AsMultiplayerAPI() MultiplayerAPI.Advanced {
 	return *((*MultiplayerAPI.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsMultiplayerAPI() MultiplayerAPI.Instance {
+	return self.Super().AsMultiplayerAPI()
 }
 func (self Instance) AsMultiplayerAPI() MultiplayerAPI.Instance {
 	return *((*MultiplayerAPI.Instance)(unsafe.Pointer(&self)))
@@ -513,6 +525,7 @@ func (self Instance) AsMultiplayerAPI() MultiplayerAPI.Instance {
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

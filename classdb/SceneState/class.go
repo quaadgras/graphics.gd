@@ -51,6 +51,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 Maintains a list of resources, nodes, exported and overridden properties, and built-in scripts associated with a scene. They cannot be modified from a [SceneState], only accessed. Useful for peeking into what a [PackedScene] contains without instantiating it.
 This class cannot be instantiated directly, it is retrieved for a given scene as the result of [method PackedScene.get_state].
 */
@@ -246,6 +251,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SceneState"))
 	casted := Instance{*(*gdclass.SceneState)(unsafe.Pointer(&object))}
@@ -551,11 +557,13 @@ func (self class) GetConnectionUnbinds(idx int64) int64 { //gd:SceneState.get_co
 	frame.Free()
 	return ret
 }
-func (self class) AsSceneState() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsSceneState() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsSceneState() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsSceneState() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsSceneState() Instance { return self.Super().AsSceneState() }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

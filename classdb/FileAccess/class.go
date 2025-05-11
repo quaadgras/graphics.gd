@@ -50,6 +50,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 This class can be used to permanently store data in the user device's file system and to read from it. This is useful for storing game save data or player configuration files.
 Here's a sample on how to write and read from a file:
 [codeblocks]
@@ -745,6 +750,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("FileAccess"))
 	casted := Instance{*(*gdclass.FileAccess)(unsafe.Pointer(&object))}
@@ -1684,11 +1690,13 @@ func (self class) GetReadOnlyAttribute(file String.Readable) bool { //gd:FileAcc
 	frame.Free()
 	return ret
 }
-func (self class) AsFileAccess() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsFileAccess() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsFileAccess() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsFileAccess() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsFileAccess() Instance { return self.Super().AsFileAccess() }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

@@ -50,6 +50,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A more generalized, low-level variation of the directory concept.
 */
 type Instance [1]gdclass.EditorFileSystemDirectory
@@ -174,6 +179,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorFileSystemDirectory"))
 	casted := Instance{*(*gdclass.EditorFileSystemDirectory)(unsafe.Pointer(&object))}
@@ -375,6 +381,9 @@ func (self class) AsEditorFileSystemDirectory() Advanced {
 }
 func (self Instance) AsEditorFileSystemDirectory() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsEditorFileSystemDirectory() Instance {
+	return self.Super().AsEditorFileSystemDirectory()
 }
 
 func (self class) Virtual(name string) reflect.Value {

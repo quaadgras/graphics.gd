@@ -52,6 +52,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 This class is used when loading a project that uses a [Material] subclass in 2 conditions:
 - When running the project exported in dedicated server mode, only the texture's dimensions are kept (as they may be relied upon for gameplay purposes or positioning of other elements). This allows reducing the exported PCK's size significantly.
 - When this subclass is missing due to using a different engine version or build (e.g. modules disabled).
@@ -80,6 +85,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PlaceholderMaterial"))
 	casted := Instance{*(*gdclass.PlaceholderMaterial)(unsafe.Pointer(&object))}
@@ -89,21 +95,27 @@ func New() Instance {
 
 func (self class) AsPlaceholderMaterial() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsPlaceholderMaterial() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsPlaceholderMaterial() Instance {
+	return self.Super().AsPlaceholderMaterial()
+}
 func (self class) AsMaterial() Material.Advanced {
 	return *((*Material.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsMaterial() Material.Instance { return self.Super().AsMaterial() }
 func (self Instance) AsMaterial() Material.Instance {
 	return *((*Material.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

@@ -52,6 +52,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A custom shader program implemented in the Godot shading language, saved with the [code].gdshader[/code] extension.
 This class is used by a [ShaderMaterial] and allows you to write your own custom behavior for rendering visual items or updating particle information. For a detailed explanation and usage, please see the tutorials linked below.
 */
@@ -147,6 +152,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Shader"))
 	casted := Instance{*(*gdclass.Shader)(unsafe.Pointer(&object))}
@@ -252,17 +258,20 @@ func (self class) InspectNativeShaderCode() { //gd:Shader.inspect_native_shader_
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shader.Bind_inspect_native_shader_code, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
-func (self class) AsShader() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsShader() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsShader() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsShader() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsShader() Instance { return self.Super().AsShader() }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

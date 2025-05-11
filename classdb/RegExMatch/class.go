@@ -50,6 +50,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 Contains the results of a single [RegEx] match returned by [method RegEx.search] and [method RegEx.search_all]. It can be used to find the position and range of the match and its capturing groups, and it can extract its substring for you.
 */
 type Instance [1]gdclass.RegExMatch
@@ -133,6 +138,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RegExMatch"))
 	casted := Instance{*(*gdclass.RegExMatch)(unsafe.Pointer(&object))}
@@ -239,11 +245,13 @@ func (self class) GetEnd(name variant.Any) int64 { //gd:RegExMatch.get_end
 	frame.Free()
 	return ret
 }
-func (self class) AsRegExMatch() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsRegExMatch() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsRegExMatch() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsRegExMatch() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsRegExMatch() Instance { return self.Super().AsRegExMatch() }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

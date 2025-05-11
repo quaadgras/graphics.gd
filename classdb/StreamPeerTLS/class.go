@@ -52,6 +52,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A stream peer that handles TLS connections. This object can be used to connect to a TLS server or accept a single TLS client connection.
 [b]Note:[/b] When exporting to Android, make sure to enable the [code]INTERNET[/code] permission in the Android export preset before exporting the project or using one-click deploy. Otherwise, network communication of any kind will be blocked by Android.
 */
@@ -130,6 +135,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("StreamPeerTLS"))
 	casted := Instance{*(*gdclass.StreamPeerTLS)(unsafe.Pointer(&object))}
@@ -215,17 +221,20 @@ func (self class) DisconnectFromStream() { //gd:StreamPeerTLS.disconnect_from_st
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerTLS.Bind_disconnect_from_stream, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
-func (self class) AsStreamPeerTLS() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsStreamPeerTLS() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsStreamPeerTLS() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsStreamPeerTLS() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsStreamPeerTLS() Instance { return self.Super().AsStreamPeerTLS() }
 func (self class) AsStreamPeer() StreamPeer.Advanced {
 	return *((*StreamPeer.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsStreamPeer() StreamPeer.Instance { return self.Super().AsStreamPeer() }
 func (self Instance) AsStreamPeer() StreamPeer.Instance {
 	return *((*StreamPeer.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

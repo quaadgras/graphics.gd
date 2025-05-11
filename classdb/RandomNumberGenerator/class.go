@@ -50,6 +50,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 RandomNumberGenerator is a class for generating pseudo-random numbers. It currently uses [url=https://www.pcg-random.org/]PCG32[/url].
 [b]Note:[/b] The underlying algorithm is an implementation detail and should not be depended upon.
 To generate a random float number (within a given range) based on a time-dependent seed:
@@ -157,6 +162,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RandomNumberGenerator"))
 	casted := Instance{*(*gdclass.RandomNumberGenerator)(unsafe.Pointer(&object))}
@@ -328,9 +334,13 @@ func (self class) Randomize() { //gd:RandomNumberGenerator.randomize
 }
 func (self class) AsRandomNumberGenerator() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsRandomNumberGenerator() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsRandomNumberGenerator() Instance {
+	return self.Super().AsRandomNumberGenerator()
+}
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

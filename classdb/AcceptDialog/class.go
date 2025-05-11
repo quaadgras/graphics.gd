@@ -56,6 +56,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 The default use of [AcceptDialog] is to allow it to only be accepted or closed, with the same result. However, the [signal confirmed] and [signal canceled] signals allow to make the two actions different, and the [method add_button] method allows to add custom buttons and actions.
 */
 type Instance [1]gdclass.AcceptDialog
@@ -140,6 +145,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AcceptDialog"))
 	casted := Instance{*(*gdclass.AcceptDialog)(unsafe.Pointer(&object))}
@@ -377,18 +383,22 @@ func (self Instance) OnCustomAction(cb func(action string)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("custom_action"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsAcceptDialog() Advanced     { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsAcceptDialog() Instance  { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self class) AsWindow() Window.Advanced    { return *((*Window.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsWindow() Window.Instance { return *((*Window.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsAcceptDialog() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsAcceptDialog() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsAcceptDialog() Instance  { return self.Super().AsAcceptDialog() }
+func (self class) AsWindow() Window.Advanced        { return *((*Window.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsWindow() Window.Instance { return self.Super().AsWindow() }
+func (self Instance) AsWindow() Window.Instance     { return *((*Window.Instance)(unsafe.Pointer(&self))) }
 func (self class) AsViewport() Viewport.Advanced {
 	return *((*Viewport.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsViewport() Viewport.Instance { return self.Super().AsViewport() }
 func (self Instance) AsViewport() Viewport.Instance {
 	return *((*Viewport.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsNode() Node.Advanced    { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

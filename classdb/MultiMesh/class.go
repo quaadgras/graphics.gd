@@ -56,6 +56,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 MultiMesh provides low-level mesh instancing. Drawing thousands of [MeshInstance3D] nodes can be slow, since each object is submitted to the GPU then drawn individually.
 MultiMesh is much faster as it can draw thousands of instances with a single draw call, resulting in less API overhead.
 As a drawback, if the instances are too far away from each other, performance may be reduced as every single instance will always render (they are spatially indexed as one, for the whole object).
@@ -172,6 +177,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MultiMesh"))
 	casted := Instance{*(*gdclass.MultiMesh)(unsafe.Pointer(&object))}
@@ -575,17 +581,20 @@ func (self class) SetBufferInterpolated(buffer_curr Packed.Array[float32], buffe
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiMesh.Bind_set_buffer_interpolated, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
-func (self class) AsMultiMesh() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsMultiMesh() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsMultiMesh() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsMultiMesh() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsMultiMesh() Instance { return self.Super().AsMultiMesh() }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

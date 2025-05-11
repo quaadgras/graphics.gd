@@ -54,6 +54,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A hand tracking system will create an instance of this object and add it to the [XRServer]. This tracking system will then obtain skeleton data, convert it to the Godot Humanoid hand skeleton and store this data on the [XRHandTracker] object.
 Use [XRHandModifier3D] to animate a hand mesh using hand tracking data.
 */
@@ -151,6 +156,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("XRHandTracker"))
 	casted := Instance{*(*gdclass.XRHandTracker)(unsafe.Pointer(&object))}
@@ -346,10 +352,14 @@ func (self class) GetHandJointAngularVelocity(joint gdclass.XRHandTrackerHandJoi
 	frame.Free()
 	return ret
 }
-func (self class) AsXRHandTracker() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsXRHandTracker() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsXRHandTracker() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsXRHandTracker() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsXRHandTracker() Instance { return self.Super().AsXRHandTracker() }
 func (self class) AsXRPositionalTracker() XRPositionalTracker.Advanced {
 	return *((*XRPositionalTracker.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsXRPositionalTracker() XRPositionalTracker.Instance {
+	return self.Super().AsXRPositionalTracker()
 }
 func (self Instance) AsXRPositionalTracker() XRPositionalTracker.Instance {
 	return *((*XRPositionalTracker.Instance)(unsafe.Pointer(&self)))
@@ -357,12 +367,14 @@ func (self Instance) AsXRPositionalTracker() XRPositionalTracker.Instance {
 func (self class) AsXRTracker() XRTracker.Advanced {
 	return *((*XRTracker.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsXRTracker() XRTracker.Instance { return self.Super().AsXRTracker() }
 func (self Instance) AsXRTracker() XRTracker.Instance {
 	return *((*XRTracker.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

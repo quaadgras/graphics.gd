@@ -54,6 +54,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 Represents a glTF node. glTF nodes may have names, transforms, children (other glTF nodes), and more specialized properties (represented by their own classes).
 glTF nodes generally exist inside of [GLTFState] which represents all data of a glTF file. Most of GLTFNode's properties are indices of other data in the glTF file. You can extend a glTF node with additional properties by using [method get_additional_data] and [method set_additional_data].
 */
@@ -106,6 +111,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GLTFNode"))
 	casted := Instance{*(*gdclass.GLTFNode)(unsafe.Pointer(&object))}
@@ -520,17 +526,20 @@ func (self class) GetSceneNodePath(gltf_state [1]gdclass.GLTFState, handle_skele
 	frame.Free()
 	return ret
 }
-func (self class) AsGLTFNode() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsGLTFNode() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsGLTFNode() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsGLTFNode() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsGLTFNode() Instance { return self.Super().AsGLTFNode() }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

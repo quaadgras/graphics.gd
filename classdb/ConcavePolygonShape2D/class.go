@@ -53,6 +53,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A 2D polyline shape, intended for use in physics. Used internally in [CollisionPolygon2D] when it's in [constant CollisionPolygon2D.BUILD_SEGMENTS] mode.
 Being just a collection of interconnected line segments, [ConcavePolygonShape2D] is the most freely configurable single 2D shape. It can be used to form polygons of any nature, or even shapes that don't enclose an area. However, [ConcavePolygonShape2D] is [i]hollow[/i] even if the interconnected line segments do enclose an area, which often makes it unsuitable for physics or detection.
 [b]Note:[/b] When used for collision, [ConcavePolygonShape2D] is intended to work with static [CollisionShape2D] nodes like [StaticBody2D] and will likely not behave well for [CharacterBody2D]s or [RigidBody2D]s in a mode other than Static.
@@ -83,6 +88,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ConcavePolygonShape2D"))
 	casted := Instance{*(*gdclass.ConcavePolygonShape2D)(unsafe.Pointer(&object))}
@@ -118,19 +124,25 @@ func (self class) GetSegments() Packed.Array[Vector2.XY] { //gd:ConcavePolygonSh
 }
 func (self class) AsConcavePolygonShape2D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsConcavePolygonShape2D() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self class) AsShape2D() Shape2D.Advanced          { return *((*Shape2D.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsConcavePolygonShape2D() Instance {
+	return self.Super().AsConcavePolygonShape2D()
+}
+func (self class) AsShape2D() Shape2D.Advanced        { return *((*Shape2D.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsShape2D() Shape2D.Instance { return self.Super().AsShape2D() }
 func (self Instance) AsShape2D() Shape2D.Instance {
 	return *((*Shape2D.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

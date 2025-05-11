@@ -61,6 +61,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A node that creates a window. The window can either be a native system window or embedded inside another [Window] (see [member Viewport.gui_embed_subwindows]).
 At runtime, [Window]s will not close automatically when requested. You need to handle it manually using the [signal close_requested] signal (this applies both to pressing the close button and clicking outside of a popup).
 
@@ -804,10 +809,10 @@ func (self Expanded) PopupExclusiveCenteredClamped(from_node Node.Instance, mins
 }
 
 /*
-Returns the [Window] that contains this node, or the last exclusive child in a chain of windows starting with the one that contains this node.
+Returns the [Window] that contains this node. If the node is in the main window, this is equivalent to getting the root node ([code]get_tree().get_root()[/code]).
 */
-func GetLastExclusive(peer Node.Instance) Instance { //gd:Node.get_last_exclusive_window
-	return Instance(Node.Advanced(peer).GetLastExclusiveWindow())
+func Get(peer Node.Instance) Instance { //gd:Node.get_window
+	return Instance(Node.Advanced(peer).GetWindow())
 }
 
 /*
@@ -819,10 +824,10 @@ func (self Instance) GetEmbeddedInView(peer Viewport.Instance) []Instance { //gd
 }
 
 /*
-Returns the [Window] that contains this node. If the node is in the main window, this is equivalent to getting the root node ([code]get_tree().get_root()[/code]).
+Returns the [Window] that contains this node, or the last exclusive child in a chain of windows starting with the one that contains this node.
 */
-func Get(peer Node.Instance) Instance { //gd:Node.get_window
-	return Instance(Node.Advanced(peer).GetWindow())
+func GetLastExclusive(peer Node.Instance) Instance { //gd:Node.get_last_exclusive_window
+	return Instance(Node.Advanced(peer).GetLastExclusiveWindow())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -837,6 +842,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Window"))
 	casted := Instance{*(*gdclass.Window)(unsafe.Pointer(&object))}
@@ -2622,16 +2628,19 @@ func (self Instance) OnTitleChanged(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("title_changed"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsWindow() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsWindow() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsWindow() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsWindow() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsWindow() Instance { return self.Super().AsWindow() }
 func (self class) AsViewport() Viewport.Advanced {
 	return *((*Viewport.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsViewport() Viewport.Instance { return self.Super().AsViewport() }
 func (self Instance) AsViewport() Viewport.Instance {
 	return *((*Viewport.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsNode() Node.Advanced    { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

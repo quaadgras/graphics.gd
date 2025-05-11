@@ -53,6 +53,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 [SubViewport] Isolates a rectangular region of a scene to be displayed independently. This can be used, for example, to display UI in 3D space.
 [b]Note:[/b] [SubViewport] is a [Viewport] that isn't a [Window], i.e. it doesn't draw anything by itself. To display anything, [SubViewport] must have a non-zero size and be either put inside a [SubViewportContainer] or assigned to a [ViewportTexture].
 [b]Note:[/b] [InputEvent]s are not passed to a standalone [SubViewport] by default. To ensure [InputEvent] propagation, a [SubViewport] can be placed inside of a [SubViewportContainer].
@@ -81,6 +86,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SubViewport"))
 	casted := Instance{*(*gdclass.SubViewport)(unsafe.Pointer(&object))}
@@ -221,16 +227,19 @@ func (self class) GetClearMode() gdclass.SubViewportClearMode { //gd:SubViewport
 	frame.Free()
 	return ret
 }
-func (self class) AsSubViewport() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsSubViewport() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsSubViewport() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsSubViewport() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsSubViewport() Instance { return self.Super().AsSubViewport() }
 func (self class) AsViewport() Viewport.Advanced {
 	return *((*Viewport.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsViewport() Viewport.Instance { return self.Super().AsViewport() }
 func (self Instance) AsViewport() Viewport.Instance {
 	return *((*Viewport.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsNode() Node.Advanced    { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

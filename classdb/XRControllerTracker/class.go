@@ -52,6 +52,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 An instance of this object represents a controller that is tracked.
 As controllers are turned on and the [XRInterface] detects them, instances of this object are automatically added to this list of active tracking objects accessible through the [XRServer].
 The [XRController3D] consumes objects of this type and should be used in your project.
@@ -80,6 +85,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("XRControllerTracker"))
 	casted := Instance{*(*gdclass.XRControllerTracker)(unsafe.Pointer(&object))}
@@ -89,8 +95,14 @@ func New() Instance {
 
 func (self class) AsXRControllerTracker() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsXRControllerTracker() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsXRControllerTracker() Instance {
+	return self.Super().AsXRControllerTracker()
+}
 func (self class) AsXRPositionalTracker() XRPositionalTracker.Advanced {
 	return *((*XRPositionalTracker.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsXRPositionalTracker() XRPositionalTracker.Instance {
+	return self.Super().AsXRPositionalTracker()
 }
 func (self Instance) AsXRPositionalTracker() XRPositionalTracker.Instance {
 	return *((*XRPositionalTracker.Instance)(unsafe.Pointer(&self)))
@@ -98,12 +110,14 @@ func (self Instance) AsXRPositionalTracker() XRPositionalTracker.Instance {
 func (self class) AsXRTracker() XRTracker.Advanced {
 	return *((*XRTracker.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsXRTracker() XRTracker.Instance { return self.Super().AsXRTracker() }
 func (self Instance) AsXRTracker() XRTracker.Instance {
 	return *((*XRTracker.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

@@ -52,6 +52,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A group of [BaseButton]-derived buttons. The buttons in a [ButtonGroup] are treated like radio buttons: No more than one button can be pressed at a time. Some types of buttons (such as [CheckBox]) may have a special appearance in this state.
 Every member of a [ButtonGroup] should have [member BaseButton.toggle_mode] set to [code]true[/code].
 */
@@ -99,6 +104,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ButtonGroup"))
 	casted := Instance{*(*gdclass.ButtonGroup)(unsafe.Pointer(&object))}
@@ -162,17 +168,20 @@ func (self Instance) OnPressed(cb func(button BaseButton.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("pressed"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsButtonGroup() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsButtonGroup() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsButtonGroup() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsButtonGroup() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsButtonGroup() Instance { return self.Super().AsButtonGroup() }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

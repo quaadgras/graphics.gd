@@ -51,6 +51,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 This object manages all render data for the rendering device based renderers.
 [b]Note:[/b] This is an internal rendering server object only exposed for GDExtension plugins.
 */
@@ -78,17 +83,20 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RenderDataRD"))
 	casted := Instance{*(*gdclass.RenderDataRD)(unsafe.Pointer(&object))}
 	return casted
 }
 
-func (self class) AsRenderDataRD() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsRenderDataRD() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsRenderDataRD() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsRenderDataRD() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsRenderDataRD() Instance { return self.Super().AsRenderDataRD() }
 func (self class) AsRenderData() RenderData.Advanced {
 	return *((*RenderData.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRenderData() RenderData.Instance { return self.Super().AsRenderData() }
 func (self Instance) AsRenderData() RenderData.Instance {
 	return *((*RenderData.Instance)(unsafe.Pointer(&self)))
 }

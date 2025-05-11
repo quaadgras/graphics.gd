@@ -51,6 +51,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 MP3 is a lossy audio format, with worse audio quality compared to [ResourceImporterOggVorbis] at a given bitrate.
 In most cases, it's recommended to use Ogg Vorbis over MP3. However, if you're using an MP3 sound source with no higher quality source available, then it's recommended to use the MP3 file directly to avoid double lossy compression.
 MP3 requires more CPU to decode than [ResourceImporterWAV]. If you need to play a lot of simultaneous sounds, it's recommended to use WAV for those sounds instead, especially if targeting low-end devices.
@@ -79,6 +84,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ResourceImporterMP3"))
 	casted := Instance{*(*gdclass.ResourceImporterMP3)(unsafe.Pointer(&object))}
@@ -88,8 +94,14 @@ func New() Instance {
 
 func (self class) AsResourceImporterMP3() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsResourceImporterMP3() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsResourceImporterMP3() Instance {
+	return self.Super().AsResourceImporterMP3()
+}
 func (self class) AsResourceImporter() ResourceImporter.Advanced {
 	return *((*ResourceImporter.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsResourceImporter() ResourceImporter.Instance {
+	return self.Super().AsResourceImporter()
 }
 func (self Instance) AsResourceImporter() ResourceImporter.Instance {
 	return *((*ResourceImporter.Instance)(unsafe.Pointer(&self)))
@@ -97,6 +109,7 @@ func (self Instance) AsResourceImporter() ResourceImporter.Instance {
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

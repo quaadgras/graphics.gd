@@ -52,6 +52,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 Controls camera-specific attributes such as auto-exposure, depth of field, and exposure override.
 When used in a [WorldEnvironment] it provides default settings for exposure, auto-exposure, and depth of field that will be used by all cameras without their own [CameraAttributes], including the editor camera. When used in a [Camera3D] it will override any [CameraAttributes] set in the [WorldEnvironment]. When used in [VoxelGI] or [LightmapGI], only the exposure settings will be used.
 */
@@ -79,6 +84,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CameraAttributesPractical"))
 	casted := Instance{*(*gdclass.CameraAttributesPractical)(unsafe.Pointer(&object))}
@@ -334,8 +340,14 @@ func (self class) AsCameraAttributesPractical() Advanced {
 func (self Instance) AsCameraAttributesPractical() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsCameraAttributesPractical() Instance {
+	return self.Super().AsCameraAttributesPractical()
+}
 func (self class) AsCameraAttributes() CameraAttributes.Advanced {
 	return *((*CameraAttributes.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsCameraAttributes() CameraAttributes.Instance {
+	return self.Super().AsCameraAttributes()
 }
 func (self Instance) AsCameraAttributes() CameraAttributes.Instance {
 	return *((*CameraAttributes.Instance)(unsafe.Pointer(&self)))
@@ -343,12 +355,14 @@ func (self Instance) AsCameraAttributes() CameraAttributes.Instance {
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

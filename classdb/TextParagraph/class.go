@@ -55,6 +55,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 Abstraction over [TextServer] for handling a single paragraph of text.
 */
 type Instance [1]gdclass.TextParagraph
@@ -378,6 +383,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TextParagraph"))
 	casted := Instance{*(*gdclass.TextParagraph)(unsafe.Pointer(&object))}
@@ -1190,11 +1196,13 @@ func (self class) HitTest(coords Vector2.XY) int64 { //gd:TextParagraph.hit_test
 	frame.Free()
 	return ret
 }
-func (self class) AsTextParagraph() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsTextParagraph() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsTextParagraph() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsTextParagraph() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsTextParagraph() Instance { return self.Super().AsTextParagraph() }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

@@ -51,6 +51,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 An implementation of the A* algorithm, used to find the shortest path between two vertices on a connected graph in 2D space.
 See [AStar3D] for a more thorough explanation on how to use this class. [AStar2D] is a wrapper for [AStar3D] that enforces 2D coordinates.
 
@@ -510,6 +515,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AStar2D"))
 	casted := Instance{*(*gdclass.AStar2D)(unsafe.Pointer(&object))}
@@ -964,11 +970,13 @@ func (self class) GetIdPath(from_id int64, to_id int64, allow_partial_path bool)
 	frame.Free()
 	return ret
 }
-func (self class) AsAStar2D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsAStar2D() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsAStar2D() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsAStar2D() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsAStar2D() Instance { return self.Super().AsAStar2D() }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

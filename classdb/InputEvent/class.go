@@ -53,6 +53,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 Abstract base class of all types of input events. See [method Node._input].
 */
 type Instance [1]gdclass.InputEvent
@@ -231,6 +236,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("InputEvent"))
 	casted := Instance{*(*gdclass.InputEvent)(unsafe.Pointer(&object))}
@@ -457,17 +463,20 @@ func (self class) XformedBy(xform Transform2D.OriginXY, local_ofs Vector2.XY) [1
 	frame.Free()
 	return ret
 }
-func (self class) AsInputEvent() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsInputEvent() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsInputEvent() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsInputEvent() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsInputEvent() Instance { return self.Super().AsInputEvent() }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

@@ -53,6 +53,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 This modification moves a series of bones, typically called a bone chain, towards a target. What makes this modification special is that it calculates the velocity and acceleration for each bone in the bone chain, and runs a very light physics-like calculation using the inputted values. This allows the bones to overshoot the target and "jiggle" around. It can be configured to act more like a spring, or sway around like cloth might.
 This modification is useful for adding additional motion to things like hair, the edges of clothing, and more. It has several settings to that allow control over how the joint moves when the target moves.
 [b]Note:[/b] The Jiggle modifier has [code]jiggle_joints[/code], which are the data objects that hold the data for each joint in the Jiggle chain. This is different from than [Bone2D] nodes! Jiggle joints hold the data needed for each [Bone2D] in the bone chain used by the Jiggle modification.
@@ -221,6 +226,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SkeletonModification2DJiggle"))
 	casted := Instance{*(*gdclass.SkeletonModification2DJiggle)(unsafe.Pointer(&object))}
@@ -688,8 +694,14 @@ func (self class) AsSkeletonModification2DJiggle() Advanced {
 func (self Instance) AsSkeletonModification2DJiggle() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsSkeletonModification2DJiggle() Instance {
+	return self.Super().AsSkeletonModification2DJiggle()
+}
 func (self class) AsSkeletonModification2D() SkeletonModification2D.Advanced {
 	return *((*SkeletonModification2D.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsSkeletonModification2D() SkeletonModification2D.Instance {
+	return self.Super().AsSkeletonModification2D()
 }
 func (self Instance) AsSkeletonModification2D() SkeletonModification2D.Instance {
 	return *((*SkeletonModification2D.Instance)(unsafe.Pointer(&self)))
@@ -697,12 +709,14 @@ func (self Instance) AsSkeletonModification2D() SkeletonModification2D.Instance 
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

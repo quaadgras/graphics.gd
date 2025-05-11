@@ -51,6 +51,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 [EditorInspectorPlugin] allows adding custom property editors to [EditorInspector].
 When an object is edited, the [method _can_handle] function is called and must return [code]true[/code] if the object type is supported.
 If supported, the function [method _parse_begin] will be called, allowing to place custom controls at the beginning of the class.
@@ -233,6 +238,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorInspectorPlugin"))
 	casted := Instance{*(*gdclass.EditorInspectorPlugin)(unsafe.Pointer(&object))}
@@ -370,9 +376,13 @@ func (self class) AddPropertyEditorForMultipleProperties(label String.Readable, 
 }
 func (self class) AsEditorInspectorPlugin() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsEditorInspectorPlugin() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsEditorInspectorPlugin() Instance {
+	return self.Super().AsEditorInspectorPlugin()
+}
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

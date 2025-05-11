@@ -55,6 +55,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 Represents a physics body as an intermediary between the [code]OMI_physics_body[/code] glTF data and Godot's nodes, and it's abstracted in a way that allows adding support for different glTF physics extensions in the future.
 */
 type Instance [1]gdclass.GLTFPhysicsBody
@@ -111,6 +116,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GLTFPhysicsBody"))
 	casted := Instance{*(*gdclass.GLTFPhysicsBody)(unsafe.Pointer(&object))}
@@ -387,17 +393,20 @@ func (self class) SetInertiaTensor(inertia_tensor Basis.XYZ) { //gd:GLTFPhysicsB
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFPhysicsBody.Bind_set_inertia_tensor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
-func (self class) AsGLTFPhysicsBody() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsGLTFPhysicsBody() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsGLTFPhysicsBody() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsGLTFPhysicsBody() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsGLTFPhysicsBody() Instance { return self.Super().AsGLTFPhysicsBody() }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

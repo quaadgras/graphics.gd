@@ -52,6 +52,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 Abstract render data object, exists for the duration of rendering a single viewport.
 [b]Note:[/b] This is an internal rendering server object, do not instantiate this from script.
 */
@@ -107,6 +112,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RenderData"))
 	casted := Instance{*(*gdclass.RenderData)(unsafe.Pointer(&object))}
@@ -164,8 +170,9 @@ func (self class) GetCameraAttributes() RID.Any { //gd:RenderData.get_camera_att
 	frame.Free()
 	return ret
 }
-func (self class) AsRenderData() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsRenderData() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsRenderData() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsRenderData() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsRenderData() Instance { return self.Super().AsRenderData() }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

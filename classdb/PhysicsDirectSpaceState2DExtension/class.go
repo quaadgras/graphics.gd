@@ -53,6 +53,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 This class extends [PhysicsDirectSpaceState2D] by providing additional virtual methods that can be overridden. When these methods are overridden, they will be called instead of the internal methods of the physics server.
 Intended for use with GDExtension to create custom implementations of [PhysicsDirectSpaceState2D].
 
@@ -209,6 +214,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PhysicsDirectSpaceState2DExtension"))
 	casted := Instance{*(*gdclass.PhysicsDirectSpaceState2DExtension)(unsafe.Pointer(&object))}
@@ -329,8 +335,14 @@ func (self class) AsPhysicsDirectSpaceState2DExtension() Advanced {
 func (self Instance) AsPhysicsDirectSpaceState2DExtension() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsPhysicsDirectSpaceState2DExtension() Instance {
+	return self.Super().AsPhysicsDirectSpaceState2DExtension()
+}
 func (self class) AsPhysicsDirectSpaceState2D() PhysicsDirectSpaceState2D.Advanced {
 	return *((*PhysicsDirectSpaceState2D.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsPhysicsDirectSpaceState2D() PhysicsDirectSpaceState2D.Instance {
+	return self.Super().AsPhysicsDirectSpaceState2D()
 }
 func (self Instance) AsPhysicsDirectSpaceState2D() PhysicsDirectSpaceState2D.Instance {
 	return *((*PhysicsDirectSpaceState2D.Instance)(unsafe.Pointer(&self)))

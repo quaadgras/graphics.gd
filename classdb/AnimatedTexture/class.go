@@ -53,6 +53,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 [AnimatedTexture] is a resource format for frame-based animations, where multiple textures can be chained automatically with a predefined delay for each frame. Unlike [AnimationPlayer] or [AnimatedSprite2D], it isn't a [Node], but has the advantage of being usable anywhere a [Texture2D] resource can be used, e.g. in a [TileSet].
 The playback of the animation is controlled by the [member speed_scale] property, as well as each frame's duration (see [method set_frame_duration]). The animation loops, i.e. it will restart at frame 0 automatically after playing the last frame.
 [AnimatedTexture] currently requires all frame textures to have the same size, otherwise the bigger ones will be cropped to match the smallest one.
@@ -112,6 +117,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AnimatedTexture"))
 	casted := Instance{*(*gdclass.AnimatedTexture)(unsafe.Pointer(&object))}
@@ -308,27 +314,32 @@ func (self class) GetFrameDuration(frame_ int64) float64 { //gd:AnimatedTexture.
 	frame.Free()
 	return ret
 }
-func (self class) AsAnimatedTexture() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsAnimatedTexture() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsAnimatedTexture() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsAnimatedTexture() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsAnimatedTexture() Instance { return self.Super().AsAnimatedTexture() }
 func (self class) AsTexture2D() Texture2D.Advanced {
 	return *((*Texture2D.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsTexture2D() Texture2D.Instance { return self.Super().AsTexture2D() }
 func (self Instance) AsTexture2D() Texture2D.Instance {
 	return *((*Texture2D.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsTexture() Texture.Advanced { return *((*Texture.Advanced)(unsafe.Pointer(&self))) }
+func (self class) AsTexture() Texture.Advanced        { return *((*Texture.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsTexture() Texture.Instance { return self.Super().AsTexture() }
 func (self Instance) AsTexture() Texture.Instance {
 	return *((*Texture.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

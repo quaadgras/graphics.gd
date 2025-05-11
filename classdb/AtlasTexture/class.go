@@ -54,6 +54,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 [Texture2D] resource that draws only part of its [member atlas] texture, as defined by the [member region]. An additional [member margin] can also be set, which is useful for small adjustments.
 Multiple [AtlasTexture] resources can be cropped from the same [member atlas]. Packing many smaller textures into a singular large texture helps to optimize video memory costs and render calls.
 [b]Note:[/b] [AtlasTexture] cannot be used in an [AnimatedTexture], and will not tile properly in nodes such as [TextureRect] or [Sprite2D]. To tile an [AtlasTexture], modify its [member region] instead.
@@ -82,6 +87,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AtlasTexture"))
 	casted := Instance{*(*gdclass.AtlasTexture)(unsafe.Pointer(&object))}
@@ -196,27 +202,32 @@ func (self class) HasFilterClip() bool { //gd:AtlasTexture.has_filter_clip
 	frame.Free()
 	return ret
 }
-func (self class) AsAtlasTexture() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsAtlasTexture() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsAtlasTexture() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsAtlasTexture() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsAtlasTexture() Instance { return self.Super().AsAtlasTexture() }
 func (self class) AsTexture2D() Texture2D.Advanced {
 	return *((*Texture2D.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsTexture2D() Texture2D.Instance { return self.Super().AsTexture2D() }
 func (self Instance) AsTexture2D() Texture2D.Instance {
 	return *((*Texture2D.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsTexture() Texture.Advanced { return *((*Texture.Advanced)(unsafe.Pointer(&self))) }
+func (self class) AsTexture() Texture.Advanced        { return *((*Texture.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsTexture() Texture.Instance { return self.Super().AsTexture() }
 func (self Instance) AsTexture() Texture.Instance {
 	return *((*Texture.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

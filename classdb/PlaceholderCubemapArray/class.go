@@ -54,6 +54,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 This class replaces a [CubemapArray] or a [CubemapArray]-derived class in 2 conditions:
 - In dedicated server mode, where the image data shouldn't affect game logic. This allows reducing the exported PCK's size significantly.
 - When the [CubemapArray]-derived class is missing, for example when using a different engine version.
@@ -83,6 +88,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PlaceholderCubemapArray"))
 	casted := Instance{*(*gdclass.PlaceholderCubemapArray)(unsafe.Pointer(&object))}
@@ -94,8 +100,14 @@ func (self class) AsPlaceholderCubemapArray() Advanced { return *((*Advanced)(un
 func (self Instance) AsPlaceholderCubemapArray() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsPlaceholderCubemapArray() Instance {
+	return self.Super().AsPlaceholderCubemapArray()
+}
 func (self class) AsPlaceholderTextureLayered() PlaceholderTextureLayered.Advanced {
 	return *((*PlaceholderTextureLayered.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsPlaceholderTextureLayered() PlaceholderTextureLayered.Instance {
+	return self.Super().AsPlaceholderTextureLayered()
 }
 func (self Instance) AsPlaceholderTextureLayered() PlaceholderTextureLayered.Instance {
 	return *((*PlaceholderTextureLayered.Instance)(unsafe.Pointer(&self)))
@@ -103,22 +115,28 @@ func (self Instance) AsPlaceholderTextureLayered() PlaceholderTextureLayered.Ins
 func (self class) AsTextureLayered() TextureLayered.Advanced {
 	return *((*TextureLayered.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsTextureLayered() TextureLayered.Instance {
+	return self.Super().AsTextureLayered()
+}
 func (self Instance) AsTextureLayered() TextureLayered.Instance {
 	return *((*TextureLayered.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsTexture() Texture.Advanced { return *((*Texture.Advanced)(unsafe.Pointer(&self))) }
+func (self class) AsTexture() Texture.Advanced        { return *((*Texture.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsTexture() Texture.Instance { return self.Super().AsTexture() }
 func (self Instance) AsTexture() Texture.Instance {
 	return *((*Texture.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

@@ -54,6 +54,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A horizontal menu bar that creates a menu for each [PopupMenu] child. New items are created by adding [PopupMenu]s to this node. Item title is determined by [member Window.title], or node name if [member Window.title] is empty. Item title can be overridden using [method set_menu_title].
 */
 type Instance [1]gdclass.MenuBar
@@ -164,6 +169,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MenuBar"))
 	casted := Instance{*(*gdclass.MenuBar)(unsafe.Pointer(&object))}
@@ -491,20 +497,24 @@ func (self class) GetMenuPopup(menu int64) [1]gdclass.PopupMenu { //gd:MenuBar.g
 	frame.Free()
 	return ret
 }
-func (self class) AsMenuBar() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsMenuBar() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self class) AsControl() Control.Advanced { return *((*Control.Advanced)(unsafe.Pointer(&self))) }
+func (self class) AsMenuBar() Advanced                { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsMenuBar() Instance             { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsMenuBar() Instance         { return self.Super().AsMenuBar() }
+func (self class) AsControl() Control.Advanced        { return *((*Control.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsControl() Control.Instance { return self.Super().AsControl() }
 func (self Instance) AsControl() Control.Instance {
 	return *((*Control.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsCanvasItem() CanvasItem.Advanced {
 	return *((*CanvasItem.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
 func (self Instance) AsCanvasItem() CanvasItem.Instance {
 	return *((*CanvasItem.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsNode() Node.Advanced    { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

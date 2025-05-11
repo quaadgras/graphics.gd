@@ -54,6 +54,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 [NativeMenu] handles low-level access to the OS native global menu bar and popup menus.
 [b]Note:[/b] This is low-level API, consider using [MenuBar] with [member MenuBar.prefer_global_menu] set to [code]true[/code], and [PopupMenu] with [member PopupMenu.prefer_native_menu] set to [code]true[/code].
 To create a menu, use [method create_menu], add menu items using [code]add_*_item[/code] methods. To remove a menu, use [method free_menu].
@@ -868,6 +873,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 
 /*
 Returns [code]true[/code] if the specified [param feature] is supported by the current [NativeMenu], [code]false[/code] otherwise.

@@ -53,6 +53,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 The engine supports multiple image formats out of the box (PNG, SVG, JPEG, WebP to name a few), but you can choose to implement support for additional image formats by extending this class.
 Be sure to respect the documented return types and values. You should create an instance of it, and call [method add_format_loader] to register that loader during the initialization phase.
 
@@ -152,6 +157,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ImageFormatLoaderExtension"))
 	casted := Instance{*(*gdclass.ImageFormatLoaderExtension)(unsafe.Pointer(&object))}
@@ -226,8 +232,14 @@ func (self class) AsImageFormatLoaderExtension() Advanced {
 func (self Instance) AsImageFormatLoaderExtension() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsImageFormatLoaderExtension() Instance {
+	return self.Super().AsImageFormatLoaderExtension()
+}
 func (self class) AsImageFormatLoader() ImageFormatLoader.Advanced {
 	return *((*ImageFormatLoader.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsImageFormatLoader() ImageFormatLoader.Instance {
+	return self.Super().AsImageFormatLoader()
 }
 func (self Instance) AsImageFormatLoader() ImageFormatLoader.Instance {
 	return *((*ImageFormatLoader.Instance)(unsafe.Pointer(&self)))
@@ -235,6 +247,7 @@ func (self Instance) AsImageFormatLoader() ImageFormatLoader.Instance {
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

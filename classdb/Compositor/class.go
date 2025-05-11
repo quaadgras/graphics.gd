@@ -52,6 +52,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 The compositor resource stores attributes used to customize how a [Viewport] is rendered.
 */
 type Instance [1]gdclass.Compositor
@@ -78,6 +83,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Compositor"))
 	casted := Instance{*(*gdclass.Compositor)(unsafe.Pointer(&object))}
@@ -111,17 +117,20 @@ func (self class) GetCompositorEffects() Array.Contains[[1]gdclass.CompositorEff
 	frame.Free()
 	return ret
 }
-func (self class) AsCompositor() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsCompositor() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsCompositor() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsCompositor() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsCompositor() Instance { return self.Super().AsCompositor() }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

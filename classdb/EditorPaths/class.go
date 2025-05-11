@@ -50,6 +50,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 This editor-only singleton returns OS-specific paths to various data folders and files. It can be used in editor plugins to ensure files are saved in the correct location on each operating system.
 [b]Note:[/b] This singleton is not accessible in exported projects. Attempting to access it in an exported project will result in a script error as the singleton won't be declared. To prevent script errors in exported projects, use [method Engine.has_singleton] to check whether the singleton is available before using it.
 [b]Note:[/b] On the Linux/BSD platform, Godot complies with the [url=https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html]XDG Base Directory Specification[/url]. You can override environment variables following the specification to change the editor and project data paths.
@@ -142,6 +147,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorPaths"))
 	casted := Instance{*(*gdclass.EditorPaths)(unsafe.Pointer(&object))}
@@ -247,8 +253,9 @@ func (self class) GetProjectSettingsDir() String.Readable { //gd:EditorPaths.get
 	frame.Free()
 	return ret
 }
-func (self class) AsEditorPaths() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsEditorPaths() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsEditorPaths() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsEditorPaths() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsEditorPaths() Instance { return self.Super().AsEditorPaths() }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

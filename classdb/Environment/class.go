@@ -55,6 +55,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 Resource for environment nodes (like [WorldEnvironment]) that define multiple environment operations (such as background [Sky] or [Color], ambient light, fog, depth-of-field...). These parameters affect the final render of the scene. The order of these operations is:
 - Depth of Field Blur
 - Glow
@@ -99,6 +104,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Environment"))
 	casted := Instance{*(*gdclass.Environment)(unsafe.Pointer(&object))}
@@ -2589,17 +2595,20 @@ func (self class) GetAdjustmentColorCorrection() [1]gdclass.Texture { //gd:Envir
 	frame.Free()
 	return ret
 }
-func (self class) AsEnvironment() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsEnvironment() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsEnvironment() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsEnvironment() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsEnvironment() Instance { return self.Super().AsEnvironment() }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

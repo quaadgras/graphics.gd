@@ -53,6 +53,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 An OpenXR composition layer that allows rendering a [SubViewport] on an internal slice of a cylinder.
 */
 type Instance [1]gdclass.OpenXRCompositionLayerCylinder
@@ -79,6 +84,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("OpenXRCompositionLayerCylinder"))
 	casted := Instance{*(*gdclass.OpenXRCompositionLayerCylinder)(unsafe.Pointer(&object))}
@@ -198,16 +204,24 @@ func (self class) AsOpenXRCompositionLayerCylinder() Advanced {
 func (self Instance) AsOpenXRCompositionLayerCylinder() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsOpenXRCompositionLayerCylinder() Instance {
+	return self.Super().AsOpenXRCompositionLayerCylinder()
+}
 func (self class) AsOpenXRCompositionLayer() OpenXRCompositionLayer.Advanced {
 	return *((*OpenXRCompositionLayer.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsOpenXRCompositionLayer() OpenXRCompositionLayer.Instance {
+	return self.Super().AsOpenXRCompositionLayer()
 }
 func (self Instance) AsOpenXRCompositionLayer() OpenXRCompositionLayer.Instance {
 	return *((*OpenXRCompositionLayer.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsNode3D() Node3D.Advanced    { return *((*Node3D.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode3D() Node3D.Instance { return *((*Node3D.Instance)(unsafe.Pointer(&self))) }
-func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode3D() Node3D.Advanced        { return *((*Node3D.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode3D() Node3D.Instance { return self.Super().AsNode3D() }
+func (self Instance) AsNode3D() Node3D.Instance     { return *((*Node3D.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced            { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode() Node.Instance     { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance         { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

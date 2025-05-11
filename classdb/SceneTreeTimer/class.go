@@ -50,6 +50,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A one-shot timer managed by the scene tree, which emits [signal timeout] on completion. See also [method SceneTree.create_timer].
 As opposed to [Timer], it does not require the instantiation of a node. Commonly used to create a one-shot delay timer as in the following example:
 [codeblocks]
@@ -99,6 +104,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SceneTreeTimer"))
 	casted := Instance{*(*gdclass.SceneTreeTimer)(unsafe.Pointer(&object))}
@@ -136,11 +142,13 @@ func (self Instance) OnTimeout(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("timeout"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsSceneTreeTimer() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsSceneTreeTimer() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsSceneTreeTimer() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsSceneTreeTimer() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsSceneTreeTimer() Instance { return self.Super().AsSceneTreeTimer() }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

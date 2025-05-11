@@ -52,6 +52,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 This node is used to preload sub-resources inside a scene, so when the scene is loaded, all the resources are ready to use and can be retrieved from the preloader. You can add the resources using the ResourcePreloader tab when the node is selected.
 GDScript has a simplified [method @GDScript.preload] built-in method which can be used in most situations, leaving the use of [ResourcePreloader] for more advanced scenarios.
 */
@@ -121,6 +126,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ResourcePreloader"))
 	casted := Instance{*(*gdclass.ResourcePreloader)(unsafe.Pointer(&object))}
@@ -205,10 +211,12 @@ func (self class) GetResourceList() Packed.Strings { //gd:ResourcePreloader.get_
 	frame.Free()
 	return ret
 }
-func (self class) AsResourcePreloader() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsResourcePreloader() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self class) AsNode() Node.Advanced            { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Node.Instance         { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsResourcePreloader() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsResourcePreloader() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsResourcePreloader() Instance { return self.Super().AsResourcePreloader() }
+func (self class) AsNode() Node.Advanced                { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode() Node.Instance         { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance             { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

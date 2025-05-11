@@ -3,6 +3,7 @@ package classdb
 import (
 	"fmt"
 	"reflect"
+	"strings"
 
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/pointers"
@@ -26,6 +27,9 @@ func registerMethods(class gd.StringName, rtype reflect.Type, renames map[uintpt
 
 		method := classTypePtr.Method(i)
 		if !method.IsExported() || method.Type.NumIn() < 1 {
+			continue
+		}
+		if strings.HasPrefix(method.Name, "As") || method.Name == "Super" {
 			continue
 		}
 		parent, ok := rtype.FieldByName("Class")

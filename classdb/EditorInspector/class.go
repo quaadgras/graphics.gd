@@ -57,6 +57,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 This is the control that implements property editing in the editor's Settings dialogs, the Inspector dock, etc. To get the [EditorInspector] used in the editor's Inspector dock, use [method EditorInterface.get_inspector].
 [EditorInspector] will show properties in the same order as the array returned by [method Object.get_property_list].
 If a property's name is path-like (i.e. if it contains forward slashes), [EditorInspector] will create nested sections for "directories" along the path. For example, if a property is named [code]highlighting/gdscript/node_path_color[/code], it will be shown as "Node Path Color" inside the "GDScript" section nested inside the "Highlighting" section.
@@ -126,6 +131,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorInspector"))
 	casted := Instance{*(*gdclass.EditorInspector)(unsafe.Pointer(&object))}
@@ -226,10 +232,14 @@ func (self Instance) OnRestartRequested(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("restart_requested"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsEditorInspector() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsEditorInspector() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsEditorInspector() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsEditorInspector() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsEditorInspector() Instance { return self.Super().AsEditorInspector() }
 func (self class) AsScrollContainer() ScrollContainer.Advanced {
 	return *((*ScrollContainer.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsScrollContainer() ScrollContainer.Instance {
+	return self.Super().AsScrollContainer()
 }
 func (self Instance) AsScrollContainer() ScrollContainer.Instance {
 	return *((*ScrollContainer.Instance)(unsafe.Pointer(&self)))
@@ -237,21 +247,25 @@ func (self Instance) AsScrollContainer() ScrollContainer.Instance {
 func (self class) AsContainer() Container.Advanced {
 	return *((*Container.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsContainer() Container.Instance { return self.Super().AsContainer() }
 func (self Instance) AsContainer() Container.Instance {
 	return *((*Container.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsControl() Control.Advanced { return *((*Control.Advanced)(unsafe.Pointer(&self))) }
+func (self class) AsControl() Control.Advanced        { return *((*Control.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsControl() Control.Instance { return self.Super().AsControl() }
 func (self Instance) AsControl() Control.Instance {
 	return *((*Control.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsCanvasItem() CanvasItem.Advanced {
 	return *((*CanvasItem.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
 func (self Instance) AsCanvasItem() CanvasItem.Instance {
 	return *((*CanvasItem.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsNode() Node.Advanced    { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

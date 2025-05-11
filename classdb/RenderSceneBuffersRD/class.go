@@ -54,6 +54,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 This object manages all 3D rendering buffers for the rendering device based renderers. An instance of this object is created for every viewport that has 3D rendering enabled.
 All buffers are organized in [b]contexts[/b]. The default context is called [b]render_buffers[/b] and can contain amongst others the color buffer, depth buffer, velocity buffers, VRS density map and MSAA variants of these buffers.
 Buffers are only guaranteed to exist during rendering of the viewport.
@@ -326,6 +331,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RenderSceneBuffersRD"))
 	casted := Instance{*(*gdclass.RenderSceneBuffersRD)(unsafe.Pointer(&object))}
@@ -739,8 +745,14 @@ func (self class) GetUseDebanding() bool { //gd:RenderSceneBuffersRD.get_use_deb
 }
 func (self class) AsRenderSceneBuffersRD() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsRenderSceneBuffersRD() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsRenderSceneBuffersRD() Instance {
+	return self.Super().AsRenderSceneBuffersRD()
+}
 func (self class) AsRenderSceneBuffers() RenderSceneBuffers.Advanced {
 	return *((*RenderSceneBuffers.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsRenderSceneBuffers() RenderSceneBuffers.Instance {
+	return self.Super().AsRenderSceneBuffers()
 }
 func (self Instance) AsRenderSceneBuffers() RenderSceneBuffers.Instance {
 	return *((*RenderSceneBuffers.Instance)(unsafe.Pointer(&self)))
@@ -748,6 +760,7 @@ func (self Instance) AsRenderSceneBuffers() RenderSceneBuffers.Instance {
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

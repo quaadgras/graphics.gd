@@ -53,6 +53,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A 3D trimesh shape, intended for use in physics. Usually used to provide a shape for a [CollisionShape3D].
 Being just a collection of interconnected triangles, [ConcavePolygonShape3D] is the most freely configurable single 3D shape. It can be used to form polyhedra of any nature, or even shapes that don't enclose a volume. However, [ConcavePolygonShape3D] is [i]hollow[/i] even if the interconnected triangles do enclose a volume, which often makes it unsuitable for physics or detection.
 [b]Note:[/b] When used for collision, [ConcavePolygonShape3D] is intended to work with static [CollisionShape3D] nodes like [StaticBody3D] and will likely not behave well for [CharacterBody3D]s or [RigidBody3D]s in a mode other than Static.
@@ -83,6 +88,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ConcavePolygonShape3D"))
 	casted := Instance{*(*gdclass.ConcavePolygonShape3D)(unsafe.Pointer(&object))}
@@ -151,19 +157,25 @@ func (self class) IsBackfaceCollisionEnabled() bool { //gd:ConcavePolygonShape3D
 }
 func (self class) AsConcavePolygonShape3D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsConcavePolygonShape3D() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self class) AsShape3D() Shape3D.Advanced          { return *((*Shape3D.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsConcavePolygonShape3D() Instance {
+	return self.Super().AsConcavePolygonShape3D()
+}
+func (self class) AsShape3D() Shape3D.Advanced        { return *((*Shape3D.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsShape3D() Shape3D.Instance { return self.Super().AsShape3D() }
 func (self Instance) AsShape3D() Shape3D.Instance {
 	return *((*Shape3D.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

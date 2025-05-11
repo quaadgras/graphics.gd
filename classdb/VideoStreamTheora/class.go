@@ -52,6 +52,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 [VideoStream] resource handling the [url=https://www.theora.org/]Ogg Theora[/url] video format with [code].ogv[/code] extension. The Theora codec is decoded on the CPU.
 [b]Note:[/b] While Ogg Theora videos can also have an [code].ogg[/code] extension, you will have to rename the extension to [code].ogv[/code] to use those videos within Godot.
 */
@@ -79,6 +84,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VideoStreamTheora"))
 	casted := Instance{*(*gdclass.VideoStreamTheora)(unsafe.Pointer(&object))}
@@ -86,23 +92,27 @@ func New() Instance {
 	return casted
 }
 
-func (self class) AsVideoStreamTheora() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsVideoStreamTheora() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsVideoStreamTheora() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsVideoStreamTheora() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsVideoStreamTheora() Instance { return self.Super().AsVideoStreamTheora() }
 func (self class) AsVideoStream() VideoStream.Advanced {
 	return *((*VideoStream.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsVideoStream() VideoStream.Instance { return self.Super().AsVideoStream() }
 func (self Instance) AsVideoStream() VideoStream.Instance {
 	return *((*VideoStream.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

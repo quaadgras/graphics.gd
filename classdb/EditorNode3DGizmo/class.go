@@ -63,6 +63,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 Gizmo that is used for providing custom visualization and editing (handles and subgizmos) for [Node3D] objects. Can be overridden to create custom gizmos, but for simple gizmos creating a [EditorNode3DGizmoPlugin] is usually recommended.
 
 	See [Interface] for methods that can be overridden by a [Class] that extends it.
@@ -447,6 +452,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorNode3DGizmo"))
 	casted := Instance{*(*gdclass.EditorNode3DGizmo)(unsafe.Pointer(&object))}
@@ -808,17 +814,20 @@ func (self class) GetSubgizmoSelection() Packed.Array[int32] { //gd:EditorNode3D
 	frame.Free()
 	return ret
 }
-func (self class) AsEditorNode3DGizmo() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsEditorNode3DGizmo() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsEditorNode3DGizmo() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsEditorNode3DGizmo() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsEditorNode3DGizmo() Instance { return self.Super().AsEditorNode3DGizmo() }
 func (self class) AsNode3DGizmo() Node3DGizmo.Advanced {
 	return *((*Node3DGizmo.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsNode3DGizmo() Node3DGizmo.Instance { return self.Super().AsNode3DGizmo() }
 func (self Instance) AsNode3DGizmo() Node3DGizmo.Instance {
 	return *((*Node3DGizmo.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

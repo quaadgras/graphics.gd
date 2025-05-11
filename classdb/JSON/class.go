@@ -51,6 +51,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 The [JSON] class enables all data types to be converted to and from a JSON string. This is useful for serializing data, e.g. to save to a file or send over the network.
 [method stringify] is used to convert any data type into a JSON string.
 [method parse] is used to convert any existing JSON data into a [Variant] that can be used within Godot. If successfully parsed, use [member data] to retrieve the [Variant], and use [method @GlobalScope.typeof] to check if the Variant's type is what you expect. JSON Objects are converted into a [Dictionary], but JSON data can be used to store [Array]s, numbers, [String]s and even just a boolean.
@@ -322,6 +327,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("JSON"))
 	casted := Instance{*(*gdclass.JSON)(unsafe.Pointer(&object))}
@@ -525,17 +531,20 @@ func (self class) ToNative(json variant.Any, allow_objects bool) variant.Any { /
 	frame.Free()
 	return ret
 }
-func (self class) AsJSON() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsJSON() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsJSON() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsJSON() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsJSON() Instance { return self.Super().AsJSON() }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

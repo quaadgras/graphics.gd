@@ -7,7 +7,6 @@ import (
 	"reflect"
 	"runtime"
 	"strings"
-	"sync"
 	"unsafe"
 
 	"golang.org/x/text/cases"
@@ -27,17 +26,15 @@ import (
 	"graphics.gd/variant/String"
 
 	gd "graphics.gd/internal"
+	"graphics.gd/internal/gdclass"
 	"graphics.gd/internal/pointers"
 )
 
 // Tool can be embedded inside a struct to make it run in the editor.
 type Tool interface{ tool() }
 
-// Extension can be embedded inside of a struct to represent a new Extension type.
-// The extended class will be available by calling the [Extension.Super] method.
-type Extension[T Class, S gd.IsClass] struct {
-	gd.Class[T, S]
-}
+// Deprecated: use a classdb package Extension instead, ie. Node.Extension[MyClass]
+type Extension[T Class, S gd.IsClass] = gdclass.Extension[T, S]
 
 // NameOf returns the defined name for the given [Extension]-embedding type.
 func NameOf(T Class) string {
@@ -48,61 +45,7 @@ func NameFor[T Class]() string {
 	return nameOf(reflect.TypeFor[T]())
 }
 
-func (class Extension[T, S]) super() S {
-	return class.Super()
-}
-
-func (class *Extension[T, S]) Super() S {
-	class.AsObject()
-	return *class.Class.Super()
-}
-
-func (class Extension[T, S]) getObject() [1]gd.Object {
-	return *(*[1]gd.Object)(unsafe.Pointer(class.Class.Super()))
-}
-
-func (class *Extension[T, S]) setObject(obj [1]gd.Object) {
-	*(*[1]gd.Object)(unsafe.Pointer(class.Class.Super())) = obj
-}
-
-func (class Extension[T, S]) superType() reflect.Type {
-	return reflect.TypeFor[S]()
-}
-
-type isClass interface {
-	gd.IsClass
-
-	getObject() [1]gd.Object
-	setObject([1]gd.Object)
-
-	superType() reflect.Type
-}
-
-type Class interface {
-	superType() reflect.Type
-	getObject() [1]gd.Object
-	Virtual(string) reflect.Value
-}
-
-func (class *Extension[T, S]) AsObject() [1]gd.Object {
-	obj := class.getObject()
-	if obj == ([1]gd.Object{}) {
-		impl, ok := registered.Load(reflect.TypeFor[T]())
-		if !ok {
-			Register[T]()
-			impl, ok = registered.Load(reflect.TypeFor[T]())
-		}
-		if ok {
-			instancer := impl.(*classImplementation)
-			obj = instancer.createInstance(reflect.NewAt(reflect.TypeFor[T](), unsafe.Pointer(class)))
-			class.setObject(obj)
-		}
-	}
-	pointers.Get(obj[0])
-	return obj
-}
-
-var registered sync.Map
+type Class = gdclass.Interface
 
 /*
 Register registers a struct available for use inside The Engine as
@@ -140,7 +83,7 @@ If the Struct extends [EditorPluginClass] then it will be added
 to the editor as a plugin.
 */
 func Register[T Class](exports ...any) {
-	var superType = ([1]T{})[0].superType()
+	var superType = gdclass.SuperType(([1]T{})[0])
 	var super = reflect.New(superType).Elem().Interface()
 	register := func() {
 		var classType = reflect.TypeFor[T]()
@@ -188,13 +131,13 @@ func Register[T Class](exports ...any) {
 				return reflect.New(classType)
 			},
 		}
-		registered.Store(classType, impl)
+		gdclass.Registered.Store(classType, impl)
 
 		gd.Global.ClassDB.RegisterClass(gd.Global.ExtensionToken, className, superName, impl)
 
 		gd.RegisterCleanup(func() {
 			gd.Global.ClassDB.UnregisterClass(gd.Global.ExtensionToken, className)
-			registered.Delete(classType)
+			gdclass.Registered.Delete(classType)
 			className.Free()
 			superName.Free()
 		})
@@ -413,10 +356,10 @@ func (class classImplementation) IsExposed() bool {
 }
 
 func (class classImplementation) CreateInstance() [1]gd.Object {
-	return class.createInstance(reflect.Value{})
+	return class.CreateInstanceFrom(reflect.Value{})
 }
 
-func (class classImplementation) createInstance(reuse reflect.Value) [1]gd.Object {
+func (class classImplementation) CreateInstanceFrom(reuse reflect.Value) [1]gd.Object {
 	var super = gd.Global.ClassDB.ConstructObject(class.Super)
 	super = [1]gd.Object{pointers.Pin(pointers.Lay(super[0]))}
 	instance := class.reloadInstance(reuse, super)
@@ -430,8 +373,8 @@ func (class classImplementation) reloadInstance(value reflect.Value, super [1]gd
 	if !value.IsValid() {
 		value = class.Constructor()
 	}
-	extensionClass := value.Interface().(isClass)
-	extensionClass.setObject(super)
+	extensionClass := value.Interface().(gdclass.Pointer)
+	gdclass.SetObject(extensionClass, super)
 
 	gd.ExtensionInstances.Store(pointers.Get(super[0])[0], extensionClass)
 
@@ -479,7 +422,7 @@ func (class classImplementation) reloadInstance(value reflect.Value, super [1]gd
 	}
 	return &instanceImplementation{
 		object:   pointers.Get(super[0])[0],
-		Value:    value.Addr().Interface().(isClass),
+		Value:    value.Addr().Interface().(gdclass.Pointer),
 		signals:  signals,
 		isEditor: !class.Tool && EngineClass.IsEditorHint(),
 	}
@@ -520,7 +463,7 @@ func (class classImplementation) GetVirtual(name gd.StringName) any {
 
 type instanceImplementation struct {
 	object  uint64
-	Value   isClass
+	Value   gdclass.Pointer
 	signals []signalChan
 
 	// FIXME use a bitfield for these booleans.
@@ -612,7 +555,7 @@ func (instance *instanceImplementation) Free() {
 // TODO this could be partially pre-compiled for a given [Register] type and cached in
 // order to avoid any use of reflection at instantiation time.
 func (instance *instanceImplementation) ready() {
-	parent, ok := As[NodeClass.Instance](Object.Instance(instance.Value.getObject()))
+	parent, ok := As[NodeClass.Instance](Object.Instance(gdclass.GetObject(instance.Value)))
 	if !ok {
 		return
 	}

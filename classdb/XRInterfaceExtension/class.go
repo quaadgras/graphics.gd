@@ -56,6 +56,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 External XR interface plugins should inherit from this class.
 
 	See [Interface] for methods that can be overridden by a [Class] that extends it.
@@ -599,6 +604,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("XRInterfaceExtension"))
 	casted := Instance{*(*gdclass.XRInterfaceExtension)(unsafe.Pointer(&object))}
@@ -1056,15 +1062,20 @@ func (self class) GetRenderTargetTexture(render_target RID.Any) RID.Any { //gd:X
 }
 func (self class) AsXRInterfaceExtension() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsXRInterfaceExtension() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsXRInterfaceExtension() Instance {
+	return self.Super().AsXRInterfaceExtension()
+}
 func (self class) AsXRInterface() XRInterface.Advanced {
 	return *((*XRInterface.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsXRInterface() XRInterface.Instance { return self.Super().AsXRInterface() }
 func (self Instance) AsXRInterface() XRInterface.Instance {
 	return *((*XRInterface.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

@@ -55,6 +55,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 Stores the factor of a magnifying touch gesture. This is usually performed when the user pinches the touch screen and used for zooming in/out.
 [b]Note:[/b] On Android, this requires the [member ProjectSettings.input_devices/pointing/android/enable_pan_and_scale_gestures] project setting to be enabled.
 */
@@ -82,6 +87,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("InputEventMagnifyGesture"))
 	casted := Instance{*(*gdclass.InputEventMagnifyGesture)(unsafe.Pointer(&object))}
@@ -119,8 +125,14 @@ func (self class) AsInputEventMagnifyGesture() Advanced { return *((*Advanced)(u
 func (self Instance) AsInputEventMagnifyGesture() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsInputEventMagnifyGesture() Instance {
+	return self.Super().AsInputEventMagnifyGesture()
+}
 func (self class) AsInputEventGesture() InputEventGesture.Advanced {
 	return *((*InputEventGesture.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsInputEventGesture() InputEventGesture.Instance {
+	return self.Super().AsInputEventGesture()
 }
 func (self Instance) AsInputEventGesture() InputEventGesture.Instance {
 	return *((*InputEventGesture.Instance)(unsafe.Pointer(&self)))
@@ -128,11 +140,17 @@ func (self Instance) AsInputEventGesture() InputEventGesture.Instance {
 func (self class) AsInputEventWithModifiers() InputEventWithModifiers.Advanced {
 	return *((*InputEventWithModifiers.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsInputEventWithModifiers() InputEventWithModifiers.Instance {
+	return self.Super().AsInputEventWithModifiers()
+}
 func (self Instance) AsInputEventWithModifiers() InputEventWithModifiers.Instance {
 	return *((*InputEventWithModifiers.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsInputEventFromWindow() InputEventFromWindow.Advanced {
 	return *((*InputEventFromWindow.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsInputEventFromWindow() InputEventFromWindow.Instance {
+	return self.Super().AsInputEventFromWindow()
 }
 func (self Instance) AsInputEventFromWindow() InputEventFromWindow.Instance {
 	return *((*InputEventFromWindow.Instance)(unsafe.Pointer(&self)))
@@ -140,18 +158,21 @@ func (self Instance) AsInputEventFromWindow() InputEventFromWindow.Instance {
 func (self class) AsInputEvent() InputEvent.Advanced {
 	return *((*InputEvent.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsInputEvent() InputEvent.Instance { return self.Super().AsInputEvent() }
 func (self Instance) AsInputEvent() InputEvent.Instance {
 	return *((*InputEvent.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

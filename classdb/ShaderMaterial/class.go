@@ -53,6 +53,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A material that uses a custom [Shader] program to render visual items (canvas items, meshes, skies, fog), or to process particles. Compared to other materials, [ShaderMaterial] gives deeper control over the generated shader code. For more information, see the shaders documentation index below.
 Multiple [ShaderMaterial]s can use the same shader and configure different values for the shader uniforms.
 [b]Note:[/b] For performance reasons, the [signal Resource.changed] signal is only emitted when the [member Resource.resource_name] changes. Only in editor, it is also emitted for [member shader] changes.
@@ -97,6 +102,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ShaderMaterial"))
 	casted := Instance{*(*gdclass.ShaderMaterial)(unsafe.Pointer(&object))}
@@ -159,23 +165,27 @@ func (self class) GetShaderParameter(param String.Name) variant.Any { //gd:Shade
 	frame.Free()
 	return ret
 }
-func (self class) AsShaderMaterial() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsShaderMaterial() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsShaderMaterial() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsShaderMaterial() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsShaderMaterial() Instance { return self.Super().AsShaderMaterial() }
 func (self class) AsMaterial() Material.Advanced {
 	return *((*Material.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsMaterial() Material.Instance { return self.Super().AsMaterial() }
 func (self Instance) AsMaterial() Material.Instance {
 	return *((*Material.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

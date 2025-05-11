@@ -53,6 +53,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 When placed on a [TileMap], tiles from [TileSetScenesCollectionSource] will automatically instantiate an associated scene at the cell's position in the TileMap.
 Scenes are instantiated as children of the [TileMap] when it enters the tree. If you add/remove a scene tile in the [TileMap] that is already inside the tree, the [TileMap] will automatically instantiate/free the scene accordingly.
 [b]Note:[/b] Scene tiles all occupy one tile slot and instead use alternate tile ID to identify scene index. [method TileSetSource.get_tiles_count] will always return [code]1[/code]. Use [method get_scene_tiles_count] to get a number of scenes in a [TileSetScenesCollectionSource].
@@ -198,6 +203,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TileSetScenesCollectionSource"))
 	casted := Instance{*(*gdclass.TileSetScenesCollectionSource)(unsafe.Pointer(&object))}
@@ -359,8 +365,14 @@ func (self class) AsTileSetScenesCollectionSource() Advanced {
 func (self Instance) AsTileSetScenesCollectionSource() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsTileSetScenesCollectionSource() Instance {
+	return self.Super().AsTileSetScenesCollectionSource()
+}
 func (self class) AsTileSetSource() TileSetSource.Advanced {
 	return *((*TileSetSource.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsTileSetSource() TileSetSource.Instance {
+	return self.Super().AsTileSetSource()
 }
 func (self Instance) AsTileSetSource() TileSetSource.Instance {
 	return *((*TileSetSource.Instance)(unsafe.Pointer(&self)))
@@ -368,12 +380,14 @@ func (self Instance) AsTileSetSource() TileSetSource.Instance {
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

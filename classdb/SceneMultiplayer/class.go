@@ -51,6 +51,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 This class is the default implementation of [MultiplayerAPI], used to provide multiplayer functionalities in Godot Engine.
 This implementation supports RPCs via [method Node.rpc] and [method Node.rpc_id] and requires [method MultiplayerAPI.rpc] to be passed a [Node] (it will fail for other object types).
 This implementation additionally provide [SceneTree] replication via the [MultiplayerSpawner] and [MultiplayerSynchronizer] nodes, and the [SceneReplicationConfig] resource.
@@ -133,6 +138,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SceneMultiplayer"))
 	casted := Instance{*(*gdclass.SceneMultiplayer)(unsafe.Pointer(&object))}
@@ -450,10 +456,14 @@ func (self Instance) OnPeerPacket(cb func(id int, packet []byte)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("peer_packet"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsSceneMultiplayer() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsSceneMultiplayer() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsSceneMultiplayer() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsSceneMultiplayer() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsSceneMultiplayer() Instance { return self.Super().AsSceneMultiplayer() }
 func (self class) AsMultiplayerAPI() MultiplayerAPI.Advanced {
 	return *((*MultiplayerAPI.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsMultiplayerAPI() MultiplayerAPI.Instance {
+	return self.Super().AsMultiplayerAPI()
 }
 func (self Instance) AsMultiplayerAPI() MultiplayerAPI.Instance {
 	return *((*MultiplayerAPI.Instance)(unsafe.Pointer(&self)))
@@ -461,6 +471,7 @@ func (self Instance) AsMultiplayerAPI() MultiplayerAPI.Instance {
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

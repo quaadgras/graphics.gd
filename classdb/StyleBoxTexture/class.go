@@ -55,6 +55,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A texture-based nine-patch [StyleBox], in a way similar to [NinePatchRect]. This stylebox performs a 3×3 scaling of a texture, where only the center cell is fully stretched. This makes it possible to design bordered styles regardless of the stylebox's size.
 */
 type Instance [1]gdclass.StyleBoxTexture
@@ -95,6 +100,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("StyleBoxTexture"))
 	casted := Instance{*(*gdclass.StyleBoxTexture)(unsafe.Pointer(&object))}
@@ -405,23 +411,27 @@ func (self class) GetVAxisStretchMode() gdclass.StyleBoxTextureAxisStretchMode {
 	frame.Free()
 	return ret
 }
-func (self class) AsStyleBoxTexture() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsStyleBoxTexture() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsStyleBoxTexture() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsStyleBoxTexture() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsStyleBoxTexture() Instance { return self.Super().AsStyleBoxTexture() }
 func (self class) AsStyleBox() StyleBox.Advanced {
 	return *((*StyleBox.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsStyleBox() StyleBox.Instance { return self.Super().AsStyleBox() }
 func (self Instance) AsStyleBox() StyleBox.Instance {
 	return *((*StyleBox.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

@@ -50,6 +50,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 Utility class which holds a reference to the internal identifier of an [Object] instance, as given by [method Object.get_instance_id]. This ID can then be used to retrieve the object instance with [method @GlobalScope.instance_from_id].
 This class is used internally by the editor inspector and script debugger, but can also be used in plugins to pass and display objects as their IDs.
 */
@@ -77,6 +82,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EncodedObjectAsID"))
 	casted := Instance{*(*gdclass.EncodedObjectAsID)(unsafe.Pointer(&object))}
@@ -110,11 +116,13 @@ func (self class) GetObjectId() int64 { //gd:EncodedObjectAsID.get_object_id
 	frame.Free()
 	return ret
 }
-func (self class) AsEncodedObjectAsID() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsEncodedObjectAsID() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsEncodedObjectAsID() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsEncodedObjectAsID() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsEncodedObjectAsID() Instance { return self.Super().AsEncodedObjectAsID() }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

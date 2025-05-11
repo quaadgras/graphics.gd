@@ -50,6 +50,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 [MainLoop] is the abstract base class for a Godot project's game loop. It is inherited by [SceneTree], which is the default game loop implementation used in Godot projects, though it is also possible to write and use one's own [MainLoop] subclass instead of the scene tree.
 Upon the application start, a [MainLoop] implementation must be provided to the OS; otherwise, the application will exit. This happens automatically (and a [SceneTree] is created) unless a [MainLoop] [Script] is provided from the command line (with e.g. [code]godot -s my_loop.gd[/code]) or the [member ProjectSettings.application/run/main_loop_type] project setting is overwritten.
 Here is an example script implementing a simple [MainLoop]:
@@ -207,6 +212,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MainLoop"))
 	casted := Instance{*(*gdclass.MainLoop)(unsafe.Pointer(&object))}
@@ -265,8 +271,9 @@ func (self Instance) OnOnRequestPermissionsResult(cb func(permission string, gra
 	self[0].AsObject()[0].Connect(gd.NewStringName("on_request_permissions_result"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsMainLoop() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsMainLoop() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsMainLoop() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsMainLoop() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsMainLoop() Instance { return self.Super().AsMainLoop() }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

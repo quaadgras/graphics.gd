@@ -51,6 +51,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 The Web exporter customizes how a web build is handled. In the editor's "Export" window, it is created when adding a new "Web" preset.
 [b]Note:[/b] Godot on Web is rendered inside a [code]<canvas>[/code] tag. Normally, the canvas cannot be positioned or resized manually, but otherwise acts as the main [Window] of the application.
 */
@@ -78,6 +83,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorExportPlatformWeb"))
 	casted := Instance{*(*gdclass.EditorExportPlatformWeb)(unsafe.Pointer(&object))}
@@ -89,8 +95,14 @@ func (self class) AsEditorExportPlatformWeb() Advanced { return *((*Advanced)(un
 func (self Instance) AsEditorExportPlatformWeb() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsEditorExportPlatformWeb() Instance {
+	return self.Super().AsEditorExportPlatformWeb()
+}
 func (self class) AsEditorExportPlatform() EditorExportPlatform.Advanced {
 	return *((*EditorExportPlatform.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsEditorExportPlatform() EditorExportPlatform.Instance {
+	return self.Super().AsEditorExportPlatform()
 }
 func (self Instance) AsEditorExportPlatform() EditorExportPlatform.Instance {
 	return *((*EditorExportPlatform.Instance)(unsafe.Pointer(&self)))
@@ -98,6 +110,7 @@ func (self Instance) AsEditorExportPlatform() EditorExportPlatform.Instance {
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

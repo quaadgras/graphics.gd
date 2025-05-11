@@ -51,6 +51,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 EditorSceneFormatImporterUFBX is designed to load FBX files and supports both binary and ASCII FBX files from version 3000 onward. This class supports various 3D object types like meshes, skins, blend shapes, materials, and rigging information. The class aims for feature parity with the official FBX SDK and supports FBX 7.4 specifications.
 */
 type Instance [1]gdclass.EditorSceneFormatImporterUFBX
@@ -77,6 +82,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorSceneFormatImporterUFBX"))
 	casted := Instance{*(*gdclass.EditorSceneFormatImporterUFBX)(unsafe.Pointer(&object))}
@@ -90,8 +96,14 @@ func (self class) AsEditorSceneFormatImporterUFBX() Advanced {
 func (self Instance) AsEditorSceneFormatImporterUFBX() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsEditorSceneFormatImporterUFBX() Instance {
+	return self.Super().AsEditorSceneFormatImporterUFBX()
+}
 func (self class) AsEditorSceneFormatImporter() EditorSceneFormatImporter.Advanced {
 	return *((*EditorSceneFormatImporter.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsEditorSceneFormatImporter() EditorSceneFormatImporter.Instance {
+	return self.Super().AsEditorSceneFormatImporter()
 }
 func (self Instance) AsEditorSceneFormatImporter() EditorSceneFormatImporter.Instance {
 	return *((*EditorSceneFormatImporter.Instance)(unsafe.Pointer(&self)))
@@ -99,6 +111,7 @@ func (self Instance) AsEditorSceneFormatImporter() EditorSceneFormatImporter.Ins
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

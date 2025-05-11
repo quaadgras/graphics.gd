@@ -52,6 +52,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 An empty [StyleBox] that can be used to display nothing instead of the default style (e.g. it can "disable" [code]focus[/code] styles).
 */
 type Instance [1]gdclass.StyleBoxEmpty
@@ -78,6 +83,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("StyleBoxEmpty"))
 	casted := Instance{*(*gdclass.StyleBoxEmpty)(unsafe.Pointer(&object))}
@@ -85,23 +91,27 @@ func New() Instance {
 	return casted
 }
 
-func (self class) AsStyleBoxEmpty() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsStyleBoxEmpty() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsStyleBoxEmpty() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsStyleBoxEmpty() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsStyleBoxEmpty() Instance { return self.Super().AsStyleBoxEmpty() }
 func (self class) AsStyleBox() StyleBox.Advanced {
 	return *((*StyleBox.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsStyleBox() StyleBox.Instance { return self.Super().AsStyleBox() }
 func (self Instance) AsStyleBox() StyleBox.Instance {
 	return *((*StyleBox.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

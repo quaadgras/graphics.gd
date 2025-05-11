@@ -55,6 +55,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 Class representing a planar [PrimitiveMesh]. This flat mesh does not have a thickness. By default, this mesh is aligned on the X and Z axes; this default rotation isn't suited for use with billboarded materials. For billboarded materials, change [member orientation] to [constant FACE_Z].
 [b]Note:[/b] When using a large textured [PlaneMesh] (e.g. as a floor), you may stumble upon UV jittering issues depending on the camera angle. To solve this, increase [member subdivide_depth] and [member subdivide_width] until you no longer notice UV jittering.
 */
@@ -82,6 +87,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PlaneMesh"))
 	casted := Instance{*(*gdclass.PlaneMesh)(unsafe.Pointer(&object))}
@@ -223,25 +229,32 @@ func (self class) GetOrientation() gdclass.PlaneMeshOrientation { //gd:PlaneMesh
 	frame.Free()
 	return ret
 }
-func (self class) AsPlaneMesh() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsPlaneMesh() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsPlaneMesh() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsPlaneMesh() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsPlaneMesh() Instance { return self.Super().AsPlaneMesh() }
 func (self class) AsPrimitiveMesh() PrimitiveMesh.Advanced {
 	return *((*PrimitiveMesh.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsPrimitiveMesh() PrimitiveMesh.Instance {
+	return self.Super().AsPrimitiveMesh()
 }
 func (self Instance) AsPrimitiveMesh() PrimitiveMesh.Instance {
 	return *((*PrimitiveMesh.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsMesh() Mesh.Advanced    { return *((*Mesh.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsMesh() Mesh.Instance { return *((*Mesh.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsMesh() Mesh.Advanced        { return *((*Mesh.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsMesh() Mesh.Instance { return self.Super().AsMesh() }
+func (self Instance) AsMesh() Mesh.Instance     { return *((*Mesh.Instance)(unsafe.Pointer(&self))) }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

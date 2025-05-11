@@ -54,6 +54,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 This class allows for a RenderSceneData implementation to be made in GDExtension.
 
 	See [Interface] for methods that can be overridden by a [Class] that extends it.
@@ -176,6 +181,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RenderSceneDataExtension"))
 	casted := Instance{*(*gdclass.RenderSceneDataExtension)(unsafe.Pointer(&object))}
@@ -254,8 +260,14 @@ func (self class) AsRenderSceneDataExtension() Advanced { return *((*Advanced)(u
 func (self Instance) AsRenderSceneDataExtension() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRenderSceneDataExtension() Instance {
+	return self.Super().AsRenderSceneDataExtension()
+}
 func (self class) AsRenderSceneData() RenderSceneData.Advanced {
 	return *((*RenderSceneData.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsRenderSceneData() RenderSceneData.Instance {
+	return self.Super().AsRenderSceneData()
 }
 func (self Instance) AsRenderSceneData() RenderSceneData.Instance {
 	return *((*RenderSceneData.Instance)(unsafe.Pointer(&self)))

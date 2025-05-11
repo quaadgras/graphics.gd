@@ -53,6 +53,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 This [SkeletonModification2D] holds a reference to a [SkeletonModificationStack2D], allowing you to use multiple modification stacks on a single [Skeleton2D].
 [b]Note:[/b] The modifications in the held [SkeletonModificationStack2D] will only be executed if their execution mode matches the execution mode of the SkeletonModification2DStackHolder.
 */
@@ -94,6 +99,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SkeletonModification2DStackHolder"))
 	casted := Instance{*(*gdclass.SkeletonModification2DStackHolder)(unsafe.Pointer(&object))}
@@ -131,8 +137,14 @@ func (self class) AsSkeletonModification2DStackHolder() Advanced {
 func (self Instance) AsSkeletonModification2DStackHolder() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsSkeletonModification2DStackHolder() Instance {
+	return self.Super().AsSkeletonModification2DStackHolder()
+}
 func (self class) AsSkeletonModification2D() SkeletonModification2D.Advanced {
 	return *((*SkeletonModification2D.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsSkeletonModification2D() SkeletonModification2D.Instance {
+	return self.Super().AsSkeletonModification2D()
 }
 func (self Instance) AsSkeletonModification2D() SkeletonModification2D.Instance {
 	return *((*SkeletonModification2D.Instance)(unsafe.Pointer(&self)))
@@ -140,12 +152,14 @@ func (self Instance) AsSkeletonModification2D() SkeletonModification2D.Instance 
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

@@ -51,6 +51,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A class stored as a resource. A script extends the functionality of all objects that instantiate it.
 This is the base class for all scripts and should not be used directly. Trying to create a new script with this class will result in an error.
 The [code]new[/code] method of a script subclass creates a new instance. [method Object.set_script] extends an existing object, if that object's class matches one of the script's base classes.
@@ -216,6 +221,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Script"))
 	casted := Instance{*(*gdclass.Script)(unsafe.Pointer(&object))}
@@ -477,17 +483,20 @@ func (self class) GetRpcConfig() variant.Any { //gd:Script.get_rpc_config
 	frame.Free()
 	return ret
 }
-func (self class) AsScript() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsScript() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsScript() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsScript() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsScript() Instance { return self.Super().AsScript() }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

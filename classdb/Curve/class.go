@@ -52,6 +52,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 This resource describes a mathematical curve by defining a set of points and tangents at each point. By default, it ranges between [code]0[/code] and [code]1[/code] on the X and Y axes, but these ranges can be changed.
 Please note that many resources and nodes assume they are given [i]unit curves[/i]. A unit curve is a curve whose domain (the X axis) is between [code]0[/code] and [code]1[/code]. Some examples of unit curve usage are [member CPUParticles2D.angle_curve] and [member Line2D.width_curve].
 */
@@ -228,6 +233,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Curve"))
 	casted := Instance{*(*gdclass.Curve)(unsafe.Pointer(&object))}
@@ -671,17 +677,20 @@ func (self Instance) OnDomainChanged(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("domain_changed"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsCurve() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsCurve() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsCurve() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsCurve() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsCurve() Instance { return self.Super().AsCurve() }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

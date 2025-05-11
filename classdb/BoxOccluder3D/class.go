@@ -53,6 +53,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 [BoxOccluder3D] stores a cuboid shape that can be used by the engine's occlusion culling system.
 See [OccluderInstance3D]'s documentation for instructions on setting up occlusion culling.
 */
@@ -80,6 +85,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("BoxOccluder3D"))
 	casted := Instance{*(*gdclass.BoxOccluder3D)(unsafe.Pointer(&object))}
@@ -113,23 +119,27 @@ func (self class) GetSize() Vector3.XYZ { //gd:BoxOccluder3D.get_size
 	frame.Free()
 	return ret
 }
-func (self class) AsBoxOccluder3D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsBoxOccluder3D() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsBoxOccluder3D() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsBoxOccluder3D() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsBoxOccluder3D() Instance { return self.Super().AsBoxOccluder3D() }
 func (self class) AsOccluder3D() Occluder3D.Advanced {
 	return *((*Occluder3D.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsOccluder3D() Occluder3D.Instance { return self.Super().AsOccluder3D() }
 func (self Instance) AsOccluder3D() Occluder3D.Instance {
 	return *((*Occluder3D.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

@@ -51,6 +51,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 [MethodTweener] is similar to a combination of [CallbackTweener] and [PropertyTweener]. It calls a method providing an interpolated value as a parameter. See [method Tween.tween_method] for more usage information.
 The tweener will finish automatically if the callback's target object is freed.
 [b]Note:[/b] [method Tween.tween_method] is the only correct way to create [MethodTweener]. Any [MethodTweener] created manually will not function correctly.
@@ -100,6 +105,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MethodTweener"))
 	casted := Instance{*(*gdclass.MethodTweener)(unsafe.Pointer(&object))}
@@ -148,15 +154,18 @@ func (self class) SetEase(ease gdclass.TweenEaseType) [1]gdclass.MethodTweener {
 	frame.Free()
 	return ret
 }
-func (self class) AsMethodTweener() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsMethodTweener() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self class) AsTweener() Tweener.Advanced  { return *((*Tweener.Advanced)(unsafe.Pointer(&self))) }
+func (self class) AsMethodTweener() Advanced          { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsMethodTweener() Instance       { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsMethodTweener() Instance   { return self.Super().AsMethodTweener() }
+func (self class) AsTweener() Tweener.Advanced        { return *((*Tweener.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsTweener() Tweener.Instance { return self.Super().AsTweener() }
 func (self Instance) AsTweener() Tweener.Instance {
 	return *((*Tweener.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

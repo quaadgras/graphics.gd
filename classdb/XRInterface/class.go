@@ -54,6 +54,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 This class needs to be implemented to make an AR or VR platform available to Godot and these should be implemented as C++ modules or GDExtension modules. Part of the interface is exposed to GDScript so you can detect, enable and configure an AR or VR platform.
 Interfaces should be written in such a way that simply enabling them will give us a working setup. You can query the available interfaces through [XRServer].
 */
@@ -235,6 +240,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("XRInterface"))
 	casted := Instance{*(*gdclass.XRInterface)(unsafe.Pointer(&object))}
@@ -660,11 +666,13 @@ func (self Instance) OnPlayAreaChanged(cb func(mode int)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("play_area_changed"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsXRInterface() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsXRInterface() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsXRInterface() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsXRInterface() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsXRInterface() Instance { return self.Super().AsXRInterface() }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

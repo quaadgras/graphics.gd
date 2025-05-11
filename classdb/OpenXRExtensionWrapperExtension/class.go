@@ -50,6 +50,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 [OpenXRExtensionWrapperExtension] allows clients to implement OpenXR extensions with GDExtension. The extension should be registered with [method register_extension_wrapper].
 
 	See [Interface] for methods that can be overridden by a [Class] that extends it.
@@ -660,6 +665,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("OpenXRExtensionWrapperExtension"))
 	casted := Instance{*(*gdclass.OpenXRExtensionWrapperExtension)(unsafe.Pointer(&object))}
@@ -1124,6 +1130,9 @@ func (self class) AsOpenXRExtensionWrapperExtension() Advanced {
 }
 func (self Instance) AsOpenXRExtensionWrapperExtension() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsOpenXRExtensionWrapperExtension() Instance {
+	return self.Super().AsOpenXRExtensionWrapperExtension()
 }
 
 func (self class) Virtual(name string) reflect.Value {

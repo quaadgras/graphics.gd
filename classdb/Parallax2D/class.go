@@ -54,6 +54,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A [Parallax2D] is used to create a parallax effect. It can move at a different speed relative to the camera movement using [member scroll_scale]. This creates an illusion of depth in a 2D game. If manual scrolling is desired, the [Camera2D] position can be ignored with [member ignore_camera_scroll].
 [b]Note:[/b] Any changes to this node's position made after it enters the scene tree will be overridden if [member ignore_camera_scroll] is [code]false[/code] or [member screen_offset] is modified.
 */
@@ -81,6 +86,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Parallax2D"))
 	casted := Instance{*(*gdclass.Parallax2D)(unsafe.Pointer(&object))}
@@ -356,18 +362,22 @@ func (self class) IsIgnoreCameraScroll() bool { //gd:Parallax2D.is_ignore_camera
 	frame.Free()
 	return ret
 }
-func (self class) AsParallax2D() Advanced       { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsParallax2D() Instance    { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self class) AsNode2D() Node2D.Advanced    { return *((*Node2D.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode2D() Node2D.Instance { return *((*Node2D.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsParallax2D() Advanced           { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsParallax2D() Instance        { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsParallax2D() Instance    { return self.Super().AsParallax2D() }
+func (self class) AsNode2D() Node2D.Advanced        { return *((*Node2D.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode2D() Node2D.Instance { return self.Super().AsNode2D() }
+func (self Instance) AsNode2D() Node2D.Instance     { return *((*Node2D.Instance)(unsafe.Pointer(&self))) }
 func (self class) AsCanvasItem() CanvasItem.Advanced {
 	return *((*CanvasItem.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
 func (self Instance) AsCanvasItem() CanvasItem.Instance {
 	return *((*CanvasItem.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsNode() Node.Advanced    { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Node.Instance { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

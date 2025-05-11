@@ -51,6 +51,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 LightmapperRD ("RD" stands for [RenderingDevice]) is the built-in GPU-based lightmapper for use with [LightmapGI]. On most dedicated GPUs, it can bake lightmaps much faster than most CPU-based lightmappers. LightmapperRD uses compute shaders to bake lightmaps, so it does not require CUDA or OpenCL libraries to be installed to be usable.
 [b]Note:[/b] Only usable when using the RenderingDevice backend (Forward+ or Mobile renderers), not Compatibility.
 */
@@ -78,6 +83,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("LightmapperRD"))
 	casted := Instance{*(*gdclass.LightmapperRD)(unsafe.Pointer(&object))}
@@ -85,17 +91,20 @@ func New() Instance {
 	return casted
 }
 
-func (self class) AsLightmapperRD() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsLightmapperRD() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsLightmapperRD() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsLightmapperRD() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsLightmapperRD() Instance { return self.Super().AsLightmapperRD() }
 func (self class) AsLightmapper() Lightmapper.Advanced {
 	return *((*Lightmapper.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsLightmapper() Lightmapper.Instance { return self.Super().AsLightmapper() }
 func (self Instance) AsLightmapper() Lightmapper.Instance {
 	return *((*Lightmapper.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

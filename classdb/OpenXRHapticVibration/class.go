@@ -52,6 +52,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 This haptic feedback resource makes it possible to define a vibration based haptic feedback pulse that can be triggered through actions in the OpenXR action map.
 */
 type Instance [1]gdclass.OpenXRHapticVibration
@@ -78,6 +83,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("OpenXRHapticVibration"))
 	casted := Instance{*(*gdclass.OpenXRHapticVibration)(unsafe.Pointer(&object))}
@@ -167,8 +173,14 @@ func (self class) GetAmplitude() float64 { //gd:OpenXRHapticVibration.get_amplit
 }
 func (self class) AsOpenXRHapticVibration() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsOpenXRHapticVibration() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsOpenXRHapticVibration() Instance {
+	return self.Super().AsOpenXRHapticVibration()
+}
 func (self class) AsOpenXRHapticBase() OpenXRHapticBase.Advanced {
 	return *((*OpenXRHapticBase.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsOpenXRHapticBase() OpenXRHapticBase.Instance {
+	return self.Super().AsOpenXRHapticBase()
 }
 func (self Instance) AsOpenXRHapticBase() OpenXRHapticBase.Instance {
 	return *((*OpenXRHapticBase.Instance)(unsafe.Pointer(&self)))
@@ -176,12 +188,14 @@ func (self Instance) AsOpenXRHapticBase() OpenXRHapticBase.Instance {
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

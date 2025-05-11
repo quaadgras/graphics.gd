@@ -55,6 +55,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 The DPad binding modifier converts an axis input to a dpad output, emulating a DPad. New input paths for each dpad direction will be added to the interaction profile. When bound to actions the DPad emulation will be activated. You should [b]not[/b] combine dpad inputs with normal inputs in the same action set for the same control, this will result in an error being returned when suggested bindings are submitted to OpenXR.
 See [url=https://registry.khronos.org/OpenXR/specs/1.1/html/xrspec.html#XR_EXT_dpad_binding]XR_EXT_dpad_binding[/url] for in-depth details.
 [b]Note:[/b] If the DPad binding modifier extension is enabled, all dpad binding paths will be available in the action map. Adding the modifier to an interaction profile allows you to further customize the behavior.
@@ -83,6 +88,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("OpenXRDpadBindingModifier"))
 	casted := Instance{*(*gdclass.OpenXRDpadBindingModifier)(unsafe.Pointer(&object))}
@@ -338,8 +344,14 @@ func (self class) AsOpenXRDpadBindingModifier() Advanced {
 func (self Instance) AsOpenXRDpadBindingModifier() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsOpenXRDpadBindingModifier() Instance {
+	return self.Super().AsOpenXRDpadBindingModifier()
+}
 func (self class) AsOpenXRIPBindingModifier() OpenXRIPBindingModifier.Advanced {
 	return *((*OpenXRIPBindingModifier.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsOpenXRIPBindingModifier() OpenXRIPBindingModifier.Instance {
+	return self.Super().AsOpenXRIPBindingModifier()
 }
 func (self Instance) AsOpenXRIPBindingModifier() OpenXRIPBindingModifier.Instance {
 	return *((*OpenXRIPBindingModifier.Instance)(unsafe.Pointer(&self)))
@@ -347,18 +359,23 @@ func (self Instance) AsOpenXRIPBindingModifier() OpenXRIPBindingModifier.Instanc
 func (self class) AsOpenXRBindingModifier() OpenXRBindingModifier.Advanced {
 	return *((*OpenXRBindingModifier.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsOpenXRBindingModifier() OpenXRBindingModifier.Instance {
+	return self.Super().AsOpenXRBindingModifier()
+}
 func (self Instance) AsOpenXRBindingModifier() OpenXRBindingModifier.Instance {
 	return *((*OpenXRBindingModifier.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

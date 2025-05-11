@@ -54,6 +54,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 Nodes are Godot's building blocks. They can be assigned as the child of another node, resulting in a tree arrangement. A given node can contain any number of nodes as children with the requirement that all siblings (direct children of a node) should have unique names.
 A tree of nodes is called a [i]scene[/i]. Scenes can be saved to the disk and then instantiated into other scenes. This allows for very high flexibility in the architecture and data model of Godot projects.
 [b]Scene tree:[/b] The [SceneTree] contains the active tree of nodes. When a node is added to the scene tree, it receives the [constant NOTIFICATION_ENTER_TREE] notification and its [method _enter_tree] callback is triggered. Child nodes are always added [i]after[/i] their parent node, i.e. the [method _enter_tree] callback of a parent node will be triggered before its child's.
@@ -1427,6 +1432,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Node"))
 	casted := Instance{*(*gdclass.Node)(unsafe.Pointer(&object))}
@@ -3432,8 +3438,9 @@ func (self Instance) OnEditorStateChanged(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("editor_state_changed"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsNode() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsNode() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsNode() Instance { return self.Super().AsNode() }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

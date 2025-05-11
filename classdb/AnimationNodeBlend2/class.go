@@ -53,6 +53,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A resource to add to an [AnimationNodeBlendTree]. Blends two animations linearly based on the amount value.
 In general, the blend value should be in the [code][0.0, 1.0][/code] range. Values outside of this range can blend amplified or inverted animations, however, [AnimationNodeAdd2] works better for this purpose.
 */
@@ -80,6 +85,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AnimationNodeBlend2"))
 	casted := Instance{*(*gdclass.AnimationNodeBlend2)(unsafe.Pointer(&object))}
@@ -89,8 +95,14 @@ func New() Instance {
 
 func (self class) AsAnimationNodeBlend2() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsAnimationNodeBlend2() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsAnimationNodeBlend2() Instance {
+	return self.Super().AsAnimationNodeBlend2()
+}
 func (self class) AsAnimationNodeSync() AnimationNodeSync.Advanced {
 	return *((*AnimationNodeSync.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsAnimationNodeSync() AnimationNodeSync.Instance {
+	return self.Super().AsAnimationNodeSync()
 }
 func (self Instance) AsAnimationNodeSync() AnimationNodeSync.Instance {
 	return *((*AnimationNodeSync.Instance)(unsafe.Pointer(&self)))
@@ -98,18 +110,23 @@ func (self Instance) AsAnimationNodeSync() AnimationNodeSync.Instance {
 func (self class) AsAnimationNode() AnimationNode.Advanced {
 	return *((*AnimationNode.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsAnimationNode() AnimationNode.Instance {
+	return self.Super().AsAnimationNode()
+}
 func (self Instance) AsAnimationNode() AnimationNode.Instance {
 	return *((*AnimationNode.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

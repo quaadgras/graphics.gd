@@ -50,6 +50,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 This class allows OpenXR core and extensions to register metadata relating to supported interaction devices such as controllers, trackers, haptic devices, etc. It is primarily used by the action map editor and to sanitize any action map by removing extension-dependent entries when applicable.
 */
 type Instance [1]gdclass.OpenXRInteractionProfileMetadata
@@ -107,6 +112,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("OpenXRInteractionProfileMetadata"))
 	casted := Instance{*(*gdclass.OpenXRInteractionProfileMetadata)(unsafe.Pointer(&object))}
@@ -178,6 +184,9 @@ func (self class) AsOpenXRInteractionProfileMetadata() Advanced {
 }
 func (self Instance) AsOpenXRInteractionProfileMetadata() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsOpenXRInteractionProfileMetadata() Instance {
+	return self.Super().AsOpenXRInteractionProfileMetadata()
 }
 
 func (self class) Virtual(name string) reflect.Value {

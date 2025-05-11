@@ -53,6 +53,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 By adjusting various properties of this resource, you can change the colors of strings, comments, numbers, and other text patterns inside a [TextEdit] control.
 */
 type Instance [1]gdclass.CodeHighlighter
@@ -191,6 +196,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CodeHighlighter"))
 	casted := Instance{*(*gdclass.CodeHighlighter)(unsafe.Pointer(&object))}
@@ -570,10 +576,14 @@ func (self class) GetMemberVariableColor() Color.RGBA { //gd:CodeHighlighter.get
 	frame.Free()
 	return ret
 }
-func (self class) AsCodeHighlighter() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsCodeHighlighter() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsCodeHighlighter() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsCodeHighlighter() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsCodeHighlighter() Instance { return self.Super().AsCodeHighlighter() }
 func (self class) AsSyntaxHighlighter() SyntaxHighlighter.Advanced {
 	return *((*SyntaxHighlighter.Advanced)(unsafe.Pointer(&self)))
+}
+func (self Extension[T]) AsSyntaxHighlighter() SyntaxHighlighter.Instance {
+	return self.Super().AsSyntaxHighlighter()
 }
 func (self Instance) AsSyntaxHighlighter() SyntaxHighlighter.Instance {
 	return *((*SyntaxHighlighter.Instance)(unsafe.Pointer(&self)))
@@ -581,12 +591,14 @@ func (self Instance) AsSyntaxHighlighter() SyntaxHighlighter.Instance {
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

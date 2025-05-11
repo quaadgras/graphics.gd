@@ -52,6 +52,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 A limiter is similar to a compressor, but it's less flexible and designed to disallow sound going over a given dB threshold. Adding one in the Master bus is always recommended to reduce the effects of clipping.
 Soft clipping starts to reduce the peaks a little below the threshold level and progressively increases its effect as the input level increases such that the threshold is never exceeded.
 */
@@ -79,6 +84,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioEffectLimiter"))
 	casted := Instance{*(*gdclass.AudioEffectLimiter)(unsafe.Pointer(&object))}
@@ -193,23 +199,27 @@ func (self class) GetSoftClipRatio() float64 { //gd:AudioEffectLimiter.get_soft_
 	frame.Free()
 	return ret
 }
-func (self class) AsAudioEffectLimiter() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsAudioEffectLimiter() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsAudioEffectLimiter() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsAudioEffectLimiter() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsAudioEffectLimiter() Instance { return self.Super().AsAudioEffectLimiter() }
 func (self class) AsAudioEffect() AudioEffect.Advanced {
 	return *((*AudioEffect.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsAudioEffect() AudioEffect.Instance { return self.Super().AsAudioEffect() }
 func (self Instance) AsAudioEffect() AudioEffect.Instance {
 	return *((*AudioEffect.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

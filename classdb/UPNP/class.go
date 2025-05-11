@@ -51,6 +51,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 This class can be used to discover compatible [UPNPDevice]s on the local network and execute commands on them, like managing port mappings (for port forwarding/NAT traversal) and querying the local and remote network IP address. Note that methods on this class are synchronous and block the calling thread.
 To forward a specific port (here [code]7777[/code], note both [method discover] and [method add_port_mapping] can return errors that should be checked):
 [codeblock]
@@ -245,6 +250,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("UPNP"))
 	casted := Instance{*(*gdclass.UPNP)(unsafe.Pointer(&object))}
@@ -489,11 +495,13 @@ func (self class) IsDiscoverIpv6() bool { //gd:UPNP.is_discover_ipv6
 	frame.Free()
 	return ret
 }
-func (self class) AsUPNP() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsUPNP() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsUPNP() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsUPNP() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self Extension[T]) AsUPNP() Instance { return self.Super().AsUPNP() }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

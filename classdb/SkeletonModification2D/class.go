@@ -52,6 +52,11 @@ type ID Object.ID
 func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(id).Instance()) }
 
 /*
+Extension can be embedded in a new struct to create an extension of this class.
+*/
+type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
+
+/*
 This resource provides an interface that can be expanded so code that operates on [Bone2D] nodes in a [Skeleton2D] can be mixed and matched together to create complex interactions.
 This is used to provide Godot with a flexible and powerful Inverse Kinematics solution that can be adapted for many different uses.
 
@@ -167,13 +172,6 @@ func (self Instance) GetEditorDrawGizmo() bool { //gd:SkeletonModification2D.get
 }
 
 /*
-Adds the passed-in [SkeletonModification2D] to the stack.
-*/
-func (self Instance) Add(peer SkeletonModificationStack2D.Instance) { //gd:SkeletonModificationStack2D.add_modification
-	SkeletonModificationStack2D.Advanced(peer).AddModification(self)
-}
-
-/*
 Sets the modification at [param mod_idx] to the passed-in modification, [param modification].
 */
 func (self Instance) Set(peer SkeletonModificationStack2D.Instance, mod_idx int) { //gd:SkeletonModificationStack2D.set_modification
@@ -185,6 +183,13 @@ Returns the [SkeletonModification2D] at the passed-in index, [param mod_idx].
 */
 func Get(peer SkeletonModificationStack2D.Instance, mod_idx int) Instance { //gd:SkeletonModificationStack2D.get_modification
 	return Instance(SkeletonModificationStack2D.Advanced(peer).GetModification(int64(mod_idx)))
+}
+
+/*
+Adds the passed-in [SkeletonModification2D] to the stack.
+*/
+func (self Instance) Add(peer SkeletonModificationStack2D.Instance) { //gd:SkeletonModificationStack2D.add_modification
+	SkeletonModificationStack2D.Advanced(peer).AddModification(self)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -199,6 +204,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
+func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SkeletonModification2D"))
 	casted := Instance{*(*gdclass.SkeletonModification2D)(unsafe.Pointer(&object))}
@@ -378,15 +384,20 @@ func (self class) AsSkeletonModification2D() Advanced { return *((*Advanced)(uns
 func (self Instance) AsSkeletonModification2D() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsSkeletonModification2D() Instance {
+	return self.Super().AsSkeletonModification2D()
+}
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
+func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
