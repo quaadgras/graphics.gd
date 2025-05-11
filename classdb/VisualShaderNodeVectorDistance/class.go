@@ -92,7 +92,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeVectorDistance"))
 	casted := Instance{*(*gdclass.VisualShaderNodeVectorDistance)(unsafe.Pointer(&object))}
@@ -106,13 +106,13 @@ func (self class) AsVisualShaderNodeVectorDistance() Advanced {
 func (self Instance) AsVisualShaderNodeVectorDistance() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsVisualShaderNodeVectorDistance() Instance {
+func (self *Extension[T]) AsVisualShaderNodeVectorDistance() Instance {
 	return self.Super().AsVisualShaderNodeVectorDistance()
 }
 func (self class) AsVisualShaderNodeVectorBase() VisualShaderNodeVectorBase.Advanced {
 	return *((*VisualShaderNodeVectorBase.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsVisualShaderNodeVectorBase() VisualShaderNodeVectorBase.Instance {
+func (self *Extension[T]) AsVisualShaderNodeVectorBase() VisualShaderNodeVectorBase.Instance {
 	return self.Super().AsVisualShaderNodeVectorBase()
 }
 func (self Instance) AsVisualShaderNodeVectorBase() VisualShaderNodeVectorBase.Instance {
@@ -121,7 +121,7 @@ func (self Instance) AsVisualShaderNodeVectorBase() VisualShaderNodeVectorBase.I
 func (self class) AsVisualShaderNode() VisualShaderNode.Advanced {
 	return *((*VisualShaderNode.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsVisualShaderNode() VisualShaderNode.Instance {
+func (self *Extension[T]) AsVisualShaderNode() VisualShaderNode.Instance {
 	return self.Super().AsVisualShaderNode()
 }
 func (self Instance) AsVisualShaderNode() VisualShaderNode.Instance {
@@ -130,14 +130,14 @@ func (self Instance) AsVisualShaderNode() VisualShaderNode.Instance {
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
+func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
+func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

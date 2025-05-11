@@ -244,7 +244,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("WebXRInterface"))
 	casted := Instance{*(*gdclass.WebXRInterface)(unsafe.Pointer(&object))}
@@ -556,20 +556,20 @@ func (self Instance) OnDisplayRefreshRateChanged(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("display_refresh_rate_changed"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsWebXRInterface() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsWebXRInterface() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsWebXRInterface() Instance { return self.Super().AsWebXRInterface() }
+func (self class) AsWebXRInterface() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsWebXRInterface() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsWebXRInterface() Instance { return self.Super().AsWebXRInterface() }
 func (self class) AsXRInterface() XRInterface.Advanced {
 	return *((*XRInterface.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsXRInterface() XRInterface.Instance { return self.Super().AsXRInterface() }
+func (self *Extension[T]) AsXRInterface() XRInterface.Instance { return self.Super().AsXRInterface() }
 func (self Instance) AsXRInterface() XRInterface.Instance {
 	return *((*XRInterface.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
+func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

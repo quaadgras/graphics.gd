@@ -160,7 +160,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 
 /*
 Converts the given UID to a [code]uid://[/code] string value.

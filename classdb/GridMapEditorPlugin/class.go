@@ -151,7 +151,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GridMapEditorPlugin"))
 	casted := Instance{*(*gdclass.GridMapEditorPlugin)(unsafe.Pointer(&object))}
@@ -262,19 +262,21 @@ func (self class) GetSelectedPaletteItem() int64 { //gd:GridMapEditorPlugin.get_
 }
 func (self class) AsGridMapEditorPlugin() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsGridMapEditorPlugin() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsGridMapEditorPlugin() Instance {
+func (self *Extension[T]) AsGridMapEditorPlugin() Instance {
 	return self.Super().AsGridMapEditorPlugin()
 }
 func (self class) AsEditorPlugin() EditorPlugin.Advanced {
 	return *((*EditorPlugin.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsEditorPlugin() EditorPlugin.Instance { return self.Super().AsEditorPlugin() }
+func (self *Extension[T]) AsEditorPlugin() EditorPlugin.Instance {
+	return self.Super().AsEditorPlugin()
+}
 func (self Instance) AsEditorPlugin() EditorPlugin.Instance {
 	return *((*EditorPlugin.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
-func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced         { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance      { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

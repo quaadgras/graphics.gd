@@ -91,7 +91,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Popup"))
 	casted := Instance{*(*gdclass.Popup)(unsafe.Pointer(&object))}
@@ -102,22 +102,22 @@ func (self Instance) OnPopupHide(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("popup_hide"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsPopup() Advanced                { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsPopup() Instance             { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsPopup() Instance         { return self.Super().AsPopup() }
-func (self class) AsWindow() Window.Advanced        { return *((*Window.Advanced)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsWindow() Window.Instance { return self.Super().AsWindow() }
-func (self Instance) AsWindow() Window.Instance     { return *((*Window.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsPopup() Advanced                 { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsPopup() Instance              { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsPopup() Instance         { return self.Super().AsPopup() }
+func (self class) AsWindow() Window.Advanced         { return *((*Window.Advanced)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsWindow() Window.Instance { return self.Super().AsWindow() }
+func (self Instance) AsWindow() Window.Instance      { return *((*Window.Instance)(unsafe.Pointer(&self))) }
 func (self class) AsViewport() Viewport.Advanced {
 	return *((*Viewport.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsViewport() Viewport.Instance { return self.Super().AsViewport() }
+func (self *Extension[T]) AsViewport() Viewport.Instance { return self.Super().AsViewport() }
 func (self Instance) AsViewport() Viewport.Instance {
 	return *((*Viewport.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
-func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced         { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance      { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

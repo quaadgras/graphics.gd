@@ -97,7 +97,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("FramebufferCacheRD"))
 	casted := Instance{*(*gdclass.FramebufferCacheRD)(unsafe.Pointer(&object))}
@@ -119,9 +119,9 @@ func (self class) GetCacheMultipass(textures Array.Contains[RID.Any], passes Arr
 	frame.Free()
 	return ret
 }
-func (self class) AsFramebufferCacheRD() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsFramebufferCacheRD() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsFramebufferCacheRD() Instance { return self.Super().AsFramebufferCacheRD() }
+func (self class) AsFramebufferCacheRD() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsFramebufferCacheRD() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsFramebufferCacheRD() Instance { return self.Super().AsFramebufferCacheRD() }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

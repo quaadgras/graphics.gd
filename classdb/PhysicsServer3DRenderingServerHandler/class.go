@@ -163,7 +163,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PhysicsServer3DRenderingServerHandler"))
 	casted := Instance{*(*gdclass.PhysicsServer3DRenderingServerHandler)(unsafe.Pointer(&object))}
@@ -250,7 +250,7 @@ func (self class) AsPhysicsServer3DRenderingServerHandler() Advanced {
 func (self Instance) AsPhysicsServer3DRenderingServerHandler() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsPhysicsServer3DRenderingServerHandler() Instance {
+func (self *Extension[T]) AsPhysicsServer3DRenderingServerHandler() Instance {
 	return self.Super().AsPhysicsServer3DRenderingServerHandler()
 }
 

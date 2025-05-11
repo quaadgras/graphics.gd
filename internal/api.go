@@ -3,6 +3,7 @@
 package gd
 
 import (
+	"reflect"
 	"unsafe"
 
 	"graphics.gd/internal/callframe"
@@ -349,7 +350,7 @@ type ClassInterface interface {
 }
 
 type ObjectInterface interface {
-	OnCreate()
+	OnCreate(reflect.Value)
 	Set(StringName, Variant) bool
 	Get(StringName) (Variant, bool)
 	GetPropertyList() []PropertyInfo

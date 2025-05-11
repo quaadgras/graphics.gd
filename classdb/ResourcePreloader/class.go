@@ -133,7 +133,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ResourcePreloader"))
 	casted := Instance{*(*gdclass.ResourcePreloader)(unsafe.Pointer(&object))}
@@ -218,12 +218,12 @@ func (self class) GetResourceList() Packed.Strings { //gd:ResourcePreloader.get_
 	frame.Free()
 	return ret
 }
-func (self class) AsResourcePreloader() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsResourcePreloader() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsResourcePreloader() Instance { return self.Super().AsResourcePreloader() }
-func (self class) AsNode() Node.Advanced                { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsNode() Node.Instance         { return self.Super().AsNode() }
-func (self Instance) AsNode() Node.Instance             { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsResourcePreloader() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsResourcePreloader() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsResourcePreloader() Instance { return self.Super().AsResourcePreloader() }
+func (self class) AsNode() Node.Advanced                 { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsNode() Node.Instance         { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance              { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

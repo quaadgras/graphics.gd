@@ -672,7 +672,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("OpenXRExtensionWrapperExtension"))
 	casted := Instance{*(*gdclass.OpenXRExtensionWrapperExtension)(unsafe.Pointer(&object))}
@@ -1138,7 +1138,7 @@ func (self class) AsOpenXRExtensionWrapperExtension() Advanced {
 func (self Instance) AsOpenXRExtensionWrapperExtension() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsOpenXRExtensionWrapperExtension() Instance {
+func (self *Extension[T]) AsOpenXRExtensionWrapperExtension() Instance {
 	return self.Super().AsOpenXRExtensionWrapperExtension()
 }
 

@@ -90,7 +90,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TextServerAdvanced"))
 	casted := Instance{*(*gdclass.TextServerAdvanced)(unsafe.Pointer(&object))}
@@ -98,13 +98,13 @@ func New() Instance {
 	return casted
 }
 
-func (self class) AsTextServerAdvanced() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsTextServerAdvanced() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsTextServerAdvanced() Instance { return self.Super().AsTextServerAdvanced() }
+func (self class) AsTextServerAdvanced() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsTextServerAdvanced() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsTextServerAdvanced() Instance { return self.Super().AsTextServerAdvanced() }
 func (self class) AsTextServerExtension() TextServerExtension.Advanced {
 	return *((*TextServerExtension.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsTextServerExtension() TextServerExtension.Instance {
+func (self *Extension[T]) AsTextServerExtension() TextServerExtension.Instance {
 	return self.Super().AsTextServerExtension()
 }
 func (self Instance) AsTextServerExtension() TextServerExtension.Instance {
@@ -113,14 +113,14 @@ func (self Instance) AsTextServerExtension() TextServerExtension.Instance {
 func (self class) AsTextServer() TextServer.Advanced {
 	return *((*TextServer.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsTextServer() TextServer.Instance { return self.Super().AsTextServer() }
+func (self *Extension[T]) AsTextServer() TextServer.Instance { return self.Super().AsTextServer() }
 func (self Instance) AsTextServer() TextServer.Instance {
 	return *((*TextServer.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
+func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

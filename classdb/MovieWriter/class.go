@@ -239,7 +239,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MovieWriter"))
 	casted := Instance{*(*gdclass.MovieWriter)(unsafe.Pointer(&object))}
@@ -352,9 +352,9 @@ func (self class) AddWriter(writer [1]gdclass.MovieWriter) { //gd:MovieWriter.ad
 	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.MovieWriter.Bind_add_writer, frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
-func (self class) AsMovieWriter() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsMovieWriter() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsMovieWriter() Instance { return self.Super().AsMovieWriter() }
+func (self class) AsMovieWriter() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsMovieWriter() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsMovieWriter() Instance { return self.Super().AsMovieWriter() }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

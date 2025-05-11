@@ -92,7 +92,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("QuadMesh"))
 	casted := Instance{*(*gdclass.QuadMesh)(unsafe.Pointer(&object))}
@@ -100,39 +100,39 @@ func New() Instance {
 	return casted
 }
 
-func (self class) AsQuadMesh() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsQuadMesh() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsQuadMesh() Instance { return self.Super().AsQuadMesh() }
+func (self class) AsQuadMesh() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsQuadMesh() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsQuadMesh() Instance { return self.Super().AsQuadMesh() }
 func (self class) AsPlaneMesh() PlaneMesh.Advanced {
 	return *((*PlaneMesh.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsPlaneMesh() PlaneMesh.Instance { return self.Super().AsPlaneMesh() }
+func (self *Extension[T]) AsPlaneMesh() PlaneMesh.Instance { return self.Super().AsPlaneMesh() }
 func (self Instance) AsPlaneMesh() PlaneMesh.Instance {
 	return *((*PlaneMesh.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsPrimitiveMesh() PrimitiveMesh.Advanced {
 	return *((*PrimitiveMesh.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsPrimitiveMesh() PrimitiveMesh.Instance {
+func (self *Extension[T]) AsPrimitiveMesh() PrimitiveMesh.Instance {
 	return self.Super().AsPrimitiveMesh()
 }
 func (self Instance) AsPrimitiveMesh() PrimitiveMesh.Instance {
 	return *((*PrimitiveMesh.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsMesh() Mesh.Advanced        { return *((*Mesh.Advanced)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsMesh() Mesh.Instance { return self.Super().AsMesh() }
-func (self Instance) AsMesh() Mesh.Instance     { return *((*Mesh.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsMesh() Mesh.Advanced         { return *((*Mesh.Advanced)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsMesh() Mesh.Instance { return self.Super().AsMesh() }
+func (self Instance) AsMesh() Mesh.Instance      { return *((*Mesh.Instance)(unsafe.Pointer(&self))) }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
+func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
+func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

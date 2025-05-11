@@ -89,7 +89,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RDAttachmentFormat"))
 	casted := Instance{*(*gdclass.RDAttachmentFormat)(unsafe.Pointer(&object))}
@@ -177,13 +177,13 @@ func (self class) GetUsageFlags() int64 { //gd:RDAttachmentFormat.get_usage_flag
 	frame.Free()
 	return ret
 }
-func (self class) AsRDAttachmentFormat() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsRDAttachmentFormat() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsRDAttachmentFormat() Instance { return self.Super().AsRDAttachmentFormat() }
+func (self class) AsRDAttachmentFormat() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsRDAttachmentFormat() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsRDAttachmentFormat() Instance { return self.Super().AsRDAttachmentFormat() }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
+func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

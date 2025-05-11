@@ -154,7 +154,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorPaths"))
 	casted := Instance{*(*gdclass.EditorPaths)(unsafe.Pointer(&object))}
@@ -260,9 +260,9 @@ func (self class) GetProjectSettingsDir() String.Readable { //gd:EditorPaths.get
 	frame.Free()
 	return ret
 }
-func (self class) AsEditorPaths() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsEditorPaths() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsEditorPaths() Instance { return self.Super().AsEditorPaths() }
+func (self class) AsEditorPaths() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsEditorPaths() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsEditorPaths() Instance { return self.Super().AsEditorPaths() }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

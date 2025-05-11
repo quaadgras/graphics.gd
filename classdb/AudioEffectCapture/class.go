@@ -145,7 +145,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioEffectCapture"))
 	casted := Instance{*(*gdclass.AudioEffectCapture)(unsafe.Pointer(&object))}
@@ -273,27 +273,27 @@ func (self class) GetPushedFrames() int64 { //gd:AudioEffectCapture.get_pushed_f
 	frame.Free()
 	return ret
 }
-func (self class) AsAudioEffectCapture() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsAudioEffectCapture() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsAudioEffectCapture() Instance { return self.Super().AsAudioEffectCapture() }
+func (self class) AsAudioEffectCapture() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsAudioEffectCapture() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsAudioEffectCapture() Instance { return self.Super().AsAudioEffectCapture() }
 func (self class) AsAudioEffect() AudioEffect.Advanced {
 	return *((*AudioEffect.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsAudioEffect() AudioEffect.Instance { return self.Super().AsAudioEffect() }
+func (self *Extension[T]) AsAudioEffect() AudioEffect.Instance { return self.Super().AsAudioEffect() }
 func (self Instance) AsAudioEffect() AudioEffect.Instance {
 	return *((*AudioEffect.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
+func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
+func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

@@ -139,7 +139,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorSyntaxHighlighter"))
 	casted := Instance{*(*gdclass.EditorSyntaxHighlighter)(unsafe.Pointer(&object))}
@@ -183,13 +183,13 @@ func (self class) AsEditorSyntaxHighlighter() Advanced { return *((*Advanced)(un
 func (self Instance) AsEditorSyntaxHighlighter() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsEditorSyntaxHighlighter() Instance {
+func (self *Extension[T]) AsEditorSyntaxHighlighter() Instance {
 	return self.Super().AsEditorSyntaxHighlighter()
 }
 func (self class) AsSyntaxHighlighter() SyntaxHighlighter.Advanced {
 	return *((*SyntaxHighlighter.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsSyntaxHighlighter() SyntaxHighlighter.Instance {
+func (self *Extension[T]) AsSyntaxHighlighter() SyntaxHighlighter.Instance {
 	return self.Super().AsSyntaxHighlighter()
 }
 func (self Instance) AsSyntaxHighlighter() SyntaxHighlighter.Instance {
@@ -198,14 +198,14 @@ func (self Instance) AsSyntaxHighlighter() SyntaxHighlighter.Instance {
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
+func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
+func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

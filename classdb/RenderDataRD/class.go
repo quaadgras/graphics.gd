@@ -90,20 +90,20 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RenderDataRD"))
 	casted := Instance{*(*gdclass.RenderDataRD)(unsafe.Pointer(&object))}
 	return casted
 }
 
-func (self class) AsRenderDataRD() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsRenderDataRD() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsRenderDataRD() Instance { return self.Super().AsRenderDataRD() }
+func (self class) AsRenderDataRD() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsRenderDataRD() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsRenderDataRD() Instance { return self.Super().AsRenderDataRD() }
 func (self class) AsRenderData() RenderData.Advanced {
 	return *((*RenderData.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRenderData() RenderData.Instance { return self.Super().AsRenderData() }
+func (self *Extension[T]) AsRenderData() RenderData.Instance { return self.Super().AsRenderData() }
 func (self Instance) AsRenderData() RenderData.Instance {
 	return *((*RenderData.Instance)(unsafe.Pointer(&self)))
 }

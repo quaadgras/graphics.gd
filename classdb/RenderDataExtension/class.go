@@ -167,7 +167,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RenderDataExtension"))
 	casted := Instance{*(*gdclass.RenderDataExtension)(unsafe.Pointer(&object))}
@@ -230,13 +230,13 @@ func (class) _get_camera_attributes(impl func(ptr unsafe.Pointer) RID.Any) (cb g
 
 func (self class) AsRenderDataExtension() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsRenderDataExtension() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsRenderDataExtension() Instance {
+func (self *Extension[T]) AsRenderDataExtension() Instance {
 	return self.Super().AsRenderDataExtension()
 }
 func (self class) AsRenderData() RenderData.Advanced {
 	return *((*RenderData.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRenderData() RenderData.Instance { return self.Super().AsRenderData() }
+func (self *Extension[T]) AsRenderData() RenderData.Instance { return self.Super().AsRenderData() }
 func (self Instance) AsRenderData() RenderData.Instance {
 	return *((*RenderData.Instance)(unsafe.Pointer(&self)))
 }

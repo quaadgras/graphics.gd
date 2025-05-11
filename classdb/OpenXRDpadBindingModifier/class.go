@@ -95,7 +95,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("OpenXRDpadBindingModifier"))
 	casted := Instance{*(*gdclass.OpenXRDpadBindingModifier)(unsafe.Pointer(&object))}
@@ -351,13 +351,13 @@ func (self class) AsOpenXRDpadBindingModifier() Advanced {
 func (self Instance) AsOpenXRDpadBindingModifier() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsOpenXRDpadBindingModifier() Instance {
+func (self *Extension[T]) AsOpenXRDpadBindingModifier() Instance {
 	return self.Super().AsOpenXRDpadBindingModifier()
 }
 func (self class) AsOpenXRIPBindingModifier() OpenXRIPBindingModifier.Advanced {
 	return *((*OpenXRIPBindingModifier.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsOpenXRIPBindingModifier() OpenXRIPBindingModifier.Instance {
+func (self *Extension[T]) AsOpenXRIPBindingModifier() OpenXRIPBindingModifier.Instance {
 	return self.Super().AsOpenXRIPBindingModifier()
 }
 func (self Instance) AsOpenXRIPBindingModifier() OpenXRIPBindingModifier.Instance {
@@ -366,7 +366,7 @@ func (self Instance) AsOpenXRIPBindingModifier() OpenXRIPBindingModifier.Instanc
 func (self class) AsOpenXRBindingModifier() OpenXRBindingModifier.Advanced {
 	return *((*OpenXRBindingModifier.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsOpenXRBindingModifier() OpenXRBindingModifier.Instance {
+func (self *Extension[T]) AsOpenXRBindingModifier() OpenXRBindingModifier.Instance {
 	return self.Super().AsOpenXRBindingModifier()
 }
 func (self Instance) AsOpenXRBindingModifier() OpenXRBindingModifier.Instance {
@@ -375,14 +375,14 @@ func (self Instance) AsOpenXRBindingModifier() OpenXRBindingModifier.Instance {
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
+func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
+func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

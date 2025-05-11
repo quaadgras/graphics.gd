@@ -2,26 +2,25 @@
 package Fog
 
 import (
+	"graphics.gd/classdb/ShaderMaterial"
+	"graphics.gd/internal/gdclass"
 	"graphics.gd/shaders/float"
-	"graphics.gd/shaders/internal"
 	"graphics.gd/shaders/vec3"
 )
 
-type Shader struct {
-	shader
+type Shader[T gdclass.Interface] struct {
+	ShaderMaterial.Extension[T]
 }
 
-type shader = internal.Shader
-
-func (Shader) ShaderType() string       { return "fog" }
-func (Shader) RenderMode() []RenderMode { return nil }
-func (Shader) Pipeline() [3]string {
+func (Shader[T]) ShaderType() string       { return "fog" }
+func (Shader[T]) RenderMode() []RenderMode { return nil }
+func (Shader[T]) Pipeline() [3]string {
 	return [3]string{"", "", "fog"}
 }
 
-func (Shader) Fragment(state struct{}) Fragment { return Fragment{} }
-func (Shader) Material(state Fragment) Material { return Material{} }
-func (Shader) Lighting(Material) struct{}       { return struct{}{} }
+func (Shader[T]) Fragment(state struct{}) Fragment { return Fragment{} }
+func (Shader[T]) Material(state Fragment) Material { return Material{} }
+func (Shader[T]) Lighting(Material) struct{}       { return struct{}{} }
 
 type RenderMode string
 

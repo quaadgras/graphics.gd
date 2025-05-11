@@ -89,7 +89,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ResourceImporterBitMap"))
 	casted := Instance{*(*gdclass.ResourceImporterBitMap)(unsafe.Pointer(&object))}
@@ -101,13 +101,13 @@ func (self class) AsResourceImporterBitMap() Advanced { return *((*Advanced)(uns
 func (self Instance) AsResourceImporterBitMap() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsResourceImporterBitMap() Instance {
+func (self *Extension[T]) AsResourceImporterBitMap() Instance {
 	return self.Super().AsResourceImporterBitMap()
 }
 func (self class) AsResourceImporter() ResourceImporter.Advanced {
 	return *((*ResourceImporter.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsResourceImporter() ResourceImporter.Instance {
+func (self *Extension[T]) AsResourceImporter() ResourceImporter.Instance {
 	return self.Super().AsResourceImporter()
 }
 func (self Instance) AsResourceImporter() ResourceImporter.Instance {
@@ -116,7 +116,7 @@ func (self Instance) AsResourceImporter() ResourceImporter.Instance {
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
+func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

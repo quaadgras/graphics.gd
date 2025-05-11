@@ -483,7 +483,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("DirAccess"))
 	casted := Instance{*(*gdclass.DirAccess)(unsafe.Pointer(&object))}
@@ -1070,13 +1070,13 @@ func (self class) IsCaseSensitive(path String.Readable) bool { //gd:DirAccess.is
 	frame.Free()
 	return ret
 }
-func (self class) AsDirAccess() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsDirAccess() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsDirAccess() Instance { return self.Super().AsDirAccess() }
+func (self class) AsDirAccess() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsDirAccess() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsDirAccess() Instance { return self.Super().AsDirAccess() }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
+func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

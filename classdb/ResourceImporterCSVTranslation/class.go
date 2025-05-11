@@ -97,7 +97,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ResourceImporterCSVTranslation"))
 	casted := Instance{*(*gdclass.ResourceImporterCSVTranslation)(unsafe.Pointer(&object))}
@@ -111,13 +111,13 @@ func (self class) AsResourceImporterCSVTranslation() Advanced {
 func (self Instance) AsResourceImporterCSVTranslation() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsResourceImporterCSVTranslation() Instance {
+func (self *Extension[T]) AsResourceImporterCSVTranslation() Instance {
 	return self.Super().AsResourceImporterCSVTranslation()
 }
 func (self class) AsResourceImporter() ResourceImporter.Advanced {
 	return *((*ResourceImporter.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsResourceImporter() ResourceImporter.Instance {
+func (self *Extension[T]) AsResourceImporter() ResourceImporter.Instance {
 	return self.Super().AsResourceImporter()
 }
 func (self Instance) AsResourceImporter() ResourceImporter.Instance {
@@ -126,7 +126,7 @@ func (self Instance) AsResourceImporter() ResourceImporter.Instance {
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
+func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

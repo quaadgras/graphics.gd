@@ -137,7 +137,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MultiplayerSpawner"))
 	casted := Instance{*(*gdclass.MultiplayerSpawner)(unsafe.Pointer(&object))}
@@ -297,12 +297,12 @@ func (self Instance) OnSpawned(cb func(node Node.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("spawned"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsMultiplayerSpawner() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsMultiplayerSpawner() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsMultiplayerSpawner() Instance { return self.Super().AsMultiplayerSpawner() }
-func (self class) AsNode() Node.Advanced                 { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsNode() Node.Instance          { return self.Super().AsNode() }
-func (self Instance) AsNode() Node.Instance              { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsMultiplayerSpawner() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsMultiplayerSpawner() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsMultiplayerSpawner() Instance { return self.Super().AsMultiplayerSpawner() }
+func (self class) AsNode() Node.Advanced                  { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsNode() Node.Instance          { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance               { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

@@ -2,9 +2,10 @@
 package Spatial
 
 import (
+	"graphics.gd/classdb/ShaderMaterial"
+	"graphics.gd/internal/gdclass"
 	"graphics.gd/shaders/float"
 	"graphics.gd/shaders/int"
-	"graphics.gd/shaders/internal"
 	"graphics.gd/shaders/internal/gpu"
 	"graphics.gd/shaders/mat4"
 	"graphics.gd/shaders/uint"
@@ -20,21 +21,19 @@ shaders are highly configurable with different render modes and different render
 Scattering, Transmission, Ambient Occlusion, Rim lighting etc). Users can optionally write vertex, fragment,
 and light processor functions to affect how objects are drawn.
 */
-type Shader struct {
-	shader
+type Shader[T gdclass.Interface] struct {
+	ShaderMaterial.Extension[T]
 }
 
-type shader = internal.Shader
-
-func (Shader) ShaderType() string       { return "spatial" }
-func (Shader) RenderMode() []RenderMode { return nil }
-func (Shader) Pipeline() [3]string {
+func (Shader[T]) ShaderType() string       { return "spatial" }
+func (Shader[T]) RenderMode() []RenderMode { return nil }
+func (Shader[T]) Pipeline() [3]string {
 	return [3]string{"vertex", "fragment", "light"}
 }
 
-func (Shader) Fragment(vertex Vertex) Fragment     { return Fragment{} }
-func (Shader) Material(fragment Fragment) Material { return Material{} }
-func (Shader) Lighting(material Material) Lighting { return Lighting{} }
+func (Shader[T]) Fragment(vertex Vertex) Fragment     { return Fragment{} }
+func (Shader[T]) Material(fragment Fragment) Material { return Material{} }
+func (Shader[T]) Lighting(material Material) Lighting { return Lighting{} }
 
 type RenderMode string
 

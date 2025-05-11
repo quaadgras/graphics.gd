@@ -88,7 +88,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioSamplePlayback"))
 	casted := Instance{*(*gdclass.AudioSamplePlayback)(unsafe.Pointer(&object))}
@@ -98,13 +98,13 @@ func New() Instance {
 
 func (self class) AsAudioSamplePlayback() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsAudioSamplePlayback() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsAudioSamplePlayback() Instance {
+func (self *Extension[T]) AsAudioSamplePlayback() Instance {
 	return self.Super().AsAudioSamplePlayback()
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
+func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

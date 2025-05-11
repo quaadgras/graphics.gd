@@ -93,7 +93,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorSceneFormatImporterBlend"))
 	casted := Instance{*(*gdclass.EditorSceneFormatImporterBlend)(unsafe.Pointer(&object))}
@@ -107,13 +107,13 @@ func (self class) AsEditorSceneFormatImporterBlend() Advanced {
 func (self Instance) AsEditorSceneFormatImporterBlend() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsEditorSceneFormatImporterBlend() Instance {
+func (self *Extension[T]) AsEditorSceneFormatImporterBlend() Instance {
 	return self.Super().AsEditorSceneFormatImporterBlend()
 }
 func (self class) AsEditorSceneFormatImporter() EditorSceneFormatImporter.Advanced {
 	return *((*EditorSceneFormatImporter.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsEditorSceneFormatImporter() EditorSceneFormatImporter.Instance {
+func (self *Extension[T]) AsEditorSceneFormatImporter() EditorSceneFormatImporter.Instance {
 	return self.Super().AsEditorSceneFormatImporter()
 }
 func (self Instance) AsEditorSceneFormatImporter() EditorSceneFormatImporter.Instance {
@@ -122,7 +122,7 @@ func (self Instance) AsEditorSceneFormatImporter() EditorSceneFormatImporter.Ins
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
+func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

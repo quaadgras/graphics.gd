@@ -1,16 +1,16 @@
 package gpu
 
 import (
-	"graphics.gd/shaders/internal"
+	"graphics.gd/classdb/ShaderMaterial"
 )
 
 type Expression struct {
 	indirect Evaluator
 	uniform  string
-	shader   *internal.Shader
+	shader   ShaderMaterial.Any
 }
 
-func Uniform(name string, shader *internal.Shader) Evaluator {
+func Uniform(name string, shader ShaderMaterial.Any) Evaluator {
 	return Expression{uniform: name, shader: shader}
 }
 
@@ -40,11 +40,11 @@ func (e *Expression) set(val Evaluator) {
 	*e = New(val)
 }
 
-func (e Expression) getShader() *internal.Shader {
+func (e Expression) getShader() ShaderMaterial.Any {
 	return e.shader
 }
 
-func Shader(ptr HasShader) *internal.Shader {
+func Shader(ptr HasShader) ShaderMaterial.Any {
 	return ptr.getShader()
 }
 
@@ -55,11 +55,11 @@ type Evaluator interface {
 type EquivalentTo[T any] interface {
 	Evaluator
 	equivalentTo(T)
-	getShader() *internal.Shader
+	getShader() ShaderMaterial.Any
 }
 
 type HasShader interface {
-	getShader() *internal.Shader
+	getShader() ShaderMaterial.Any
 }
 
 type Pointer interface {

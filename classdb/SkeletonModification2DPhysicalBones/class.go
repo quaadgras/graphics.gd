@@ -146,7 +146,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SkeletonModification2DPhysicalBones"))
 	casted := Instance{*(*gdclass.SkeletonModification2DPhysicalBones)(unsafe.Pointer(&object))}
@@ -251,13 +251,13 @@ func (self class) AsSkeletonModification2DPhysicalBones() Advanced {
 func (self Instance) AsSkeletonModification2DPhysicalBones() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsSkeletonModification2DPhysicalBones() Instance {
+func (self *Extension[T]) AsSkeletonModification2DPhysicalBones() Instance {
 	return self.Super().AsSkeletonModification2DPhysicalBones()
 }
 func (self class) AsSkeletonModification2D() SkeletonModification2D.Advanced {
 	return *((*SkeletonModification2D.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsSkeletonModification2D() SkeletonModification2D.Instance {
+func (self *Extension[T]) AsSkeletonModification2D() SkeletonModification2D.Instance {
 	return self.Super().AsSkeletonModification2D()
 }
 func (self Instance) AsSkeletonModification2D() SkeletonModification2D.Instance {
@@ -266,14 +266,14 @@ func (self Instance) AsSkeletonModification2D() SkeletonModification2D.Instance 
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
+func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
+func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

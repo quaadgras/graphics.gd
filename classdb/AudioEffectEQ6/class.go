@@ -98,7 +98,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioEffectEQ6"))
 	casted := Instance{*(*gdclass.AudioEffectEQ6)(unsafe.Pointer(&object))}
@@ -106,13 +106,13 @@ func New() Instance {
 	return casted
 }
 
-func (self class) AsAudioEffectEQ6() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsAudioEffectEQ6() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsAudioEffectEQ6() Instance { return self.Super().AsAudioEffectEQ6() }
+func (self class) AsAudioEffectEQ6() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsAudioEffectEQ6() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsAudioEffectEQ6() Instance { return self.Super().AsAudioEffectEQ6() }
 func (self class) AsAudioEffectEQ() AudioEffectEQ.Advanced {
 	return *((*AudioEffectEQ.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsAudioEffectEQ() AudioEffectEQ.Instance {
+func (self *Extension[T]) AsAudioEffectEQ() AudioEffectEQ.Instance {
 	return self.Super().AsAudioEffectEQ()
 }
 func (self Instance) AsAudioEffectEQ() AudioEffectEQ.Instance {
@@ -121,21 +121,21 @@ func (self Instance) AsAudioEffectEQ() AudioEffectEQ.Instance {
 func (self class) AsAudioEffect() AudioEffect.Advanced {
 	return *((*AudioEffect.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsAudioEffect() AudioEffect.Instance { return self.Super().AsAudioEffect() }
+func (self *Extension[T]) AsAudioEffect() AudioEffect.Instance { return self.Super().AsAudioEffect() }
 func (self Instance) AsAudioEffect() AudioEffect.Instance {
 	return *((*AudioEffect.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
+func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
+func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

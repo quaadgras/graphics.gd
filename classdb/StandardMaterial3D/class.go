@@ -91,7 +91,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("StandardMaterial3D"))
 	casted := Instance{*(*gdclass.StandardMaterial3D)(unsafe.Pointer(&object))}
@@ -99,13 +99,13 @@ func New() Instance {
 	return casted
 }
 
-func (self class) AsStandardMaterial3D() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsStandardMaterial3D() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsStandardMaterial3D() Instance { return self.Super().AsStandardMaterial3D() }
+func (self class) AsStandardMaterial3D() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsStandardMaterial3D() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsStandardMaterial3D() Instance { return self.Super().AsStandardMaterial3D() }
 func (self class) AsBaseMaterial3D() BaseMaterial3D.Advanced {
 	return *((*BaseMaterial3D.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsBaseMaterial3D() BaseMaterial3D.Instance {
+func (self *Extension[T]) AsBaseMaterial3D() BaseMaterial3D.Instance {
 	return self.Super().AsBaseMaterial3D()
 }
 func (self Instance) AsBaseMaterial3D() BaseMaterial3D.Instance {
@@ -114,21 +114,21 @@ func (self Instance) AsBaseMaterial3D() BaseMaterial3D.Instance {
 func (self class) AsMaterial() Material.Advanced {
 	return *((*Material.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsMaterial() Material.Instance { return self.Super().AsMaterial() }
+func (self *Extension[T]) AsMaterial() Material.Instance { return self.Super().AsMaterial() }
 func (self Instance) AsMaterial() Material.Instance {
 	return *((*Material.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
+func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
+func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

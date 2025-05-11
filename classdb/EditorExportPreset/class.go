@@ -266,7 +266,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorExportPreset"))
 	casted := Instance{*(*gdclass.EditorExportPreset)(unsafe.Pointer(&object))}
@@ -594,13 +594,13 @@ func (self class) GetVersion(name String.Name, windows_version bool) String.Read
 	frame.Free()
 	return ret
 }
-func (self class) AsEditorExportPreset() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsEditorExportPreset() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsEditorExportPreset() Instance { return self.Super().AsEditorExportPreset() }
+func (self class) AsEditorExportPreset() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsEditorExportPreset() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsEditorExportPreset() Instance { return self.Super().AsEditorExportPreset() }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
+func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

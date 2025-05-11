@@ -137,7 +137,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RenderSceneData"))
 	casted := Instance{*(*gdclass.RenderSceneData)(unsafe.Pointer(&object))}
@@ -226,9 +226,9 @@ func (self class) GetUniformBuffer() RID.Any { //gd:RenderSceneData.get_uniform_
 	frame.Free()
 	return ret
 }
-func (self class) AsRenderSceneData() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsRenderSceneData() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsRenderSceneData() Instance { return self.Super().AsRenderSceneData() }
+func (self class) AsRenderSceneData() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsRenderSceneData() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsRenderSceneData() Instance { return self.Super().AsRenderSceneData() }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

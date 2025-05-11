@@ -97,7 +97,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CSGBox3D"))
 	casted := Instance{*(*gdclass.CSGBox3D)(unsafe.Pointer(&object))}
@@ -157,13 +157,13 @@ func (self class) GetMaterial() [1]gdclass.Material { //gd:CSGBox3D.get_material
 	frame.Free()
 	return ret
 }
-func (self class) AsCSGBox3D() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsCSGBox3D() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsCSGBox3D() Instance { return self.Super().AsCSGBox3D() }
+func (self class) AsCSGBox3D() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsCSGBox3D() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsCSGBox3D() Instance { return self.Super().AsCSGBox3D() }
 func (self class) AsCSGPrimitive3D() CSGPrimitive3D.Advanced {
 	return *((*CSGPrimitive3D.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsCSGPrimitive3D() CSGPrimitive3D.Instance {
+func (self *Extension[T]) AsCSGPrimitive3D() CSGPrimitive3D.Instance {
 	return self.Super().AsCSGPrimitive3D()
 }
 func (self Instance) AsCSGPrimitive3D() CSGPrimitive3D.Instance {
@@ -172,14 +172,14 @@ func (self Instance) AsCSGPrimitive3D() CSGPrimitive3D.Instance {
 func (self class) AsCSGShape3D() CSGShape3D.Advanced {
 	return *((*CSGShape3D.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsCSGShape3D() CSGShape3D.Instance { return self.Super().AsCSGShape3D() }
+func (self *Extension[T]) AsCSGShape3D() CSGShape3D.Instance { return self.Super().AsCSGShape3D() }
 func (self Instance) AsCSGShape3D() CSGShape3D.Instance {
 	return *((*CSGShape3D.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsGeometryInstance3D() GeometryInstance3D.Advanced {
 	return *((*GeometryInstance3D.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsGeometryInstance3D() GeometryInstance3D.Instance {
+func (self *Extension[T]) AsGeometryInstance3D() GeometryInstance3D.Instance {
 	return self.Super().AsGeometryInstance3D()
 }
 func (self Instance) AsGeometryInstance3D() GeometryInstance3D.Instance {
@@ -188,18 +188,18 @@ func (self Instance) AsGeometryInstance3D() GeometryInstance3D.Instance {
 func (self class) AsVisualInstance3D() VisualInstance3D.Advanced {
 	return *((*VisualInstance3D.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsVisualInstance3D() VisualInstance3D.Instance {
+func (self *Extension[T]) AsVisualInstance3D() VisualInstance3D.Instance {
 	return self.Super().AsVisualInstance3D()
 }
 func (self Instance) AsVisualInstance3D() VisualInstance3D.Instance {
 	return *((*VisualInstance3D.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsNode3D() Node3D.Advanced        { return *((*Node3D.Advanced)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsNode3D() Node3D.Instance { return self.Super().AsNode3D() }
-func (self Instance) AsNode3D() Node3D.Instance     { return *((*Node3D.Instance)(unsafe.Pointer(&self))) }
-func (self class) AsNode() Node.Advanced            { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsNode() Node.Instance     { return self.Super().AsNode() }
-func (self Instance) AsNode() Node.Instance         { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode3D() Node3D.Advanced         { return *((*Node3D.Advanced)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsNode3D() Node3D.Instance { return self.Super().AsNode3D() }
+func (self Instance) AsNode3D() Node3D.Instance      { return *((*Node3D.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced             { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsNode() Node.Instance     { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance          { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

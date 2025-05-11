@@ -92,7 +92,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("World3D"))
 	casted := Instance{*(*gdclass.World3D)(unsafe.Pointer(&object))}
@@ -236,20 +236,20 @@ func (self class) GetDirectSpaceState() [1]gdclass.PhysicsDirectSpaceState3D { /
 	frame.Free()
 	return ret
 }
-func (self class) AsWorld3D() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsWorld3D() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsWorld3D() Instance { return self.Super().AsWorld3D() }
+func (self class) AsWorld3D() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsWorld3D() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsWorld3D() Instance { return self.Super().AsWorld3D() }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
+func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
+func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

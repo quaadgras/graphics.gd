@@ -89,7 +89,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RDVertexAttribute"))
 	casted := Instance{*(*gdclass.RDVertexAttribute)(unsafe.Pointer(&object))}
@@ -231,13 +231,13 @@ func (self class) GetFrequency() Rendering.VertexFrequency { //gd:RDVertexAttrib
 	frame.Free()
 	return ret
 }
-func (self class) AsRDVertexAttribute() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsRDVertexAttribute() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsRDVertexAttribute() Instance { return self.Super().AsRDVertexAttribute() }
+func (self class) AsRDVertexAttribute() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsRDVertexAttribute() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsRDVertexAttribute() Instance { return self.Super().AsRDVertexAttribute() }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
+func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

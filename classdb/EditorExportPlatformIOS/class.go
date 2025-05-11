@@ -85,7 +85,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorExportPlatformIOS"))
 	casted := Instance{*(*gdclass.EditorExportPlatformIOS)(unsafe.Pointer(&object))}
@@ -97,13 +97,13 @@ func (self class) AsEditorExportPlatformIOS() Advanced { return *((*Advanced)(un
 func (self Instance) AsEditorExportPlatformIOS() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsEditorExportPlatformIOS() Instance {
+func (self *Extension[T]) AsEditorExportPlatformIOS() Instance {
 	return self.Super().AsEditorExportPlatformIOS()
 }
 func (self class) AsEditorExportPlatform() EditorExportPlatform.Advanced {
 	return *((*EditorExportPlatform.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsEditorExportPlatform() EditorExportPlatform.Instance {
+func (self *Extension[T]) AsEditorExportPlatform() EditorExportPlatform.Instance {
 	return self.Super().AsEditorExportPlatform()
 }
 func (self Instance) AsEditorExportPlatform() EditorExportPlatform.Instance {
@@ -112,7 +112,7 @@ func (self Instance) AsEditorExportPlatform() EditorExportPlatform.Instance {
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
+func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

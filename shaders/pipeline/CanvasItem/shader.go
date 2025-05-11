@@ -2,10 +2,14 @@
 package CanvasItem
 
 import (
+	"reflect"
+
+	"graphics.gd/classdb/ShaderMaterial"
+	"graphics.gd/internal/gdclass"
+	"graphics.gd/shaders"
 	"graphics.gd/shaders/bool"
 	"graphics.gd/shaders/float"
 	"graphics.gd/shaders/int"
-	"graphics.gd/shaders/internal"
 	"graphics.gd/shaders/internal/gpu"
 	"graphics.gd/shaders/mat4"
 	"graphics.gd/shaders/vec2"
@@ -19,21 +23,23 @@ Shader used to draw all 2D elements in Godot. These include all nodes that inher
 CanvasItem shaders contain fewer built-in variables and functionality than Spatial shaders, but they maintain the same basic
 structure with vertex, fragment, and light processor functions.
 */
-type Shader struct {
-	shader
+type Shader[T gdclass.Interface] struct {
+	ShaderMaterial.Extension[T]
 }
 
-type shader = internal.Shader
+func (s *Shader[T]) OnCreate(value reflect.Value) {
+	shaders.CompileAny(value.Interface().(shaders.Any))
+}
 
-func (Shader) ShaderType() string       { return "canvas_item" }
-func (Shader) RenderMode() []RenderMode { return nil }
-func (Shader) Pipeline() [3]string {
+func (*Shader[T]) ShaderType() string       { return "canvas_item" }
+func (*Shader[T]) RenderMode() []RenderMode { return nil }
+func (*Shader[T]) Pipeline() [3]string {
 	return [3]string{"vertex", "fragment", "light"}
 }
 
-func (Shader) Fragment(vertex Vertex) Fragment     { return Fragment{} }
-func (Shader) Material(fragment Fragment) Material { return Material{} }
-func (Shader) Lighting(material Material) Lighting { return Lighting{} }
+func (*Shader[T]) Fragment(vertex Vertex) Fragment     { return Fragment{} }
+func (*Shader[T]) Material(fragment Fragment) Material { return Material{} }
+func (*Shader[T]) Lighting(material Material) Lighting { return Lighting{} }
 
 type RenderMode string
 

@@ -232,7 +232,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShader"))
 	casted := Instance{*(*gdclass.VisualShader)(unsafe.Pointer(&object))}
@@ -559,23 +559,23 @@ func (self class) HasVarying(name String.Readable) bool { //gd:VisualShader.has_
 	frame.Free()
 	return ret
 }
-func (self class) AsVisualShader() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsVisualShader() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsVisualShader() Instance  { return self.Super().AsVisualShader() }
-func (self class) AsShader() Shader.Advanced        { return *((*Shader.Advanced)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsShader() Shader.Instance { return self.Super().AsShader() }
-func (self Instance) AsShader() Shader.Instance     { return *((*Shader.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsVisualShader() Advanced          { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsVisualShader() Instance       { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsVisualShader() Instance  { return self.Super().AsVisualShader() }
+func (self class) AsShader() Shader.Advanced         { return *((*Shader.Advanced)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsShader() Shader.Instance { return self.Super().AsShader() }
+func (self Instance) AsShader() Shader.Instance      { return *((*Shader.Instance)(unsafe.Pointer(&self))) }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
+func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
+func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

@@ -322,7 +322,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ResourceFormatLoader"))
 	casted := Instance{*(*gdclass.ResourceFormatLoader)(unsafe.Pointer(&object))}
@@ -517,13 +517,13 @@ func (class) _load(impl func(ptr unsafe.Pointer, path String.Readable, original_
 
 func (self class) AsResourceFormatLoader() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsResourceFormatLoader() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsResourceFormatLoader() Instance {
+func (self *Extension[T]) AsResourceFormatLoader() Instance {
 	return self.Super().AsResourceFormatLoader()
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
+func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

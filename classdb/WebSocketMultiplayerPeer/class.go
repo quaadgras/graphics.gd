@@ -146,7 +146,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("WebSocketMultiplayerPeer"))
 	casted := Instance{*(*gdclass.WebSocketMultiplayerPeer)(unsafe.Pointer(&object))}
@@ -393,13 +393,13 @@ func (self class) AsWebSocketMultiplayerPeer() Advanced { return *((*Advanced)(u
 func (self Instance) AsWebSocketMultiplayerPeer() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsWebSocketMultiplayerPeer() Instance {
+func (self *Extension[T]) AsWebSocketMultiplayerPeer() Instance {
 	return self.Super().AsWebSocketMultiplayerPeer()
 }
 func (self class) AsMultiplayerPeer() MultiplayerPeer.Advanced {
 	return *((*MultiplayerPeer.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsMultiplayerPeer() MultiplayerPeer.Instance {
+func (self *Extension[T]) AsMultiplayerPeer() MultiplayerPeer.Instance {
 	return self.Super().AsMultiplayerPeer()
 }
 func (self Instance) AsMultiplayerPeer() MultiplayerPeer.Instance {
@@ -408,14 +408,14 @@ func (self Instance) AsMultiplayerPeer() MultiplayerPeer.Instance {
 func (self class) AsPacketPeer() PacketPeer.Advanced {
 	return *((*PacketPeer.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsPacketPeer() PacketPeer.Instance { return self.Super().AsPacketPeer() }
+func (self *Extension[T]) AsPacketPeer() PacketPeer.Instance { return self.Super().AsPacketPeer() }
 func (self Instance) AsPacketPeer() PacketPeer.Instance {
 	return *((*PacketPeer.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
+func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

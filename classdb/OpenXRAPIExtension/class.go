@@ -399,7 +399,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("OpenXRAPIExtension"))
 	casted := Instance{*(*gdclass.OpenXRAPIExtension)(unsafe.Pointer(&object))}
@@ -962,13 +962,13 @@ func (self class) IsEnvironmentBlendModeAlphaSupported() OpenXRAlphaBlendModeSup
 	frame.Free()
 	return ret
 }
-func (self class) AsOpenXRAPIExtension() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsOpenXRAPIExtension() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsOpenXRAPIExtension() Instance { return self.Super().AsOpenXRAPIExtension() }
+func (self class) AsOpenXRAPIExtension() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsOpenXRAPIExtension() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsOpenXRAPIExtension() Instance { return self.Super().AsOpenXRAPIExtension() }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
+func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

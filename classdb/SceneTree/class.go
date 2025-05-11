@@ -383,7 +383,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SceneTree"))
 	casted := Instance{*(*gdclass.SceneTree)(unsafe.Pointer(&object))}
@@ -1065,13 +1065,13 @@ func (self Instance) OnPhysicsFrame(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("physics_frame"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsSceneTree() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsSceneTree() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsSceneTree() Instance { return self.Super().AsSceneTree() }
+func (self class) AsSceneTree() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsSceneTree() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsSceneTree() Instance { return self.Super().AsSceneTree() }
 func (self class) AsMainLoop() MainLoop.Advanced {
 	return *((*MainLoop.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsMainLoop() MainLoop.Instance { return self.Super().AsMainLoop() }
+func (self *Extension[T]) AsMainLoop() MainLoop.Instance { return self.Super().AsMainLoop() }
 func (self Instance) AsMainLoop() MainLoop.Instance {
 	return *((*MainLoop.Instance)(unsafe.Pointer(&self)))
 }

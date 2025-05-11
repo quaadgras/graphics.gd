@@ -170,7 +170,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("OpenXRActionMap"))
 	casted := Instance{*(*gdclass.OpenXRActionMap)(unsafe.Pointer(&object))}
@@ -372,20 +372,20 @@ func (self class) CreateDefaultActionSets() { //gd:OpenXRActionMap.create_defaul
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionMap.Bind_create_default_action_sets, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
-func (self class) AsOpenXRActionMap() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsOpenXRActionMap() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsOpenXRActionMap() Instance { return self.Super().AsOpenXRActionMap() }
+func (self class) AsOpenXRActionMap() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsOpenXRActionMap() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsOpenXRActionMap() Instance { return self.Super().AsOpenXRActionMap() }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
+func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
+func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

@@ -385,7 +385,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		fmt.Fprintf(file, "\n\n//go:nosplit\nfunc (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }\n")
 		fmt.Fprintln(file, "func (self Instance) AsObject() [1]gd.Object { return self[0].AsObject() }")
 		fmt.Fprintf(file, "\n\n//go:nosplit\nfunc (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }\n")
-		fmt.Fprintln(file, "func (self Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }")
+		fmt.Fprintln(file, "func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }")
 		if !singleton {
 			classDB.new(file, class)
 		}
@@ -402,7 +402,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 			if !singleton {
 				fmt.Fprintf(file, "\nfunc (self class) As%[1]v() Advanced { return *((*Advanced)(unsafe.Pointer(&self))) }\n", class.Name)
 				fmt.Fprintf(file, "func (self Instance) As%[1]v() Instance { return *((*Instance)(unsafe.Pointer(&self))) }\n", class.Name)
-				fmt.Fprintf(file, "func (self Extension[T]) As%[1]v() Instance { return self.Super().As%[1]v() }\n", class.Name)
+				fmt.Fprintf(file, "func (self *Extension[T]) As%[1]v() Instance { return self.Super().As%[1]v() }\n", class.Name)
 			}
 			super := classDB[class.Inherits]
 			for super.Name != "" && super.Name != "Object" {
@@ -412,13 +412,13 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 				}
 				if super.Name == "RefCounted" {
 					fmt.Fprintf(file, "func (self class) AsRefCounted() [1]gd.RefCounted { return *((*[1]gd.RefCounted)(unsafe.Pointer(&self))) }\n")
-					fmt.Fprintf(file, "func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }\n")
+					fmt.Fprintf(file, "func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }\n")
 					if !singleton {
 						fmt.Fprintf(file, "func (self Instance) AsRefCounted() [1]gd.RefCounted { return *((*[1]gd.RefCounted)(unsafe.Pointer(&self))) }\n")
 					}
 				} else {
 					fmt.Fprintf(file, "func (self class) As%[2]v() %[2]v.Advanced { return *((*%[2]v.Advanced)(unsafe.Pointer(&self))) }\n", class.Name, super.Name)
-					fmt.Fprintf(file, "func (self Extension[T]) As%[2]v() %[2]v.Instance { return self.Super().As%[2]v() }\n", class.Name, super.Name)
+					fmt.Fprintf(file, "func (self *Extension[T]) As%[2]v() %[2]v.Instance { return self.Super().As%[2]v() }\n", class.Name, super.Name)
 					if !singleton {
 						fmt.Fprintf(file, "func (self Instance) As%[2]v() %[2]v.Instance { return *((*%[2]v.Instance)(unsafe.Pointer(&self))) }\n", class.Name, super.Name)
 					}

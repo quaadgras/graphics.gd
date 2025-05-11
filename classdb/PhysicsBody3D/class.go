@@ -174,7 +174,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PhysicsBody3D"))
 	casted := Instance{*(*gdclass.PhysicsBody3D)(unsafe.Pointer(&object))}
@@ -352,24 +352,24 @@ func (self class) RemoveCollisionExceptionWith(body [1]gdclass.Node) { //gd:Phys
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsBody3D.Bind_remove_collision_exception_with, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
-func (self class) AsPhysicsBody3D() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsPhysicsBody3D() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsPhysicsBody3D() Instance { return self.Super().AsPhysicsBody3D() }
+func (self class) AsPhysicsBody3D() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsPhysicsBody3D() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsPhysicsBody3D() Instance { return self.Super().AsPhysicsBody3D() }
 func (self class) AsCollisionObject3D() CollisionObject3D.Advanced {
 	return *((*CollisionObject3D.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsCollisionObject3D() CollisionObject3D.Instance {
+func (self *Extension[T]) AsCollisionObject3D() CollisionObject3D.Instance {
 	return self.Super().AsCollisionObject3D()
 }
 func (self Instance) AsCollisionObject3D() CollisionObject3D.Instance {
 	return *((*CollisionObject3D.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsNode3D() Node3D.Advanced        { return *((*Node3D.Advanced)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsNode3D() Node3D.Instance { return self.Super().AsNode3D() }
-func (self Instance) AsNode3D() Node3D.Instance     { return *((*Node3D.Instance)(unsafe.Pointer(&self))) }
-func (self class) AsNode() Node.Advanced            { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsNode() Node.Instance     { return self.Super().AsNode() }
-func (self Instance) AsNode() Node.Instance         { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode3D() Node3D.Advanced         { return *((*Node3D.Advanced)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsNode3D() Node3D.Instance { return self.Super().AsNode3D() }
+func (self Instance) AsNode3D() Node3D.Instance      { return *((*Node3D.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced             { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsNode() Node.Instance     { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance          { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

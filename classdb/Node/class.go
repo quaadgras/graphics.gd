@@ -1439,7 +1439,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Node"))
 	casted := Instance{*(*gdclass.Node)(unsafe.Pointer(&object))}
@@ -3445,9 +3445,9 @@ func (self Instance) OnEditorStateChanged(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("editor_state_changed"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsNode() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsNode() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsNode() Instance { return self.Super().AsNode() }
+func (self class) AsNode() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsNode() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsNode() Instance { return self.Super().AsNode() }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

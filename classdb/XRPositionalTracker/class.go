@@ -137,7 +137,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("XRPositionalTracker"))
 	casted := Instance{*(*gdclass.XRPositionalTracker)(unsafe.Pointer(&object))}
@@ -311,20 +311,20 @@ func (self Instance) OnProfileChanged(cb func(role string)) {
 
 func (self class) AsXRPositionalTracker() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsXRPositionalTracker() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsXRPositionalTracker() Instance {
+func (self *Extension[T]) AsXRPositionalTracker() Instance {
 	return self.Super().AsXRPositionalTracker()
 }
 func (self class) AsXRTracker() XRTracker.Advanced {
 	return *((*XRTracker.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsXRTracker() XRTracker.Instance { return self.Super().AsXRTracker() }
+func (self *Extension[T]) AsXRTracker() XRTracker.Instance { return self.Super().AsXRTracker() }
 func (self Instance) AsXRTracker() XRTracker.Instance {
 	return *((*XRTracker.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
+func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

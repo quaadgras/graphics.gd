@@ -118,7 +118,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("FileSystemDock"))
 	casted := Instance{*(*gdclass.FileSystemDock)(unsafe.Pointer(&object))}
@@ -196,13 +196,13 @@ func (self Instance) OnDisplayModeChanged(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("display_mode_changed"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsFileSystemDock() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsFileSystemDock() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsFileSystemDock() Instance { return self.Super().AsFileSystemDock() }
+func (self class) AsFileSystemDock() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsFileSystemDock() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsFileSystemDock() Instance { return self.Super().AsFileSystemDock() }
 func (self class) AsVBoxContainer() VBoxContainer.Advanced {
 	return *((*VBoxContainer.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsVBoxContainer() VBoxContainer.Instance {
+func (self *Extension[T]) AsVBoxContainer() VBoxContainer.Instance {
 	return self.Super().AsVBoxContainer()
 }
 func (self Instance) AsVBoxContainer() VBoxContainer.Instance {
@@ -211,32 +211,34 @@ func (self Instance) AsVBoxContainer() VBoxContainer.Instance {
 func (self class) AsBoxContainer() BoxContainer.Advanced {
 	return *((*BoxContainer.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsBoxContainer() BoxContainer.Instance { return self.Super().AsBoxContainer() }
+func (self *Extension[T]) AsBoxContainer() BoxContainer.Instance {
+	return self.Super().AsBoxContainer()
+}
 func (self Instance) AsBoxContainer() BoxContainer.Instance {
 	return *((*BoxContainer.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsContainer() Container.Advanced {
 	return *((*Container.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsContainer() Container.Instance { return self.Super().AsContainer() }
+func (self *Extension[T]) AsContainer() Container.Instance { return self.Super().AsContainer() }
 func (self Instance) AsContainer() Container.Instance {
 	return *((*Container.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsControl() Control.Advanced        { return *((*Control.Advanced)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsControl() Control.Instance { return self.Super().AsControl() }
+func (self class) AsControl() Control.Advanced         { return *((*Control.Advanced)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsControl() Control.Instance { return self.Super().AsControl() }
 func (self Instance) AsControl() Control.Instance {
 	return *((*Control.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsCanvasItem() CanvasItem.Advanced {
 	return *((*CanvasItem.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
+func (self *Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
 func (self Instance) AsCanvasItem() CanvasItem.Instance {
 	return *((*CanvasItem.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
-func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced         { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance      { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

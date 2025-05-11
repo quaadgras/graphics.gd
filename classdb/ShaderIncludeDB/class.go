@@ -112,7 +112,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ShaderIncludeDB"))
 	casted := Instance{*(*gdclass.ShaderIncludeDB)(unsafe.Pointer(&object))}
@@ -159,9 +159,9 @@ func (self class) GetBuiltInIncludeFile(filename String.Readable) String.Readabl
 	frame.Free()
 	return ret
 }
-func (self class) AsShaderIncludeDB() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsShaderIncludeDB() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsShaderIncludeDB() Instance { return self.Super().AsShaderIncludeDB() }
+func (self class) AsShaderIncludeDB() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsShaderIncludeDB() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsShaderIncludeDB() Instance { return self.Super().AsShaderIncludeDB() }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

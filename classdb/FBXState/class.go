@@ -90,7 +90,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("FBXState"))
 	casted := Instance{*(*gdclass.FBXState)(unsafe.Pointer(&object))}
@@ -124,27 +124,27 @@ func (self class) SetAllowGeometryHelperNodes(allow bool) { //gd:FBXState.set_al
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FBXState.Bind_set_allow_geometry_helper_nodes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
-func (self class) AsFBXState() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsFBXState() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsFBXState() Instance { return self.Super().AsFBXState() }
+func (self class) AsFBXState() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsFBXState() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsFBXState() Instance { return self.Super().AsFBXState() }
 func (self class) AsGLTFState() GLTFState.Advanced {
 	return *((*GLTFState.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsGLTFState() GLTFState.Instance { return self.Super().AsGLTFState() }
+func (self *Extension[T]) AsGLTFState() GLTFState.Instance { return self.Super().AsGLTFState() }
 func (self Instance) AsGLTFState() GLTFState.Instance {
 	return *((*GLTFState.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
+func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
+func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

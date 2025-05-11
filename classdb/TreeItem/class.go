@@ -946,7 +946,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TreeItem"))
 	casted := Instance{*(*gdclass.TreeItem)(unsafe.Pointer(&object))}
@@ -2535,9 +2535,9 @@ func (self class) CallRecursive(method String.Name, args ...gd.Variant) { //gd:T
 	_ = ret
 }
 
-func (self class) AsTreeItem() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsTreeItem() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsTreeItem() Instance { return self.Super().AsTreeItem() }
+func (self class) AsTreeItem() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsTreeItem() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsTreeItem() Instance { return self.Super().AsTreeItem() }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

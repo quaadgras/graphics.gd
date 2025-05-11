@@ -375,7 +375,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("UndoRedo"))
 	casted := Instance{*(*gdclass.UndoRedo)(unsafe.Pointer(&object))}
@@ -701,9 +701,9 @@ func (self Instance) OnVersionChanged(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("version_changed"), gd.NewCallable(cb), 0)
 }
 
-func (self class) AsUndoRedo() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsUndoRedo() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsUndoRedo() Instance { return self.Super().AsUndoRedo() }
+func (self class) AsUndoRedo() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsUndoRedo() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsUndoRedo() Instance { return self.Super().AsUndoRedo() }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

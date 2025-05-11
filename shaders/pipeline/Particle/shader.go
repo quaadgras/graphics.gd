@@ -2,9 +2,10 @@
 package Particle
 
 import (
+	"graphics.gd/classdb/ShaderMaterial"
+	"graphics.gd/internal/gdclass"
 	"graphics.gd/shaders/bool"
 	"graphics.gd/shaders/float"
-	"graphics.gd/shaders/internal"
 	"graphics.gd/shaders/internal/gpu"
 	"graphics.gd/shaders/mat4"
 	"graphics.gd/shaders/uint"
@@ -21,21 +22,19 @@ which are then used by a CanvasItem or Spatial shader. They contain two processo
 
 Unlike other shader types, particle shaders keep the data that was output the previous frame. Therefore, particle shaders can be used for complex effects that take place over multiple frames.
 */
-type Shader struct {
-	shader
+type Shader[T gdclass.Interface] struct {
+	ShaderMaterial.Extension[T]
 }
 
-type shader = internal.Shader
-
-func (Shader) ShaderType() string       { return "particle" }
-func (Shader) RenderMode() []RenderMode { return nil }
-func (Shader) Pipeline() [3]string {
+func (Shader[T]) ShaderType() string       { return "particle" }
+func (Shader[T]) RenderMode() []RenderMode { return nil }
+func (Shader[T]) Pipeline() [3]string {
 	return [3]string{"start", "process", ""}
 }
 
-func (Shader) Fragment(state Startup) Process { return Process{} }
-func (Shader) Material(state Process) State   { return State{} }
-func (Shader) Lighting(Process) struct{}      { return struct{}{} }
+func (Shader[T]) Fragment(state Startup) Process { return Process{} }
+func (Shader[T]) Material(state Process) State   { return State{} }
+func (Shader[T]) Lighting(Process) struct{}      { return struct{}{} }
 
 type RenderMode string
 

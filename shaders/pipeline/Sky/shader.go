@@ -4,9 +4,10 @@ package Sky
 import (
 	"fmt"
 
+	"graphics.gd/classdb/ShaderMaterial"
+	"graphics.gd/internal/gdclass"
 	"graphics.gd/shaders/bool"
 	"graphics.gd/shaders/float"
-	"graphics.gd/shaders/internal"
 	"graphics.gd/shaders/internal/gpu"
 	"graphics.gd/shaders/texture"
 	"graphics.gd/shaders/vec2"
@@ -14,21 +15,19 @@ import (
 	"graphics.gd/shaders/vec4"
 )
 
-type Shader struct {
-	shader
+type Shader[T gdclass.Interface] struct {
+	ShaderMaterial.Extension[T]
 }
 
-type shader = internal.Shader
-
-func (Shader) ShaderType() string       { return "sky" }
-func (Shader) RenderMode() []RenderMode { return nil }
-func (Shader) Pipeline() [3]string {
+func (Shader[T]) ShaderType() string       { return "sky" }
+func (Shader[T]) RenderMode() []RenderMode { return nil }
+func (Shader[T]) Pipeline() [3]string {
 	return [3]string{"", "", "sky"}
 }
 
-func (Shader) Fragment(state struct{}) struct{} { return struct{}{} }
-func (Shader) Material(state struct{}) Snapshot { return Snapshot{} }
-func (Shader) Lighting(Snapshot) Lighting       { return Lighting{} }
+func (Shader[T]) Fragment(state struct{}) struct{} { return struct{}{} }
+func (Shader[T]) Material(state struct{}) Snapshot { return Snapshot{} }
+func (Shader[T]) Lighting(Snapshot) Lighting       { return Lighting{} }
 
 type RenderMode string
 

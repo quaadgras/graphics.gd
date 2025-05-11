@@ -103,7 +103,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RDTextureFormat"))
 	casted := Instance{*(*gdclass.RDTextureFormat)(unsafe.Pointer(&object))}
@@ -431,13 +431,13 @@ func (self class) RemoveShareableFormat(format Rendering.DataFormat) { //gd:RDTe
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_remove_shareable_format, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
-func (self class) AsRDTextureFormat() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsRDTextureFormat() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsRDTextureFormat() Instance { return self.Super().AsRDTextureFormat() }
+func (self class) AsRDTextureFormat() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsRDTextureFormat() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsRDTextureFormat() Instance { return self.Super().AsRDTextureFormat() }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
+func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

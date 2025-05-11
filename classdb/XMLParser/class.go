@@ -245,7 +245,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("XMLParser"))
 	casted := Instance{*(*gdclass.XMLParser)(unsafe.Pointer(&object))}
@@ -481,13 +481,13 @@ func (self class) OpenBuffer(buffer Packed.Bytes) Error.Code { //gd:XMLParser.op
 	frame.Free()
 	return ret
 }
-func (self class) AsXMLParser() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsXMLParser() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsXMLParser() Instance { return self.Super().AsXMLParser() }
+func (self class) AsXMLParser() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsXMLParser() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsXMLParser() Instance { return self.Super().AsXMLParser() }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
+func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

@@ -92,7 +92,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("InputEventScreenTouch"))
 	casted := Instance{*(*gdclass.InputEventScreenTouch)(unsafe.Pointer(&object))}
@@ -208,13 +208,13 @@ func (self class) IsDoubleTap() bool { //gd:InputEventScreenTouch.is_double_tap
 }
 func (self class) AsInputEventScreenTouch() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsInputEventScreenTouch() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsInputEventScreenTouch() Instance {
+func (self *Extension[T]) AsInputEventScreenTouch() Instance {
 	return self.Super().AsInputEventScreenTouch()
 }
 func (self class) AsInputEventFromWindow() InputEventFromWindow.Advanced {
 	return *((*InputEventFromWindow.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsInputEventFromWindow() InputEventFromWindow.Instance {
+func (self *Extension[T]) AsInputEventFromWindow() InputEventFromWindow.Instance {
 	return self.Super().AsInputEventFromWindow()
 }
 func (self Instance) AsInputEventFromWindow() InputEventFromWindow.Instance {
@@ -223,21 +223,21 @@ func (self Instance) AsInputEventFromWindow() InputEventFromWindow.Instance {
 func (self class) AsInputEvent() InputEvent.Advanced {
 	return *((*InputEvent.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsInputEvent() InputEvent.Instance { return self.Super().AsInputEvent() }
+func (self *Extension[T]) AsInputEvent() InputEvent.Instance { return self.Super().AsInputEvent() }
 func (self Instance) AsInputEvent() InputEvent.Instance {
 	return *((*InputEvent.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
+func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
+func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

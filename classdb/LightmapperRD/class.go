@@ -90,7 +90,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("LightmapperRD"))
 	casted := Instance{*(*gdclass.LightmapperRD)(unsafe.Pointer(&object))}
@@ -98,20 +98,20 @@ func New() Instance {
 	return casted
 }
 
-func (self class) AsLightmapperRD() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsLightmapperRD() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsLightmapperRD() Instance { return self.Super().AsLightmapperRD() }
+func (self class) AsLightmapperRD() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsLightmapperRD() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsLightmapperRD() Instance { return self.Super().AsLightmapperRD() }
 func (self class) AsLightmapper() Lightmapper.Advanced {
 	return *((*Lightmapper.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsLightmapper() Lightmapper.Instance { return self.Super().AsLightmapper() }
+func (self *Extension[T]) AsLightmapper() Lightmapper.Instance { return self.Super().AsLightmapper() }
 func (self Instance) AsLightmapper() Lightmapper.Instance {
 	return *((*Lightmapper.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
+func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

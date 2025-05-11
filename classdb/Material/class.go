@@ -171,7 +171,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Material"))
 	casted := Instance{*(*gdclass.Material)(unsafe.Pointer(&object))}
@@ -300,20 +300,20 @@ func (self class) CreatePlaceholder() [1]gdclass.Resource { //gd:Material.create
 	frame.Free()
 	return ret
 }
-func (self class) AsMaterial() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsMaterial() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsMaterial() Instance { return self.Super().AsMaterial() }
+func (self class) AsMaterial() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsMaterial() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsMaterial() Instance { return self.Super().AsMaterial() }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
+func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
+func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

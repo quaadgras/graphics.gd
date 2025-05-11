@@ -309,7 +309,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AStarGrid2D"))
 	casted := Instance{*(*gdclass.AStarGrid2D)(unsafe.Pointer(&object))}
@@ -801,13 +801,13 @@ func (self class) GetIdPath(from_id Vector2i.XY, to_id Vector2i.XY, allow_partia
 	frame.Free()
 	return ret
 }
-func (self class) AsAStarGrid2D() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsAStarGrid2D() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsAStarGrid2D() Instance { return self.Super().AsAStarGrid2D() }
+func (self class) AsAStarGrid2D() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsAStarGrid2D() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsAStarGrid2D() Instance { return self.Super().AsAStarGrid2D() }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
+func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

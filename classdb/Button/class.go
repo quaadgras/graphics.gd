@@ -130,7 +130,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Button"))
 	casted := Instance{*(*gdclass.Button)(unsafe.Pointer(&object))}
@@ -460,31 +460,31 @@ func (self class) IsExpandIcon() bool { //gd:Button.is_expand_icon
 	frame.Free()
 	return ret
 }
-func (self class) AsButton() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsButton() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsButton() Instance { return self.Super().AsButton() }
+func (self class) AsButton() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsButton() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsButton() Instance { return self.Super().AsButton() }
 func (self class) AsBaseButton() BaseButton.Advanced {
 	return *((*BaseButton.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsBaseButton() BaseButton.Instance { return self.Super().AsBaseButton() }
+func (self *Extension[T]) AsBaseButton() BaseButton.Instance { return self.Super().AsBaseButton() }
 func (self Instance) AsBaseButton() BaseButton.Instance {
 	return *((*BaseButton.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsControl() Control.Advanced        { return *((*Control.Advanced)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsControl() Control.Instance { return self.Super().AsControl() }
+func (self class) AsControl() Control.Advanced         { return *((*Control.Advanced)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsControl() Control.Instance { return self.Super().AsControl() }
 func (self Instance) AsControl() Control.Instance {
 	return *((*Control.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsCanvasItem() CanvasItem.Advanced {
 	return *((*CanvasItem.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
+func (self *Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
 func (self Instance) AsCanvasItem() CanvasItem.Instance {
 	return *((*CanvasItem.Instance)(unsafe.Pointer(&self)))
 }
-func (self class) AsNode() Node.Advanced        { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
-func (self Instance) AsNode() Node.Instance     { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced         { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance      { return *((*Node.Instance)(unsafe.Pointer(&self))) }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

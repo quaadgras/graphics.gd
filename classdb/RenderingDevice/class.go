@@ -1393,7 +1393,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RenderingDevice"))
 	casted := Instance{*(*gdclass.RenderingDevice)(unsafe.Pointer(&object))}
@@ -3269,9 +3269,9 @@ func (self class) GetDeviceAllocsByObjectType(atype int64) int64 { //gd:Renderin
 	frame.Free()
 	return ret
 }
-func (self class) AsRenderingDevice() Advanced        { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsRenderingDevice() Instance     { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsRenderingDevice() Instance { return self.Super().AsRenderingDevice() }
+func (self class) AsRenderingDevice() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsRenderingDevice() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsRenderingDevice() Instance { return self.Super().AsRenderingDevice() }
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

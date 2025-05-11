@@ -92,7 +92,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeVec2Constant"))
 	casted := Instance{*(*gdclass.VisualShaderNodeVec2Constant)(unsafe.Pointer(&object))}
@@ -132,13 +132,13 @@ func (self class) AsVisualShaderNodeVec2Constant() Advanced {
 func (self Instance) AsVisualShaderNodeVec2Constant() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsVisualShaderNodeVec2Constant() Instance {
+func (self *Extension[T]) AsVisualShaderNodeVec2Constant() Instance {
 	return self.Super().AsVisualShaderNodeVec2Constant()
 }
 func (self class) AsVisualShaderNodeConstant() VisualShaderNodeConstant.Advanced {
 	return *((*VisualShaderNodeConstant.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsVisualShaderNodeConstant() VisualShaderNodeConstant.Instance {
+func (self *Extension[T]) AsVisualShaderNodeConstant() VisualShaderNodeConstant.Instance {
 	return self.Super().AsVisualShaderNodeConstant()
 }
 func (self Instance) AsVisualShaderNodeConstant() VisualShaderNodeConstant.Instance {
@@ -147,7 +147,7 @@ func (self Instance) AsVisualShaderNodeConstant() VisualShaderNodeConstant.Insta
 func (self class) AsVisualShaderNode() VisualShaderNode.Advanced {
 	return *((*VisualShaderNode.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsVisualShaderNode() VisualShaderNode.Instance {
+func (self *Extension[T]) AsVisualShaderNode() VisualShaderNode.Instance {
 	return self.Super().AsVisualShaderNode()
 }
 func (self Instance) AsVisualShaderNode() VisualShaderNode.Instance {
@@ -156,14 +156,14 @@ func (self Instance) AsVisualShaderNode() VisualShaderNode.Instance {
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
+func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
+func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

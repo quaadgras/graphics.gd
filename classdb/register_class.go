@@ -356,23 +356,20 @@ func (class classImplementation) IsExposed() bool {
 }
 
 func (class classImplementation) CreateInstance() [1]gd.Object {
-	return class.CreateInstanceFrom(reflect.Value{})
+	return class.CreateInstanceFrom(class.Constructor())
 }
 
-func (class classImplementation) CreateInstanceFrom(reuse reflect.Value) [1]gd.Object {
+func (class classImplementation) CreateInstanceFrom(value reflect.Value) [1]gd.Object {
 	var super = gd.Global.ClassDB.ConstructObject(class.Super)
 	super = [1]gd.Object{pointers.Pin(pointers.Lay(super[0]))}
-	instance := class.reloadInstance(reuse, super)
+	instance := class.reloadInstance(value, super)
 	gd.Global.Object.SetInstance(super, class.Name, instance)
 	gd.Global.Object.SetInstanceBinding(super, gd.Global.ExtensionToken, nil, nil)
-	instance.OnCreate()
+	instance.OnCreate(value)
 	return super
 }
 
 func (class classImplementation) reloadInstance(value reflect.Value, super [1]gd.Object) gd.ObjectInterface {
-	if !value.IsValid() {
-		value = class.Constructor()
-	}
 	extensionClass := value.Interface().(gdclass.Pointer)
 	gdclass.SetObject(extensionClass, super)
 
@@ -472,11 +469,21 @@ type instanceImplementation struct {
 
 var lastGC int
 
-func (instance *instanceImplementation) OnCreate() {
+func (instance *instanceImplementation) OnCreate(value reflect.Value) {
 	if impl, ok := instance.Value.(interface {
 		OnCreate()
 	}); ok {
 		impl.OnCreate()
+	}
+	if impl, ok := instance.Value.(interface {
+		OnCreate(value reflect.Value)
+	}); ok {
+		impl.OnCreate(value)
+	}
+	if impl, ok := instance.Value.(interface {
+		Init()
+	}); ok {
+		impl.Init()
 	}
 }
 

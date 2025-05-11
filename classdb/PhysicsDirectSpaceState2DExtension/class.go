@@ -221,7 +221,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PhysicsDirectSpaceState2DExtension"))
 	casted := Instance{*(*gdclass.PhysicsDirectSpaceState2DExtension)(unsafe.Pointer(&object))}
@@ -342,13 +342,13 @@ func (self class) AsPhysicsDirectSpaceState2DExtension() Advanced {
 func (self Instance) AsPhysicsDirectSpaceState2DExtension() Instance {
 	return *((*Instance)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsPhysicsDirectSpaceState2DExtension() Instance {
+func (self *Extension[T]) AsPhysicsDirectSpaceState2DExtension() Instance {
 	return self.Super().AsPhysicsDirectSpaceState2DExtension()
 }
 func (self class) AsPhysicsDirectSpaceState2D() PhysicsDirectSpaceState2D.Advanced {
 	return *((*PhysicsDirectSpaceState2D.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsPhysicsDirectSpaceState2D() PhysicsDirectSpaceState2D.Instance {
+func (self *Extension[T]) AsPhysicsDirectSpaceState2D() PhysicsDirectSpaceState2D.Instance {
 	return self.Super().AsPhysicsDirectSpaceState2D()
 }
 func (self Instance) AsPhysicsDirectSpaceState2D() PhysicsDirectSpaceState2D.Instance {

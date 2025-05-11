@@ -134,7 +134,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioEffectInstance"))
 	casted := Instance{*(*gdclass.AudioEffectInstance)(unsafe.Pointer(&object))}
@@ -170,13 +170,13 @@ func (class) _process_silence(impl func(ptr unsafe.Pointer) bool) (cb gd.Extensi
 
 func (self class) AsAudioEffectInstance() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsAudioEffectInstance() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsAudioEffectInstance() Instance {
+func (self *Extension[T]) AsAudioEffectInstance() Instance {
 	return self.Super().AsAudioEffectInstance()
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
+func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }

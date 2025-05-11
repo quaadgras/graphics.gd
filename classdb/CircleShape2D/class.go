@@ -91,7 +91,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 
 //go:nosplit
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
 	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CircleShape2D"))
 	casted := Instance{*(*gdclass.CircleShape2D)(unsafe.Pointer(&object))}
@@ -125,25 +125,25 @@ func (self class) GetRadius() float64 { //gd:CircleShape2D.get_radius
 	frame.Free()
 	return ret
 }
-func (self class) AsCircleShape2D() Advanced          { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsCircleShape2D() Instance       { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsCircleShape2D() Instance   { return self.Super().AsCircleShape2D() }
-func (self class) AsShape2D() Shape2D.Advanced        { return *((*Shape2D.Advanced)(unsafe.Pointer(&self))) }
-func (self Extension[T]) AsShape2D() Shape2D.Instance { return self.Super().AsShape2D() }
+func (self class) AsCircleShape2D() Advanced           { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self Instance) AsCircleShape2D() Instance        { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsCircleShape2D() Instance   { return self.Super().AsCircleShape2D() }
+func (self class) AsShape2D() Shape2D.Advanced         { return *((*Shape2D.Advanced)(unsafe.Pointer(&self))) }
+func (self *Extension[T]) AsShape2D() Shape2D.Instance { return self.Super().AsShape2D() }
 func (self Instance) AsShape2D() Shape2D.Instance {
 	return *((*Shape2D.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsResource() Resource.Advanced {
 	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
+func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
 	return *((*Resource.Instance)(unsafe.Pointer(&self)))
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
-func (self Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
+func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
 }
