@@ -193,12 +193,12 @@ func Register[T Class](exports ...any) {
 				}
 			}
 		}
-		registerClassInformation(className, rename, nameOf(superType), classType, documentation, method_renames)
 		switch super.(type) {
 		case interface {
 			AsShaderMaterial() ShaderMaterialClass.Instance
 		}:
 		default:
+			registerClassInformation(className, rename, nameOf(superType), classType, documentation, method_renames)
 			registerSignals(className, classType)
 			registerMethods(className, classType, method_renames)
 		}

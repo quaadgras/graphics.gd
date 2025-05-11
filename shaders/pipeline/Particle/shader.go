@@ -2,8 +2,11 @@
 package Particle
 
 import (
+	"reflect"
+
 	"graphics.gd/classdb/ShaderMaterial"
 	"graphics.gd/internal/gdclass"
+	"graphics.gd/shaders"
 	"graphics.gd/shaders/bool"
 	"graphics.gd/shaders/float"
 	"graphics.gd/shaders/internal/gpu"
@@ -26,15 +29,19 @@ type Shader[T gdclass.Interface] struct {
 	ShaderMaterial.Extension[T]
 }
 
-func (Shader[T]) ShaderType() string       { return "particle" }
-func (Shader[T]) RenderMode() []RenderMode { return nil }
-func (Shader[T]) Pipeline() [3]string {
+func (s *Shader[T]) OnCreate(value reflect.Value) {
+	shaders.CompileAny(value.Interface().(shaders.Any))
+}
+
+func (*Shader[T]) ShaderType() string       { return "particle" }
+func (*Shader[T]) RenderMode() []RenderMode { return nil }
+func (*Shader[T]) Pipeline() [3]string {
 	return [3]string{"start", "process", ""}
 }
 
-func (Shader[T]) Fragment(state Startup) Process { return Process{} }
-func (Shader[T]) Material(state Process) State   { return State{} }
-func (Shader[T]) Lighting(Process) struct{}      { return struct{}{} }
+func (*Shader[T]) Fragment(state Startup) Process { return Process{} }
+func (*Shader[T]) Material(state Process) State   { return State{} }
+func (*Shader[T]) Lighting(Process) struct{}      { return struct{}{} }
 
 type RenderMode string
 

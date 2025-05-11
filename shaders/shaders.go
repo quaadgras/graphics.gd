@@ -80,6 +80,7 @@ import (
 	"graphics.gd/shaders/internal/gpu"
 	dsl "graphics.gd/shaders/internal/gpu"
 	"graphics.gd/shaders/vec2"
+	"graphics.gd/variant/String"
 )
 
 // Globals are available everywhere, including custom functions.
@@ -214,11 +215,33 @@ func compileUniforms(w io.Writer, prog Any) {
 	value := reflect.ValueOf(prog).Elem()
 	rtype := value.Type()
 	for i := range rtype.NumField() {
-		if tag := rtype.Field(i).Tag.Get("gd"); tag != "" {
-			field := rtype.Field(i)
-			fmt.Fprintf(w, "uniform %s %s;\n", glslTypeFor(field.Type), tag)
-			dsl.Set(value.Field(i).Addr().Interface().(dsl.Pointer), gpu.Uniform(tag, prog))
+		field := rtype.Field(i)
+		if field.Name == "Shader" {
+			continue
 		}
+		name := String.ToSnakeCase(field.Name)
+		options := ""
+		if tag := field.Tag.Get("gd"); tag != "" {
+			tag, options, _ = strings.Cut(tag, ",")
+			if tag != "" {
+				name = tag
+			}
+		}
+		fmt.Fprintf(w, "uniform %s %s", glslTypeFor(field.Type), name)
+		dsl.Set(value.Field(i).Addr().Interface().(dsl.Pointer), gpu.Uniform(name, prog))
+		if options != "" {
+			fmt.Fprintf(w, ": ")
+			var first bool = true
+			for option := range strings.SplitSeq(options, ",") {
+				if first {
+					first = false
+				} else {
+					fmt.Fprintf(w, ",")
+				}
+				fmt.Fprintf(w, " %s", option)
+			}
+		}
+		fmt.Fprintf(w, ";\n")
 	}
 	fmt.Fprintln(w)
 }
@@ -254,6 +277,10 @@ func glslTypeFor(t reflect.Type) string {
 	case t.ConvertibleTo(reflect.TypeFor[gpu.Vec3]()):
 		return "vec3"
 	case t.ConvertibleTo(reflect.TypeFor[gpu.Vec4]()):
+		return "vec4"
+	case t.ConvertibleTo(reflect.TypeFor[gpu.RGB]()):
+		return "vec3"
+	case t.ConvertibleTo(reflect.TypeFor[gpu.RGBA]()):
 		return "vec4"
 	case t.ConvertibleTo(reflect.TypeFor[gpu.Uint]()):
 		return "uint"

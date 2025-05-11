@@ -3,9 +3,11 @@ package Sky
 
 import (
 	"fmt"
+	"reflect"
 
 	"graphics.gd/classdb/ShaderMaterial"
 	"graphics.gd/internal/gdclass"
+	"graphics.gd/shaders"
 	"graphics.gd/shaders/bool"
 	"graphics.gd/shaders/float"
 	"graphics.gd/shaders/internal/gpu"
@@ -19,15 +21,19 @@ type Shader[T gdclass.Interface] struct {
 	ShaderMaterial.Extension[T]
 }
 
-func (Shader[T]) ShaderType() string       { return "sky" }
-func (Shader[T]) RenderMode() []RenderMode { return nil }
-func (Shader[T]) Pipeline() [3]string {
+func (s *Shader[T]) OnCreate(value reflect.Value) {
+	shaders.CompileAny(value.Interface().(shaders.Any))
+}
+
+func (*Shader[T]) ShaderType() string       { return "sky" }
+func (*Shader[T]) RenderMode() []RenderMode { return nil }
+func (*Shader[T]) Pipeline() [3]string {
 	return [3]string{"", "", "sky"}
 }
 
-func (Shader[T]) Fragment(state struct{}) struct{} { return struct{}{} }
-func (Shader[T]) Material(state struct{}) Snapshot { return Snapshot{} }
-func (Shader[T]) Lighting(Snapshot) Lighting       { return Lighting{} }
+func (*Shader[T]) Fragment(state struct{}) struct{} { return struct{}{} }
+func (*Shader[T]) Material(state struct{}) Snapshot { return Snapshot{} }
+func (*Shader[T]) Lighting(Snapshot) Lighting       { return Lighting{} }
 
 type RenderMode string
 

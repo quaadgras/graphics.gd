@@ -2,8 +2,11 @@
 package Spatial
 
 import (
+	"reflect"
+
 	"graphics.gd/classdb/ShaderMaterial"
 	"graphics.gd/internal/gdclass"
+	"graphics.gd/shaders"
 	"graphics.gd/shaders/float"
 	"graphics.gd/shaders/int"
 	"graphics.gd/shaders/internal/gpu"
@@ -13,6 +16,7 @@ import (
 	"graphics.gd/shaders/vec2"
 	"graphics.gd/shaders/vec3"
 	"graphics.gd/shaders/vec4"
+	"graphics.gd/variant/Object"
 )
 
 /*
@@ -25,15 +29,21 @@ type Shader[T gdclass.Interface] struct {
 	ShaderMaterial.Extension[T]
 }
 
-func (Shader[T]) ShaderType() string       { return "spatial" }
-func (Shader[T]) RenderMode() []RenderMode { return nil }
-func (Shader[T]) Pipeline() [3]string {
+func (s *Shader[T]) OnCreate(value reflect.Value) {
+	shaders.CompileAny(value.Interface().(shaders.Any))
+}
+
+func (s *Shader[T]) GetPropertyList() []Object.PropertyInfo { return nil }
+
+func (*Shader[T]) ShaderType() string       { return "spatial" }
+func (*Shader[T]) RenderMode() []RenderMode { return nil }
+func (*Shader[T]) Pipeline() [3]string {
 	return [3]string{"vertex", "fragment", "light"}
 }
 
-func (Shader[T]) Fragment(vertex Vertex) Fragment     { return Fragment{} }
-func (Shader[T]) Material(fragment Fragment) Material { return Material{} }
-func (Shader[T]) Lighting(material Material) Lighting { return Lighting{} }
+func (*Shader[T]) Fragment(vertex Vertex) Fragment     { return Fragment{} }
+func (*Shader[T]) Material(fragment Fragment) Material { return Material{} }
+func (*Shader[T]) Lighting(material Material) Lighting { return Lighting{} }
 
 type RenderMode string
 

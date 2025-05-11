@@ -11,29 +11,29 @@ import (
 )
 
 type Material struct {
-	LightVertexPosition    vec3.XYZ  `gd:"LIGHT_VERTEX"`             // A writable version of VERTEX that can be used to alter light and shadows. Writing to this will not change the position of the fragment.
-	Depth                  float.X   `gd:"DEPTH"`                    // Custom depth value (range of [0.0, 1.0]). If DEPTH is being written to in any shader branch, then you are responsible for setting the DEPTH for all other branches. Otherwise, the graphics API will leave them uninitialized.
-	Normal                 vec3.XYZ  `gd:"NORMAL"`                   // Normal that comes from the vertex() function, in view space. If skip_vertex_transform is enabled, it may not be in view space.
-	Tangent                vec3.XYZ  `gd:"TANGENT"`                  // Tangent that comes from the vertex() function, in view space. If skip_vertex_transform is enabled, it may not be in view space.
-	Binormal               vec3.XYZ  `gd:"BINORMAL"`                 // Binormal that comes from the vertex() function, in view space. If skip_vertex_transform is enabled, it may not be in view space.
-	NormalMap              vec3.XYZ  `gd:"NORMAL_MAP"`               // Set normal here if reading normal from a texture instead of NORMAL.
-	NormalMapDepth         float.X   `gd:"NORMAL_MAP_DEPTH"`         // Depth from NORMAL_MAP. Defaults to 1.0.
-	Albedo                 vec4.RGBA `gd:"ALBEDO"`                   // Albedo (default white). Base color.
-	Alpha                  float.X   `gd:"ALPHA"`                    // Alpha (range of [0.0, 1.0]). If read from or written to, the material will go to the transparent pipeline.
-	AlphaScizzorThreshold  float.X   `gd:"ALPHA_SCISSOR_THRESHOLD"`  // If written to, values below a certain amount of alpha are discarded.
-	AlphaHashScale         float.X   `gd:"ALPHA_HASH_SCALE"`         // Alpha hash scale when using the alpha hash transparency mode. Defaults to 1.0. Higher values result in more visible pixels in the dithering pattern.
-	AlphaAntialiasingEdge  float.X   `gd:"ALPHA_ANTIALIASING_EDGE"`  // The threshold below which alpha to coverage antialiasing should be used. Defaults to 0.0. Requires the alpha_to_coverage render mode. Should be set to a value lower than ALPHA_SCISSOR_THRESHOLD to be effective.
-	AlphaTextureCoordinate vec2.XY   `gd:"ALPHA_TEXTURE_COORDINATE"` // The texture coordinate to use for alpha-to-coverge antialiasing. Requires the alpha_to_coverage render mode. Typically set to UV * vec2(albedo_texture_size) where albedo_texture_size is the size of the albedo texture in pixels.
-	PremultiplyAlphaFactor float.X   `gd:"PREMUL_ALPHA_FACTOR"`      // Premultiplied alpha factor. Only effective if render_mode blend_premul_alpha; is used. This should be written to when using a shaded material with premultiplied alpha blending for interaction with lighting. This is not required for unshaded materials.
-	Metallic               float.X   `gd:"METALLIC"`                 // Metallic (range of [0.0, 1.0]).
-	Specular               float.X   `gd:"SPECULAR"`                 // Specular (not physically accurate to change). Defaults to 0.5. 0.0 disables reflections.
-	Roughness              float.X   `gd:"ROUGHNESS"`                // Roughness (range of [0.0, 1.0]).
-	Rim                    float.X   `gd:"RIM"`                      // Rim (range of [0.0, 1.0]). If used, Godot calculates rim lighting. Rim size depends on ROUGHNESS.
-	RimTint                float.X   `gd:"RIM_TINT"`                 // Rim Tint, range of 0.0 (white) to 1.0 (albedo). If used, Godot calculates rim lighting.
-	ClearCoat              float.X   `gd:"CLEARCOAT"`                // Small specular blob added on top of the existing one. If used, Godot calculates clearcoat.
-	ClearCoatGloss         float.X   `gd:"CLEARCOAT_GLOSS"`          // Gloss of clearcoat. If used, Godot calculates clearcoat.
-	Anisotropy             float.X   `gd:"ANISOTROPY"`               // For distorting the specular blob according to tangent space.
-	AnisotropyFlow         vec2.XY   `gd:"ANISOTROPY_FLOW"`          // Distortion direction, use with flowmaps.
+	LightVertexPosition    vec3.XYZ `gd:"LIGHT_VERTEX"`             // A writable version of VERTEX that can be used to alter light and shadows. Writing to this will not change the position of the fragment.
+	Depth                  float.X  `gd:"DEPTH"`                    // Custom depth value (range of [0.0, 1.0]). If DEPTH is being written to in any shader branch, then you are responsible for setting the DEPTH for all other branches. Otherwise, the graphics API will leave them uninitialized.
+	Normal                 vec3.XYZ `gd:"NORMAL"`                   // Normal that comes from the vertex() function, in view space. If skip_vertex_transform is enabled, it may not be in view space.
+	Tangent                vec3.XYZ `gd:"TANGENT"`                  // Tangent that comes from the vertex() function, in view space. If skip_vertex_transform is enabled, it may not be in view space.
+	Binormal               vec3.XYZ `gd:"BINORMAL"`                 // Binormal that comes from the vertex() function, in view space. If skip_vertex_transform is enabled, it may not be in view space.
+	NormalMap              vec3.XYZ `gd:"NORMAL_MAP"`               // Set normal here if reading normal from a texture instead of NORMAL.
+	NormalMapDepth         float.X  `gd:"NORMAL_MAP_DEPTH"`         // Depth from NORMAL_MAP. Defaults to 1.0.
+	Albedo                 vec3.RGB `gd:"ALBEDO"`                   // Albedo (default white). Base color.
+	Alpha                  float.X  `gd:"ALPHA"`                    // Alpha (range of [0.0, 1.0]). If read from or written to, the material will go to the transparent pipeline.
+	AlphaScizzorThreshold  float.X  `gd:"ALPHA_SCISSOR_THRESHOLD"`  // If written to, values below a certain amount of alpha are discarded.
+	AlphaHashScale         float.X  `gd:"ALPHA_HASH_SCALE"`         // Alpha hash scale when using the alpha hash transparency mode. Defaults to 1.0. Higher values result in more visible pixels in the dithering pattern.
+	AlphaAntialiasingEdge  float.X  `gd:"ALPHA_ANTIALIASING_EDGE"`  // The threshold below which alpha to coverage antialiasing should be used. Defaults to 0.0. Requires the alpha_to_coverage render mode. Should be set to a value lower than ALPHA_SCISSOR_THRESHOLD to be effective.
+	AlphaTextureCoordinate vec2.XY  `gd:"ALPHA_TEXTURE_COORDINATE"` // The texture coordinate to use for alpha-to-coverge antialiasing. Requires the alpha_to_coverage render mode. Typically set to UV * vec2(albedo_texture_size) where albedo_texture_size is the size of the albedo texture in pixels.
+	PremultiplyAlphaFactor float.X  `gd:"PREMUL_ALPHA_FACTOR"`      // Premultiplied alpha factor. Only effective if render_mode blend_premul_alpha; is used. This should be written to when using a shaded material with premultiplied alpha blending for interaction with lighting. This is not required for unshaded materials.
+	Metallic               float.X  `gd:"METALLIC"`                 // Metallic (range of [0.0, 1.0]).
+	Specular               float.X  `gd:"SPECULAR"`                 // Specular (not physically accurate to change). Defaults to 0.5. 0.0 disables reflections.
+	Roughness              float.X  `gd:"ROUGHNESS"`                // Roughness (range of [0.0, 1.0]).
+	Rim                    float.X  `gd:"RIM"`                      // Rim (range of [0.0, 1.0]). If used, Godot calculates rim lighting. Rim size depends on ROUGHNESS.
+	RimTint                float.X  `gd:"RIM_TINT"`                 // Rim Tint, range of 0.0 (white) to 1.0 (albedo). If used, Godot calculates rim lighting.
+	ClearCoat              float.X  `gd:"CLEARCOAT"`                // Small specular blob added on top of the existing one. If used, Godot calculates clearcoat.
+	ClearCoatGloss         float.X  `gd:"CLEARCOAT_GLOSS"`          // Gloss of clearcoat. If used, Godot calculates clearcoat.
+	Anisotropy             float.X  `gd:"ANISOTROPY"`               // For distorting the specular blob according to tangent space.
+	AnisotropyFlow         vec2.XY  `gd:"ANISOTROPY_FLOW"`          // Distortion direction, use with flowmaps.
 	SubsurfaceScattering   SubsurfaceScattering
 	Backlight              float.X `gd:"BACKLIGHT"` // Color of backlighting (works like direct light, but it's received even if the normal is slightly facing away from the light). If used, backlighting will be applied to the object. Can be used as a cheaper approximation of subsurface scattering.
 	AmbientOcclusion       AmbientOcclusion
