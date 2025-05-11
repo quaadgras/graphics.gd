@@ -42,6 +42,9 @@ func Cycle() {
 // then it will be wrapped as if it were a function without any arguments that
 // returns the specified value.
 func New(value any) Function {
+	if already, ok := value.(Function); ok {
+		return already
+	}
 	return Function{
 		proxy: &local{
 			value: value,
