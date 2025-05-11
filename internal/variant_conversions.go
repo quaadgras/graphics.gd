@@ -9,7 +9,9 @@ import (
 	"graphics.gd/internal/callframe"
 	"graphics.gd/internal/pointers"
 	VariantPkg "graphics.gd/variant"
+	"graphics.gd/variant/Angle"
 	ArrayType "graphics.gd/variant/Array"
+	BasisType "graphics.gd/variant/Basis"
 	CallableType "graphics.gd/variant/Callable"
 	DictionaryType "graphics.gd/variant/Dictionary"
 	"graphics.gd/variant/Enum"
@@ -245,6 +247,9 @@ func NewVariant(v any) Variant {
 		case Vector3:
 			var arg = callframe.Arg(frame, val)
 			Global.variant.FromType[TypeVector3](ret, arg.Addr())
+		case Angle.Euler3D:
+			var arg = callframe.Arg(frame, val)
+			Global.variant.FromType[TypeVector3](ret, arg.Addr())
 		case Vector3i:
 			var arg = callframe.Arg(frame, val)
 			Global.variant.FromType[TypeVector3i](ret, arg.Addr())
@@ -267,7 +272,7 @@ func NewVariant(v any) Variant {
 			var arg = callframe.Arg(frame, val)
 			Global.variant.FromType[TypeAABB](ret, arg.Addr())
 		case Basis:
-			var arg = callframe.Arg(frame, val)
+			var arg = callframe.Arg(frame, BasisType.Transposed(val))
 			Global.variant.FromType[TypeBasis](ret, arg.Addr())
 		case Transform3D:
 			var arg = callframe.Arg(frame, val)
@@ -465,7 +470,7 @@ func (variant Variant) Interface() any {
 	case TypeAABB:
 		return variantAsValueType[AABB](variant, vtype)
 	case TypeBasis:
-		return variantAsValueType[Basis](variant, vtype)
+		return BasisType.Transposed(variantAsValueType[Basis](variant, vtype))
 	case TypeTransform3D:
 		return variantAsValueType[Transform3D](variant, vtype)
 	case TypeProjection:

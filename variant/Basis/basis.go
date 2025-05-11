@@ -138,24 +138,24 @@ func Euler(e Angle.Euler3D, order Angle.Order) XYZ { //gd:Basis.from_euler
 	s = Angle.Sin(e.X)
 	var xmat = XYZ{
 		Vector3.New(1, 0, 0),
-		Vector3.New(0, c, -s),
-		Vector3.New(0, s, c),
+		Vector3.New(0, c, s),
+		Vector3.New(0, -s, c),
 	}
 	c = Angle.Cos(e.Y)
 	s = Angle.Sin(e.Y)
 	var (
 		ymat = XYZ{
-			Vector3.New(c, 0, s),
+			Vector3.New(c, 0, -s),
 			Vector3.New(0, 1, 0),
-			Vector3.New(-s, 0, c),
+			Vector3.New(s, 0, c),
 		}
 	)
 	c = Angle.Cos(e.Z)
 	s = Angle.Sin(e.Z)
 	var (
 		zmat = XYZ{
-			Vector3.New(c, -s, 0),
-			Vector3.New(s, c, 0),
+			Vector3.New(c, s, 0),
+			Vector3.New(-s, c, 0),
 			Vector3.New(0, 0, 1),
 		}
 	)
