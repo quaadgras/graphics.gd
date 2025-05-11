@@ -275,7 +275,7 @@ func NewVariant(v any) Variant {
 			var arg = callframe.Arg(frame, BasisType.Transposed(val))
 			Global.variant.FromType[TypeBasis](ret, arg.Addr())
 		case Transform3D:
-			var arg = callframe.Arg(frame, val)
+			var arg = callframe.Arg(frame, Transposed(val))
 			Global.variant.FromType[TypeTransform3D](ret, arg.Addr())
 		case Projection:
 			var arg = callframe.Arg(frame, val)
@@ -472,7 +472,7 @@ func (variant Variant) Interface() any {
 	case TypeBasis:
 		return BasisType.Transposed(variantAsValueType[Basis](variant, vtype))
 	case TypeTransform3D:
-		return variantAsValueType[Transform3D](variant, vtype)
+		return Transposed(variantAsValueType[Transform3D](variant, vtype))
 	case TypeProjection:
 		return variantAsValueType[Projection](variant, vtype)
 	case TypeColor:
