@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/EditorExportPlatform"
 import "graphics.gd/classdb/EditorExportPreset"
 import "graphics.gd/classdb/ImageTexture"
@@ -28,6 +29,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -43,6 +48,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,6 +61,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -139,7 +146,7 @@ type Interface interface {
 	//[b]Optional.[/b]
 	//This method is called when [param device] one-click deploy menu option is selected.
 	//Implementation should export project to a temporary location, upload and run it on the specific [param device], or perform another action associated with the menu item.
-	Run(preset EditorExportPreset.Instance, device int, debug_flags gdclass.EditorExportPlatformDebugFlags) error
+	Run(preset EditorExportPreset.Instance, device int, debug_flags EditorExportPlatform.DebugFlags) error
 	//[b]Optional.[/b]
 	//Returns icon of the one-click deploy menu button, icon should be 16x16 adjusted to the current editor scale, see [method EditorInterface.get_editor_scale].
 	GetRunIcon() Texture2D.Instance
@@ -160,25 +167,25 @@ type Interface interface {
 	//Creates a full project at [param path] for the specified [param preset].
 	//This method is called when "Export" button is pressed in the export dialog.
 	//This method implementation can call [method EditorExportPlatform.save_pack] or [method EditorExportPlatform.save_zip] to use default PCK/ZIP export process, or calls [method EditorExportPlatform.export_project_files] and implement custom callback for processing each exported file.
-	ExportProject(preset EditorExportPreset.Instance, debug bool, path string, flags gdclass.EditorExportPlatformDebugFlags) error
+	ExportProject(preset EditorExportPreset.Instance, debug bool, path string, flags EditorExportPlatform.DebugFlags) error
 	//[b]Optional.[/b]
 	//Creates a PCK archive at [param path] for the specified [param preset].
 	//This method is called when "Export PCK/ZIP" button is pressed in the export dialog, with "Export as Patch" disabled, and PCK is selected as a file type.
-	ExportPack(preset EditorExportPreset.Instance, debug bool, path string, flags gdclass.EditorExportPlatformDebugFlags) error
+	ExportPack(preset EditorExportPreset.Instance, debug bool, path string, flags EditorExportPlatform.DebugFlags) error
 	//[b]Optional.[/b]
 	//Create a ZIP archive at [param path] for the specified [param preset].
 	//This method is called when "Export PCK/ZIP" button is pressed in the export dialog, with "Export as Patch" disabled, and ZIP is selected as a file type.
-	ExportZip(preset EditorExportPreset.Instance, debug bool, path string, flags gdclass.EditorExportPlatformDebugFlags) error
+	ExportZip(preset EditorExportPreset.Instance, debug bool, path string, flags EditorExportPlatform.DebugFlags) error
 	//[b]Optional.[/b]
 	//Creates a patch PCK archive at [param path] for the specified [param preset], containing only the files that have changed since the last patch.
 	//This method is called when "Export PCK/ZIP" button is pressed in the export dialog, with "Export as Patch" enabled, and PCK is selected as a file type.
 	//[b]Note:[/b] The patches provided in [param patches] have already been loaded when this method is called and are merely provided as context. When empty the patches defined in the export preset have been loaded instead.
-	ExportPackPatch(preset EditorExportPreset.Instance, debug bool, path string, patches []string, flags gdclass.EditorExportPlatformDebugFlags) error
+	ExportPackPatch(preset EditorExportPreset.Instance, debug bool, path string, patches []string, flags EditorExportPlatform.DebugFlags) error
 	//[b]Optional.[/b]
 	//Create a ZIP archive at [param path] for the specified [param preset], containing only the files that have changed since the last patch.
 	//This method is called when "Export PCK/ZIP" button is pressed in the export dialog, with "Export as Patch" enabled, and ZIP is selected as a file type.
 	//[b]Note:[/b] The patches provided in [param patches] have already been loaded when this method is called and are merely provided as context. When empty the patches defined in the export preset have been loaded instead.
-	ExportZipPatch(preset EditorExportPreset.Instance, debug bool, path string, patches []string, flags gdclass.EditorExportPlatformDebugFlags) error
+	ExportZipPatch(preset EditorExportPreset.Instance, debug bool, path string, patches []string, flags EditorExportPlatform.DebugFlags) error
 	//[b]Required.[/b]
 	//Returns array of platform specific features.
 	GetPlatformFeatures() []string
@@ -213,7 +220,7 @@ func (self implementation) GetOptionLabel(device int) (_ string)               {
 func (self implementation) GetOptionTooltip(device int) (_ string)             { return }
 func (self implementation) GetDeviceArchitecture(device int) (_ string)        { return }
 func (self implementation) Cleanup()                                           { return }
-func (self implementation) Run(preset EditorExportPreset.Instance, device int, debug_flags gdclass.EditorExportPlatformDebugFlags) (_ error) {
+func (self implementation) Run(preset EditorExportPreset.Instance, device int, debug_flags EditorExportPlatform.DebugFlags) (_ error) {
 	return
 }
 func (self implementation) GetRunIcon() (_ Texture2D.Instance)                                { return }
@@ -227,19 +234,19 @@ func (self implementation) HasValidProjectConfiguration(preset EditorExportPrese
 func (self implementation) GetBinaryExtensions(preset EditorExportPreset.Instance) (_ []string) {
 	return
 }
-func (self implementation) ExportProject(preset EditorExportPreset.Instance, debug bool, path string, flags gdclass.EditorExportPlatformDebugFlags) (_ error) {
+func (self implementation) ExportProject(preset EditorExportPreset.Instance, debug bool, path string, flags EditorExportPlatform.DebugFlags) (_ error) {
 	return
 }
-func (self implementation) ExportPack(preset EditorExportPreset.Instance, debug bool, path string, flags gdclass.EditorExportPlatformDebugFlags) (_ error) {
+func (self implementation) ExportPack(preset EditorExportPreset.Instance, debug bool, path string, flags EditorExportPlatform.DebugFlags) (_ error) {
 	return
 }
-func (self implementation) ExportZip(preset EditorExportPreset.Instance, debug bool, path string, flags gdclass.EditorExportPlatformDebugFlags) (_ error) {
+func (self implementation) ExportZip(preset EditorExportPreset.Instance, debug bool, path string, flags EditorExportPlatform.DebugFlags) (_ error) {
 	return
 }
-func (self implementation) ExportPackPatch(preset EditorExportPreset.Instance, debug bool, path string, patches []string, flags gdclass.EditorExportPlatformDebugFlags) (_ error) {
+func (self implementation) ExportPackPatch(preset EditorExportPreset.Instance, debug bool, path string, patches []string, flags EditorExportPlatform.DebugFlags) (_ error) {
 	return
 }
-func (self implementation) ExportZipPatch(preset EditorExportPreset.Instance, debug bool, path string, patches []string, flags gdclass.EditorExportPlatformDebugFlags) (_ error) {
+func (self implementation) ExportZipPatch(preset EditorExportPreset.Instance, debug bool, path string, patches []string, flags EditorExportPlatform.DebugFlags) (_ error) {
 	return
 }
 func (self implementation) GetPlatformFeatures() (_ []string) { return }
@@ -536,13 +543,13 @@ func (Instance) _cleanup(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCal
 This method is called when [param device] one-click deploy menu option is selected.
 Implementation should export project to a temporary location, upload and run it on the specific [param device], or perform another action associated with the menu item.
 */
-func (Instance) _run(impl func(ptr unsafe.Pointer, preset EditorExportPreset.Instance, device int, debug_flags gdclass.EditorExportPlatformDebugFlags) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _run(impl func(ptr unsafe.Pointer, preset EditorExportPreset.Instance, device int, debug_flags EditorExportPlatform.DebugFlags) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
 		defer pointers.End(preset[0])
 		var device = gd.UnsafeGet[int64](p_args, 1)
-		var debug_flags = gd.UnsafeGet[gdclass.EditorExportPlatformDebugFlags](p_args, 2)
+		var debug_flags = gd.UnsafeGet[EditorExportPlatform.DebugFlags](p_args, 2)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, preset, int(device), debug_flags)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
@@ -645,7 +652,7 @@ Creates a full project at [param path] for the specified [param preset].
 This method is called when "Export" button is pressed in the export dialog.
 This method implementation can call [method EditorExportPlatform.save_pack] or [method EditorExportPlatform.save_zip] to use default PCK/ZIP export process, or calls [method EditorExportPlatform.export_project_files] and implement custom callback for processing each exported file.
 */
-func (Instance) _export_project(impl func(ptr unsafe.Pointer, preset EditorExportPreset.Instance, debug bool, path string, flags gdclass.EditorExportPlatformDebugFlags) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _export_project(impl func(ptr unsafe.Pointer, preset EditorExportPreset.Instance, debug bool, path string, flags EditorExportPlatform.DebugFlags) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -653,7 +660,7 @@ func (Instance) _export_project(impl func(ptr unsafe.Pointer, preset EditorExpor
 		var debug = gd.UnsafeGet[bool](p_args, 1)
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalString(path))
-		var flags = gd.UnsafeGet[gdclass.EditorExportPlatformDebugFlags](p_args, 3)
+		var flags = gd.UnsafeGet[EditorExportPlatform.DebugFlags](p_args, 3)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, preset, debug, path.String(), flags)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
@@ -670,7 +677,7 @@ func (Instance) _export_project(impl func(ptr unsafe.Pointer, preset EditorExpor
 Creates a PCK archive at [param path] for the specified [param preset].
 This method is called when "Export PCK/ZIP" button is pressed in the export dialog, with "Export as Patch" disabled, and PCK is selected as a file type.
 */
-func (Instance) _export_pack(impl func(ptr unsafe.Pointer, preset EditorExportPreset.Instance, debug bool, path string, flags gdclass.EditorExportPlatformDebugFlags) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _export_pack(impl func(ptr unsafe.Pointer, preset EditorExportPreset.Instance, debug bool, path string, flags EditorExportPlatform.DebugFlags) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -678,7 +685,7 @@ func (Instance) _export_pack(impl func(ptr unsafe.Pointer, preset EditorExportPr
 		var debug = gd.UnsafeGet[bool](p_args, 1)
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalString(path))
-		var flags = gd.UnsafeGet[gdclass.EditorExportPlatformDebugFlags](p_args, 3)
+		var flags = gd.UnsafeGet[EditorExportPlatform.DebugFlags](p_args, 3)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, preset, debug, path.String(), flags)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
@@ -695,7 +702,7 @@ func (Instance) _export_pack(impl func(ptr unsafe.Pointer, preset EditorExportPr
 Create a ZIP archive at [param path] for the specified [param preset].
 This method is called when "Export PCK/ZIP" button is pressed in the export dialog, with "Export as Patch" disabled, and ZIP is selected as a file type.
 */
-func (Instance) _export_zip(impl func(ptr unsafe.Pointer, preset EditorExportPreset.Instance, debug bool, path string, flags gdclass.EditorExportPlatformDebugFlags) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _export_zip(impl func(ptr unsafe.Pointer, preset EditorExportPreset.Instance, debug bool, path string, flags EditorExportPlatform.DebugFlags) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -703,7 +710,7 @@ func (Instance) _export_zip(impl func(ptr unsafe.Pointer, preset EditorExportPre
 		var debug = gd.UnsafeGet[bool](p_args, 1)
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalString(path))
-		var flags = gd.UnsafeGet[gdclass.EditorExportPlatformDebugFlags](p_args, 3)
+		var flags = gd.UnsafeGet[EditorExportPlatform.DebugFlags](p_args, 3)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, preset, debug, path.String(), flags)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
@@ -721,7 +728,7 @@ Creates a patch PCK archive at [param path] for the specified [param preset], co
 This method is called when "Export PCK/ZIP" button is pressed in the export dialog, with "Export as Patch" enabled, and PCK is selected as a file type.
 [b]Note:[/b] The patches provided in [param patches] have already been loaded when this method is called and are merely provided as context. When empty the patches defined in the export preset have been loaded instead.
 */
-func (Instance) _export_pack_patch(impl func(ptr unsafe.Pointer, preset EditorExportPreset.Instance, debug bool, path string, patches []string, flags gdclass.EditorExportPlatformDebugFlags) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _export_pack_patch(impl func(ptr unsafe.Pointer, preset EditorExportPreset.Instance, debug bool, path string, patches []string, flags EditorExportPlatform.DebugFlags) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -731,7 +738,7 @@ func (Instance) _export_pack_patch(impl func(ptr unsafe.Pointer, preset EditorEx
 		defer pointers.End(gd.InternalString(path))
 		var patches = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 3)))))
 		defer pointers.End(gd.InternalPackedStrings(patches))
-		var flags = gd.UnsafeGet[gdclass.EditorExportPlatformDebugFlags](p_args, 4)
+		var flags = gd.UnsafeGet[EditorExportPlatform.DebugFlags](p_args, 4)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, preset, debug, path.String(), patches.Strings(), flags)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
@@ -749,7 +756,7 @@ Create a ZIP archive at [param path] for the specified [param preset], containin
 This method is called when "Export PCK/ZIP" button is pressed in the export dialog, with "Export as Patch" enabled, and ZIP is selected as a file type.
 [b]Note:[/b] The patches provided in [param patches] have already been loaded when this method is called and are merely provided as context. When empty the patches defined in the export preset have been loaded instead.
 */
-func (Instance) _export_zip_patch(impl func(ptr unsafe.Pointer, preset EditorExportPreset.Instance, debug bool, path string, patches []string, flags gdclass.EditorExportPlatformDebugFlags) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _export_zip_patch(impl func(ptr unsafe.Pointer, preset EditorExportPreset.Instance, debug bool, path string, patches []string, flags EditorExportPlatform.DebugFlags) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -759,7 +766,7 @@ func (Instance) _export_zip_patch(impl func(ptr unsafe.Pointer, preset EditorExp
 		defer pointers.End(gd.InternalString(path))
 		var patches = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 3)))))
 		defer pointers.End(gd.InternalPackedStrings(patches))
-		var flags = gd.UnsafeGet[gdclass.EditorExportPlatformDebugFlags](p_args, 4)
+		var flags = gd.UnsafeGet[EditorExportPlatform.DebugFlags](p_args, 4)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, preset, debug, path.String(), patches.Strings(), flags)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
@@ -1144,13 +1151,13 @@ func (class) _cleanup(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVi
 This method is called when [param device] one-click deploy menu option is selected.
 Implementation should export project to a temporary location, upload and run it on the specific [param device], or perform another action associated with the menu item.
 */
-func (class) _run(impl func(ptr unsafe.Pointer, preset [1]gdclass.EditorExportPreset, device int64, debug_flags gdclass.EditorExportPlatformDebugFlags) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _run(impl func(ptr unsafe.Pointer, preset [1]gdclass.EditorExportPreset, device int64, debug_flags EditorExportPlatform.DebugFlags) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
 		defer pointers.End(preset[0])
 		var device = gd.UnsafeGet[int64](p_args, 1)
-		var debug_flags = gd.UnsafeGet[gdclass.EditorExportPlatformDebugFlags](p_args, 2)
+		var debug_flags = gd.UnsafeGet[EditorExportPlatform.DebugFlags](p_args, 2)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, preset, device, debug_flags)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
@@ -1253,7 +1260,7 @@ Creates a full project at [param path] for the specified [param preset].
 This method is called when "Export" button is pressed in the export dialog.
 This method implementation can call [method EditorExportPlatform.save_pack] or [method EditorExportPlatform.save_zip] to use default PCK/ZIP export process, or calls [method EditorExportPlatform.export_project_files] and implement custom callback for processing each exported file.
 */
-func (class) _export_project(impl func(ptr unsafe.Pointer, preset [1]gdclass.EditorExportPreset, debug bool, path String.Readable, flags gdclass.EditorExportPlatformDebugFlags) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _export_project(impl func(ptr unsafe.Pointer, preset [1]gdclass.EditorExportPreset, debug bool, path String.Readable, flags EditorExportPlatform.DebugFlags) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -1261,7 +1268,7 @@ func (class) _export_project(impl func(ptr unsafe.Pointer, preset [1]gdclass.Edi
 		var debug = gd.UnsafeGet[bool](p_args, 1)
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalString(path))
-		var flags = gd.UnsafeGet[gdclass.EditorExportPlatformDebugFlags](p_args, 3)
+		var flags = gd.UnsafeGet[EditorExportPlatform.DebugFlags](p_args, 3)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, preset, debug, path, flags)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
@@ -1278,7 +1285,7 @@ func (class) _export_project(impl func(ptr unsafe.Pointer, preset [1]gdclass.Edi
 Creates a PCK archive at [param path] for the specified [param preset].
 This method is called when "Export PCK/ZIP" button is pressed in the export dialog, with "Export as Patch" disabled, and PCK is selected as a file type.
 */
-func (class) _export_pack(impl func(ptr unsafe.Pointer, preset [1]gdclass.EditorExportPreset, debug bool, path String.Readable, flags gdclass.EditorExportPlatformDebugFlags) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _export_pack(impl func(ptr unsafe.Pointer, preset [1]gdclass.EditorExportPreset, debug bool, path String.Readable, flags EditorExportPlatform.DebugFlags) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -1286,7 +1293,7 @@ func (class) _export_pack(impl func(ptr unsafe.Pointer, preset [1]gdclass.Editor
 		var debug = gd.UnsafeGet[bool](p_args, 1)
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalString(path))
-		var flags = gd.UnsafeGet[gdclass.EditorExportPlatformDebugFlags](p_args, 3)
+		var flags = gd.UnsafeGet[EditorExportPlatform.DebugFlags](p_args, 3)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, preset, debug, path, flags)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
@@ -1303,7 +1310,7 @@ func (class) _export_pack(impl func(ptr unsafe.Pointer, preset [1]gdclass.Editor
 Create a ZIP archive at [param path] for the specified [param preset].
 This method is called when "Export PCK/ZIP" button is pressed in the export dialog, with "Export as Patch" disabled, and ZIP is selected as a file type.
 */
-func (class) _export_zip(impl func(ptr unsafe.Pointer, preset [1]gdclass.EditorExportPreset, debug bool, path String.Readable, flags gdclass.EditorExportPlatformDebugFlags) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _export_zip(impl func(ptr unsafe.Pointer, preset [1]gdclass.EditorExportPreset, debug bool, path String.Readable, flags EditorExportPlatform.DebugFlags) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -1311,7 +1318,7 @@ func (class) _export_zip(impl func(ptr unsafe.Pointer, preset [1]gdclass.EditorE
 		var debug = gd.UnsafeGet[bool](p_args, 1)
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
 		defer pointers.End(gd.InternalString(path))
-		var flags = gd.UnsafeGet[gdclass.EditorExportPlatformDebugFlags](p_args, 3)
+		var flags = gd.UnsafeGet[EditorExportPlatform.DebugFlags](p_args, 3)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, preset, debug, path, flags)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
@@ -1329,7 +1336,7 @@ Creates a patch PCK archive at [param path] for the specified [param preset], co
 This method is called when "Export PCK/ZIP" button is pressed in the export dialog, with "Export as Patch" enabled, and PCK is selected as a file type.
 [b]Note:[/b] The patches provided in [param patches] have already been loaded when this method is called and are merely provided as context. When empty the patches defined in the export preset have been loaded instead.
 */
-func (class) _export_pack_patch(impl func(ptr unsafe.Pointer, preset [1]gdclass.EditorExportPreset, debug bool, path String.Readable, patches Packed.Strings, flags gdclass.EditorExportPlatformDebugFlags) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _export_pack_patch(impl func(ptr unsafe.Pointer, preset [1]gdclass.EditorExportPreset, debug bool, path String.Readable, patches Packed.Strings, flags EditorExportPlatform.DebugFlags) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -1339,7 +1346,7 @@ func (class) _export_pack_patch(impl func(ptr unsafe.Pointer, preset [1]gdclass.
 		defer pointers.End(gd.InternalString(path))
 		var patches = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 3)))))
 		defer pointers.End(gd.InternalPackedStrings(patches))
-		var flags = gd.UnsafeGet[gdclass.EditorExportPlatformDebugFlags](p_args, 4)
+		var flags = gd.UnsafeGet[EditorExportPlatform.DebugFlags](p_args, 4)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, preset, debug, path, patches, flags)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
@@ -1357,7 +1364,7 @@ Create a ZIP archive at [param path] for the specified [param preset], containin
 This method is called when "Export PCK/ZIP" button is pressed in the export dialog, with "Export as Patch" enabled, and ZIP is selected as a file type.
 [b]Note:[/b] The patches provided in [param patches] have already been loaded when this method is called and are merely provided as context. When empty the patches defined in the export preset have been loaded instead.
 */
-func (class) _export_zip_patch(impl func(ptr unsafe.Pointer, preset [1]gdclass.EditorExportPreset, debug bool, path String.Readable, patches Packed.Strings, flags gdclass.EditorExportPlatformDebugFlags) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _export_zip_patch(impl func(ptr unsafe.Pointer, preset [1]gdclass.EditorExportPreset, debug bool, path String.Readable, patches Packed.Strings, flags EditorExportPlatform.DebugFlags) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
@@ -1367,7 +1374,7 @@ func (class) _export_zip_patch(impl func(ptr unsafe.Pointer, preset [1]gdclass.E
 		defer pointers.End(gd.InternalString(path))
 		var patches = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 3)))))
 		defer pointers.End(gd.InternalPackedStrings(patches))
-		var flags = gd.UnsafeGet[gdclass.EditorExportPlatformDebugFlags](p_args, 4)
+		var flags = gd.UnsafeGet[EditorExportPlatform.DebugFlags](p_args, 4)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, preset, debug, path, patches, flags)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)

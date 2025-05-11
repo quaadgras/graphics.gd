@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -24,6 +25,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -39,6 +44,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -51,6 +57,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -99,7 +106,7 @@ func (self Instance) Open(path string) error { //gd:ZIPPacker.open
 Opens a zip file for writing at the given path using the specified write mode.
 This must be called before everything else.
 */
-func (self Expanded) Open(path string, append gdclass.ZIPPackerZipAppend) error { //gd:ZIPPacker.open
+func (self Expanded) Open(path string, append ZipAppend) error { //gd:ZIPPacker.open
 	return error(gd.ToError(Advanced(self).Open(String.New(path), append)))
 }
 
@@ -159,7 +166,7 @@ Opens a zip file for writing at the given path using the specified write mode.
 This must be called before everything else.
 */
 //go:nosplit
-func (self class) Open(path String.Readable, append gdclass.ZIPPackerZipAppend) Error.Code { //gd:ZIPPacker.open
+func (self class) Open(path String.Readable, append ZipAppend) Error.Code { //gd:ZIPPacker.open
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, append)
@@ -254,7 +261,7 @@ func init() {
 	gdclass.Register("ZIPPacker", func(ptr gd.Object) any { return [1]gdclass.ZIPPacker{*(*gdclass.ZIPPacker)(unsafe.Pointer(&ptr))} })
 }
 
-type ZipAppend = gdclass.ZIPPackerZipAppend //gd:ZIPPacker.ZipAppend
+type ZipAppend int //gd:ZIPPacker.ZipAppend
 
 const (
 	/*Create a new zip archive at the given path.*/

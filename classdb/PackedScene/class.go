@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
@@ -26,6 +27,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -41,6 +46,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -53,6 +59,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -160,7 +167,7 @@ func (self Instance) Instantiate() Node.Instance { //gd:PackedScene.instantiate
 /*
 Instantiates the scene's node hierarchy. Triggers child scene instantiation(s). Triggers a [constant Node.NOTIFICATION_SCENE_INSTANTIATED] notification on the root node.
 */
-func (self Expanded) Instantiate(edit_state gdclass.PackedSceneGenEditState) Node.Instance { //gd:PackedScene.instantiate
+func (self Expanded) Instantiate(edit_state GenEditState) Node.Instance { //gd:PackedScene.instantiate
 	return Node.Instance(Advanced(self).Instantiate(edit_state))
 }
 
@@ -209,7 +216,7 @@ func (self class) Pack(path [1]gdclass.Node) Error.Code { //gd:PackedScene.pack
 Instantiates the scene's node hierarchy. Triggers child scene instantiation(s). Triggers a [constant Node.NOTIFICATION_SCENE_INSTANTIATED] notification on the root node.
 */
 //go:nosplit
-func (self class) Instantiate(edit_state gdclass.PackedSceneGenEditState) [1]gdclass.Node { //gd:PackedScene.instantiate
+func (self class) Instantiate(edit_state GenEditState) [1]gdclass.Node { //gd:PackedScene.instantiate
 	var frame = callframe.New()
 	callframe.Arg(frame, edit_state)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -279,7 +286,7 @@ func init() {
 	gdclass.Register("PackedScene", func(ptr gd.Object) any { return [1]gdclass.PackedScene{*(*gdclass.PackedScene)(unsafe.Pointer(&ptr))} })
 }
 
-type GenEditState = gdclass.PackedSceneGenEditState //gd:PackedScene.GenEditState
+type GenEditState int //gd:PackedScene.GenEditState
 
 const (
 	/*If passed to [method instantiate], blocks edits to the scene state.*/

@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/PacketPeer"
 import "graphics.gd/classdb/StreamPeer"
 import "graphics.gd/classdb/TLSOptions"
@@ -27,6 +28,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -42,6 +47,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -54,6 +60,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -141,7 +148,7 @@ func (self Instance) Send(message []byte) error { //gd:WebSocketPeer.send
 /*
 Sends the given [param message] using the desired [param write_mode]. When sending a [String], prefer using [method send_text].
 */
-func (self Expanded) Send(message []byte, write_mode gdclass.WebSocketPeerWriteMode) error { //gd:WebSocketPeer.send
+func (self Expanded) Send(message []byte, write_mode WriteMode) error { //gd:WebSocketPeer.send
 	return error(gd.ToError(Advanced(self).Send(Packed.Bytes(Packed.New(message...)), write_mode)))
 }
 
@@ -232,8 +239,8 @@ func (self Instance) GetCurrentOutboundBufferedAmount() int { //gd:WebSocketPeer
 /*
 Returns the ready state of the connection. See [enum State].
 */
-func (self Instance) GetReadyState() gdclass.WebSocketPeerState { //gd:WebSocketPeer.get_ready_state
-	return gdclass.WebSocketPeerState(Advanced(self).GetReadyState())
+func (self Instance) GetReadyState() State { //gd:WebSocketPeer.get_ready_state
+	return State(Advanced(self).GetReadyState())
 }
 
 /*
@@ -354,7 +361,7 @@ func (self class) AcceptStream(stream [1]gdclass.StreamPeer) Error.Code { //gd:W
 Sends the given [param message] using the desired [param write_mode]. When sending a [String], prefer using [method send_text].
 */
 //go:nosplit
-func (self class) Send(message Packed.Bytes, write_mode gdclass.WebSocketPeerWriteMode) Error.Code { //gd:WebSocketPeer.send
+func (self class) Send(message Packed.Bytes, write_mode WriteMode) Error.Code { //gd:WebSocketPeer.send
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](message))))
 	callframe.Arg(frame, write_mode)
@@ -502,9 +509,9 @@ func (self class) GetCurrentOutboundBufferedAmount() int64 { //gd:WebSocketPeer.
 Returns the ready state of the connection. See [enum State].
 */
 //go:nosplit
-func (self class) GetReadyState() gdclass.WebSocketPeerState { //gd:WebSocketPeer.get_ready_state
+func (self class) GetReadyState() State { //gd:WebSocketPeer.get_ready_state
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.WebSocketPeerState](frame)
+	var r_ret = callframe.Ret[State](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebSocketPeer.Bind_get_ready_state, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -687,7 +694,7 @@ func init() {
 	})
 }
 
-type WriteMode = gdclass.WebSocketPeerWriteMode //gd:WebSocketPeer.WriteMode
+type WriteMode int //gd:WebSocketPeer.WriteMode
 
 const (
 	/*Specifies that WebSockets messages should be transferred as text payload (only valid UTF-8 is allowed).*/
@@ -696,7 +703,7 @@ const (
 	WriteModeBinary WriteMode = 1
 )
 
-type State = gdclass.WebSocketPeerState //gd:WebSocketPeer.State
+type State int //gd:WebSocketPeer.State
 
 const (
 	/*Socket has been created. The connection is not yet open.*/

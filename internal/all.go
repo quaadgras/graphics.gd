@@ -11415,8 +11415,6 @@ func (self PackedVector4Array) Count(value Vector4) int64 {
 	return ret
 }
 
-type ObjectConnectFlags int64
-
 /*
 Returns the object's built-in class name, as a [String]. See also [method is_class].
 [b]Note:[/b] This method ignores [code]class_name[/code] declarations. If this object's script has defined a [code]class_name[/code], the base, built-in class name is returned instead.

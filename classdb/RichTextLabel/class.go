@@ -11,12 +11,15 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/Font"
+import "graphics.gd/classdb/GUI"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/PopupMenu"
 import "graphics.gd/classdb/RichTextEffect"
+import "graphics.gd/classdb/TextServer"
 import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/classdb/VScrollBar"
 import "graphics.gd/variant/Array"
@@ -36,6 +39,10 @@ import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -51,6 +58,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -63,6 +71,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -122,21 +131,21 @@ If [param width] and [param height] are not set, but [param region] is, the regi
 If [param pad] is set, and the image is smaller than the size specified by [param width] and [param height], the image padding is added to match the size instead of upscaling.
 If [param size_in_percent] is set, [param width] and [param height] values are percentages of the control width instead of pixels.
 */
-func (self Expanded) AddImage(image Texture2D.Instance, width int, height int, color Color.RGBA, inline_align InlineAlignment, region Rect2.PositionSize, key any, pad bool, tooltip string, size_in_percent bool) { //gd:RichTextLabel.add_image
+func (self Expanded) AddImage(image Texture2D.Instance, width int, height int, color Color.RGBA, inline_align GUI.InlineAlignment, region Rect2.PositionSize, key any, pad bool, tooltip string, size_in_percent bool) { //gd:RichTextLabel.add_image
 	Advanced(self).AddImage(image, int64(width), int64(height), Color.RGBA(color), inline_align, Rect2.PositionSize(region), variant.New(key), pad, String.New(tooltip), size_in_percent)
 }
 
 /*
 Updates the existing images with the key [param key]. Only properties specified by [param mask] bits are updated. See [method add_image].
 */
-func (self Instance) UpdateImage(key any, mask gdclass.RichTextLabelImageUpdateMask, image Texture2D.Instance) { //gd:RichTextLabel.update_image
+func (self Instance) UpdateImage(key any, mask ImageUpdateMask, image Texture2D.Instance) { //gd:RichTextLabel.update_image
 	Advanced(self).UpdateImage(variant.New(key), mask, image, int64(0), int64(0), Color.RGBA(gd.Color{1, 1, 1, 1}), 5, Rect2.PositionSize(gd.NewRect2(0, 0, 0, 0)), false, String.New(""), false)
 }
 
 /*
 Updates the existing images with the key [param key]. Only properties specified by [param mask] bits are updated. See [method add_image].
 */
-func (self Expanded) UpdateImage(key any, mask gdclass.RichTextLabelImageUpdateMask, image Texture2D.Instance, width int, height int, color Color.RGBA, inline_align InlineAlignment, region Rect2.PositionSize, pad bool, tooltip string, size_in_percent bool) { //gd:RichTextLabel.update_image
+func (self Expanded) UpdateImage(key any, mask ImageUpdateMask, image Texture2D.Instance, width int, height int, color Color.RGBA, inline_align GUI.InlineAlignment, region Rect2.PositionSize, pad bool, tooltip string, size_in_percent bool) { //gd:RichTextLabel.update_image
 	Advanced(self).UpdateImage(variant.New(key), mask, image, int64(width), int64(height), Color.RGBA(color), inline_align, Rect2.PositionSize(region), pad, String.New(tooltip), size_in_percent)
 }
 
@@ -254,14 +263,14 @@ func (self Instance) PushOutlineColor(color Color.RGBA) { //gd:RichTextLabel.pus
 /*
 Adds a [code skip-lint][p][/code] tag to the tag stack.
 */
-func (self Instance) PushParagraph(alignment HorizontalAlignment) { //gd:RichTextLabel.push_paragraph
+func (self Instance) PushParagraph(alignment GUI.HorizontalAlignment) { //gd:RichTextLabel.push_paragraph
 	Advanced(self).PushParagraph(alignment, 0, String.New(""), 0, 163, Packed.New([1][]float32{}[0]...))
 }
 
 /*
 Adds a [code skip-lint][p][/code] tag to the tag stack.
 */
-func (self Expanded) PushParagraph(alignment HorizontalAlignment, base_direction gdclass.ControlTextDirection, language string, st_parser gdclass.TextServerStructuredTextParser, justification_flags gdclass.TextServerJustificationFlag, tab_stops []float32) { //gd:RichTextLabel.push_paragraph
+func (self Expanded) PushParagraph(alignment GUI.HorizontalAlignment, base_direction Control.TextDirection, language string, st_parser TextServer.StructuredTextParser, justification_flags TextServer.JustificationFlag, tab_stops []float32) { //gd:RichTextLabel.push_paragraph
 	Advanced(self).PushParagraph(alignment, base_direction, String.New(language), st_parser, justification_flags, Packed.New(tab_stops...))
 }
 
@@ -275,14 +284,14 @@ func (self Instance) PushIndent(level int) { //gd:RichTextLabel.push_indent
 /*
 Adds [code skip-lint][ol][/code] or [code skip-lint][ul][/code] tag to the tag stack. Multiplies [param level] by current [member tab_size] to determine new margin length.
 */
-func (self Instance) PushList(level int, atype gdclass.RichTextLabelListType, capitalize bool) { //gd:RichTextLabel.push_list
+func (self Instance) PushList(level int, atype ListType, capitalize bool) { //gd:RichTextLabel.push_list
 	Advanced(self).PushList(int64(level), atype, capitalize, String.New("•"))
 }
 
 /*
 Adds [code skip-lint][ol][/code] or [code skip-lint][ul][/code] tag to the tag stack. Multiplies [param level] by current [member tab_size] to determine new margin length.
 */
-func (self Expanded) PushList(level int, atype gdclass.RichTextLabelListType, capitalize bool, bullet string) { //gd:RichTextLabel.push_list
+func (self Expanded) PushList(level int, atype ListType, capitalize bool, bullet string) { //gd:RichTextLabel.push_list
 	Advanced(self).PushList(int64(level), atype, capitalize, String.New(bullet))
 }
 
@@ -300,7 +309,7 @@ Adds a meta tag to the tag stack. Similar to the BBCode [code skip-lint][url=som
 If [member meta_underlined] is [code]true[/code], meta tags display an underline. This behavior can be customized with [param underline_mode].
 [b]Note:[/b] Meta tags do nothing by default when clicked. To assign behavior when clicked, connect [signal meta_clicked] to a function that is called when the meta tag is clicked.
 */
-func (self Expanded) PushMeta(data any, underline_mode gdclass.RichTextLabelMetaUnderline, tooltip string) { //gd:RichTextLabel.push_meta
+func (self Expanded) PushMeta(data any, underline_mode MetaUnderline, tooltip string) { //gd:RichTextLabel.push_meta
 	Advanced(self).PushMeta(variant.New(data), underline_mode, String.New(tooltip))
 }
 
@@ -342,7 +351,7 @@ func (self Instance) PushTable(columns int) { //gd:RichTextLabel.push_table
 /*
 Adds a [code skip-lint][table=columns,inline_align][/code] tag to the tag stack. Use [method set_table_column_expand] to set column expansion ratio. Use [method push_cell] to add cells.
 */
-func (self Expanded) PushTable(columns int, inline_align InlineAlignment, align_to_row int) { //gd:RichTextLabel.push_table
+func (self Expanded) PushTable(columns int, inline_align GUI.InlineAlignment, align_to_row int) { //gd:RichTextLabel.push_table
 	Advanced(self).PushTable(int64(columns), inline_align, int64(align_to_row))
 }
 
@@ -830,11 +839,11 @@ func (self Instance) SetScrollFollowing(value bool) {
 	class(self).SetScrollFollow(value)
 }
 
-func (self Instance) AutowrapMode() gdclass.TextServerAutowrapMode {
-	return gdclass.TextServerAutowrapMode(class(self).GetAutowrapMode())
+func (self Instance) AutowrapMode() TextServer.AutowrapMode {
+	return TextServer.AutowrapMode(class(self).GetAutowrapMode())
 }
 
-func (self Instance) SetAutowrapMode(value gdclass.TextServerAutowrapMode) {
+func (self Instance) SetAutowrapMode(value TextServer.AutowrapMode) {
 	class(self).SetAutowrapMode(value)
 }
 
@@ -862,27 +871,27 @@ func (self Instance) SetShortcutKeysEnabled(value bool) {
 	class(self).SetShortcutKeysEnabled(value)
 }
 
-func (self Instance) HorizontalAlignment() HorizontalAlignment {
-	return HorizontalAlignment(class(self).GetHorizontalAlignment())
+func (self Instance) HorizontalAlignment() GUI.HorizontalAlignment {
+	return GUI.HorizontalAlignment(class(self).GetHorizontalAlignment())
 }
 
-func (self Instance) SetHorizontalAlignment(value HorizontalAlignment) {
+func (self Instance) SetHorizontalAlignment(value GUI.HorizontalAlignment) {
 	class(self).SetHorizontalAlignment(value)
 }
 
-func (self Instance) VerticalAlignment() VerticalAlignment {
-	return VerticalAlignment(class(self).GetVerticalAlignment())
+func (self Instance) VerticalAlignment() GUI.VerticalAlignment {
+	return GUI.VerticalAlignment(class(self).GetVerticalAlignment())
 }
 
-func (self Instance) SetVerticalAlignment(value VerticalAlignment) {
+func (self Instance) SetVerticalAlignment(value GUI.VerticalAlignment) {
 	class(self).SetVerticalAlignment(value)
 }
 
-func (self Instance) JustificationFlags() gdclass.TextServerJustificationFlag {
-	return gdclass.TextServerJustificationFlag(class(self).GetJustificationFlags())
+func (self Instance) JustificationFlags() TextServer.JustificationFlag {
+	return TextServer.JustificationFlag(class(self).GetJustificationFlags())
 }
 
-func (self Instance) SetJustificationFlags(value gdclass.TextServerJustificationFlag) {
+func (self Instance) SetJustificationFlags(value TextServer.JustificationFlag) {
 	class(self).SetJustificationFlags(value)
 }
 
@@ -966,11 +975,11 @@ func (self Instance) SetVisibleCharacters(value int) {
 	class(self).SetVisibleCharacters(int64(value))
 }
 
-func (self Instance) VisibleCharactersBehavior() gdclass.TextServerVisibleCharactersBehavior {
-	return gdclass.TextServerVisibleCharactersBehavior(class(self).GetVisibleCharactersBehavior())
+func (self Instance) VisibleCharactersBehavior() TextServer.VisibleCharactersBehavior {
+	return TextServer.VisibleCharactersBehavior(class(self).GetVisibleCharactersBehavior())
 }
 
-func (self Instance) SetVisibleCharactersBehavior(value gdclass.TextServerVisibleCharactersBehavior) {
+func (self Instance) SetVisibleCharactersBehavior(value TextServer.VisibleCharactersBehavior) {
 	class(self).SetVisibleCharactersBehavior(value)
 }
 
@@ -982,11 +991,11 @@ func (self Instance) SetVisibleRatio(value Float.X) {
 	class(self).SetVisibleRatio(float64(value))
 }
 
-func (self Instance) TextDirection() gdclass.ControlTextDirection {
-	return gdclass.ControlTextDirection(class(self).GetTextDirection())
+func (self Instance) TextDirection() Control.TextDirection {
+	return Control.TextDirection(class(self).GetTextDirection())
 }
 
-func (self Instance) SetTextDirection(value gdclass.ControlTextDirection) {
+func (self Instance) SetTextDirection(value Control.TextDirection) {
 	class(self).SetTextDirection(value)
 }
 
@@ -998,11 +1007,11 @@ func (self Instance) SetLanguage(value string) {
 	class(self).SetLanguage(String.New(value))
 }
 
-func (self Instance) StructuredTextBidiOverride() gdclass.TextServerStructuredTextParser {
-	return gdclass.TextServerStructuredTextParser(class(self).GetStructuredTextBidiOverride())
+func (self Instance) StructuredTextBidiOverride() TextServer.StructuredTextParser {
+	return TextServer.StructuredTextParser(class(self).GetStructuredTextBidiOverride())
 }
 
-func (self Instance) SetStructuredTextBidiOverride(value gdclass.TextServerStructuredTextParser) {
+func (self Instance) SetStructuredTextBidiOverride(value TextServer.StructuredTextParser) {
 	class(self).SetStructuredTextBidiOverride(value)
 }
 
@@ -1057,7 +1066,7 @@ If [param pad] is set, and the image is smaller than the size specified by [para
 If [param size_in_percent] is set, [param width] and [param height] values are percentages of the control width instead of pixels.
 */
 //go:nosplit
-func (self class) AddImage(image [1]gdclass.Texture2D, width int64, height int64, color Color.RGBA, inline_align InlineAlignment, region Rect2.PositionSize, key variant.Any, pad bool, tooltip String.Readable, size_in_percent bool) { //gd:RichTextLabel.add_image
+func (self class) AddImage(image [1]gdclass.Texture2D, width int64, height int64, color Color.RGBA, inline_align GUI.InlineAlignment, region Rect2.PositionSize, key variant.Any, pad bool, tooltip String.Readable, size_in_percent bool) { //gd:RichTextLabel.add_image
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(image[0])[0])
 	callframe.Arg(frame, width)
@@ -1078,7 +1087,7 @@ func (self class) AddImage(image [1]gdclass.Texture2D, width int64, height int64
 Updates the existing images with the key [param key]. Only properties specified by [param mask] bits are updated. See [method add_image].
 */
 //go:nosplit
-func (self class) UpdateImage(key variant.Any, mask gdclass.RichTextLabelImageUpdateMask, image [1]gdclass.Texture2D, width int64, height int64, color Color.RGBA, inline_align InlineAlignment, region Rect2.PositionSize, pad bool, tooltip String.Readable, size_in_percent bool) { //gd:RichTextLabel.update_image
+func (self class) UpdateImage(key variant.Any, mask ImageUpdateMask, image [1]gdclass.Texture2D, width int64, height int64, color Color.RGBA, inline_align GUI.InlineAlignment, region Rect2.PositionSize, pad bool, tooltip String.Readable, size_in_percent bool) { //gd:RichTextLabel.update_image
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalVariant(key)))
 	callframe.Arg(frame, mask)
@@ -1259,7 +1268,7 @@ func (self class) PushOutlineColor(color Color.RGBA) { //gd:RichTextLabel.push_o
 Adds a [code skip-lint][p][/code] tag to the tag stack.
 */
 //go:nosplit
-func (self class) PushParagraph(alignment HorizontalAlignment, base_direction gdclass.ControlTextDirection, language String.Readable, st_parser gdclass.TextServerStructuredTextParser, justification_flags gdclass.TextServerJustificationFlag, tab_stops Packed.Array[float32]) { //gd:RichTextLabel.push_paragraph
+func (self class) PushParagraph(alignment GUI.HorizontalAlignment, base_direction Control.TextDirection, language String.Readable, st_parser TextServer.StructuredTextParser, justification_flags TextServer.JustificationFlag, tab_stops Packed.Array[float32]) { //gd:RichTextLabel.push_paragraph
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
 	callframe.Arg(frame, base_direction)
@@ -1288,7 +1297,7 @@ func (self class) PushIndent(level int64) { //gd:RichTextLabel.push_indent
 Adds [code skip-lint][ol][/code] or [code skip-lint][ul][/code] tag to the tag stack. Multiplies [param level] by current [member tab_size] to determine new margin length.
 */
 //go:nosplit
-func (self class) PushList(level int64, atype gdclass.RichTextLabelListType, capitalize bool, bullet String.Readable) { //gd:RichTextLabel.push_list
+func (self class) PushList(level int64, atype ListType, capitalize bool, bullet String.Readable) { //gd:RichTextLabel.push_list
 	var frame = callframe.New()
 	callframe.Arg(frame, level)
 	callframe.Arg(frame, atype)
@@ -1305,7 +1314,7 @@ If [member meta_underlined] is [code]true[/code], meta tags display an underline
 [b]Note:[/b] Meta tags do nothing by default when clicked. To assign behavior when clicked, connect [signal meta_clicked] to a function that is called when the meta tag is clicked.
 */
 //go:nosplit
-func (self class) PushMeta(data variant.Any, underline_mode gdclass.RichTextLabelMetaUnderline, tooltip String.Readable) { //gd:RichTextLabel.push_meta
+func (self class) PushMeta(data variant.Any, underline_mode MetaUnderline, tooltip String.Readable) { //gd:RichTextLabel.push_meta
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalVariant(data)))
 	callframe.Arg(frame, underline_mode)
@@ -1365,7 +1374,7 @@ func (self class) PushStrikethrough() { //gd:RichTextLabel.push_strikethrough
 Adds a [code skip-lint][table=columns,inline_align][/code] tag to the tag stack. Use [method set_table_column_expand] to set column expansion ratio. Use [method push_cell] to add cells.
 */
 //go:nosplit
-func (self class) PushTable(columns int64, inline_align InlineAlignment, align_to_row int64) { //gd:RichTextLabel.push_table
+func (self class) PushTable(columns int64, inline_align GUI.InlineAlignment, align_to_row int64) { //gd:RichTextLabel.push_table
 	var frame = callframe.New()
 	callframe.Arg(frame, columns)
 	callframe.Arg(frame, inline_align)
@@ -1565,7 +1574,7 @@ func (self class) Clear() { //gd:RichTextLabel.clear
 }
 
 //go:nosplit
-func (self class) SetStructuredTextBidiOverride(parser gdclass.TextServerStructuredTextParser) { //gd:RichTextLabel.set_structured_text_bidi_override
+func (self class) SetStructuredTextBidiOverride(parser TextServer.StructuredTextParser) { //gd:RichTextLabel.set_structured_text_bidi_override
 	var frame = callframe.New()
 	callframe.Arg(frame, parser)
 	var r_ret = callframe.Nil
@@ -1574,9 +1583,9 @@ func (self class) SetStructuredTextBidiOverride(parser gdclass.TextServerStructu
 }
 
 //go:nosplit
-func (self class) GetStructuredTextBidiOverride() gdclass.TextServerStructuredTextParser { //gd:RichTextLabel.get_structured_text_bidi_override
+func (self class) GetStructuredTextBidiOverride() TextServer.StructuredTextParser { //gd:RichTextLabel.get_structured_text_bidi_override
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TextServerStructuredTextParser](frame)
+	var r_ret = callframe.Ret[TextServer.StructuredTextParser](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_structured_text_bidi_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1603,7 +1612,7 @@ func (self class) GetStructuredTextBidiOverrideOptions() Array.Any { //gd:RichTe
 }
 
 //go:nosplit
-func (self class) SetTextDirection(direction gdclass.ControlTextDirection) { //gd:RichTextLabel.set_text_direction
+func (self class) SetTextDirection(direction Control.TextDirection) { //gd:RichTextLabel.set_text_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, direction)
 	var r_ret = callframe.Nil
@@ -1612,9 +1621,9 @@ func (self class) SetTextDirection(direction gdclass.ControlTextDirection) { //g
 }
 
 //go:nosplit
-func (self class) GetTextDirection() gdclass.ControlTextDirection { //gd:RichTextLabel.get_text_direction
+func (self class) GetTextDirection() Control.TextDirection { //gd:RichTextLabel.get_text_direction
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ControlTextDirection](frame)
+	var r_ret = callframe.Ret[Control.TextDirection](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_text_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1641,7 +1650,7 @@ func (self class) GetLanguage() String.Readable { //gd:RichTextLabel.get_languag
 }
 
 //go:nosplit
-func (self class) SetHorizontalAlignment(alignment HorizontalAlignment) { //gd:RichTextLabel.set_horizontal_alignment
+func (self class) SetHorizontalAlignment(alignment GUI.HorizontalAlignment) { //gd:RichTextLabel.set_horizontal_alignment
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
 	var r_ret = callframe.Nil
@@ -1650,9 +1659,9 @@ func (self class) SetHorizontalAlignment(alignment HorizontalAlignment) { //gd:R
 }
 
 //go:nosplit
-func (self class) GetHorizontalAlignment() HorizontalAlignment { //gd:RichTextLabel.get_horizontal_alignment
+func (self class) GetHorizontalAlignment() GUI.HorizontalAlignment { //gd:RichTextLabel.get_horizontal_alignment
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[HorizontalAlignment](frame)
+	var r_ret = callframe.Ret[GUI.HorizontalAlignment](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_horizontal_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1660,7 +1669,7 @@ func (self class) GetHorizontalAlignment() HorizontalAlignment { //gd:RichTextLa
 }
 
 //go:nosplit
-func (self class) SetVerticalAlignment(alignment VerticalAlignment) { //gd:RichTextLabel.set_vertical_alignment
+func (self class) SetVerticalAlignment(alignment GUI.VerticalAlignment) { //gd:RichTextLabel.set_vertical_alignment
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
 	var r_ret = callframe.Nil
@@ -1669,9 +1678,9 @@ func (self class) SetVerticalAlignment(alignment VerticalAlignment) { //gd:RichT
 }
 
 //go:nosplit
-func (self class) GetVerticalAlignment() VerticalAlignment { //gd:RichTextLabel.get_vertical_alignment
+func (self class) GetVerticalAlignment() GUI.VerticalAlignment { //gd:RichTextLabel.get_vertical_alignment
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[VerticalAlignment](frame)
+	var r_ret = callframe.Ret[GUI.VerticalAlignment](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_vertical_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1679,7 +1688,7 @@ func (self class) GetVerticalAlignment() VerticalAlignment { //gd:RichTextLabel.
 }
 
 //go:nosplit
-func (self class) SetJustificationFlags(justification_flags gdclass.TextServerJustificationFlag) { //gd:RichTextLabel.set_justification_flags
+func (self class) SetJustificationFlags(justification_flags TextServer.JustificationFlag) { //gd:RichTextLabel.set_justification_flags
 	var frame = callframe.New()
 	callframe.Arg(frame, justification_flags)
 	var r_ret = callframe.Nil
@@ -1688,9 +1697,9 @@ func (self class) SetJustificationFlags(justification_flags gdclass.TextServerJu
 }
 
 //go:nosplit
-func (self class) GetJustificationFlags() gdclass.TextServerJustificationFlag { //gd:RichTextLabel.get_justification_flags
+func (self class) GetJustificationFlags() TextServer.JustificationFlag { //gd:RichTextLabel.get_justification_flags
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TextServerJustificationFlag](frame)
+	var r_ret = callframe.Ret[TextServer.JustificationFlag](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_justification_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1717,7 +1726,7 @@ func (self class) GetTabStops() Packed.Array[float32] { //gd:RichTextLabel.get_t
 }
 
 //go:nosplit
-func (self class) SetAutowrapMode(autowrap_mode gdclass.TextServerAutowrapMode) { //gd:RichTextLabel.set_autowrap_mode
+func (self class) SetAutowrapMode(autowrap_mode TextServer.AutowrapMode) { //gd:RichTextLabel.set_autowrap_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, autowrap_mode)
 	var r_ret = callframe.Nil
@@ -1726,9 +1735,9 @@ func (self class) SetAutowrapMode(autowrap_mode gdclass.TextServerAutowrapMode) 
 }
 
 //go:nosplit
-func (self class) GetAutowrapMode() gdclass.TextServerAutowrapMode { //gd:RichTextLabel.get_autowrap_mode
+func (self class) GetAutowrapMode() TextServer.AutowrapMode { //gd:RichTextLabel.get_autowrap_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TextServerAutowrapMode](frame)
+	var r_ret = callframe.Ret[TextServer.AutowrapMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_autowrap_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2187,9 +2196,9 @@ func (self class) GetVisibleCharacters() int64 { //gd:RichTextLabel.get_visible_
 }
 
 //go:nosplit
-func (self class) GetVisibleCharactersBehavior() gdclass.TextServerVisibleCharactersBehavior { //gd:RichTextLabel.get_visible_characters_behavior
+func (self class) GetVisibleCharactersBehavior() TextServer.VisibleCharactersBehavior { //gd:RichTextLabel.get_visible_characters_behavior
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TextServerVisibleCharactersBehavior](frame)
+	var r_ret = callframe.Ret[TextServer.VisibleCharactersBehavior](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_visible_characters_behavior, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2197,7 +2206,7 @@ func (self class) GetVisibleCharactersBehavior() gdclass.TextServerVisibleCharac
 }
 
 //go:nosplit
-func (self class) SetVisibleCharactersBehavior(behavior gdclass.TextServerVisibleCharactersBehavior) { //gd:RichTextLabel.set_visible_characters_behavior
+func (self class) SetVisibleCharactersBehavior(behavior TextServer.VisibleCharactersBehavior) { //gd:RichTextLabel.set_visible_characters_behavior
 	var frame = callframe.New()
 	callframe.Arg(frame, behavior)
 	var r_ret = callframe.Nil
@@ -2613,7 +2622,7 @@ func init() {
 	})
 }
 
-type ListType = gdclass.RichTextLabelListType //gd:RichTextLabel.ListType
+type ListType int //gd:RichTextLabel.ListType
 
 const (
 	/*Each list item has a number marker.*/
@@ -2626,7 +2635,7 @@ const (
 	ListDots ListType = 3
 )
 
-type MenuItems = gdclass.RichTextLabelMenuItems //gd:RichTextLabel.MenuItems
+type MenuItems int //gd:RichTextLabel.MenuItems
 
 const (
 	/*Copies the selected text.*/
@@ -2637,7 +2646,7 @@ const (
 	MenuMax MenuItems = 2
 )
 
-type MetaUnderline = gdclass.RichTextLabelMetaUnderline //gd:RichTextLabel.MetaUnderline
+type MetaUnderline int //gd:RichTextLabel.MetaUnderline
 
 const (
 	/*Meta tag does not display an underline, even if [member meta_underlined] is [code]true[/code].*/
@@ -2648,7 +2657,7 @@ const (
 	MetaUnderlineOnHover MetaUnderline = 2
 )
 
-type ImageUpdateMask = gdclass.RichTextLabelImageUpdateMask //gd:RichTextLabel.ImageUpdateMask
+type ImageUpdateMask int //gd:RichTextLabel.ImageUpdateMask
 
 const (
 	/*If this bit is set, [method update_image] changes image texture.*/
@@ -2667,61 +2676,4 @@ const (
 	UpdateTooltip ImageUpdateMask = 64
 	/*If this bit is set, [method update_image] changes image width from/to percents.*/
 	UpdateWidthInPercent ImageUpdateMask = 128
-)
-
-type HorizontalAlignment int
-
-const (
-	/*Horizontal left alignment, usually for text-derived classes.*/
-	HorizontalAlignmentLeft HorizontalAlignment = 0
-	/*Horizontal center alignment, usually for text-derived classes.*/
-	HorizontalAlignmentCenter HorizontalAlignment = 1
-	/*Horizontal right alignment, usually for text-derived classes.*/
-	HorizontalAlignmentRight HorizontalAlignment = 2
-	/*Expand row to fit width, usually for text-derived classes.*/
-	HorizontalAlignmentFill HorizontalAlignment = 3
-)
-
-type InlineAlignment int
-
-const (
-	/*Aligns the top of the inline object (e.g. image, table) to the position of the text specified by [code]INLINE_ALIGNMENT_TO_*[/code] constant.*/
-	InlineAlignmentTopTo InlineAlignment = 0
-	/*Aligns the center of the inline object (e.g. image, table) to the position of the text specified by [code]INLINE_ALIGNMENT_TO_*[/code] constant.*/
-	InlineAlignmentCenterTo InlineAlignment = 1
-	/*Aligns the baseline (user defined) of the inline object (e.g. image, table) to the position of the text specified by [code]INLINE_ALIGNMENT_TO_*[/code] constant.*/
-	InlineAlignmentBaselineTo InlineAlignment = 3
-	/*Aligns the bottom of the inline object (e.g. image, table) to the position of the text specified by [code]INLINE_ALIGNMENT_TO_*[/code] constant.*/
-	InlineAlignmentBottomTo InlineAlignment = 2
-	/*Aligns the position of the inline object (e.g. image, table) specified by [code]INLINE_ALIGNMENT_*_TO[/code] constant to the top of the text.*/
-	InlineAlignmentToTop InlineAlignment = 0
-	/*Aligns the position of the inline object (e.g. image, table) specified by [code]INLINE_ALIGNMENT_*_TO[/code] constant to the center of the text.*/
-	InlineAlignmentToCenter InlineAlignment = 4
-	/*Aligns the position of the inline object (e.g. image, table) specified by [code]INLINE_ALIGNMENT_*_TO[/code] constant to the baseline of the text.*/
-	InlineAlignmentToBaseline InlineAlignment = 8
-	/*Aligns inline object (e.g. image, table) to the bottom of the text.*/
-	InlineAlignmentToBottom InlineAlignment = 12
-	/*Aligns top of the inline object (e.g. image, table) to the top of the text. Equivalent to [code]INLINE_ALIGNMENT_TOP_TO | INLINE_ALIGNMENT_TO_TOP[/code].*/
-	InlineAlignmentTop InlineAlignment = 0
-	/*Aligns center of the inline object (e.g. image, table) to the center of the text. Equivalent to [code]INLINE_ALIGNMENT_CENTER_TO | INLINE_ALIGNMENT_TO_CENTER[/code].*/
-	InlineAlignmentCenter InlineAlignment = 5
-	/*Aligns bottom of the inline object (e.g. image, table) to the bottom of the text. Equivalent to [code]INLINE_ALIGNMENT_BOTTOM_TO | INLINE_ALIGNMENT_TO_BOTTOM[/code].*/
-	InlineAlignmentBottom InlineAlignment = 14
-	/*A bit mask for [code]INLINE_ALIGNMENT_*_TO[/code] alignment constants.*/
-	InlineAlignmentImageMask InlineAlignment = 3
-	/*A bit mask for [code]INLINE_ALIGNMENT_TO_*[/code] alignment constants.*/
-	InlineAlignmentTextMask InlineAlignment = 12
-)
-
-type VerticalAlignment int
-
-const (
-	/*Vertical top alignment, usually for text-derived classes.*/
-	VerticalAlignmentTop VerticalAlignment = 0
-	/*Vertical center alignment, usually for text-derived classes.*/
-	VerticalAlignmentCenter VerticalAlignment = 1
-	/*Vertical bottom alignment, usually for text-derived classes.*/
-	VerticalAlignmentBottom VerticalAlignment = 2
-	/*Expand rows to fit height, usually for text-derived classes.*/
-	VerticalAlignmentFill VerticalAlignment = 3
 )

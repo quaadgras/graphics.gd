@@ -80,8 +80,6 @@ func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
 		return maybeInternal("StringName")
 	case "enum::GDExtension.InitializationLevel":
 		return maybeInternal("GDExtensionInitializationLevel")
-	case "enum::GDExtensionManager.LoadStatus":
-		return "GDExtensionManagerLoadStatus"
 	case "PackedStringArray", "PackedInt32Array", "PackedInt64Array", "PackedFloat32Array",
 		"PackedFloat64Array", "PackedVector2Array", "PackedVector3Array", "PackedVector4Array", "PackedColorArray", "PackedByteArray",
 		"Vector2", "Vector2i", "Rect2", "Rect2i", "Vector3", "Vector3i", "Transform2D", "Vector4", "Vector4i",
@@ -386,6 +384,9 @@ func generate() error {
 		}
 	}
 	for i, class := range spec.Classes {
+		if class.IsEphemeral {
+			continue
+		}
 		var pkg = "internal"
 		if !inCore(class.Name) {
 			pkg = "classdb"
@@ -624,6 +625,9 @@ func generate() error {
 
 	fmt.Fprintf(out, "type singletons struct{\n")
 	for _, class := range spec.Classes {
+		if class.IsEphemeral {
+			continue
+		}
 		if singletons[class.Name] {
 			fmt.Fprintf(out, "\t%v StringName\n", class.Name)
 		}
@@ -632,6 +636,9 @@ func generate() error {
 
 	fmt.Fprintf(out, "type methods struct{\n")
 	for _, class := range spec.Classes {
+		if class.IsEphemeral {
+			continue
+		}
 		fmt.Fprintf(out, "\t%v struct{\n", class.Name)
 		for _, method := range class.Methods {
 			if method.Name == "select" {
@@ -647,15 +654,15 @@ func generate() error {
 	fmt.Fprintf(out, "}\n")
 
 	for _, class := range spec.Classes {
+		if class.IsEphemeral {
+			continue
+		}
 		var w = core
 		if class.Package != "internal" {
 			w = all
 		}
 		pkg := class.Package
 
-		for _, enum := range class.Enums {
-			genEnum(pkg, w, nil, class.Name, enum)
-		}
 		if class.Name != "Object" && class.Name != "RefCounted" {
 			fmt.Fprintf(w, "type %[1]v pointers.Trio[%[1]v]\n", class.Name, classDB.nameOf(pkg, class.Inherits))
 			fmt.Fprintf(w, "func (self %[1]v) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }\n", class.Name)

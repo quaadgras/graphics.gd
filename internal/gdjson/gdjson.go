@@ -59,6 +59,7 @@ type Class struct {
 	IsRefcounted   bool   `json:"is_refcounted"`
 	IsInstantiable bool   `json:"is_instantiable"`
 	IsSingleton    bool
+	IsEphemeral    bool
 
 	IsKeyed   bool `json:"is_keyed"` // builtin class
 	Operators []struct {

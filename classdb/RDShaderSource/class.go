@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/Rendering"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -24,6 +26,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -39,6 +45,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -51,6 +58,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -130,11 +138,11 @@ func (self Instance) SetSourceCompute(value string) {
 	class(self).SetStageSource(4, String.New(value))
 }
 
-func (self Instance) Language() gdclass.RenderingDeviceShaderLanguage {
-	return gdclass.RenderingDeviceShaderLanguage(class(self).GetLanguage())
+func (self Instance) Language() Rendering.ShaderLanguage {
+	return Rendering.ShaderLanguage(class(self).GetLanguage())
 }
 
-func (self Instance) SetLanguage(value gdclass.RenderingDeviceShaderLanguage) {
+func (self Instance) SetLanguage(value Rendering.ShaderLanguage) {
 	class(self).SetLanguage(value)
 }
 
@@ -143,7 +151,7 @@ Sets [param source] code for the specified shader [param stage]. Equivalent to s
 [b]Note:[/b] If you set the compute shader source code using this method directly, remember to remove the Godot-specific hint [code]#[compute][/code].
 */
 //go:nosplit
-func (self class) SetStageSource(stage gdclass.RenderingDeviceShaderStage, source String.Readable) { //gd:RDShaderSource.set_stage_source
+func (self class) SetStageSource(stage Rendering.ShaderStage, source String.Readable) { //gd:RDShaderSource.set_stage_source
 	var frame = callframe.New()
 	callframe.Arg(frame, stage)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(source)))
@@ -156,7 +164,7 @@ func (self class) SetStageSource(stage gdclass.RenderingDeviceShaderStage, sourc
 Returns source code for the specified shader [param stage]. Equivalent to getting one of [member source_compute], [member source_fragment], [member source_tesselation_control], [member source_tesselation_evaluation] or [member source_vertex].
 */
 //go:nosplit
-func (self class) GetStageSource(stage gdclass.RenderingDeviceShaderStage) String.Readable { //gd:RDShaderSource.get_stage_source
+func (self class) GetStageSource(stage Rendering.ShaderStage) String.Readable { //gd:RDShaderSource.get_stage_source
 	var frame = callframe.New()
 	callframe.Arg(frame, stage)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -167,7 +175,7 @@ func (self class) GetStageSource(stage gdclass.RenderingDeviceShaderStage) Strin
 }
 
 //go:nosplit
-func (self class) SetLanguage(language gdclass.RenderingDeviceShaderLanguage) { //gd:RDShaderSource.set_language
+func (self class) SetLanguage(language Rendering.ShaderLanguage) { //gd:RDShaderSource.set_language
 	var frame = callframe.New()
 	callframe.Arg(frame, language)
 	var r_ret = callframe.Nil
@@ -176,9 +184,9 @@ func (self class) SetLanguage(language gdclass.RenderingDeviceShaderLanguage) { 
 }
 
 //go:nosplit
-func (self class) GetLanguage() gdclass.RenderingDeviceShaderLanguage { //gd:RDShaderSource.get_language
+func (self class) GetLanguage() Rendering.ShaderLanguage { //gd:RDShaderSource.get_language
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingDeviceShaderLanguage](frame)
+	var r_ret = callframe.Ret[Rendering.ShaderLanguage](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDShaderSource.Bind_get_language, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

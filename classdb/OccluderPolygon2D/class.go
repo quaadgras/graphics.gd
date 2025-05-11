@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -26,6 +27,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -41,6 +46,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -53,6 +59,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -99,11 +106,11 @@ func (self Instance) SetClosed(value bool) {
 	class(self).SetClosed(value)
 }
 
-func (self Instance) CullMode() gdclass.OccluderPolygon2DCullMode {
-	return gdclass.OccluderPolygon2DCullMode(class(self).GetCullMode())
+func (self Instance) CullMode() CullMode {
+	return CullMode(class(self).GetCullMode())
 }
 
-func (self Instance) SetCullMode(value gdclass.OccluderPolygon2DCullMode) {
+func (self Instance) SetCullMode(value CullMode) {
 	class(self).SetCullMode(value)
 }
 
@@ -135,7 +142,7 @@ func (self class) IsClosed() bool { //gd:OccluderPolygon2D.is_closed
 }
 
 //go:nosplit
-func (self class) SetCullMode(cull_mode gdclass.OccluderPolygon2DCullMode) { //gd:OccluderPolygon2D.set_cull_mode
+func (self class) SetCullMode(cull_mode CullMode) { //gd:OccluderPolygon2D.set_cull_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, cull_mode)
 	var r_ret = callframe.Nil
@@ -144,9 +151,9 @@ func (self class) SetCullMode(cull_mode gdclass.OccluderPolygon2DCullMode) { //g
 }
 
 //go:nosplit
-func (self class) GetCullMode() gdclass.OccluderPolygon2DCullMode { //gd:OccluderPolygon2D.get_cull_mode
+func (self class) GetCullMode() CullMode { //gd:OccluderPolygon2D.get_cull_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.OccluderPolygon2DCullMode](frame)
+	var r_ret = callframe.Ret[CullMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OccluderPolygon2D.Bind_get_cull_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -208,7 +215,7 @@ func init() {
 	})
 }
 
-type CullMode = gdclass.OccluderPolygon2DCullMode //gd:OccluderPolygon2D.CullMode
+type CullMode int //gd:OccluderPolygon2D.CullMode
 
 const (
 	/*Culling is disabled. See [member cull_mode].*/

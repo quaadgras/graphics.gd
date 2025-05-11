@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/Animation"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -25,6 +27,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -40,6 +46,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -52,6 +59,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -326,7 +334,7 @@ func (self Instance) BlendAnimation(animation string, time Float.X, delta Float.
 Blend an animation by [param blend] amount (name must be valid in the linked [AnimationPlayer]). A [param time] and [param delta] may be passed, as well as whether [param seeked] happened.
 A [param looped_flag] is used by internal processing immediately after the loop. See also [enum Animation.LoopedFlag].
 */
-func (self Expanded) BlendAnimation(animation string, time Float.X, delta Float.X, seeked bool, is_external_seeking bool, blend Float.X, looped_flag gdclass.AnimationLoopedFlag) { //gd:AnimationNode.blend_animation
+func (self Expanded) BlendAnimation(animation string, time Float.X, delta Float.X, seeked bool, is_external_seeking bool, blend Float.X, looped_flag Animation.LoopedFlag) { //gd:AnimationNode.blend_animation
 	Advanced(self).BlendAnimation(String.Name(String.New(animation)), float64(time), float64(delta), seeked, is_external_seeking, float64(blend), looped_flag)
 }
 
@@ -340,7 +348,7 @@ func (self Instance) BlendNode(name string, node Instance, time Float.X, seek bo
 /*
 Blend another animation node (in case this animation node contains child animation nodes). This function is only useful if you inherit from [AnimationRootNode] instead, otherwise editors will not display your animation node for addition.
 */
-func (self Expanded) BlendNode(name string, node Instance, time Float.X, seek bool, is_external_seeking bool, blend Float.X, filter gdclass.AnimationNodeFilterAction, sync bool, test_only bool) Float.X { //gd:AnimationNode.blend_node
+func (self Expanded) BlendNode(name string, node Instance, time Float.X, seek bool, is_external_seeking bool, blend Float.X, filter FilterAction, sync bool, test_only bool) Float.X { //gd:AnimationNode.blend_node
 	return Float.X(Float.X(Advanced(self).BlendNode(String.Name(String.New(name)), node, float64(time), seek, is_external_seeking, float64(blend), filter, sync, test_only)))
 }
 
@@ -354,7 +362,7 @@ func (self Instance) BlendInput(input_index int, time Float.X, seek bool, is_ext
 /*
 Blend an input. This is only useful for animation nodes created for an [AnimationNodeBlendTree]. The [param time] parameter is a relative delta, unless [param seek] is [code]true[/code], in which case it is absolute. A filter mode may be optionally passed (see [enum FilterAction] for options).
 */
-func (self Expanded) BlendInput(input_index int, time Float.X, seek bool, is_external_seeking bool, blend Float.X, filter gdclass.AnimationNodeFilterAction, sync bool, test_only bool) Float.X { //gd:AnimationNode.blend_input
+func (self Expanded) BlendInput(input_index int, time Float.X, seek bool, is_external_seeking bool, blend Float.X, filter FilterAction, sync bool, test_only bool) Float.X { //gd:AnimationNode.blend_input
 	return Float.X(Float.X(Advanced(self).BlendInput(int64(input_index), float64(time), seek, is_external_seeking, float64(blend), filter, sync, test_only)))
 }
 
@@ -685,7 +693,7 @@ Blend an animation by [param blend] amount (name must be valid in the linked [An
 A [param looped_flag] is used by internal processing immediately after the loop. See also [enum Animation.LoopedFlag].
 */
 //go:nosplit
-func (self class) BlendAnimation(animation String.Name, time float64, delta float64, seeked bool, is_external_seeking bool, blend float64, looped_flag gdclass.AnimationLoopedFlag) { //gd:AnimationNode.blend_animation
+func (self class) BlendAnimation(animation String.Name, time float64, delta float64, seeked bool, is_external_seeking bool, blend float64, looped_flag Animation.LoopedFlag) { //gd:AnimationNode.blend_animation
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(animation)))
 	callframe.Arg(frame, time)
@@ -703,7 +711,7 @@ func (self class) BlendAnimation(animation String.Name, time float64, delta floa
 Blend another animation node (in case this animation node contains child animation nodes). This function is only useful if you inherit from [AnimationRootNode] instead, otherwise editors will not display your animation node for addition.
 */
 //go:nosplit
-func (self class) BlendNode(name String.Name, node [1]gdclass.AnimationNode, time float64, seek bool, is_external_seeking bool, blend float64, filter gdclass.AnimationNodeFilterAction, sync bool, test_only bool) float64 { //gd:AnimationNode.blend_node
+func (self class) BlendNode(name String.Name, node [1]gdclass.AnimationNode, time float64, seek bool, is_external_seeking bool, blend float64, filter FilterAction, sync bool, test_only bool) float64 { //gd:AnimationNode.blend_node
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, pointers.Get(node[0])[0])
@@ -725,7 +733,7 @@ func (self class) BlendNode(name String.Name, node [1]gdclass.AnimationNode, tim
 Blend an input. This is only useful for animation nodes created for an [AnimationNodeBlendTree]. The [param time] parameter is a relative delta, unless [param seek] is [code]true[/code], in which case it is absolute. A filter mode may be optionally passed (see [enum FilterAction] for options).
 */
 //go:nosplit
-func (self class) BlendInput(input_index int64, time float64, seek bool, is_external_seeking bool, blend float64, filter gdclass.AnimationNodeFilterAction, sync bool, test_only bool) float64 { //gd:AnimationNode.blend_input
+func (self class) BlendInput(input_index int64, time float64, seek bool, is_external_seeking bool, blend float64, filter FilterAction, sync bool, test_only bool) float64 { //gd:AnimationNode.blend_input
 	var frame = callframe.New()
 	callframe.Arg(frame, input_index)
 	callframe.Arg(frame, time)
@@ -849,7 +857,7 @@ func init() {
 	})
 }
 
-type FilterAction = gdclass.AnimationNodeFilterAction //gd:AnimationNode.FilterAction
+type FilterAction int //gd:AnimationNode.FilterAction
 
 const (
 	/*Do not use filtering.*/

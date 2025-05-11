@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -24,6 +25,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -39,6 +44,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -51,6 +57,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -173,11 +180,11 @@ func (self Instance) SetIgdOurAddr(value string) {
 	class(self).SetIgdOurAddr(String.New(value))
 }
 
-func (self Instance) IgdStatus() gdclass.UPNPDeviceIGDStatus {
-	return gdclass.UPNPDeviceIGDStatus(class(self).GetIgdStatus())
+func (self Instance) IgdStatus() IGDStatus {
+	return IGDStatus(class(self).GetIgdStatus())
 }
 
-func (self Instance) SetIgdStatus(value gdclass.UPNPDeviceIGDStatus) {
+func (self Instance) SetIgdStatus(value IGDStatus) {
 	class(self).SetIgdStatus(value)
 }
 
@@ -336,7 +343,7 @@ func (self class) GetIgdOurAddr() String.Readable { //gd:UPNPDevice.get_igd_our_
 }
 
 //go:nosplit
-func (self class) SetIgdStatus(status gdclass.UPNPDeviceIGDStatus) { //gd:UPNPDevice.set_igd_status
+func (self class) SetIgdStatus(status IGDStatus) { //gd:UPNPDevice.set_igd_status
 	var frame = callframe.New()
 	callframe.Arg(frame, status)
 	var r_ret = callframe.Nil
@@ -345,9 +352,9 @@ func (self class) SetIgdStatus(status gdclass.UPNPDeviceIGDStatus) { //gd:UPNPDe
 }
 
 //go:nosplit
-func (self class) GetIgdStatus() gdclass.UPNPDeviceIGDStatus { //gd:UPNPDevice.get_igd_status
+func (self class) GetIgdStatus() IGDStatus { //gd:UPNPDevice.get_igd_status
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.UPNPDeviceIGDStatus](frame)
+	var r_ret = callframe.Ret[IGDStatus](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_get_igd_status, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -381,7 +388,7 @@ func init() {
 	gdclass.Register("UPNPDevice", func(ptr gd.Object) any { return [1]gdclass.UPNPDevice{*(*gdclass.UPNPDevice)(unsafe.Pointer(&ptr))} })
 }
 
-type IGDStatus = gdclass.UPNPDeviceIGDStatus //gd:UPNPDevice.IGDStatus
+type IGDStatus int //gd:UPNPDevice.IGDStatus
 
 const (
 	/*OK.*/

@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -27,6 +28,10 @@ import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -42,6 +47,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -54,6 +60,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -342,11 +349,11 @@ func (self Instance) SetCellSize(value Vector2.XY) {
 	class(self).SetCellSize(Vector2.XY(value))
 }
 
-func (self Instance) CellShape() gdclass.AStarGrid2DCellShape {
-	return gdclass.AStarGrid2DCellShape(class(self).GetCellShape())
+func (self Instance) CellShape() CellShape {
+	return CellShape(class(self).GetCellShape())
 }
 
-func (self Instance) SetCellShape(value gdclass.AStarGrid2DCellShape) {
+func (self Instance) SetCellShape(value CellShape) {
 	class(self).SetCellShape(value)
 }
 
@@ -358,27 +365,27 @@ func (self Instance) SetJumpingEnabled(value bool) {
 	class(self).SetJumpingEnabled(value)
 }
 
-func (self Instance) DefaultComputeHeuristic() gdclass.AStarGrid2DHeuristic {
-	return gdclass.AStarGrid2DHeuristic(class(self).GetDefaultComputeHeuristic())
+func (self Instance) DefaultComputeHeuristic() Heuristic {
+	return Heuristic(class(self).GetDefaultComputeHeuristic())
 }
 
-func (self Instance) SetDefaultComputeHeuristic(value gdclass.AStarGrid2DHeuristic) {
+func (self Instance) SetDefaultComputeHeuristic(value Heuristic) {
 	class(self).SetDefaultComputeHeuristic(value)
 }
 
-func (self Instance) DefaultEstimateHeuristic() gdclass.AStarGrid2DHeuristic {
-	return gdclass.AStarGrid2DHeuristic(class(self).GetDefaultEstimateHeuristic())
+func (self Instance) DefaultEstimateHeuristic() Heuristic {
+	return Heuristic(class(self).GetDefaultEstimateHeuristic())
 }
 
-func (self Instance) SetDefaultEstimateHeuristic(value gdclass.AStarGrid2DHeuristic) {
+func (self Instance) SetDefaultEstimateHeuristic(value Heuristic) {
 	class(self).SetDefaultEstimateHeuristic(value)
 }
 
-func (self Instance) DiagonalMode() gdclass.AStarGrid2DDiagonalMode {
-	return gdclass.AStarGrid2DDiagonalMode(class(self).GetDiagonalMode())
+func (self Instance) DiagonalMode() DiagonalMode {
+	return DiagonalMode(class(self).GetDiagonalMode())
 }
 
-func (self Instance) SetDiagonalMode(value gdclass.AStarGrid2DDiagonalMode) {
+func (self Instance) SetDiagonalMode(value DiagonalMode) {
 	class(self).SetDiagonalMode(value)
 }
 
@@ -487,7 +494,7 @@ func (self class) GetCellSize() Vector2.XY { //gd:AStarGrid2D.get_cell_size
 }
 
 //go:nosplit
-func (self class) SetCellShape(cell_shape gdclass.AStarGrid2DCellShape) { //gd:AStarGrid2D.set_cell_shape
+func (self class) SetCellShape(cell_shape CellShape) { //gd:AStarGrid2D.set_cell_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, cell_shape)
 	var r_ret = callframe.Nil
@@ -496,9 +503,9 @@ func (self class) SetCellShape(cell_shape gdclass.AStarGrid2DCellShape) { //gd:A
 }
 
 //go:nosplit
-func (self class) GetCellShape() gdclass.AStarGrid2DCellShape { //gd:AStarGrid2D.get_cell_shape
+func (self class) GetCellShape() CellShape { //gd:AStarGrid2D.get_cell_shape
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.AStarGrid2DCellShape](frame)
+	var r_ret = callframe.Ret[CellShape](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_cell_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -579,7 +586,7 @@ func (self class) IsJumpingEnabled() bool { //gd:AStarGrid2D.is_jumping_enabled
 }
 
 //go:nosplit
-func (self class) SetDiagonalMode(mode gdclass.AStarGrid2DDiagonalMode) { //gd:AStarGrid2D.set_diagonal_mode
+func (self class) SetDiagonalMode(mode DiagonalMode) { //gd:AStarGrid2D.set_diagonal_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -588,9 +595,9 @@ func (self class) SetDiagonalMode(mode gdclass.AStarGrid2DDiagonalMode) { //gd:A
 }
 
 //go:nosplit
-func (self class) GetDiagonalMode() gdclass.AStarGrid2DDiagonalMode { //gd:AStarGrid2D.get_diagonal_mode
+func (self class) GetDiagonalMode() DiagonalMode { //gd:AStarGrid2D.get_diagonal_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.AStarGrid2DDiagonalMode](frame)
+	var r_ret = callframe.Ret[DiagonalMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_diagonal_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -598,7 +605,7 @@ func (self class) GetDiagonalMode() gdclass.AStarGrid2DDiagonalMode { //gd:AStar
 }
 
 //go:nosplit
-func (self class) SetDefaultComputeHeuristic(heuristic gdclass.AStarGrid2DHeuristic) { //gd:AStarGrid2D.set_default_compute_heuristic
+func (self class) SetDefaultComputeHeuristic(heuristic Heuristic) { //gd:AStarGrid2D.set_default_compute_heuristic
 	var frame = callframe.New()
 	callframe.Arg(frame, heuristic)
 	var r_ret = callframe.Nil
@@ -607,9 +614,9 @@ func (self class) SetDefaultComputeHeuristic(heuristic gdclass.AStarGrid2DHeuris
 }
 
 //go:nosplit
-func (self class) GetDefaultComputeHeuristic() gdclass.AStarGrid2DHeuristic { //gd:AStarGrid2D.get_default_compute_heuristic
+func (self class) GetDefaultComputeHeuristic() Heuristic { //gd:AStarGrid2D.get_default_compute_heuristic
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.AStarGrid2DHeuristic](frame)
+	var r_ret = callframe.Ret[Heuristic](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_default_compute_heuristic, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -617,7 +624,7 @@ func (self class) GetDefaultComputeHeuristic() gdclass.AStarGrid2DHeuristic { //
 }
 
 //go:nosplit
-func (self class) SetDefaultEstimateHeuristic(heuristic gdclass.AStarGrid2DHeuristic) { //gd:AStarGrid2D.set_default_estimate_heuristic
+func (self class) SetDefaultEstimateHeuristic(heuristic Heuristic) { //gd:AStarGrid2D.set_default_estimate_heuristic
 	var frame = callframe.New()
 	callframe.Arg(frame, heuristic)
 	var r_ret = callframe.Nil
@@ -626,9 +633,9 @@ func (self class) SetDefaultEstimateHeuristic(heuristic gdclass.AStarGrid2DHeuri
 }
 
 //go:nosplit
-func (self class) GetDefaultEstimateHeuristic() gdclass.AStarGrid2DHeuristic { //gd:AStarGrid2D.get_default_estimate_heuristic
+func (self class) GetDefaultEstimateHeuristic() Heuristic { //gd:AStarGrid2D.get_default_estimate_heuristic
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.AStarGrid2DHeuristic](frame)
+	var r_ret = callframe.Ret[Heuristic](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AStarGrid2D.Bind_get_default_estimate_heuristic, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -830,7 +837,7 @@ func init() {
 	gdclass.Register("AStarGrid2D", func(ptr gd.Object) any { return [1]gdclass.AStarGrid2D{*(*gdclass.AStarGrid2D)(unsafe.Pointer(&ptr))} })
 }
 
-type Heuristic = gdclass.AStarGrid2DHeuristic //gd:AStarGrid2D.Heuristic
+type Heuristic int //gd:AStarGrid2D.Heuristic
 
 const (
 	/*The [url=https://en.wikipedia.org/wiki/Euclidean_distance]Euclidean heuristic[/url] to be used for the pathfinding using the following formula:
@@ -868,7 +875,7 @@ const (
 	HeuristicMax Heuristic = 4
 )
 
-type DiagonalMode = gdclass.AStarGrid2DDiagonalMode //gd:AStarGrid2D.DiagonalMode
+type DiagonalMode int //gd:AStarGrid2D.DiagonalMode
 
 const (
 	/*The pathfinding algorithm will ignore solid neighbors around the target cell and allow passing using diagonals.*/
@@ -883,7 +890,7 @@ const (
 	DiagonalModeMax DiagonalMode = 4
 )
 
-type CellShape = gdclass.AStarGrid2DCellShape //gd:AStarGrid2D.CellShape
+type CellShape int //gd:AStarGrid2D.CellShape
 
 const (
 	/*Rectangular cell shape.*/

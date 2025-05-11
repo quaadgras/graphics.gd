@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/NavigationMesh"
 import "graphics.gd/classdb/NavigationMeshSourceGeometryData3D"
 import "graphics.gd/classdb/NavigationPathQueryParameters3D"
@@ -34,6 +35,10 @@ import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -49,6 +54,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -61,6 +67,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -1363,7 +1370,7 @@ func GetDebugEnabled() bool { //gd:NavigationServer3D.get_debug_enabled
 /*
 Returns information about the current state of the NavigationServer. See [enum ProcessInfo] for a list of available states.
 */
-func GetProcessInfo(process_info gdclass.NavigationServer3DProcessInfo) int { //gd:NavigationServer3D.get_process_info
+func GetProcessInfo(process_info ProcessInfo) int { //gd:NavigationServer3D.get_process_info
 	once.Do(singleton)
 	return int(int(Advanced().GetProcessInfo(process_info)))
 }
@@ -3446,7 +3453,7 @@ func (self class) GetDebugEnabled() bool { //gd:NavigationServer3D.get_debug_ena
 Returns information about the current state of the NavigationServer. See [enum ProcessInfo] for a list of available states.
 */
 //go:nosplit
-func (self class) GetProcessInfo(process_info gdclass.NavigationServer3DProcessInfo) int64 { //gd:NavigationServer3D.get_process_info
+func (self class) GetProcessInfo(process_info ProcessInfo) int64 { //gd:NavigationServer3D.get_process_info
 	var frame = callframe.New()
 	callframe.Arg(frame, process_info)
 	var r_ret = callframe.Ret[int64](frame)
@@ -3486,7 +3493,7 @@ func init() {
 	})
 }
 
-type ProcessInfo = gdclass.NavigationServer3DProcessInfo //gd:NavigationServer3D.ProcessInfo
+type ProcessInfo int //gd:NavigationServer3D.ProcessInfo
 
 const (
 	/*Constant to get the number of active navigation maps.*/

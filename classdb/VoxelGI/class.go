@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CameraAttributes"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
@@ -30,6 +31,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -45,6 +50,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -57,6 +63,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -125,11 +132,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Subdiv() gdclass.VoxelGISubdiv {
-	return gdclass.VoxelGISubdiv(class(self).GetSubdiv())
+func (self Instance) Subdiv() Subdiv {
+	return Subdiv(class(self).GetSubdiv())
 }
 
-func (self Instance) SetSubdiv(value gdclass.VoxelGISubdiv) {
+func (self Instance) SetSubdiv(value Subdiv) {
 	class(self).SetSubdiv(value)
 }
 
@@ -177,7 +184,7 @@ func (self class) GetProbeData() [1]gdclass.VoxelGIData { //gd:VoxelGI.get_probe
 }
 
 //go:nosplit
-func (self class) SetSubdiv(subdiv gdclass.VoxelGISubdiv) { //gd:VoxelGI.set_subdiv
+func (self class) SetSubdiv(subdiv Subdiv) { //gd:VoxelGI.set_subdiv
 	var frame = callframe.New()
 	callframe.Arg(frame, subdiv)
 	var r_ret = callframe.Nil
@@ -186,9 +193,9 @@ func (self class) SetSubdiv(subdiv gdclass.VoxelGISubdiv) { //gd:VoxelGI.set_sub
 }
 
 //go:nosplit
-func (self class) GetSubdiv() gdclass.VoxelGISubdiv { //gd:VoxelGI.get_subdiv
+func (self class) GetSubdiv() Subdiv { //gd:VoxelGI.get_subdiv
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.VoxelGISubdiv](frame)
+	var r_ret = callframe.Ret[Subdiv](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VoxelGI.Bind_get_subdiv, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -294,7 +301,7 @@ func init() {
 	gdclass.Register("VoxelGI", func(ptr gd.Object) any { return [1]gdclass.VoxelGI{*(*gdclass.VoxelGI)(unsafe.Pointer(&ptr))} })
 }
 
-type Subdiv = gdclass.VoxelGISubdiv //gd:VoxelGI.Subdiv
+type Subdiv int //gd:VoxelGI.Subdiv
 
 const (
 	/*Use 64 subdivisions. This is the lowest quality setting, but the fastest. Use it if you can, but especially use it on lower-end hardware.*/

@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Mesh"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/Shape3D"
@@ -29,6 +30,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform3D"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -44,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,6 +62,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -164,7 +171,7 @@ The [param lods] argument is a dictionary with [float] keys and [PackedInt32Arra
 The [param flags] argument is the bitwise OR of, as required: One value of [enum Mesh.ArrayCustomFormat] left shifted by [code]ARRAY_FORMAT_CUSTOMn_SHIFT[/code] for each custom channel in use, [constant Mesh.ARRAY_FLAG_USE_DYNAMIC_UPDATE], [constant Mesh.ARRAY_FLAG_USE_8_BONE_WEIGHTS], or [constant Mesh.ARRAY_FLAG_USES_EMPTY_VERTEX_ARRAY].
 [b]Note:[/b] When using indices, it is recommended to only use points, lines, or triangles.
 */
-func (self Instance) AddSurfaceFromArrays(primitive gdclass.MeshPrimitiveType, arrays []any) { //gd:ArrayMesh.add_surface_from_arrays
+func (self Instance) AddSurfaceFromArrays(primitive Mesh.PrimitiveType, arrays []any) { //gd:ArrayMesh.add_surface_from_arrays
 	Advanced(self).AddSurfaceFromArrays(primitive, gd.EngineArrayFromSlice(arrays), gd.ArrayFromSlice[Array.Contains[Array.Any]]([1][][]any{}[0]), Dictionary.Nil, 0)
 }
 
@@ -177,7 +184,7 @@ The [param lods] argument is a dictionary with [float] keys and [PackedInt32Arra
 The [param flags] argument is the bitwise OR of, as required: One value of [enum Mesh.ArrayCustomFormat] left shifted by [code]ARRAY_FORMAT_CUSTOMn_SHIFT[/code] for each custom channel in use, [constant Mesh.ARRAY_FLAG_USE_DYNAMIC_UPDATE], [constant Mesh.ARRAY_FLAG_USE_8_BONE_WEIGHTS], or [constant Mesh.ARRAY_FLAG_USES_EMPTY_VERTEX_ARRAY].
 [b]Note:[/b] When using indices, it is recommended to only use points, lines, or triangles.
 */
-func (self Expanded) AddSurfaceFromArrays(primitive gdclass.MeshPrimitiveType, arrays []any, blend_shapes [][]any, lods map[float32][]int32, flags gdclass.MeshArrayFormat) { //gd:ArrayMesh.add_surface_from_arrays
+func (self Expanded) AddSurfaceFromArrays(primitive Mesh.PrimitiveType, arrays []any, blend_shapes [][]any, lods map[float32][]int32, flags Mesh.ArrayFormat) { //gd:ArrayMesh.add_surface_from_arrays
 	Advanced(self).AddSurfaceFromArrays(primitive, gd.EngineArrayFromSlice(arrays), gd.ArrayFromSlice[Array.Contains[Array.Any]](blend_shapes), gd.DictionaryFromMap(lods), flags)
 }
 
@@ -221,15 +228,15 @@ func (self Instance) SurfaceGetArrayIndexLen(surf_idx int) int { //gd:ArrayMesh.
 /*
 Returns the format mask of the requested surface (see [method add_surface_from_arrays]).
 */
-func (self Instance) SurfaceGetFormat(surf_idx int) gdclass.MeshArrayFormat { //gd:ArrayMesh.surface_get_format
-	return gdclass.MeshArrayFormat(Advanced(self).SurfaceGetFormat(int64(surf_idx)))
+func (self Instance) SurfaceGetFormat(surf_idx int) Mesh.ArrayFormat { //gd:ArrayMesh.surface_get_format
+	return Mesh.ArrayFormat(Advanced(self).SurfaceGetFormat(int64(surf_idx)))
 }
 
 /*
 Returns the primitive type of the requested surface (see [method add_surface_from_arrays]).
 */
-func (self Instance) SurfaceGetPrimitiveType(surf_idx int) gdclass.MeshPrimitiveType { //gd:ArrayMesh.surface_get_primitive_type
-	return gdclass.MeshPrimitiveType(Advanced(self).SurfaceGetPrimitiveType(int64(surf_idx)))
+func (self Instance) SurfaceGetPrimitiveType(surf_idx int) Mesh.PrimitiveType { //gd:ArrayMesh.surface_get_primitive_type
+	return Mesh.PrimitiveType(Advanced(self).SurfaceGetPrimitiveType(int64(surf_idx)))
 }
 
 /*
@@ -294,11 +301,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) BlendShapeMode() gdclass.MeshBlendShapeMode {
-	return gdclass.MeshBlendShapeMode(class(self).GetBlendShapeMode())
+func (self Instance) BlendShapeMode() Mesh.BlendShapeMode {
+	return Mesh.BlendShapeMode(class(self).GetBlendShapeMode())
 }
 
-func (self Instance) SetBlendShapeMode(value gdclass.MeshBlendShapeMode) {
+func (self Instance) SetBlendShapeMode(value Mesh.BlendShapeMode) {
 	class(self).SetBlendShapeMode(value)
 }
 
@@ -382,7 +389,7 @@ func (self class) ClearBlendShapes() { //gd:ArrayMesh.clear_blend_shapes
 }
 
 //go:nosplit
-func (self class) SetBlendShapeMode(mode gdclass.MeshBlendShapeMode) { //gd:ArrayMesh.set_blend_shape_mode
+func (self class) SetBlendShapeMode(mode Mesh.BlendShapeMode) { //gd:ArrayMesh.set_blend_shape_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -391,9 +398,9 @@ func (self class) SetBlendShapeMode(mode gdclass.MeshBlendShapeMode) { //gd:Arra
 }
 
 //go:nosplit
-func (self class) GetBlendShapeMode() gdclass.MeshBlendShapeMode { //gd:ArrayMesh.get_blend_shape_mode
+func (self class) GetBlendShapeMode() Mesh.BlendShapeMode { //gd:ArrayMesh.get_blend_shape_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.MeshBlendShapeMode](frame)
+	var r_ret = callframe.Ret[Mesh.BlendShapeMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_get_blend_shape_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -410,7 +417,7 @@ The [param flags] argument is the bitwise OR of, as required: One value of [enum
 [b]Note:[/b] When using indices, it is recommended to only use points, lines, or triangles.
 */
 //go:nosplit
-func (self class) AddSurfaceFromArrays(primitive gdclass.MeshPrimitiveType, arrays Array.Any, blend_shapes Array.Contains[Array.Any], lods Dictionary.Any, flags gdclass.MeshArrayFormat) { //gd:ArrayMesh.add_surface_from_arrays
+func (self class) AddSurfaceFromArrays(primitive Mesh.PrimitiveType, arrays Array.Any, blend_shapes Array.Contains[Array.Any], lods Dictionary.Any, flags Mesh.ArrayFormat) { //gd:ArrayMesh.add_surface_from_arrays
 	var frame = callframe.New()
 	callframe.Arg(frame, primitive)
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(arrays)))
@@ -510,10 +517,10 @@ func (self class) SurfaceGetArrayIndexLen(surf_idx int64) int64 { //gd:ArrayMesh
 Returns the format mask of the requested surface (see [method add_surface_from_arrays]).
 */
 //go:nosplit
-func (self class) SurfaceGetFormat(surf_idx int64) gdclass.MeshArrayFormat { //gd:ArrayMesh.surface_get_format
+func (self class) SurfaceGetFormat(surf_idx int64) Mesh.ArrayFormat { //gd:ArrayMesh.surface_get_format
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
-	var r_ret = callframe.Ret[gdclass.MeshArrayFormat](frame)
+	var r_ret = callframe.Ret[Mesh.ArrayFormat](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_surface_get_format, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -524,10 +531,10 @@ func (self class) SurfaceGetFormat(surf_idx int64) gdclass.MeshArrayFormat { //g
 Returns the primitive type of the requested surface (see [method add_surface_from_arrays]).
 */
 //go:nosplit
-func (self class) SurfaceGetPrimitiveType(surf_idx int64) gdclass.MeshPrimitiveType { //gd:ArrayMesh.surface_get_primitive_type
+func (self class) SurfaceGetPrimitiveType(surf_idx int64) Mesh.PrimitiveType { //gd:ArrayMesh.surface_get_primitive_type
 	var frame = callframe.New()
 	callframe.Arg(frame, surf_idx)
-	var r_ret = callframe.Ret[gdclass.MeshPrimitiveType](frame)
+	var r_ret = callframe.Ret[Mesh.PrimitiveType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ArrayMesh.Bind_surface_get_primitive_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

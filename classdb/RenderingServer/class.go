@@ -12,7 +12,9 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Image"
+import "graphics.gd/classdb/Rendering"
 import "graphics.gd/classdb/RenderingDevice"
 import "graphics.gd/variant/AABB"
 import "graphics.gd/variant/Array"
@@ -38,6 +40,10 @@ import "graphics.gd/variant/Vector3"
 import "graphics.gd/variant/Vector3i"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -53,6 +59,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -65,6 +72,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -107,7 +115,7 @@ Creates a 2-dimensional layered texture and adds it to the RenderingServer. It c
 Once finished with your RID, you will want to free the RID using the RenderingServer's [method free_rid] method.
 [b]Note:[/b] The equivalent resource is [TextureLayered].
 */
-func Texture2dLayeredCreate(layers []Image.Instance, layered_type gdclass.RenderingServerTextureLayeredType) RID.Texture2D { //gd:RenderingServer.texture_2d_layered_create
+func Texture2dLayeredCreate(layers []Image.Instance, layered_type TextureLayeredType) RID.Texture2D { //gd:RenderingServer.texture_2d_layered_create
 	once.Do(singleton)
 	return RID.Texture2D(Advanced().Texture2dLayeredCreate(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Image]](layers), layered_type))
 }
@@ -115,7 +123,7 @@ func Texture2dLayeredCreate(layers []Image.Instance, layered_type gdclass.Render
 /*
 [b]Note:[/b] The equivalent resource is [Texture3D].
 */
-func Texture3dCreate(format gdclass.ImageFormat, width int, height int, depth int, mipmaps bool, data []Image.Instance) RID.Texture3D { //gd:RenderingServer.texture_3d_create
+func Texture3dCreate(format Image.Format, width int, height int, depth int, mipmaps bool, data []Image.Instance) RID.Texture3D { //gd:RenderingServer.texture_3d_create
 	once.Do(singleton)
 	return RID.Texture3D(Advanced().Texture3dCreate(format, int64(width), int64(height), int64(depth), mipmaps, gd.ArrayFromSlice[Array.Contains[[1]gdclass.Image]](data)))
 }
@@ -132,7 +140,7 @@ func TextureProxyCreate(base RID.TextureProxy) RID.TextureProxy { //gd:Rendering
 Creates a texture based on a native handle that was created outside of Godot's renderer.
 [b]Note:[/b] If using only the rendering device renderer, it's recommend to use [method RenderingDevice.texture_create_from_extension] together with [method RenderingServer.texture_rd_create], rather than this method. It will give you much more control over the texture's format and usage.
 */
-func TextureCreateFromNativeHandle(atype gdclass.RenderingServerTextureType, format gdclass.ImageFormat, native_handle int, width int, height int, depth int, layered_type gdclass.RenderingServerTextureLayeredType) RID.Texture { //gd:RenderingServer.texture_create_from_native_handle
+func TextureCreateFromNativeHandle(atype TextureType, format Image.Format, native_handle int, width int, height int, depth int, layered_type TextureLayeredType) RID.Texture { //gd:RenderingServer.texture_create_from_native_handle
 	once.Do(singleton)
 	return RID.Texture(Advanced().TextureCreateFromNativeHandle(atype, format, int64(native_handle), int64(width), int64(height), int64(depth), int64(1), layered_type))
 }
@@ -141,7 +149,7 @@ func TextureCreateFromNativeHandle(atype gdclass.RenderingServerTextureType, for
 Creates a texture based on a native handle that was created outside of Godot's renderer.
 [b]Note:[/b] If using only the rendering device renderer, it's recommend to use [method RenderingDevice.texture_create_from_extension] together with [method RenderingServer.texture_rd_create], rather than this method. It will give you much more control over the texture's format and usage.
 */
-func TextureCreateFromNativeHandleOptions(atype gdclass.RenderingServerTextureType, format gdclass.ImageFormat, native_handle int, width int, height int, depth int, layers int, layered_type gdclass.RenderingServerTextureLayeredType) RID.Texture { //gd:RenderingServer.texture_create_from_native_handle
+func TextureCreateFromNativeHandleOptions(atype TextureType, format Image.Format, native_handle int, width int, height int, depth int, layers int, layered_type TextureLayeredType) RID.Texture { //gd:RenderingServer.texture_create_from_native_handle
 	once.Do(singleton)
 	return RID.Texture(Advanced().TextureCreateFromNativeHandle(atype, format, int64(native_handle), int64(width), int64(height), int64(depth), int64(layers), layered_type))
 }
@@ -186,7 +194,7 @@ func Texture2dPlaceholderCreate() RID.Texture2D { //gd:RenderingServer.texture_2
 Creates a placeholder for a 2-dimensional layered texture and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all [code]texture_2d_layered_*[/code] RenderingServer functions, although it does nothing when used. See also [method texture_2d_placeholder_create].
 [b]Note:[/b] The equivalent resource is [PlaceholderTextureLayered].
 */
-func Texture2dLayeredPlaceholderCreate(layered_type gdclass.RenderingServerTextureLayeredType) RID.Texture2D { //gd:RenderingServer.texture_2d_layered_placeholder_create
+func Texture2dLayeredPlaceholderCreate(layered_type TextureLayeredType) RID.Texture2D { //gd:RenderingServer.texture_2d_layered_placeholder_create
 	once.Do(singleton)
 	return RID.Texture2D(Advanced().Texture2dLayeredPlaceholderCreate(layered_type))
 }
@@ -254,9 +262,9 @@ func TextureGetPath(texture RID.Texture) string { //gd:RenderingServer.texture_g
 /*
 Returns the format for the texture.
 */
-func TextureGetFormat(texture RID.Texture) gdclass.ImageFormat { //gd:RenderingServer.texture_get_format
+func TextureGetFormat(texture RID.Texture) Image.Format { //gd:RenderingServer.texture_get_format
 	once.Do(singleton)
-	return gdclass.ImageFormat(Advanced().TextureGetFormat(RID.Any(texture)))
+	return Image.Format(Advanced().TextureGetFormat(RID.Any(texture)))
 }
 func TextureSetForceRedrawIfVisible(texture RID.Texture, enable bool) { //gd:RenderingServer.texture_set_force_redraw_if_visible
 	once.Do(singleton)
@@ -266,7 +274,7 @@ func TextureSetForceRedrawIfVisible(texture RID.Texture, enable bool) { //gd:Ren
 /*
 Creates a new texture object based on a texture created directly on the [RenderingDevice]. If the texture contains layers, [param layer_type] is used to define the layer type.
 */
-func TextureRdCreate(rd_texture RID.Texture, layer_type gdclass.RenderingServerTextureLayeredType) RID.Texture { //gd:RenderingServer.texture_rd_create
+func TextureRdCreate(rd_texture RID.Texture, layer_type TextureLayeredType) RID.Texture { //gd:RenderingServer.texture_rd_create
 	once.Do(singleton)
 	return RID.Texture(Advanced().TextureRdCreate(RID.Any(rd_texture), layer_type))
 }
@@ -274,7 +282,7 @@ func TextureRdCreate(rd_texture RID.Texture, layer_type gdclass.RenderingServerT
 /*
 Creates a new texture object based on a texture created directly on the [RenderingDevice]. If the texture contains layers, [param layer_type] is used to define the layer type.
 */
-func TextureRdCreateOptions(rd_texture RID.Texture, layer_type gdclass.RenderingServerTextureLayeredType) RID.Texture { //gd:RenderingServer.texture_rd_create
+func TextureRdCreateOptions(rd_texture RID.Texture, layer_type TextureLayeredType) RID.Texture { //gd:RenderingServer.texture_rd_create
 	once.Do(singleton)
 	return RID.Texture(Advanced().TextureRdCreate(RID.Any(rd_texture), layer_type))
 }
@@ -471,7 +479,7 @@ func MeshCreate() RID.Mesh { //gd:RenderingServer.mesh_create
 /*
 Returns the offset of a given attribute by [param array_index] in the start of its respective buffer.
 */
-func MeshSurfaceGetFormatOffset(format gdclass.RenderingServerArrayFormat, vertex_count int, array_index int) int { //gd:RenderingServer.mesh_surface_get_format_offset
+func MeshSurfaceGetFormatOffset(format ArrayFormat, vertex_count int, array_index int) int { //gd:RenderingServer.mesh_surface_get_format_offset
 	once.Do(singleton)
 	return int(int(Advanced().MeshSurfaceGetFormatOffset(format, int64(vertex_count), int64(array_index))))
 }
@@ -479,7 +487,7 @@ func MeshSurfaceGetFormatOffset(format gdclass.RenderingServerArrayFormat, verte
 /*
 Returns the stride of the vertex positions for a mesh with given [param format]. Note importantly that vertex positions are stored consecutively and are not interleaved with the other attributes in the vertex buffer (normals and tangents).
 */
-func MeshSurfaceGetFormatVertexStride(format gdclass.RenderingServerArrayFormat, vertex_count int) int { //gd:RenderingServer.mesh_surface_get_format_vertex_stride
+func MeshSurfaceGetFormatVertexStride(format ArrayFormat, vertex_count int) int { //gd:RenderingServer.mesh_surface_get_format_vertex_stride
 	once.Do(singleton)
 	return int(int(Advanced().MeshSurfaceGetFormatVertexStride(format, int64(vertex_count))))
 }
@@ -487,7 +495,7 @@ func MeshSurfaceGetFormatVertexStride(format gdclass.RenderingServerArrayFormat,
 /*
 Returns the stride of the combined normals and tangents for a mesh with given [param format]. Note importantly that, while normals and tangents are in the vertex buffer with vertices, they are only interleaved with each other and so have a different stride than vertex positions.
 */
-func MeshSurfaceGetFormatNormalTangentStride(format gdclass.RenderingServerArrayFormat, vertex_count int) int { //gd:RenderingServer.mesh_surface_get_format_normal_tangent_stride
+func MeshSurfaceGetFormatNormalTangentStride(format ArrayFormat, vertex_count int) int { //gd:RenderingServer.mesh_surface_get_format_normal_tangent_stride
 	once.Do(singleton)
 	return int(int(Advanced().MeshSurfaceGetFormatNormalTangentStride(format, int64(vertex_count))))
 }
@@ -495,7 +503,7 @@ func MeshSurfaceGetFormatNormalTangentStride(format gdclass.RenderingServerArray
 /*
 Returns the stride of the attribute buffer for a mesh with given [param format].
 */
-func MeshSurfaceGetFormatAttributeStride(format gdclass.RenderingServerArrayFormat, vertex_count int) int { //gd:RenderingServer.mesh_surface_get_format_attribute_stride
+func MeshSurfaceGetFormatAttributeStride(format ArrayFormat, vertex_count int) int { //gd:RenderingServer.mesh_surface_get_format_attribute_stride
 	once.Do(singleton)
 	return int(int(Advanced().MeshSurfaceGetFormatAttributeStride(format, int64(vertex_count))))
 }
@@ -503,7 +511,7 @@ func MeshSurfaceGetFormatAttributeStride(format gdclass.RenderingServerArrayForm
 /*
 Returns the stride of the skin buffer for a mesh with given [param format].
 */
-func MeshSurfaceGetFormatSkinStride(format gdclass.RenderingServerArrayFormat, vertex_count int) int { //gd:RenderingServer.mesh_surface_get_format_skin_stride
+func MeshSurfaceGetFormatSkinStride(format ArrayFormat, vertex_count int) int { //gd:RenderingServer.mesh_surface_get_format_skin_stride
 	once.Do(singleton)
 	return int(int(Advanced().MeshSurfaceGetFormatSkinStride(format, int64(vertex_count))))
 }
@@ -511,11 +519,11 @@ func MeshAddSurface(mesh RID.Mesh, surface Surface) { //gd:RenderingServer.mesh_
 	once.Do(singleton)
 	Advanced().MeshAddSurface(RID.Any(mesh), gd.DictionaryFromMap(surface))
 }
-func MeshAddSurfaceFromArrays(mesh RID.Mesh, primitive gdclass.RenderingServerPrimitiveType, arrays []any, blend_shapes []any, lods map[float32][]int32, compress_format gdclass.RenderingServerArrayFormat) { //gd:RenderingServer.mesh_add_surface_from_arrays
+func MeshAddSurfaceFromArrays(mesh RID.Mesh, primitive PrimitiveType, arrays []any, blend_shapes []any, lods map[float32][]int32, compress_format ArrayFormat) { //gd:RenderingServer.mesh_add_surface_from_arrays
 	once.Do(singleton)
 	Advanced().MeshAddSurfaceFromArrays(RID.Any(mesh), primitive, gd.EngineArrayFromSlice(arrays), gd.EngineArrayFromSlice(blend_shapes), gd.DictionaryFromMap(lods), compress_format)
 }
-func MeshAddSurfaceFromArraysOptions(mesh RID.Mesh, primitive gdclass.RenderingServerPrimitiveType, arrays []any, blend_shapes []any, lods map[float32][]int32, compress_format gdclass.RenderingServerArrayFormat) { //gd:RenderingServer.mesh_add_surface_from_arrays
+func MeshAddSurfaceFromArraysOptions(mesh RID.Mesh, primitive PrimitiveType, arrays []any, blend_shapes []any, lods map[float32][]int32, compress_format ArrayFormat) { //gd:RenderingServer.mesh_add_surface_from_arrays
 	once.Do(singleton)
 	Advanced().MeshAddSurfaceFromArrays(RID.Any(mesh), primitive, gd.EngineArrayFromSlice(arrays), gd.EngineArrayFromSlice(blend_shapes), gd.DictionaryFromMap(lods), compress_format)
 }
@@ -531,7 +539,7 @@ func MeshGetBlendShapeCount(mesh RID.Mesh) int { //gd:RenderingServer.mesh_get_b
 /*
 Sets a mesh's blend shape mode.
 */
-func MeshSetBlendShapeMode(mesh RID.Mesh, mode gdclass.RenderingServerBlendShapeMode) { //gd:RenderingServer.mesh_set_blend_shape_mode
+func MeshSetBlendShapeMode(mesh RID.Mesh, mode BlendShapeMode) { //gd:RenderingServer.mesh_set_blend_shape_mode
 	once.Do(singleton)
 	Advanced().MeshSetBlendShapeMode(RID.Any(mesh), mode)
 }
@@ -539,9 +547,9 @@ func MeshSetBlendShapeMode(mesh RID.Mesh, mode gdclass.RenderingServerBlendShape
 /*
 Returns a mesh's blend shape mode.
 */
-func MeshGetBlendShapeMode(mesh RID.Mesh) gdclass.RenderingServerBlendShapeMode { //gd:RenderingServer.mesh_get_blend_shape_mode
+func MeshGetBlendShapeMode(mesh RID.Mesh) BlendShapeMode { //gd:RenderingServer.mesh_get_blend_shape_mode
 	once.Do(singleton)
-	return gdclass.RenderingServerBlendShapeMode(Advanced().MeshGetBlendShapeMode(RID.Any(mesh)))
+	return BlendShapeMode(Advanced().MeshGetBlendShapeMode(RID.Any(mesh)))
 }
 
 /*
@@ -646,11 +654,11 @@ func MultimeshCreate() RID.MultiMesh { //gd:RenderingServer.multimesh_create
 	once.Do(singleton)
 	return RID.MultiMesh(Advanced().MultimeshCreate())
 }
-func MultimeshAllocateData(multimesh RID.MultiMesh, instances int, transform_format gdclass.RenderingServerMultimeshTransformFormat, color_format bool, custom_data_format bool, use_indirect bool) { //gd:RenderingServer.multimesh_allocate_data
+func MultimeshAllocateData(multimesh RID.MultiMesh, instances int, transform_format MultimeshTransformFormat, color_format bool, custom_data_format bool, use_indirect bool) { //gd:RenderingServer.multimesh_allocate_data
 	once.Do(singleton)
 	Advanced().MultimeshAllocateData(RID.Any(multimesh), int64(instances), transform_format, color_format, custom_data_format, use_indirect)
 }
-func MultimeshAllocateDataOptions(multimesh RID.MultiMesh, instances int, transform_format gdclass.RenderingServerMultimeshTransformFormat, color_format bool, custom_data_format bool, use_indirect bool) { //gd:RenderingServer.multimesh_allocate_data
+func MultimeshAllocateDataOptions(multimesh RID.MultiMesh, instances int, transform_format MultimeshTransformFormat, color_format bool, custom_data_format bool, use_indirect bool) { //gd:RenderingServer.multimesh_allocate_data
 	once.Do(singleton)
 	Advanced().MultimeshAllocateData(RID.Any(multimesh), int64(instances), transform_format, color_format, custom_data_format, use_indirect)
 }
@@ -875,7 +883,7 @@ func MultimeshSetPhysicsInterpolated(multimesh RID.MultiMesh, interpolated bool)
 Sets the physics interpolation quality for the [MultiMesh].
 A value of [constant MULTIMESH_INTERP_QUALITY_FAST] gives fast but low quality interpolation, a value of [constant MULTIMESH_INTERP_QUALITY_HIGH] gives slower but higher quality interpolation.
 */
-func MultimeshSetPhysicsInterpolationQuality(multimesh RID.MultiMesh, quality gdclass.RenderingServerMultimeshPhysicsInterpolationQuality) { //gd:RenderingServer.multimesh_set_physics_interpolation_quality
+func MultimeshSetPhysicsInterpolationQuality(multimesh RID.MultiMesh, quality MultimeshPhysicsInterpolationQuality) { //gd:RenderingServer.multimesh_set_physics_interpolation_quality
 	once.Do(singleton)
 	Advanced().MultimeshSetPhysicsInterpolationQuality(RID.Any(multimesh), quality)
 }
@@ -993,7 +1001,7 @@ func LightSetColor(light RID.Light, color Color.RGBA) { //gd:RenderingServer.lig
 /*
 Sets the specified 3D light parameter. See [enum LightParam] for options. Equivalent to [method Light3D.set_param].
 */
-func LightSetParam(light RID.Light, param gdclass.RenderingServerLightParam, value Float.X) { //gd:RenderingServer.light_set_param
+func LightSetParam(light RID.Light, param LightParam, value Float.X) { //gd:RenderingServer.light_set_param
 	once.Do(singleton)
 	Advanced().LightSetParam(RID.Any(light), param, float64(value))
 }
@@ -1057,7 +1065,7 @@ func LightSetShadowCasterMask(light RID.Light, mask int) { //gd:RenderingServer.
 /*
 Sets the bake mode to use for the specified 3D light. Equivalent to [member Light3D.light_bake_mode].
 */
-func LightSetBakeMode(light RID.Light, bake_mode gdclass.RenderingServerLightBakeMode) { //gd:RenderingServer.light_set_bake_mode
+func LightSetBakeMode(light RID.Light, bake_mode LightBakeMode) { //gd:RenderingServer.light_set_bake_mode
 	once.Do(singleton)
 	Advanced().LightSetBakeMode(RID.Any(light), bake_mode)
 }
@@ -1073,7 +1081,7 @@ func LightSetMaxSdfgiCascade(light RID.Light, cascade int) { //gd:RenderingServe
 /*
 Sets whether to use a dual paraboloid or a cubemap for the shadow map. Dual paraboloid is faster but may suffer from artifacts. Equivalent to [member OmniLight3D.omni_shadow_mode].
 */
-func LightOmniSetShadowMode(light RID.Light, mode gdclass.RenderingServerLightOmniShadowMode) { //gd:RenderingServer.light_omni_set_shadow_mode
+func LightOmniSetShadowMode(light RID.Light, mode LightOmniShadowMode) { //gd:RenderingServer.light_omni_set_shadow_mode
 	once.Do(singleton)
 	Advanced().LightOmniSetShadowMode(RID.Any(light), mode)
 }
@@ -1081,7 +1089,7 @@ func LightOmniSetShadowMode(light RID.Light, mode gdclass.RenderingServerLightOm
 /*
 Sets the shadow mode for this directional light. Equivalent to [member DirectionalLight3D.directional_shadow_mode]. See [enum LightDirectionalShadowMode] for options.
 */
-func LightDirectionalSetShadowMode(light RID.Light, mode gdclass.RenderingServerLightDirectionalShadowMode) { //gd:RenderingServer.light_directional_set_shadow_mode
+func LightDirectionalSetShadowMode(light RID.Light, mode LightDirectionalShadowMode) { //gd:RenderingServer.light_directional_set_shadow_mode
 	once.Do(singleton)
 	Advanced().LightDirectionalSetShadowMode(RID.Any(light), mode)
 }
@@ -1097,7 +1105,7 @@ func LightDirectionalSetBlendSplits(light RID.Light, enable bool) { //gd:Renderi
 /*
 If [code]true[/code], this light will not be used for anything except sky shaders. Use this for lights that impact your sky shader that you may want to hide from affecting the rest of the scene. For example, you may want to enable this when the sun in your sky shader falls below the horizon.
 */
-func LightDirectionalSetSkyMode(light RID.Light, mode gdclass.RenderingServerLightDirectionalSkyMode) { //gd:RenderingServer.light_directional_set_sky_mode
+func LightDirectionalSetSkyMode(light RID.Light, mode LightDirectionalSkyMode) { //gd:RenderingServer.light_directional_set_sky_mode
 	once.Do(singleton)
 	Advanced().LightDirectionalSetSkyMode(RID.Any(light), mode)
 }
@@ -1105,7 +1113,7 @@ func LightDirectionalSetSkyMode(light RID.Light, mode gdclass.RenderingServerLig
 /*
 Sets the texture filter mode to use when rendering light projectors. This parameter is global and cannot be set on a per-light basis.
 */
-func LightProjectorsSetFilter(filter gdclass.RenderingServerLightProjectorFilter) { //gd:RenderingServer.light_projectors_set_filter
+func LightProjectorsSetFilter(filter LightProjectorFilter) { //gd:RenderingServer.light_projectors_set_filter
 	once.Do(singleton)
 	Advanced().LightProjectorsSetFilter(filter)
 }
@@ -1121,7 +1129,7 @@ func LightmapsSetBicubicFilter(enable bool) { //gd:RenderingServer.lightmaps_set
 /*
 Sets the filter quality for omni and spot light shadows in 3D. See also [member ProjectSettings.rendering/lights_and_shadows/positional_shadow/soft_shadow_filter_quality]. This parameter is global and cannot be set on a per-viewport basis.
 */
-func PositionalSoftShadowFilterSetQuality(quality gdclass.RenderingServerShadowQuality) { //gd:RenderingServer.positional_soft_shadow_filter_set_quality
+func PositionalSoftShadowFilterSetQuality(quality ShadowQuality) { //gd:RenderingServer.positional_soft_shadow_filter_set_quality
 	once.Do(singleton)
 	Advanced().PositionalSoftShadowFilterSetQuality(quality)
 }
@@ -1129,7 +1137,7 @@ func PositionalSoftShadowFilterSetQuality(quality gdclass.RenderingServerShadowQ
 /*
 Sets the filter [param quality] for directional light shadows in 3D. See also [member ProjectSettings.rendering/lights_and_shadows/directional_shadow/soft_shadow_filter_quality]. This parameter is global and cannot be set on a per-viewport basis.
 */
-func DirectionalSoftShadowFilterSetQuality(quality gdclass.RenderingServerShadowQuality) { //gd:RenderingServer.directional_soft_shadow_filter_set_quality
+func DirectionalSoftShadowFilterSetQuality(quality ShadowQuality) { //gd:RenderingServer.directional_soft_shadow_filter_set_quality
 	once.Do(singleton)
 	Advanced().DirectionalSoftShadowFilterSetQuality(quality)
 }
@@ -1156,7 +1164,7 @@ func ReflectionProbeCreate() RID.ReflectionProbe { //gd:RenderingServer.reflecti
 /*
 Sets how often the reflection probe updates. Can either be once or every frame. See [enum ReflectionProbeUpdateMode] for options.
 */
-func ReflectionProbeSetUpdateMode(probe RID.ReflectionProbe, mode gdclass.RenderingServerReflectionProbeUpdateMode) { //gd:RenderingServer.reflection_probe_set_update_mode
+func ReflectionProbeSetUpdateMode(probe RID.ReflectionProbe, mode ReflectionProbeUpdateMode) { //gd:RenderingServer.reflection_probe_set_update_mode
 	once.Do(singleton)
 	Advanced().ReflectionProbeSetUpdateMode(RID.Any(probe), mode)
 }
@@ -1180,7 +1188,7 @@ func ReflectionProbeSetBlendDistance(probe RID.ReflectionProbe, blend_distance F
 /*
 Sets the reflection probe's ambient light mode. Equivalent to [member ReflectionProbe.ambient_mode].
 */
-func ReflectionProbeSetAmbientMode(probe RID.ReflectionProbe, mode gdclass.RenderingServerReflectionProbeAmbientMode) { //gd:RenderingServer.reflection_probe_set_ambient_mode
+func ReflectionProbeSetAmbientMode(probe RID.ReflectionProbe, mode ReflectionProbeAmbientMode) { //gd:RenderingServer.reflection_probe_set_ambient_mode
 	once.Do(singleton)
 	Advanced().ReflectionProbeSetAmbientMode(RID.Any(probe), mode)
 }
@@ -1303,7 +1311,7 @@ func DecalSetSize(decal RID.Decal, size Vector3.XYZ) { //gd:RenderingServer.deca
 /*
 Sets the [param texture] in the given texture [param type] slot for the specified decal. Equivalent to [method Decal.set_texture].
 */
-func DecalSetTexture(decal RID.Decal, atype gdclass.RenderingServerDecalTexture, texture RID.Texture) { //gd:RenderingServer.decal_set_texture
+func DecalSetTexture(decal RID.Decal, atype DecalTexture, texture RID.Texture) { //gd:RenderingServer.decal_set_texture
 	once.Do(singleton)
 	Advanced().DecalSetTexture(RID.Any(decal), atype, RID.Any(texture))
 }
@@ -1367,7 +1375,7 @@ func DecalSetNormalFade(decal RID.Decal, fade Float.X) { //gd:RenderingServer.de
 /*
 Sets the texture [param filter] mode to use when rendering decals. This parameter is global and cannot be set on a per-decal basis.
 */
-func DecalsSetFilter(filter gdclass.RenderingServerDecalFilter) { //gd:RenderingServer.decals_set_filter
+func DecalsSetFilter(filter DecalFilter) { //gd:RenderingServer.decals_set_filter
 	once.Do(singleton)
 	Advanced().DecalsSetFilter(filter)
 }
@@ -1485,7 +1493,7 @@ func VoxelGiSetUseTwoBounces(voxel_gi RID.VoxelGI, enable bool) { //gd:Rendering
 /*
 Sets the [member ProjectSettings.rendering/global_illumination/voxel_gi/quality] value to use when rendering. This parameter is global and cannot be set on a per-VoxelGI basis.
 */
-func VoxelGiSetQuality(quality gdclass.RenderingServerVoxelGIQuality) { //gd:RenderingServer.voxel_gi_set_quality
+func VoxelGiSetQuality(quality VoxelGIQuality) { //gd:RenderingServer.voxel_gi_set_quality
 	once.Do(singleton)
 	Advanced().VoxelGiSetQuality(quality)
 }
@@ -1563,7 +1571,7 @@ func ParticlesCreate() RID.Particles { //gd:RenderingServer.particles_create
 /*
 Sets whether the GPU particles specified by the [param particles] RID should be rendered in 2D or 3D according to [param mode].
 */
-func ParticlesSetMode(particles RID.Particles, mode gdclass.RenderingServerParticlesMode) { //gd:RenderingServer.particles_set_mode
+func ParticlesSetMode(particles RID.Particles, mode ParticlesMode) { //gd:RenderingServer.particles_set_mode
 	once.Do(singleton)
 	Advanced().ParticlesSetMode(RID.Any(particles), mode)
 }
@@ -1720,7 +1728,7 @@ func ParticlesSetCollisionBaseSize(particles RID.Particles, size Float.X) { //gd
 	once.Do(singleton)
 	Advanced().ParticlesSetCollisionBaseSize(RID.Any(particles), float64(size))
 }
-func ParticlesSetTransformAlign(particles RID.Particles, align gdclass.RenderingServerParticlesTransformAlign) { //gd:RenderingServer.particles_set_transform_align
+func ParticlesSetTransformAlign(particles RID.Particles, align ParticlesTransformAlign) { //gd:RenderingServer.particles_set_transform_align
 	once.Do(singleton)
 	Advanced().ParticlesSetTransformAlign(RID.Any(particles), align)
 }
@@ -1776,7 +1784,7 @@ func ParticlesEmit(particles RID.Particles, transform Transform3D.BasisOrigin, v
 /*
 Sets the draw order of the particles to one of the named enums from [enum ParticlesDrawOrder]. See [enum ParticlesDrawOrder] for options. Equivalent to [member GPUParticles3D.draw_order].
 */
-func ParticlesSetDrawOrder(particles RID.Particles, order gdclass.RenderingServerParticlesDrawOrder) { //gd:RenderingServer.particles_set_draw_order
+func ParticlesSetDrawOrder(particles RID.Particles, order ParticlesDrawOrder) { //gd:RenderingServer.particles_set_draw_order
 	once.Do(singleton)
 	Advanced().ParticlesSetDrawOrder(RID.Any(particles), order)
 }
@@ -1825,7 +1833,7 @@ func ParticlesCollisionCreate() RID.ParticlesCollision { //gd:RenderingServer.pa
 /*
 Sets the collision or attractor shape [param type] for the 3D GPU particles collision or attractor specified by the [param particles_collision] RID.
 */
-func ParticlesCollisionSetCollisionType(particles_collision RID.ParticlesCollision, atype gdclass.RenderingServerParticlesCollisionType) { //gd:RenderingServer.particles_collision_set_collision_type
+func ParticlesCollisionSetCollisionType(particles_collision RID.ParticlesCollision, atype ParticlesCollisionType) { //gd:RenderingServer.particles_collision_set_collision_type
 	once.Do(singleton)
 	Advanced().ParticlesCollisionSetCollisionType(RID.Any(particles_collision), atype)
 }
@@ -1897,7 +1905,7 @@ func ParticlesCollisionHeightFieldUpdate(particles_collision RID.ParticlesCollis
 /*
 Sets the heightmap [param resolution] for the 3D GPU particles heightfield collision specified by the [param particles_collision] RID. Equivalent to [member GPUParticlesCollisionHeightField3D.resolution].
 */
-func ParticlesCollisionSetHeightFieldResolution(particles_collision RID.ParticlesCollision, resolution gdclass.RenderingServerParticlesCollisionHeightfieldResolution) { //gd:RenderingServer.particles_collision_set_height_field_resolution
+func ParticlesCollisionSetHeightFieldResolution(particles_collision RID.ParticlesCollision, resolution ParticlesCollisionHeightfieldResolution) { //gd:RenderingServer.particles_collision_set_height_field_resolution
 	once.Do(singleton)
 	Advanced().ParticlesCollisionSetHeightFieldResolution(RID.Any(particles_collision), resolution)
 }
@@ -1923,7 +1931,7 @@ func FogVolumeCreate() RID.FogVolume { //gd:RenderingServer.fog_volume_create
 /*
 Sets the shape of the fog volume to either [constant RenderingServer.FOG_VOLUME_SHAPE_ELLIPSOID], [constant RenderingServer.FOG_VOLUME_SHAPE_CONE], [constant RenderingServer.FOG_VOLUME_SHAPE_CYLINDER], [constant RenderingServer.FOG_VOLUME_SHAPE_BOX] or [constant RenderingServer.FOG_VOLUME_SHAPE_WORLD].
 */
-func FogVolumeSetShape(fog_volume RID.FogVolume, shape gdclass.RenderingServerFogVolumeShape) { //gd:RenderingServer.fog_volume_set_shape
+func FogVolumeSetShape(fog_volume RID.FogVolume, shape FogVolumeShape) { //gd:RenderingServer.fog_volume_set_shape
 	once.Do(singleton)
 	Advanced().FogVolumeSetShape(RID.Any(fog_volume), shape)
 }
@@ -2162,7 +2170,7 @@ func ViewportSetCanvasCullMask(viewport RID.Viewport, canvas_cull_mask int) { //
 /*
 Sets the 3D resolution scaling mode. Bilinear scaling renders at different resolution to either undersample or supersample the viewport. FidelityFX Super Resolution 1.0, abbreviated to FSR, is an upscaling technology that produces high quality images at fast framerates by using a spatially aware upscaling algorithm. FSR is slightly more expensive than bilinear, but it produces significantly higher image quality. FSR should be used where possible.
 */
-func ViewportSetScaling3dMode(viewport RID.Viewport, scaling_3d_mode gdclass.RenderingServerViewportScaling3DMode) { //gd:RenderingServer.viewport_set_scaling_3d_mode
+func ViewportSetScaling3dMode(viewport RID.Viewport, scaling_3d_mode ViewportScaling3DMode) { //gd:RenderingServer.viewport_set_scaling_3d_mode
 	once.Do(singleton)
 	Advanced().ViewportSetScaling3dMode(RID.Any(viewport), scaling_3d_mode)
 }
@@ -2199,7 +2207,7 @@ The anisotropic filtering level also affects decals and light projectors if they
 [b]Note:[/b] In 3D, for this setting to have an effect, set [member BaseMaterial3D.texture_filter] to [constant BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC] or [constant BaseMaterial3D.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS_ANISOTROPIC] on materials.
 [b]Note:[/b] In 2D, for this setting to have an effect, set [member CanvasItem.texture_filter] to [constant CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC] or [constant CanvasItem.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS_ANISOTROPIC] on the [CanvasItem] node displaying the texture (or in [CanvasTexture]). However, anisotropic filtering is rarely useful in 2D, so only enable it for textures in 2D if it makes a meaningful visual difference.
 */
-func ViewportSetAnisotropicFilteringLevel(viewport RID.Viewport, anisotropic_filtering_level gdclass.RenderingServerViewportAnisotropicFiltering) { //gd:RenderingServer.viewport_set_anisotropic_filtering_level
+func ViewportSetAnisotropicFilteringLevel(viewport RID.Viewport, anisotropic_filtering_level ViewportAnisotropicFiltering) { //gd:RenderingServer.viewport_set_anisotropic_filtering_level
 	once.Do(singleton)
 	Advanced().ViewportSetAnisotropicFilteringLevel(RID.Any(viewport), anisotropic_filtering_level)
 }
@@ -2207,7 +2215,7 @@ func ViewportSetAnisotropicFilteringLevel(viewport RID.Viewport, anisotropic_fil
 /*
 Sets when the viewport should be updated. See [enum ViewportUpdateMode] constants for options.
 */
-func ViewportSetUpdateMode(viewport RID.Viewport, update_mode gdclass.RenderingServerViewportUpdateMode) { //gd:RenderingServer.viewport_set_update_mode
+func ViewportSetUpdateMode(viewport RID.Viewport, update_mode ViewportUpdateMode) { //gd:RenderingServer.viewport_set_update_mode
 	once.Do(singleton)
 	Advanced().ViewportSetUpdateMode(RID.Any(viewport), update_mode)
 }
@@ -2216,15 +2224,15 @@ func ViewportSetUpdateMode(viewport RID.Viewport, update_mode gdclass.RenderingS
 Returns the viewport's update mode. See [enum ViewportUpdateMode] constants for options.
 [b]Warning:[/b] Calling this from any thread other than the rendering thread will be detrimental to performance.
 */
-func ViewportGetUpdateMode(viewport RID.Viewport) gdclass.RenderingServerViewportUpdateMode { //gd:RenderingServer.viewport_get_update_mode
+func ViewportGetUpdateMode(viewport RID.Viewport) ViewportUpdateMode { //gd:RenderingServer.viewport_get_update_mode
 	once.Do(singleton)
-	return gdclass.RenderingServerViewportUpdateMode(Advanced().ViewportGetUpdateMode(RID.Any(viewport)))
+	return ViewportUpdateMode(Advanced().ViewportGetUpdateMode(RID.Any(viewport)))
 }
 
 /*
 Sets the clear mode of a viewport. See [enum ViewportClearMode] for options.
 */
-func ViewportSetClearMode(viewport RID.Viewport, clear_mode gdclass.RenderingServerViewportClearMode) { //gd:RenderingServer.viewport_set_clear_mode
+func ViewportSetClearMode(viewport RID.Viewport, clear_mode ViewportClearMode) { //gd:RenderingServer.viewport_set_clear_mode
 	once.Do(singleton)
 	Advanced().ViewportSetClearMode(RID.Any(viewport), clear_mode)
 }
@@ -2264,7 +2272,7 @@ func ViewportSetDisable2d(viewport RID.Viewport, disable bool) { //gd:RenderingS
 /*
 Sets the viewport's environment mode which allows enabling or disabling rendering of 3D environment over 2D canvas. When disabled, 2D will not be affected by the environment. When enabled, 2D will be affected by the environment if the environment background mode is [constant ENV_BG_CANVAS]. The default behavior is to inherit the setting from the viewport's parent. If the topmost parent is also set to [constant VIEWPORT_ENVIRONMENT_INHERIT], then the behavior will be the same as if it was set to [constant VIEWPORT_ENVIRONMENT_ENABLED].
 */
-func ViewportSetEnvironmentMode(viewport RID.Viewport, mode gdclass.RenderingServerViewportEnvironmentMode) { //gd:RenderingServer.viewport_set_environment_mode
+func ViewportSetEnvironmentMode(viewport RID.Viewport, mode ViewportEnvironmentMode) { //gd:RenderingServer.viewport_set_environment_mode
 	once.Do(singleton)
 	Advanced().ViewportSetEnvironmentMode(RID.Any(viewport), mode)
 }
@@ -2320,7 +2328,7 @@ func ViewportSetSnap2dVerticesToPixel(viewport RID.Viewport, enabled bool) { //g
 /*
 Sets the default texture filtering mode for the specified [param viewport] RID. See [enum CanvasItemTextureFilter] for options.
 */
-func ViewportSetDefaultCanvasItemTextureFilter(viewport RID.Viewport, filter gdclass.RenderingServerCanvasItemTextureFilter) { //gd:RenderingServer.viewport_set_default_canvas_item_texture_filter
+func ViewportSetDefaultCanvasItemTextureFilter(viewport RID.Viewport, filter CanvasItemTextureFilter) { //gd:RenderingServer.viewport_set_default_canvas_item_texture_filter
 	once.Do(singleton)
 	Advanced().ViewportSetDefaultCanvasItemTextureFilter(RID.Any(viewport), filter)
 }
@@ -2328,7 +2336,7 @@ func ViewportSetDefaultCanvasItemTextureFilter(viewport RID.Viewport, filter gdc
 /*
 Sets the default texture repeat mode for the specified [param viewport] RID. See [enum CanvasItemTextureRepeat] for options.
 */
-func ViewportSetDefaultCanvasItemTextureRepeat(viewport RID.Viewport, repeat gdclass.RenderingServerCanvasItemTextureRepeat) { //gd:RenderingServer.viewport_set_default_canvas_item_texture_repeat
+func ViewportSetDefaultCanvasItemTextureRepeat(viewport RID.Viewport, repeat CanvasItemTextureRepeat) { //gd:RenderingServer.viewport_set_default_canvas_item_texture_repeat
 	once.Do(singleton)
 	Advanced().ViewportSetDefaultCanvasItemTextureRepeat(RID.Any(viewport), repeat)
 }
@@ -2369,7 +2377,7 @@ func ViewportSetGlobalCanvasTransform(viewport RID.Viewport, transform Transform
 /*
 Sets the viewport's 2D signed distance field [member ProjectSettings.rendering/2d/sdf/oversize] and [member ProjectSettings.rendering/2d/sdf/scale]. This is used when sampling the signed distance field in [CanvasItem] shaders as well as [GPUParticles2D] collision. This is [i]not[/i] used by SDFGI in 3D rendering.
 */
-func ViewportSetSdfOversizeAndScale(viewport RID.Viewport, oversize gdclass.RenderingServerViewportSDFOversize, scale gdclass.RenderingServerViewportSDFScale) { //gd:RenderingServer.viewport_set_sdf_oversize_and_scale
+func ViewportSetSdfOversizeAndScale(viewport RID.Viewport, oversize ViewportSDFOversize, scale ViewportSDFScale) { //gd:RenderingServer.viewport_set_sdf_oversize_and_scale
 	once.Do(singleton)
 	Advanced().ViewportSetSdfOversizeAndScale(RID.Any(viewport), oversize, scale)
 }
@@ -2403,7 +2411,7 @@ func ViewportSetPositionalShadowAtlasQuadrantSubdivision(viewport RID.Viewport, 
 /*
 Sets the multisample antialiasing mode for 3D on the specified [param viewport] RID. See [enum ViewportMSAA] for options. Equivalent to [member ProjectSettings.rendering/anti_aliasing/quality/msaa_3d] or [member Viewport.msaa_3d].
 */
-func ViewportSetMsaa3d(viewport RID.Viewport, msaa gdclass.RenderingServerViewportMSAA) { //gd:RenderingServer.viewport_set_msaa_3d
+func ViewportSetMsaa3d(viewport RID.Viewport, msaa ViewportMSAA) { //gd:RenderingServer.viewport_set_msaa_3d
 	once.Do(singleton)
 	Advanced().ViewportSetMsaa3d(RID.Any(viewport), msaa)
 }
@@ -2411,7 +2419,7 @@ func ViewportSetMsaa3d(viewport RID.Viewport, msaa gdclass.RenderingServerViewpo
 /*
 Sets the multisample antialiasing mode for 2D/Canvas on the specified [param viewport] RID. See [enum ViewportMSAA] for options. Equivalent to [member ProjectSettings.rendering/anti_aliasing/quality/msaa_2d] or [member Viewport.msaa_2d].
 */
-func ViewportSetMsaa2d(viewport RID.Viewport, msaa gdclass.RenderingServerViewportMSAA) { //gd:RenderingServer.viewport_set_msaa_2d
+func ViewportSetMsaa2d(viewport RID.Viewport, msaa ViewportMSAA) { //gd:RenderingServer.viewport_set_msaa_2d
 	once.Do(singleton)
 	Advanced().ViewportSetMsaa2d(RID.Any(viewport), msaa)
 }
@@ -2428,7 +2436,7 @@ func ViewportSetUseHdr2d(viewport RID.Viewport, enabled bool) { //gd:RenderingSe
 /*
 Sets the viewport's screen-space antialiasing mode. Equivalent to [member ProjectSettings.rendering/anti_aliasing/quality/screen_space_aa] or [member Viewport.screen_space_aa].
 */
-func ViewportSetScreenSpaceAa(viewport RID.Viewport, mode gdclass.RenderingServerViewportScreenSpaceAA) { //gd:RenderingServer.viewport_set_screen_space_aa
+func ViewportSetScreenSpaceAa(viewport RID.Viewport, mode ViewportScreenSpaceAA) { //gd:RenderingServer.viewport_set_screen_space_aa
 	once.Do(singleton)
 	Advanced().ViewportSetScreenSpaceAa(RID.Any(viewport), mode)
 }
@@ -2468,7 +2476,7 @@ func ViewportSetOcclusionRaysPerThread(rays_per_thread int) { //gd:RenderingServ
 /*
 Sets the [member ProjectSettings.rendering/occlusion_culling/bvh_build_quality] to use for occlusion culling. This parameter is global and cannot be set on a per-viewport basis.
 */
-func ViewportSetOcclusionCullingBuildQuality(quality gdclass.RenderingServerViewportOcclusionCullingBuildQuality) { //gd:RenderingServer.viewport_set_occlusion_culling_build_quality
+func ViewportSetOcclusionCullingBuildQuality(quality ViewportOcclusionCullingBuildQuality) { //gd:RenderingServer.viewport_set_occlusion_culling_build_quality
 	once.Do(singleton)
 	Advanced().ViewportSetOcclusionCullingBuildQuality(quality)
 }
@@ -2491,7 +2499,7 @@ func _ready():
 
 [/codeblock]
 */
-func ViewportGetRenderInfo(viewport RID.Viewport, atype gdclass.RenderingServerViewportRenderInfoType, info gdclass.RenderingServerViewportRenderInfo) int { //gd:RenderingServer.viewport_get_render_info
+func ViewportGetRenderInfo(viewport RID.Viewport, atype ViewportRenderInfoType, info ViewportRenderInfo) int { //gd:RenderingServer.viewport_get_render_info
 	once.Do(singleton)
 	return int(int(Advanced().ViewportGetRenderInfo(RID.Any(viewport), atype, info)))
 }
@@ -2499,7 +2507,7 @@ func ViewportGetRenderInfo(viewport RID.Viewport, atype gdclass.RenderingServerV
 /*
 Sets the debug draw mode of a viewport. See [enum ViewportDebugDraw] for options.
 */
-func ViewportSetDebugDraw(viewport RID.Viewport, draw gdclass.RenderingServerViewportDebugDraw) { //gd:RenderingServer.viewport_set_debug_draw
+func ViewportSetDebugDraw(viewport RID.Viewport, draw ViewportDebugDraw) { //gd:RenderingServer.viewport_set_debug_draw
 	once.Do(singleton)
 	Advanced().ViewportSetDebugDraw(RID.Any(viewport), draw)
 }
@@ -2534,7 +2542,7 @@ func ViewportGetMeasuredRenderTimeGpu(viewport RID.Viewport) Float.X { //gd:Rend
 /*
 Sets the Variable Rate Shading (VRS) mode for the viewport. If the GPU does not support VRS, this property is ignored. Equivalent to [member ProjectSettings.rendering/vrs/mode].
 */
-func ViewportSetVrsMode(viewport RID.Viewport, mode gdclass.RenderingServerViewportVRSMode) { //gd:RenderingServer.viewport_set_vrs_mode
+func ViewportSetVrsMode(viewport RID.Viewport, mode ViewportVRSMode) { //gd:RenderingServer.viewport_set_vrs_mode
 	once.Do(singleton)
 	Advanced().ViewportSetVrsMode(RID.Any(viewport), mode)
 }
@@ -2543,7 +2551,7 @@ func ViewportSetVrsMode(viewport RID.Viewport, mode gdclass.RenderingServerViewp
 Sets the update mode for Variable Rate Shading (VRS) for the viewport. VRS requires the input texture to be converted to the format usable by the VRS method supported by the hardware. The update mode defines how often this happens. If the GPU does not support VRS, or VRS is not enabled, this property is ignored.
 If set to [constant RenderingServer.VIEWPORT_VRS_UPDATE_ONCE], the input texture is copied once and the mode is changed to [constant RenderingServer.VIEWPORT_VRS_UPDATE_DISABLED].
 */
-func ViewportSetVrsUpdateMode(viewport RID.Viewport, mode gdclass.RenderingServerViewportVRSUpdateMode) { //gd:RenderingServer.viewport_set_vrs_update_mode
+func ViewportSetVrsUpdateMode(viewport RID.Viewport, mode ViewportVRSUpdateMode) { //gd:RenderingServer.viewport_set_vrs_update_mode
 	once.Do(singleton)
 	Advanced().ViewportSetVrsUpdateMode(RID.Any(viewport), mode)
 }
@@ -2576,7 +2584,7 @@ func SkySetRadianceSize(sky RID.Sky, radiance_size int) { //gd:RenderingServer.s
 /*
 Sets the process [param mode] of the sky specified by the [param sky] RID. Equivalent to [member Sky.process_mode].
 */
-func SkySetMode(sky RID.Sky, mode gdclass.RenderingServerSkyMode) { //gd:RenderingServer.sky_set_mode
+func SkySetMode(sky RID.Sky, mode SkyMode) { //gd:RenderingServer.sky_set_mode
 	once.Do(singleton)
 	Advanced().SkySetMode(RID.Any(sky), mode)
 }
@@ -2619,7 +2627,7 @@ func CompositorEffectSetEnabled(effect RID.CompositorEffect, enabled bool) { //g
 /*
 Sets the callback type ([param callback_type]) and callback method([param callback]) for this rendering effect.
 */
-func CompositorEffectSetCallback(effect RID.CompositorEffect, callback_type gdclass.RenderingServerCompositorEffectCallbackType, callback func()) { //gd:RenderingServer.compositor_effect_set_callback
+func CompositorEffectSetCallback(effect RID.CompositorEffect, callback_type CompositorEffectCallbackType, callback func()) { //gd:RenderingServer.compositor_effect_set_callback
 	once.Do(singleton)
 	Advanced().CompositorEffectSetCallback(RID.Any(effect), callback_type, Callable.New(callback))
 }
@@ -2627,7 +2635,7 @@ func CompositorEffectSetCallback(effect RID.CompositorEffect, callback_type gdcl
 /*
 Sets the flag ([param flag]) for this rendering effect to [code]true[/code] or [code]false[/code] ([param set]).
 */
-func CompositorEffectSetFlag(effect RID.CompositorEffect, flag gdclass.RenderingServerCompositorEffectFlags, set bool) { //gd:RenderingServer.compositor_effect_set_flag
+func CompositorEffectSetFlag(effect RID.CompositorEffect, flag CompositorEffectFlags, set bool) { //gd:RenderingServer.compositor_effect_set_flag
 	once.Do(singleton)
 	Advanced().CompositorEffectSetFlag(RID.Any(effect), flag, set)
 }
@@ -2662,7 +2670,7 @@ func EnvironmentCreate() RID.Environment { //gd:RenderingServer.environment_crea
 /*
 Sets the environment's background mode. Equivalent to [member Environment.background_mode].
 */
-func EnvironmentSetBackground(env RID.Environment, bg gdclass.RenderingServerEnvironmentBG) { //gd:RenderingServer.environment_set_background
+func EnvironmentSetBackground(env RID.Environment, bg EnvironmentBG) { //gd:RenderingServer.environment_set_background
 	once.Do(singleton)
 	Advanced().EnvironmentSetBackground(RID.Any(env), bg)
 }
@@ -2726,7 +2734,7 @@ func EnvironmentSetCanvasMaxLayer(env RID.Environment, max_layer int) { //gd:Ren
 /*
 Sets the values to be used for ambient light rendering. See [Environment] for more details.
 */
-func EnvironmentSetAmbientLight(env RID.Environment, color Color.RGBA, ambient gdclass.RenderingServerEnvironmentAmbientSource, sky_contribution Float.X, reflection_source gdclass.RenderingServerEnvironmentReflectionSource) { //gd:RenderingServer.environment_set_ambient_light
+func EnvironmentSetAmbientLight(env RID.Environment, color Color.RGBA, ambient EnvironmentAmbientSource, sky_contribution Float.X, reflection_source EnvironmentReflectionSource) { //gd:RenderingServer.environment_set_ambient_light
 	once.Do(singleton)
 	Advanced().EnvironmentSetAmbientLight(RID.Any(env), Color.RGBA(color), ambient, float64(1.0), float64(sky_contribution), reflection_source)
 }
@@ -2734,7 +2742,7 @@ func EnvironmentSetAmbientLight(env RID.Environment, color Color.RGBA, ambient g
 /*
 Sets the values to be used for ambient light rendering. See [Environment] for more details.
 */
-func EnvironmentSetAmbientLightOptions(env RID.Environment, color Color.RGBA, ambient gdclass.RenderingServerEnvironmentAmbientSource, energy Float.X, sky_contribution Float.X, reflection_source gdclass.RenderingServerEnvironmentReflectionSource) { //gd:RenderingServer.environment_set_ambient_light
+func EnvironmentSetAmbientLightOptions(env RID.Environment, color Color.RGBA, ambient EnvironmentAmbientSource, energy Float.X, sky_contribution Float.X, reflection_source EnvironmentReflectionSource) { //gd:RenderingServer.environment_set_ambient_light
 	once.Do(singleton)
 	Advanced().EnvironmentSetAmbientLight(RID.Any(env), Color.RGBA(color), ambient, float64(energy), float64(sky_contribution), reflection_source)
 }
@@ -2742,7 +2750,7 @@ func EnvironmentSetAmbientLightOptions(env RID.Environment, color Color.RGBA, am
 /*
 Configures glow for the specified environment RID. See [code]glow_*[/code] properties in [Environment] for more information.
 */
-func EnvironmentSetGlow(env RID.Environment, enable bool, levels []float32, intensity Float.X, strength Float.X, mix Float.X, bloom_threshold Float.X, blend_mode gdclass.RenderingServerEnvironmentGlowBlendMode, hdr_bleed_threshold Float.X, hdr_bleed_scale Float.X, hdr_luminance_cap Float.X, glow_map_strength Float.X, glow_map RID.Texture) { //gd:RenderingServer.environment_set_glow
+func EnvironmentSetGlow(env RID.Environment, enable bool, levels []float32, intensity Float.X, strength Float.X, mix Float.X, bloom_threshold Float.X, blend_mode EnvironmentGlowBlendMode, hdr_bleed_threshold Float.X, hdr_bleed_scale Float.X, hdr_luminance_cap Float.X, glow_map_strength Float.X, glow_map RID.Texture) { //gd:RenderingServer.environment_set_glow
 	once.Do(singleton)
 	Advanced().EnvironmentSetGlow(RID.Any(env), enable, Packed.New(levels...), float64(intensity), float64(strength), float64(mix), float64(bloom_threshold), blend_mode, float64(hdr_bleed_threshold), float64(hdr_bleed_scale), float64(hdr_luminance_cap), float64(glow_map_strength), RID.Any(glow_map))
 }
@@ -2750,7 +2758,7 @@ func EnvironmentSetGlow(env RID.Environment, enable bool, levels []float32, inte
 /*
 Sets the variables to be used with the "tonemap" post-process effect. See [Environment] for more details.
 */
-func EnvironmentSetTonemap(env RID.Environment, tone_mapper gdclass.RenderingServerEnvironmentToneMapper, exposure Float.X, white Float.X) { //gd:RenderingServer.environment_set_tonemap
+func EnvironmentSetTonemap(env RID.Environment, tone_mapper EnvironmentToneMapper, exposure Float.X, white Float.X) { //gd:RenderingServer.environment_set_tonemap
 	once.Do(singleton)
 	Advanced().EnvironmentSetTonemap(RID.Any(env), tone_mapper, float64(exposure), float64(white))
 }
@@ -2782,7 +2790,7 @@ func EnvironmentSetSsao(env RID.Environment, enable bool, radius Float.X, intens
 /*
 Configures fog for the specified environment RID. See [code]fog_*[/code] properties in [Environment] for more information.
 */
-func EnvironmentSetFog(env RID.Environment, enable bool, light_color Color.RGBA, light_energy Float.X, sun_scatter Float.X, density Float.X, height Float.X, height_density Float.X, aerial_perspective Float.X, sky_affect Float.X, fog_mode gdclass.RenderingServerEnvironmentFogMode) { //gd:RenderingServer.environment_set_fog
+func EnvironmentSetFog(env RID.Environment, enable bool, light_color Color.RGBA, light_energy Float.X, sun_scatter Float.X, density Float.X, height Float.X, height_density Float.X, aerial_perspective Float.X, sky_affect Float.X, fog_mode EnvironmentFogMode) { //gd:RenderingServer.environment_set_fog
 	once.Do(singleton)
 	Advanced().EnvironmentSetFog(RID.Any(env), enable, Color.RGBA(light_color), float64(light_energy), float64(sun_scatter), float64(density), float64(height), float64(height_density), float64(aerial_perspective), float64(sky_affect), fog_mode)
 }
@@ -2790,7 +2798,7 @@ func EnvironmentSetFog(env RID.Environment, enable bool, light_color Color.RGBA,
 /*
 Configures fog for the specified environment RID. See [code]fog_*[/code] properties in [Environment] for more information.
 */
-func EnvironmentSetFogOptions(env RID.Environment, enable bool, light_color Color.RGBA, light_energy Float.X, sun_scatter Float.X, density Float.X, height Float.X, height_density Float.X, aerial_perspective Float.X, sky_affect Float.X, fog_mode gdclass.RenderingServerEnvironmentFogMode) { //gd:RenderingServer.environment_set_fog
+func EnvironmentSetFogOptions(env RID.Environment, enable bool, light_color Color.RGBA, light_energy Float.X, sun_scatter Float.X, density Float.X, height Float.X, height_density Float.X, aerial_perspective Float.X, sky_affect Float.X, fog_mode EnvironmentFogMode) { //gd:RenderingServer.environment_set_fog
 	once.Do(singleton)
 	Advanced().EnvironmentSetFog(RID.Any(env), enable, Color.RGBA(light_color), float64(light_energy), float64(sun_scatter), float64(density), float64(height), float64(height_density), float64(aerial_perspective), float64(sky_affect), fog_mode)
 }
@@ -2798,7 +2806,7 @@ func EnvironmentSetFogOptions(env RID.Environment, enable bool, light_color Colo
 /*
 Configures signed distance field global illumination for the specified environment RID. See [code]sdfgi_*[/code] properties in [Environment] for more information.
 */
-func EnvironmentSetSdfgi(env RID.Environment, enable bool, cascades int, min_cell_size Float.X, y_scale gdclass.RenderingServerEnvironmentSDFGIYScale, use_occlusion bool, bounce_feedback Float.X, read_sky bool, energy Float.X, normal_bias Float.X, probe_bias Float.X) { //gd:RenderingServer.environment_set_sdfgi
+func EnvironmentSetSdfgi(env RID.Environment, enable bool, cascades int, min_cell_size Float.X, y_scale EnvironmentSDFGIYScale, use_occlusion bool, bounce_feedback Float.X, read_sky bool, energy Float.X, normal_bias Float.X, probe_bias Float.X) { //gd:RenderingServer.environment_set_sdfgi
 	once.Do(singleton)
 	Advanced().EnvironmentSetSdfgi(RID.Any(env), enable, int64(cascades), float64(min_cell_size), y_scale, use_occlusion, float64(bounce_feedback), read_sky, float64(energy), float64(normal_bias), float64(probe_bias))
 }
@@ -2818,7 +2826,7 @@ func EnvironmentGlowSetUseBicubicUpscale(enable bool) { //gd:RenderingServer.env
 	once.Do(singleton)
 	Advanced().EnvironmentGlowSetUseBicubicUpscale(enable)
 }
-func EnvironmentSetSsrRoughnessQuality(quality gdclass.RenderingServerEnvironmentSSRRoughnessQuality) { //gd:RenderingServer.environment_set_ssr_roughness_quality
+func EnvironmentSetSsrRoughnessQuality(quality EnvironmentSSRRoughnessQuality) { //gd:RenderingServer.environment_set_ssr_roughness_quality
 	once.Do(singleton)
 	Advanced().EnvironmentSetSsrRoughnessQuality(quality)
 }
@@ -2826,7 +2834,7 @@ func EnvironmentSetSsrRoughnessQuality(quality gdclass.RenderingServerEnvironmen
 /*
 Sets the quality level of the screen-space ambient occlusion (SSAO) post-process effect. See [Environment] for more details.
 */
-func EnvironmentSetSsaoQuality(quality gdclass.RenderingServerEnvironmentSSAOQuality, half_size bool, adaptive_target Float.X, blur_passes int, fadeout_from Float.X, fadeout_to Float.X) { //gd:RenderingServer.environment_set_ssao_quality
+func EnvironmentSetSsaoQuality(quality EnvironmentSSAOQuality, half_size bool, adaptive_target Float.X, blur_passes int, fadeout_from Float.X, fadeout_to Float.X) { //gd:RenderingServer.environment_set_ssao_quality
 	once.Do(singleton)
 	Advanced().EnvironmentSetSsaoQuality(quality, half_size, float64(adaptive_target), int64(blur_passes), float64(fadeout_from), float64(fadeout_to))
 }
@@ -2834,7 +2842,7 @@ func EnvironmentSetSsaoQuality(quality gdclass.RenderingServerEnvironmentSSAOQua
 /*
 Sets the quality level of the screen-space indirect lighting (SSIL) post-process effect. See [Environment] for more details.
 */
-func EnvironmentSetSsilQuality(quality gdclass.RenderingServerEnvironmentSSILQuality, half_size bool, adaptive_target Float.X, blur_passes int, fadeout_from Float.X, fadeout_to Float.X) { //gd:RenderingServer.environment_set_ssil_quality
+func EnvironmentSetSsilQuality(quality EnvironmentSSILQuality, half_size bool, adaptive_target Float.X, blur_passes int, fadeout_from Float.X, fadeout_to Float.X) { //gd:RenderingServer.environment_set_ssil_quality
 	once.Do(singleton)
 	Advanced().EnvironmentSetSsilQuality(quality, half_size, float64(adaptive_target), int64(blur_passes), float64(fadeout_from), float64(fadeout_to))
 }
@@ -2842,7 +2850,7 @@ func EnvironmentSetSsilQuality(quality gdclass.RenderingServerEnvironmentSSILQua
 /*
 Sets the number of rays to throw per frame when computing signed distance field global illumination. Equivalent to [member ProjectSettings.rendering/global_illumination/sdfgi/probe_ray_count].
 */
-func EnvironmentSetSdfgiRayCount(ray_count gdclass.RenderingServerEnvironmentSDFGIRayCount) { //gd:RenderingServer.environment_set_sdfgi_ray_count
+func EnvironmentSetSdfgiRayCount(ray_count EnvironmentSDFGIRayCount) { //gd:RenderingServer.environment_set_sdfgi_ray_count
 	once.Do(singleton)
 	Advanced().EnvironmentSetSdfgiRayCount(ray_count)
 }
@@ -2850,7 +2858,7 @@ func EnvironmentSetSdfgiRayCount(ray_count gdclass.RenderingServerEnvironmentSDF
 /*
 Sets the number of frames to use for converging signed distance field global illumination. Equivalent to [member ProjectSettings.rendering/global_illumination/sdfgi/frames_to_converge].
 */
-func EnvironmentSetSdfgiFramesToConverge(frames gdclass.RenderingServerEnvironmentSDFGIFramesToConverge) { //gd:RenderingServer.environment_set_sdfgi_frames_to_converge
+func EnvironmentSetSdfgiFramesToConverge(frames EnvironmentSDFGIFramesToConverge) { //gd:RenderingServer.environment_set_sdfgi_frames_to_converge
 	once.Do(singleton)
 	Advanced().EnvironmentSetSdfgiFramesToConverge(frames)
 }
@@ -2858,7 +2866,7 @@ func EnvironmentSetSdfgiFramesToConverge(frames gdclass.RenderingServerEnvironme
 /*
 Sets the update speed for dynamic lights' indirect lighting when computing signed distance field global illumination. Equivalent to [member ProjectSettings.rendering/global_illumination/sdfgi/frames_to_update_lights].
 */
-func EnvironmentSetSdfgiFramesToUpdateLight(frames gdclass.RenderingServerEnvironmentSDFGIFramesToUpdateLight) { //gd:RenderingServer.environment_set_sdfgi_frames_to_update_light
+func EnvironmentSetSdfgiFramesToUpdateLight(frames EnvironmentSDFGIFramesToUpdateLight) { //gd:RenderingServer.environment_set_sdfgi_frames_to_update_light
 	once.Do(singleton)
 	Advanced().EnvironmentSetSdfgiFramesToUpdateLight(frames)
 }
@@ -2900,7 +2908,7 @@ func ScreenSpaceRoughnessLimiterSetActive(enable bool, amount Float.X, limit Flo
 /*
 Sets [member ProjectSettings.rendering/environment/subsurface_scattering/subsurface_scattering_quality] to use when rendering materials that have subsurface scattering enabled.
 */
-func SubSurfaceScatteringSetQuality(quality gdclass.RenderingServerSubSurfaceScatteringQuality) { //gd:RenderingServer.sub_surface_scattering_set_quality
+func SubSurfaceScatteringSetQuality(quality SubSurfaceScatteringQuality) { //gd:RenderingServer.sub_surface_scattering_set_quality
 	once.Do(singleton)
 	Advanced().SubSurfaceScatteringSetQuality(quality)
 }
@@ -2926,7 +2934,7 @@ func CameraAttributesCreate() RID.CameraAttributes { //gd:RenderingServer.camera
 /*
 Sets the quality level of the DOF blur effect to one of the options in [enum DOFBlurQuality]. [param use_jitter] can be used to jitter samples taken during the blur pass to hide artifacts at the cost of looking more fuzzy.
 */
-func CameraAttributesSetDofBlurQuality(quality gdclass.RenderingServerDOFBlurQuality, use_jitter bool) { //gd:RenderingServer.camera_attributes_set_dof_blur_quality
+func CameraAttributesSetDofBlurQuality(quality DOFBlurQuality, use_jitter bool) { //gd:RenderingServer.camera_attributes_set_dof_blur_quality
 	once.Do(singleton)
 	Advanced().CameraAttributesSetDofBlurQuality(quality, use_jitter)
 }
@@ -2934,7 +2942,7 @@ func CameraAttributesSetDofBlurQuality(quality gdclass.RenderingServerDOFBlurQua
 /*
 Sets the shape of the DOF bokeh pattern. Different shapes may be used to achieve artistic effect, or to meet performance targets. For more detail on available options see [enum DOFBokehShape].
 */
-func CameraAttributesSetDofBlurBokehShape(shape gdclass.RenderingServerDOFBokehShape) { //gd:RenderingServer.camera_attributes_set_dof_blur_bokeh_shape
+func CameraAttributesSetDofBlurBokehShape(shape DOFBokehShape) { //gd:RenderingServer.camera_attributes_set_dof_blur_bokeh_shape
 	once.Do(singleton)
 	Advanced().CameraAttributesSetDofBlurBokehShape(shape)
 }
@@ -3182,7 +3190,7 @@ func InstanceSetIgnoreCulling(instance RID.VisualInstance, enabled bool) { //gd:
 /*
 Sets the flag for a given [enum InstanceFlags]. See [enum InstanceFlags] for more details.
 */
-func InstanceGeometrySetFlag(instance RID.VisualInstance, flag gdclass.RenderingServerInstanceFlags, enabled bool) { //gd:RenderingServer.instance_geometry_set_flag
+func InstanceGeometrySetFlag(instance RID.VisualInstance, flag InstanceFlags, enabled bool) { //gd:RenderingServer.instance_geometry_set_flag
 	once.Do(singleton)
 	Advanced().InstanceGeometrySetFlag(RID.Any(instance), flag, enabled)
 }
@@ -3190,7 +3198,7 @@ func InstanceGeometrySetFlag(instance RID.VisualInstance, flag gdclass.Rendering
 /*
 Sets the shadow casting setting to one of [enum ShadowCastingSetting]. Equivalent to [member GeometryInstance3D.cast_shadow].
 */
-func InstanceGeometrySetCastShadowsSetting(instance RID.VisualInstance, shadow_casting_setting gdclass.RenderingServerShadowCastingSetting) { //gd:RenderingServer.instance_geometry_set_cast_shadows_setting
+func InstanceGeometrySetCastShadowsSetting(instance RID.VisualInstance, shadow_casting_setting ShadowCastingSetting) { //gd:RenderingServer.instance_geometry_set_cast_shadows_setting
 	once.Do(singleton)
 	Advanced().InstanceGeometrySetCastShadowsSetting(RID.Any(instance), shadow_casting_setting)
 }
@@ -3214,7 +3222,7 @@ func InstanceGeometrySetMaterialOverlay(instance RID.VisualInstance, material RI
 /*
 Sets the visibility range values for the given geometry instance. Equivalent to [member GeometryInstance3D.visibility_range_begin] and related properties.
 */
-func InstanceGeometrySetVisibilityRange(instance RID.VisualInstance, min Float.X, max Float.X, min_margin Float.X, max_margin Float.X, fade_mode gdclass.RenderingServerVisibilityRangeFadeMode) { //gd:RenderingServer.instance_geometry_set_visibility_range
+func InstanceGeometrySetVisibilityRange(instance RID.VisualInstance, min Float.X, max Float.X, min_margin Float.X, max_margin Float.X, fade_mode VisibilityRangeFadeMode) { //gd:RenderingServer.instance_geometry_set_visibility_range
 	once.Do(singleton)
 	Advanced().InstanceGeometrySetVisibilityRange(RID.Any(instance), float64(min), float64(max), float64(min_margin), float64(max_margin), fade_mode)
 }
@@ -3382,7 +3390,7 @@ func CanvasTextureCreate() RID.CanvasTexture { //gd:RenderingServer.canvas_textu
 /*
 Sets the [param channel]'s [param texture] for the canvas texture specified by the [param canvas_texture] RID. Equivalent to [member CanvasTexture.diffuse_texture], [member CanvasTexture.normal_texture] and [member CanvasTexture.specular_texture].
 */
-func CanvasTextureSetChannel(canvas_texture RID.CanvasTexture, channel gdclass.RenderingServerCanvasTextureChannel, texture RID.CanvasTexture) { //gd:RenderingServer.canvas_texture_set_channel
+func CanvasTextureSetChannel(canvas_texture RID.CanvasTexture, channel CanvasTextureChannel, texture RID.CanvasTexture) { //gd:RenderingServer.canvas_texture_set_channel
 	once.Do(singleton)
 	Advanced().CanvasTextureSetChannel(RID.Any(canvas_texture), channel, RID.Any(texture))
 }
@@ -3398,7 +3406,7 @@ func CanvasTextureSetShadingParameters(canvas_texture RID.CanvasTexture, base_co
 /*
 Sets the texture [param filter] mode to use for the canvas texture specified by the [param canvas_texture] RID.
 */
-func CanvasTextureSetTextureFilter(canvas_texture RID.CanvasTexture, filter gdclass.RenderingServerCanvasItemTextureFilter) { //gd:RenderingServer.canvas_texture_set_texture_filter
+func CanvasTextureSetTextureFilter(canvas_texture RID.CanvasTexture, filter CanvasItemTextureFilter) { //gd:RenderingServer.canvas_texture_set_texture_filter
 	once.Do(singleton)
 	Advanced().CanvasTextureSetTextureFilter(RID.Any(canvas_texture), filter)
 }
@@ -3406,7 +3414,7 @@ func CanvasTextureSetTextureFilter(canvas_texture RID.CanvasTexture, filter gdcl
 /*
 Sets the texture [param repeat] mode to use for the canvas texture specified by the [param canvas_texture] RID.
 */
-func CanvasTextureSetTextureRepeat(canvas_texture RID.CanvasTexture, repeat gdclass.RenderingServerCanvasItemTextureRepeat) { //gd:RenderingServer.canvas_texture_set_texture_repeat
+func CanvasTextureSetTextureRepeat(canvas_texture RID.CanvasTexture, repeat CanvasItemTextureRepeat) { //gd:RenderingServer.canvas_texture_set_texture_repeat
 	once.Do(singleton)
 	Advanced().CanvasTextureSetTextureRepeat(RID.Any(canvas_texture), repeat)
 }
@@ -3432,7 +3440,7 @@ func CanvasItemSetParent(item RID.CanvasItem, parent RID.CanvasItem) { //gd:Rend
 /*
 Sets the default texture filter mode for the canvas item specified by the [param item] RID. Equivalent to [member CanvasItem.texture_filter].
 */
-func CanvasItemSetDefaultTextureFilter(item RID.CanvasItem, filter gdclass.RenderingServerCanvasItemTextureFilter) { //gd:RenderingServer.canvas_item_set_default_texture_filter
+func CanvasItemSetDefaultTextureFilter(item RID.CanvasItem, filter CanvasItemTextureFilter) { //gd:RenderingServer.canvas_item_set_default_texture_filter
 	once.Do(singleton)
 	Advanced().CanvasItemSetDefaultTextureFilter(RID.Any(item), filter)
 }
@@ -3440,7 +3448,7 @@ func CanvasItemSetDefaultTextureFilter(item RID.CanvasItem, filter gdclass.Rende
 /*
 Sets the default texture repeat mode for the canvas item specified by the [param item] RID. Equivalent to [member CanvasItem.texture_repeat].
 */
-func CanvasItemSetDefaultTextureRepeat(item RID.CanvasItem, repeat gdclass.RenderingServerCanvasItemTextureRepeat) { //gd:RenderingServer.canvas_item_set_default_texture_repeat
+func CanvasItemSetDefaultTextureRepeat(item RID.CanvasItem, repeat CanvasItemTextureRepeat) { //gd:RenderingServer.canvas_item_set_default_texture_repeat
 	once.Do(singleton)
 	Advanced().CanvasItemSetDefaultTextureRepeat(RID.Any(item), repeat)
 }
@@ -3699,7 +3707,7 @@ func CanvasItemAddTextureRectRegionOptions(item RID.CanvasItem, rect Rect2.Posit
 /*
 Draws a nine-patch rectangle on the [CanvasItem] pointed to by the [param item] [RID].
 */
-func CanvasItemAddNinePatch(item RID.CanvasItem, rect Rect2.PositionSize, source Rect2.PositionSize, texture RID.CanvasTexture, topleft Vector2.XY, bottomright Vector2.XY, x_axis_mode gdclass.RenderingServerNinePatchAxisMode, y_axis_mode gdclass.RenderingServerNinePatchAxisMode) { //gd:RenderingServer.canvas_item_add_nine_patch
+func CanvasItemAddNinePatch(item RID.CanvasItem, rect Rect2.PositionSize, source Rect2.PositionSize, texture RID.CanvasTexture, topleft Vector2.XY, bottomright Vector2.XY, x_axis_mode NinePatchAxisMode, y_axis_mode NinePatchAxisMode) { //gd:RenderingServer.canvas_item_add_nine_patch
 	once.Do(singleton)
 	Advanced().CanvasItemAddNinePatch(RID.Any(item), Rect2.PositionSize(rect), Rect2.PositionSize(source), RID.Any(texture), Vector2.XY(topleft), Vector2.XY(bottomright), x_axis_mode, y_axis_mode, true, Color.RGBA(gd.Color{1, 1, 1, 1}))
 }
@@ -3707,7 +3715,7 @@ func CanvasItemAddNinePatch(item RID.CanvasItem, rect Rect2.PositionSize, source
 /*
 Draws a nine-patch rectangle on the [CanvasItem] pointed to by the [param item] [RID].
 */
-func CanvasItemAddNinePatchOptions(item RID.CanvasItem, rect Rect2.PositionSize, source Rect2.PositionSize, texture RID.CanvasTexture, topleft Vector2.XY, bottomright Vector2.XY, x_axis_mode gdclass.RenderingServerNinePatchAxisMode, y_axis_mode gdclass.RenderingServerNinePatchAxisMode, draw_center bool, modulate Color.RGBA) { //gd:RenderingServer.canvas_item_add_nine_patch
+func CanvasItemAddNinePatchOptions(item RID.CanvasItem, rect Rect2.PositionSize, source Rect2.PositionSize, texture RID.CanvasTexture, topleft Vector2.XY, bottomright Vector2.XY, x_axis_mode NinePatchAxisMode, y_axis_mode NinePatchAxisMode, draw_center bool, modulate Color.RGBA) { //gd:RenderingServer.canvas_item_add_nine_patch
 	once.Do(singleton)
 	Advanced().CanvasItemAddNinePatch(RID.Any(item), Rect2.PositionSize(rect), Rect2.PositionSize(source), RID.Any(texture), Vector2.XY(topleft), Vector2.XY(bottomright), x_axis_mode, y_axis_mode, draw_center, Color.RGBA(modulate))
 }
@@ -3946,7 +3954,7 @@ func CanvasItemSetVisibilityNotifier(item RID.CanvasItem, enable bool, area Rect
 Sets the canvas group mode used during 2D rendering for the canvas item specified by the [param item] RID. For faster but more limited clipping, use [method canvas_item_set_clip] instead.
 [b]Note:[/b] The equivalent node functionality is found in [CanvasGroup] and [member CanvasItem.clip_children].
 */
-func CanvasItemSetCanvasGroupMode(item RID.CanvasItem, mode gdclass.RenderingServerCanvasGroupMode, fit_empty bool, fit_margin Float.X, blur_mipmaps bool) { //gd:RenderingServer.canvas_item_set_canvas_group_mode
+func CanvasItemSetCanvasGroupMode(item RID.CanvasItem, mode CanvasGroupMode, fit_empty bool, fit_margin Float.X, blur_mipmaps bool) { //gd:RenderingServer.canvas_item_set_canvas_group_mode
 	once.Do(singleton)
 	Advanced().CanvasItemSetCanvasGroupMode(RID.Any(item), mode, float64(5.0), fit_empty, float64(fit_margin), blur_mipmaps)
 }
@@ -3955,7 +3963,7 @@ func CanvasItemSetCanvasGroupMode(item RID.CanvasItem, mode gdclass.RenderingSer
 Sets the canvas group mode used during 2D rendering for the canvas item specified by the [param item] RID. For faster but more limited clipping, use [method canvas_item_set_clip] instead.
 [b]Note:[/b] The equivalent node functionality is found in [CanvasGroup] and [member CanvasItem.clip_children].
 */
-func CanvasItemSetCanvasGroupModeOptions(item RID.CanvasItem, mode gdclass.RenderingServerCanvasGroupMode, clear_margin Float.X, fit_empty bool, fit_margin Float.X, blur_mipmaps bool) { //gd:RenderingServer.canvas_item_set_canvas_group_mode
+func CanvasItemSetCanvasGroupModeOptions(item RID.CanvasItem, mode CanvasGroupMode, clear_margin Float.X, fit_empty bool, fit_margin Float.X, blur_mipmaps bool) { //gd:RenderingServer.canvas_item_set_canvas_group_mode
 	once.Do(singleton)
 	Advanced().CanvasItemSetCanvasGroupMode(RID.Any(item), mode, float64(clear_margin), fit_empty, float64(fit_margin), blur_mipmaps)
 }
@@ -4086,7 +4094,7 @@ func CanvasLightSetItemShadowCullMask(light RID.CanvasLight, mask int) { //gd:Re
 /*
 The mode of the light, see [enum CanvasLightMode] constants.
 */
-func CanvasLightSetMode(light RID.CanvasLight, mode gdclass.RenderingServerCanvasLightMode) { //gd:RenderingServer.canvas_light_set_mode
+func CanvasLightSetMode(light RID.CanvasLight, mode CanvasLightMode) { //gd:RenderingServer.canvas_light_set_mode
 	once.Do(singleton)
 	Advanced().CanvasLightSetMode(RID.Any(light), mode)
 }
@@ -4102,7 +4110,7 @@ func CanvasLightSetShadowEnabled(light RID.CanvasLight, enabled bool) { //gd:Ren
 /*
 Sets the canvas light's shadow's filter, see [enum CanvasLightShadowFilter] constants.
 */
-func CanvasLightSetShadowFilter(light RID.CanvasLight, filter gdclass.RenderingServerCanvasLightShadowFilter) { //gd:RenderingServer.canvas_light_set_shadow_filter
+func CanvasLightSetShadowFilter(light RID.CanvasLight, filter CanvasLightShadowFilter) { //gd:RenderingServer.canvas_light_set_shadow_filter
 	once.Do(singleton)
 	Advanced().CanvasLightSetShadowFilter(RID.Any(light), filter)
 }
@@ -4126,7 +4134,7 @@ func CanvasLightSetShadowSmooth(light RID.CanvasLight, smooth Float.X) { //gd:Re
 /*
 Sets the blend mode for the given canvas light. See [enum CanvasLightBlendMode] for options. Equivalent to [member Light2D.blend_mode].
 */
-func CanvasLightSetBlendMode(light RID.CanvasLight, mode gdclass.RenderingServerCanvasLightBlendMode) { //gd:RenderingServer.canvas_light_set_blend_mode
+func CanvasLightSetBlendMode(light RID.CanvasLight, mode CanvasLightBlendMode) { //gd:RenderingServer.canvas_light_set_blend_mode
 	once.Do(singleton)
 	Advanced().CanvasLightSetBlendMode(RID.Any(light), mode)
 }
@@ -4258,7 +4266,7 @@ func CanvasOccluderPolygonSetShape(occluder_polygon RID.CanvasLightOccluderPolyg
 /*
 Sets an occluder polygons cull mode. See [enum CanvasOccluderPolygonCullMode] constants.
 */
-func CanvasOccluderPolygonSetCullMode(occluder_polygon RID.CanvasLightOccluderPolygon, mode gdclass.RenderingServerCanvasOccluderPolygonCullMode) { //gd:RenderingServer.canvas_occluder_polygon_set_cull_mode
+func CanvasOccluderPolygonSetCullMode(occluder_polygon RID.CanvasLightOccluderPolygon, mode CanvasOccluderPolygonCullMode) { //gd:RenderingServer.canvas_occluder_polygon_set_cull_mode
 	once.Do(singleton)
 	Advanced().CanvasOccluderPolygonSetCullMode(RID.Any(occluder_polygon), mode)
 }
@@ -4275,7 +4283,7 @@ func CanvasSetShadowTextureSize(size int) { //gd:RenderingServer.canvas_set_shad
 Creates a new global shader uniform.
 [b]Note:[/b] Global shader parameter names are case-sensitive.
 */
-func GlobalShaderParameterAdd(name string, atype gdclass.RenderingServerGlobalShaderParameterType, default_value any) { //gd:RenderingServer.global_shader_parameter_add
+func GlobalShaderParameterAdd(name string, atype GlobalShaderParameterType, default_value any) { //gd:RenderingServer.global_shader_parameter_add
 	once.Do(singleton)
 	Advanced().GlobalShaderParameterAdd(String.Name(String.New(name)), atype, variant.New(default_value))
 }
@@ -4326,9 +4334,9 @@ func GlobalShaderParameterGet(name string) any { //gd:RenderingServer.global_sha
 Returns the type associated to the global shader uniform specified by [param name].
 [b]Note:[/b] [method global_shader_parameter_get] has a large performance penalty as the rendering thread needs to synchronize with the calling thread, which is slow. Do not use this method during gameplay to avoid stuttering. If you need to read values in a script after setting them, consider creating an autoload where you store the values you need to query at the same time you're setting them as global parameters.
 */
-func GlobalShaderParameterGetType(name string) gdclass.RenderingServerGlobalShaderParameterType { //gd:RenderingServer.global_shader_parameter_get_type
+func GlobalShaderParameterGetType(name string) GlobalShaderParameterType { //gd:RenderingServer.global_shader_parameter_get_type
 	once.Do(singleton)
-	return gdclass.RenderingServerGlobalShaderParameterType(Advanced().GlobalShaderParameterGetType(String.Name(String.New(name))))
+	return GlobalShaderParameterType(Advanced().GlobalShaderParameterGetType(String.Name(String.New(name))))
 }
 
 /*
@@ -4369,7 +4377,7 @@ func _ready():
 
 [/codeblock]
 */
-func GetRenderingInfo(info gdclass.RenderingServerRenderingInfo) int { //gd:RenderingServer.get_rendering_info
+func GetRenderingInfo(info RenderingInfo) int { //gd:RenderingServer.get_rendering_info
 	once.Do(singleton)
 	return int(int(Advanced().GetRenderingInfo(info)))
 }
@@ -4397,9 +4405,9 @@ func GetVideoAdapterVendor() string { //gd:RenderingServer.get_video_adapter_ven
 Returns the type of the video adapter. Since dedicated graphics cards from a given generation will [i]usually[/i] be significantly faster than integrated graphics made in the same generation, the device type can be used as a basis for automatic graphics settings adjustment. However, this is not always true, so make sure to provide users with a way to manually override graphics settings.
 [b]Note:[/b] When using the OpenGL rendering driver or when running in headless mode, this function always returns [constant RenderingDevice.DEVICE_TYPE_OTHER].
 */
-func GetVideoAdapterType() gdclass.RenderingDeviceDeviceType { //gd:RenderingServer.get_video_adapter_type
+func GetVideoAdapterType() Rendering.DeviceType { //gd:RenderingServer.get_video_adapter_type
 	once.Do(singleton)
-	return gdclass.RenderingDeviceDeviceType(Advanced().GetVideoAdapterType())
+	return Rendering.DeviceType(Advanced().GetVideoAdapterType())
 }
 
 /*
@@ -4591,7 +4599,7 @@ func CallOnRenderThread(callable func()) { //gd:RenderingServer.call_on_render_t
 /*
 This method does nothing and always returns [code]false[/code].
 */
-func HasFeature(feature gdclass.RenderingServerFeatures) bool { //gd:RenderingServer.has_feature
+func HasFeature(feature Features) bool { //gd:RenderingServer.has_feature
 	once.Do(singleton)
 	return bool(Advanced().HasFeature(feature))
 }
@@ -4644,7 +4652,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 [b]Note:[/b] The equivalent resource is [TextureLayered].
 */
 //go:nosplit
-func (self class) Texture2dLayeredCreate(layers Array.Contains[[1]gdclass.Image], layered_type gdclass.RenderingServerTextureLayeredType) RID.Any { //gd:RenderingServer.texture_2d_layered_create
+func (self class) Texture2dLayeredCreate(layers Array.Contains[[1]gdclass.Image], layered_type TextureLayeredType) RID.Any { //gd:RenderingServer.texture_2d_layered_create
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(layers)))
 	callframe.Arg(frame, layered_type)
@@ -4659,7 +4667,7 @@ func (self class) Texture2dLayeredCreate(layers Array.Contains[[1]gdclass.Image]
 [b]Note:[/b] The equivalent resource is [Texture3D].
 */
 //go:nosplit
-func (self class) Texture3dCreate(format gdclass.ImageFormat, width int64, height int64, depth int64, mipmaps bool, data Array.Contains[[1]gdclass.Image]) RID.Any { //gd:RenderingServer.texture_3d_create
+func (self class) Texture3dCreate(format Image.Format, width int64, height int64, depth int64, mipmaps bool, data Array.Contains[[1]gdclass.Image]) RID.Any { //gd:RenderingServer.texture_3d_create
 	var frame = callframe.New()
 	callframe.Arg(frame, format)
 	callframe.Arg(frame, width)
@@ -4693,7 +4701,7 @@ Creates a texture based on a native handle that was created outside of Godot's r
 [b]Note:[/b] If using only the rendering device renderer, it's recommend to use [method RenderingDevice.texture_create_from_extension] together with [method RenderingServer.texture_rd_create], rather than this method. It will give you much more control over the texture's format and usage.
 */
 //go:nosplit
-func (self class) TextureCreateFromNativeHandle(atype gdclass.RenderingServerTextureType, format gdclass.ImageFormat, native_handle int64, width int64, height int64, depth int64, layers int64, layered_type gdclass.RenderingServerTextureLayeredType) RID.Any { //gd:RenderingServer.texture_create_from_native_handle
+func (self class) TextureCreateFromNativeHandle(atype TextureType, format Image.Format, native_handle int64, width int64, height int64, depth int64, layers int64, layered_type TextureLayeredType) RID.Any { //gd:RenderingServer.texture_create_from_native_handle
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	callframe.Arg(frame, format)
@@ -4772,7 +4780,7 @@ Creates a placeholder for a 2-dimensional layered texture and adds it to the Ren
 [b]Note:[/b] The equivalent resource is [PlaceholderTextureLayered].
 */
 //go:nosplit
-func (self class) Texture2dLayeredPlaceholderCreate(layered_type gdclass.RenderingServerTextureLayeredType) RID.Any { //gd:RenderingServer.texture_2d_layered_placeholder_create
+func (self class) Texture2dLayeredPlaceholderCreate(layered_type TextureLayeredType) RID.Any { //gd:RenderingServer.texture_2d_layered_placeholder_create
 	var frame = callframe.New()
 	callframe.Arg(frame, layered_type)
 	var r_ret = callframe.Ret[RID.Any](frame)
@@ -4895,10 +4903,10 @@ func (self class) TextureGetPath(texture RID.Any) String.Readable { //gd:Renderi
 Returns the format for the texture.
 */
 //go:nosplit
-func (self class) TextureGetFormat(texture RID.Any) gdclass.ImageFormat { //gd:RenderingServer.texture_get_format
+func (self class) TextureGetFormat(texture RID.Any) Image.Format { //gd:RenderingServer.texture_get_format
 	var frame = callframe.New()
 	callframe.Arg(frame, texture)
-	var r_ret = callframe.Ret[gdclass.ImageFormat](frame)
+	var r_ret = callframe.Ret[Image.Format](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_texture_get_format, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -4919,7 +4927,7 @@ func (self class) TextureSetForceRedrawIfVisible(texture RID.Any, enable bool) {
 Creates a new texture object based on a texture created directly on the [RenderingDevice]. If the texture contains layers, [param layer_type] is used to define the layer type.
 */
 //go:nosplit
-func (self class) TextureRdCreate(rd_texture RID.Any, layer_type gdclass.RenderingServerTextureLayeredType) RID.Any { //gd:RenderingServer.texture_rd_create
+func (self class) TextureRdCreate(rd_texture RID.Any, layer_type TextureLayeredType) RID.Any { //gd:RenderingServer.texture_rd_create
 	var frame = callframe.New()
 	callframe.Arg(frame, rd_texture)
 	callframe.Arg(frame, layer_type)
@@ -5193,7 +5201,7 @@ func (self class) MeshCreate() RID.Any { //gd:RenderingServer.mesh_create
 Returns the offset of a given attribute by [param array_index] in the start of its respective buffer.
 */
 //go:nosplit
-func (self class) MeshSurfaceGetFormatOffset(format gdclass.RenderingServerArrayFormat, vertex_count int64, array_index int64) int64 { //gd:RenderingServer.mesh_surface_get_format_offset
+func (self class) MeshSurfaceGetFormatOffset(format ArrayFormat, vertex_count int64, array_index int64) int64 { //gd:RenderingServer.mesh_surface_get_format_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, format)
 	callframe.Arg(frame, vertex_count)
@@ -5209,7 +5217,7 @@ func (self class) MeshSurfaceGetFormatOffset(format gdclass.RenderingServerArray
 Returns the stride of the vertex positions for a mesh with given [param format]. Note importantly that vertex positions are stored consecutively and are not interleaved with the other attributes in the vertex buffer (normals and tangents).
 */
 //go:nosplit
-func (self class) MeshSurfaceGetFormatVertexStride(format gdclass.RenderingServerArrayFormat, vertex_count int64) int64 { //gd:RenderingServer.mesh_surface_get_format_vertex_stride
+func (self class) MeshSurfaceGetFormatVertexStride(format ArrayFormat, vertex_count int64) int64 { //gd:RenderingServer.mesh_surface_get_format_vertex_stride
 	var frame = callframe.New()
 	callframe.Arg(frame, format)
 	callframe.Arg(frame, vertex_count)
@@ -5224,7 +5232,7 @@ func (self class) MeshSurfaceGetFormatVertexStride(format gdclass.RenderingServe
 Returns the stride of the combined normals and tangents for a mesh with given [param format]. Note importantly that, while normals and tangents are in the vertex buffer with vertices, they are only interleaved with each other and so have a different stride than vertex positions.
 */
 //go:nosplit
-func (self class) MeshSurfaceGetFormatNormalTangentStride(format gdclass.RenderingServerArrayFormat, vertex_count int64) int64 { //gd:RenderingServer.mesh_surface_get_format_normal_tangent_stride
+func (self class) MeshSurfaceGetFormatNormalTangentStride(format ArrayFormat, vertex_count int64) int64 { //gd:RenderingServer.mesh_surface_get_format_normal_tangent_stride
 	var frame = callframe.New()
 	callframe.Arg(frame, format)
 	callframe.Arg(frame, vertex_count)
@@ -5239,7 +5247,7 @@ func (self class) MeshSurfaceGetFormatNormalTangentStride(format gdclass.Renderi
 Returns the stride of the attribute buffer for a mesh with given [param format].
 */
 //go:nosplit
-func (self class) MeshSurfaceGetFormatAttributeStride(format gdclass.RenderingServerArrayFormat, vertex_count int64) int64 { //gd:RenderingServer.mesh_surface_get_format_attribute_stride
+func (self class) MeshSurfaceGetFormatAttributeStride(format ArrayFormat, vertex_count int64) int64 { //gd:RenderingServer.mesh_surface_get_format_attribute_stride
 	var frame = callframe.New()
 	callframe.Arg(frame, format)
 	callframe.Arg(frame, vertex_count)
@@ -5254,7 +5262,7 @@ func (self class) MeshSurfaceGetFormatAttributeStride(format gdclass.RenderingSe
 Returns the stride of the skin buffer for a mesh with given [param format].
 */
 //go:nosplit
-func (self class) MeshSurfaceGetFormatSkinStride(format gdclass.RenderingServerArrayFormat, vertex_count int64) int64 { //gd:RenderingServer.mesh_surface_get_format_skin_stride
+func (self class) MeshSurfaceGetFormatSkinStride(format ArrayFormat, vertex_count int64) int64 { //gd:RenderingServer.mesh_surface_get_format_skin_stride
 	var frame = callframe.New()
 	callframe.Arg(frame, format)
 	callframe.Arg(frame, vertex_count)
@@ -5276,7 +5284,7 @@ func (self class) MeshAddSurface(mesh RID.Any, surface Dictionary.Any) { //gd:Re
 }
 
 //go:nosplit
-func (self class) MeshAddSurfaceFromArrays(mesh RID.Any, primitive gdclass.RenderingServerPrimitiveType, arrays Array.Any, blend_shapes Array.Any, lods Dictionary.Any, compress_format gdclass.RenderingServerArrayFormat) { //gd:RenderingServer.mesh_add_surface_from_arrays
+func (self class) MeshAddSurfaceFromArrays(mesh RID.Any, primitive PrimitiveType, arrays Array.Any, blend_shapes Array.Any, lods Dictionary.Any, compress_format ArrayFormat) { //gd:RenderingServer.mesh_add_surface_from_arrays
 	var frame = callframe.New()
 	callframe.Arg(frame, mesh)
 	callframe.Arg(frame, primitive)
@@ -5307,7 +5315,7 @@ func (self class) MeshGetBlendShapeCount(mesh RID.Any) int64 { //gd:RenderingSer
 Sets a mesh's blend shape mode.
 */
 //go:nosplit
-func (self class) MeshSetBlendShapeMode(mesh RID.Any, mode gdclass.RenderingServerBlendShapeMode) { //gd:RenderingServer.mesh_set_blend_shape_mode
+func (self class) MeshSetBlendShapeMode(mesh RID.Any, mode BlendShapeMode) { //gd:RenderingServer.mesh_set_blend_shape_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mesh)
 	callframe.Arg(frame, mode)
@@ -5320,10 +5328,10 @@ func (self class) MeshSetBlendShapeMode(mesh RID.Any, mode gdclass.RenderingServ
 Returns a mesh's blend shape mode.
 */
 //go:nosplit
-func (self class) MeshGetBlendShapeMode(mesh RID.Any) gdclass.RenderingServerBlendShapeMode { //gd:RenderingServer.mesh_get_blend_shape_mode
+func (self class) MeshGetBlendShapeMode(mesh RID.Any) BlendShapeMode { //gd:RenderingServer.mesh_get_blend_shape_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mesh)
-	var r_ret = callframe.Ret[gdclass.RenderingServerBlendShapeMode](frame)
+	var r_ret = callframe.Ret[BlendShapeMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_mesh_get_blend_shape_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -5530,7 +5538,7 @@ func (self class) MultimeshCreate() RID.Any { //gd:RenderingServer.multimesh_cre
 }
 
 //go:nosplit
-func (self class) MultimeshAllocateData(multimesh RID.Any, instances int64, transform_format gdclass.RenderingServerMultimeshTransformFormat, color_format bool, custom_data_format bool, use_indirect bool) { //gd:RenderingServer.multimesh_allocate_data
+func (self class) MultimeshAllocateData(multimesh RID.Any, instances int64, transform_format MultimeshTransformFormat, color_format bool, custom_data_format bool, use_indirect bool) { //gd:RenderingServer.multimesh_allocate_data
 	var frame = callframe.New()
 	callframe.Arg(frame, multimesh)
 	callframe.Arg(frame, instances)
@@ -5889,7 +5897,7 @@ Sets the physics interpolation quality for the [MultiMesh].
 A value of [constant MULTIMESH_INTERP_QUALITY_FAST] gives fast but low quality interpolation, a value of [constant MULTIMESH_INTERP_QUALITY_HIGH] gives slower but higher quality interpolation.
 */
 //go:nosplit
-func (self class) MultimeshSetPhysicsInterpolationQuality(multimesh RID.Any, quality gdclass.RenderingServerMultimeshPhysicsInterpolationQuality) { //gd:RenderingServer.multimesh_set_physics_interpolation_quality
+func (self class) MultimeshSetPhysicsInterpolationQuality(multimesh RID.Any, quality MultimeshPhysicsInterpolationQuality) { //gd:RenderingServer.multimesh_set_physics_interpolation_quality
 	var frame = callframe.New()
 	callframe.Arg(frame, multimesh)
 	callframe.Arg(frame, quality)
@@ -6083,7 +6091,7 @@ func (self class) LightSetColor(light RID.Any, color Color.RGBA) { //gd:Renderin
 Sets the specified 3D light parameter. See [enum LightParam] for options. Equivalent to [method Light3D.set_param].
 */
 //go:nosplit
-func (self class) LightSetParam(light RID.Any, param gdclass.RenderingServerLightParam, value float64) { //gd:RenderingServer.light_set_param
+func (self class) LightSetParam(light RID.Any, param LightParam, value float64) { //gd:RenderingServer.light_set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, param)
@@ -6191,7 +6199,7 @@ func (self class) LightSetShadowCasterMask(light RID.Any, mask int64) { //gd:Ren
 Sets the bake mode to use for the specified 3D light. Equivalent to [member Light3D.light_bake_mode].
 */
 //go:nosplit
-func (self class) LightSetBakeMode(light RID.Any, bake_mode gdclass.RenderingServerLightBakeMode) { //gd:RenderingServer.light_set_bake_mode
+func (self class) LightSetBakeMode(light RID.Any, bake_mode LightBakeMode) { //gd:RenderingServer.light_set_bake_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, bake_mode)
@@ -6217,7 +6225,7 @@ func (self class) LightSetMaxSdfgiCascade(light RID.Any, cascade int64) { //gd:R
 Sets whether to use a dual paraboloid or a cubemap for the shadow map. Dual paraboloid is faster but may suffer from artifacts. Equivalent to [member OmniLight3D.omni_shadow_mode].
 */
 //go:nosplit
-func (self class) LightOmniSetShadowMode(light RID.Any, mode gdclass.RenderingServerLightOmniShadowMode) { //gd:RenderingServer.light_omni_set_shadow_mode
+func (self class) LightOmniSetShadowMode(light RID.Any, mode LightOmniShadowMode) { //gd:RenderingServer.light_omni_set_shadow_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, mode)
@@ -6230,7 +6238,7 @@ func (self class) LightOmniSetShadowMode(light RID.Any, mode gdclass.RenderingSe
 Sets the shadow mode for this directional light. Equivalent to [member DirectionalLight3D.directional_shadow_mode]. See [enum LightDirectionalShadowMode] for options.
 */
 //go:nosplit
-func (self class) LightDirectionalSetShadowMode(light RID.Any, mode gdclass.RenderingServerLightDirectionalShadowMode) { //gd:RenderingServer.light_directional_set_shadow_mode
+func (self class) LightDirectionalSetShadowMode(light RID.Any, mode LightDirectionalShadowMode) { //gd:RenderingServer.light_directional_set_shadow_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, mode)
@@ -6256,7 +6264,7 @@ func (self class) LightDirectionalSetBlendSplits(light RID.Any, enable bool) { /
 If [code]true[/code], this light will not be used for anything except sky shaders. Use this for lights that impact your sky shader that you may want to hide from affecting the rest of the scene. For example, you may want to enable this when the sun in your sky shader falls below the horizon.
 */
 //go:nosplit
-func (self class) LightDirectionalSetSkyMode(light RID.Any, mode gdclass.RenderingServerLightDirectionalSkyMode) { //gd:RenderingServer.light_directional_set_sky_mode
+func (self class) LightDirectionalSetSkyMode(light RID.Any, mode LightDirectionalSkyMode) { //gd:RenderingServer.light_directional_set_sky_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, mode)
@@ -6269,7 +6277,7 @@ func (self class) LightDirectionalSetSkyMode(light RID.Any, mode gdclass.Renderi
 Sets the texture filter mode to use when rendering light projectors. This parameter is global and cannot be set on a per-light basis.
 */
 //go:nosplit
-func (self class) LightProjectorsSetFilter(filter gdclass.RenderingServerLightProjectorFilter) { //gd:RenderingServer.light_projectors_set_filter
+func (self class) LightProjectorsSetFilter(filter LightProjectorFilter) { //gd:RenderingServer.light_projectors_set_filter
 	var frame = callframe.New()
 	callframe.Arg(frame, filter)
 	var r_ret = callframe.Nil
@@ -6293,7 +6301,7 @@ func (self class) LightmapsSetBicubicFilter(enable bool) { //gd:RenderingServer.
 Sets the filter quality for omni and spot light shadows in 3D. See also [member ProjectSettings.rendering/lights_and_shadows/positional_shadow/soft_shadow_filter_quality]. This parameter is global and cannot be set on a per-viewport basis.
 */
 //go:nosplit
-func (self class) PositionalSoftShadowFilterSetQuality(quality gdclass.RenderingServerShadowQuality) { //gd:RenderingServer.positional_soft_shadow_filter_set_quality
+func (self class) PositionalSoftShadowFilterSetQuality(quality ShadowQuality) { //gd:RenderingServer.positional_soft_shadow_filter_set_quality
 	var frame = callframe.New()
 	callframe.Arg(frame, quality)
 	var r_ret = callframe.Nil
@@ -6305,7 +6313,7 @@ func (self class) PositionalSoftShadowFilterSetQuality(quality gdclass.Rendering
 Sets the filter [param quality] for directional light shadows in 3D. See also [member ProjectSettings.rendering/lights_and_shadows/directional_shadow/soft_shadow_filter_quality]. This parameter is global and cannot be set on a per-viewport basis.
 */
 //go:nosplit
-func (self class) DirectionalSoftShadowFilterSetQuality(quality gdclass.RenderingServerShadowQuality) { //gd:RenderingServer.directional_soft_shadow_filter_set_quality
+func (self class) DirectionalSoftShadowFilterSetQuality(quality ShadowQuality) { //gd:RenderingServer.directional_soft_shadow_filter_set_quality
 	var frame = callframe.New()
 	callframe.Arg(frame, quality)
 	var r_ret = callframe.Nil
@@ -6346,7 +6354,7 @@ func (self class) ReflectionProbeCreate() RID.Any { //gd:RenderingServer.reflect
 Sets how often the reflection probe updates. Can either be once or every frame. See [enum ReflectionProbeUpdateMode] for options.
 */
 //go:nosplit
-func (self class) ReflectionProbeSetUpdateMode(probe RID.Any, mode gdclass.RenderingServerReflectionProbeUpdateMode) { //gd:RenderingServer.reflection_probe_set_update_mode
+func (self class) ReflectionProbeSetUpdateMode(probe RID.Any, mode ReflectionProbeUpdateMode) { //gd:RenderingServer.reflection_probe_set_update_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, probe)
 	callframe.Arg(frame, mode)
@@ -6385,7 +6393,7 @@ func (self class) ReflectionProbeSetBlendDistance(probe RID.Any, blend_distance 
 Sets the reflection probe's ambient light mode. Equivalent to [member ReflectionProbe.ambient_mode].
 */
 //go:nosplit
-func (self class) ReflectionProbeSetAmbientMode(probe RID.Any, mode gdclass.RenderingServerReflectionProbeAmbientMode) { //gd:RenderingServer.reflection_probe_set_ambient_mode
+func (self class) ReflectionProbeSetAmbientMode(probe RID.Any, mode ReflectionProbeAmbientMode) { //gd:RenderingServer.reflection_probe_set_ambient_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, probe)
 	callframe.Arg(frame, mode)
@@ -6583,7 +6591,7 @@ func (self class) DecalSetSize(decal RID.Any, size Vector3.XYZ) { //gd:Rendering
 Sets the [param texture] in the given texture [param type] slot for the specified decal. Equivalent to [method Decal.set_texture].
 */
 //go:nosplit
-func (self class) DecalSetTexture(decal RID.Any, atype gdclass.RenderingServerDecalTexture, texture RID.Any) { //gd:RenderingServer.decal_set_texture
+func (self class) DecalSetTexture(decal RID.Any, atype DecalTexture, texture RID.Any) { //gd:RenderingServer.decal_set_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, decal)
 	callframe.Arg(frame, atype)
@@ -6691,7 +6699,7 @@ func (self class) DecalSetNormalFade(decal RID.Any, fade float64) { //gd:Renderi
 Sets the texture [param filter] mode to use when rendering decals. This parameter is global and cannot be set on a per-decal basis.
 */
 //go:nosplit
-func (self class) DecalsSetFilter(filter gdclass.RenderingServerDecalFilter) { //gd:RenderingServer.decals_set_filter
+func (self class) DecalsSetFilter(filter DecalFilter) { //gd:RenderingServer.decals_set_filter
 	var frame = callframe.New()
 	callframe.Arg(frame, filter)
 	var r_ret = callframe.Nil
@@ -6916,7 +6924,7 @@ func (self class) VoxelGiSetUseTwoBounces(voxel_gi RID.Any, enable bool) { //gd:
 Sets the [member ProjectSettings.rendering/global_illumination/voxel_gi/quality] value to use when rendering. This parameter is global and cannot be set on a per-VoxelGI basis.
 */
 //go:nosplit
-func (self class) VoxelGiSetQuality(quality gdclass.RenderingServerVoxelGIQuality) { //gd:RenderingServer.voxel_gi_set_quality
+func (self class) VoxelGiSetQuality(quality VoxelGIQuality) { //gd:RenderingServer.voxel_gi_set_quality
 	var frame = callframe.New()
 	callframe.Arg(frame, quality)
 	var r_ret = callframe.Nil
@@ -7073,7 +7081,7 @@ func (self class) ParticlesCreate() RID.Any { //gd:RenderingServer.particles_cre
 Sets whether the GPU particles specified by the [param particles] RID should be rendered in 2D or 3D according to [param mode].
 */
 //go:nosplit
-func (self class) ParticlesSetMode(particles RID.Any, mode gdclass.RenderingServerParticlesMode) { //gd:RenderingServer.particles_set_mode
+func (self class) ParticlesSetMode(particles RID.Any, mode ParticlesMode) { //gd:RenderingServer.particles_set_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, particles)
 	callframe.Arg(frame, mode)
@@ -7339,7 +7347,7 @@ func (self class) ParticlesSetCollisionBaseSize(particles RID.Any, size float64)
 }
 
 //go:nosplit
-func (self class) ParticlesSetTransformAlign(particles RID.Any, align gdclass.RenderingServerParticlesTransformAlign) { //gd:RenderingServer.particles_set_transform_align
+func (self class) ParticlesSetTransformAlign(particles RID.Any, align ParticlesTransformAlign) { //gd:RenderingServer.particles_set_transform_align
 	var frame = callframe.New()
 	callframe.Arg(frame, particles)
 	callframe.Arg(frame, align)
@@ -7441,7 +7449,7 @@ func (self class) ParticlesEmit(particles RID.Any, transform Transform3D.BasisOr
 Sets the draw order of the particles to one of the named enums from [enum ParticlesDrawOrder]. See [enum ParticlesDrawOrder] for options. Equivalent to [member GPUParticles3D.draw_order].
 */
 //go:nosplit
-func (self class) ParticlesSetDrawOrder(particles RID.Any, order gdclass.RenderingServerParticlesDrawOrder) { //gd:RenderingServer.particles_set_draw_order
+func (self class) ParticlesSetDrawOrder(particles RID.Any, order ParticlesDrawOrder) { //gd:RenderingServer.particles_set_draw_order
 	var frame = callframe.New()
 	callframe.Arg(frame, particles)
 	callframe.Arg(frame, order)
@@ -7522,7 +7530,7 @@ func (self class) ParticlesCollisionCreate() RID.Any { //gd:RenderingServer.part
 Sets the collision or attractor shape [param type] for the 3D GPU particles collision or attractor specified by the [param particles_collision] RID.
 */
 //go:nosplit
-func (self class) ParticlesCollisionSetCollisionType(particles_collision RID.Any, atype gdclass.RenderingServerParticlesCollisionType) { //gd:RenderingServer.particles_collision_set_collision_type
+func (self class) ParticlesCollisionSetCollisionType(particles_collision RID.Any, atype ParticlesCollisionType) { //gd:RenderingServer.particles_collision_set_collision_type
 	var frame = callframe.New()
 	callframe.Arg(frame, particles_collision)
 	callframe.Arg(frame, atype)
@@ -7638,7 +7646,7 @@ func (self class) ParticlesCollisionHeightFieldUpdate(particles_collision RID.An
 Sets the heightmap [param resolution] for the 3D GPU particles heightfield collision specified by the [param particles_collision] RID. Equivalent to [member GPUParticlesCollisionHeightField3D.resolution].
 */
 //go:nosplit
-func (self class) ParticlesCollisionSetHeightFieldResolution(particles_collision RID.Any, resolution gdclass.RenderingServerParticlesCollisionHeightfieldResolution) { //gd:RenderingServer.particles_collision_set_height_field_resolution
+func (self class) ParticlesCollisionSetHeightFieldResolution(particles_collision RID.Any, resolution ParticlesCollisionHeightfieldResolution) { //gd:RenderingServer.particles_collision_set_height_field_resolution
 	var frame = callframe.New()
 	callframe.Arg(frame, particles_collision)
 	callframe.Arg(frame, resolution)
@@ -7679,7 +7687,7 @@ func (self class) FogVolumeCreate() RID.Any { //gd:RenderingServer.fog_volume_cr
 Sets the shape of the fog volume to either [constant RenderingServer.FOG_VOLUME_SHAPE_ELLIPSOID], [constant RenderingServer.FOG_VOLUME_SHAPE_CONE], [constant RenderingServer.FOG_VOLUME_SHAPE_CYLINDER], [constant RenderingServer.FOG_VOLUME_SHAPE_BOX] or [constant RenderingServer.FOG_VOLUME_SHAPE_WORLD].
 */
 //go:nosplit
-func (self class) FogVolumeSetShape(fog_volume RID.Any, shape gdclass.RenderingServerFogVolumeShape) { //gd:RenderingServer.fog_volume_set_shape
+func (self class) FogVolumeSetShape(fog_volume RID.Any, shape FogVolumeShape) { //gd:RenderingServer.fog_volume_set_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, fog_volume)
 	callframe.Arg(frame, shape)
@@ -8040,7 +8048,7 @@ func (self class) ViewportSetCanvasCullMask(viewport RID.Any, canvas_cull_mask i
 Sets the 3D resolution scaling mode. Bilinear scaling renders at different resolution to either undersample or supersample the viewport. FidelityFX Super Resolution 1.0, abbreviated to FSR, is an upscaling technology that produces high quality images at fast framerates by using a spatially aware upscaling algorithm. FSR is slightly more expensive than bilinear, but it produces significantly higher image quality. FSR should be used where possible.
 */
 //go:nosplit
-func (self class) ViewportSetScaling3dMode(viewport RID.Any, scaling_3d_mode gdclass.RenderingServerViewportScaling3DMode) { //gd:RenderingServer.viewport_set_scaling_3d_mode
+func (self class) ViewportSetScaling3dMode(viewport RID.Any, scaling_3d_mode ViewportScaling3DMode) { //gd:RenderingServer.viewport_set_scaling_3d_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, scaling_3d_mode)
@@ -8097,7 +8105,7 @@ The anisotropic filtering level also affects decals and light projectors if they
 [b]Note:[/b] In 2D, for this setting to have an effect, set [member CanvasItem.texture_filter] to [constant CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC] or [constant CanvasItem.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS_ANISOTROPIC] on the [CanvasItem] node displaying the texture (or in [CanvasTexture]). However, anisotropic filtering is rarely useful in 2D, so only enable it for textures in 2D if it makes a meaningful visual difference.
 */
 //go:nosplit
-func (self class) ViewportSetAnisotropicFilteringLevel(viewport RID.Any, anisotropic_filtering_level gdclass.RenderingServerViewportAnisotropicFiltering) { //gd:RenderingServer.viewport_set_anisotropic_filtering_level
+func (self class) ViewportSetAnisotropicFilteringLevel(viewport RID.Any, anisotropic_filtering_level ViewportAnisotropicFiltering) { //gd:RenderingServer.viewport_set_anisotropic_filtering_level
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, anisotropic_filtering_level)
@@ -8110,7 +8118,7 @@ func (self class) ViewportSetAnisotropicFilteringLevel(viewport RID.Any, anisotr
 Sets when the viewport should be updated. See [enum ViewportUpdateMode] constants for options.
 */
 //go:nosplit
-func (self class) ViewportSetUpdateMode(viewport RID.Any, update_mode gdclass.RenderingServerViewportUpdateMode) { //gd:RenderingServer.viewport_set_update_mode
+func (self class) ViewportSetUpdateMode(viewport RID.Any, update_mode ViewportUpdateMode) { //gd:RenderingServer.viewport_set_update_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, update_mode)
@@ -8124,10 +8132,10 @@ Returns the viewport's update mode. See [enum ViewportUpdateMode] constants for 
 [b]Warning:[/b] Calling this from any thread other than the rendering thread will be detrimental to performance.
 */
 //go:nosplit
-func (self class) ViewportGetUpdateMode(viewport RID.Any) gdclass.RenderingServerViewportUpdateMode { //gd:RenderingServer.viewport_get_update_mode
+func (self class) ViewportGetUpdateMode(viewport RID.Any) ViewportUpdateMode { //gd:RenderingServer.viewport_get_update_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
-	var r_ret = callframe.Ret[gdclass.RenderingServerViewportUpdateMode](frame)
+	var r_ret = callframe.Ret[ViewportUpdateMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_viewport_get_update_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -8138,7 +8146,7 @@ func (self class) ViewportGetUpdateMode(viewport RID.Any) gdclass.RenderingServe
 Sets the clear mode of a viewport. See [enum ViewportClearMode] for options.
 */
 //go:nosplit
-func (self class) ViewportSetClearMode(viewport RID.Any, clear_mode gdclass.RenderingServerViewportClearMode) { //gd:RenderingServer.viewport_set_clear_mode
+func (self class) ViewportSetClearMode(viewport RID.Any, clear_mode ViewportClearMode) { //gd:RenderingServer.viewport_set_clear_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, clear_mode)
@@ -8205,7 +8213,7 @@ func (self class) ViewportSetDisable2d(viewport RID.Any, disable bool) { //gd:Re
 Sets the viewport's environment mode which allows enabling or disabling rendering of 3D environment over 2D canvas. When disabled, 2D will not be affected by the environment. When enabled, 2D will be affected by the environment if the environment background mode is [constant ENV_BG_CANVAS]. The default behavior is to inherit the setting from the viewport's parent. If the topmost parent is also set to [constant VIEWPORT_ENVIRONMENT_INHERIT], then the behavior will be the same as if it was set to [constant VIEWPORT_ENVIRONMENT_ENABLED].
 */
 //go:nosplit
-func (self class) ViewportSetEnvironmentMode(viewport RID.Any, mode gdclass.RenderingServerViewportEnvironmentMode) { //gd:RenderingServer.viewport_set_environment_mode
+func (self class) ViewportSetEnvironmentMode(viewport RID.Any, mode ViewportEnvironmentMode) { //gd:RenderingServer.viewport_set_environment_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, mode)
@@ -8296,7 +8304,7 @@ func (self class) ViewportSetSnap2dVerticesToPixel(viewport RID.Any, enabled boo
 Sets the default texture filtering mode for the specified [param viewport] RID. See [enum CanvasItemTextureFilter] for options.
 */
 //go:nosplit
-func (self class) ViewportSetDefaultCanvasItemTextureFilter(viewport RID.Any, filter gdclass.RenderingServerCanvasItemTextureFilter) { //gd:RenderingServer.viewport_set_default_canvas_item_texture_filter
+func (self class) ViewportSetDefaultCanvasItemTextureFilter(viewport RID.Any, filter CanvasItemTextureFilter) { //gd:RenderingServer.viewport_set_default_canvas_item_texture_filter
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, filter)
@@ -8309,7 +8317,7 @@ func (self class) ViewportSetDefaultCanvasItemTextureFilter(viewport RID.Any, fi
 Sets the default texture repeat mode for the specified [param viewport] RID. See [enum CanvasItemTextureRepeat] for options.
 */
 //go:nosplit
-func (self class) ViewportSetDefaultCanvasItemTextureRepeat(viewport RID.Any, repeat gdclass.RenderingServerCanvasItemTextureRepeat) { //gd:RenderingServer.viewport_set_default_canvas_item_texture_repeat
+func (self class) ViewportSetDefaultCanvasItemTextureRepeat(viewport RID.Any, repeat CanvasItemTextureRepeat) { //gd:RenderingServer.viewport_set_default_canvas_item_texture_repeat
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, repeat)
@@ -8378,7 +8386,7 @@ func (self class) ViewportSetGlobalCanvasTransform(viewport RID.Any, transform T
 Sets the viewport's 2D signed distance field [member ProjectSettings.rendering/2d/sdf/oversize] and [member ProjectSettings.rendering/2d/sdf/scale]. This is used when sampling the signed distance field in [CanvasItem] shaders as well as [GPUParticles2D] collision. This is [i]not[/i] used by SDFGI in 3D rendering.
 */
 //go:nosplit
-func (self class) ViewportSetSdfOversizeAndScale(viewport RID.Any, oversize gdclass.RenderingServerViewportSDFOversize, scale gdclass.RenderingServerViewportSDFScale) { //gd:RenderingServer.viewport_set_sdf_oversize_and_scale
+func (self class) ViewportSetSdfOversizeAndScale(viewport RID.Any, oversize ViewportSDFOversize, scale ViewportSDFScale) { //gd:RenderingServer.viewport_set_sdf_oversize_and_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, oversize)
@@ -8421,7 +8429,7 @@ func (self class) ViewportSetPositionalShadowAtlasQuadrantSubdivision(viewport R
 Sets the multisample antialiasing mode for 3D on the specified [param viewport] RID. See [enum ViewportMSAA] for options. Equivalent to [member ProjectSettings.rendering/anti_aliasing/quality/msaa_3d] or [member Viewport.msaa_3d].
 */
 //go:nosplit
-func (self class) ViewportSetMsaa3d(viewport RID.Any, msaa gdclass.RenderingServerViewportMSAA) { //gd:RenderingServer.viewport_set_msaa_3d
+func (self class) ViewportSetMsaa3d(viewport RID.Any, msaa ViewportMSAA) { //gd:RenderingServer.viewport_set_msaa_3d
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, msaa)
@@ -8434,7 +8442,7 @@ func (self class) ViewportSetMsaa3d(viewport RID.Any, msaa gdclass.RenderingServ
 Sets the multisample antialiasing mode for 2D/Canvas on the specified [param viewport] RID. See [enum ViewportMSAA] for options. Equivalent to [member ProjectSettings.rendering/anti_aliasing/quality/msaa_2d] or [member Viewport.msaa_2d].
 */
 //go:nosplit
-func (self class) ViewportSetMsaa2d(viewport RID.Any, msaa gdclass.RenderingServerViewportMSAA) { //gd:RenderingServer.viewport_set_msaa_2d
+func (self class) ViewportSetMsaa2d(viewport RID.Any, msaa ViewportMSAA) { //gd:RenderingServer.viewport_set_msaa_2d
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, msaa)
@@ -8461,7 +8469,7 @@ func (self class) ViewportSetUseHdr2d(viewport RID.Any, enabled bool) { //gd:Ren
 Sets the viewport's screen-space antialiasing mode. Equivalent to [member ProjectSettings.rendering/anti_aliasing/quality/screen_space_aa] or [member Viewport.screen_space_aa].
 */
 //go:nosplit
-func (self class) ViewportSetScreenSpaceAa(viewport RID.Any, mode gdclass.RenderingServerViewportScreenSpaceAA) { //gd:RenderingServer.viewport_set_screen_space_aa
+func (self class) ViewportSetScreenSpaceAa(viewport RID.Any, mode ViewportScreenSpaceAA) { //gd:RenderingServer.viewport_set_screen_space_aa
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, mode)
@@ -8525,7 +8533,7 @@ func (self class) ViewportSetOcclusionRaysPerThread(rays_per_thread int64) { //g
 Sets the [member ProjectSettings.rendering/occlusion_culling/bvh_build_quality] to use for occlusion culling. This parameter is global and cannot be set on a per-viewport basis.
 */
 //go:nosplit
-func (self class) ViewportSetOcclusionCullingBuildQuality(quality gdclass.RenderingServerViewportOcclusionCullingBuildQuality) { //gd:RenderingServer.viewport_set_occlusion_culling_build_quality
+func (self class) ViewportSetOcclusionCullingBuildQuality(quality ViewportOcclusionCullingBuildQuality) { //gd:RenderingServer.viewport_set_occlusion_culling_build_quality
 	var frame = callframe.New()
 	callframe.Arg(frame, quality)
 	var r_ret = callframe.Nil
@@ -8550,7 +8558,7 @@ func _ready():
 [/codeblock]
 */
 //go:nosplit
-func (self class) ViewportGetRenderInfo(viewport RID.Any, atype gdclass.RenderingServerViewportRenderInfoType, info gdclass.RenderingServerViewportRenderInfo) int64 { //gd:RenderingServer.viewport_get_render_info
+func (self class) ViewportGetRenderInfo(viewport RID.Any, atype ViewportRenderInfoType, info ViewportRenderInfo) int64 { //gd:RenderingServer.viewport_get_render_info
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, atype)
@@ -8566,7 +8574,7 @@ func (self class) ViewportGetRenderInfo(viewport RID.Any, atype gdclass.Renderin
 Sets the debug draw mode of a viewport. See [enum ViewportDebugDraw] for options.
 */
 //go:nosplit
-func (self class) ViewportSetDebugDraw(viewport RID.Any, draw gdclass.RenderingServerViewportDebugDraw) { //gd:RenderingServer.viewport_set_debug_draw
+func (self class) ViewportSetDebugDraw(viewport RID.Any, draw ViewportDebugDraw) { //gd:RenderingServer.viewport_set_debug_draw
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, draw)
@@ -8623,7 +8631,7 @@ func (self class) ViewportGetMeasuredRenderTimeGpu(viewport RID.Any) float64 { /
 Sets the Variable Rate Shading (VRS) mode for the viewport. If the GPU does not support VRS, this property is ignored. Equivalent to [member ProjectSettings.rendering/vrs/mode].
 */
 //go:nosplit
-func (self class) ViewportSetVrsMode(viewport RID.Any, mode gdclass.RenderingServerViewportVRSMode) { //gd:RenderingServer.viewport_set_vrs_mode
+func (self class) ViewportSetVrsMode(viewport RID.Any, mode ViewportVRSMode) { //gd:RenderingServer.viewport_set_vrs_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, mode)
@@ -8637,7 +8645,7 @@ Sets the update mode for Variable Rate Shading (VRS) for the viewport. VRS requi
 If set to [constant RenderingServer.VIEWPORT_VRS_UPDATE_ONCE], the input texture is copied once and the mode is changed to [constant RenderingServer.VIEWPORT_VRS_UPDATE_DISABLED].
 */
 //go:nosplit
-func (self class) ViewportSetVrsUpdateMode(viewport RID.Any, mode gdclass.RenderingServerViewportVRSUpdateMode) { //gd:RenderingServer.viewport_set_vrs_update_mode
+func (self class) ViewportSetVrsUpdateMode(viewport RID.Any, mode ViewportVRSUpdateMode) { //gd:RenderingServer.viewport_set_vrs_update_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, viewport)
 	callframe.Arg(frame, mode)
@@ -8690,7 +8698,7 @@ func (self class) SkySetRadianceSize(sky RID.Any, radiance_size int64) { //gd:Re
 Sets the process [param mode] of the sky specified by the [param sky] RID. Equivalent to [member Sky.process_mode].
 */
 //go:nosplit
-func (self class) SkySetMode(sky RID.Any, mode gdclass.RenderingServerSkyMode) { //gd:RenderingServer.sky_set_mode
+func (self class) SkySetMode(sky RID.Any, mode SkyMode) { //gd:RenderingServer.sky_set_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, sky)
 	callframe.Arg(frame, mode)
@@ -8762,7 +8770,7 @@ func (self class) CompositorEffectSetEnabled(effect RID.Any, enabled bool) { //g
 Sets the callback type ([param callback_type]) and callback method([param callback]) for this rendering effect.
 */
 //go:nosplit
-func (self class) CompositorEffectSetCallback(effect RID.Any, callback_type gdclass.RenderingServerCompositorEffectCallbackType, callback Callable.Function) { //gd:RenderingServer.compositor_effect_set_callback
+func (self class) CompositorEffectSetCallback(effect RID.Any, callback_type CompositorEffectCallbackType, callback Callable.Function) { //gd:RenderingServer.compositor_effect_set_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, effect)
 	callframe.Arg(frame, callback_type)
@@ -8776,7 +8784,7 @@ func (self class) CompositorEffectSetCallback(effect RID.Any, callback_type gdcl
 Sets the flag ([param flag]) for this rendering effect to [code]true[/code] or [code]false[/code] ([param set]).
 */
 //go:nosplit
-func (self class) CompositorEffectSetFlag(effect RID.Any, flag gdclass.RenderingServerCompositorEffectFlags, set bool) { //gd:RenderingServer.compositor_effect_set_flag
+func (self class) CompositorEffectSetFlag(effect RID.Any, flag CompositorEffectFlags, set bool) { //gd:RenderingServer.compositor_effect_set_flag
 	var frame = callframe.New()
 	callframe.Arg(frame, effect)
 	callframe.Arg(frame, flag)
@@ -8832,7 +8840,7 @@ func (self class) EnvironmentCreate() RID.Any { //gd:RenderingServer.environment
 Sets the environment's background mode. Equivalent to [member Environment.background_mode].
 */
 //go:nosplit
-func (self class) EnvironmentSetBackground(env RID.Any, bg gdclass.RenderingServerEnvironmentBG) { //gd:RenderingServer.environment_set_background
+func (self class) EnvironmentSetBackground(env RID.Any, bg EnvironmentBG) { //gd:RenderingServer.environment_set_background
 	var frame = callframe.New()
 	callframe.Arg(frame, env)
 	callframe.Arg(frame, bg)
@@ -8937,7 +8945,7 @@ func (self class) EnvironmentSetCanvasMaxLayer(env RID.Any, max_layer int64) { /
 Sets the values to be used for ambient light rendering. See [Environment] for more details.
 */
 //go:nosplit
-func (self class) EnvironmentSetAmbientLight(env RID.Any, color Color.RGBA, ambient gdclass.RenderingServerEnvironmentAmbientSource, energy float64, sky_contribution float64, reflection_source gdclass.RenderingServerEnvironmentReflectionSource) { //gd:RenderingServer.environment_set_ambient_light
+func (self class) EnvironmentSetAmbientLight(env RID.Any, color Color.RGBA, ambient EnvironmentAmbientSource, energy float64, sky_contribution float64, reflection_source EnvironmentReflectionSource) { //gd:RenderingServer.environment_set_ambient_light
 	var frame = callframe.New()
 	callframe.Arg(frame, env)
 	callframe.Arg(frame, color)
@@ -8954,7 +8962,7 @@ func (self class) EnvironmentSetAmbientLight(env RID.Any, color Color.RGBA, ambi
 Configures glow for the specified environment RID. See [code]glow_*[/code] properties in [Environment] for more information.
 */
 //go:nosplit
-func (self class) EnvironmentSetGlow(env RID.Any, enable bool, levels Packed.Array[float32], intensity float64, strength float64, mix float64, bloom_threshold float64, blend_mode gdclass.RenderingServerEnvironmentGlowBlendMode, hdr_bleed_threshold float64, hdr_bleed_scale float64, hdr_luminance_cap float64, glow_map_strength float64, glow_map RID.Any) { //gd:RenderingServer.environment_set_glow
+func (self class) EnvironmentSetGlow(env RID.Any, enable bool, levels Packed.Array[float32], intensity float64, strength float64, mix float64, bloom_threshold float64, blend_mode EnvironmentGlowBlendMode, hdr_bleed_threshold float64, hdr_bleed_scale float64, hdr_luminance_cap float64, glow_map_strength float64, glow_map RID.Any) { //gd:RenderingServer.environment_set_glow
 	var frame = callframe.New()
 	callframe.Arg(frame, env)
 	callframe.Arg(frame, enable)
@@ -8978,7 +8986,7 @@ func (self class) EnvironmentSetGlow(env RID.Any, enable bool, levels Packed.Arr
 Sets the variables to be used with the "tonemap" post-process effect. See [Environment] for more details.
 */
 //go:nosplit
-func (self class) EnvironmentSetTonemap(env RID.Any, tone_mapper gdclass.RenderingServerEnvironmentToneMapper, exposure float64, white float64) { //gd:RenderingServer.environment_set_tonemap
+func (self class) EnvironmentSetTonemap(env RID.Any, tone_mapper EnvironmentToneMapper, exposure float64, white float64) { //gd:RenderingServer.environment_set_tonemap
 	var frame = callframe.New()
 	callframe.Arg(frame, env)
 	callframe.Arg(frame, tone_mapper)
@@ -9049,7 +9057,7 @@ func (self class) EnvironmentSetSsao(env RID.Any, enable bool, radius float64, i
 Configures fog for the specified environment RID. See [code]fog_*[/code] properties in [Environment] for more information.
 */
 //go:nosplit
-func (self class) EnvironmentSetFog(env RID.Any, enable bool, light_color Color.RGBA, light_energy float64, sun_scatter float64, density float64, height float64, height_density float64, aerial_perspective float64, sky_affect float64, fog_mode gdclass.RenderingServerEnvironmentFogMode) { //gd:RenderingServer.environment_set_fog
+func (self class) EnvironmentSetFog(env RID.Any, enable bool, light_color Color.RGBA, light_energy float64, sun_scatter float64, density float64, height float64, height_density float64, aerial_perspective float64, sky_affect float64, fog_mode EnvironmentFogMode) { //gd:RenderingServer.environment_set_fog
 	var frame = callframe.New()
 	callframe.Arg(frame, env)
 	callframe.Arg(frame, enable)
@@ -9071,7 +9079,7 @@ func (self class) EnvironmentSetFog(env RID.Any, enable bool, light_color Color.
 Configures signed distance field global illumination for the specified environment RID. See [code]sdfgi_*[/code] properties in [Environment] for more information.
 */
 //go:nosplit
-func (self class) EnvironmentSetSdfgi(env RID.Any, enable bool, cascades int64, min_cell_size float64, y_scale gdclass.RenderingServerEnvironmentSDFGIYScale, use_occlusion bool, bounce_feedback float64, read_sky bool, energy float64, normal_bias float64, probe_bias float64) { //gd:RenderingServer.environment_set_sdfgi
+func (self class) EnvironmentSetSdfgi(env RID.Any, enable bool, cascades int64, min_cell_size float64, y_scale EnvironmentSDFGIYScale, use_occlusion bool, bounce_feedback float64, read_sky bool, energy float64, normal_bias float64, probe_bias float64) { //gd:RenderingServer.environment_set_sdfgi
 	var frame = callframe.New()
 	callframe.Arg(frame, env)
 	callframe.Arg(frame, enable)
@@ -9127,7 +9135,7 @@ func (self class) EnvironmentGlowSetUseBicubicUpscale(enable bool) { //gd:Render
 }
 
 //go:nosplit
-func (self class) EnvironmentSetSsrRoughnessQuality(quality gdclass.RenderingServerEnvironmentSSRRoughnessQuality) { //gd:RenderingServer.environment_set_ssr_roughness_quality
+func (self class) EnvironmentSetSsrRoughnessQuality(quality EnvironmentSSRRoughnessQuality) { //gd:RenderingServer.environment_set_ssr_roughness_quality
 	var frame = callframe.New()
 	callframe.Arg(frame, quality)
 	var r_ret = callframe.Nil
@@ -9139,7 +9147,7 @@ func (self class) EnvironmentSetSsrRoughnessQuality(quality gdclass.RenderingSer
 Sets the quality level of the screen-space ambient occlusion (SSAO) post-process effect. See [Environment] for more details.
 */
 //go:nosplit
-func (self class) EnvironmentSetSsaoQuality(quality gdclass.RenderingServerEnvironmentSSAOQuality, half_size bool, adaptive_target float64, blur_passes int64, fadeout_from float64, fadeout_to float64) { //gd:RenderingServer.environment_set_ssao_quality
+func (self class) EnvironmentSetSsaoQuality(quality EnvironmentSSAOQuality, half_size bool, adaptive_target float64, blur_passes int64, fadeout_from float64, fadeout_to float64) { //gd:RenderingServer.environment_set_ssao_quality
 	var frame = callframe.New()
 	callframe.Arg(frame, quality)
 	callframe.Arg(frame, half_size)
@@ -9156,7 +9164,7 @@ func (self class) EnvironmentSetSsaoQuality(quality gdclass.RenderingServerEnvir
 Sets the quality level of the screen-space indirect lighting (SSIL) post-process effect. See [Environment] for more details.
 */
 //go:nosplit
-func (self class) EnvironmentSetSsilQuality(quality gdclass.RenderingServerEnvironmentSSILQuality, half_size bool, adaptive_target float64, blur_passes int64, fadeout_from float64, fadeout_to float64) { //gd:RenderingServer.environment_set_ssil_quality
+func (self class) EnvironmentSetSsilQuality(quality EnvironmentSSILQuality, half_size bool, adaptive_target float64, blur_passes int64, fadeout_from float64, fadeout_to float64) { //gd:RenderingServer.environment_set_ssil_quality
 	var frame = callframe.New()
 	callframe.Arg(frame, quality)
 	callframe.Arg(frame, half_size)
@@ -9173,7 +9181,7 @@ func (self class) EnvironmentSetSsilQuality(quality gdclass.RenderingServerEnvir
 Sets the number of rays to throw per frame when computing signed distance field global illumination. Equivalent to [member ProjectSettings.rendering/global_illumination/sdfgi/probe_ray_count].
 */
 //go:nosplit
-func (self class) EnvironmentSetSdfgiRayCount(ray_count gdclass.RenderingServerEnvironmentSDFGIRayCount) { //gd:RenderingServer.environment_set_sdfgi_ray_count
+func (self class) EnvironmentSetSdfgiRayCount(ray_count EnvironmentSDFGIRayCount) { //gd:RenderingServer.environment_set_sdfgi_ray_count
 	var frame = callframe.New()
 	callframe.Arg(frame, ray_count)
 	var r_ret = callframe.Nil
@@ -9185,7 +9193,7 @@ func (self class) EnvironmentSetSdfgiRayCount(ray_count gdclass.RenderingServerE
 Sets the number of frames to use for converging signed distance field global illumination. Equivalent to [member ProjectSettings.rendering/global_illumination/sdfgi/frames_to_converge].
 */
 //go:nosplit
-func (self class) EnvironmentSetSdfgiFramesToConverge(frames gdclass.RenderingServerEnvironmentSDFGIFramesToConverge) { //gd:RenderingServer.environment_set_sdfgi_frames_to_converge
+func (self class) EnvironmentSetSdfgiFramesToConverge(frames EnvironmentSDFGIFramesToConverge) { //gd:RenderingServer.environment_set_sdfgi_frames_to_converge
 	var frame = callframe.New()
 	callframe.Arg(frame, frames)
 	var r_ret = callframe.Nil
@@ -9197,7 +9205,7 @@ func (self class) EnvironmentSetSdfgiFramesToConverge(frames gdclass.RenderingSe
 Sets the update speed for dynamic lights' indirect lighting when computing signed distance field global illumination. Equivalent to [member ProjectSettings.rendering/global_illumination/sdfgi/frames_to_update_lights].
 */
 //go:nosplit
-func (self class) EnvironmentSetSdfgiFramesToUpdateLight(frames gdclass.RenderingServerEnvironmentSDFGIFramesToUpdateLight) { //gd:RenderingServer.environment_set_sdfgi_frames_to_update_light
+func (self class) EnvironmentSetSdfgiFramesToUpdateLight(frames EnvironmentSDFGIFramesToUpdateLight) { //gd:RenderingServer.environment_set_sdfgi_frames_to_update_light
 	var frame = callframe.New()
 	callframe.Arg(frame, frames)
 	var r_ret = callframe.Nil
@@ -9266,7 +9274,7 @@ func (self class) ScreenSpaceRoughnessLimiterSetActive(enable bool, amount float
 Sets [member ProjectSettings.rendering/environment/subsurface_scattering/subsurface_scattering_quality] to use when rendering materials that have subsurface scattering enabled.
 */
 //go:nosplit
-func (self class) SubSurfaceScatteringSetQuality(quality gdclass.RenderingServerSubSurfaceScatteringQuality) { //gd:RenderingServer.sub_surface_scattering_set_quality
+func (self class) SubSurfaceScatteringSetQuality(quality SubSurfaceScatteringQuality) { //gd:RenderingServer.sub_surface_scattering_set_quality
 	var frame = callframe.New()
 	callframe.Arg(frame, quality)
 	var r_ret = callframe.Nil
@@ -9306,7 +9314,7 @@ func (self class) CameraAttributesCreate() RID.Any { //gd:RenderingServer.camera
 Sets the quality level of the DOF blur effect to one of the options in [enum DOFBlurQuality]. [param use_jitter] can be used to jitter samples taken during the blur pass to hide artifacts at the cost of looking more fuzzy.
 */
 //go:nosplit
-func (self class) CameraAttributesSetDofBlurQuality(quality gdclass.RenderingServerDOFBlurQuality, use_jitter bool) { //gd:RenderingServer.camera_attributes_set_dof_blur_quality
+func (self class) CameraAttributesSetDofBlurQuality(quality DOFBlurQuality, use_jitter bool) { //gd:RenderingServer.camera_attributes_set_dof_blur_quality
 	var frame = callframe.New()
 	callframe.Arg(frame, quality)
 	callframe.Arg(frame, use_jitter)
@@ -9319,7 +9327,7 @@ func (self class) CameraAttributesSetDofBlurQuality(quality gdclass.RenderingSer
 Sets the shape of the DOF bokeh pattern. Different shapes may be used to achieve artistic effect, or to meet performance targets. For more detail on available options see [enum DOFBokehShape].
 */
 //go:nosplit
-func (self class) CameraAttributesSetDofBlurBokehShape(shape gdclass.RenderingServerDOFBokehShape) { //gd:RenderingServer.camera_attributes_set_dof_blur_bokeh_shape
+func (self class) CameraAttributesSetDofBlurBokehShape(shape DOFBokehShape) { //gd:RenderingServer.camera_attributes_set_dof_blur_bokeh_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
 	var r_ret = callframe.Nil
@@ -9717,7 +9725,7 @@ func (self class) InstanceSetIgnoreCulling(instance RID.Any, enabled bool) { //g
 Sets the flag for a given [enum InstanceFlags]. See [enum InstanceFlags] for more details.
 */
 //go:nosplit
-func (self class) InstanceGeometrySetFlag(instance RID.Any, flag gdclass.RenderingServerInstanceFlags, enabled bool) { //gd:RenderingServer.instance_geometry_set_flag
+func (self class) InstanceGeometrySetFlag(instance RID.Any, flag InstanceFlags, enabled bool) { //gd:RenderingServer.instance_geometry_set_flag
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
 	callframe.Arg(frame, flag)
@@ -9731,7 +9739,7 @@ func (self class) InstanceGeometrySetFlag(instance RID.Any, flag gdclass.Renderi
 Sets the shadow casting setting to one of [enum ShadowCastingSetting]. Equivalent to [member GeometryInstance3D.cast_shadow].
 */
 //go:nosplit
-func (self class) InstanceGeometrySetCastShadowsSetting(instance RID.Any, shadow_casting_setting gdclass.RenderingServerShadowCastingSetting) { //gd:RenderingServer.instance_geometry_set_cast_shadows_setting
+func (self class) InstanceGeometrySetCastShadowsSetting(instance RID.Any, shadow_casting_setting ShadowCastingSetting) { //gd:RenderingServer.instance_geometry_set_cast_shadows_setting
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
 	callframe.Arg(frame, shadow_casting_setting)
@@ -9770,7 +9778,7 @@ func (self class) InstanceGeometrySetMaterialOverlay(instance RID.Any, material 
 Sets the visibility range values for the given geometry instance. Equivalent to [member GeometryInstance3D.visibility_range_begin] and related properties.
 */
 //go:nosplit
-func (self class) InstanceGeometrySetVisibilityRange(instance RID.Any, min float64, max float64, min_margin float64, max_margin float64, fade_mode gdclass.RenderingServerVisibilityRangeFadeMode) { //gd:RenderingServer.instance_geometry_set_visibility_range
+func (self class) InstanceGeometrySetVisibilityRange(instance RID.Any, min float64, max float64, min_margin float64, max_margin float64, fade_mode VisibilityRangeFadeMode) { //gd:RenderingServer.instance_geometry_set_visibility_range
 	var frame = callframe.New()
 	callframe.Arg(frame, instance)
 	callframe.Arg(frame, min)
@@ -10020,7 +10028,7 @@ func (self class) CanvasTextureCreate() RID.Any { //gd:RenderingServer.canvas_te
 Sets the [param channel]'s [param texture] for the canvas texture specified by the [param canvas_texture] RID. Equivalent to [member CanvasTexture.diffuse_texture], [member CanvasTexture.normal_texture] and [member CanvasTexture.specular_texture].
 */
 //go:nosplit
-func (self class) CanvasTextureSetChannel(canvas_texture RID.Any, channel gdclass.RenderingServerCanvasTextureChannel, texture RID.Any) { //gd:RenderingServer.canvas_texture_set_channel
+func (self class) CanvasTextureSetChannel(canvas_texture RID.Any, channel CanvasTextureChannel, texture RID.Any) { //gd:RenderingServer.canvas_texture_set_channel
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas_texture)
 	callframe.Arg(frame, channel)
@@ -10048,7 +10056,7 @@ func (self class) CanvasTextureSetShadingParameters(canvas_texture RID.Any, base
 Sets the texture [param filter] mode to use for the canvas texture specified by the [param canvas_texture] RID.
 */
 //go:nosplit
-func (self class) CanvasTextureSetTextureFilter(canvas_texture RID.Any, filter gdclass.RenderingServerCanvasItemTextureFilter) { //gd:RenderingServer.canvas_texture_set_texture_filter
+func (self class) CanvasTextureSetTextureFilter(canvas_texture RID.Any, filter CanvasItemTextureFilter) { //gd:RenderingServer.canvas_texture_set_texture_filter
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas_texture)
 	callframe.Arg(frame, filter)
@@ -10061,7 +10069,7 @@ func (self class) CanvasTextureSetTextureFilter(canvas_texture RID.Any, filter g
 Sets the texture [param repeat] mode to use for the canvas texture specified by the [param canvas_texture] RID.
 */
 //go:nosplit
-func (self class) CanvasTextureSetTextureRepeat(canvas_texture RID.Any, repeat gdclass.RenderingServerCanvasItemTextureRepeat) { //gd:RenderingServer.canvas_texture_set_texture_repeat
+func (self class) CanvasTextureSetTextureRepeat(canvas_texture RID.Any, repeat CanvasItemTextureRepeat) { //gd:RenderingServer.canvas_texture_set_texture_repeat
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas_texture)
 	callframe.Arg(frame, repeat)
@@ -10102,7 +10110,7 @@ func (self class) CanvasItemSetParent(item RID.Any, parent RID.Any) { //gd:Rende
 Sets the default texture filter mode for the canvas item specified by the [param item] RID. Equivalent to [member CanvasItem.texture_filter].
 */
 //go:nosplit
-func (self class) CanvasItemSetDefaultTextureFilter(item RID.Any, filter gdclass.RenderingServerCanvasItemTextureFilter) { //gd:RenderingServer.canvas_item_set_default_texture_filter
+func (self class) CanvasItemSetDefaultTextureFilter(item RID.Any, filter CanvasItemTextureFilter) { //gd:RenderingServer.canvas_item_set_default_texture_filter
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
 	callframe.Arg(frame, filter)
@@ -10115,7 +10123,7 @@ func (self class) CanvasItemSetDefaultTextureFilter(item RID.Any, filter gdclass
 Sets the default texture repeat mode for the canvas item specified by the [param item] RID. Equivalent to [member CanvasItem.texture_repeat].
 */
 //go:nosplit
-func (self class) CanvasItemSetDefaultTextureRepeat(item RID.Any, repeat gdclass.RenderingServerCanvasItemTextureRepeat) { //gd:RenderingServer.canvas_item_set_default_texture_repeat
+func (self class) CanvasItemSetDefaultTextureRepeat(item RID.Any, repeat CanvasItemTextureRepeat) { //gd:RenderingServer.canvas_item_set_default_texture_repeat
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
 	callframe.Arg(frame, repeat)
@@ -10450,7 +10458,7 @@ func (self class) CanvasItemAddTextureRectRegion(item RID.Any, rect Rect2.Positi
 Draws a nine-patch rectangle on the [CanvasItem] pointed to by the [param item] [RID].
 */
 //go:nosplit
-func (self class) CanvasItemAddNinePatch(item RID.Any, rect Rect2.PositionSize, source Rect2.PositionSize, texture RID.Any, topleft Vector2.XY, bottomright Vector2.XY, x_axis_mode gdclass.RenderingServerNinePatchAxisMode, y_axis_mode gdclass.RenderingServerNinePatchAxisMode, draw_center bool, modulate Color.RGBA) { //gd:RenderingServer.canvas_item_add_nine_patch
+func (self class) CanvasItemAddNinePatch(item RID.Any, rect Rect2.PositionSize, source Rect2.PositionSize, texture RID.Any, topleft Vector2.XY, bottomright Vector2.XY, x_axis_mode NinePatchAxisMode, y_axis_mode NinePatchAxisMode, draw_center bool, modulate Color.RGBA) { //gd:RenderingServer.canvas_item_add_nine_patch
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
 	callframe.Arg(frame, rect)
@@ -10805,7 +10813,7 @@ Sets the canvas group mode used during 2D rendering for the canvas item specifie
 [b]Note:[/b] The equivalent node functionality is found in [CanvasGroup] and [member CanvasItem.clip_children].
 */
 //go:nosplit
-func (self class) CanvasItemSetCanvasGroupMode(item RID.Any, mode gdclass.RenderingServerCanvasGroupMode, clear_margin float64, fit_empty bool, fit_margin float64, blur_mipmaps bool) { //gd:RenderingServer.canvas_item_set_canvas_group_mode
+func (self class) CanvasItemSetCanvasGroupMode(item RID.Any, mode CanvasGroupMode, clear_margin float64, fit_empty bool, fit_margin float64, blur_mipmaps bool) { //gd:RenderingServer.canvas_item_set_canvas_group_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, item)
 	callframe.Arg(frame, mode)
@@ -11023,7 +11031,7 @@ func (self class) CanvasLightSetItemShadowCullMask(light RID.Any, mask int64) { 
 The mode of the light, see [enum CanvasLightMode] constants.
 */
 //go:nosplit
-func (self class) CanvasLightSetMode(light RID.Any, mode gdclass.RenderingServerCanvasLightMode) { //gd:RenderingServer.canvas_light_set_mode
+func (self class) CanvasLightSetMode(light RID.Any, mode CanvasLightMode) { //gd:RenderingServer.canvas_light_set_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, mode)
@@ -11049,7 +11057,7 @@ func (self class) CanvasLightSetShadowEnabled(light RID.Any, enabled bool) { //g
 Sets the canvas light's shadow's filter, see [enum CanvasLightShadowFilter] constants.
 */
 //go:nosplit
-func (self class) CanvasLightSetShadowFilter(light RID.Any, filter gdclass.RenderingServerCanvasLightShadowFilter) { //gd:RenderingServer.canvas_light_set_shadow_filter
+func (self class) CanvasLightSetShadowFilter(light RID.Any, filter CanvasLightShadowFilter) { //gd:RenderingServer.canvas_light_set_shadow_filter
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, filter)
@@ -11088,7 +11096,7 @@ func (self class) CanvasLightSetShadowSmooth(light RID.Any, smooth float64) { //
 Sets the blend mode for the given canvas light. See [enum CanvasLightBlendMode] for options. Equivalent to [member Light2D.blend_mode].
 */
 //go:nosplit
-func (self class) CanvasLightSetBlendMode(light RID.Any, mode gdclass.RenderingServerCanvasLightBlendMode) { //gd:RenderingServer.canvas_light_set_blend_mode
+func (self class) CanvasLightSetBlendMode(light RID.Any, mode CanvasLightBlendMode) { //gd:RenderingServer.canvas_light_set_blend_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, light)
 	callframe.Arg(frame, mode)
@@ -11300,7 +11308,7 @@ func (self class) CanvasOccluderPolygonSetShape(occluder_polygon RID.Any, shape 
 Sets an occluder polygons cull mode. See [enum CanvasOccluderPolygonCullMode] constants.
 */
 //go:nosplit
-func (self class) CanvasOccluderPolygonSetCullMode(occluder_polygon RID.Any, mode gdclass.RenderingServerCanvasOccluderPolygonCullMode) { //gd:RenderingServer.canvas_occluder_polygon_set_cull_mode
+func (self class) CanvasOccluderPolygonSetCullMode(occluder_polygon RID.Any, mode CanvasOccluderPolygonCullMode) { //gd:RenderingServer.canvas_occluder_polygon_set_cull_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, occluder_polygon)
 	callframe.Arg(frame, mode)
@@ -11326,7 +11334,7 @@ Creates a new global shader uniform.
 [b]Note:[/b] Global shader parameter names are case-sensitive.
 */
 //go:nosplit
-func (self class) GlobalShaderParameterAdd(name String.Name, atype gdclass.RenderingServerGlobalShaderParameterType, default_value variant.Any) { //gd:RenderingServer.global_shader_parameter_add
+func (self class) GlobalShaderParameterAdd(name String.Name, atype GlobalShaderParameterType, default_value variant.Any) { //gd:RenderingServer.global_shader_parameter_add
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, atype)
@@ -11408,10 +11416,10 @@ Returns the type associated to the global shader uniform specified by [param nam
 [b]Note:[/b] [method global_shader_parameter_get] has a large performance penalty as the rendering thread needs to synchronize with the calling thread, which is slow. Do not use this method during gameplay to avoid stuttering. If you need to read values in a script after setting them, consider creating an autoload where you store the values you need to query at the same time you're setting them as global parameters.
 */
 //go:nosplit
-func (self class) GlobalShaderParameterGetType(name String.Name) gdclass.RenderingServerGlobalShaderParameterType { //gd:RenderingServer.global_shader_parameter_get_type
+func (self class) GlobalShaderParameterGetType(name String.Name) GlobalShaderParameterType { //gd:RenderingServer.global_shader_parameter_get_type
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
-	var r_ret = callframe.Ret[gdclass.RenderingServerGlobalShaderParameterType](frame)
+	var r_ret = callframe.Ret[GlobalShaderParameterType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_get_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11468,7 +11476,7 @@ func _ready():
 [/codeblock]
 */
 //go:nosplit
-func (self class) GetRenderingInfo(info gdclass.RenderingServerRenderingInfo) int64 { //gd:RenderingServer.get_rendering_info
+func (self class) GetRenderingInfo(info RenderingInfo) int64 { //gd:RenderingServer.get_rendering_info
 	var frame = callframe.New()
 	callframe.Arg(frame, info)
 	var r_ret = callframe.Ret[int64](frame)
@@ -11512,9 +11520,9 @@ Returns the type of the video adapter. Since dedicated graphics cards from a giv
 [b]Note:[/b] When using the OpenGL rendering driver or when running in headless mode, this function always returns [constant RenderingDevice.DEVICE_TYPE_OTHER].
 */
 //go:nosplit
-func (self class) GetVideoAdapterType() gdclass.RenderingDeviceDeviceType { //gd:RenderingServer.get_video_adapter_type
+func (self class) GetVideoAdapterType() Rendering.DeviceType { //gd:RenderingServer.get_video_adapter_type
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingDeviceDeviceType](frame)
+	var r_ret = callframe.Ret[Rendering.DeviceType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_get_video_adapter_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -11810,7 +11818,7 @@ func (self class) CallOnRenderThread(callable Callable.Function) { //gd:Renderin
 This method does nothing and always returns [code]false[/code].
 */
 //go:nosplit
-func (self class) HasFeature(feature gdclass.RenderingServerFeatures) bool { //gd:RenderingServer.has_feature
+func (self class) HasFeature(feature Features) bool { //gd:RenderingServer.has_feature
 	var frame = callframe.New()
 	callframe.Arg(frame, feature)
 	var r_ret = callframe.Ret[bool](frame)
@@ -11846,7 +11854,7 @@ func init() {
 	})
 }
 
-type TextureType = gdclass.RenderingServerTextureType //gd:RenderingServer.TextureType
+type TextureType int //gd:RenderingServer.TextureType
 
 const (
 	/*2D texture.*/
@@ -11857,7 +11865,7 @@ const (
 	TextureType3d TextureType = 2
 )
 
-type TextureLayeredType = gdclass.RenderingServerTextureLayeredType //gd:RenderingServer.TextureLayeredType
+type TextureLayeredType int //gd:RenderingServer.TextureLayeredType
 
 const (
 	/*Array of 2-dimensional textures (see [Texture2DArray]).*/
@@ -11868,7 +11876,7 @@ const (
 	TextureLayeredCubemapArray TextureLayeredType = 2
 )
 
-type CubeMapLayer = gdclass.RenderingServerCubeMapLayer //gd:RenderingServer.CubeMapLayer
+type CubeMapLayer int //gd:RenderingServer.CubeMapLayer
 
 const (
 	/*Left face of a [Cubemap].*/
@@ -11885,7 +11893,7 @@ const (
 	CubemapLayerBack CubeMapLayer = 5
 )
 
-type ShaderMode = gdclass.RenderingServerShaderMode //gd:RenderingServer.ShaderMode
+type ShaderMode int //gd:RenderingServer.ShaderMode
 
 const (
 	/*Shader is a 3D shader.*/
@@ -11902,7 +11910,7 @@ const (
 	ShaderMax ShaderMode = 5
 )
 
-type ArrayType = gdclass.RenderingServerArrayType //gd:RenderingServer.ArrayType
+type ArrayType int //gd:RenderingServer.ArrayType
 
 const (
 	/*Array is a vertex position array.*/
@@ -11935,7 +11943,7 @@ const (
 	ArrayMax ArrayType = 13
 )
 
-type ArrayCustomFormat = gdclass.RenderingServerArrayCustomFormat //gd:RenderingServer.ArrayCustomFormat
+type ArrayCustomFormat int //gd:RenderingServer.ArrayCustomFormat
 
 const (
 	/*Custom data array contains 8-bit-per-channel red/green/blue/alpha color data. Values are normalized, unsigned floating-point in the [code][0.0, 1.0][/code] range.*/
@@ -11958,7 +11966,7 @@ const (
 	ArrayCustomMax ArrayCustomFormat = 8
 )
 
-type ArrayFormat = gdclass.RenderingServerArrayFormat //gd:RenderingServer.ArrayFormat
+type ArrayFormat int //gd:RenderingServer.ArrayFormat
 
 const (
 	/*Flag used to mark a vertex position array.*/
@@ -12029,7 +12037,7 @@ const (
 	ArrayFlagFormatVersionMask ArrayFormat = 255
 )
 
-type PrimitiveType = gdclass.RenderingServerPrimitiveType //gd:RenderingServer.PrimitiveType
+type PrimitiveType int //gd:RenderingServer.PrimitiveType
 
 const (
 	/*Primitive to draw consists of points.*/
@@ -12046,7 +12054,7 @@ const (
 	PrimitiveMax PrimitiveType = 5
 )
 
-type BlendShapeMode = gdclass.RenderingServerBlendShapeMode //gd:RenderingServer.BlendShapeMode
+type BlendShapeMode int //gd:RenderingServer.BlendShapeMode
 
 const (
 	/*Blend shapes are normalized.*/
@@ -12055,7 +12063,7 @@ const (
 	BlendShapeModeRelative BlendShapeMode = 1
 )
 
-type MultimeshTransformFormat = gdclass.RenderingServerMultimeshTransformFormat //gd:RenderingServer.MultimeshTransformFormat
+type MultimeshTransformFormat int //gd:RenderingServer.MultimeshTransformFormat
 
 const (
 	/*Use [Transform2D] to store MultiMesh transform.*/
@@ -12064,7 +12072,7 @@ const (
 	MultimeshTransform3d MultimeshTransformFormat = 1
 )
 
-type MultimeshPhysicsInterpolationQuality = gdclass.RenderingServerMultimeshPhysicsInterpolationQuality //gd:RenderingServer.MultimeshPhysicsInterpolationQuality
+type MultimeshPhysicsInterpolationQuality int //gd:RenderingServer.MultimeshPhysicsInterpolationQuality
 
 const (
 	/*MultiMesh physics interpolation favors speed over quality.*/
@@ -12073,7 +12081,7 @@ const (
 	MultimeshInterpQualityHigh MultimeshPhysicsInterpolationQuality = 1
 )
 
-type LightProjectorFilter = gdclass.RenderingServerLightProjectorFilter //gd:RenderingServer.LightProjectorFilter
+type LightProjectorFilter int //gd:RenderingServer.LightProjectorFilter
 
 const (
 	/*Nearest-neighbor filter for light projectors (use for pixel art light projectors). No mipmaps are used for rendering, which means light projectors at a distance will look sharp but grainy. This has roughly the same performance cost as using mipmaps.*/
@@ -12090,7 +12098,7 @@ const (
 	LightProjectorFilterLinearMipmapsAnisotropic LightProjectorFilter = 5
 )
 
-type LightType = gdclass.RenderingServerLightType //gd:RenderingServer.LightType
+type LightType int //gd:RenderingServer.LightType
 
 const (
 	/*Directional (sun/moon) light (see [DirectionalLight3D]).*/
@@ -12101,7 +12109,7 @@ const (
 	LightSpot LightType = 2
 )
 
-type LightParam = gdclass.RenderingServerLightParam //gd:RenderingServer.LightParam
+type LightParam int //gd:RenderingServer.LightParam
 
 const (
 	/*The light's energy multiplier.*/
@@ -12149,7 +12157,7 @@ const (
 	LightParamMax LightParam = 21
 )
 
-type LightBakeMode = gdclass.RenderingServerLightBakeMode //gd:RenderingServer.LightBakeMode
+type LightBakeMode int //gd:RenderingServer.LightBakeMode
 
 const (
 	/*Light is ignored when baking. This is the fastest mode, but the light will be taken into account when baking global illumination. This mode should generally be used for dynamic lights that change quickly, as the effect of global illumination is less noticeable on those lights.*/
@@ -12160,7 +12168,7 @@ const (
 	LightBakeDynamic LightBakeMode = 2
 )
 
-type LightOmniShadowMode = gdclass.RenderingServerLightOmniShadowMode //gd:RenderingServer.LightOmniShadowMode
+type LightOmniShadowMode int //gd:RenderingServer.LightOmniShadowMode
 
 const (
 	/*Use a dual paraboloid shadow map for omni lights.*/
@@ -12169,7 +12177,7 @@ const (
 	LightOmniShadowCube LightOmniShadowMode = 1
 )
 
-type LightDirectionalShadowMode = gdclass.RenderingServerLightDirectionalShadowMode //gd:RenderingServer.LightDirectionalShadowMode
+type LightDirectionalShadowMode int //gd:RenderingServer.LightDirectionalShadowMode
 
 const (
 	/*Use orthogonal shadow projection for directional light.*/
@@ -12180,7 +12188,7 @@ const (
 	LightDirectionalShadowParallel4Splits LightDirectionalShadowMode = 2
 )
 
-type LightDirectionalSkyMode = gdclass.RenderingServerLightDirectionalSkyMode //gd:RenderingServer.LightDirectionalSkyMode
+type LightDirectionalSkyMode int //gd:RenderingServer.LightDirectionalSkyMode
 
 const (
 	/*Use DirectionalLight3D in both sky rendering and scene lighting.*/
@@ -12191,7 +12199,7 @@ const (
 	LightDirectionalSkyModeSkyOnly LightDirectionalSkyMode = 2
 )
 
-type ShadowQuality = gdclass.RenderingServerShadowQuality //gd:RenderingServer.ShadowQuality
+type ShadowQuality int //gd:RenderingServer.ShadowQuality
 
 const (
 	/*Lowest shadow filtering quality (fastest). Soft shadows are not available with this quality setting, which means the [member Light3D.shadow_blur] property is ignored if [member Light3D.light_size] and [member Light3D.light_angular_distance] is [code]0.0[/code].
@@ -12211,7 +12219,7 @@ const (
 	ShadowQualityMax ShadowQuality = 6
 )
 
-type ReflectionProbeUpdateMode = gdclass.RenderingServerReflectionProbeUpdateMode //gd:RenderingServer.ReflectionProbeUpdateMode
+type ReflectionProbeUpdateMode int //gd:RenderingServer.ReflectionProbeUpdateMode
 
 const (
 	/*Reflection probe will update reflections once and then stop.*/
@@ -12220,7 +12228,7 @@ const (
 	ReflectionProbeUpdateAlways ReflectionProbeUpdateMode = 1
 )
 
-type ReflectionProbeAmbientMode = gdclass.RenderingServerReflectionProbeAmbientMode //gd:RenderingServer.ReflectionProbeAmbientMode
+type ReflectionProbeAmbientMode int //gd:RenderingServer.ReflectionProbeAmbientMode
 
 const (
 	/*Do not apply any ambient lighting inside the reflection probe's box defined by its size.*/
@@ -12231,7 +12239,7 @@ const (
 	ReflectionProbeAmbientColor ReflectionProbeAmbientMode = 2
 )
 
-type DecalTexture = gdclass.RenderingServerDecalTexture //gd:RenderingServer.DecalTexture
+type DecalTexture int //gd:RenderingServer.DecalTexture
 
 const (
 	/*Albedo texture slot in a decal ([member Decal.texture_albedo]).*/
@@ -12246,7 +12254,7 @@ const (
 	DecalTextureMax DecalTexture = 4
 )
 
-type DecalFilter = gdclass.RenderingServerDecalFilter //gd:RenderingServer.DecalFilter
+type DecalFilter int //gd:RenderingServer.DecalFilter
 
 const (
 	/*Nearest-neighbor filter for decals (use for pixel art decals). No mipmaps are used for rendering, which means decals at a distance will look sharp but grainy. This has roughly the same performance cost as using mipmaps.*/
@@ -12263,7 +12271,7 @@ const (
 	DecalFilterLinearMipmapsAnisotropic DecalFilter = 5
 )
 
-type VoxelGIQuality = gdclass.RenderingServerVoxelGIQuality //gd:RenderingServer.VoxelGIQuality
+type VoxelGIQuality int //gd:RenderingServer.VoxelGIQuality
 
 const (
 	/*Low [VoxelGI] rendering quality using 4 cones.*/
@@ -12272,7 +12280,7 @@ const (
 	VoxelGiQualityHigh VoxelGIQuality = 1
 )
 
-type ParticlesMode = gdclass.RenderingServerParticlesMode //gd:RenderingServer.ParticlesMode
+type ParticlesMode int //gd:RenderingServer.ParticlesMode
 
 const (
 	/*2D particles.*/
@@ -12281,7 +12289,7 @@ const (
 	ParticlesMode3d ParticlesMode = 1
 )
 
-type ParticlesTransformAlign = gdclass.RenderingServerParticlesTransformAlign //gd:RenderingServer.ParticlesTransformAlign
+type ParticlesTransformAlign int //gd:RenderingServer.ParticlesTransformAlign
 
 const (
 	ParticlesTransformAlignDisabled              ParticlesTransformAlign = 0
@@ -12290,7 +12298,7 @@ const (
 	ParticlesTransformAlignZBillboardYToVelocity ParticlesTransformAlign = 3
 )
 
-type ParticlesDrawOrder = gdclass.RenderingServerParticlesDrawOrder //gd:RenderingServer.ParticlesDrawOrder
+type ParticlesDrawOrder int //gd:RenderingServer.ParticlesDrawOrder
 
 const (
 	/*Draw particles in the order that they appear in the particles array.*/
@@ -12303,7 +12311,7 @@ const (
 	ParticlesDrawOrderViewDepth ParticlesDrawOrder = 3
 )
 
-type ParticlesCollisionType = gdclass.RenderingServerParticlesCollisionType //gd:RenderingServer.ParticlesCollisionType
+type ParticlesCollisionType int //gd:RenderingServer.ParticlesCollisionType
 
 const (
 	ParticlesCollisionTypeSphereAttract      ParticlesCollisionType = 0
@@ -12315,7 +12323,7 @@ const (
 	ParticlesCollisionTypeHeightfieldCollide ParticlesCollisionType = 6
 )
 
-type ParticlesCollisionHeightfieldResolution = gdclass.RenderingServerParticlesCollisionHeightfieldResolution //gd:RenderingServer.ParticlesCollisionHeightfieldResolution
+type ParticlesCollisionHeightfieldResolution int //gd:RenderingServer.ParticlesCollisionHeightfieldResolution
 
 const (
 	ParticlesCollisionHeightfieldResolution256  ParticlesCollisionHeightfieldResolution = 0
@@ -12328,7 +12336,7 @@ const (
 	ParticlesCollisionHeightfieldResolutionMax ParticlesCollisionHeightfieldResolution = 6
 )
 
-type FogVolumeShape = gdclass.RenderingServerFogVolumeShape //gd:RenderingServer.FogVolumeShape
+type FogVolumeShape int //gd:RenderingServer.FogVolumeShape
 
 const (
 	/*[FogVolume] will be shaped like an ellipsoid (stretched sphere).*/
@@ -12345,7 +12353,7 @@ const (
 	FogVolumeShapeMax FogVolumeShape = 5
 )
 
-type ViewportScaling3DMode = gdclass.RenderingServerViewportScaling3DMode //gd:RenderingServer.ViewportScaling3DMode
+type ViewportScaling3DMode int //gd:RenderingServer.ViewportScaling3DMode
 
 const (
 	/*Use bilinear scaling for the viewport's 3D buffer. The amount of scaling can be set using [member Viewport.scaling_3d_scale]. Values less than [code]1.0[/code] will result in undersampling while values greater than [code]1.0[/code] will result in supersampling. A value of [code]1.0[/code] disables scaling.*/
@@ -12364,7 +12372,7 @@ const (
 	ViewportScaling3dModeMax ViewportScaling3DMode = 5
 )
 
-type ViewportUpdateMode = gdclass.RenderingServerViewportUpdateMode //gd:RenderingServer.ViewportUpdateMode
+type ViewportUpdateMode int //gd:RenderingServer.ViewportUpdateMode
 
 const (
 	/*Do not update the viewport's render target.*/
@@ -12379,7 +12387,7 @@ const (
 	ViewportUpdateAlways ViewportUpdateMode = 4
 )
 
-type ViewportClearMode = gdclass.RenderingServerViewportClearMode //gd:RenderingServer.ViewportClearMode
+type ViewportClearMode int //gd:RenderingServer.ViewportClearMode
 
 const (
 	/*Always clear the viewport's render target before drawing.*/
@@ -12390,7 +12398,7 @@ const (
 	ViewportClearOnlyNextFrame ViewportClearMode = 2
 )
 
-type ViewportEnvironmentMode = gdclass.RenderingServerViewportEnvironmentMode //gd:RenderingServer.ViewportEnvironmentMode
+type ViewportEnvironmentMode int //gd:RenderingServer.ViewportEnvironmentMode
 
 const (
 	/*Disable rendering of 3D environment over 2D canvas.*/
@@ -12403,7 +12411,7 @@ const (
 	ViewportEnvironmentMax ViewportEnvironmentMode = 3
 )
 
-type ViewportSDFOversize = gdclass.RenderingServerViewportSDFOversize //gd:RenderingServer.ViewportSDFOversize
+type ViewportSDFOversize int //gd:RenderingServer.ViewportSDFOversize
 
 const (
 	/*Do not oversize the 2D signed distance field. Occluders may disappear when touching the viewport's edges, and [GPUParticles3D] collision may stop working earlier than intended. This has the lowest GPU requirements.*/
@@ -12418,7 +12426,7 @@ const (
 	ViewportSdfOversizeMax ViewportSDFOversize = 4
 )
 
-type ViewportSDFScale = gdclass.RenderingServerViewportSDFScale //gd:RenderingServer.ViewportSDFScale
+type ViewportSDFScale int //gd:RenderingServer.ViewportSDFScale
 
 const (
 	/*Full resolution 2D signed distance field scale. This has the highest GPU requirements.*/
@@ -12431,7 +12439,7 @@ const (
 	ViewportSdfScaleMax ViewportSDFScale = 3
 )
 
-type ViewportMSAA = gdclass.RenderingServerViewportMSAA //gd:RenderingServer.ViewportMSAA
+type ViewportMSAA int //gd:RenderingServer.ViewportMSAA
 
 const (
 	/*Multisample antialiasing for 3D is disabled. This is the default value, and also the fastest setting.*/
@@ -12446,7 +12454,7 @@ const (
 	ViewportMsaaMax ViewportMSAA = 4
 )
 
-type ViewportAnisotropicFiltering = gdclass.RenderingServerViewportAnisotropicFiltering //gd:RenderingServer.ViewportAnisotropicFiltering
+type ViewportAnisotropicFiltering int //gd:RenderingServer.ViewportAnisotropicFiltering
 
 const (
 	/*Anisotropic filtering is disabled.*/
@@ -12463,7 +12471,7 @@ const (
 	ViewportAnisotropyMax ViewportAnisotropicFiltering = 5
 )
 
-type ViewportScreenSpaceAA = gdclass.RenderingServerViewportScreenSpaceAA //gd:RenderingServer.ViewportScreenSpaceAA
+type ViewportScreenSpaceAA int //gd:RenderingServer.ViewportScreenSpaceAA
 
 const (
 	/*Do not perform any antialiasing in the full screen post-process.*/
@@ -12474,7 +12482,7 @@ const (
 	ViewportScreenSpaceAaMax ViewportScreenSpaceAA = 2
 )
 
-type ViewportOcclusionCullingBuildQuality = gdclass.RenderingServerViewportOcclusionCullingBuildQuality //gd:RenderingServer.ViewportOcclusionCullingBuildQuality
+type ViewportOcclusionCullingBuildQuality int //gd:RenderingServer.ViewportOcclusionCullingBuildQuality
 
 const (
 	/*Low occlusion culling BVH build quality (as defined by Embree). Results in the lowest CPU usage, but least effective culling.*/
@@ -12485,7 +12493,7 @@ const (
 	ViewportOcclusionBuildQualityHigh ViewportOcclusionCullingBuildQuality = 2
 )
 
-type ViewportRenderInfo = gdclass.RenderingServerViewportRenderInfo //gd:RenderingServer.ViewportRenderInfo
+type ViewportRenderInfo int //gd:RenderingServer.ViewportRenderInfo
 
 const (
 	/*Number of objects drawn in a single frame.*/
@@ -12498,7 +12506,7 @@ const (
 	ViewportRenderInfoMax ViewportRenderInfo = 3
 )
 
-type ViewportRenderInfoType = gdclass.RenderingServerViewportRenderInfoType //gd:RenderingServer.ViewportRenderInfoType
+type ViewportRenderInfoType int //gd:RenderingServer.ViewportRenderInfoType
 
 const (
 	/*Visible render pass (excluding shadows).*/
@@ -12511,7 +12519,7 @@ const (
 	ViewportRenderInfoTypeMax ViewportRenderInfoType = 3
 )
 
-type ViewportDebugDraw = gdclass.RenderingServerViewportDebugDraw //gd:RenderingServer.ViewportDebugDraw
+type ViewportDebugDraw int //gd:RenderingServer.ViewportDebugDraw
 
 const (
 	/*Debug draw is disabled. Default setting.*/
@@ -12574,7 +12582,7 @@ const (
 	ViewportDebugDrawInternalBuffer ViewportDebugDraw = 26
 )
 
-type ViewportVRSMode = gdclass.RenderingServerViewportVRSMode //gd:RenderingServer.ViewportVRSMode
+type ViewportVRSMode int //gd:RenderingServer.ViewportVRSMode
 
 const (
 	/*Variable rate shading is disabled.*/
@@ -12587,7 +12595,7 @@ const (
 	ViewportVrsMax ViewportVRSMode = 3
 )
 
-type ViewportVRSUpdateMode = gdclass.RenderingServerViewportVRSUpdateMode //gd:RenderingServer.ViewportVRSUpdateMode
+type ViewportVRSUpdateMode int //gd:RenderingServer.ViewportVRSUpdateMode
 
 const (
 	/*The input texture for variable rate shading will not be processed.*/
@@ -12600,7 +12608,7 @@ const (
 	ViewportVrsUpdateMax ViewportVRSUpdateMode = 3
 )
 
-type SkyMode = gdclass.RenderingServerSkyMode //gd:RenderingServer.SkyMode
+type SkyMode int //gd:RenderingServer.SkyMode
 
 const (
 	/*Automatically selects the appropriate process mode based on your sky shader. If your shader uses [code]TIME[/code] or [code]POSITION[/code], this will use [constant SKY_MODE_REALTIME]. If your shader uses any of the [code]LIGHT_*[/code] variables or any custom uniforms, this uses [constant SKY_MODE_INCREMENTAL]. Otherwise, this defaults to [constant SKY_MODE_QUALITY].*/
@@ -12614,7 +12622,7 @@ const (
 	SkyModeRealtime SkyMode = 3
 )
 
-type CompositorEffectFlags = gdclass.RenderingServerCompositorEffectFlags //gd:RenderingServer.CompositorEffectFlags
+type CompositorEffectFlags int //gd:RenderingServer.CompositorEffectFlags
 
 const (
 	/*The rendering effect requires the color buffer to be resolved if MSAA is enabled.*/
@@ -12629,7 +12637,7 @@ const (
 	CompositorEffectFlagNeedsSeparateSpecular CompositorEffectFlags = 16
 )
 
-type CompositorEffectCallbackType = gdclass.RenderingServerCompositorEffectCallbackType //gd:RenderingServer.CompositorEffectCallbackType
+type CompositorEffectCallbackType int //gd:RenderingServer.CompositorEffectCallbackType
 
 const (
 	/*The callback is called before our opaque rendering pass, but after depth prepass (if applicable).*/
@@ -12645,7 +12653,7 @@ const (
 	CompositorEffectCallbackTypeAny             CompositorEffectCallbackType = -1
 )
 
-type EnvironmentBG = gdclass.RenderingServerEnvironmentBG //gd:RenderingServer.EnvironmentBG
+type EnvironmentBG int //gd:RenderingServer.EnvironmentBG
 
 const (
 	/*Use the clear color as background.*/
@@ -12664,7 +12672,7 @@ const (
 	EnvBgMax EnvironmentBG = 6
 )
 
-type EnvironmentAmbientSource = gdclass.RenderingServerEnvironmentAmbientSource //gd:RenderingServer.EnvironmentAmbientSource
+type EnvironmentAmbientSource int //gd:RenderingServer.EnvironmentAmbientSource
 
 const (
 	/*Gather ambient light from whichever source is specified as the background.*/
@@ -12677,7 +12685,7 @@ const (
 	EnvAmbientSourceSky EnvironmentAmbientSource = 3
 )
 
-type EnvironmentReflectionSource = gdclass.RenderingServerEnvironmentReflectionSource //gd:RenderingServer.EnvironmentReflectionSource
+type EnvironmentReflectionSource int //gd:RenderingServer.EnvironmentReflectionSource
 
 const (
 	/*Use the background for reflections.*/
@@ -12688,7 +12696,7 @@ const (
 	EnvReflectionSourceSky EnvironmentReflectionSource = 2
 )
 
-type EnvironmentGlowBlendMode = gdclass.RenderingServerEnvironmentGlowBlendMode //gd:RenderingServer.EnvironmentGlowBlendMode
+type EnvironmentGlowBlendMode int //gd:RenderingServer.EnvironmentGlowBlendMode
 
 const (
 	/*Additive glow blending mode. Mostly used for particles, glows (bloom), lens flare, bright sources.*/
@@ -12703,7 +12711,7 @@ const (
 	EnvGlowBlendModeMix EnvironmentGlowBlendMode = 4
 )
 
-type EnvironmentFogMode = gdclass.RenderingServerEnvironmentFogMode //gd:RenderingServer.EnvironmentFogMode
+type EnvironmentFogMode int //gd:RenderingServer.EnvironmentFogMode
 
 const (
 	/*Use a physically-based fog model defined primarily by fog density.*/
@@ -12712,7 +12720,7 @@ const (
 	EnvFogModeDepth EnvironmentFogMode = 1
 )
 
-type EnvironmentToneMapper = gdclass.RenderingServerEnvironmentToneMapper //gd:RenderingServer.EnvironmentToneMapper
+type EnvironmentToneMapper int //gd:RenderingServer.EnvironmentToneMapper
 
 const (
 	/*Does not modify color data, resulting in a linear tonemapping curve which unnaturally clips bright values, causing bright lighting to look blown out. The simplest and fastest tonemapper.*/
@@ -12730,7 +12738,7 @@ const (
 	EnvToneMapperAgx EnvironmentToneMapper = 4
 )
 
-type EnvironmentSSRRoughnessQuality = gdclass.RenderingServerEnvironmentSSRRoughnessQuality //gd:RenderingServer.EnvironmentSSRRoughnessQuality
+type EnvironmentSSRRoughnessQuality int //gd:RenderingServer.EnvironmentSSRRoughnessQuality
 
 const (
 	/*Lowest quality of roughness filter for screen-space reflections. Rough materials will not have blurrier screen-space reflections compared to smooth (non-rough) materials. This is the fastest option.*/
@@ -12743,7 +12751,7 @@ const (
 	EnvSsrRoughnessQualityHigh EnvironmentSSRRoughnessQuality = 3
 )
 
-type EnvironmentSSAOQuality = gdclass.RenderingServerEnvironmentSSAOQuality //gd:RenderingServer.EnvironmentSSAOQuality
+type EnvironmentSSAOQuality int //gd:RenderingServer.EnvironmentSSAOQuality
 
 const (
 	/*Lowest quality of screen-space ambient occlusion.*/
@@ -12758,7 +12766,7 @@ const (
 	EnvSsaoQualityUltra EnvironmentSSAOQuality = 4
 )
 
-type EnvironmentSSILQuality = gdclass.RenderingServerEnvironmentSSILQuality //gd:RenderingServer.EnvironmentSSILQuality
+type EnvironmentSSILQuality int //gd:RenderingServer.EnvironmentSSILQuality
 
 const (
 	/*Lowest quality of screen-space indirect lighting.*/
@@ -12773,7 +12781,7 @@ const (
 	EnvSsilQualityUltra EnvironmentSSILQuality = 4
 )
 
-type EnvironmentSDFGIYScale = gdclass.RenderingServerEnvironmentSDFGIYScale //gd:RenderingServer.EnvironmentSDFGIYScale
+type EnvironmentSDFGIYScale int //gd:RenderingServer.EnvironmentSDFGIYScale
 
 const (
 	/*Use 50% scale for SDFGI on the Y (vertical) axis. SDFGI cells will be twice as short as they are wide. This allows providing increased GI detail and reduced light leaking with thin floors and ceilings. This is usually the best choice for scenes that don't feature much verticality.*/
@@ -12784,7 +12792,7 @@ const (
 	EnvSdfgiYScale100Percent EnvironmentSDFGIYScale = 2
 )
 
-type EnvironmentSDFGIRayCount = gdclass.RenderingServerEnvironmentSDFGIRayCount //gd:RenderingServer.EnvironmentSDFGIRayCount
+type EnvironmentSDFGIRayCount int //gd:RenderingServer.EnvironmentSDFGIRayCount
 
 const (
 	/*Throw 4 rays per frame when converging SDFGI. This has the lowest GPU requirements, but creates the most noisy result.*/
@@ -12805,7 +12813,7 @@ const (
 	EnvSdfgiRayCountMax EnvironmentSDFGIRayCount = 7
 )
 
-type EnvironmentSDFGIFramesToConverge = gdclass.RenderingServerEnvironmentSDFGIFramesToConverge //gd:RenderingServer.EnvironmentSDFGIFramesToConverge
+type EnvironmentSDFGIFramesToConverge int //gd:RenderingServer.EnvironmentSDFGIFramesToConverge
 
 const (
 	/*Converge SDFGI over 5 frames. This is the most responsive, but creates the most noisy result with a given ray count.*/
@@ -12824,7 +12832,7 @@ const (
 	EnvSdfgiConvergeMax EnvironmentSDFGIFramesToConverge = 6
 )
 
-type EnvironmentSDFGIFramesToUpdateLight = gdclass.RenderingServerEnvironmentSDFGIFramesToUpdateLight //gd:RenderingServer.EnvironmentSDFGIFramesToUpdateLight
+type EnvironmentSDFGIFramesToUpdateLight int //gd:RenderingServer.EnvironmentSDFGIFramesToUpdateLight
 
 const (
 	/*Update indirect light from dynamic lights in SDFGI over 1 frame. This is the most responsive, but has the highest GPU requirements.*/
@@ -12841,7 +12849,7 @@ const (
 	EnvSdfgiUpdateLightMax EnvironmentSDFGIFramesToUpdateLight = 5
 )
 
-type SubSurfaceScatteringQuality = gdclass.RenderingServerSubSurfaceScatteringQuality //gd:RenderingServer.SubSurfaceScatteringQuality
+type SubSurfaceScatteringQuality int //gd:RenderingServer.SubSurfaceScatteringQuality
 
 const (
 	/*Disables subsurface scattering entirely, even on materials that have [member BaseMaterial3D.subsurf_scatter_enabled] set to [code]true[/code]. This has the lowest GPU requirements.*/
@@ -12854,7 +12862,7 @@ const (
 	SubSurfaceScatteringQualityHigh SubSurfaceScatteringQuality = 3
 )
 
-type DOFBokehShape = gdclass.RenderingServerDOFBokehShape //gd:RenderingServer.DOFBokehShape
+type DOFBokehShape int //gd:RenderingServer.DOFBokehShape
 
 const (
 	/*Calculate the DOF blur using a box filter. The fastest option, but results in obvious lines in blur pattern.*/
@@ -12865,7 +12873,7 @@ const (
 	DofBokehCircle DOFBokehShape = 2
 )
 
-type DOFBlurQuality = gdclass.RenderingServerDOFBlurQuality //gd:RenderingServer.DOFBlurQuality
+type DOFBlurQuality int //gd:RenderingServer.DOFBlurQuality
 
 const (
 	/*Lowest quality DOF blur. This is the fastest setting, but you may be able to see filtering artifacts.*/
@@ -12878,7 +12886,7 @@ const (
 	DofBlurQualityHigh DOFBlurQuality = 3
 )
 
-type InstanceType = gdclass.RenderingServerInstanceType //gd:RenderingServer.InstanceType
+type InstanceType int //gd:RenderingServer.InstanceType
 
 const (
 	/*The instance does not have a type.*/
@@ -12913,7 +12921,7 @@ const (
 	InstanceGeometryMask InstanceType = 14
 )
 
-type InstanceFlags = gdclass.RenderingServerInstanceFlags //gd:RenderingServer.InstanceFlags
+type InstanceFlags int //gd:RenderingServer.InstanceFlags
 
 const (
 	/*Allows the instance to be used in baked lighting.*/
@@ -12928,7 +12936,7 @@ const (
 	InstanceFlagMax InstanceFlags = 4
 )
 
-type ShadowCastingSetting = gdclass.RenderingServerShadowCastingSetting //gd:RenderingServer.ShadowCastingSetting
+type ShadowCastingSetting int //gd:RenderingServer.ShadowCastingSetting
 
 const (
 	/*Disable shadows from this instance.*/
@@ -12941,7 +12949,7 @@ const (
 	ShadowCastingSettingShadowsOnly ShadowCastingSetting = 3
 )
 
-type VisibilityRangeFadeMode = gdclass.RenderingServerVisibilityRangeFadeMode //gd:RenderingServer.VisibilityRangeFadeMode
+type VisibilityRangeFadeMode int //gd:RenderingServer.VisibilityRangeFadeMode
 
 const (
 	/*Disable visibility range fading for the given instance.*/
@@ -12952,7 +12960,7 @@ const (
 	VisibilityRangeFadeDependencies VisibilityRangeFadeMode = 2
 )
 
-type BakeChannels = gdclass.RenderingServerBakeChannels //gd:RenderingServer.BakeChannels
+type BakeChannels int //gd:RenderingServer.BakeChannels
 
 const (
 	/*Index of [Image] in array of [Image]s returned by [method bake_render_uv2]. Image uses [constant Image.FORMAT_RGBA8] and contains albedo color in the [code].rgb[/code] channels and alpha in the [code].a[/code] channel.*/
@@ -12965,7 +12973,7 @@ const (
 	BakeChannelEmission BakeChannels = 3
 )
 
-type CanvasTextureChannel = gdclass.RenderingServerCanvasTextureChannel //gd:RenderingServer.CanvasTextureChannel
+type CanvasTextureChannel int //gd:RenderingServer.CanvasTextureChannel
 
 const (
 	/*Diffuse canvas texture ([member CanvasTexture.diffuse_texture]).*/
@@ -12976,7 +12984,7 @@ const (
 	CanvasTextureChannelSpecular CanvasTextureChannel = 2
 )
 
-type NinePatchAxisMode = gdclass.RenderingServerNinePatchAxisMode //gd:RenderingServer.NinePatchAxisMode
+type NinePatchAxisMode int //gd:RenderingServer.NinePatchAxisMode
 
 const (
 	/*The nine patch gets stretched where needed.*/
@@ -12987,7 +12995,7 @@ const (
 	NinePatchTileFit NinePatchAxisMode = 2
 )
 
-type CanvasItemTextureFilter = gdclass.RenderingServerCanvasItemTextureFilter //gd:RenderingServer.CanvasItemTextureFilter
+type CanvasItemTextureFilter int //gd:RenderingServer.CanvasItemTextureFilter
 
 const (
 	/*Uses the default filter mode for this [Viewport].*/
@@ -13012,7 +13020,7 @@ const (
 	CanvasItemTextureFilterMax CanvasItemTextureFilter = 7
 )
 
-type CanvasItemTextureRepeat = gdclass.RenderingServerCanvasItemTextureRepeat //gd:RenderingServer.CanvasItemTextureRepeat
+type CanvasItemTextureRepeat int //gd:RenderingServer.CanvasItemTextureRepeat
 
 const (
 	/*Uses the default repeat mode for this [Viewport].*/
@@ -13027,7 +13035,7 @@ const (
 	CanvasItemTextureRepeatMax CanvasItemTextureRepeat = 4
 )
 
-type CanvasGroupMode = gdclass.RenderingServerCanvasGroupMode //gd:RenderingServer.CanvasGroupMode
+type CanvasGroupMode int //gd:RenderingServer.CanvasGroupMode
 
 const (
 	/*Child draws over parent and is not clipped.*/
@@ -13039,7 +13047,7 @@ const (
 	CanvasGroupModeTransparent CanvasGroupMode = 3
 )
 
-type CanvasLightMode = gdclass.RenderingServerCanvasLightMode //gd:RenderingServer.CanvasLightMode
+type CanvasLightMode int //gd:RenderingServer.CanvasLightMode
 
 const (
 	/*2D point light (see [PointLight2D]).*/
@@ -13048,7 +13056,7 @@ const (
 	CanvasLightModeDirectional CanvasLightMode = 1
 )
 
-type CanvasLightBlendMode = gdclass.RenderingServerCanvasLightBlendMode //gd:RenderingServer.CanvasLightBlendMode
+type CanvasLightBlendMode int //gd:RenderingServer.CanvasLightBlendMode
 
 const (
 	/*Adds light color additive to the canvas.*/
@@ -13059,7 +13067,7 @@ const (
 	CanvasLightBlendModeMix CanvasLightBlendMode = 2
 )
 
-type CanvasLightShadowFilter = gdclass.RenderingServerCanvasLightShadowFilter //gd:RenderingServer.CanvasLightShadowFilter
+type CanvasLightShadowFilter int //gd:RenderingServer.CanvasLightShadowFilter
 
 const (
 	/*Do not apply a filter to canvas light shadows.*/
@@ -13072,7 +13080,7 @@ const (
 	CanvasLightFilterMax CanvasLightShadowFilter = 3
 )
 
-type CanvasOccluderPolygonCullMode = gdclass.RenderingServerCanvasOccluderPolygonCullMode //gd:RenderingServer.CanvasOccluderPolygonCullMode
+type CanvasOccluderPolygonCullMode int //gd:RenderingServer.CanvasOccluderPolygonCullMode
 
 const (
 	/*Culling of the canvas occluder is disabled.*/
@@ -13083,7 +13091,7 @@ const (
 	CanvasOccluderPolygonCullCounterClockwise CanvasOccluderPolygonCullMode = 2
 )
 
-type GlobalShaderParameterType = gdclass.RenderingServerGlobalShaderParameterType //gd:RenderingServer.GlobalShaderParameterType
+type GlobalShaderParameterType int //gd:RenderingServer.GlobalShaderParameterType
 
 const (
 	/*Boolean global shader parameter ([code]global uniform bool ...[/code]).*/
@@ -13148,7 +13156,7 @@ const (
 	GlobalVarTypeMax GlobalShaderParameterType = 29
 )
 
-type RenderingInfo = gdclass.RenderingServerRenderingInfo //gd:RenderingServer.RenderingInfo
+type RenderingInfo int //gd:RenderingServer.RenderingInfo
 
 const (
 	/*Number of objects rendered in the current 3D scene. This varies depending on camera position and rotation.*/
@@ -13175,7 +13183,7 @@ const (
 	RenderingInfoPipelineCompilationsSpecialization RenderingInfo = 10
 )
 
-type PipelineSource = gdclass.RenderingServerPipelineSource //gd:RenderingServer.PipelineSource
+type PipelineSource int //gd:RenderingServer.PipelineSource
 
 const (
 	/*Pipeline compilation that was triggered by the 2D canvas renderer.*/
@@ -13192,7 +13200,7 @@ const (
 	PipelineSourceMax PipelineSource = 5
 )
 
-type Features = gdclass.RenderingServerFeatures //gd:RenderingServer.Features
+type Features int //gd:RenderingServer.Features
 
 const (
 	FeatureShaders       Features = 0

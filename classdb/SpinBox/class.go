@@ -11,8 +11,10 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/GUI"
 import "graphics.gd/classdb/LineEdit"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Range"
@@ -29,6 +31,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -44,6 +50,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,6 +63,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -129,11 +137,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Alignment() HorizontalAlignment {
-	return HorizontalAlignment(class(self).GetHorizontalAlignment())
+func (self Instance) Alignment() GUI.HorizontalAlignment {
+	return GUI.HorizontalAlignment(class(self).GetHorizontalAlignment())
 }
 
-func (self Instance) SetAlignment(value HorizontalAlignment) {
+func (self Instance) SetAlignment(value GUI.HorizontalAlignment) {
 	class(self).SetHorizontalAlignment(value)
 }
 
@@ -186,7 +194,7 @@ func (self Instance) SetSelectAllOnFocus(value bool) {
 }
 
 //go:nosplit
-func (self class) SetHorizontalAlignment(alignment HorizontalAlignment) { //gd:SpinBox.set_horizontal_alignment
+func (self class) SetHorizontalAlignment(alignment GUI.HorizontalAlignment) { //gd:SpinBox.set_horizontal_alignment
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
 	var r_ret = callframe.Nil
@@ -195,9 +203,9 @@ func (self class) SetHorizontalAlignment(alignment HorizontalAlignment) { //gd:S
 }
 
 //go:nosplit
-func (self class) GetHorizontalAlignment() HorizontalAlignment { //gd:SpinBox.get_horizontal_alignment
+func (self class) GetHorizontalAlignment() GUI.HorizontalAlignment { //gd:SpinBox.get_horizontal_alignment
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[HorizontalAlignment](frame)
+	var r_ret = callframe.Ret[GUI.HorizontalAlignment](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpinBox.Bind_get_horizontal_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -380,16 +388,3 @@ func (self Instance) Virtual(name string) reflect.Value {
 func init() {
 	gdclass.Register("SpinBox", func(ptr gd.Object) any { return [1]gdclass.SpinBox{*(*gdclass.SpinBox)(unsafe.Pointer(&ptr))} })
 }
-
-type HorizontalAlignment int
-
-const (
-	/*Horizontal left alignment, usually for text-derived classes.*/
-	HorizontalAlignmentLeft HorizontalAlignment = 0
-	/*Horizontal center alignment, usually for text-derived classes.*/
-	HorizontalAlignmentCenter HorizontalAlignment = 1
-	/*Horizontal right alignment, usually for text-derived classes.*/
-	HorizontalAlignmentRight HorizontalAlignment = 2
-	/*Expand row to fit width, usually for text-derived classes.*/
-	HorizontalAlignmentFill HorizontalAlignment = 3
-)

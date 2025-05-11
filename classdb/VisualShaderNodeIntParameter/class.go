@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/VisualShaderNode"
 import "graphics.gd/classdb/VisualShaderNodeParameter"
@@ -27,6 +28,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -42,6 +47,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -54,6 +60,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -92,11 +99,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Hint() gdclass.VisualShaderNodeIntParameterHint {
-	return gdclass.VisualShaderNodeIntParameterHint(class(self).GetHint())
+func (self Instance) Hint() Hint {
+	return Hint(class(self).GetHint())
 }
 
-func (self Instance) SetHint(value gdclass.VisualShaderNodeIntParameterHint) {
+func (self Instance) SetHint(value Hint) {
 	class(self).SetHint(value)
 }
 
@@ -149,7 +156,7 @@ func (self Instance) SetDefaultValue(value int) {
 }
 
 //go:nosplit
-func (self class) SetHint(hint gdclass.VisualShaderNodeIntParameterHint) { //gd:VisualShaderNodeIntParameter.set_hint
+func (self class) SetHint(hint Hint) { //gd:VisualShaderNodeIntParameter.set_hint
 	var frame = callframe.New()
 	callframe.Arg(frame, hint)
 	var r_ret = callframe.Nil
@@ -158,9 +165,9 @@ func (self class) SetHint(hint gdclass.VisualShaderNodeIntParameterHint) { //gd:
 }
 
 //go:nosplit
-func (self class) GetHint() gdclass.VisualShaderNodeIntParameterHint { //gd:VisualShaderNodeIntParameter.get_hint
+func (self class) GetHint() Hint { //gd:VisualShaderNodeIntParameter.get_hint
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.VisualShaderNodeIntParameterHint](frame)
+	var r_ret = callframe.Ret[Hint](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeIntParameter.Bind_get_hint, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -341,7 +348,7 @@ func init() {
 	})
 }
 
-type Hint = gdclass.VisualShaderNodeIntParameterHint //gd:VisualShaderNodeIntParameter.Hint
+type Hint int //gd:VisualShaderNodeIntParameter.Hint
 
 const (
 	/*The parameter will not constrain its value.*/

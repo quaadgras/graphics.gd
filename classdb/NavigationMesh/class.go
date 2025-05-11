@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Mesh"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/AABB"
@@ -28,6 +29,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -43,6 +48,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,6 +61,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -158,19 +165,19 @@ func (self Instance) SetVertices(value []Vector3.XYZ) {
 	class(self).SetVertices(Packed.New(value...))
 }
 
-func (self Instance) SamplePartitionType() gdclass.NavigationMeshSamplePartitionType {
-	return gdclass.NavigationMeshSamplePartitionType(class(self).GetSamplePartitionType())
+func (self Instance) SamplePartitionType() SamplePartitionType {
+	return SamplePartitionType(class(self).GetSamplePartitionType())
 }
 
-func (self Instance) SetSamplePartitionType(value gdclass.NavigationMeshSamplePartitionType) {
+func (self Instance) SetSamplePartitionType(value SamplePartitionType) {
 	class(self).SetSamplePartitionType(value)
 }
 
-func (self Instance) GeometryParsedGeometryType() gdclass.NavigationMeshParsedGeometryType {
-	return gdclass.NavigationMeshParsedGeometryType(class(self).GetParsedGeometryType())
+func (self Instance) GeometryParsedGeometryType() ParsedGeometryType {
+	return ParsedGeometryType(class(self).GetParsedGeometryType())
 }
 
-func (self Instance) SetGeometryParsedGeometryType(value gdclass.NavigationMeshParsedGeometryType) {
+func (self Instance) SetGeometryParsedGeometryType(value ParsedGeometryType) {
 	class(self).SetParsedGeometryType(value)
 }
 
@@ -182,11 +189,11 @@ func (self Instance) SetGeometryCollisionMask(value int) {
 	class(self).SetCollisionMask(int64(value))
 }
 
-func (self Instance) GeometrySourceGeometryMode() gdclass.NavigationMeshSourceGeometryMode {
-	return gdclass.NavigationMeshSourceGeometryMode(class(self).GetSourceGeometryMode())
+func (self Instance) GeometrySourceGeometryMode() SourceGeometryMode {
+	return SourceGeometryMode(class(self).GetSourceGeometryMode())
 }
 
-func (self Instance) SetGeometrySourceGeometryMode(value gdclass.NavigationMeshSourceGeometryMode) {
+func (self Instance) SetGeometrySourceGeometryMode(value SourceGeometryMode) {
 	class(self).SetSourceGeometryMode(value)
 }
 
@@ -351,7 +358,7 @@ func (self Instance) SetFilterBakingAabbOffset(value Vector3.XYZ) {
 }
 
 //go:nosplit
-func (self class) SetSamplePartitionType(sample_partition_type gdclass.NavigationMeshSamplePartitionType) { //gd:NavigationMesh.set_sample_partition_type
+func (self class) SetSamplePartitionType(sample_partition_type SamplePartitionType) { //gd:NavigationMesh.set_sample_partition_type
 	var frame = callframe.New()
 	callframe.Arg(frame, sample_partition_type)
 	var r_ret = callframe.Nil
@@ -360,9 +367,9 @@ func (self class) SetSamplePartitionType(sample_partition_type gdclass.Navigatio
 }
 
 //go:nosplit
-func (self class) GetSamplePartitionType() gdclass.NavigationMeshSamplePartitionType { //gd:NavigationMesh.get_sample_partition_type
+func (self class) GetSamplePartitionType() SamplePartitionType { //gd:NavigationMesh.get_sample_partition_type
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.NavigationMeshSamplePartitionType](frame)
+	var r_ret = callframe.Ret[SamplePartitionType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMesh.Bind_get_sample_partition_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -370,7 +377,7 @@ func (self class) GetSamplePartitionType() gdclass.NavigationMeshSamplePartition
 }
 
 //go:nosplit
-func (self class) SetParsedGeometryType(geometry_type gdclass.NavigationMeshParsedGeometryType) { //gd:NavigationMesh.set_parsed_geometry_type
+func (self class) SetParsedGeometryType(geometry_type ParsedGeometryType) { //gd:NavigationMesh.set_parsed_geometry_type
 	var frame = callframe.New()
 	callframe.Arg(frame, geometry_type)
 	var r_ret = callframe.Nil
@@ -379,9 +386,9 @@ func (self class) SetParsedGeometryType(geometry_type gdclass.NavigationMeshPars
 }
 
 //go:nosplit
-func (self class) GetParsedGeometryType() gdclass.NavigationMeshParsedGeometryType { //gd:NavigationMesh.get_parsed_geometry_type
+func (self class) GetParsedGeometryType() ParsedGeometryType { //gd:NavigationMesh.get_parsed_geometry_type
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.NavigationMeshParsedGeometryType](frame)
+	var r_ret = callframe.Ret[ParsedGeometryType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMesh.Bind_get_parsed_geometry_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -435,7 +442,7 @@ func (self class) GetCollisionMaskValue(layer_number int64) bool { //gd:Navigati
 }
 
 //go:nosplit
-func (self class) SetSourceGeometryMode(mask gdclass.NavigationMeshSourceGeometryMode) { //gd:NavigationMesh.set_source_geometry_mode
+func (self class) SetSourceGeometryMode(mask SourceGeometryMode) { //gd:NavigationMesh.set_source_geometry_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
 	var r_ret = callframe.Nil
@@ -444,9 +451,9 @@ func (self class) SetSourceGeometryMode(mask gdclass.NavigationMeshSourceGeometr
 }
 
 //go:nosplit
-func (self class) GetSourceGeometryMode() gdclass.NavigationMeshSourceGeometryMode { //gd:NavigationMesh.get_source_geometry_mode
+func (self class) GetSourceGeometryMode() SourceGeometryMode { //gd:NavigationMesh.get_source_geometry_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.NavigationMeshSourceGeometryMode](frame)
+	var r_ret = callframe.Ret[SourceGeometryMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMesh.Bind_get_source_geometry_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -968,7 +975,7 @@ func init() {
 	})
 }
 
-type SamplePartitionType = gdclass.NavigationMeshSamplePartitionType //gd:NavigationMesh.SamplePartitionType
+type SamplePartitionType int //gd:NavigationMesh.SamplePartitionType
 
 const (
 	/*Watershed partitioning. Generally the best choice if you precompute the navigation mesh, use this if you have large open areas.*/
@@ -981,7 +988,7 @@ const (
 	SamplePartitionMax SamplePartitionType = 3
 )
 
-type ParsedGeometryType = gdclass.NavigationMeshParsedGeometryType //gd:NavigationMesh.ParsedGeometryType
+type ParsedGeometryType int //gd:NavigationMesh.ParsedGeometryType
 
 const (
 	/*Parses mesh instances as geometry. This includes [MeshInstance3D], [CSGShape3D], and [GridMap] nodes.*/
@@ -994,7 +1001,7 @@ const (
 	ParsedGeometryMax ParsedGeometryType = 3
 )
 
-type SourceGeometryMode = gdclass.NavigationMeshSourceGeometryMode //gd:NavigationMesh.SourceGeometryMode
+type SourceGeometryMode int //gd:NavigationMesh.SourceGeometryMode
 
 const (
 	/*Scans the child nodes of the root node recursively for geometry.*/

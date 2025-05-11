@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Material"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
@@ -26,6 +27,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -41,6 +46,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -53,6 +59,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -99,24 +106,24 @@ func (self Instance) SetSkyMaterial(value Material.Instance) {
 	class(self).SetMaterial(value)
 }
 
-func (self Instance) ProcessMode() gdclass.SkyProcessMode {
-	return gdclass.SkyProcessMode(class(self).GetProcessMode())
+func (self Instance) ProcessMode() ProcessMode {
+	return ProcessMode(class(self).GetProcessMode())
 }
 
-func (self Instance) SetProcessMode(value gdclass.SkyProcessMode) {
+func (self Instance) SetProcessMode(value ProcessMode) {
 	class(self).SetProcessMode(value)
 }
 
-func (self Instance) RadianceSize() gdclass.SkyRadianceSize {
-	return gdclass.SkyRadianceSize(class(self).GetRadianceSize())
+func (self Instance) RadianceSize() RadianceSize {
+	return RadianceSize(class(self).GetRadianceSize())
 }
 
-func (self Instance) SetRadianceSize(value gdclass.SkyRadianceSize) {
+func (self Instance) SetRadianceSize(value RadianceSize) {
 	class(self).SetRadianceSize(value)
 }
 
 //go:nosplit
-func (self class) SetRadianceSize(size gdclass.SkyRadianceSize) { //gd:Sky.set_radiance_size
+func (self class) SetRadianceSize(size RadianceSize) { //gd:Sky.set_radiance_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -125,9 +132,9 @@ func (self class) SetRadianceSize(size gdclass.SkyRadianceSize) { //gd:Sky.set_r
 }
 
 //go:nosplit
-func (self class) GetRadianceSize() gdclass.SkyRadianceSize { //gd:Sky.get_radiance_size
+func (self class) GetRadianceSize() RadianceSize { //gd:Sky.get_radiance_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.SkyRadianceSize](frame)
+	var r_ret = callframe.Ret[RadianceSize](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sky.Bind_get_radiance_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -135,7 +142,7 @@ func (self class) GetRadianceSize() gdclass.SkyRadianceSize { //gd:Sky.get_radia
 }
 
 //go:nosplit
-func (self class) SetProcessMode(mode gdclass.SkyProcessMode) { //gd:Sky.set_process_mode
+func (self class) SetProcessMode(mode ProcessMode) { //gd:Sky.set_process_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -144,9 +151,9 @@ func (self class) SetProcessMode(mode gdclass.SkyProcessMode) { //gd:Sky.set_pro
 }
 
 //go:nosplit
-func (self class) GetProcessMode() gdclass.SkyProcessMode { //gd:Sky.get_process_mode
+func (self class) GetProcessMode() ProcessMode { //gd:Sky.get_process_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.SkyProcessMode](frame)
+	var r_ret = callframe.Ret[ProcessMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sky.Bind_get_process_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -206,7 +213,7 @@ func init() {
 	gdclass.Register("Sky", func(ptr gd.Object) any { return [1]gdclass.Sky{*(*gdclass.Sky)(unsafe.Pointer(&ptr))} })
 }
 
-type RadianceSize = gdclass.SkyRadianceSize //gd:Sky.RadianceSize
+type RadianceSize int //gd:Sky.RadianceSize
 
 const (
 	/*Radiance texture size is 32×32 pixels.*/
@@ -227,7 +234,7 @@ const (
 	RadianceSizeMax RadianceSize = 7
 )
 
-type ProcessMode = gdclass.SkyProcessMode //gd:Sky.ProcessMode
+type ProcessMode int //gd:Sky.ProcessMode
 
 const (
 	/*Automatically selects the appropriate process mode based on your sky shader. If your shader uses [code]TIME[/code] or [code]POSITION[/code], this will use [constant PROCESS_MODE_REALTIME]. If your shader uses any of the [code]LIGHT_*[/code] variables or any custom uniforms, this uses [constant PROCESS_MODE_INCREMENTAL]. Otherwise, this defaults to [constant PROCESS_MODE_QUALITY].*/

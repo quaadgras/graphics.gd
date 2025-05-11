@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Image"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/Texture"
@@ -29,6 +30,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -44,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,6 +62,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -104,8 +111,8 @@ func CreateFromImage(image Image.Instance) Instance { //gd:ImageTexture.create_f
 /*
 Returns the format of the texture, one of [enum Image.Format].
 */
-func (self Instance) GetFormat() gdclass.ImageFormat { //gd:ImageTexture.get_format
-	return gdclass.ImageFormat(Advanced(self).GetFormat())
+func (self Instance) GetFormat() Image.Format { //gd:ImageTexture.get_format
+	return Image.Format(Advanced(self).GetFormat())
 }
 
 /*
@@ -170,9 +177,9 @@ func (self class) CreateFromImage(image [1]gdclass.Image) [1]gdclass.ImageTextur
 Returns the format of the texture, one of [enum Image.Format].
 */
 //go:nosplit
-func (self class) GetFormat() gdclass.ImageFormat { //gd:ImageTexture.get_format
+func (self class) GetFormat() Image.Format { //gd:ImageTexture.get_format
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ImageFormat](frame)
+	var r_ret = callframe.Ret[Image.Format](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTexture.Bind_get_format, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

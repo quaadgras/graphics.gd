@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/ConcavePolygonShape3D"
 import "graphics.gd/classdb/ConvexPolygonShape3D"
 import "graphics.gd/classdb/Material"
@@ -32,6 +33,10 @@ import "graphics.gd/variant/Vector2i"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -47,6 +52,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -59,6 +65,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -921,7 +928,7 @@ func init() {
 	gdclass.Register("Mesh", func(ptr gd.Object) any { return [1]gdclass.Mesh{*(*gdclass.Mesh)(unsafe.Pointer(&ptr))} })
 }
 
-type PrimitiveType = gdclass.MeshPrimitiveType //gd:Mesh.PrimitiveType
+type PrimitiveType int //gd:Mesh.PrimitiveType
 
 const (
 	/*Render array as points (one vertex equals one point).*/
@@ -936,7 +943,7 @@ const (
 	PrimitiveTriangleStrip PrimitiveType = 4
 )
 
-type ArrayType = gdclass.MeshArrayType //gd:Mesh.ArrayType
+type ArrayType int //gd:Mesh.ArrayType
 
 const (
 	/*[PackedVector3Array], [PackedVector2Array], or [Array] of vertex positions.*/
@@ -971,7 +978,7 @@ const (
 	ArrayMax ArrayType = 13
 )
 
-type ArrayCustomFormat = gdclass.MeshArrayCustomFormat //gd:Mesh.ArrayCustomFormat
+type ArrayCustomFormat int //gd:Mesh.ArrayCustomFormat
 
 const (
 	/*Indicates this custom channel contains unsigned normalized byte colors from 0 to 1, encoded as [PackedByteArray].*/
@@ -994,7 +1001,7 @@ const (
 	ArrayCustomMax ArrayCustomFormat = 8
 )
 
-type ArrayFormat = gdclass.MeshArrayFormat //gd:Mesh.ArrayFormat
+type ArrayFormat int //gd:Mesh.ArrayFormat
 
 const (
 	/*Mesh array contains vertices. All meshes require a vertex array so this should always be present.*/
@@ -1053,7 +1060,7 @@ const (
 	ArrayFlagCompressAttributes ArrayFormat = 536870912
 )
 
-type BlendShapeMode = gdclass.MeshBlendShapeMode //gd:Mesh.BlendShapeMode
+type BlendShapeMode int //gd:Mesh.BlendShapeMode
 
 const (
 	/*Blend shapes are normalized.*/

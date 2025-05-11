@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/Input"
 import "graphics.gd/classdb/InputEvent"
 import "graphics.gd/classdb/InputEventFromWindow"
 import "graphics.gd/classdb/InputEventWithModifiers"
@@ -29,6 +31,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -44,6 +50,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,6 +63,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -94,11 +102,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) ButtonMask() MouseButtonMask {
-	return MouseButtonMask(class(self).GetButtonMask())
+func (self Instance) ButtonMask() Input.MouseButtonMask {
+	return Input.MouseButtonMask(class(self).GetButtonMask())
 }
 
-func (self Instance) SetButtonMask(value MouseButtonMask) {
+func (self Instance) SetButtonMask(value Input.MouseButtonMask) {
 	class(self).SetButtonMask(value)
 }
 
@@ -119,7 +127,7 @@ func (self Instance) SetGlobalPosition(value Vector2.XY) {
 }
 
 //go:nosplit
-func (self class) SetButtonMask(button_mask MouseButtonMask) { //gd:InputEventMouse.set_button_mask
+func (self class) SetButtonMask(button_mask Input.MouseButtonMask) { //gd:InputEventMouse.set_button_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, button_mask)
 	var r_ret = callframe.Nil
@@ -128,9 +136,9 @@ func (self class) SetButtonMask(button_mask MouseButtonMask) { //gd:InputEventMo
 }
 
 //go:nosplit
-func (self class) GetButtonMask() MouseButtonMask { //gd:InputEventMouse.get_button_mask
+func (self class) GetButtonMask() Input.MouseButtonMask { //gd:InputEventMouse.get_button_mask
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[MouseButtonMask](frame)
+	var r_ret = callframe.Ret[Input.MouseButtonMask](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMouse.Bind_get_button_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -235,18 +243,3 @@ func init() {
 		return [1]gdclass.InputEventMouse{*(*gdclass.InputEventMouse)(unsafe.Pointer(&ptr))}
 	})
 }
-
-type MouseButtonMask int
-
-const (
-	/*Primary mouse button mask, usually for the left button.*/
-	MouseButtonMaskLeft MouseButtonMask = 1
-	/*Secondary mouse button mask, usually for the right button.*/
-	MouseButtonMaskRight MouseButtonMask = 2
-	/*Middle mouse button mask.*/
-	MouseButtonMaskMiddle MouseButtonMask = 4
-	/*Extra mouse button 1 mask.*/
-	MouseButtonMaskMbXbutton1 MouseButtonMask = 128
-	/*Extra mouse button 2 mask.*/
-	MouseButtonMaskMbXbutton2 MouseButtonMask = 256
-)

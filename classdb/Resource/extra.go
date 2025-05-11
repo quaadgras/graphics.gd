@@ -89,7 +89,7 @@ func singleton() {
 	self = *(*[1]gdclass.ResourceLoader)(unsafe.Pointer(&obj))
 }
 
-func load(path String.Readable, type_hint String.Readable, cache_mode gdclass.ResourceLoaderCacheMode) [1]gdclass.Resource { //gd:ResourceLoader.load
+func load(path String.Readable, type_hint String.Readable, cache_mode int) [1]gdclass.Resource { //gd:ResourceLoader.load
 	once.Do(singleton)
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))

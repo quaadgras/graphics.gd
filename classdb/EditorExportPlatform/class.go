@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/EditorExportPreset"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -25,6 +26,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -40,6 +45,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -52,6 +58,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -141,7 +148,7 @@ func (self Instance) SaveZipPatch(preset EditorExportPreset.Instance, debug bool
 /*
 Generates array of command line arguments for the default export templates for the debug flags and editor settings.
 */
-func (self Instance) GenExportFlags(flags gdclass.EditorExportPlatformDebugFlags) []string { //gd:EditorExportPlatform.gen_export_flags
+func (self Instance) GenExportFlags(flags DebugFlags) []string { //gd:EditorExportPlatform.gen_export_flags
 	return []string(Advanced(self).GenExportFlags(flags).Strings())
 }
 
@@ -175,7 +182,7 @@ func (self Instance) ExportProject(preset EditorExportPreset.Instance, debug boo
 /*
 Creates a full project at [param path] for the specified [param preset].
 */
-func (self Expanded) ExportProject(preset EditorExportPreset.Instance, debug bool, path string, flags gdclass.EditorExportPlatformDebugFlags) error { //gd:EditorExportPlatform.export_project
+func (self Expanded) ExportProject(preset EditorExportPreset.Instance, debug bool, path string, flags DebugFlags) error { //gd:EditorExportPlatform.export_project
 	return error(gd.ToError(Advanced(self).ExportProject(preset, debug, String.New(path), flags)))
 }
 
@@ -189,7 +196,7 @@ func (self Instance) ExportPack(preset EditorExportPreset.Instance, debug bool, 
 /*
 Creates a PCK archive at [param path] for the specified [param preset].
 */
-func (self Expanded) ExportPack(preset EditorExportPreset.Instance, debug bool, path string, flags gdclass.EditorExportPlatformDebugFlags) error { //gd:EditorExportPlatform.export_pack
+func (self Expanded) ExportPack(preset EditorExportPreset.Instance, debug bool, path string, flags DebugFlags) error { //gd:EditorExportPlatform.export_pack
 	return error(gd.ToError(Advanced(self).ExportPack(preset, debug, String.New(path), flags)))
 }
 
@@ -203,7 +210,7 @@ func (self Instance) ExportZip(preset EditorExportPreset.Instance, debug bool, p
 /*
 Create a ZIP archive at [param path] for the specified [param preset].
 */
-func (self Expanded) ExportZip(preset EditorExportPreset.Instance, debug bool, path string, flags gdclass.EditorExportPlatformDebugFlags) error { //gd:EditorExportPlatform.export_zip
+func (self Expanded) ExportZip(preset EditorExportPreset.Instance, debug bool, path string, flags DebugFlags) error { //gd:EditorExportPlatform.export_zip
 	return error(gd.ToError(Advanced(self).ExportZip(preset, debug, String.New(path), flags)))
 }
 
@@ -219,7 +226,7 @@ func (self Instance) ExportPackPatch(preset EditorExportPreset.Instance, debug b
 Creates a patch PCK archive at [param path] for the specified [param preset], containing only the files that have changed since the last patch.
 [b]Note:[/b] [param patches] is an optional override of the set of patches defined in the export preset. When empty the patches defined in the export preset will be used instead.
 */
-func (self Expanded) ExportPackPatch(preset EditorExportPreset.Instance, debug bool, path string, patches []string, flags gdclass.EditorExportPlatformDebugFlags) error { //gd:EditorExportPlatform.export_pack_patch
+func (self Expanded) ExportPackPatch(preset EditorExportPreset.Instance, debug bool, path string, patches []string, flags DebugFlags) error { //gd:EditorExportPlatform.export_pack_patch
 	return error(gd.ToError(Advanced(self).ExportPackPatch(preset, debug, String.New(path), Packed.MakeStrings(patches...), flags)))
 }
 
@@ -235,7 +242,7 @@ func (self Instance) ExportZipPatch(preset EditorExportPreset.Instance, debug bo
 Create a patch ZIP archive at [param path] for the specified [param preset], containing only the files that have changed since the last patch.
 [b]Note:[/b] [param patches] is an optional override of the set of patches defined in the export preset. When empty the patches defined in the export preset will be used instead.
 */
-func (self Expanded) ExportZipPatch(preset EditorExportPreset.Instance, debug bool, path string, patches []string, flags gdclass.EditorExportPlatformDebugFlags) error { //gd:EditorExportPlatform.export_zip_patch
+func (self Expanded) ExportZipPatch(preset EditorExportPreset.Instance, debug bool, path string, patches []string, flags DebugFlags) error { //gd:EditorExportPlatform.export_zip_patch
 	return error(gd.ToError(Advanced(self).ExportZipPatch(preset, debug, String.New(path), Packed.MakeStrings(patches...), flags)))
 }
 
@@ -249,7 +256,7 @@ func (self Instance) ClearMessages() { //gd:EditorExportPlatform.clear_messages
 /*
 Adds a message to the export log that will be displayed when exporting ends.
 */
-func (self Instance) AddMessage(atype gdclass.EditorExportPlatformExportMessageType, category string, message string) { //gd:EditorExportPlatform.add_message
+func (self Instance) AddMessage(atype ExportMessageType, category string, message string) { //gd:EditorExportPlatform.add_message
 	Advanced(self).AddMessage(atype, String.New(category), String.New(message))
 }
 
@@ -263,8 +270,8 @@ func (self Instance) GetMessageCount() int { //gd:EditorExportPlatform.get_messa
 /*
 Returns message type, for the message with [param index].
 */
-func (self Instance) GetMessageType(index int) gdclass.EditorExportPlatformExportMessageType { //gd:EditorExportPlatform.get_message_type
-	return gdclass.EditorExportPlatformExportMessageType(Advanced(self).GetMessageType(int64(index)))
+func (self Instance) GetMessageType(index int) ExportMessageType { //gd:EditorExportPlatform.get_message_type
+	return ExportMessageType(Advanced(self).GetMessageType(int64(index)))
 }
 
 /*
@@ -284,8 +291,8 @@ func (self Instance) GetMessageText(index int) string { //gd:EditorExportPlatfor
 /*
 Returns most severe message type currently present in the export log.
 */
-func (self Instance) GetWorstMessageType() gdclass.EditorExportPlatformExportMessageType { //gd:EditorExportPlatform.get_worst_message_type
-	return gdclass.EditorExportPlatformExportMessageType(Advanced(self).GetWorstMessageType())
+func (self Instance) GetWorstMessageType() ExportMessageType { //gd:EditorExportPlatform.get_worst_message_type
+	return ExportMessageType(Advanced(self).GetWorstMessageType())
 }
 
 /*
@@ -481,7 +488,7 @@ func (self class) SaveZipPatch(preset [1]gdclass.EditorExportPreset, debug bool,
 Generates array of command line arguments for the default export templates for the debug flags and editor settings.
 */
 //go:nosplit
-func (self class) GenExportFlags(flags gdclass.EditorExportPlatformDebugFlags) Packed.Strings { //gd:EditorExportPlatform.gen_export_flags
+func (self class) GenExportFlags(flags DebugFlags) Packed.Strings { //gd:EditorExportPlatform.gen_export_flags
 	var frame = callframe.New()
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -515,7 +522,7 @@ func (self class) ExportProjectFiles(preset [1]gdclass.EditorExportPreset, debug
 Creates a full project at [param path] for the specified [param preset].
 */
 //go:nosplit
-func (self class) ExportProject(preset [1]gdclass.EditorExportPreset, debug bool, path String.Readable, flags gdclass.EditorExportPlatformDebugFlags) Error.Code { //gd:EditorExportPlatform.export_project
+func (self class) ExportProject(preset [1]gdclass.EditorExportPreset, debug bool, path String.Readable, flags DebugFlags) Error.Code { //gd:EditorExportPlatform.export_project
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(preset[0])[0])
 	callframe.Arg(frame, debug)
@@ -532,7 +539,7 @@ func (self class) ExportProject(preset [1]gdclass.EditorExportPreset, debug bool
 Creates a PCK archive at [param path] for the specified [param preset].
 */
 //go:nosplit
-func (self class) ExportPack(preset [1]gdclass.EditorExportPreset, debug bool, path String.Readable, flags gdclass.EditorExportPlatformDebugFlags) Error.Code { //gd:EditorExportPlatform.export_pack
+func (self class) ExportPack(preset [1]gdclass.EditorExportPreset, debug bool, path String.Readable, flags DebugFlags) Error.Code { //gd:EditorExportPlatform.export_pack
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(preset[0])[0])
 	callframe.Arg(frame, debug)
@@ -549,7 +556,7 @@ func (self class) ExportPack(preset [1]gdclass.EditorExportPreset, debug bool, p
 Create a ZIP archive at [param path] for the specified [param preset].
 */
 //go:nosplit
-func (self class) ExportZip(preset [1]gdclass.EditorExportPreset, debug bool, path String.Readable, flags gdclass.EditorExportPlatformDebugFlags) Error.Code { //gd:EditorExportPlatform.export_zip
+func (self class) ExportZip(preset [1]gdclass.EditorExportPreset, debug bool, path String.Readable, flags DebugFlags) Error.Code { //gd:EditorExportPlatform.export_zip
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(preset[0])[0])
 	callframe.Arg(frame, debug)
@@ -567,7 +574,7 @@ Creates a patch PCK archive at [param path] for the specified [param preset], co
 [b]Note:[/b] [param patches] is an optional override of the set of patches defined in the export preset. When empty the patches defined in the export preset will be used instead.
 */
 //go:nosplit
-func (self class) ExportPackPatch(preset [1]gdclass.EditorExportPreset, debug bool, path String.Readable, patches Packed.Strings, flags gdclass.EditorExportPlatformDebugFlags) Error.Code { //gd:EditorExportPlatform.export_pack_patch
+func (self class) ExportPackPatch(preset [1]gdclass.EditorExportPreset, debug bool, path String.Readable, patches Packed.Strings, flags DebugFlags) Error.Code { //gd:EditorExportPlatform.export_pack_patch
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(preset[0])[0])
 	callframe.Arg(frame, debug)
@@ -586,7 +593,7 @@ Create a patch ZIP archive at [param path] for the specified [param preset], con
 [b]Note:[/b] [param patches] is an optional override of the set of patches defined in the export preset. When empty the patches defined in the export preset will be used instead.
 */
 //go:nosplit
-func (self class) ExportZipPatch(preset [1]gdclass.EditorExportPreset, debug bool, path String.Readable, patches Packed.Strings, flags gdclass.EditorExportPlatformDebugFlags) Error.Code { //gd:EditorExportPlatform.export_zip_patch
+func (self class) ExportZipPatch(preset [1]gdclass.EditorExportPreset, debug bool, path String.Readable, patches Packed.Strings, flags DebugFlags) Error.Code { //gd:EditorExportPlatform.export_zip_patch
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(preset[0])[0])
 	callframe.Arg(frame, debug)
@@ -615,7 +622,7 @@ func (self class) ClearMessages() { //gd:EditorExportPlatform.clear_messages
 Adds a message to the export log that will be displayed when exporting ends.
 */
 //go:nosplit
-func (self class) AddMessage(atype gdclass.EditorExportPlatformExportMessageType, category String.Readable, message String.Readable) { //gd:EditorExportPlatform.add_message
+func (self class) AddMessage(atype ExportMessageType, category String.Readable, message String.Readable) { //gd:EditorExportPlatform.add_message
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(category)))
@@ -642,10 +649,10 @@ func (self class) GetMessageCount() int64 { //gd:EditorExportPlatform.get_messag
 Returns message type, for the message with [param index].
 */
 //go:nosplit
-func (self class) GetMessageType(index int64) gdclass.EditorExportPlatformExportMessageType { //gd:EditorExportPlatform.get_message_type
+func (self class) GetMessageType(index int64) ExportMessageType { //gd:EditorExportPlatform.get_message_type
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[gdclass.EditorExportPlatformExportMessageType](frame)
+	var r_ret = callframe.Ret[ExportMessageType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlatform.Bind_get_message_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -684,9 +691,9 @@ func (self class) GetMessageText(index int64) String.Readable { //gd:EditorExpor
 Returns most severe message type currently present in the export log.
 */
 //go:nosplit
-func (self class) GetWorstMessageType() gdclass.EditorExportPlatformExportMessageType { //gd:EditorExportPlatform.get_worst_message_type
+func (self class) GetWorstMessageType() ExportMessageType { //gd:EditorExportPlatform.get_worst_message_type
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.EditorExportPlatformExportMessageType](frame)
+	var r_ret = callframe.Ret[ExportMessageType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlatform.Bind_get_worst_message_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -807,7 +814,7 @@ func init() {
 	})
 }
 
-type ExportMessageType = gdclass.EditorExportPlatformExportMessageType //gd:EditorExportPlatform.ExportMessageType
+type ExportMessageType int //gd:EditorExportPlatform.ExportMessageType
 
 const (
 	/*Invalid message type used as the default value when no type is specified.*/
@@ -820,7 +827,7 @@ const (
 	ExportMessageError ExportMessageType = 3
 )
 
-type DebugFlags = gdclass.EditorExportPlatformDebugFlags //gd:EditorExportPlatform.DebugFlags
+type DebugFlags int //gd:EditorExportPlatform.DebugFlags
 
 const (
 	/*Flag is set if remotely debugged project is expected to use remote file system. If set, [method gen_export_flags] will add [code]--remote-fs[/code] and [code]--remote-fs-password[/code] (if password is set in the editor settings) command line arguments to the list.*/

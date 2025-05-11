@@ -11,8 +11,10 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Mesh"
 import "graphics.gd/classdb/NavigationMesh"
+import "graphics.gd/classdb/RenderingServer"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
@@ -29,6 +31,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform3D"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -44,6 +50,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,6 +63,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -107,7 +115,7 @@ func (self Instance) SetItemMeshTransform(id int, mesh_transform Transform3D.Bas
 /*
 Sets the item's shadow casting mode. See [enum RenderingServer.ShadowCastingSetting] for possible values.
 */
-func (self Instance) SetItemMeshCastShadow(id int, shadow_casting_setting gdclass.RenderingServerShadowCastingSetting) { //gd:MeshLibrary.set_item_mesh_cast_shadow
+func (self Instance) SetItemMeshCastShadow(id int, shadow_casting_setting RenderingServer.ShadowCastingSetting) { //gd:MeshLibrary.set_item_mesh_cast_shadow
 	Advanced(self).SetItemMeshCastShadow(int64(id), shadow_casting_setting)
 }
 
@@ -171,8 +179,8 @@ func (self Instance) GetItemMeshTransform(id int) Transform3D.BasisOrigin { //gd
 /*
 Returns the item's shadow casting mode. See [enum RenderingServer.ShadowCastingSetting] for possible values.
 */
-func (self Instance) GetItemMeshCastShadow(id int) gdclass.RenderingServerShadowCastingSetting { //gd:MeshLibrary.get_item_mesh_cast_shadow
-	return gdclass.RenderingServerShadowCastingSetting(Advanced(self).GetItemMeshCastShadow(int64(id)))
+func (self Instance) GetItemMeshCastShadow(id int) RenderingServer.ShadowCastingSetting { //gd:MeshLibrary.get_item_mesh_cast_shadow
+	return RenderingServer.ShadowCastingSetting(Advanced(self).GetItemMeshCastShadow(int64(id)))
 }
 
 /*
@@ -323,7 +331,7 @@ func (self class) SetItemMeshTransform(id int64, mesh_transform Transform3D.Basi
 Sets the item's shadow casting mode. See [enum RenderingServer.ShadowCastingSetting] for possible values.
 */
 //go:nosplit
-func (self class) SetItemMeshCastShadow(id int64, shadow_casting_setting gdclass.RenderingServerShadowCastingSetting) { //gd:MeshLibrary.set_item_mesh_cast_shadow
+func (self class) SetItemMeshCastShadow(id int64, shadow_casting_setting RenderingServer.ShadowCastingSetting) { //gd:MeshLibrary.set_item_mesh_cast_shadow
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
 	callframe.Arg(frame, shadow_casting_setting)
@@ -444,10 +452,10 @@ func (self class) GetItemMeshTransform(id int64) Transform3D.BasisOrigin { //gd:
 Returns the item's shadow casting mode. See [enum RenderingServer.ShadowCastingSetting] for possible values.
 */
 //go:nosplit
-func (self class) GetItemMeshCastShadow(id int64) gdclass.RenderingServerShadowCastingSetting { //gd:MeshLibrary.get_item_mesh_cast_shadow
+func (self class) GetItemMeshCastShadow(id int64) RenderingServer.ShadowCastingSetting { //gd:MeshLibrary.get_item_mesh_cast_shadow
 	var frame = callframe.New()
 	callframe.Arg(frame, id)
-	var r_ret = callframe.Ret[gdclass.RenderingServerShadowCastingSetting](frame)
+	var r_ret = callframe.Ret[RenderingServer.ShadowCastingSetting](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_get_item_mesh_cast_shadow, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/ENetPacketPeer"
 import "graphics.gd/classdb/TLSOptions"
 import "graphics.gd/variant/Array"
@@ -26,6 +27,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -41,6 +46,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -53,6 +59,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -188,7 +195,7 @@ Sets the compression method used for network packets. These have different trade
 [b]Note:[/b] Most games' network design involve sending many small packets frequently (smaller than 4 KB each). If in doubt, it is recommended to keep the default compression algorithm as it works best on these small packets.
 [b]Note:[/b] The compression mode must be set to the same value on both the server and all its clients. Clients will fail to connect if the compression mode set on the client differs from the one set on the server.
 */
-func (self Instance) Compress(mode gdclass.ENetConnectionCompressionMode) { //gd:ENetConnection.compress
+func (self Instance) Compress(mode CompressionMode) { //gd:ENetConnection.compress
 	Advanced(self).Compress(mode)
 }
 
@@ -224,7 +231,7 @@ func (self Instance) RefuseNewConnections(refuse bool) { //gd:ENetConnection.ref
 /*
 Returns and resets host statistics. See [enum HostStatistic] for more info.
 */
-func (self Instance) PopStatistic(statistic gdclass.ENetConnectionHostStatistic) Float.X { //gd:ENetConnection.pop_statistic
+func (self Instance) PopStatistic(statistic HostStatistic) Float.X { //gd:ENetConnection.pop_statistic
 	return Float.X(Float.X(Advanced(self).PopStatistic(statistic)))
 }
 
@@ -419,7 +426,7 @@ Sets the compression method used for network packets. These have different trade
 [b]Note:[/b] The compression mode must be set to the same value on both the server and all its clients. Clients will fail to connect if the compression mode set on the client differs from the one set on the server.
 */
 //go:nosplit
-func (self class) Compress(mode gdclass.ENetConnectionCompressionMode) { //gd:ENetConnection.compress
+func (self class) Compress(mode CompressionMode) { //gd:ENetConnection.compress
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -473,7 +480,7 @@ func (self class) RefuseNewConnections(refuse bool) { //gd:ENetConnection.refuse
 Returns and resets host statistics. See [enum HostStatistic] for more info.
 */
 //go:nosplit
-func (self class) PopStatistic(statistic gdclass.ENetConnectionHostStatistic) float64 { //gd:ENetConnection.pop_statistic
+func (self class) PopStatistic(statistic HostStatistic) float64 { //gd:ENetConnection.pop_statistic
 	var frame = callframe.New()
 	callframe.Arg(frame, statistic)
 	var r_ret = callframe.Ret[float64](frame)
@@ -568,7 +575,7 @@ func init() {
 	})
 }
 
-type CompressionMode = gdclass.ENetConnectionCompressionMode //gd:ENetConnection.CompressionMode
+type CompressionMode int //gd:ENetConnection.CompressionMode
 
 const (
 	/*No compression. This uses the most bandwidth, but has the upside of requiring the fewest CPU resources. This option may also be used to make network debugging using tools like Wireshark easier.*/
@@ -583,7 +590,7 @@ const (
 	CompressZstd CompressionMode = 4
 )
 
-type EventType = gdclass.ENetConnectionEventType //gd:ENetConnection.EventType
+type EventType int //gd:ENetConnection.EventType
 
 const (
 	/*An error occurred during [method service]. You will likely need to [method destroy] the host and recreate it.*/
@@ -598,7 +605,7 @@ const (
 	EventReceive EventType = 3
 )
 
-type HostStatistic = gdclass.ENetConnectionHostStatistic //gd:ENetConnection.HostStatistic
+type HostStatistic int //gd:ENetConnection.HostStatistic
 
 const (
 	/*Total data sent.*/

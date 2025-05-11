@@ -16,6 +16,15 @@ const (
 	SideBottom Side = 3
 )
 
+type Corner int
+
+const (
+	CornerTopLeft     Corner = 0
+	CornerTopRight    Corner = 1
+	CornerBottomRight Corner = 2
+	CornerBottomLeft  Corner = 3
+)
+
 // PositionSize represents an axis-aligned rectangle in a 2D space.
 // It is defined by its position and size, which are Vector2. It is frequently used for
 // fast overlap tests (see intersects). Although [PositionSize] itself is axis-aligned,

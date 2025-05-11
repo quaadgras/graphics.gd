@@ -11,7 +11,10 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/GUI"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/TextServer"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -28,6 +31,10 @@ import "graphics.gd/variant/Transform2D"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -43,6 +50,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,6 +63,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -200,8 +209,8 @@ func (self Instance) GetOtNameStrings() map[string]string { //gd:Font.get_ot_nam
 /*
 Returns font style flags, see [enum TextServer.FontStyle].
 */
-func (self Instance) GetFontStyle() gdclass.TextServerFontStyle { //gd:Font.get_font_style
-	return gdclass.TextServerFontStyle(Advanced(self).GetFontStyle())
+func (self Instance) GetFontStyle() TextServer.FontStyle { //gd:Font.get_font_style
+	return TextServer.FontStyle(Advanced(self).GetFontStyle())
 }
 
 /*
@@ -221,7 +230,7 @@ func (self Instance) GetFontStretch() int { //gd:Font.get_font_stretch
 /*
 Returns the spacing for the given [code]type[/code] (see [enum TextServer.SpacingType]).
 */
-func (self Instance) GetSpacing(spacing gdclass.TextServerSpacingType) int { //gd:Font.get_spacing
+func (self Instance) GetSpacing(spacing TextServer.SpacingType) int { //gd:Font.get_spacing
 	return int(int(Advanced(self).GetSpacing(spacing)))
 }
 
@@ -273,7 +282,7 @@ Vector2 stringSize = label.GetThemeFont("font").GetStringSize(label.Text, Horizo
 [b]Note:[/b] Since kerning, advance and subpixel positioning are taken into account by [method get_string_size], using separate [method get_string_size] calls on substrings of a string then adding the results together will return a different result compared to using a single [method get_string_size] call on the full string.
 [b]Note:[/b] Real height of the string is context-dependent and can be significantly different from the value returned by [method get_height].
 */
-func (self Expanded) GetStringSize(text string, alignment HorizontalAlignment, width Float.X, font_size int, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) Vector2.XY { //gd:Font.get_string_size
+func (self Expanded) GetStringSize(text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) Vector2.XY { //gd:Font.get_string_size
 	return Vector2.XY(Advanced(self).GetStringSize(String.New(text), alignment, float64(width), int64(font_size), justification_flags, direction, orientation))
 }
 
@@ -289,7 +298,7 @@ func (self Instance) GetMultilineStringSize(text string) Vector2.XY { //gd:Font.
 Returns the size of a bounding box of a string broken into the lines, taking kerning and advance into account.
 See also [method draw_multiline_string].
 */
-func (self Expanded) GetMultilineStringSize(text string, alignment HorizontalAlignment, width Float.X, font_size int, max_lines int, brk_flags gdclass.TextServerLineBreakFlag, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) Vector2.XY { //gd:Font.get_multiline_string_size
+func (self Expanded) GetMultilineStringSize(text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, max_lines int, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) Vector2.XY { //gd:Font.get_multiline_string_size
 	return Vector2.XY(Advanced(self).GetMultilineStringSize(String.New(text), alignment, float64(width), int64(font_size), int64(max_lines), brk_flags, justification_flags, direction, orientation))
 }
 
@@ -305,7 +314,7 @@ func (self Instance) DrawString(canvas_item RID.CanvasItem, pos Vector2.XY, text
 Draw [param text] into a canvas item using the font, at a given position, with [param modulate] color, optionally clipping the width and aligning horizontally. [param pos] specifies the baseline, not the top. To draw from the top, [i]ascent[/i] must be added to the Y axis.
 See also [method CanvasItem.draw_string].
 */
-func (self Expanded) DrawString(canvas_item RID.CanvasItem, pos Vector2.XY, text string, alignment HorizontalAlignment, width Float.X, font_size int, modulate Color.RGBA, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:Font.draw_string
+func (self Expanded) DrawString(canvas_item RID.CanvasItem, pos Vector2.XY, text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, modulate Color.RGBA, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) { //gd:Font.draw_string
 	Advanced(self).DrawString(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), alignment, float64(width), int64(font_size), Color.RGBA(modulate), justification_flags, direction, orientation)
 }
 
@@ -321,7 +330,7 @@ func (self Instance) DrawMultilineString(canvas_item RID.CanvasItem, pos Vector2
 Breaks [param text] into lines using rules specified by [param brk_flags] and draws it into a canvas item using the font, at a given position, with [param modulate] color, optionally clipping the width and aligning horizontally. [param pos] specifies the baseline of the first line, not the top. To draw from the top, [i]ascent[/i] must be added to the Y axis.
 See also [method CanvasItem.draw_multiline_string].
 */
-func (self Expanded) DrawMultilineString(canvas_item RID.CanvasItem, pos Vector2.XY, text string, alignment HorizontalAlignment, width Float.X, font_size int, max_lines int, modulate Color.RGBA, brk_flags gdclass.TextServerLineBreakFlag, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:Font.draw_multiline_string
+func (self Expanded) DrawMultilineString(canvas_item RID.CanvasItem, pos Vector2.XY, text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, max_lines int, modulate Color.RGBA, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) { //gd:Font.draw_multiline_string
 	Advanced(self).DrawMultilineString(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), alignment, float64(width), int64(font_size), int64(max_lines), Color.RGBA(modulate), brk_flags, justification_flags, direction, orientation)
 }
 
@@ -337,7 +346,7 @@ func (self Instance) DrawStringOutline(canvas_item RID.CanvasItem, pos Vector2.X
 Draw [param text] outline into a canvas item using the font, at a given position, with [param modulate] color and [param size] outline size, optionally clipping the width and aligning horizontally. [param pos] specifies the baseline, not the top. To draw from the top, [i]ascent[/i] must be added to the Y axis.
 See also [method CanvasItem.draw_string_outline].
 */
-func (self Expanded) DrawStringOutline(canvas_item RID.CanvasItem, pos Vector2.XY, text string, alignment HorizontalAlignment, width Float.X, font_size int, size int, modulate Color.RGBA, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:Font.draw_string_outline
+func (self Expanded) DrawStringOutline(canvas_item RID.CanvasItem, pos Vector2.XY, text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, size int, modulate Color.RGBA, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) { //gd:Font.draw_string_outline
 	Advanced(self).DrawStringOutline(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), alignment, float64(width), int64(font_size), int64(size), Color.RGBA(modulate), justification_flags, direction, orientation)
 }
 
@@ -353,7 +362,7 @@ func (self Instance) DrawMultilineStringOutline(canvas_item RID.CanvasItem, pos 
 Breaks [param text] to the lines using rules specified by [param brk_flags] and draws text outline into a canvas item using the font, at a given position, with [param modulate] color and [param size] outline size, optionally clipping the width and aligning horizontally. [param pos] specifies the baseline of the first line, not the top. To draw from the top, [i]ascent[/i] must be added to the Y axis.
 See also [method CanvasItem.draw_multiline_string_outline].
 */
-func (self Expanded) DrawMultilineStringOutline(canvas_item RID.CanvasItem, pos Vector2.XY, text string, alignment HorizontalAlignment, width Float.X, font_size int, max_lines int, size int, modulate Color.RGBA, brk_flags gdclass.TextServerLineBreakFlag, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:Font.draw_multiline_string_outline
+func (self Expanded) DrawMultilineStringOutline(canvas_item RID.CanvasItem, pos Vector2.XY, text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, max_lines int, size int, modulate Color.RGBA, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) { //gd:Font.draw_multiline_string_outline
 	Advanced(self).DrawMultilineStringOutline(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), alignment, float64(width), int64(font_size), int64(max_lines), int64(size), Color.RGBA(modulate), brk_flags, justification_flags, direction, orientation)
 }
 
@@ -661,9 +670,9 @@ func (self class) GetOtNameStrings() Dictionary.Any { //gd:Font.get_ot_name_stri
 Returns font style flags, see [enum TextServer.FontStyle].
 */
 //go:nosplit
-func (self class) GetFontStyle() gdclass.TextServerFontStyle { //gd:Font.get_font_style
+func (self class) GetFontStyle() TextServer.FontStyle { //gd:Font.get_font_style
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TextServerFontStyle](frame)
+	var r_ret = callframe.Ret[TextServer.FontStyle](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Font.Bind_get_font_style, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -700,7 +709,7 @@ func (self class) GetFontStretch() int64 { //gd:Font.get_font_stretch
 Returns the spacing for the given [code]type[/code] (see [enum TextServer.SpacingType]).
 */
 //go:nosplit
-func (self class) GetSpacing(spacing gdclass.TextServerSpacingType) int64 { //gd:Font.get_spacing
+func (self class) GetSpacing(spacing TextServer.SpacingType) int64 { //gd:Font.get_spacing
 	var frame = callframe.New()
 	callframe.Arg(frame, spacing)
 	var r_ret = callframe.Ret[int64](frame)
@@ -752,7 +761,7 @@ Vector2 stringSize = label.GetThemeFont("font").GetStringSize(label.Text, Horizo
 [b]Note:[/b] Real height of the string is context-dependent and can be significantly different from the value returned by [method get_height].
 */
 //go:nosplit
-func (self class) GetStringSize(text String.Readable, alignment HorizontalAlignment, width float64, font_size int64, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) Vector2.XY { //gd:Font.get_string_size
+func (self class) GetStringSize(text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) Vector2.XY { //gd:Font.get_string_size
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	callframe.Arg(frame, alignment)
@@ -773,7 +782,7 @@ Returns the size of a bounding box of a string broken into the lines, taking ker
 See also [method draw_multiline_string].
 */
 //go:nosplit
-func (self class) GetMultilineStringSize(text String.Readable, alignment HorizontalAlignment, width float64, font_size int64, max_lines int64, brk_flags gdclass.TextServerLineBreakFlag, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) Vector2.XY { //gd:Font.get_multiline_string_size
+func (self class) GetMultilineStringSize(text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, max_lines int64, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) Vector2.XY { //gd:Font.get_multiline_string_size
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
 	callframe.Arg(frame, alignment)
@@ -796,7 +805,7 @@ Draw [param text] into a canvas item using the font, at a given position, with [
 See also [method CanvasItem.draw_string].
 */
 //go:nosplit
-func (self class) DrawString(canvas_item RID.Any, pos Vector2.XY, text String.Readable, alignment HorizontalAlignment, width float64, font_size int64, modulate Color.RGBA, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:Font.draw_string
+func (self class) DrawString(canvas_item RID.Any, pos Vector2.XY, text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, modulate Color.RGBA, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) { //gd:Font.draw_string
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas_item)
 	callframe.Arg(frame, pos)
@@ -818,7 +827,7 @@ Breaks [param text] into lines using rules specified by [param brk_flags] and dr
 See also [method CanvasItem.draw_multiline_string].
 */
 //go:nosplit
-func (self class) DrawMultilineString(canvas_item RID.Any, pos Vector2.XY, text String.Readable, alignment HorizontalAlignment, width float64, font_size int64, max_lines int64, modulate Color.RGBA, brk_flags gdclass.TextServerLineBreakFlag, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:Font.draw_multiline_string
+func (self class) DrawMultilineString(canvas_item RID.Any, pos Vector2.XY, text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, max_lines int64, modulate Color.RGBA, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) { //gd:Font.draw_multiline_string
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas_item)
 	callframe.Arg(frame, pos)
@@ -842,7 +851,7 @@ Draw [param text] outline into a canvas item using the font, at a given position
 See also [method CanvasItem.draw_string_outline].
 */
 //go:nosplit
-func (self class) DrawStringOutline(canvas_item RID.Any, pos Vector2.XY, text String.Readable, alignment HorizontalAlignment, width float64, font_size int64, size int64, modulate Color.RGBA, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:Font.draw_string_outline
+func (self class) DrawStringOutline(canvas_item RID.Any, pos Vector2.XY, text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, size int64, modulate Color.RGBA, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) { //gd:Font.draw_string_outline
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas_item)
 	callframe.Arg(frame, pos)
@@ -865,7 +874,7 @@ Breaks [param text] to the lines using rules specified by [param brk_flags] and 
 See also [method CanvasItem.draw_multiline_string_outline].
 */
 //go:nosplit
-func (self class) DrawMultilineStringOutline(canvas_item RID.Any, pos Vector2.XY, text String.Readable, alignment HorizontalAlignment, width float64, font_size int64, max_lines int64, size int64, modulate Color.RGBA, brk_flags gdclass.TextServerLineBreakFlag, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:Font.draw_multiline_string_outline
+func (self class) DrawMultilineStringOutline(canvas_item RID.Any, pos Vector2.XY, text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, max_lines int64, size int64, modulate Color.RGBA, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) { //gd:Font.draw_multiline_string_outline
 	var frame = callframe.New()
 	callframe.Arg(frame, canvas_item)
 	callframe.Arg(frame, pos)
@@ -1080,16 +1089,3 @@ func (self Instance) Virtual(name string) reflect.Value {
 func init() {
 	gdclass.Register("Font", func(ptr gd.Object) any { return [1]gdclass.Font{*(*gdclass.Font)(unsafe.Pointer(&ptr))} })
 }
-
-type HorizontalAlignment int
-
-const (
-	/*Horizontal left alignment, usually for text-derived classes.*/
-	HorizontalAlignmentLeft HorizontalAlignment = 0
-	/*Horizontal center alignment, usually for text-derived classes.*/
-	HorizontalAlignmentCenter HorizontalAlignment = 1
-	/*Horizontal right alignment, usually for text-derived classes.*/
-	HorizontalAlignmentRight HorizontalAlignment = 2
-	/*Expand row to fit width, usually for text-derived classes.*/
-	HorizontalAlignmentFill HorizontalAlignment = 3
-)

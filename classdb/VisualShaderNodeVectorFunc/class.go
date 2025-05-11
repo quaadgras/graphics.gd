@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/VisualShaderNode"
 import "graphics.gd/classdb/VisualShaderNodeVectorBase"
@@ -27,6 +28,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -42,6 +47,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -54,6 +60,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -92,16 +99,16 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Function() gdclass.VisualShaderNodeVectorFuncFunction {
-	return gdclass.VisualShaderNodeVectorFuncFunction(class(self).GetFunction())
+func (self Instance) Function() Function {
+	return Function(class(self).GetFunction())
 }
 
-func (self Instance) SetFunction(value gdclass.VisualShaderNodeVectorFuncFunction) {
+func (self Instance) SetFunction(value Function) {
 	class(self).SetFunction(value)
 }
 
 //go:nosplit
-func (self class) SetFunction(fn gdclass.VisualShaderNodeVectorFuncFunction) { //gd:VisualShaderNodeVectorFunc.set_function
+func (self class) SetFunction(fn Function) { //gd:VisualShaderNodeVectorFunc.set_function
 	var frame = callframe.New()
 	callframe.Arg(frame, fn)
 	var r_ret = callframe.Nil
@@ -110,9 +117,9 @@ func (self class) SetFunction(fn gdclass.VisualShaderNodeVectorFuncFunction) { /
 }
 
 //go:nosplit
-func (self class) GetFunction() gdclass.VisualShaderNodeVectorFuncFunction { //gd:VisualShaderNodeVectorFunc.get_function
+func (self class) GetFunction() Function { //gd:VisualShaderNodeVectorFunc.get_function
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.VisualShaderNodeVectorFuncFunction](frame)
+	var r_ret = callframe.Ret[Function](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeVectorFunc.Bind_get_function, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -179,7 +186,7 @@ func init() {
 	})
 }
 
-type Function = gdclass.VisualShaderNodeVectorFuncFunction //gd:VisualShaderNodeVectorFunc.Function
+type Function int //gd:VisualShaderNodeVectorFunc.Function
 
 const (
 	/*Normalizes the vector so that it has a length of [code]1[/code] but points in the same direction.*/

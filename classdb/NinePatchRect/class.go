@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/Node"
@@ -29,6 +30,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -44,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,6 +62,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -149,19 +156,19 @@ func (self Instance) SetPatchMarginBottom(value int) {
 	class(self).SetPatchMargin(3, int64(value))
 }
 
-func (self Instance) AxisStretchHorizontal() gdclass.NinePatchRectAxisStretchMode {
-	return gdclass.NinePatchRectAxisStretchMode(class(self).GetHAxisStretchMode())
+func (self Instance) AxisStretchHorizontal() AxisStretchMode {
+	return AxisStretchMode(class(self).GetHAxisStretchMode())
 }
 
-func (self Instance) SetAxisStretchHorizontal(value gdclass.NinePatchRectAxisStretchMode) {
+func (self Instance) SetAxisStretchHorizontal(value AxisStretchMode) {
 	class(self).SetHAxisStretchMode(value)
 }
 
-func (self Instance) AxisStretchVertical() gdclass.NinePatchRectAxisStretchMode {
-	return gdclass.NinePatchRectAxisStretchMode(class(self).GetVAxisStretchMode())
+func (self Instance) AxisStretchVertical() AxisStretchMode {
+	return AxisStretchMode(class(self).GetVAxisStretchMode())
 }
 
-func (self Instance) SetAxisStretchVertical(value gdclass.NinePatchRectAxisStretchMode) {
+func (self Instance) SetAxisStretchVertical(value AxisStretchMode) {
 	class(self).SetVAxisStretchMode(value)
 }
 
@@ -188,7 +195,7 @@ func (self class) GetTexture() [1]gdclass.Texture2D { //gd:NinePatchRect.get_tex
 Sets the size of the margin on the specified [enum Side] to [param value] pixels.
 */
 //go:nosplit
-func (self class) SetPatchMargin(margin Side, value int64) { //gd:NinePatchRect.set_patch_margin
+func (self class) SetPatchMargin(margin Rect2.Side, value int64) { //gd:NinePatchRect.set_patch_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	callframe.Arg(frame, value)
@@ -201,7 +208,7 @@ func (self class) SetPatchMargin(margin Side, value int64) { //gd:NinePatchRect.
 Returns the size of the margin on the specified [enum Side].
 */
 //go:nosplit
-func (self class) GetPatchMargin(margin Side) int64 { //gd:NinePatchRect.get_patch_margin
+func (self class) GetPatchMargin(margin Rect2.Side) int64 { //gd:NinePatchRect.get_patch_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Ret[int64](frame)
@@ -250,7 +257,7 @@ func (self class) IsDrawCenterEnabled() bool { //gd:NinePatchRect.is_draw_center
 }
 
 //go:nosplit
-func (self class) SetHAxisStretchMode(mode gdclass.NinePatchRectAxisStretchMode) { //gd:NinePatchRect.set_h_axis_stretch_mode
+func (self class) SetHAxisStretchMode(mode AxisStretchMode) { //gd:NinePatchRect.set_h_axis_stretch_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -259,9 +266,9 @@ func (self class) SetHAxisStretchMode(mode gdclass.NinePatchRectAxisStretchMode)
 }
 
 //go:nosplit
-func (self class) GetHAxisStretchMode() gdclass.NinePatchRectAxisStretchMode { //gd:NinePatchRect.get_h_axis_stretch_mode
+func (self class) GetHAxisStretchMode() AxisStretchMode { //gd:NinePatchRect.get_h_axis_stretch_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.NinePatchRectAxisStretchMode](frame)
+	var r_ret = callframe.Ret[AxisStretchMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NinePatchRect.Bind_get_h_axis_stretch_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -269,7 +276,7 @@ func (self class) GetHAxisStretchMode() gdclass.NinePatchRectAxisStretchMode { /
 }
 
 //go:nosplit
-func (self class) SetVAxisStretchMode(mode gdclass.NinePatchRectAxisStretchMode) { //gd:NinePatchRect.set_v_axis_stretch_mode
+func (self class) SetVAxisStretchMode(mode AxisStretchMode) { //gd:NinePatchRect.set_v_axis_stretch_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -278,9 +285,9 @@ func (self class) SetVAxisStretchMode(mode gdclass.NinePatchRectAxisStretchMode)
 }
 
 //go:nosplit
-func (self class) GetVAxisStretchMode() gdclass.NinePatchRectAxisStretchMode { //gd:NinePatchRect.get_v_axis_stretch_mode
+func (self class) GetVAxisStretchMode() AxisStretchMode { //gd:NinePatchRect.get_v_axis_stretch_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.NinePatchRectAxisStretchMode](frame)
+	var r_ret = callframe.Ret[AxisStretchMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NinePatchRect.Bind_get_v_axis_stretch_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -328,7 +335,7 @@ func init() {
 	})
 }
 
-type AxisStretchMode = gdclass.NinePatchRectAxisStretchMode //gd:NinePatchRect.AxisStretchMode
+type AxisStretchMode int //gd:NinePatchRect.AxisStretchMode
 
 const (
 	/*Stretches the center texture across the NinePatchRect. This may cause the texture to be distorted.*/
@@ -337,17 +344,4 @@ const (
 	AxisStretchModeTile AxisStretchMode = 1
 	/*Repeats the center texture across the NinePatchRect, but will also stretch the texture to make sure each tile is visible in full. This may cause the texture to be distorted, but less than [constant AXIS_STRETCH_MODE_STRETCH]. The texture must be seamless for this to work without displaying artifacts between edges.*/
 	AxisStretchModeTileFit AxisStretchMode = 2
-)
-
-type Side int
-
-const (
-	/*Left side, usually used for [Control] or [StyleBox]-derived classes.*/
-	SideLeft Side = 0
-	/*Top side, usually used for [Control] or [StyleBox]-derived classes.*/
-	SideTop Side = 1
-	/*Right side, usually used for [Control] or [StyleBox]-derived classes.*/
-	SideRight Side = 2
-	/*Bottom side, usually used for [Control] or [StyleBox]-derived classes.*/
-	SideBottom Side = 3
 )

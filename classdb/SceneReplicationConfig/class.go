@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -25,6 +26,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -40,6 +45,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -52,6 +58,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 type Instance [1]gdclass.SceneReplicationConfig
@@ -129,14 +136,14 @@ func (self Instance) PropertySetSpawn(path string, enabled bool) { //gd:SceneRep
 /*
 Returns the replication mode for the property identified by the given [param path]. See [enum ReplicationMode].
 */
-func (self Instance) PropertyGetReplicationMode(path string) gdclass.SceneReplicationConfigReplicationMode { //gd:SceneReplicationConfig.property_get_replication_mode
-	return gdclass.SceneReplicationConfigReplicationMode(Advanced(self).PropertyGetReplicationMode(Path.ToNode(String.New(path))))
+func (self Instance) PropertyGetReplicationMode(path string) ReplicationMode { //gd:SceneReplicationConfig.property_get_replication_mode
+	return ReplicationMode(Advanced(self).PropertyGetReplicationMode(Path.ToNode(String.New(path))))
 }
 
 /*
 Sets the synchronization mode for the property identified by the given [param path]. See [enum ReplicationMode].
 */
-func (self Instance) PropertySetReplicationMode(path string, mode gdclass.SceneReplicationConfigReplicationMode) { //gd:SceneReplicationConfig.property_set_replication_mode
+func (self Instance) PropertySetReplicationMode(path string, mode ReplicationMode) { //gd:SceneReplicationConfig.property_set_replication_mode
 	Advanced(self).PropertySetReplicationMode(Path.ToNode(String.New(path)), mode)
 }
 
@@ -286,10 +293,10 @@ func (self class) PropertySetSpawn(path Path.ToNode, enabled bool) { //gd:SceneR
 Returns the replication mode for the property identified by the given [param path]. See [enum ReplicationMode].
 */
 //go:nosplit
-func (self class) PropertyGetReplicationMode(path Path.ToNode) gdclass.SceneReplicationConfigReplicationMode { //gd:SceneReplicationConfig.property_get_replication_mode
+func (self class) PropertyGetReplicationMode(path Path.ToNode) ReplicationMode { //gd:SceneReplicationConfig.property_get_replication_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
-	var r_ret = callframe.Ret[gdclass.SceneReplicationConfigReplicationMode](frame)
+	var r_ret = callframe.Ret[ReplicationMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SceneReplicationConfig.Bind_property_get_replication_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -300,7 +307,7 @@ func (self class) PropertyGetReplicationMode(path Path.ToNode) gdclass.SceneRepl
 Sets the synchronization mode for the property identified by the given [param path]. See [enum ReplicationMode].
 */
 //go:nosplit
-func (self class) PropertySetReplicationMode(path Path.ToNode, mode gdclass.SceneReplicationConfigReplicationMode) { //gd:SceneReplicationConfig.property_set_replication_mode
+func (self class) PropertySetReplicationMode(path Path.ToNode, mode ReplicationMode) { //gd:SceneReplicationConfig.property_set_replication_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	callframe.Arg(frame, mode)
@@ -403,7 +410,7 @@ func init() {
 	})
 }
 
-type ReplicationMode = gdclass.SceneReplicationConfigReplicationMode //gd:SceneReplicationConfig.ReplicationMode
+type ReplicationMode int //gd:SceneReplicationConfig.ReplicationMode
 
 const (
 	/*Do not keep the given property synchronized.*/

@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/PacketPeer"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -25,6 +26,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -40,6 +45,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -52,6 +58,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -187,15 +194,15 @@ func (self Instance) GetRemotePort() int { //gd:ENetPacketPeer.get_remote_port
 /*
 Returns the requested [param statistic] for this peer. See [enum PeerStatistic].
 */
-func (self Instance) GetStatistic(statistic gdclass.ENetPacketPeerPeerStatistic) Float.X { //gd:ENetPacketPeer.get_statistic
+func (self Instance) GetStatistic(statistic PeerStatistic) Float.X { //gd:ENetPacketPeer.get_statistic
 	return Float.X(Float.X(Advanced(self).GetStatistic(statistic)))
 }
 
 /*
 Returns the current peer state. See [enum PeerState].
 */
-func (self Instance) GetState() gdclass.ENetPacketPeerPeerState { //gd:ENetPacketPeer.get_state
-	return gdclass.ENetPacketPeerPeerState(Advanced(self).GetState())
+func (self Instance) GetState() PeerState { //gd:ENetPacketPeer.get_state
+	return PeerState(Advanced(self).GetState())
 }
 
 /*
@@ -394,7 +401,7 @@ func (self class) GetRemotePort() int64 { //gd:ENetPacketPeer.get_remote_port
 Returns the requested [param statistic] for this peer. See [enum PeerStatistic].
 */
 //go:nosplit
-func (self class) GetStatistic(statistic gdclass.ENetPacketPeerPeerStatistic) float64 { //gd:ENetPacketPeer.get_statistic
+func (self class) GetStatistic(statistic PeerStatistic) float64 { //gd:ENetPacketPeer.get_statistic
 	var frame = callframe.New()
 	callframe.Arg(frame, statistic)
 	var r_ret = callframe.Ret[float64](frame)
@@ -408,9 +415,9 @@ func (self class) GetStatistic(statistic gdclass.ENetPacketPeerPeerStatistic) fl
 Returns the current peer state. See [enum PeerState].
 */
 //go:nosplit
-func (self class) GetState() gdclass.ENetPacketPeerPeerState { //gd:ENetPacketPeer.get_state
+func (self class) GetState() PeerState { //gd:ENetPacketPeer.get_state
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ENetPacketPeerPeerState](frame)
+	var r_ret = callframe.Ret[PeerState](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_get_state, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -479,7 +486,7 @@ func init() {
 	})
 }
 
-type PeerState = gdclass.ENetPacketPeerPeerState //gd:ENetPacketPeer.PeerState
+type PeerState int //gd:ENetPacketPeer.PeerState
 
 const (
 	/*The peer is disconnected.*/
@@ -504,7 +511,7 @@ const (
 	StateZombie PeerState = 9
 )
 
-type PeerStatistic = gdclass.ENetPacketPeerPeerStatistic //gd:ENetPacketPeer.PeerStatistic
+type PeerStatistic int //gd:ENetPacketPeer.PeerStatistic
 
 const (
 	/*Mean packet loss of reliable packets as a ratio with respect to the [constant PACKET_LOSS_SCALE].*/

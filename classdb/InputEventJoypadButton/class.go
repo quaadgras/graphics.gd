@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/Input"
 import "graphics.gd/classdb/InputEvent"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
@@ -26,6 +28,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -41,6 +47,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -53,6 +60,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -91,11 +99,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) ButtonIndex() JoyButton {
-	return JoyButton(class(self).GetButtonIndex())
+func (self Instance) ButtonIndex() Input.JoyButton {
+	return Input.JoyButton(class(self).GetButtonIndex())
 }
 
-func (self Instance) SetButtonIndex(value JoyButton) {
+func (self Instance) SetButtonIndex(value Input.JoyButton) {
 	class(self).SetButtonIndex(value)
 }
 
@@ -112,7 +120,7 @@ func (self Instance) SetPressed(value bool) {
 }
 
 //go:nosplit
-func (self class) SetButtonIndex(button_index JoyButton) { //gd:InputEventJoypadButton.set_button_index
+func (self class) SetButtonIndex(button_index Input.JoyButton) { //gd:InputEventJoypadButton.set_button_index
 	var frame = callframe.New()
 	callframe.Arg(frame, button_index)
 	var r_ret = callframe.Nil
@@ -121,9 +129,9 @@ func (self class) SetButtonIndex(button_index JoyButton) { //gd:InputEventJoypad
 }
 
 //go:nosplit
-func (self class) GetButtonIndex() JoyButton { //gd:InputEventJoypadButton.get_button_index
+func (self class) GetButtonIndex() Input.JoyButton { //gd:InputEventJoypadButton.get_button_index
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[JoyButton](frame)
+	var r_ret = callframe.Ret[Input.JoyButton](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventJoypadButton.Bind_get_button_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -204,59 +212,3 @@ func init() {
 		return [1]gdclass.InputEventJoypadButton{*(*gdclass.InputEventJoypadButton)(unsafe.Pointer(&ptr))}
 	})
 }
-
-type JoyButton int
-
-const (
-	/*An invalid game controller button.*/
-	JoyButtonInvalid JoyButton = -1
-	/*Game controller SDL button A. Corresponds to the bottom action button: Sony Cross, Xbox A, Nintendo B.*/
-	JoyButtonA JoyButton = 0
-	/*Game controller SDL button B. Corresponds to the right action button: Sony Circle, Xbox B, Nintendo A.*/
-	JoyButtonB JoyButton = 1
-	/*Game controller SDL button X. Corresponds to the left action button: Sony Square, Xbox X, Nintendo Y.*/
-	JoyButtonX JoyButton = 2
-	/*Game controller SDL button Y. Corresponds to the top action button: Sony Triangle, Xbox Y, Nintendo X.*/
-	JoyButtonY JoyButton = 3
-	/*Game controller SDL back button. Corresponds to the Sony Select, Xbox Back, Nintendo - button.*/
-	JoyButtonBack JoyButton = 4
-	/*Game controller SDL guide button. Corresponds to the Sony PS, Xbox Home button.*/
-	JoyButtonGuide JoyButton = 5
-	/*Game controller SDL start button. Corresponds to the Sony Options, Xbox Menu, Nintendo + button.*/
-	JoyButtonStart JoyButton = 6
-	/*Game controller SDL left stick button. Corresponds to the Sony L3, Xbox L/LS button.*/
-	JoyButtonLeftStick JoyButton = 7
-	/*Game controller SDL right stick button. Corresponds to the Sony R3, Xbox R/RS button.*/
-	JoyButtonRightStick JoyButton = 8
-	/*Game controller SDL left shoulder button. Corresponds to the Sony L1, Xbox LB button.*/
-	JoyButtonLeftShoulder JoyButton = 9
-	/*Game controller SDL right shoulder button. Corresponds to the Sony R1, Xbox RB button.*/
-	JoyButtonRightShoulder JoyButton = 10
-	/*Game controller D-pad up button.*/
-	JoyButtonDpadUp JoyButton = 11
-	/*Game controller D-pad down button.*/
-	JoyButtonDpadDown JoyButton = 12
-	/*Game controller D-pad left button.*/
-	JoyButtonDpadLeft JoyButton = 13
-	/*Game controller D-pad right button.*/
-	JoyButtonDpadRight JoyButton = 14
-	/*Game controller SDL miscellaneous button. Corresponds to Xbox share button, PS5 microphone button, Nintendo Switch capture button.*/
-	JoyButtonMisc1 JoyButton = 15
-	/*Game controller SDL paddle 1 button.*/
-	JoyButtonPaddle1 JoyButton = 16
-	/*Game controller SDL paddle 2 button.*/
-	JoyButtonPaddle2 JoyButton = 17
-	/*Game controller SDL paddle 3 button.*/
-	JoyButtonPaddle3 JoyButton = 18
-	/*Game controller SDL paddle 4 button.*/
-	JoyButtonPaddle4 JoyButton = 19
-	/*Game controller SDL touchpad button.*/
-	JoyButtonTouchpad JoyButton = 20
-	/*The number of SDL game controller buttons.*/
-	JoyButtonSdlMax JoyButton = 21
-	/*The maximum number of game controller buttons supported by the engine. The actual limit may be lower on specific platforms:
-	  - [b]Android:[/b] Up to 36 buttons.
-	  - [b]Linux:[/b] Up to 80 buttons.
-	  - [b]Windows[/b] and [b]macOS:[/b] Up to 128 buttons.*/
-	JoyButtonMax JoyButton = 128
-)

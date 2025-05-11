@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/Animation"
 import "graphics.gd/classdb/AnimationNode"
 import "graphics.gd/classdb/AnimationRootNode"
 import "graphics.gd/classdb/Resource"
@@ -27,6 +29,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -42,6 +48,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -54,6 +61,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -100,11 +108,11 @@ func (self Instance) SetAnimation(value string) {
 	class(self).SetAnimation(String.Name(String.New(value)))
 }
 
-func (self Instance) PlayMode() gdclass.AnimationNodeAnimationPlayMode {
-	return gdclass.AnimationNodeAnimationPlayMode(class(self).GetPlayMode())
+func (self Instance) PlayMode() PlayMode {
+	return PlayMode(class(self).GetPlayMode())
 }
 
-func (self Instance) SetPlayMode(value gdclass.AnimationNodeAnimationPlayMode) {
+func (self Instance) SetPlayMode(value PlayMode) {
 	class(self).SetPlayMode(value)
 }
 
@@ -148,11 +156,11 @@ func (self Instance) SetStartOffset(value Float.X) {
 	class(self).SetStartOffset(float64(value))
 }
 
-func (self Instance) LoopMode() gdclass.AnimationLoopMode {
-	return gdclass.AnimationLoopMode(class(self).GetLoopMode())
+func (self Instance) LoopMode() Animation.LoopMode {
+	return Animation.LoopMode(class(self).GetLoopMode())
 }
 
-func (self Instance) SetLoopMode(value gdclass.AnimationLoopMode) {
+func (self Instance) SetLoopMode(value Animation.LoopMode) {
 	class(self).SetLoopMode(value)
 }
 
@@ -176,7 +184,7 @@ func (self class) GetAnimation() String.Name { //gd:AnimationNodeAnimation.get_a
 }
 
 //go:nosplit
-func (self class) SetPlayMode(mode gdclass.AnimationNodeAnimationPlayMode) { //gd:AnimationNodeAnimation.set_play_mode
+func (self class) SetPlayMode(mode PlayMode) { //gd:AnimationNodeAnimation.set_play_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -185,9 +193,9 @@ func (self class) SetPlayMode(mode gdclass.AnimationNodeAnimationPlayMode) { //g
 }
 
 //go:nosplit
-func (self class) GetPlayMode() gdclass.AnimationNodeAnimationPlayMode { //gd:AnimationNodeAnimation.get_play_mode
+func (self class) GetPlayMode() PlayMode { //gd:AnimationNodeAnimation.get_play_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.AnimationNodeAnimationPlayMode](frame)
+	var r_ret = callframe.Ret[PlayMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeAnimation.Bind_get_play_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -290,7 +298,7 @@ func (self class) GetStartOffset() float64 { //gd:AnimationNodeAnimation.get_sta
 }
 
 //go:nosplit
-func (self class) SetLoopMode(loop_mode gdclass.AnimationLoopMode) { //gd:AnimationNodeAnimation.set_loop_mode
+func (self class) SetLoopMode(loop_mode Animation.LoopMode) { //gd:AnimationNodeAnimation.set_loop_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, loop_mode)
 	var r_ret = callframe.Nil
@@ -299,9 +307,9 @@ func (self class) SetLoopMode(loop_mode gdclass.AnimationLoopMode) { //gd:Animat
 }
 
 //go:nosplit
-func (self class) GetLoopMode() gdclass.AnimationLoopMode { //gd:AnimationNodeAnimation.get_loop_mode
+func (self class) GetLoopMode() Animation.LoopMode { //gd:AnimationNodeAnimation.get_loop_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.AnimationLoopMode](frame)
+	var r_ret = callframe.Ret[Animation.LoopMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeAnimation.Bind_get_loop_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -366,7 +374,7 @@ func init() {
 	})
 }
 
-type PlayMode = gdclass.AnimationNodeAnimationPlayMode //gd:AnimationNodeAnimation.PlayMode
+type PlayMode int //gd:AnimationNodeAnimation.PlayMode
 
 const (
 	/*Plays animation in forward direction.*/

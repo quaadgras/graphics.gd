@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Material"
 import "graphics.gd/classdb/Mesh"
 import "graphics.gd/classdb/Resource"
@@ -31,6 +32,10 @@ import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -46,6 +51,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -58,6 +64,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -101,14 +108,14 @@ type Any interface {
 /*
 Begin a new surface.
 */
-func (self Instance) SurfaceBegin(primitive gdclass.MeshPrimitiveType) { //gd:ImmediateMesh.surface_begin
+func (self Instance) SurfaceBegin(primitive Mesh.PrimitiveType) { //gd:ImmediateMesh.surface_begin
 	Advanced(self).SurfaceBegin(primitive, [1]Material.Instance{}[0])
 }
 
 /*
 Begin a new surface.
 */
-func (self Expanded) SurfaceBegin(primitive gdclass.MeshPrimitiveType, material Material.Instance) { //gd:ImmediateMesh.surface_begin
+func (self Expanded) SurfaceBegin(primitive Mesh.PrimitiveType, material Material.Instance) { //gd:ImmediateMesh.surface_begin
 	Advanced(self).SurfaceBegin(primitive, material)
 }
 
@@ -199,7 +206,7 @@ func New() Instance {
 Begin a new surface.
 */
 //go:nosplit
-func (self class) SurfaceBegin(primitive gdclass.MeshPrimitiveType, material [1]gdclass.Material) { //gd:ImmediateMesh.surface_begin
+func (self class) SurfaceBegin(primitive Mesh.PrimitiveType, material [1]gdclass.Material) { //gd:ImmediateMesh.surface_begin
 	var frame = callframe.New()
 	callframe.Arg(frame, primitive)
 	callframe.Arg(frame, pointers.Get(material[0])[0])

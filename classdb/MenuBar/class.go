@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/Node"
@@ -28,6 +29,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -43,6 +48,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,6 +61,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -208,11 +215,11 @@ func (self Instance) SetPreferGlobalMenu(value bool) {
 	class(self).SetPreferGlobalMenu(value)
 }
 
-func (self Instance) TextDirection() gdclass.ControlTextDirection {
-	return gdclass.ControlTextDirection(class(self).GetTextDirection())
+func (self Instance) TextDirection() Control.TextDirection {
+	return Control.TextDirection(class(self).GetTextDirection())
 }
 
-func (self Instance) SetTextDirection(value gdclass.ControlTextDirection) {
+func (self Instance) SetTextDirection(value Control.TextDirection) {
 	class(self).SetTextDirection(value)
 }
 
@@ -301,7 +308,7 @@ func (self class) GetMenuCount() int64 { //gd:MenuBar.get_menu_count
 }
 
 //go:nosplit
-func (self class) SetTextDirection(direction gdclass.ControlTextDirection) { //gd:MenuBar.set_text_direction
+func (self class) SetTextDirection(direction Control.TextDirection) { //gd:MenuBar.set_text_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, direction)
 	var r_ret = callframe.Nil
@@ -310,9 +317,9 @@ func (self class) SetTextDirection(direction gdclass.ControlTextDirection) { //g
 }
 
 //go:nosplit
-func (self class) GetTextDirection() gdclass.ControlTextDirection { //gd:MenuBar.get_text_direction
+func (self class) GetTextDirection() Control.TextDirection { //gd:MenuBar.get_text_direction
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ControlTextDirection](frame)
+	var r_ret = callframe.Ret[Control.TextDirection](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_get_text_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

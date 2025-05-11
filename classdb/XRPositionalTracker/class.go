@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/XRPose"
 import "graphics.gd/classdb/XRTracker"
 import "graphics.gd/variant/Array"
@@ -29,6 +30,10 @@ import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -44,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,6 +62,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -100,7 +107,7 @@ func (self Instance) InvalidatePose(name string) { //gd:XRPositionalTracker.inva
 /*
 Sets the transform, linear velocity, angular velocity and tracking confidence for the given pose. This method is called by a [XRInterface] implementation and should not be used directly.
 */
-func (self Instance) SetPose(name string, transform Transform3D.BasisOrigin, linear_velocity Vector3.XYZ, angular_velocity Vector3.XYZ, tracking_confidence gdclass.XRPoseTrackingConfidence) { //gd:XRPositionalTracker.set_pose
+func (self Instance) SetPose(name string, transform Transform3D.BasisOrigin, linear_velocity Vector3.XYZ, angular_velocity Vector3.XYZ, tracking_confidence XRPose.TrackingConfidence) { //gd:XRPositionalTracker.set_pose
 	Advanced(self).SetPose(String.Name(String.New(name)), Transform3D.BasisOrigin(transform), Vector3.XYZ(linear_velocity), Vector3.XYZ(angular_velocity), tracking_confidence)
 }
 
@@ -146,11 +153,11 @@ func (self Instance) SetProfile(value string) {
 	class(self).SetTrackerProfile(String.New(value))
 }
 
-func (self Instance) Hand() gdclass.XRPositionalTrackerTrackerHand {
-	return gdclass.XRPositionalTrackerTrackerHand(class(self).GetTrackerHand())
+func (self Instance) Hand() TrackerHand {
+	return TrackerHand(class(self).GetTrackerHand())
 }
 
-func (self Instance) SetHand(value gdclass.XRPositionalTrackerTrackerHand) {
+func (self Instance) SetHand(value TrackerHand) {
 	class(self).SetTrackerHand(value)
 }
 
@@ -174,9 +181,9 @@ func (self class) SetTrackerProfile(profile String.Readable) { //gd:XRPositional
 }
 
 //go:nosplit
-func (self class) GetTrackerHand() gdclass.XRPositionalTrackerTrackerHand { //gd:XRPositionalTracker.get_tracker_hand
+func (self class) GetTrackerHand() TrackerHand { //gd:XRPositionalTracker.get_tracker_hand
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.XRPositionalTrackerTrackerHand](frame)
+	var r_ret = callframe.Ret[TrackerHand](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_get_tracker_hand, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -184,7 +191,7 @@ func (self class) GetTrackerHand() gdclass.XRPositionalTrackerTrackerHand { //gd
 }
 
 //go:nosplit
-func (self class) SetTrackerHand(hand gdclass.XRPositionalTrackerTrackerHand) { //gd:XRPositionalTracker.set_tracker_hand
+func (self class) SetTrackerHand(hand TrackerHand) { //gd:XRPositionalTracker.set_tracker_hand
 	var frame = callframe.New()
 	callframe.Arg(frame, hand)
 	var r_ret = callframe.Nil
@@ -236,7 +243,7 @@ func (self class) InvalidatePose(name String.Name) { //gd:XRPositionalTracker.in
 Sets the transform, linear velocity, angular velocity and tracking confidence for the given pose. This method is called by a [XRInterface] implementation and should not be used directly.
 */
 //go:nosplit
-func (self class) SetPose(name String.Name, transform Transform3D.BasisOrigin, linear_velocity Vector3.XYZ, angular_velocity Vector3.XYZ, tracking_confidence gdclass.XRPoseTrackingConfidence) { //gd:XRPositionalTracker.set_pose
+func (self class) SetPose(name String.Name, transform Transform3D.BasisOrigin, linear_velocity Vector3.XYZ, angular_velocity Vector3.XYZ, tracking_confidence XRPose.TrackingConfidence) { //gd:XRPositionalTracker.set_pose
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, gd.Transposed(transform))
@@ -341,7 +348,7 @@ func init() {
 	})
 }
 
-type TrackerHand = gdclass.XRPositionalTrackerTrackerHand //gd:XRPositionalTracker.TrackerHand
+type TrackerHand int //gd:XRPositionalTracker.TrackerHand
 
 const (
 	/*The hand this tracker is held in is unknown or not applicable.*/

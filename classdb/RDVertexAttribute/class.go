@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/Rendering"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -24,6 +26,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -39,6 +45,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -51,6 +58,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -105,11 +113,11 @@ func (self Instance) SetOffset(value int) {
 	class(self).SetOffset(int64(value))
 }
 
-func (self Instance) Format() gdclass.RenderingDeviceDataFormat {
-	return gdclass.RenderingDeviceDataFormat(class(self).GetFormat())
+func (self Instance) Format() Rendering.DataFormat {
+	return Rendering.DataFormat(class(self).GetFormat())
 }
 
-func (self Instance) SetFormat(value gdclass.RenderingDeviceDataFormat) {
+func (self Instance) SetFormat(value Rendering.DataFormat) {
 	class(self).SetFormat(value)
 }
 
@@ -121,11 +129,11 @@ func (self Instance) SetStride(value int) {
 	class(self).SetStride(int64(value))
 }
 
-func (self Instance) Frequency() gdclass.RenderingDeviceVertexFrequency {
-	return gdclass.RenderingDeviceVertexFrequency(class(self).GetFrequency())
+func (self Instance) Frequency() Rendering.VertexFrequency {
+	return Rendering.VertexFrequency(class(self).GetFrequency())
 }
 
-func (self Instance) SetFrequency(value gdclass.RenderingDeviceVertexFrequency) {
+func (self Instance) SetFrequency(value Rendering.VertexFrequency) {
 	class(self).SetFrequency(value)
 }
 
@@ -168,7 +176,7 @@ func (self class) GetOffset() int64 { //gd:RDVertexAttribute.get_offset
 }
 
 //go:nosplit
-func (self class) SetFormat(p_member gdclass.RenderingDeviceDataFormat) { //gd:RDVertexAttribute.set_format
+func (self class) SetFormat(p_member Rendering.DataFormat) { //gd:RDVertexAttribute.set_format
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -177,9 +185,9 @@ func (self class) SetFormat(p_member gdclass.RenderingDeviceDataFormat) { //gd:R
 }
 
 //go:nosplit
-func (self class) GetFormat() gdclass.RenderingDeviceDataFormat { //gd:RDVertexAttribute.get_format
+func (self class) GetFormat() Rendering.DataFormat { //gd:RDVertexAttribute.get_format
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingDeviceDataFormat](frame)
+	var r_ret = callframe.Ret[Rendering.DataFormat](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDVertexAttribute.Bind_get_format, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -206,7 +214,7 @@ func (self class) GetStride() int64 { //gd:RDVertexAttribute.get_stride
 }
 
 //go:nosplit
-func (self class) SetFrequency(p_member gdclass.RenderingDeviceVertexFrequency) { //gd:RDVertexAttribute.set_frequency
+func (self class) SetFrequency(p_member Rendering.VertexFrequency) { //gd:RDVertexAttribute.set_frequency
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -215,9 +223,9 @@ func (self class) SetFrequency(p_member gdclass.RenderingDeviceVertexFrequency) 
 }
 
 //go:nosplit
-func (self class) GetFrequency() gdclass.RenderingDeviceVertexFrequency { //gd:RDVertexAttribute.get_frequency
+func (self class) GetFrequency() Rendering.VertexFrequency { //gd:RDVertexAttribute.get_frequency
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingDeviceVertexFrequency](frame)
+	var r_ret = callframe.Ret[Rendering.VertexFrequency](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDVertexAttribute.Bind_get_frequency, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

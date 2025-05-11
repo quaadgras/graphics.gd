@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/Rendering"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -24,6 +26,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -39,6 +45,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -51,6 +58,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -110,11 +118,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) UniformType() gdclass.RenderingDeviceUniformType {
-	return gdclass.RenderingDeviceUniformType(class(self).GetUniformType())
+func (self Instance) UniformType() Rendering.UniformType {
+	return Rendering.UniformType(class(self).GetUniformType())
 }
 
-func (self Instance) SetUniformType(value gdclass.RenderingDeviceUniformType) {
+func (self Instance) SetUniformType(value Rendering.UniformType) {
 	class(self).SetUniformType(value)
 }
 
@@ -127,7 +135,7 @@ func (self Instance) SetBinding(value int) {
 }
 
 //go:nosplit
-func (self class) SetUniformType(p_member gdclass.RenderingDeviceUniformType) { //gd:RDUniform.set_uniform_type
+func (self class) SetUniformType(p_member Rendering.UniformType) { //gd:RDUniform.set_uniform_type
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -136,9 +144,9 @@ func (self class) SetUniformType(p_member gdclass.RenderingDeviceUniformType) { 
 }
 
 //go:nosplit
-func (self class) GetUniformType() gdclass.RenderingDeviceUniformType { //gd:RDUniform.get_uniform_type
+func (self class) GetUniformType() Rendering.UniformType { //gd:RDUniform.get_uniform_type
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingDeviceUniformType](frame)
+	var r_ret = callframe.Ret[Rendering.UniformType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDUniform.Bind_get_uniform_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

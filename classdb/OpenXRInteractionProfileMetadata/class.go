@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/OpenXRAction"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -24,6 +26,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -39,6 +45,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -51,6 +58,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -96,7 +104,7 @@ func (self Instance) RegisterInteractionProfile(display_name string, openxr_path
 /*
 Registers an input/output path for the given [param interaction_profile]. The profile should previously have been registered using [method register_interaction_profile]. [param display_name] is the description shown to the user. [param toplevel_path] specifies the bind path this input/output can be bound to (e.g. [code]/user/hand/left[/code] or [code]/user/hand/right[/code]). [param openxr_path] is the action input/output being registered (e.g. [code]/user/hand/left/input/aim/pose[/code]). [param openxr_extension_name] restricts this input/output to an enabled/available extension, this doesn't need to repeat the extension on the profile but relates to overlapping extension (e.g. [code]XR_EXT_palm_pose[/code] that introduces [code]…/input/palm_ext/pose[/code] input paths). [param action_type] defines the type of input or output provided by OpenXR.
 */
-func (self Instance) RegisterIoPath(interaction_profile string, display_name string, toplevel_path string, openxr_path string, openxr_extension_name string, action_type gdclass.OpenXRActionActionType) { //gd:OpenXRInteractionProfileMetadata.register_io_path
+func (self Instance) RegisterIoPath(interaction_profile string, display_name string, toplevel_path string, openxr_path string, openxr_extension_name string, action_type OpenXRAction.ActionType) { //gd:OpenXRInteractionProfileMetadata.register_io_path
 	Advanced(self).RegisterIoPath(String.New(interaction_profile), String.New(display_name), String.New(toplevel_path), String.New(openxr_path), String.New(openxr_extension_name), action_type)
 }
 
@@ -167,7 +175,7 @@ func (self class) RegisterInteractionProfile(display_name String.Readable, openx
 Registers an input/output path for the given [param interaction_profile]. The profile should previously have been registered using [method register_interaction_profile]. [param display_name] is the description shown to the user. [param toplevel_path] specifies the bind path this input/output can be bound to (e.g. [code]/user/hand/left[/code] or [code]/user/hand/right[/code]). [param openxr_path] is the action input/output being registered (e.g. [code]/user/hand/left/input/aim/pose[/code]). [param openxr_extension_name] restricts this input/output to an enabled/available extension, this doesn't need to repeat the extension on the profile but relates to overlapping extension (e.g. [code]XR_EXT_palm_pose[/code] that introduces [code]…/input/palm_ext/pose[/code] input paths). [param action_type] defines the type of input or output provided by OpenXR.
 */
 //go:nosplit
-func (self class) RegisterIoPath(interaction_profile String.Readable, display_name String.Readable, toplevel_path String.Readable, openxr_path String.Readable, openxr_extension_name String.Readable, action_type gdclass.OpenXRActionActionType) { //gd:OpenXRInteractionProfileMetadata.register_io_path
+func (self class) RegisterIoPath(interaction_profile String.Readable, display_name String.Readable, toplevel_path String.Readable, openxr_path String.Readable, openxr_extension_name String.Readable, action_type OpenXRAction.ActionType) { //gd:OpenXRInteractionProfileMetadata.register_io_path
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(interaction_profile)))
 	callframe.Arg(frame, pointers.Get(gd.InternalString(display_name)))

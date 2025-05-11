@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/InputEvent"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
@@ -29,6 +30,10 @@ import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -44,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,6 +62,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -569,7 +576,7 @@ Sets the default cursor shape to be used in the viewport instead of [constant CU
 [b]Note:[/b] If you want to change the default cursor shape for [Control]'s nodes, use [member Control.mouse_default_cursor_shape] instead.
 [b]Note:[/b] This method generates an [InputEventMouseMotion] to update cursor immediately.
 */
-func SetDefaultCursorShape(shape gdclass.InputCursorShape) { //gd:Input.set_default_cursor_shape
+func SetDefaultCursorShape(shape CursorShape) { //gd:Input.set_default_cursor_shape
 	once.Do(singleton)
 	Advanced().SetDefaultCursorShape(shape)
 }
@@ -579,7 +586,7 @@ Sets the default cursor shape to be used in the viewport instead of [constant CU
 [b]Note:[/b] If you want to change the default cursor shape for [Control]'s nodes, use [member Control.mouse_default_cursor_shape] instead.
 [b]Note:[/b] This method generates an [InputEventMouseMotion] to update cursor immediately.
 */
-func SetDefaultCursorShapeOptions(shape gdclass.InputCursorShape) { //gd:Input.set_default_cursor_shape
+func SetDefaultCursorShapeOptions(shape CursorShape) { //gd:Input.set_default_cursor_shape
 	once.Do(singleton)
 	Advanced().SetDefaultCursorShape(shape)
 }
@@ -587,9 +594,9 @@ func SetDefaultCursorShapeOptions(shape gdclass.InputCursorShape) { //gd:Input.s
 /*
 Returns the currently assigned cursor shape (see [enum CursorShape]).
 */
-func GetCurrentCursorShape() gdclass.InputCursorShape { //gd:Input.get_current_cursor_shape
+func GetCurrentCursorShape() CursorShape { //gd:Input.get_current_cursor_shape
 	once.Do(singleton)
-	return gdclass.InputCursorShape(Advanced().GetCurrentCursorShape())
+	return CursorShape(Advanced().GetCurrentCursorShape())
 }
 
 /*
@@ -600,7 +607,7 @@ Sets a custom mouse cursor image, which is only visible inside the game window. 
 [b]Note:[/b] The [b]Lossless[/b], [b]Lossy[/b] or [b]Uncompressed[/b] compression modes are recommended. The [b]Video RAM[/b] compression mode can be used, but it will be decompressed on the CPU, which means loading times are slowed down and no memory is saved compared to lossless modes.
 [b]Note:[/b] On the web platform, the maximum allowed cursor image size is 128×128. Cursor images larger than 32×32 will also only be displayed if the mouse cursor image is entirely located within the page for [url=https://chromestatus.com/feature/5825971391299584]security reasons[/url].
 */
-func SetCustomMouseCursor(image Resource.Instance, shape gdclass.InputCursorShape, hotspot Vector2.XY) { //gd:Input.set_custom_mouse_cursor
+func SetCustomMouseCursor(image Resource.Instance, shape CursorShape, hotspot Vector2.XY) { //gd:Input.set_custom_mouse_cursor
 	once.Do(singleton)
 	Advanced().SetCustomMouseCursor(image, shape, Vector2.XY(hotspot))
 }
@@ -613,7 +620,7 @@ Sets a custom mouse cursor image, which is only visible inside the game window. 
 [b]Note:[/b] The [b]Lossless[/b], [b]Lossy[/b] or [b]Uncompressed[/b] compression modes are recommended. The [b]Video RAM[/b] compression mode can be used, but it will be decompressed on the CPU, which means loading times are slowed down and no memory is saved compared to lossless modes.
 [b]Note:[/b] On the web platform, the maximum allowed cursor image size is 128×128. Cursor images larger than 32×32 will also only be displayed if the mouse cursor image is entirely located within the page for [url=https://chromestatus.com/feature/5825971391299584]security reasons[/url].
 */
-func SetCustomMouseCursorOptions(image Resource.Instance, shape gdclass.InputCursorShape, hotspot Vector2.XY) { //gd:Input.set_custom_mouse_cursor
+func SetCustomMouseCursorOptions(image Resource.Instance, shape CursorShape, hotspot Vector2.XY) { //gd:Input.set_custom_mouse_cursor
 	once.Do(singleton)
 	Advanced().SetCustomMouseCursor(image, shape, Vector2.XY(hotspot))
 }
@@ -665,12 +672,12 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObject() }
 
-func MouseMode() gdclass.InputMouseMode {
+func MouseMode() MouseModeValue {
 	once.Do(singleton)
-	return gdclass.InputMouseMode(class(self).GetMouseMode())
+	return MouseModeValue(class(self).GetMouseMode())
 }
 
-func SetMouseMode(value gdclass.InputMouseMode) {
+func SetMouseMode(value MouseModeValue) {
 	once.Do(singleton)
 	class(self).SetMouseMode(value)
 }
@@ -1282,7 +1289,7 @@ func (self class) GetMouseButtonMask() MouseButtonMask { //gd:Input.get_mouse_bu
 }
 
 //go:nosplit
-func (self class) SetMouseMode(mode gdclass.InputMouseMode) { //gd:Input.set_mouse_mode
+func (self class) SetMouseMode(mode MouseModeValue) { //gd:Input.set_mouse_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -1291,9 +1298,9 @@ func (self class) SetMouseMode(mode gdclass.InputMouseMode) { //gd:Input.set_mou
 }
 
 //go:nosplit
-func (self class) GetMouseMode() gdclass.InputMouseMode { //gd:Input.get_mouse_mode
+func (self class) GetMouseMode() MouseModeValue { //gd:Input.get_mouse_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.InputMouseMode](frame)
+	var r_ret = callframe.Ret[MouseModeValue](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_mouse_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1347,7 +1354,7 @@ Sets the default cursor shape to be used in the viewport instead of [constant CU
 [b]Note:[/b] This method generates an [InputEventMouseMotion] to update cursor immediately.
 */
 //go:nosplit
-func (self class) SetDefaultCursorShape(shape gdclass.InputCursorShape) { //gd:Input.set_default_cursor_shape
+func (self class) SetDefaultCursorShape(shape CursorShape) { //gd:Input.set_default_cursor_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
 	var r_ret = callframe.Nil
@@ -1359,9 +1366,9 @@ func (self class) SetDefaultCursorShape(shape gdclass.InputCursorShape) { //gd:I
 Returns the currently assigned cursor shape (see [enum CursorShape]).
 */
 //go:nosplit
-func (self class) GetCurrentCursorShape() gdclass.InputCursorShape { //gd:Input.get_current_cursor_shape
+func (self class) GetCurrentCursorShape() CursorShape { //gd:Input.get_current_cursor_shape
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.InputCursorShape](frame)
+	var r_ret = callframe.Ret[CursorShape](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Input.Bind_get_current_cursor_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1377,7 +1384,7 @@ Sets a custom mouse cursor image, which is only visible inside the game window. 
 [b]Note:[/b] On the web platform, the maximum allowed cursor image size is 128×128. Cursor images larger than 32×32 will also only be displayed if the mouse cursor image is entirely located within the page for [url=https://chromestatus.com/feature/5825971391299584]security reasons[/url].
 */
 //go:nosplit
-func (self class) SetCustomMouseCursor(image [1]gdclass.Resource, shape gdclass.InputCursorShape, hotspot Vector2.XY) { //gd:Input.set_custom_mouse_cursor
+func (self class) SetCustomMouseCursor(image [1]gdclass.Resource, shape CursorShape, hotspot Vector2.XY) { //gd:Input.set_custom_mouse_cursor
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(image[0])[0])
 	callframe.Arg(frame, shape)
@@ -1503,25 +1510,7 @@ func init() {
 	gdclass.Register("Input", func(ptr gd.Object) any { return [1]gdclass.Input{*(*gdclass.Input)(unsafe.Pointer(&ptr))} })
 }
 
-type MouseModeValue = gdclass.InputMouseMode //gd:Input.MouseMode
-
-const (
-	/*Makes the mouse cursor visible if it is hidden.*/
-	MouseModeVisible MouseModeValue = 0
-	/*Makes the mouse cursor hidden if it is visible.*/
-	MouseModeHidden MouseModeValue = 1
-	/*Captures the mouse. The mouse will be hidden and its position locked at the center of the window manager's window.
-	  [b]Note:[/b] If you want to process the mouse's movement in this mode, you need to use [member InputEventMouseMotion.relative].*/
-	MouseModeCaptured MouseModeValue = 2
-	/*Confines the mouse cursor to the game window, and make it visible.*/
-	MouseModeConfined MouseModeValue = 3
-	/*Confines the mouse cursor to the game window, and make it hidden.*/
-	MouseModeConfinedHidden MouseModeValue = 4
-	/*Max value of the [enum MouseMode].*/
-	MouseModeMax MouseModeValue = 5
-)
-
-type CursorShape = gdclass.InputCursorShape //gd:Input.CursorShape
+type CursorShape int //gd:Input.CursorShape
 
 const (
 	/*Arrow cursor. Standard, default pointing cursor.*/
@@ -1561,7 +1550,25 @@ const (
 	CursorHelp CursorShape = 16
 )
 
-type JoyAxis int
+type MouseModeValue int //gd:Input.MouseMode
+
+const (
+	/*Makes the mouse cursor visible if it is hidden.*/
+	MouseModeVisible MouseModeValue = 0
+	/*Makes the mouse cursor hidden if it is visible.*/
+	MouseModeHidden MouseModeValue = 1
+	/*Captures the mouse. The mouse will be hidden and its position locked at the center of the window manager's window.
+	  [b]Note:[/b] If you want to process the mouse's movement in this mode, you need to use [member InputEventMouseMotion.relative].*/
+	MouseModeCaptured MouseModeValue = 2
+	/*Confines the mouse cursor to the game window, and make it visible.*/
+	MouseModeConfined MouseModeValue = 3
+	/*Confines the mouse cursor to the game window, and make it hidden.*/
+	MouseModeConfinedHidden MouseModeValue = 4
+	/*Max value of the [enum MouseMode].*/
+	MouseModeMax MouseModeValue = 5
+)
+
+type JoyAxis int //gd:JoyAxis
 
 const (
 	/*An invalid game controller axis.*/
@@ -1584,7 +1591,7 @@ const (
 	JoyAxisMax JoyAxis = 10
 )
 
-type JoyButton int
+type JoyButton int //gd:JoyButton
 
 const (
 	/*An invalid game controller button.*/
@@ -1640,7 +1647,7 @@ const (
 	JoyButtonMax JoyButton = 128
 )
 
-type Key int
+type Key int //gd:Key
 
 const (
 	/*Enum value which doesn't correspond to any key. This is used to initialize [enum Key] properties with a generic state.*/
@@ -2031,7 +2038,42 @@ const (
 	KeySection Key = 167
 )
 
-type MouseButton int
+type KeyLocation int //gd:KeyLocation
+
+const (
+	/*Used for keys which only appear once, or when a comparison doesn't need to differentiate the [code]LEFT[/code] and [code]RIGHT[/code] versions.
+	  For example, when using [method InputEvent.is_match], an event which has [constant KEY_LOCATION_UNSPECIFIED] will match any [enum KeyLocation] on the passed event.*/
+	KeyLocationUnspecified KeyLocation = 0
+	/*A key which is to the left of its twin.*/
+	KeyLocationLeft KeyLocation = 1
+	/*A key which is to the right of its twin.*/
+	KeyLocationRight KeyLocation = 2
+)
+
+type KeyModifierMask int //gd:KeyModifierMask
+
+const (
+	/*Key Code mask.*/
+	KeyCodeMask KeyModifierMask = 8388607
+	/*Modifier key mask.*/
+	KeyModifierMaskDefault KeyModifierMask = 2130706432
+	/*Automatically remapped to [constant KEY_META] on macOS and [constant KEY_CTRL] on other platforms, this mask is never set in the actual events, and should be used for key mapping only.*/
+	KeyMaskCmdOrCtrl KeyModifierMask = 16777216
+	/*Shift key mask.*/
+	KeyMaskShift KeyModifierMask = 33554432
+	/*Alt or Option (on macOS) key mask.*/
+	KeyMaskAlt KeyModifierMask = 67108864
+	/*Command (on macOS) or Meta/Windows key mask.*/
+	KeyMaskMeta KeyModifierMask = 134217728
+	/*Control key mask.*/
+	KeyMaskCtrl KeyModifierMask = 268435456
+	/*Keypad key mask.*/
+	KeyMaskKpad KeyModifierMask = 536870912
+	/*Group Switch key mask.*/
+	KeyMaskGroupSwitch KeyModifierMask = 1073741824
+)
+
+type MouseButton int //gd:MouseButton
 
 const (
 	/*Enum value which doesn't correspond to any mouse button. This is used to initialize [enum MouseButton] properties with a generic state.*/
@@ -2056,7 +2098,7 @@ const (
 	MouseButtonXbutton2 MouseButton = 9
 )
 
-type MouseButtonMask int
+type MouseButtonMask int //gd:MouseButtonMask
 
 const (
 	/*Primary mouse button mask, usually for the left button.*/

@@ -11,7 +11,10 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Font"
+import "graphics.gd/classdb/GUI"
+import "graphics.gd/classdb/TextServer"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -28,6 +31,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -43,6 +50,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,6 +63,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -114,7 +123,7 @@ func (self Instance) AddObject(key any, size Vector2.XY) bool { //gd:TextLine.ad
 /*
 Adds inline object to the text buffer, [param key] must be unique. In the text, object is represented as [param length] object replacement characters.
 */
-func (self Expanded) AddObject(key any, size Vector2.XY, inline_align InlineAlignment, length int, baseline Float.X) bool { //gd:TextLine.add_object
+func (self Expanded) AddObject(key any, size Vector2.XY, inline_align GUI.InlineAlignment, length int, baseline Float.X) bool { //gd:TextLine.add_object
 	return bool(Advanced(self).AddObject(variant.New(key), Vector2.XY(size), inline_align, int64(length), float64(baseline)))
 }
 
@@ -128,7 +137,7 @@ func (self Instance) ResizeObject(key any, size Vector2.XY) bool { //gd:TextLine
 /*
 Sets new size and alignment of embedded object.
 */
-func (self Expanded) ResizeObject(key any, size Vector2.XY, inline_align InlineAlignment, baseline Float.X) bool { //gd:TextLine.resize_object
+func (self Expanded) ResizeObject(key any, size Vector2.XY, inline_align GUI.InlineAlignment, baseline Float.X) bool { //gd:TextLine.resize_object
 	return bool(Advanced(self).ResizeObject(variant.New(key), Vector2.XY(size), inline_align, float64(baseline)))
 }
 
@@ -257,19 +266,19 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Direction() gdclass.TextServerDirection {
-	return gdclass.TextServerDirection(class(self).GetDirection())
+func (self Instance) Direction() TextServer.Direction {
+	return TextServer.Direction(class(self).GetDirection())
 }
 
-func (self Instance) SetDirection(value gdclass.TextServerDirection) {
+func (self Instance) SetDirection(value TextServer.Direction) {
 	class(self).SetDirection(value)
 }
 
-func (self Instance) Orientation() gdclass.TextServerOrientation {
-	return gdclass.TextServerOrientation(class(self).GetOrientation())
+func (self Instance) Orientation() TextServer.Orientation {
+	return TextServer.Orientation(class(self).GetOrientation())
 }
 
-func (self Instance) SetOrientation(value gdclass.TextServerOrientation) {
+func (self Instance) SetOrientation(value TextServer.Orientation) {
 	class(self).SetOrientation(value)
 }
 
@@ -297,27 +306,27 @@ func (self Instance) SetWidth(value Float.X) {
 	class(self).SetWidth(float64(value))
 }
 
-func (self Instance) Alignment() HorizontalAlignment {
-	return HorizontalAlignment(class(self).GetHorizontalAlignment())
+func (self Instance) Alignment() GUI.HorizontalAlignment {
+	return GUI.HorizontalAlignment(class(self).GetHorizontalAlignment())
 }
 
-func (self Instance) SetAlignment(value HorizontalAlignment) {
+func (self Instance) SetAlignment(value GUI.HorizontalAlignment) {
 	class(self).SetHorizontalAlignment(value)
 }
 
-func (self Instance) Flags() gdclass.TextServerJustificationFlag {
-	return gdclass.TextServerJustificationFlag(class(self).GetFlags())
+func (self Instance) Flags() TextServer.JustificationFlag {
+	return TextServer.JustificationFlag(class(self).GetFlags())
 }
 
-func (self Instance) SetFlags(value gdclass.TextServerJustificationFlag) {
+func (self Instance) SetFlags(value TextServer.JustificationFlag) {
 	class(self).SetFlags(value)
 }
 
-func (self Instance) TextOverrunBehavior() gdclass.TextServerOverrunBehavior {
-	return gdclass.TextServerOverrunBehavior(class(self).GetTextOverrunBehavior())
+func (self Instance) TextOverrunBehavior() TextServer.OverrunBehavior {
+	return TextServer.OverrunBehavior(class(self).GetTextOverrunBehavior())
 }
 
-func (self Instance) SetTextOverrunBehavior(value gdclass.TextServerOverrunBehavior) {
+func (self Instance) SetTextOverrunBehavior(value TextServer.OverrunBehavior) {
 	class(self).SetTextOverrunBehavior(value)
 }
 
@@ -341,7 +350,7 @@ func (self class) Clear() { //gd:TextLine.clear
 }
 
 //go:nosplit
-func (self class) SetDirection(direction gdclass.TextServerDirection) { //gd:TextLine.set_direction
+func (self class) SetDirection(direction TextServer.Direction) { //gd:TextLine.set_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, direction)
 	var r_ret = callframe.Nil
@@ -350,9 +359,9 @@ func (self class) SetDirection(direction gdclass.TextServerDirection) { //gd:Tex
 }
 
 //go:nosplit
-func (self class) GetDirection() gdclass.TextServerDirection { //gd:TextLine.get_direction
+func (self class) GetDirection() TextServer.Direction { //gd:TextLine.get_direction
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TextServerDirection](frame)
+	var r_ret = callframe.Ret[TextServer.Direction](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -360,7 +369,7 @@ func (self class) GetDirection() gdclass.TextServerDirection { //gd:TextLine.get
 }
 
 //go:nosplit
-func (self class) SetOrientation(orientation gdclass.TextServerOrientation) { //gd:TextLine.set_orientation
+func (self class) SetOrientation(orientation TextServer.Orientation) { //gd:TextLine.set_orientation
 	var frame = callframe.New()
 	callframe.Arg(frame, orientation)
 	var r_ret = callframe.Nil
@@ -369,9 +378,9 @@ func (self class) SetOrientation(orientation gdclass.TextServerOrientation) { //
 }
 
 //go:nosplit
-func (self class) GetOrientation() gdclass.TextServerOrientation { //gd:TextLine.get_orientation
+func (self class) GetOrientation() TextServer.Orientation { //gd:TextLine.get_orientation
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TextServerOrientation](frame)
+	var r_ret = callframe.Ret[TextServer.Orientation](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_orientation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -451,7 +460,7 @@ func (self class) AddString(text String.Readable, font [1]gdclass.Font, font_siz
 Adds inline object to the text buffer, [param key] must be unique. In the text, object is represented as [param length] object replacement characters.
 */
 //go:nosplit
-func (self class) AddObject(key variant.Any, size Vector2.XY, inline_align InlineAlignment, length int64, baseline float64) bool { //gd:TextLine.add_object
+func (self class) AddObject(key variant.Any, size Vector2.XY, inline_align GUI.InlineAlignment, length int64, baseline float64) bool { //gd:TextLine.add_object
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalVariant(key)))
 	callframe.Arg(frame, size)
@@ -469,7 +478,7 @@ func (self class) AddObject(key variant.Any, size Vector2.XY, inline_align Inlin
 Sets new size and alignment of embedded object.
 */
 //go:nosplit
-func (self class) ResizeObject(key variant.Any, size Vector2.XY, inline_align InlineAlignment, baseline float64) bool { //gd:TextLine.resize_object
+func (self class) ResizeObject(key variant.Any, size Vector2.XY, inline_align GUI.InlineAlignment, baseline float64) bool { //gd:TextLine.resize_object
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalVariant(key)))
 	callframe.Arg(frame, size)
@@ -502,7 +511,7 @@ func (self class) GetWidth() float64 { //gd:TextLine.get_width
 }
 
 //go:nosplit
-func (self class) SetHorizontalAlignment(alignment HorizontalAlignment) { //gd:TextLine.set_horizontal_alignment
+func (self class) SetHorizontalAlignment(alignment GUI.HorizontalAlignment) { //gd:TextLine.set_horizontal_alignment
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
 	var r_ret = callframe.Nil
@@ -511,9 +520,9 @@ func (self class) SetHorizontalAlignment(alignment HorizontalAlignment) { //gd:T
 }
 
 //go:nosplit
-func (self class) GetHorizontalAlignment() HorizontalAlignment { //gd:TextLine.get_horizontal_alignment
+func (self class) GetHorizontalAlignment() GUI.HorizontalAlignment { //gd:TextLine.get_horizontal_alignment
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[HorizontalAlignment](frame)
+	var r_ret = callframe.Ret[GUI.HorizontalAlignment](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_horizontal_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -533,7 +542,7 @@ func (self class) TabAlign(tab_stops Packed.Array[float32]) { //gd:TextLine.tab_
 }
 
 //go:nosplit
-func (self class) SetFlags(flags gdclass.TextServerJustificationFlag) { //gd:TextLine.set_flags
+func (self class) SetFlags(flags TextServer.JustificationFlag) { //gd:TextLine.set_flags
 	var frame = callframe.New()
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Nil
@@ -542,9 +551,9 @@ func (self class) SetFlags(flags gdclass.TextServerJustificationFlag) { //gd:Tex
 }
 
 //go:nosplit
-func (self class) GetFlags() gdclass.TextServerJustificationFlag { //gd:TextLine.get_flags
+func (self class) GetFlags() TextServer.JustificationFlag { //gd:TextLine.get_flags
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TextServerJustificationFlag](frame)
+	var r_ret = callframe.Ret[TextServer.JustificationFlag](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -552,7 +561,7 @@ func (self class) GetFlags() gdclass.TextServerJustificationFlag { //gd:TextLine
 }
 
 //go:nosplit
-func (self class) SetTextOverrunBehavior(overrun_behavior gdclass.TextServerOverrunBehavior) { //gd:TextLine.set_text_overrun_behavior
+func (self class) SetTextOverrunBehavior(overrun_behavior TextServer.OverrunBehavior) { //gd:TextLine.set_text_overrun_behavior
 	var frame = callframe.New()
 	callframe.Arg(frame, overrun_behavior)
 	var r_ret = callframe.Nil
@@ -561,9 +570,9 @@ func (self class) SetTextOverrunBehavior(overrun_behavior gdclass.TextServerOver
 }
 
 //go:nosplit
-func (self class) GetTextOverrunBehavior() gdclass.TextServerOverrunBehavior { //gd:TextLine.get_text_overrun_behavior
+func (self class) GetTextOverrunBehavior() TextServer.OverrunBehavior { //gd:TextLine.get_text_overrun_behavior
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TextServerOverrunBehavior](frame)
+	var r_ret = callframe.Ret[TextServer.OverrunBehavior](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextLine.Bind_get_text_overrun_behavior, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -776,47 +785,3 @@ func (self Instance) Virtual(name string) reflect.Value {
 func init() {
 	gdclass.Register("TextLine", func(ptr gd.Object) any { return [1]gdclass.TextLine{*(*gdclass.TextLine)(unsafe.Pointer(&ptr))} })
 }
-
-type HorizontalAlignment int
-
-const (
-	/*Horizontal left alignment, usually for text-derived classes.*/
-	HorizontalAlignmentLeft HorizontalAlignment = 0
-	/*Horizontal center alignment, usually for text-derived classes.*/
-	HorizontalAlignmentCenter HorizontalAlignment = 1
-	/*Horizontal right alignment, usually for text-derived classes.*/
-	HorizontalAlignmentRight HorizontalAlignment = 2
-	/*Expand row to fit width, usually for text-derived classes.*/
-	HorizontalAlignmentFill HorizontalAlignment = 3
-)
-
-type InlineAlignment int
-
-const (
-	/*Aligns the top of the inline object (e.g. image, table) to the position of the text specified by [code]INLINE_ALIGNMENT_TO_*[/code] constant.*/
-	InlineAlignmentTopTo InlineAlignment = 0
-	/*Aligns the center of the inline object (e.g. image, table) to the position of the text specified by [code]INLINE_ALIGNMENT_TO_*[/code] constant.*/
-	InlineAlignmentCenterTo InlineAlignment = 1
-	/*Aligns the baseline (user defined) of the inline object (e.g. image, table) to the position of the text specified by [code]INLINE_ALIGNMENT_TO_*[/code] constant.*/
-	InlineAlignmentBaselineTo InlineAlignment = 3
-	/*Aligns the bottom of the inline object (e.g. image, table) to the position of the text specified by [code]INLINE_ALIGNMENT_TO_*[/code] constant.*/
-	InlineAlignmentBottomTo InlineAlignment = 2
-	/*Aligns the position of the inline object (e.g. image, table) specified by [code]INLINE_ALIGNMENT_*_TO[/code] constant to the top of the text.*/
-	InlineAlignmentToTop InlineAlignment = 0
-	/*Aligns the position of the inline object (e.g. image, table) specified by [code]INLINE_ALIGNMENT_*_TO[/code] constant to the center of the text.*/
-	InlineAlignmentToCenter InlineAlignment = 4
-	/*Aligns the position of the inline object (e.g. image, table) specified by [code]INLINE_ALIGNMENT_*_TO[/code] constant to the baseline of the text.*/
-	InlineAlignmentToBaseline InlineAlignment = 8
-	/*Aligns inline object (e.g. image, table) to the bottom of the text.*/
-	InlineAlignmentToBottom InlineAlignment = 12
-	/*Aligns top of the inline object (e.g. image, table) to the top of the text. Equivalent to [code]INLINE_ALIGNMENT_TOP_TO | INLINE_ALIGNMENT_TO_TOP[/code].*/
-	InlineAlignmentTop InlineAlignment = 0
-	/*Aligns center of the inline object (e.g. image, table) to the center of the text. Equivalent to [code]INLINE_ALIGNMENT_CENTER_TO | INLINE_ALIGNMENT_TO_CENTER[/code].*/
-	InlineAlignmentCenter InlineAlignment = 5
-	/*Aligns bottom of the inline object (e.g. image, table) to the bottom of the text. Equivalent to [code]INLINE_ALIGNMENT_BOTTOM_TO | INLINE_ALIGNMENT_TO_BOTTOM[/code].*/
-	InlineAlignmentBottom InlineAlignment = 14
-	/*A bit mask for [code]INLINE_ALIGNMENT_*_TO[/code] alignment constants.*/
-	InlineAlignmentImageMask InlineAlignment = 3
-	/*A bit mask for [code]INLINE_ALIGNMENT_TO_*[/code] alignment constants.*/
-	InlineAlignmentTextMask InlineAlignment = 12
-)

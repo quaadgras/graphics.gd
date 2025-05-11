@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/ArrayMesh"
 import "graphics.gd/classdb/Material"
 import "graphics.gd/classdb/Mesh"
@@ -33,6 +34,10 @@ import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -48,6 +53,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -60,6 +66,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -106,7 +113,7 @@ Set to [constant SKIN_8_WEIGHTS] to indicate that up to 8 bone influences per ve
 By default, only 4 bone influences are used ([constant SKIN_4_WEIGHTS]).
 [b]Note:[/b] This function takes an enum, not the exact number of weights.
 */
-func (self Instance) SetSkinWeightCount(count gdclass.SurfaceToolSkinWeightCount) { //gd:SurfaceTool.set_skin_weight_count
+func (self Instance) SetSkinWeightCount(count SkinWeightCount) { //gd:SurfaceTool.set_skin_weight_count
 	Advanced(self).SetSkinWeightCount(count)
 }
 
@@ -115,29 +122,29 @@ By default, returns [constant SKIN_4_WEIGHTS] to indicate only 4 bone influences
 Returns [constant SKIN_8_WEIGHTS] if up to 8 influences are used.
 [b]Note:[/b] This function returns an enum, not the exact number of weights.
 */
-func (self Instance) GetSkinWeightCount() gdclass.SurfaceToolSkinWeightCount { //gd:SurfaceTool.get_skin_weight_count
-	return gdclass.SurfaceToolSkinWeightCount(Advanced(self).GetSkinWeightCount())
+func (self Instance) GetSkinWeightCount() SkinWeightCount { //gd:SurfaceTool.get_skin_weight_count
+	return SkinWeightCount(Advanced(self).GetSkinWeightCount())
 }
 
 /*
 Sets the color format for this custom [param channel_index]. Use [constant CUSTOM_MAX] to disable.
 Must be invoked after [method begin] and should be set before [method commit] or [method commit_to_arrays].
 */
-func (self Instance) SetCustomFormat(channel_index int, format gdclass.SurfaceToolCustomFormat) { //gd:SurfaceTool.set_custom_format
+func (self Instance) SetCustomFormat(channel_index int, format CustomFormat) { //gd:SurfaceTool.set_custom_format
 	Advanced(self).SetCustomFormat(int64(channel_index), format)
 }
 
 /*
 Returns the format for custom [param channel_index] (currently up to 4). Returns [constant CUSTOM_MAX] if this custom channel is unused.
 */
-func (self Instance) GetCustomFormat(channel_index int) gdclass.SurfaceToolCustomFormat { //gd:SurfaceTool.get_custom_format
-	return gdclass.SurfaceToolCustomFormat(Advanced(self).GetCustomFormat(int64(channel_index)))
+func (self Instance) GetCustomFormat(channel_index int) CustomFormat { //gd:SurfaceTool.get_custom_format
+	return CustomFormat(Advanced(self).GetCustomFormat(int64(channel_index)))
 }
 
 /*
 Called before adding any vertices. Takes the primitive type as an argument (e.g. [constant Mesh.PRIMITIVE_TRIANGLES]).
 */
-func (self Instance) Begin(primitive gdclass.MeshPrimitiveType) { //gd:SurfaceTool.begin
+func (self Instance) Begin(primitive Mesh.PrimitiveType) { //gd:SurfaceTool.begin
 	Advanced(self).Begin(primitive)
 }
 
@@ -314,8 +321,8 @@ func (self Instance) SetMaterial(material Material.Instance) { //gd:SurfaceTool.
 /*
 Returns the type of mesh geometry, such as [constant Mesh.PRIMITIVE_TRIANGLES].
 */
-func (self Instance) GetPrimitiveType() gdclass.MeshPrimitiveType { //gd:SurfaceTool.get_primitive_type
-	return gdclass.MeshPrimitiveType(Advanced(self).GetPrimitiveType())
+func (self Instance) GetPrimitiveType() Mesh.PrimitiveType { //gd:SurfaceTool.get_primitive_type
+	return Mesh.PrimitiveType(Advanced(self).GetPrimitiveType())
 }
 
 /*
@@ -342,7 +349,7 @@ func (self Instance) CreateFromArrays(arrays []any) { //gd:SurfaceTool.create_fr
 /*
 Creates this SurfaceTool from existing vertex arrays such as returned by [method commit_to_arrays], [method Mesh.surface_get_arrays], [method Mesh.surface_get_blend_shape_arrays], [method ImporterMesh.get_surface_arrays], and [method ImporterMesh.get_surface_blend_shape_arrays]. [param primitive_type] controls the type of mesh data, defaulting to [constant Mesh.PRIMITIVE_TRIANGLES].
 */
-func (self Expanded) CreateFromArrays(arrays []any, primitive_type gdclass.MeshPrimitiveType) { //gd:SurfaceTool.create_from_arrays
+func (self Expanded) CreateFromArrays(arrays []any, primitive_type Mesh.PrimitiveType) { //gd:SurfaceTool.create_from_arrays
 	Advanced(self).CreateFromArrays(gd.EngineArrayFromSlice(arrays), primitive_type)
 }
 
@@ -409,7 +416,7 @@ By default, only 4 bone influences are used ([constant SKIN_4_WEIGHTS]).
 [b]Note:[/b] This function takes an enum, not the exact number of weights.
 */
 //go:nosplit
-func (self class) SetSkinWeightCount(count gdclass.SurfaceToolSkinWeightCount) { //gd:SurfaceTool.set_skin_weight_count
+func (self class) SetSkinWeightCount(count SkinWeightCount) { //gd:SurfaceTool.set_skin_weight_count
 	var frame = callframe.New()
 	callframe.Arg(frame, count)
 	var r_ret = callframe.Nil
@@ -423,9 +430,9 @@ Returns [constant SKIN_8_WEIGHTS] if up to 8 influences are used.
 [b]Note:[/b] This function returns an enum, not the exact number of weights.
 */
 //go:nosplit
-func (self class) GetSkinWeightCount() gdclass.SurfaceToolSkinWeightCount { //gd:SurfaceTool.get_skin_weight_count
+func (self class) GetSkinWeightCount() SkinWeightCount { //gd:SurfaceTool.get_skin_weight_count
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.SurfaceToolSkinWeightCount](frame)
+	var r_ret = callframe.Ret[SkinWeightCount](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_get_skin_weight_count, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -437,7 +444,7 @@ Sets the color format for this custom [param channel_index]. Use [constant CUSTO
 Must be invoked after [method begin] and should be set before [method commit] or [method commit_to_arrays].
 */
 //go:nosplit
-func (self class) SetCustomFormat(channel_index int64, format gdclass.SurfaceToolCustomFormat) { //gd:SurfaceTool.set_custom_format
+func (self class) SetCustomFormat(channel_index int64, format CustomFormat) { //gd:SurfaceTool.set_custom_format
 	var frame = callframe.New()
 	callframe.Arg(frame, channel_index)
 	callframe.Arg(frame, format)
@@ -450,10 +457,10 @@ func (self class) SetCustomFormat(channel_index int64, format gdclass.SurfaceToo
 Returns the format for custom [param channel_index] (currently up to 4). Returns [constant CUSTOM_MAX] if this custom channel is unused.
 */
 //go:nosplit
-func (self class) GetCustomFormat(channel_index int64) gdclass.SurfaceToolCustomFormat { //gd:SurfaceTool.get_custom_format
+func (self class) GetCustomFormat(channel_index int64) CustomFormat { //gd:SurfaceTool.get_custom_format
 	var frame = callframe.New()
 	callframe.Arg(frame, channel_index)
-	var r_ret = callframe.Ret[gdclass.SurfaceToolCustomFormat](frame)
+	var r_ret = callframe.Ret[CustomFormat](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_get_custom_format, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -464,7 +471,7 @@ func (self class) GetCustomFormat(channel_index int64) gdclass.SurfaceToolCustom
 Called before adding any vertices. Takes the primitive type as an argument (e.g. [constant Mesh.PRIMITIVE_TRIANGLES]).
 */
 //go:nosplit
-func (self class) Begin(primitive gdclass.MeshPrimitiveType) { //gd:SurfaceTool.begin
+func (self class) Begin(primitive Mesh.PrimitiveType) { //gd:SurfaceTool.begin
 	var frame = callframe.New()
 	callframe.Arg(frame, primitive)
 	var r_ret = callframe.Nil
@@ -728,9 +735,9 @@ func (self class) SetMaterial(material [1]gdclass.Material) { //gd:SurfaceTool.s
 Returns the type of mesh geometry, such as [constant Mesh.PRIMITIVE_TRIANGLES].
 */
 //go:nosplit
-func (self class) GetPrimitiveType() gdclass.MeshPrimitiveType { //gd:SurfaceTool.get_primitive_type
+func (self class) GetPrimitiveType() Mesh.PrimitiveType { //gd:SurfaceTool.get_primitive_type
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.MeshPrimitiveType](frame)
+	var r_ret = callframe.Ret[Mesh.PrimitiveType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_get_primitive_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -765,7 +772,7 @@ func (self class) CreateFrom(existing [1]gdclass.Mesh, surface int64) { //gd:Sur
 Creates this SurfaceTool from existing vertex arrays such as returned by [method commit_to_arrays], [method Mesh.surface_get_arrays], [method Mesh.surface_get_blend_shape_arrays], [method ImporterMesh.get_surface_arrays], and [method ImporterMesh.get_surface_blend_shape_arrays]. [param primitive_type] controls the type of mesh data, defaulting to [constant Mesh.PRIMITIVE_TRIANGLES].
 */
 //go:nosplit
-func (self class) CreateFromArrays(arrays Array.Any, primitive_type gdclass.MeshPrimitiveType) { //gd:SurfaceTool.create_from_arrays
+func (self class) CreateFromArrays(arrays Array.Any, primitive_type Mesh.PrimitiveType) { //gd:SurfaceTool.create_from_arrays
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(arrays)))
 	callframe.Arg(frame, primitive_type)
@@ -858,7 +865,7 @@ func init() {
 	gdclass.Register("SurfaceTool", func(ptr gd.Object) any { return [1]gdclass.SurfaceTool{*(*gdclass.SurfaceTool)(unsafe.Pointer(&ptr))} })
 }
 
-type CustomFormat = gdclass.SurfaceToolCustomFormat //gd:SurfaceTool.CustomFormat
+type CustomFormat int //gd:SurfaceTool.CustomFormat
 
 const (
 	/*Limits range of data passed to [method set_custom] to unsigned normalized 0 to 1 stored in 8 bits per channel. See [constant Mesh.ARRAY_CUSTOM_RGBA8_UNORM].*/
@@ -881,7 +888,7 @@ const (
 	CustomMax CustomFormat = 8
 )
 
-type SkinWeightCount = gdclass.SurfaceToolSkinWeightCount //gd:SurfaceTool.SkinWeightCount
+type SkinWeightCount int //gd:SurfaceTool.SkinWeightCount
 
 const (
 	/*Each individual vertex can be influenced by only 4 bone weights.*/

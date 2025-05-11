@@ -11,9 +11,11 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/SkeletonModifier3D"
+import "graphics.gd/classdb/Tween"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -28,6 +30,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -43,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,6 +62,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -140,19 +148,19 @@ func (self Instance) SetBone(value int) {
 	class(self).SetBone(int64(value))
 }
 
-func (self Instance) ForwardAxis() gdclass.SkeletonModifier3DBoneAxis {
-	return gdclass.SkeletonModifier3DBoneAxis(class(self).GetForwardAxis())
+func (self Instance) ForwardAxis() SkeletonModifier3D.BoneAxis {
+	return SkeletonModifier3D.BoneAxis(class(self).GetForwardAxis())
 }
 
-func (self Instance) SetForwardAxis(value gdclass.SkeletonModifier3DBoneAxis) {
+func (self Instance) SetForwardAxis(value SkeletonModifier3D.BoneAxis) {
 	class(self).SetForwardAxis(value)
 }
 
-func (self Instance) PrimaryRotationAxis() gd.Vector3Axis {
-	return gd.Vector3Axis(class(self).GetPrimaryRotationAxis())
+func (self Instance) PrimaryRotationAxis() Vector3.Axis {
+	return Vector3.Axis(class(self).GetPrimaryRotationAxis())
 }
 
-func (self Instance) SetPrimaryRotationAxis(value gd.Vector3Axis) {
+func (self Instance) SetPrimaryRotationAxis(value Vector3.Axis) {
 	class(self).SetPrimaryRotationAxis(value)
 }
 
@@ -164,11 +172,11 @@ func (self Instance) SetUseSecondaryRotation(value bool) {
 	class(self).SetUseSecondaryRotation(value)
 }
 
-func (self Instance) OriginFrom() gdclass.LookAtModifier3DOriginFrom {
-	return gdclass.LookAtModifier3DOriginFrom(class(self).GetOriginFrom())
+func (self Instance) OriginFrom() OriginFrom {
+	return OriginFrom(class(self).GetOriginFrom())
 }
 
-func (self Instance) SetOriginFrom(value gdclass.LookAtModifier3DOriginFrom) {
+func (self Instance) SetOriginFrom(value OriginFrom) {
 	class(self).SetOriginFrom(value)
 }
 
@@ -220,19 +228,19 @@ func (self Instance) SetDuration(value Float.X) {
 	class(self).SetDuration(float64(value))
 }
 
-func (self Instance) TransitionType() gdclass.TweenTransitionType {
-	return gdclass.TweenTransitionType(class(self).GetTransitionType())
+func (self Instance) TransitionType() Tween.TransitionType {
+	return Tween.TransitionType(class(self).GetTransitionType())
 }
 
-func (self Instance) SetTransitionType(value gdclass.TweenTransitionType) {
+func (self Instance) SetTransitionType(value Tween.TransitionType) {
 	class(self).SetTransitionType(value)
 }
 
-func (self Instance) EaseType() gdclass.TweenEaseType {
-	return gdclass.TweenEaseType(class(self).GetEaseType())
+func (self Instance) EaseType() Tween.EaseType {
+	return Tween.EaseType(class(self).GetEaseType())
 }
 
-func (self Instance) SetEaseType(value gdclass.TweenEaseType) {
+func (self Instance) SetEaseType(value Tween.EaseType) {
 	class(self).SetEaseType(value)
 }
 
@@ -406,7 +414,7 @@ func (self class) GetBone() int64 { //gd:LookAtModifier3D.get_bone
 }
 
 //go:nosplit
-func (self class) SetForwardAxis(forward_axis gdclass.SkeletonModifier3DBoneAxis) { //gd:LookAtModifier3D.set_forward_axis
+func (self class) SetForwardAxis(forward_axis SkeletonModifier3D.BoneAxis) { //gd:LookAtModifier3D.set_forward_axis
 	var frame = callframe.New()
 	callframe.Arg(frame, forward_axis)
 	var r_ret = callframe.Nil
@@ -415,9 +423,9 @@ func (self class) SetForwardAxis(forward_axis gdclass.SkeletonModifier3DBoneAxis
 }
 
 //go:nosplit
-func (self class) GetForwardAxis() gdclass.SkeletonModifier3DBoneAxis { //gd:LookAtModifier3D.get_forward_axis
+func (self class) GetForwardAxis() SkeletonModifier3D.BoneAxis { //gd:LookAtModifier3D.get_forward_axis
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.SkeletonModifier3DBoneAxis](frame)
+	var r_ret = callframe.Ret[SkeletonModifier3D.BoneAxis](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_get_forward_axis, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -425,7 +433,7 @@ func (self class) GetForwardAxis() gdclass.SkeletonModifier3DBoneAxis { //gd:Loo
 }
 
 //go:nosplit
-func (self class) SetPrimaryRotationAxis(axis gd.Vector3Axis) { //gd:LookAtModifier3D.set_primary_rotation_axis
+func (self class) SetPrimaryRotationAxis(axis Vector3.Axis) { //gd:LookAtModifier3D.set_primary_rotation_axis
 	var frame = callframe.New()
 	callframe.Arg(frame, axis)
 	var r_ret = callframe.Nil
@@ -434,9 +442,9 @@ func (self class) SetPrimaryRotationAxis(axis gd.Vector3Axis) { //gd:LookAtModif
 }
 
 //go:nosplit
-func (self class) GetPrimaryRotationAxis() gd.Vector3Axis { //gd:LookAtModifier3D.get_primary_rotation_axis
+func (self class) GetPrimaryRotationAxis() Vector3.Axis { //gd:LookAtModifier3D.get_primary_rotation_axis
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3Axis](frame)
+	var r_ret = callframe.Ret[Vector3.Axis](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_get_primary_rotation_axis, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -482,7 +490,7 @@ func (self class) GetOriginSafeMargin() float64 { //gd:LookAtModifier3D.get_orig
 }
 
 //go:nosplit
-func (self class) SetOriginFrom(origin_from gdclass.LookAtModifier3DOriginFrom) { //gd:LookAtModifier3D.set_origin_from
+func (self class) SetOriginFrom(origin_from OriginFrom) { //gd:LookAtModifier3D.set_origin_from
 	var frame = callframe.New()
 	callframe.Arg(frame, origin_from)
 	var r_ret = callframe.Nil
@@ -491,9 +499,9 @@ func (self class) SetOriginFrom(origin_from gdclass.LookAtModifier3DOriginFrom) 
 }
 
 //go:nosplit
-func (self class) GetOriginFrom() gdclass.LookAtModifier3DOriginFrom { //gd:LookAtModifier3D.get_origin_from
+func (self class) GetOriginFrom() OriginFrom { //gd:LookAtModifier3D.get_origin_from
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.LookAtModifier3DOriginFrom](frame)
+	var r_ret = callframe.Ret[OriginFrom](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_get_origin_from, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -596,7 +604,7 @@ func (self class) GetDuration() float64 { //gd:LookAtModifier3D.get_duration
 }
 
 //go:nosplit
-func (self class) SetTransitionType(transition_type gdclass.TweenTransitionType) { //gd:LookAtModifier3D.set_transition_type
+func (self class) SetTransitionType(transition_type Tween.TransitionType) { //gd:LookAtModifier3D.set_transition_type
 	var frame = callframe.New()
 	callframe.Arg(frame, transition_type)
 	var r_ret = callframe.Nil
@@ -605,9 +613,9 @@ func (self class) SetTransitionType(transition_type gdclass.TweenTransitionType)
 }
 
 //go:nosplit
-func (self class) GetTransitionType() gdclass.TweenTransitionType { //gd:LookAtModifier3D.get_transition_type
+func (self class) GetTransitionType() Tween.TransitionType { //gd:LookAtModifier3D.get_transition_type
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TweenTransitionType](frame)
+	var r_ret = callframe.Ret[Tween.TransitionType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_get_transition_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -615,7 +623,7 @@ func (self class) GetTransitionType() gdclass.TweenTransitionType { //gd:LookAtM
 }
 
 //go:nosplit
-func (self class) SetEaseType(ease_type gdclass.TweenEaseType) { //gd:LookAtModifier3D.set_ease_type
+func (self class) SetEaseType(ease_type Tween.EaseType) { //gd:LookAtModifier3D.set_ease_type
 	var frame = callframe.New()
 	callframe.Arg(frame, ease_type)
 	var r_ret = callframe.Nil
@@ -624,9 +632,9 @@ func (self class) SetEaseType(ease_type gdclass.TweenEaseType) { //gd:LookAtModi
 }
 
 //go:nosplit
-func (self class) GetEaseType() gdclass.TweenEaseType { //gd:LookAtModifier3D.get_ease_type
+func (self class) GetEaseType() Tween.EaseType { //gd:LookAtModifier3D.get_ease_type
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TweenEaseType](frame)
+	var r_ret = callframe.Ret[Tween.EaseType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_get_ease_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -977,7 +985,7 @@ func init() {
 	})
 }
 
-type OriginFrom = gdclass.LookAtModifier3DOriginFrom //gd:LookAtModifier3D.OriginFrom
+type OriginFrom int //gd:LookAtModifier3D.OriginFrom
 
 const (
 	/*The bone rest position of the bone specified in [member bone] is used as origin.*/

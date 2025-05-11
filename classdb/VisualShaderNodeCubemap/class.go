@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/TextureLayered"
 import "graphics.gd/classdb/VisualShaderNode"
@@ -27,6 +28,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -42,6 +47,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -54,6 +60,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -92,11 +99,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Source() gdclass.VisualShaderNodeCubemapSource {
-	return gdclass.VisualShaderNodeCubemapSource(class(self).GetSource())
+func (self Instance) Source() Source {
+	return Source(class(self).GetSource())
 }
 
-func (self Instance) SetSource(value gdclass.VisualShaderNodeCubemapSource) {
+func (self Instance) SetSource(value Source) {
 	class(self).SetSource(value)
 }
 
@@ -108,16 +115,16 @@ func (self Instance) SetCubeMap(value TextureLayered.Instance) {
 	class(self).SetCubeMap(value)
 }
 
-func (self Instance) TextureType() gdclass.VisualShaderNodeCubemapTextureType {
-	return gdclass.VisualShaderNodeCubemapTextureType(class(self).GetTextureType())
+func (self Instance) TextureType() TextureType {
+	return TextureType(class(self).GetTextureType())
 }
 
-func (self Instance) SetTextureType(value gdclass.VisualShaderNodeCubemapTextureType) {
+func (self Instance) SetTextureType(value TextureType) {
 	class(self).SetTextureType(value)
 }
 
 //go:nosplit
-func (self class) SetSource(value gdclass.VisualShaderNodeCubemapSource) { //gd:VisualShaderNodeCubemap.set_source
+func (self class) SetSource(value Source) { //gd:VisualShaderNodeCubemap.set_source
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -126,9 +133,9 @@ func (self class) SetSource(value gdclass.VisualShaderNodeCubemapSource) { //gd:
 }
 
 //go:nosplit
-func (self class) GetSource() gdclass.VisualShaderNodeCubemapSource { //gd:VisualShaderNodeCubemap.get_source
+func (self class) GetSource() Source { //gd:VisualShaderNodeCubemap.get_source
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.VisualShaderNodeCubemapSource](frame)
+	var r_ret = callframe.Ret[Source](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCubemap.Bind_get_source, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -155,7 +162,7 @@ func (self class) GetCubeMap() [1]gdclass.TextureLayered { //gd:VisualShaderNode
 }
 
 //go:nosplit
-func (self class) SetTextureType(value gdclass.VisualShaderNodeCubemapTextureType) { //gd:VisualShaderNodeCubemap.set_texture_type
+func (self class) SetTextureType(value TextureType) { //gd:VisualShaderNodeCubemap.set_texture_type
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -164,9 +171,9 @@ func (self class) SetTextureType(value gdclass.VisualShaderNodeCubemapTextureTyp
 }
 
 //go:nosplit
-func (self class) GetTextureType() gdclass.VisualShaderNodeCubemapTextureType { //gd:VisualShaderNodeCubemap.get_texture_type
+func (self class) GetTextureType() TextureType { //gd:VisualShaderNodeCubemap.get_texture_type
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.VisualShaderNodeCubemapTextureType](frame)
+	var r_ret = callframe.Ret[TextureType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCubemap.Bind_get_texture_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -222,7 +229,7 @@ func init() {
 	})
 }
 
-type Source = gdclass.VisualShaderNodeCubemapSource //gd:VisualShaderNodeCubemap.Source
+type Source int //gd:VisualShaderNodeCubemap.Source
 
 const (
 	/*Use the [Cubemap] set via [member cube_map]. If this is set to [member source], the [code]samplerCube[/code] port is ignored.*/
@@ -233,7 +240,7 @@ const (
 	SourceMax Source = 2
 )
 
-type TextureType = gdclass.VisualShaderNodeCubemapTextureType //gd:VisualShaderNodeCubemap.TextureType
+type TextureType int //gd:VisualShaderNodeCubemap.TextureType
 
 const (
 	/*No hints are added to the uniform declaration.*/

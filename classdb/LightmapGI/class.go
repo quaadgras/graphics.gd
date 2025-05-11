@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CameraAttributes"
 import "graphics.gd/classdb/LightmapGIData"
 import "graphics.gd/classdb/Node"
@@ -31,6 +32,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -46,6 +51,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -58,6 +64,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -101,11 +108,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Quality() gdclass.LightmapGIBakeQuality {
-	return gdclass.LightmapGIBakeQuality(class(self).GetBakeQuality())
+func (self Instance) Quality() BakeQuality {
+	return BakeQuality(class(self).GetBakeQuality())
 }
 
-func (self Instance) SetQuality(value gdclass.LightmapGIBakeQuality) {
+func (self Instance) SetQuality(value BakeQuality) {
 	class(self).SetBakeQuality(value)
 }
 
@@ -149,11 +156,11 @@ func (self Instance) SetDirectional(value bool) {
 	class(self).SetDirectional(value)
 }
 
-func (self Instance) ShadowmaskMode() gdclass.LightmapGIDataShadowmaskMode {
-	return gdclass.LightmapGIDataShadowmaskMode(class(self).GetShadowmaskMode())
+func (self Instance) ShadowmaskMode() LightmapGIData.ShadowmaskMode {
+	return LightmapGIData.ShadowmaskMode(class(self).GetShadowmaskMode())
 }
 
-func (self Instance) SetShadowmaskMode(value gdclass.LightmapGIDataShadowmaskMode) {
+func (self Instance) SetShadowmaskMode(value LightmapGIData.ShadowmaskMode) {
 	class(self).SetShadowmaskMode(value)
 }
 
@@ -221,11 +228,11 @@ func (self Instance) SetMaxTextureSize(value int) {
 	class(self).SetMaxTextureSize(int64(value))
 }
 
-func (self Instance) EnvironmentMode() gdclass.LightmapGIEnvironmentMode {
-	return gdclass.LightmapGIEnvironmentMode(class(self).GetEnvironmentMode())
+func (self Instance) EnvironmentMode() EnvironmentMode {
+	return EnvironmentMode(class(self).GetEnvironmentMode())
 }
 
-func (self Instance) SetEnvironmentMode(value gdclass.LightmapGIEnvironmentMode) {
+func (self Instance) SetEnvironmentMode(value EnvironmentMode) {
 	class(self).SetEnvironmentMode(value)
 }
 
@@ -261,11 +268,11 @@ func (self Instance) SetCameraAttributes(value CameraAttributes.Instance) {
 	class(self).SetCameraAttributes(value)
 }
 
-func (self Instance) GenerateProbesSubdiv() gdclass.LightmapGIGenerateProbes {
-	return gdclass.LightmapGIGenerateProbes(class(self).GetGenerateProbes())
+func (self Instance) GenerateProbesSubdiv() GenerateProbes {
+	return GenerateProbes(class(self).GetGenerateProbes())
 }
 
-func (self Instance) SetGenerateProbesSubdiv(value gdclass.LightmapGIGenerateProbes) {
+func (self Instance) SetGenerateProbesSubdiv(value GenerateProbes) {
 	class(self).SetGenerateProbes(value)
 }
 
@@ -297,7 +304,7 @@ func (self class) GetLightData() [1]gdclass.LightmapGIData { //gd:LightmapGI.get
 }
 
 //go:nosplit
-func (self class) SetBakeQuality(bake_quality gdclass.LightmapGIBakeQuality) { //gd:LightmapGI.set_bake_quality
+func (self class) SetBakeQuality(bake_quality BakeQuality) { //gd:LightmapGI.set_bake_quality
 	var frame = callframe.New()
 	callframe.Arg(frame, bake_quality)
 	var r_ret = callframe.Nil
@@ -306,9 +313,9 @@ func (self class) SetBakeQuality(bake_quality gdclass.LightmapGIBakeQuality) { /
 }
 
 //go:nosplit
-func (self class) GetBakeQuality() gdclass.LightmapGIBakeQuality { //gd:LightmapGI.get_bake_quality
+func (self class) GetBakeQuality() BakeQuality { //gd:LightmapGI.get_bake_quality
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.LightmapGIBakeQuality](frame)
+	var r_ret = callframe.Ret[BakeQuality](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_get_bake_quality, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -354,7 +361,7 @@ func (self class) GetBounceIndirectEnergy() float64 { //gd:LightmapGI.get_bounce
 }
 
 //go:nosplit
-func (self class) SetGenerateProbes(subdivision gdclass.LightmapGIGenerateProbes) { //gd:LightmapGI.set_generate_probes
+func (self class) SetGenerateProbes(subdivision GenerateProbes) { //gd:LightmapGI.set_generate_probes
 	var frame = callframe.New()
 	callframe.Arg(frame, subdivision)
 	var r_ret = callframe.Nil
@@ -363,9 +370,9 @@ func (self class) SetGenerateProbes(subdivision gdclass.LightmapGIGenerateProbes
 }
 
 //go:nosplit
-func (self class) GetGenerateProbes() gdclass.LightmapGIGenerateProbes { //gd:LightmapGI.get_generate_probes
+func (self class) GetGenerateProbes() GenerateProbes { //gd:LightmapGI.get_generate_probes
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.LightmapGIGenerateProbes](frame)
+	var r_ret = callframe.Ret[GenerateProbes](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_get_generate_probes, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -392,7 +399,7 @@ func (self class) GetBias() float64 { //gd:LightmapGI.get_bias
 }
 
 //go:nosplit
-func (self class) SetEnvironmentMode(mode gdclass.LightmapGIEnvironmentMode) { //gd:LightmapGI.set_environment_mode
+func (self class) SetEnvironmentMode(mode EnvironmentMode) { //gd:LightmapGI.set_environment_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -401,9 +408,9 @@ func (self class) SetEnvironmentMode(mode gdclass.LightmapGIEnvironmentMode) { /
 }
 
 //go:nosplit
-func (self class) GetEnvironmentMode() gdclass.LightmapGIEnvironmentMode { //gd:LightmapGI.get_environment_mode
+func (self class) GetEnvironmentMode() EnvironmentMode { //gd:LightmapGI.get_environment_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.LightmapGIEnvironmentMode](frame)
+	var r_ret = callframe.Ret[EnvironmentMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_get_environment_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -639,7 +646,7 @@ func (self class) IsDirectional() bool { //gd:LightmapGI.is_directional
 }
 
 //go:nosplit
-func (self class) SetShadowmaskMode(mode gdclass.LightmapGIDataShadowmaskMode) { //gd:LightmapGI.set_shadowmask_mode
+func (self class) SetShadowmaskMode(mode LightmapGIData.ShadowmaskMode) { //gd:LightmapGI.set_shadowmask_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -648,9 +655,9 @@ func (self class) SetShadowmaskMode(mode gdclass.LightmapGIDataShadowmaskMode) {
 }
 
 //go:nosplit
-func (self class) GetShadowmaskMode() gdclass.LightmapGIDataShadowmaskMode { //gd:LightmapGI.get_shadowmask_mode
+func (self class) GetShadowmaskMode() LightmapGIData.ShadowmaskMode { //gd:LightmapGI.get_shadowmask_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.LightmapGIDataShadowmaskMode](frame)
+	var r_ret = callframe.Ret[LightmapGIData.ShadowmaskMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_get_shadowmask_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -730,7 +737,7 @@ func init() {
 	gdclass.Register("LightmapGI", func(ptr gd.Object) any { return [1]gdclass.LightmapGI{*(*gdclass.LightmapGI)(unsafe.Pointer(&ptr))} })
 }
 
-type BakeQuality = gdclass.LightmapGIBakeQuality //gd:LightmapGI.BakeQuality
+type BakeQuality int //gd:LightmapGI.BakeQuality
 
 const (
 	/*Low bake quality (fastest bake times). The quality of this preset can be adjusted by changing [member ProjectSettings.rendering/lightmapping/bake_quality/low_quality_ray_count] and [member ProjectSettings.rendering/lightmapping/bake_quality/low_quality_probe_ray_count].*/
@@ -743,7 +750,7 @@ const (
 	BakeQualityUltra BakeQuality = 3
 )
 
-type GenerateProbes = gdclass.LightmapGIGenerateProbes //gd:LightmapGI.GenerateProbes
+type GenerateProbes int //gd:LightmapGI.GenerateProbes
 
 const (
 	/*Don't generate lightmap probes for lighting dynamic objects.*/
@@ -758,7 +765,7 @@ const (
 	GenerateProbesSubdiv32 GenerateProbes = 4
 )
 
-type BakeError = gdclass.LightmapGIBakeError //gd:LightmapGI.BakeError
+type BakeError int //gd:LightmapGI.BakeError
 
 const (
 	/*Lightmap baking was successful.*/
@@ -787,7 +794,7 @@ const (
 	BakeErrorAtlasTooSmall BakeError = 11
 )
 
-type EnvironmentMode = gdclass.LightmapGIEnvironmentMode //gd:LightmapGI.EnvironmentMode
+type EnvironmentMode int //gd:LightmapGI.EnvironmentMode
 
 const (
 	/*Ignore environment lighting when baking lightmaps.*/

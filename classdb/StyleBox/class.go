@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
@@ -28,6 +29,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -43,6 +48,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,6 +61,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -147,7 +154,7 @@ func (self Instance) SetContentMarginAll(offset Float.X) { //gd:StyleBox.set_con
 Returns the content margin offset for the specified [enum Side].
 Positive values reduce size inwards, unlike [Control]'s margin values.
 */
-func (self Instance) GetMargin(margin Side) Float.X { //gd:StyleBox.get_margin
+func (self Instance) GetMargin(margin Rect2.Side) Float.X { //gd:StyleBox.get_margin
 	return Float.X(Float.X(Advanced(self).GetMargin(margin)))
 }
 
@@ -287,7 +294,7 @@ func (self class) GetMinimumSize() Vector2.XY { //gd:StyleBox.get_minimum_size
 Sets the default value of the specified [enum Side] to [param offset] pixels.
 */
 //go:nosplit
-func (self class) SetContentMargin(margin Side, offset float64) { //gd:StyleBox.set_content_margin
+func (self class) SetContentMargin(margin Rect2.Side, offset float64) { //gd:StyleBox.set_content_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	callframe.Arg(frame, offset)
@@ -312,7 +319,7 @@ func (self class) SetContentMarginAll(offset float64) { //gd:StyleBox.set_conten
 Returns the default margin of the specified [enum Side].
 */
 //go:nosplit
-func (self class) GetContentMargin(margin Side) float64 { //gd:StyleBox.get_content_margin
+func (self class) GetContentMargin(margin Rect2.Side) float64 { //gd:StyleBox.get_content_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Ret[float64](frame)
@@ -327,7 +334,7 @@ Returns the content margin offset for the specified [enum Side].
 Positive values reduce size inwards, unlike [Control]'s margin values.
 */
 //go:nosplit
-func (self class) GetMargin(margin Side) float64 { //gd:StyleBox.get_margin
+func (self class) GetMargin(margin Rect2.Side) float64 { //gd:StyleBox.get_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Ret[float64](frame)
@@ -441,16 +448,3 @@ func (self Instance) Virtual(name string) reflect.Value {
 func init() {
 	gdclass.Register("StyleBox", func(ptr gd.Object) any { return [1]gdclass.StyleBox{*(*gdclass.StyleBox)(unsafe.Pointer(&ptr))} })
 }
-
-type Side int
-
-const (
-	/*Left side, usually used for [Control] or [StyleBox]-derived classes.*/
-	SideLeft Side = 0
-	/*Top side, usually used for [Control] or [StyleBox]-derived classes.*/
-	SideTop Side = 1
-	/*Right side, usually used for [Control] or [StyleBox]-derived classes.*/
-	SideRight Side = 2
-	/*Bottom side, usually used for [Control] or [StyleBox]-derived classes.*/
-	SideBottom Side = 3
-)

@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Material"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
@@ -29,6 +30,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -44,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,6 +62,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -134,11 +141,11 @@ func (self Instance) SetTransparency(value Float.X) {
 	class(self).SetTransparency(float64(value))
 }
 
-func (self Instance) CastShadow() gdclass.GeometryInstance3DShadowCastingSetting {
-	return gdclass.GeometryInstance3DShadowCastingSetting(class(self).GetCastShadowsSetting())
+func (self Instance) CastShadow() ShadowCastingSetting {
+	return ShadowCastingSetting(class(self).GetCastShadowsSetting())
 }
 
-func (self Instance) SetCastShadow(value gdclass.GeometryInstance3DShadowCastingSetting) {
+func (self Instance) SetCastShadow(value ShadowCastingSetting) {
 	class(self).SetCastShadowsSetting(value)
 }
 
@@ -174,11 +181,11 @@ func (self Instance) SetIgnoreOcclusionCulling(value bool) {
 	class(self).SetIgnoreOcclusionCulling(value)
 }
 
-func (self Instance) GiMode() gdclass.GeometryInstance3DGIMode {
-	return gdclass.GeometryInstance3DGIMode(class(self).GetGiMode())
+func (self Instance) GiMode() GIMode {
+	return GIMode(class(self).GetGiMode())
 }
 
-func (self Instance) SetGiMode(value gdclass.GeometryInstance3DGIMode) {
+func (self Instance) SetGiMode(value GIMode) {
 	class(self).SetGiMode(value)
 }
 
@@ -190,11 +197,11 @@ func (self Instance) SetGiLightmapTexelScale(value Float.X) {
 	class(self).SetLightmapTexelScale(float64(value))
 }
 
-func (self Instance) GiLightmapScale() gdclass.GeometryInstance3DLightmapScale {
-	return gdclass.GeometryInstance3DLightmapScale(class(self).GetLightmapScale())
+func (self Instance) GiLightmapScale() LightmapScale {
+	return LightmapScale(class(self).GetLightmapScale())
 }
 
-func (self Instance) SetGiLightmapScale(value gdclass.GeometryInstance3DLightmapScale) {
+func (self Instance) SetGiLightmapScale(value LightmapScale) {
 	class(self).SetLightmapScale(value)
 }
 
@@ -230,11 +237,11 @@ func (self Instance) SetVisibilityRangeEndMargin(value Float.X) {
 	class(self).SetVisibilityRangeEndMargin(float64(value))
 }
 
-func (self Instance) VisibilityRangeFadeMode() gdclass.GeometryInstance3DVisibilityRangeFadeMode {
-	return gdclass.GeometryInstance3DVisibilityRangeFadeMode(class(self).GetVisibilityRangeFadeMode())
+func (self Instance) VisibilityRangeFadeMode() VisibilityRangeFadeMode {
+	return VisibilityRangeFadeMode(class(self).GetVisibilityRangeFadeMode())
 }
 
-func (self Instance) SetVisibilityRangeFadeMode(value gdclass.GeometryInstance3DVisibilityRangeFadeMode) {
+func (self Instance) SetVisibilityRangeFadeMode(value VisibilityRangeFadeMode) {
 	class(self).SetVisibilityRangeFadeMode(value)
 }
 
@@ -277,7 +284,7 @@ func (self class) GetMaterialOverlay() [1]gdclass.Material { //gd:GeometryInstan
 }
 
 //go:nosplit
-func (self class) SetCastShadowsSetting(shadow_casting_setting gdclass.GeometryInstance3DShadowCastingSetting) { //gd:GeometryInstance3D.set_cast_shadows_setting
+func (self class) SetCastShadowsSetting(shadow_casting_setting ShadowCastingSetting) { //gd:GeometryInstance3D.set_cast_shadows_setting
 	var frame = callframe.New()
 	callframe.Arg(frame, shadow_casting_setting)
 	var r_ret = callframe.Nil
@@ -286,9 +293,9 @@ func (self class) SetCastShadowsSetting(shadow_casting_setting gdclass.GeometryI
 }
 
 //go:nosplit
-func (self class) GetCastShadowsSetting() gdclass.GeometryInstance3DShadowCastingSetting { //gd:GeometryInstance3D.get_cast_shadows_setting
+func (self class) GetCastShadowsSetting() ShadowCastingSetting { //gd:GeometryInstance3D.get_cast_shadows_setting
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.GeometryInstance3DShadowCastingSetting](frame)
+	var r_ret = callframe.Ret[ShadowCastingSetting](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GeometryInstance3D.Bind_get_cast_shadows_setting, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -410,7 +417,7 @@ func (self class) GetVisibilityRangeBegin() float64 { //gd:GeometryInstance3D.ge
 }
 
 //go:nosplit
-func (self class) SetVisibilityRangeFadeMode(mode gdclass.GeometryInstance3DVisibilityRangeFadeMode) { //gd:GeometryInstance3D.set_visibility_range_fade_mode
+func (self class) SetVisibilityRangeFadeMode(mode VisibilityRangeFadeMode) { //gd:GeometryInstance3D.set_visibility_range_fade_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -419,9 +426,9 @@ func (self class) SetVisibilityRangeFadeMode(mode gdclass.GeometryInstance3DVisi
 }
 
 //go:nosplit
-func (self class) GetVisibilityRangeFadeMode() gdclass.GeometryInstance3DVisibilityRangeFadeMode { //gd:GeometryInstance3D.get_visibility_range_fade_mode
+func (self class) GetVisibilityRangeFadeMode() VisibilityRangeFadeMode { //gd:GeometryInstance3D.get_visibility_range_fade_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.GeometryInstance3DVisibilityRangeFadeMode](frame)
+	var r_ret = callframe.Ret[VisibilityRangeFadeMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GeometryInstance3D.Bind_get_visibility_range_fade_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -497,7 +504,7 @@ func (self class) GetLightmapTexelScale() float64 { //gd:GeometryInstance3D.get_
 }
 
 //go:nosplit
-func (self class) SetLightmapScale(scale gdclass.GeometryInstance3DLightmapScale) { //gd:GeometryInstance3D.set_lightmap_scale
+func (self class) SetLightmapScale(scale LightmapScale) { //gd:GeometryInstance3D.set_lightmap_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
 	var r_ret = callframe.Nil
@@ -506,9 +513,9 @@ func (self class) SetLightmapScale(scale gdclass.GeometryInstance3DLightmapScale
 }
 
 //go:nosplit
-func (self class) GetLightmapScale() gdclass.GeometryInstance3DLightmapScale { //gd:GeometryInstance3D.get_lightmap_scale
+func (self class) GetLightmapScale() LightmapScale { //gd:GeometryInstance3D.get_lightmap_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.GeometryInstance3DLightmapScale](frame)
+	var r_ret = callframe.Ret[LightmapScale](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GeometryInstance3D.Bind_get_lightmap_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -516,7 +523,7 @@ func (self class) GetLightmapScale() gdclass.GeometryInstance3DLightmapScale { /
 }
 
 //go:nosplit
-func (self class) SetGiMode(mode gdclass.GeometryInstance3DGIMode) { //gd:GeometryInstance3D.set_gi_mode
+func (self class) SetGiMode(mode GIMode) { //gd:GeometryInstance3D.set_gi_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -525,9 +532,9 @@ func (self class) SetGiMode(mode gdclass.GeometryInstance3DGIMode) { //gd:Geomet
 }
 
 //go:nosplit
-func (self class) GetGiMode() gdclass.GeometryInstance3DGIMode { //gd:GeometryInstance3D.get_gi_mode
+func (self class) GetGiMode() GIMode { //gd:GeometryInstance3D.get_gi_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.GeometryInstance3DGIMode](frame)
+	var r_ret = callframe.Ret[GIMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GeometryInstance3D.Bind_get_gi_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -609,7 +616,7 @@ func init() {
 	})
 }
 
-type ShadowCastingSetting = gdclass.GeometryInstance3DShadowCastingSetting //gd:GeometryInstance3D.ShadowCastingSetting
+type ShadowCastingSetting int //gd:GeometryInstance3D.ShadowCastingSetting
 
 const (
 	/*Will not cast any shadows. Use this to improve performance for small geometry that is unlikely to cast noticeable shadows (such as debris).*/
@@ -625,7 +632,7 @@ const (
 	ShadowCastingSettingShadowsOnly ShadowCastingSetting = 3
 )
 
-type GIMode = gdclass.GeometryInstance3DGIMode //gd:GeometryInstance3D.GIMode
+type GIMode int //gd:GeometryInstance3D.GIMode
 
 const (
 	/*Disabled global illumination mode. Use for dynamic objects that do not contribute to global illumination (such as characters). When using [VoxelGI] and SDFGI, the geometry will [i]receive[/i] indirect lighting and reflections but the geometry will not be considered in GI baking.*/
@@ -636,7 +643,7 @@ const (
 	GiModeDynamic GIMode = 2
 )
 
-type LightmapScale = gdclass.GeometryInstance3DLightmapScale //gd:GeometryInstance3D.LightmapScale
+type LightmapScale int //gd:GeometryInstance3D.LightmapScale
 
 const (
 	/*The standard texel density for lightmapping with [LightmapGI].*/
@@ -651,7 +658,7 @@ const (
 	LightmapScaleMax LightmapScale = 4
 )
 
-type VisibilityRangeFadeMode = gdclass.GeometryInstance3DVisibilityRangeFadeMode //gd:GeometryInstance3D.VisibilityRangeFadeMode
+type VisibilityRangeFadeMode int //gd:GeometryInstance3D.VisibilityRangeFadeMode
 
 const (
 	/*Will not fade itself nor its visibility dependencies, hysteresis will be used instead. This is the fastest approach to manual LOD, but it can result in noticeable LOD transitions depending on how the LOD meshes are authored. See [member visibility_range_begin] and [member Node3D.visibility_parent] for more information.*/

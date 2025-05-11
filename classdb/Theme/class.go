@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Font"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/StyleBox"
@@ -29,6 +30,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -44,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,6 +62,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -425,7 +432,7 @@ Creates or changes the value of the theme property of [param data_type] defined 
 Fails if the [param value] type is not accepted by [param data_type].
 [b]Note:[/b] This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
 */
-func (self Instance) SetThemeItem(data_type gdclass.ThemeDataType, name string, theme_type string, value any) { //gd:Theme.set_theme_item
+func (self Instance) SetThemeItem(data_type DataType, name string, theme_type string, value any) { //gd:Theme.set_theme_item
 	Advanced(self).SetThemeItem(data_type, String.Name(String.New(name)), String.Name(String.New(theme_type)), variant.New(value))
 }
 
@@ -434,7 +441,7 @@ Returns the theme property of [param data_type] defined by [param name] and [par
 Returns the engine fallback value if the property doesn't exist (see [ThemeDB]). Use [method has_theme_item] to check for existence.
 [b]Note:[/b] This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
 */
-func (self Instance) GetThemeItem(data_type gdclass.ThemeDataType, name string, theme_type string) any { //gd:Theme.get_theme_item
+func (self Instance) GetThemeItem(data_type DataType, name string, theme_type string) any { //gd:Theme.get_theme_item
 	return any(Advanced(self).GetThemeItem(data_type, String.Name(String.New(name)), String.Name(String.New(theme_type))).Interface())
 }
 
@@ -443,7 +450,7 @@ Returns [code]true[/code] if the theme property of [param data_type] defined by 
 Returns [code]false[/code] if it doesn't exist. Use [method set_theme_item] to define it.
 [b]Note:[/b] This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
 */
-func (self Instance) HasThemeItem(data_type gdclass.ThemeDataType, name string, theme_type string) bool { //gd:Theme.has_theme_item
+func (self Instance) HasThemeItem(data_type DataType, name string, theme_type string) bool { //gd:Theme.has_theme_item
 	return bool(Advanced(self).HasThemeItem(data_type, String.Name(String.New(name)), String.Name(String.New(theme_type))))
 }
 
@@ -452,7 +459,7 @@ Renames the theme property of [param data_type] defined by [param old_name] and 
 Fails if it doesn't exist, or if a similar property with the new name already exists. Use [method has_theme_item] to check for existence, and [method clear_theme_item] to remove the existing property.
 [b]Note:[/b] This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
 */
-func (self Instance) RenameThemeItem(data_type gdclass.ThemeDataType, old_name string, name string, theme_type string) { //gd:Theme.rename_theme_item
+func (self Instance) RenameThemeItem(data_type DataType, old_name string, name string, theme_type string) { //gd:Theme.rename_theme_item
 	Advanced(self).RenameThemeItem(data_type, String.Name(String.New(old_name)), String.Name(String.New(name)), String.Name(String.New(theme_type)))
 }
 
@@ -461,7 +468,7 @@ Removes the theme property of [param data_type] defined by [param name] and [par
 Fails if it doesn't exist. Use [method has_theme_item] to check for existence.
 [b]Note:[/b] This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
 */
-func (self Instance) ClearThemeItem(data_type gdclass.ThemeDataType, name string, theme_type string) { //gd:Theme.clear_theme_item
+func (self Instance) ClearThemeItem(data_type DataType, name string, theme_type string) { //gd:Theme.clear_theme_item
 	Advanced(self).ClearThemeItem(data_type, String.Name(String.New(name)), String.Name(String.New(theme_type)))
 }
 
@@ -469,7 +476,7 @@ func (self Instance) ClearThemeItem(data_type gdclass.ThemeDataType, name string
 Returns a list of names for properties of [param data_type] defined with [param theme_type]. Use [method get_theme_item_type_list] to get a list of possible theme type names.
 [b]Note:[/b] This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
 */
-func (self Instance) GetThemeItemList(data_type gdclass.ThemeDataType, theme_type string) []string { //gd:Theme.get_theme_item_list
+func (self Instance) GetThemeItemList(data_type DataType, theme_type string) []string { //gd:Theme.get_theme_item_list
 	return []string(Advanced(self).GetThemeItemList(data_type, String.New(theme_type)).Strings())
 }
 
@@ -477,7 +484,7 @@ func (self Instance) GetThemeItemList(data_type gdclass.ThemeDataType, theme_typ
 Returns a list of all unique theme type names for [param data_type] properties. Use [method get_type_list] to get a list of all unique theme types.
 [b]Note:[/b] This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
 */
-func (self Instance) GetThemeItemTypeList(data_type gdclass.ThemeDataType) []string { //gd:Theme.get_theme_item_type_list
+func (self Instance) GetThemeItemTypeList(data_type DataType) []string { //gd:Theme.get_theme_item_type_list
 	return []string(Advanced(self).GetThemeItemTypeList(data_type).Strings())
 }
 
@@ -1319,7 +1326,7 @@ Fails if the [param value] type is not accepted by [param data_type].
 [b]Note:[/b] This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
 */
 //go:nosplit
-func (self class) SetThemeItem(data_type gdclass.ThemeDataType, name String.Name, theme_type String.Name, value variant.Any) { //gd:Theme.set_theme_item
+func (self class) SetThemeItem(data_type DataType, name String.Name, theme_type String.Name, value variant.Any) { //gd:Theme.set_theme_item
 	var frame = callframe.New()
 	callframe.Arg(frame, data_type)
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
@@ -1336,7 +1343,7 @@ Returns the engine fallback value if the property doesn't exist (see [ThemeDB]).
 [b]Note:[/b] This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
 */
 //go:nosplit
-func (self class) GetThemeItem(data_type gdclass.ThemeDataType, name String.Name, theme_type String.Name) variant.Any { //gd:Theme.get_theme_item
+func (self class) GetThemeItem(data_type DataType, name String.Name, theme_type String.Name) variant.Any { //gd:Theme.get_theme_item
 	var frame = callframe.New()
 	callframe.Arg(frame, data_type)
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
@@ -1354,7 +1361,7 @@ Returns [code]false[/code] if it doesn't exist. Use [method set_theme_item] to d
 [b]Note:[/b] This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
 */
 //go:nosplit
-func (self class) HasThemeItem(data_type gdclass.ThemeDataType, name String.Name, theme_type String.Name) bool { //gd:Theme.has_theme_item
+func (self class) HasThemeItem(data_type DataType, name String.Name, theme_type String.Name) bool { //gd:Theme.has_theme_item
 	var frame = callframe.New()
 	callframe.Arg(frame, data_type)
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
@@ -1372,7 +1379,7 @@ Fails if it doesn't exist, or if a similar property with the new name already ex
 [b]Note:[/b] This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
 */
 //go:nosplit
-func (self class) RenameThemeItem(data_type gdclass.ThemeDataType, old_name String.Name, name String.Name, theme_type String.Name) { //gd:Theme.rename_theme_item
+func (self class) RenameThemeItem(data_type DataType, old_name String.Name, name String.Name, theme_type String.Name) { //gd:Theme.rename_theme_item
 	var frame = callframe.New()
 	callframe.Arg(frame, data_type)
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(old_name)))
@@ -1389,7 +1396,7 @@ Fails if it doesn't exist. Use [method has_theme_item] to check for existence.
 [b]Note:[/b] This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
 */
 //go:nosplit
-func (self class) ClearThemeItem(data_type gdclass.ThemeDataType, name String.Name, theme_type String.Name) { //gd:Theme.clear_theme_item
+func (self class) ClearThemeItem(data_type DataType, name String.Name, theme_type String.Name) { //gd:Theme.clear_theme_item
 	var frame = callframe.New()
 	callframe.Arg(frame, data_type)
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
@@ -1404,7 +1411,7 @@ Returns a list of names for properties of [param data_type] defined with [param 
 [b]Note:[/b] This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
 */
 //go:nosplit
-func (self class) GetThemeItemList(data_type gdclass.ThemeDataType, theme_type String.Readable) Packed.Strings { //gd:Theme.get_theme_item_list
+func (self class) GetThemeItemList(data_type DataType, theme_type String.Readable) Packed.Strings { //gd:Theme.get_theme_item_list
 	var frame = callframe.New()
 	callframe.Arg(frame, data_type)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(theme_type)))
@@ -1420,7 +1427,7 @@ Returns a list of all unique theme type names for [param data_type] properties. 
 [b]Note:[/b] This method is analogous to calling the corresponding data type specific method, but can be used for more generalized logic.
 */
 //go:nosplit
-func (self class) GetThemeItemTypeList(data_type gdclass.ThemeDataType) Packed.Strings { //gd:Theme.get_theme_item_type_list
+func (self class) GetThemeItemTypeList(data_type DataType) Packed.Strings { //gd:Theme.get_theme_item_type_list
 	var frame = callframe.New()
 	callframe.Arg(frame, data_type)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -1597,7 +1604,7 @@ func init() {
 	gdclass.Register("Theme", func(ptr gd.Object) any { return [1]gdclass.Theme{*(*gdclass.Theme)(unsafe.Pointer(&ptr))} })
 }
 
-type DataType = gdclass.ThemeDataType //gd:Theme.DataType
+type DataType int //gd:Theme.DataType
 
 const (
 	/*Theme's [Color] item type.*/

@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/HTTPClient"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/TLSOptions"
 import "graphics.gd/variant/Array"
@@ -26,6 +28,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -41,6 +47,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -53,6 +60,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -247,7 +255,7 @@ Returns [constant OK] if request is successfully created. (Does not imply that t
 [b]Note:[/b] When [param method] is [constant HTTPClient.METHOD_GET], the payload sent via [param request_data] might be ignored by the server or even cause the server to reject the request (check [url=https://datatracker.ietf.org/doc/html/rfc7231#section-4.3.1]RFC 7231 section 4.3.1[/url] for more details). As a workaround, you can send data as a query string in the URL (see [method String.uri_encode] for an example).
 [b]Note:[/b] It's recommended to use transport encryption (TLS) and to avoid sending sensitive information (such as login credentials) in HTTP GET URL parameters. Consider using HTTP POST requests or HTTP headers for such information instead.
 */
-func (self Expanded) Request(url string, custom_headers []string, method gdclass.HTTPClientMethod, request_data string) error { //gd:HTTPRequest.request
+func (self Expanded) Request(url string, custom_headers []string, method HTTPClient.Method, request_data string) error { //gd:HTTPRequest.request
 	return error(gd.ToError(Advanced(self).Request(String.New(url), Packed.MakeStrings(custom_headers...), method, String.New(request_data))))
 }
 
@@ -263,7 +271,7 @@ func (self Instance) RequestRaw(url string) error { //gd:HTTPRequest.request_raw
 Creates request on the underlying [HTTPClient] using a raw array of bytes for the request body. If there is no configuration errors, it tries to connect using [method HTTPClient.connect_to_host] and passes parameters onto [method HTTPClient.request].
 Returns [constant OK] if request is successfully created. (Does not imply that the server has responded), [constant ERR_UNCONFIGURED] if not in the tree, [constant ERR_BUSY] if still processing previous request, [constant ERR_INVALID_PARAMETER] if given string is not a valid URL format, or [constant ERR_CANT_CONNECT] if not using thread and the [HTTPClient] cannot connect to host.
 */
-func (self Expanded) RequestRaw(url string, custom_headers []string, method gdclass.HTTPClientMethod, request_data_raw []byte) error { //gd:HTTPRequest.request_raw
+func (self Expanded) RequestRaw(url string, custom_headers []string, method HTTPClient.Method, request_data_raw []byte) error { //gd:HTTPRequest.request_raw
 	return error(gd.ToError(Advanced(self).RequestRaw(String.New(url), Packed.MakeStrings(custom_headers...), method, Packed.Bytes(Packed.New(request_data_raw...)))))
 }
 
@@ -284,8 +292,8 @@ func (self Instance) SetTlsOptions(client_options TLSOptions.Instance) { //gd:HT
 /*
 Returns the current status of the underlying [HTTPClient]. See [enum HTTPClient.Status].
 */
-func (self Instance) GetHttpClientStatus() gdclass.HTTPClientStatus { //gd:HTTPRequest.get_http_client_status
-	return gdclass.HTTPClientStatus(Advanced(self).GetHttpClientStatus())
+func (self Instance) GetHttpClientStatus() HTTPClient.Status { //gd:HTTPRequest.get_http_client_status
+	return HTTPClient.Status(Advanced(self).GetHttpClientStatus())
 }
 
 /*
@@ -401,7 +409,7 @@ Returns [constant OK] if request is successfully created. (Does not imply that t
 [b]Note:[/b] It's recommended to use transport encryption (TLS) and to avoid sending sensitive information (such as login credentials) in HTTP GET URL parameters. Consider using HTTP POST requests or HTTP headers for such information instead.
 */
 //go:nosplit
-func (self class) Request(url String.Readable, custom_headers Packed.Strings, method gdclass.HTTPClientMethod, request_data String.Readable) Error.Code { //gd:HTTPRequest.request
+func (self class) Request(url String.Readable, custom_headers Packed.Strings, method HTTPClient.Method, request_data String.Readable) Error.Code { //gd:HTTPRequest.request
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(url)))
 	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(custom_headers)))
@@ -419,7 +427,7 @@ Creates request on the underlying [HTTPClient] using a raw array of bytes for th
 Returns [constant OK] if request is successfully created. (Does not imply that the server has responded), [constant ERR_UNCONFIGURED] if not in the tree, [constant ERR_BUSY] if still processing previous request, [constant ERR_INVALID_PARAMETER] if given string is not a valid URL format, or [constant ERR_CANT_CONNECT] if not using thread and the [HTTPClient] cannot connect to host.
 */
 //go:nosplit
-func (self class) RequestRaw(url String.Readable, custom_headers Packed.Strings, method gdclass.HTTPClientMethod, request_data_raw Packed.Bytes) Error.Code { //gd:HTTPRequest.request_raw
+func (self class) RequestRaw(url String.Readable, custom_headers Packed.Strings, method HTTPClient.Method, request_data_raw Packed.Bytes) Error.Code { //gd:HTTPRequest.request_raw
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(url)))
 	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(custom_headers)))
@@ -459,9 +467,9 @@ func (self class) SetTlsOptions(client_options [1]gdclass.TLSOptions) { //gd:HTT
 Returns the current status of the underlying [HTTPClient]. See [enum HTTPClient.Status].
 */
 //go:nosplit
-func (self class) GetHttpClientStatus() gdclass.HTTPClientStatus { //gd:HTTPRequest.get_http_client_status
+func (self class) GetHttpClientStatus() HTTPClient.Status { //gd:HTTPRequest.get_http_client_status
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.HTTPClientStatus](frame)
+	var r_ret = callframe.Ret[HTTPClient.Status](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_get_http_client_status, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -683,7 +691,7 @@ func init() {
 	gdclass.Register("HTTPRequest", func(ptr gd.Object) any { return [1]gdclass.HTTPRequest{*(*gdclass.HTTPRequest)(unsafe.Pointer(&ptr))} })
 }
 
-type Result = gdclass.HTTPRequestResult //gd:HTTPRequest.Result
+type Result int //gd:HTTPRequest.Result
 
 const (
 	/*Request successful.*/

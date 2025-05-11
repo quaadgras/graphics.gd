@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/PhysicsDirectBodyState3D"
 import "graphics.gd/classdb/PhysicsDirectSpaceState3D"
 import "graphics.gd/classdb/PhysicsServer3DRenderingServerHandler"
@@ -33,6 +34,10 @@ import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -48,6 +53,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -60,6 +66,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -145,9 +152,9 @@ func ShapeSetMargin(shape RID.Shape3D, margin Float.X) { //gd:PhysicsServer3D.sh
 /*
 Returns the type of shape (see [enum ShapeType] constants).
 */
-func ShapeGetType(shape RID.Shape3D) gdclass.PhysicsServer3DShapeType { //gd:PhysicsServer3D.shape_get_type
+func ShapeGetType(shape RID.Shape3D) ShapeType { //gd:PhysicsServer3D.shape_get_type
 	once.Do(singleton)
-	return gdclass.PhysicsServer3DShapeType(Advanced().ShapeGetType(RID.Any(shape)))
+	return ShapeType(Advanced().ShapeGetType(RID.Any(shape)))
 }
 
 /*
@@ -194,7 +201,7 @@ func SpaceIsActive(space RID.Space3D) bool { //gd:PhysicsServer3D.space_is_activ
 /*
 Sets the value for a space parameter. A list of available parameters is on the [enum SpaceParameter] constants.
 */
-func SpaceSetParam(space RID.Space3D, param gdclass.PhysicsServer3DSpaceParameter, value Float.X) { //gd:PhysicsServer3D.space_set_param
+func SpaceSetParam(space RID.Space3D, param SpaceParameter, value Float.X) { //gd:PhysicsServer3D.space_set_param
 	once.Do(singleton)
 	Advanced().SpaceSetParam(RID.Any(space), param, float64(value))
 }
@@ -202,7 +209,7 @@ func SpaceSetParam(space RID.Space3D, param gdclass.PhysicsServer3DSpaceParamete
 /*
 Returns the value of a space parameter.
 */
-func SpaceGetParam(space RID.Space3D, param gdclass.PhysicsServer3DSpaceParameter) Float.X { //gd:PhysicsServer3D.space_get_param
+func SpaceGetParam(space RID.Space3D, param SpaceParameter) Float.X { //gd:PhysicsServer3D.space_get_param
 	once.Do(singleton)
 	return Float.X(Float.X(Advanced().SpaceGetParam(RID.Any(space), param)))
 }
@@ -351,7 +358,7 @@ func AreaGetCollisionMask(area RID.Area3D) int { //gd:PhysicsServer3D.area_get_c
 /*
 Sets the value for an area parameter. A list of available parameters is on the [enum AreaParameter] constants.
 */
-func AreaSetParam(area RID.Area3D, param gdclass.PhysicsServer3DAreaParameter, value any) { //gd:PhysicsServer3D.area_set_param
+func AreaSetParam(area RID.Area3D, param AreaParameter, value any) { //gd:PhysicsServer3D.area_set_param
 	once.Do(singleton)
 	Advanced().AreaSetParam(RID.Any(area), param, variant.New(value))
 }
@@ -367,7 +374,7 @@ func AreaSetTransform(area RID.Area3D, transform Transform3D.BasisOrigin) { //gd
 /*
 Returns an area parameter value. A list of available parameters is on the [enum AreaParameter] constants.
 */
-func AreaGetParam(area RID.Area3D, param gdclass.PhysicsServer3DAreaParameter) any { //gd:PhysicsServer3D.area_get_param
+func AreaGetParam(area RID.Area3D, param AreaParameter) any { //gd:PhysicsServer3D.area_get_param
 	once.Do(singleton)
 	return any(Advanced().AreaGetParam(RID.Any(area), param).Interface())
 }
@@ -464,7 +471,7 @@ func BodyGetSpace(body RID.Body3D) RID.Space3D { //gd:PhysicsServer3D.body_get_s
 /*
 Sets the body mode, from one of the [enum BodyMode] constants.
 */
-func BodySetMode(body RID.Body3D, mode gdclass.PhysicsServer3DBodyMode) { //gd:PhysicsServer3D.body_set_mode
+func BodySetMode(body RID.Body3D, mode BodyMode) { //gd:PhysicsServer3D.body_set_mode
 	once.Do(singleton)
 	Advanced().BodySetMode(RID.Any(body), mode)
 }
@@ -472,9 +479,9 @@ func BodySetMode(body RID.Body3D, mode gdclass.PhysicsServer3DBodyMode) { //gd:P
 /*
 Returns the body mode.
 */
-func BodyGetMode(body RID.Body3D) gdclass.PhysicsServer3DBodyMode { //gd:PhysicsServer3D.body_get_mode
+func BodyGetMode(body RID.Body3D) BodyMode { //gd:PhysicsServer3D.body_get_mode
 	once.Do(singleton)
-	return gdclass.PhysicsServer3DBodyMode(Advanced().BodyGetMode(RID.Any(body)))
+	return BodyMode(Advanced().BodyGetMode(RID.Any(body)))
 }
 
 /*
@@ -637,7 +644,7 @@ func BodyIsContinuousCollisionDetectionEnabled(body RID.Body3D) bool { //gd:Phys
 /*
 Sets a body parameter. A list of available parameters is on the [enum BodyParameter] constants.
 */
-func BodySetParam(body RID.Body3D, param gdclass.PhysicsServer3DBodyParameter, value any) { //gd:PhysicsServer3D.body_set_param
+func BodySetParam(body RID.Body3D, param BodyParameter, value any) { //gd:PhysicsServer3D.body_set_param
 	once.Do(singleton)
 	Advanced().BodySetParam(RID.Any(body), param, variant.New(value))
 }
@@ -645,7 +652,7 @@ func BodySetParam(body RID.Body3D, param gdclass.PhysicsServer3DBodyParameter, v
 /*
 Returns the value of a body parameter. A list of available parameters is on the [enum BodyParameter] constants.
 */
-func BodyGetParam(body RID.Body3D, param gdclass.PhysicsServer3DBodyParameter) any { //gd:PhysicsServer3D.body_get_param
+func BodyGetParam(body RID.Body3D, param BodyParameter) any { //gd:PhysicsServer3D.body_get_param
 	once.Do(singleton)
 	return any(Advanced().BodyGetParam(RID.Any(body), param).Interface())
 }
@@ -661,7 +668,7 @@ func BodyResetMassProperties(body RID.Body3D) { //gd:PhysicsServer3D.body_reset_
 /*
 Sets a body state (see [enum BodyState] constants).
 */
-func BodySetState(body RID.Body3D, state gdclass.PhysicsServer3DBodyState, value any) { //gd:PhysicsServer3D.body_set_state
+func BodySetState(body RID.Body3D, state BodyState, value any) { //gd:PhysicsServer3D.body_set_state
 	once.Do(singleton)
 	Advanced().BodySetState(RID.Any(body), state, variant.New(value))
 }
@@ -669,7 +676,7 @@ func BodySetState(body RID.Body3D, state gdclass.PhysicsServer3DBodyState, value
 /*
 Returns a body state.
 */
-func BodyGetState(body RID.Body3D, state gdclass.PhysicsServer3DBodyState) any { //gd:PhysicsServer3D.body_get_state
+func BodyGetState(body RID.Body3D, state BodyState) any { //gd:PhysicsServer3D.body_get_state
 	once.Do(singleton)
 	return any(Advanced().BodyGetState(RID.Any(body), state).Interface())
 }
@@ -826,11 +833,11 @@ func BodySetAxisVelocity(body RID.Body3D, axis_velocity Vector3.XYZ) { //gd:Phys
 	once.Do(singleton)
 	Advanced().BodySetAxisVelocity(RID.Any(body), Vector3.XYZ(axis_velocity))
 }
-func BodySetAxisLock(body RID.Body3D, axis gdclass.PhysicsServer3DBodyAxis, lock bool) { //gd:PhysicsServer3D.body_set_axis_lock
+func BodySetAxisLock(body RID.Body3D, axis BodyAxis, lock bool) { //gd:PhysicsServer3D.body_set_axis_lock
 	once.Do(singleton)
 	Advanced().BodySetAxisLock(RID.Any(body), axis, lock)
 }
-func BodyIsAxisLocked(body RID.Body3D, axis gdclass.PhysicsServer3DBodyAxis) bool { //gd:PhysicsServer3D.body_is_axis_locked
+func BodyIsAxisLocked(body RID.Body3D, axis BodyAxis) bool { //gd:PhysicsServer3D.body_is_axis_locked
 	once.Do(singleton)
 	return bool(Advanced().BodyIsAxisLocked(RID.Any(body), axis))
 }
@@ -1054,7 +1061,7 @@ func SoftBodyRemoveCollisionException(body RID.SoftBody3D, body_b RID.Body3D) { 
 Sets the given body state for the given body (see [enum BodyState] constants).
 [b]Note:[/b] Godot's default physics implementation does not support [constant BODY_STATE_LINEAR_VELOCITY], [constant BODY_STATE_ANGULAR_VELOCITY], [constant BODY_STATE_SLEEPING], or [constant BODY_STATE_CAN_SLEEP].
 */
-func SoftBodySetState(body RID.SoftBody3D, state gdclass.PhysicsServer3DBodyState, v any) { //gd:PhysicsServer3D.soft_body_set_state
+func SoftBodySetState(body RID.SoftBody3D, state BodyState, v any) { //gd:PhysicsServer3D.soft_body_set_state
 	once.Do(singleton)
 	Advanced().SoftBodySetState(RID.Any(body), state, variant.New(v))
 }
@@ -1063,7 +1070,7 @@ func SoftBodySetState(body RID.SoftBody3D, state gdclass.PhysicsServer3DBodyStat
 Returns the given soft body state (see [enum BodyState] constants).
 [b]Note:[/b] Godot's default physics implementation does not support [constant BODY_STATE_LINEAR_VELOCITY], [constant BODY_STATE_ANGULAR_VELOCITY], [constant BODY_STATE_SLEEPING], or [constant BODY_STATE_CAN_SLEEP].
 */
-func SoftBodyGetState(body RID.SoftBody3D, state gdclass.PhysicsServer3DBodyState) any { //gd:PhysicsServer3D.soft_body_get_state
+func SoftBodyGetState(body RID.SoftBody3D, state BodyState) any { //gd:PhysicsServer3D.soft_body_get_state
 	once.Do(singleton)
 	return any(Advanced().SoftBodyGetState(RID.Any(body), state).Interface())
 }
@@ -1237,7 +1244,7 @@ func JointMakePin(joint RID.Joint3D, body_A RID.Body3D, local_A Vector3.XYZ, bod
 /*
 Sets a pin_joint parameter (see [enum PinJointParam] constants).
 */
-func PinJointSetParam(joint RID.Joint3D, param gdclass.PhysicsServer3DPinJointParam, value Float.X) { //gd:PhysicsServer3D.pin_joint_set_param
+func PinJointSetParam(joint RID.Joint3D, param PinJointParam, value Float.X) { //gd:PhysicsServer3D.pin_joint_set_param
 	once.Do(singleton)
 	Advanced().PinJointSetParam(RID.Any(joint), param, float64(value))
 }
@@ -1245,7 +1252,7 @@ func PinJointSetParam(joint RID.Joint3D, param gdclass.PhysicsServer3DPinJointPa
 /*
 Gets a pin_joint parameter (see [enum PinJointParam] constants).
 */
-func PinJointGetParam(joint RID.Joint3D, param gdclass.PhysicsServer3DPinJointParam) Float.X { //gd:PhysicsServer3D.pin_joint_get_param
+func PinJointGetParam(joint RID.Joint3D, param PinJointParam) Float.X { //gd:PhysicsServer3D.pin_joint_get_param
 	once.Do(singleton)
 	return Float.X(Float.X(Advanced().PinJointGetParam(RID.Any(joint), param)))
 }
@@ -1289,7 +1296,7 @@ func JointMakeHinge(joint RID.Joint3D, body_A RID.Body3D, hinge_A Transform3D.Ba
 /*
 Sets a hinge_joint parameter (see [enum HingeJointParam] constants).
 */
-func HingeJointSetParam(joint RID.Joint3D, param gdclass.PhysicsServer3DHingeJointParam, value Float.X) { //gd:PhysicsServer3D.hinge_joint_set_param
+func HingeJointSetParam(joint RID.Joint3D, param HingeJointParam, value Float.X) { //gd:PhysicsServer3D.hinge_joint_set_param
 	once.Do(singleton)
 	Advanced().HingeJointSetParam(RID.Any(joint), param, float64(value))
 }
@@ -1297,7 +1304,7 @@ func HingeJointSetParam(joint RID.Joint3D, param gdclass.PhysicsServer3DHingeJoi
 /*
 Gets a hinge_joint parameter (see [enum HingeJointParam]).
 */
-func HingeJointGetParam(joint RID.Joint3D, param gdclass.PhysicsServer3DHingeJointParam) Float.X { //gd:PhysicsServer3D.hinge_joint_get_param
+func HingeJointGetParam(joint RID.Joint3D, param HingeJointParam) Float.X { //gd:PhysicsServer3D.hinge_joint_get_param
 	once.Do(singleton)
 	return Float.X(Float.X(Advanced().HingeJointGetParam(RID.Any(joint), param)))
 }
@@ -1305,7 +1312,7 @@ func HingeJointGetParam(joint RID.Joint3D, param gdclass.PhysicsServer3DHingeJoi
 /*
 Sets a hinge_joint flag (see [enum HingeJointFlag] constants).
 */
-func HingeJointSetFlag(joint RID.Joint3D, flag gdclass.PhysicsServer3DHingeJointFlag, enabled bool) { //gd:PhysicsServer3D.hinge_joint_set_flag
+func HingeJointSetFlag(joint RID.Joint3D, flag HingeJointFlag, enabled bool) { //gd:PhysicsServer3D.hinge_joint_set_flag
 	once.Do(singleton)
 	Advanced().HingeJointSetFlag(RID.Any(joint), flag, enabled)
 }
@@ -1313,7 +1320,7 @@ func HingeJointSetFlag(joint RID.Joint3D, flag gdclass.PhysicsServer3DHingeJoint
 /*
 Gets a hinge_joint flag (see [enum HingeJointFlag] constants).
 */
-func HingeJointGetFlag(joint RID.Joint3D, flag gdclass.PhysicsServer3DHingeJointFlag) bool { //gd:PhysicsServer3D.hinge_joint_get_flag
+func HingeJointGetFlag(joint RID.Joint3D, flag HingeJointFlag) bool { //gd:PhysicsServer3D.hinge_joint_get_flag
 	once.Do(singleton)
 	return bool(Advanced().HingeJointGetFlag(RID.Any(joint), flag))
 }
@@ -1325,7 +1332,7 @@ func JointMakeSlider(joint RID.Joint3D, body_A RID.Body3D, local_ref_A Transform
 /*
 Gets a slider_joint parameter (see [enum SliderJointParam] constants).
 */
-func SliderJointSetParam(joint RID.Joint3D, param gdclass.PhysicsServer3DSliderJointParam, value Float.X) { //gd:PhysicsServer3D.slider_joint_set_param
+func SliderJointSetParam(joint RID.Joint3D, param SliderJointParam, value Float.X) { //gd:PhysicsServer3D.slider_joint_set_param
 	once.Do(singleton)
 	Advanced().SliderJointSetParam(RID.Any(joint), param, float64(value))
 }
@@ -1333,7 +1340,7 @@ func SliderJointSetParam(joint RID.Joint3D, param gdclass.PhysicsServer3DSliderJ
 /*
 Gets a slider_joint parameter (see [enum SliderJointParam] constants).
 */
-func SliderJointGetParam(joint RID.Joint3D, param gdclass.PhysicsServer3DSliderJointParam) Float.X { //gd:PhysicsServer3D.slider_joint_get_param
+func SliderJointGetParam(joint RID.Joint3D, param SliderJointParam) Float.X { //gd:PhysicsServer3D.slider_joint_get_param
 	once.Do(singleton)
 	return Float.X(Float.X(Advanced().SliderJointGetParam(RID.Any(joint), param)))
 }
@@ -1345,7 +1352,7 @@ func JointMakeConeTwist(joint RID.Joint3D, body_A RID.Body3D, local_ref_A Transf
 /*
 Sets a cone_twist_joint parameter (see [enum ConeTwistJointParam] constants).
 */
-func ConeTwistJointSetParam(joint RID.Joint3D, param gdclass.PhysicsServer3DConeTwistJointParam, value Float.X) { //gd:PhysicsServer3D.cone_twist_joint_set_param
+func ConeTwistJointSetParam(joint RID.Joint3D, param ConeTwistJointParam, value Float.X) { //gd:PhysicsServer3D.cone_twist_joint_set_param
 	once.Do(singleton)
 	Advanced().ConeTwistJointSetParam(RID.Any(joint), param, float64(value))
 }
@@ -1353,7 +1360,7 @@ func ConeTwistJointSetParam(joint RID.Joint3D, param gdclass.PhysicsServer3DCone
 /*
 Gets a cone_twist_joint parameter (see [enum ConeTwistJointParam] constants).
 */
-func ConeTwistJointGetParam(joint RID.Joint3D, param gdclass.PhysicsServer3DConeTwistJointParam) Float.X { //gd:PhysicsServer3D.cone_twist_joint_get_param
+func ConeTwistJointGetParam(joint RID.Joint3D, param ConeTwistJointParam) Float.X { //gd:PhysicsServer3D.cone_twist_joint_get_param
 	once.Do(singleton)
 	return Float.X(Float.X(Advanced().ConeTwistJointGetParam(RID.Any(joint), param)))
 }
@@ -1361,9 +1368,9 @@ func ConeTwistJointGetParam(joint RID.Joint3D, param gdclass.PhysicsServer3DCone
 /*
 Returns the type of the Joint3D.
 */
-func JointGetType(joint RID.Joint3D) gdclass.PhysicsServer3DJointType { //gd:PhysicsServer3D.joint_get_type
+func JointGetType(joint RID.Joint3D) JointType { //gd:PhysicsServer3D.joint_get_type
 	once.Do(singleton)
-	return gdclass.PhysicsServer3DJointType(Advanced().JointGetType(RID.Any(joint)))
+	return JointType(Advanced().JointGetType(RID.Any(joint)))
 }
 
 /*
@@ -1409,7 +1416,7 @@ func JointMakeGeneric6dof(joint RID.Joint3D, body_A RID.Body3D, local_ref_A Tran
 /*
 Sets the value of a given generic 6DOF joint parameter. See [enum G6DOFJointAxisParam] for the list of available parameters.
 */
-func Generic6dofJointSetParam(joint RID.Joint3D, axis gd.Vector3Axis, param gdclass.PhysicsServer3DG6DOFJointAxisParam, value Float.X) { //gd:PhysicsServer3D.generic_6dof_joint_set_param
+func Generic6dofJointSetParam(joint RID.Joint3D, axis Vector3.Axis, param G6DOFJointAxisParam, value Float.X) { //gd:PhysicsServer3D.generic_6dof_joint_set_param
 	once.Do(singleton)
 	Advanced().Generic6dofJointSetParam(RID.Any(joint), axis, param, float64(value))
 }
@@ -1417,7 +1424,7 @@ func Generic6dofJointSetParam(joint RID.Joint3D, axis gd.Vector3Axis, param gdcl
 /*
 Returns the value of a generic 6DOF joint parameter. See [enum G6DOFJointAxisParam] for the list of available parameters.
 */
-func Generic6dofJointGetParam(joint RID.Joint3D, axis gd.Vector3Axis, param gdclass.PhysicsServer3DG6DOFJointAxisParam) Float.X { //gd:PhysicsServer3D.generic_6dof_joint_get_param
+func Generic6dofJointGetParam(joint RID.Joint3D, axis Vector3.Axis, param G6DOFJointAxisParam) Float.X { //gd:PhysicsServer3D.generic_6dof_joint_get_param
 	once.Do(singleton)
 	return Float.X(Float.X(Advanced().Generic6dofJointGetParam(RID.Any(joint), axis, param)))
 }
@@ -1425,7 +1432,7 @@ func Generic6dofJointGetParam(joint RID.Joint3D, axis gd.Vector3Axis, param gdcl
 /*
 Sets the value of a given generic 6DOF joint flag. See [enum G6DOFJointAxisFlag] for the list of available flags.
 */
-func Generic6dofJointSetFlag(joint RID.Joint3D, axis gd.Vector3Axis, flag gdclass.PhysicsServer3DG6DOFJointAxisFlag, enable bool) { //gd:PhysicsServer3D.generic_6dof_joint_set_flag
+func Generic6dofJointSetFlag(joint RID.Joint3D, axis Vector3.Axis, flag G6DOFJointAxisFlag, enable bool) { //gd:PhysicsServer3D.generic_6dof_joint_set_flag
 	once.Do(singleton)
 	Advanced().Generic6dofJointSetFlag(RID.Any(joint), axis, flag, enable)
 }
@@ -1433,7 +1440,7 @@ func Generic6dofJointSetFlag(joint RID.Joint3D, axis gd.Vector3Axis, flag gdclas
 /*
 Returns the value of a generic 6DOF joint flag. See [enum G6DOFJointAxisFlag] for the list of available flags.
 */
-func Generic6dofJointGetFlag(joint RID.Joint3D, axis gd.Vector3Axis, flag gdclass.PhysicsServer3DG6DOFJointAxisFlag) bool { //gd:PhysicsServer3D.generic_6dof_joint_get_flag
+func Generic6dofJointGetFlag(joint RID.Joint3D, axis Vector3.Axis, flag G6DOFJointAxisFlag) bool { //gd:PhysicsServer3D.generic_6dof_joint_get_flag
 	once.Do(singleton)
 	return bool(Advanced().Generic6dofJointGetFlag(RID.Any(joint), axis, flag))
 }
@@ -1457,7 +1464,7 @@ func SetActive(active bool) { //gd:PhysicsServer3D.set_active
 /*
 Returns information about the current state of the 3D physics engine. See [enum ProcessInfo] for a list of available states.
 */
-func GetProcessInfo(process_info gdclass.PhysicsServer3DProcessInfo) int { //gd:PhysicsServer3D.get_process_info
+func GetProcessInfo(process_info ProcessInfo) int { //gd:PhysicsServer3D.get_process_info
 	once.Do(singleton)
 	return int(int(Advanced().GetProcessInfo(process_info)))
 }
@@ -1608,10 +1615,10 @@ func (self class) ShapeSetMargin(shape RID.Any, margin float64) { //gd:PhysicsSe
 Returns the type of shape (see [enum ShapeType] constants).
 */
 //go:nosplit
-func (self class) ShapeGetType(shape RID.Any) gdclass.PhysicsServer3DShapeType { //gd:PhysicsServer3D.shape_get_type
+func (self class) ShapeGetType(shape RID.Any) ShapeType { //gd:PhysicsServer3D.shape_get_type
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
-	var r_ret = callframe.Ret[gdclass.PhysicsServer3DShapeType](frame)
+	var r_ret = callframe.Ret[ShapeType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_shape_get_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1691,7 +1698,7 @@ func (self class) SpaceIsActive(space RID.Any) bool { //gd:PhysicsServer3D.space
 Sets the value for a space parameter. A list of available parameters is on the [enum SpaceParameter] constants.
 */
 //go:nosplit
-func (self class) SpaceSetParam(space RID.Any, param gdclass.PhysicsServer3DSpaceParameter, value float64) { //gd:PhysicsServer3D.space_set_param
+func (self class) SpaceSetParam(space RID.Any, param SpaceParameter, value float64) { //gd:PhysicsServer3D.space_set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, space)
 	callframe.Arg(frame, param)
@@ -1705,7 +1712,7 @@ func (self class) SpaceSetParam(space RID.Any, param gdclass.PhysicsServer3DSpac
 Returns the value of a space parameter.
 */
 //go:nosplit
-func (self class) SpaceGetParam(space RID.Any, param gdclass.PhysicsServer3DSpaceParameter) float64 { //gd:PhysicsServer3D.space_get_param
+func (self class) SpaceGetParam(space RID.Any, param SpaceParameter) float64 { //gd:PhysicsServer3D.space_get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, space)
 	callframe.Arg(frame, param)
@@ -1952,7 +1959,7 @@ func (self class) AreaGetCollisionMask(area RID.Any) int64 { //gd:PhysicsServer3
 Sets the value for an area parameter. A list of available parameters is on the [enum AreaParameter] constants.
 */
 //go:nosplit
-func (self class) AreaSetParam(area RID.Any, param gdclass.PhysicsServer3DAreaParameter, value variant.Any) { //gd:PhysicsServer3D.area_set_param
+func (self class) AreaSetParam(area RID.Any, param AreaParameter, value variant.Any) { //gd:PhysicsServer3D.area_set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, param)
@@ -1979,7 +1986,7 @@ func (self class) AreaSetTransform(area RID.Any, transform Transform3D.BasisOrig
 Returns an area parameter value. A list of available parameters is on the [enum AreaParameter] constants.
 */
 //go:nosplit
-func (self class) AreaGetParam(area RID.Any, param gdclass.PhysicsServer3DAreaParameter) variant.Any { //gd:PhysicsServer3D.area_get_param
+func (self class) AreaGetParam(area RID.Any, param AreaParameter) variant.Any { //gd:PhysicsServer3D.area_get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, param)
@@ -2137,7 +2144,7 @@ func (self class) BodyGetSpace(body RID.Any) RID.Any { //gd:PhysicsServer3D.body
 Sets the body mode, from one of the [enum BodyMode] constants.
 */
 //go:nosplit
-func (self class) BodySetMode(body RID.Any, mode gdclass.PhysicsServer3DBodyMode) { //gd:PhysicsServer3D.body_set_mode
+func (self class) BodySetMode(body RID.Any, mode BodyMode) { //gd:PhysicsServer3D.body_set_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, mode)
@@ -2150,10 +2157,10 @@ func (self class) BodySetMode(body RID.Any, mode gdclass.PhysicsServer3DBodyMode
 Returns the body mode.
 */
 //go:nosplit
-func (self class) BodyGetMode(body RID.Any) gdclass.PhysicsServer3DBodyMode { //gd:PhysicsServer3D.body_get_mode
+func (self class) BodyGetMode(body RID.Any) BodyMode { //gd:PhysicsServer3D.body_get_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
-	var r_ret = callframe.Ret[gdclass.PhysicsServer3DBodyMode](frame)
+	var r_ret = callframe.Ret[BodyMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_body_get_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2423,7 +2430,7 @@ func (self class) BodyIsContinuousCollisionDetectionEnabled(body RID.Any) bool {
 Sets a body parameter. A list of available parameters is on the [enum BodyParameter] constants.
 */
 //go:nosplit
-func (self class) BodySetParam(body RID.Any, param gdclass.PhysicsServer3DBodyParameter, value variant.Any) { //gd:PhysicsServer3D.body_set_param
+func (self class) BodySetParam(body RID.Any, param BodyParameter, value variant.Any) { //gd:PhysicsServer3D.body_set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, param)
@@ -2437,7 +2444,7 @@ func (self class) BodySetParam(body RID.Any, param gdclass.PhysicsServer3DBodyPa
 Returns the value of a body parameter. A list of available parameters is on the [enum BodyParameter] constants.
 */
 //go:nosplit
-func (self class) BodyGetParam(body RID.Any, param gdclass.PhysicsServer3DBodyParameter) variant.Any { //gd:PhysicsServer3D.body_get_param
+func (self class) BodyGetParam(body RID.Any, param BodyParameter) variant.Any { //gd:PhysicsServer3D.body_get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, param)
@@ -2464,7 +2471,7 @@ func (self class) BodyResetMassProperties(body RID.Any) { //gd:PhysicsServer3D.b
 Sets a body state (see [enum BodyState] constants).
 */
 //go:nosplit
-func (self class) BodySetState(body RID.Any, state gdclass.PhysicsServer3DBodyState, value variant.Any) { //gd:PhysicsServer3D.body_set_state
+func (self class) BodySetState(body RID.Any, state BodyState, value variant.Any) { //gd:PhysicsServer3D.body_set_state
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, state)
@@ -2478,7 +2485,7 @@ func (self class) BodySetState(body RID.Any, state gdclass.PhysicsServer3DBodySt
 Returns a body state.
 */
 //go:nosplit
-func (self class) BodyGetState(body RID.Any, state gdclass.PhysicsServer3DBodyState) variant.Any { //gd:PhysicsServer3D.body_get_state
+func (self class) BodyGetState(body RID.Any, state BodyState) variant.Any { //gd:PhysicsServer3D.body_get_state
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, state)
@@ -2690,7 +2697,7 @@ func (self class) BodySetAxisVelocity(body RID.Any, axis_velocity Vector3.XYZ) {
 }
 
 //go:nosplit
-func (self class) BodySetAxisLock(body RID.Any, axis gdclass.PhysicsServer3DBodyAxis, lock bool) { //gd:PhysicsServer3D.body_set_axis_lock
+func (self class) BodySetAxisLock(body RID.Any, axis BodyAxis, lock bool) { //gd:PhysicsServer3D.body_set_axis_lock
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, axis)
@@ -2701,7 +2708,7 @@ func (self class) BodySetAxisLock(body RID.Any, axis gdclass.PhysicsServer3DBody
 }
 
 //go:nosplit
-func (self class) BodyIsAxisLocked(body RID.Any, axis gdclass.PhysicsServer3DBodyAxis) bool { //gd:PhysicsServer3D.body_is_axis_locked
+func (self class) BodyIsAxisLocked(body RID.Any, axis BodyAxis) bool { //gd:PhysicsServer3D.body_is_axis_locked
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, axis)
@@ -3037,7 +3044,7 @@ Sets the given body state for the given body (see [enum BodyState] constants).
 [b]Note:[/b] Godot's default physics implementation does not support [constant BODY_STATE_LINEAR_VELOCITY], [constant BODY_STATE_ANGULAR_VELOCITY], [constant BODY_STATE_SLEEPING], or [constant BODY_STATE_CAN_SLEEP].
 */
 //go:nosplit
-func (self class) SoftBodySetState(body RID.Any, state gdclass.PhysicsServer3DBodyState, v variant.Any) { //gd:PhysicsServer3D.soft_body_set_state
+func (self class) SoftBodySetState(body RID.Any, state BodyState, v variant.Any) { //gd:PhysicsServer3D.soft_body_set_state
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, state)
@@ -3052,7 +3059,7 @@ Returns the given soft body state (see [enum BodyState] constants).
 [b]Note:[/b] Godot's default physics implementation does not support [constant BODY_STATE_LINEAR_VELOCITY], [constant BODY_STATE_ANGULAR_VELOCITY], [constant BODY_STATE_SLEEPING], or [constant BODY_STATE_CAN_SLEEP].
 */
 //go:nosplit
-func (self class) SoftBodyGetState(body RID.Any, state gdclass.PhysicsServer3DBodyState) variant.Any { //gd:PhysicsServer3D.soft_body_get_state
+func (self class) SoftBodyGetState(body RID.Any, state BodyState) variant.Any { //gd:PhysicsServer3D.soft_body_get_state
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, state)
@@ -3359,7 +3366,7 @@ func (self class) JointMakePin(joint RID.Any, body_A RID.Any, local_A Vector3.XY
 Sets a pin_joint parameter (see [enum PinJointParam] constants).
 */
 //go:nosplit
-func (self class) PinJointSetParam(joint RID.Any, param gdclass.PhysicsServer3DPinJointParam, value float64) { //gd:PhysicsServer3D.pin_joint_set_param
+func (self class) PinJointSetParam(joint RID.Any, param PinJointParam, value float64) { //gd:PhysicsServer3D.pin_joint_set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, param)
@@ -3373,7 +3380,7 @@ func (self class) PinJointSetParam(joint RID.Any, param gdclass.PhysicsServer3DP
 Gets a pin_joint parameter (see [enum PinJointParam] constants).
 */
 //go:nosplit
-func (self class) PinJointGetParam(joint RID.Any, param gdclass.PhysicsServer3DPinJointParam) float64 { //gd:PhysicsServer3D.pin_joint_get_param
+func (self class) PinJointGetParam(joint RID.Any, param PinJointParam) float64 { //gd:PhysicsServer3D.pin_joint_get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, param)
@@ -3455,7 +3462,7 @@ func (self class) JointMakeHinge(joint RID.Any, body_A RID.Any, hinge_A Transfor
 Sets a hinge_joint parameter (see [enum HingeJointParam] constants).
 */
 //go:nosplit
-func (self class) HingeJointSetParam(joint RID.Any, param gdclass.PhysicsServer3DHingeJointParam, value float64) { //gd:PhysicsServer3D.hinge_joint_set_param
+func (self class) HingeJointSetParam(joint RID.Any, param HingeJointParam, value float64) { //gd:PhysicsServer3D.hinge_joint_set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, param)
@@ -3469,7 +3476,7 @@ func (self class) HingeJointSetParam(joint RID.Any, param gdclass.PhysicsServer3
 Gets a hinge_joint parameter (see [enum HingeJointParam]).
 */
 //go:nosplit
-func (self class) HingeJointGetParam(joint RID.Any, param gdclass.PhysicsServer3DHingeJointParam) float64 { //gd:PhysicsServer3D.hinge_joint_get_param
+func (self class) HingeJointGetParam(joint RID.Any, param HingeJointParam) float64 { //gd:PhysicsServer3D.hinge_joint_get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, param)
@@ -3484,7 +3491,7 @@ func (self class) HingeJointGetParam(joint RID.Any, param gdclass.PhysicsServer3
 Sets a hinge_joint flag (see [enum HingeJointFlag] constants).
 */
 //go:nosplit
-func (self class) HingeJointSetFlag(joint RID.Any, flag gdclass.PhysicsServer3DHingeJointFlag, enabled bool) { //gd:PhysicsServer3D.hinge_joint_set_flag
+func (self class) HingeJointSetFlag(joint RID.Any, flag HingeJointFlag, enabled bool) { //gd:PhysicsServer3D.hinge_joint_set_flag
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, flag)
@@ -3498,7 +3505,7 @@ func (self class) HingeJointSetFlag(joint RID.Any, flag gdclass.PhysicsServer3DH
 Gets a hinge_joint flag (see [enum HingeJointFlag] constants).
 */
 //go:nosplit
-func (self class) HingeJointGetFlag(joint RID.Any, flag gdclass.PhysicsServer3DHingeJointFlag) bool { //gd:PhysicsServer3D.hinge_joint_get_flag
+func (self class) HingeJointGetFlag(joint RID.Any, flag HingeJointFlag) bool { //gd:PhysicsServer3D.hinge_joint_get_flag
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, flag)
@@ -3526,7 +3533,7 @@ func (self class) JointMakeSlider(joint RID.Any, body_A RID.Any, local_ref_A Tra
 Gets a slider_joint parameter (see [enum SliderJointParam] constants).
 */
 //go:nosplit
-func (self class) SliderJointSetParam(joint RID.Any, param gdclass.PhysicsServer3DSliderJointParam, value float64) { //gd:PhysicsServer3D.slider_joint_set_param
+func (self class) SliderJointSetParam(joint RID.Any, param SliderJointParam, value float64) { //gd:PhysicsServer3D.slider_joint_set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, param)
@@ -3540,7 +3547,7 @@ func (self class) SliderJointSetParam(joint RID.Any, param gdclass.PhysicsServer
 Gets a slider_joint parameter (see [enum SliderJointParam] constants).
 */
 //go:nosplit
-func (self class) SliderJointGetParam(joint RID.Any, param gdclass.PhysicsServer3DSliderJointParam) float64 { //gd:PhysicsServer3D.slider_joint_get_param
+func (self class) SliderJointGetParam(joint RID.Any, param SliderJointParam) float64 { //gd:PhysicsServer3D.slider_joint_get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, param)
@@ -3568,7 +3575,7 @@ func (self class) JointMakeConeTwist(joint RID.Any, body_A RID.Any, local_ref_A 
 Sets a cone_twist_joint parameter (see [enum ConeTwistJointParam] constants).
 */
 //go:nosplit
-func (self class) ConeTwistJointSetParam(joint RID.Any, param gdclass.PhysicsServer3DConeTwistJointParam, value float64) { //gd:PhysicsServer3D.cone_twist_joint_set_param
+func (self class) ConeTwistJointSetParam(joint RID.Any, param ConeTwistJointParam, value float64) { //gd:PhysicsServer3D.cone_twist_joint_set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, param)
@@ -3582,7 +3589,7 @@ func (self class) ConeTwistJointSetParam(joint RID.Any, param gdclass.PhysicsSer
 Gets a cone_twist_joint parameter (see [enum ConeTwistJointParam] constants).
 */
 //go:nosplit
-func (self class) ConeTwistJointGetParam(joint RID.Any, param gdclass.PhysicsServer3DConeTwistJointParam) float64 { //gd:PhysicsServer3D.cone_twist_joint_get_param
+func (self class) ConeTwistJointGetParam(joint RID.Any, param ConeTwistJointParam) float64 { //gd:PhysicsServer3D.cone_twist_joint_get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, param)
@@ -3597,10 +3604,10 @@ func (self class) ConeTwistJointGetParam(joint RID.Any, param gdclass.PhysicsSer
 Returns the type of the Joint3D.
 */
 //go:nosplit
-func (self class) JointGetType(joint RID.Any) gdclass.PhysicsServer3DJointType { //gd:PhysicsServer3D.joint_get_type
+func (self class) JointGetType(joint RID.Any) JointType { //gd:PhysicsServer3D.joint_get_type
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
-	var r_ret = callframe.Ret[gdclass.PhysicsServer3DJointType](frame)
+	var r_ret = callframe.Ret[JointType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_joint_get_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3681,7 +3688,7 @@ func (self class) JointMakeGeneric6dof(joint RID.Any, body_A RID.Any, local_ref_
 Sets the value of a given generic 6DOF joint parameter. See [enum G6DOFJointAxisParam] for the list of available parameters.
 */
 //go:nosplit
-func (self class) Generic6dofJointSetParam(joint RID.Any, axis gd.Vector3Axis, param gdclass.PhysicsServer3DG6DOFJointAxisParam, value float64) { //gd:PhysicsServer3D.generic_6dof_joint_set_param
+func (self class) Generic6dofJointSetParam(joint RID.Any, axis Vector3.Axis, param G6DOFJointAxisParam, value float64) { //gd:PhysicsServer3D.generic_6dof_joint_set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, axis)
@@ -3696,7 +3703,7 @@ func (self class) Generic6dofJointSetParam(joint RID.Any, axis gd.Vector3Axis, p
 Returns the value of a generic 6DOF joint parameter. See [enum G6DOFJointAxisParam] for the list of available parameters.
 */
 //go:nosplit
-func (self class) Generic6dofJointGetParam(joint RID.Any, axis gd.Vector3Axis, param gdclass.PhysicsServer3DG6DOFJointAxisParam) float64 { //gd:PhysicsServer3D.generic_6dof_joint_get_param
+func (self class) Generic6dofJointGetParam(joint RID.Any, axis Vector3.Axis, param G6DOFJointAxisParam) float64 { //gd:PhysicsServer3D.generic_6dof_joint_get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, axis)
@@ -3712,7 +3719,7 @@ func (self class) Generic6dofJointGetParam(joint RID.Any, axis gd.Vector3Axis, p
 Sets the value of a given generic 6DOF joint flag. See [enum G6DOFJointAxisFlag] for the list of available flags.
 */
 //go:nosplit
-func (self class) Generic6dofJointSetFlag(joint RID.Any, axis gd.Vector3Axis, flag gdclass.PhysicsServer3DG6DOFJointAxisFlag, enable bool) { //gd:PhysicsServer3D.generic_6dof_joint_set_flag
+func (self class) Generic6dofJointSetFlag(joint RID.Any, axis Vector3.Axis, flag G6DOFJointAxisFlag, enable bool) { //gd:PhysicsServer3D.generic_6dof_joint_set_flag
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, axis)
@@ -3727,7 +3734,7 @@ func (self class) Generic6dofJointSetFlag(joint RID.Any, axis gd.Vector3Axis, fl
 Returns the value of a generic 6DOF joint flag. See [enum G6DOFJointAxisFlag] for the list of available flags.
 */
 //go:nosplit
-func (self class) Generic6dofJointGetFlag(joint RID.Any, axis gd.Vector3Axis, flag gdclass.PhysicsServer3DG6DOFJointAxisFlag) bool { //gd:PhysicsServer3D.generic_6dof_joint_get_flag
+func (self class) Generic6dofJointGetFlag(joint RID.Any, axis Vector3.Axis, flag G6DOFJointAxisFlag) bool { //gd:PhysicsServer3D.generic_6dof_joint_get_flag
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, axis)
@@ -3767,7 +3774,7 @@ func (self class) SetActive(active bool) { //gd:PhysicsServer3D.set_active
 Returns information about the current state of the 3D physics engine. See [enum ProcessInfo] for a list of available states.
 */
 //go:nosplit
-func (self class) GetProcessInfo(process_info gdclass.PhysicsServer3DProcessInfo) int64 { //gd:PhysicsServer3D.get_process_info
+func (self class) GetProcessInfo(process_info ProcessInfo) int64 { //gd:PhysicsServer3D.get_process_info
 	var frame = callframe.New()
 	callframe.Arg(frame, process_info)
 	var r_ret = callframe.Ret[int64](frame)
@@ -3795,7 +3802,7 @@ func init() {
 	})
 }
 
-type JointType = gdclass.PhysicsServer3DJointType //gd:PhysicsServer3D.JointType
+type JointType int //gd:PhysicsServer3D.JointType
 
 const (
 	/*The [Joint3D] is a [PinJoint3D].*/
@@ -3812,7 +3819,7 @@ const (
 	JointTypeMax JointType = 5
 )
 
-type PinJointParam = gdclass.PhysicsServer3DPinJointParam //gd:PhysicsServer3D.PinJointParam
+type PinJointParam int //gd:PhysicsServer3D.PinJointParam
 
 const (
 	/*The strength with which the pinned objects try to stay in positional relation to each other.
@@ -3825,7 +3832,7 @@ const (
 	PinJointImpulseClamp PinJointParam = 2
 )
 
-type HingeJointParam = gdclass.PhysicsServer3DHingeJointParam //gd:PhysicsServer3D.HingeJointParam
+type HingeJointParam int //gd:PhysicsServer3D.HingeJointParam
 
 const (
 	/*The speed with which the two bodies get pulled together when they move in different directions.*/
@@ -3845,7 +3852,7 @@ const (
 	HingeJointMotorMaxImpulse HingeJointParam = 7
 )
 
-type HingeJointFlag = gdclass.PhysicsServer3DHingeJointFlag //gd:PhysicsServer3D.HingeJointFlag
+type HingeJointFlag int //gd:PhysicsServer3D.HingeJointFlag
 
 const (
 	/*If [code]true[/code], the Hinge has a maximum and a minimum rotation.*/
@@ -3854,7 +3861,7 @@ const (
 	HingeJointFlagEnableMotor HingeJointFlag = 1
 )
 
-type SliderJointParam = gdclass.PhysicsServer3DSliderJointParam //gd:PhysicsServer3D.SliderJointParam
+type SliderJointParam int //gd:PhysicsServer3D.SliderJointParam
 
 const (
 	/*The maximum difference between the pivot points on their X axis before damping happens.*/
@@ -3905,7 +3912,7 @@ const (
 	SliderJointMax SliderJointParam = 22
 )
 
-type ConeTwistJointParam = gdclass.PhysicsServer3DConeTwistJointParam //gd:PhysicsServer3D.ConeTwistJointParam
+type ConeTwistJointParam int //gd:PhysicsServer3D.ConeTwistJointParam
 
 const (
 	/*Swing is rotation from side to side, around the axis perpendicular to the twist axis.
@@ -3925,7 +3932,7 @@ const (
 	ConeTwistJointRelaxation ConeTwistJointParam = 4
 )
 
-type G6DOFJointAxisParam = gdclass.PhysicsServer3DG6DOFJointAxisParam //gd:PhysicsServer3D.G6DOFJointAxisParam
+type G6DOFJointAxisParam int //gd:PhysicsServer3D.G6DOFJointAxisParam
 
 const (
 	/*The minimum difference between the pivot points' axes.*/
@@ -3970,7 +3977,7 @@ const (
 	G6dofJointMax G6DOFJointAxisParam = 22
 )
 
-type G6DOFJointAxisFlag = gdclass.PhysicsServer3DG6DOFJointAxisFlag //gd:PhysicsServer3D.G6DOFJointAxisFlag
+type G6DOFJointAxisFlag int //gd:PhysicsServer3D.G6DOFJointAxisFlag
 
 const (
 	/*If set, linear motion is possible within the given limits.*/
@@ -3987,7 +3994,7 @@ const (
 	G6dofJointFlagMax G6DOFJointAxisFlag = 6
 )
 
-type ShapeType = gdclass.PhysicsServer3DShapeType //gd:PhysicsServer3D.ShapeType
+type ShapeType int //gd:PhysicsServer3D.ShapeType
 
 const (
 	/*The [Shape3D] is a [WorldBoundaryShape3D].*/
@@ -4014,7 +4021,7 @@ const (
 	ShapeCustom ShapeType = 10
 )
 
-type AreaParameter = gdclass.PhysicsServer3DAreaParameter //gd:PhysicsServer3D.AreaParameter
+type AreaParameter int //gd:PhysicsServer3D.AreaParameter
 
 const (
 	/*Constant to set/get gravity override mode in an area. See [enum AreaSpaceOverrideMode] for possible values.*/
@@ -4048,7 +4055,7 @@ const (
 	AreaParamWindAttenuationFactor AreaParameter = 13
 )
 
-type AreaSpaceOverrideMode = gdclass.PhysicsServer3DAreaSpaceOverrideMode //gd:PhysicsServer3D.AreaSpaceOverrideMode
+type AreaSpaceOverrideMode int //gd:PhysicsServer3D.AreaSpaceOverrideMode
 
 const (
 	/*This area does not affect gravity/damp. These are generally areas that exist only to detect collisions, and objects entering or exiting them.*/
@@ -4063,7 +4070,7 @@ const (
 	AreaSpaceOverrideReplaceCombine AreaSpaceOverrideMode = 4
 )
 
-type BodyMode = gdclass.PhysicsServer3DBodyMode //gd:PhysicsServer3D.BodyMode
+type BodyMode int //gd:PhysicsServer3D.BodyMode
 
 const (
 	/*Constant for static bodies. In this mode, a body can be only moved by user code and doesn't collide with other bodies along its path when moved.*/
@@ -4076,7 +4083,7 @@ const (
 	BodyModeRigidLinear BodyMode = 3
 )
 
-type BodyParameter = gdclass.PhysicsServer3DBodyParameter //gd:PhysicsServer3D.BodyParameter
+type BodyParameter int //gd:PhysicsServer3D.BodyParameter
 
 const (
 	/*Constant to set/get a body's bounce factor.*/
@@ -4103,7 +4110,7 @@ const (
 	BodyParamMax BodyParameter = 10
 )
 
-type BodyDampMode = gdclass.PhysicsServer3DBodyDampMode //gd:PhysicsServer3D.BodyDampMode
+type BodyDampMode int //gd:PhysicsServer3D.BodyDampMode
 
 const (
 	/*The body's damping value is added to any value set in areas or the default value.*/
@@ -4112,7 +4119,7 @@ const (
 	BodyDampModeReplace BodyDampMode = 1
 )
 
-type BodyState = gdclass.PhysicsServer3DBodyState //gd:PhysicsServer3D.BodyState
+type BodyState int //gd:PhysicsServer3D.BodyState
 
 const (
 	/*Constant to set/get the current transform matrix of the body.*/
@@ -4127,7 +4134,7 @@ const (
 	BodyStateCanSleep BodyState = 4
 )
 
-type AreaBodyStatus = gdclass.PhysicsServer3DAreaBodyStatus //gd:PhysicsServer3D.AreaBodyStatus
+type AreaBodyStatus int //gd:PhysicsServer3D.AreaBodyStatus
 
 const (
 	/*The value of the first parameter and area callback function receives, when an object enters one of its shapes.*/
@@ -4136,7 +4143,7 @@ const (
 	AreaBodyRemoved AreaBodyStatus = 1
 )
 
-type ProcessInfo = gdclass.PhysicsServer3DProcessInfo //gd:PhysicsServer3D.ProcessInfo
+type ProcessInfo int //gd:PhysicsServer3D.ProcessInfo
 
 const (
 	/*Constant to get the number of objects that are not sleeping.*/
@@ -4147,7 +4154,7 @@ const (
 	InfoIslandCount ProcessInfo = 2
 )
 
-type SpaceParameter = gdclass.PhysicsServer3DSpaceParameter //gd:PhysicsServer3D.SpaceParameter
+type SpaceParameter int //gd:PhysicsServer3D.SpaceParameter
 
 const (
 	/*Constant to set/get the maximum distance a pair of bodies has to move before their collision status has to be recalculated.*/
@@ -4168,7 +4175,7 @@ const (
 	SpaceParamSolverIterations SpaceParameter = 7
 )
 
-type BodyAxis = gdclass.PhysicsServer3DBodyAxis //gd:PhysicsServer3D.BodyAxis
+type BodyAxis int //gd:PhysicsServer3D.BodyAxis
 
 const (
 	BodyAxisLinearX  BodyAxis = 1

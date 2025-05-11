@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"sort"
+	"strings"
 
 	"graphics.gd/internal/gdjson"
 	"runtime.link/api/xray"
@@ -141,8 +142,24 @@ func main() {
 				continue
 			}
 			for _, arg := range method.Arguments {
+				if strings.HasPrefix(arg.Type, "enum::") || strings.HasPrefix(arg.Type, "bitfield::") {
+					arg.Type = strings.TrimPrefix(arg.Type, "enum::")
+					arg.Type = strings.TrimPrefix(arg.Type, "bitfield::")
+					host, _, hasHost := strings.Cut(arg.Type, ".")
+					if hasHost {
+						dependency.AddEdge(class.Name, host)
+					}
+				}
 				if classdb[arg.Type] && arg.Type != class.Name {
 					dependency.AddEdge(class.Name, arg.Type)
+				}
+			}
+			if strings.HasPrefix(method.ReturnValue.Type, "enum::") || strings.HasPrefix(method.ReturnValue.Type, "bitfield::") {
+				method.ReturnValue.Type = strings.TrimPrefix(method.ReturnValue.Type, "enum::")
+				method.ReturnValue.Type = strings.TrimPrefix(method.ReturnValue.Type, "bitfield::")
+				host, _, hasHost := strings.Cut(method.ReturnValue.Type, ".")
+				if hasHost {
+					dependency.AddEdge(class.Name, host)
 				}
 			}
 			if classdb[method.ReturnValue.Type] && method.ReturnValue.Type != class.Name {

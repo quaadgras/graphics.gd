@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -24,6 +25,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -39,6 +44,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -51,6 +57,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -115,21 +122,21 @@ func (self Instance) IsClassPropertyDisabled(class_name string, property string)
 /*
 If [param disable] is [code]true[/code], disables the editor feature specified in [param feature]. When a feature is disabled, it will disappear from the editor entirely.
 */
-func (self Instance) SetDisableFeature(feature gdclass.EditorFeatureProfileFeature, disable bool) { //gd:EditorFeatureProfile.set_disable_feature
+func (self Instance) SetDisableFeature(feature Feature, disable bool) { //gd:EditorFeatureProfile.set_disable_feature
 	Advanced(self).SetDisableFeature(feature, disable)
 }
 
 /*
 Returns [code]true[/code] if the [param feature] is disabled. When a feature is disabled, it will disappear from the editor entirely.
 */
-func (self Instance) IsFeatureDisabled(feature gdclass.EditorFeatureProfileFeature) bool { //gd:EditorFeatureProfile.is_feature_disabled
+func (self Instance) IsFeatureDisabled(feature Feature) bool { //gd:EditorFeatureProfile.is_feature_disabled
 	return bool(Advanced(self).IsFeatureDisabled(feature))
 }
 
 /*
 Returns the specified [param feature]'s human-readable name.
 */
-func (self Instance) GetFeatureName(feature gdclass.EditorFeatureProfileFeature) string { //gd:EditorFeatureProfile.get_feature_name
+func (self Instance) GetFeatureName(feature Feature) string { //gd:EditorFeatureProfile.get_feature_name
 	return string(Advanced(self).GetFeatureName(feature).String())
 }
 
@@ -256,7 +263,7 @@ func (self class) IsClassPropertyDisabled(class_name String.Name, property Strin
 If [param disable] is [code]true[/code], disables the editor feature specified in [param feature]. When a feature is disabled, it will disappear from the editor entirely.
 */
 //go:nosplit
-func (self class) SetDisableFeature(feature gdclass.EditorFeatureProfileFeature, disable bool) { //gd:EditorFeatureProfile.set_disable_feature
+func (self class) SetDisableFeature(feature Feature, disable bool) { //gd:EditorFeatureProfile.set_disable_feature
 	var frame = callframe.New()
 	callframe.Arg(frame, feature)
 	callframe.Arg(frame, disable)
@@ -269,7 +276,7 @@ func (self class) SetDisableFeature(feature gdclass.EditorFeatureProfileFeature,
 Returns [code]true[/code] if the [param feature] is disabled. When a feature is disabled, it will disappear from the editor entirely.
 */
 //go:nosplit
-func (self class) IsFeatureDisabled(feature gdclass.EditorFeatureProfileFeature) bool { //gd:EditorFeatureProfile.is_feature_disabled
+func (self class) IsFeatureDisabled(feature Feature) bool { //gd:EditorFeatureProfile.is_feature_disabled
 	var frame = callframe.New()
 	callframe.Arg(frame, feature)
 	var r_ret = callframe.Ret[bool](frame)
@@ -283,7 +290,7 @@ func (self class) IsFeatureDisabled(feature gdclass.EditorFeatureProfileFeature)
 Returns the specified [param feature]'s human-readable name.
 */
 //go:nosplit
-func (self class) GetFeatureName(feature gdclass.EditorFeatureProfileFeature) String.Readable { //gd:EditorFeatureProfile.get_feature_name
+func (self class) GetFeatureName(feature Feature) String.Readable { //gd:EditorFeatureProfile.get_feature_name
 	var frame = callframe.New()
 	callframe.Arg(frame, feature)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -354,7 +361,7 @@ func init() {
 	})
 }
 
-type Feature = gdclass.EditorFeatureProfileFeature //gd:EditorFeatureProfile.Feature
+type Feature int //gd:EditorFeatureProfile.Feature
 
 const (
 	/*The 3D editor. If this feature is disabled, the 3D editor won't display but 3D nodes will still display in the Create New Node dialog.*/

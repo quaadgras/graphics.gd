@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/CameraFeed"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/Texture"
 import "graphics.gd/classdb/Texture2D"
@@ -27,6 +29,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -42,6 +48,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -54,6 +61,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -101,11 +109,11 @@ func (self Instance) SetCameraFeedId(value int) {
 	class(self).SetCameraFeedId(int64(value))
 }
 
-func (self Instance) WhichFeed() gdclass.CameraServerFeedImage {
-	return gdclass.CameraServerFeedImage(class(self).GetWhichFeed())
+func (self Instance) WhichFeed() CameraFeed.ImageType {
+	return CameraFeed.ImageType(class(self).GetWhichFeed())
 }
 
-func (self Instance) SetWhichFeed(value gdclass.CameraServerFeedImage) {
+func (self Instance) SetWhichFeed(value CameraFeed.ImageType) {
 	class(self).SetWhichFeed(value)
 }
 
@@ -137,7 +145,7 @@ func (self class) GetCameraFeedId() int64 { //gd:CameraTexture.get_camera_feed_i
 }
 
 //go:nosplit
-func (self class) SetWhichFeed(which_feed gdclass.CameraServerFeedImage) { //gd:CameraTexture.set_which_feed
+func (self class) SetWhichFeed(which_feed CameraFeed.ImageType) { //gd:CameraTexture.set_which_feed
 	var frame = callframe.New()
 	callframe.Arg(frame, which_feed)
 	var r_ret = callframe.Nil
@@ -146,9 +154,9 @@ func (self class) SetWhichFeed(which_feed gdclass.CameraServerFeedImage) { //gd:
 }
 
 //go:nosplit
-func (self class) GetWhichFeed() gdclass.CameraServerFeedImage { //gd:CameraTexture.get_which_feed
+func (self class) GetWhichFeed() CameraFeed.ImageType { //gd:CameraTexture.get_which_feed
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.CameraServerFeedImage](frame)
+	var r_ret = callframe.Ret[CameraFeed.ImageType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraTexture.Bind_get_which_feed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

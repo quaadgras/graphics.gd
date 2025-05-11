@@ -11,10 +11,9 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CallbackTweener"
 import "graphics.gd/classdb/IntervalTweener"
-import "graphics.gd/classdb/MethodTweener"
-import "graphics.gd/classdb/PropertyTweener"
 import "graphics.gd/classdb/SubtweenTweener"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -29,6 +28,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -44,6 +47,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,6 +60,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -171,40 +176,6 @@ type Any interface {
 }
 
 /*
-Creates and appends a [PropertyTweener]. This method tweens a [param property] of an [param object] between an initial value and [param final_val] in a span of time equal to [param duration], in seconds. The initial value by default is the property's value at the time the tweening of the [PropertyTweener] starts.
-[codeblocks]
-[gdscript]
-var tween = create_tween()
-tween.tween_property($Sprite, "position", Vector2(100, 200), 1)
-tween.tween_property($Sprite, "position", Vector2(200, 300), 1)
-[/gdscript]
-[csharp]
-Tween tween = CreateTween();
-tween.TweenProperty(GetNode("Sprite"), "position", new Vector2(100.0f, 200.0f), 1.0f);
-tween.TweenProperty(GetNode("Sprite"), "position", new Vector2(200.0f, 300.0f), 1.0f);
-[/csharp]
-[/codeblocks]
-will move the sprite to position (100, 200) and then to (200, 300). If you use [method PropertyTweener.from] or [method PropertyTweener.from_current], the starting position will be overwritten by the given value instead. See other methods in [PropertyTweener] to see how the tweening can be tweaked further.
-[b]Note:[/b] You can find the correct property name by hovering over the property in the Inspector. You can also provide the components of a property directly by using [code]"property:component"[/code] (eg. [code]position:x[/code]), where it would only apply to that particular component.
-[b]Example:[/b] Moving an object twice from the same position, with different transition types:
-[codeblocks]
-[gdscript]
-var tween = create_tween()
-tween.tween_property($Sprite, "position", Vector2.RIGHT * 300, 1).as_relative().set_trans(Tween.TRANS_SINE)
-tween.tween_property($Sprite, "position", Vector2.RIGHT * 300, 1).as_relative().from_current().set_trans(Tween.TRANS_EXPO)
-[/gdscript]
-[csharp]
-Tween tween = CreateTween();
-tween.TweenProperty(GetNode("Sprite"), "position", Vector2.Right * 300.0f, 1.0f).AsRelative().SetTrans(Tween.TransitionType.Sine);
-tween.TweenProperty(GetNode("Sprite"), "position", Vector2.Right * 300.0f, 1.0f).AsRelative().FromCurrent().SetTrans(Tween.TransitionType.Expo);
-[/csharp]
-[/codeblocks]
-*/
-func (self Instance) TweenProperty(obj Object.Instance, property string, final_val any, duration Float.X) PropertyTweener.Instance { //gd:Tween.tween_property
-	return PropertyTweener.Instance(Advanced(self).TweenProperty(obj, Path.ToNode(String.New(property)), variant.New(final_val), float64(duration)))
-}
-
-/*
 Creates and appends an [IntervalTweener]. This method can be used to create delays in the tween animation, as an alternative to using the delay in other [Tweener]s, or when there's no animation (in which case the [Tween] acts as a timer). [param time] is the length of the interval, in seconds.
 [b]Example:[/b] Creating an interval in code execution:
 [codeblocks]
@@ -275,55 +246,6 @@ tween.TweenCallback(Callable.From(() => sprite.Modulate = Colors.Blue)).SetDelay
 */
 func (self Instance) TweenCallback(callback func()) CallbackTweener.Instance { //gd:Tween.tween_callback
 	return CallbackTweener.Instance(Advanced(self).TweenCallback(Callable.New(callback)))
-}
-
-/*
-Creates and appends a [MethodTweener]. This method is similar to a combination of [method tween_callback] and [method tween_property]. It calls a method over time with a tweened value provided as an argument. The value is tweened between [param from] and [param to] over the time specified by [param duration], in seconds. Use [method Callable.bind] to bind additional arguments for the call. You can use [method MethodTweener.set_ease] and [method MethodTweener.set_trans] to tweak the easing and transition of the value or [method MethodTweener.set_delay] to delay the tweening.
-[b]Example:[/b] Making a 3D object look from one point to another point:
-[codeblocks]
-[gdscript]
-var tween = create_tween()
-tween.tween_method(look_at.bind(Vector3.UP), Vector3(-1, 0, -1), Vector3(1, 0, -1), 1) # The look_at() method takes up vector as second argument.
-[/gdscript]
-[csharp]
-Tween tween = CreateTween();
-tween.TweenMethod(Callable.From((Vector3 target) => LookAt(target, Vector3.Up)), new Vector3(-1.0f, 0.0f, -1.0f), new Vector3(1.0f, 0.0f, -1.0f), 1.0f); // Use lambdas to bind additional arguments for the call.
-[/csharp]
-[/codeblocks]
-[b]Example:[/b] Setting the text of a [Label], using an intermediate method and after a delay:
-[codeblocks]
-[gdscript]
-func _ready():
-
-	var tween = create_tween()
-	tween.tween_method(set_label_text, 0, 10, 1).set_delay(1)
-
-func set_label_text(value: int):
-
-	$Label.text = "Counting " + str(value)
-
-[/gdscript]
-[csharp]
-public override void _Ready()
-
-	{
-	    base._Ready();
-
-	    Tween tween = CreateTween();
-	    tween.TweenMethod(Callable.From<int>(SetLabelText), 0.0f, 10.0f, 1.0f).SetDelay(1.0f);
-	}
-
-private void SetLabelText(int value)
-
-	{
-	    GetNode<Label>("Label").Text = $"Counting {value}";
-	}
-
-[/csharp]
-[/codeblocks]
-*/
-func (self Instance) TweenMethod(method func(value any), from any, to any, duration Float.X) MethodTweener.Instance { //gd:Tween.tween_method
-	return MethodTweener.Instance(Advanced(self).TweenMethod(Callable.New(method), variant.New(from), variant.New(to), float64(duration)))
 }
 
 /*
@@ -427,7 +349,7 @@ func (self Instance) IsValid() bool { //gd:Tween.is_valid
 Determines whether the [Tween] should run after process frames (see [method Node._process]) or physics frames (see [method Node._physics_process]).
 Default value is [constant TWEEN_PROCESS_IDLE].
 */
-func (self Instance) SetProcessMode(mode gdclass.TweenTweenProcessMode) Instance { //gd:Tween.set_process_mode
+func (self Instance) SetProcessMode(mode TweenProcessMode) Instance { //gd:Tween.set_process_mode
 	return Instance(Advanced(self).SetProcessMode(mode))
 }
 
@@ -435,7 +357,7 @@ func (self Instance) SetProcessMode(mode gdclass.TweenTweenProcessMode) Instance
 Determines the behavior of the [Tween] when the [SceneTree] is paused. Check [enum TweenPauseMode] for options.
 Default value is [constant TWEEN_PAUSE_BOUND].
 */
-func (self Instance) SetPauseMode(mode gdclass.TweenTweenPauseMode) Instance { //gd:Tween.set_pause_mode
+func (self Instance) SetPauseMode(mode TweenPauseMode) Instance { //gd:Tween.set_pause_mode
 	return Instance(Advanced(self).SetPauseMode(mode))
 }
 
@@ -521,7 +443,7 @@ tween.set_trans(Tween.TRANS_SINE)
 tween.tween_property(self, "rotation_degrees", 45.0, 0.5) # Uses TRANS_SINE.
 [/codeblock]
 */
-func (self Instance) SetTrans(trans gdclass.TweenTransitionType) Instance { //gd:Tween.set_trans
+func (self Instance) SetTrans(trans TransitionType) Instance { //gd:Tween.set_trans
 	return Instance(Advanced(self).SetTrans(trans))
 }
 
@@ -535,7 +457,7 @@ tween.set_ease(Tween.EASE_IN)
 tween.tween_property(self, "rotation_degrees", 45.0, 0.5) # Uses EASE_IN.
 [/codeblock]
 */
-func (self Instance) SetEase(ease gdclass.TweenEaseType) Instance { //gd:Tween.set_ease
+func (self Instance) SetEase(ease EaseType) Instance { //gd:Tween.set_ease
 	return Instance(Advanced(self).SetEase(ease))
 }
 
@@ -591,7 +513,7 @@ This method can be used for manual interpolation of a value, when you don't want
 [param duration] is the total time of the interpolation.
 [b]Note:[/b] If [param duration] is equal to [code]0[/code], the method will always return the final value, regardless of [param elapsed_time] provided.
 */
-func InterpolateValue(initial_value any, delta_value any, elapsed_time Float.X, duration Float.X, trans_type gdclass.TweenTransitionType, ease_type gdclass.TweenEaseType) any { //gd:Tween.interpolate_value
+func InterpolateValue(initial_value any, delta_value any, elapsed_time Float.X, duration Float.X, trans_type TransitionType, ease_type EaseType) any { //gd:Tween.interpolate_value
 	self := Instance{}
 	return any(Advanced(self).InterpolateValue(variant.New(initial_value), variant.New(delta_value), float64(elapsed_time), float64(duration), trans_type, ease_type).Interface())
 }
@@ -965,7 +887,7 @@ Determines whether the [Tween] should run after process frames (see [method Node
 Default value is [constant TWEEN_PROCESS_IDLE].
 */
 //go:nosplit
-func (self class) SetProcessMode(mode gdclass.TweenTweenProcessMode) [1]gdclass.Tween { //gd:Tween.set_process_mode
+func (self class) SetProcessMode(mode TweenProcessMode) [1]gdclass.Tween { //gd:Tween.set_process_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -980,7 +902,7 @@ Determines the behavior of the [Tween] when the [SceneTree] is paused. Check [en
 Default value is [constant TWEEN_PAUSE_BOUND].
 */
 //go:nosplit
-func (self class) SetPauseMode(mode gdclass.TweenTweenPauseMode) [1]gdclass.Tween { //gd:Tween.set_pause_mode
+func (self class) SetPauseMode(mode TweenPauseMode) [1]gdclass.Tween { //gd:Tween.set_pause_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -1078,7 +1000,7 @@ tween.tween_property(self, "rotation_degrees", 45.0, 0.5) # Uses TRANS_SINE.
 [/codeblock]
 */
 //go:nosplit
-func (self class) SetTrans(trans gdclass.TweenTransitionType) [1]gdclass.Tween { //gd:Tween.set_trans
+func (self class) SetTrans(trans TransitionType) [1]gdclass.Tween { //gd:Tween.set_trans
 	var frame = callframe.New()
 	callframe.Arg(frame, trans)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -1099,7 +1021,7 @@ tween.tween_property(self, "rotation_degrees", 45.0, 0.5) # Uses EASE_IN.
 [/codeblock]
 */
 //go:nosplit
-func (self class) SetEase(ease gdclass.TweenEaseType) [1]gdclass.Tween { //gd:Tween.set_ease
+func (self class) SetEase(ease EaseType) [1]gdclass.Tween { //gd:Tween.set_ease
 	var frame = callframe.New()
 	callframe.Arg(frame, ease)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -1174,7 +1096,7 @@ This method can be used for manual interpolation of a value, when you don't want
 [b]Note:[/b] If [param duration] is equal to [code]0[/code], the method will always return the final value, regardless of [param elapsed_time] provided.
 */
 //go:nosplit
-func (self class) InterpolateValue(initial_value variant.Any, delta_value variant.Any, elapsed_time float64, duration float64, trans_type gdclass.TweenTransitionType, ease_type gdclass.TweenEaseType) variant.Any { //gd:Tween.interpolate_value
+func (self class) InterpolateValue(initial_value variant.Any, delta_value variant.Any, elapsed_time float64, duration float64, trans_type TransitionType, ease_type EaseType) variant.Any { //gd:Tween.interpolate_value
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalVariant(initial_value)))
 	callframe.Arg(frame, pointers.Get(gd.InternalVariant(delta_value)))
@@ -1228,7 +1150,7 @@ func init() {
 	gdclass.Register("Tween", func(ptr gd.Object) any { return [1]gdclass.Tween{*(*gdclass.Tween)(unsafe.Pointer(&ptr))} })
 }
 
-type TweenProcessMode = gdclass.TweenTweenProcessMode //gd:Tween.TweenProcessMode
+type TweenProcessMode int //gd:Tween.TweenProcessMode
 
 const (
 	/*The [Tween] updates after each physics frame (see [method Node._physics_process]).*/
@@ -1237,7 +1159,7 @@ const (
 	TweenProcessIdle TweenProcessMode = 1
 )
 
-type TweenPauseMode = gdclass.TweenTweenPauseMode //gd:Tween.TweenPauseMode
+type TweenPauseMode int //gd:Tween.TweenPauseMode
 
 const (
 	/*If the [Tween] has a bound node, it will process when that node can process (see [member Node.process_mode]). Otherwise it's the same as [constant TWEEN_PAUSE_STOP].*/
@@ -1248,7 +1170,7 @@ const (
 	TweenPauseProcess TweenPauseMode = 2
 )
 
-type TransitionType = gdclass.TweenTransitionType //gd:Tween.TransitionType
+type TransitionType int //gd:Tween.TransitionType
 
 const (
 	/*The animation is interpolated linearly.*/
@@ -1277,7 +1199,7 @@ const (
 	TransSpring TransitionType = 11
 )
 
-type EaseType = gdclass.TweenEaseType //gd:Tween.EaseType
+type EaseType int //gd:Tween.EaseType
 
 const (
 	/*The interpolation starts slowly and speeds up towards the end.*/

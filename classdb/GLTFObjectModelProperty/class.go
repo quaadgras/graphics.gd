@@ -11,7 +11,9 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Expression"
+import "graphics.gd/classdb/GLTFAccessor"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -25,6 +27,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -40,6 +46,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -52,6 +59,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -89,8 +97,8 @@ func (self Instance) AppendPathToProperty(node_path string, prop_name string) { 
 /*
 The GLTF accessor type associated with this property's [member object_model_type]. See [member GLTFAccessor.accessor_type] for possible values, and see [enum GLTFObjectModelType] for how the object model type maps to accessor types.
 */
-func (self Instance) GetAccessorType() gdclass.GLTFAccessorGLTFAccessorType { //gd:GLTFObjectModelProperty.get_accessor_type
-	return gdclass.GLTFAccessorGLTFAccessorType(Advanced(self).GetAccessorType())
+func (self Instance) GetAccessorType() GLTFAccessor.GLTFAccessorType { //gd:GLTFObjectModelProperty.get_accessor_type
+	return GLTFAccessor.GLTFAccessorType(Advanced(self).GetAccessorType())
 }
 
 /*
@@ -110,7 +118,7 @@ func (self Instance) HasJsonPointers() bool { //gd:GLTFObjectModelProperty.has_j
 /*
 Sets the [member variant_type] and [member object_model_type] properties. This is a convenience method to set both properties at once, since they are almost always known at the same time. This method should be called once. Calling it again with the same values will have no effect.
 */
-func (self Instance) SetTypes(variant_type variant.Type, obj_model_type gdclass.GLTFObjectModelPropertyGLTFObjectModelType) { //gd:GLTFObjectModelProperty.set_types
+func (self Instance) SetTypes(variant_type variant.Type, obj_model_type GLTFObjectModelType) { //gd:GLTFObjectModelProperty.set_types
 	Advanced(self).SetTypes(variant_type, obj_model_type)
 }
 
@@ -158,11 +166,11 @@ func (self Instance) SetNodePaths(value []string) {
 	class(self).SetNodePaths(gd.ArrayFromSlice[Array.Contains[Path.ToNode]](value))
 }
 
-func (self Instance) ObjectModelType() gdclass.GLTFObjectModelPropertyGLTFObjectModelType {
-	return gdclass.GLTFObjectModelPropertyGLTFObjectModelType(class(self).GetObjectModelType())
+func (self Instance) ObjectModelType() GLTFObjectModelType {
+	return GLTFObjectModelType(class(self).GetObjectModelType())
 }
 
-func (self Instance) SetObjectModelType(value gdclass.GLTFObjectModelPropertyGLTFObjectModelType) {
+func (self Instance) SetObjectModelType(value GLTFObjectModelType) {
 	class(self).SetObjectModelType(value)
 }
 
@@ -211,9 +219,9 @@ func (self class) AppendPathToProperty(node_path Path.ToNode, prop_name String.N
 The GLTF accessor type associated with this property's [member object_model_type]. See [member GLTFAccessor.accessor_type] for possible values, and see [enum GLTFObjectModelType] for how the object model type maps to accessor types.
 */
 //go:nosplit
-func (self class) GetAccessorType() gdclass.GLTFAccessorGLTFAccessorType { //gd:GLTFObjectModelProperty.get_accessor_type
+func (self class) GetAccessorType() GLTFAccessor.GLTFAccessorType { //gd:GLTFObjectModelProperty.get_accessor_type
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.GLTFAccessorGLTFAccessorType](frame)
+	var r_ret = callframe.Ret[GLTFAccessor.GLTFAccessorType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFObjectModelProperty.Bind_get_accessor_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -291,9 +299,9 @@ func (self class) SetNodePaths(node_paths Array.Contains[Path.ToNode]) { //gd:GL
 }
 
 //go:nosplit
-func (self class) GetObjectModelType() gdclass.GLTFObjectModelPropertyGLTFObjectModelType { //gd:GLTFObjectModelProperty.get_object_model_type
+func (self class) GetObjectModelType() GLTFObjectModelType { //gd:GLTFObjectModelProperty.get_object_model_type
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.GLTFObjectModelPropertyGLTFObjectModelType](frame)
+	var r_ret = callframe.Ret[GLTFObjectModelType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFObjectModelProperty.Bind_get_object_model_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -301,7 +309,7 @@ func (self class) GetObjectModelType() gdclass.GLTFObjectModelPropertyGLTFObject
 }
 
 //go:nosplit
-func (self class) SetObjectModelType(atype gdclass.GLTFObjectModelPropertyGLTFObjectModelType) { //gd:GLTFObjectModelProperty.set_object_model_type
+func (self class) SetObjectModelType(atype GLTFObjectModelType) { //gd:GLTFObjectModelProperty.set_object_model_type
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	var r_ret = callframe.Nil
@@ -364,7 +372,7 @@ func (self class) SetVariantType(variant_type variant.Type) { //gd:GLTFObjectMod
 Sets the [member variant_type] and [member object_model_type] properties. This is a convenience method to set both properties at once, since they are almost always known at the same time. This method should be called once. Calling it again with the same values will have no effect.
 */
 //go:nosplit
-func (self class) SetTypes(variant_type variant.Type, obj_model_type gdclass.GLTFObjectModelPropertyGLTFObjectModelType) { //gd:GLTFObjectModelProperty.set_types
+func (self class) SetTypes(variant_type variant.Type, obj_model_type GLTFObjectModelType) { //gd:GLTFObjectModelProperty.set_types
 	var frame = callframe.New()
 	callframe.Arg(frame, variant_type)
 	callframe.Arg(frame, obj_model_type)
@@ -406,7 +414,7 @@ func init() {
 	})
 }
 
-type GLTFObjectModelType = gdclass.GLTFObjectModelPropertyGLTFObjectModelType //gd:GLTFObjectModelProperty.GLTFObjectModelType
+type GLTFObjectModelType int //gd:GLTFObjectModelProperty.GLTFObjectModelType
 
 const (
 	/*Unknown or not set object model type. If the object model type is set to this value, the real type still needs to be determined.*/
@@ -431,89 +439,4 @@ const (
 	GltfObjectModelTypeFloat4x4 GLTFObjectModelType = 9
 	/*Object model type "int". Represented in the glTF JSON as a number, and encoded in a [GLTFAccessor] as "SCALAR". The range of values is limited to signed integers. For [code]KHR_interactivity[/code], only 32-bit integers are supported.*/
 	GltfObjectModelTypeInt GLTFObjectModelType = 10
-)
-
-type VariantType int
-
-const (
-	/*Variable is [code]null[/code].*/
-	TypeNil VariantType = 0
-	/*Variable is of type [bool].*/
-	TypeBool VariantType = 1
-	/*Variable is of type [int].*/
-	TypeInt VariantType = 2
-	/*Variable is of type [float].*/
-	TypeFloat VariantType = 3
-	/*Variable is of type [String].*/
-	TypeString VariantType = 4
-	/*Variable is of type [Vector2].*/
-	TypeVector2 VariantType = 5
-	/*Variable is of type [Vector2i].*/
-	TypeVector2i VariantType = 6
-	/*Variable is of type [Rect2].*/
-	TypeRect2 VariantType = 7
-	/*Variable is of type [Rect2i].*/
-	TypeRect2i VariantType = 8
-	/*Variable is of type [Vector3].*/
-	TypeVector3 VariantType = 9
-	/*Variable is of type [Vector3i].*/
-	TypeVector3i VariantType = 10
-	/*Variable is of type [Transform2D].*/
-	TypeTransform2d VariantType = 11
-	/*Variable is of type [Vector4].*/
-	TypeVector4 VariantType = 12
-	/*Variable is of type [Vector4i].*/
-	TypeVector4i VariantType = 13
-	/*Variable is of type [Plane].*/
-	TypePlane VariantType = 14
-	/*Variable is of type [Quaternion].*/
-	TypeQuaternion VariantType = 15
-	/*Variable is of type [AABB].*/
-	TypeAabb VariantType = 16
-	/*Variable is of type [Basis].*/
-	TypeBasis VariantType = 17
-	/*Variable is of type [Transform3D].*/
-	TypeTransform3d VariantType = 18
-	/*Variable is of type [Projection].*/
-	TypeProjection VariantType = 19
-	/*Variable is of type [Color].*/
-	TypeColor VariantType = 20
-	/*Variable is of type [StringName].*/
-	TypeStringName VariantType = 21
-	/*Variable is of type [NodePath].*/
-	TypeNodePath VariantType = 22
-	/*Variable is of type [RID].*/
-	TypeRid VariantType = 23
-	/*Variable is of type [Object].*/
-	TypeObject VariantType = 24
-	/*Variable is of type [Callable].*/
-	TypeCallable VariantType = 25
-	/*Variable is of type [Signal].*/
-	TypeSignal VariantType = 26
-	/*Variable is of type [Dictionary].*/
-	TypeDictionary VariantType = 27
-	/*Variable is of type [Array].*/
-	TypeArray VariantType = 28
-	/*Variable is of type [PackedByteArray].*/
-	TypePackedByteArray VariantType = 29
-	/*Variable is of type [PackedInt32Array].*/
-	TypePackedInt32Array VariantType = 30
-	/*Variable is of type [PackedInt64Array].*/
-	TypePackedInt64Array VariantType = 31
-	/*Variable is of type [PackedFloat32Array].*/
-	TypePackedFloat32Array VariantType = 32
-	/*Variable is of type [PackedFloat64Array].*/
-	TypePackedFloat64Array VariantType = 33
-	/*Variable is of type [PackedStringArray].*/
-	TypePackedStringArray VariantType = 34
-	/*Variable is of type [PackedVector2Array].*/
-	TypePackedVector2Array VariantType = 35
-	/*Variable is of type [PackedVector3Array].*/
-	TypePackedVector3Array VariantType = 36
-	/*Variable is of type [PackedColorArray].*/
-	TypePackedColorArray VariantType = 37
-	/*Variable is of type [PackedVector4Array].*/
-	TypePackedVector4Array VariantType = 38
-	/*Represents the size of the [enum Variant.Type] enum.*/
-	TypeMax VariantType = 39
 )

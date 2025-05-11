@@ -11,10 +11,13 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Font"
+import "graphics.gd/classdb/GUI"
 import "graphics.gd/classdb/Mesh"
 import "graphics.gd/classdb/PrimitiveMesh"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/TextServer"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -29,6 +32,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -44,6 +51,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,6 +64,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -120,19 +129,19 @@ func (self Instance) SetFontSize(value int) {
 	class(self).SetFontSize(int64(value))
 }
 
-func (self Instance) HorizontalAlignment() HorizontalAlignment {
-	return HorizontalAlignment(class(self).GetHorizontalAlignment())
+func (self Instance) HorizontalAlignment() GUI.HorizontalAlignment {
+	return GUI.HorizontalAlignment(class(self).GetHorizontalAlignment())
 }
 
-func (self Instance) SetHorizontalAlignment(value HorizontalAlignment) {
+func (self Instance) SetHorizontalAlignment(value GUI.HorizontalAlignment) {
 	class(self).SetHorizontalAlignment(value)
 }
 
-func (self Instance) VerticalAlignment() VerticalAlignment {
-	return VerticalAlignment(class(self).GetVerticalAlignment())
+func (self Instance) VerticalAlignment() GUI.VerticalAlignment {
+	return GUI.VerticalAlignment(class(self).GetVerticalAlignment())
 }
 
-func (self Instance) SetVerticalAlignment(value VerticalAlignment) {
+func (self Instance) SetVerticalAlignment(value GUI.VerticalAlignment) {
 	class(self).SetVerticalAlignment(value)
 }
 
@@ -152,19 +161,19 @@ func (self Instance) SetLineSpacing(value Float.X) {
 	class(self).SetLineSpacing(float64(value))
 }
 
-func (self Instance) AutowrapMode() gdclass.TextServerAutowrapMode {
-	return gdclass.TextServerAutowrapMode(class(self).GetAutowrapMode())
+func (self Instance) AutowrapMode() TextServer.AutowrapMode {
+	return TextServer.AutowrapMode(class(self).GetAutowrapMode())
 }
 
-func (self Instance) SetAutowrapMode(value gdclass.TextServerAutowrapMode) {
+func (self Instance) SetAutowrapMode(value TextServer.AutowrapMode) {
 	class(self).SetAutowrapMode(value)
 }
 
-func (self Instance) JustificationFlags() gdclass.TextServerJustificationFlag {
-	return gdclass.TextServerJustificationFlag(class(self).GetJustificationFlags())
+func (self Instance) JustificationFlags() TextServer.JustificationFlag {
+	return TextServer.JustificationFlag(class(self).GetJustificationFlags())
 }
 
-func (self Instance) SetJustificationFlags(value gdclass.TextServerJustificationFlag) {
+func (self Instance) SetJustificationFlags(value TextServer.JustificationFlag) {
 	class(self).SetJustificationFlags(value)
 }
 
@@ -208,11 +217,11 @@ func (self Instance) SetOffset(value Vector2.XY) {
 	class(self).SetOffset(Vector2.XY(value))
 }
 
-func (self Instance) TextDirection() gdclass.TextServerDirection {
-	return gdclass.TextServerDirection(class(self).GetTextDirection())
+func (self Instance) TextDirection() TextServer.Direction {
+	return TextServer.Direction(class(self).GetTextDirection())
 }
 
-func (self Instance) SetTextDirection(value gdclass.TextServerDirection) {
+func (self Instance) SetTextDirection(value TextServer.Direction) {
 	class(self).SetTextDirection(value)
 }
 
@@ -224,11 +233,11 @@ func (self Instance) SetLanguage(value string) {
 	class(self).SetLanguage(String.New(value))
 }
 
-func (self Instance) StructuredTextBidiOverride() gdclass.TextServerStructuredTextParser {
-	return gdclass.TextServerStructuredTextParser(class(self).GetStructuredTextBidiOverride())
+func (self Instance) StructuredTextBidiOverride() TextServer.StructuredTextParser {
+	return TextServer.StructuredTextParser(class(self).GetStructuredTextBidiOverride())
 }
 
-func (self Instance) SetStructuredTextBidiOverride(value gdclass.TextServerStructuredTextParser) {
+func (self Instance) SetStructuredTextBidiOverride(value TextServer.StructuredTextParser) {
 	class(self).SetStructuredTextBidiOverride(value)
 }
 
@@ -241,7 +250,7 @@ func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) {
 }
 
 //go:nosplit
-func (self class) SetHorizontalAlignment(alignment HorizontalAlignment) { //gd:TextMesh.set_horizontal_alignment
+func (self class) SetHorizontalAlignment(alignment GUI.HorizontalAlignment) { //gd:TextMesh.set_horizontal_alignment
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
 	var r_ret = callframe.Nil
@@ -250,9 +259,9 @@ func (self class) SetHorizontalAlignment(alignment HorizontalAlignment) { //gd:T
 }
 
 //go:nosplit
-func (self class) GetHorizontalAlignment() HorizontalAlignment { //gd:TextMesh.get_horizontal_alignment
+func (self class) GetHorizontalAlignment() GUI.HorizontalAlignment { //gd:TextMesh.get_horizontal_alignment
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[HorizontalAlignment](frame)
+	var r_ret = callframe.Ret[GUI.HorizontalAlignment](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextMesh.Bind_get_horizontal_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -260,7 +269,7 @@ func (self class) GetHorizontalAlignment() HorizontalAlignment { //gd:TextMesh.g
 }
 
 //go:nosplit
-func (self class) SetVerticalAlignment(alignment VerticalAlignment) { //gd:TextMesh.set_vertical_alignment
+func (self class) SetVerticalAlignment(alignment GUI.VerticalAlignment) { //gd:TextMesh.set_vertical_alignment
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
 	var r_ret = callframe.Nil
@@ -269,9 +278,9 @@ func (self class) SetVerticalAlignment(alignment VerticalAlignment) { //gd:TextM
 }
 
 //go:nosplit
-func (self class) GetVerticalAlignment() VerticalAlignment { //gd:TextMesh.get_vertical_alignment
+func (self class) GetVerticalAlignment() GUI.VerticalAlignment { //gd:TextMesh.get_vertical_alignment
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[VerticalAlignment](frame)
+	var r_ret = callframe.Ret[GUI.VerticalAlignment](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextMesh.Bind_get_vertical_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -355,7 +364,7 @@ func (self class) GetLineSpacing() float64 { //gd:TextMesh.get_line_spacing
 }
 
 //go:nosplit
-func (self class) SetAutowrapMode(autowrap_mode gdclass.TextServerAutowrapMode) { //gd:TextMesh.set_autowrap_mode
+func (self class) SetAutowrapMode(autowrap_mode TextServer.AutowrapMode) { //gd:TextMesh.set_autowrap_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, autowrap_mode)
 	var r_ret = callframe.Nil
@@ -364,9 +373,9 @@ func (self class) SetAutowrapMode(autowrap_mode gdclass.TextServerAutowrapMode) 
 }
 
 //go:nosplit
-func (self class) GetAutowrapMode() gdclass.TextServerAutowrapMode { //gd:TextMesh.get_autowrap_mode
+func (self class) GetAutowrapMode() TextServer.AutowrapMode { //gd:TextMesh.get_autowrap_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TextServerAutowrapMode](frame)
+	var r_ret = callframe.Ret[TextServer.AutowrapMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextMesh.Bind_get_autowrap_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -374,7 +383,7 @@ func (self class) GetAutowrapMode() gdclass.TextServerAutowrapMode { //gd:TextMe
 }
 
 //go:nosplit
-func (self class) SetJustificationFlags(justification_flags gdclass.TextServerJustificationFlag) { //gd:TextMesh.set_justification_flags
+func (self class) SetJustificationFlags(justification_flags TextServer.JustificationFlag) { //gd:TextMesh.set_justification_flags
 	var frame = callframe.New()
 	callframe.Arg(frame, justification_flags)
 	var r_ret = callframe.Nil
@@ -383,9 +392,9 @@ func (self class) SetJustificationFlags(justification_flags gdclass.TextServerJu
 }
 
 //go:nosplit
-func (self class) GetJustificationFlags() gdclass.TextServerJustificationFlag { //gd:TextMesh.get_justification_flags
+func (self class) GetJustificationFlags() TextServer.JustificationFlag { //gd:TextMesh.get_justification_flags
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TextServerJustificationFlag](frame)
+	var r_ret = callframe.Ret[TextServer.JustificationFlag](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextMesh.Bind_get_justification_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -488,7 +497,7 @@ func (self class) GetCurveStep() float64 { //gd:TextMesh.get_curve_step
 }
 
 //go:nosplit
-func (self class) SetTextDirection(direction gdclass.TextServerDirection) { //gd:TextMesh.set_text_direction
+func (self class) SetTextDirection(direction TextServer.Direction) { //gd:TextMesh.set_text_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, direction)
 	var r_ret = callframe.Nil
@@ -497,9 +506,9 @@ func (self class) SetTextDirection(direction gdclass.TextServerDirection) { //gd
 }
 
 //go:nosplit
-func (self class) GetTextDirection() gdclass.TextServerDirection { //gd:TextMesh.get_text_direction
+func (self class) GetTextDirection() TextServer.Direction { //gd:TextMesh.get_text_direction
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TextServerDirection](frame)
+	var r_ret = callframe.Ret[TextServer.Direction](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextMesh.Bind_get_text_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -526,7 +535,7 @@ func (self class) GetLanguage() String.Readable { //gd:TextMesh.get_language
 }
 
 //go:nosplit
-func (self class) SetStructuredTextBidiOverride(parser gdclass.TextServerStructuredTextParser) { //gd:TextMesh.set_structured_text_bidi_override
+func (self class) SetStructuredTextBidiOverride(parser TextServer.StructuredTextParser) { //gd:TextMesh.set_structured_text_bidi_override
 	var frame = callframe.New()
 	callframe.Arg(frame, parser)
 	var r_ret = callframe.Nil
@@ -535,9 +544,9 @@ func (self class) SetStructuredTextBidiOverride(parser gdclass.TextServerStructu
 }
 
 //go:nosplit
-func (self class) GetStructuredTextBidiOverride() gdclass.TextServerStructuredTextParser { //gd:TextMesh.get_structured_text_bidi_override
+func (self class) GetStructuredTextBidiOverride() TextServer.StructuredTextParser { //gd:TextMesh.get_structured_text_bidi_override
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TextServerStructuredTextParser](frame)
+	var r_ret = callframe.Ret[TextServer.StructuredTextParser](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextMesh.Bind_get_structured_text_bidi_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -627,29 +636,3 @@ func (self Instance) Virtual(name string) reflect.Value {
 func init() {
 	gdclass.Register("TextMesh", func(ptr gd.Object) any { return [1]gdclass.TextMesh{*(*gdclass.TextMesh)(unsafe.Pointer(&ptr))} })
 }
-
-type HorizontalAlignment int
-
-const (
-	/*Horizontal left alignment, usually for text-derived classes.*/
-	HorizontalAlignmentLeft HorizontalAlignment = 0
-	/*Horizontal center alignment, usually for text-derived classes.*/
-	HorizontalAlignmentCenter HorizontalAlignment = 1
-	/*Horizontal right alignment, usually for text-derived classes.*/
-	HorizontalAlignmentRight HorizontalAlignment = 2
-	/*Expand row to fit width, usually for text-derived classes.*/
-	HorizontalAlignmentFill HorizontalAlignment = 3
-)
-
-type VerticalAlignment int
-
-const (
-	/*Vertical top alignment, usually for text-derived classes.*/
-	VerticalAlignmentTop VerticalAlignment = 0
-	/*Vertical center alignment, usually for text-derived classes.*/
-	VerticalAlignmentCenter VerticalAlignment = 1
-	/*Vertical bottom alignment, usually for text-derived classes.*/
-	VerticalAlignmentBottom VerticalAlignment = 2
-	/*Expand rows to fit height, usually for text-derived classes.*/
-	VerticalAlignmentFill VerticalAlignment = 3
-)

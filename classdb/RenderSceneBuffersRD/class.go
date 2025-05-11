@@ -11,9 +11,12 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/RDTextureFormat"
 import "graphics.gd/classdb/RDTextureView"
 import "graphics.gd/classdb/RenderSceneBuffers"
+import "graphics.gd/classdb/Rendering"
+import "graphics.gd/classdb/RenderingServer"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -28,6 +31,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -43,6 +50,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,6 +63,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -88,7 +97,7 @@ func (self Instance) HasTexture(context string, name string) bool { //gd:RenderS
 /*
 Create a new texture with the given definition and cache this under the given name. Will return the existing texture if it already exists.
 */
-func (self Instance) CreateTexture(context string, name string, data_format gdclass.RenderingDeviceDataFormat, usage_bits int, texture_samples gdclass.RenderingDeviceTextureSamples, size Vector2i.XY, layers int, mipmaps int, unique bool, discardable bool) RID.Texture { //gd:RenderSceneBuffersRD.create_texture
+func (self Instance) CreateTexture(context string, name string, data_format Rendering.DataFormat, usage_bits int, texture_samples Rendering.TextureSamples, size Vector2i.XY, layers int, mipmaps int, unique bool, discardable bool) RID.Texture { //gd:RenderSceneBuffersRD.create_texture
 	return RID.Texture(Advanced(self).CreateTexture(String.Name(String.New(context)), String.Name(String.New(name)), data_format, int64(usage_bits), texture_samples, Vector2i.XY(size), int64(layers), int64(mipmaps), unique, discardable))
 }
 
@@ -273,8 +282,8 @@ func (self Instance) GetTargetSize() Vector2i.XY { //gd:RenderSceneBuffersRD.get
 /*
 Returns the scaling mode used for upscaling.
 */
-func (self Instance) GetScaling3dMode() gdclass.RenderingServerViewportScaling3DMode { //gd:RenderSceneBuffersRD.get_scaling_3d_mode
-	return gdclass.RenderingServerViewportScaling3DMode(Advanced(self).GetScaling3dMode())
+func (self Instance) GetScaling3dMode() RenderingServer.ViewportScaling3DMode { //gd:RenderSceneBuffersRD.get_scaling_3d_mode
+	return RenderingServer.ViewportScaling3DMode(Advanced(self).GetScaling3dMode())
 }
 
 /*
@@ -287,22 +296,22 @@ func (self Instance) GetFsrSharpness() Float.X { //gd:RenderSceneBuffersRD.get_f
 /*
 Returns the applied 3D MSAA mode for this viewport.
 */
-func (self Instance) GetMsaa3d() gdclass.RenderingServerViewportMSAA { //gd:RenderSceneBuffersRD.get_msaa_3d
-	return gdclass.RenderingServerViewportMSAA(Advanced(self).GetMsaa3d())
+func (self Instance) GetMsaa3d() RenderingServer.ViewportMSAA { //gd:RenderSceneBuffersRD.get_msaa_3d
+	return RenderingServer.ViewportMSAA(Advanced(self).GetMsaa3d())
 }
 
 /*
 Returns the number of MSAA samples used.
 */
-func (self Instance) GetTextureSamples() gdclass.RenderingDeviceTextureSamples { //gd:RenderSceneBuffersRD.get_texture_samples
-	return gdclass.RenderingDeviceTextureSamples(Advanced(self).GetTextureSamples())
+func (self Instance) GetTextureSamples() Rendering.TextureSamples { //gd:RenderSceneBuffersRD.get_texture_samples
+	return Rendering.TextureSamples(Advanced(self).GetTextureSamples())
 }
 
 /*
 Returns the screen-space antialiasing method applied.
 */
-func (self Instance) GetScreenSpaceAa() gdclass.RenderingServerViewportScreenSpaceAA { //gd:RenderSceneBuffersRD.get_screen_space_aa
-	return gdclass.RenderingServerViewportScreenSpaceAA(Advanced(self).GetScreenSpaceAa())
+func (self Instance) GetScreenSpaceAa() RenderingServer.ViewportScreenSpaceAA { //gd:RenderSceneBuffersRD.get_screen_space_aa
+	return RenderingServer.ViewportScreenSpaceAA(Advanced(self).GetScreenSpaceAa())
 }
 
 /*
@@ -358,7 +367,7 @@ func (self class) HasTexture(context String.Name, name String.Name) bool { //gd:
 Create a new texture with the given definition and cache this under the given name. Will return the existing texture if it already exists.
 */
 //go:nosplit
-func (self class) CreateTexture(context String.Name, name String.Name, data_format gdclass.RenderingDeviceDataFormat, usage_bits int64, texture_samples gdclass.RenderingDeviceTextureSamples, size Vector2i.XY, layers int64, mipmaps int64, unique bool, discardable bool) RID.Any { //gd:RenderSceneBuffersRD.create_texture
+func (self class) CreateTexture(context String.Name, name String.Name, data_format Rendering.DataFormat, usage_bits int64, texture_samples Rendering.TextureSamples, size Vector2i.XY, layers int64, mipmaps int64, unique bool, discardable bool) RID.Any { //gd:RenderSceneBuffersRD.create_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(context)))
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
@@ -657,9 +666,9 @@ func (self class) GetTargetSize() Vector2i.XY { //gd:RenderSceneBuffersRD.get_ta
 Returns the scaling mode used for upscaling.
 */
 //go:nosplit
-func (self class) GetScaling3dMode() gdclass.RenderingServerViewportScaling3DMode { //gd:RenderSceneBuffersRD.get_scaling_3d_mode
+func (self class) GetScaling3dMode() RenderingServer.ViewportScaling3DMode { //gd:RenderSceneBuffersRD.get_scaling_3d_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingServerViewportScaling3DMode](frame)
+	var r_ret = callframe.Ret[RenderingServer.ViewportScaling3DMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneBuffersRD.Bind_get_scaling_3d_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -683,9 +692,9 @@ func (self class) GetFsrSharpness() float64 { //gd:RenderSceneBuffersRD.get_fsr_
 Returns the applied 3D MSAA mode for this viewport.
 */
 //go:nosplit
-func (self class) GetMsaa3d() gdclass.RenderingServerViewportMSAA { //gd:RenderSceneBuffersRD.get_msaa_3d
+func (self class) GetMsaa3d() RenderingServer.ViewportMSAA { //gd:RenderSceneBuffersRD.get_msaa_3d
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingServerViewportMSAA](frame)
+	var r_ret = callframe.Ret[RenderingServer.ViewportMSAA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneBuffersRD.Bind_get_msaa_3d, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -696,9 +705,9 @@ func (self class) GetMsaa3d() gdclass.RenderingServerViewportMSAA { //gd:RenderS
 Returns the number of MSAA samples used.
 */
 //go:nosplit
-func (self class) GetTextureSamples() gdclass.RenderingDeviceTextureSamples { //gd:RenderSceneBuffersRD.get_texture_samples
+func (self class) GetTextureSamples() Rendering.TextureSamples { //gd:RenderSceneBuffersRD.get_texture_samples
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingDeviceTextureSamples](frame)
+	var r_ret = callframe.Ret[Rendering.TextureSamples](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneBuffersRD.Bind_get_texture_samples, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -709,9 +718,9 @@ func (self class) GetTextureSamples() gdclass.RenderingDeviceTextureSamples { //
 Returns the screen-space antialiasing method applied.
 */
 //go:nosplit
-func (self class) GetScreenSpaceAa() gdclass.RenderingServerViewportScreenSpaceAA { //gd:RenderSceneBuffersRD.get_screen_space_aa
+func (self class) GetScreenSpaceAa() RenderingServer.ViewportScreenSpaceAA { //gd:RenderSceneBuffersRD.get_screen_space_aa
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingServerViewportScreenSpaceAA](frame)
+	var r_ret = callframe.Ret[RenderingServer.ViewportScreenSpaceAA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneBuffersRD.Bind_get_screen_space_aa, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

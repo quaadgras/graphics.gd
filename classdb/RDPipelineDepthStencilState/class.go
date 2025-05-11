@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/Rendering"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -24,6 +26,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -39,6 +45,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -51,6 +58,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -105,11 +113,11 @@ func (self Instance) SetEnableDepthWrite(value bool) {
 	class(self).SetEnableDepthWrite(value)
 }
 
-func (self Instance) DepthCompareOperator() gdclass.RenderingDeviceCompareOperator {
-	return gdclass.RenderingDeviceCompareOperator(class(self).GetDepthCompareOperator())
+func (self Instance) DepthCompareOperator() Rendering.CompareOperator {
+	return Rendering.CompareOperator(class(self).GetDepthCompareOperator())
 }
 
-func (self Instance) SetDepthCompareOperator(value gdclass.RenderingDeviceCompareOperator) {
+func (self Instance) SetDepthCompareOperator(value Rendering.CompareOperator) {
 	class(self).SetDepthCompareOperator(value)
 }
 
@@ -145,35 +153,35 @@ func (self Instance) SetEnableStencil(value bool) {
 	class(self).SetEnableStencil(value)
 }
 
-func (self Instance) FrontOpFail() gdclass.RenderingDeviceStencilOperation {
-	return gdclass.RenderingDeviceStencilOperation(class(self).GetFrontOpFail())
+func (self Instance) FrontOpFail() Rendering.StencilOperation {
+	return Rendering.StencilOperation(class(self).GetFrontOpFail())
 }
 
-func (self Instance) SetFrontOpFail(value gdclass.RenderingDeviceStencilOperation) {
+func (self Instance) SetFrontOpFail(value Rendering.StencilOperation) {
 	class(self).SetFrontOpFail(value)
 }
 
-func (self Instance) FrontOpPass() gdclass.RenderingDeviceStencilOperation {
-	return gdclass.RenderingDeviceStencilOperation(class(self).GetFrontOpPass())
+func (self Instance) FrontOpPass() Rendering.StencilOperation {
+	return Rendering.StencilOperation(class(self).GetFrontOpPass())
 }
 
-func (self Instance) SetFrontOpPass(value gdclass.RenderingDeviceStencilOperation) {
+func (self Instance) SetFrontOpPass(value Rendering.StencilOperation) {
 	class(self).SetFrontOpPass(value)
 }
 
-func (self Instance) FrontOpDepthFail() gdclass.RenderingDeviceStencilOperation {
-	return gdclass.RenderingDeviceStencilOperation(class(self).GetFrontOpDepthFail())
+func (self Instance) FrontOpDepthFail() Rendering.StencilOperation {
+	return Rendering.StencilOperation(class(self).GetFrontOpDepthFail())
 }
 
-func (self Instance) SetFrontOpDepthFail(value gdclass.RenderingDeviceStencilOperation) {
+func (self Instance) SetFrontOpDepthFail(value Rendering.StencilOperation) {
 	class(self).SetFrontOpDepthFail(value)
 }
 
-func (self Instance) FrontOpCompare() gdclass.RenderingDeviceCompareOperator {
-	return gdclass.RenderingDeviceCompareOperator(class(self).GetFrontOpCompare())
+func (self Instance) FrontOpCompare() Rendering.CompareOperator {
+	return Rendering.CompareOperator(class(self).GetFrontOpCompare())
 }
 
-func (self Instance) SetFrontOpCompare(value gdclass.RenderingDeviceCompareOperator) {
+func (self Instance) SetFrontOpCompare(value Rendering.CompareOperator) {
 	class(self).SetFrontOpCompare(value)
 }
 
@@ -201,35 +209,35 @@ func (self Instance) SetFrontOpReference(value int) {
 	class(self).SetFrontOpReference(int64(value))
 }
 
-func (self Instance) BackOpFail() gdclass.RenderingDeviceStencilOperation {
-	return gdclass.RenderingDeviceStencilOperation(class(self).GetBackOpFail())
+func (self Instance) BackOpFail() Rendering.StencilOperation {
+	return Rendering.StencilOperation(class(self).GetBackOpFail())
 }
 
-func (self Instance) SetBackOpFail(value gdclass.RenderingDeviceStencilOperation) {
+func (self Instance) SetBackOpFail(value Rendering.StencilOperation) {
 	class(self).SetBackOpFail(value)
 }
 
-func (self Instance) BackOpPass() gdclass.RenderingDeviceStencilOperation {
-	return gdclass.RenderingDeviceStencilOperation(class(self).GetBackOpPass())
+func (self Instance) BackOpPass() Rendering.StencilOperation {
+	return Rendering.StencilOperation(class(self).GetBackOpPass())
 }
 
-func (self Instance) SetBackOpPass(value gdclass.RenderingDeviceStencilOperation) {
+func (self Instance) SetBackOpPass(value Rendering.StencilOperation) {
 	class(self).SetBackOpPass(value)
 }
 
-func (self Instance) BackOpDepthFail() gdclass.RenderingDeviceStencilOperation {
-	return gdclass.RenderingDeviceStencilOperation(class(self).GetBackOpDepthFail())
+func (self Instance) BackOpDepthFail() Rendering.StencilOperation {
+	return Rendering.StencilOperation(class(self).GetBackOpDepthFail())
 }
 
-func (self Instance) SetBackOpDepthFail(value gdclass.RenderingDeviceStencilOperation) {
+func (self Instance) SetBackOpDepthFail(value Rendering.StencilOperation) {
 	class(self).SetBackOpDepthFail(value)
 }
 
-func (self Instance) BackOpCompare() gdclass.RenderingDeviceCompareOperator {
-	return gdclass.RenderingDeviceCompareOperator(class(self).GetBackOpCompare())
+func (self Instance) BackOpCompare() Rendering.CompareOperator {
+	return Rendering.CompareOperator(class(self).GetBackOpCompare())
 }
 
-func (self Instance) SetBackOpCompare(value gdclass.RenderingDeviceCompareOperator) {
+func (self Instance) SetBackOpCompare(value Rendering.CompareOperator) {
 	class(self).SetBackOpCompare(value)
 }
 
@@ -296,7 +304,7 @@ func (self class) GetEnableDepthWrite() bool { //gd:RDPipelineDepthStencilState.
 }
 
 //go:nosplit
-func (self class) SetDepthCompareOperator(p_member gdclass.RenderingDeviceCompareOperator) { //gd:RDPipelineDepthStencilState.set_depth_compare_operator
+func (self class) SetDepthCompareOperator(p_member Rendering.CompareOperator) { //gd:RDPipelineDepthStencilState.set_depth_compare_operator
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -305,9 +313,9 @@ func (self class) SetDepthCompareOperator(p_member gdclass.RenderingDeviceCompar
 }
 
 //go:nosplit
-func (self class) GetDepthCompareOperator() gdclass.RenderingDeviceCompareOperator { //gd:RDPipelineDepthStencilState.get_depth_compare_operator
+func (self class) GetDepthCompareOperator() Rendering.CompareOperator { //gd:RDPipelineDepthStencilState.get_depth_compare_operator
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingDeviceCompareOperator](frame)
+	var r_ret = callframe.Ret[Rendering.CompareOperator](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_depth_compare_operator, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -391,7 +399,7 @@ func (self class) GetEnableStencil() bool { //gd:RDPipelineDepthStencilState.get
 }
 
 //go:nosplit
-func (self class) SetFrontOpFail(p_member gdclass.RenderingDeviceStencilOperation) { //gd:RDPipelineDepthStencilState.set_front_op_fail
+func (self class) SetFrontOpFail(p_member Rendering.StencilOperation) { //gd:RDPipelineDepthStencilState.set_front_op_fail
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -400,9 +408,9 @@ func (self class) SetFrontOpFail(p_member gdclass.RenderingDeviceStencilOperatio
 }
 
 //go:nosplit
-func (self class) GetFrontOpFail() gdclass.RenderingDeviceStencilOperation { //gd:RDPipelineDepthStencilState.get_front_op_fail
+func (self class) GetFrontOpFail() Rendering.StencilOperation { //gd:RDPipelineDepthStencilState.get_front_op_fail
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingDeviceStencilOperation](frame)
+	var r_ret = callframe.Ret[Rendering.StencilOperation](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_front_op_fail, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -410,7 +418,7 @@ func (self class) GetFrontOpFail() gdclass.RenderingDeviceStencilOperation { //g
 }
 
 //go:nosplit
-func (self class) SetFrontOpPass(p_member gdclass.RenderingDeviceStencilOperation) { //gd:RDPipelineDepthStencilState.set_front_op_pass
+func (self class) SetFrontOpPass(p_member Rendering.StencilOperation) { //gd:RDPipelineDepthStencilState.set_front_op_pass
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -419,9 +427,9 @@ func (self class) SetFrontOpPass(p_member gdclass.RenderingDeviceStencilOperatio
 }
 
 //go:nosplit
-func (self class) GetFrontOpPass() gdclass.RenderingDeviceStencilOperation { //gd:RDPipelineDepthStencilState.get_front_op_pass
+func (self class) GetFrontOpPass() Rendering.StencilOperation { //gd:RDPipelineDepthStencilState.get_front_op_pass
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingDeviceStencilOperation](frame)
+	var r_ret = callframe.Ret[Rendering.StencilOperation](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_front_op_pass, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -429,7 +437,7 @@ func (self class) GetFrontOpPass() gdclass.RenderingDeviceStencilOperation { //g
 }
 
 //go:nosplit
-func (self class) SetFrontOpDepthFail(p_member gdclass.RenderingDeviceStencilOperation) { //gd:RDPipelineDepthStencilState.set_front_op_depth_fail
+func (self class) SetFrontOpDepthFail(p_member Rendering.StencilOperation) { //gd:RDPipelineDepthStencilState.set_front_op_depth_fail
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -438,9 +446,9 @@ func (self class) SetFrontOpDepthFail(p_member gdclass.RenderingDeviceStencilOpe
 }
 
 //go:nosplit
-func (self class) GetFrontOpDepthFail() gdclass.RenderingDeviceStencilOperation { //gd:RDPipelineDepthStencilState.get_front_op_depth_fail
+func (self class) GetFrontOpDepthFail() Rendering.StencilOperation { //gd:RDPipelineDepthStencilState.get_front_op_depth_fail
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingDeviceStencilOperation](frame)
+	var r_ret = callframe.Ret[Rendering.StencilOperation](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_front_op_depth_fail, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -448,7 +456,7 @@ func (self class) GetFrontOpDepthFail() gdclass.RenderingDeviceStencilOperation 
 }
 
 //go:nosplit
-func (self class) SetFrontOpCompare(p_member gdclass.RenderingDeviceCompareOperator) { //gd:RDPipelineDepthStencilState.set_front_op_compare
+func (self class) SetFrontOpCompare(p_member Rendering.CompareOperator) { //gd:RDPipelineDepthStencilState.set_front_op_compare
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -457,9 +465,9 @@ func (self class) SetFrontOpCompare(p_member gdclass.RenderingDeviceCompareOpera
 }
 
 //go:nosplit
-func (self class) GetFrontOpCompare() gdclass.RenderingDeviceCompareOperator { //gd:RDPipelineDepthStencilState.get_front_op_compare
+func (self class) GetFrontOpCompare() Rendering.CompareOperator { //gd:RDPipelineDepthStencilState.get_front_op_compare
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingDeviceCompareOperator](frame)
+	var r_ret = callframe.Ret[Rendering.CompareOperator](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_front_op_compare, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -524,7 +532,7 @@ func (self class) GetFrontOpReference() int64 { //gd:RDPipelineDepthStencilState
 }
 
 //go:nosplit
-func (self class) SetBackOpFail(p_member gdclass.RenderingDeviceStencilOperation) { //gd:RDPipelineDepthStencilState.set_back_op_fail
+func (self class) SetBackOpFail(p_member Rendering.StencilOperation) { //gd:RDPipelineDepthStencilState.set_back_op_fail
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -533,9 +541,9 @@ func (self class) SetBackOpFail(p_member gdclass.RenderingDeviceStencilOperation
 }
 
 //go:nosplit
-func (self class) GetBackOpFail() gdclass.RenderingDeviceStencilOperation { //gd:RDPipelineDepthStencilState.get_back_op_fail
+func (self class) GetBackOpFail() Rendering.StencilOperation { //gd:RDPipelineDepthStencilState.get_back_op_fail
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingDeviceStencilOperation](frame)
+	var r_ret = callframe.Ret[Rendering.StencilOperation](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_back_op_fail, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -543,7 +551,7 @@ func (self class) GetBackOpFail() gdclass.RenderingDeviceStencilOperation { //gd
 }
 
 //go:nosplit
-func (self class) SetBackOpPass(p_member gdclass.RenderingDeviceStencilOperation) { //gd:RDPipelineDepthStencilState.set_back_op_pass
+func (self class) SetBackOpPass(p_member Rendering.StencilOperation) { //gd:RDPipelineDepthStencilState.set_back_op_pass
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -552,9 +560,9 @@ func (self class) SetBackOpPass(p_member gdclass.RenderingDeviceStencilOperation
 }
 
 //go:nosplit
-func (self class) GetBackOpPass() gdclass.RenderingDeviceStencilOperation { //gd:RDPipelineDepthStencilState.get_back_op_pass
+func (self class) GetBackOpPass() Rendering.StencilOperation { //gd:RDPipelineDepthStencilState.get_back_op_pass
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingDeviceStencilOperation](frame)
+	var r_ret = callframe.Ret[Rendering.StencilOperation](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_back_op_pass, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -562,7 +570,7 @@ func (self class) GetBackOpPass() gdclass.RenderingDeviceStencilOperation { //gd
 }
 
 //go:nosplit
-func (self class) SetBackOpDepthFail(p_member gdclass.RenderingDeviceStencilOperation) { //gd:RDPipelineDepthStencilState.set_back_op_depth_fail
+func (self class) SetBackOpDepthFail(p_member Rendering.StencilOperation) { //gd:RDPipelineDepthStencilState.set_back_op_depth_fail
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -571,9 +579,9 @@ func (self class) SetBackOpDepthFail(p_member gdclass.RenderingDeviceStencilOper
 }
 
 //go:nosplit
-func (self class) GetBackOpDepthFail() gdclass.RenderingDeviceStencilOperation { //gd:RDPipelineDepthStencilState.get_back_op_depth_fail
+func (self class) GetBackOpDepthFail() Rendering.StencilOperation { //gd:RDPipelineDepthStencilState.get_back_op_depth_fail
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingDeviceStencilOperation](frame)
+	var r_ret = callframe.Ret[Rendering.StencilOperation](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_back_op_depth_fail, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -581,7 +589,7 @@ func (self class) GetBackOpDepthFail() gdclass.RenderingDeviceStencilOperation {
 }
 
 //go:nosplit
-func (self class) SetBackOpCompare(p_member gdclass.RenderingDeviceCompareOperator) { //gd:RDPipelineDepthStencilState.set_back_op_compare
+func (self class) SetBackOpCompare(p_member Rendering.CompareOperator) { //gd:RDPipelineDepthStencilState.set_back_op_compare
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -590,9 +598,9 @@ func (self class) SetBackOpCompare(p_member gdclass.RenderingDeviceCompareOperat
 }
 
 //go:nosplit
-func (self class) GetBackOpCompare() gdclass.RenderingDeviceCompareOperator { //gd:RDPipelineDepthStencilState.get_back_op_compare
+func (self class) GetBackOpCompare() Rendering.CompareOperator { //gd:RDPipelineDepthStencilState.get_back_op_compare
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingDeviceCompareOperator](frame)
+	var r_ret = callframe.Ret[Rendering.CompareOperator](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineDepthStencilState.Bind_get_back_op_compare, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/AudioBusLayout"
 import "graphics.gd/classdb/AudioEffect"
 import "graphics.gd/classdb/AudioEffectInstance"
@@ -29,6 +30,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -44,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,6 +62,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -352,9 +359,9 @@ func Unlock() { //gd:AudioServer.unlock
 /*
 Returns the speaker configuration.
 */
-func GetSpeakerMode() gdclass.AudioServerSpeakerMode { //gd:AudioServer.get_speaker_mode
+func GetSpeakerMode() SpeakerMode { //gd:AudioServer.get_speaker_mode
 	once.Do(singleton)
-	return gdclass.AudioServerSpeakerMode(Advanced().GetSpeakerMode())
+	return SpeakerMode(Advanced().GetSpeakerMode())
 }
 
 /*
@@ -987,9 +994,9 @@ func (self class) Unlock() { //gd:AudioServer.unlock
 Returns the speaker configuration.
 */
 //go:nosplit
-func (self class) GetSpeakerMode() gdclass.AudioServerSpeakerMode { //gd:AudioServer.get_speaker_mode
+func (self class) GetSpeakerMode() SpeakerMode { //gd:AudioServer.get_speaker_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.AudioServerSpeakerMode](frame)
+	var r_ret = callframe.Ret[SpeakerMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_speaker_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1230,7 +1237,7 @@ func init() {
 	gdclass.Register("AudioServer", func(ptr gd.Object) any { return [1]gdclass.AudioServer{*(*gdclass.AudioServer)(unsafe.Pointer(&ptr))} })
 }
 
-type SpeakerMode = gdclass.AudioServerSpeakerMode //gd:AudioServer.SpeakerMode
+type SpeakerMode int //gd:AudioServer.SpeakerMode
 
 const (
 	/*Two or fewer speakers were detected.*/
@@ -1243,7 +1250,7 @@ const (
 	SpeakerSurround71 SpeakerMode = 3
 )
 
-type PlaybackType = gdclass.AudioServerPlaybackType //gd:AudioServer.PlaybackType
+type PlaybackType int //gd:AudioServer.PlaybackType
 
 const (
 	/*The playback will be considered of the type declared at [member ProjectSettings.audio/general/default_playback_type].*/

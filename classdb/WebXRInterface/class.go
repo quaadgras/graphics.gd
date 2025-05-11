@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/XRControllerTracker"
 import "graphics.gd/classdb/XRInterface"
 import "graphics.gd/variant/Array"
@@ -26,6 +27,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -41,6 +46,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -53,6 +59,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -200,8 +207,8 @@ func (self Instance) GetInputSourceTracker(input_source_id int) XRControllerTrac
 Returns the target ray mode for the given [param input_source_id].
 This can help interpret the input coming from that input source. See [url=https://developer.mozilla.org/en-US/docs/Web/API/XRInputSource/targetRayMode]XRInputSource.targetRayMode[/url] for more information.
 */
-func (self Instance) GetInputSourceTargetRayMode(input_source_id int) gdclass.WebXRInterfaceTargetRayMode { //gd:WebXRInterface.get_input_source_target_ray_mode
-	return gdclass.WebXRInterfaceTargetRayMode(Advanced(self).GetInputSourceTargetRayMode(int64(input_source_id)))
+func (self Instance) GetInputSourceTargetRayMode(input_source_id int) TargetRayMode { //gd:WebXRInterface.get_input_source_target_ray_mode
+	return TargetRayMode(Advanced(self).GetInputSourceTargetRayMode(int64(input_source_id)))
 }
 
 /*
@@ -440,10 +447,10 @@ Returns the target ray mode for the given [param input_source_id].
 This can help interpret the input coming from that input source. See [url=https://developer.mozilla.org/en-US/docs/Web/API/XRInputSource/targetRayMode]XRInputSource.targetRayMode[/url] for more information.
 */
 //go:nosplit
-func (self class) GetInputSourceTargetRayMode(input_source_id int64) gdclass.WebXRInterfaceTargetRayMode { //gd:WebXRInterface.get_input_source_target_ray_mode
+func (self class) GetInputSourceTargetRayMode(input_source_id int64) TargetRayMode { //gd:WebXRInterface.get_input_source_target_ray_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, input_source_id)
-	var r_ret = callframe.Ret[gdclass.WebXRInterfaceTargetRayMode](frame)
+	var r_ret = callframe.Ret[TargetRayMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebXRInterface.Bind_get_input_source_target_ray_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -586,7 +593,7 @@ func init() {
 	})
 }
 
-type TargetRayMode = gdclass.WebXRInterfaceTargetRayMode //gd:WebXRInterface.TargetRayMode
+type TargetRayMode int //gd:WebXRInterface.TargetRayMode
 
 const (
 	/*We don't know the target ray mode.*/

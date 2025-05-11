@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -25,6 +26,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -40,6 +45,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -52,6 +58,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -131,11 +138,11 @@ func (self Instance) SetCount(value int) {
 	class(self).SetCount(int64(value))
 }
 
-func (self Instance) AccessorType() gdclass.GLTFAccessorGLTFAccessorType {
-	return gdclass.GLTFAccessorGLTFAccessorType(class(self).GetAccessorType())
+func (self Instance) AccessorType() GLTFAccessorType {
+	return GLTFAccessorType(class(self).GetAccessorType())
 }
 
-func (self Instance) SetAccessorType(value gdclass.GLTFAccessorGLTFAccessorType) {
+func (self Instance) SetAccessorType(value GLTFAccessorType) {
 	class(self).SetAccessorType(value)
 }
 
@@ -307,9 +314,9 @@ func (self class) SetCount(count int64) { //gd:GLTFAccessor.set_count
 }
 
 //go:nosplit
-func (self class) GetAccessorType() gdclass.GLTFAccessorGLTFAccessorType { //gd:GLTFAccessor.get_accessor_type
+func (self class) GetAccessorType() GLTFAccessorType { //gd:GLTFAccessor.get_accessor_type
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.GLTFAccessorGLTFAccessorType](frame)
+	var r_ret = callframe.Ret[GLTFAccessorType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFAccessor.Bind_get_accessor_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -317,7 +324,7 @@ func (self class) GetAccessorType() gdclass.GLTFAccessorGLTFAccessorType { //gd:
 }
 
 //go:nosplit
-func (self class) SetAccessorType(accessor_type gdclass.GLTFAccessorGLTFAccessorType) { //gd:GLTFAccessor.set_accessor_type
+func (self class) SetAccessorType(accessor_type GLTFAccessorType) { //gd:GLTFAccessor.set_accessor_type
 	var frame = callframe.New()
 	callframe.Arg(frame, accessor_type)
 	var r_ret = callframe.Nil
@@ -532,7 +539,7 @@ func init() {
 	})
 }
 
-type GLTFAccessorType = gdclass.GLTFAccessorGLTFAccessorType //gd:GLTFAccessor.GLTFAccessorType
+type GLTFAccessorType int //gd:GLTFAccessor.GLTFAccessorType
 
 const (
 	/*Accessor type "SCALAR". For the glTF object model, this can be used to map to a single float, int, or bool value, or a float array.*/
@@ -551,7 +558,7 @@ const (
 	TypeMat4 GLTFAccessorType = 6
 )
 
-type GLTFComponentType = gdclass.GLTFAccessorGLTFComponentType //gd:GLTFAccessor.GLTFComponentType
+type GLTFComponentType int //gd:GLTFAccessor.GLTFComponentType
 
 const (
 	/*Component type "NONE". This is not a valid component type, and is used to indicate that the component type is not set.*/

@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node2D"
@@ -33,6 +34,10 @@ import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -48,6 +53,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -60,6 +66,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -401,7 +408,7 @@ func (self Instance) GetSurroundingCells(coords Vector2i.XY) []Vector2i.XY { //g
 /*
 Returns the neighboring cell to the one at coordinates [param coords], identified by the [param neighbor] direction. This method takes into account the different layouts a TileMap can take.
 */
-func (self Instance) GetNeighborCell(coords Vector2i.XY, neighbor gdclass.TileSetCellNeighbor) Vector2i.XY { //gd:TileMapLayer.get_neighbor_cell
+func (self Instance) GetNeighborCell(coords Vector2i.XY, neighbor TileSet.CellNeighbor) Vector2i.XY { //gd:TileMapLayer.get_neighbor_cell
 	return Vector2i.XY(Advanced(self).GetNeighborCell(Vector2i.XY(coords), neighbor))
 }
 
@@ -526,11 +533,11 @@ func (self Instance) SetUseKinematicBodies(value bool) {
 	class(self).SetUseKinematicBodies(value)
 }
 
-func (self Instance) CollisionVisibilityMode() gdclass.TileMapLayerDebugVisibilityMode {
-	return gdclass.TileMapLayerDebugVisibilityMode(class(self).GetCollisionVisibilityMode())
+func (self Instance) CollisionVisibilityMode() DebugVisibilityMode {
+	return DebugVisibilityMode(class(self).GetCollisionVisibilityMode())
 }
 
-func (self Instance) SetCollisionVisibilityMode(value gdclass.TileMapLayerDebugVisibilityMode) {
+func (self Instance) SetCollisionVisibilityMode(value DebugVisibilityMode) {
 	class(self).SetCollisionVisibilityMode(value)
 }
 
@@ -542,11 +549,11 @@ func (self Instance) SetNavigationEnabled(value bool) {
 	class(self).SetNavigationEnabled(value)
 }
 
-func (self Instance) NavigationVisibilityMode() gdclass.TileMapLayerDebugVisibilityMode {
-	return gdclass.TileMapLayerDebugVisibilityMode(class(self).GetNavigationVisibilityMode())
+func (self Instance) NavigationVisibilityMode() DebugVisibilityMode {
+	return DebugVisibilityMode(class(self).GetNavigationVisibilityMode())
 }
 
-func (self Instance) SetNavigationVisibilityMode(value gdclass.TileMapLayerDebugVisibilityMode) {
+func (self Instance) SetNavigationVisibilityMode(value DebugVisibilityMode) {
 	class(self).SetNavigationVisibilityMode(value)
 }
 
@@ -954,7 +961,7 @@ func (self class) GetSurroundingCells(coords Vector2i.XY) Array.Contains[Vector2
 Returns the neighboring cell to the one at coordinates [param coords], identified by the [param neighbor] direction. This method takes into account the different layouts a TileMap can take.
 */
 //go:nosplit
-func (self class) GetNeighborCell(coords Vector2i.XY, neighbor gdclass.TileSetCellNeighbor) Vector2i.XY { //gd:TileMapLayer.get_neighbor_cell
+func (self class) GetNeighborCell(coords Vector2i.XY, neighbor TileSet.CellNeighbor) Vector2i.XY { //gd:TileMapLayer.get_neighbor_cell
 	var frame = callframe.New()
 	callframe.Arg(frame, coords)
 	callframe.Arg(frame, neighbor)
@@ -1147,7 +1154,7 @@ func (self class) IsUsingKinematicBodies() bool { //gd:TileMapLayer.is_using_kin
 }
 
 //go:nosplit
-func (self class) SetCollisionVisibilityMode(visibility_mode gdclass.TileMapLayerDebugVisibilityMode) { //gd:TileMapLayer.set_collision_visibility_mode
+func (self class) SetCollisionVisibilityMode(visibility_mode DebugVisibilityMode) { //gd:TileMapLayer.set_collision_visibility_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, visibility_mode)
 	var r_ret = callframe.Nil
@@ -1156,9 +1163,9 @@ func (self class) SetCollisionVisibilityMode(visibility_mode gdclass.TileMapLaye
 }
 
 //go:nosplit
-func (self class) GetCollisionVisibilityMode() gdclass.TileMapLayerDebugVisibilityMode { //gd:TileMapLayer.get_collision_visibility_mode
+func (self class) GetCollisionVisibilityMode() DebugVisibilityMode { //gd:TileMapLayer.get_collision_visibility_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TileMapLayerDebugVisibilityMode](frame)
+	var r_ret = callframe.Ret[DebugVisibilityMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_get_collision_visibility_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1230,7 +1237,7 @@ func (self class) GetNavigationMap() RID.Any { //gd:TileMapLayer.get_navigation_
 }
 
 //go:nosplit
-func (self class) SetNavigationVisibilityMode(show_navigation gdclass.TileMapLayerDebugVisibilityMode) { //gd:TileMapLayer.set_navigation_visibility_mode
+func (self class) SetNavigationVisibilityMode(show_navigation DebugVisibilityMode) { //gd:TileMapLayer.set_navigation_visibility_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, show_navigation)
 	var r_ret = callframe.Nil
@@ -1239,9 +1246,9 @@ func (self class) SetNavigationVisibilityMode(show_navigation gdclass.TileMapLay
 }
 
 //go:nosplit
-func (self class) GetNavigationVisibilityMode() gdclass.TileMapLayerDebugVisibilityMode { //gd:TileMapLayer.get_navigation_visibility_mode
+func (self class) GetNavigationVisibilityMode() DebugVisibilityMode { //gd:TileMapLayer.get_navigation_visibility_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TileMapLayerDebugVisibilityMode](frame)
+	var r_ret = callframe.Ret[DebugVisibilityMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_get_navigation_visibility_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1299,7 +1306,7 @@ func init() {
 	})
 }
 
-type DebugVisibilityMode = gdclass.TileMapLayerDebugVisibilityMode //gd:TileMapLayer.DebugVisibilityMode
+type DebugVisibilityMode int //gd:TileMapLayer.DebugVisibilityMode
 
 const (
 	/*Hide the collisions or navigation debug shapes in the editor, and use the debug settings to determine their visibility in game (i.e. [member SceneTree.debug_collisions_hint] or [member SceneTree.debug_navigation_hint]).*/

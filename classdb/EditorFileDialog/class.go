@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/AcceptDialog"
 import "graphics.gd/classdb/ConfirmationDialog"
 import "graphics.gd/classdb/Control"
@@ -32,6 +33,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -47,6 +52,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -59,6 +65,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -246,27 +253,27 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Access() gdclass.EditorFileDialogAccess {
-	return gdclass.EditorFileDialogAccess(class(self).GetAccess())
+func (self Instance) Access() Access {
+	return Access(class(self).GetAccess())
 }
 
-func (self Instance) SetAccess(value gdclass.EditorFileDialogAccess) {
+func (self Instance) SetAccess(value Access) {
 	class(self).SetAccess(value)
 }
 
-func (self Instance) DisplayMode() gdclass.EditorFileDialogDisplayMode {
-	return gdclass.EditorFileDialogDisplayMode(class(self).GetDisplayMode())
+func (self Instance) DisplayMode() DisplayMode {
+	return DisplayMode(class(self).GetDisplayMode())
 }
 
-func (self Instance) SetDisplayMode(value gdclass.EditorFileDialogDisplayMode) {
+func (self Instance) SetDisplayMode(value DisplayMode) {
 	class(self).SetDisplayMode(value)
 }
 
-func (self Instance) FileMode() gdclass.EditorFileDialogFileMode {
-	return gdclass.EditorFileDialogFileMode(class(self).GetFileMode())
+func (self Instance) FileMode() FileMode {
+	return FileMode(class(self).GetFileMode())
 }
 
-func (self Instance) SetFileMode(value gdclass.EditorFileDialogFileMode) {
+func (self Instance) SetFileMode(value FileMode) {
 	class(self).SetFileMode(value)
 }
 
@@ -593,7 +600,7 @@ func (self class) SetCurrentPath(path String.Readable) { //gd:EditorFileDialog.s
 }
 
 //go:nosplit
-func (self class) SetFileMode(mode gdclass.EditorFileDialogFileMode) { //gd:EditorFileDialog.set_file_mode
+func (self class) SetFileMode(mode FileMode) { //gd:EditorFileDialog.set_file_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -602,9 +609,9 @@ func (self class) SetFileMode(mode gdclass.EditorFileDialogFileMode) { //gd:Edit
 }
 
 //go:nosplit
-func (self class) GetFileMode() gdclass.EditorFileDialogFileMode { //gd:EditorFileDialog.get_file_mode
+func (self class) GetFileMode() FileMode { //gd:EditorFileDialog.get_file_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.EditorFileDialogFileMode](frame)
+	var r_ret = callframe.Ret[FileMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_get_file_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -640,7 +647,7 @@ func (self class) GetLineEdit() [1]gdclass.LineEdit { //gd:EditorFileDialog.get_
 }
 
 //go:nosplit
-func (self class) SetAccess(access gdclass.EditorFileDialogAccess) { //gd:EditorFileDialog.set_access
+func (self class) SetAccess(access Access) { //gd:EditorFileDialog.set_access
 	var frame = callframe.New()
 	callframe.Arg(frame, access)
 	var r_ret = callframe.Nil
@@ -649,9 +656,9 @@ func (self class) SetAccess(access gdclass.EditorFileDialogAccess) { //gd:Editor
 }
 
 //go:nosplit
-func (self class) GetAccess() gdclass.EditorFileDialogAccess { //gd:EditorFileDialog.get_access
+func (self class) GetAccess() Access { //gd:EditorFileDialog.get_access
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.EditorFileDialogAccess](frame)
+	var r_ret = callframe.Ret[Access](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_get_access, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -678,7 +685,7 @@ func (self class) IsShowingHiddenFiles() bool { //gd:EditorFileDialog.is_showing
 }
 
 //go:nosplit
-func (self class) SetDisplayMode(mode gdclass.EditorFileDialogDisplayMode) { //gd:EditorFileDialog.set_display_mode
+func (self class) SetDisplayMode(mode DisplayMode) { //gd:EditorFileDialog.set_display_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -687,9 +694,9 @@ func (self class) SetDisplayMode(mode gdclass.EditorFileDialogDisplayMode) { //g
 }
 
 //go:nosplit
-func (self class) GetDisplayMode() gdclass.EditorFileDialogDisplayMode { //gd:EditorFileDialog.get_display_mode
+func (self class) GetDisplayMode() DisplayMode { //gd:EditorFileDialog.get_display_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.EditorFileDialogDisplayMode](frame)
+	var r_ret = callframe.Ret[DisplayMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFileDialog.Bind_get_display_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -817,7 +824,7 @@ func init() {
 	})
 }
 
-type FileMode = gdclass.EditorFileDialogFileMode //gd:EditorFileDialog.FileMode
+type FileMode int //gd:EditorFileDialog.FileMode
 
 const (
 	/*The [EditorFileDialog] can select only one file. Accepting the window will open the file.*/
@@ -832,7 +839,7 @@ const (
 	FileModeSaveFile FileMode = 4
 )
 
-type Access = gdclass.EditorFileDialogAccess //gd:EditorFileDialog.Access
+type Access int //gd:EditorFileDialog.Access
 
 const (
 	/*The [EditorFileDialog] can only view [code]res://[/code] directory contents.*/
@@ -843,7 +850,7 @@ const (
 	AccessFilesystem Access = 2
 )
 
-type DisplayMode = gdclass.EditorFileDialogDisplayMode //gd:EditorFileDialog.DisplayMode
+type DisplayMode int //gd:EditorFileDialog.DisplayMode
 
 const (
 	/*The [EditorFileDialog] displays resources as thumbnails.*/

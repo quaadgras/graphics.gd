@@ -11,8 +11,10 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/ArrayMesh"
 import "graphics.gd/classdb/Material"
+import "graphics.gd/classdb/Mesh"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -28,6 +30,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -43,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,6 +62,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -100,15 +108,15 @@ func (self Instance) GetBlendShapeName(blend_shape_idx int) string { //gd:Import
 /*
 Sets the blend shape mode to one of [enum Mesh.BlendShapeMode].
 */
-func (self Instance) SetBlendShapeMode(mode gdclass.MeshBlendShapeMode) { //gd:ImporterMesh.set_blend_shape_mode
+func (self Instance) SetBlendShapeMode(mode Mesh.BlendShapeMode) { //gd:ImporterMesh.set_blend_shape_mode
 	Advanced(self).SetBlendShapeMode(mode)
 }
 
 /*
 Returns the blend shape mode for this Mesh.
 */
-func (self Instance) GetBlendShapeMode() gdclass.MeshBlendShapeMode { //gd:ImporterMesh.get_blend_shape_mode
-	return gdclass.MeshBlendShapeMode(Advanced(self).GetBlendShapeMode())
+func (self Instance) GetBlendShapeMode() Mesh.BlendShapeMode { //gd:ImporterMesh.get_blend_shape_mode
+	return Mesh.BlendShapeMode(Advanced(self).GetBlendShapeMode())
 }
 
 /*
@@ -120,7 +128,7 @@ The [param lods] argument is a dictionary with [float] keys and [PackedInt32Arra
 The [param flags] argument is the bitwise OR of, as required: One value of [enum Mesh.ArrayCustomFormat] left shifted by [code]ARRAY_FORMAT_CUSTOMn_SHIFT[/code] for each custom channel in use, [constant Mesh.ARRAY_FLAG_USE_DYNAMIC_UPDATE], [constant Mesh.ARRAY_FLAG_USE_8_BONE_WEIGHTS], or [constant Mesh.ARRAY_FLAG_USES_EMPTY_VERTEX_ARRAY].
 [b]Note:[/b] When using indices, it is recommended to only use points, lines, or triangles.
 */
-func (self Instance) AddSurface(primitive gdclass.MeshPrimitiveType, arrays []any) { //gd:ImporterMesh.add_surface
+func (self Instance) AddSurface(primitive Mesh.PrimitiveType, arrays []any) { //gd:ImporterMesh.add_surface
 	Advanced(self).AddSurface(primitive, gd.EngineArrayFromSlice(arrays), gd.ArrayFromSlice[Array.Contains[Array.Any]]([1][][]any{}[0]), Dictionary.Nil, [1]Material.Instance{}[0], String.New(""), int64(0))
 }
 
@@ -133,7 +141,7 @@ The [param lods] argument is a dictionary with [float] keys and [PackedInt32Arra
 The [param flags] argument is the bitwise OR of, as required: One value of [enum Mesh.ArrayCustomFormat] left shifted by [code]ARRAY_FORMAT_CUSTOMn_SHIFT[/code] for each custom channel in use, [constant Mesh.ARRAY_FLAG_USE_DYNAMIC_UPDATE], [constant Mesh.ARRAY_FLAG_USE_8_BONE_WEIGHTS], or [constant Mesh.ARRAY_FLAG_USES_EMPTY_VERTEX_ARRAY].
 [b]Note:[/b] When using indices, it is recommended to only use points, lines, or triangles.
 */
-func (self Expanded) AddSurface(primitive gdclass.MeshPrimitiveType, arrays []any, blend_shapes [][]any, lods map[float32][]int32, material Material.Instance, name string, flags int) { //gd:ImporterMesh.add_surface
+func (self Expanded) AddSurface(primitive Mesh.PrimitiveType, arrays []any, blend_shapes [][]any, lods map[float32][]int32, material Material.Instance, name string, flags int) { //gd:ImporterMesh.add_surface
 	Advanced(self).AddSurface(primitive, gd.EngineArrayFromSlice(arrays), gd.ArrayFromSlice[Array.Contains[Array.Any]](blend_shapes), gd.DictionaryFromMap(lods), material, String.New(name), int64(flags))
 }
 
@@ -147,8 +155,8 @@ func (self Instance) GetSurfaceCount() int { //gd:ImporterMesh.get_surface_count
 /*
 Returns the primitive type of the requested surface (see [method add_surface]).
 */
-func (self Instance) GetSurfacePrimitiveType(surface_idx int) gdclass.MeshPrimitiveType { //gd:ImporterMesh.get_surface_primitive_type
-	return gdclass.MeshPrimitiveType(Advanced(self).GetSurfacePrimitiveType(int64(surface_idx)))
+func (self Instance) GetSurfacePrimitiveType(surface_idx int) Mesh.PrimitiveType { //gd:ImporterMesh.get_surface_primitive_type
+	return Mesh.PrimitiveType(Advanced(self).GetSurfacePrimitiveType(int64(surface_idx)))
 }
 
 /*
@@ -334,7 +342,7 @@ func (self class) GetBlendShapeName(blend_shape_idx int64) String.Readable { //g
 Sets the blend shape mode to one of [enum Mesh.BlendShapeMode].
 */
 //go:nosplit
-func (self class) SetBlendShapeMode(mode gdclass.MeshBlendShapeMode) { //gd:ImporterMesh.set_blend_shape_mode
+func (self class) SetBlendShapeMode(mode Mesh.BlendShapeMode) { //gd:ImporterMesh.set_blend_shape_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -346,9 +354,9 @@ func (self class) SetBlendShapeMode(mode gdclass.MeshBlendShapeMode) { //gd:Impo
 Returns the blend shape mode for this Mesh.
 */
 //go:nosplit
-func (self class) GetBlendShapeMode() gdclass.MeshBlendShapeMode { //gd:ImporterMesh.get_blend_shape_mode
+func (self class) GetBlendShapeMode() Mesh.BlendShapeMode { //gd:ImporterMesh.get_blend_shape_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.MeshBlendShapeMode](frame)
+	var r_ret = callframe.Ret[Mesh.BlendShapeMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMesh.Bind_get_blend_shape_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -365,7 +373,7 @@ The [param flags] argument is the bitwise OR of, as required: One value of [enum
 [b]Note:[/b] When using indices, it is recommended to only use points, lines, or triangles.
 */
 //go:nosplit
-func (self class) AddSurface(primitive gdclass.MeshPrimitiveType, arrays Array.Any, blend_shapes Array.Contains[Array.Any], lods Dictionary.Any, material [1]gdclass.Material, name String.Readable, flags int64) { //gd:ImporterMesh.add_surface
+func (self class) AddSurface(primitive Mesh.PrimitiveType, arrays Array.Any, blend_shapes Array.Contains[Array.Any], lods Dictionary.Any, material [1]gdclass.Material, name String.Readable, flags int64) { //gd:ImporterMesh.add_surface
 	var frame = callframe.New()
 	callframe.Arg(frame, primitive)
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(arrays)))
@@ -396,10 +404,10 @@ func (self class) GetSurfaceCount() int64 { //gd:ImporterMesh.get_surface_count
 Returns the primitive type of the requested surface (see [method add_surface]).
 */
 //go:nosplit
-func (self class) GetSurfacePrimitiveType(surface_idx int64) gdclass.MeshPrimitiveType { //gd:ImporterMesh.get_surface_primitive_type
+func (self class) GetSurfacePrimitiveType(surface_idx int64) Mesh.PrimitiveType { //gd:ImporterMesh.get_surface_primitive_type
 	var frame = callframe.New()
 	callframe.Arg(frame, surface_idx)
-	var r_ret = callframe.Ret[gdclass.MeshPrimitiveType](frame)
+	var r_ret = callframe.Ret[Mesh.PrimitiveType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMesh.Bind_get_surface_primitive_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

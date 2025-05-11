@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CollisionObject3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
@@ -28,6 +29,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -43,6 +48,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,6 +61,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -168,11 +175,11 @@ func (self Instance) SetPriority(value int) {
 	class(self).SetPriority(int64(value))
 }
 
-func (self Instance) GravitySpaceOverride() gdclass.Area3DSpaceOverride {
-	return gdclass.Area3DSpaceOverride(class(self).GetGravitySpaceOverrideMode())
+func (self Instance) GravitySpaceOverride() SpaceOverride {
+	return SpaceOverride(class(self).GetGravitySpaceOverrideMode())
 }
 
-func (self Instance) SetGravitySpaceOverride(value gdclass.Area3DSpaceOverride) {
+func (self Instance) SetGravitySpaceOverride(value SpaceOverride) {
 	class(self).SetGravitySpaceOverrideMode(value)
 }
 
@@ -216,11 +223,11 @@ func (self Instance) SetGravity(value Float.X) {
 	class(self).SetGravity(float64(value))
 }
 
-func (self Instance) LinearDampSpaceOverride() gdclass.Area3DSpaceOverride {
-	return gdclass.Area3DSpaceOverride(class(self).GetLinearDampSpaceOverrideMode())
+func (self Instance) LinearDampSpaceOverride() SpaceOverride {
+	return SpaceOverride(class(self).GetLinearDampSpaceOverrideMode())
 }
 
-func (self Instance) SetLinearDampSpaceOverride(value gdclass.Area3DSpaceOverride) {
+func (self Instance) SetLinearDampSpaceOverride(value SpaceOverride) {
 	class(self).SetLinearDampSpaceOverrideMode(value)
 }
 
@@ -232,11 +239,11 @@ func (self Instance) SetLinearDamp(value Float.X) {
 	class(self).SetLinearDamp(float64(value))
 }
 
-func (self Instance) AngularDampSpaceOverride() gdclass.Area3DSpaceOverride {
-	return gdclass.Area3DSpaceOverride(class(self).GetAngularDampSpaceOverrideMode())
+func (self Instance) AngularDampSpaceOverride() SpaceOverride {
+	return SpaceOverride(class(self).GetAngularDampSpaceOverrideMode())
 }
 
-func (self Instance) SetAngularDampSpaceOverride(value gdclass.Area3DSpaceOverride) {
+func (self Instance) SetAngularDampSpaceOverride(value SpaceOverride) {
 	class(self).SetAngularDampSpaceOverrideMode(value)
 }
 
@@ -321,7 +328,7 @@ func (self Instance) SetReverbBusUniformity(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetGravitySpaceOverrideMode(space_override_mode gdclass.Area3DSpaceOverride) { //gd:Area3D.set_gravity_space_override_mode
+func (self class) SetGravitySpaceOverrideMode(space_override_mode SpaceOverride) { //gd:Area3D.set_gravity_space_override_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, space_override_mode)
 	var r_ret = callframe.Nil
@@ -330,9 +337,9 @@ func (self class) SetGravitySpaceOverrideMode(space_override_mode gdclass.Area3D
 }
 
 //go:nosplit
-func (self class) GetGravitySpaceOverrideMode() gdclass.Area3DSpaceOverride { //gd:Area3D.get_gravity_space_override_mode
+func (self class) GetGravitySpaceOverrideMode() SpaceOverride { //gd:Area3D.get_gravity_space_override_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.Area3DSpaceOverride](frame)
+	var r_ret = callframe.Ret[SpaceOverride](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area3D.Bind_get_gravity_space_override_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -435,7 +442,7 @@ func (self class) GetGravity() float64 { //gd:Area3D.get_gravity
 }
 
 //go:nosplit
-func (self class) SetLinearDampSpaceOverrideMode(space_override_mode gdclass.Area3DSpaceOverride) { //gd:Area3D.set_linear_damp_space_override_mode
+func (self class) SetLinearDampSpaceOverrideMode(space_override_mode SpaceOverride) { //gd:Area3D.set_linear_damp_space_override_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, space_override_mode)
 	var r_ret = callframe.Nil
@@ -444,9 +451,9 @@ func (self class) SetLinearDampSpaceOverrideMode(space_override_mode gdclass.Are
 }
 
 //go:nosplit
-func (self class) GetLinearDampSpaceOverrideMode() gdclass.Area3DSpaceOverride { //gd:Area3D.get_linear_damp_space_override_mode
+func (self class) GetLinearDampSpaceOverrideMode() SpaceOverride { //gd:Area3D.get_linear_damp_space_override_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.Area3DSpaceOverride](frame)
+	var r_ret = callframe.Ret[SpaceOverride](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area3D.Bind_get_linear_damp_space_override_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -454,7 +461,7 @@ func (self class) GetLinearDampSpaceOverrideMode() gdclass.Area3DSpaceOverride {
 }
 
 //go:nosplit
-func (self class) SetAngularDampSpaceOverrideMode(space_override_mode gdclass.Area3DSpaceOverride) { //gd:Area3D.set_angular_damp_space_override_mode
+func (self class) SetAngularDampSpaceOverrideMode(space_override_mode SpaceOverride) { //gd:Area3D.set_angular_damp_space_override_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, space_override_mode)
 	var r_ret = callframe.Nil
@@ -463,9 +470,9 @@ func (self class) SetAngularDampSpaceOverrideMode(space_override_mode gdclass.Ar
 }
 
 //go:nosplit
-func (self class) GetAngularDampSpaceOverrideMode() gdclass.Area3DSpaceOverride { //gd:Area3D.get_angular_damp_space_override_mode
+func (self class) GetAngularDampSpaceOverrideMode() SpaceOverride { //gd:Area3D.get_angular_damp_space_override_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.Area3DSpaceOverride](frame)
+	var r_ret = callframe.Ret[SpaceOverride](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area3D.Bind_get_angular_damp_space_override_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -892,7 +899,7 @@ func init() {
 	gdclass.Register("Area3D", func(ptr gd.Object) any { return [1]gdclass.Area3D{*(*gdclass.Area3D)(unsafe.Pointer(&ptr))} })
 }
 
-type SpaceOverride = gdclass.Area3DSpaceOverride //gd:Area3D.SpaceOverride
+type SpaceOverride int //gd:Area3D.SpaceOverride
 
 const (
 	/*This area does not affect gravity/damping.*/

@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/GeometryInstance3D"
 import "graphics.gd/classdb/Material"
 import "graphics.gd/classdb/Mesh"
@@ -35,6 +36,10 @@ import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -50,6 +55,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -62,6 +68,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -303,19 +310,19 @@ func (self Instance) SetLocalCoords(value bool) {
 	class(self).SetUseLocalCoordinates(value)
 }
 
-func (self Instance) DrawOrder() gdclass.GPUParticles3DDrawOrder {
-	return gdclass.GPUParticles3DDrawOrder(class(self).GetDrawOrder())
+func (self Instance) DrawOrder() DrawOrder {
+	return DrawOrder(class(self).GetDrawOrder())
 }
 
-func (self Instance) SetDrawOrder(value gdclass.GPUParticles3DDrawOrder) {
+func (self Instance) SetDrawOrder(value DrawOrder) {
 	class(self).SetDrawOrder(value)
 }
 
-func (self Instance) TransformAlign() gdclass.GPUParticles3DTransformAlign {
-	return gdclass.GPUParticles3DTransformAlign(class(self).GetTransformAlign())
+func (self Instance) TransformAlign() TransformAlign {
+	return TransformAlign(class(self).GetTransformAlign())
 }
 
-func (self Instance) SetTransformAlign(value gdclass.GPUParticles3DTransformAlign) {
+func (self Instance) SetTransformAlign(value TransformAlign) {
 	class(self).SetTransformAlign(value)
 }
 
@@ -734,7 +741,7 @@ func (self class) GetSeed() int64 { //gd:GPUParticles3D.get_seed
 }
 
 //go:nosplit
-func (self class) SetDrawOrder(order gdclass.GPUParticles3DDrawOrder) { //gd:GPUParticles3D.set_draw_order
+func (self class) SetDrawOrder(order DrawOrder) { //gd:GPUParticles3D.set_draw_order
 	var frame = callframe.New()
 	callframe.Arg(frame, order)
 	var r_ret = callframe.Nil
@@ -743,9 +750,9 @@ func (self class) SetDrawOrder(order gdclass.GPUParticles3DDrawOrder) { //gd:GPU
 }
 
 //go:nosplit
-func (self class) GetDrawOrder() gdclass.GPUParticles3DDrawOrder { //gd:GPUParticles3D.get_draw_order
+func (self class) GetDrawOrder() DrawOrder { //gd:GPUParticles3D.get_draw_order
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.GPUParticles3DDrawOrder](frame)
+	var r_ret = callframe.Ret[DrawOrder](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles3D.Bind_get_draw_order, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -920,7 +927,7 @@ func (self class) GetTrailLifetime() float64 { //gd:GPUParticles3D.get_trail_lif
 }
 
 //go:nosplit
-func (self class) SetTransformAlign(align gdclass.GPUParticles3DTransformAlign) { //gd:GPUParticles3D.set_transform_align
+func (self class) SetTransformAlign(align TransformAlign) { //gd:GPUParticles3D.set_transform_align
 	var frame = callframe.New()
 	callframe.Arg(frame, align)
 	var r_ret = callframe.Nil
@@ -929,9 +936,9 @@ func (self class) SetTransformAlign(align gdclass.GPUParticles3DTransformAlign) 
 }
 
 //go:nosplit
-func (self class) GetTransformAlign() gdclass.GPUParticles3DTransformAlign { //gd:GPUParticles3D.get_transform_align
+func (self class) GetTransformAlign() TransformAlign { //gd:GPUParticles3D.get_transform_align
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.GPUParticles3DTransformAlign](frame)
+	var r_ret = callframe.Ret[TransformAlign](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles3D.Bind_get_transform_align, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1032,7 +1039,7 @@ func init() {
 	})
 }
 
-type DrawOrder = gdclass.GPUParticles3DDrawOrder //gd:GPUParticles3D.DrawOrder
+type DrawOrder int //gd:GPUParticles3D.DrawOrder
 
 const (
 	/*Particles are drawn in the order emitted.*/
@@ -1045,7 +1052,7 @@ const (
 	DrawOrderViewDepth DrawOrder = 3
 )
 
-type EmitFlags = gdclass.GPUParticles3DEmitFlags //gd:GPUParticles3D.EmitFlags
+type EmitFlags int //gd:GPUParticles3D.EmitFlags
 
 const (
 	/*Particle starts at the specified position.*/
@@ -1060,7 +1067,7 @@ const (
 	EmitFlagCustom EmitFlags = 16
 )
 
-type TransformAlign = gdclass.GPUParticles3DTransformAlign //gd:GPUParticles3D.TransformAlign
+type TransformAlign int //gd:GPUParticles3D.TransformAlign
 
 const (
 	TransformAlignDisabled              TransformAlign = 0

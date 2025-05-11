@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Joint3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
@@ -27,6 +28,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -42,6 +47,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -54,6 +60,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -75,28 +82,28 @@ type Any interface {
 /*
 Sets the value of the specified parameter.
 */
-func (self Instance) SetParam(param gdclass.HingeJoint3DParam, value Float.X) { //gd:HingeJoint3D.set_param
+func (self Instance) SetParam(param Param, value Float.X) { //gd:HingeJoint3D.set_param
 	Advanced(self).SetParam(param, float64(value))
 }
 
 /*
 Returns the value of the specified parameter.
 */
-func (self Instance) GetParam(param gdclass.HingeJoint3DParam) Float.X { //gd:HingeJoint3D.get_param
+func (self Instance) GetParam(param Param) Float.X { //gd:HingeJoint3D.get_param
 	return Float.X(Float.X(Advanced(self).GetParam(param)))
 }
 
 /*
 If [code]true[/code], enables the specified flag.
 */
-func (self Instance) SetFlag(flag gdclass.HingeJoint3DFlag, enabled bool) { //gd:HingeJoint3D.set_flag
+func (self Instance) SetFlag(flag Flag, enabled bool) { //gd:HingeJoint3D.set_flag
 	Advanced(self).SetFlag(flag, enabled)
 }
 
 /*
 Returns the value of the specified flag.
 */
-func (self Instance) GetFlag(flag gdclass.HingeJoint3DFlag) bool { //gd:HingeJoint3D.get_flag
+func (self Instance) GetFlag(flag Flag) bool { //gd:HingeJoint3D.get_flag
 	return bool(Advanced(self).GetFlag(flag))
 }
 
@@ -123,7 +130,7 @@ func New() Instance {
 Sets the value of the specified parameter.
 */
 //go:nosplit
-func (self class) SetParam(param gdclass.HingeJoint3DParam, value float64) { //gd:HingeJoint3D.set_param
+func (self class) SetParam(param Param, value float64) { //gd:HingeJoint3D.set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, value)
@@ -136,7 +143,7 @@ func (self class) SetParam(param gdclass.HingeJoint3DParam, value float64) { //g
 Returns the value of the specified parameter.
 */
 //go:nosplit
-func (self class) GetParam(param gdclass.HingeJoint3DParam) float64 { //gd:HingeJoint3D.get_param
+func (self class) GetParam(param Param) float64 { //gd:HingeJoint3D.get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[float64](frame)
@@ -150,7 +157,7 @@ func (self class) GetParam(param gdclass.HingeJoint3DParam) float64 { //gd:Hinge
 If [code]true[/code], enables the specified flag.
 */
 //go:nosplit
-func (self class) SetFlag(flag gdclass.HingeJoint3DFlag, enabled bool) { //gd:HingeJoint3D.set_flag
+func (self class) SetFlag(flag Flag, enabled bool) { //gd:HingeJoint3D.set_flag
 	var frame = callframe.New()
 	callframe.Arg(frame, flag)
 	callframe.Arg(frame, enabled)
@@ -163,7 +170,7 @@ func (self class) SetFlag(flag gdclass.HingeJoint3DFlag, enabled bool) { //gd:Hi
 Returns the value of the specified flag.
 */
 //go:nosplit
-func (self class) GetFlag(flag gdclass.HingeJoint3DFlag) bool { //gd:HingeJoint3D.get_flag
+func (self class) GetFlag(flag Flag) bool { //gd:HingeJoint3D.get_flag
 	var frame = callframe.New()
 	callframe.Arg(frame, flag)
 	var r_ret = callframe.Ret[bool](frame)
@@ -206,7 +213,7 @@ func init() {
 	})
 }
 
-type Param = gdclass.HingeJoint3DParam //gd:HingeJoint3D.Param
+type Param int //gd:HingeJoint3D.Param
 
 const (
 	/*The speed with which the two bodies get pulled together when they move in different directions.*/
@@ -228,7 +235,7 @@ const (
 	ParamMax Param = 8
 )
 
-type Flag = gdclass.HingeJoint3DFlag //gd:HingeJoint3D.Flag
+type Flag int //gd:HingeJoint3D.Flag
 
 const (
 	/*If [code]true[/code], the hinges maximum and minimum rotation, defined by [member angular_limit/lower] and [member angular_limit/upper] has effects.*/

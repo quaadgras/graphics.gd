@@ -11,8 +11,10 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/Input"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Shortcut"
 import "graphics.gd/variant/Array"
@@ -28,6 +30,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -43,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,6 +62,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -128,8 +136,8 @@ func (self Instance) IsHovered() bool { //gd:BaseButton.is_hovered
 /*
 Returns the visual state used to draw the button. This is useful mainly when implementing your own draw code by either overriding _draw() or connecting to "draw" signal. The visual state of the button is defined by the [enum DrawMode] enum.
 */
-func (self Instance) GetDrawMode() gdclass.BaseButtonDrawMode { //gd:BaseButton.get_draw_mode
-	return gdclass.BaseButtonDrawMode(Advanced(self).GetDrawMode())
+func (self Instance) GetDrawMode() DrawMode { //gd:BaseButton.get_draw_mode
+	return DrawMode(Advanced(self).GetDrawMode())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -175,19 +183,19 @@ func (self Instance) SetButtonPressed(value bool) {
 	class(self).SetPressed(value)
 }
 
-func (self Instance) ActionMode() gdclass.BaseButtonActionMode {
-	return gdclass.BaseButtonActionMode(class(self).GetActionMode())
+func (self Instance) ActionMode() ActionMode {
+	return ActionMode(class(self).GetActionMode())
 }
 
-func (self Instance) SetActionMode(value gdclass.BaseButtonActionMode) {
+func (self Instance) SetActionMode(value ActionMode) {
 	class(self).SetActionMode(value)
 }
 
-func (self Instance) ButtonMask() MouseButtonMask {
-	return MouseButtonMask(class(self).GetButtonMask())
+func (self Instance) ButtonMask() Input.MouseButtonMask {
+	return Input.MouseButtonMask(class(self).GetButtonMask())
 }
 
-func (self Instance) SetButtonMask(value MouseButtonMask) {
+func (self Instance) SetButtonMask(value Input.MouseButtonMask) {
 	class(self).SetButtonMask(value)
 }
 
@@ -347,7 +355,7 @@ func (self class) IsDisabled() bool { //gd:BaseButton.is_disabled
 }
 
 //go:nosplit
-func (self class) SetActionMode(mode gdclass.BaseButtonActionMode) { //gd:BaseButton.set_action_mode
+func (self class) SetActionMode(mode ActionMode) { //gd:BaseButton.set_action_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -356,9 +364,9 @@ func (self class) SetActionMode(mode gdclass.BaseButtonActionMode) { //gd:BaseBu
 }
 
 //go:nosplit
-func (self class) GetActionMode() gdclass.BaseButtonActionMode { //gd:BaseButton.get_action_mode
+func (self class) GetActionMode() ActionMode { //gd:BaseButton.get_action_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.BaseButtonActionMode](frame)
+	var r_ret = callframe.Ret[ActionMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseButton.Bind_get_action_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -366,7 +374,7 @@ func (self class) GetActionMode() gdclass.BaseButtonActionMode { //gd:BaseButton
 }
 
 //go:nosplit
-func (self class) SetButtonMask(mask MouseButtonMask) { //gd:BaseButton.set_button_mask
+func (self class) SetButtonMask(mask Input.MouseButtonMask) { //gd:BaseButton.set_button_mask
 	var frame = callframe.New()
 	callframe.Arg(frame, mask)
 	var r_ret = callframe.Nil
@@ -375,9 +383,9 @@ func (self class) SetButtonMask(mask MouseButtonMask) { //gd:BaseButton.set_butt
 }
 
 //go:nosplit
-func (self class) GetButtonMask() MouseButtonMask { //gd:BaseButton.get_button_mask
+func (self class) GetButtonMask() Input.MouseButtonMask { //gd:BaseButton.get_button_mask
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[MouseButtonMask](frame)
+	var r_ret = callframe.Ret[Input.MouseButtonMask](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseButton.Bind_get_button_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -388,9 +396,9 @@ func (self class) GetButtonMask() MouseButtonMask { //gd:BaseButton.get_button_m
 Returns the visual state used to draw the button. This is useful mainly when implementing your own draw code by either overriding _draw() or connecting to "draw" signal. The visual state of the button is defined by the [enum DrawMode] enum.
 */
 //go:nosplit
-func (self class) GetDrawMode() gdclass.BaseButtonDrawMode { //gd:BaseButton.get_draw_mode
+func (self class) GetDrawMode() DrawMode { //gd:BaseButton.get_draw_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.BaseButtonDrawMode](frame)
+	var r_ret = callframe.Ret[DrawMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseButton.Bind_get_draw_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -532,7 +540,7 @@ func init() {
 	gdclass.Register("BaseButton", func(ptr gd.Object) any { return [1]gdclass.BaseButton{*(*gdclass.BaseButton)(unsafe.Pointer(&ptr))} })
 }
 
-type DrawMode = gdclass.BaseButtonDrawMode //gd:BaseButton.DrawMode
+type DrawMode int //gd:BaseButton.DrawMode
 
 const (
 	/*The normal state (i.e. not pressed, not hovered, not toggled and enabled) of buttons.*/
@@ -547,26 +555,11 @@ const (
 	DrawHoverPressed DrawMode = 4
 )
 
-type ActionMode = gdclass.BaseButtonActionMode //gd:BaseButton.ActionMode
+type ActionMode int //gd:BaseButton.ActionMode
 
 const (
 	/*Require just a press to consider the button clicked.*/
 	ActionModeButtonPress ActionMode = 0
 	/*Require a press and a subsequent release before considering the button clicked.*/
 	ActionModeButtonRelease ActionMode = 1
-)
-
-type MouseButtonMask int
-
-const (
-	/*Primary mouse button mask, usually for the left button.*/
-	MouseButtonMaskLeft MouseButtonMask = 1
-	/*Secondary mouse button mask, usually for the right button.*/
-	MouseButtonMaskRight MouseButtonMask = 2
-	/*Middle mouse button mask.*/
-	MouseButtonMaskMiddle MouseButtonMask = 4
-	/*Extra mouse button 1 mask.*/
-	MouseButtonMaskMbXbutton1 MouseButtonMask = 128
-	/*Extra mouse button 2 mask.*/
-	MouseButtonMaskMbXbutton2 MouseButtonMask = 256
 )

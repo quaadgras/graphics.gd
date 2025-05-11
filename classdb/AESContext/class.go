@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -24,6 +25,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -39,6 +44,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -51,6 +57,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -148,14 +155,14 @@ type Any interface {
 /*
 Start the AES context in the given [param mode]. A [param key] of either 16 or 32 bytes must always be provided, while an [param iv] (initialization vector) of exactly 16 bytes, is only needed when [param mode] is either [constant MODE_CBC_ENCRYPT] or [constant MODE_CBC_DECRYPT].
 */
-func (self Instance) Start(mode gdclass.AESContextMode, key []byte) error { //gd:AESContext.start
+func (self Instance) Start(mode Mode, key []byte) error { //gd:AESContext.start
 	return error(gd.ToError(Advanced(self).Start(mode, Packed.Bytes(Packed.New(key...)), Packed.Bytes(Packed.New([1][]byte{}[0]...)))))
 }
 
 /*
 Start the AES context in the given [param mode]. A [param key] of either 16 or 32 bytes must always be provided, while an [param iv] (initialization vector) of exactly 16 bytes, is only needed when [param mode] is either [constant MODE_CBC_ENCRYPT] or [constant MODE_CBC_DECRYPT].
 */
-func (self Expanded) Start(mode gdclass.AESContextMode, key []byte, iv []byte) error { //gd:AESContext.start
+func (self Expanded) Start(mode Mode, key []byte, iv []byte) error { //gd:AESContext.start
 	return error(gd.ToError(Advanced(self).Start(mode, Packed.Bytes(Packed.New(key...)), Packed.Bytes(Packed.New(iv...)))))
 }
 
@@ -206,7 +213,7 @@ func New() Instance {
 Start the AES context in the given [param mode]. A [param key] of either 16 or 32 bytes must always be provided, while an [param iv] (initialization vector) of exactly 16 bytes, is only needed when [param mode] is either [constant MODE_CBC_ENCRYPT] or [constant MODE_CBC_DECRYPT].
 */
 //go:nosplit
-func (self class) Start(mode gdclass.AESContextMode, key Packed.Bytes, iv Packed.Bytes) Error.Code { //gd:AESContext.start
+func (self class) Start(mode Mode, key Packed.Bytes, iv Packed.Bytes) Error.Code { //gd:AESContext.start
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key))))
@@ -285,7 +292,7 @@ func init() {
 	gdclass.Register("AESContext", func(ptr gd.Object) any { return [1]gdclass.AESContext{*(*gdclass.AESContext)(unsafe.Pointer(&ptr))} })
 }
 
-type Mode = gdclass.AESContextMode //gd:AESContext.Mode
+type Mode int //gd:AESContext.Mode
 
 const (
 	/*AES electronic codebook encryption mode.*/

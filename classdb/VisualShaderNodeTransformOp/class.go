@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/VisualShaderNode"
 import "graphics.gd/variant/Array"
@@ -26,6 +27,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -41,6 +46,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -53,6 +59,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -91,16 +98,16 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Operator() gdclass.VisualShaderNodeTransformOpOperator {
-	return gdclass.VisualShaderNodeTransformOpOperator(class(self).GetOperator())
+func (self Instance) Operator() Operator {
+	return Operator(class(self).GetOperator())
 }
 
-func (self Instance) SetOperator(value gdclass.VisualShaderNodeTransformOpOperator) {
+func (self Instance) SetOperator(value Operator) {
 	class(self).SetOperator(value)
 }
 
 //go:nosplit
-func (self class) SetOperator(op gdclass.VisualShaderNodeTransformOpOperator) { //gd:VisualShaderNodeTransformOp.set_operator
+func (self class) SetOperator(op Operator) { //gd:VisualShaderNodeTransformOp.set_operator
 	var frame = callframe.New()
 	callframe.Arg(frame, op)
 	var r_ret = callframe.Nil
@@ -109,9 +116,9 @@ func (self class) SetOperator(op gdclass.VisualShaderNodeTransformOpOperator) { 
 }
 
 //go:nosplit
-func (self class) GetOperator() gdclass.VisualShaderNodeTransformOpOperator { //gd:VisualShaderNodeTransformOp.get_operator
+func (self class) GetOperator() Operator { //gd:VisualShaderNodeTransformOp.get_operator
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.VisualShaderNodeTransformOpOperator](frame)
+	var r_ret = callframe.Ret[Operator](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTransformOp.Bind_get_operator, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -169,7 +176,7 @@ func init() {
 	})
 }
 
-type Operator = gdclass.VisualShaderNodeTransformOpOperator //gd:VisualShaderNodeTransformOp.Operator
+type Operator int //gd:VisualShaderNodeTransformOp.Operator
 
 const (
 	/*Multiplies transform [code]a[/code] by the transform [code]b[/code].*/

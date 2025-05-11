@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/PacketPeer"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -25,6 +26,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -40,6 +45,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -52,6 +58,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 type Instance [1]gdclass.WebRTCDataChannel
@@ -90,8 +97,8 @@ func (self Instance) WasStringPacket() bool { //gd:WebRTCDataChannel.was_string_
 /*
 Returns the current state of this channel, see [enum ChannelState].
 */
-func (self Instance) GetReadyState() gdclass.WebRTCDataChannelChannelState { //gd:WebRTCDataChannel.get_ready_state
-	return gdclass.WebRTCDataChannelChannelState(Advanced(self).GetReadyState())
+func (self Instance) GetReadyState() ChannelState { //gd:WebRTCDataChannel.get_ready_state
+	return ChannelState(Advanced(self).GetReadyState())
 }
 
 /*
@@ -173,11 +180,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) WriteMode() gdclass.WebRTCDataChannelWriteMode {
-	return gdclass.WebRTCDataChannelWriteMode(class(self).GetWriteMode())
+func (self Instance) WriteMode() WriteMode {
+	return WriteMode(class(self).GetWriteMode())
 }
 
-func (self Instance) SetWriteMode(value gdclass.WebRTCDataChannelWriteMode) {
+func (self Instance) SetWriteMode(value WriteMode) {
 	class(self).SetWriteMode(value)
 }
 
@@ -219,7 +226,7 @@ func (self class) WasStringPacket() bool { //gd:WebRTCDataChannel.was_string_pac
 }
 
 //go:nosplit
-func (self class) SetWriteMode(write_mode gdclass.WebRTCDataChannelWriteMode) { //gd:WebRTCDataChannel.set_write_mode
+func (self class) SetWriteMode(write_mode WriteMode) { //gd:WebRTCDataChannel.set_write_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, write_mode)
 	var r_ret = callframe.Nil
@@ -228,9 +235,9 @@ func (self class) SetWriteMode(write_mode gdclass.WebRTCDataChannelWriteMode) { 
 }
 
 //go:nosplit
-func (self class) GetWriteMode() gdclass.WebRTCDataChannelWriteMode { //gd:WebRTCDataChannel.get_write_mode
+func (self class) GetWriteMode() WriteMode { //gd:WebRTCDataChannel.get_write_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.WebRTCDataChannelWriteMode](frame)
+	var r_ret = callframe.Ret[WriteMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCDataChannel.Bind_get_write_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -241,9 +248,9 @@ func (self class) GetWriteMode() gdclass.WebRTCDataChannelWriteMode { //gd:WebRT
 Returns the current state of this channel, see [enum ChannelState].
 */
 //go:nosplit
-func (self class) GetReadyState() gdclass.WebRTCDataChannelChannelState { //gd:WebRTCDataChannel.get_ready_state
+func (self class) GetReadyState() ChannelState { //gd:WebRTCDataChannel.get_ready_state
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.WebRTCDataChannelChannelState](frame)
+	var r_ret = callframe.Ret[ChannelState](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCDataChannel.Bind_get_ready_state, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -393,7 +400,7 @@ func init() {
 	})
 }
 
-type WriteMode = gdclass.WebRTCDataChannelWriteMode //gd:WebRTCDataChannel.WriteMode
+type WriteMode int //gd:WebRTCDataChannel.WriteMode
 
 const (
 	/*Tells the channel to send data over this channel as text. An external peer (non-Godot) would receive this as a string.*/
@@ -402,7 +409,7 @@ const (
 	WriteModeBinary WriteMode = 1
 )
 
-type ChannelState = gdclass.WebRTCDataChannelChannelState //gd:WebRTCDataChannel.ChannelState
+type ChannelState int //gd:WebRTCDataChannel.ChannelState
 
 const (
 	/*The channel was created, but it's still trying to connect.*/

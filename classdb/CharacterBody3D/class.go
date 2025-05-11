@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CollisionObject3D"
 import "graphics.gd/classdb/KinematicCollision3D"
 import "graphics.gd/classdb/Node"
@@ -30,6 +31,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -45,6 +50,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -57,6 +63,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -242,11 +249,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) MotionMode() gdclass.CharacterBody3DMotionMode {
-	return gdclass.CharacterBody3DMotionMode(class(self).GetMotionMode())
+func (self Instance) MotionMode() MotionMode {
+	return MotionMode(class(self).GetMotionMode())
 }
 
-func (self Instance) SetMotionMode(value gdclass.CharacterBody3DMotionMode) {
+func (self Instance) SetMotionMode(value MotionMode) {
 	class(self).SetMotionMode(value)
 }
 
@@ -330,11 +337,11 @@ func (self Instance) SetFloorSnapLength(value Float.X) {
 	class(self).SetFloorSnapLength(float64(value))
 }
 
-func (self Instance) PlatformOnLeave() gdclass.CharacterBody3DPlatformOnLeave {
-	return gdclass.CharacterBody3DPlatformOnLeave(class(self).GetPlatformOnLeave())
+func (self Instance) PlatformOnLeave() PlatformOnLeave {
+	return PlatformOnLeave(class(self).GetPlatformOnLeave())
 }
 
-func (self Instance) SetPlatformOnLeave(value gdclass.CharacterBody3DPlatformOnLeave) {
+func (self Instance) SetPlatformOnLeave(value PlatformOnLeave) {
 	class(self).SetPlatformOnLeave(value)
 }
 
@@ -637,7 +644,7 @@ func (self class) SetUpDirection(up_direction Vector3.XYZ) { //gd:CharacterBody3
 }
 
 //go:nosplit
-func (self class) SetMotionMode(mode gdclass.CharacterBody3DMotionMode) { //gd:CharacterBody3D.set_motion_mode
+func (self class) SetMotionMode(mode MotionMode) { //gd:CharacterBody3D.set_motion_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -646,9 +653,9 @@ func (self class) SetMotionMode(mode gdclass.CharacterBody3DMotionMode) { //gd:C
 }
 
 //go:nosplit
-func (self class) GetMotionMode() gdclass.CharacterBody3DMotionMode { //gd:CharacterBody3D.get_motion_mode
+func (self class) GetMotionMode() MotionMode { //gd:CharacterBody3D.get_motion_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.CharacterBody3DMotionMode](frame)
+	var r_ret = callframe.Ret[MotionMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_motion_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -656,7 +663,7 @@ func (self class) GetMotionMode() gdclass.CharacterBody3DMotionMode { //gd:Chara
 }
 
 //go:nosplit
-func (self class) SetPlatformOnLeave(on_leave_apply_velocity gdclass.CharacterBody3DPlatformOnLeave) { //gd:CharacterBody3D.set_platform_on_leave
+func (self class) SetPlatformOnLeave(on_leave_apply_velocity PlatformOnLeave) { //gd:CharacterBody3D.set_platform_on_leave
 	var frame = callframe.New()
 	callframe.Arg(frame, on_leave_apply_velocity)
 	var r_ret = callframe.Nil
@@ -665,9 +672,9 @@ func (self class) SetPlatformOnLeave(on_leave_apply_velocity gdclass.CharacterBo
 }
 
 //go:nosplit
-func (self class) GetPlatformOnLeave() gdclass.CharacterBody3DPlatformOnLeave { //gd:CharacterBody3D.get_platform_on_leave
+func (self class) GetPlatformOnLeave() PlatformOnLeave { //gd:CharacterBody3D.get_platform_on_leave
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.CharacterBody3DPlatformOnLeave](frame)
+	var r_ret = callframe.Ret[PlatformOnLeave](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody3D.Bind_get_platform_on_leave, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -945,7 +952,7 @@ func init() {
 	})
 }
 
-type MotionMode = gdclass.CharacterBody3DMotionMode //gd:CharacterBody3D.MotionMode
+type MotionMode int //gd:CharacterBody3D.MotionMode
 
 const (
 	/*Apply when notions of walls, ceiling and floor are relevant. In this mode the body motion will react to slopes (acceleration/slowdown). This mode is suitable for grounded games like platformers.*/
@@ -954,7 +961,7 @@ const (
 	MotionModeFloating MotionMode = 1
 )
 
-type PlatformOnLeave = gdclass.CharacterBody3DPlatformOnLeave //gd:CharacterBody3D.PlatformOnLeave
+type PlatformOnLeave int //gd:CharacterBody3D.PlatformOnLeave
 
 const (
 	/*Add the last platform velocity to the [member velocity] when you leave a moving platform.*/

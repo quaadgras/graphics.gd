@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/VisualShaderNode"
 import "graphics.gd/variant/Array"
@@ -26,6 +27,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -41,6 +46,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -53,6 +59,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -91,16 +98,16 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Function() gdclass.VisualShaderNodeUIntFuncFunction {
-	return gdclass.VisualShaderNodeUIntFuncFunction(class(self).GetFunction())
+func (self Instance) Function() Function {
+	return Function(class(self).GetFunction())
 }
 
-func (self Instance) SetFunction(value gdclass.VisualShaderNodeUIntFuncFunction) {
+func (self Instance) SetFunction(value Function) {
 	class(self).SetFunction(value)
 }
 
 //go:nosplit
-func (self class) SetFunction(fn gdclass.VisualShaderNodeUIntFuncFunction) { //gd:VisualShaderNodeUIntFunc.set_function
+func (self class) SetFunction(fn Function) { //gd:VisualShaderNodeUIntFunc.set_function
 	var frame = callframe.New()
 	callframe.Arg(frame, fn)
 	var r_ret = callframe.Nil
@@ -109,9 +116,9 @@ func (self class) SetFunction(fn gdclass.VisualShaderNodeUIntFuncFunction) { //g
 }
 
 //go:nosplit
-func (self class) GetFunction() gdclass.VisualShaderNodeUIntFuncFunction { //gd:VisualShaderNodeUIntFunc.get_function
+func (self class) GetFunction() Function { //gd:VisualShaderNodeUIntFunc.get_function
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.VisualShaderNodeUIntFuncFunction](frame)
+	var r_ret = callframe.Ret[Function](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeUIntFunc.Bind_get_function, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -167,7 +174,7 @@ func init() {
 	})
 }
 
-type Function = gdclass.VisualShaderNodeUIntFuncFunction //gd:VisualShaderNodeUIntFunc.Function
+type Function int //gd:VisualShaderNodeUIntFunc.Function
 
 const (
 	/*Negates the [code]x[/code] using [code]-(x)[/code].*/

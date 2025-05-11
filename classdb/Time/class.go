@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -25,6 +26,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -40,6 +45,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -52,6 +58,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -678,7 +685,7 @@ func init() {
 	gdclass.Register("Time", func(ptr gd.Object) any { return [1]gdclass.Time{*(*gdclass.Time)(unsafe.Pointer(&ptr))} })
 }
 
-type Month = gdclass.TimeMonth //gd:Time.Month
+type Month int //gd:Time.Month
 
 const (
 	/*The month of January, represented numerically as [code]01[/code].*/
@@ -707,7 +714,7 @@ const (
 	MonthDecember Month = 12
 )
 
-type Weekday = gdclass.TimeWeekday //gd:Time.Weekday
+type Weekday int //gd:Time.Weekday
 
 const (
 	/*The day of the week Sunday, represented numerically as [code]0[/code].*/

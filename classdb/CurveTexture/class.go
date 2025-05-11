@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Curve"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/Texture"
@@ -28,6 +29,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -43,6 +48,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,6 +61,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -98,11 +105,11 @@ func (self Instance) SetWidth(value int) {
 	class(self).SetWidth(int64(value))
 }
 
-func (self Instance) TextureMode() gdclass.CurveTextureTextureMode {
-	return gdclass.CurveTextureTextureMode(class(self).GetTextureMode())
+func (self Instance) TextureMode() TextureMode {
+	return TextureMode(class(self).GetTextureMode())
 }
 
-func (self Instance) SetTextureMode(value gdclass.CurveTextureTextureMode) {
+func (self Instance) SetTextureMode(value TextureMode) {
 	class(self).SetTextureMode(value)
 }
 
@@ -143,7 +150,7 @@ func (self class) GetCurve() [1]gdclass.Curve { //gd:CurveTexture.get_curve
 }
 
 //go:nosplit
-func (self class) SetTextureMode(texture_mode gdclass.CurveTextureTextureMode) { //gd:CurveTexture.set_texture_mode
+func (self class) SetTextureMode(texture_mode TextureMode) { //gd:CurveTexture.set_texture_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, texture_mode)
 	var r_ret = callframe.Nil
@@ -152,9 +159,9 @@ func (self class) SetTextureMode(texture_mode gdclass.CurveTextureTextureMode) {
 }
 
 //go:nosplit
-func (self class) GetTextureMode() gdclass.CurveTextureTextureMode { //gd:CurveTexture.get_texture_mode
+func (self class) GetTextureMode() TextureMode { //gd:CurveTexture.get_texture_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.CurveTextureTextureMode](frame)
+	var r_ret = callframe.Ret[TextureMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CurveTexture.Bind_get_texture_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -209,7 +216,7 @@ func init() {
 	})
 }
 
-type TextureMode = gdclass.CurveTextureTextureMode //gd:CurveTexture.TextureMode
+type TextureMode int //gd:CurveTexture.TextureMode
 
 const (
 	/*Store the curve equally across the red, green and blue channels. This uses more video memory, but is more compatible with shaders that only read the green and blue values.*/

@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/AnimationMixer"
 import "graphics.gd/classdb/AnimationRootNode"
 import "graphics.gd/classdb/Node"
@@ -27,6 +28,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -42,6 +47,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -54,6 +60,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -76,15 +83,15 @@ type Any interface {
 /*
 Sets the process notification in which to update animations.
 */
-func (self Instance) SetProcessCallback(mode gdclass.AnimationTreeAnimationProcessCallback) { //gd:AnimationTree.set_process_callback
+func (self Instance) SetProcessCallback(mode AnimationProcessCallback) { //gd:AnimationTree.set_process_callback
 	Advanced(self).SetProcessCallback(mode)
 }
 
 /*
 Returns the process notification in which to update animations.
 */
-func (self Instance) GetProcessCallback() gdclass.AnimationTreeAnimationProcessCallback { //gd:AnimationTree.get_process_callback
-	return gdclass.AnimationTreeAnimationProcessCallback(Advanced(self).GetProcessCallback())
+func (self Instance) GetProcessCallback() AnimationProcessCallback { //gd:AnimationTree.get_process_callback
+	return AnimationProcessCallback(Advanced(self).GetProcessCallback())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -191,7 +198,7 @@ func (self class) GetAnimationPlayer() Path.ToNode { //gd:AnimationTree.get_anim
 Sets the process notification in which to update animations.
 */
 //go:nosplit
-func (self class) SetProcessCallback(mode gdclass.AnimationTreeAnimationProcessCallback) { //gd:AnimationTree.set_process_callback
+func (self class) SetProcessCallback(mode AnimationProcessCallback) { //gd:AnimationTree.set_process_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -203,9 +210,9 @@ func (self class) SetProcessCallback(mode gdclass.AnimationTreeAnimationProcessC
 Returns the process notification in which to update animations.
 */
 //go:nosplit
-func (self class) GetProcessCallback() gdclass.AnimationTreeAnimationProcessCallback { //gd:AnimationTree.get_process_callback
+func (self class) GetProcessCallback() AnimationProcessCallback { //gd:AnimationTree.get_process_callback
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.AnimationTreeAnimationProcessCallback](frame)
+	var r_ret = callframe.Ret[AnimationProcessCallback](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationTree.Bind_get_process_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -250,7 +257,7 @@ func init() {
 	})
 }
 
-type AnimationProcessCallback = gdclass.AnimationTreeAnimationProcessCallback //gd:AnimationTree.AnimationProcessCallback
+type AnimationProcessCallback int //gd:AnimationTree.AnimationProcessCallback
 
 const (
 	AnimationProcessPhysics AnimationProcessCallback = 0

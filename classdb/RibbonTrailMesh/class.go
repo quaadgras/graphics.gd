@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Curve"
 import "graphics.gd/classdb/Mesh"
 import "graphics.gd/classdb/PrimitiveMesh"
@@ -28,6 +29,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -43,6 +48,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,6 +61,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -94,11 +101,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Shape() gdclass.RibbonTrailMeshShape {
-	return gdclass.RibbonTrailMeshShape(class(self).GetShape())
+func (self Instance) Shape() Shape {
+	return Shape(class(self).GetShape())
 }
 
-func (self Instance) SetShape(value gdclass.RibbonTrailMeshShape) {
+func (self Instance) SetShape(value Shape) {
 	class(self).SetShape(value)
 }
 
@@ -238,7 +245,7 @@ func (self class) GetCurve() [1]gdclass.Curve { //gd:RibbonTrailMesh.get_curve
 }
 
 //go:nosplit
-func (self class) SetShape(shape gdclass.RibbonTrailMeshShape) { //gd:RibbonTrailMesh.set_shape
+func (self class) SetShape(shape Shape) { //gd:RibbonTrailMesh.set_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
 	var r_ret = callframe.Nil
@@ -247,9 +254,9 @@ func (self class) SetShape(shape gdclass.RibbonTrailMeshShape) { //gd:RibbonTrai
 }
 
 //go:nosplit
-func (self class) GetShape() gdclass.RibbonTrailMeshShape { //gd:RibbonTrailMesh.get_shape
+func (self class) GetShape() Shape { //gd:RibbonTrailMesh.get_shape
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RibbonTrailMeshShape](frame)
+	var r_ret = callframe.Ret[Shape](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RibbonTrailMesh.Bind_get_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -304,7 +311,7 @@ func init() {
 	})
 }
 
-type Shape = gdclass.RibbonTrailMeshShape //gd:RibbonTrailMesh.Shape
+type Shape int //gd:RibbonTrailMesh.Shape
 
 const (
 	/*Gives the mesh a single flat face.*/

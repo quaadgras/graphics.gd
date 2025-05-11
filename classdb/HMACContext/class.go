@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/HashingContext"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -24,6 +26,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -39,6 +45,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -51,6 +58,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -119,7 +127,7 @@ type Any interface {
 /*
 Initializes the HMACContext. This method cannot be called again on the same HMACContext until [method finish] has been called.
 */
-func (self Instance) Start(hash_type gdclass.HashingContextHashType, key []byte) error { //gd:HMACContext.start
+func (self Instance) Start(hash_type HashingContext.HashType, key []byte) error { //gd:HMACContext.start
 	return error(gd.ToError(Advanced(self).Start(hash_type, Packed.Bytes(Packed.New(key...)))))
 }
 
@@ -161,7 +169,7 @@ func New() Instance {
 Initializes the HMACContext. This method cannot be called again on the same HMACContext until [method finish] has been called.
 */
 //go:nosplit
-func (self class) Start(hash_type gdclass.HashingContextHashType, key Packed.Bytes) Error.Code { //gd:HMACContext.start
+func (self class) Start(hash_type HashingContext.HashType, key Packed.Bytes) Error.Code { //gd:HMACContext.start
 	var frame = callframe.New()
 	callframe.Arg(frame, hash_type)
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key))))

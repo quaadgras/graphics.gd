@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Mesh"
 import "graphics.gd/classdb/PrimitiveMesh"
 import "graphics.gd/classdb/Resource"
@@ -29,6 +30,10 @@ import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -44,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,6 +62,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -127,11 +134,11 @@ func (self Instance) SetCenterOffset(value Vector3.XYZ) {
 	class(self).SetCenterOffset(Vector3.XYZ(value))
 }
 
-func (self Instance) Orientation() gdclass.PlaneMeshOrientation {
-	return gdclass.PlaneMeshOrientation(class(self).GetOrientation())
+func (self Instance) Orientation() Orientation {
+	return Orientation(class(self).GetOrientation())
 }
 
-func (self Instance) SetOrientation(value gdclass.PlaneMeshOrientation) {
+func (self Instance) SetOrientation(value Orientation) {
 	class(self).SetOrientation(value)
 }
 
@@ -212,7 +219,7 @@ func (self class) GetCenterOffset() Vector3.XYZ { //gd:PlaneMesh.get_center_offs
 }
 
 //go:nosplit
-func (self class) SetOrientation(orientation gdclass.PlaneMeshOrientation) { //gd:PlaneMesh.set_orientation
+func (self class) SetOrientation(orientation Orientation) { //gd:PlaneMesh.set_orientation
 	var frame = callframe.New()
 	callframe.Arg(frame, orientation)
 	var r_ret = callframe.Nil
@@ -221,9 +228,9 @@ func (self class) SetOrientation(orientation gdclass.PlaneMeshOrientation) { //g
 }
 
 //go:nosplit
-func (self class) GetOrientation() gdclass.PlaneMeshOrientation { //gd:PlaneMesh.get_orientation
+func (self class) GetOrientation() Orientation { //gd:PlaneMesh.get_orientation
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.PlaneMeshOrientation](frame)
+	var r_ret = callframe.Ret[Orientation](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PlaneMesh.Bind_get_orientation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -276,7 +283,7 @@ func init() {
 	gdclass.Register("PlaneMesh", func(ptr gd.Object) any { return [1]gdclass.PlaneMesh{*(*gdclass.PlaneMesh)(unsafe.Pointer(&ptr))} })
 }
 
-type Orientation = gdclass.PlaneMeshOrientation //gd:PlaneMesh.Orientation
+type Orientation int //gd:PlaneMesh.Orientation
 
 const (
 	/*[PlaneMesh] will face the positive X-axis.*/

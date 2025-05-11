@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node2D"
@@ -34,6 +35,10 @@ import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -49,6 +54,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -61,6 +67,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -684,7 +691,7 @@ func (self Instance) LocalToMap(local_position Vector2.XY) Vector2i.XY { //gd:Ti
 /*
 Returns the neighboring cell to the one at coordinates [param coords], identified by the [param neighbor] direction. This method takes into account the different layouts a TileMap can take.
 */
-func (self Instance) GetNeighborCell(coords Vector2i.XY, neighbor gdclass.TileSetCellNeighbor) Vector2i.XY { //gd:TileMap.get_neighbor_cell
+func (self Instance) GetNeighborCell(coords Vector2i.XY, neighbor TileSet.CellNeighbor) Vector2i.XY { //gd:TileMap.get_neighbor_cell
 	return Vector2i.XY(Advanced(self).GetNeighborCell(Vector2i.XY(coords), neighbor))
 }
 
@@ -731,19 +738,19 @@ func (self Instance) SetCollisionAnimatable(value bool) {
 	class(self).SetCollisionAnimatable(value)
 }
 
-func (self Instance) CollisionVisibilityMode() gdclass.TileMapVisibilityMode {
-	return gdclass.TileMapVisibilityMode(class(self).GetCollisionVisibilityMode())
+func (self Instance) CollisionVisibilityMode() VisibilityMode {
+	return VisibilityMode(class(self).GetCollisionVisibilityMode())
 }
 
-func (self Instance) SetCollisionVisibilityMode(value gdclass.TileMapVisibilityMode) {
+func (self Instance) SetCollisionVisibilityMode(value VisibilityMode) {
 	class(self).SetCollisionVisibilityMode(value)
 }
 
-func (self Instance) NavigationVisibilityMode() gdclass.TileMapVisibilityMode {
-	return gdclass.TileMapVisibilityMode(class(self).GetNavigationVisibilityMode())
+func (self Instance) NavigationVisibilityMode() VisibilityMode {
+	return VisibilityMode(class(self).GetNavigationVisibilityMode())
 }
 
-func (self Instance) SetNavigationVisibilityMode(value gdclass.TileMapVisibilityMode) {
+func (self Instance) SetNavigationVisibilityMode(value VisibilityMode) {
 	class(self).SetNavigationVisibilityMode(value)
 }
 
@@ -1163,7 +1170,7 @@ func (self class) IsCollisionAnimatable() bool { //gd:TileMap.is_collision_anima
 }
 
 //go:nosplit
-func (self class) SetCollisionVisibilityMode(collision_visibility_mode gdclass.TileMapVisibilityMode) { //gd:TileMap.set_collision_visibility_mode
+func (self class) SetCollisionVisibilityMode(collision_visibility_mode VisibilityMode) { //gd:TileMap.set_collision_visibility_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, collision_visibility_mode)
 	var r_ret = callframe.Nil
@@ -1172,9 +1179,9 @@ func (self class) SetCollisionVisibilityMode(collision_visibility_mode gdclass.T
 }
 
 //go:nosplit
-func (self class) GetCollisionVisibilityMode() gdclass.TileMapVisibilityMode { //gd:TileMap.get_collision_visibility_mode
+func (self class) GetCollisionVisibilityMode() VisibilityMode { //gd:TileMap.get_collision_visibility_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TileMapVisibilityMode](frame)
+	var r_ret = callframe.Ret[VisibilityMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_collision_visibility_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1182,7 +1189,7 @@ func (self class) GetCollisionVisibilityMode() gdclass.TileMapVisibilityMode { /
 }
 
 //go:nosplit
-func (self class) SetNavigationVisibilityMode(navigation_visibility_mode gdclass.TileMapVisibilityMode) { //gd:TileMap.set_navigation_visibility_mode
+func (self class) SetNavigationVisibilityMode(navigation_visibility_mode VisibilityMode) { //gd:TileMap.set_navigation_visibility_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, navigation_visibility_mode)
 	var r_ret = callframe.Nil
@@ -1191,9 +1198,9 @@ func (self class) SetNavigationVisibilityMode(navigation_visibility_mode gdclass
 }
 
 //go:nosplit
-func (self class) GetNavigationVisibilityMode() gdclass.TileMapVisibilityMode { //gd:TileMap.get_navigation_visibility_mode
+func (self class) GetNavigationVisibilityMode() VisibilityMode { //gd:TileMap.get_navigation_visibility_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TileMapVisibilityMode](frame)
+	var r_ret = callframe.Ret[VisibilityMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_navigation_visibility_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1635,7 +1642,7 @@ func (self class) LocalToMap(local_position Vector2.XY) Vector2i.XY { //gd:TileM
 Returns the neighboring cell to the one at coordinates [param coords], identified by the [param neighbor] direction. This method takes into account the different layouts a TileMap can take.
 */
 //go:nosplit
-func (self class) GetNeighborCell(coords Vector2i.XY, neighbor gdclass.TileSetCellNeighbor) Vector2i.XY { //gd:TileMap.get_neighbor_cell
+func (self class) GetNeighborCell(coords Vector2i.XY, neighbor TileSet.CellNeighbor) Vector2i.XY { //gd:TileMap.get_neighbor_cell
 	var frame = callframe.New()
 	callframe.Arg(frame, coords)
 	callframe.Arg(frame, neighbor)
@@ -1691,7 +1698,7 @@ func init() {
 	gdclass.Register("TileMap", func(ptr gd.Object) any { return [1]gdclass.TileMap{*(*gdclass.TileMap)(unsafe.Pointer(&ptr))} })
 }
 
-type VisibilityMode = gdclass.TileMapVisibilityMode //gd:TileMap.VisibilityMode
+type VisibilityMode int //gd:TileMap.VisibilityMode
 
 const (
 	/*Use the debug settings to determine visibility.*/

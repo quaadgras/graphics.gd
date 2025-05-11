@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -25,6 +26,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -40,6 +45,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -52,6 +58,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -131,11 +138,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) ProcessCallback() gdclass.TimerTimerProcessCallback {
-	return gdclass.TimerTimerProcessCallback(class(self).GetTimerProcessCallback())
+func (self Instance) ProcessCallback() TimerProcessCallback {
+	return TimerProcessCallback(class(self).GetTimerProcessCallback())
 }
 
-func (self Instance) SetProcessCallback(value gdclass.TimerTimerProcessCallback) {
+func (self Instance) SetProcessCallback(value TimerProcessCallback) {
 	class(self).SetTimerProcessCallback(value)
 }
 
@@ -326,7 +333,7 @@ func (self class) GetTimeLeft() float64 { //gd:Timer.get_time_left
 }
 
 //go:nosplit
-func (self class) SetTimerProcessCallback(callback gdclass.TimerTimerProcessCallback) { //gd:Timer.set_timer_process_callback
+func (self class) SetTimerProcessCallback(callback TimerProcessCallback) { //gd:Timer.set_timer_process_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, callback)
 	var r_ret = callframe.Nil
@@ -335,9 +342,9 @@ func (self class) SetTimerProcessCallback(callback gdclass.TimerTimerProcessCall
 }
 
 //go:nosplit
-func (self class) GetTimerProcessCallback() gdclass.TimerTimerProcessCallback { //gd:Timer.get_timer_process_callback
+func (self class) GetTimerProcessCallback() TimerProcessCallback { //gd:Timer.get_timer_process_callback
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TimerTimerProcessCallback](frame)
+	var r_ret = callframe.Ret[TimerProcessCallback](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Timer.Bind_get_timer_process_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -371,7 +378,7 @@ func init() {
 	gdclass.Register("Timer", func(ptr gd.Object) any { return [1]gdclass.Timer{*(*gdclass.Timer)(unsafe.Pointer(&ptr))} })
 }
 
-type TimerProcessCallback = gdclass.TimerTimerProcessCallback //gd:Timer.TimerProcessCallback
+type TimerProcessCallback int //gd:Timer.TimerProcessCallback
 
 const (
 	/*Update the timer every physics process frame (see [constant Node.NOTIFICATION_INTERNAL_PHYSICS_PROCESS]).*/

@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Font"
 import "graphics.gd/classdb/InputEvent"
@@ -35,6 +36,10 @@ import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector3i"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -50,6 +55,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -62,6 +68,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -570,7 +577,7 @@ func (self Instance) GetCombinedMinimumSize() Vector2.XY { //gd:Control.get_comb
 Sets the anchors to a [param preset] from [enum Control.LayoutPreset] enum. This is the code equivalent to using the Layout menu in the 2D editor.
 If [param keep_offsets] is [code]true[/code], control's position will also be updated.
 */
-func (self Instance) SetAnchorsPreset(preset gdclass.ControlLayoutPreset) { //gd:Control.set_anchors_preset
+func (self Instance) SetAnchorsPreset(preset LayoutPreset) { //gd:Control.set_anchors_preset
 	Advanced(self).SetAnchorsPreset(preset, false)
 }
 
@@ -578,7 +585,7 @@ func (self Instance) SetAnchorsPreset(preset gdclass.ControlLayoutPreset) { //gd
 Sets the anchors to a [param preset] from [enum Control.LayoutPreset] enum. This is the code equivalent to using the Layout menu in the 2D editor.
 If [param keep_offsets] is [code]true[/code], control's position will also be updated.
 */
-func (self Expanded) SetAnchorsPreset(preset gdclass.ControlLayoutPreset, keep_offsets bool) { //gd:Control.set_anchors_preset
+func (self Expanded) SetAnchorsPreset(preset LayoutPreset, keep_offsets bool) { //gd:Control.set_anchors_preset
 	Advanced(self).SetAnchorsPreset(preset, keep_offsets)
 }
 
@@ -587,7 +594,7 @@ Sets the offsets to a [param preset] from [enum Control.LayoutPreset] enum. This
 Use parameter [param resize_mode] with constants from [enum Control.LayoutPresetMode] to better determine the resulting size of the [Control]. Constant size will be ignored if used with presets that change size, e.g. [constant PRESET_LEFT_WIDE].
 Use parameter [param margin] to determine the gap between the [Control] and the edges.
 */
-func (self Instance) SetOffsetsPreset(preset gdclass.ControlLayoutPreset) { //gd:Control.set_offsets_preset
+func (self Instance) SetOffsetsPreset(preset LayoutPreset) { //gd:Control.set_offsets_preset
 	Advanced(self).SetOffsetsPreset(preset, 0, int64(0))
 }
 
@@ -596,21 +603,21 @@ Sets the offsets to a [param preset] from [enum Control.LayoutPreset] enum. This
 Use parameter [param resize_mode] with constants from [enum Control.LayoutPresetMode] to better determine the resulting size of the [Control]. Constant size will be ignored if used with presets that change size, e.g. [constant PRESET_LEFT_WIDE].
 Use parameter [param margin] to determine the gap between the [Control] and the edges.
 */
-func (self Expanded) SetOffsetsPreset(preset gdclass.ControlLayoutPreset, resize_mode gdclass.ControlLayoutPresetMode, margin int) { //gd:Control.set_offsets_preset
+func (self Expanded) SetOffsetsPreset(preset LayoutPreset, resize_mode LayoutPresetMode, margin int) { //gd:Control.set_offsets_preset
 	Advanced(self).SetOffsetsPreset(preset, resize_mode, int64(margin))
 }
 
 /*
 Sets both anchor preset and offset preset. See [method set_anchors_preset] and [method set_offsets_preset].
 */
-func (self Instance) SetAnchorsAndOffsetsPreset(preset gdclass.ControlLayoutPreset) { //gd:Control.set_anchors_and_offsets_preset
+func (self Instance) SetAnchorsAndOffsetsPreset(preset LayoutPreset) { //gd:Control.set_anchors_and_offsets_preset
 	Advanced(self).SetAnchorsAndOffsetsPreset(preset, 0, int64(0))
 }
 
 /*
 Sets both anchor preset and offset preset. See [method set_anchors_preset] and [method set_offsets_preset].
 */
-func (self Expanded) SetAnchorsAndOffsetsPreset(preset gdclass.ControlLayoutPreset, resize_mode gdclass.ControlLayoutPresetMode, margin int) { //gd:Control.set_anchors_and_offsets_preset
+func (self Expanded) SetAnchorsAndOffsetsPreset(preset LayoutPreset, resize_mode LayoutPresetMode, margin int) { //gd:Control.set_anchors_and_offsets_preset
 	Advanced(self).SetAnchorsAndOffsetsPreset(preset, resize_mode, int64(margin))
 }
 
@@ -619,7 +626,7 @@ Sets the anchor for the specified [enum Side] to [param anchor]. A setter method
 If [param keep_offset] is [code]true[/code], offsets aren't updated after this operation.
 If [param push_opposite_anchor] is [code]true[/code] and the opposite anchor overlaps this anchor, the opposite one will have its value overridden. For example, when setting left anchor to 1 and the right anchor has value of 0.5, the right anchor will also get value of 1. If [param push_opposite_anchor] was [code]false[/code], the left anchor would get value 0.5.
 */
-func (self Instance) SetAnchor(side Side, anchor Float.X) { //gd:Control.set_anchor
+func (self Instance) SetAnchor(side Rect2.Side, anchor Float.X) { //gd:Control.set_anchor
 	Advanced(self).SetAnchor(side, float64(anchor), false, true)
 }
 
@@ -628,21 +635,21 @@ Sets the anchor for the specified [enum Side] to [param anchor]. A setter method
 If [param keep_offset] is [code]true[/code], offsets aren't updated after this operation.
 If [param push_opposite_anchor] is [code]true[/code] and the opposite anchor overlaps this anchor, the opposite one will have its value overridden. For example, when setting left anchor to 1 and the right anchor has value of 0.5, the right anchor will also get value of 1. If [param push_opposite_anchor] was [code]false[/code], the left anchor would get value 0.5.
 */
-func (self Expanded) SetAnchor(side Side, anchor Float.X, keep_offset bool, push_opposite_anchor bool) { //gd:Control.set_anchor
+func (self Expanded) SetAnchor(side Rect2.Side, anchor Float.X, keep_offset bool, push_opposite_anchor bool) { //gd:Control.set_anchor
 	Advanced(self).SetAnchor(side, float64(anchor), keep_offset, push_opposite_anchor)
 }
 
 /*
 Works the same as [method set_anchor], but instead of [code]keep_offset[/code] argument and automatic update of offset, it allows to set the offset yourself (see [method set_offset]).
 */
-func (self Instance) SetAnchorAndOffset(side Side, anchor Float.X, offset Float.X) { //gd:Control.set_anchor_and_offset
+func (self Instance) SetAnchorAndOffset(side Rect2.Side, anchor Float.X, offset Float.X) { //gd:Control.set_anchor_and_offset
 	Advanced(self).SetAnchorAndOffset(side, float64(anchor), float64(offset), false)
 }
 
 /*
 Works the same as [method set_anchor], but instead of [code]keep_offset[/code] argument and automatic update of offset, it allows to set the offset yourself (see [method set_offset]).
 */
-func (self Expanded) SetAnchorAndOffset(side Side, anchor Float.X, offset Float.X, push_opposite_anchor bool) { //gd:Control.set_anchor_and_offset
+func (self Expanded) SetAnchorAndOffset(side Rect2.Side, anchor Float.X, offset Float.X, push_opposite_anchor bool) { //gd:Control.set_anchor_and_offset
 	Advanced(self).SetAnchorAndOffset(side, float64(anchor), float64(offset), push_opposite_anchor)
 }
 
@@ -808,7 +815,7 @@ func (self Instance) FindNextValidFocus() Instance { //gd:Control.find_next_vali
 Finds the next [Control] that can receive the focus on the specified [enum Side].
 [b]Note:[/b] This is different from [method get_focus_neighbor], which returns the path of a specified focus neighbor.
 */
-func (self Instance) FindValidFocusNeighbor(side Side) Instance { //gd:Control.find_valid_focus_neighbor
+func (self Instance) FindValidFocusNeighbor(side Rect2.Side) Instance { //gd:Control.find_valid_focus_neighbor
 	return Instance(Advanced(self).FindValidFocusNeighbor(side))
 }
 
@@ -1296,15 +1303,15 @@ func (self Expanded) GetTooltip(at_position Vector2.XY) string { //gd:Control.ge
 /*
 Returns the mouse cursor shape the control displays on mouse hover. See [enum CursorShape].
 */
-func (self Instance) GetCursorShape() gdclass.ControlCursorShape { //gd:Control.get_cursor_shape
-	return gdclass.ControlCursorShape(Advanced(self).GetCursorShape(Vector2.XY(gd.Vector2{0, 0})))
+func (self Instance) GetCursorShape() CursorShape { //gd:Control.get_cursor_shape
+	return CursorShape(Advanced(self).GetCursorShape(Vector2.XY(gd.Vector2{0, 0})))
 }
 
 /*
 Returns the mouse cursor shape the control displays on mouse hover. See [enum CursorShape].
 */
-func (self Expanded) GetCursorShape(position Vector2.XY) gdclass.ControlCursorShape { //gd:Control.get_cursor_shape
-	return gdclass.ControlCursorShape(Advanced(self).GetCursorShape(Vector2.XY(position)))
+func (self Expanded) GetCursorShape(position Vector2.XY) CursorShape { //gd:Control.get_cursor_shape
+	return CursorShape(Advanced(self).GetCursorShape(Vector2.XY(position)))
 }
 
 /*
@@ -1452,11 +1459,11 @@ func (self Instance) SetCustomMinimumSize(value Vector2.XY) {
 	class(self).SetCustomMinimumSize(Vector2.XY(value))
 }
 
-func (self Instance) LayoutDirection() gdclass.ControlLayoutDirection {
-	return gdclass.ControlLayoutDirection(class(self).GetLayoutDirection())
+func (self Instance) LayoutDirection() LayoutDirection {
+	return LayoutDirection(class(self).GetLayoutDirection())
 }
 
-func (self Instance) SetLayoutDirection(value gdclass.ControlLayoutDirection) {
+func (self Instance) SetLayoutDirection(value LayoutDirection) {
 	class(self).SetLayoutDirection(value)
 }
 
@@ -1508,19 +1515,19 @@ func (self Instance) SetOffsetBottom(value Float.X) {
 	class(self).SetOffset(3, float64(value))
 }
 
-func (self Instance) GrowHorizontal() gdclass.ControlGrowDirection {
-	return gdclass.ControlGrowDirection(class(self).GetHGrowDirection())
+func (self Instance) GrowHorizontal() GrowDirection {
+	return GrowDirection(class(self).GetHGrowDirection())
 }
 
-func (self Instance) SetGrowHorizontal(value gdclass.ControlGrowDirection) {
+func (self Instance) SetGrowHorizontal(value GrowDirection) {
 	class(self).SetHGrowDirection(value)
 }
 
-func (self Instance) GrowVertical() gdclass.ControlGrowDirection {
-	return gdclass.ControlGrowDirection(class(self).GetVGrowDirection())
+func (self Instance) GrowVertical() GrowDirection {
+	return GrowDirection(class(self).GetVGrowDirection())
 }
 
-func (self Instance) SetGrowVertical(value gdclass.ControlGrowDirection) {
+func (self Instance) SetGrowVertical(value GrowDirection) {
 	class(self).SetVGrowDirection(value)
 }
 
@@ -1568,19 +1575,19 @@ func (self Instance) SetPivotOffset(value Vector2.XY) {
 	class(self).SetPivotOffset(Vector2.XY(value))
 }
 
-func (self Instance) SizeFlagsHorizontal() gdclass.ControlSizeFlags {
-	return gdclass.ControlSizeFlags(class(self).GetHSizeFlags())
+func (self Instance) SizeFlagsHorizontal() SizeFlags {
+	return SizeFlags(class(self).GetHSizeFlags())
 }
 
-func (self Instance) SetSizeFlagsHorizontal(value gdclass.ControlSizeFlags) {
+func (self Instance) SetSizeFlagsHorizontal(value SizeFlags) {
 	class(self).SetHSizeFlags(value)
 }
 
-func (self Instance) SizeFlagsVertical() gdclass.ControlSizeFlags {
-	return gdclass.ControlSizeFlags(class(self).GetVSizeFlags())
+func (self Instance) SizeFlagsVertical() SizeFlags {
+	return SizeFlags(class(self).GetVSizeFlags())
 }
 
-func (self Instance) SetSizeFlagsVertical(value gdclass.ControlSizeFlags) {
+func (self Instance) SetSizeFlagsVertical(value SizeFlags) {
 	class(self).SetVSizeFlags(value)
 }
 
@@ -1616,11 +1623,11 @@ func (self Instance) SetTooltipText(value string) {
 	class(self).SetTooltipText(String.New(value))
 }
 
-func (self Instance) TooltipAutoTranslateMode() gdclass.NodeAutoTranslateMode {
-	return gdclass.NodeAutoTranslateMode(class(self).GetTooltipAutoTranslateMode())
+func (self Instance) TooltipAutoTranslateMode() Node.AutoTranslateMode {
+	return Node.AutoTranslateMode(class(self).GetTooltipAutoTranslateMode())
 }
 
-func (self Instance) SetTooltipAutoTranslateMode(value gdclass.NodeAutoTranslateMode) {
+func (self Instance) SetTooltipAutoTranslateMode(value Node.AutoTranslateMode) {
 	class(self).SetTooltipAutoTranslateMode(value)
 }
 
@@ -1672,19 +1679,19 @@ func (self Instance) SetFocusPrevious(value string) {
 	class(self).SetFocusPrevious(Path.ToNode(String.New(value)))
 }
 
-func (self Instance) FocusMode() gdclass.ControlFocusMode {
-	return gdclass.ControlFocusMode(class(self).GetFocusMode())
+func (self Instance) FocusMode() FocusMode {
+	return FocusMode(class(self).GetFocusMode())
 }
 
-func (self Instance) SetFocusMode(value gdclass.ControlFocusMode) {
+func (self Instance) SetFocusMode(value FocusMode) {
 	class(self).SetFocusMode(value)
 }
 
-func (self Instance) MouseFilter() gdclass.ControlMouseFilter {
-	return gdclass.ControlMouseFilter(class(self).GetMouseFilter())
+func (self Instance) MouseFilter() MouseFilter {
+	return MouseFilter(class(self).GetMouseFilter())
 }
 
-func (self Instance) SetMouseFilter(value gdclass.ControlMouseFilter) {
+func (self Instance) SetMouseFilter(value MouseFilter) {
 	class(self).SetMouseFilter(value)
 }
 
@@ -1696,11 +1703,11 @@ func (self Instance) SetMouseForcePassScrollEvents(value bool) {
 	class(self).SetForcePassScrollEvents(value)
 }
 
-func (self Instance) MouseDefaultCursorShape() gdclass.ControlCursorShape {
-	return gdclass.ControlCursorShape(class(self).GetDefaultCursorShape())
+func (self Instance) MouseDefaultCursorShape() CursorShape {
+	return CursorShape(class(self).GetDefaultCursorShape())
 }
 
-func (self Instance) SetMouseDefaultCursorShape(value gdclass.ControlCursorShape) {
+func (self Instance) SetMouseDefaultCursorShape(value CursorShape) {
 	class(self).SetDefaultCursorShape(value)
 }
 
@@ -2059,7 +2066,7 @@ Sets the anchors to a [param preset] from [enum Control.LayoutPreset] enum. This
 If [param keep_offsets] is [code]true[/code], control's position will also be updated.
 */
 //go:nosplit
-func (self class) SetAnchorsPreset(preset gdclass.ControlLayoutPreset, keep_offsets bool) { //gd:Control.set_anchors_preset
+func (self class) SetAnchorsPreset(preset LayoutPreset, keep_offsets bool) { //gd:Control.set_anchors_preset
 	var frame = callframe.New()
 	callframe.Arg(frame, preset)
 	callframe.Arg(frame, keep_offsets)
@@ -2074,7 +2081,7 @@ Use parameter [param resize_mode] with constants from [enum Control.LayoutPreset
 Use parameter [param margin] to determine the gap between the [Control] and the edges.
 */
 //go:nosplit
-func (self class) SetOffsetsPreset(preset gdclass.ControlLayoutPreset, resize_mode gdclass.ControlLayoutPresetMode, margin int64) { //gd:Control.set_offsets_preset
+func (self class) SetOffsetsPreset(preset LayoutPreset, resize_mode LayoutPresetMode, margin int64) { //gd:Control.set_offsets_preset
 	var frame = callframe.New()
 	callframe.Arg(frame, preset)
 	callframe.Arg(frame, resize_mode)
@@ -2088,7 +2095,7 @@ func (self class) SetOffsetsPreset(preset gdclass.ControlLayoutPreset, resize_mo
 Sets both anchor preset and offset preset. See [method set_anchors_preset] and [method set_offsets_preset].
 */
 //go:nosplit
-func (self class) SetAnchorsAndOffsetsPreset(preset gdclass.ControlLayoutPreset, resize_mode gdclass.ControlLayoutPresetMode, margin int64) { //gd:Control.set_anchors_and_offsets_preset
+func (self class) SetAnchorsAndOffsetsPreset(preset LayoutPreset, resize_mode LayoutPresetMode, margin int64) { //gd:Control.set_anchors_and_offsets_preset
 	var frame = callframe.New()
 	callframe.Arg(frame, preset)
 	callframe.Arg(frame, resize_mode)
@@ -2104,7 +2111,7 @@ If [param keep_offset] is [code]true[/code], offsets aren't updated after this o
 If [param push_opposite_anchor] is [code]true[/code] and the opposite anchor overlaps this anchor, the opposite one will have its value overridden. For example, when setting left anchor to 1 and the right anchor has value of 0.5, the right anchor will also get value of 1. If [param push_opposite_anchor] was [code]false[/code], the left anchor would get value 0.5.
 */
 //go:nosplit
-func (self class) SetAnchor(side Side, anchor float64, keep_offset bool, push_opposite_anchor bool) { //gd:Control.set_anchor
+func (self class) SetAnchor(side Rect2.Side, anchor float64, keep_offset bool, push_opposite_anchor bool) { //gd:Control.set_anchor
 	var frame = callframe.New()
 	callframe.Arg(frame, side)
 	callframe.Arg(frame, anchor)
@@ -2119,7 +2126,7 @@ func (self class) SetAnchor(side Side, anchor float64, keep_offset bool, push_op
 Returns the anchor for the specified [enum Side]. A getter method for [member anchor_bottom], [member anchor_left], [member anchor_right] and [member anchor_top].
 */
 //go:nosplit
-func (self class) GetAnchor(side Side) float64 { //gd:Control.get_anchor
+func (self class) GetAnchor(side Rect2.Side) float64 { //gd:Control.get_anchor
 	var frame = callframe.New()
 	callframe.Arg(frame, side)
 	var r_ret = callframe.Ret[float64](frame)
@@ -2133,7 +2140,7 @@ func (self class) GetAnchor(side Side) float64 { //gd:Control.get_anchor
 Sets the offset for the specified [enum Side] to [param offset]. A setter method for [member offset_bottom], [member offset_left], [member offset_right] and [member offset_top].
 */
 //go:nosplit
-func (self class) SetOffset(side Side, offset float64) { //gd:Control.set_offset
+func (self class) SetOffset(side Rect2.Side, offset float64) { //gd:Control.set_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, side)
 	callframe.Arg(frame, offset)
@@ -2146,7 +2153,7 @@ func (self class) SetOffset(side Side, offset float64) { //gd:Control.set_offset
 Returns the offset for the specified [enum Side]. A getter method for [member offset_bottom], [member offset_left], [member offset_right] and [member offset_top].
 */
 //go:nosplit
-func (self class) GetOffset(offset Side) float64 { //gd:Control.get_offset
+func (self class) GetOffset(offset Rect2.Side) float64 { //gd:Control.get_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, offset)
 	var r_ret = callframe.Ret[float64](frame)
@@ -2160,7 +2167,7 @@ func (self class) GetOffset(offset Side) float64 { //gd:Control.get_offset
 Works the same as [method set_anchor], but instead of [code]keep_offset[/code] argument and automatic update of offset, it allows to set the offset yourself (see [method set_offset]).
 */
 //go:nosplit
-func (self class) SetAnchorAndOffset(side Side, anchor float64, offset float64, push_opposite_anchor bool) { //gd:Control.set_anchor_and_offset
+func (self class) SetAnchorAndOffset(side Rect2.Side, anchor float64, offset float64, push_opposite_anchor bool) { //gd:Control.set_anchor_and_offset
 	var frame = callframe.New()
 	callframe.Arg(frame, side)
 	callframe.Arg(frame, anchor)
@@ -2463,7 +2470,7 @@ func (self class) GetGlobalRect() Rect2.PositionSize { //gd:Control.get_global_r
 }
 
 //go:nosplit
-func (self class) SetFocusMode(mode gdclass.ControlFocusMode) { //gd:Control.set_focus_mode
+func (self class) SetFocusMode(mode FocusMode) { //gd:Control.set_focus_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -2472,9 +2479,9 @@ func (self class) SetFocusMode(mode gdclass.ControlFocusMode) { //gd:Control.set
 }
 
 //go:nosplit
-func (self class) GetFocusMode() gdclass.ControlFocusMode { //gd:Control.get_focus_mode
+func (self class) GetFocusMode() FocusMode { //gd:Control.get_focus_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ControlFocusMode](frame)
+	var r_ret = callframe.Ret[FocusMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_focus_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2548,7 +2555,7 @@ Finds the next [Control] that can receive the focus on the specified [enum Side]
 [b]Note:[/b] This is different from [method get_focus_neighbor], which returns the path of a specified focus neighbor.
 */
 //go:nosplit
-func (self class) FindValidFocusNeighbor(side Side) [1]gdclass.Control { //gd:Control.find_valid_focus_neighbor
+func (self class) FindValidFocusNeighbor(side Rect2.Side) [1]gdclass.Control { //gd:Control.find_valid_focus_neighbor
 	var frame = callframe.New()
 	callframe.Arg(frame, side)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -2559,7 +2566,7 @@ func (self class) FindValidFocusNeighbor(side Side) [1]gdclass.Control { //gd:Co
 }
 
 //go:nosplit
-func (self class) SetHSizeFlags(flags gdclass.ControlSizeFlags) { //gd:Control.set_h_size_flags
+func (self class) SetHSizeFlags(flags SizeFlags) { //gd:Control.set_h_size_flags
 	var frame = callframe.New()
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Nil
@@ -2568,9 +2575,9 @@ func (self class) SetHSizeFlags(flags gdclass.ControlSizeFlags) { //gd:Control.s
 }
 
 //go:nosplit
-func (self class) GetHSizeFlags() gdclass.ControlSizeFlags { //gd:Control.get_h_size_flags
+func (self class) GetHSizeFlags() SizeFlags { //gd:Control.get_h_size_flags
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ControlSizeFlags](frame)
+	var r_ret = callframe.Ret[SizeFlags](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_h_size_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2597,7 +2604,7 @@ func (self class) GetStretchRatio() float64 { //gd:Control.get_stretch_ratio
 }
 
 //go:nosplit
-func (self class) SetVSizeFlags(flags gdclass.ControlSizeFlags) { //gd:Control.set_v_size_flags
+func (self class) SetVSizeFlags(flags SizeFlags) { //gd:Control.set_v_size_flags
 	var frame = callframe.New()
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Nil
@@ -2606,9 +2613,9 @@ func (self class) SetVSizeFlags(flags gdclass.ControlSizeFlags) { //gd:Control.s
 }
 
 //go:nosplit
-func (self class) GetVSizeFlags() gdclass.ControlSizeFlags { //gd:Control.get_v_size_flags
+func (self class) GetVSizeFlags() SizeFlags { //gd:Control.get_v_size_flags
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ControlSizeFlags](frame)
+	var r_ret = callframe.Ret[SizeFlags](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_v_size_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3231,7 +3238,7 @@ func (self class) GetParentControl() [1]gdclass.Control { //gd:Control.get_paren
 }
 
 //go:nosplit
-func (self class) SetHGrowDirection(direction gdclass.ControlGrowDirection) { //gd:Control.set_h_grow_direction
+func (self class) SetHGrowDirection(direction GrowDirection) { //gd:Control.set_h_grow_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, direction)
 	var r_ret = callframe.Nil
@@ -3240,9 +3247,9 @@ func (self class) SetHGrowDirection(direction gdclass.ControlGrowDirection) { //
 }
 
 //go:nosplit
-func (self class) GetHGrowDirection() gdclass.ControlGrowDirection { //gd:Control.get_h_grow_direction
+func (self class) GetHGrowDirection() GrowDirection { //gd:Control.get_h_grow_direction
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ControlGrowDirection](frame)
+	var r_ret = callframe.Ret[GrowDirection](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_h_grow_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3250,7 +3257,7 @@ func (self class) GetHGrowDirection() gdclass.ControlGrowDirection { //gd:Contro
 }
 
 //go:nosplit
-func (self class) SetVGrowDirection(direction gdclass.ControlGrowDirection) { //gd:Control.set_v_grow_direction
+func (self class) SetVGrowDirection(direction GrowDirection) { //gd:Control.set_v_grow_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, direction)
 	var r_ret = callframe.Nil
@@ -3259,9 +3266,9 @@ func (self class) SetVGrowDirection(direction gdclass.ControlGrowDirection) { //
 }
 
 //go:nosplit
-func (self class) GetVGrowDirection() gdclass.ControlGrowDirection { //gd:Control.get_v_grow_direction
+func (self class) GetVGrowDirection() GrowDirection { //gd:Control.get_v_grow_direction
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ControlGrowDirection](frame)
+	var r_ret = callframe.Ret[GrowDirection](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_v_grow_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3269,7 +3276,7 @@ func (self class) GetVGrowDirection() gdclass.ControlGrowDirection { //gd:Contro
 }
 
 //go:nosplit
-func (self class) SetTooltipAutoTranslateMode(mode gdclass.NodeAutoTranslateMode) { //gd:Control.set_tooltip_auto_translate_mode
+func (self class) SetTooltipAutoTranslateMode(mode Node.AutoTranslateMode) { //gd:Control.set_tooltip_auto_translate_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -3278,9 +3285,9 @@ func (self class) SetTooltipAutoTranslateMode(mode gdclass.NodeAutoTranslateMode
 }
 
 //go:nosplit
-func (self class) GetTooltipAutoTranslateMode() gdclass.NodeAutoTranslateMode { //gd:Control.get_tooltip_auto_translate_mode
+func (self class) GetTooltipAutoTranslateMode() Node.AutoTranslateMode { //gd:Control.get_tooltip_auto_translate_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.NodeAutoTranslateMode](frame)
+	var r_ret = callframe.Ret[Node.AutoTranslateMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_tooltip_auto_translate_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3323,7 +3330,7 @@ func (self class) GetTooltip(at_position Vector2.XY) String.Readable { //gd:Cont
 }
 
 //go:nosplit
-func (self class) SetDefaultCursorShape(shape gdclass.ControlCursorShape) { //gd:Control.set_default_cursor_shape
+func (self class) SetDefaultCursorShape(shape CursorShape) { //gd:Control.set_default_cursor_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
 	var r_ret = callframe.Nil
@@ -3332,9 +3339,9 @@ func (self class) SetDefaultCursorShape(shape gdclass.ControlCursorShape) { //gd
 }
 
 //go:nosplit
-func (self class) GetDefaultCursorShape() gdclass.ControlCursorShape { //gd:Control.get_default_cursor_shape
+func (self class) GetDefaultCursorShape() CursorShape { //gd:Control.get_default_cursor_shape
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ControlCursorShape](frame)
+	var r_ret = callframe.Ret[CursorShape](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_default_cursor_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3345,10 +3352,10 @@ func (self class) GetDefaultCursorShape() gdclass.ControlCursorShape { //gd:Cont
 Returns the mouse cursor shape the control displays on mouse hover. See [enum CursorShape].
 */
 //go:nosplit
-func (self class) GetCursorShape(position Vector2.XY) gdclass.ControlCursorShape { //gd:Control.get_cursor_shape
+func (self class) GetCursorShape(position Vector2.XY) CursorShape { //gd:Control.get_cursor_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
-	var r_ret = callframe.Ret[gdclass.ControlCursorShape](frame)
+	var r_ret = callframe.Ret[CursorShape](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_cursor_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3359,7 +3366,7 @@ func (self class) GetCursorShape(position Vector2.XY) gdclass.ControlCursorShape
 Sets the focus neighbor for the specified [enum Side] to the [Control] at [param neighbor] node path. A setter method for [member focus_neighbor_bottom], [member focus_neighbor_left], [member focus_neighbor_right] and [member focus_neighbor_top].
 */
 //go:nosplit
-func (self class) SetFocusNeighbor(side Side, neighbor Path.ToNode) { //gd:Control.set_focus_neighbor
+func (self class) SetFocusNeighbor(side Rect2.Side, neighbor Path.ToNode) { //gd:Control.set_focus_neighbor
 	var frame = callframe.New()
 	callframe.Arg(frame, side)
 	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(neighbor)))
@@ -3373,7 +3380,7 @@ Returns the focus neighbor for the specified [enum Side]. A getter method for [m
 [b]Note:[/b] To find the next [Control] on the specific [enum Side], even if a neighbor is not assigned, use [method find_valid_focus_neighbor].
 */
 //go:nosplit
-func (self class) GetFocusNeighbor(side Side) Path.ToNode { //gd:Control.get_focus_neighbor
+func (self class) GetFocusNeighbor(side Rect2.Side) Path.ToNode { //gd:Control.get_focus_neighbor
 	var frame = callframe.New()
 	callframe.Arg(frame, side)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
@@ -3436,7 +3443,7 @@ func (self class) ForceDrag(data variant.Any, preview [1]gdclass.Control) { //gd
 }
 
 //go:nosplit
-func (self class) SetMouseFilter(filter gdclass.ControlMouseFilter) { //gd:Control.set_mouse_filter
+func (self class) SetMouseFilter(filter MouseFilter) { //gd:Control.set_mouse_filter
 	var frame = callframe.New()
 	callframe.Arg(frame, filter)
 	var r_ret = callframe.Nil
@@ -3445,9 +3452,9 @@ func (self class) SetMouseFilter(filter gdclass.ControlMouseFilter) { //gd:Contr
 }
 
 //go:nosplit
-func (self class) GetMouseFilter() gdclass.ControlMouseFilter { //gd:Control.get_mouse_filter
+func (self class) GetMouseFilter() MouseFilter { //gd:Control.get_mouse_filter
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ControlMouseFilter](frame)
+	var r_ret = callframe.Ret[MouseFilter](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_mouse_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3630,7 +3637,7 @@ func (self class) UpdateMinimumSize() { //gd:Control.update_minimum_size
 }
 
 //go:nosplit
-func (self class) SetLayoutDirection(direction gdclass.ControlLayoutDirection) { //gd:Control.set_layout_direction
+func (self class) SetLayoutDirection(direction LayoutDirection) { //gd:Control.set_layout_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, direction)
 	var r_ret = callframe.Nil
@@ -3639,9 +3646,9 @@ func (self class) SetLayoutDirection(direction gdclass.ControlLayoutDirection) {
 }
 
 //go:nosplit
-func (self class) GetLayoutDirection() gdclass.ControlLayoutDirection { //gd:Control.get_layout_direction
+func (self class) GetLayoutDirection() LayoutDirection { //gd:Control.get_layout_direction
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ControlLayoutDirection](frame)
+	var r_ret = callframe.Ret[LayoutDirection](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Control.Bind_get_layout_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3801,7 +3808,7 @@ func init() {
 	gdclass.Register("Control", func(ptr gd.Object) any { return [1]gdclass.Control{*(*gdclass.Control)(unsafe.Pointer(&ptr))} })
 }
 
-type FocusMode = gdclass.ControlFocusMode //gd:Control.FocusMode
+type FocusMode int //gd:Control.FocusMode
 
 const (
 	/*The node cannot grab focus. Use with [member focus_mode].*/
@@ -3812,7 +3819,7 @@ const (
 	FocusAll FocusMode = 2
 )
 
-type CursorShape = gdclass.ControlCursorShape //gd:Control.CursorShape
+type CursorShape int //gd:Control.CursorShape
 
 const (
 	/*Show the system's arrow mouse cursor when the user hovers the node. Use with [member mouse_default_cursor_shape].*/
@@ -3851,7 +3858,7 @@ const (
 	CursorHelp CursorShape = 16
 )
 
-type LayoutPreset = gdclass.ControlLayoutPreset //gd:Control.LayoutPreset
+type LayoutPreset int //gd:Control.LayoutPreset
 
 const (
 	/*Snap all 4 anchors to the top-left of the parent control's bounds. Use with [method set_anchors_preset].*/
@@ -3888,7 +3895,7 @@ const (
 	PresetFullRect LayoutPreset = 15
 )
 
-type LayoutPresetMode = gdclass.ControlLayoutPresetMode //gd:Control.LayoutPresetMode
+type LayoutPresetMode int //gd:Control.LayoutPresetMode
 
 const (
 	/*The control will be resized to its minimum size.*/
@@ -3901,7 +3908,7 @@ const (
 	PresetModeKeepSize LayoutPresetMode = 3
 )
 
-type SizeFlags = gdclass.ControlSizeFlags //gd:Control.SizeFlags
+type SizeFlags int //gd:Control.SizeFlags
 
 const (
 	/*Tells the parent [Container] to align the node with its start, either the top or the left edge. It is mutually exclusive with [constant SIZE_FILL] and other shrink size flags, but can be used with [constant SIZE_EXPAND] in some containers. Use with [member size_flags_horizontal] and [member size_flags_vertical].
@@ -3919,7 +3926,7 @@ const (
 	SizeShrinkEnd SizeFlags = 8
 )
 
-type MouseFilter = gdclass.ControlMouseFilter //gd:Control.MouseFilter
+type MouseFilter int //gd:Control.MouseFilter
 
 const (
 	/*The control will receive mouse movement input events and mouse button input events if clicked on through [method _gui_input]. The control will also receive the [signal mouse_entered] and [signal mouse_exited] signals. These events are automatically marked as handled, and they will not propagate further to other controls. This also results in blocking signals in other controls.*/
@@ -3932,7 +3939,7 @@ const (
 	MouseFilterIgnore MouseFilter = 2
 )
 
-type GrowDirection = gdclass.ControlGrowDirection //gd:Control.GrowDirection
+type GrowDirection int //gd:Control.GrowDirection
 
 const (
 	/*The control will grow to the left or top to make up if its minimum size is changed to be greater than its current size on the respective axis.*/
@@ -3943,7 +3950,7 @@ const (
 	GrowDirectionBoth GrowDirection = 2
 )
 
-type Anchor = gdclass.ControlAnchor //gd:Control.Anchor
+type Anchor int //gd:Control.Anchor
 
 const (
 	/*Snaps one of the 4 anchor's sides to the origin of the node's [code]Rect[/code], in the top left. Use it with one of the [code]anchor_*[/code] member variables, like [member anchor_left]. To change all 4 anchors at once, use [method set_anchors_preset].*/
@@ -3952,7 +3959,7 @@ const (
 	AnchorEnd Anchor = 1
 )
 
-type LayoutDirection = gdclass.ControlLayoutDirection //gd:Control.LayoutDirection
+type LayoutDirection int //gd:Control.LayoutDirection
 
 const (
 	/*Automatic layout direction, determined from the parent control layout direction.*/
@@ -3970,7 +3977,7 @@ const (
 	LayoutDirectionLocale LayoutDirection = 1
 )
 
-type TextDirection = gdclass.ControlTextDirection //gd:Control.TextDirection
+type TextDirection int //gd:Control.TextDirection
 
 const (
 	/*Text writing direction is the same as layout direction.*/
@@ -3981,17 +3988,4 @@ const (
 	TextDirectionLtr TextDirection = 1
 	/*Right-to-left text writing direction.*/
 	TextDirectionRtl TextDirection = 2
-)
-
-type Side int
-
-const (
-	/*Left side, usually used for [Control] or [StyleBox]-derived classes.*/
-	SideLeft Side = 0
-	/*Top side, usually used for [Control] or [StyleBox]-derived classes.*/
-	SideTop Side = 1
-	/*Right side, usually used for [Control] or [StyleBox]-derived classes.*/
-	SideRight Side = 2
-	/*Bottom side, usually used for [Control] or [StyleBox]-derived classes.*/
-	SideBottom Side = 3
 )

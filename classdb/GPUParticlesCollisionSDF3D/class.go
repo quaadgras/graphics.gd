@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/GPUParticlesCollision3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
@@ -30,6 +31,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -45,6 +50,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -57,6 +63,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -121,11 +128,11 @@ func (self Instance) SetSize(value Vector3.XYZ) {
 	class(self).SetSize(Vector3.XYZ(value))
 }
 
-func (self Instance) Resolution() gdclass.GPUParticlesCollisionSDF3DResolution {
-	return gdclass.GPUParticlesCollisionSDF3DResolution(class(self).GetResolution())
+func (self Instance) Resolution() Resolution {
+	return Resolution(class(self).GetResolution())
 }
 
-func (self Instance) SetResolution(value gdclass.GPUParticlesCollisionSDF3DResolution) {
+func (self Instance) SetResolution(value Resolution) {
 	class(self).SetResolution(value)
 }
 
@@ -173,7 +180,7 @@ func (self class) GetSize() Vector3.XYZ { //gd:GPUParticlesCollisionSDF3D.get_si
 }
 
 //go:nosplit
-func (self class) SetResolution(resolution gdclass.GPUParticlesCollisionSDF3DResolution) { //gd:GPUParticlesCollisionSDF3D.set_resolution
+func (self class) SetResolution(resolution Resolution) { //gd:GPUParticlesCollisionSDF3D.set_resolution
 	var frame = callframe.New()
 	callframe.Arg(frame, resolution)
 	var r_ret = callframe.Nil
@@ -182,9 +189,9 @@ func (self class) SetResolution(resolution gdclass.GPUParticlesCollisionSDF3DRes
 }
 
 //go:nosplit
-func (self class) GetResolution() gdclass.GPUParticlesCollisionSDF3DResolution { //gd:GPUParticlesCollisionSDF3D.get_resolution
+func (self class) GetResolution() Resolution { //gd:GPUParticlesCollisionSDF3D.get_resolution
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.GPUParticlesCollisionSDF3DResolution](frame)
+	var r_ret = callframe.Ret[Resolution](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_get_resolution, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -327,7 +334,7 @@ func init() {
 	})
 }
 
-type Resolution = gdclass.GPUParticlesCollisionSDF3DResolution //gd:GPUParticlesCollisionSDF3D.Resolution
+type Resolution int //gd:GPUParticlesCollisionSDF3D.Resolution
 
 const (
 	/*Bake a 16×16×16 signed distance field. This is the fastest option, but also the least precise.*/

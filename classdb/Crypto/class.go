@@ -11,7 +11,9 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CryptoKey"
+import "graphics.gd/classdb/HashingContext"
 import "graphics.gd/classdb/X509Certificate"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -26,6 +28,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -41,6 +47,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -53,6 +60,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -204,14 +212,14 @@ func (self Expanded) GenerateSelfSignedCertificate(key CryptoKey.Instance, issue
 /*
 Sign a given [param hash] of type [param hash_type] with the provided private [param key].
 */
-func (self Instance) Sign(hash_type gdclass.HashingContextHashType, hash []byte, key CryptoKey.Instance) []byte { //gd:Crypto.sign
+func (self Instance) Sign(hash_type HashingContext.HashType, hash []byte, key CryptoKey.Instance) []byte { //gd:Crypto.sign
 	return []byte(Advanced(self).Sign(hash_type, Packed.Bytes(Packed.New(hash...)), key).Bytes())
 }
 
 /*
 Verify that a given [param signature] for [param hash] of type [param hash_type] against the provided public [param key].
 */
-func (self Instance) Verify(hash_type gdclass.HashingContextHashType, hash []byte, signature []byte, key CryptoKey.Instance) bool { //gd:Crypto.verify
+func (self Instance) Verify(hash_type HashingContext.HashType, hash []byte, signature []byte, key CryptoKey.Instance) bool { //gd:Crypto.verify
 	return bool(Advanced(self).Verify(hash_type, Packed.Bytes(Packed.New(hash...)), Packed.Bytes(Packed.New(signature...)), key))
 }
 
@@ -235,7 +243,7 @@ func (self Instance) Decrypt(key CryptoKey.Instance, ciphertext []byte) []byte {
 Generates an [url=https://en.wikipedia.org/wiki/HMAC]HMAC[/url] digest of [param msg] using [param key]. The [param hash_type] parameter is the hashing algorithm that is used for the inner and outer hashes.
 Currently, only [constant HashingContext.HASH_SHA256] and [constant HashingContext.HASH_SHA1] are supported.
 */
-func (self Instance) HmacDigest(hash_type gdclass.HashingContextHashType, key []byte, msg []byte) []byte { //gd:Crypto.hmac_digest
+func (self Instance) HmacDigest(hash_type HashingContext.HashType, key []byte, msg []byte) []byte { //gd:Crypto.hmac_digest
 	return []byte(Advanced(self).HmacDigest(hash_type, Packed.Bytes(Packed.New(key...)), Packed.Bytes(Packed.New(msg...))).Bytes())
 }
 
@@ -333,7 +341,7 @@ func (self class) GenerateSelfSignedCertificate(key [1]gdclass.CryptoKey, issuer
 Sign a given [param hash] of type [param hash_type] with the provided private [param key].
 */
 //go:nosplit
-func (self class) Sign(hash_type gdclass.HashingContextHashType, hash Packed.Bytes, key [1]gdclass.CryptoKey) Packed.Bytes { //gd:Crypto.sign
+func (self class) Sign(hash_type HashingContext.HashType, hash Packed.Bytes, key [1]gdclass.CryptoKey) Packed.Bytes { //gd:Crypto.sign
 	var frame = callframe.New()
 	callframe.Arg(frame, hash_type)
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](hash))))
@@ -349,7 +357,7 @@ func (self class) Sign(hash_type gdclass.HashingContextHashType, hash Packed.Byt
 Verify that a given [param signature] for [param hash] of type [param hash_type] against the provided public [param key].
 */
 //go:nosplit
-func (self class) Verify(hash_type gdclass.HashingContextHashType, hash Packed.Bytes, signature Packed.Bytes, key [1]gdclass.CryptoKey) bool { //gd:Crypto.verify
+func (self class) Verify(hash_type HashingContext.HashType, hash Packed.Bytes, signature Packed.Bytes, key [1]gdclass.CryptoKey) bool { //gd:Crypto.verify
 	var frame = callframe.New()
 	callframe.Arg(frame, hash_type)
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](hash))))
@@ -399,7 +407,7 @@ Generates an [url=https://en.wikipedia.org/wiki/HMAC]HMAC[/url] digest of [param
 Currently, only [constant HashingContext.HASH_SHA256] and [constant HashingContext.HASH_SHA1] are supported.
 */
 //go:nosplit
-func (self class) HmacDigest(hash_type gdclass.HashingContextHashType, key Packed.Bytes, msg Packed.Bytes) Packed.Bytes { //gd:Crypto.hmac_digest
+func (self class) HmacDigest(hash_type HashingContext.HashType, key Packed.Bytes, msg Packed.Bytes) Packed.Bytes { //gd:Crypto.hmac_digest
 	var frame = callframe.New()
 	callframe.Arg(frame, hash_type)
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key))))

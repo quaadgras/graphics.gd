@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/Rendering"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -24,6 +26,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -39,6 +45,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -51,6 +58,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -89,51 +97,51 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) MagFilter() gdclass.RenderingDeviceSamplerFilter {
-	return gdclass.RenderingDeviceSamplerFilter(class(self).GetMagFilter())
+func (self Instance) MagFilter() Rendering.SamplerFilter {
+	return Rendering.SamplerFilter(class(self).GetMagFilter())
 }
 
-func (self Instance) SetMagFilter(value gdclass.RenderingDeviceSamplerFilter) {
+func (self Instance) SetMagFilter(value Rendering.SamplerFilter) {
 	class(self).SetMagFilter(value)
 }
 
-func (self Instance) MinFilter() gdclass.RenderingDeviceSamplerFilter {
-	return gdclass.RenderingDeviceSamplerFilter(class(self).GetMinFilter())
+func (self Instance) MinFilter() Rendering.SamplerFilter {
+	return Rendering.SamplerFilter(class(self).GetMinFilter())
 }
 
-func (self Instance) SetMinFilter(value gdclass.RenderingDeviceSamplerFilter) {
+func (self Instance) SetMinFilter(value Rendering.SamplerFilter) {
 	class(self).SetMinFilter(value)
 }
 
-func (self Instance) MipFilter() gdclass.RenderingDeviceSamplerFilter {
-	return gdclass.RenderingDeviceSamplerFilter(class(self).GetMipFilter())
+func (self Instance) MipFilter() Rendering.SamplerFilter {
+	return Rendering.SamplerFilter(class(self).GetMipFilter())
 }
 
-func (self Instance) SetMipFilter(value gdclass.RenderingDeviceSamplerFilter) {
+func (self Instance) SetMipFilter(value Rendering.SamplerFilter) {
 	class(self).SetMipFilter(value)
 }
 
-func (self Instance) RepeatU() gdclass.RenderingDeviceSamplerRepeatMode {
-	return gdclass.RenderingDeviceSamplerRepeatMode(class(self).GetRepeatU())
+func (self Instance) RepeatU() Rendering.SamplerRepeatMode {
+	return Rendering.SamplerRepeatMode(class(self).GetRepeatU())
 }
 
-func (self Instance) SetRepeatU(value gdclass.RenderingDeviceSamplerRepeatMode) {
+func (self Instance) SetRepeatU(value Rendering.SamplerRepeatMode) {
 	class(self).SetRepeatU(value)
 }
 
-func (self Instance) RepeatV() gdclass.RenderingDeviceSamplerRepeatMode {
-	return gdclass.RenderingDeviceSamplerRepeatMode(class(self).GetRepeatV())
+func (self Instance) RepeatV() Rendering.SamplerRepeatMode {
+	return Rendering.SamplerRepeatMode(class(self).GetRepeatV())
 }
 
-func (self Instance) SetRepeatV(value gdclass.RenderingDeviceSamplerRepeatMode) {
+func (self Instance) SetRepeatV(value Rendering.SamplerRepeatMode) {
 	class(self).SetRepeatV(value)
 }
 
-func (self Instance) RepeatW() gdclass.RenderingDeviceSamplerRepeatMode {
-	return gdclass.RenderingDeviceSamplerRepeatMode(class(self).GetRepeatW())
+func (self Instance) RepeatW() Rendering.SamplerRepeatMode {
+	return Rendering.SamplerRepeatMode(class(self).GetRepeatW())
 }
 
-func (self Instance) SetRepeatW(value gdclass.RenderingDeviceSamplerRepeatMode) {
+func (self Instance) SetRepeatW(value Rendering.SamplerRepeatMode) {
 	class(self).SetRepeatW(value)
 }
 
@@ -169,11 +177,11 @@ func (self Instance) SetEnableCompare(value bool) {
 	class(self).SetEnableCompare(value)
 }
 
-func (self Instance) CompareOp() gdclass.RenderingDeviceCompareOperator {
-	return gdclass.RenderingDeviceCompareOperator(class(self).GetCompareOp())
+func (self Instance) CompareOp() Rendering.CompareOperator {
+	return Rendering.CompareOperator(class(self).GetCompareOp())
 }
 
-func (self Instance) SetCompareOp(value gdclass.RenderingDeviceCompareOperator) {
+func (self Instance) SetCompareOp(value Rendering.CompareOperator) {
 	class(self).SetCompareOp(value)
 }
 
@@ -193,11 +201,11 @@ func (self Instance) SetMaxLod(value Float.X) {
 	class(self).SetMaxLod(float64(value))
 }
 
-func (self Instance) BorderColor() gdclass.RenderingDeviceSamplerBorderColor {
-	return gdclass.RenderingDeviceSamplerBorderColor(class(self).GetBorderColor())
+func (self Instance) BorderColor() Rendering.SamplerBorderColor {
+	return Rendering.SamplerBorderColor(class(self).GetBorderColor())
 }
 
-func (self Instance) SetBorderColor(value gdclass.RenderingDeviceSamplerBorderColor) {
+func (self Instance) SetBorderColor(value Rendering.SamplerBorderColor) {
 	class(self).SetBorderColor(value)
 }
 
@@ -210,7 +218,7 @@ func (self Instance) SetUnnormalizedUvw(value bool) {
 }
 
 //go:nosplit
-func (self class) SetMagFilter(p_member gdclass.RenderingDeviceSamplerFilter) { //gd:RDSamplerState.set_mag_filter
+func (self class) SetMagFilter(p_member Rendering.SamplerFilter) { //gd:RDSamplerState.set_mag_filter
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -219,9 +227,9 @@ func (self class) SetMagFilter(p_member gdclass.RenderingDeviceSamplerFilter) { 
 }
 
 //go:nosplit
-func (self class) GetMagFilter() gdclass.RenderingDeviceSamplerFilter { //gd:RDSamplerState.get_mag_filter
+func (self class) GetMagFilter() Rendering.SamplerFilter { //gd:RDSamplerState.get_mag_filter
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingDeviceSamplerFilter](frame)
+	var r_ret = callframe.Ret[Rendering.SamplerFilter](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_mag_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -229,7 +237,7 @@ func (self class) GetMagFilter() gdclass.RenderingDeviceSamplerFilter { //gd:RDS
 }
 
 //go:nosplit
-func (self class) SetMinFilter(p_member gdclass.RenderingDeviceSamplerFilter) { //gd:RDSamplerState.set_min_filter
+func (self class) SetMinFilter(p_member Rendering.SamplerFilter) { //gd:RDSamplerState.set_min_filter
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -238,9 +246,9 @@ func (self class) SetMinFilter(p_member gdclass.RenderingDeviceSamplerFilter) { 
 }
 
 //go:nosplit
-func (self class) GetMinFilter() gdclass.RenderingDeviceSamplerFilter { //gd:RDSamplerState.get_min_filter
+func (self class) GetMinFilter() Rendering.SamplerFilter { //gd:RDSamplerState.get_min_filter
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingDeviceSamplerFilter](frame)
+	var r_ret = callframe.Ret[Rendering.SamplerFilter](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_min_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -248,7 +256,7 @@ func (self class) GetMinFilter() gdclass.RenderingDeviceSamplerFilter { //gd:RDS
 }
 
 //go:nosplit
-func (self class) SetMipFilter(p_member gdclass.RenderingDeviceSamplerFilter) { //gd:RDSamplerState.set_mip_filter
+func (self class) SetMipFilter(p_member Rendering.SamplerFilter) { //gd:RDSamplerState.set_mip_filter
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -257,9 +265,9 @@ func (self class) SetMipFilter(p_member gdclass.RenderingDeviceSamplerFilter) { 
 }
 
 //go:nosplit
-func (self class) GetMipFilter() gdclass.RenderingDeviceSamplerFilter { //gd:RDSamplerState.get_mip_filter
+func (self class) GetMipFilter() Rendering.SamplerFilter { //gd:RDSamplerState.get_mip_filter
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingDeviceSamplerFilter](frame)
+	var r_ret = callframe.Ret[Rendering.SamplerFilter](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_mip_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -267,7 +275,7 @@ func (self class) GetMipFilter() gdclass.RenderingDeviceSamplerFilter { //gd:RDS
 }
 
 //go:nosplit
-func (self class) SetRepeatU(p_member gdclass.RenderingDeviceSamplerRepeatMode) { //gd:RDSamplerState.set_repeat_u
+func (self class) SetRepeatU(p_member Rendering.SamplerRepeatMode) { //gd:RDSamplerState.set_repeat_u
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -276,9 +284,9 @@ func (self class) SetRepeatU(p_member gdclass.RenderingDeviceSamplerRepeatMode) 
 }
 
 //go:nosplit
-func (self class) GetRepeatU() gdclass.RenderingDeviceSamplerRepeatMode { //gd:RDSamplerState.get_repeat_u
+func (self class) GetRepeatU() Rendering.SamplerRepeatMode { //gd:RDSamplerState.get_repeat_u
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingDeviceSamplerRepeatMode](frame)
+	var r_ret = callframe.Ret[Rendering.SamplerRepeatMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_repeat_u, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -286,7 +294,7 @@ func (self class) GetRepeatU() gdclass.RenderingDeviceSamplerRepeatMode { //gd:R
 }
 
 //go:nosplit
-func (self class) SetRepeatV(p_member gdclass.RenderingDeviceSamplerRepeatMode) { //gd:RDSamplerState.set_repeat_v
+func (self class) SetRepeatV(p_member Rendering.SamplerRepeatMode) { //gd:RDSamplerState.set_repeat_v
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -295,9 +303,9 @@ func (self class) SetRepeatV(p_member gdclass.RenderingDeviceSamplerRepeatMode) 
 }
 
 //go:nosplit
-func (self class) GetRepeatV() gdclass.RenderingDeviceSamplerRepeatMode { //gd:RDSamplerState.get_repeat_v
+func (self class) GetRepeatV() Rendering.SamplerRepeatMode { //gd:RDSamplerState.get_repeat_v
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingDeviceSamplerRepeatMode](frame)
+	var r_ret = callframe.Ret[Rendering.SamplerRepeatMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_repeat_v, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -305,7 +313,7 @@ func (self class) GetRepeatV() gdclass.RenderingDeviceSamplerRepeatMode { //gd:R
 }
 
 //go:nosplit
-func (self class) SetRepeatW(p_member gdclass.RenderingDeviceSamplerRepeatMode) { //gd:RDSamplerState.set_repeat_w
+func (self class) SetRepeatW(p_member Rendering.SamplerRepeatMode) { //gd:RDSamplerState.set_repeat_w
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -314,9 +322,9 @@ func (self class) SetRepeatW(p_member gdclass.RenderingDeviceSamplerRepeatMode) 
 }
 
 //go:nosplit
-func (self class) GetRepeatW() gdclass.RenderingDeviceSamplerRepeatMode { //gd:RDSamplerState.get_repeat_w
+func (self class) GetRepeatW() Rendering.SamplerRepeatMode { //gd:RDSamplerState.get_repeat_w
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingDeviceSamplerRepeatMode](frame)
+	var r_ret = callframe.Ret[Rendering.SamplerRepeatMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_repeat_w, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -400,7 +408,7 @@ func (self class) GetEnableCompare() bool { //gd:RDSamplerState.get_enable_compa
 }
 
 //go:nosplit
-func (self class) SetCompareOp(p_member gdclass.RenderingDeviceCompareOperator) { //gd:RDSamplerState.set_compare_op
+func (self class) SetCompareOp(p_member Rendering.CompareOperator) { //gd:RDSamplerState.set_compare_op
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -409,9 +417,9 @@ func (self class) SetCompareOp(p_member gdclass.RenderingDeviceCompareOperator) 
 }
 
 //go:nosplit
-func (self class) GetCompareOp() gdclass.RenderingDeviceCompareOperator { //gd:RDSamplerState.get_compare_op
+func (self class) GetCompareOp() Rendering.CompareOperator { //gd:RDSamplerState.get_compare_op
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingDeviceCompareOperator](frame)
+	var r_ret = callframe.Ret[Rendering.CompareOperator](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_compare_op, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -457,7 +465,7 @@ func (self class) GetMaxLod() float64 { //gd:RDSamplerState.get_max_lod
 }
 
 //go:nosplit
-func (self class) SetBorderColor(p_member gdclass.RenderingDeviceSamplerBorderColor) { //gd:RDSamplerState.set_border_color
+func (self class) SetBorderColor(p_member Rendering.SamplerBorderColor) { //gd:RDSamplerState.set_border_color
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -466,9 +474,9 @@ func (self class) SetBorderColor(p_member gdclass.RenderingDeviceSamplerBorderCo
 }
 
 //go:nosplit
-func (self class) GetBorderColor() gdclass.RenderingDeviceSamplerBorderColor { //gd:RDSamplerState.get_border_color
+func (self class) GetBorderColor() Rendering.SamplerBorderColor { //gd:RDSamplerState.get_border_color
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingDeviceSamplerBorderColor](frame)
+	var r_ret = callframe.Ret[Rendering.SamplerBorderColor](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDSamplerState.Bind_get_border_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

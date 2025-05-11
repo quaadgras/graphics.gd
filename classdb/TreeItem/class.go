@@ -11,7 +11,12 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/Font"
+import "graphics.gd/classdb/GUI"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/TextServer"
 import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -28,6 +33,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -43,6 +52,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,6 +65,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -80,30 +91,30 @@ type Any interface {
 /*
 Sets the given column's cell mode to [param mode]. This determines how the cell is displayed and edited. See [enum TreeCellMode] constants for details.
 */
-func (self Instance) SetCellMode(column int, mode gdclass.TreeItemTreeCellMode) { //gd:TreeItem.set_cell_mode
+func (self Instance) SetCellMode(column int, mode TreeCellMode) { //gd:TreeItem.set_cell_mode
 	Advanced(self).SetCellMode(int64(column), mode)
 }
 
 /*
 Returns the column's cell mode.
 */
-func (self Instance) GetCellMode(column int) gdclass.TreeItemTreeCellMode { //gd:TreeItem.get_cell_mode
-	return gdclass.TreeItemTreeCellMode(Advanced(self).GetCellMode(int64(column)))
+func (self Instance) GetCellMode(column int) TreeCellMode { //gd:TreeItem.get_cell_mode
+	return TreeCellMode(Advanced(self).GetCellMode(int64(column)))
 }
 
 /*
 Sets the given column's auto translate mode to [param mode].
 All columns use [constant Node.AUTO_TRANSLATE_MODE_INHERIT] by default, which uses the same auto translate mode as the [Tree] itself.
 */
-func (self Instance) SetAutoTranslateMode(column int, mode gdclass.NodeAutoTranslateMode) { //gd:TreeItem.set_auto_translate_mode
+func (self Instance) SetAutoTranslateMode(column int, mode Node.AutoTranslateMode) { //gd:TreeItem.set_auto_translate_mode
 	Advanced(self).SetAutoTranslateMode(int64(column), mode)
 }
 
 /*
 Returns the column's auto translate mode.
 */
-func (self Instance) GetAutoTranslateMode(column int) gdclass.NodeAutoTranslateMode { //gd:TreeItem.get_auto_translate_mode
-	return gdclass.NodeAutoTranslateMode(Advanced(self).GetAutoTranslateMode(int64(column)))
+func (self Instance) GetAutoTranslateMode(column int) Node.AutoTranslateMode { //gd:TreeItem.get_auto_translate_mode
+	return Node.AutoTranslateMode(Advanced(self).GetAutoTranslateMode(int64(column)))
 }
 
 /*
@@ -181,57 +192,57 @@ func (self Instance) GetText(column int) string { //gd:TreeItem.get_text
 /*
 Sets item's text base writing direction.
 */
-func (self Instance) SetTextDirection(column int, direction gdclass.ControlTextDirection) { //gd:TreeItem.set_text_direction
+func (self Instance) SetTextDirection(column int, direction Control.TextDirection) { //gd:TreeItem.set_text_direction
 	Advanced(self).SetTextDirection(int64(column), direction)
 }
 
 /*
 Returns item's text base writing direction.
 */
-func (self Instance) GetTextDirection(column int) gdclass.ControlTextDirection { //gd:TreeItem.get_text_direction
-	return gdclass.ControlTextDirection(Advanced(self).GetTextDirection(int64(column)))
+func (self Instance) GetTextDirection(column int) Control.TextDirection { //gd:TreeItem.get_text_direction
+	return Control.TextDirection(Advanced(self).GetTextDirection(int64(column)))
 }
 
 /*
 Sets the autowrap mode in the given [param column]. If set to something other than [constant TextServer.AUTOWRAP_OFF], the text gets wrapped inside the cell's bounding rectangle.
 */
-func (self Instance) SetAutowrapMode(column int, autowrap_mode gdclass.TextServerAutowrapMode) { //gd:TreeItem.set_autowrap_mode
+func (self Instance) SetAutowrapMode(column int, autowrap_mode TextServer.AutowrapMode) { //gd:TreeItem.set_autowrap_mode
 	Advanced(self).SetAutowrapMode(int64(column), autowrap_mode)
 }
 
 /*
 Returns the text autowrap mode in the given [param column]. By default it is [constant TextServer.AUTOWRAP_OFF].
 */
-func (self Instance) GetAutowrapMode(column int) gdclass.TextServerAutowrapMode { //gd:TreeItem.get_autowrap_mode
-	return gdclass.TextServerAutowrapMode(Advanced(self).GetAutowrapMode(int64(column)))
+func (self Instance) GetAutowrapMode(column int) TextServer.AutowrapMode { //gd:TreeItem.get_autowrap_mode
+	return TextServer.AutowrapMode(Advanced(self).GetAutowrapMode(int64(column)))
 }
 
 /*
 Sets the clipping behavior when the text exceeds the item's bounding rectangle in the given [param column].
 */
-func (self Instance) SetTextOverrunBehavior(column int, overrun_behavior gdclass.TextServerOverrunBehavior) { //gd:TreeItem.set_text_overrun_behavior
+func (self Instance) SetTextOverrunBehavior(column int, overrun_behavior TextServer.OverrunBehavior) { //gd:TreeItem.set_text_overrun_behavior
 	Advanced(self).SetTextOverrunBehavior(int64(column), overrun_behavior)
 }
 
 /*
 Returns the clipping behavior when the text exceeds the item's bounding rectangle in the given [param column]. By default it is [constant TextServer.OVERRUN_TRIM_ELLIPSIS].
 */
-func (self Instance) GetTextOverrunBehavior(column int) gdclass.TextServerOverrunBehavior { //gd:TreeItem.get_text_overrun_behavior
-	return gdclass.TextServerOverrunBehavior(Advanced(self).GetTextOverrunBehavior(int64(column)))
+func (self Instance) GetTextOverrunBehavior(column int) TextServer.OverrunBehavior { //gd:TreeItem.get_text_overrun_behavior
+	return TextServer.OverrunBehavior(Advanced(self).GetTextOverrunBehavior(int64(column)))
 }
 
 /*
 Set BiDi algorithm override for the structured text. Has effect for cells that display text.
 */
-func (self Instance) SetStructuredTextBidiOverride(column int, parser gdclass.TextServerStructuredTextParser) { //gd:TreeItem.set_structured_text_bidi_override
+func (self Instance) SetStructuredTextBidiOverride(column int, parser TextServer.StructuredTextParser) { //gd:TreeItem.set_structured_text_bidi_override
 	Advanced(self).SetStructuredTextBidiOverride(int64(column), parser)
 }
 
 /*
 Returns the BiDi algorithm override set for this cell.
 */
-func (self Instance) GetStructuredTextBidiOverride(column int) gdclass.TextServerStructuredTextParser { //gd:TreeItem.get_structured_text_bidi_override
-	return gdclass.TextServerStructuredTextParser(Advanced(self).GetStructuredTextBidiOverride(int64(column)))
+func (self Instance) GetStructuredTextBidiOverride(column int) TextServer.StructuredTextParser { //gd:TreeItem.get_structured_text_bidi_override
+	return TextServer.StructuredTextParser(Advanced(self).GetStructuredTextBidiOverride(int64(column)))
 }
 
 /*
@@ -719,15 +730,15 @@ func (self Instance) GetTooltipText(column int) string { //gd:TreeItem.get_toolt
 /*
 Sets the given column's text alignment. See [enum HorizontalAlignment] for possible values.
 */
-func (self Instance) SetTextAlignment(column int, text_alignment HorizontalAlignment) { //gd:TreeItem.set_text_alignment
+func (self Instance) SetTextAlignment(column int, text_alignment GUI.HorizontalAlignment) { //gd:TreeItem.set_text_alignment
 	Advanced(self).SetTextAlignment(int64(column), text_alignment)
 }
 
 /*
 Returns the given column's text alignment.
 */
-func (self Instance) GetTextAlignment(column int) HorizontalAlignment { //gd:TreeItem.get_text_alignment
-	return HorizontalAlignment(Advanced(self).GetTextAlignment(int64(column)))
+func (self Instance) GetTextAlignment(column int) GUI.HorizontalAlignment { //gd:TreeItem.get_text_alignment
+	return GUI.HorizontalAlignment(Advanced(self).GetTextAlignment(int64(column)))
 }
 
 /*
@@ -978,7 +989,7 @@ func (self Instance) SetCustomMinimumHeight(value int) {
 Sets the given column's cell mode to [param mode]. This determines how the cell is displayed and edited. See [enum TreeCellMode] constants for details.
 */
 //go:nosplit
-func (self class) SetCellMode(column int64, mode gdclass.TreeItemTreeCellMode) { //gd:TreeItem.set_cell_mode
+func (self class) SetCellMode(column int64, mode TreeCellMode) { //gd:TreeItem.set_cell_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, mode)
@@ -991,10 +1002,10 @@ func (self class) SetCellMode(column int64, mode gdclass.TreeItemTreeCellMode) {
 Returns the column's cell mode.
 */
 //go:nosplit
-func (self class) GetCellMode(column int64) gdclass.TreeItemTreeCellMode { //gd:TreeItem.get_cell_mode
+func (self class) GetCellMode(column int64) TreeCellMode { //gd:TreeItem.get_cell_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	var r_ret = callframe.Ret[gdclass.TreeItemTreeCellMode](frame)
+	var r_ret = callframe.Ret[TreeCellMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_cell_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1006,7 +1017,7 @@ Sets the given column's auto translate mode to [param mode].
 All columns use [constant Node.AUTO_TRANSLATE_MODE_INHERIT] by default, which uses the same auto translate mode as the [Tree] itself.
 */
 //go:nosplit
-func (self class) SetAutoTranslateMode(column int64, mode gdclass.NodeAutoTranslateMode) { //gd:TreeItem.set_auto_translate_mode
+func (self class) SetAutoTranslateMode(column int64, mode Node.AutoTranslateMode) { //gd:TreeItem.set_auto_translate_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, mode)
@@ -1019,10 +1030,10 @@ func (self class) SetAutoTranslateMode(column int64, mode gdclass.NodeAutoTransl
 Returns the column's auto translate mode.
 */
 //go:nosplit
-func (self class) GetAutoTranslateMode(column int64) gdclass.NodeAutoTranslateMode { //gd:TreeItem.get_auto_translate_mode
+func (self class) GetAutoTranslateMode(column int64) Node.AutoTranslateMode { //gd:TreeItem.get_auto_translate_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	var r_ret = callframe.Ret[gdclass.NodeAutoTranslateMode](frame)
+	var r_ret = callframe.Ret[Node.AutoTranslateMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_auto_translate_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1156,7 +1167,7 @@ func (self class) GetText(column int64) String.Readable { //gd:TreeItem.get_text
 Sets item's text base writing direction.
 */
 //go:nosplit
-func (self class) SetTextDirection(column int64, direction gdclass.ControlTextDirection) { //gd:TreeItem.set_text_direction
+func (self class) SetTextDirection(column int64, direction Control.TextDirection) { //gd:TreeItem.set_text_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, direction)
@@ -1169,10 +1180,10 @@ func (self class) SetTextDirection(column int64, direction gdclass.ControlTextDi
 Returns item's text base writing direction.
 */
 //go:nosplit
-func (self class) GetTextDirection(column int64) gdclass.ControlTextDirection { //gd:TreeItem.get_text_direction
+func (self class) GetTextDirection(column int64) Control.TextDirection { //gd:TreeItem.get_text_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	var r_ret = callframe.Ret[gdclass.ControlTextDirection](frame)
+	var r_ret = callframe.Ret[Control.TextDirection](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_text_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1183,7 +1194,7 @@ func (self class) GetTextDirection(column int64) gdclass.ControlTextDirection { 
 Sets the autowrap mode in the given [param column]. If set to something other than [constant TextServer.AUTOWRAP_OFF], the text gets wrapped inside the cell's bounding rectangle.
 */
 //go:nosplit
-func (self class) SetAutowrapMode(column int64, autowrap_mode gdclass.TextServerAutowrapMode) { //gd:TreeItem.set_autowrap_mode
+func (self class) SetAutowrapMode(column int64, autowrap_mode TextServer.AutowrapMode) { //gd:TreeItem.set_autowrap_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, autowrap_mode)
@@ -1196,10 +1207,10 @@ func (self class) SetAutowrapMode(column int64, autowrap_mode gdclass.TextServer
 Returns the text autowrap mode in the given [param column]. By default it is [constant TextServer.AUTOWRAP_OFF].
 */
 //go:nosplit
-func (self class) GetAutowrapMode(column int64) gdclass.TextServerAutowrapMode { //gd:TreeItem.get_autowrap_mode
+func (self class) GetAutowrapMode(column int64) TextServer.AutowrapMode { //gd:TreeItem.get_autowrap_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	var r_ret = callframe.Ret[gdclass.TextServerAutowrapMode](frame)
+	var r_ret = callframe.Ret[TextServer.AutowrapMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_autowrap_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1210,7 +1221,7 @@ func (self class) GetAutowrapMode(column int64) gdclass.TextServerAutowrapMode {
 Sets the clipping behavior when the text exceeds the item's bounding rectangle in the given [param column].
 */
 //go:nosplit
-func (self class) SetTextOverrunBehavior(column int64, overrun_behavior gdclass.TextServerOverrunBehavior) { //gd:TreeItem.set_text_overrun_behavior
+func (self class) SetTextOverrunBehavior(column int64, overrun_behavior TextServer.OverrunBehavior) { //gd:TreeItem.set_text_overrun_behavior
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, overrun_behavior)
@@ -1223,10 +1234,10 @@ func (self class) SetTextOverrunBehavior(column int64, overrun_behavior gdclass.
 Returns the clipping behavior when the text exceeds the item's bounding rectangle in the given [param column]. By default it is [constant TextServer.OVERRUN_TRIM_ELLIPSIS].
 */
 //go:nosplit
-func (self class) GetTextOverrunBehavior(column int64) gdclass.TextServerOverrunBehavior { //gd:TreeItem.get_text_overrun_behavior
+func (self class) GetTextOverrunBehavior(column int64) TextServer.OverrunBehavior { //gd:TreeItem.get_text_overrun_behavior
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	var r_ret = callframe.Ret[gdclass.TextServerOverrunBehavior](frame)
+	var r_ret = callframe.Ret[TextServer.OverrunBehavior](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_text_overrun_behavior, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1237,7 +1248,7 @@ func (self class) GetTextOverrunBehavior(column int64) gdclass.TextServerOverrun
 Set BiDi algorithm override for the structured text. Has effect for cells that display text.
 */
 //go:nosplit
-func (self class) SetStructuredTextBidiOverride(column int64, parser gdclass.TextServerStructuredTextParser) { //gd:TreeItem.set_structured_text_bidi_override
+func (self class) SetStructuredTextBidiOverride(column int64, parser TextServer.StructuredTextParser) { //gd:TreeItem.set_structured_text_bidi_override
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, parser)
@@ -1250,10 +1261,10 @@ func (self class) SetStructuredTextBidiOverride(column int64, parser gdclass.Tex
 Returns the BiDi algorithm override set for this cell.
 */
 //go:nosplit
-func (self class) GetStructuredTextBidiOverride(column int64) gdclass.TextServerStructuredTextParser { //gd:TreeItem.get_structured_text_bidi_override
+func (self class) GetStructuredTextBidiOverride(column int64) TextServer.StructuredTextParser { //gd:TreeItem.get_structured_text_bidi_override
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	var r_ret = callframe.Ret[gdclass.TextServerStructuredTextParser](frame)
+	var r_ret = callframe.Ret[TextServer.StructuredTextParser](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_structured_text_bidi_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2195,7 +2206,7 @@ func (self class) GetTooltipText(column int64) String.Readable { //gd:TreeItem.g
 Sets the given column's text alignment. See [enum HorizontalAlignment] for possible values.
 */
 //go:nosplit
-func (self class) SetTextAlignment(column int64, text_alignment HorizontalAlignment) { //gd:TreeItem.set_text_alignment
+func (self class) SetTextAlignment(column int64, text_alignment GUI.HorizontalAlignment) { //gd:TreeItem.set_text_alignment
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, text_alignment)
@@ -2208,10 +2219,10 @@ func (self class) SetTextAlignment(column int64, text_alignment HorizontalAlignm
 Returns the given column's text alignment.
 */
 //go:nosplit
-func (self class) GetTextAlignment(column int64) HorizontalAlignment { //gd:TreeItem.get_text_alignment
+func (self class) GetTextAlignment(column int64) GUI.HorizontalAlignment { //gd:TreeItem.get_text_alignment
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	var r_ret = callframe.Ret[HorizontalAlignment](frame)
+	var r_ret = callframe.Ret[GUI.HorizontalAlignment](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TreeItem.Bind_get_text_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2545,7 +2556,7 @@ func init() {
 	gdclass.Register("TreeItem", func(ptr gd.Object) any { return [1]gdclass.TreeItem{*(*gdclass.TreeItem)(unsafe.Pointer(&ptr))} })
 }
 
-type TreeCellMode = gdclass.TreeItemTreeCellMode //gd:TreeItem.TreeCellMode
+type TreeCellMode int //gd:TreeItem.TreeCellMode
 
 const (
 	/*Cell shows a string label, optionally with an icon. When editable, the text can be edited using a [LineEdit], or a [TextEdit] popup if [method set_edit_multiline] is used.*/
@@ -2560,19 +2571,6 @@ const (
 	/*Cell shows as a clickable button. It will display an arrow similar to [OptionButton], but doesn't feature a dropdown (for that you can use [constant CELL_MODE_RANGE]). Clicking the button emits the [signal Tree.item_edited] signal. The button is flat by default, you can use [method set_custom_as_button] to display it with a [StyleBox].
 	  This mode also supports custom drawing using [method set_custom_draw_callback].*/
 	CellModeCustom TreeCellMode = 4
-)
-
-type HorizontalAlignment int
-
-const (
-	/*Horizontal left alignment, usually for text-derived classes.*/
-	HorizontalAlignmentLeft HorizontalAlignment = 0
-	/*Horizontal center alignment, usually for text-derived classes.*/
-	HorizontalAlignmentCenter HorizontalAlignment = 1
-	/*Horizontal right alignment, usually for text-derived classes.*/
-	HorizontalAlignmentRight HorizontalAlignment = 2
-	/*Expand row to fit width, usually for text-derived classes.*/
-	HorizontalAlignmentFill HorizontalAlignment = 3
 )
 
 type RangeConfig struct {

@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Button"
 import "graphics.gd/classdb/Camera3D"
 import "graphics.gd/classdb/ConfigFile"
@@ -49,6 +50,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -64,6 +69,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -76,6 +82,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -998,7 +1005,7 @@ Adds a custom control to a container (see [enum CustomControlContainer]). There 
 Please remember that you have to manage the visibility of your custom controls yourself (and likely hide it after adding it).
 When your plugin is deactivated, make sure to remove your custom control with [method remove_control_from_container] and free it with [method Node.queue_free].
 */
-func (self Instance) AddControlToContainer(container gdclass.EditorPluginCustomControlContainer, control Control.Instance) { //gd:EditorPlugin.add_control_to_container
+func (self Instance) AddControlToContainer(container CustomControlContainer, control Control.Instance) { //gd:EditorPlugin.add_control_to_container
 	Advanced(self).AddControlToContainer(container, control)
 }
 
@@ -1024,7 +1031,7 @@ If the dock is repositioned and as long as the plugin is active, the editor will
 When your plugin is deactivated, make sure to remove your custom control with [method remove_control_from_docks] and free it with [method Node.queue_free].
 Optionally, you can specify a shortcut parameter. When pressed, this shortcut will toggle the dock's visibility once it's moved to the bottom panel (this shortcut does not affect the dock otherwise). See the default editor bottom panel shortcuts in the Editor Settings for inspiration. Per convention, they all use [kbd]Alt[/kbd] modifier.
 */
-func (self Instance) AddControlToDock(slot gdclass.EditorPluginDockSlot, control Control.Instance) { //gd:EditorPlugin.add_control_to_dock
+func (self Instance) AddControlToDock(slot DockSlot, control Control.Instance) { //gd:EditorPlugin.add_control_to_dock
 	Advanced(self).AddControlToDock(slot, control, [1]Shortcut.Instance{}[0])
 }
 
@@ -1034,7 +1041,7 @@ If the dock is repositioned and as long as the plugin is active, the editor will
 When your plugin is deactivated, make sure to remove your custom control with [method remove_control_from_docks] and free it with [method Node.queue_free].
 Optionally, you can specify a shortcut parameter. When pressed, this shortcut will toggle the dock's visibility once it's moved to the bottom panel (this shortcut does not affect the dock otherwise). See the default editor bottom panel shortcuts in the Editor Settings for inspiration. Per convention, they all use [kbd]Alt[/kbd] modifier.
 */
-func (self Expanded) AddControlToDock(slot gdclass.EditorPluginDockSlot, control Control.Instance, shortcut Shortcut.Instance) { //gd:EditorPlugin.add_control_to_dock
+func (self Expanded) AddControlToDock(slot DockSlot, control Control.Instance, shortcut Shortcut.Instance) { //gd:EditorPlugin.add_control_to_dock
 	Advanced(self).AddControlToDock(slot, control, shortcut)
 }
 
@@ -1055,7 +1062,7 @@ func (self Instance) RemoveControlFromBottomPanel(control Control.Instance) { //
 /*
 Removes the control from the specified container. You have to manually [method Node.queue_free] the control.
 */
-func (self Instance) RemoveControlFromContainer(container gdclass.EditorPluginCustomControlContainer, control Control.Instance) { //gd:EditorPlugin.remove_control_from_container
+func (self Instance) RemoveControlFromContainer(container CustomControlContainer, control Control.Instance) { //gd:EditorPlugin.remove_control_from_container
 	Advanced(self).RemoveControlFromContainer(container, control)
 }
 
@@ -1371,7 +1378,7 @@ func (self Instance) SetForceDrawOverForwardingEnabled() { //gd:EditorPlugin.set
 Adds a plugin to the context menu. [param slot] is the context menu where the plugin will be added.
 See [enum EditorContextMenuPlugin.ContextMenuSlot] for available context menus. A plugin instance can belong only to a single context menu slot.
 */
-func (self Instance) AddContextMenuPlugin(slot gdclass.EditorContextMenuPluginContextMenuSlot, plugin EditorContextMenuPlugin.Instance) { //gd:EditorPlugin.add_context_menu_plugin
+func (self Instance) AddContextMenuPlugin(slot EditorContextMenuPlugin.ContextMenuSlot, plugin EditorContextMenuPlugin.Instance) { //gd:EditorPlugin.add_context_menu_plugin
 	Advanced(self).AddContextMenuPlugin(slot, plugin)
 }
 
@@ -2030,7 +2037,7 @@ Please remember that you have to manage the visibility of your custom controls y
 When your plugin is deactivated, make sure to remove your custom control with [method remove_control_from_container] and free it with [method Node.queue_free].
 */
 //go:nosplit
-func (self class) AddControlToContainer(container gdclass.EditorPluginCustomControlContainer, control [1]gdclass.Control) { //gd:EditorPlugin.add_control_to_container
+func (self class) AddControlToContainer(container CustomControlContainer, control [1]gdclass.Control) { //gd:EditorPlugin.add_control_to_container
 	var frame = callframe.New()
 	callframe.Arg(frame, container)
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0]))
@@ -2063,7 +2070,7 @@ When your plugin is deactivated, make sure to remove your custom control with [m
 Optionally, you can specify a shortcut parameter. When pressed, this shortcut will toggle the dock's visibility once it's moved to the bottom panel (this shortcut does not affect the dock otherwise). See the default editor bottom panel shortcuts in the Editor Settings for inspiration. Per convention, they all use [kbd]Alt[/kbd] modifier.
 */
 //go:nosplit
-func (self class) AddControlToDock(slot gdclass.EditorPluginDockSlot, control [1]gdclass.Control, shortcut [1]gdclass.Shortcut) { //gd:EditorPlugin.add_control_to_dock
+func (self class) AddControlToDock(slot DockSlot, control [1]gdclass.Control, shortcut [1]gdclass.Shortcut) { //gd:EditorPlugin.add_control_to_dock
 	var frame = callframe.New()
 	callframe.Arg(frame, slot)
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0]))
@@ -2101,7 +2108,7 @@ func (self class) RemoveControlFromBottomPanel(control [1]gdclass.Control) { //g
 Removes the control from the specified container. You have to manually [method Node.queue_free] the control.
 */
 //go:nosplit
-func (self class) RemoveControlFromContainer(container gdclass.EditorPluginCustomControlContainer, control [1]gdclass.Control) { //gd:EditorPlugin.remove_control_from_container
+func (self class) RemoveControlFromContainer(container CustomControlContainer, control [1]gdclass.Control) { //gd:EditorPlugin.remove_control_from_container
 	var frame = callframe.New()
 	callframe.Arg(frame, container)
 	callframe.Arg(frame, pointers.Get(control[0])[0])
@@ -2583,7 +2590,7 @@ Adds a plugin to the context menu. [param slot] is the context menu where the pl
 See [enum EditorContextMenuPlugin.ContextMenuSlot] for available context menus. A plugin instance can belong only to a single context menu slot.
 */
 //go:nosplit
-func (self class) AddContextMenuPlugin(slot gdclass.EditorContextMenuPluginContextMenuSlot, plugin [1]gdclass.EditorContextMenuPlugin) { //gd:EditorPlugin.add_context_menu_plugin
+func (self class) AddContextMenuPlugin(slot EditorContextMenuPlugin.ContextMenuSlot, plugin [1]gdclass.EditorContextMenuPlugin) { //gd:EditorPlugin.add_context_menu_plugin
 	var frame = callframe.New()
 	callframe.Arg(frame, slot)
 	callframe.Arg(frame, pointers.Get(plugin[0])[0])
@@ -2814,7 +2821,7 @@ func init() {
 	})
 }
 
-type CustomControlContainer = gdclass.EditorPluginCustomControlContainer //gd:EditorPlugin.CustomControlContainer
+type CustomControlContainer int //gd:EditorPlugin.CustomControlContainer
 
 const (
 	/*Main editor toolbar, next to play buttons.*/
@@ -2843,7 +2850,7 @@ const (
 	ContainerProjectSettingTabRight CustomControlContainer = 11
 )
 
-type DockSlot = gdclass.EditorPluginDockSlot //gd:EditorPlugin.DockSlot
+type DockSlot int //gd:EditorPlugin.DockSlot
 
 const (
 	/*Dock slot, left side, upper-left (empty in default layout).*/
@@ -2866,7 +2873,7 @@ const (
 	DockSlotMax DockSlot = 8
 )
 
-type AfterGUIInput = gdclass.EditorPluginAfterGUIInput //gd:EditorPlugin.AfterGUIInput
+type AfterGUIInput int //gd:EditorPlugin.AfterGUIInput
 
 const (
 	/*Forwards the [InputEvent] to other EditorPlugins.*/

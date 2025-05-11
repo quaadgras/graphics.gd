@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Material"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/Texture2D"
@@ -30,6 +31,10 @@ import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -45,6 +50,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -57,6 +63,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -151,11 +158,11 @@ func (self Instance) SetEmissionShapeScale(value Vector3.XYZ) {
 	class(self).SetEmissionShapeScale(Vector3.XYZ(value))
 }
 
-func (self Instance) EmissionShape() gdclass.ParticleProcessMaterialEmissionShape {
-	return gdclass.ParticleProcessMaterialEmissionShape(class(self).GetEmissionShape())
+func (self Instance) EmissionShape() EmissionShape {
+	return EmissionShape(class(self).GetEmissionShape())
 }
 
-func (self Instance) SetEmissionShape(value gdclass.ParticleProcessMaterialEmissionShape) {
+func (self Instance) SetEmissionShape(value EmissionShape) {
 	class(self).SetEmissionShape(value)
 }
 
@@ -919,11 +926,11 @@ func (self Instance) SetTurbulenceInfluenceOverLife(value Texture2D.Instance) {
 	class(self).SetParamTexture(12, value)
 }
 
-func (self Instance) CollisionMode() gdclass.ParticleProcessMaterialCollisionMode {
-	return gdclass.ParticleProcessMaterialCollisionMode(class(self).GetCollisionMode())
+func (self Instance) CollisionMode() CollisionMode {
+	return CollisionMode(class(self).GetCollisionMode())
 }
 
-func (self Instance) SetCollisionMode(value gdclass.ParticleProcessMaterialCollisionMode) {
+func (self Instance) SetCollisionMode(value CollisionMode) {
 	class(self).SetCollisionMode(value)
 }
 
@@ -951,11 +958,11 @@ func (self Instance) SetCollisionUseScale(value bool) {
 	class(self).SetCollisionUseScale(value)
 }
 
-func (self Instance) SubEmitterMode() gdclass.ParticleProcessMaterialSubEmitterMode {
-	return gdclass.ParticleProcessMaterialSubEmitterMode(class(self).GetSubEmitterMode())
+func (self Instance) SubEmitterMode() SubEmitterMode {
+	return SubEmitterMode(class(self).GetSubEmitterMode())
 }
 
-func (self Instance) SetSubEmitterMode(value gdclass.ParticleProcessMaterialSubEmitterMode) {
+func (self Instance) SetSubEmitterMode(value SubEmitterMode) {
 	class(self).SetSubEmitterMode(value)
 }
 
@@ -1080,7 +1087,7 @@ Sets the minimum and maximum values of the given [param param].
 The [code]x[/code] component of the argument vector corresponds to minimum and the [code]y[/code] component corresponds to maximum.
 */
 //go:nosplit
-func (self class) SetParam(param gdclass.ParticleProcessMaterialParameter, value Vector2.XY) { //gd:ParticleProcessMaterial.set_param
+func (self class) SetParam(param Parameter, value Vector2.XY) { //gd:ParticleProcessMaterial.set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, value)
@@ -1094,7 +1101,7 @@ Returns the minimum and maximum values of the given [param param] as a vector.
 The [code]x[/code] component of the returned vector corresponds to minimum and the [code]y[/code] component corresponds to maximum.
 */
 //go:nosplit
-func (self class) GetParam(param gdclass.ParticleProcessMaterialParameter) Vector2.XY { //gd:ParticleProcessMaterial.get_param
+func (self class) GetParam(param Parameter) Vector2.XY { //gd:ParticleProcessMaterial.get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[Vector2.XY](frame)
@@ -1108,7 +1115,7 @@ func (self class) GetParam(param gdclass.ParticleProcessMaterialParameter) Vecto
 Sets the minimum value range for the given parameter.
 */
 //go:nosplit
-func (self class) SetParamMin(param gdclass.ParticleProcessMaterialParameter, value float64) { //gd:ParticleProcessMaterial.set_param_min
+func (self class) SetParamMin(param Parameter, value float64) { //gd:ParticleProcessMaterial.set_param_min
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, value)
@@ -1121,7 +1128,7 @@ func (self class) SetParamMin(param gdclass.ParticleProcessMaterialParameter, va
 Returns the minimum value range for the given parameter.
 */
 //go:nosplit
-func (self class) GetParamMin(param gdclass.ParticleProcessMaterialParameter) float64 { //gd:ParticleProcessMaterial.get_param_min
+func (self class) GetParamMin(param Parameter) float64 { //gd:ParticleProcessMaterial.get_param_min
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[float64](frame)
@@ -1135,7 +1142,7 @@ func (self class) GetParamMin(param gdclass.ParticleProcessMaterialParameter) fl
 Sets the maximum value range for the given parameter.
 */
 //go:nosplit
-func (self class) SetParamMax(param gdclass.ParticleProcessMaterialParameter, value float64) { //gd:ParticleProcessMaterial.set_param_max
+func (self class) SetParamMax(param Parameter, value float64) { //gd:ParticleProcessMaterial.set_param_max
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, value)
@@ -1148,7 +1155,7 @@ func (self class) SetParamMax(param gdclass.ParticleProcessMaterialParameter, va
 Returns the maximum value range for the given parameter.
 */
 //go:nosplit
-func (self class) GetParamMax(param gdclass.ParticleProcessMaterialParameter) float64 { //gd:ParticleProcessMaterial.get_param_max
+func (self class) GetParamMax(param Parameter) float64 { //gd:ParticleProcessMaterial.get_param_max
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[float64](frame)
@@ -1162,7 +1169,7 @@ func (self class) GetParamMax(param gdclass.ParticleProcessMaterialParameter) fl
 Sets the [Texture2D] for the specified [enum Parameter].
 */
 //go:nosplit
-func (self class) SetParamTexture(param gdclass.ParticleProcessMaterialParameter, texture [1]gdclass.Texture2D) { //gd:ParticleProcessMaterial.set_param_texture
+func (self class) SetParamTexture(param Parameter, texture [1]gdclass.Texture2D) { //gd:ParticleProcessMaterial.set_param_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
@@ -1175,7 +1182,7 @@ func (self class) SetParamTexture(param gdclass.ParticleProcessMaterialParameter
 Returns the [Texture2D] used by the specified parameter.
 */
 //go:nosplit
-func (self class) GetParamTexture(param gdclass.ParticleProcessMaterialParameter) [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_param_texture
+func (self class) GetParamTexture(param Parameter) [1]gdclass.Texture2D { //gd:ParticleProcessMaterial.get_param_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -1303,7 +1310,7 @@ func (self class) GetVelocityLimitCurve() [1]gdclass.Texture2D { //gd:ParticlePr
 If [code]true[/code], enables the specified particle flag. See [enum ParticleFlags] for options.
 */
 //go:nosplit
-func (self class) SetParticleFlag(particle_flag gdclass.ParticleProcessMaterialParticleFlags, enable bool) { //gd:ParticleProcessMaterial.set_particle_flag
+func (self class) SetParticleFlag(particle_flag ParticleFlags, enable bool) { //gd:ParticleProcessMaterial.set_particle_flag
 	var frame = callframe.New()
 	callframe.Arg(frame, particle_flag)
 	callframe.Arg(frame, enable)
@@ -1316,7 +1323,7 @@ func (self class) SetParticleFlag(particle_flag gdclass.ParticleProcessMaterialP
 Returns [code]true[/code] if the specified particle flag is enabled. See [enum ParticleFlags] for options.
 */
 //go:nosplit
-func (self class) GetParticleFlag(particle_flag gdclass.ParticleProcessMaterialParticleFlags) bool { //gd:ParticleProcessMaterial.get_particle_flag
+func (self class) GetParticleFlag(particle_flag ParticleFlags) bool { //gd:ParticleProcessMaterial.get_particle_flag
 	var frame = callframe.New()
 	callframe.Arg(frame, particle_flag)
 	var r_ret = callframe.Ret[bool](frame)
@@ -1346,7 +1353,7 @@ func (self class) GetVelocityPivot() Vector3.XYZ { //gd:ParticleProcessMaterial.
 }
 
 //go:nosplit
-func (self class) SetEmissionShape(shape gdclass.ParticleProcessMaterialEmissionShape) { //gd:ParticleProcessMaterial.set_emission_shape
+func (self class) SetEmissionShape(shape EmissionShape) { //gd:ParticleProcessMaterial.set_emission_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
 	var r_ret = callframe.Nil
@@ -1355,9 +1362,9 @@ func (self class) SetEmissionShape(shape gdclass.ParticleProcessMaterialEmission
 }
 
 //go:nosplit
-func (self class) GetEmissionShape() gdclass.ParticleProcessMaterialEmissionShape { //gd:ParticleProcessMaterial.get_emission_shape
+func (self class) GetEmissionShape() EmissionShape { //gd:ParticleProcessMaterial.get_emission_shape
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ParticleProcessMaterialEmissionShape](frame)
+	var r_ret = callframe.Ret[EmissionShape](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_emission_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1745,9 +1752,9 @@ func (self class) GetLifetimeRandomness() float64 { //gd:ParticleProcessMaterial
 }
 
 //go:nosplit
-func (self class) GetSubEmitterMode() gdclass.ParticleProcessMaterialSubEmitterMode { //gd:ParticleProcessMaterial.get_sub_emitter_mode
+func (self class) GetSubEmitterMode() SubEmitterMode { //gd:ParticleProcessMaterial.get_sub_emitter_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ParticleProcessMaterialSubEmitterMode](frame)
+	var r_ret = callframe.Ret[SubEmitterMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_sub_emitter_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1755,7 +1762,7 @@ func (self class) GetSubEmitterMode() gdclass.ParticleProcessMaterialSubEmitterM
 }
 
 //go:nosplit
-func (self class) SetSubEmitterMode(mode gdclass.ParticleProcessMaterialSubEmitterMode) { //gd:ParticleProcessMaterial.set_sub_emitter_mode
+func (self class) SetSubEmitterMode(mode SubEmitterMode) { //gd:ParticleProcessMaterial.set_sub_emitter_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -1878,7 +1885,7 @@ func (self class) IsAttractorInteractionEnabled() bool { //gd:ParticleProcessMat
 }
 
 //go:nosplit
-func (self class) SetCollisionMode(mode gdclass.ParticleProcessMaterialCollisionMode) { //gd:ParticleProcessMaterial.set_collision_mode
+func (self class) SetCollisionMode(mode CollisionMode) { //gd:ParticleProcessMaterial.set_collision_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -1887,9 +1894,9 @@ func (self class) SetCollisionMode(mode gdclass.ParticleProcessMaterialCollision
 }
 
 //go:nosplit
-func (self class) GetCollisionMode() gdclass.ParticleProcessMaterialCollisionMode { //gd:ParticleProcessMaterial.get_collision_mode
+func (self class) GetCollisionMode() CollisionMode { //gd:ParticleProcessMaterial.get_collision_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ParticleProcessMaterialCollisionMode](frame)
+	var r_ret = callframe.Ret[CollisionMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ParticleProcessMaterial.Bind_get_collision_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2004,7 +2011,7 @@ func init() {
 	})
 }
 
-type Parameter = gdclass.ParticleProcessMaterialParameter //gd:ParticleProcessMaterial.Parameter
+type Parameter int //gd:ParticleProcessMaterial.Parameter
 
 const (
 	/*Use with [method set_param_min], [method set_param_max], and [method set_param_texture] to set initial velocity properties.*/
@@ -2047,7 +2054,7 @@ const (
 	ParamTurbInfluenceOverLife Parameter = 12
 )
 
-type ParticleFlags = gdclass.ParticleProcessMaterialParticleFlags //gd:ParticleProcessMaterial.ParticleFlags
+type ParticleFlags int //gd:ParticleProcessMaterial.ParticleFlags
 
 const (
 	/*Use with [method set_particle_flag] to set [member particle_flag_align_y].*/
@@ -2061,7 +2068,7 @@ const (
 	ParticleFlagMax ParticleFlags = 4
 )
 
-type EmissionShape = gdclass.ParticleProcessMaterialEmissionShape //gd:ParticleProcessMaterial.EmissionShape
+type EmissionShape int //gd:ParticleProcessMaterial.EmissionShape
 
 const (
 	/*All particles will be emitted from a single point.*/
@@ -2082,7 +2089,7 @@ const (
 	EmissionShapeMax EmissionShape = 7
 )
 
-type SubEmitterMode = gdclass.ParticleProcessMaterialSubEmitterMode //gd:ParticleProcessMaterial.SubEmitterMode
+type SubEmitterMode int //gd:ParticleProcessMaterial.SubEmitterMode
 
 const (
 	SubEmitterDisabled    SubEmitterMode = 0
@@ -2094,7 +2101,7 @@ const (
 	SubEmitterMax SubEmitterMode = 5
 )
 
-type CollisionMode = gdclass.ParticleProcessMaterialCollisionMode //gd:ParticleProcessMaterial.CollisionMode
+type CollisionMode int //gd:ParticleProcessMaterial.CollisionMode
 
 const (
 	/*No collision for particles. Particles will go through [GPUParticlesCollision3D] nodes.*/

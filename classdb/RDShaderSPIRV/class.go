@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/Rendering"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -25,6 +27,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -40,6 +46,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -52,6 +59,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -175,7 +183,7 @@ func (self Instance) SetCompileErrorCompute(value string) {
 Sets the SPIR-V [param bytecode] for the given shader [param stage]. Equivalent to setting one of [member bytecode_compute], [member bytecode_fragment], [member bytecode_tesselation_control], [member bytecode_tesselation_evaluation], [member bytecode_vertex].
 */
 //go:nosplit
-func (self class) SetStageBytecode(stage gdclass.RenderingDeviceShaderStage, bytecode Packed.Bytes) { //gd:RDShaderSPIRV.set_stage_bytecode
+func (self class) SetStageBytecode(stage Rendering.ShaderStage, bytecode Packed.Bytes) { //gd:RDShaderSPIRV.set_stage_bytecode
 	var frame = callframe.New()
 	callframe.Arg(frame, stage)
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](bytecode))))
@@ -188,7 +196,7 @@ func (self class) SetStageBytecode(stage gdclass.RenderingDeviceShaderStage, byt
 Equivalent to getting one of [member bytecode_compute], [member bytecode_fragment], [member bytecode_tesselation_control], [member bytecode_tesselation_evaluation], [member bytecode_vertex].
 */
 //go:nosplit
-func (self class) GetStageBytecode(stage gdclass.RenderingDeviceShaderStage) Packed.Bytes { //gd:RDShaderSPIRV.get_stage_bytecode
+func (self class) GetStageBytecode(stage Rendering.ShaderStage) Packed.Bytes { //gd:RDShaderSPIRV.get_stage_bytecode
 	var frame = callframe.New()
 	callframe.Arg(frame, stage)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
@@ -202,7 +210,7 @@ func (self class) GetStageBytecode(stage gdclass.RenderingDeviceShaderStage) Pac
 Sets the compilation error message for the given shader [param stage] to [param compile_error]. Equivalent to setting one of [member compile_error_compute], [member compile_error_fragment], [member compile_error_tesselation_control], [member compile_error_tesselation_evaluation], [member compile_error_vertex].
 */
 //go:nosplit
-func (self class) SetStageCompileError(stage gdclass.RenderingDeviceShaderStage, compile_error String.Readable) { //gd:RDShaderSPIRV.set_stage_compile_error
+func (self class) SetStageCompileError(stage Rendering.ShaderStage, compile_error String.Readable) { //gd:RDShaderSPIRV.set_stage_compile_error
 	var frame = callframe.New()
 	callframe.Arg(frame, stage)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(compile_error)))
@@ -215,7 +223,7 @@ func (self class) SetStageCompileError(stage gdclass.RenderingDeviceShaderStage,
 Returns the compilation error message for the given shader [param stage]. Equivalent to getting one of [member compile_error_compute], [member compile_error_fragment], [member compile_error_tesselation_control], [member compile_error_tesselation_evaluation], [member compile_error_vertex].
 */
 //go:nosplit
-func (self class) GetStageCompileError(stage gdclass.RenderingDeviceShaderStage) String.Readable { //gd:RDShaderSPIRV.get_stage_compile_error
+func (self class) GetStageCompileError(stage Rendering.ShaderStage) String.Readable { //gd:RDShaderSPIRV.get_stage_compile_error
 	var frame = callframe.New()
 	callframe.Arg(frame, stage)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)

@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/BaseButton"
 import "graphics.gd/classdb/BitMap"
 import "graphics.gd/classdb/CanvasItem"
@@ -30,6 +31,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -45,6 +50,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -57,6 +63,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -152,11 +159,11 @@ func (self Instance) SetIgnoreTextureSize(value bool) {
 	class(self).SetIgnoreTextureSize(value)
 }
 
-func (self Instance) StretchMode() gdclass.TextureButtonStretchMode {
-	return gdclass.TextureButtonStretchMode(class(self).GetStretchMode())
+func (self Instance) StretchMode() StretchMode {
+	return StretchMode(class(self).GetStretchMode())
 }
 
-func (self Instance) SetStretchMode(value gdclass.TextureButtonStretchMode) {
+func (self Instance) SetStretchMode(value StretchMode) {
 	class(self).SetStretchMode(value)
 }
 
@@ -240,7 +247,7 @@ func (self class) SetIgnoreTextureSize(ignore bool) { //gd:TextureButton.set_ign
 }
 
 //go:nosplit
-func (self class) SetStretchMode(mode gdclass.TextureButtonStretchMode) { //gd:TextureButton.set_stretch_mode
+func (self class) SetStretchMode(mode StretchMode) { //gd:TextureButton.set_stretch_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -357,9 +364,9 @@ func (self class) GetIgnoreTextureSize() bool { //gd:TextureButton.get_ignore_te
 }
 
 //go:nosplit
-func (self class) GetStretchMode() gdclass.TextureButtonStretchMode { //gd:TextureButton.get_stretch_mode
+func (self class) GetStretchMode() StretchMode { //gd:TextureButton.get_stretch_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TextureButtonStretchMode](frame)
+	var r_ret = callframe.Ret[StretchMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureButton.Bind_get_stretch_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -410,7 +417,7 @@ func init() {
 	})
 }
 
-type StretchMode = gdclass.TextureButtonStretchMode //gd:TextureButton.StretchMode
+type StretchMode int //gd:TextureButton.StretchMode
 
 const (
 	/*Scale to fit the node's bounding rectangle.*/

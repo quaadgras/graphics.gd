@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -27,6 +28,10 @@ import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -42,6 +47,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -54,6 +60,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -284,7 +291,7 @@ GD.Print((Variant)polygon); // Prints [(50, 50), (150, 50), (150, 150), (50, 150
 [/csharp]
 [/codeblocks]
 */
-func OffsetPolygon(polygon []Vector2.XY, delta Float.X, join_type gdclass.Geometry2DPolyJoinType) [][]Vector2.XY { //gd:Geometry2D.offset_polygon
+func OffsetPolygon(polygon []Vector2.XY, delta Float.X, join_type PolyJoinType) [][]Vector2.XY { //gd:Geometry2D.offset_polygon
 	once.Do(singleton)
 	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(Advanced().OffsetPolygon(Packed.New(polygon...), float64(delta), join_type))))
 }
@@ -309,7 +316,7 @@ GD.Print((Variant)polygon); // Prints [(50, 50), (150, 50), (150, 150), (50, 150
 [/csharp]
 [/codeblocks]
 */
-func OffsetPolygonOptions(polygon []Vector2.XY, delta Float.X, join_type gdclass.Geometry2DPolyJoinType) [][]Vector2.XY { //gd:Geometry2D.offset_polygon
+func OffsetPolygonOptions(polygon []Vector2.XY, delta Float.X, join_type PolyJoinType) [][]Vector2.XY { //gd:Geometry2D.offset_polygon
 	once.Do(singleton)
 	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(Advanced().OffsetPolygon(Packed.New(polygon...), float64(delta), join_type))))
 }
@@ -320,7 +327,7 @@ Each polygon's vertices will be rounded as determined by [param join_type], see 
 Each polygon's endpoints will be rounded as determined by [param end_type], see [enum PolyEndType].
 The operation may result in an outer polygon (boundary) and inner polygon (hole) produced which could be distinguished by calling [method is_polygon_clockwise].
 */
-func OffsetPolyline(polyline []Vector2.XY, delta Float.X, join_type gdclass.Geometry2DPolyJoinType) [][]Vector2.XY { //gd:Geometry2D.offset_polyline
+func OffsetPolyline(polyline []Vector2.XY, delta Float.X, join_type PolyJoinType) [][]Vector2.XY { //gd:Geometry2D.offset_polyline
 	once.Do(singleton)
 	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(Advanced().OffsetPolyline(Packed.New(polyline...), float64(delta), join_type, 3))))
 }
@@ -331,7 +338,7 @@ Each polygon's vertices will be rounded as determined by [param join_type], see 
 Each polygon's endpoints will be rounded as determined by [param end_type], see [enum PolyEndType].
 The operation may result in an outer polygon (boundary) and inner polygon (hole) produced which could be distinguished by calling [method is_polygon_clockwise].
 */
-func OffsetPolylineOptions(polyline []Vector2.XY, delta Float.X, join_type gdclass.Geometry2DPolyJoinType, end_type gdclass.Geometry2DPolyEndType) [][]Vector2.XY { //gd:Geometry2D.offset_polyline
+func OffsetPolylineOptions(polyline []Vector2.XY, delta Float.X, join_type PolyJoinType, end_type PolyEndType) [][]Vector2.XY { //gd:Geometry2D.offset_polyline
 	once.Do(singleton)
 	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(Advanced().OffsetPolyline(Packed.New(polyline...), float64(delta), join_type, end_type))))
 }
@@ -736,7 +743,7 @@ GD.Print((Variant)polygon); // Prints [(50, 50), (150, 50), (150, 150), (50, 150
 [/codeblocks]
 */
 //go:nosplit
-func (self class) OffsetPolygon(polygon Packed.Array[Vector2.XY], delta float64, join_type gdclass.Geometry2DPolyJoinType) Array.Contains[Packed.Array[Vector2.XY]] { //gd:Geometry2D.offset_polygon
+func (self class) OffsetPolygon(polygon Packed.Array[Vector2.XY], delta float64, join_type PolyJoinType) Array.Contains[Packed.Array[Vector2.XY]] { //gd:Geometry2D.offset_polygon
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon)))
 	callframe.Arg(frame, delta)
@@ -755,7 +762,7 @@ Each polygon's endpoints will be rounded as determined by [param end_type], see 
 The operation may result in an outer polygon (boundary) and inner polygon (hole) produced which could be distinguished by calling [method is_polygon_clockwise].
 */
 //go:nosplit
-func (self class) OffsetPolyline(polyline Packed.Array[Vector2.XY], delta float64, join_type gdclass.Geometry2DPolyJoinType, end_type gdclass.Geometry2DPolyEndType) Array.Contains[Packed.Array[Vector2.XY]] { //gd:Geometry2D.offset_polyline
+func (self class) OffsetPolyline(polyline Packed.Array[Vector2.XY], delta float64, join_type PolyJoinType, end_type PolyEndType) Array.Contains[Packed.Array[Vector2.XY]] { //gd:Geometry2D.offset_polyline
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polyline)))
 	callframe.Arg(frame, delta)
@@ -819,7 +826,7 @@ func init() {
 	gdclass.Register("Geometry2D", func(ptr gd.Object) any { return [1]gdclass.Geometry2D{*(*gdclass.Geometry2D)(unsafe.Pointer(&ptr))} })
 }
 
-type PolyBooleanOperation = gdclass.Geometry2DPolyBooleanOperation //gd:Geometry2D.PolyBooleanOperation
+type PolyBooleanOperation int //gd:Geometry2D.PolyBooleanOperation
 
 const (
 	/*Create regions where either subject or clip polygons (or both) are filled.*/
@@ -832,7 +839,7 @@ const (
 	OperationXor PolyBooleanOperation = 3
 )
 
-type PolyJoinType = gdclass.Geometry2DPolyJoinType //gd:Geometry2D.PolyJoinType
+type PolyJoinType int //gd:Geometry2D.PolyJoinType
 
 const (
 	/*Squaring is applied uniformally at all convex edge joins at [code]1 * delta[/code].*/
@@ -843,7 +850,7 @@ const (
 	JoinMiter PolyJoinType = 2
 )
 
-type PolyEndType = gdclass.Geometry2DPolyEndType //gd:Geometry2D.PolyEndType
+type PolyEndType int //gd:Geometry2D.PolyEndType
 
 const (
 	/*Endpoints are joined using the [enum PolyJoinType] value and the path filled as a polygon.*/

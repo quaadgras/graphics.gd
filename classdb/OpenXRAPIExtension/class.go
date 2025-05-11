@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/OpenXRExtensionWrapperExtension"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -28,6 +29,10 @@ import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -43,6 +48,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,6 +61,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -369,8 +376,8 @@ func (self Instance) SetEmulateEnvironmentBlendModeAlphaBlend(enabled bool) { //
 /*
 Returns [enum OpenXRAPIExtension.OpenXRAlphaBlendModeSupport] denoting if [constant XRInterface.XR_ENV_BLEND_MODE_ALPHA_BLEND] is really supported, emulated or not supported at all.
 */
-func (self Instance) IsEnvironmentBlendModeAlphaSupported() gdclass.OpenXRAPIExtensionOpenXRAlphaBlendModeSupport { //gd:OpenXRAPIExtension.is_environment_blend_mode_alpha_supported
-	return gdclass.OpenXRAPIExtensionOpenXRAlphaBlendModeSupport(Advanced(self).IsEnvironmentBlendModeAlphaSupported())
+func (self Instance) IsEnvironmentBlendModeAlphaSupported() OpenXRAlphaBlendModeSupport { //gd:OpenXRAPIExtension.is_environment_blend_mode_alpha_supported
+	return OpenXRAlphaBlendModeSupport(Advanced(self).IsEnvironmentBlendModeAlphaSupported())
 }
 
 /*
@@ -947,9 +954,9 @@ func (self class) SetEmulateEnvironmentBlendModeAlphaBlend(enabled bool) { //gd:
 Returns [enum OpenXRAPIExtension.OpenXRAlphaBlendModeSupport] denoting if [constant XRInterface.XR_ENV_BLEND_MODE_ALPHA_BLEND] is really supported, emulated or not supported at all.
 */
 //go:nosplit
-func (self class) IsEnvironmentBlendModeAlphaSupported() gdclass.OpenXRAPIExtensionOpenXRAlphaBlendModeSupport { //gd:OpenXRAPIExtension.is_environment_blend_mode_alpha_supported
+func (self class) IsEnvironmentBlendModeAlphaSupported() OpenXRAlphaBlendModeSupport { //gd:OpenXRAPIExtension.is_environment_blend_mode_alpha_supported
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.OpenXRAPIExtensionOpenXRAlphaBlendModeSupport](frame)
+	var r_ret = callframe.Ret[OpenXRAlphaBlendModeSupport](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_is_environment_blend_mode_alpha_supported, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -985,7 +992,7 @@ func init() {
 	})
 }
 
-type OpenXRAlphaBlendModeSupport = gdclass.OpenXRAPIExtensionOpenXRAlphaBlendModeSupport //gd:OpenXRAPIExtension.OpenXRAlphaBlendModeSupport
+type OpenXRAlphaBlendModeSupport int //gd:OpenXRAPIExtension.OpenXRAlphaBlendModeSupport
 
 const (
 	/*Means that [constant XRInterface.XR_ENV_BLEND_MODE_ALPHA_BLEND] isn't supported at all.*/

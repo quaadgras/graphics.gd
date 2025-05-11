@@ -11,9 +11,11 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Material"
 import "graphics.gd/classdb/NavigationPolygon"
 import "graphics.gd/classdb/OccluderPolygon2D"
+import "graphics.gd/classdb/TileSet"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Color"
@@ -30,6 +32,10 @@ import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -45,6 +51,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -57,6 +64,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -252,21 +260,21 @@ func (self Instance) GetCollisionPolygonOneWayMargin(layer_id int, polygon_index
 /*
 Sets the tile's terrain bit for the given [param peering_bit] direction. To check that a direction is valid, use [method is_valid_terrain_peering_bit].
 */
-func (self Instance) SetTerrainPeeringBit(peering_bit gdclass.TileSetCellNeighbor, terrain int) { //gd:TileData.set_terrain_peering_bit
+func (self Instance) SetTerrainPeeringBit(peering_bit TileSet.CellNeighbor, terrain int) { //gd:TileData.set_terrain_peering_bit
 	Advanced(self).SetTerrainPeeringBit(peering_bit, int64(terrain))
 }
 
 /*
 Returns the tile's terrain bit for the given [param peering_bit] direction. To check that a direction is valid, use [method is_valid_terrain_peering_bit].
 */
-func (self Instance) GetTerrainPeeringBit(peering_bit gdclass.TileSetCellNeighbor) int { //gd:TileData.get_terrain_peering_bit
+func (self Instance) GetTerrainPeeringBit(peering_bit TileSet.CellNeighbor) int { //gd:TileData.get_terrain_peering_bit
 	return int(int(Advanced(self).GetTerrainPeeringBit(peering_bit)))
 }
 
 /*
 Returns whether the given [param peering_bit] direction is valid for this tile.
 */
-func (self Instance) IsValidTerrainPeeringBit(peering_bit gdclass.TileSetCellNeighbor) bool { //gd:TileData.is_valid_terrain_peering_bit
+func (self Instance) IsValidTerrainPeeringBit(peering_bit TileSet.CellNeighbor) bool { //gd:TileData.is_valid_terrain_peering_bit
 	return bool(Advanced(self).IsValidTerrainPeeringBit(peering_bit))
 }
 
@@ -938,7 +946,7 @@ func (self class) GetTerrain() int64 { //gd:TileData.get_terrain
 Sets the tile's terrain bit for the given [param peering_bit] direction. To check that a direction is valid, use [method is_valid_terrain_peering_bit].
 */
 //go:nosplit
-func (self class) SetTerrainPeeringBit(peering_bit gdclass.TileSetCellNeighbor, terrain int64) { //gd:TileData.set_terrain_peering_bit
+func (self class) SetTerrainPeeringBit(peering_bit TileSet.CellNeighbor, terrain int64) { //gd:TileData.set_terrain_peering_bit
 	var frame = callframe.New()
 	callframe.Arg(frame, peering_bit)
 	callframe.Arg(frame, terrain)
@@ -951,7 +959,7 @@ func (self class) SetTerrainPeeringBit(peering_bit gdclass.TileSetCellNeighbor, 
 Returns the tile's terrain bit for the given [param peering_bit] direction. To check that a direction is valid, use [method is_valid_terrain_peering_bit].
 */
 //go:nosplit
-func (self class) GetTerrainPeeringBit(peering_bit gdclass.TileSetCellNeighbor) int64 { //gd:TileData.get_terrain_peering_bit
+func (self class) GetTerrainPeeringBit(peering_bit TileSet.CellNeighbor) int64 { //gd:TileData.get_terrain_peering_bit
 	var frame = callframe.New()
 	callframe.Arg(frame, peering_bit)
 	var r_ret = callframe.Ret[int64](frame)
@@ -965,7 +973,7 @@ func (self class) GetTerrainPeeringBit(peering_bit gdclass.TileSetCellNeighbor) 
 Returns whether the given [param peering_bit] direction is valid for this tile.
 */
 //go:nosplit
-func (self class) IsValidTerrainPeeringBit(peering_bit gdclass.TileSetCellNeighbor) bool { //gd:TileData.is_valid_terrain_peering_bit
+func (self class) IsValidTerrainPeeringBit(peering_bit TileSet.CellNeighbor) bool { //gd:TileData.is_valid_terrain_peering_bit
 	var frame = callframe.New()
 	callframe.Arg(frame, peering_bit)
 	var r_ret = callframe.Ret[bool](frame)

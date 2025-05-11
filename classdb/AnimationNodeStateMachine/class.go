@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/AnimationNode"
 import "graphics.gd/classdb/AnimationNodeStateMachineTransition"
 import "graphics.gd/classdb/AnimationRootNode"
@@ -29,6 +30,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -44,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,6 +62,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -246,11 +253,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) StateMachineType() gdclass.AnimationNodeStateMachineStateMachineType {
-	return gdclass.AnimationNodeStateMachineStateMachineType(class(self).GetStateMachineType())
+func (self Instance) StateMachineType() StateMachineType {
+	return StateMachineType(class(self).GetStateMachineType())
 }
 
-func (self Instance) SetStateMachineType(value gdclass.AnimationNodeStateMachineStateMachineType) {
+func (self Instance) SetStateMachineType(value StateMachineType) {
 	class(self).SetStateMachineType(value)
 }
 
@@ -526,7 +533,7 @@ func (self class) GetGraphOffset() Vector2.XY { //gd:AnimationNodeStateMachine.g
 }
 
 //go:nosplit
-func (self class) SetStateMachineType(state_machine_type gdclass.AnimationNodeStateMachineStateMachineType) { //gd:AnimationNodeStateMachine.set_state_machine_type
+func (self class) SetStateMachineType(state_machine_type StateMachineType) { //gd:AnimationNodeStateMachine.set_state_machine_type
 	var frame = callframe.New()
 	callframe.Arg(frame, state_machine_type)
 	var r_ret = callframe.Nil
@@ -535,9 +542,9 @@ func (self class) SetStateMachineType(state_machine_type gdclass.AnimationNodeSt
 }
 
 //go:nosplit
-func (self class) GetStateMachineType() gdclass.AnimationNodeStateMachineStateMachineType { //gd:AnimationNodeStateMachine.get_state_machine_type
+func (self class) GetStateMachineType() StateMachineType { //gd:AnimationNodeStateMachine.get_state_machine_type
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.AnimationNodeStateMachineStateMachineType](frame)
+	var r_ret = callframe.Ret[StateMachineType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_state_machine_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -642,7 +649,7 @@ func init() {
 	})
 }
 
-type StateMachineType = gdclass.AnimationNodeStateMachineStateMachineType //gd:AnimationNodeStateMachine.StateMachineType
+type StateMachineType int //gd:AnimationNodeStateMachine.StateMachineType
 
 const (
 	/*Seeking to the beginning is treated as playing from the start state. Transition to the end state is treated as exiting the state machine.*/

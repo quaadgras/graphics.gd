@@ -1,6 +1,27 @@
 package gdtype
 
-import "strings"
+import (
+	"strings"
+
+	"graphics.gd/internal/gdjson"
+)
+
+func EnumNameOf(class, enum_name string) (string, string) {
+	if rename := gdjson.Renumeration[class+"."+enum_name]; rename != "" {
+		return rename, class + "." + enum_name
+	}
+	rename := enum_name
+	if enum_name == "MouseMode" {
+		rename = "MouseModeValue"
+	}
+	original := enum_name
+	if class != "" {
+		original = class + "." + original
+	}
+	rename = strings.Replace(rename, ".", "", -1)
+	enum_name = strings.Replace(enum_name, ".", "", -1)
+	return rename, original
+}
 
 func EngineTypeAsGoType(pkg, meta string, gdType string) string {
 	maybeInternal := func(name string) string {
@@ -25,8 +46,6 @@ func EngineTypeAsGoType(pkg, meta string, gdType string) string {
 		return "String.Name"
 	case "enum::GDExtension.InitializationLevel":
 		return maybeInternal("GDExtensionInitializationLevel")
-	case "enum::GDExtensionManager.LoadStatus":
-		return "gdclass.GDExtensionManagerLoadStatus"
 	case "PackedInt32Array":
 		return "Packed.Array[int32]"
 	case "PackedInt64Array":
@@ -123,12 +142,21 @@ func EngineTypeAsGoType(pkg, meta string, gdType string) string {
 		if strings.HasPrefix(gdType, "enum::") || strings.HasPrefix(gdType, "bitfield::") {
 			gdType = strings.TrimPrefix(gdType, "enum::")
 			gdType = strings.TrimPrefix(gdType, "bitfield::")
+			if rename := gdjson.Renumeration[gdType]; rename != "" {
+				gdType = rename
+			}
 			host, sub, hasHost := strings.Cut(gdType, ".")
-			if Name(host).IsBuiltin() {
-				return "gd." + host + sub
+			if sub == "MouseMode" {
+				sub = "MouseModeValue"
+			}
+			if host == "RenderingDevice" {
+				host = "Rendering"
 			}
 			if hasHost {
-				return "gdclass." + host + sub
+				if host == pkg {
+					return sub
+				}
+				return host + "." + sub
 			} else {
 				return gdType
 			}

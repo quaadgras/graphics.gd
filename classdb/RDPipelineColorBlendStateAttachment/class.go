@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/Rendering"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -24,6 +26,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -39,6 +45,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -51,6 +58,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -160,51 +168,51 @@ func (self Instance) SetEnableBlend(value bool) {
 	class(self).SetEnableBlend(value)
 }
 
-func (self Instance) SrcColorBlendFactor() gdclass.RenderingDeviceBlendFactor {
-	return gdclass.RenderingDeviceBlendFactor(class(self).GetSrcColorBlendFactor())
+func (self Instance) SrcColorBlendFactor() Rendering.BlendFactor {
+	return Rendering.BlendFactor(class(self).GetSrcColorBlendFactor())
 }
 
-func (self Instance) SetSrcColorBlendFactor(value gdclass.RenderingDeviceBlendFactor) {
+func (self Instance) SetSrcColorBlendFactor(value Rendering.BlendFactor) {
 	class(self).SetSrcColorBlendFactor(value)
 }
 
-func (self Instance) DstColorBlendFactor() gdclass.RenderingDeviceBlendFactor {
-	return gdclass.RenderingDeviceBlendFactor(class(self).GetDstColorBlendFactor())
+func (self Instance) DstColorBlendFactor() Rendering.BlendFactor {
+	return Rendering.BlendFactor(class(self).GetDstColorBlendFactor())
 }
 
-func (self Instance) SetDstColorBlendFactor(value gdclass.RenderingDeviceBlendFactor) {
+func (self Instance) SetDstColorBlendFactor(value Rendering.BlendFactor) {
 	class(self).SetDstColorBlendFactor(value)
 }
 
-func (self Instance) ColorBlendOp() gdclass.RenderingDeviceBlendOperation {
-	return gdclass.RenderingDeviceBlendOperation(class(self).GetColorBlendOp())
+func (self Instance) ColorBlendOp() Rendering.BlendOperation {
+	return Rendering.BlendOperation(class(self).GetColorBlendOp())
 }
 
-func (self Instance) SetColorBlendOp(value gdclass.RenderingDeviceBlendOperation) {
+func (self Instance) SetColorBlendOp(value Rendering.BlendOperation) {
 	class(self).SetColorBlendOp(value)
 }
 
-func (self Instance) SrcAlphaBlendFactor() gdclass.RenderingDeviceBlendFactor {
-	return gdclass.RenderingDeviceBlendFactor(class(self).GetSrcAlphaBlendFactor())
+func (self Instance) SrcAlphaBlendFactor() Rendering.BlendFactor {
+	return Rendering.BlendFactor(class(self).GetSrcAlphaBlendFactor())
 }
 
-func (self Instance) SetSrcAlphaBlendFactor(value gdclass.RenderingDeviceBlendFactor) {
+func (self Instance) SetSrcAlphaBlendFactor(value Rendering.BlendFactor) {
 	class(self).SetSrcAlphaBlendFactor(value)
 }
 
-func (self Instance) DstAlphaBlendFactor() gdclass.RenderingDeviceBlendFactor {
-	return gdclass.RenderingDeviceBlendFactor(class(self).GetDstAlphaBlendFactor())
+func (self Instance) DstAlphaBlendFactor() Rendering.BlendFactor {
+	return Rendering.BlendFactor(class(self).GetDstAlphaBlendFactor())
 }
 
-func (self Instance) SetDstAlphaBlendFactor(value gdclass.RenderingDeviceBlendFactor) {
+func (self Instance) SetDstAlphaBlendFactor(value Rendering.BlendFactor) {
 	class(self).SetDstAlphaBlendFactor(value)
 }
 
-func (self Instance) AlphaBlendOp() gdclass.RenderingDeviceBlendOperation {
-	return gdclass.RenderingDeviceBlendOperation(class(self).GetAlphaBlendOp())
+func (self Instance) AlphaBlendOp() Rendering.BlendOperation {
+	return Rendering.BlendOperation(class(self).GetAlphaBlendOp())
 }
 
-func (self Instance) SetAlphaBlendOp(value gdclass.RenderingDeviceBlendOperation) {
+func (self Instance) SetAlphaBlendOp(value Rendering.BlendOperation) {
 	class(self).SetAlphaBlendOp(value)
 }
 
@@ -271,7 +279,7 @@ func (self class) GetEnableBlend() bool { //gd:RDPipelineColorBlendStateAttachme
 }
 
 //go:nosplit
-func (self class) SetSrcColorBlendFactor(p_member gdclass.RenderingDeviceBlendFactor) { //gd:RDPipelineColorBlendStateAttachment.set_src_color_blend_factor
+func (self class) SetSrcColorBlendFactor(p_member Rendering.BlendFactor) { //gd:RDPipelineColorBlendStateAttachment.set_src_color_blend_factor
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -280,9 +288,9 @@ func (self class) SetSrcColorBlendFactor(p_member gdclass.RenderingDeviceBlendFa
 }
 
 //go:nosplit
-func (self class) GetSrcColorBlendFactor() gdclass.RenderingDeviceBlendFactor { //gd:RDPipelineColorBlendStateAttachment.get_src_color_blend_factor
+func (self class) GetSrcColorBlendFactor() Rendering.BlendFactor { //gd:RDPipelineColorBlendStateAttachment.get_src_color_blend_factor
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingDeviceBlendFactor](frame)
+	var r_ret = callframe.Ret[Rendering.BlendFactor](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineColorBlendStateAttachment.Bind_get_src_color_blend_factor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -290,7 +298,7 @@ func (self class) GetSrcColorBlendFactor() gdclass.RenderingDeviceBlendFactor { 
 }
 
 //go:nosplit
-func (self class) SetDstColorBlendFactor(p_member gdclass.RenderingDeviceBlendFactor) { //gd:RDPipelineColorBlendStateAttachment.set_dst_color_blend_factor
+func (self class) SetDstColorBlendFactor(p_member Rendering.BlendFactor) { //gd:RDPipelineColorBlendStateAttachment.set_dst_color_blend_factor
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -299,9 +307,9 @@ func (self class) SetDstColorBlendFactor(p_member gdclass.RenderingDeviceBlendFa
 }
 
 //go:nosplit
-func (self class) GetDstColorBlendFactor() gdclass.RenderingDeviceBlendFactor { //gd:RDPipelineColorBlendStateAttachment.get_dst_color_blend_factor
+func (self class) GetDstColorBlendFactor() Rendering.BlendFactor { //gd:RDPipelineColorBlendStateAttachment.get_dst_color_blend_factor
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingDeviceBlendFactor](frame)
+	var r_ret = callframe.Ret[Rendering.BlendFactor](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineColorBlendStateAttachment.Bind_get_dst_color_blend_factor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -309,7 +317,7 @@ func (self class) GetDstColorBlendFactor() gdclass.RenderingDeviceBlendFactor { 
 }
 
 //go:nosplit
-func (self class) SetColorBlendOp(p_member gdclass.RenderingDeviceBlendOperation) { //gd:RDPipelineColorBlendStateAttachment.set_color_blend_op
+func (self class) SetColorBlendOp(p_member Rendering.BlendOperation) { //gd:RDPipelineColorBlendStateAttachment.set_color_blend_op
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -318,9 +326,9 @@ func (self class) SetColorBlendOp(p_member gdclass.RenderingDeviceBlendOperation
 }
 
 //go:nosplit
-func (self class) GetColorBlendOp() gdclass.RenderingDeviceBlendOperation { //gd:RDPipelineColorBlendStateAttachment.get_color_blend_op
+func (self class) GetColorBlendOp() Rendering.BlendOperation { //gd:RDPipelineColorBlendStateAttachment.get_color_blend_op
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingDeviceBlendOperation](frame)
+	var r_ret = callframe.Ret[Rendering.BlendOperation](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineColorBlendStateAttachment.Bind_get_color_blend_op, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -328,7 +336,7 @@ func (self class) GetColorBlendOp() gdclass.RenderingDeviceBlendOperation { //gd
 }
 
 //go:nosplit
-func (self class) SetSrcAlphaBlendFactor(p_member gdclass.RenderingDeviceBlendFactor) { //gd:RDPipelineColorBlendStateAttachment.set_src_alpha_blend_factor
+func (self class) SetSrcAlphaBlendFactor(p_member Rendering.BlendFactor) { //gd:RDPipelineColorBlendStateAttachment.set_src_alpha_blend_factor
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -337,9 +345,9 @@ func (self class) SetSrcAlphaBlendFactor(p_member gdclass.RenderingDeviceBlendFa
 }
 
 //go:nosplit
-func (self class) GetSrcAlphaBlendFactor() gdclass.RenderingDeviceBlendFactor { //gd:RDPipelineColorBlendStateAttachment.get_src_alpha_blend_factor
+func (self class) GetSrcAlphaBlendFactor() Rendering.BlendFactor { //gd:RDPipelineColorBlendStateAttachment.get_src_alpha_blend_factor
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingDeviceBlendFactor](frame)
+	var r_ret = callframe.Ret[Rendering.BlendFactor](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineColorBlendStateAttachment.Bind_get_src_alpha_blend_factor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -347,7 +355,7 @@ func (self class) GetSrcAlphaBlendFactor() gdclass.RenderingDeviceBlendFactor { 
 }
 
 //go:nosplit
-func (self class) SetDstAlphaBlendFactor(p_member gdclass.RenderingDeviceBlendFactor) { //gd:RDPipelineColorBlendStateAttachment.set_dst_alpha_blend_factor
+func (self class) SetDstAlphaBlendFactor(p_member Rendering.BlendFactor) { //gd:RDPipelineColorBlendStateAttachment.set_dst_alpha_blend_factor
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -356,9 +364,9 @@ func (self class) SetDstAlphaBlendFactor(p_member gdclass.RenderingDeviceBlendFa
 }
 
 //go:nosplit
-func (self class) GetDstAlphaBlendFactor() gdclass.RenderingDeviceBlendFactor { //gd:RDPipelineColorBlendStateAttachment.get_dst_alpha_blend_factor
+func (self class) GetDstAlphaBlendFactor() Rendering.BlendFactor { //gd:RDPipelineColorBlendStateAttachment.get_dst_alpha_blend_factor
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingDeviceBlendFactor](frame)
+	var r_ret = callframe.Ret[Rendering.BlendFactor](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineColorBlendStateAttachment.Bind_get_dst_alpha_blend_factor, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -366,7 +374,7 @@ func (self class) GetDstAlphaBlendFactor() gdclass.RenderingDeviceBlendFactor { 
 }
 
 //go:nosplit
-func (self class) SetAlphaBlendOp(p_member gdclass.RenderingDeviceBlendOperation) { //gd:RDPipelineColorBlendStateAttachment.set_alpha_blend_op
+func (self class) SetAlphaBlendOp(p_member Rendering.BlendOperation) { //gd:RDPipelineColorBlendStateAttachment.set_alpha_blend_op
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -375,9 +383,9 @@ func (self class) SetAlphaBlendOp(p_member gdclass.RenderingDeviceBlendOperation
 }
 
 //go:nosplit
-func (self class) GetAlphaBlendOp() gdclass.RenderingDeviceBlendOperation { //gd:RDPipelineColorBlendStateAttachment.get_alpha_blend_op
+func (self class) GetAlphaBlendOp() Rendering.BlendOperation { //gd:RDPipelineColorBlendStateAttachment.get_alpha_blend_op
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingDeviceBlendOperation](frame)
+	var r_ret = callframe.Ret[Rendering.BlendOperation](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDPipelineColorBlendStateAttachment.Bind_get_alpha_blend_op, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

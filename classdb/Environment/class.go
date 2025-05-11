@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/Sky"
 import "graphics.gd/classdb/Texture"
@@ -29,6 +30,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -44,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,6 +62,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -112,11 +119,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) BackgroundMode() gdclass.EnvironmentBGMode {
-	return gdclass.EnvironmentBGMode(class(self).GetBackground())
+func (self Instance) BackgroundMode() BGMode {
+	return BGMode(class(self).GetBackground())
 }
 
-func (self Instance) SetBackgroundMode(value gdclass.EnvironmentBGMode) {
+func (self Instance) SetBackgroundMode(value BGMode) {
 	class(self).SetBackground(value)
 }
 
@@ -184,11 +191,11 @@ func (self Instance) SetSkyRotation(value Vector3.XYZ) {
 	class(self).SetSkyRotation(Vector3.XYZ(value))
 }
 
-func (self Instance) AmbientLightSource() gdclass.EnvironmentAmbientSource {
-	return gdclass.EnvironmentAmbientSource(class(self).GetAmbientSource())
+func (self Instance) AmbientLightSource() AmbientSource {
+	return AmbientSource(class(self).GetAmbientSource())
 }
 
-func (self Instance) SetAmbientLightSource(value gdclass.EnvironmentAmbientSource) {
+func (self Instance) SetAmbientLightSource(value AmbientSource) {
 	class(self).SetAmbientSource(value)
 }
 
@@ -216,19 +223,19 @@ func (self Instance) SetAmbientLightEnergy(value Float.X) {
 	class(self).SetAmbientLightEnergy(float64(value))
 }
 
-func (self Instance) ReflectedLightSource() gdclass.EnvironmentReflectionSource {
-	return gdclass.EnvironmentReflectionSource(class(self).GetReflectionSource())
+func (self Instance) ReflectedLightSource() ReflectionSource {
+	return ReflectionSource(class(self).GetReflectionSource())
 }
 
-func (self Instance) SetReflectedLightSource(value gdclass.EnvironmentReflectionSource) {
+func (self Instance) SetReflectedLightSource(value ReflectionSource) {
 	class(self).SetReflectionSource(value)
 }
 
-func (self Instance) TonemapMode() gdclass.EnvironmentToneMapper {
-	return gdclass.EnvironmentToneMapper(class(self).GetTonemapper())
+func (self Instance) TonemapMode() ToneMapper {
+	return ToneMapper(class(self).GetTonemapper())
 }
 
-func (self Instance) SetTonemapMode(value gdclass.EnvironmentToneMapper) {
+func (self Instance) SetTonemapMode(value ToneMapper) {
 	class(self).SetTonemapper(value)
 }
 
@@ -464,11 +471,11 @@ func (self Instance) SetSdfgiMaxDistance(value Float.X) {
 	class(self).SetSdfgiMaxDistance(float64(value))
 }
 
-func (self Instance) SdfgiYScale() gdclass.EnvironmentSDFGIYScale {
-	return gdclass.EnvironmentSDFGIYScale(class(self).GetSdfgiYScale())
+func (self Instance) SdfgiYScale() SDFGIYScale {
+	return SDFGIYScale(class(self).GetSdfgiYScale())
 }
 
-func (self Instance) SetSdfgiYScale(value gdclass.EnvironmentSDFGIYScale) {
+func (self Instance) SetSdfgiYScale(value SDFGIYScale) {
 	class(self).SetSdfgiYScale(value)
 }
 
@@ -544,11 +551,11 @@ func (self Instance) SetGlowBloom(value Float.X) {
 	class(self).SetGlowBloom(float64(value))
 }
 
-func (self Instance) GlowBlendMode() gdclass.EnvironmentGlowBlendMode {
-	return gdclass.EnvironmentGlowBlendMode(class(self).GetGlowBlendMode())
+func (self Instance) GlowBlendMode() GlowBlendMode {
+	return GlowBlendMode(class(self).GetGlowBlendMode())
 }
 
-func (self Instance) SetGlowBlendMode(value gdclass.EnvironmentGlowBlendMode) {
+func (self Instance) SetGlowBlendMode(value GlowBlendMode) {
 	class(self).SetGlowBlendMode(value)
 }
 
@@ -600,11 +607,11 @@ func (self Instance) SetFogEnabled(value bool) {
 	class(self).SetFogEnabled(value)
 }
 
-func (self Instance) FogMode() gdclass.EnvironmentFogMode {
-	return gdclass.EnvironmentFogMode(class(self).GetFogMode())
+func (self Instance) FogMode() FogMode {
+	return FogMode(class(self).GetFogMode())
 }
 
-func (self Instance) SetFogMode(value gdclass.EnvironmentFogMode) {
+func (self Instance) SetFogMode(value FogMode) {
 	class(self).SetFogMode(value)
 }
 
@@ -841,7 +848,7 @@ func (self Instance) SetAdjustmentColorCorrection(value Texture.Instance) {
 }
 
 //go:nosplit
-func (self class) SetBackground(mode gdclass.EnvironmentBGMode) { //gd:Environment.set_background
+func (self class) SetBackground(mode BGMode) { //gd:Environment.set_background
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -850,9 +857,9 @@ func (self class) SetBackground(mode gdclass.EnvironmentBGMode) { //gd:Environme
 }
 
 //go:nosplit
-func (self class) GetBackground() gdclass.EnvironmentBGMode { //gd:Environment.get_background
+func (self class) GetBackground() BGMode { //gd:Environment.get_background
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.EnvironmentBGMode](frame)
+	var r_ret = callframe.Ret[BGMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_background, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1031,7 +1038,7 @@ func (self class) GetAmbientLightColor() Color.RGBA { //gd:Environment.get_ambie
 }
 
 //go:nosplit
-func (self class) SetAmbientSource(source gdclass.EnvironmentAmbientSource) { //gd:Environment.set_ambient_source
+func (self class) SetAmbientSource(source AmbientSource) { //gd:Environment.set_ambient_source
 	var frame = callframe.New()
 	callframe.Arg(frame, source)
 	var r_ret = callframe.Nil
@@ -1040,9 +1047,9 @@ func (self class) SetAmbientSource(source gdclass.EnvironmentAmbientSource) { //
 }
 
 //go:nosplit
-func (self class) GetAmbientSource() gdclass.EnvironmentAmbientSource { //gd:Environment.get_ambient_source
+func (self class) GetAmbientSource() AmbientSource { //gd:Environment.get_ambient_source
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.EnvironmentAmbientSource](frame)
+	var r_ret = callframe.Ret[AmbientSource](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_ambient_source, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1088,7 +1095,7 @@ func (self class) GetAmbientLightSkyContribution() float64 { //gd:Environment.ge
 }
 
 //go:nosplit
-func (self class) SetReflectionSource(source gdclass.EnvironmentReflectionSource) { //gd:Environment.set_reflection_source
+func (self class) SetReflectionSource(source ReflectionSource) { //gd:Environment.set_reflection_source
 	var frame = callframe.New()
 	callframe.Arg(frame, source)
 	var r_ret = callframe.Nil
@@ -1097,9 +1104,9 @@ func (self class) SetReflectionSource(source gdclass.EnvironmentReflectionSource
 }
 
 //go:nosplit
-func (self class) GetReflectionSource() gdclass.EnvironmentReflectionSource { //gd:Environment.get_reflection_source
+func (self class) GetReflectionSource() ReflectionSource { //gd:Environment.get_reflection_source
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.EnvironmentReflectionSource](frame)
+	var r_ret = callframe.Ret[ReflectionSource](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_reflection_source, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1107,7 +1114,7 @@ func (self class) GetReflectionSource() gdclass.EnvironmentReflectionSource { //
 }
 
 //go:nosplit
-func (self class) SetTonemapper(mode gdclass.EnvironmentToneMapper) { //gd:Environment.set_tonemapper
+func (self class) SetTonemapper(mode ToneMapper) { //gd:Environment.set_tonemapper
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -1116,9 +1123,9 @@ func (self class) SetTonemapper(mode gdclass.EnvironmentToneMapper) { //gd:Envir
 }
 
 //go:nosplit
-func (self class) GetTonemapper() gdclass.EnvironmentToneMapper { //gd:Environment.get_tonemapper
+func (self class) GetTonemapper() ToneMapper { //gd:Environment.get_tonemapper
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.EnvironmentToneMapper](frame)
+	var r_ret = callframe.Ret[ToneMapper](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_tonemapper, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1620,7 +1627,7 @@ func (self class) GetSdfgiCascade0Distance() float64 { //gd:Environment.get_sdfg
 }
 
 //go:nosplit
-func (self class) SetSdfgiYScale(scale gdclass.EnvironmentSDFGIYScale) { //gd:Environment.set_sdfgi_y_scale
+func (self class) SetSdfgiYScale(scale SDFGIYScale) { //gd:Environment.set_sdfgi_y_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
 	var r_ret = callframe.Nil
@@ -1629,9 +1636,9 @@ func (self class) SetSdfgiYScale(scale gdclass.EnvironmentSDFGIYScale) { //gd:En
 }
 
 //go:nosplit
-func (self class) GetSdfgiYScale() gdclass.EnvironmentSDFGIYScale { //gd:Environment.get_sdfgi_y_scale
+func (self class) GetSdfgiYScale() SDFGIYScale { //gd:Environment.get_sdfgi_y_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.EnvironmentSDFGIYScale](frame)
+	var r_ret = callframe.Ret[SDFGIYScale](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_sdfgi_y_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1894,7 +1901,7 @@ func (self class) GetGlowBloom() float64 { //gd:Environment.get_glow_bloom
 }
 
 //go:nosplit
-func (self class) SetGlowBlendMode(mode gdclass.EnvironmentGlowBlendMode) { //gd:Environment.set_glow_blend_mode
+func (self class) SetGlowBlendMode(mode GlowBlendMode) { //gd:Environment.set_glow_blend_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -1903,9 +1910,9 @@ func (self class) SetGlowBlendMode(mode gdclass.EnvironmentGlowBlendMode) { //gd
 }
 
 //go:nosplit
-func (self class) GetGlowBlendMode() gdclass.EnvironmentGlowBlendMode { //gd:Environment.get_glow_blend_mode
+func (self class) GetGlowBlendMode() GlowBlendMode { //gd:Environment.get_glow_blend_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.EnvironmentGlowBlendMode](frame)
+	var r_ret = callframe.Ret[GlowBlendMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_glow_blend_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2027,7 +2034,7 @@ func (self class) IsFogEnabled() bool { //gd:Environment.is_fog_enabled
 }
 
 //go:nosplit
-func (self class) SetFogMode(mode gdclass.EnvironmentFogMode) { //gd:Environment.set_fog_mode
+func (self class) SetFogMode(mode FogMode) { //gd:Environment.set_fog_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -2036,9 +2043,9 @@ func (self class) SetFogMode(mode gdclass.EnvironmentFogMode) { //gd:Environment
 }
 
 //go:nosplit
-func (self class) GetFogMode() gdclass.EnvironmentFogMode { //gd:Environment.get_fog_mode
+func (self class) GetFogMode() FogMode { //gd:Environment.get_fog_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.EnvironmentFogMode](frame)
+	var r_ret = callframe.Ret[FogMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Environment.Bind_get_fog_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2630,7 +2637,7 @@ func init() {
 	gdclass.Register("Environment", func(ptr gd.Object) any { return [1]gdclass.Environment{*(*gdclass.Environment)(unsafe.Pointer(&ptr))} })
 }
 
-type BGMode = gdclass.EnvironmentBGMode //gd:Environment.BGMode
+type BGMode int //gd:Environment.BGMode
 
 const (
 	/*Clears the background using the clear color defined in [member ProjectSettings.rendering/environment/defaults/default_clear_color].*/
@@ -2649,7 +2656,7 @@ const (
 	BgMax BGMode = 6
 )
 
-type AmbientSource = gdclass.EnvironmentAmbientSource //gd:Environment.AmbientSource
+type AmbientSource int //gd:Environment.AmbientSource
 
 const (
 	/*Gather ambient light from whichever source is specified as the background.*/
@@ -2662,7 +2669,7 @@ const (
 	AmbientSourceSky AmbientSource = 3
 )
 
-type ReflectionSource = gdclass.EnvironmentReflectionSource //gd:Environment.ReflectionSource
+type ReflectionSource int //gd:Environment.ReflectionSource
 
 const (
 	/*Use the background for reflections.*/
@@ -2673,7 +2680,7 @@ const (
 	ReflectionSourceSky ReflectionSource = 2
 )
 
-type ToneMapper = gdclass.EnvironmentToneMapper //gd:Environment.ToneMapper
+type ToneMapper int //gd:Environment.ToneMapper
 
 const (
 	/*Does not modify color data, resulting in a linear tonemapping curve which unnaturally clips bright values, causing bright lighting to look blown out. The simplest and fastest tonemapper.*/
@@ -2691,7 +2698,7 @@ const (
 	ToneMapperAgx ToneMapper = 4
 )
 
-type GlowBlendMode = gdclass.EnvironmentGlowBlendMode //gd:Environment.GlowBlendMode
+type GlowBlendMode int //gd:Environment.GlowBlendMode
 
 const (
 	/*Additive glow blending mode. Mostly used for particles, glows (bloom), lens flare, bright sources.*/
@@ -2706,7 +2713,7 @@ const (
 	GlowBlendModeMix GlowBlendMode = 4
 )
 
-type FogMode = gdclass.EnvironmentFogMode //gd:Environment.FogMode
+type FogMode int //gd:Environment.FogMode
 
 const (
 	/*Use a physically-based fog model defined primarily by fog density.*/
@@ -2715,7 +2722,7 @@ const (
 	FogModeDepth FogMode = 1
 )
 
-type SDFGIYScale = gdclass.EnvironmentSDFGIYScale //gd:Environment.SDFGIYScale
+type SDFGIYScale int //gd:Environment.SDFGIYScale
 
 const (
 	/*Use 50% scale for SDFGI on the Y (vertical) axis. SDFGI cells will be twice as short as they are wide. This allows providing increased GI detail and reduced light leaking with thin floors and ceilings. This is usually the best choice for scenes that don't feature much verticality.*/

@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/variant/Array"
@@ -26,6 +27,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -41,6 +46,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -53,6 +59,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -93,19 +100,19 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Hand() gdclass.OpenXRHandHands {
-	return gdclass.OpenXRHandHands(class(self).GetHand())
+func (self Instance) Hand() Hands {
+	return Hands(class(self).GetHand())
 }
 
-func (self Instance) SetHand(value gdclass.OpenXRHandHands) {
+func (self Instance) SetHand(value Hands) {
 	class(self).SetHand(value)
 }
 
-func (self Instance) MotionRange() gdclass.OpenXRHandMotionRange {
-	return gdclass.OpenXRHandMotionRange(class(self).GetMotionRange())
+func (self Instance) MotionRange() MotionRange {
+	return MotionRange(class(self).GetMotionRange())
 }
 
-func (self Instance) SetMotionRange(value gdclass.OpenXRHandMotionRange) {
+func (self Instance) SetMotionRange(value MotionRange) {
 	class(self).SetMotionRange(value)
 }
 
@@ -117,24 +124,24 @@ func (self Instance) SetHandSkeleton(value string) {
 	class(self).SetHandSkeleton(Path.ToNode(String.New(value)))
 }
 
-func (self Instance) SkeletonRig() gdclass.OpenXRHandSkeletonRig {
-	return gdclass.OpenXRHandSkeletonRig(class(self).GetSkeletonRig())
+func (self Instance) SkeletonRig() SkeletonRig {
+	return SkeletonRig(class(self).GetSkeletonRig())
 }
 
-func (self Instance) SetSkeletonRig(value gdclass.OpenXRHandSkeletonRig) {
+func (self Instance) SetSkeletonRig(value SkeletonRig) {
 	class(self).SetSkeletonRig(value)
 }
 
-func (self Instance) BoneUpdate() gdclass.OpenXRHandBoneUpdate {
-	return gdclass.OpenXRHandBoneUpdate(class(self).GetBoneUpdate())
+func (self Instance) BoneUpdate() BoneUpdate {
+	return BoneUpdate(class(self).GetBoneUpdate())
 }
 
-func (self Instance) SetBoneUpdate(value gdclass.OpenXRHandBoneUpdate) {
+func (self Instance) SetBoneUpdate(value BoneUpdate) {
 	class(self).SetBoneUpdate(value)
 }
 
 //go:nosplit
-func (self class) SetHand(hand gdclass.OpenXRHandHands) { //gd:OpenXRHand.set_hand
+func (self class) SetHand(hand Hands) { //gd:OpenXRHand.set_hand
 	var frame = callframe.New()
 	callframe.Arg(frame, hand)
 	var r_ret = callframe.Nil
@@ -143,9 +150,9 @@ func (self class) SetHand(hand gdclass.OpenXRHandHands) { //gd:OpenXRHand.set_ha
 }
 
 //go:nosplit
-func (self class) GetHand() gdclass.OpenXRHandHands { //gd:OpenXRHand.get_hand
+func (self class) GetHand() Hands { //gd:OpenXRHand.get_hand
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.OpenXRHandHands](frame)
+	var r_ret = callframe.Ret[Hands](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRHand.Bind_get_hand, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -172,7 +179,7 @@ func (self class) GetHandSkeleton() Path.ToNode { //gd:OpenXRHand.get_hand_skele
 }
 
 //go:nosplit
-func (self class) SetMotionRange(motion_range gdclass.OpenXRHandMotionRange) { //gd:OpenXRHand.set_motion_range
+func (self class) SetMotionRange(motion_range MotionRange) { //gd:OpenXRHand.set_motion_range
 	var frame = callframe.New()
 	callframe.Arg(frame, motion_range)
 	var r_ret = callframe.Nil
@@ -181,9 +188,9 @@ func (self class) SetMotionRange(motion_range gdclass.OpenXRHandMotionRange) { /
 }
 
 //go:nosplit
-func (self class) GetMotionRange() gdclass.OpenXRHandMotionRange { //gd:OpenXRHand.get_motion_range
+func (self class) GetMotionRange() MotionRange { //gd:OpenXRHand.get_motion_range
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.OpenXRHandMotionRange](frame)
+	var r_ret = callframe.Ret[MotionRange](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRHand.Bind_get_motion_range, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -191,7 +198,7 @@ func (self class) GetMotionRange() gdclass.OpenXRHandMotionRange { //gd:OpenXRHa
 }
 
 //go:nosplit
-func (self class) SetSkeletonRig(skeleton_rig gdclass.OpenXRHandSkeletonRig) { //gd:OpenXRHand.set_skeleton_rig
+func (self class) SetSkeletonRig(skeleton_rig SkeletonRig) { //gd:OpenXRHand.set_skeleton_rig
 	var frame = callframe.New()
 	callframe.Arg(frame, skeleton_rig)
 	var r_ret = callframe.Nil
@@ -200,9 +207,9 @@ func (self class) SetSkeletonRig(skeleton_rig gdclass.OpenXRHandSkeletonRig) { /
 }
 
 //go:nosplit
-func (self class) GetSkeletonRig() gdclass.OpenXRHandSkeletonRig { //gd:OpenXRHand.get_skeleton_rig
+func (self class) GetSkeletonRig() SkeletonRig { //gd:OpenXRHand.get_skeleton_rig
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.OpenXRHandSkeletonRig](frame)
+	var r_ret = callframe.Ret[SkeletonRig](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRHand.Bind_get_skeleton_rig, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -210,7 +217,7 @@ func (self class) GetSkeletonRig() gdclass.OpenXRHandSkeletonRig { //gd:OpenXRHa
 }
 
 //go:nosplit
-func (self class) SetBoneUpdate(bone_update gdclass.OpenXRHandBoneUpdate) { //gd:OpenXRHand.set_bone_update
+func (self class) SetBoneUpdate(bone_update BoneUpdate) { //gd:OpenXRHand.set_bone_update
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_update)
 	var r_ret = callframe.Nil
@@ -219,9 +226,9 @@ func (self class) SetBoneUpdate(bone_update gdclass.OpenXRHandBoneUpdate) { //gd
 }
 
 //go:nosplit
-func (self class) GetBoneUpdate() gdclass.OpenXRHandBoneUpdate { //gd:OpenXRHand.get_bone_update
+func (self class) GetBoneUpdate() BoneUpdate { //gd:OpenXRHand.get_bone_update
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.OpenXRHandBoneUpdate](frame)
+	var r_ret = callframe.Ret[BoneUpdate](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRHand.Bind_get_bone_update, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -254,7 +261,7 @@ func init() {
 	gdclass.Register("OpenXRHand", func(ptr gd.Object) any { return [1]gdclass.OpenXRHand{*(*gdclass.OpenXRHand)(unsafe.Pointer(&ptr))} })
 }
 
-type Hands = gdclass.OpenXRHandHands //gd:OpenXRHand.Hands
+type Hands int //gd:OpenXRHand.Hands
 
 const (
 	/*Tracking the player's left hand.*/
@@ -265,7 +272,7 @@ const (
 	HandMax Hands = 2
 )
 
-type MotionRange = gdclass.OpenXRHandMotionRange //gd:OpenXRHand.MotionRange
+type MotionRange int //gd:OpenXRHand.MotionRange
 
 const (
 	/*When player grips, hand skeleton will form a full fist.*/
@@ -276,7 +283,7 @@ const (
 	MotionRangeMax MotionRange = 2
 )
 
-type SkeletonRig = gdclass.OpenXRHandSkeletonRig //gd:OpenXRHand.SkeletonRig
+type SkeletonRig int //gd:OpenXRHand.SkeletonRig
 
 const (
 	/*An OpenXR compliant skeleton.*/
@@ -287,7 +294,7 @@ const (
 	SkeletonRigMax SkeletonRig = 2
 )
 
-type BoneUpdate = gdclass.OpenXRHandBoneUpdate //gd:OpenXRHand.BoneUpdate
+type BoneUpdate int //gd:OpenXRHand.BoneUpdate
 
 const (
 	/*The skeletons bones are fully updated (both position and rotation) to match the tracked bones.*/

@@ -11,9 +11,11 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/XRNode3D"
+import "graphics.gd/classdb/XRPositionalTracker"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -28,6 +30,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -43,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,6 +62,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -107,8 +115,8 @@ func (self Instance) GetVector2(name string) Vector2.XY { //gd:XRController3D.ge
 /*
 Returns the hand holding this controller, if known. See [enum XRPositionalTracker.TrackerHand].
 */
-func (self Instance) GetTrackerHand() gdclass.XRPositionalTrackerTrackerHand { //gd:XRController3D.get_tracker_hand
-	return gdclass.XRPositionalTrackerTrackerHand(Advanced(self).GetTrackerHand())
+func (self Instance) GetTrackerHand() XRPositionalTracker.TrackerHand { //gd:XRController3D.get_tracker_hand
+	return XRPositionalTracker.TrackerHand(Advanced(self).GetTrackerHand())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -190,9 +198,9 @@ func (self class) GetVector2(name String.Name) Vector2.XY { //gd:XRController3D.
 Returns the hand holding this controller, if known. See [enum XRPositionalTracker.TrackerHand].
 */
 //go:nosplit
-func (self class) GetTrackerHand() gdclass.XRPositionalTrackerTrackerHand { //gd:XRController3D.get_tracker_hand
+func (self class) GetTrackerHand() XRPositionalTracker.TrackerHand { //gd:XRController3D.get_tracker_hand
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.XRPositionalTrackerTrackerHand](frame)
+	var r_ret = callframe.Ret[XRPositionalTracker.TrackerHand](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRController3D.Bind_get_tracker_hand, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

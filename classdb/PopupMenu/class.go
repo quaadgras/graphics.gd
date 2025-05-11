@@ -11,7 +11,11 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/Input"
 import "graphics.gd/classdb/InputEvent"
+import "graphics.gd/classdb/NativeMenu"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Popup"
 import "graphics.gd/classdb/Shortcut"
@@ -32,6 +36,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -47,6 +55,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -59,6 +68,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -122,7 +132,7 @@ Adds a new item with text [param label].
 An [param id] can optionally be provided, as well as an accelerator ([param accel]). If no [param id] is provided, one will be created from the index. If no [param accel] is provided, then the default value of 0 (corresponding to [constant @GlobalScope.KEY_NONE]) will be assigned to the item (which means it won't have any accelerator). See [method get_item_accelerator] for more info on accelerators.
 [b]Note:[/b] The provided [param id] is used only in [signal id_pressed] and [signal id_focused] signals. It's not related to the [code]index[/code] arguments in e.g. [method set_item_checked].
 */
-func (self Expanded) AddItem(label string, id int, accel Key) { //gd:PopupMenu.add_item
+func (self Expanded) AddItem(label string, id int, accel Input.Key) { //gd:PopupMenu.add_item
 	Advanced(self).AddItem(String.New(label), int64(id), accel)
 }
 
@@ -138,7 +148,7 @@ func (self Instance) AddIconItem(texture Texture2D.Instance, label string) { //g
 Adds a new item with text [param label] and icon [param texture].
 An [param id] can optionally be provided, as well as an accelerator ([param accel]). If no [param id] is provided, one will be created from the index. If no [param accel] is provided, then the default value of 0 (corresponding to [constant @GlobalScope.KEY_NONE]) will be assigned to the item (which means it won't have any accelerator). See [method get_item_accelerator] for more info on accelerators.
 */
-func (self Expanded) AddIconItem(texture Texture2D.Instance, label string, id int, accel Key) { //gd:PopupMenu.add_icon_item
+func (self Expanded) AddIconItem(texture Texture2D.Instance, label string, id int, accel Input.Key) { //gd:PopupMenu.add_icon_item
 	Advanced(self).AddIconItem(texture, String.New(label), int64(id), accel)
 }
 
@@ -156,7 +166,7 @@ Adds a new checkable item with text [param label].
 An [param id] can optionally be provided, as well as an accelerator ([param accel]). If no [param id] is provided, one will be created from the index. If no [param accel] is provided, then the default value of 0 (corresponding to [constant @GlobalScope.KEY_NONE]) will be assigned to the item (which means it won't have any accelerator). See [method get_item_accelerator] for more info on accelerators.
 [b]Note:[/b] Checkable items just display a checkmark, but don't have any built-in checking behavior and must be checked/unchecked manually. See [method set_item_checked] for more info on how to control it.
 */
-func (self Expanded) AddCheckItem(label string, id int, accel Key) { //gd:PopupMenu.add_check_item
+func (self Expanded) AddCheckItem(label string, id int, accel Input.Key) { //gd:PopupMenu.add_check_item
 	Advanced(self).AddCheckItem(String.New(label), int64(id), accel)
 }
 
@@ -174,7 +184,7 @@ Adds a new checkable item with text [param label] and icon [param texture].
 An [param id] can optionally be provided, as well as an accelerator ([param accel]). If no [param id] is provided, one will be created from the index. If no [param accel] is provided, then the default value of 0 (corresponding to [constant @GlobalScope.KEY_NONE]) will be assigned to the item (which means it won't have any accelerator). See [method get_item_accelerator] for more info on accelerators.
 [b]Note:[/b] Checkable items just display a checkmark, but don't have any built-in checking behavior and must be checked/unchecked manually. See [method set_item_checked] for more info on how to control it.
 */
-func (self Expanded) AddIconCheckItem(texture Texture2D.Instance, label string, id int, accel Key) { //gd:PopupMenu.add_icon_check_item
+func (self Expanded) AddIconCheckItem(texture Texture2D.Instance, label string, id int, accel Input.Key) { //gd:PopupMenu.add_icon_check_item
 	Advanced(self).AddIconCheckItem(texture, String.New(label), int64(id), accel)
 }
 
@@ -192,7 +202,7 @@ Adds a new radio check button with text [param label].
 An [param id] can optionally be provided, as well as an accelerator ([param accel]). If no [param id] is provided, one will be created from the index. If no [param accel] is provided, then the default value of 0 (corresponding to [constant @GlobalScope.KEY_NONE]) will be assigned to the item (which means it won't have any accelerator). See [method get_item_accelerator] for more info on accelerators.
 [b]Note:[/b] Checkable items just display a checkmark, but don't have any built-in checking behavior and must be checked/unchecked manually. See [method set_item_checked] for more info on how to control it.
 */
-func (self Expanded) AddRadioCheckItem(label string, id int, accel Key) { //gd:PopupMenu.add_radio_check_item
+func (self Expanded) AddRadioCheckItem(label string, id int, accel Input.Key) { //gd:PopupMenu.add_radio_check_item
 	Advanced(self).AddRadioCheckItem(String.New(label), int64(id), accel)
 }
 
@@ -206,7 +216,7 @@ func (self Instance) AddIconRadioCheckItem(texture Texture2D.Instance, label str
 /*
 Same as [method add_icon_check_item], but uses a radio check button.
 */
-func (self Expanded) AddIconRadioCheckItem(texture Texture2D.Instance, label string, id int, accel Key) { //gd:PopupMenu.add_icon_radio_check_item
+func (self Expanded) AddIconRadioCheckItem(texture Texture2D.Instance, label string, id int, accel Input.Key) { //gd:PopupMenu.add_icon_radio_check_item
 	Advanced(self).AddIconRadioCheckItem(texture, String.New(label), int64(id), accel)
 }
 
@@ -260,7 +270,7 @@ func _ready():
 [/codeblock]
 [b]Note:[/b] Multistate items don't update their state automatically and must be done manually. See [method toggle_item_multistate], [method set_item_multistate] and [method get_item_multistate] for more info on how to control it.
 */
-func (self Expanded) AddMultistateItem(label string, max_states int, default_state int, id int, accel Key) { //gd:PopupMenu.add_multistate_item
+func (self Expanded) AddMultistateItem(label string, max_states int, default_state int, id int, accel Input.Key) { //gd:PopupMenu.add_multistate_item
 	Advanced(self).AddMultistateItem(String.New(label), int64(max_states), int64(default_state), int64(id), accel)
 }
 
@@ -412,7 +422,7 @@ func (self Instance) SetItemText(index int, text string) { //gd:PopupMenu.set_it
 /*
 Sets item's text base writing direction.
 */
-func (self Instance) SetItemTextDirection(index int, direction gdclass.ControlTextDirection) { //gd:PopupMenu.set_item_text_direction
+func (self Instance) SetItemTextDirection(index int, direction Control.TextDirection) { //gd:PopupMenu.set_item_text_direction
 	Advanced(self).SetItemTextDirection(int64(index), direction)
 }
 
@@ -462,7 +472,7 @@ func (self Instance) SetItemId(index int, id int) { //gd:PopupMenu.set_item_id
 /*
 Sets the accelerator of the item at the given [param index]. An accelerator is a keyboard shortcut that can be pressed to trigger the menu button even if it's not currently open. [param accel] is generally a combination of [enum KeyModifierMask]s and [enum Key]s using bitwise OR such as [code]KEY_MASK_CTRL | KEY_A[/code] ([kbd]Ctrl + A[/kbd]).
 */
-func (self Instance) SetItemAccelerator(index int, accel Key) { //gd:PopupMenu.set_item_accelerator
+func (self Instance) SetItemAccelerator(index int, accel Input.Key) { //gd:PopupMenu.set_item_accelerator
 	Advanced(self).SetItemAccelerator(int64(index), accel)
 }
 
@@ -589,8 +599,8 @@ func (self Instance) GetItemText(index int) string { //gd:PopupMenu.get_item_tex
 /*
 Returns item's text base writing direction.
 */
-func (self Instance) GetItemTextDirection(index int) gdclass.ControlTextDirection { //gd:PopupMenu.get_item_text_direction
-	return gdclass.ControlTextDirection(Advanced(self).GetItemTextDirection(int64(index)))
+func (self Instance) GetItemTextDirection(index int) Control.TextDirection { //gd:PopupMenu.get_item_text_direction
+	return Control.TextDirection(Advanced(self).GetItemTextDirection(int64(index)))
 }
 
 /*
@@ -645,8 +655,8 @@ func (self Instance) GetItemIndex(id int) int { //gd:PopupMenu.get_item_index
 /*
 Returns the accelerator of the item at the given [param index]. An accelerator is a keyboard shortcut that can be pressed to trigger the menu button even if it's not currently open. The return value is an integer which is generally a combination of [enum KeyModifierMask]s and [enum Key]s using bitwise OR such as [code]KEY_MASK_CTRL | KEY_A[/code] ([kbd]Ctrl + A[/kbd]). If no accelerator is defined for the specified [param index], [method get_item_accelerator] returns [code]0[/code] (corresponding to [constant @GlobalScope.KEY_NONE]).
 */
-func (self Instance) GetItemAccelerator(index int) Key { //gd:PopupMenu.get_item_accelerator
-	return Key(Advanced(self).GetItemAccelerator(int64(index)))
+func (self Instance) GetItemAccelerator(index int) Input.Key { //gd:PopupMenu.get_item_accelerator
+	return Input.Key(Advanced(self).GetItemAccelerator(int64(index)))
 }
 
 /*
@@ -869,11 +879,11 @@ func (self Instance) SetAllowSearch(value bool) {
 	class(self).SetAllowSearch(value)
 }
 
-func (self Instance) SystemMenuId() gdclass.NativeMenuSystemMenus {
-	return gdclass.NativeMenuSystemMenus(class(self).GetSystemMenu())
+func (self Instance) SystemMenuId() NativeMenu.SystemMenus {
+	return NativeMenu.SystemMenus(class(self).GetSystemMenu())
 }
 
-func (self Instance) SetSystemMenuId(value gdclass.NativeMenuSystemMenus) {
+func (self Instance) SetSystemMenuId(value NativeMenu.SystemMenus) {
 	class(self).SetSystemMenu(value)
 }
 
@@ -948,7 +958,7 @@ An [param id] can optionally be provided, as well as an accelerator ([param acce
 [b]Note:[/b] The provided [param id] is used only in [signal id_pressed] and [signal id_focused] signals. It's not related to the [code]index[/code] arguments in e.g. [method set_item_checked].
 */
 //go:nosplit
-func (self class) AddItem(label String.Readable, id int64, accel Key) { //gd:PopupMenu.add_item
+func (self class) AddItem(label String.Readable, id int64, accel Input.Key) { //gd:PopupMenu.add_item
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
 	callframe.Arg(frame, id)
@@ -963,7 +973,7 @@ Adds a new item with text [param label] and icon [param texture].
 An [param id] can optionally be provided, as well as an accelerator ([param accel]). If no [param id] is provided, one will be created from the index. If no [param accel] is provided, then the default value of 0 (corresponding to [constant @GlobalScope.KEY_NONE]) will be assigned to the item (which means it won't have any accelerator). See [method get_item_accelerator] for more info on accelerators.
 */
 //go:nosplit
-func (self class) AddIconItem(texture [1]gdclass.Texture2D, label String.Readable, id int64, accel Key) { //gd:PopupMenu.add_icon_item
+func (self class) AddIconItem(texture [1]gdclass.Texture2D, label String.Readable, id int64, accel Input.Key) { //gd:PopupMenu.add_icon_item
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
@@ -980,7 +990,7 @@ An [param id] can optionally be provided, as well as an accelerator ([param acce
 [b]Note:[/b] Checkable items just display a checkmark, but don't have any built-in checking behavior and must be checked/unchecked manually. See [method set_item_checked] for more info on how to control it.
 */
 //go:nosplit
-func (self class) AddCheckItem(label String.Readable, id int64, accel Key) { //gd:PopupMenu.add_check_item
+func (self class) AddCheckItem(label String.Readable, id int64, accel Input.Key) { //gd:PopupMenu.add_check_item
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
 	callframe.Arg(frame, id)
@@ -996,7 +1006,7 @@ An [param id] can optionally be provided, as well as an accelerator ([param acce
 [b]Note:[/b] Checkable items just display a checkmark, but don't have any built-in checking behavior and must be checked/unchecked manually. See [method set_item_checked] for more info on how to control it.
 */
 //go:nosplit
-func (self class) AddIconCheckItem(texture [1]gdclass.Texture2D, label String.Readable, id int64, accel Key) { //gd:PopupMenu.add_icon_check_item
+func (self class) AddIconCheckItem(texture [1]gdclass.Texture2D, label String.Readable, id int64, accel Input.Key) { //gd:PopupMenu.add_icon_check_item
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
@@ -1013,7 +1023,7 @@ An [param id] can optionally be provided, as well as an accelerator ([param acce
 [b]Note:[/b] Checkable items just display a checkmark, but don't have any built-in checking behavior and must be checked/unchecked manually. See [method set_item_checked] for more info on how to control it.
 */
 //go:nosplit
-func (self class) AddRadioCheckItem(label String.Readable, id int64, accel Key) { //gd:PopupMenu.add_radio_check_item
+func (self class) AddRadioCheckItem(label String.Readable, id int64, accel Input.Key) { //gd:PopupMenu.add_radio_check_item
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
 	callframe.Arg(frame, id)
@@ -1027,7 +1037,7 @@ func (self class) AddRadioCheckItem(label String.Readable, id int64, accel Key) 
 Same as [method add_icon_check_item], but uses a radio check button.
 */
 //go:nosplit
-func (self class) AddIconRadioCheckItem(texture [1]gdclass.Texture2D, label String.Readable, id int64, accel Key) { //gd:PopupMenu.add_icon_radio_check_item
+func (self class) AddIconRadioCheckItem(texture [1]gdclass.Texture2D, label String.Readable, id int64, accel Input.Key) { //gd:PopupMenu.add_icon_radio_check_item
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
 	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
@@ -1060,7 +1070,7 @@ func _ready():
 [b]Note:[/b] Multistate items don't update their state automatically and must be done manually. See [method toggle_item_multistate], [method set_item_multistate] and [method get_item_multistate] for more info on how to control it.
 */
 //go:nosplit
-func (self class) AddMultistateItem(label String.Readable, max_states int64, default_state int64, id int64, accel Key) { //gd:PopupMenu.add_multistate_item
+func (self class) AddMultistateItem(label String.Readable, max_states int64, default_state int64, id int64, accel Input.Key) { //gd:PopupMenu.add_multistate_item
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
 	callframe.Arg(frame, max_states)
@@ -1219,7 +1229,7 @@ func (self class) SetItemText(index int64, text String.Readable) { //gd:PopupMen
 Sets item's text base writing direction.
 */
 //go:nosplit
-func (self class) SetItemTextDirection(index int64, direction gdclass.ControlTextDirection) { //gd:PopupMenu.set_item_text_direction
+func (self class) SetItemTextDirection(index int64, direction Control.TextDirection) { //gd:PopupMenu.set_item_text_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, direction)
@@ -1311,7 +1321,7 @@ func (self class) SetItemId(index int64, id int64) { //gd:PopupMenu.set_item_id
 Sets the accelerator of the item at the given [param index]. An accelerator is a keyboard shortcut that can be pressed to trigger the menu button even if it's not currently open. [param accel] is generally a combination of [enum KeyModifierMask]s and [enum Key]s using bitwise OR such as [code]KEY_MASK_CTRL | KEY_A[/code] ([kbd]Ctrl + A[/kbd]).
 */
 //go:nosplit
-func (self class) SetItemAccelerator(index int64, accel Key) { //gd:PopupMenu.set_item_accelerator
+func (self class) SetItemAccelerator(index int64, accel Input.Key) { //gd:PopupMenu.set_item_accelerator
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, accel)
@@ -1533,10 +1543,10 @@ func (self class) GetItemText(index int64) String.Readable { //gd:PopupMenu.get_
 Returns item's text base writing direction.
 */
 //go:nosplit
-func (self class) GetItemTextDirection(index int64) gdclass.ControlTextDirection { //gd:PopupMenu.get_item_text_direction
+func (self class) GetItemTextDirection(index int64) Control.TextDirection { //gd:PopupMenu.get_item_text_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[gdclass.ControlTextDirection](frame)
+	var r_ret = callframe.Ret[Control.TextDirection](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PopupMenu.Bind_get_item_text_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1645,10 +1655,10 @@ func (self class) GetItemIndex(id int64) int64 { //gd:PopupMenu.get_item_index
 Returns the accelerator of the item at the given [param index]. An accelerator is a keyboard shortcut that can be pressed to trigger the menu button even if it's not currently open. The return value is an integer which is generally a combination of [enum KeyModifierMask]s and [enum Key]s using bitwise OR such as [code]KEY_MASK_CTRL | KEY_A[/code] ([kbd]Ctrl + A[/kbd]). If no accelerator is defined for the specified [param index], [method get_item_accelerator] returns [code]0[/code] (corresponding to [constant @GlobalScope.KEY_NONE]).
 */
 //go:nosplit
-func (self class) GetItemAccelerator(index int64) Key { //gd:PopupMenu.get_item_accelerator
+func (self class) GetItemAccelerator(index int64) Input.Key { //gd:PopupMenu.get_item_accelerator
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[Key](frame)
+	var r_ret = callframe.Ret[Input.Key](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PopupMenu.Bind_get_item_accelerator, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2045,7 +2055,7 @@ func (self class) IsSystemMenu() bool { //gd:PopupMenu.is_system_menu
 }
 
 //go:nosplit
-func (self class) SetSystemMenu(system_menu_id gdclass.NativeMenuSystemMenus) { //gd:PopupMenu.set_system_menu
+func (self class) SetSystemMenu(system_menu_id NativeMenu.SystemMenus) { //gd:PopupMenu.set_system_menu
 	var frame = callframe.New()
 	callframe.Arg(frame, system_menu_id)
 	var r_ret = callframe.Nil
@@ -2054,9 +2064,9 @@ func (self class) SetSystemMenu(system_menu_id gdclass.NativeMenuSystemMenus) { 
 }
 
 //go:nosplit
-func (self class) GetSystemMenu() gdclass.NativeMenuSystemMenus { //gd:PopupMenu.get_system_menu
+func (self class) GetSystemMenu() NativeMenu.SystemMenus { //gd:PopupMenu.get_system_menu
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.NativeMenuSystemMenus](frame)
+	var r_ret = callframe.Ret[NativeMenu.SystemMenus](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PopupMenu.Bind_get_system_menu, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2114,394 +2124,3 @@ func (self Instance) Virtual(name string) reflect.Value {
 func init() {
 	gdclass.Register("PopupMenu", func(ptr gd.Object) any { return [1]gdclass.PopupMenu{*(*gdclass.PopupMenu)(unsafe.Pointer(&ptr))} })
 }
-
-type Key int
-
-const (
-	/*Enum value which doesn't correspond to any key. This is used to initialize [enum Key] properties with a generic state.*/
-	KeyNone Key = 0
-	/*Keycodes with this bit applied are non-printable.*/
-	KeySpecial Key = 4194304
-	/*Escape key.*/
-	KeyEscape Key = 4194305
-	/*Tab key.*/
-	KeyTab Key = 4194306
-	/*Shift + Tab key.*/
-	KeyBacktab Key = 4194307
-	/*Backspace key.*/
-	KeyBackspace Key = 4194308
-	/*Return key (on the main keyboard).*/
-	KeyEnter Key = 4194309
-	/*Enter key on the numeric keypad.*/
-	KeyKpEnter Key = 4194310
-	/*Insert key.*/
-	KeyInsert Key = 4194311
-	/*Delete key.*/
-	KeyDelete Key = 4194312
-	/*Pause key.*/
-	KeyPause Key = 4194313
-	/*Print Screen key.*/
-	KeyPrint Key = 4194314
-	/*System Request key.*/
-	KeySysreq Key = 4194315
-	/*Clear key.*/
-	KeyClear Key = 4194316
-	/*Home key.*/
-	KeyHome Key = 4194317
-	/*End key.*/
-	KeyEnd Key = 4194318
-	/*Left arrow key.*/
-	KeyLeft Key = 4194319
-	/*Up arrow key.*/
-	KeyUp Key = 4194320
-	/*Right arrow key.*/
-	KeyRight Key = 4194321
-	/*Down arrow key.*/
-	KeyDown Key = 4194322
-	/*Page Up key.*/
-	KeyPageup Key = 4194323
-	/*Page Down key.*/
-	KeyPagedown Key = 4194324
-	/*Shift key.*/
-	KeyShift Key = 4194325
-	/*Control key.*/
-	KeyCtrl Key = 4194326
-	/*Meta key.*/
-	KeyMeta Key = 4194327
-	/*Alt key.*/
-	KeyAlt Key = 4194328
-	/*Caps Lock key.*/
-	KeyCapslock Key = 4194329
-	/*Num Lock key.*/
-	KeyNumlock Key = 4194330
-	/*Scroll Lock key.*/
-	KeyScrolllock Key = 4194331
-	/*F1 key.*/
-	KeyF1 Key = 4194332
-	/*F2 key.*/
-	KeyF2 Key = 4194333
-	/*F3 key.*/
-	KeyF3 Key = 4194334
-	/*F4 key.*/
-	KeyF4 Key = 4194335
-	/*F5 key.*/
-	KeyF5 Key = 4194336
-	/*F6 key.*/
-	KeyF6 Key = 4194337
-	/*F7 key.*/
-	KeyF7 Key = 4194338
-	/*F8 key.*/
-	KeyF8 Key = 4194339
-	/*F9 key.*/
-	KeyF9 Key = 4194340
-	/*F10 key.*/
-	KeyF10 Key = 4194341
-	/*F11 key.*/
-	KeyF11 Key = 4194342
-	/*F12 key.*/
-	KeyF12 Key = 4194343
-	/*F13 key.*/
-	KeyF13 Key = 4194344
-	/*F14 key.*/
-	KeyF14 Key = 4194345
-	/*F15 key.*/
-	KeyF15 Key = 4194346
-	/*F16 key.*/
-	KeyF16 Key = 4194347
-	/*F17 key.*/
-	KeyF17 Key = 4194348
-	/*F18 key.*/
-	KeyF18 Key = 4194349
-	/*F19 key.*/
-	KeyF19 Key = 4194350
-	/*F20 key.*/
-	KeyF20 Key = 4194351
-	/*F21 key.*/
-	KeyF21 Key = 4194352
-	/*F22 key.*/
-	KeyF22 Key = 4194353
-	/*F23 key.*/
-	KeyF23 Key = 4194354
-	/*F24 key.*/
-	KeyF24 Key = 4194355
-	/*F25 key. Only supported on macOS and Linux due to a Windows limitation.*/
-	KeyF25 Key = 4194356
-	/*F26 key. Only supported on macOS and Linux due to a Windows limitation.*/
-	KeyF26 Key = 4194357
-	/*F27 key. Only supported on macOS and Linux due to a Windows limitation.*/
-	KeyF27 Key = 4194358
-	/*F28 key. Only supported on macOS and Linux due to a Windows limitation.*/
-	KeyF28 Key = 4194359
-	/*F29 key. Only supported on macOS and Linux due to a Windows limitation.*/
-	KeyF29 Key = 4194360
-	/*F30 key. Only supported on macOS and Linux due to a Windows limitation.*/
-	KeyF30 Key = 4194361
-	/*F31 key. Only supported on macOS and Linux due to a Windows limitation.*/
-	KeyF31 Key = 4194362
-	/*F32 key. Only supported on macOS and Linux due to a Windows limitation.*/
-	KeyF32 Key = 4194363
-	/*F33 key. Only supported on macOS and Linux due to a Windows limitation.*/
-	KeyF33 Key = 4194364
-	/*F34 key. Only supported on macOS and Linux due to a Windows limitation.*/
-	KeyF34 Key = 4194365
-	/*F35 key. Only supported on macOS and Linux due to a Windows limitation.*/
-	KeyF35 Key = 4194366
-	/*Multiply (*) key on the numeric keypad.*/
-	KeyKpMultiply Key = 4194433
-	/*Divide (/) key on the numeric keypad.*/
-	KeyKpDivide Key = 4194434
-	/*Subtract (-) key on the numeric keypad.*/
-	KeyKpSubtract Key = 4194435
-	/*Period (.) key on the numeric keypad.*/
-	KeyKpPeriod Key = 4194436
-	/*Add (+) key on the numeric keypad.*/
-	KeyKpAdd Key = 4194437
-	/*Number 0 on the numeric keypad.*/
-	KeyKp0 Key = 4194438
-	/*Number 1 on the numeric keypad.*/
-	KeyKp1 Key = 4194439
-	/*Number 2 on the numeric keypad.*/
-	KeyKp2 Key = 4194440
-	/*Number 3 on the numeric keypad.*/
-	KeyKp3 Key = 4194441
-	/*Number 4 on the numeric keypad.*/
-	KeyKp4 Key = 4194442
-	/*Number 5 on the numeric keypad.*/
-	KeyKp5 Key = 4194443
-	/*Number 6 on the numeric keypad.*/
-	KeyKp6 Key = 4194444
-	/*Number 7 on the numeric keypad.*/
-	KeyKp7 Key = 4194445
-	/*Number 8 on the numeric keypad.*/
-	KeyKp8 Key = 4194446
-	/*Number 9 on the numeric keypad.*/
-	KeyKp9 Key = 4194447
-	/*Context menu key.*/
-	KeyMenu Key = 4194370
-	/*Hyper key. (On Linux/X11 only).*/
-	KeyHyper Key = 4194371
-	/*Help key.*/
-	KeyHelp Key = 4194373
-	/*Back key.*/
-	KeyBack Key = 4194376
-	/*Forward key.*/
-	KeyForward Key = 4194377
-	/*Media stop key.*/
-	KeyStop Key = 4194378
-	/*Refresh key.*/
-	KeyRefresh Key = 4194379
-	/*Volume down key.*/
-	KeyVolumedown Key = 4194380
-	/*Mute volume key.*/
-	KeyVolumemute Key = 4194381
-	/*Volume up key.*/
-	KeyVolumeup Key = 4194382
-	/*Media play key.*/
-	KeyMediaplay Key = 4194388
-	/*Media stop key.*/
-	KeyMediastop Key = 4194389
-	/*Previous song key.*/
-	KeyMediaprevious Key = 4194390
-	/*Next song key.*/
-	KeyMedianext Key = 4194391
-	/*Media record key.*/
-	KeyMediarecord Key = 4194392
-	/*Home page key.*/
-	KeyHomepage Key = 4194393
-	/*Favorites key.*/
-	KeyFavorites Key = 4194394
-	/*Search key.*/
-	KeySearch Key = 4194395
-	/*Standby key.*/
-	KeyStandby Key = 4194396
-	/*Open URL / Launch Browser key.*/
-	KeyOpenurl Key = 4194397
-	/*Launch Mail key.*/
-	KeyLaunchmail Key = 4194398
-	/*Launch Media key.*/
-	KeyLaunchmedia Key = 4194399
-	/*Launch Shortcut 0 key.*/
-	KeyLaunch0 Key = 4194400
-	/*Launch Shortcut 1 key.*/
-	KeyLaunch1 Key = 4194401
-	/*Launch Shortcut 2 key.*/
-	KeyLaunch2 Key = 4194402
-	/*Launch Shortcut 3 key.*/
-	KeyLaunch3 Key = 4194403
-	/*Launch Shortcut 4 key.*/
-	KeyLaunch4 Key = 4194404
-	/*Launch Shortcut 5 key.*/
-	KeyLaunch5 Key = 4194405
-	/*Launch Shortcut 6 key.*/
-	KeyLaunch6 Key = 4194406
-	/*Launch Shortcut 7 key.*/
-	KeyLaunch7 Key = 4194407
-	/*Launch Shortcut 8 key.*/
-	KeyLaunch8 Key = 4194408
-	/*Launch Shortcut 9 key.*/
-	KeyLaunch9 Key = 4194409
-	/*Launch Shortcut A key.*/
-	KeyLauncha Key = 4194410
-	/*Launch Shortcut B key.*/
-	KeyLaunchb Key = 4194411
-	/*Launch Shortcut C key.*/
-	KeyLaunchc Key = 4194412
-	/*Launch Shortcut D key.*/
-	KeyLaunchd Key = 4194413
-	/*Launch Shortcut E key.*/
-	KeyLaunche Key = 4194414
-	/*Launch Shortcut F key.*/
-	KeyLaunchf Key = 4194415
-	/*"Globe" key on Mac / iPad keyboard.*/
-	KeyGlobe Key = 4194416
-	/*"On-screen keyboard" key on iPad keyboard.*/
-	KeyKeyboard Key = 4194417
-	/*英数 key on Mac keyboard.*/
-	KeyJisEisu Key = 4194418
-	/*かな key on Mac keyboard.*/
-	KeyJisKana Key = 4194419
-	/*Unknown key.*/
-	KeyUnknown Key = 8388607
-	/*Space key.*/
-	KeySpace Key = 32
-	/*Exclamation mark ([code]![/code]) key.*/
-	KeyExclam Key = 33
-	/*Double quotation mark ([code]"[/code]) key.*/
-	KeyQuotedbl Key = 34
-	/*Number sign or [i]hash[/i] ([code]#[/code]) key.*/
-	KeyNumbersign Key = 35
-	/*Dollar sign ([code]$[/code]) key.*/
-	KeyDollar Key = 36
-	/*Percent sign ([code]%[/code]) key.*/
-	KeyPercent Key = 37
-	/*Ampersand ([code]&[/code]) key.*/
-	KeyAmpersand Key = 38
-	/*Apostrophe ([code]'[/code]) key.*/
-	KeyApostrophe Key = 39
-	/*Left parenthesis ([code]([/code]) key.*/
-	KeyParenleft Key = 40
-	/*Right parenthesis ([code])[/code]) key.*/
-	KeyParenright Key = 41
-	/*Asterisk ([code]*[/code]) key.*/
-	KeyAsterisk Key = 42
-	/*Plus ([code]+[/code]) key.*/
-	KeyPlus Key = 43
-	/*Comma ([code],[/code]) key.*/
-	KeyComma Key = 44
-	/*Minus ([code]-[/code]) key.*/
-	KeyMinus Key = 45
-	/*Period ([code].[/code]) key.*/
-	KeyPeriod Key = 46
-	/*Slash ([code]/[/code]) key.*/
-	KeySlash Key = 47
-	/*Number 0 key.*/
-	Key0 Key = 48
-	/*Number 1 key.*/
-	Key1 Key = 49
-	/*Number 2 key.*/
-	Key2 Key = 50
-	/*Number 3 key.*/
-	Key3 Key = 51
-	/*Number 4 key.*/
-	Key4 Key = 52
-	/*Number 5 key.*/
-	Key5 Key = 53
-	/*Number 6 key.*/
-	Key6 Key = 54
-	/*Number 7 key.*/
-	Key7 Key = 55
-	/*Number 8 key.*/
-	Key8 Key = 56
-	/*Number 9 key.*/
-	Key9 Key = 57
-	/*Colon ([code]:[/code]) key.*/
-	KeyColon Key = 58
-	/*Semicolon ([code];[/code]) key.*/
-	KeySemicolon Key = 59
-	/*Less-than sign ([code]<[/code]) key.*/
-	KeyLess Key = 60
-	/*Equal sign ([code]=[/code]) key.*/
-	KeyEqual Key = 61
-	/*Greater-than sign ([code]>[/code]) key.*/
-	KeyGreater Key = 62
-	/*Question mark ([code]?[/code]) key.*/
-	KeyQuestion Key = 63
-	/*At sign ([code]@[/code]) key.*/
-	KeyAt Key = 64
-	/*A key.*/
-	KeyA Key = 65
-	/*B key.*/
-	KeyB Key = 66
-	/*C key.*/
-	KeyC Key = 67
-	/*D key.*/
-	KeyD Key = 68
-	/*E key.*/
-	KeyE Key = 69
-	/*F key.*/
-	KeyF Key = 70
-	/*G key.*/
-	KeyG Key = 71
-	/*H key.*/
-	KeyH Key = 72
-	/*I key.*/
-	KeyI Key = 73
-	/*J key.*/
-	KeyJ Key = 74
-	/*K key.*/
-	KeyK Key = 75
-	/*L key.*/
-	KeyL Key = 76
-	/*M key.*/
-	KeyM Key = 77
-	/*N key.*/
-	KeyN Key = 78
-	/*O key.*/
-	KeyO Key = 79
-	/*P key.*/
-	KeyP Key = 80
-	/*Q key.*/
-	KeyQ Key = 81
-	/*R key.*/
-	KeyR Key = 82
-	/*S key.*/
-	KeyS Key = 83
-	/*T key.*/
-	KeyT Key = 84
-	/*U key.*/
-	KeyU Key = 85
-	/*V key.*/
-	KeyV Key = 86
-	/*W key.*/
-	KeyW Key = 87
-	/*X key.*/
-	KeyX Key = 88
-	/*Y key.*/
-	KeyY Key = 89
-	/*Z key.*/
-	KeyZ Key = 90
-	/*Left bracket ([code][lb][/code]) key.*/
-	KeyBracketleft Key = 91
-	/*Backslash ([code]\[/code]) key.*/
-	KeyBackslash Key = 92
-	/*Right bracket ([code][rb][/code]) key.*/
-	KeyBracketright Key = 93
-	/*Caret ([code]^[/code]) key.*/
-	KeyAsciicircum Key = 94
-	/*Underscore ([code]_[/code]) key.*/
-	KeyUnderscore Key = 95
-	/*Backtick ([code]`[/code]) key.*/
-	KeyQuoteleft Key = 96
-	/*Left brace ([code]{[/code]) key.*/
-	KeyBraceleft Key = 123
-	/*Vertical bar or [i]pipe[/i] ([code]|[/code]) key.*/
-	KeyBar Key = 124
-	/*Right brace ([code]}[/code]) key.*/
-	KeyBraceright Key = 125
-	/*Tilde ([code]~[/code]) key.*/
-	KeyAsciitilde Key = 126
-	/*Yen symbol ([code]¥[/code]) key.*/
-	KeyYen Key = 165
-	/*Section sign ([code]§[/code]) key.*/
-	KeySection Key = 167
-)

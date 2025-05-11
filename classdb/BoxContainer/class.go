@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
@@ -28,6 +29,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -43,6 +48,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,6 +61,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -99,11 +106,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Alignment() gdclass.BoxContainerAlignmentMode {
-	return gdclass.BoxContainerAlignmentMode(class(self).GetAlignment())
+func (self Instance) Alignment() AlignmentMode {
+	return AlignmentMode(class(self).GetAlignment())
 }
 
-func (self Instance) SetAlignment(value gdclass.BoxContainerAlignmentMode) {
+func (self Instance) SetAlignment(value AlignmentMode) {
 	class(self).SetAlignment(value)
 }
 
@@ -130,7 +137,7 @@ func (self class) AddSpacer(begin bool) [1]gdclass.Control { //gd:BoxContainer.a
 }
 
 //go:nosplit
-func (self class) SetAlignment(alignment gdclass.BoxContainerAlignmentMode) { //gd:BoxContainer.set_alignment
+func (self class) SetAlignment(alignment AlignmentMode) { //gd:BoxContainer.set_alignment
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
 	var r_ret = callframe.Nil
@@ -139,9 +146,9 @@ func (self class) SetAlignment(alignment gdclass.BoxContainerAlignmentMode) { //
 }
 
 //go:nosplit
-func (self class) GetAlignment() gdclass.BoxContainerAlignmentMode { //gd:BoxContainer.get_alignment
+func (self class) GetAlignment() AlignmentMode { //gd:BoxContainer.get_alignment
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.BoxContainerAlignmentMode](frame)
+	var r_ret = callframe.Ret[AlignmentMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BoxContainer.Bind_get_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -211,7 +218,7 @@ func init() {
 	})
 }
 
-type AlignmentMode = gdclass.BoxContainerAlignmentMode //gd:BoxContainer.AlignmentMode
+type AlignmentMode int //gd:BoxContainer.AlignmentMode
 
 const (
 	/*The child controls will be arranged at the beginning of the container, i.e. top if orientation is vertical, left if orientation is horizontal (right for RTL layout).*/

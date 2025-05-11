@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/Tween"
 import "graphics.gd/classdb/Tweener"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -25,6 +27,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -40,6 +46,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -52,6 +59,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -128,14 +136,14 @@ func (self Instance) AsRelative() Instance { //gd:PropertyTweener.as_relative
 /*
 Sets the type of used transition from [enum Tween.TransitionType]. If not set, the default transition is used from the [Tween] that contains this Tweener.
 */
-func (self Instance) SetTrans(trans gdclass.TweenTransitionType) Instance { //gd:PropertyTweener.set_trans
+func (self Instance) SetTrans(trans Tween.TransitionType) Instance { //gd:PropertyTweener.set_trans
 	return Instance(Advanced(self).SetTrans(trans))
 }
 
 /*
 Sets the type of used easing from [enum Tween.EaseType]. If not set, the default easing is used from the [Tween] that contains this Tweener.
 */
-func (self Instance) SetEase(ease gdclass.TweenEaseType) Instance { //gd:PropertyTweener.set_ease
+func (self Instance) SetEase(ease Tween.EaseType) Instance { //gd:PropertyTweener.set_ease
 	return Instance(Advanced(self).SetEase(ease))
 }
 
@@ -187,6 +195,40 @@ Sets the time in seconds after which the [PropertyTweener] will start interpolat
 */
 func (self Instance) SetDelay(delay Float.X) Instance { //gd:PropertyTweener.set_delay
 	return Instance(Advanced(self).SetDelay(float64(delay)))
+}
+
+/*
+Creates and appends a [PropertyTweener]. This method tweens a [param property] of an [param object] between an initial value and [param final_val] in a span of time equal to [param duration], in seconds. The initial value by default is the property's value at the time the tweening of the [PropertyTweener] starts.
+[codeblocks]
+[gdscript]
+var tween = create_tween()
+tween.tween_property($Sprite, "position", Vector2(100, 200), 1)
+tween.tween_property($Sprite, "position", Vector2(200, 300), 1)
+[/gdscript]
+[csharp]
+Tween tween = CreateTween();
+tween.TweenProperty(GetNode("Sprite"), "position", new Vector2(100.0f, 200.0f), 1.0f);
+tween.TweenProperty(GetNode("Sprite"), "position", new Vector2(200.0f, 300.0f), 1.0f);
+[/csharp]
+[/codeblocks]
+will move the sprite to position (100, 200) and then to (200, 300). If you use [method PropertyTweener.from] or [method PropertyTweener.from_current], the starting position will be overwritten by the given value instead. See other methods in [PropertyTweener] to see how the tweening can be tweaked further.
+[b]Note:[/b] You can find the correct property name by hovering over the property in the Inspector. You can also provide the components of a property directly by using [code]"property:component"[/code] (eg. [code]position:x[/code]), where it would only apply to that particular component.
+[b]Example:[/b] Moving an object twice from the same position, with different transition types:
+[codeblocks]
+[gdscript]
+var tween = create_tween()
+tween.tween_property($Sprite, "position", Vector2.RIGHT * 300, 1).as_relative().set_trans(Tween.TRANS_SINE)
+tween.tween_property($Sprite, "position", Vector2.RIGHT * 300, 1).as_relative().from_current().set_trans(Tween.TRANS_EXPO)
+[/gdscript]
+[csharp]
+Tween tween = CreateTween();
+tween.TweenProperty(GetNode("Sprite"), "position", Vector2.Right * 300.0f, 1.0f).AsRelative().SetTrans(Tween.TransitionType.Sine);
+tween.TweenProperty(GetNode("Sprite"), "position", Vector2.Right * 300.0f, 1.0f).AsRelative().FromCurrent().SetTrans(Tween.TransitionType.Expo);
+[/csharp]
+[/codeblocks]
+*/
+func Make(peer Tween.Instance, obj Object.Instance, property string, final_val any, duration Float.X) Instance { //gd:Tween.tween_property
+	return Instance(Tween.Advanced(peer).TweenProperty(obj, Path.ToNode(String.New(property)), variant.New(final_val), float64(duration)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -285,7 +327,7 @@ func (self class) AsRelative() [1]gdclass.PropertyTweener { //gd:PropertyTweener
 Sets the type of used transition from [enum Tween.TransitionType]. If not set, the default transition is used from the [Tween] that contains this Tweener.
 */
 //go:nosplit
-func (self class) SetTrans(trans gdclass.TweenTransitionType) [1]gdclass.PropertyTweener { //gd:PropertyTweener.set_trans
+func (self class) SetTrans(trans Tween.TransitionType) [1]gdclass.PropertyTweener { //gd:PropertyTweener.set_trans
 	var frame = callframe.New()
 	callframe.Arg(frame, trans)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -299,7 +341,7 @@ func (self class) SetTrans(trans gdclass.TweenTransitionType) [1]gdclass.Propert
 Sets the type of used easing from [enum Tween.EaseType]. If not set, the default easing is used from the [Tween] that contains this Tweener.
 */
 //go:nosplit
-func (self class) SetEase(ease gdclass.TweenEaseType) [1]gdclass.PropertyTweener { //gd:PropertyTweener.set_ease
+func (self class) SetEase(ease Tween.EaseType) [1]gdclass.PropertyTweener { //gd:PropertyTweener.set_ease
 	var frame = callframe.New()
 	callframe.Arg(frame, ease)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)

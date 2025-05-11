@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -26,6 +27,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -41,6 +46,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -53,6 +59,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -84,7 +91,7 @@ func (self Instance) AddPoint(position Vector2.XY) int { //gd:Curve.add_point
 /*
 Adds a point to the curve. For each side, if the [code]*_mode[/code] is [constant TANGENT_LINEAR], the [code]*_tangent[/code] angle (in degrees) uses the slope of the curve halfway to the adjacent point. Allows custom assignments to the [code]*_tangent[/code] angle if [code]*_mode[/code] is set to [constant TANGENT_FREE].
 */
-func (self Expanded) AddPoint(position Vector2.XY, left_tangent Float.X, right_tangent Float.X, left_mode gdclass.CurveTangentMode, right_mode gdclass.CurveTangentMode) int { //gd:Curve.add_point
+func (self Expanded) AddPoint(position Vector2.XY, left_tangent Float.X, right_tangent Float.X, left_mode TangentMode, right_mode TangentMode) int { //gd:Curve.add_point
 	return int(int(Advanced(self).AddPoint(Vector2.XY(position), float64(left_tangent), float64(right_tangent), left_mode, right_mode)))
 }
 
@@ -154,15 +161,15 @@ func (self Instance) GetPointRightTangent(index int) Float.X { //gd:Curve.get_po
 /*
 Returns the left [enum TangentMode] for the point at [param index].
 */
-func (self Instance) GetPointLeftMode(index int) gdclass.CurveTangentMode { //gd:Curve.get_point_left_mode
-	return gdclass.CurveTangentMode(Advanced(self).GetPointLeftMode(int64(index)))
+func (self Instance) GetPointLeftMode(index int) TangentMode { //gd:Curve.get_point_left_mode
+	return TangentMode(Advanced(self).GetPointLeftMode(int64(index)))
 }
 
 /*
 Returns the right [enum TangentMode] for the point at [param index].
 */
-func (self Instance) GetPointRightMode(index int) gdclass.CurveTangentMode { //gd:Curve.get_point_right_mode
-	return gdclass.CurveTangentMode(Advanced(self).GetPointRightMode(int64(index)))
+func (self Instance) GetPointRightMode(index int) TangentMode { //gd:Curve.get_point_right_mode
+	return TangentMode(Advanced(self).GetPointRightMode(int64(index)))
 }
 
 /*
@@ -182,14 +189,14 @@ func (self Instance) SetPointRightTangent(index int, tangent Float.X) { //gd:Cur
 /*
 Sets the left [enum TangentMode] for the point at [param index] to [param mode].
 */
-func (self Instance) SetPointLeftMode(index int, mode gdclass.CurveTangentMode) { //gd:Curve.set_point_left_mode
+func (self Instance) SetPointLeftMode(index int, mode TangentMode) { //gd:Curve.set_point_left_mode
 	Advanced(self).SetPointLeftMode(int64(index), mode)
 }
 
 /*
 Sets the right [enum TangentMode] for the point at [param index] to [param mode].
 */
-func (self Instance) SetPointRightMode(index int, mode gdclass.CurveTangentMode) { //gd:Curve.set_point_right_mode
+func (self Instance) SetPointRightMode(index int, mode TangentMode) { //gd:Curve.set_point_right_mode
 	Advanced(self).SetPointRightMode(int64(index), mode)
 }
 
@@ -312,7 +319,7 @@ func (self class) SetPointCount(count int64) { //gd:Curve.set_point_count
 Adds a point to the curve. For each side, if the [code]*_mode[/code] is [constant TANGENT_LINEAR], the [code]*_tangent[/code] angle (in degrees) uses the slope of the curve halfway to the adjacent point. Allows custom assignments to the [code]*_tangent[/code] angle if [code]*_mode[/code] is set to [constant TANGENT_FREE].
 */
 //go:nosplit
-func (self class) AddPoint(position Vector2.XY, left_tangent float64, right_tangent float64, left_mode gdclass.CurveTangentMode, right_mode gdclass.CurveTangentMode) int64 { //gd:Curve.add_point
+func (self class) AddPoint(position Vector2.XY, left_tangent float64, right_tangent float64, left_mode TangentMode, right_mode TangentMode) int64 { //gd:Curve.add_point
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	callframe.Arg(frame, left_tangent)
@@ -451,10 +458,10 @@ func (self class) GetPointRightTangent(index int64) float64 { //gd:Curve.get_poi
 Returns the left [enum TangentMode] for the point at [param index].
 */
 //go:nosplit
-func (self class) GetPointLeftMode(index int64) gdclass.CurveTangentMode { //gd:Curve.get_point_left_mode
+func (self class) GetPointLeftMode(index int64) TangentMode { //gd:Curve.get_point_left_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[gdclass.CurveTangentMode](frame)
+	var r_ret = callframe.Ret[TangentMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_get_point_left_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -465,10 +472,10 @@ func (self class) GetPointLeftMode(index int64) gdclass.CurveTangentMode { //gd:
 Returns the right [enum TangentMode] for the point at [param index].
 */
 //go:nosplit
-func (self class) GetPointRightMode(index int64) gdclass.CurveTangentMode { //gd:Curve.get_point_right_mode
+func (self class) GetPointRightMode(index int64) TangentMode { //gd:Curve.get_point_right_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[gdclass.CurveTangentMode](frame)
+	var r_ret = callframe.Ret[TangentMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve.Bind_get_point_right_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -505,7 +512,7 @@ func (self class) SetPointRightTangent(index int64, tangent float64) { //gd:Curv
 Sets the left [enum TangentMode] for the point at [param index] to [param mode].
 */
 //go:nosplit
-func (self class) SetPointLeftMode(index int64, mode gdclass.CurveTangentMode) { //gd:Curve.set_point_left_mode
+func (self class) SetPointLeftMode(index int64, mode TangentMode) { //gd:Curve.set_point_left_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, mode)
@@ -518,7 +525,7 @@ func (self class) SetPointLeftMode(index int64, mode gdclass.CurveTangentMode) {
 Sets the right [enum TangentMode] for the point at [param index] to [param mode].
 */
 //go:nosplit
-func (self class) SetPointRightMode(index int64, mode gdclass.CurveTangentMode) { //gd:Curve.set_point_right_mode
+func (self class) SetPointRightMode(index int64, mode TangentMode) { //gd:Curve.set_point_right_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, mode)
@@ -712,7 +719,7 @@ func init() {
 	gdclass.Register("Curve", func(ptr gd.Object) any { return [1]gdclass.Curve{*(*gdclass.Curve)(unsafe.Pointer(&ptr))} })
 }
 
-type TangentMode = gdclass.CurveTangentMode //gd:Curve.TangentMode
+type TangentMode int //gd:Curve.TangentMode
 
 const (
 	/*The tangent on this side of the point is user-defined.*/

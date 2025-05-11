@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CameraAttributes"
 import "graphics.gd/classdb/Compositor"
 import "graphics.gd/classdb/Environment"
@@ -34,6 +35,10 @@ import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -49,6 +54,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -61,6 +67,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -248,11 +255,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) KeepAspect() gdclass.Camera3DKeepAspect {
-	return gdclass.Camera3DKeepAspect(class(self).GetKeepAspectMode())
+func (self Instance) KeepAspect() KeepAspect {
+	return KeepAspect(class(self).GetKeepAspectMode())
 }
 
-func (self Instance) SetKeepAspect(value gdclass.Camera3DKeepAspect) {
+func (self Instance) SetKeepAspect(value KeepAspect) {
 	class(self).SetKeepAspectMode(value)
 }
 
@@ -304,19 +311,19 @@ func (self Instance) SetVOffset(value Float.X) {
 	class(self).SetVOffset(float64(value))
 }
 
-func (self Instance) DopplerTracking() gdclass.Camera3DDopplerTracking {
-	return gdclass.Camera3DDopplerTracking(class(self).GetDopplerTracking())
+func (self Instance) DopplerTracking() DopplerTracking {
+	return DopplerTracking(class(self).GetDopplerTracking())
 }
 
-func (self Instance) SetDopplerTracking(value gdclass.Camera3DDopplerTracking) {
+func (self Instance) SetDopplerTracking(value DopplerTracking) {
 	class(self).SetDopplerTracking(value)
 }
 
-func (self Instance) Projection() gdclass.Camera3DProjectionType {
-	return gdclass.Camera3DProjectionType(class(self).GetProjection())
+func (self Instance) Projection() ProjectionType {
+	return ProjectionType(class(self).GetProjection())
 }
 
-func (self Instance) SetProjection(value gdclass.Camera3DProjectionType) {
+func (self Instance) SetProjection(value ProjectionType) {
 	class(self).SetProjection(value)
 }
 
@@ -668,9 +675,9 @@ func (self class) SetNear(near float64) { //gd:Camera3D.set_near
 }
 
 //go:nosplit
-func (self class) GetProjection() gdclass.Camera3DProjectionType { //gd:Camera3D.get_projection
+func (self class) GetProjection() ProjectionType { //gd:Camera3D.get_projection
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.Camera3DProjectionType](frame)
+	var r_ret = callframe.Ret[ProjectionType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_projection, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -678,7 +685,7 @@ func (self class) GetProjection() gdclass.Camera3DProjectionType { //gd:Camera3D
 }
 
 //go:nosplit
-func (self class) SetProjection(mode gdclass.Camera3DProjectionType) { //gd:Camera3D.set_projection
+func (self class) SetProjection(mode ProjectionType) { //gd:Camera3D.set_projection
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -801,7 +808,7 @@ func (self class) GetCompositor() [1]gdclass.Compositor { //gd:Camera3D.get_comp
 }
 
 //go:nosplit
-func (self class) SetKeepAspectMode(mode gdclass.Camera3DKeepAspect) { //gd:Camera3D.set_keep_aspect_mode
+func (self class) SetKeepAspectMode(mode KeepAspect) { //gd:Camera3D.set_keep_aspect_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -810,9 +817,9 @@ func (self class) SetKeepAspectMode(mode gdclass.Camera3DKeepAspect) { //gd:Came
 }
 
 //go:nosplit
-func (self class) GetKeepAspectMode() gdclass.Camera3DKeepAspect { //gd:Camera3D.get_keep_aspect_mode
+func (self class) GetKeepAspectMode() KeepAspect { //gd:Camera3D.get_keep_aspect_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.Camera3DKeepAspect](frame)
+	var r_ret = callframe.Ret[KeepAspect](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_keep_aspect_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -820,7 +827,7 @@ func (self class) GetKeepAspectMode() gdclass.Camera3DKeepAspect { //gd:Camera3D
 }
 
 //go:nosplit
-func (self class) SetDopplerTracking(mode gdclass.Camera3DDopplerTracking) { //gd:Camera3D.set_doppler_tracking
+func (self class) SetDopplerTracking(mode DopplerTracking) { //gd:Camera3D.set_doppler_tracking
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -829,9 +836,9 @@ func (self class) SetDopplerTracking(mode gdclass.Camera3DDopplerTracking) { //g
 }
 
 //go:nosplit
-func (self class) GetDopplerTracking() gdclass.Camera3DDopplerTracking { //gd:Camera3D.get_doppler_tracking
+func (self class) GetDopplerTracking() DopplerTracking { //gd:Camera3D.get_doppler_tracking
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.Camera3DDopplerTracking](frame)
+	var r_ret = callframe.Ret[DopplerTracking](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera3D.Bind_get_doppler_tracking, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -944,7 +951,7 @@ func init() {
 	gdclass.Register("Camera3D", func(ptr gd.Object) any { return [1]gdclass.Camera3D{*(*gdclass.Camera3D)(unsafe.Pointer(&ptr))} })
 }
 
-type ProjectionType = gdclass.Camera3DProjectionType //gd:Camera3D.ProjectionType
+type ProjectionType int //gd:Camera3D.ProjectionType
 
 const (
 	/*Perspective projection. Objects on the screen becomes smaller when they are far away.*/
@@ -955,7 +962,7 @@ const (
 	ProjectionFrustum ProjectionType = 2
 )
 
-type KeepAspect = gdclass.Camera3DKeepAspect //gd:Camera3D.KeepAspect
+type KeepAspect int //gd:Camera3D.KeepAspect
 
 const (
 	/*Preserves the horizontal aspect ratio; also known as Vert- scaling. This is usually the best option for projects running in portrait mode, as taller aspect ratios will benefit from a wider vertical FOV.*/
@@ -964,7 +971,7 @@ const (
 	KeepHeight KeepAspect = 1
 )
 
-type DopplerTracking = gdclass.Camera3DDopplerTracking //gd:Camera3D.DopplerTracking
+type DopplerTracking int //gd:Camera3D.DopplerTracking
 
 const (
 	/*Disables [url=https://en.wikipedia.org/wiki/Doppler_effect]Doppler effect[/url] simulation (default).*/

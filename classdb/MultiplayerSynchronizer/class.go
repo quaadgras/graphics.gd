@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/SceneReplicationConfig"
 import "graphics.gd/variant/Array"
@@ -26,6 +27,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -41,6 +46,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -53,6 +59,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -171,11 +178,11 @@ func (self Instance) SetReplicationConfig(value SceneReplicationConfig.Instance)
 	class(self).SetReplicationConfig(value)
 }
 
-func (self Instance) VisibilityUpdateMode() gdclass.MultiplayerSynchronizerVisibilityUpdateMode {
-	return gdclass.MultiplayerSynchronizerVisibilityUpdateMode(class(self).GetVisibilityUpdateMode())
+func (self Instance) VisibilityUpdateMode() VisibilityUpdateMode {
+	return VisibilityUpdateMode(class(self).GetVisibilityUpdateMode())
 }
 
-func (self Instance) SetVisibilityUpdateMode(value gdclass.MultiplayerSynchronizerVisibilityUpdateMode) {
+func (self Instance) SetVisibilityUpdateMode(value VisibilityUpdateMode) {
 	class(self).SetVisibilityUpdateMode(value)
 }
 
@@ -264,7 +271,7 @@ func (self class) GetReplicationConfig() [1]gdclass.SceneReplicationConfig { //g
 }
 
 //go:nosplit
-func (self class) SetVisibilityUpdateMode(mode gdclass.MultiplayerSynchronizerVisibilityUpdateMode) { //gd:MultiplayerSynchronizer.set_visibility_update_mode
+func (self class) SetVisibilityUpdateMode(mode VisibilityUpdateMode) { //gd:MultiplayerSynchronizer.set_visibility_update_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -273,9 +280,9 @@ func (self class) SetVisibilityUpdateMode(mode gdclass.MultiplayerSynchronizerVi
 }
 
 //go:nosplit
-func (self class) GetVisibilityUpdateMode() gdclass.MultiplayerSynchronizerVisibilityUpdateMode { //gd:MultiplayerSynchronizer.get_visibility_update_mode
+func (self class) GetVisibilityUpdateMode() VisibilityUpdateMode { //gd:MultiplayerSynchronizer.get_visibility_update_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.MultiplayerSynchronizerVisibilityUpdateMode](frame)
+	var r_ret = callframe.Ret[VisibilityUpdateMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerSynchronizer.Bind_get_visibility_update_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -406,7 +413,7 @@ func init() {
 	})
 }
 
-type VisibilityUpdateMode = gdclass.MultiplayerSynchronizerVisibilityUpdateMode //gd:MultiplayerSynchronizer.VisibilityUpdateMode
+type VisibilityUpdateMode int //gd:MultiplayerSynchronizer.VisibilityUpdateMode
 
 const (
 	/*Visibility filters are updated during process frames (see [constant Node.NOTIFICATION_INTERNAL_PROCESS]).*/

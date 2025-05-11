@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/PhysicsDirectBodyState2D"
 import "graphics.gd/classdb/PhysicsDirectSpaceState2D"
 import "graphics.gd/classdb/PhysicsTestMotionParameters2D"
@@ -31,6 +32,10 @@ import "graphics.gd/variant/Transform2D"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -46,6 +51,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -58,6 +64,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -167,9 +174,9 @@ func ShapeSetData(shape RID.Shape2D, data any) { //gd:PhysicsServer2D.shape_set_
 /*
 Returns the shape's type (see [enum ShapeType]).
 */
-func ShapeGetType(shape RID.Shape2D) gdclass.PhysicsServer2DShapeType { //gd:PhysicsServer2D.shape_get_type
+func ShapeGetType(shape RID.Shape2D) ShapeType { //gd:PhysicsServer2D.shape_get_type
 	once.Do(singleton)
-	return gdclass.PhysicsServer2DShapeType(Advanced().ShapeGetType(RID.Any(shape)))
+	return ShapeType(Advanced().ShapeGetType(RID.Any(shape)))
 }
 
 /*
@@ -207,7 +214,7 @@ func SpaceIsActive(space RID.Space2D) bool { //gd:PhysicsServer2D.space_is_activ
 /*
 Sets the value of the given space parameter. See [enum SpaceParameter] for the list of available parameters.
 */
-func SpaceSetParam(space RID.Space2D, param gdclass.PhysicsServer2DSpaceParameter, value Float.X) { //gd:PhysicsServer2D.space_set_param
+func SpaceSetParam(space RID.Space2D, param SpaceParameter, value Float.X) { //gd:PhysicsServer2D.space_set_param
 	once.Do(singleton)
 	Advanced().SpaceSetParam(RID.Any(space), param, float64(value))
 }
@@ -215,7 +222,7 @@ func SpaceSetParam(space RID.Space2D, param gdclass.PhysicsServer2DSpaceParamete
 /*
 Returns the value of the given space parameter. See [enum SpaceParameter] for the list of available parameters.
 */
-func SpaceGetParam(space RID.Space2D, param gdclass.PhysicsServer2DSpaceParameter) Float.X { //gd:PhysicsServer2D.space_get_param
+func SpaceGetParam(space RID.Space2D, param SpaceParameter) Float.X { //gd:PhysicsServer2D.space_get_param
 	once.Do(singleton)
 	return Float.X(Float.X(Advanced().SpaceGetParam(RID.Any(space), param)))
 }
@@ -369,7 +376,7 @@ func AreaGetCollisionMask(area RID.Area2D) int { //gd:PhysicsServer2D.area_get_c
 /*
 Sets the value of the given area parameter. See [enum AreaParameter] for the list of available parameters.
 */
-func AreaSetParam(area RID.Area2D, param gdclass.PhysicsServer2DAreaParameter, value any) { //gd:PhysicsServer2D.area_set_param
+func AreaSetParam(area RID.Area2D, param AreaParameter, value any) { //gd:PhysicsServer2D.area_set_param
 	once.Do(singleton)
 	Advanced().AreaSetParam(RID.Any(area), param, variant.New(value))
 }
@@ -385,7 +392,7 @@ func AreaSetTransform(area RID.Area2D, transform Transform2D.OriginXY) { //gd:Ph
 /*
 Returns the value of the given area parameter. See [enum AreaParameter] for the list of available parameters.
 */
-func AreaGetParam(area RID.Area2D, param gdclass.PhysicsServer2DAreaParameter) any { //gd:PhysicsServer2D.area_get_param
+func AreaGetParam(area RID.Area2D, param AreaParameter) any { //gd:PhysicsServer2D.area_get_param
 	once.Do(singleton)
 	return any(Advanced().AreaGetParam(RID.Any(area), param).Interface())
 }
@@ -497,7 +504,7 @@ func BodyGetSpace(body RID.Body2D) RID.Space2D { //gd:PhysicsServer2D.body_get_s
 /*
 Sets the body's mode. See [enum BodyMode] for the list of available modes.
 */
-func BodySetMode(body RID.Body2D, mode gdclass.PhysicsServer2DBodyMode) { //gd:PhysicsServer2D.body_set_mode
+func BodySetMode(body RID.Body2D, mode BodyMode) { //gd:PhysicsServer2D.body_set_mode
 	once.Do(singleton)
 	Advanced().BodySetMode(RID.Any(body), mode)
 }
@@ -505,9 +512,9 @@ func BodySetMode(body RID.Body2D, mode gdclass.PhysicsServer2DBodyMode) { //gd:P
 /*
 Returns the body's mode (see [enum BodyMode]).
 */
-func BodyGetMode(body RID.Body2D) gdclass.PhysicsServer2DBodyMode { //gd:PhysicsServer2D.body_get_mode
+func BodyGetMode(body RID.Body2D) BodyMode { //gd:PhysicsServer2D.body_get_mode
 	once.Do(singleton)
-	return gdclass.PhysicsServer2DBodyMode(Advanced().BodyGetMode(RID.Any(body)))
+	return BodyMode(Advanced().BodyGetMode(RID.Any(body)))
 }
 
 /*
@@ -634,7 +641,7 @@ func BodyGetCanvasInstanceId(body RID.Body2D) int { //gd:PhysicsServer2D.body_ge
 Sets the continuous collision detection mode using one of the [enum CCDMode] constants.
 Continuous collision detection tries to predict where a moving body would collide in between physics updates, instead of moving it and correcting its movement if it collided.
 */
-func BodySetContinuousCollisionDetectionMode(body RID.Body2D, mode gdclass.PhysicsServer2DCCDMode) { //gd:PhysicsServer2D.body_set_continuous_collision_detection_mode
+func BodySetContinuousCollisionDetectionMode(body RID.Body2D, mode CCDMode) { //gd:PhysicsServer2D.body_set_continuous_collision_detection_mode
 	once.Do(singleton)
 	Advanced().BodySetContinuousCollisionDetectionMode(RID.Any(body), mode)
 }
@@ -642,9 +649,9 @@ func BodySetContinuousCollisionDetectionMode(body RID.Body2D, mode gdclass.Physi
 /*
 Returns the body's continuous collision detection mode (see [enum CCDMode]).
 */
-func BodyGetContinuousCollisionDetectionMode(body RID.Body2D) gdclass.PhysicsServer2DCCDMode { //gd:PhysicsServer2D.body_get_continuous_collision_detection_mode
+func BodyGetContinuousCollisionDetectionMode(body RID.Body2D) CCDMode { //gd:PhysicsServer2D.body_get_continuous_collision_detection_mode
 	once.Do(singleton)
-	return gdclass.PhysicsServer2DCCDMode(Advanced().BodyGetContinuousCollisionDetectionMode(RID.Any(body)))
+	return CCDMode(Advanced().BodyGetContinuousCollisionDetectionMode(RID.Any(body)))
 }
 
 /*
@@ -698,7 +705,7 @@ func BodyGetCollisionPriority(body RID.Body2D) Float.X { //gd:PhysicsServer2D.bo
 /*
 Sets the value of the given body parameter. See [enum BodyParameter] for the list of available parameters.
 */
-func BodySetParam(body RID.Body2D, param gdclass.PhysicsServer2DBodyParameter, value any) { //gd:PhysicsServer2D.body_set_param
+func BodySetParam(body RID.Body2D, param BodyParameter, value any) { //gd:PhysicsServer2D.body_set_param
 	once.Do(singleton)
 	Advanced().BodySetParam(RID.Any(body), param, variant.New(value))
 }
@@ -706,7 +713,7 @@ func BodySetParam(body RID.Body2D, param gdclass.PhysicsServer2DBodyParameter, v
 /*
 Returns the value of the given body parameter. See [enum BodyParameter] for the list of available parameters.
 */
-func BodyGetParam(body RID.Body2D, param gdclass.PhysicsServer2DBodyParameter) any { //gd:PhysicsServer2D.body_get_param
+func BodyGetParam(body RID.Body2D, param BodyParameter) any { //gd:PhysicsServer2D.body_get_param
 	once.Do(singleton)
 	return any(Advanced().BodyGetParam(RID.Any(body), param).Interface())
 }
@@ -723,7 +730,7 @@ func BodyResetMassProperties(body RID.Body2D) { //gd:PhysicsServer2D.body_reset_
 Sets the value of a body's state. See [enum BodyState] for the list of available states.
 [b]Note:[/b] The state change doesn't take effect immediately. The state will change on the next physics frame.
 */
-func BodySetState(body RID.Body2D, state gdclass.PhysicsServer2DBodyState, value any) { //gd:PhysicsServer2D.body_set_state
+func BodySetState(body RID.Body2D, state BodyState, value any) { //gd:PhysicsServer2D.body_set_state
 	once.Do(singleton)
 	Advanced().BodySetState(RID.Any(body), state, variant.New(value))
 }
@@ -731,7 +738,7 @@ func BodySetState(body RID.Body2D, state gdclass.PhysicsServer2DBodyState, value
 /*
 Returns the value of the given state of the body. See [enum BodyState] for the list of available states.
 */
-func BodyGetState(body RID.Body2D, state gdclass.PhysicsServer2DBodyState) any { //gd:PhysicsServer2D.body_get_state
+func BodyGetState(body RID.Body2D, state BodyState) any { //gd:PhysicsServer2D.body_get_state
 	once.Do(singleton)
 	return any(Advanced().BodyGetState(RID.Any(body), state).Interface())
 }
@@ -1018,7 +1025,7 @@ func JointClear(joint RID.Joint2D) { //gd:PhysicsServer2D.joint_clear
 /*
 Sets the value of the given joint parameter. See [enum JointParam] for the list of available parameters.
 */
-func JointSetParam(joint RID.Joint2D, param gdclass.PhysicsServer2DJointParam, value Float.X) { //gd:PhysicsServer2D.joint_set_param
+func JointSetParam(joint RID.Joint2D, param JointParam, value Float.X) { //gd:PhysicsServer2D.joint_set_param
 	once.Do(singleton)
 	Advanced().JointSetParam(RID.Any(joint), param, float64(value))
 }
@@ -1026,7 +1033,7 @@ func JointSetParam(joint RID.Joint2D, param gdclass.PhysicsServer2DJointParam, v
 /*
 Returns the value of the given joint parameter. See [enum JointParam] for the list of available parameters.
 */
-func JointGetParam(joint RID.Joint2D, param gdclass.PhysicsServer2DJointParam) Float.X { //gd:PhysicsServer2D.joint_get_param
+func JointGetParam(joint RID.Joint2D, param JointParam) Float.X { //gd:PhysicsServer2D.joint_get_param
 	once.Do(singleton)
 	return Float.X(Float.X(Advanced().JointGetParam(RID.Any(joint), param)))
 }
@@ -1098,7 +1105,7 @@ func JointMakeDampedSpringOptions(joint RID.Joint2D, anchor_a Vector2.XY, anchor
 /*
 Sets a pin joint flag (see [enum PinJointFlag] constants).
 */
-func PinJointSetFlag(joint RID.Joint2D, flag gdclass.PhysicsServer2DPinJointFlag, enabled bool) { //gd:PhysicsServer2D.pin_joint_set_flag
+func PinJointSetFlag(joint RID.Joint2D, flag PinJointFlag, enabled bool) { //gd:PhysicsServer2D.pin_joint_set_flag
 	once.Do(singleton)
 	Advanced().PinJointSetFlag(RID.Any(joint), flag, enabled)
 }
@@ -1106,7 +1113,7 @@ func PinJointSetFlag(joint RID.Joint2D, flag gdclass.PhysicsServer2DPinJointFlag
 /*
 Gets a pin joint flag (see [enum PinJointFlag] constants).
 */
-func PinJointGetFlag(joint RID.Joint2D, flag gdclass.PhysicsServer2DPinJointFlag) bool { //gd:PhysicsServer2D.pin_joint_get_flag
+func PinJointGetFlag(joint RID.Joint2D, flag PinJointFlag) bool { //gd:PhysicsServer2D.pin_joint_get_flag
 	once.Do(singleton)
 	return bool(Advanced().PinJointGetFlag(RID.Any(joint), flag))
 }
@@ -1114,7 +1121,7 @@ func PinJointGetFlag(joint RID.Joint2D, flag gdclass.PhysicsServer2DPinJointFlag
 /*
 Sets a pin joint parameter. See [enum PinJointParam] for a list of available parameters.
 */
-func PinJointSetParam(joint RID.Joint2D, param gdclass.PhysicsServer2DPinJointParam, value Float.X) { //gd:PhysicsServer2D.pin_joint_set_param
+func PinJointSetParam(joint RID.Joint2D, param PinJointParam, value Float.X) { //gd:PhysicsServer2D.pin_joint_set_param
 	once.Do(singleton)
 	Advanced().PinJointSetParam(RID.Any(joint), param, float64(value))
 }
@@ -1122,7 +1129,7 @@ func PinJointSetParam(joint RID.Joint2D, param gdclass.PhysicsServer2DPinJointPa
 /*
 Returns the value of a pin joint parameter. See [enum PinJointParam] for a list of available parameters.
 */
-func PinJointGetParam(joint RID.Joint2D, param gdclass.PhysicsServer2DPinJointParam) Float.X { //gd:PhysicsServer2D.pin_joint_get_param
+func PinJointGetParam(joint RID.Joint2D, param PinJointParam) Float.X { //gd:PhysicsServer2D.pin_joint_get_param
 	once.Do(singleton)
 	return Float.X(Float.X(Advanced().PinJointGetParam(RID.Any(joint), param)))
 }
@@ -1130,7 +1137,7 @@ func PinJointGetParam(joint RID.Joint2D, param gdclass.PhysicsServer2DPinJointPa
 /*
 Sets the value of the given damped spring joint parameter. See [enum DampedSpringParam] for the list of available parameters.
 */
-func DampedSpringJointSetParam(joint RID.Joint2D, param gdclass.PhysicsServer2DDampedSpringParam, value Float.X) { //gd:PhysicsServer2D.damped_spring_joint_set_param
+func DampedSpringJointSetParam(joint RID.Joint2D, param DampedSpringParam, value Float.X) { //gd:PhysicsServer2D.damped_spring_joint_set_param
 	once.Do(singleton)
 	Advanced().DampedSpringJointSetParam(RID.Any(joint), param, float64(value))
 }
@@ -1138,7 +1145,7 @@ func DampedSpringJointSetParam(joint RID.Joint2D, param gdclass.PhysicsServer2DD
 /*
 Returns the value of the given damped spring joint parameter. See [enum DampedSpringParam] for the list of available parameters.
 */
-func DampedSpringJointGetParam(joint RID.Joint2D, param gdclass.PhysicsServer2DDampedSpringParam) Float.X { //gd:PhysicsServer2D.damped_spring_joint_get_param
+func DampedSpringJointGetParam(joint RID.Joint2D, param DampedSpringParam) Float.X { //gd:PhysicsServer2D.damped_spring_joint_get_param
 	once.Do(singleton)
 	return Float.X(Float.X(Advanced().DampedSpringJointGetParam(RID.Any(joint), param)))
 }
@@ -1146,9 +1153,9 @@ func DampedSpringJointGetParam(joint RID.Joint2D, param gdclass.PhysicsServer2DD
 /*
 Returns the joint's type (see [enum JointType]).
 */
-func JointGetType(joint RID.Joint2D) gdclass.PhysicsServer2DJointType { //gd:PhysicsServer2D.joint_get_type
+func JointGetType(joint RID.Joint2D) JointType { //gd:PhysicsServer2D.joint_get_type
 	once.Do(singleton)
-	return gdclass.PhysicsServer2DJointType(Advanced().JointGetType(RID.Any(joint)))
+	return JointType(Advanced().JointGetType(RID.Any(joint)))
 }
 
 /*
@@ -1170,7 +1177,7 @@ func SetActive(active bool) { //gd:PhysicsServer2D.set_active
 /*
 Returns information about the current state of the 2D physics engine. See [enum ProcessInfo] for the list of available states.
 */
-func GetProcessInfo(process_info gdclass.PhysicsServer2DProcessInfo) int { //gd:PhysicsServer2D.get_process_info
+func GetProcessInfo(process_info ProcessInfo) int { //gd:PhysicsServer2D.get_process_info
 	once.Do(singleton)
 	return int(int(Advanced().GetProcessInfo(process_info)))
 }
@@ -1320,10 +1327,10 @@ func (self class) ShapeSetData(shape RID.Any, data variant.Any) { //gd:PhysicsSe
 Returns the shape's type (see [enum ShapeType]).
 */
 //go:nosplit
-func (self class) ShapeGetType(shape RID.Any) gdclass.PhysicsServer2DShapeType { //gd:PhysicsServer2D.shape_get_type
+func (self class) ShapeGetType(shape RID.Any) ShapeType { //gd:PhysicsServer2D.shape_get_type
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
-	var r_ret = callframe.Ret[gdclass.PhysicsServer2DShapeType](frame)
+	var r_ret = callframe.Ret[ShapeType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_shape_get_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1388,7 +1395,7 @@ func (self class) SpaceIsActive(space RID.Any) bool { //gd:PhysicsServer2D.space
 Sets the value of the given space parameter. See [enum SpaceParameter] for the list of available parameters.
 */
 //go:nosplit
-func (self class) SpaceSetParam(space RID.Any, param gdclass.PhysicsServer2DSpaceParameter, value float64) { //gd:PhysicsServer2D.space_set_param
+func (self class) SpaceSetParam(space RID.Any, param SpaceParameter, value float64) { //gd:PhysicsServer2D.space_set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, space)
 	callframe.Arg(frame, param)
@@ -1402,7 +1409,7 @@ func (self class) SpaceSetParam(space RID.Any, param gdclass.PhysicsServer2DSpac
 Returns the value of the given space parameter. See [enum SpaceParameter] for the list of available parameters.
 */
 //go:nosplit
-func (self class) SpaceGetParam(space RID.Any, param gdclass.PhysicsServer2DSpaceParameter) float64 { //gd:PhysicsServer2D.space_get_param
+func (self class) SpaceGetParam(space RID.Any, param SpaceParameter) float64 { //gd:PhysicsServer2D.space_get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, space)
 	callframe.Arg(frame, param)
@@ -1653,7 +1660,7 @@ func (self class) AreaGetCollisionMask(area RID.Any) int64 { //gd:PhysicsServer2
 Sets the value of the given area parameter. See [enum AreaParameter] for the list of available parameters.
 */
 //go:nosplit
-func (self class) AreaSetParam(area RID.Any, param gdclass.PhysicsServer2DAreaParameter, value variant.Any) { //gd:PhysicsServer2D.area_set_param
+func (self class) AreaSetParam(area RID.Any, param AreaParameter, value variant.Any) { //gd:PhysicsServer2D.area_set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, param)
@@ -1680,7 +1687,7 @@ func (self class) AreaSetTransform(area RID.Any, transform Transform2D.OriginXY)
 Returns the value of the given area parameter. See [enum AreaParameter] for the list of available parameters.
 */
 //go:nosplit
-func (self class) AreaGetParam(area RID.Any, param gdclass.PhysicsServer2DAreaParameter) variant.Any { //gd:PhysicsServer2D.area_get_param
+func (self class) AreaGetParam(area RID.Any, param AreaParameter) variant.Any { //gd:PhysicsServer2D.area_get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, area)
 	callframe.Arg(frame, param)
@@ -1858,7 +1865,7 @@ func (self class) BodyGetSpace(body RID.Any) RID.Any { //gd:PhysicsServer2D.body
 Sets the body's mode. See [enum BodyMode] for the list of available modes.
 */
 //go:nosplit
-func (self class) BodySetMode(body RID.Any, mode gdclass.PhysicsServer2DBodyMode) { //gd:PhysicsServer2D.body_set_mode
+func (self class) BodySetMode(body RID.Any, mode BodyMode) { //gd:PhysicsServer2D.body_set_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, mode)
@@ -1871,10 +1878,10 @@ func (self class) BodySetMode(body RID.Any, mode gdclass.PhysicsServer2DBodyMode
 Returns the body's mode (see [enum BodyMode]).
 */
 //go:nosplit
-func (self class) BodyGetMode(body RID.Any) gdclass.PhysicsServer2DBodyMode { //gd:PhysicsServer2D.body_get_mode
+func (self class) BodyGetMode(body RID.Any) BodyMode { //gd:PhysicsServer2D.body_get_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
-	var r_ret = callframe.Ret[gdclass.PhysicsServer2DBodyMode](frame)
+	var r_ret = callframe.Ret[BodyMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_get_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2081,7 +2088,7 @@ Sets the continuous collision detection mode using one of the [enum CCDMode] con
 Continuous collision detection tries to predict where a moving body would collide in between physics updates, instead of moving it and correcting its movement if it collided.
 */
 //go:nosplit
-func (self class) BodySetContinuousCollisionDetectionMode(body RID.Any, mode gdclass.PhysicsServer2DCCDMode) { //gd:PhysicsServer2D.body_set_continuous_collision_detection_mode
+func (self class) BodySetContinuousCollisionDetectionMode(body RID.Any, mode CCDMode) { //gd:PhysicsServer2D.body_set_continuous_collision_detection_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, mode)
@@ -2094,10 +2101,10 @@ func (self class) BodySetContinuousCollisionDetectionMode(body RID.Any, mode gdc
 Returns the body's continuous collision detection mode (see [enum CCDMode]).
 */
 //go:nosplit
-func (self class) BodyGetContinuousCollisionDetectionMode(body RID.Any) gdclass.PhysicsServer2DCCDMode { //gd:PhysicsServer2D.body_get_continuous_collision_detection_mode
+func (self class) BodyGetContinuousCollisionDetectionMode(body RID.Any) CCDMode { //gd:PhysicsServer2D.body_get_continuous_collision_detection_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
-	var r_ret = callframe.Ret[gdclass.PhysicsServer2DCCDMode](frame)
+	var r_ret = callframe.Ret[CCDMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_get_continuous_collision_detection_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2189,7 +2196,7 @@ func (self class) BodyGetCollisionPriority(body RID.Any) float64 { //gd:PhysicsS
 Sets the value of the given body parameter. See [enum BodyParameter] for the list of available parameters.
 */
 //go:nosplit
-func (self class) BodySetParam(body RID.Any, param gdclass.PhysicsServer2DBodyParameter, value variant.Any) { //gd:PhysicsServer2D.body_set_param
+func (self class) BodySetParam(body RID.Any, param BodyParameter, value variant.Any) { //gd:PhysicsServer2D.body_set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, param)
@@ -2203,7 +2210,7 @@ func (self class) BodySetParam(body RID.Any, param gdclass.PhysicsServer2DBodyPa
 Returns the value of the given body parameter. See [enum BodyParameter] for the list of available parameters.
 */
 //go:nosplit
-func (self class) BodyGetParam(body RID.Any, param gdclass.PhysicsServer2DBodyParameter) variant.Any { //gd:PhysicsServer2D.body_get_param
+func (self class) BodyGetParam(body RID.Any, param BodyParameter) variant.Any { //gd:PhysicsServer2D.body_get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, param)
@@ -2231,7 +2238,7 @@ Sets the value of a body's state. See [enum BodyState] for the list of available
 [b]Note:[/b] The state change doesn't take effect immediately. The state will change on the next physics frame.
 */
 //go:nosplit
-func (self class) BodySetState(body RID.Any, state gdclass.PhysicsServer2DBodyState, value variant.Any) { //gd:PhysicsServer2D.body_set_state
+func (self class) BodySetState(body RID.Any, state BodyState, value variant.Any) { //gd:PhysicsServer2D.body_set_state
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, state)
@@ -2245,7 +2252,7 @@ func (self class) BodySetState(body RID.Any, state gdclass.PhysicsServer2DBodySt
 Returns the value of the given state of the body. See [enum BodyState] for the list of available states.
 */
 //go:nosplit
-func (self class) BodyGetState(body RID.Any, state gdclass.PhysicsServer2DBodyState) variant.Any { //gd:PhysicsServer2D.body_get_state
+func (self class) BodyGetState(body RID.Any, state BodyState) variant.Any { //gd:PhysicsServer2D.body_get_state
 	var frame = callframe.New()
 	callframe.Arg(frame, body)
 	callframe.Arg(frame, state)
@@ -2631,7 +2638,7 @@ func (self class) JointClear(joint RID.Any) { //gd:PhysicsServer2D.joint_clear
 Sets the value of the given joint parameter. See [enum JointParam] for the list of available parameters.
 */
 //go:nosplit
-func (self class) JointSetParam(joint RID.Any, param gdclass.PhysicsServer2DJointParam, value float64) { //gd:PhysicsServer2D.joint_set_param
+func (self class) JointSetParam(joint RID.Any, param JointParam, value float64) { //gd:PhysicsServer2D.joint_set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, param)
@@ -2645,7 +2652,7 @@ func (self class) JointSetParam(joint RID.Any, param gdclass.PhysicsServer2DJoin
 Returns the value of the given joint parameter. See [enum JointParam] for the list of available parameters.
 */
 //go:nosplit
-func (self class) JointGetParam(joint RID.Any, param gdclass.PhysicsServer2DJointParam) float64 { //gd:PhysicsServer2D.joint_get_param
+func (self class) JointGetParam(joint RID.Any, param JointParam) float64 { //gd:PhysicsServer2D.joint_get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, param)
@@ -2735,7 +2742,7 @@ func (self class) JointMakeDampedSpring(joint RID.Any, anchor_a Vector2.XY, anch
 Sets a pin joint flag (see [enum PinJointFlag] constants).
 */
 //go:nosplit
-func (self class) PinJointSetFlag(joint RID.Any, flag gdclass.PhysicsServer2DPinJointFlag, enabled bool) { //gd:PhysicsServer2D.pin_joint_set_flag
+func (self class) PinJointSetFlag(joint RID.Any, flag PinJointFlag, enabled bool) { //gd:PhysicsServer2D.pin_joint_set_flag
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, flag)
@@ -2749,7 +2756,7 @@ func (self class) PinJointSetFlag(joint RID.Any, flag gdclass.PhysicsServer2DPin
 Gets a pin joint flag (see [enum PinJointFlag] constants).
 */
 //go:nosplit
-func (self class) PinJointGetFlag(joint RID.Any, flag gdclass.PhysicsServer2DPinJointFlag) bool { //gd:PhysicsServer2D.pin_joint_get_flag
+func (self class) PinJointGetFlag(joint RID.Any, flag PinJointFlag) bool { //gd:PhysicsServer2D.pin_joint_get_flag
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, flag)
@@ -2764,7 +2771,7 @@ func (self class) PinJointGetFlag(joint RID.Any, flag gdclass.PhysicsServer2DPin
 Sets a pin joint parameter. See [enum PinJointParam] for a list of available parameters.
 */
 //go:nosplit
-func (self class) PinJointSetParam(joint RID.Any, param gdclass.PhysicsServer2DPinJointParam, value float64) { //gd:PhysicsServer2D.pin_joint_set_param
+func (self class) PinJointSetParam(joint RID.Any, param PinJointParam, value float64) { //gd:PhysicsServer2D.pin_joint_set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, param)
@@ -2778,7 +2785,7 @@ func (self class) PinJointSetParam(joint RID.Any, param gdclass.PhysicsServer2DP
 Returns the value of a pin joint parameter. See [enum PinJointParam] for a list of available parameters.
 */
 //go:nosplit
-func (self class) PinJointGetParam(joint RID.Any, param gdclass.PhysicsServer2DPinJointParam) float64 { //gd:PhysicsServer2D.pin_joint_get_param
+func (self class) PinJointGetParam(joint RID.Any, param PinJointParam) float64 { //gd:PhysicsServer2D.pin_joint_get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, param)
@@ -2793,7 +2800,7 @@ func (self class) PinJointGetParam(joint RID.Any, param gdclass.PhysicsServer2DP
 Sets the value of the given damped spring joint parameter. See [enum DampedSpringParam] for the list of available parameters.
 */
 //go:nosplit
-func (self class) DampedSpringJointSetParam(joint RID.Any, param gdclass.PhysicsServer2DDampedSpringParam, value float64) { //gd:PhysicsServer2D.damped_spring_joint_set_param
+func (self class) DampedSpringJointSetParam(joint RID.Any, param DampedSpringParam, value float64) { //gd:PhysicsServer2D.damped_spring_joint_set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, param)
@@ -2807,7 +2814,7 @@ func (self class) DampedSpringJointSetParam(joint RID.Any, param gdclass.Physics
 Returns the value of the given damped spring joint parameter. See [enum DampedSpringParam] for the list of available parameters.
 */
 //go:nosplit
-func (self class) DampedSpringJointGetParam(joint RID.Any, param gdclass.PhysicsServer2DDampedSpringParam) float64 { //gd:PhysicsServer2D.damped_spring_joint_get_param
+func (self class) DampedSpringJointGetParam(joint RID.Any, param DampedSpringParam) float64 { //gd:PhysicsServer2D.damped_spring_joint_get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
 	callframe.Arg(frame, param)
@@ -2822,10 +2829,10 @@ func (self class) DampedSpringJointGetParam(joint RID.Any, param gdclass.Physics
 Returns the joint's type (see [enum JointType]).
 */
 //go:nosplit
-func (self class) JointGetType(joint RID.Any) gdclass.PhysicsServer2DJointType { //gd:PhysicsServer2D.joint_get_type
+func (self class) JointGetType(joint RID.Any) JointType { //gd:PhysicsServer2D.joint_get_type
 	var frame = callframe.New()
 	callframe.Arg(frame, joint)
-	var r_ret = callframe.Ret[gdclass.PhysicsServer2DJointType](frame)
+	var r_ret = callframe.Ret[JointType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_joint_get_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2860,7 +2867,7 @@ func (self class) SetActive(active bool) { //gd:PhysicsServer2D.set_active
 Returns information about the current state of the 2D physics engine. See [enum ProcessInfo] for the list of available states.
 */
 //go:nosplit
-func (self class) GetProcessInfo(process_info gdclass.PhysicsServer2DProcessInfo) int64 { //gd:PhysicsServer2D.get_process_info
+func (self class) GetProcessInfo(process_info ProcessInfo) int64 { //gd:PhysicsServer2D.get_process_info
 	var frame = callframe.New()
 	callframe.Arg(frame, process_info)
 	var r_ret = callframe.Ret[int64](frame)
@@ -2888,7 +2895,7 @@ func init() {
 	})
 }
 
-type SpaceParameter = gdclass.PhysicsServer2DSpaceParameter //gd:PhysicsServer2D.SpaceParameter
+type SpaceParameter int //gd:PhysicsServer2D.SpaceParameter
 
 const (
 	/*Constant to set/get the maximum distance a pair of bodies has to move before their collision status has to be recalculated. The default value of this parameter is [member ProjectSettings.physics/2d/solver/contact_recycle_radius].*/
@@ -2911,7 +2918,7 @@ const (
 	SpaceParamSolverIterations SpaceParameter = 8
 )
 
-type ShapeType = gdclass.PhysicsServer2DShapeType //gd:PhysicsServer2D.ShapeType
+type ShapeType int //gd:PhysicsServer2D.ShapeType
 
 const (
 	/*This is the constant for creating world boundary shapes. A world boundary shape is an [i]infinite[/i] line with an origin point, and a normal. Thus, it can be used for front/behind checks.*/
@@ -2934,7 +2941,7 @@ const (
 	ShapeCustom ShapeType = 8
 )
 
-type AreaParameter = gdclass.PhysicsServer2DAreaParameter //gd:PhysicsServer2D.AreaParameter
+type AreaParameter int //gd:PhysicsServer2D.AreaParameter
 
 const (
 	/*Constant to set/get gravity override mode in an area. See [enum AreaSpaceOverrideMode] for possible values. The default value of this parameter is [constant AREA_SPACE_OVERRIDE_DISABLED].*/
@@ -2960,7 +2967,7 @@ const (
 	AreaParamPriority AreaParameter = 9
 )
 
-type AreaSpaceOverrideMode = gdclass.PhysicsServer2DAreaSpaceOverrideMode //gd:PhysicsServer2D.AreaSpaceOverrideMode
+type AreaSpaceOverrideMode int //gd:PhysicsServer2D.AreaSpaceOverrideMode
 
 const (
 	/*This area does not affect gravity/damp. These are generally areas that exist only to detect collisions, and objects entering or exiting them.*/
@@ -2975,7 +2982,7 @@ const (
 	AreaSpaceOverrideReplaceCombine AreaSpaceOverrideMode = 4
 )
 
-type BodyMode = gdclass.PhysicsServer2DBodyMode //gd:PhysicsServer2D.BodyMode
+type BodyMode int //gd:PhysicsServer2D.BodyMode
 
 const (
 	/*Constant for static bodies. In this mode, a body can be only moved by user code and doesn't collide with other bodies along its path when moved.*/
@@ -2988,7 +2995,7 @@ const (
 	BodyModeRigidLinear BodyMode = 3
 )
 
-type BodyParameter = gdclass.PhysicsServer2DBodyParameter //gd:PhysicsServer2D.BodyParameter
+type BodyParameter int //gd:PhysicsServer2D.BodyParameter
 
 const (
 	/*Constant to set/get a body's bounce factor. The default value of this parameter is [code]0.0[/code].*/
@@ -3017,7 +3024,7 @@ const (
 	BodyParamMax BodyParameter = 10
 )
 
-type BodyDampMode = gdclass.PhysicsServer2DBodyDampMode //gd:PhysicsServer2D.BodyDampMode
+type BodyDampMode int //gd:PhysicsServer2D.BodyDampMode
 
 const (
 	/*The body's damping value is added to any value set in areas or the default value.*/
@@ -3026,7 +3033,7 @@ const (
 	BodyDampModeReplace BodyDampMode = 1
 )
 
-type BodyState = gdclass.PhysicsServer2DBodyState //gd:PhysicsServer2D.BodyState
+type BodyState int //gd:PhysicsServer2D.BodyState
 
 const (
 	/*Constant to set/get the current transform matrix of the body.*/
@@ -3041,7 +3048,7 @@ const (
 	BodyStateCanSleep BodyState = 4
 )
 
-type JointType = gdclass.PhysicsServer2DJointType //gd:PhysicsServer2D.JointType
+type JointType int //gd:PhysicsServer2D.JointType
 
 const (
 	/*Constant to create pin joints.*/
@@ -3054,7 +3061,7 @@ const (
 	JointTypeMax JointType = 3
 )
 
-type JointParam = gdclass.PhysicsServer2DJointParam //gd:PhysicsServer2D.JointParam
+type JointParam int //gd:PhysicsServer2D.JointParam
 
 const (
 	/*Constant to set/get how fast the joint pulls the bodies back to satisfy the joint constraint. The lower the value, the more the two bodies can pull on the joint. The default value of this parameter is [code]0.0[/code].
@@ -3068,7 +3075,7 @@ const (
 	JointParamMaxForce JointParam = 2
 )
 
-type PinJointParam = gdclass.PhysicsServer2DPinJointParam //gd:PhysicsServer2D.PinJointParam
+type PinJointParam int //gd:PhysicsServer2D.PinJointParam
 
 const (
 	/*Constant to set/get a how much the bond of the pin joint can flex. The default value of this parameter is [code]0.0[/code].*/
@@ -3081,7 +3088,7 @@ const (
 	PinJointMotorTargetVelocity PinJointParam = 3
 )
 
-type PinJointFlag = gdclass.PhysicsServer2DPinJointFlag //gd:PhysicsServer2D.PinJointFlag
+type PinJointFlag int //gd:PhysicsServer2D.PinJointFlag
 
 const (
 	/*If [code]true[/code], the pin has a maximum and a minimum rotation.*/
@@ -3090,7 +3097,7 @@ const (
 	PinJointFlagMotorEnabled PinJointFlag = 1
 )
 
-type DampedSpringParam = gdclass.PhysicsServer2DDampedSpringParam //gd:PhysicsServer2D.DampedSpringParam
+type DampedSpringParam int //gd:PhysicsServer2D.DampedSpringParam
 
 const (
 	/*Sets the resting length of the spring joint. The joint will always try to go to back this length when pulled apart. The default value of this parameter is the distance between the joint's anchor points.*/
@@ -3101,7 +3108,7 @@ const (
 	DampedSpringDamping DampedSpringParam = 2
 )
 
-type CCDMode = gdclass.PhysicsServer2DCCDMode //gd:PhysicsServer2D.CCDMode
+type CCDMode int //gd:PhysicsServer2D.CCDMode
 
 const (
 	/*Disables continuous collision detection. This is the fastest way to detect body collisions, but it can miss small and/or fast-moving objects.*/
@@ -3112,7 +3119,7 @@ const (
 	CcdModeCastShape CCDMode = 2
 )
 
-type AreaBodyStatus = gdclass.PhysicsServer2DAreaBodyStatus //gd:PhysicsServer2D.AreaBodyStatus
+type AreaBodyStatus int //gd:PhysicsServer2D.AreaBodyStatus
 
 const (
 	/*The value of the first parameter and area callback function receives, when an object enters one of its shapes.*/
@@ -3121,7 +3128,7 @@ const (
 	AreaBodyRemoved AreaBodyStatus = 1
 )
 
-type ProcessInfo = gdclass.PhysicsServer2DProcessInfo //gd:PhysicsServer2D.ProcessInfo
+type ProcessInfo int //gd:PhysicsServer2D.ProcessInfo
 
 const (
 	/*Constant to get the number of objects that are not sleeping.*/

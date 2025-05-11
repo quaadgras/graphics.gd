@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/NavigationPathQueryParameters2D"
 import "graphics.gd/classdb/NavigationPathQueryResult2D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
@@ -28,6 +30,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -43,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,6 +62,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -268,27 +276,27 @@ func (self Instance) SetNavigationLayers(value int) {
 	class(self).SetNavigationLayers(int64(value))
 }
 
-func (self Instance) PathfindingAlgorithm() gdclass.NavigationPathQueryParameters2DPathfindingAlgorithm {
-	return gdclass.NavigationPathQueryParameters2DPathfindingAlgorithm(class(self).GetPathfindingAlgorithm())
+func (self Instance) PathfindingAlgorithm() NavigationPathQueryParameters2D.PathfindingAlgorithm {
+	return NavigationPathQueryParameters2D.PathfindingAlgorithm(class(self).GetPathfindingAlgorithm())
 }
 
-func (self Instance) SetPathfindingAlgorithm(value gdclass.NavigationPathQueryParameters2DPathfindingAlgorithm) {
+func (self Instance) SetPathfindingAlgorithm(value NavigationPathQueryParameters2D.PathfindingAlgorithm) {
 	class(self).SetPathfindingAlgorithm(value)
 }
 
-func (self Instance) PathPostprocessing() gdclass.NavigationPathQueryParameters2DPathPostProcessing {
-	return gdclass.NavigationPathQueryParameters2DPathPostProcessing(class(self).GetPathPostprocessing())
+func (self Instance) PathPostprocessing() NavigationPathQueryParameters2D.PathPostProcessing {
+	return NavigationPathQueryParameters2D.PathPostProcessing(class(self).GetPathPostprocessing())
 }
 
-func (self Instance) SetPathPostprocessing(value gdclass.NavigationPathQueryParameters2DPathPostProcessing) {
+func (self Instance) SetPathPostprocessing(value NavigationPathQueryParameters2D.PathPostProcessing) {
 	class(self).SetPathPostprocessing(value)
 }
 
-func (self Instance) PathMetadataFlags() gdclass.NavigationPathQueryParameters2DPathMetadataFlags {
-	return gdclass.NavigationPathQueryParameters2DPathMetadataFlags(class(self).GetPathMetadataFlags())
+func (self Instance) PathMetadataFlags() NavigationPathQueryParameters2D.PathMetadataFlags {
+	return NavigationPathQueryParameters2D.PathMetadataFlags(class(self).GetPathMetadataFlags())
 }
 
-func (self Instance) SetPathMetadataFlags(value gdclass.NavigationPathQueryParameters2DPathMetadataFlags) {
+func (self Instance) SetPathMetadataFlags(value NavigationPathQueryParameters2D.PathMetadataFlags) {
 	class(self).SetPathMetadataFlags(value)
 }
 
@@ -686,7 +694,7 @@ func (self class) GetNavigationLayerValue(layer_number int64) bool { //gd:Naviga
 }
 
 //go:nosplit
-func (self class) SetPathfindingAlgorithm(pathfinding_algorithm gdclass.NavigationPathQueryParameters2DPathfindingAlgorithm) { //gd:NavigationAgent2D.set_pathfinding_algorithm
+func (self class) SetPathfindingAlgorithm(pathfinding_algorithm NavigationPathQueryParameters2D.PathfindingAlgorithm) { //gd:NavigationAgent2D.set_pathfinding_algorithm
 	var frame = callframe.New()
 	callframe.Arg(frame, pathfinding_algorithm)
 	var r_ret = callframe.Nil
@@ -695,9 +703,9 @@ func (self class) SetPathfindingAlgorithm(pathfinding_algorithm gdclass.Navigati
 }
 
 //go:nosplit
-func (self class) GetPathfindingAlgorithm() gdclass.NavigationPathQueryParameters2DPathfindingAlgorithm { //gd:NavigationAgent2D.get_pathfinding_algorithm
+func (self class) GetPathfindingAlgorithm() NavigationPathQueryParameters2D.PathfindingAlgorithm { //gd:NavigationAgent2D.get_pathfinding_algorithm
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.NavigationPathQueryParameters2DPathfindingAlgorithm](frame)
+	var r_ret = callframe.Ret[NavigationPathQueryParameters2D.PathfindingAlgorithm](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent2D.Bind_get_pathfinding_algorithm, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -705,7 +713,7 @@ func (self class) GetPathfindingAlgorithm() gdclass.NavigationPathQueryParameter
 }
 
 //go:nosplit
-func (self class) SetPathPostprocessing(path_postprocessing gdclass.NavigationPathQueryParameters2DPathPostProcessing) { //gd:NavigationAgent2D.set_path_postprocessing
+func (self class) SetPathPostprocessing(path_postprocessing NavigationPathQueryParameters2D.PathPostProcessing) { //gd:NavigationAgent2D.set_path_postprocessing
 	var frame = callframe.New()
 	callframe.Arg(frame, path_postprocessing)
 	var r_ret = callframe.Nil
@@ -714,9 +722,9 @@ func (self class) SetPathPostprocessing(path_postprocessing gdclass.NavigationPa
 }
 
 //go:nosplit
-func (self class) GetPathPostprocessing() gdclass.NavigationPathQueryParameters2DPathPostProcessing { //gd:NavigationAgent2D.get_path_postprocessing
+func (self class) GetPathPostprocessing() NavigationPathQueryParameters2D.PathPostProcessing { //gd:NavigationAgent2D.get_path_postprocessing
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.NavigationPathQueryParameters2DPathPostProcessing](frame)
+	var r_ret = callframe.Ret[NavigationPathQueryParameters2D.PathPostProcessing](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent2D.Bind_get_path_postprocessing, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -724,7 +732,7 @@ func (self class) GetPathPostprocessing() gdclass.NavigationPathQueryParameters2
 }
 
 //go:nosplit
-func (self class) SetPathMetadataFlags(flags gdclass.NavigationPathQueryParameters2DPathMetadataFlags) { //gd:NavigationAgent2D.set_path_metadata_flags
+func (self class) SetPathMetadataFlags(flags NavigationPathQueryParameters2D.PathMetadataFlags) { //gd:NavigationAgent2D.set_path_metadata_flags
 	var frame = callframe.New()
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Nil
@@ -733,9 +741,9 @@ func (self class) SetPathMetadataFlags(flags gdclass.NavigationPathQueryParamete
 }
 
 //go:nosplit
-func (self class) GetPathMetadataFlags() gdclass.NavigationPathQueryParameters2DPathMetadataFlags { //gd:NavigationAgent2D.get_path_metadata_flags
+func (self class) GetPathMetadataFlags() NavigationPathQueryParameters2D.PathMetadataFlags { //gd:NavigationAgent2D.get_path_metadata_flags
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.NavigationPathQueryParameters2DPathMetadataFlags](frame)
+	var r_ret = callframe.Ret[NavigationPathQueryParameters2D.PathMetadataFlags](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent2D.Bind_get_path_metadata_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

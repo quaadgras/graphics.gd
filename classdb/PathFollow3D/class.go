@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/variant/Array"
@@ -27,6 +28,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform3D"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -42,6 +47,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -54,6 +60,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -76,7 +83,7 @@ type Any interface {
 /*
 Correct the [param transform]. [param rotation_mode] implicitly specifies how posture (forward, up and sideway direction) is calculated.
 */
-func CorrectPosture(transform Transform3D.BasisOrigin, rotation_mode gdclass.PathFollow3DRotationMode) Transform3D.BasisOrigin { //gd:PathFollow3D.correct_posture
+func CorrectPosture(transform Transform3D.BasisOrigin, rotation_mode RotationMode) Transform3D.BasisOrigin { //gd:PathFollow3D.correct_posture
 	self := Instance{}
 	return Transform3D.BasisOrigin(Advanced(self).CorrectPosture(Transform3D.BasisOrigin(transform), rotation_mode))
 }
@@ -132,11 +139,11 @@ func (self Instance) SetVOffset(value Float.X) {
 	class(self).SetVOffset(float64(value))
 }
 
-func (self Instance) RotationMode() gdclass.PathFollow3DRotationMode {
-	return gdclass.PathFollow3DRotationMode(class(self).GetRotationMode())
+func (self Instance) RotationMode() RotationMode {
+	return RotationMode(class(self).GetRotationMode())
 }
 
-func (self Instance) SetRotationMode(value gdclass.PathFollow3DRotationMode) {
+func (self Instance) SetRotationMode(value RotationMode) {
 	class(self).SetRotationMode(value)
 }
 
@@ -249,7 +256,7 @@ func (self class) GetProgressRatio() float64 { //gd:PathFollow3D.get_progress_ra
 }
 
 //go:nosplit
-func (self class) SetRotationMode(rotation_mode gdclass.PathFollow3DRotationMode) { //gd:PathFollow3D.set_rotation_mode
+func (self class) SetRotationMode(rotation_mode RotationMode) { //gd:PathFollow3D.set_rotation_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, rotation_mode)
 	var r_ret = callframe.Nil
@@ -258,9 +265,9 @@ func (self class) SetRotationMode(rotation_mode gdclass.PathFollow3DRotationMode
 }
 
 //go:nosplit
-func (self class) GetRotationMode() gdclass.PathFollow3DRotationMode { //gd:PathFollow3D.get_rotation_mode
+func (self class) GetRotationMode() RotationMode { //gd:PathFollow3D.get_rotation_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.PathFollow3DRotationMode](frame)
+	var r_ret = callframe.Ret[RotationMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PathFollow3D.Bind_get_rotation_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -347,7 +354,7 @@ func (self class) IsTiltEnabled() bool { //gd:PathFollow3D.is_tilt_enabled
 Correct the [param transform]. [param rotation_mode] implicitly specifies how posture (forward, up and sideway direction) is calculated.
 */
 //go:nosplit
-func (self class) CorrectPosture(transform Transform3D.BasisOrigin, rotation_mode gdclass.PathFollow3DRotationMode) Transform3D.BasisOrigin { //gd:PathFollow3D.correct_posture
+func (self class) CorrectPosture(transform Transform3D.BasisOrigin, rotation_mode RotationMode) Transform3D.BasisOrigin { //gd:PathFollow3D.correct_posture
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.Transposed(transform))
 	callframe.Arg(frame, rotation_mode)
@@ -386,7 +393,7 @@ func init() {
 	})
 }
 
-type RotationMode = gdclass.PathFollow3DRotationMode //gd:PathFollow3D.RotationMode
+type RotationMode int //gd:PathFollow3D.RotationMode
 
 const (
 	/*Forbids the PathFollow3D to rotate.*/

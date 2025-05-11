@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/StreamPeer"
 import "graphics.gd/classdb/TLSOptions"
 import "graphics.gd/variant/Array"
@@ -26,6 +27,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -41,6 +46,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -53,6 +59,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -105,8 +112,8 @@ func (self Expanded) ConnectToStream(stream StreamPeer.Instance, common_name str
 /*
 Returns the status of the connection. See [enum Status] for values.
 */
-func (self Instance) GetStatus() gdclass.StreamPeerTLSStatus { //gd:StreamPeerTLS.get_status
-	return gdclass.StreamPeerTLSStatus(Advanced(self).GetStatus())
+func (self Instance) GetStatus() Status { //gd:StreamPeerTLS.get_status
+	return Status(Advanced(self).GetStatus())
 }
 
 /*
@@ -189,9 +196,9 @@ func (self class) ConnectToStream(stream [1]gdclass.StreamPeer, common_name Stri
 Returns the status of the connection. See [enum Status] for values.
 */
 //go:nosplit
-func (self class) GetStatus() gdclass.StreamPeerTLSStatus { //gd:StreamPeerTLS.get_status
+func (self class) GetStatus() Status { //gd:StreamPeerTLS.get_status
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.StreamPeerTLSStatus](frame)
+	var r_ret = callframe.Ret[Status](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerTLS.Bind_get_status, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -258,7 +265,7 @@ func init() {
 	})
 }
 
-type Status = gdclass.StreamPeerTLSStatus //gd:StreamPeerTLS.Status
+type Status int //gd:StreamPeerTLS.Status
 
 const (
 	/*A status representing a [StreamPeerTLS] that is disconnected.*/

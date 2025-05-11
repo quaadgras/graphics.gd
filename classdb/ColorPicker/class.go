@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/BoxContainer"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Container"
@@ -31,6 +32,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -46,6 +51,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -58,6 +64,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -156,11 +163,11 @@ func (self Instance) SetEditAlpha(value bool) {
 	class(self).SetEditAlpha(value)
 }
 
-func (self Instance) ColorMode() gdclass.ColorPickerColorModeType {
-	return gdclass.ColorPickerColorModeType(class(self).GetColorMode())
+func (self Instance) ColorMode() ColorModeType {
+	return ColorModeType(class(self).GetColorMode())
 }
 
-func (self Instance) SetColorMode(value gdclass.ColorPickerColorModeType) {
+func (self Instance) SetColorMode(value ColorModeType) {
 	class(self).SetColorMode(value)
 }
 
@@ -172,11 +179,11 @@ func (self Instance) SetDeferredMode(value bool) {
 	class(self).SetDeferredMode(value)
 }
 
-func (self Instance) PickerShape() gdclass.ColorPickerPickerShapeType {
-	return gdclass.ColorPickerPickerShapeType(class(self).GetPickerShape())
+func (self Instance) PickerShape() PickerShapeType {
+	return PickerShapeType(class(self).GetPickerShape())
 }
 
-func (self Instance) SetPickerShape(value gdclass.ColorPickerPickerShapeType) {
+func (self Instance) SetPickerShape(value PickerShapeType) {
 	class(self).SetPickerShape(value)
 }
 
@@ -267,7 +274,7 @@ func (self class) IsDeferredMode() bool { //gd:ColorPicker.is_deferred_mode
 }
 
 //go:nosplit
-func (self class) SetColorMode(color_mode gdclass.ColorPickerColorModeType) { //gd:ColorPicker.set_color_mode
+func (self class) SetColorMode(color_mode ColorModeType) { //gd:ColorPicker.set_color_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, color_mode)
 	var r_ret = callframe.Nil
@@ -276,9 +283,9 @@ func (self class) SetColorMode(color_mode gdclass.ColorPickerColorModeType) { //
 }
 
 //go:nosplit
-func (self class) GetColorMode() gdclass.ColorPickerColorModeType { //gd:ColorPicker.get_color_mode
+func (self class) GetColorMode() ColorModeType { //gd:ColorPicker.get_color_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ColorPickerColorModeType](frame)
+	var r_ret = callframe.Ret[ColorModeType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPicker.Bind_get_color_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -495,7 +502,7 @@ func (self class) GetRecentPresets() Packed.Array[Color.RGBA] { //gd:ColorPicker
 }
 
 //go:nosplit
-func (self class) SetPickerShape(shape gdclass.ColorPickerPickerShapeType) { //gd:ColorPicker.set_picker_shape
+func (self class) SetPickerShape(shape PickerShapeType) { //gd:ColorPicker.set_picker_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
 	var r_ret = callframe.Nil
@@ -504,9 +511,9 @@ func (self class) SetPickerShape(shape gdclass.ColorPickerPickerShapeType) { //g
 }
 
 //go:nosplit
-func (self class) GetPickerShape() gdclass.ColorPickerPickerShapeType { //gd:ColorPicker.get_picker_shape
+func (self class) GetPickerShape() PickerShapeType { //gd:ColorPicker.get_picker_shape
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ColorPickerPickerShapeType](frame)
+	var r_ret = callframe.Ret[PickerShapeType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPicker.Bind_get_picker_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -583,7 +590,7 @@ func init() {
 	gdclass.Register("ColorPicker", func(ptr gd.Object) any { return [1]gdclass.ColorPicker{*(*gdclass.ColorPicker)(unsafe.Pointer(&ptr))} })
 }
 
-type ColorModeType = gdclass.ColorPickerColorModeType //gd:ColorPicker.ColorModeType
+type ColorModeType int //gd:ColorPicker.ColorModeType
 
 const (
 	/*Allows editing the color with Red/Green/Blue sliders.*/
@@ -598,7 +605,7 @@ const (
 	ModeOkhsl ColorModeType = 3
 )
 
-type PickerShapeType = gdclass.ColorPickerPickerShapeType //gd:ColorPicker.PickerShapeType
+type PickerShapeType int //gd:ColorPicker.PickerShapeType
 
 const (
 	/*HSV Color Model rectangle color space.*/

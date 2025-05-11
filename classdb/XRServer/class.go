@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/XRInterface"
 import "graphics.gd/classdb/XRTracker"
 import "graphics.gd/variant/Array"
@@ -28,6 +29,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform3D"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -43,6 +48,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,6 +61,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -97,7 +104,7 @@ This method allows you to center your tracker on the location of the HMD. It wil
 For this method to produce usable results, tracking information must be available. This often takes a few frames after starting your game.
 You should call this method after a few seconds have passed. For example, when the user requests a realignment of the display holding a designated button on a controller for a short period of time, or when implementing a teleport mechanism.
 */
-func CenterOnHmd(rotation_mode gdclass.XRServerRotationMode, keep_height bool) { //gd:XRServer.center_on_hmd
+func CenterOnHmd(rotation_mode RotationMode, keep_height bool) { //gd:XRServer.center_on_hmd
 	once.Do(singleton)
 	Advanced().CenterOnHmd(rotation_mode, keep_height)
 }
@@ -316,7 +323,7 @@ For this method to produce usable results, tracking information must be availabl
 You should call this method after a few seconds have passed. For example, when the user requests a realignment of the display holding a designated button on a controller for a short period of time, or when implementing a teleport mechanism.
 */
 //go:nosplit
-func (self class) CenterOnHmd(rotation_mode gdclass.XRServerRotationMode, keep_height bool) { //gd:XRServer.center_on_hmd
+func (self class) CenterOnHmd(rotation_mode RotationMode, keep_height bool) { //gd:XRServer.center_on_hmd
 	var frame = callframe.New()
 	callframe.Arg(frame, rotation_mode)
 	callframe.Arg(frame, keep_height)
@@ -546,32 +553,7 @@ func init() {
 	gdclass.Register("XRServer", func(ptr gd.Object) any { return [1]gdclass.XRServer{*(*gdclass.XRServer)(unsafe.Pointer(&ptr))} })
 }
 
-type TrackerType = gdclass.XRServerTrackerType //gd:XRServer.TrackerType
-
-const (
-	/*The tracker tracks the location of the players head. This is usually a location centered between the players eyes. Note that for handheld AR devices this can be the current location of the device.*/
-	TrackerHead TrackerType = 1
-	/*The tracker tracks the location of a controller.*/
-	TrackerController TrackerType = 2
-	/*The tracker tracks the location of a base station.*/
-	TrackerBasestation TrackerType = 4
-	/*The tracker tracks the location and size of an AR anchor.*/
-	TrackerAnchor TrackerType = 8
-	/*The tracker tracks the location and joints of a hand.*/
-	TrackerHand TrackerType = 16
-	/*The tracker tracks the location and joints of a body.*/
-	TrackerBody TrackerType = 32
-	/*The tracker tracks the expressions of a face.*/
-	TrackerFace TrackerType = 64
-	/*Used internally to filter trackers of any known type.*/
-	TrackerAnyKnown TrackerType = 127
-	/*Used internally if we haven't set the tracker type yet.*/
-	TrackerUnknown TrackerType = 128
-	/*Used internally to select all trackers.*/
-	TrackerAny TrackerType = 255
-)
-
-type RotationMode = gdclass.XRServerRotationMode //gd:XRServer.RotationMode
+type RotationMode int //gd:XRServer.RotationMode
 
 const (
 	/*Fully reset the orientation of the HMD. Regardless of what direction the user is looking to in the real world. The user will look dead ahead in the virtual world.*/

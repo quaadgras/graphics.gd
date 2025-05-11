@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/Input"
 import "graphics.gd/classdb/InputEvent"
 import "graphics.gd/classdb/InputEventFromWindow"
 import "graphics.gd/classdb/InputEventMouse"
@@ -29,6 +31,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -44,6 +50,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,6 +63,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -103,11 +111,11 @@ func (self Instance) SetFactor(value Float.X) {
 	class(self).SetFactor(float64(value))
 }
 
-func (self Instance) ButtonIndex() MouseButton {
-	return MouseButton(class(self).GetButtonIndex())
+func (self Instance) ButtonIndex() Input.MouseButton {
+	return Input.MouseButton(class(self).GetButtonIndex())
 }
 
-func (self Instance) SetButtonIndex(value MouseButton) {
+func (self Instance) SetButtonIndex(value Input.MouseButton) {
 	class(self).SetButtonIndex(value)
 }
 
@@ -147,7 +155,7 @@ func (self class) GetFactor() float64 { //gd:InputEventMouseButton.get_factor
 }
 
 //go:nosplit
-func (self class) SetButtonIndex(button_index MouseButton) { //gd:InputEventMouseButton.set_button_index
+func (self class) SetButtonIndex(button_index Input.MouseButton) { //gd:InputEventMouseButton.set_button_index
 	var frame = callframe.New()
 	callframe.Arg(frame, button_index)
 	var r_ret = callframe.Nil
@@ -156,9 +164,9 @@ func (self class) SetButtonIndex(button_index MouseButton) { //gd:InputEventMous
 }
 
 //go:nosplit
-func (self class) GetButtonIndex() MouseButton { //gd:InputEventMouseButton.get_button_index
+func (self class) GetButtonIndex() Input.MouseButton { //gd:InputEventMouseButton.get_button_index
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[MouseButton](frame)
+	var r_ret = callframe.Ret[Input.MouseButton](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMouseButton.Bind_get_button_index, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -273,28 +281,3 @@ func init() {
 		return [1]gdclass.InputEventMouseButton{*(*gdclass.InputEventMouseButton)(unsafe.Pointer(&ptr))}
 	})
 }
-
-type MouseButton int
-
-const (
-	/*Enum value which doesn't correspond to any mouse button. This is used to initialize [enum MouseButton] properties with a generic state.*/
-	MouseButtonNone MouseButton = 0
-	/*Primary mouse button, usually assigned to the left button.*/
-	MouseButtonLeft MouseButton = 1
-	/*Secondary mouse button, usually assigned to the right button.*/
-	MouseButtonRight MouseButton = 2
-	/*Middle mouse button.*/
-	MouseButtonMiddle MouseButton = 3
-	/*Mouse wheel scrolling up.*/
-	MouseButtonWheelUp MouseButton = 4
-	/*Mouse wheel scrolling down.*/
-	MouseButtonWheelDown MouseButton = 5
-	/*Mouse wheel left button (only present on some mice).*/
-	MouseButtonWheelLeft MouseButton = 6
-	/*Mouse wheel right button (only present on some mice).*/
-	MouseButtonWheelRight MouseButton = 7
-	/*Extra mouse button 1. This is sometimes present, usually to the sides of the mouse.*/
-	MouseButtonXbutton1 MouseButton = 8
-	/*Extra mouse button 2. This is sometimes present, usually to the sides of the mouse.*/
-	MouseButtonXbutton2 MouseButton = 9
-)

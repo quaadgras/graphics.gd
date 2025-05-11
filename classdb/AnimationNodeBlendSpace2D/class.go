@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/AnimationNode"
 import "graphics.gd/classdb/AnimationRootNode"
 import "graphics.gd/classdb/Resource"
@@ -28,6 +29,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -43,6 +48,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,6 +61,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -236,11 +243,11 @@ func (self Instance) SetYLabel(value string) {
 	class(self).SetYLabel(String.New(value))
 }
 
-func (self Instance) BlendMode() gdclass.AnimationNodeBlendSpace2DBlendMode {
-	return gdclass.AnimationNodeBlendSpace2DBlendMode(class(self).GetBlendMode())
+func (self Instance) BlendMode() BlendMode {
+	return BlendMode(class(self).GetBlendMode())
 }
 
-func (self Instance) SetBlendMode(value gdclass.AnimationNodeBlendSpace2DBlendMode) {
+func (self Instance) SetBlendMode(value BlendMode) {
 	class(self).SetBlendMode(value)
 }
 
@@ -515,7 +522,7 @@ func (self class) GetAutoTriangles() bool { //gd:AnimationNodeBlendSpace2D.get_a
 }
 
 //go:nosplit
-func (self class) SetBlendMode(mode gdclass.AnimationNodeBlendSpace2DBlendMode) { //gd:AnimationNodeBlendSpace2D.set_blend_mode
+func (self class) SetBlendMode(mode BlendMode) { //gd:AnimationNodeBlendSpace2D.set_blend_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -524,9 +531,9 @@ func (self class) SetBlendMode(mode gdclass.AnimationNodeBlendSpace2DBlendMode) 
 }
 
 //go:nosplit
-func (self class) GetBlendMode() gdclass.AnimationNodeBlendSpace2DBlendMode { //gd:AnimationNodeBlendSpace2D.get_blend_mode
+func (self class) GetBlendMode() BlendMode { //gd:AnimationNodeBlendSpace2D.get_blend_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.AnimationNodeBlendSpace2DBlendMode](frame)
+	var r_ret = callframe.Ret[BlendMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_get_blend_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -616,7 +623,7 @@ func init() {
 	})
 }
 
-type BlendMode = gdclass.AnimationNodeBlendSpace2DBlendMode //gd:AnimationNodeBlendSpace2D.BlendMode
+type BlendMode int //gd:AnimationNodeBlendSpace2D.BlendMode
 
 const (
 	/*The interpolation between animations is linear.*/

@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -28,6 +29,10 @@ import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -43,6 +48,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,6 +61,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -124,8 +131,8 @@ func (self Instance) GetSystemInfo() map[string]interface{} { //gd:XRInterface.g
 /*
 If supported, returns the status of our tracking. This will allow you to provide feedback to the user whether there are issues with positional tracking.
 */
-func (self Instance) GetTrackingStatus() gdclass.XRInterfaceTrackingStatus { //gd:XRInterface.get_tracking_status
-	return gdclass.XRInterfaceTrackingStatus(Advanced(self).GetTrackingStatus())
+func (self Instance) GetTrackingStatus() TrackingStatus { //gd:XRInterface.get_tracking_status
+	return TrackingStatus(Advanced(self).GetTrackingStatus())
 }
 
 /*
@@ -158,7 +165,7 @@ func (self Instance) TriggerHapticPulse(action_name string, tracker_name string,
 /*
 Call this to find out if a given play area mode is supported by this interface.
 */
-func (self Instance) SupportsPlayAreaMode(mode gdclass.XRInterfacePlayAreaMode) bool { //gd:XRInterface.supports_play_area_mode
+func (self Instance) SupportsPlayAreaMode(mode PlayAreaMode) bool { //gd:XRInterface.supports_play_area_mode
 	return bool(Advanced(self).SupportsPlayAreaMode(mode))
 }
 
@@ -256,19 +263,19 @@ func (self Instance) SetInterfaceIsPrimary(value bool) {
 	class(self).SetPrimary(value)
 }
 
-func (self Instance) XrPlayAreaMode() gdclass.XRInterfacePlayAreaMode {
-	return gdclass.XRInterfacePlayAreaMode(class(self).GetPlayAreaMode())
+func (self Instance) XrPlayAreaMode() PlayAreaMode {
+	return PlayAreaMode(class(self).GetPlayAreaMode())
 }
 
-func (self Instance) SetXrPlayAreaMode(value gdclass.XRInterfacePlayAreaMode) {
+func (self Instance) SetXrPlayAreaMode(value PlayAreaMode) {
 	class(self).SetPlayAreaMode(value)
 }
 
-func (self Instance) EnvironmentBlendMode() gdclass.XRInterfaceEnvironmentBlendMode {
-	return gdclass.XRInterfaceEnvironmentBlendMode(class(self).GetEnvironmentBlendMode())
+func (self Instance) EnvironmentBlendMode() EnvironmentBlendMode {
+	return EnvironmentBlendMode(class(self).GetEnvironmentBlendMode())
 }
 
-func (self Instance) SetEnvironmentBlendMode(value gdclass.XRInterfaceEnvironmentBlendMode) {
+func (self Instance) SetEnvironmentBlendMode(value EnvironmentBlendMode) {
 	class(self).SetEnvironmentBlendMode(value)
 }
 
@@ -384,9 +391,9 @@ func (self class) GetSystemInfo() Dictionary.Any { //gd:XRInterface.get_system_i
 If supported, returns the status of our tracking. This will allow you to provide feedback to the user whether there are issues with positional tracking.
 */
 //go:nosplit
-func (self class) GetTrackingStatus() gdclass.XRInterfaceTrackingStatus { //gd:XRInterface.get_tracking_status
+func (self class) GetTrackingStatus() TrackingStatus { //gd:XRInterface.get_tracking_status
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.XRInterfaceTrackingStatus](frame)
+	var r_ret = callframe.Ret[TrackingStatus](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_tracking_status, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -446,7 +453,7 @@ func (self class) TriggerHapticPulse(action_name String.Readable, tracker_name S
 Call this to find out if a given play area mode is supported by this interface.
 */
 //go:nosplit
-func (self class) SupportsPlayAreaMode(mode gdclass.XRInterfacePlayAreaMode) bool { //gd:XRInterface.supports_play_area_mode
+func (self class) SupportsPlayAreaMode(mode PlayAreaMode) bool { //gd:XRInterface.supports_play_area_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Ret[bool](frame)
@@ -457,9 +464,9 @@ func (self class) SupportsPlayAreaMode(mode gdclass.XRInterfacePlayAreaMode) boo
 }
 
 //go:nosplit
-func (self class) GetPlayAreaMode() gdclass.XRInterfacePlayAreaMode { //gd:XRInterface.get_play_area_mode
+func (self class) GetPlayAreaMode() PlayAreaMode { //gd:XRInterface.get_play_area_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.XRInterfacePlayAreaMode](frame)
+	var r_ret = callframe.Ret[PlayAreaMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_play_area_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -471,7 +478,7 @@ Sets the active play area mode, will return [code]false[/code] if the mode can't
 [b]Note:[/b] Changing this after the interface has already been initialized can be jarring for the player, so it's recommended to recenter on the HMD with [method XRServer.center_on_hmd] (if switching to [constant XRInterface.XR_PLAY_AREA_STAGE]) or make the switch during a scene change.
 */
 //go:nosplit
-func (self class) SetPlayAreaMode(mode gdclass.XRInterfacePlayAreaMode) bool { //gd:XRInterface.set_play_area_mode
+func (self class) SetPlayAreaMode(mode PlayAreaMode) bool { //gd:XRInterface.set_play_area_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Ret[bool](frame)
@@ -643,7 +650,7 @@ func _ready():
 [/codeblock]
 */
 //go:nosplit
-func (self class) SetEnvironmentBlendMode(mode gdclass.XRInterfaceEnvironmentBlendMode) bool { //gd:XRInterface.set_environment_blend_mode
+func (self class) SetEnvironmentBlendMode(mode EnvironmentBlendMode) bool { //gd:XRInterface.set_environment_blend_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Ret[bool](frame)
@@ -654,9 +661,9 @@ func (self class) SetEnvironmentBlendMode(mode gdclass.XRInterfaceEnvironmentBle
 }
 
 //go:nosplit
-func (self class) GetEnvironmentBlendMode() gdclass.XRInterfaceEnvironmentBlendMode { //gd:XRInterface.get_environment_blend_mode
+func (self class) GetEnvironmentBlendMode() EnvironmentBlendMode { //gd:XRInterface.get_environment_blend_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.XRInterfaceEnvironmentBlendMode](frame)
+	var r_ret = callframe.Ret[EnvironmentBlendMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterface.Bind_get_environment_blend_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -694,7 +701,7 @@ func init() {
 	gdclass.Register("XRInterface", func(ptr gd.Object) any { return [1]gdclass.XRInterface{*(*gdclass.XRInterface)(unsafe.Pointer(&ptr))} })
 }
 
-type Capabilities = gdclass.XRInterfaceCapabilities //gd:XRInterface.Capabilities
+type Capabilities int //gd:XRInterface.Capabilities
 
 const (
 	/*No XR capabilities.*/
@@ -713,7 +720,7 @@ const (
 	XrExternal Capabilities = 32
 )
 
-type TrackingStatus = gdclass.XRInterfaceTrackingStatus //gd:XRInterface.TrackingStatus
+type TrackingStatus int //gd:XRInterface.TrackingStatus
 
 const (
 	/*Tracking is behaving as expected.*/
@@ -728,7 +735,7 @@ const (
 	XrNotTracking TrackingStatus = 4
 )
 
-type PlayAreaMode = gdclass.XRInterfacePlayAreaMode //gd:XRInterface.PlayAreaMode
+type PlayAreaMode int //gd:XRInterface.PlayAreaMode
 
 const (
 	/*Play area mode not set or not available.*/
@@ -743,7 +750,7 @@ const (
 	XrPlayAreaStage PlayAreaMode = 4
 )
 
-type EnvironmentBlendMode = gdclass.XRInterfaceEnvironmentBlendMode //gd:XRInterface.EnvironmentBlendMode
+type EnvironmentBlendMode int //gd:XRInterface.EnvironmentBlendMode
 
 const (
 	/*Opaque blend mode. This is typically used for VR devices.*/

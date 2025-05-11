@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Curve"
 import "graphics.gd/classdb/GeometryInstance3D"
 import "graphics.gd/classdb/Gradient"
@@ -34,6 +35,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -49,6 +54,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -61,6 +67,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -259,11 +266,11 @@ func (self Instance) SetLocalCoords(value bool) {
 	class(self).SetUseLocalCoordinates(value)
 }
 
-func (self Instance) DrawOrder() gdclass.CPUParticles3DDrawOrder {
-	return gdclass.CPUParticles3DDrawOrder(class(self).GetDrawOrder())
+func (self Instance) DrawOrder() DrawOrder {
+	return DrawOrder(class(self).GetDrawOrder())
 }
 
-func (self Instance) SetDrawOrder(value gdclass.CPUParticles3DDrawOrder) {
+func (self Instance) SetDrawOrder(value DrawOrder) {
 	class(self).SetDrawOrder(value)
 }
 
@@ -275,11 +282,11 @@ func (self Instance) SetMesh(value Mesh.Instance) {
 	class(self).SetMesh(value)
 }
 
-func (self Instance) EmissionShape() gdclass.CPUParticles3DEmissionShape {
-	return gdclass.CPUParticles3DEmissionShape(class(self).GetEmissionShape())
+func (self Instance) EmissionShape() EmissionShape {
+	return EmissionShape(class(self).GetEmissionShape())
 }
 
-func (self Instance) SetEmissionShape(value gdclass.CPUParticles3DEmissionShape) {
+func (self Instance) SetEmissionShape(value EmissionShape) {
 	class(self).SetEmissionShape(value)
 }
 
@@ -1003,7 +1010,7 @@ func (self class) GetSpeedScale() float64 { //gd:CPUParticles3D.get_speed_scale
 }
 
 //go:nosplit
-func (self class) SetDrawOrder(order gdclass.CPUParticles3DDrawOrder) { //gd:CPUParticles3D.set_draw_order
+func (self class) SetDrawOrder(order DrawOrder) { //gd:CPUParticles3D.set_draw_order
 	var frame = callframe.New()
 	callframe.Arg(frame, order)
 	var r_ret = callframe.Nil
@@ -1012,9 +1019,9 @@ func (self class) SetDrawOrder(order gdclass.CPUParticles3DDrawOrder) { //gd:CPU
 }
 
 //go:nosplit
-func (self class) GetDrawOrder() gdclass.CPUParticles3DDrawOrder { //gd:CPUParticles3D.get_draw_order
+func (self class) GetDrawOrder() DrawOrder { //gd:CPUParticles3D.get_draw_order
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.CPUParticles3DDrawOrder](frame)
+	var r_ret = callframe.Ret[DrawOrder](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles3D.Bind_get_draw_order, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1178,7 +1185,7 @@ func (self class) GetFlatness() float64 { //gd:CPUParticles3D.get_flatness
 Sets the minimum value for the given parameter.
 */
 //go:nosplit
-func (self class) SetParamMin(param gdclass.CPUParticles3DParameter, value float64) { //gd:CPUParticles3D.set_param_min
+func (self class) SetParamMin(param Parameter, value float64) { //gd:CPUParticles3D.set_param_min
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, value)
@@ -1191,7 +1198,7 @@ func (self class) SetParamMin(param gdclass.CPUParticles3DParameter, value float
 Returns the minimum value range for the given parameter.
 */
 //go:nosplit
-func (self class) GetParamMin(param gdclass.CPUParticles3DParameter) float64 { //gd:CPUParticles3D.get_param_min
+func (self class) GetParamMin(param Parameter) float64 { //gd:CPUParticles3D.get_param_min
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[float64](frame)
@@ -1205,7 +1212,7 @@ func (self class) GetParamMin(param gdclass.CPUParticles3DParameter) float64 { /
 Sets the maximum value for the given parameter.
 */
 //go:nosplit
-func (self class) SetParamMax(param gdclass.CPUParticles3DParameter, value float64) { //gd:CPUParticles3D.set_param_max
+func (self class) SetParamMax(param Parameter, value float64) { //gd:CPUParticles3D.set_param_max
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, value)
@@ -1218,7 +1225,7 @@ func (self class) SetParamMax(param gdclass.CPUParticles3DParameter, value float
 Returns the maximum value range for the given parameter.
 */
 //go:nosplit
-func (self class) GetParamMax(param gdclass.CPUParticles3DParameter) float64 { //gd:CPUParticles3D.get_param_max
+func (self class) GetParamMax(param Parameter) float64 { //gd:CPUParticles3D.get_param_max
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[float64](frame)
@@ -1232,7 +1239,7 @@ func (self class) GetParamMax(param gdclass.CPUParticles3DParameter) float64 { /
 Sets the [Curve] of the parameter specified by [enum Parameter]. Should be a unit [Curve].
 */
 //go:nosplit
-func (self class) SetParamCurve(param gdclass.CPUParticles3DParameter, curve [1]gdclass.Curve) { //gd:CPUParticles3D.set_param_curve
+func (self class) SetParamCurve(param Parameter, curve [1]gdclass.Curve) { //gd:CPUParticles3D.set_param_curve
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, pointers.Get(curve[0])[0])
@@ -1245,7 +1252,7 @@ func (self class) SetParamCurve(param gdclass.CPUParticles3DParameter, curve [1]
 Returns the [Curve] of the parameter specified by [enum Parameter].
 */
 //go:nosplit
-func (self class) GetParamCurve(param gdclass.CPUParticles3DParameter) [1]gdclass.Curve { //gd:CPUParticles3D.get_param_curve
+func (self class) GetParamCurve(param Parameter) [1]gdclass.Curve { //gd:CPUParticles3D.get_param_curve
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -1316,7 +1323,7 @@ func (self class) GetColorInitialRamp() [1]gdclass.Gradient { //gd:CPUParticles3
 Enables or disables the given particle flag (see [enum ParticleFlags] for options).
 */
 //go:nosplit
-func (self class) SetParticleFlag(particle_flag gdclass.CPUParticles3DParticleFlags, enable bool) { //gd:CPUParticles3D.set_particle_flag
+func (self class) SetParticleFlag(particle_flag ParticleFlags, enable bool) { //gd:CPUParticles3D.set_particle_flag
 	var frame = callframe.New()
 	callframe.Arg(frame, particle_flag)
 	callframe.Arg(frame, enable)
@@ -1329,7 +1336,7 @@ func (self class) SetParticleFlag(particle_flag gdclass.CPUParticles3DParticleFl
 Returns the enabled state of the given particle flag (see [enum ParticleFlags] for options).
 */
 //go:nosplit
-func (self class) GetParticleFlag(particle_flag gdclass.CPUParticles3DParticleFlags) bool { //gd:CPUParticles3D.get_particle_flag
+func (self class) GetParticleFlag(particle_flag ParticleFlags) bool { //gd:CPUParticles3D.get_particle_flag
 	var frame = callframe.New()
 	callframe.Arg(frame, particle_flag)
 	var r_ret = callframe.Ret[bool](frame)
@@ -1340,7 +1347,7 @@ func (self class) GetParticleFlag(particle_flag gdclass.CPUParticles3DParticleFl
 }
 
 //go:nosplit
-func (self class) SetEmissionShape(shape gdclass.CPUParticles3DEmissionShape) { //gd:CPUParticles3D.set_emission_shape
+func (self class) SetEmissionShape(shape EmissionShape) { //gd:CPUParticles3D.set_emission_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
 	var r_ret = callframe.Nil
@@ -1349,9 +1356,9 @@ func (self class) SetEmissionShape(shape gdclass.CPUParticles3DEmissionShape) { 
 }
 
 //go:nosplit
-func (self class) GetEmissionShape() gdclass.CPUParticles3DEmissionShape { //gd:CPUParticles3D.get_emission_shape
+func (self class) GetEmissionShape() EmissionShape { //gd:CPUParticles3D.get_emission_shape
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.CPUParticles3DEmissionShape](frame)
+	var r_ret = callframe.Ret[EmissionShape](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles3D.Bind_get_emission_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1705,7 +1712,7 @@ func init() {
 	})
 }
 
-type DrawOrder = gdclass.CPUParticles3DDrawOrder //gd:CPUParticles3D.DrawOrder
+type DrawOrder int //gd:CPUParticles3D.DrawOrder
 
 const (
 	/*Particles are drawn in the order emitted.*/
@@ -1716,7 +1723,7 @@ const (
 	DrawOrderViewDepth DrawOrder = 2
 )
 
-type Parameter = gdclass.CPUParticles3DParameter //gd:CPUParticles3D.Parameter
+type Parameter int //gd:CPUParticles3D.Parameter
 
 const (
 	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set initial velocity properties.*/
@@ -1747,7 +1754,7 @@ const (
 	ParamMax Parameter = 12
 )
 
-type ParticleFlags = gdclass.CPUParticles3DParticleFlags //gd:CPUParticles3D.ParticleFlags
+type ParticleFlags int //gd:CPUParticles3D.ParticleFlags
 
 const (
 	/*Use with [method set_particle_flag] to set [member particle_flag_align_y].*/
@@ -1760,7 +1767,7 @@ const (
 	ParticleFlagMax ParticleFlags = 3
 )
 
-type EmissionShape = gdclass.CPUParticles3DEmissionShape //gd:CPUParticles3D.EmissionShape
+type EmissionShape int //gd:CPUParticles3D.EmissionShape
 
 const (
 	/*All particles will be emitted from a single point.*/

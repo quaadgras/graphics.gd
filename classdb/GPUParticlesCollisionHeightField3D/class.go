@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/GPUParticlesCollision3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
@@ -29,6 +30,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -44,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,6 +62,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -119,19 +126,19 @@ func (self Instance) SetSize(value Vector3.XYZ) {
 	class(self).SetSize(Vector3.XYZ(value))
 }
 
-func (self Instance) Resolution() gdclass.GPUParticlesCollisionHeightField3DResolution {
-	return gdclass.GPUParticlesCollisionHeightField3DResolution(class(self).GetResolution())
+func (self Instance) Resolution() Resolution {
+	return Resolution(class(self).GetResolution())
 }
 
-func (self Instance) SetResolution(value gdclass.GPUParticlesCollisionHeightField3DResolution) {
+func (self Instance) SetResolution(value Resolution) {
 	class(self).SetResolution(value)
 }
 
-func (self Instance) UpdateMode() gdclass.GPUParticlesCollisionHeightField3DUpdateMode {
-	return gdclass.GPUParticlesCollisionHeightField3DUpdateMode(class(self).GetUpdateMode())
+func (self Instance) UpdateMode() UpdateMode {
+	return UpdateMode(class(self).GetUpdateMode())
 }
 
-func (self Instance) SetUpdateMode(value gdclass.GPUParticlesCollisionHeightField3DUpdateMode) {
+func (self Instance) SetUpdateMode(value UpdateMode) {
 	class(self).SetUpdateMode(value)
 }
 
@@ -171,7 +178,7 @@ func (self class) GetSize() Vector3.XYZ { //gd:GPUParticlesCollisionHeightField3
 }
 
 //go:nosplit
-func (self class) SetResolution(resolution gdclass.GPUParticlesCollisionHeightField3DResolution) { //gd:GPUParticlesCollisionHeightField3D.set_resolution
+func (self class) SetResolution(resolution Resolution) { //gd:GPUParticlesCollisionHeightField3D.set_resolution
 	var frame = callframe.New()
 	callframe.Arg(frame, resolution)
 	var r_ret = callframe.Nil
@@ -180,9 +187,9 @@ func (self class) SetResolution(resolution gdclass.GPUParticlesCollisionHeightFi
 }
 
 //go:nosplit
-func (self class) GetResolution() gdclass.GPUParticlesCollisionHeightField3DResolution { //gd:GPUParticlesCollisionHeightField3D.get_resolution
+func (self class) GetResolution() Resolution { //gd:GPUParticlesCollisionHeightField3D.get_resolution
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.GPUParticlesCollisionHeightField3DResolution](frame)
+	var r_ret = callframe.Ret[Resolution](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_get_resolution, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -190,7 +197,7 @@ func (self class) GetResolution() gdclass.GPUParticlesCollisionHeightField3DReso
 }
 
 //go:nosplit
-func (self class) SetUpdateMode(update_mode gdclass.GPUParticlesCollisionHeightField3DUpdateMode) { //gd:GPUParticlesCollisionHeightField3D.set_update_mode
+func (self class) SetUpdateMode(update_mode UpdateMode) { //gd:GPUParticlesCollisionHeightField3D.set_update_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, update_mode)
 	var r_ret = callframe.Nil
@@ -199,9 +206,9 @@ func (self class) SetUpdateMode(update_mode gdclass.GPUParticlesCollisionHeightF
 }
 
 //go:nosplit
-func (self class) GetUpdateMode() gdclass.GPUParticlesCollisionHeightField3DUpdateMode { //gd:GPUParticlesCollisionHeightField3D.get_update_mode
+func (self class) GetUpdateMode() UpdateMode { //gd:GPUParticlesCollisionHeightField3D.get_update_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.GPUParticlesCollisionHeightField3DUpdateMode](frame)
+	var r_ret = callframe.Ret[UpdateMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_get_update_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -325,7 +332,7 @@ func init() {
 	})
 }
 
-type Resolution = gdclass.GPUParticlesCollisionHeightField3DResolution //gd:GPUParticlesCollisionHeightField3D.Resolution
+type Resolution int //gd:GPUParticlesCollisionHeightField3D.Resolution
 
 const (
 	/*Generate a 256×256 heightmap. Intended for small-scale scenes, or larger scenes with no distant particles.*/
@@ -344,7 +351,7 @@ const (
 	ResolutionMax Resolution = 6
 )
 
-type UpdateMode = gdclass.GPUParticlesCollisionHeightField3DUpdateMode //gd:GPUParticlesCollisionHeightField3D.UpdateMode
+type UpdateMode int //gd:GPUParticlesCollisionHeightField3D.UpdateMode
 
 const (
 	/*Only update the heightmap when the [GPUParticlesCollisionHeightField3D] node is moved, or when the camera moves if [member follow_camera_enabled] is [code]true[/code]. An update can be forced by slightly moving the [GPUParticlesCollisionHeightField3D] in any direction, or by calling [method RenderingServer.particles_collision_height_field_update].*/

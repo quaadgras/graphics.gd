@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -26,6 +27,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -41,6 +46,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -53,6 +59,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -156,19 +163,19 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) InterpolationMode() gdclass.GradientInterpolationMode {
-	return gdclass.GradientInterpolationMode(class(self).GetInterpolationMode())
+func (self Instance) InterpolationMode() InterpolationMode {
+	return InterpolationMode(class(self).GetInterpolationMode())
 }
 
-func (self Instance) SetInterpolationMode(value gdclass.GradientInterpolationMode) {
+func (self Instance) SetInterpolationMode(value InterpolationMode) {
 	class(self).SetInterpolationMode(value)
 }
 
-func (self Instance) InterpolationColorSpace() gdclass.GradientColorSpace {
-	return gdclass.GradientColorSpace(class(self).GetInterpolationColorSpace())
+func (self Instance) InterpolationColorSpace() ColorSpace {
+	return ColorSpace(class(self).GetInterpolationColorSpace())
 }
 
-func (self Instance) SetInterpolationColorSpace(value gdclass.GradientColorSpace) {
+func (self Instance) SetInterpolationColorSpace(value ColorSpace) {
 	class(self).SetInterpolationColorSpace(value)
 }
 
@@ -345,7 +352,7 @@ func (self class) GetColors() Packed.Array[Color.RGBA] { //gd:Gradient.get_color
 }
 
 //go:nosplit
-func (self class) SetInterpolationMode(interpolation_mode gdclass.GradientInterpolationMode) { //gd:Gradient.set_interpolation_mode
+func (self class) SetInterpolationMode(interpolation_mode InterpolationMode) { //gd:Gradient.set_interpolation_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, interpolation_mode)
 	var r_ret = callframe.Nil
@@ -354,9 +361,9 @@ func (self class) SetInterpolationMode(interpolation_mode gdclass.GradientInterp
 }
 
 //go:nosplit
-func (self class) GetInterpolationMode() gdclass.GradientInterpolationMode { //gd:Gradient.get_interpolation_mode
+func (self class) GetInterpolationMode() InterpolationMode { //gd:Gradient.get_interpolation_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.GradientInterpolationMode](frame)
+	var r_ret = callframe.Ret[InterpolationMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_get_interpolation_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -364,7 +371,7 @@ func (self class) GetInterpolationMode() gdclass.GradientInterpolationMode { //g
 }
 
 //go:nosplit
-func (self class) SetInterpolationColorSpace(interpolation_color_space gdclass.GradientColorSpace) { //gd:Gradient.set_interpolation_color_space
+func (self class) SetInterpolationColorSpace(interpolation_color_space ColorSpace) { //gd:Gradient.set_interpolation_color_space
 	var frame = callframe.New()
 	callframe.Arg(frame, interpolation_color_space)
 	var r_ret = callframe.Nil
@@ -373,9 +380,9 @@ func (self class) SetInterpolationColorSpace(interpolation_color_space gdclass.G
 }
 
 //go:nosplit
-func (self class) GetInterpolationColorSpace() gdclass.GradientColorSpace { //gd:Gradient.get_interpolation_color_space
+func (self class) GetInterpolationColorSpace() ColorSpace { //gd:Gradient.get_interpolation_color_space
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.GradientColorSpace](frame)
+	var r_ret = callframe.Ret[ColorSpace](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Gradient.Bind_get_interpolation_color_space, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -416,7 +423,7 @@ func init() {
 	gdclass.Register("Gradient", func(ptr gd.Object) any { return [1]gdclass.Gradient{*(*gdclass.Gradient)(unsafe.Pointer(&ptr))} })
 }
 
-type InterpolationMode = gdclass.GradientInterpolationMode //gd:Gradient.InterpolationMode
+type InterpolationMode int //gd:Gradient.InterpolationMode
 
 const (
 	/*Linear interpolation.*/
@@ -427,7 +434,7 @@ const (
 	GradientInterpolateCubic InterpolationMode = 2
 )
 
-type ColorSpace = gdclass.GradientColorSpace //gd:Gradient.ColorSpace
+type ColorSpace int //gd:Gradient.ColorSpace
 
 const (
 	/*sRGB color space.*/

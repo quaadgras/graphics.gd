@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Viewport"
 import "graphics.gd/variant/Array"
@@ -27,6 +28,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -42,6 +47,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -54,6 +60,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -117,19 +124,19 @@ func (self Instance) SetSize2dOverrideStretch(value bool) {
 	class(self).SetSize2dOverrideStretch(value)
 }
 
-func (self Instance) RenderTargetClearMode() gdclass.SubViewportClearMode {
-	return gdclass.SubViewportClearMode(class(self).GetClearMode())
+func (self Instance) RenderTargetClearMode() ClearMode {
+	return ClearMode(class(self).GetClearMode())
 }
 
-func (self Instance) SetRenderTargetClearMode(value gdclass.SubViewportClearMode) {
+func (self Instance) SetRenderTargetClearMode(value ClearMode) {
 	class(self).SetClearMode(value)
 }
 
-func (self Instance) RenderTargetUpdateMode() gdclass.SubViewportUpdateMode {
-	return gdclass.SubViewportUpdateMode(class(self).GetUpdateMode())
+func (self Instance) RenderTargetUpdateMode() UpdateMode {
+	return UpdateMode(class(self).GetUpdateMode())
 }
 
-func (self Instance) SetRenderTargetUpdateMode(value gdclass.SubViewportUpdateMode) {
+func (self Instance) SetRenderTargetUpdateMode(value UpdateMode) {
 	class(self).SetUpdateMode(value)
 }
 
@@ -191,7 +198,7 @@ func (self class) IsSize2dOverrideStretchEnabled() bool { //gd:SubViewport.is_si
 }
 
 //go:nosplit
-func (self class) SetUpdateMode(mode gdclass.SubViewportUpdateMode) { //gd:SubViewport.set_update_mode
+func (self class) SetUpdateMode(mode UpdateMode) { //gd:SubViewport.set_update_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -200,9 +207,9 @@ func (self class) SetUpdateMode(mode gdclass.SubViewportUpdateMode) { //gd:SubVi
 }
 
 //go:nosplit
-func (self class) GetUpdateMode() gdclass.SubViewportUpdateMode { //gd:SubViewport.get_update_mode
+func (self class) GetUpdateMode() UpdateMode { //gd:SubViewport.get_update_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.SubViewportUpdateMode](frame)
+	var r_ret = callframe.Ret[UpdateMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SubViewport.Bind_get_update_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -210,7 +217,7 @@ func (self class) GetUpdateMode() gdclass.SubViewportUpdateMode { //gd:SubViewpo
 }
 
 //go:nosplit
-func (self class) SetClearMode(mode gdclass.SubViewportClearMode) { //gd:SubViewport.set_clear_mode
+func (self class) SetClearMode(mode ClearMode) { //gd:SubViewport.set_clear_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -219,9 +226,9 @@ func (self class) SetClearMode(mode gdclass.SubViewportClearMode) { //gd:SubView
 }
 
 //go:nosplit
-func (self class) GetClearMode() gdclass.SubViewportClearMode { //gd:SubViewport.get_clear_mode
+func (self class) GetClearMode() ClearMode { //gd:SubViewport.get_clear_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.SubViewportClearMode](frame)
+	var r_ret = callframe.Ret[ClearMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SubViewport.Bind_get_clear_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -258,7 +265,7 @@ func init() {
 	gdclass.Register("SubViewport", func(ptr gd.Object) any { return [1]gdclass.SubViewport{*(*gdclass.SubViewport)(unsafe.Pointer(&ptr))} })
 }
 
-type ClearMode = gdclass.SubViewportClearMode //gd:SubViewport.ClearMode
+type ClearMode int //gd:SubViewport.ClearMode
 
 const (
 	/*Always clear the render target before drawing.*/
@@ -269,7 +276,7 @@ const (
 	ClearModeOnce ClearMode = 2
 )
 
-type UpdateMode = gdclass.SubViewportUpdateMode //gd:SubViewport.UpdateMode
+type UpdateMode int //gd:SubViewport.UpdateMode
 
 const (
 	/*Do not update the render target.*/

@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/NavigationPathQueryParameters3D"
 import "graphics.gd/classdb/NavigationPathQueryResult3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
@@ -28,6 +30,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -43,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,6 +62,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -276,27 +284,27 @@ func (self Instance) SetNavigationLayers(value int) {
 	class(self).SetNavigationLayers(int64(value))
 }
 
-func (self Instance) PathfindingAlgorithm() gdclass.NavigationPathQueryParameters3DPathfindingAlgorithm {
-	return gdclass.NavigationPathQueryParameters3DPathfindingAlgorithm(class(self).GetPathfindingAlgorithm())
+func (self Instance) PathfindingAlgorithm() NavigationPathQueryParameters3D.PathfindingAlgorithm {
+	return NavigationPathQueryParameters3D.PathfindingAlgorithm(class(self).GetPathfindingAlgorithm())
 }
 
-func (self Instance) SetPathfindingAlgorithm(value gdclass.NavigationPathQueryParameters3DPathfindingAlgorithm) {
+func (self Instance) SetPathfindingAlgorithm(value NavigationPathQueryParameters3D.PathfindingAlgorithm) {
 	class(self).SetPathfindingAlgorithm(value)
 }
 
-func (self Instance) PathPostprocessing() gdclass.NavigationPathQueryParameters3DPathPostProcessing {
-	return gdclass.NavigationPathQueryParameters3DPathPostProcessing(class(self).GetPathPostprocessing())
+func (self Instance) PathPostprocessing() NavigationPathQueryParameters3D.PathPostProcessing {
+	return NavigationPathQueryParameters3D.PathPostProcessing(class(self).GetPathPostprocessing())
 }
 
-func (self Instance) SetPathPostprocessing(value gdclass.NavigationPathQueryParameters3DPathPostProcessing) {
+func (self Instance) SetPathPostprocessing(value NavigationPathQueryParameters3D.PathPostProcessing) {
 	class(self).SetPathPostprocessing(value)
 }
 
-func (self Instance) PathMetadataFlags() gdclass.NavigationPathQueryParameters3DPathMetadataFlags {
-	return gdclass.NavigationPathQueryParameters3DPathMetadataFlags(class(self).GetPathMetadataFlags())
+func (self Instance) PathMetadataFlags() NavigationPathQueryParameters3D.PathMetadataFlags {
+	return NavigationPathQueryParameters3D.PathMetadataFlags(class(self).GetPathMetadataFlags())
 }
 
-func (self Instance) SetPathMetadataFlags(value gdclass.NavigationPathQueryParameters3DPathMetadataFlags) {
+func (self Instance) SetPathMetadataFlags(value NavigationPathQueryParameters3D.PathMetadataFlags) {
 	class(self).SetPathMetadataFlags(value)
 }
 
@@ -786,7 +794,7 @@ func (self class) GetNavigationLayerValue(layer_number int64) bool { //gd:Naviga
 }
 
 //go:nosplit
-func (self class) SetPathfindingAlgorithm(pathfinding_algorithm gdclass.NavigationPathQueryParameters3DPathfindingAlgorithm) { //gd:NavigationAgent3D.set_pathfinding_algorithm
+func (self class) SetPathfindingAlgorithm(pathfinding_algorithm NavigationPathQueryParameters3D.PathfindingAlgorithm) { //gd:NavigationAgent3D.set_pathfinding_algorithm
 	var frame = callframe.New()
 	callframe.Arg(frame, pathfinding_algorithm)
 	var r_ret = callframe.Nil
@@ -795,9 +803,9 @@ func (self class) SetPathfindingAlgorithm(pathfinding_algorithm gdclass.Navigati
 }
 
 //go:nosplit
-func (self class) GetPathfindingAlgorithm() gdclass.NavigationPathQueryParameters3DPathfindingAlgorithm { //gd:NavigationAgent3D.get_pathfinding_algorithm
+func (self class) GetPathfindingAlgorithm() NavigationPathQueryParameters3D.PathfindingAlgorithm { //gd:NavigationAgent3D.get_pathfinding_algorithm
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.NavigationPathQueryParameters3DPathfindingAlgorithm](frame)
+	var r_ret = callframe.Ret[NavigationPathQueryParameters3D.PathfindingAlgorithm](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_pathfinding_algorithm, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -805,7 +813,7 @@ func (self class) GetPathfindingAlgorithm() gdclass.NavigationPathQueryParameter
 }
 
 //go:nosplit
-func (self class) SetPathPostprocessing(path_postprocessing gdclass.NavigationPathQueryParameters3DPathPostProcessing) { //gd:NavigationAgent3D.set_path_postprocessing
+func (self class) SetPathPostprocessing(path_postprocessing NavigationPathQueryParameters3D.PathPostProcessing) { //gd:NavigationAgent3D.set_path_postprocessing
 	var frame = callframe.New()
 	callframe.Arg(frame, path_postprocessing)
 	var r_ret = callframe.Nil
@@ -814,9 +822,9 @@ func (self class) SetPathPostprocessing(path_postprocessing gdclass.NavigationPa
 }
 
 //go:nosplit
-func (self class) GetPathPostprocessing() gdclass.NavigationPathQueryParameters3DPathPostProcessing { //gd:NavigationAgent3D.get_path_postprocessing
+func (self class) GetPathPostprocessing() NavigationPathQueryParameters3D.PathPostProcessing { //gd:NavigationAgent3D.get_path_postprocessing
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.NavigationPathQueryParameters3DPathPostProcessing](frame)
+	var r_ret = callframe.Ret[NavigationPathQueryParameters3D.PathPostProcessing](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_path_postprocessing, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -824,7 +832,7 @@ func (self class) GetPathPostprocessing() gdclass.NavigationPathQueryParameters3
 }
 
 //go:nosplit
-func (self class) SetPathMetadataFlags(flags gdclass.NavigationPathQueryParameters3DPathMetadataFlags) { //gd:NavigationAgent3D.set_path_metadata_flags
+func (self class) SetPathMetadataFlags(flags NavigationPathQueryParameters3D.PathMetadataFlags) { //gd:NavigationAgent3D.set_path_metadata_flags
 	var frame = callframe.New()
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Nil
@@ -833,9 +841,9 @@ func (self class) SetPathMetadataFlags(flags gdclass.NavigationPathQueryParamete
 }
 
 //go:nosplit
-func (self class) GetPathMetadataFlags() gdclass.NavigationPathQueryParameters3DPathMetadataFlags { //gd:NavigationAgent3D.get_path_metadata_flags
+func (self class) GetPathMetadataFlags() NavigationPathQueryParameters3D.PathMetadataFlags { //gd:NavigationAgent3D.get_path_metadata_flags
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.NavigationPathQueryParameters3DPathMetadataFlags](frame)
+	var r_ret = callframe.Ret[NavigationPathQueryParameters3D.PathMetadataFlags](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationAgent3D.Bind_get_path_metadata_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

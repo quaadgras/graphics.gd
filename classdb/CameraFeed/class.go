@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Image"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -26,6 +27,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform2D"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -41,6 +46,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -53,6 +59,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -134,14 +141,14 @@ func (self Instance) SetName(name string) { //gd:CameraFeed.set_name
 /*
 Returns the position of camera on the device.
 */
-func (self Instance) GetPosition() gdclass.CameraFeedFeedPosition { //gd:CameraFeed.get_position
-	return gdclass.CameraFeedFeedPosition(Advanced(self).GetPosition())
+func (self Instance) GetPosition() FeedPosition { //gd:CameraFeed.get_position
+	return FeedPosition(Advanced(self).GetPosition())
 }
 
 /*
 Sets the position of this camera.
 */
-func (self Instance) SetPosition(position gdclass.CameraFeedFeedPosition) { //gd:CameraFeed.set_position
+func (self Instance) SetPosition(position FeedPosition) { //gd:CameraFeed.set_position
 	Advanced(self).SetPosition(position)
 }
 
@@ -169,15 +176,15 @@ func (self Instance) SetExternal(width int, height int) { //gd:CameraFeed.set_ex
 /*
 Returns the texture backend ID (usable by some external libraries that need a handle to a texture to write data).
 */
-func (self Instance) GetTextureTexId(feed_image_type gdclass.CameraServerFeedImage) int { //gd:CameraFeed.get_texture_tex_id
+func (self Instance) GetTextureTexId(feed_image_type ImageType) int { //gd:CameraFeed.get_texture_tex_id
 	return int(int(Advanced(self).GetTextureTexId(feed_image_type)))
 }
 
 /*
 Returns feed image data type.
 */
-func (self Instance) GetDatatype() gdclass.CameraFeedFeedDataType { //gd:CameraFeed.get_datatype
-	return gdclass.CameraFeedFeedDataType(Advanced(self).GetDatatype())
+func (self Instance) GetDatatype() FeedDataType { //gd:CameraFeed.get_datatype
+	return FeedDataType(Advanced(self).GetDatatype())
 }
 
 /*
@@ -312,9 +319,9 @@ func (self class) SetName(name String.Readable) { //gd:CameraFeed.set_name
 Returns the position of camera on the device.
 */
 //go:nosplit
-func (self class) GetPosition() gdclass.CameraFeedFeedPosition { //gd:CameraFeed.get_position
+func (self class) GetPosition() FeedPosition { //gd:CameraFeed.get_position
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.CameraFeedFeedPosition](frame)
+	var r_ret = callframe.Ret[FeedPosition](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraFeed.Bind_get_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -325,7 +332,7 @@ func (self class) GetPosition() gdclass.CameraFeedFeedPosition { //gd:CameraFeed
 Sets the position of this camera.
 */
 //go:nosplit
-func (self class) SetPosition(position gdclass.CameraFeedFeedPosition) { //gd:CameraFeed.set_position
+func (self class) SetPosition(position FeedPosition) { //gd:CameraFeed.set_position
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
 	var r_ret = callframe.Nil
@@ -393,7 +400,7 @@ func (self class) SetExternal(width int64, height int64) { //gd:CameraFeed.set_e
 Returns the texture backend ID (usable by some external libraries that need a handle to a texture to write data).
 */
 //go:nosplit
-func (self class) GetTextureTexId(feed_image_type gdclass.CameraServerFeedImage) int64 { //gd:CameraFeed.get_texture_tex_id
+func (self class) GetTextureTexId(feed_image_type ImageType) int64 { //gd:CameraFeed.get_texture_tex_id
 	var frame = callframe.New()
 	callframe.Arg(frame, feed_image_type)
 	var r_ret = callframe.Ret[int64](frame)
@@ -407,9 +414,9 @@ func (self class) GetTextureTexId(feed_image_type gdclass.CameraServerFeedImage)
 Returns feed image data type.
 */
 //go:nosplit
-func (self class) GetDatatype() gdclass.CameraFeedFeedDataType { //gd:CameraFeed.get_datatype
+func (self class) GetDatatype() FeedDataType { //gd:CameraFeed.get_datatype
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.CameraFeedFeedDataType](frame)
+	var r_ret = callframe.Ret[FeedDataType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraFeed.Bind_get_datatype, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -487,7 +494,7 @@ func init() {
 	gdclass.Register("CameraFeed", func(ptr gd.Object) any { return [1]gdclass.CameraFeed{*(*gdclass.CameraFeed)(unsafe.Pointer(&ptr))} })
 }
 
-type FeedDataType = gdclass.CameraFeedFeedDataType //gd:CameraFeed.FeedDataType
+type FeedDataType int //gd:CameraFeed.FeedDataType
 
 const (
 	/*No image set for the feed.*/
@@ -502,7 +509,7 @@ const (
 	FeedExternal FeedDataType = 4
 )
 
-type FeedPosition = gdclass.CameraFeedFeedPosition //gd:CameraFeed.FeedPosition
+type FeedPosition int //gd:CameraFeed.FeedPosition
 
 const (
 	/*Unspecified position.*/
@@ -511,6 +518,19 @@ const (
 	FeedFront FeedPosition = 1
 	/*Camera is mounted at the back of the device.*/
 	FeedBack FeedPosition = 2
+)
+
+type ImageType int //gd:CameraServer.FeedImage
+
+const (
+	/*The RGBA camera image.*/
+	FeedRgbaImage ImageType = 0
+	/*The [url=https://en.wikipedia.org/wiki/YCbCr]YCbCr[/url] camera image.*/
+	FeedYcbcrImage ImageType = 0
+	/*The Y component camera image.*/
+	FeedYImage ImageType = 0
+	/*The CbCr component camera image.*/
+	FeedCbcrImage ImageType = 1
 )
 
 type FormatParameters struct {

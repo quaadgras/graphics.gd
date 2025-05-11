@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Texture2D"
@@ -30,6 +31,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -45,6 +50,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -57,6 +63,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -256,7 +263,7 @@ for (int i = 0; i < (int)Decal.DecalTexture.Max; i++)
 [/codeblocks]
 */
 //go:nosplit
-func (self class) SetTexture(atype gdclass.DecalDecalTexture, texture [1]gdclass.Texture2D) { //gd:Decal.set_texture
+func (self class) SetTexture(atype DecalTexture, texture [1]gdclass.Texture2D) { //gd:Decal.set_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
@@ -283,7 +290,7 @@ for (int i = 0; i < (int)Decal.DecalTexture.Max; i++)
 [/codeblocks]
 */
 //go:nosplit
-func (self class) GetTexture(atype gdclass.DecalDecalTexture) [1]gdclass.Texture2D { //gd:Decal.get_texture
+func (self class) GetTexture(atype DecalTexture) [1]gdclass.Texture2D { //gd:Decal.get_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -518,7 +525,7 @@ func init() {
 	gdclass.Register("Decal", func(ptr gd.Object) any { return [1]gdclass.Decal{*(*gdclass.Decal)(unsafe.Pointer(&ptr))} })
 }
 
-type DecalTexture = gdclass.DecalDecalTexture //gd:Decal.DecalTexture
+type DecalTexture int //gd:Decal.DecalTexture
 
 const (
 	/*[Texture2D] corresponding to [member texture_albedo].*/

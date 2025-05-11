@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Texture2D"
@@ -29,6 +30,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -44,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,6 +62,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -196,11 +203,11 @@ func (self Instance) SetLightSpecular(value Float.X) {
 	class(self).SetParam(3, float64(value))
 }
 
-func (self Instance) LightBakeMode() gdclass.Light3DBakeMode {
-	return gdclass.Light3DBakeMode(class(self).GetBakeMode())
+func (self Instance) LightBakeMode() BakeMode {
+	return BakeMode(class(self).GetBakeMode())
 }
 
-func (self Instance) SetLightBakeMode(value gdclass.Light3DBakeMode) {
+func (self Instance) SetLightBakeMode(value BakeMode) {
 	class(self).SetBakeMode(value)
 }
 
@@ -339,7 +346,7 @@ func (self class) IsEditorOnly() bool { //gd:Light3D.is_editor_only
 Sets the value of the specified [enum Light3D.Param] parameter.
 */
 //go:nosplit
-func (self class) SetParam(param gdclass.Light3DParam, value float64) { //gd:Light3D.set_param
+func (self class) SetParam(param Param, value float64) { //gd:Light3D.set_param
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, value)
@@ -352,7 +359,7 @@ func (self class) SetParam(param gdclass.Light3DParam, value float64) { //gd:Lig
 Returns the value of the specified [enum Light3D.Param] parameter.
 */
 //go:nosplit
-func (self class) GetParam(param gdclass.Light3DParam) float64 { //gd:Light3D.get_param
+func (self class) GetParam(param Param) float64 { //gd:Light3D.get_param
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[float64](frame)
@@ -553,7 +560,7 @@ func (self class) GetShadowCasterMask() int64 { //gd:Light3D.get_shadow_caster_m
 }
 
 //go:nosplit
-func (self class) SetBakeMode(bake_mode gdclass.Light3DBakeMode) { //gd:Light3D.set_bake_mode
+func (self class) SetBakeMode(bake_mode BakeMode) { //gd:Light3D.set_bake_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, bake_mode)
 	var r_ret = callframe.Nil
@@ -562,9 +569,9 @@ func (self class) SetBakeMode(bake_mode gdclass.Light3DBakeMode) { //gd:Light3D.
 }
 
 //go:nosplit
-func (self class) GetBakeMode() gdclass.Light3DBakeMode { //gd:Light3D.get_bake_mode
+func (self class) GetBakeMode() BakeMode { //gd:Light3D.get_bake_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.Light3DBakeMode](frame)
+	var r_ret = callframe.Ret[BakeMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Light3D.Bind_get_bake_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -657,7 +664,7 @@ func init() {
 	gdclass.Register("Light3D", func(ptr gd.Object) any { return [1]gdclass.Light3D{*(*gdclass.Light3D)(unsafe.Pointer(&ptr))} })
 }
 
-type Param = gdclass.Light3DParam //gd:Light3D.Param
+type Param int //gd:Light3D.Param
 
 const (
 	/*Constant for accessing [member light_energy].*/
@@ -706,7 +713,7 @@ const (
 	ParamMax Param = 21
 )
 
-type BakeMode = gdclass.Light3DBakeMode //gd:Light3D.BakeMode
+type BakeMode int //gd:Light3D.BakeMode
 
 const (
 	/*Light is ignored when baking. This is the fastest mode, but the light will be taken into account when baking global illumination. This mode should generally be used for dynamic lights that change quickly, as the effect of global illumination is less noticeable on those lights.

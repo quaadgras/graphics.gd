@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Material"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/Texture2D"
@@ -29,6 +30,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -44,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,6 +62,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -94,11 +101,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Transparency() gdclass.BaseMaterial3DTransparency {
-	return gdclass.BaseMaterial3DTransparency(class(self).GetTransparency())
+func (self Instance) Transparency() Transparency {
+	return Transparency(class(self).GetTransparency())
 }
 
-func (self Instance) SetTransparency(value gdclass.BaseMaterial3DTransparency) {
+func (self Instance) SetTransparency(value Transparency) {
 	class(self).SetTransparency(value)
 }
 
@@ -118,11 +125,11 @@ func (self Instance) SetAlphaHashScale(value Float.X) {
 	class(self).SetAlphaHashScale(float64(value))
 }
 
-func (self Instance) AlphaAntialiasingMode() gdclass.BaseMaterial3DAlphaAntiAliasing {
-	return gdclass.BaseMaterial3DAlphaAntiAliasing(class(self).GetAlphaAntialiasing())
+func (self Instance) AlphaAntialiasingMode() AlphaAntiAliasing {
+	return AlphaAntiAliasing(class(self).GetAlphaAntialiasing())
 }
 
-func (self Instance) SetAlphaAntialiasingMode(value gdclass.BaseMaterial3DAlphaAntiAliasing) {
+func (self Instance) SetAlphaAntialiasingMode(value AlphaAntiAliasing) {
 	class(self).SetAlphaAntialiasing(value)
 }
 
@@ -134,27 +141,27 @@ func (self Instance) SetAlphaAntialiasingEdge(value Float.X) {
 	class(self).SetAlphaAntialiasingEdge(float64(value))
 }
 
-func (self Instance) BlendMode() gdclass.BaseMaterial3DBlendMode {
-	return gdclass.BaseMaterial3DBlendMode(class(self).GetBlendMode())
+func (self Instance) BlendMode() BlendMode {
+	return BlendMode(class(self).GetBlendMode())
 }
 
-func (self Instance) SetBlendMode(value gdclass.BaseMaterial3DBlendMode) {
+func (self Instance) SetBlendMode(value BlendMode) {
 	class(self).SetBlendMode(value)
 }
 
-func (self Instance) CullMode() gdclass.BaseMaterial3DCullMode {
-	return gdclass.BaseMaterial3DCullMode(class(self).GetCullMode())
+func (self Instance) CullMode() CullMode {
+	return CullMode(class(self).GetCullMode())
 }
 
-func (self Instance) SetCullMode(value gdclass.BaseMaterial3DCullMode) {
+func (self Instance) SetCullMode(value CullMode) {
 	class(self).SetCullMode(value)
 }
 
-func (self Instance) DepthDrawMode() gdclass.BaseMaterial3DDepthDrawMode {
-	return gdclass.BaseMaterial3DDepthDrawMode(class(self).GetDepthDrawMode())
+func (self Instance) DepthDrawMode() DepthDrawMode {
+	return DepthDrawMode(class(self).GetDepthDrawMode())
 }
 
-func (self Instance) SetDepthDrawMode(value gdclass.BaseMaterial3DDepthDrawMode) {
+func (self Instance) SetDepthDrawMode(value DepthDrawMode) {
 	class(self).SetDepthDrawMode(value)
 }
 
@@ -166,27 +173,27 @@ func (self Instance) SetNoDepthTest(value bool) {
 	class(self).SetFlag(0, value)
 }
 
-func (self Instance) ShadingMode() gdclass.BaseMaterial3DShadingMode {
-	return gdclass.BaseMaterial3DShadingMode(class(self).GetShadingMode())
+func (self Instance) ShadingMode() ShadingMode {
+	return ShadingMode(class(self).GetShadingMode())
 }
 
-func (self Instance) SetShadingMode(value gdclass.BaseMaterial3DShadingMode) {
+func (self Instance) SetShadingMode(value ShadingMode) {
 	class(self).SetShadingMode(value)
 }
 
-func (self Instance) DiffuseMode() gdclass.BaseMaterial3DDiffuseMode {
-	return gdclass.BaseMaterial3DDiffuseMode(class(self).GetDiffuseMode())
+func (self Instance) DiffuseMode() DiffuseMode {
+	return DiffuseMode(class(self).GetDiffuseMode())
 }
 
-func (self Instance) SetDiffuseMode(value gdclass.BaseMaterial3DDiffuseMode) {
+func (self Instance) SetDiffuseMode(value DiffuseMode) {
 	class(self).SetDiffuseMode(value)
 }
 
-func (self Instance) SpecularMode() gdclass.BaseMaterial3DSpecularMode {
-	return gdclass.BaseMaterial3DSpecularMode(class(self).GetSpecularMode())
+func (self Instance) SpecularMode() SpecularMode {
+	return SpecularMode(class(self).GetSpecularMode())
 }
 
-func (self Instance) SetSpecularMode(value gdclass.BaseMaterial3DSpecularMode) {
+func (self Instance) SetSpecularMode(value SpecularMode) {
 	class(self).SetSpecularMode(value)
 }
 
@@ -286,11 +293,11 @@ func (self Instance) SetMetallicTexture(value Texture2D.Instance) {
 	class(self).SetTexture(1, value)
 }
 
-func (self Instance) MetallicTextureChannel() gdclass.BaseMaterial3DTextureChannel {
-	return gdclass.BaseMaterial3DTextureChannel(class(self).GetMetallicTextureChannel())
+func (self Instance) MetallicTextureChannel() TextureChannel {
+	return TextureChannel(class(self).GetMetallicTextureChannel())
 }
 
-func (self Instance) SetMetallicTextureChannel(value gdclass.BaseMaterial3DTextureChannel) {
+func (self Instance) SetMetallicTextureChannel(value TextureChannel) {
 	class(self).SetMetallicTextureChannel(value)
 }
 
@@ -310,11 +317,11 @@ func (self Instance) SetRoughnessTexture(value Texture2D.Instance) {
 	class(self).SetTexture(2, value)
 }
 
-func (self Instance) RoughnessTextureChannel() gdclass.BaseMaterial3DTextureChannel {
-	return gdclass.BaseMaterial3DTextureChannel(class(self).GetRoughnessTextureChannel())
+func (self Instance) RoughnessTextureChannel() TextureChannel {
+	return TextureChannel(class(self).GetRoughnessTextureChannel())
 }
 
-func (self Instance) SetRoughnessTextureChannel(value gdclass.BaseMaterial3DTextureChannel) {
+func (self Instance) SetRoughnessTextureChannel(value TextureChannel) {
 	class(self).SetRoughnessTextureChannel(value)
 }
 
@@ -350,11 +357,11 @@ func (self Instance) SetEmissionIntensity(value Float.X) {
 	class(self).SetEmissionIntensity(float64(value))
 }
 
-func (self Instance) EmissionOperator() gdclass.BaseMaterial3DEmissionOperator {
-	return gdclass.BaseMaterial3DEmissionOperator(class(self).GetEmissionOperator())
+func (self Instance) EmissionOperator() EmissionOperator {
+	return EmissionOperator(class(self).GetEmissionOperator())
 }
 
-func (self Instance) SetEmissionOperator(value gdclass.BaseMaterial3DEmissionOperator) {
+func (self Instance) SetEmissionOperator(value EmissionOperator) {
 	class(self).SetEmissionOperator(value)
 }
 
@@ -518,11 +525,11 @@ func (self Instance) SetAoOnUv2(value bool) {
 	class(self).SetFlag(10, value)
 }
 
-func (self Instance) AoTextureChannel() gdclass.BaseMaterial3DTextureChannel {
-	return gdclass.BaseMaterial3DTextureChannel(class(self).GetAoTextureChannel())
+func (self Instance) AoTextureChannel() TextureChannel {
+	return TextureChannel(class(self).GetAoTextureChannel())
 }
 
-func (self Instance) SetAoTextureChannel(value gdclass.BaseMaterial3DTextureChannel) {
+func (self Instance) SetAoTextureChannel(value TextureChannel) {
 	class(self).SetAoTextureChannel(value)
 }
 
@@ -718,11 +725,11 @@ func (self Instance) SetRefractionTexture(value Texture2D.Instance) {
 	class(self).SetTexture(13, value)
 }
 
-func (self Instance) RefractionTextureChannel() gdclass.BaseMaterial3DTextureChannel {
-	return gdclass.BaseMaterial3DTextureChannel(class(self).GetRefractionTextureChannel())
+func (self Instance) RefractionTextureChannel() TextureChannel {
+	return TextureChannel(class(self).GetRefractionTextureChannel())
 }
 
-func (self Instance) SetRefractionTextureChannel(value gdclass.BaseMaterial3DTextureChannel) {
+func (self Instance) SetRefractionTextureChannel(value TextureChannel) {
 	class(self).SetRefractionTextureChannel(value)
 }
 
@@ -742,19 +749,19 @@ func (self Instance) SetDetailMask(value Texture2D.Instance) {
 	class(self).SetTexture(14, value)
 }
 
-func (self Instance) DetailBlendMode() gdclass.BaseMaterial3DBlendMode {
-	return gdclass.BaseMaterial3DBlendMode(class(self).GetDetailBlendMode())
+func (self Instance) DetailBlendMode() BlendMode {
+	return BlendMode(class(self).GetDetailBlendMode())
 }
 
-func (self Instance) SetDetailBlendMode(value gdclass.BaseMaterial3DBlendMode) {
+func (self Instance) SetDetailBlendMode(value BlendMode) {
 	class(self).SetDetailBlendMode(value)
 }
 
-func (self Instance) DetailUvLayer() gdclass.BaseMaterial3DDetailUV {
-	return gdclass.BaseMaterial3DDetailUV(class(self).GetDetailUv())
+func (self Instance) DetailUvLayer() DetailUV {
+	return DetailUV(class(self).GetDetailUv())
 }
 
-func (self Instance) SetDetailUvLayer(value gdclass.BaseMaterial3DDetailUV) {
+func (self Instance) SetDetailUvLayer(value DetailUV) {
 	class(self).SetDetailUv(value)
 }
 
@@ -854,11 +861,11 @@ func (self Instance) SetUv2WorldTriplanar(value bool) {
 	class(self).SetFlag(9, value)
 }
 
-func (self Instance) TextureFilter() gdclass.BaseMaterial3DTextureFilter {
-	return gdclass.BaseMaterial3DTextureFilter(class(self).GetTextureFilter())
+func (self Instance) TextureFilter() TextureFilter {
+	return TextureFilter(class(self).GetTextureFilter())
 }
 
-func (self Instance) SetTextureFilter(value gdclass.BaseMaterial3DTextureFilter) {
+func (self Instance) SetTextureFilter(value TextureFilter) {
 	class(self).SetTextureFilter(value)
 }
 
@@ -886,11 +893,11 @@ func (self Instance) SetShadowToOpacity(value bool) {
 	class(self).SetFlag(15, value)
 }
 
-func (self Instance) BillboardMode() gdclass.BaseMaterial3DBillboardMode {
-	return gdclass.BaseMaterial3DBillboardMode(class(self).GetBillboardMode())
+func (self Instance) BillboardMode() BillboardMode {
+	return BillboardMode(class(self).GetBillboardMode())
 }
 
-func (self Instance) SetBillboardMode(value gdclass.BaseMaterial3DBillboardMode) {
+func (self Instance) SetBillboardMode(value BillboardMode) {
 	class(self).SetBillboardMode(value)
 }
 
@@ -1006,11 +1013,11 @@ func (self Instance) SetMsdfOutlineSize(value Float.X) {
 	class(self).SetMsdfOutlineSize(float64(value))
 }
 
-func (self Instance) DistanceFadeMode() gdclass.BaseMaterial3DDistanceFadeMode {
-	return gdclass.BaseMaterial3DDistanceFadeMode(class(self).GetDistanceFade())
+func (self Instance) DistanceFadeMode() DistanceFadeMode {
+	return DistanceFadeMode(class(self).GetDistanceFade())
 }
 
-func (self Instance) SetDistanceFadeMode(value gdclass.BaseMaterial3DDistanceFadeMode) {
+func (self Instance) SetDistanceFadeMode(value DistanceFadeMode) {
 	class(self).SetDistanceFade(value)
 }
 
@@ -1050,7 +1057,7 @@ func (self class) GetAlbedo() Color.RGBA { //gd:BaseMaterial3D.get_albedo
 }
 
 //go:nosplit
-func (self class) SetTransparency(transparency gdclass.BaseMaterial3DTransparency) { //gd:BaseMaterial3D.set_transparency
+func (self class) SetTransparency(transparency Transparency) { //gd:BaseMaterial3D.set_transparency
 	var frame = callframe.New()
 	callframe.Arg(frame, transparency)
 	var r_ret = callframe.Nil
@@ -1059,9 +1066,9 @@ func (self class) SetTransparency(transparency gdclass.BaseMaterial3DTransparenc
 }
 
 //go:nosplit
-func (self class) GetTransparency() gdclass.BaseMaterial3DTransparency { //gd:BaseMaterial3D.get_transparency
+func (self class) GetTransparency() Transparency { //gd:BaseMaterial3D.get_transparency
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.BaseMaterial3DTransparency](frame)
+	var r_ret = callframe.Ret[Transparency](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_transparency, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1069,7 +1076,7 @@ func (self class) GetTransparency() gdclass.BaseMaterial3DTransparency { //gd:Ba
 }
 
 //go:nosplit
-func (self class) SetAlphaAntialiasing(alpha_aa gdclass.BaseMaterial3DAlphaAntiAliasing) { //gd:BaseMaterial3D.set_alpha_antialiasing
+func (self class) SetAlphaAntialiasing(alpha_aa AlphaAntiAliasing) { //gd:BaseMaterial3D.set_alpha_antialiasing
 	var frame = callframe.New()
 	callframe.Arg(frame, alpha_aa)
 	var r_ret = callframe.Nil
@@ -1078,9 +1085,9 @@ func (self class) SetAlphaAntialiasing(alpha_aa gdclass.BaseMaterial3DAlphaAntiA
 }
 
 //go:nosplit
-func (self class) GetAlphaAntialiasing() gdclass.BaseMaterial3DAlphaAntiAliasing { //gd:BaseMaterial3D.get_alpha_antialiasing
+func (self class) GetAlphaAntialiasing() AlphaAntiAliasing { //gd:BaseMaterial3D.get_alpha_antialiasing
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.BaseMaterial3DAlphaAntiAliasing](frame)
+	var r_ret = callframe.Ret[AlphaAntiAliasing](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_alpha_antialiasing, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1107,7 +1114,7 @@ func (self class) GetAlphaAntialiasingEdge() float64 { //gd:BaseMaterial3D.get_a
 }
 
 //go:nosplit
-func (self class) SetShadingMode(shading_mode gdclass.BaseMaterial3DShadingMode) { //gd:BaseMaterial3D.set_shading_mode
+func (self class) SetShadingMode(shading_mode ShadingMode) { //gd:BaseMaterial3D.set_shading_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, shading_mode)
 	var r_ret = callframe.Nil
@@ -1116,9 +1123,9 @@ func (self class) SetShadingMode(shading_mode gdclass.BaseMaterial3DShadingMode)
 }
 
 //go:nosplit
-func (self class) GetShadingMode() gdclass.BaseMaterial3DShadingMode { //gd:BaseMaterial3D.get_shading_mode
+func (self class) GetShadingMode() ShadingMode { //gd:BaseMaterial3D.get_shading_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.BaseMaterial3DShadingMode](frame)
+	var r_ret = callframe.Ret[ShadingMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_shading_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1506,7 +1513,7 @@ func (self class) GetPointSize() float64 { //gd:BaseMaterial3D.get_point_size
 }
 
 //go:nosplit
-func (self class) SetDetailUv(detail_uv gdclass.BaseMaterial3DDetailUV) { //gd:BaseMaterial3D.set_detail_uv
+func (self class) SetDetailUv(detail_uv DetailUV) { //gd:BaseMaterial3D.set_detail_uv
 	var frame = callframe.New()
 	callframe.Arg(frame, detail_uv)
 	var r_ret = callframe.Nil
@@ -1515,9 +1522,9 @@ func (self class) SetDetailUv(detail_uv gdclass.BaseMaterial3DDetailUV) { //gd:B
 }
 
 //go:nosplit
-func (self class) GetDetailUv() gdclass.BaseMaterial3DDetailUV { //gd:BaseMaterial3D.get_detail_uv
+func (self class) GetDetailUv() DetailUV { //gd:BaseMaterial3D.get_detail_uv
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.BaseMaterial3DDetailUV](frame)
+	var r_ret = callframe.Ret[DetailUV](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_detail_uv, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1525,7 +1532,7 @@ func (self class) GetDetailUv() gdclass.BaseMaterial3DDetailUV { //gd:BaseMateri
 }
 
 //go:nosplit
-func (self class) SetBlendMode(blend_mode gdclass.BaseMaterial3DBlendMode) { //gd:BaseMaterial3D.set_blend_mode
+func (self class) SetBlendMode(blend_mode BlendMode) { //gd:BaseMaterial3D.set_blend_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, blend_mode)
 	var r_ret = callframe.Nil
@@ -1534,9 +1541,9 @@ func (self class) SetBlendMode(blend_mode gdclass.BaseMaterial3DBlendMode) { //g
 }
 
 //go:nosplit
-func (self class) GetBlendMode() gdclass.BaseMaterial3DBlendMode { //gd:BaseMaterial3D.get_blend_mode
+func (self class) GetBlendMode() BlendMode { //gd:BaseMaterial3D.get_blend_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.BaseMaterial3DBlendMode](frame)
+	var r_ret = callframe.Ret[BlendMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_blend_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1544,7 +1551,7 @@ func (self class) GetBlendMode() gdclass.BaseMaterial3DBlendMode { //gd:BaseMate
 }
 
 //go:nosplit
-func (self class) SetDepthDrawMode(depth_draw_mode gdclass.BaseMaterial3DDepthDrawMode) { //gd:BaseMaterial3D.set_depth_draw_mode
+func (self class) SetDepthDrawMode(depth_draw_mode DepthDrawMode) { //gd:BaseMaterial3D.set_depth_draw_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, depth_draw_mode)
 	var r_ret = callframe.Nil
@@ -1553,9 +1560,9 @@ func (self class) SetDepthDrawMode(depth_draw_mode gdclass.BaseMaterial3DDepthDr
 }
 
 //go:nosplit
-func (self class) GetDepthDrawMode() gdclass.BaseMaterial3DDepthDrawMode { //gd:BaseMaterial3D.get_depth_draw_mode
+func (self class) GetDepthDrawMode() DepthDrawMode { //gd:BaseMaterial3D.get_depth_draw_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.BaseMaterial3DDepthDrawMode](frame)
+	var r_ret = callframe.Ret[DepthDrawMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_depth_draw_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1563,7 +1570,7 @@ func (self class) GetDepthDrawMode() gdclass.BaseMaterial3DDepthDrawMode { //gd:
 }
 
 //go:nosplit
-func (self class) SetCullMode(cull_mode gdclass.BaseMaterial3DCullMode) { //gd:BaseMaterial3D.set_cull_mode
+func (self class) SetCullMode(cull_mode CullMode) { //gd:BaseMaterial3D.set_cull_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, cull_mode)
 	var r_ret = callframe.Nil
@@ -1572,9 +1579,9 @@ func (self class) SetCullMode(cull_mode gdclass.BaseMaterial3DCullMode) { //gd:B
 }
 
 //go:nosplit
-func (self class) GetCullMode() gdclass.BaseMaterial3DCullMode { //gd:BaseMaterial3D.get_cull_mode
+func (self class) GetCullMode() CullMode { //gd:BaseMaterial3D.get_cull_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.BaseMaterial3DCullMode](frame)
+	var r_ret = callframe.Ret[CullMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_cull_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1582,7 +1589,7 @@ func (self class) GetCullMode() gdclass.BaseMaterial3DCullMode { //gd:BaseMateri
 }
 
 //go:nosplit
-func (self class) SetDiffuseMode(diffuse_mode gdclass.BaseMaterial3DDiffuseMode) { //gd:BaseMaterial3D.set_diffuse_mode
+func (self class) SetDiffuseMode(diffuse_mode DiffuseMode) { //gd:BaseMaterial3D.set_diffuse_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, diffuse_mode)
 	var r_ret = callframe.Nil
@@ -1591,9 +1598,9 @@ func (self class) SetDiffuseMode(diffuse_mode gdclass.BaseMaterial3DDiffuseMode)
 }
 
 //go:nosplit
-func (self class) GetDiffuseMode() gdclass.BaseMaterial3DDiffuseMode { //gd:BaseMaterial3D.get_diffuse_mode
+func (self class) GetDiffuseMode() DiffuseMode { //gd:BaseMaterial3D.get_diffuse_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.BaseMaterial3DDiffuseMode](frame)
+	var r_ret = callframe.Ret[DiffuseMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_diffuse_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1601,7 +1608,7 @@ func (self class) GetDiffuseMode() gdclass.BaseMaterial3DDiffuseMode { //gd:Base
 }
 
 //go:nosplit
-func (self class) SetSpecularMode(specular_mode gdclass.BaseMaterial3DSpecularMode) { //gd:BaseMaterial3D.set_specular_mode
+func (self class) SetSpecularMode(specular_mode SpecularMode) { //gd:BaseMaterial3D.set_specular_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, specular_mode)
 	var r_ret = callframe.Nil
@@ -1610,9 +1617,9 @@ func (self class) SetSpecularMode(specular_mode gdclass.BaseMaterial3DSpecularMo
 }
 
 //go:nosplit
-func (self class) GetSpecularMode() gdclass.BaseMaterial3DSpecularMode { //gd:BaseMaterial3D.get_specular_mode
+func (self class) GetSpecularMode() SpecularMode { //gd:BaseMaterial3D.get_specular_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.BaseMaterial3DSpecularMode](frame)
+	var r_ret = callframe.Ret[SpecularMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_specular_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1623,7 +1630,7 @@ func (self class) GetSpecularMode() gdclass.BaseMaterial3DSpecularMode { //gd:Ba
 If [code]true[/code], enables the specified flag. Flags are optional behavior that can be turned on and off. Only one flag can be enabled at a time with this function, the flag enumerators cannot be bit-masked together to enable or disable multiple flags at once. Flags can also be enabled by setting the corresponding member to [code]true[/code]. See [enum Flags] enumerator for options.
 */
 //go:nosplit
-func (self class) SetFlag(flag gdclass.BaseMaterial3DFlags, enable bool) { //gd:BaseMaterial3D.set_flag
+func (self class) SetFlag(flag Flags, enable bool) { //gd:BaseMaterial3D.set_flag
 	var frame = callframe.New()
 	callframe.Arg(frame, flag)
 	callframe.Arg(frame, enable)
@@ -1636,7 +1643,7 @@ func (self class) SetFlag(flag gdclass.BaseMaterial3DFlags, enable bool) { //gd:
 Returns [code]true[/code], if the specified flag is enabled. See [enum Flags] enumerator for options.
 */
 //go:nosplit
-func (self class) GetFlag(flag gdclass.BaseMaterial3DFlags) bool { //gd:BaseMaterial3D.get_flag
+func (self class) GetFlag(flag Flags) bool { //gd:BaseMaterial3D.get_flag
 	var frame = callframe.New()
 	callframe.Arg(frame, flag)
 	var r_ret = callframe.Ret[bool](frame)
@@ -1647,7 +1654,7 @@ func (self class) GetFlag(flag gdclass.BaseMaterial3DFlags) bool { //gd:BaseMate
 }
 
 //go:nosplit
-func (self class) SetTextureFilter(mode gdclass.BaseMaterial3DTextureFilter) { //gd:BaseMaterial3D.set_texture_filter
+func (self class) SetTextureFilter(mode TextureFilter) { //gd:BaseMaterial3D.set_texture_filter
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -1656,9 +1663,9 @@ func (self class) SetTextureFilter(mode gdclass.BaseMaterial3DTextureFilter) { /
 }
 
 //go:nosplit
-func (self class) GetTextureFilter() gdclass.BaseMaterial3DTextureFilter { //gd:BaseMaterial3D.get_texture_filter
+func (self class) GetTextureFilter() TextureFilter { //gd:BaseMaterial3D.get_texture_filter
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.BaseMaterial3DTextureFilter](frame)
+	var r_ret = callframe.Ret[TextureFilter](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_texture_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1669,7 +1676,7 @@ func (self class) GetTextureFilter() gdclass.BaseMaterial3DTextureFilter { //gd:
 If [code]true[/code], enables the specified [enum Feature]. Many features that are available in [BaseMaterial3D]s need to be enabled before use. This way the cost for using the feature is only incurred when specified. Features can also be enabled by setting the corresponding member to [code]true[/code].
 */
 //go:nosplit
-func (self class) SetFeature(feature gdclass.BaseMaterial3DFeature, enable bool) { //gd:BaseMaterial3D.set_feature
+func (self class) SetFeature(feature Feature, enable bool) { //gd:BaseMaterial3D.set_feature
 	var frame = callframe.New()
 	callframe.Arg(frame, feature)
 	callframe.Arg(frame, enable)
@@ -1682,7 +1689,7 @@ func (self class) SetFeature(feature gdclass.BaseMaterial3DFeature, enable bool)
 Returns [code]true[/code], if the specified [enum Feature] is enabled.
 */
 //go:nosplit
-func (self class) GetFeature(feature gdclass.BaseMaterial3DFeature) bool { //gd:BaseMaterial3D.get_feature
+func (self class) GetFeature(feature Feature) bool { //gd:BaseMaterial3D.get_feature
 	var frame = callframe.New()
 	callframe.Arg(frame, feature)
 	var r_ret = callframe.Ret[bool](frame)
@@ -1696,7 +1703,7 @@ func (self class) GetFeature(feature gdclass.BaseMaterial3DFeature) bool { //gd:
 Sets the texture for the slot specified by [param param]. See [enum TextureParam] for available slots.
 */
 //go:nosplit
-func (self class) SetTexture(param gdclass.BaseMaterial3DTextureParam, texture [1]gdclass.Texture2D) { //gd:BaseMaterial3D.set_texture
+func (self class) SetTexture(param TextureParam, texture [1]gdclass.Texture2D) { //gd:BaseMaterial3D.set_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
@@ -1709,7 +1716,7 @@ func (self class) SetTexture(param gdclass.BaseMaterial3DTextureParam, texture [
 Returns the [Texture2D] associated with the specified [enum TextureParam].
 */
 //go:nosplit
-func (self class) GetTexture(param gdclass.BaseMaterial3DTextureParam) [1]gdclass.Texture2D { //gd:BaseMaterial3D.get_texture
+func (self class) GetTexture(param TextureParam) [1]gdclass.Texture2D { //gd:BaseMaterial3D.get_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -1720,7 +1727,7 @@ func (self class) GetTexture(param gdclass.BaseMaterial3DTextureParam) [1]gdclas
 }
 
 //go:nosplit
-func (self class) SetDetailBlendMode(detail_blend_mode gdclass.BaseMaterial3DBlendMode) { //gd:BaseMaterial3D.set_detail_blend_mode
+func (self class) SetDetailBlendMode(detail_blend_mode BlendMode) { //gd:BaseMaterial3D.set_detail_blend_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, detail_blend_mode)
 	var r_ret = callframe.Nil
@@ -1729,9 +1736,9 @@ func (self class) SetDetailBlendMode(detail_blend_mode gdclass.BaseMaterial3DBle
 }
 
 //go:nosplit
-func (self class) GetDetailBlendMode() gdclass.BaseMaterial3DBlendMode { //gd:BaseMaterial3D.get_detail_blend_mode
+func (self class) GetDetailBlendMode() BlendMode { //gd:BaseMaterial3D.get_detail_blend_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.BaseMaterial3DBlendMode](frame)
+	var r_ret = callframe.Ret[BlendMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_detail_blend_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1853,7 +1860,7 @@ func (self class) GetUv2TriplanarBlendSharpness() float64 { //gd:BaseMaterial3D.
 }
 
 //go:nosplit
-func (self class) SetBillboardMode(mode gdclass.BaseMaterial3DBillboardMode) { //gd:BaseMaterial3D.set_billboard_mode
+func (self class) SetBillboardMode(mode BillboardMode) { //gd:BaseMaterial3D.set_billboard_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -1862,9 +1869,9 @@ func (self class) SetBillboardMode(mode gdclass.BaseMaterial3DBillboardMode) { /
 }
 
 //go:nosplit
-func (self class) GetBillboardMode() gdclass.BaseMaterial3DBillboardMode { //gd:BaseMaterial3D.get_billboard_mode
+func (self class) GetBillboardMode() BillboardMode { //gd:BaseMaterial3D.get_billboard_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.BaseMaterial3DBillboardMode](frame)
+	var r_ret = callframe.Ret[BillboardMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_billboard_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2043,7 +2050,7 @@ func (self class) GetGrow() float64 { //gd:BaseMaterial3D.get_grow
 }
 
 //go:nosplit
-func (self class) SetEmissionOperator(operator gdclass.BaseMaterial3DEmissionOperator) { //gd:BaseMaterial3D.set_emission_operator
+func (self class) SetEmissionOperator(operator EmissionOperator) { //gd:BaseMaterial3D.set_emission_operator
 	var frame = callframe.New()
 	callframe.Arg(frame, operator)
 	var r_ret = callframe.Nil
@@ -2052,9 +2059,9 @@ func (self class) SetEmissionOperator(operator gdclass.BaseMaterial3DEmissionOpe
 }
 
 //go:nosplit
-func (self class) GetEmissionOperator() gdclass.BaseMaterial3DEmissionOperator { //gd:BaseMaterial3D.get_emission_operator
+func (self class) GetEmissionOperator() EmissionOperator { //gd:BaseMaterial3D.get_emission_operator
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.BaseMaterial3DEmissionOperator](frame)
+	var r_ret = callframe.Ret[EmissionOperator](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_emission_operator, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2138,7 +2145,7 @@ func (self class) IsGrowEnabled() bool { //gd:BaseMaterial3D.is_grow_enabled
 }
 
 //go:nosplit
-func (self class) SetMetallicTextureChannel(channel gdclass.BaseMaterial3DTextureChannel) { //gd:BaseMaterial3D.set_metallic_texture_channel
+func (self class) SetMetallicTextureChannel(channel TextureChannel) { //gd:BaseMaterial3D.set_metallic_texture_channel
 	var frame = callframe.New()
 	callframe.Arg(frame, channel)
 	var r_ret = callframe.Nil
@@ -2147,9 +2154,9 @@ func (self class) SetMetallicTextureChannel(channel gdclass.BaseMaterial3DTextur
 }
 
 //go:nosplit
-func (self class) GetMetallicTextureChannel() gdclass.BaseMaterial3DTextureChannel { //gd:BaseMaterial3D.get_metallic_texture_channel
+func (self class) GetMetallicTextureChannel() TextureChannel { //gd:BaseMaterial3D.get_metallic_texture_channel
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.BaseMaterial3DTextureChannel](frame)
+	var r_ret = callframe.Ret[TextureChannel](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_metallic_texture_channel, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2157,7 +2164,7 @@ func (self class) GetMetallicTextureChannel() gdclass.BaseMaterial3DTextureChann
 }
 
 //go:nosplit
-func (self class) SetRoughnessTextureChannel(channel gdclass.BaseMaterial3DTextureChannel) { //gd:BaseMaterial3D.set_roughness_texture_channel
+func (self class) SetRoughnessTextureChannel(channel TextureChannel) { //gd:BaseMaterial3D.set_roughness_texture_channel
 	var frame = callframe.New()
 	callframe.Arg(frame, channel)
 	var r_ret = callframe.Nil
@@ -2166,9 +2173,9 @@ func (self class) SetRoughnessTextureChannel(channel gdclass.BaseMaterial3DTextu
 }
 
 //go:nosplit
-func (self class) GetRoughnessTextureChannel() gdclass.BaseMaterial3DTextureChannel { //gd:BaseMaterial3D.get_roughness_texture_channel
+func (self class) GetRoughnessTextureChannel() TextureChannel { //gd:BaseMaterial3D.get_roughness_texture_channel
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.BaseMaterial3DTextureChannel](frame)
+	var r_ret = callframe.Ret[TextureChannel](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_roughness_texture_channel, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2176,7 +2183,7 @@ func (self class) GetRoughnessTextureChannel() gdclass.BaseMaterial3DTextureChan
 }
 
 //go:nosplit
-func (self class) SetAoTextureChannel(channel gdclass.BaseMaterial3DTextureChannel) { //gd:BaseMaterial3D.set_ao_texture_channel
+func (self class) SetAoTextureChannel(channel TextureChannel) { //gd:BaseMaterial3D.set_ao_texture_channel
 	var frame = callframe.New()
 	callframe.Arg(frame, channel)
 	var r_ret = callframe.Nil
@@ -2185,9 +2192,9 @@ func (self class) SetAoTextureChannel(channel gdclass.BaseMaterial3DTextureChann
 }
 
 //go:nosplit
-func (self class) GetAoTextureChannel() gdclass.BaseMaterial3DTextureChannel { //gd:BaseMaterial3D.get_ao_texture_channel
+func (self class) GetAoTextureChannel() TextureChannel { //gd:BaseMaterial3D.get_ao_texture_channel
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.BaseMaterial3DTextureChannel](frame)
+	var r_ret = callframe.Ret[TextureChannel](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_ao_texture_channel, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2195,7 +2202,7 @@ func (self class) GetAoTextureChannel() gdclass.BaseMaterial3DTextureChannel { /
 }
 
 //go:nosplit
-func (self class) SetRefractionTextureChannel(channel gdclass.BaseMaterial3DTextureChannel) { //gd:BaseMaterial3D.set_refraction_texture_channel
+func (self class) SetRefractionTextureChannel(channel TextureChannel) { //gd:BaseMaterial3D.set_refraction_texture_channel
 	var frame = callframe.New()
 	callframe.Arg(frame, channel)
 	var r_ret = callframe.Nil
@@ -2204,9 +2211,9 @@ func (self class) SetRefractionTextureChannel(channel gdclass.BaseMaterial3DText
 }
 
 //go:nosplit
-func (self class) GetRefractionTextureChannel() gdclass.BaseMaterial3DTextureChannel { //gd:BaseMaterial3D.get_refraction_texture_channel
+func (self class) GetRefractionTextureChannel() TextureChannel { //gd:BaseMaterial3D.get_refraction_texture_channel
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.BaseMaterial3DTextureChannel](frame)
+	var r_ret = callframe.Ret[TextureChannel](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_refraction_texture_channel, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2290,7 +2297,7 @@ func (self class) GetMsdfOutlineSize() float64 { //gd:BaseMaterial3D.get_msdf_ou
 }
 
 //go:nosplit
-func (self class) SetDistanceFade(mode gdclass.BaseMaterial3DDistanceFadeMode) { //gd:BaseMaterial3D.set_distance_fade
+func (self class) SetDistanceFade(mode DistanceFadeMode) { //gd:BaseMaterial3D.set_distance_fade
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -2299,9 +2306,9 @@ func (self class) SetDistanceFade(mode gdclass.BaseMaterial3DDistanceFadeMode) {
 }
 
 //go:nosplit
-func (self class) GetDistanceFade() gdclass.BaseMaterial3DDistanceFadeMode { //gd:BaseMaterial3D.get_distance_fade
+func (self class) GetDistanceFade() DistanceFadeMode { //gd:BaseMaterial3D.get_distance_fade
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.BaseMaterial3DDistanceFadeMode](frame)
+	var r_ret = callframe.Ret[DistanceFadeMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseMaterial3D.Bind_get_distance_fade, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2389,7 +2396,7 @@ func init() {
 	})
 }
 
-type TextureParam = gdclass.BaseMaterial3DTextureParam //gd:BaseMaterial3D.TextureParam
+type TextureParam int //gd:BaseMaterial3D.TextureParam
 
 const (
 	/*Texture specifying per-pixel color.*/
@@ -2432,7 +2439,7 @@ const (
 	TextureMax TextureParam = 18
 )
 
-type TextureFilter = gdclass.BaseMaterial3DTextureFilter //gd:BaseMaterial3D.TextureFilter
+type TextureFilter int //gd:BaseMaterial3D.TextureFilter
 
 const (
 	/*The texture filter reads from the nearest pixel only. This makes the texture look pixelated from up close, and grainy from a distance (due to mipmaps not being sampled).*/
@@ -2451,7 +2458,7 @@ const (
 	TextureFilterMax TextureFilter = 6
 )
 
-type DetailUV = gdclass.BaseMaterial3DDetailUV //gd:BaseMaterial3D.DetailUV
+type DetailUV int //gd:BaseMaterial3D.DetailUV
 
 const (
 	/*Use [code]UV[/code] with the detail texture.*/
@@ -2460,7 +2467,7 @@ const (
 	DetailUv2 DetailUV = 1
 )
 
-type Transparency = gdclass.BaseMaterial3DTransparency //gd:BaseMaterial3D.Transparency
+type Transparency int //gd:BaseMaterial3D.Transparency
 
 const (
 	/*The material will not use transparency. This is the fastest to render.*/
@@ -2477,7 +2484,7 @@ const (
 	TransparencyMax Transparency = 5
 )
 
-type ShadingMode = gdclass.BaseMaterial3DShadingMode //gd:BaseMaterial3D.ShadingMode
+type ShadingMode int //gd:BaseMaterial3D.ShadingMode
 
 const (
 	/*The object will not receive shadows. This is the fastest to render, but it disables all interactions with lights.*/
@@ -2490,7 +2497,7 @@ const (
 	ShadingModeMax ShadingMode = 3
 )
 
-type Feature = gdclass.BaseMaterial3DFeature //gd:BaseMaterial3D.Feature
+type Feature int //gd:BaseMaterial3D.Feature
 
 const (
 	/*Constant for setting [member emission_enabled].*/
@@ -2521,7 +2528,7 @@ const (
 	FeatureMax Feature = 12
 )
 
-type BlendMode = gdclass.BaseMaterial3DBlendMode //gd:BaseMaterial3D.BlendMode
+type BlendMode int //gd:BaseMaterial3D.BlendMode
 
 const (
 	/*Default blend mode. The color of the object is blended over the background based on the object's alpha value.*/
@@ -2536,7 +2543,7 @@ const (
 	BlendModePremultAlpha BlendMode = 4
 )
 
-type AlphaAntiAliasing = gdclass.BaseMaterial3DAlphaAntiAliasing //gd:BaseMaterial3D.AlphaAntiAliasing
+type AlphaAntiAliasing int //gd:BaseMaterial3D.AlphaAntiAliasing
 
 const (
 	/*Disables Alpha AntiAliasing for the material.*/
@@ -2547,7 +2554,7 @@ const (
 	AlphaAntialiasingAlphaToCoverageAndToOne AlphaAntiAliasing = 2
 )
 
-type DepthDrawMode = gdclass.BaseMaterial3DDepthDrawMode //gd:BaseMaterial3D.DepthDrawMode
+type DepthDrawMode int //gd:BaseMaterial3D.DepthDrawMode
 
 const (
 	/*Default depth draw mode. Depth is drawn only for opaque objects during the opaque prepass (if any) and during the opaque pass.*/
@@ -2559,7 +2566,7 @@ const (
 	DepthDrawDisabled DepthDrawMode = 2
 )
 
-type CullMode = gdclass.BaseMaterial3DCullMode //gd:BaseMaterial3D.CullMode
+type CullMode int //gd:BaseMaterial3D.CullMode
 
 const (
 	/*Default cull mode. The back of the object is culled when not visible. Back face triangles will be culled when facing the camera. This results in only the front side of triangles being drawn. For closed-surface meshes, this means that only the exterior of the mesh will be visible.*/
@@ -2570,7 +2577,7 @@ const (
 	CullDisabled CullMode = 2
 )
 
-type Flags = gdclass.BaseMaterial3DFlags //gd:BaseMaterial3D.Flags
+type Flags int //gd:BaseMaterial3D.Flags
 
 const (
 	/*Disables the depth test, so this object is drawn on top of all others drawn before it. This puts the object in the transparent draw pass where it is sorted based on distance to camera. Objects drawn after it in the draw order may cover it. This also disables writing to depth.*/
@@ -2622,7 +2629,7 @@ const (
 	FlagMax Flags = 22
 )
 
-type DiffuseMode = gdclass.BaseMaterial3DDiffuseMode //gd:BaseMaterial3D.DiffuseMode
+type DiffuseMode int //gd:BaseMaterial3D.DiffuseMode
 
 const (
 	/*Default diffuse scattering algorithm.*/
@@ -2635,7 +2642,7 @@ const (
 	DiffuseToon DiffuseMode = 3
 )
 
-type SpecularMode = gdclass.BaseMaterial3DSpecularMode //gd:BaseMaterial3D.SpecularMode
+type SpecularMode int //gd:BaseMaterial3D.SpecularMode
 
 const (
 	/*Default specular blob.*/
@@ -2646,7 +2653,7 @@ const (
 	SpecularDisabled SpecularMode = 2
 )
 
-type BillboardMode = gdclass.BaseMaterial3DBillboardMode //gd:BaseMaterial3D.BillboardMode
+type BillboardMode int //gd:BaseMaterial3D.BillboardMode
 
 const (
 	/*Billboard mode is disabled.*/
@@ -2660,7 +2667,7 @@ const (
 	BillboardParticles BillboardMode = 3
 )
 
-type TextureChannel = gdclass.BaseMaterial3DTextureChannel //gd:BaseMaterial3D.TextureChannel
+type TextureChannel int //gd:BaseMaterial3D.TextureChannel
 
 const (
 	/*Used to read from the red channel of a texture.*/
@@ -2675,7 +2682,7 @@ const (
 	TextureChannelGrayscale TextureChannel = 4
 )
 
-type EmissionOperator = gdclass.BaseMaterial3DEmissionOperator //gd:BaseMaterial3D.EmissionOperator
+type EmissionOperator int //gd:BaseMaterial3D.EmissionOperator
 
 const (
 	/*Adds the emission color to the color from the emission texture.*/
@@ -2684,7 +2691,7 @@ const (
 	EmissionOpMultiply EmissionOperator = 1
 )
 
-type DistanceFadeMode = gdclass.BaseMaterial3DDistanceFadeMode //gd:BaseMaterial3D.DistanceFadeMode
+type DistanceFadeMode int //gd:BaseMaterial3D.DistanceFadeMode
 
 const (
 	/*Do not use distance fade.*/

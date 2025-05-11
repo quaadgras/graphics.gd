@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/SkeletonModifier3D"
@@ -27,6 +28,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -42,6 +47,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -54,6 +60,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -101,11 +108,11 @@ func (self Instance) SetHandTracker(value string) {
 	class(self).SetHandTracker(String.Name(String.New(value)))
 }
 
-func (self Instance) BoneUpdate() gdclass.XRHandModifier3DBoneUpdate {
-	return gdclass.XRHandModifier3DBoneUpdate(class(self).GetBoneUpdate())
+func (self Instance) BoneUpdate() BoneUpdate {
+	return BoneUpdate(class(self).GetBoneUpdate())
 }
 
-func (self Instance) SetBoneUpdate(value gdclass.XRHandModifier3DBoneUpdate) {
+func (self Instance) SetBoneUpdate(value BoneUpdate) {
 	class(self).SetBoneUpdate(value)
 }
 
@@ -129,7 +136,7 @@ func (self class) GetHandTracker() String.Name { //gd:XRHandModifier3D.get_hand_
 }
 
 //go:nosplit
-func (self class) SetBoneUpdate(bone_update gdclass.XRHandModifier3DBoneUpdate) { //gd:XRHandModifier3D.set_bone_update
+func (self class) SetBoneUpdate(bone_update BoneUpdate) { //gd:XRHandModifier3D.set_bone_update
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_update)
 	var r_ret = callframe.Nil
@@ -138,9 +145,9 @@ func (self class) SetBoneUpdate(bone_update gdclass.XRHandModifier3DBoneUpdate) 
 }
 
 //go:nosplit
-func (self class) GetBoneUpdate() gdclass.XRHandModifier3DBoneUpdate { //gd:XRHandModifier3D.get_bone_update
+func (self class) GetBoneUpdate() BoneUpdate { //gd:XRHandModifier3D.get_bone_update
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.XRHandModifier3DBoneUpdate](frame)
+	var r_ret = callframe.Ret[BoneUpdate](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRHandModifier3D.Bind_get_bone_update, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -184,7 +191,7 @@ func init() {
 	})
 }
 
-type BoneUpdate = gdclass.XRHandModifier3DBoneUpdate //gd:XRHandModifier3D.BoneUpdate
+type BoneUpdate int //gd:XRHandModifier3D.BoneUpdate
 
 const (
 	/*The skeleton's bones are fully updated (both position and rotation) to match the tracked bones.*/

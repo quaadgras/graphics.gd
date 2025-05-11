@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -28,6 +29,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -43,6 +48,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,6 +61,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -108,8 +115,8 @@ func (self Instance) HasMipmaps() bool { //gd:Image.has_mipmaps
 /*
 Returns the image's format. See [enum Format] constants.
 */
-func (self Instance) GetFormat() gdclass.ImageFormat { //gd:Image.get_format
-	return gdclass.ImageFormat(Advanced(self).GetFormat())
+func (self Instance) GetFormat() Format { //gd:Image.get_format
+	return Format(Advanced(self).GetFormat())
 }
 
 /*
@@ -129,7 +136,7 @@ func (self Instance) GetDataSize() int { //gd:Image.get_data_size
 /*
 Converts the image's format. See [enum Format] constants.
 */
-func (self Instance) Convert(format gdclass.ImageFormat) { //gd:Image.convert
+func (self Instance) Convert(format Format) { //gd:Image.convert
 	Advanced(self).Convert(format)
 }
 
@@ -157,7 +164,7 @@ func (self Instance) ResizeToPo2() { //gd:Image.resize_to_po2
 /*
 Resizes the image to the nearest power of 2 for the width and height. If [param square] is [code]true[/code] then set width and height to be the same. New pixels are calculated using the [param interpolation] mode defined via [enum Interpolation] constants.
 */
-func (self Expanded) ResizeToPo2(square bool, interpolation gdclass.ImageInterpolation) { //gd:Image.resize_to_po2
+func (self Expanded) ResizeToPo2(square bool, interpolation Interpolation) { //gd:Image.resize_to_po2
 	Advanced(self).ResizeToPo2(square, interpolation)
 }
 
@@ -171,7 +178,7 @@ func (self Instance) Resize(width int, height int) { //gd:Image.resize
 /*
 Resizes the image to the given [param width] and [param height]. New pixels are calculated using the [param interpolation] mode defined via [enum Interpolation] constants.
 */
-func (self Expanded) Resize(width int, height int, interpolation gdclass.ImageInterpolation) { //gd:Image.resize
+func (self Expanded) Resize(width int, height int, interpolation Interpolation) { //gd:Image.resize
 	Advanced(self).Resize(int64(width), int64(height), interpolation)
 }
 
@@ -229,7 +236,7 @@ func (self Instance) ClearMipmaps() { //gd:Image.clear_mipmaps
 /*
 Creates an empty image of given size and format. See [enum Format] constants. If [param use_mipmaps] is [code]true[/code], then generate mipmaps for this image. See the [method generate_mipmaps].
 */
-func Create(width int, height int, use_mipmaps bool, format gdclass.ImageFormat) Instance { //gd:Image.create
+func Create(width int, height int, use_mipmaps bool, format Format) Instance { //gd:Image.create
 	self := Instance{}
 	return Instance(Advanced(self).Create(int64(width), int64(height), use_mipmaps, format))
 }
@@ -237,7 +244,7 @@ func Create(width int, height int, use_mipmaps bool, format gdclass.ImageFormat)
 /*
 Creates an empty image of given size and format. See [enum Format] constants. If [param use_mipmaps] is [code]true[/code], then generate mipmaps for this image. See the [method generate_mipmaps].
 */
-func CreateEmpty(width int, height int, use_mipmaps bool, format gdclass.ImageFormat) Instance { //gd:Image.create_empty
+func CreateEmpty(width int, height int, use_mipmaps bool, format Format) Instance { //gd:Image.create_empty
 	self := Instance{}
 	return Instance(Advanced(self).CreateEmpty(int64(width), int64(height), use_mipmaps, format))
 }
@@ -245,7 +252,7 @@ func CreateEmpty(width int, height int, use_mipmaps bool, format gdclass.ImageFo
 /*
 Creates a new image of given size and format. See [enum Format] constants. Fills the image with the given raw data. If [param use_mipmaps] is [code]true[/code] then loads mipmaps for this image from [param data]. See [method generate_mipmaps].
 */
-func CreateFromData(width int, height int, use_mipmaps bool, format gdclass.ImageFormat, data []byte) Instance { //gd:Image.create_from_data
+func CreateFromData(width int, height int, use_mipmaps bool, format Format, data []byte) Instance { //gd:Image.create_from_data
 	self := Instance{}
 	return Instance(Advanced(self).CreateFromData(int64(width), int64(height), use_mipmaps, format, Packed.Bytes(Packed.New(data...))))
 }
@@ -253,7 +260,7 @@ func CreateFromData(width int, height int, use_mipmaps bool, format gdclass.Imag
 /*
 Overwrites data of an existing [Image]. Non-static equivalent of [method create_from_data].
 */
-func (self Instance) SetData(width int, height int, use_mipmaps bool, format gdclass.ImageFormat, data []byte) { //gd:Image.set_data
+func (self Instance) SetData(width int, height int, use_mipmaps bool, format Format, data []byte) { //gd:Image.set_data
 	Advanced(self).SetData(int64(width), int64(height), use_mipmaps, format, Packed.Bytes(Packed.New(data...)))
 }
 
@@ -394,8 +401,8 @@ func (self Expanded) SaveWebpToBuffer(lossy bool, quality Float.X) []byte { //gd
 /*
 Returns [constant ALPHA_BLEND] if the image has data for alpha values. Returns [constant ALPHA_BIT] if all the alpha values are stored in a single bit. Returns [constant ALPHA_NONE] if no data for alpha values is found.
 */
-func (self Instance) DetectAlpha() gdclass.ImageAlphaMode { //gd:Image.detect_alpha
-	return gdclass.ImageAlphaMode(Advanced(self).DetectAlpha())
+func (self Instance) DetectAlpha() AlphaMode { //gd:Image.detect_alpha
+	return AlphaMode(Advanced(self).DetectAlpha())
 }
 
 /*
@@ -408,15 +415,15 @@ func (self Instance) IsInvisible() bool { //gd:Image.is_invisible
 /*
 Returns the color channels used by this image, as one of the [enum UsedChannels] constants. If the image is compressed, the original [param source] must be specified.
 */
-func (self Instance) DetectUsedChannels() gdclass.ImageUsedChannels { //gd:Image.detect_used_channels
-	return gdclass.ImageUsedChannels(Advanced(self).DetectUsedChannels(0))
+func (self Instance) DetectUsedChannels() UsedChannels { //gd:Image.detect_used_channels
+	return UsedChannels(Advanced(self).DetectUsedChannels(0))
 }
 
 /*
 Returns the color channels used by this image, as one of the [enum UsedChannels] constants. If the image is compressed, the original [param source] must be specified.
 */
-func (self Expanded) DetectUsedChannels(source gdclass.ImageCompressSource) gdclass.ImageUsedChannels { //gd:Image.detect_used_channels
-	return gdclass.ImageUsedChannels(Advanced(self).DetectUsedChannels(source))
+func (self Expanded) DetectUsedChannels(source CompressSource) UsedChannels { //gd:Image.detect_used_channels
+	return UsedChannels(Advanced(self).DetectUsedChannels(source))
 }
 
 /*
@@ -424,7 +431,7 @@ Compresses the image to use less memory. Can not directly access pixel data whil
 The [param source] parameter helps to pick the best compression method for DXT and ETC2 formats. It is ignored for ASTC compression.
 For ASTC compression, the [param astc_format] parameter must be supplied.
 */
-func (self Instance) Compress(mode gdclass.ImageCompressMode) error { //gd:Image.compress
+func (self Instance) Compress(mode CompressMode) error { //gd:Image.compress
 	return error(gd.ToError(Advanced(self).Compress(mode, 0, 0)))
 }
 
@@ -433,7 +440,7 @@ Compresses the image to use less memory. Can not directly access pixel data whil
 The [param source] parameter helps to pick the best compression method for DXT and ETC2 formats. It is ignored for ASTC compression.
 For ASTC compression, the [param astc_format] parameter must be supplied.
 */
-func (self Expanded) Compress(mode gdclass.ImageCompressMode, source gdclass.ImageCompressSource, astc_format gdclass.ImageASTCFormat) error { //gd:Image.compress
+func (self Expanded) Compress(mode CompressMode, source CompressSource, astc_format ASTCFormat) error { //gd:Image.compress
 	return error(gd.ToError(Advanced(self).Compress(mode, source, astc_format)))
 }
 
@@ -442,7 +449,7 @@ Compresses the image to use less memory. Can not directly access pixel data whil
 This is an alternative to [method compress] that lets the user supply the channels used in order for the compressor to pick the best DXT and ETC2 formats. For other formats (non DXT or ETC2), this argument is ignored.
 For ASTC compression, the [param astc_format] parameter must be supplied.
 */
-func (self Instance) CompressFromChannels(mode gdclass.ImageCompressMode, channels gdclass.ImageUsedChannels) error { //gd:Image.compress_from_channels
+func (self Instance) CompressFromChannels(mode CompressMode, channels UsedChannels) error { //gd:Image.compress_from_channels
 	return error(gd.ToError(Advanced(self).CompressFromChannels(mode, channels, 0)))
 }
 
@@ -451,7 +458,7 @@ Compresses the image to use less memory. Can not directly access pixel data whil
 This is an alternative to [method compress] that lets the user supply the channels used in order for the compressor to pick the best DXT and ETC2 formats. For other formats (non DXT or ETC2), this argument is ignored.
 For ASTC compression, the [param astc_format] parameter must be supplied.
 */
-func (self Expanded) CompressFromChannels(mode gdclass.ImageCompressMode, channels gdclass.ImageUsedChannels, astc_format gdclass.ImageASTCFormat) error { //gd:Image.compress_from_channels
+func (self Expanded) CompressFromChannels(mode CompressMode, channels UsedChannels, astc_format ASTCFormat) error { //gd:Image.compress_from_channels
 	return error(gd.ToError(Advanced(self).CompressFromChannels(mode, channels, astc_format)))
 }
 
@@ -473,7 +480,7 @@ func (self Instance) IsCompressed() bool { //gd:Image.is_compressed
 /*
 Rotates the image in the specified [param direction] by [code]90[/code] degrees. The width and height of the image must be greater than [code]1[/code]. If the width and height are not equal, the image will be resized.
 */
-func (self Instance) Rotate90(direction ClockDirection) { //gd:Image.rotate_90
+func (self Instance) Rotate90(direction Angle.Direction) { //gd:Image.rotate_90
 	Advanced(self).Rotate90(direction)
 }
 
@@ -840,9 +847,9 @@ func (self class) HasMipmaps() bool { //gd:Image.has_mipmaps
 Returns the image's format. See [enum Format] constants.
 */
 //go:nosplit
-func (self class) GetFormat() gdclass.ImageFormat { //gd:Image.get_format
+func (self class) GetFormat() Format { //gd:Image.get_format
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ImageFormat](frame)
+	var r_ret = callframe.Ret[Format](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_get_format, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -879,7 +886,7 @@ func (self class) GetDataSize() int64 { //gd:Image.get_data_size
 Converts the image's format. See [enum Format] constants.
 */
 //go:nosplit
-func (self class) Convert(format gdclass.ImageFormat) { //gd:Image.convert
+func (self class) Convert(format Format) { //gd:Image.convert
 	var frame = callframe.New()
 	callframe.Arg(frame, format)
 	var r_ret = callframe.Nil
@@ -918,7 +925,7 @@ func (self class) GetMipmapOffset(mipmap int64) int64 { //gd:Image.get_mipmap_of
 Resizes the image to the nearest power of 2 for the width and height. If [param square] is [code]true[/code] then set width and height to be the same. New pixels are calculated using the [param interpolation] mode defined via [enum Interpolation] constants.
 */
 //go:nosplit
-func (self class) ResizeToPo2(square bool, interpolation gdclass.ImageInterpolation) { //gd:Image.resize_to_po2
+func (self class) ResizeToPo2(square bool, interpolation Interpolation) { //gd:Image.resize_to_po2
 	var frame = callframe.New()
 	callframe.Arg(frame, square)
 	callframe.Arg(frame, interpolation)
@@ -931,7 +938,7 @@ func (self class) ResizeToPo2(square bool, interpolation gdclass.ImageInterpolat
 Resizes the image to the given [param width] and [param height]. New pixels are calculated using the [param interpolation] mode defined via [enum Interpolation] constants.
 */
 //go:nosplit
-func (self class) Resize(width int64, height int64, interpolation gdclass.ImageInterpolation) { //gd:Image.resize
+func (self class) Resize(width int64, height int64, interpolation Interpolation) { //gd:Image.resize
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, height)
@@ -1017,7 +1024,7 @@ func (self class) ClearMipmaps() { //gd:Image.clear_mipmaps
 Creates an empty image of given size and format. See [enum Format] constants. If [param use_mipmaps] is [code]true[/code], then generate mipmaps for this image. See the [method generate_mipmaps].
 */
 //go:nosplit
-func (self class) Create(width int64, height int64, use_mipmaps bool, format gdclass.ImageFormat) [1]gdclass.Image { //gd:Image.create
+func (self class) Create(width int64, height int64, use_mipmaps bool, format Format) [1]gdclass.Image { //gd:Image.create
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, height)
@@ -1034,7 +1041,7 @@ func (self class) Create(width int64, height int64, use_mipmaps bool, format gdc
 Creates an empty image of given size and format. See [enum Format] constants. If [param use_mipmaps] is [code]true[/code], then generate mipmaps for this image. See the [method generate_mipmaps].
 */
 //go:nosplit
-func (self class) CreateEmpty(width int64, height int64, use_mipmaps bool, format gdclass.ImageFormat) [1]gdclass.Image { //gd:Image.create_empty
+func (self class) CreateEmpty(width int64, height int64, use_mipmaps bool, format Format) [1]gdclass.Image { //gd:Image.create_empty
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, height)
@@ -1051,7 +1058,7 @@ func (self class) CreateEmpty(width int64, height int64, use_mipmaps bool, forma
 Creates a new image of given size and format. See [enum Format] constants. Fills the image with the given raw data. If [param use_mipmaps] is [code]true[/code] then loads mipmaps for this image from [param data]. See [method generate_mipmaps].
 */
 //go:nosplit
-func (self class) CreateFromData(width int64, height int64, use_mipmaps bool, format gdclass.ImageFormat, data Packed.Bytes) [1]gdclass.Image { //gd:Image.create_from_data
+func (self class) CreateFromData(width int64, height int64, use_mipmaps bool, format Format, data Packed.Bytes) [1]gdclass.Image { //gd:Image.create_from_data
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, height)
@@ -1069,7 +1076,7 @@ func (self class) CreateFromData(width int64, height int64, use_mipmaps bool, fo
 Overwrites data of an existing [Image]. Non-static equivalent of [method create_from_data].
 */
 //go:nosplit
-func (self class) SetData(width int64, height int64, use_mipmaps bool, format gdclass.ImageFormat, data Packed.Bytes) { //gd:Image.set_data
+func (self class) SetData(width int64, height int64, use_mipmaps bool, format Format, data Packed.Bytes) { //gd:Image.set_data
 	var frame = callframe.New()
 	callframe.Arg(frame, width)
 	callframe.Arg(frame, height)
@@ -1250,9 +1257,9 @@ func (self class) SaveWebpToBuffer(lossy bool, quality float64) Packed.Bytes { /
 Returns [constant ALPHA_BLEND] if the image has data for alpha values. Returns [constant ALPHA_BIT] if all the alpha values are stored in a single bit. Returns [constant ALPHA_NONE] if no data for alpha values is found.
 */
 //go:nosplit
-func (self class) DetectAlpha() gdclass.ImageAlphaMode { //gd:Image.detect_alpha
+func (self class) DetectAlpha() AlphaMode { //gd:Image.detect_alpha
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ImageAlphaMode](frame)
+	var r_ret = callframe.Ret[AlphaMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_detect_alpha, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1276,10 +1283,10 @@ func (self class) IsInvisible() bool { //gd:Image.is_invisible
 Returns the color channels used by this image, as one of the [enum UsedChannels] constants. If the image is compressed, the original [param source] must be specified.
 */
 //go:nosplit
-func (self class) DetectUsedChannels(source gdclass.ImageCompressSource) gdclass.ImageUsedChannels { //gd:Image.detect_used_channels
+func (self class) DetectUsedChannels(source CompressSource) UsedChannels { //gd:Image.detect_used_channels
 	var frame = callframe.New()
 	callframe.Arg(frame, source)
-	var r_ret = callframe.Ret[gdclass.ImageUsedChannels](frame)
+	var r_ret = callframe.Ret[UsedChannels](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_detect_used_channels, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1292,7 +1299,7 @@ The [param source] parameter helps to pick the best compression method for DXT a
 For ASTC compression, the [param astc_format] parameter must be supplied.
 */
 //go:nosplit
-func (self class) Compress(mode gdclass.ImageCompressMode, source gdclass.ImageCompressSource, astc_format gdclass.ImageASTCFormat) Error.Code { //gd:Image.compress
+func (self class) Compress(mode CompressMode, source CompressSource, astc_format ASTCFormat) Error.Code { //gd:Image.compress
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	callframe.Arg(frame, source)
@@ -1310,7 +1317,7 @@ This is an alternative to [method compress] that lets the user supply the channe
 For ASTC compression, the [param astc_format] parameter must be supplied.
 */
 //go:nosplit
-func (self class) CompressFromChannels(mode gdclass.ImageCompressMode, channels gdclass.ImageUsedChannels, astc_format gdclass.ImageASTCFormat) Error.Code { //gd:Image.compress_from_channels
+func (self class) CompressFromChannels(mode CompressMode, channels UsedChannels, astc_format ASTCFormat) Error.Code { //gd:Image.compress_from_channels
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	callframe.Arg(frame, channels)
@@ -1353,7 +1360,7 @@ func (self class) IsCompressed() bool { //gd:Image.is_compressed
 Rotates the image in the specified [param direction] by [code]90[/code] degrees. The width and height of the image must be greater than [code]1[/code]. If the width and height are not equal, the image will be resized.
 */
 //go:nosplit
-func (self class) Rotate90(direction ClockDirection) { //gd:Image.rotate_90
+func (self class) Rotate90(direction Angle.Direction) { //gd:Image.rotate_90
 	var frame = callframe.New()
 	callframe.Arg(frame, direction)
 	var r_ret = callframe.Nil
@@ -1853,7 +1860,7 @@ func init() {
 	gdclass.Register("Image", func(ptr gd.Object) any { return [1]gdclass.Image{*(*gdclass.Image)(unsafe.Pointer(&ptr))} })
 }
 
-type Format = gdclass.ImageFormat //gd:Image.Format
+type Format int //gd:Image.Format
 
 const (
 	/*Texture format with a single 8-bit depth representing luminance.*/
@@ -1947,7 +1954,7 @@ const (
 	FormatMax Format = 39
 )
 
-type Interpolation = gdclass.ImageInterpolation //gd:Image.Interpolation
+type Interpolation int //gd:Image.Interpolation
 
 const (
 	/*Performs nearest-neighbor interpolation. If the image is resized, it will be pixelated.*/
@@ -1966,7 +1973,7 @@ const (
 	InterpolateLanczos Interpolation = 4
 )
 
-type AlphaMode = gdclass.ImageAlphaMode //gd:Image.AlphaMode
+type AlphaMode int //gd:Image.AlphaMode
 
 const (
 	/*Image does not have alpha.*/
@@ -1977,7 +1984,7 @@ const (
 	AlphaBlend AlphaMode = 2
 )
 
-type CompressMode = gdclass.ImageCompressMode //gd:Image.CompressMode
+type CompressMode int //gd:Image.CompressMode
 
 const (
 	/*Use S3TC compression.*/
@@ -1994,7 +2001,7 @@ const (
 	CompressMax CompressMode = 5
 )
 
-type UsedChannels = gdclass.ImageUsedChannels //gd:Image.UsedChannels
+type UsedChannels int //gd:Image.UsedChannels
 
 const (
 	/*The image only uses one channel for luminance (grayscale).*/
@@ -2011,7 +2018,7 @@ const (
 	UsedChannelsRgba UsedChannels = 5
 )
 
-type CompressSource = gdclass.ImageCompressSource //gd:Image.CompressSource
+type CompressSource int //gd:Image.CompressSource
 
 const (
 	/*Source texture (before compression) is a regular texture. Default for all textures.*/
@@ -2022,22 +2029,13 @@ const (
 	CompressSourceNormal CompressSource = 2
 )
 
-type ASTCFormat = gdclass.ImageASTCFormat //gd:Image.ASTCFormat
+type ASTCFormat int //gd:Image.ASTCFormat
 
 const (
 	/*Hint to indicate that the high quality 4×4 ASTC compression format should be used.*/
 	AstcFormat4x4 ASTCFormat = 0
 	/*Hint to indicate that the low quality 8×8 ASTC compression format should be used.*/
 	AstcFormat8x8 ASTCFormat = 1
-)
-
-type ClockDirection int
-
-const (
-	/*Clockwise rotation. Used by some methods (e.g. [method Image.rotate_90]).*/
-	Clockwise ClockDirection = 0
-	/*Counter-clockwise rotation. Used by some methods (e.g. [method Image.rotate_90]).*/
-	Counterclockwise ClockDirection = 1
 )
 
 type Metrics struct {

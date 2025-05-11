@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/PacketPeer"
 import "graphics.gd/classdb/WebRTCDataChannel"
 import "graphics.gd/variant/Array"
@@ -26,6 +27,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -41,6 +46,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -53,6 +59,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 type Instance [1]gdclass.WebRTCDataChannelExtension
@@ -73,10 +80,10 @@ type Interface interface {
 	GetMaxPacketSize() int
 	Poll() error
 	Close()
-	SetWriteMode(p_write_mode gdclass.WebRTCDataChannelWriteMode)
-	GetWriteMode() gdclass.WebRTCDataChannelWriteMode
+	SetWriteMode(p_write_mode WebRTCDataChannel.WriteMode)
+	GetWriteMode() WebRTCDataChannel.WriteMode
 	WasStringPacket() bool
-	GetReadyState() gdclass.WebRTCDataChannelChannelState
+	GetReadyState() WebRTCDataChannel.ChannelState
 	GetLabel() string
 	IsOrdered() bool
 	GetId() int
@@ -98,10 +105,10 @@ func (self implementation) GetAvailablePacketCount() (_ int)                    
 func (self implementation) GetMaxPacketSize() (_ int)                                         { return }
 func (self implementation) Poll() (_ error)                                                   { return }
 func (self implementation) Close()                                                            { return }
-func (self implementation) SetWriteMode(p_write_mode gdclass.WebRTCDataChannelWriteMode)      { return }
-func (self implementation) GetWriteMode() (_ gdclass.WebRTCDataChannelWriteMode)              { return }
+func (self implementation) SetWriteMode(p_write_mode WebRTCDataChannel.WriteMode)             { return }
+func (self implementation) GetWriteMode() (_ WebRTCDataChannel.WriteMode)                     { return }
 func (self implementation) WasStringPacket() (_ bool)                                         { return }
-func (self implementation) GetReadyState() (_ gdclass.WebRTCDataChannelChannelState)          { return }
+func (self implementation) GetReadyState() (_ WebRTCDataChannel.ChannelState)                 { return }
 func (self implementation) GetLabel() (_ string)                                              { return }
 func (self implementation) IsOrdered() (_ bool)                                               { return }
 func (self implementation) GetId() (_ int)                                                    { return }
@@ -170,14 +177,14 @@ func (Instance) _close(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallV
 		impl(self)
 	}
 }
-func (Instance) _set_write_mode(impl func(ptr unsafe.Pointer, p_write_mode gdclass.WebRTCDataChannelWriteMode)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_write_mode(impl func(ptr unsafe.Pointer, p_write_mode WebRTCDataChannel.WriteMode)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var p_write_mode = gd.UnsafeGet[gdclass.WebRTCDataChannelWriteMode](p_args, 0)
+		var p_write_mode = gd.UnsafeGet[WebRTCDataChannel.WriteMode](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, p_write_mode)
 	}
 }
-func (Instance) _get_write_mode(impl func(ptr unsafe.Pointer) gdclass.WebRTCDataChannelWriteMode) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_write_mode(impl func(ptr unsafe.Pointer) WebRTCDataChannel.WriteMode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -191,7 +198,7 @@ func (Instance) _was_string_packet(impl func(ptr unsafe.Pointer) bool) (cb gd.Ex
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _get_ready_state(impl func(ptr unsafe.Pointer) gdclass.WebRTCDataChannelChannelState) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_ready_state(impl func(ptr unsafe.Pointer) WebRTCDataChannel.ChannelState) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -351,15 +358,15 @@ func (class) _close(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirt
 	}
 }
 
-func (class) _set_write_mode(impl func(ptr unsafe.Pointer, p_write_mode gdclass.WebRTCDataChannelWriteMode)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_write_mode(impl func(ptr unsafe.Pointer, p_write_mode WebRTCDataChannel.WriteMode)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var p_write_mode = gd.UnsafeGet[gdclass.WebRTCDataChannelWriteMode](p_args, 0)
+		var p_write_mode = gd.UnsafeGet[WebRTCDataChannel.WriteMode](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, p_write_mode)
 	}
 }
 
-func (class) _get_write_mode(impl func(ptr unsafe.Pointer) gdclass.WebRTCDataChannelWriteMode) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_write_mode(impl func(ptr unsafe.Pointer) WebRTCDataChannel.WriteMode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -375,7 +382,7 @@ func (class) _was_string_packet(impl func(ptr unsafe.Pointer) bool) (cb gd.Exten
 	}
 }
 
-func (class) _get_ready_state(impl func(ptr unsafe.Pointer) gdclass.WebRTCDataChannelChannelState) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_ready_state(impl func(ptr unsafe.Pointer) WebRTCDataChannel.ChannelState) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)

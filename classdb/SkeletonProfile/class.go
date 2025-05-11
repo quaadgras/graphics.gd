@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
@@ -28,6 +29,10 @@ import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -43,6 +48,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,6 +61,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -142,15 +149,15 @@ func (self Instance) SetBoneParent(bone_idx int, bone_parent string) { //gd:Skel
 /*
 Returns the tail direction of the bone at [param bone_idx].
 */
-func (self Instance) GetTailDirection(bone_idx int) gdclass.SkeletonProfileTailDirection { //gd:SkeletonProfile.get_tail_direction
-	return gdclass.SkeletonProfileTailDirection(Advanced(self).GetTailDirection(int64(bone_idx)))
+func (self Instance) GetTailDirection(bone_idx int) TailDirection { //gd:SkeletonProfile.get_tail_direction
+	return TailDirection(Advanced(self).GetTailDirection(int64(bone_idx)))
 }
 
 /*
 Sets the tail direction of the bone at [param bone_idx].
 [b]Note:[/b] This only specifies the method of calculation. The actual coordinates required should be stored in an external skeleton, so the calculation itself needs to be done externally.
 */
-func (self Instance) SetTailDirection(bone_idx int, tail_direction gdclass.SkeletonProfileTailDirection) { //gd:SkeletonProfile.set_tail_direction
+func (self Instance) SetTailDirection(bone_idx int, tail_direction TailDirection) { //gd:SkeletonProfile.set_tail_direction
 	Advanced(self).SetTailDirection(int64(bone_idx), tail_direction)
 }
 
@@ -483,10 +490,10 @@ func (self class) SetBoneParent(bone_idx int64, bone_parent String.Name) { //gd:
 Returns the tail direction of the bone at [param bone_idx].
 */
 //go:nosplit
-func (self class) GetTailDirection(bone_idx int64) gdclass.SkeletonProfileTailDirection { //gd:SkeletonProfile.get_tail_direction
+func (self class) GetTailDirection(bone_idx int64) TailDirection { //gd:SkeletonProfile.get_tail_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Ret[gdclass.SkeletonProfileTailDirection](frame)
+	var r_ret = callframe.Ret[TailDirection](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonProfile.Bind_get_tail_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -498,7 +505,7 @@ Sets the tail direction of the bone at [param bone_idx].
 [b]Note:[/b] This only specifies the method of calculation. The actual coordinates required should be stored in an external skeleton, so the calculation itself needs to be done externally.
 */
 //go:nosplit
-func (self class) SetTailDirection(bone_idx int64, tail_direction gdclass.SkeletonProfileTailDirection) { //gd:SkeletonProfile.set_tail_direction
+func (self class) SetTailDirection(bone_idx int64, tail_direction TailDirection) { //gd:SkeletonProfile.set_tail_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_idx)
 	callframe.Arg(frame, tail_direction)
@@ -685,7 +692,7 @@ func init() {
 	})
 }
 
-type TailDirection = gdclass.SkeletonProfileTailDirection //gd:SkeletonProfile.TailDirection
+type TailDirection int //gd:SkeletonProfile.TailDirection
 
 const (
 	/*Direction to the average coordinates of bone children.*/

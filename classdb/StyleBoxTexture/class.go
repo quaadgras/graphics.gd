@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/StyleBox"
 import "graphics.gd/classdb/Texture2D"
@@ -29,6 +30,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -44,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,6 +62,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -180,19 +187,19 @@ func (self Instance) SetExpandMarginBottom(value Float.X) {
 	class(self).SetExpandMargin(3, float64(value))
 }
 
-func (self Instance) AxisStretchHorizontal() gdclass.StyleBoxTextureAxisStretchMode {
-	return gdclass.StyleBoxTextureAxisStretchMode(class(self).GetHAxisStretchMode())
+func (self Instance) AxisStretchHorizontal() AxisStretchMode {
+	return AxisStretchMode(class(self).GetHAxisStretchMode())
 }
 
-func (self Instance) SetAxisStretchHorizontal(value gdclass.StyleBoxTextureAxisStretchMode) {
+func (self Instance) SetAxisStretchHorizontal(value AxisStretchMode) {
 	class(self).SetHAxisStretchMode(value)
 }
 
-func (self Instance) AxisStretchVertical() gdclass.StyleBoxTextureAxisStretchMode {
-	return gdclass.StyleBoxTextureAxisStretchMode(class(self).GetVAxisStretchMode())
+func (self Instance) AxisStretchVertical() AxisStretchMode {
+	return AxisStretchMode(class(self).GetVAxisStretchMode())
 }
 
-func (self Instance) SetAxisStretchVertical(value gdclass.StyleBoxTextureAxisStretchMode) {
+func (self Instance) SetAxisStretchVertical(value AxisStretchMode) {
 	class(self).SetVAxisStretchMode(value)
 }
 
@@ -243,7 +250,7 @@ func (self class) GetTexture() [1]gdclass.Texture2D { //gd:StyleBoxTexture.get_t
 Sets the margin to [param size] pixels for the specified [enum Side].
 */
 //go:nosplit
-func (self class) SetTextureMargin(margin Side, size float64) { //gd:StyleBoxTexture.set_texture_margin
+func (self class) SetTextureMargin(margin Rect2.Side, size float64) { //gd:StyleBoxTexture.set_texture_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	callframe.Arg(frame, size)
@@ -268,7 +275,7 @@ func (self class) SetTextureMarginAll(size float64) { //gd:StyleBoxTexture.set_t
 Returns the margin size of the specified [enum Side].
 */
 //go:nosplit
-func (self class) GetTextureMargin(margin Side) float64 { //gd:StyleBoxTexture.get_texture_margin
+func (self class) GetTextureMargin(margin Rect2.Side) float64 { //gd:StyleBoxTexture.get_texture_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Ret[float64](frame)
@@ -282,7 +289,7 @@ func (self class) GetTextureMargin(margin Side) float64 { //gd:StyleBoxTexture.g
 Sets the expand margin to [param size] pixels for the specified [enum Side].
 */
 //go:nosplit
-func (self class) SetExpandMargin(margin Side, size float64) { //gd:StyleBoxTexture.set_expand_margin
+func (self class) SetExpandMargin(margin Rect2.Side, size float64) { //gd:StyleBoxTexture.set_expand_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	callframe.Arg(frame, size)
@@ -307,7 +314,7 @@ func (self class) SetExpandMarginAll(size float64) { //gd:StyleBoxTexture.set_ex
 Returns the expand margin size of the specified [enum Side].
 */
 //go:nosplit
-func (self class) GetExpandMargin(margin Side) float64 { //gd:StyleBoxTexture.get_expand_margin
+func (self class) GetExpandMargin(margin Rect2.Side) float64 { //gd:StyleBoxTexture.get_expand_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Ret[float64](frame)
@@ -375,7 +382,7 @@ func (self class) GetModulate() Color.RGBA { //gd:StyleBoxTexture.get_modulate
 }
 
 //go:nosplit
-func (self class) SetHAxisStretchMode(mode gdclass.StyleBoxTextureAxisStretchMode) { //gd:StyleBoxTexture.set_h_axis_stretch_mode
+func (self class) SetHAxisStretchMode(mode AxisStretchMode) { //gd:StyleBoxTexture.set_h_axis_stretch_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -384,9 +391,9 @@ func (self class) SetHAxisStretchMode(mode gdclass.StyleBoxTextureAxisStretchMod
 }
 
 //go:nosplit
-func (self class) GetHAxisStretchMode() gdclass.StyleBoxTextureAxisStretchMode { //gd:StyleBoxTexture.get_h_axis_stretch_mode
+func (self class) GetHAxisStretchMode() AxisStretchMode { //gd:StyleBoxTexture.get_h_axis_stretch_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.StyleBoxTextureAxisStretchMode](frame)
+	var r_ret = callframe.Ret[AxisStretchMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StyleBoxTexture.Bind_get_h_axis_stretch_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -394,7 +401,7 @@ func (self class) GetHAxisStretchMode() gdclass.StyleBoxTextureAxisStretchMode {
 }
 
 //go:nosplit
-func (self class) SetVAxisStretchMode(mode gdclass.StyleBoxTextureAxisStretchMode) { //gd:StyleBoxTexture.set_v_axis_stretch_mode
+func (self class) SetVAxisStretchMode(mode AxisStretchMode) { //gd:StyleBoxTexture.set_v_axis_stretch_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -403,9 +410,9 @@ func (self class) SetVAxisStretchMode(mode gdclass.StyleBoxTextureAxisStretchMod
 }
 
 //go:nosplit
-func (self class) GetVAxisStretchMode() gdclass.StyleBoxTextureAxisStretchMode { //gd:StyleBoxTexture.get_v_axis_stretch_mode
+func (self class) GetVAxisStretchMode() AxisStretchMode { //gd:StyleBoxTexture.get_v_axis_stretch_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.StyleBoxTextureAxisStretchMode](frame)
+	var r_ret = callframe.Ret[AxisStretchMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StyleBoxTexture.Bind_get_v_axis_stretch_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -455,7 +462,7 @@ func init() {
 	})
 }
 
-type AxisStretchMode = gdclass.StyleBoxTextureAxisStretchMode //gd:StyleBoxTexture.AxisStretchMode
+type AxisStretchMode int //gd:StyleBoxTexture.AxisStretchMode
 
 const (
 	/*Stretch the stylebox's texture. This results in visible distortion unless the texture size matches the stylebox's size perfectly.*/
@@ -464,17 +471,4 @@ const (
 	AxisStretchModeTile AxisStretchMode = 1
 	/*Repeats the stylebox's texture to match the stylebox's size according to the nine-patch system. Unlike [constant AXIS_STRETCH_MODE_TILE], the texture may be slightly stretched to make the nine-patch texture tile seamlessly.*/
 	AxisStretchModeTileFit AxisStretchMode = 2
-)
-
-type Side int
-
-const (
-	/*Left side, usually used for [Control] or [StyleBox]-derived classes.*/
-	SideLeft Side = 0
-	/*Top side, usually used for [Control] or [StyleBox]-derived classes.*/
-	SideTop Side = 1
-	/*Right side, usually used for [Control] or [StyleBox]-derived classes.*/
-	SideRight Side = 2
-	/*Bottom side, usually used for [Control] or [StyleBox]-derived classes.*/
-	SideBottom Side = 3
 )

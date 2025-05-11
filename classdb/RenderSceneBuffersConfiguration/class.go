@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/RenderingServer"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -25,6 +27,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -40,6 +46,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -52,6 +59,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -122,27 +130,27 @@ func (self Instance) SetViewCount(value int) {
 	class(self).SetViewCount(int64(value))
 }
 
-func (self Instance) Scaling3dMode() gdclass.RenderingServerViewportScaling3DMode {
-	return gdclass.RenderingServerViewportScaling3DMode(class(self).GetScaling3dMode())
+func (self Instance) Scaling3dMode() RenderingServer.ViewportScaling3DMode {
+	return RenderingServer.ViewportScaling3DMode(class(self).GetScaling3dMode())
 }
 
-func (self Instance) SetScaling3dMode(value gdclass.RenderingServerViewportScaling3DMode) {
+func (self Instance) SetScaling3dMode(value RenderingServer.ViewportScaling3DMode) {
 	class(self).SetScaling3dMode(value)
 }
 
-func (self Instance) Msaa3d() gdclass.RenderingServerViewportMSAA {
-	return gdclass.RenderingServerViewportMSAA(class(self).GetMsaa3d())
+func (self Instance) Msaa3d() RenderingServer.ViewportMSAA {
+	return RenderingServer.ViewportMSAA(class(self).GetMsaa3d())
 }
 
-func (self Instance) SetMsaa3d(value gdclass.RenderingServerViewportMSAA) {
+func (self Instance) SetMsaa3d(value RenderingServer.ViewportMSAA) {
 	class(self).SetMsaa3d(value)
 }
 
-func (self Instance) ScreenSpaceAa() gdclass.RenderingServerViewportScreenSpaceAA {
-	return gdclass.RenderingServerViewportScreenSpaceAA(class(self).GetScreenSpaceAa())
+func (self Instance) ScreenSpaceAa() RenderingServer.ViewportScreenSpaceAA {
+	return RenderingServer.ViewportScreenSpaceAA(class(self).GetScreenSpaceAa())
 }
 
-func (self Instance) SetScreenSpaceAa(value gdclass.RenderingServerViewportScreenSpaceAA) {
+func (self Instance) SetScreenSpaceAa(value RenderingServer.ViewportScreenSpaceAA) {
 	class(self).SetScreenSpaceAa(value)
 }
 
@@ -162,11 +170,11 @@ func (self Instance) SetTextureMipmapBias(value Float.X) {
 	class(self).SetTextureMipmapBias(float64(value))
 }
 
-func (self Instance) AnisotropicFilteringLevel() gdclass.RenderingServerViewportAnisotropicFiltering {
-	return gdclass.RenderingServerViewportAnisotropicFiltering(class(self).GetAnisotropicFilteringLevel())
+func (self Instance) AnisotropicFilteringLevel() RenderingServer.ViewportAnisotropicFiltering {
+	return RenderingServer.ViewportAnisotropicFiltering(class(self).GetAnisotropicFilteringLevel())
 }
 
-func (self Instance) SetAnisotropicFilteringLevel(value gdclass.RenderingServerViewportAnisotropicFiltering) {
+func (self Instance) SetAnisotropicFilteringLevel(value RenderingServer.ViewportAnisotropicFiltering) {
 	class(self).SetAnisotropicFilteringLevel(value)
 }
 
@@ -247,9 +255,9 @@ func (self class) SetViewCount(view_count int64) { //gd:RenderSceneBuffersConfig
 }
 
 //go:nosplit
-func (self class) GetScaling3dMode() gdclass.RenderingServerViewportScaling3DMode { //gd:RenderSceneBuffersConfiguration.get_scaling_3d_mode
+func (self class) GetScaling3dMode() RenderingServer.ViewportScaling3DMode { //gd:RenderSceneBuffersConfiguration.get_scaling_3d_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingServerViewportScaling3DMode](frame)
+	var r_ret = callframe.Ret[RenderingServer.ViewportScaling3DMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_get_scaling_3d_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -257,7 +265,7 @@ func (self class) GetScaling3dMode() gdclass.RenderingServerViewportScaling3DMod
 }
 
 //go:nosplit
-func (self class) SetScaling3dMode(scaling_3d_mode gdclass.RenderingServerViewportScaling3DMode) { //gd:RenderSceneBuffersConfiguration.set_scaling_3d_mode
+func (self class) SetScaling3dMode(scaling_3d_mode RenderingServer.ViewportScaling3DMode) { //gd:RenderSceneBuffersConfiguration.set_scaling_3d_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, scaling_3d_mode)
 	var r_ret = callframe.Nil
@@ -266,9 +274,9 @@ func (self class) SetScaling3dMode(scaling_3d_mode gdclass.RenderingServerViewpo
 }
 
 //go:nosplit
-func (self class) GetMsaa3d() gdclass.RenderingServerViewportMSAA { //gd:RenderSceneBuffersConfiguration.get_msaa_3d
+func (self class) GetMsaa3d() RenderingServer.ViewportMSAA { //gd:RenderSceneBuffersConfiguration.get_msaa_3d
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingServerViewportMSAA](frame)
+	var r_ret = callframe.Ret[RenderingServer.ViewportMSAA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_get_msaa_3d, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -276,7 +284,7 @@ func (self class) GetMsaa3d() gdclass.RenderingServerViewportMSAA { //gd:RenderS
 }
 
 //go:nosplit
-func (self class) SetMsaa3d(msaa_3d gdclass.RenderingServerViewportMSAA) { //gd:RenderSceneBuffersConfiguration.set_msaa_3d
+func (self class) SetMsaa3d(msaa_3d RenderingServer.ViewportMSAA) { //gd:RenderSceneBuffersConfiguration.set_msaa_3d
 	var frame = callframe.New()
 	callframe.Arg(frame, msaa_3d)
 	var r_ret = callframe.Nil
@@ -285,9 +293,9 @@ func (self class) SetMsaa3d(msaa_3d gdclass.RenderingServerViewportMSAA) { //gd:
 }
 
 //go:nosplit
-func (self class) GetScreenSpaceAa() gdclass.RenderingServerViewportScreenSpaceAA { //gd:RenderSceneBuffersConfiguration.get_screen_space_aa
+func (self class) GetScreenSpaceAa() RenderingServer.ViewportScreenSpaceAA { //gd:RenderSceneBuffersConfiguration.get_screen_space_aa
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingServerViewportScreenSpaceAA](frame)
+	var r_ret = callframe.Ret[RenderingServer.ViewportScreenSpaceAA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_get_screen_space_aa, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -295,7 +303,7 @@ func (self class) GetScreenSpaceAa() gdclass.RenderingServerViewportScreenSpaceA
 }
 
 //go:nosplit
-func (self class) SetScreenSpaceAa(screen_space_aa gdclass.RenderingServerViewportScreenSpaceAA) { //gd:RenderSceneBuffersConfiguration.set_screen_space_aa
+func (self class) SetScreenSpaceAa(screen_space_aa RenderingServer.ViewportScreenSpaceAA) { //gd:RenderSceneBuffersConfiguration.set_screen_space_aa
 	var frame = callframe.New()
 	callframe.Arg(frame, screen_space_aa)
 	var r_ret = callframe.Nil
@@ -342,9 +350,9 @@ func (self class) SetTextureMipmapBias(texture_mipmap_bias float64) { //gd:Rende
 }
 
 //go:nosplit
-func (self class) GetAnisotropicFilteringLevel() gdclass.RenderingServerViewportAnisotropicFiltering { //gd:RenderSceneBuffersConfiguration.get_anisotropic_filtering_level
+func (self class) GetAnisotropicFilteringLevel() RenderingServer.ViewportAnisotropicFiltering { //gd:RenderSceneBuffersConfiguration.get_anisotropic_filtering_level
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingServerViewportAnisotropicFiltering](frame)
+	var r_ret = callframe.Ret[RenderingServer.ViewportAnisotropicFiltering](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_get_anisotropic_filtering_level, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -352,7 +360,7 @@ func (self class) GetAnisotropicFilteringLevel() gdclass.RenderingServerViewport
 }
 
 //go:nosplit
-func (self class) SetAnisotropicFilteringLevel(anisotropic_filtering_level gdclass.RenderingServerViewportAnisotropicFiltering) { //gd:RenderSceneBuffersConfiguration.set_anisotropic_filtering_level
+func (self class) SetAnisotropicFilteringLevel(anisotropic_filtering_level RenderingServer.ViewportAnisotropicFiltering) { //gd:RenderSceneBuffersConfiguration.set_anisotropic_filtering_level
 	var frame = callframe.New()
 	callframe.Arg(frame, anisotropic_filtering_level)
 	var r_ret = callframe.Nil

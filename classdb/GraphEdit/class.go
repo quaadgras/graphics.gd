@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/GraphFrame"
@@ -31,6 +32,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -46,6 +51,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -58,6 +64,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -523,11 +530,11 @@ func (self Instance) SetShowGrid(value bool) {
 	class(self).SetShowGrid(value)
 }
 
-func (self Instance) GridPattern() gdclass.GraphEditGridPattern {
-	return gdclass.GraphEditGridPattern(class(self).GetGridPattern())
+func (self Instance) GridPattern() GridPattern {
+	return GridPattern(class(self).GetGridPattern())
 }
 
-func (self Instance) SetGridPattern(value gdclass.GraphEditGridPattern) {
+func (self Instance) SetGridPattern(value GridPattern) {
 	class(self).SetGridPattern(value)
 }
 
@@ -547,11 +554,11 @@ func (self Instance) SetSnappingDistance(value int) {
 	class(self).SetSnappingDistance(int64(value))
 }
 
-func (self Instance) PanningScheme() gdclass.GraphEditPanningScheme {
-	return gdclass.GraphEditPanningScheme(class(self).GetPanningScheme())
+func (self Instance) PanningScheme() PanningScheme {
+	return PanningScheme(class(self).GetPanningScheme())
 }
 
-func (self Instance) SetPanningScheme(value gdclass.GraphEditPanningScheme) {
+func (self Instance) SetPanningScheme(value PanningScheme) {
 	class(self).SetPanningScheme(value)
 }
 
@@ -1165,7 +1172,7 @@ func (self class) GetAttachedNodesOfFrame(frame_ String.Name) Array.Contains[Str
 }
 
 //go:nosplit
-func (self class) SetPanningScheme(scheme gdclass.GraphEditPanningScheme) { //gd:GraphEdit.set_panning_scheme
+func (self class) SetPanningScheme(scheme PanningScheme) { //gd:GraphEdit.set_panning_scheme
 	var frame = callframe.New()
 	callframe.Arg(frame, scheme)
 	var r_ret = callframe.Nil
@@ -1174,9 +1181,9 @@ func (self class) SetPanningScheme(scheme gdclass.GraphEditPanningScheme) { //gd
 }
 
 //go:nosplit
-func (self class) GetPanningScheme() gdclass.GraphEditPanningScheme { //gd:GraphEdit.get_panning_scheme
+func (self class) GetPanningScheme() PanningScheme { //gd:GraphEdit.get_panning_scheme
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.GraphEditPanningScheme](frame)
+	var r_ret = callframe.Ret[PanningScheme](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_panning_scheme, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1279,7 +1286,7 @@ func (self class) IsShowingGrid() bool { //gd:GraphEdit.is_showing_grid
 }
 
 //go:nosplit
-func (self class) SetGridPattern(pattern gdclass.GraphEditGridPattern) { //gd:GraphEdit.set_grid_pattern
+func (self class) SetGridPattern(pattern GridPattern) { //gd:GraphEdit.set_grid_pattern
 	var frame = callframe.New()
 	callframe.Arg(frame, pattern)
 	var r_ret = callframe.Nil
@@ -1288,9 +1295,9 @@ func (self class) SetGridPattern(pattern gdclass.GraphEditGridPattern) { //gd:Gr
 }
 
 //go:nosplit
-func (self class) GetGridPattern() gdclass.GraphEditGridPattern { //gd:GraphEdit.get_grid_pattern
+func (self class) GetGridPattern() GridPattern { //gd:GraphEdit.get_grid_pattern
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.GraphEditGridPattern](frame)
+	var r_ret = callframe.Ret[GridPattern](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_grid_pattern, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1746,7 +1753,7 @@ func init() {
 	gdclass.Register("GraphEdit", func(ptr gd.Object) any { return [1]gdclass.GraphEdit{*(*gdclass.GraphEdit)(unsafe.Pointer(&ptr))} })
 }
 
-type PanningScheme = gdclass.GraphEditPanningScheme //gd:GraphEdit.PanningScheme
+type PanningScheme int //gd:GraphEdit.PanningScheme
 
 const (
 	/*[kbd]Mouse Wheel[/kbd] will zoom, [kbd]Ctrl + Mouse Wheel[/kbd] will move the view.*/
@@ -1755,7 +1762,7 @@ const (
 	ScrollPans PanningScheme = 1
 )
 
-type GridPattern = gdclass.GraphEditGridPattern //gd:GraphEdit.GridPattern
+type GridPattern int //gd:GraphEdit.GridPattern
 
 const (
 	/*Draw the grid using solid lines.*/

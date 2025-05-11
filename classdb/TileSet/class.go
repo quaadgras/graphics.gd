@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/PhysicsMaterial"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/TileMapPattern"
@@ -30,6 +31,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -45,6 +50,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -57,6 +63,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -345,15 +352,15 @@ func (self Instance) RemoveTerrainSet(terrain_set int) { //gd:TileSet.remove_ter
 /*
 Sets a terrain mode. Each mode determines which bits of a tile shape is used to match the neighboring tiles' terrains.
 */
-func (self Instance) SetTerrainSetMode(terrain_set int, mode gdclass.TileSetTerrainMode) { //gd:TileSet.set_terrain_set_mode
+func (self Instance) SetTerrainSetMode(terrain_set int, mode TerrainMode) { //gd:TileSet.set_terrain_set_mode
 	Advanced(self).SetTerrainSetMode(int64(terrain_set), mode)
 }
 
 /*
 Returns a terrain set mode.
 */
-func (self Instance) GetTerrainSetMode(terrain_set int) gdclass.TileSetTerrainMode { //gd:TileSet.get_terrain_set_mode
-	return gdclass.TileSetTerrainMode(Advanced(self).GetTerrainSetMode(int64(terrain_set)))
+func (self Instance) GetTerrainSetMode(terrain_set int) TerrainMode { //gd:TileSet.get_terrain_set_mode
+	return TerrainMode(Advanced(self).GetTerrainSetMode(int64(terrain_set)))
 }
 
 /*
@@ -741,27 +748,27 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) TileShape() gdclass.TileSetTileShape {
-	return gdclass.TileSetTileShape(class(self).GetTileShape())
+func (self Instance) TileShape() TileShape {
+	return TileShape(class(self).GetTileShape())
 }
 
-func (self Instance) SetTileShape(value gdclass.TileSetTileShape) {
+func (self Instance) SetTileShape(value TileShape) {
 	class(self).SetTileShape(value)
 }
 
-func (self Instance) TileLayout() gdclass.TileSetTileLayout {
-	return gdclass.TileSetTileLayout(class(self).GetTileLayout())
+func (self Instance) TileLayout() TileLayout {
+	return TileLayout(class(self).GetTileLayout())
 }
 
-func (self Instance) SetTileLayout(value gdclass.TileSetTileLayout) {
+func (self Instance) SetTileLayout(value TileLayout) {
 	class(self).SetTileLayout(value)
 }
 
-func (self Instance) TileOffsetAxis() gdclass.TileSetTileOffsetAxis {
-	return gdclass.TileSetTileOffsetAxis(class(self).GetTileOffsetAxis())
+func (self Instance) TileOffsetAxis() TileOffsetAxis {
+	return TileOffsetAxis(class(self).GetTileOffsetAxis())
 }
 
-func (self Instance) SetTileOffsetAxis(value gdclass.TileSetTileOffsetAxis) {
+func (self Instance) SetTileOffsetAxis(value TileOffsetAxis) {
 	class(self).SetTileOffsetAxis(value)
 }
 
@@ -892,7 +899,7 @@ func (self class) GetSource(source_id int64) [1]gdclass.TileSetSource { //gd:Til
 }
 
 //go:nosplit
-func (self class) SetTileShape(shape gdclass.TileSetTileShape) { //gd:TileSet.set_tile_shape
+func (self class) SetTileShape(shape TileShape) { //gd:TileSet.set_tile_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
 	var r_ret = callframe.Nil
@@ -901,9 +908,9 @@ func (self class) SetTileShape(shape gdclass.TileSetTileShape) { //gd:TileSet.se
 }
 
 //go:nosplit
-func (self class) GetTileShape() gdclass.TileSetTileShape { //gd:TileSet.get_tile_shape
+func (self class) GetTileShape() TileShape { //gd:TileSet.get_tile_shape
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TileSetTileShape](frame)
+	var r_ret = callframe.Ret[TileShape](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_tile_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -911,7 +918,7 @@ func (self class) GetTileShape() gdclass.TileSetTileShape { //gd:TileSet.get_til
 }
 
 //go:nosplit
-func (self class) SetTileLayout(layout gdclass.TileSetTileLayout) { //gd:TileSet.set_tile_layout
+func (self class) SetTileLayout(layout TileLayout) { //gd:TileSet.set_tile_layout
 	var frame = callframe.New()
 	callframe.Arg(frame, layout)
 	var r_ret = callframe.Nil
@@ -920,9 +927,9 @@ func (self class) SetTileLayout(layout gdclass.TileSetTileLayout) { //gd:TileSet
 }
 
 //go:nosplit
-func (self class) GetTileLayout() gdclass.TileSetTileLayout { //gd:TileSet.get_tile_layout
+func (self class) GetTileLayout() TileLayout { //gd:TileSet.get_tile_layout
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TileSetTileLayout](frame)
+	var r_ret = callframe.Ret[TileLayout](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_tile_layout, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -930,7 +937,7 @@ func (self class) GetTileLayout() gdclass.TileSetTileLayout { //gd:TileSet.get_t
 }
 
 //go:nosplit
-func (self class) SetTileOffsetAxis(alignment gdclass.TileSetTileOffsetAxis) { //gd:TileSet.set_tile_offset_axis
+func (self class) SetTileOffsetAxis(alignment TileOffsetAxis) { //gd:TileSet.set_tile_offset_axis
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
 	var r_ret = callframe.Nil
@@ -939,9 +946,9 @@ func (self class) SetTileOffsetAxis(alignment gdclass.TileSetTileOffsetAxis) { /
 }
 
 //go:nosplit
-func (self class) GetTileOffsetAxis() gdclass.TileSetTileOffsetAxis { //gd:TileSet.get_tile_offset_axis
+func (self class) GetTileOffsetAxis() TileOffsetAxis { //gd:TileSet.get_tile_offset_axis
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TileSetTileOffsetAxis](frame)
+	var r_ret = callframe.Ret[TileOffsetAxis](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_tile_offset_axis, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1304,7 +1311,7 @@ func (self class) RemoveTerrainSet(terrain_set int64) { //gd:TileSet.remove_terr
 Sets a terrain mode. Each mode determines which bits of a tile shape is used to match the neighboring tiles' terrains.
 */
 //go:nosplit
-func (self class) SetTerrainSetMode(terrain_set int64, mode gdclass.TileSetTerrainMode) { //gd:TileSet.set_terrain_set_mode
+func (self class) SetTerrainSetMode(terrain_set int64, mode TerrainMode) { //gd:TileSet.set_terrain_set_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, terrain_set)
 	callframe.Arg(frame, mode)
@@ -1317,10 +1324,10 @@ func (self class) SetTerrainSetMode(terrain_set int64, mode gdclass.TileSetTerra
 Returns a terrain set mode.
 */
 //go:nosplit
-func (self class) GetTerrainSetMode(terrain_set int64) gdclass.TileSetTerrainMode { //gd:TileSet.get_terrain_set_mode
+func (self class) GetTerrainSetMode(terrain_set int64) TerrainMode { //gd:TileSet.get_terrain_set_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, terrain_set)
-	var r_ret = callframe.Ret[gdclass.TileSetTerrainMode](frame)
+	var r_ret = callframe.Ret[TerrainMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSet.Bind_get_terrain_set_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1990,7 +1997,7 @@ func init() {
 	gdclass.Register("TileSet", func(ptr gd.Object) any { return [1]gdclass.TileSet{*(*gdclass.TileSet)(unsafe.Pointer(&ptr))} })
 }
 
-type TileShape = gdclass.TileSetTileShape //gd:TileSet.TileShape
+type TileShape int //gd:TileSet.TileShape
 
 const (
 	/*Rectangular tile shape.*/
@@ -2004,7 +2011,7 @@ const (
 	TileShapeHexagon TileShape = 3
 )
 
-type TileLayout = gdclass.TileSetTileLayout //gd:TileSet.TileLayout
+type TileLayout int //gd:TileSet.TileLayout
 
 const (
 	/*Tile coordinates layout where both axis stay consistent with their respective local horizontal and vertical axis.*/
@@ -2021,7 +2028,7 @@ const (
 	TileLayoutDiamondDown TileLayout = 5
 )
 
-type TileOffsetAxis = gdclass.TileSetTileOffsetAxis //gd:TileSet.TileOffsetAxis
+type TileOffsetAxis int //gd:TileSet.TileOffsetAxis
 
 const (
 	/*Horizontal half-offset.*/
@@ -2030,7 +2037,7 @@ const (
 	TileOffsetAxisVertical TileOffsetAxis = 1
 )
 
-type CellNeighbor = gdclass.TileSetCellNeighbor //gd:TileSet.CellNeighbor
+type CellNeighbor int //gd:TileSet.CellNeighbor
 
 const (
 	/*Neighbor on the right side.*/
@@ -2067,7 +2074,7 @@ const (
 	CellNeighborTopRightCorner CellNeighbor = 15
 )
 
-type TerrainMode = gdclass.TileSetTerrainMode //gd:TileSet.TerrainMode
+type TerrainMode int //gd:TileSet.TerrainMode
 
 const (
 	/*Requires both corners and side to match with neighboring tiles' terrains.*/
@@ -2076,89 +2083,4 @@ const (
 	TerrainModeMatchCorners TerrainMode = 1
 	/*Requires sides to match with neighboring tiles' terrains.*/
 	TerrainModeMatchSides TerrainMode = 2
-)
-
-type VariantType int
-
-const (
-	/*Variable is [code]null[/code].*/
-	TypeNil VariantType = 0
-	/*Variable is of type [bool].*/
-	TypeBool VariantType = 1
-	/*Variable is of type [int].*/
-	TypeInt VariantType = 2
-	/*Variable is of type [float].*/
-	TypeFloat VariantType = 3
-	/*Variable is of type [String].*/
-	TypeString VariantType = 4
-	/*Variable is of type [Vector2].*/
-	TypeVector2 VariantType = 5
-	/*Variable is of type [Vector2i].*/
-	TypeVector2i VariantType = 6
-	/*Variable is of type [Rect2].*/
-	TypeRect2 VariantType = 7
-	/*Variable is of type [Rect2i].*/
-	TypeRect2i VariantType = 8
-	/*Variable is of type [Vector3].*/
-	TypeVector3 VariantType = 9
-	/*Variable is of type [Vector3i].*/
-	TypeVector3i VariantType = 10
-	/*Variable is of type [Transform2D].*/
-	TypeTransform2d VariantType = 11
-	/*Variable is of type [Vector4].*/
-	TypeVector4 VariantType = 12
-	/*Variable is of type [Vector4i].*/
-	TypeVector4i VariantType = 13
-	/*Variable is of type [Plane].*/
-	TypePlane VariantType = 14
-	/*Variable is of type [Quaternion].*/
-	TypeQuaternion VariantType = 15
-	/*Variable is of type [AABB].*/
-	TypeAabb VariantType = 16
-	/*Variable is of type [Basis].*/
-	TypeBasis VariantType = 17
-	/*Variable is of type [Transform3D].*/
-	TypeTransform3d VariantType = 18
-	/*Variable is of type [Projection].*/
-	TypeProjection VariantType = 19
-	/*Variable is of type [Color].*/
-	TypeColor VariantType = 20
-	/*Variable is of type [StringName].*/
-	TypeStringName VariantType = 21
-	/*Variable is of type [NodePath].*/
-	TypeNodePath VariantType = 22
-	/*Variable is of type [RID].*/
-	TypeRid VariantType = 23
-	/*Variable is of type [Object].*/
-	TypeObject VariantType = 24
-	/*Variable is of type [Callable].*/
-	TypeCallable VariantType = 25
-	/*Variable is of type [Signal].*/
-	TypeSignal VariantType = 26
-	/*Variable is of type [Dictionary].*/
-	TypeDictionary VariantType = 27
-	/*Variable is of type [Array].*/
-	TypeArray VariantType = 28
-	/*Variable is of type [PackedByteArray].*/
-	TypePackedByteArray VariantType = 29
-	/*Variable is of type [PackedInt32Array].*/
-	TypePackedInt32Array VariantType = 30
-	/*Variable is of type [PackedInt64Array].*/
-	TypePackedInt64Array VariantType = 31
-	/*Variable is of type [PackedFloat32Array].*/
-	TypePackedFloat32Array VariantType = 32
-	/*Variable is of type [PackedFloat64Array].*/
-	TypePackedFloat64Array VariantType = 33
-	/*Variable is of type [PackedStringArray].*/
-	TypePackedStringArray VariantType = 34
-	/*Variable is of type [PackedVector2Array].*/
-	TypePackedVector2Array VariantType = 35
-	/*Variable is of type [PackedVector3Array].*/
-	TypePackedVector3Array VariantType = 36
-	/*Variable is of type [PackedColorArray].*/
-	TypePackedColorArray VariantType = 37
-	/*Variable is of type [PackedVector4Array].*/
-	TypePackedVector4Array VariantType = 38
-	/*Represents the size of the [enum Variant.Type] enum.*/
-	TypeMax VariantType = 39
 )

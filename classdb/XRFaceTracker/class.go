@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/XRTracker"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -25,6 +26,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -40,6 +45,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -52,6 +58,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -74,14 +81,14 @@ type Any interface {
 /*
 Returns the requested face blend shape weight.
 */
-func (self Instance) GetBlendShape(blend_shape gdclass.XRFaceTrackerBlendShapeEntry) Float.X { //gd:XRFaceTracker.get_blend_shape
+func (self Instance) GetBlendShape(blend_shape BlendShapeEntry) Float.X { //gd:XRFaceTracker.get_blend_shape
 	return Float.X(Float.X(Advanced(self).GetBlendShape(blend_shape)))
 }
 
 /*
 Sets a face blend shape weight.
 */
-func (self Instance) SetBlendShape(blend_shape gdclass.XRFaceTrackerBlendShapeEntry, weight Float.X) { //gd:XRFaceTracker.set_blend_shape
+func (self Instance) SetBlendShape(blend_shape BlendShapeEntry, weight Float.X) { //gd:XRFaceTracker.set_blend_shape
 	Advanced(self).SetBlendShape(blend_shape, float64(weight))
 }
 
@@ -117,7 +124,7 @@ func (self Instance) SetBlendShapes(value []float32) {
 Returns the requested face blend shape weight.
 */
 //go:nosplit
-func (self class) GetBlendShape(blend_shape gdclass.XRFaceTrackerBlendShapeEntry) float64 { //gd:XRFaceTracker.get_blend_shape
+func (self class) GetBlendShape(blend_shape BlendShapeEntry) float64 { //gd:XRFaceTracker.get_blend_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, blend_shape)
 	var r_ret = callframe.Ret[float64](frame)
@@ -131,7 +138,7 @@ func (self class) GetBlendShape(blend_shape gdclass.XRFaceTrackerBlendShapeEntry
 Sets a face blend shape weight.
 */
 //go:nosplit
-func (self class) SetBlendShape(blend_shape gdclass.XRFaceTrackerBlendShapeEntry, weight float64) { //gd:XRFaceTracker.set_blend_shape
+func (self class) SetBlendShape(blend_shape BlendShapeEntry, weight float64) { //gd:XRFaceTracker.set_blend_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, blend_shape)
 	callframe.Arg(frame, weight)
@@ -195,7 +202,7 @@ func init() {
 	})
 }
 
-type BlendShapeEntry = gdclass.XRFaceTrackerBlendShapeEntry //gd:XRFaceTracker.BlendShapeEntry
+type BlendShapeEntry int //gd:XRFaceTracker.BlendShapeEntry
 
 const (
 	/*Right eye looks outwards.*/

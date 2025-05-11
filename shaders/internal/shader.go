@@ -7,7 +7,7 @@ import (
 )
 
 type Shader struct {
-	classdb.Extension[Shader, ShaderMaterial.Instance] `gd:"GoShader"`
+	ShaderMaterial.Extension[Shader] `gd:"GoShader"`
 }
 
 func (shader *Shader) shader() *Shader {

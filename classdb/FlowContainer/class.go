@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
@@ -28,6 +29,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -43,6 +48,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,6 +61,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -99,19 +106,19 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Alignment() gdclass.FlowContainerAlignmentMode {
-	return gdclass.FlowContainerAlignmentMode(class(self).GetAlignment())
+func (self Instance) Alignment() AlignmentMode {
+	return AlignmentMode(class(self).GetAlignment())
 }
 
-func (self Instance) SetAlignment(value gdclass.FlowContainerAlignmentMode) {
+func (self Instance) SetAlignment(value AlignmentMode) {
 	class(self).SetAlignment(value)
 }
 
-func (self Instance) LastWrapAlignment() gdclass.FlowContainerLastWrapAlignmentMode {
-	return gdclass.FlowContainerLastWrapAlignmentMode(class(self).GetLastWrapAlignment())
+func (self Instance) LastWrapAlignment() LastWrapAlignmentMode {
+	return LastWrapAlignmentMode(class(self).GetLastWrapAlignment())
 }
 
-func (self Instance) SetLastWrapAlignment(value gdclass.FlowContainerLastWrapAlignmentMode) {
+func (self Instance) SetLastWrapAlignment(value LastWrapAlignmentMode) {
 	class(self).SetLastWrapAlignment(value)
 }
 
@@ -145,7 +152,7 @@ func (self class) GetLineCount() int64 { //gd:FlowContainer.get_line_count
 }
 
 //go:nosplit
-func (self class) SetAlignment(alignment gdclass.FlowContainerAlignmentMode) { //gd:FlowContainer.set_alignment
+func (self class) SetAlignment(alignment AlignmentMode) { //gd:FlowContainer.set_alignment
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
 	var r_ret = callframe.Nil
@@ -154,9 +161,9 @@ func (self class) SetAlignment(alignment gdclass.FlowContainerAlignmentMode) { /
 }
 
 //go:nosplit
-func (self class) GetAlignment() gdclass.FlowContainerAlignmentMode { //gd:FlowContainer.get_alignment
+func (self class) GetAlignment() AlignmentMode { //gd:FlowContainer.get_alignment
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.FlowContainerAlignmentMode](frame)
+	var r_ret = callframe.Ret[AlignmentMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FlowContainer.Bind_get_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -164,7 +171,7 @@ func (self class) GetAlignment() gdclass.FlowContainerAlignmentMode { //gd:FlowC
 }
 
 //go:nosplit
-func (self class) SetLastWrapAlignment(last_wrap_alignment gdclass.FlowContainerLastWrapAlignmentMode) { //gd:FlowContainer.set_last_wrap_alignment
+func (self class) SetLastWrapAlignment(last_wrap_alignment LastWrapAlignmentMode) { //gd:FlowContainer.set_last_wrap_alignment
 	var frame = callframe.New()
 	callframe.Arg(frame, last_wrap_alignment)
 	var r_ret = callframe.Nil
@@ -173,9 +180,9 @@ func (self class) SetLastWrapAlignment(last_wrap_alignment gdclass.FlowContainer
 }
 
 //go:nosplit
-func (self class) GetLastWrapAlignment() gdclass.FlowContainerLastWrapAlignmentMode { //gd:FlowContainer.get_last_wrap_alignment
+func (self class) GetLastWrapAlignment() LastWrapAlignmentMode { //gd:FlowContainer.get_last_wrap_alignment
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.FlowContainerLastWrapAlignmentMode](frame)
+	var r_ret = callframe.Ret[LastWrapAlignmentMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FlowContainer.Bind_get_last_wrap_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -264,7 +271,7 @@ func init() {
 	})
 }
 
-type AlignmentMode = gdclass.FlowContainerAlignmentMode //gd:FlowContainer.AlignmentMode
+type AlignmentMode int //gd:FlowContainer.AlignmentMode
 
 const (
 	/*The child controls will be arranged at the beginning of the container, i.e. top if orientation is vertical, left if orientation is horizontal (right for RTL layout).*/
@@ -275,7 +282,7 @@ const (
 	AlignmentEnd AlignmentMode = 2
 )
 
-type LastWrapAlignmentMode = gdclass.FlowContainerLastWrapAlignmentMode //gd:FlowContainer.LastWrapAlignmentMode
+type LastWrapAlignmentMode int //gd:FlowContainer.LastWrapAlignmentMode
 
 const (
 	/*The last partially filled row or column will wrap aligned to the previous row or column in accordance with [member alignment].*/

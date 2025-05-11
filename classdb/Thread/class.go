@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -24,6 +25,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -39,6 +44,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -51,6 +57,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -92,7 +99,7 @@ If the method takes some arguments, you can pass them using [method Callable.bin
 The [param priority] of the [Thread] can be changed by passing a value from the [enum Priority] enum.
 Returns [constant OK] on success, or [constant ERR_CANT_CREATE] on failure.
 */
-func (self Expanded) Start(callable func(), priority gdclass.ThreadPriority) error { //gd:Thread.start
+func (self Expanded) Start(callable func(), priority Priority) error { //gd:Thread.start
 	return error(gd.ToError(Advanced(self).Start(Callable.New(callable), priority)))
 }
 
@@ -168,7 +175,7 @@ The [param priority] of the [Thread] can be changed by passing a value from the 
 Returns [constant OK] on success, or [constant ERR_CANT_CREATE] on failure.
 */
 //go:nosplit
-func (self class) Start(callable Callable.Function, priority gdclass.ThreadPriority) Error.Code { //gd:Thread.start
+func (self class) Start(callable Callable.Function, priority Priority) Error.Code { //gd:Thread.start
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callable)))
 	callframe.Arg(frame, priority)
@@ -279,7 +286,7 @@ func init() {
 	gdclass.Register("Thread", func(ptr gd.Object) any { return [1]gdclass.Thread{*(*gdclass.Thread)(unsafe.Pointer(&ptr))} })
 }
 
-type Priority = gdclass.ThreadPriority //gd:Thread.Priority
+type Priority int //gd:Thread.Priority
 
 const (
 	/*A thread running with lower priority than normally.*/

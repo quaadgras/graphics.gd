@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/PacketPeer"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -25,6 +26,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -40,6 +45,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -52,6 +58,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -99,8 +106,8 @@ func (self Instance) GetPacketChannel() int { //gd:MultiplayerPeer.get_packet_ch
 /*
 Returns the transfer mode the remote peer used to send the next available packet. See [method PacketPeer.get_available_packet_count].
 */
-func (self Instance) GetPacketMode() gdclass.MultiplayerPeerTransferMode { //gd:MultiplayerPeer.get_packet_mode
-	return gdclass.MultiplayerPeerTransferMode(Advanced(self).GetPacketMode())
+func (self Instance) GetPacketMode() TransferMode { //gd:MultiplayerPeer.get_packet_mode
+	return TransferMode(Advanced(self).GetPacketMode())
 }
 
 /*
@@ -134,8 +141,8 @@ func (self Expanded) DisconnectPeer(peer int, force bool) { //gd:MultiplayerPeer
 /*
 Returns the current state of the connection. See [enum ConnectionStatus].
 */
-func (self Instance) GetConnectionStatus() gdclass.MultiplayerPeerConnectionStatus { //gd:MultiplayerPeer.get_connection_status
-	return gdclass.MultiplayerPeerConnectionStatus(Advanced(self).GetConnectionStatus())
+func (self Instance) GetConnectionStatus() ConnectionStatus { //gd:MultiplayerPeer.get_connection_status
+	return ConnectionStatus(Advanced(self).GetConnectionStatus())
 }
 
 /*
@@ -187,11 +194,11 @@ func (self Instance) SetRefuseNewConnections(value bool) {
 	class(self).SetRefuseNewConnections(value)
 }
 
-func (self Instance) TransferMode() gdclass.MultiplayerPeerTransferMode {
-	return gdclass.MultiplayerPeerTransferMode(class(self).GetTransferMode())
+func (self Instance) TransferMode() TransferMode {
+	return TransferMode(class(self).GetTransferMode())
 }
 
-func (self Instance) SetTransferMode(value gdclass.MultiplayerPeerTransferMode) {
+func (self Instance) SetTransferMode(value TransferMode) {
 	class(self).SetTransferMode(value)
 }
 
@@ -223,7 +230,7 @@ func (self class) GetTransferChannel() int64 { //gd:MultiplayerPeer.get_transfer
 }
 
 //go:nosplit
-func (self class) SetTransferMode(mode gdclass.MultiplayerPeerTransferMode) { //gd:MultiplayerPeer.set_transfer_mode
+func (self class) SetTransferMode(mode TransferMode) { //gd:MultiplayerPeer.set_transfer_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -232,9 +239,9 @@ func (self class) SetTransferMode(mode gdclass.MultiplayerPeerTransferMode) { //
 }
 
 //go:nosplit
-func (self class) GetTransferMode() gdclass.MultiplayerPeerTransferMode { //gd:MultiplayerPeer.get_transfer_mode
+func (self class) GetTransferMode() TransferMode { //gd:MultiplayerPeer.get_transfer_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.MultiplayerPeerTransferMode](frame)
+	var r_ret = callframe.Ret[TransferMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerPeer.Bind_get_transfer_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -284,9 +291,9 @@ func (self class) GetPacketChannel() int64 { //gd:MultiplayerPeer.get_packet_cha
 Returns the transfer mode the remote peer used to send the next available packet. See [method PacketPeer.get_available_packet_count].
 */
 //go:nosplit
-func (self class) GetPacketMode() gdclass.MultiplayerPeerTransferMode { //gd:MultiplayerPeer.get_packet_mode
+func (self class) GetPacketMode() TransferMode { //gd:MultiplayerPeer.get_packet_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.MultiplayerPeerTransferMode](frame)
+	var r_ret = callframe.Ret[TransferMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerPeer.Bind_get_packet_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -332,9 +339,9 @@ func (self class) DisconnectPeer(peer int64, force bool) { //gd:MultiplayerPeer.
 Returns the current state of the connection. See [enum ConnectionStatus].
 */
 //go:nosplit
-func (self class) GetConnectionStatus() gdclass.MultiplayerPeerConnectionStatus { //gd:MultiplayerPeer.get_connection_status
+func (self class) GetConnectionStatus() ConnectionStatus { //gd:MultiplayerPeer.get_connection_status
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.MultiplayerPeerConnectionStatus](frame)
+	var r_ret = callframe.Ret[ConnectionStatus](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerPeer.Bind_get_connection_status, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -443,7 +450,7 @@ func init() {
 	})
 }
 
-type ConnectionStatus = gdclass.MultiplayerPeerConnectionStatus //gd:MultiplayerPeer.ConnectionStatus
+type ConnectionStatus int //gd:MultiplayerPeer.ConnectionStatus
 
 const (
 	/*The MultiplayerPeer is disconnected.*/
@@ -454,7 +461,7 @@ const (
 	ConnectionConnected ConnectionStatus = 2
 )
 
-type TransferMode = gdclass.MultiplayerPeerTransferMode //gd:MultiplayerPeer.TransferMode
+type TransferMode int //gd:MultiplayerPeer.TransferMode
 
 const (
 	/*Packets are not acknowledged, no resend attempts are made for lost packets. Packets may arrive in any order. Potentially faster than [constant TRANSFER_MODE_UNRELIABLE_ORDERED]. Use for non-critical data, and always consider whether the order matters.*/

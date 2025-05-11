@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Material"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
@@ -26,6 +27,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -41,6 +46,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -53,6 +59,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -91,19 +98,19 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) BlendMode() gdclass.CanvasItemMaterialBlendMode {
-	return gdclass.CanvasItemMaterialBlendMode(class(self).GetBlendMode())
+func (self Instance) BlendMode() BlendMode {
+	return BlendMode(class(self).GetBlendMode())
 }
 
-func (self Instance) SetBlendMode(value gdclass.CanvasItemMaterialBlendMode) {
+func (self Instance) SetBlendMode(value BlendMode) {
 	class(self).SetBlendMode(value)
 }
 
-func (self Instance) LightMode() gdclass.CanvasItemMaterialLightMode {
-	return gdclass.CanvasItemMaterialLightMode(class(self).GetLightMode())
+func (self Instance) LightMode() LightMode {
+	return LightMode(class(self).GetLightMode())
 }
 
-func (self Instance) SetLightMode(value gdclass.CanvasItemMaterialLightMode) {
+func (self Instance) SetLightMode(value LightMode) {
 	class(self).SetLightMode(value)
 }
 
@@ -140,7 +147,7 @@ func (self Instance) SetParticlesAnimLoop(value bool) {
 }
 
 //go:nosplit
-func (self class) SetBlendMode(blend_mode gdclass.CanvasItemMaterialBlendMode) { //gd:CanvasItemMaterial.set_blend_mode
+func (self class) SetBlendMode(blend_mode BlendMode) { //gd:CanvasItemMaterial.set_blend_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, blend_mode)
 	var r_ret = callframe.Nil
@@ -149,9 +156,9 @@ func (self class) SetBlendMode(blend_mode gdclass.CanvasItemMaterialBlendMode) {
 }
 
 //go:nosplit
-func (self class) GetBlendMode() gdclass.CanvasItemMaterialBlendMode { //gd:CanvasItemMaterial.get_blend_mode
+func (self class) GetBlendMode() BlendMode { //gd:CanvasItemMaterial.get_blend_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.CanvasItemMaterialBlendMode](frame)
+	var r_ret = callframe.Ret[BlendMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItemMaterial.Bind_get_blend_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -159,7 +166,7 @@ func (self class) GetBlendMode() gdclass.CanvasItemMaterialBlendMode { //gd:Canv
 }
 
 //go:nosplit
-func (self class) SetLightMode(light_mode gdclass.CanvasItemMaterialLightMode) { //gd:CanvasItemMaterial.set_light_mode
+func (self class) SetLightMode(light_mode LightMode) { //gd:CanvasItemMaterial.set_light_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, light_mode)
 	var r_ret = callframe.Nil
@@ -168,9 +175,9 @@ func (self class) SetLightMode(light_mode gdclass.CanvasItemMaterialLightMode) {
 }
 
 //go:nosplit
-func (self class) GetLightMode() gdclass.CanvasItemMaterialLightMode { //gd:CanvasItemMaterial.get_light_mode
+func (self class) GetLightMode() LightMode { //gd:CanvasItemMaterial.get_light_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.CanvasItemMaterialLightMode](frame)
+	var r_ret = callframe.Ret[LightMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItemMaterial.Bind_get_light_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -296,7 +303,7 @@ func init() {
 	})
 }
 
-type BlendMode = gdclass.CanvasItemMaterialBlendMode //gd:CanvasItemMaterial.BlendMode
+type BlendMode int //gd:CanvasItemMaterial.BlendMode
 
 const (
 	/*Mix blending mode. Colors are assumed to be independent of the alpha (opacity) value.*/
@@ -311,7 +318,7 @@ const (
 	BlendModePremultAlpha BlendMode = 4
 )
 
-type LightMode = gdclass.CanvasItemMaterialLightMode //gd:CanvasItemMaterial.LightMode
+type LightMode int //gd:CanvasItemMaterial.LightMode
 
 const (
 	/*Render the material using both light and non-light sensitive material properties.*/

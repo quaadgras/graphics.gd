@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/AudioListener2D"
 import "graphics.gd/classdb/AudioListener3D"
 import "graphics.gd/classdb/Camera2D"
@@ -38,6 +39,10 @@ import "graphics.gd/variant/Transform2D"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -53,6 +58,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -65,6 +71,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -128,7 +135,7 @@ func (self Instance) GetVisibleRect() Rect2.PositionSize { //gd:Viewport.get_vis
 /*
 Returns rendering statistics of the given type. See [enum RenderInfoType] and [enum RenderInfo] for options.
 */
-func (self Instance) GetRenderInfo(atype gdclass.ViewportRenderInfoType, info gdclass.ViewportRenderInfo) int { //gd:Viewport.get_render_info
+func (self Instance) GetRenderInfo(atype RenderInfoType, info RenderInfo) int { //gd:Viewport.get_render_info
 	return int(int(Advanced(self).GetRenderInfo(atype, info)))
 }
 
@@ -479,27 +486,27 @@ func (self Instance) SetSnap2dVerticesToPixel(value bool) {
 	class(self).SetSnap2dVerticesToPixel(value)
 }
 
-func (self Instance) Msaa2d() gdclass.ViewportMSAA {
-	return gdclass.ViewportMSAA(class(self).GetMsaa2d())
+func (self Instance) Msaa2d() MSAA {
+	return MSAA(class(self).GetMsaa2d())
 }
 
-func (self Instance) SetMsaa2d(value gdclass.ViewportMSAA) {
+func (self Instance) SetMsaa2d(value MSAA) {
 	class(self).SetMsaa2d(value)
 }
 
-func (self Instance) Msaa3d() gdclass.ViewportMSAA {
-	return gdclass.ViewportMSAA(class(self).GetMsaa3d())
+func (self Instance) Msaa3d() MSAA {
+	return MSAA(class(self).GetMsaa3d())
 }
 
-func (self Instance) SetMsaa3d(value gdclass.ViewportMSAA) {
+func (self Instance) SetMsaa3d(value MSAA) {
 	class(self).SetMsaa3d(value)
 }
 
-func (self Instance) ScreenSpaceAa() gdclass.ViewportScreenSpaceAA {
-	return gdclass.ViewportScreenSpaceAA(class(self).GetScreenSpaceAa())
+func (self Instance) ScreenSpaceAa() ScreenSpaceAA {
+	return ScreenSpaceAA(class(self).GetScreenSpaceAa())
 }
 
-func (self Instance) SetScreenSpaceAa(value gdclass.ViewportScreenSpaceAA) {
+func (self Instance) SetScreenSpaceAa(value ScreenSpaceAA) {
 	class(self).SetScreenSpaceAa(value)
 }
 
@@ -535,11 +542,11 @@ func (self Instance) SetMeshLodThreshold(value Float.X) {
 	class(self).SetMeshLodThreshold(float64(value))
 }
 
-func (self Instance) DebugDraw() gdclass.ViewportDebugDraw {
-	return gdclass.ViewportDebugDraw(class(self).GetDebugDraw())
+func (self Instance) DebugDraw() DebugDraw {
+	return DebugDraw(class(self).GetDebugDraw())
 }
 
-func (self Instance) SetDebugDraw(value gdclass.ViewportDebugDraw) {
+func (self Instance) SetDebugDraw(value DebugDraw) {
 	class(self).SetDebugDraw(value)
 }
 
@@ -551,11 +558,11 @@ func (self Instance) SetUseHdr2d(value bool) {
 	class(self).SetUseHdr2d(value)
 }
 
-func (self Instance) Scaling3dMode() gdclass.ViewportScaling3DMode {
-	return gdclass.ViewportScaling3DMode(class(self).GetScaling3dMode())
+func (self Instance) Scaling3dMode() Scaling3DMode {
+	return Scaling3DMode(class(self).GetScaling3dMode())
 }
 
-func (self Instance) SetScaling3dMode(value gdclass.ViewportScaling3DMode) {
+func (self Instance) SetScaling3dMode(value Scaling3DMode) {
 	class(self).SetScaling3dMode(value)
 }
 
@@ -575,11 +582,11 @@ func (self Instance) SetTextureMipmapBias(value Float.X) {
 	class(self).SetTextureMipmapBias(float64(value))
 }
 
-func (self Instance) AnisotropicFilteringLevel() gdclass.ViewportAnisotropicFiltering {
-	return gdclass.ViewportAnisotropicFiltering(class(self).GetAnisotropicFilteringLevel())
+func (self Instance) AnisotropicFilteringLevel() AnisotropicFiltering {
+	return AnisotropicFiltering(class(self).GetAnisotropicFilteringLevel())
 }
 
-func (self Instance) SetAnisotropicFilteringLevel(value gdclass.ViewportAnisotropicFiltering) {
+func (self Instance) SetAnisotropicFilteringLevel(value AnisotropicFiltering) {
 	class(self).SetAnisotropicFilteringLevel(value)
 }
 
@@ -591,19 +598,19 @@ func (self Instance) SetFsrSharpness(value Float.X) {
 	class(self).SetFsrSharpness(float64(value))
 }
 
-func (self Instance) VrsMode() gdclass.ViewportVRSMode {
-	return gdclass.ViewportVRSMode(class(self).GetVrsMode())
+func (self Instance) VrsMode() VRSMode {
+	return VRSMode(class(self).GetVrsMode())
 }
 
-func (self Instance) SetVrsMode(value gdclass.ViewportVRSMode) {
+func (self Instance) SetVrsMode(value VRSMode) {
 	class(self).SetVrsMode(value)
 }
 
-func (self Instance) VrsUpdateMode() gdclass.ViewportVRSUpdateMode {
-	return gdclass.ViewportVRSUpdateMode(class(self).GetVrsUpdateMode())
+func (self Instance) VrsUpdateMode() VRSUpdateMode {
+	return VRSUpdateMode(class(self).GetVrsUpdateMode())
 }
 
-func (self Instance) SetVrsUpdateMode(value gdclass.ViewportVRSUpdateMode) {
+func (self Instance) SetVrsUpdateMode(value VRSUpdateMode) {
 	class(self).SetVrsUpdateMode(value)
 }
 
@@ -615,19 +622,19 @@ func (self Instance) SetVrsTexture(value Texture2D.Instance) {
 	class(self).SetVrsTexture(value)
 }
 
-func (self Instance) CanvasItemDefaultTextureFilter() gdclass.ViewportDefaultCanvasItemTextureFilter {
-	return gdclass.ViewportDefaultCanvasItemTextureFilter(class(self).GetDefaultCanvasItemTextureFilter())
+func (self Instance) CanvasItemDefaultTextureFilter() DefaultCanvasItemTextureFilter {
+	return DefaultCanvasItemTextureFilter(class(self).GetDefaultCanvasItemTextureFilter())
 }
 
-func (self Instance) SetCanvasItemDefaultTextureFilter(value gdclass.ViewportDefaultCanvasItemTextureFilter) {
+func (self Instance) SetCanvasItemDefaultTextureFilter(value DefaultCanvasItemTextureFilter) {
 	class(self).SetDefaultCanvasItemTextureFilter(value)
 }
 
-func (self Instance) CanvasItemDefaultTextureRepeat() gdclass.ViewportDefaultCanvasItemTextureRepeat {
-	return gdclass.ViewportDefaultCanvasItemTextureRepeat(class(self).GetDefaultCanvasItemTextureRepeat())
+func (self Instance) CanvasItemDefaultTextureRepeat() DefaultCanvasItemTextureRepeat {
+	return DefaultCanvasItemTextureRepeat(class(self).GetDefaultCanvasItemTextureRepeat())
 }
 
-func (self Instance) SetCanvasItemDefaultTextureRepeat(value gdclass.ViewportDefaultCanvasItemTextureRepeat) {
+func (self Instance) SetCanvasItemDefaultTextureRepeat(value DefaultCanvasItemTextureRepeat) {
 	class(self).SetDefaultCanvasItemTextureRepeat(value)
 }
 
@@ -695,19 +702,19 @@ func (self Instance) SetGuiEmbedSubwindows(value bool) {
 	class(self).SetEmbeddingSubwindows(value)
 }
 
-func (self Instance) SdfOversize() gdclass.ViewportSDFOversize {
-	return gdclass.ViewportSDFOversize(class(self).GetSdfOversize())
+func (self Instance) SdfOversize() SDFOversize {
+	return SDFOversize(class(self).GetSdfOversize())
 }
 
-func (self Instance) SetSdfOversize(value gdclass.ViewportSDFOversize) {
+func (self Instance) SetSdfOversize(value SDFOversize) {
 	class(self).SetSdfOversize(value)
 }
 
-func (self Instance) SdfScale() gdclass.ViewportSDFScale {
-	return gdclass.ViewportSDFScale(class(self).GetSdfScale())
+func (self Instance) SdfScale() SDFScale {
+	return SDFScale(class(self).GetSdfScale())
 }
 
-func (self Instance) SetSdfScale(value gdclass.ViewportSDFScale) {
+func (self Instance) SetSdfScale(value SDFScale) {
 	class(self).SetSdfScale(value)
 }
 
@@ -727,35 +734,35 @@ func (self Instance) SetPositionalShadowAtlas16Bits(value bool) {
 	class(self).SetPositionalShadowAtlas16Bits(value)
 }
 
-func (self Instance) PositionalShadowAtlasQuad0() gdclass.ViewportPositionalShadowAtlasQuadrantSubdiv {
-	return gdclass.ViewportPositionalShadowAtlasQuadrantSubdiv(class(self).GetPositionalShadowAtlasQuadrantSubdiv(0))
+func (self Instance) PositionalShadowAtlasQuad0() PositionalShadowAtlasQuadrantSubdiv {
+	return PositionalShadowAtlasQuadrantSubdiv(class(self).GetPositionalShadowAtlasQuadrantSubdiv(0))
 }
 
-func (self Instance) SetPositionalShadowAtlasQuad0(value gdclass.ViewportPositionalShadowAtlasQuadrantSubdiv) {
+func (self Instance) SetPositionalShadowAtlasQuad0(value PositionalShadowAtlasQuadrantSubdiv) {
 	class(self).SetPositionalShadowAtlasQuadrantSubdiv(0, value)
 }
 
-func (self Instance) PositionalShadowAtlasQuad1() gdclass.ViewportPositionalShadowAtlasQuadrantSubdiv {
-	return gdclass.ViewportPositionalShadowAtlasQuadrantSubdiv(class(self).GetPositionalShadowAtlasQuadrantSubdiv(1))
+func (self Instance) PositionalShadowAtlasQuad1() PositionalShadowAtlasQuadrantSubdiv {
+	return PositionalShadowAtlasQuadrantSubdiv(class(self).GetPositionalShadowAtlasQuadrantSubdiv(1))
 }
 
-func (self Instance) SetPositionalShadowAtlasQuad1(value gdclass.ViewportPositionalShadowAtlasQuadrantSubdiv) {
+func (self Instance) SetPositionalShadowAtlasQuad1(value PositionalShadowAtlasQuadrantSubdiv) {
 	class(self).SetPositionalShadowAtlasQuadrantSubdiv(1, value)
 }
 
-func (self Instance) PositionalShadowAtlasQuad2() gdclass.ViewportPositionalShadowAtlasQuadrantSubdiv {
-	return gdclass.ViewportPositionalShadowAtlasQuadrantSubdiv(class(self).GetPositionalShadowAtlasQuadrantSubdiv(2))
+func (self Instance) PositionalShadowAtlasQuad2() PositionalShadowAtlasQuadrantSubdiv {
+	return PositionalShadowAtlasQuadrantSubdiv(class(self).GetPositionalShadowAtlasQuadrantSubdiv(2))
 }
 
-func (self Instance) SetPositionalShadowAtlasQuad2(value gdclass.ViewportPositionalShadowAtlasQuadrantSubdiv) {
+func (self Instance) SetPositionalShadowAtlasQuad2(value PositionalShadowAtlasQuadrantSubdiv) {
 	class(self).SetPositionalShadowAtlasQuadrantSubdiv(2, value)
 }
 
-func (self Instance) PositionalShadowAtlasQuad3() gdclass.ViewportPositionalShadowAtlasQuadrantSubdiv {
-	return gdclass.ViewportPositionalShadowAtlasQuadrantSubdiv(class(self).GetPositionalShadowAtlasQuadrantSubdiv(3))
+func (self Instance) PositionalShadowAtlasQuad3() PositionalShadowAtlasQuadrantSubdiv {
+	return PositionalShadowAtlasQuadrantSubdiv(class(self).GetPositionalShadowAtlasQuadrantSubdiv(3))
 }
 
-func (self Instance) SetPositionalShadowAtlasQuad3(value gdclass.ViewportPositionalShadowAtlasQuadrantSubdiv) {
+func (self Instance) SetPositionalShadowAtlasQuad3(value PositionalShadowAtlasQuadrantSubdiv) {
 	class(self).SetPositionalShadowAtlasQuadrantSubdiv(3, value)
 }
 
@@ -945,7 +952,7 @@ func (self class) IsUsingHdr2d() bool { //gd:Viewport.is_using_hdr_2d
 }
 
 //go:nosplit
-func (self class) SetMsaa2d(msaa gdclass.ViewportMSAA) { //gd:Viewport.set_msaa_2d
+func (self class) SetMsaa2d(msaa MSAA) { //gd:Viewport.set_msaa_2d
 	var frame = callframe.New()
 	callframe.Arg(frame, msaa)
 	var r_ret = callframe.Nil
@@ -954,9 +961,9 @@ func (self class) SetMsaa2d(msaa gdclass.ViewportMSAA) { //gd:Viewport.set_msaa_
 }
 
 //go:nosplit
-func (self class) GetMsaa2d() gdclass.ViewportMSAA { //gd:Viewport.get_msaa_2d
+func (self class) GetMsaa2d() MSAA { //gd:Viewport.get_msaa_2d
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ViewportMSAA](frame)
+	var r_ret = callframe.Ret[MSAA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_msaa_2d, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -964,7 +971,7 @@ func (self class) GetMsaa2d() gdclass.ViewportMSAA { //gd:Viewport.get_msaa_2d
 }
 
 //go:nosplit
-func (self class) SetMsaa3d(msaa gdclass.ViewportMSAA) { //gd:Viewport.set_msaa_3d
+func (self class) SetMsaa3d(msaa MSAA) { //gd:Viewport.set_msaa_3d
 	var frame = callframe.New()
 	callframe.Arg(frame, msaa)
 	var r_ret = callframe.Nil
@@ -973,9 +980,9 @@ func (self class) SetMsaa3d(msaa gdclass.ViewportMSAA) { //gd:Viewport.set_msaa_
 }
 
 //go:nosplit
-func (self class) GetMsaa3d() gdclass.ViewportMSAA { //gd:Viewport.get_msaa_3d
+func (self class) GetMsaa3d() MSAA { //gd:Viewport.get_msaa_3d
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ViewportMSAA](frame)
+	var r_ret = callframe.Ret[MSAA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_msaa_3d, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -983,7 +990,7 @@ func (self class) GetMsaa3d() gdclass.ViewportMSAA { //gd:Viewport.get_msaa_3d
 }
 
 //go:nosplit
-func (self class) SetScreenSpaceAa(screen_space_aa gdclass.ViewportScreenSpaceAA) { //gd:Viewport.set_screen_space_aa
+func (self class) SetScreenSpaceAa(screen_space_aa ScreenSpaceAA) { //gd:Viewport.set_screen_space_aa
 	var frame = callframe.New()
 	callframe.Arg(frame, screen_space_aa)
 	var r_ret = callframe.Nil
@@ -992,9 +999,9 @@ func (self class) SetScreenSpaceAa(screen_space_aa gdclass.ViewportScreenSpaceAA
 }
 
 //go:nosplit
-func (self class) GetScreenSpaceAa() gdclass.ViewportScreenSpaceAA { //gd:Viewport.get_screen_space_aa
+func (self class) GetScreenSpaceAa() ScreenSpaceAA { //gd:Viewport.get_screen_space_aa
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ViewportScreenSpaceAA](frame)
+	var r_ret = callframe.Ret[ScreenSpaceAA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_screen_space_aa, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1059,7 +1066,7 @@ func (self class) IsUsingOcclusionCulling() bool { //gd:Viewport.is_using_occlus
 }
 
 //go:nosplit
-func (self class) SetDebugDraw(debug_draw gdclass.ViewportDebugDraw) { //gd:Viewport.set_debug_draw
+func (self class) SetDebugDraw(debug_draw DebugDraw) { //gd:Viewport.set_debug_draw
 	var frame = callframe.New()
 	callframe.Arg(frame, debug_draw)
 	var r_ret = callframe.Nil
@@ -1068,9 +1075,9 @@ func (self class) SetDebugDraw(debug_draw gdclass.ViewportDebugDraw) { //gd:View
 }
 
 //go:nosplit
-func (self class) GetDebugDraw() gdclass.ViewportDebugDraw { //gd:Viewport.get_debug_draw
+func (self class) GetDebugDraw() DebugDraw { //gd:Viewport.get_debug_draw
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ViewportDebugDraw](frame)
+	var r_ret = callframe.Ret[DebugDraw](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_debug_draw, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1081,7 +1088,7 @@ func (self class) GetDebugDraw() gdclass.ViewportDebugDraw { //gd:Viewport.get_d
 Returns rendering statistics of the given type. See [enum RenderInfoType] and [enum RenderInfo] for options.
 */
 //go:nosplit
-func (self class) GetRenderInfo(atype gdclass.ViewportRenderInfoType, info gdclass.ViewportRenderInfo) int64 { //gd:Viewport.get_render_info
+func (self class) GetRenderInfo(atype RenderInfoType, info RenderInfo) int64 { //gd:Viewport.get_render_info
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	callframe.Arg(frame, info)
@@ -1506,7 +1513,7 @@ func (self class) IsSnap2dVerticesToPixelEnabled() bool { //gd:Viewport.is_snap_
 Sets the number of subdivisions to use in the specified quadrant. A higher number of subdivisions allows you to have more shadows in the scene at once, but reduces the quality of the shadows. A good practice is to have quadrants with a varying number of subdivisions and to have as few subdivisions as possible.
 */
 //go:nosplit
-func (self class) SetPositionalShadowAtlasQuadrantSubdiv(quadrant int64, subdiv gdclass.ViewportPositionalShadowAtlasQuadrantSubdiv) { //gd:Viewport.set_positional_shadow_atlas_quadrant_subdiv
+func (self class) SetPositionalShadowAtlasQuadrantSubdiv(quadrant int64, subdiv PositionalShadowAtlasQuadrantSubdiv) { //gd:Viewport.set_positional_shadow_atlas_quadrant_subdiv
 	var frame = callframe.New()
 	callframe.Arg(frame, quadrant)
 	callframe.Arg(frame, subdiv)
@@ -1519,10 +1526,10 @@ func (self class) SetPositionalShadowAtlasQuadrantSubdiv(quadrant int64, subdiv 
 Returns the positional shadow atlas quadrant subdivision of the specified quadrant.
 */
 //go:nosplit
-func (self class) GetPositionalShadowAtlasQuadrantSubdiv(quadrant int64) gdclass.ViewportPositionalShadowAtlasQuadrantSubdiv { //gd:Viewport.get_positional_shadow_atlas_quadrant_subdiv
+func (self class) GetPositionalShadowAtlasQuadrantSubdiv(quadrant int64) PositionalShadowAtlasQuadrantSubdiv { //gd:Viewport.get_positional_shadow_atlas_quadrant_subdiv
 	var frame = callframe.New()
 	callframe.Arg(frame, quadrant)
-	var r_ret = callframe.Ret[gdclass.ViewportPositionalShadowAtlasQuadrantSubdiv](frame)
+	var r_ret = callframe.Ret[PositionalShadowAtlasQuadrantSubdiv](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_positional_shadow_atlas_quadrant_subdiv, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1576,7 +1583,7 @@ func (self class) IsHandlingInputLocally() bool { //gd:Viewport.is_handling_inpu
 }
 
 //go:nosplit
-func (self class) SetDefaultCanvasItemTextureFilter(mode gdclass.ViewportDefaultCanvasItemTextureFilter) { //gd:Viewport.set_default_canvas_item_texture_filter
+func (self class) SetDefaultCanvasItemTextureFilter(mode DefaultCanvasItemTextureFilter) { //gd:Viewport.set_default_canvas_item_texture_filter
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -1585,9 +1592,9 @@ func (self class) SetDefaultCanvasItemTextureFilter(mode gdclass.ViewportDefault
 }
 
 //go:nosplit
-func (self class) GetDefaultCanvasItemTextureFilter() gdclass.ViewportDefaultCanvasItemTextureFilter { //gd:Viewport.get_default_canvas_item_texture_filter
+func (self class) GetDefaultCanvasItemTextureFilter() DefaultCanvasItemTextureFilter { //gd:Viewport.get_default_canvas_item_texture_filter
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ViewportDefaultCanvasItemTextureFilter](frame)
+	var r_ret = callframe.Ret[DefaultCanvasItemTextureFilter](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_default_canvas_item_texture_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1674,7 +1681,7 @@ func (self class) GetCanvasCullMaskBit(layer int64) bool { //gd:Viewport.get_can
 }
 
 //go:nosplit
-func (self class) SetDefaultCanvasItemTextureRepeat(mode gdclass.ViewportDefaultCanvasItemTextureRepeat) { //gd:Viewport.set_default_canvas_item_texture_repeat
+func (self class) SetDefaultCanvasItemTextureRepeat(mode DefaultCanvasItemTextureRepeat) { //gd:Viewport.set_default_canvas_item_texture_repeat
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -1683,9 +1690,9 @@ func (self class) SetDefaultCanvasItemTextureRepeat(mode gdclass.ViewportDefault
 }
 
 //go:nosplit
-func (self class) GetDefaultCanvasItemTextureRepeat() gdclass.ViewportDefaultCanvasItemTextureRepeat { //gd:Viewport.get_default_canvas_item_texture_repeat
+func (self class) GetDefaultCanvasItemTextureRepeat() DefaultCanvasItemTextureRepeat { //gd:Viewport.get_default_canvas_item_texture_repeat
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ViewportDefaultCanvasItemTextureRepeat](frame)
+	var r_ret = callframe.Ret[DefaultCanvasItemTextureRepeat](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_default_canvas_item_texture_repeat, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1693,7 +1700,7 @@ func (self class) GetDefaultCanvasItemTextureRepeat() gdclass.ViewportDefaultCan
 }
 
 //go:nosplit
-func (self class) SetSdfOversize(oversize gdclass.ViewportSDFOversize) { //gd:Viewport.set_sdf_oversize
+func (self class) SetSdfOversize(oversize SDFOversize) { //gd:Viewport.set_sdf_oversize
 	var frame = callframe.New()
 	callframe.Arg(frame, oversize)
 	var r_ret = callframe.Nil
@@ -1702,9 +1709,9 @@ func (self class) SetSdfOversize(oversize gdclass.ViewportSDFOversize) { //gd:Vi
 }
 
 //go:nosplit
-func (self class) GetSdfOversize() gdclass.ViewportSDFOversize { //gd:Viewport.get_sdf_oversize
+func (self class) GetSdfOversize() SDFOversize { //gd:Viewport.get_sdf_oversize
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ViewportSDFOversize](frame)
+	var r_ret = callframe.Ret[SDFOversize](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_sdf_oversize, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1712,7 +1719,7 @@ func (self class) GetSdfOversize() gdclass.ViewportSDFOversize { //gd:Viewport.g
 }
 
 //go:nosplit
-func (self class) SetSdfScale(scale gdclass.ViewportSDFScale) { //gd:Viewport.set_sdf_scale
+func (self class) SetSdfScale(scale SDFScale) { //gd:Viewport.set_sdf_scale
 	var frame = callframe.New()
 	callframe.Arg(frame, scale)
 	var r_ret = callframe.Nil
@@ -1721,9 +1728,9 @@ func (self class) SetSdfScale(scale gdclass.ViewportSDFScale) { //gd:Viewport.se
 }
 
 //go:nosplit
-func (self class) GetSdfScale() gdclass.ViewportSDFScale { //gd:Viewport.get_sdf_scale
+func (self class) GetSdfScale() SDFScale { //gd:Viewport.get_sdf_scale
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ViewportSDFScale](frame)
+	var r_ret = callframe.Ret[SDFScale](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_sdf_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1929,7 +1936,7 @@ func (self class) IsUsingXr() bool { //gd:Viewport.is_using_xr
 }
 
 //go:nosplit
-func (self class) SetScaling3dMode(scaling_3d_mode gdclass.ViewportScaling3DMode) { //gd:Viewport.set_scaling_3d_mode
+func (self class) SetScaling3dMode(scaling_3d_mode Scaling3DMode) { //gd:Viewport.set_scaling_3d_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, scaling_3d_mode)
 	var r_ret = callframe.Nil
@@ -1938,9 +1945,9 @@ func (self class) SetScaling3dMode(scaling_3d_mode gdclass.ViewportScaling3DMode
 }
 
 //go:nosplit
-func (self class) GetScaling3dMode() gdclass.ViewportScaling3DMode { //gd:Viewport.get_scaling_3d_mode
+func (self class) GetScaling3dMode() Scaling3DMode { //gd:Viewport.get_scaling_3d_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ViewportScaling3DMode](frame)
+	var r_ret = callframe.Ret[Scaling3DMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_scaling_3d_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2005,7 +2012,7 @@ func (self class) GetTextureMipmapBias() float64 { //gd:Viewport.get_texture_mip
 }
 
 //go:nosplit
-func (self class) SetAnisotropicFilteringLevel(anisotropic_filtering_level gdclass.ViewportAnisotropicFiltering) { //gd:Viewport.set_anisotropic_filtering_level
+func (self class) SetAnisotropicFilteringLevel(anisotropic_filtering_level AnisotropicFiltering) { //gd:Viewport.set_anisotropic_filtering_level
 	var frame = callframe.New()
 	callframe.Arg(frame, anisotropic_filtering_level)
 	var r_ret = callframe.Nil
@@ -2014,9 +2021,9 @@ func (self class) SetAnisotropicFilteringLevel(anisotropic_filtering_level gdcla
 }
 
 //go:nosplit
-func (self class) GetAnisotropicFilteringLevel() gdclass.ViewportAnisotropicFiltering { //gd:Viewport.get_anisotropic_filtering_level
+func (self class) GetAnisotropicFilteringLevel() AnisotropicFiltering { //gd:Viewport.get_anisotropic_filtering_level
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ViewportAnisotropicFiltering](frame)
+	var r_ret = callframe.Ret[AnisotropicFiltering](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_anisotropic_filtering_level, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2024,7 +2031,7 @@ func (self class) GetAnisotropicFilteringLevel() gdclass.ViewportAnisotropicFilt
 }
 
 //go:nosplit
-func (self class) SetVrsMode(mode gdclass.ViewportVRSMode) { //gd:Viewport.set_vrs_mode
+func (self class) SetVrsMode(mode VRSMode) { //gd:Viewport.set_vrs_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -2033,9 +2040,9 @@ func (self class) SetVrsMode(mode gdclass.ViewportVRSMode) { //gd:Viewport.set_v
 }
 
 //go:nosplit
-func (self class) GetVrsMode() gdclass.ViewportVRSMode { //gd:Viewport.get_vrs_mode
+func (self class) GetVrsMode() VRSMode { //gd:Viewport.get_vrs_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ViewportVRSMode](frame)
+	var r_ret = callframe.Ret[VRSMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_vrs_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2043,7 +2050,7 @@ func (self class) GetVrsMode() gdclass.ViewportVRSMode { //gd:Viewport.get_vrs_m
 }
 
 //go:nosplit
-func (self class) SetVrsUpdateMode(mode gdclass.ViewportVRSUpdateMode) { //gd:Viewport.set_vrs_update_mode
+func (self class) SetVrsUpdateMode(mode VRSUpdateMode) { //gd:Viewport.set_vrs_update_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -2052,9 +2059,9 @@ func (self class) SetVrsUpdateMode(mode gdclass.ViewportVRSUpdateMode) { //gd:Vi
 }
 
 //go:nosplit
-func (self class) GetVrsUpdateMode() gdclass.ViewportVRSUpdateMode { //gd:Viewport.get_vrs_update_mode
+func (self class) GetVrsUpdateMode() VRSUpdateMode { //gd:Viewport.get_vrs_update_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ViewportVRSUpdateMode](frame)
+	var r_ret = callframe.Ret[VRSUpdateMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Viewport.Bind_get_vrs_update_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2111,7 +2118,7 @@ func init() {
 	gdclass.Register("Viewport", func(ptr gd.Object) any { return [1]gdclass.Viewport{*(*gdclass.Viewport)(unsafe.Pointer(&ptr))} })
 }
 
-type PositionalShadowAtlasQuadrantSubdiv = gdclass.ViewportPositionalShadowAtlasQuadrantSubdiv //gd:Viewport.PositionalShadowAtlasQuadrantSubdiv
+type PositionalShadowAtlasQuadrantSubdiv int //gd:Viewport.PositionalShadowAtlasQuadrantSubdiv
 
 const (
 	/*This quadrant will not be used.*/
@@ -2132,7 +2139,7 @@ const (
 	ShadowAtlasQuadrantSubdivMax PositionalShadowAtlasQuadrantSubdiv = 7
 )
 
-type Scaling3DMode = gdclass.ViewportScaling3DMode //gd:Viewport.Scaling3DMode
+type Scaling3DMode int //gd:Viewport.Scaling3DMode
 
 const (
 	/*Use bilinear scaling for the viewport's 3D buffer. The amount of scaling can be set using [member scaling_3d_scale]. Values less than [code]1.0[/code] will result in undersampling while values greater than [code]1.0[/code] will result in supersampling. A value of [code]1.0[/code] disables scaling.*/
@@ -2157,7 +2164,7 @@ const (
 	Scaling3dModeMax Scaling3DMode = 5
 )
 
-type MSAA = gdclass.ViewportMSAA //gd:Viewport.MSAA
+type MSAA int //gd:Viewport.MSAA
 
 const (
 	/*Multisample antialiasing mode disabled. This is the default value, and is also the fastest setting.*/
@@ -2172,7 +2179,7 @@ const (
 	MsaaMax MSAA = 4
 )
 
-type AnisotropicFiltering = gdclass.ViewportAnisotropicFiltering //gd:Viewport.AnisotropicFiltering
+type AnisotropicFiltering int //gd:Viewport.AnisotropicFiltering
 
 const (
 	/*Anisotropic filtering is disabled.*/
@@ -2189,7 +2196,7 @@ const (
 	AnisotropyMax AnisotropicFiltering = 5
 )
 
-type ScreenSpaceAA = gdclass.ViewportScreenSpaceAA //gd:Viewport.ScreenSpaceAA
+type ScreenSpaceAA int //gd:Viewport.ScreenSpaceAA
 
 const (
 	/*Do not perform any antialiasing in the full screen post-process.*/
@@ -2200,7 +2207,7 @@ const (
 	ScreenSpaceAaMax ScreenSpaceAA = 2
 )
 
-type RenderInfo = gdclass.ViewportRenderInfo //gd:Viewport.RenderInfo
+type RenderInfo int //gd:Viewport.RenderInfo
 
 const (
 	/*Amount of objects in frame.*/
@@ -2213,7 +2220,7 @@ const (
 	RenderInfoMax RenderInfo = 3
 )
 
-type RenderInfoType = gdclass.ViewportRenderInfoType //gd:Viewport.RenderInfoType
+type RenderInfoType int //gd:Viewport.RenderInfoType
 
 const (
 	/*Visible render pass (excluding shadows).*/
@@ -2226,7 +2233,7 @@ const (
 	RenderInfoTypeMax RenderInfoType = 3
 )
 
-type DebugDraw = gdclass.ViewportDebugDraw //gd:Viewport.DebugDraw
+type DebugDraw int //gd:Viewport.DebugDraw
 
 const (
 	/*Objects are displayed normally.*/
@@ -2288,7 +2295,7 @@ const (
 	DebugDrawInternalBuffer DebugDraw = 26
 )
 
-type DefaultCanvasItemTextureFilter = gdclass.ViewportDefaultCanvasItemTextureFilter //gd:Viewport.DefaultCanvasItemTextureFilter
+type DefaultCanvasItemTextureFilter int //gd:Viewport.DefaultCanvasItemTextureFilter
 
 const (
 	/*The texture filter reads from the nearest pixel only. This makes the texture look pixelated from up close, and grainy from a distance (due to mipmaps not being sampled).*/
@@ -2305,7 +2312,7 @@ const (
 	DefaultCanvasItemTextureFilterMax DefaultCanvasItemTextureFilter = 4
 )
 
-type DefaultCanvasItemTextureRepeat = gdclass.ViewportDefaultCanvasItemTextureRepeat //gd:Viewport.DefaultCanvasItemTextureRepeat
+type DefaultCanvasItemTextureRepeat int //gd:Viewport.DefaultCanvasItemTextureRepeat
 
 const (
 	/*Disables textures repeating. Instead, when reading UVs outside the 0-1 range, the value will be clamped to the edge of the texture, resulting in a stretched out look at the borders of the texture.*/
@@ -2318,7 +2325,7 @@ const (
 	DefaultCanvasItemTextureRepeatMax DefaultCanvasItemTextureRepeat = 3
 )
 
-type SDFOversize = gdclass.ViewportSDFOversize //gd:Viewport.SDFOversize
+type SDFOversize int //gd:Viewport.SDFOversize
 
 const (
 	/*The signed distance field only covers the viewport's own rectangle.*/
@@ -2333,7 +2340,7 @@ const (
 	SdfOversizeMax SDFOversize = 4
 )
 
-type SDFScale = gdclass.ViewportSDFScale //gd:Viewport.SDFScale
+type SDFScale int //gd:Viewport.SDFScale
 
 const (
 	/*The signed distance field is rendered at full resolution.*/
@@ -2346,7 +2353,7 @@ const (
 	SdfScaleMax SDFScale = 3
 )
 
-type VRSMode = gdclass.ViewportVRSMode //gd:Viewport.VRSMode
+type VRSMode int //gd:Viewport.VRSMode
 
 const (
 	/*Variable Rate Shading is disabled.*/
@@ -2359,7 +2366,7 @@ const (
 	VrsMax VRSMode = 3
 )
 
-type VRSUpdateMode = gdclass.ViewportVRSUpdateMode //gd:Viewport.VRSUpdateMode
+type VRSUpdateMode int //gd:Viewport.VRSUpdateMode
 
 const (
 	/*The input texture for variable rate shading will not be processed.*/

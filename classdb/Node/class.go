@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/InputEvent"
 import "graphics.gd/classdb/MultiplayerAPI"
 import "graphics.gd/classdb/Resource"
@@ -28,6 +29,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -43,6 +48,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,6 +61,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -430,7 +437,7 @@ AddChild(childNode);
 If you need the child node to be added below a specific node in the list of children, use [method add_sibling] instead of this method.
 [b]Note:[/b] If you want a child to be persisted to a [PackedScene], you must set [member owner] in addition to calling [method add_child]. This is typically relevant for [url=$DOCS_URL/tutorials/plugins/running_code_in_the_editor.html]tool scripts[/url] and [url=$DOCS_URL/tutorials/plugins/editor/index.html]editor plugins[/url]. If [method add_child] is called without setting [member owner], the newly added [Node] will not be visible in the scene tree, though it will be visible in the 2D/3D view.
 */
-func (self Expanded) AddChild(node Instance, force_readable_name bool, internal_ gdclass.NodeInternalMode) { //gd:Node.add_child
+func (self Expanded) AddChild(node Instance, force_readable_name bool, internal_ InternalMode) { //gd:Node.add_child
 	Advanced(self).AddChild(node, force_readable_name, internal_)
 }
 
@@ -1406,18 +1413,18 @@ func (self Instance) NotifyThreadSafe(what int) { //gd:Node.notify_thread_safe
 }
 
 /*
-If [member resource_local_to_scene] is set to [code]true[/code] and the resource has been loaded from a [PackedScene] instantiation, returns the root [Node] of the scene where this resource is used. Otherwise, returns [code]null[/code].
-*/
-func ResourceLocalScene(peer Resource.Instance) Instance { //gd:Resource.get_local_scene
-	return Instance(Resource.Advanced(peer).GetLocalScene())
-}
-
-/*
 Binds this [Tween] with the given [param node]. [Tween]s are processed directly by the [SceneTree], so they run independently of the animated nodes. When you bind a [Node] with the [Tween], the [Tween] will halt the animation when the object is not inside tree and the [Tween] will be automatically killed when the bound object is freed. Also [constant TWEEN_PAUSE_BOUND] will make the pausing behavior dependent on the bound node.
 For a shorter way to create and bind a [Tween], you can use [method Node.create_tween].
 */
 func (self Instance) BindTween(peer Tween.Instance) Tween.Instance { //gd:Tween.bind_node
 	return Tween.Instance(Tween.Advanced(peer).BindNode(self))
+}
+
+/*
+If [member resource_local_to_scene] is set to [code]true[/code] and the resource has been loaded from a [PackedScene] instantiation, returns the root [Node] of the scene where this resource is used. Otherwise, returns [code]null[/code].
+*/
+func ResourceLocalScene(peer Resource.Instance) Instance { //gd:Resource.get_local_scene
+	return Instance(Resource.Advanced(peer).GetLocalScene())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -1475,11 +1482,11 @@ func (self Instance) Multiplayer() MultiplayerAPI.Instance {
 	return MultiplayerAPI.Instance(class(self).GetMultiplayer())
 }
 
-func (self Instance) ProcessMode() gdclass.NodeProcessMode {
-	return gdclass.NodeProcessMode(class(self).GetProcessMode())
+func (self Instance) ProcessMode() ProcessMode {
+	return ProcessMode(class(self).GetProcessMode())
 }
 
-func (self Instance) SetProcessMode(value gdclass.NodeProcessMode) {
+func (self Instance) SetProcessMode(value ProcessMode) {
 	class(self).SetProcessMode(value)
 }
 
@@ -1499,11 +1506,11 @@ func (self Instance) SetProcessPhysicsPriority(value int) {
 	class(self).SetPhysicsProcessPriority(int64(value))
 }
 
-func (self Instance) ProcessThreadGroup() gdclass.NodeProcessThreadGroup {
-	return gdclass.NodeProcessThreadGroup(class(self).GetProcessThreadGroup())
+func (self Instance) ProcessThreadGroup() ProcessThreadGroup {
+	return ProcessThreadGroup(class(self).GetProcessThreadGroup())
 }
 
-func (self Instance) SetProcessThreadGroup(value gdclass.NodeProcessThreadGroup) {
+func (self Instance) SetProcessThreadGroup(value ProcessThreadGroup) {
 	class(self).SetProcessThreadGroup(value)
 }
 
@@ -1515,27 +1522,27 @@ func (self Instance) SetProcessThreadGroupOrder(value int) {
 	class(self).SetProcessThreadGroupOrder(int64(value))
 }
 
-func (self Instance) ProcessThreadMessages() gdclass.NodeProcessThreadMessages {
-	return gdclass.NodeProcessThreadMessages(class(self).GetProcessThreadMessages())
+func (self Instance) ProcessThreadMessages() ProcessThreadMessages {
+	return ProcessThreadMessages(class(self).GetProcessThreadMessages())
 }
 
-func (self Instance) SetProcessThreadMessages(value gdclass.NodeProcessThreadMessages) {
+func (self Instance) SetProcessThreadMessages(value ProcessThreadMessages) {
 	class(self).SetProcessThreadMessages(value)
 }
 
-func (self Instance) PhysicsInterpolationMode() gdclass.NodePhysicsInterpolationMode {
-	return gdclass.NodePhysicsInterpolationMode(class(self).GetPhysicsInterpolationMode())
+func (self Instance) PhysicsInterpolationMode() PhysicsInterpolationMode {
+	return PhysicsInterpolationMode(class(self).GetPhysicsInterpolationMode())
 }
 
-func (self Instance) SetPhysicsInterpolationMode(value gdclass.NodePhysicsInterpolationMode) {
+func (self Instance) SetPhysicsInterpolationMode(value PhysicsInterpolationMode) {
 	class(self).SetPhysicsInterpolationMode(value)
 }
 
-func (self Instance) AutoTranslateMode() gdclass.NodeAutoTranslateMode {
-	return gdclass.NodeAutoTranslateMode(class(self).GetAutoTranslateMode())
+func (self Instance) AutoTranslateMode() AutoTranslateMode {
+	return AutoTranslateMode(class(self).GetAutoTranslateMode())
 }
 
-func (self Instance) SetAutoTranslateMode(value gdclass.NodeAutoTranslateMode) {
+func (self Instance) SetAutoTranslateMode(value AutoTranslateMode) {
 	class(self).SetAutoTranslateMode(value)
 }
 
@@ -1788,7 +1795,7 @@ If you need the child node to be added below a specific node in the list of chil
 [b]Note:[/b] If you want a child to be persisted to a [PackedScene], you must set [member owner] in addition to calling [method add_child]. This is typically relevant for [url=$DOCS_URL/tutorials/plugins/running_code_in_the_editor.html]tool scripts[/url] and [url=$DOCS_URL/tutorials/plugins/editor/index.html]editor plugins[/url]. If [method add_child] is called without setting [member owner], the newly added [Node] will not be visible in the scene tree, though it will be visible in the 2D/3D view.
 */
 //go:nosplit
-func (self class) AddChild(node [1]gdclass.Node, force_readable_name bool, internal_ gdclass.NodeInternalMode) { //gd:Node.add_child
+func (self class) AddChild(node [1]gdclass.Node, force_readable_name bool, internal_ InternalMode) { //gd:Node.add_child
 	var frame = callframe.New()
 	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(node[0].AsObject()[0]))
 	callframe.Arg(frame, force_readable_name)
@@ -2649,7 +2656,7 @@ func (self class) IsProcessingUnhandledKeyInput() bool { //gd:Node.is_processing
 }
 
 //go:nosplit
-func (self class) SetProcessMode(mode gdclass.NodeProcessMode) { //gd:Node.set_process_mode
+func (self class) SetProcessMode(mode ProcessMode) { //gd:Node.set_process_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -2658,9 +2665,9 @@ func (self class) SetProcessMode(mode gdclass.NodeProcessMode) { //gd:Node.set_p
 }
 
 //go:nosplit
-func (self class) GetProcessMode() gdclass.NodeProcessMode { //gd:Node.get_process_mode
+func (self class) GetProcessMode() ProcessMode { //gd:Node.get_process_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.NodeProcessMode](frame)
+	var r_ret = callframe.Ret[ProcessMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_process_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2687,7 +2694,7 @@ func (self class) CanProcess() bool { //gd:Node.can_process
 }
 
 //go:nosplit
-func (self class) SetProcessThreadGroup(mode gdclass.NodeProcessThreadGroup) { //gd:Node.set_process_thread_group
+func (self class) SetProcessThreadGroup(mode ProcessThreadGroup) { //gd:Node.set_process_thread_group
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -2696,9 +2703,9 @@ func (self class) SetProcessThreadGroup(mode gdclass.NodeProcessThreadGroup) { /
 }
 
 //go:nosplit
-func (self class) GetProcessThreadGroup() gdclass.NodeProcessThreadGroup { //gd:Node.get_process_thread_group
+func (self class) GetProcessThreadGroup() ProcessThreadGroup { //gd:Node.get_process_thread_group
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.NodeProcessThreadGroup](frame)
+	var r_ret = callframe.Ret[ProcessThreadGroup](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_process_thread_group, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2706,7 +2713,7 @@ func (self class) GetProcessThreadGroup() gdclass.NodeProcessThreadGroup { //gd:
 }
 
 //go:nosplit
-func (self class) SetProcessThreadMessages(flags gdclass.NodeProcessThreadMessages) { //gd:Node.set_process_thread_messages
+func (self class) SetProcessThreadMessages(flags ProcessThreadMessages) { //gd:Node.set_process_thread_messages
 	var frame = callframe.New()
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Nil
@@ -2715,9 +2722,9 @@ func (self class) SetProcessThreadMessages(flags gdclass.NodeProcessThreadMessag
 }
 
 //go:nosplit
-func (self class) GetProcessThreadMessages() gdclass.NodeProcessThreadMessages { //gd:Node.get_process_thread_messages
+func (self class) GetProcessThreadMessages() ProcessThreadMessages { //gd:Node.get_process_thread_messages
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.NodeProcessThreadMessages](frame)
+	var r_ret = callframe.Ret[ProcessThreadMessages](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_process_thread_messages, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2821,7 +2828,7 @@ func (self class) IsPhysicsProcessingInternal() bool { //gd:Node.is_physics_proc
 }
 
 //go:nosplit
-func (self class) SetPhysicsInterpolationMode(mode gdclass.NodePhysicsInterpolationMode) { //gd:Node.set_physics_interpolation_mode
+func (self class) SetPhysicsInterpolationMode(mode PhysicsInterpolationMode) { //gd:Node.set_physics_interpolation_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -2830,9 +2837,9 @@ func (self class) SetPhysicsInterpolationMode(mode gdclass.NodePhysicsInterpolat
 }
 
 //go:nosplit
-func (self class) GetPhysicsInterpolationMode() gdclass.NodePhysicsInterpolationMode { //gd:Node.get_physics_interpolation_mode
+func (self class) GetPhysicsInterpolationMode() PhysicsInterpolationMode { //gd:Node.get_physics_interpolation_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.NodePhysicsInterpolationMode](frame)
+	var r_ret = callframe.Ret[PhysicsInterpolationMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_physics_interpolation_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2883,7 +2890,7 @@ func (self class) ResetPhysicsInterpolation() { //gd:Node.reset_physics_interpol
 }
 
 //go:nosplit
-func (self class) SetAutoTranslateMode(mode gdclass.NodeAutoTranslateMode) { //gd:Node.set_auto_translate_mode
+func (self class) SetAutoTranslateMode(mode AutoTranslateMode) { //gd:Node.set_auto_translate_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -2892,9 +2899,9 @@ func (self class) SetAutoTranslateMode(mode gdclass.NodeAutoTranslateMode) { //g
 }
 
 //go:nosplit
-func (self class) GetAutoTranslateMode() gdclass.NodeAutoTranslateMode { //gd:Node.get_auto_translate_mode
+func (self class) GetAutoTranslateMode() AutoTranslateMode { //gd:Node.get_auto_translate_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.NodeAutoTranslateMode](frame)
+	var r_ret = callframe.Ret[AutoTranslateMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node.Bind_get_auto_translate_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3499,7 +3506,7 @@ func init() {
 	gdclass.Register("Node", func(ptr gd.Object) any { return [1]gdclass.Node{*(*gdclass.Node)(unsafe.Pointer(&ptr))} })
 }
 
-type ProcessMode = gdclass.NodeProcessMode //gd:Node.ProcessMode
+type ProcessMode int //gd:Node.ProcessMode
 
 const (
 	/*Inherits [member process_mode] from the node's parent. This is the default for any newly created node.*/
@@ -3514,7 +3521,7 @@ const (
 	ProcessModeDisabled ProcessMode = 4
 )
 
-type ProcessThreadGroup = gdclass.NodeProcessThreadGroup //gd:Node.ProcessThreadGroup
+type ProcessThreadGroup int //gd:Node.ProcessThreadGroup
 
 const (
 	/*Process this node based on the thread group mode of the first parent (or grandparent) node that has a thread group mode that is not inherit. See [member process_thread_group] for more information.*/
@@ -3525,7 +3532,7 @@ const (
 	ProcessThreadGroupSubThread ProcessThreadGroup = 2
 )
 
-type ProcessThreadMessages = gdclass.NodeProcessThreadMessages //gd:Node.ProcessThreadMessages
+type ProcessThreadMessages int //gd:Node.ProcessThreadMessages
 
 const (
 	/*Allows this node to process threaded messages created with [method call_deferred_thread_group] right before [method _process] is called.*/
@@ -3536,7 +3543,7 @@ const (
 	FlagProcessThreadMessagesAll ProcessThreadMessages = 3
 )
 
-type PhysicsInterpolationMode = gdclass.NodePhysicsInterpolationMode //gd:Node.PhysicsInterpolationMode
+type PhysicsInterpolationMode int //gd:Node.PhysicsInterpolationMode
 
 const (
 	/*Inherits [member physics_interpolation_mode] from the node's parent. This is the default for any newly created node.*/
@@ -3547,7 +3554,7 @@ const (
 	PhysicsInterpolationModeOff PhysicsInterpolationMode = 2
 )
 
-type DuplicateFlags = gdclass.NodeDuplicateFlags //gd:Node.DuplicateFlags
+type DuplicateFlags int //gd:Node.DuplicateFlags
 
 const (
 	/*Duplicate the node's signal connections.*/
@@ -3560,7 +3567,7 @@ const (
 	DuplicateUseInstantiation DuplicateFlags = 8
 )
 
-type InternalMode = gdclass.NodeInternalMode //gd:Node.InternalMode
+type InternalMode int //gd:Node.InternalMode
 
 const (
 	/*The node will not be internal.*/
@@ -3571,7 +3578,7 @@ const (
 	InternalModeBack InternalMode = 2
 )
 
-type AutoTranslateMode = gdclass.NodeAutoTranslateMode //gd:Node.AutoTranslateMode
+type AutoTranslateMode int //gd:Node.AutoTranslateMode
 
 const (
 	/*Inherits [member auto_translate_mode] from the node's parent. This is the default for any newly created node.*/

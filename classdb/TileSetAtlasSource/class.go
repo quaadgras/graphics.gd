@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/classdb/TileData"
@@ -31,6 +32,10 @@ import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -46,6 +51,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -58,6 +64,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -215,15 +222,15 @@ func (self Instance) GetTileAnimationSpeed(atlas_coords Vector2i.XY) Float.X { /
 /*
 Sets the tile animation mode of the tile at [param atlas_coords] to [param mode]. See also [method get_tile_animation_mode].
 */
-func (self Instance) SetTileAnimationMode(atlas_coords Vector2i.XY, mode gdclass.TileSetAtlasSourceTileAnimationMode) { //gd:TileSetAtlasSource.set_tile_animation_mode
+func (self Instance) SetTileAnimationMode(atlas_coords Vector2i.XY, mode TileAnimationMode) { //gd:TileSetAtlasSource.set_tile_animation_mode
 	Advanced(self).SetTileAnimationMode(Vector2i.XY(atlas_coords), mode)
 }
 
 /*
 Returns the tile animation mode of the tile at [param atlas_coords]. See also [method set_tile_animation_mode].
 */
-func (self Instance) GetTileAnimationMode(atlas_coords Vector2i.XY) gdclass.TileSetAtlasSourceTileAnimationMode { //gd:TileSetAtlasSource.get_tile_animation_mode
-	return gdclass.TileSetAtlasSourceTileAnimationMode(Advanced(self).GetTileAnimationMode(Vector2i.XY(atlas_coords)))
+func (self Instance) GetTileAnimationMode(atlas_coords Vector2i.XY) TileAnimationMode { //gd:TileSetAtlasSource.get_tile_animation_mode
+	return TileAnimationMode(Advanced(self).GetTileAnimationMode(Vector2i.XY(atlas_coords)))
 }
 
 /*
@@ -712,7 +719,7 @@ func (self class) GetTileAnimationSpeed(atlas_coords Vector2i.XY) float64 { //gd
 Sets the tile animation mode of the tile at [param atlas_coords] to [param mode]. See also [method get_tile_animation_mode].
 */
 //go:nosplit
-func (self class) SetTileAnimationMode(atlas_coords Vector2i.XY, mode gdclass.TileSetAtlasSourceTileAnimationMode) { //gd:TileSetAtlasSource.set_tile_animation_mode
+func (self class) SetTileAnimationMode(atlas_coords Vector2i.XY, mode TileAnimationMode) { //gd:TileSetAtlasSource.set_tile_animation_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
 	callframe.Arg(frame, mode)
@@ -725,10 +732,10 @@ func (self class) SetTileAnimationMode(atlas_coords Vector2i.XY, mode gdclass.Ti
 Returns the tile animation mode of the tile at [param atlas_coords]. See also [method set_tile_animation_mode].
 */
 //go:nosplit
-func (self class) GetTileAnimationMode(atlas_coords Vector2i.XY) gdclass.TileSetAtlasSourceTileAnimationMode { //gd:TileSetAtlasSource.get_tile_animation_mode
+func (self class) GetTileAnimationMode(atlas_coords Vector2i.XY) TileAnimationMode { //gd:TileSetAtlasSource.get_tile_animation_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, atlas_coords)
-	var r_ret = callframe.Ret[gdclass.TileSetAtlasSourceTileAnimationMode](frame)
+	var r_ret = callframe.Ret[TileAnimationMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetAtlasSource.Bind_get_tile_animation_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -981,7 +988,7 @@ func init() {
 	})
 }
 
-type TileAnimationMode = gdclass.TileSetAtlasSourceTileAnimationMode //gd:TileSetAtlasSource.TileAnimationMode
+type TileAnimationMode int //gd:TileSetAtlasSource.TileAnimationMode
 
 const (
 	/*Tile animations start at same time, looking identical.*/

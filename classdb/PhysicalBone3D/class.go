@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CollisionObject3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
@@ -31,6 +32,10 @@ import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -46,6 +51,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -58,6 +64,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -172,11 +179,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) JointType() gdclass.PhysicalBone3DJointType {
-	return gdclass.PhysicalBone3DJointType(class(self).GetJointType())
+func (self Instance) JointType() JointType {
+	return JointType(class(self).GetJointType())
 }
 
-func (self Instance) SetJointType(value gdclass.PhysicalBone3DJointType) {
+func (self Instance) SetJointType(value JointType) {
 	class(self).SetJointType(value)
 }
 
@@ -244,11 +251,11 @@ func (self Instance) SetCustomIntegrator(value bool) {
 	class(self).SetUseCustomIntegrator(value)
 }
 
-func (self Instance) LinearDampMode() gdclass.PhysicalBone3DDampMode {
-	return gdclass.PhysicalBone3DDampMode(class(self).GetLinearDampMode())
+func (self Instance) LinearDampMode() DampMode {
+	return DampMode(class(self).GetLinearDampMode())
 }
 
-func (self Instance) SetLinearDampMode(value gdclass.PhysicalBone3DDampMode) {
+func (self Instance) SetLinearDampMode(value DampMode) {
 	class(self).SetLinearDampMode(value)
 }
 
@@ -260,11 +267,11 @@ func (self Instance) SetLinearDamp(value Float.X) {
 	class(self).SetLinearDamp(float64(value))
 }
 
-func (self Instance) AngularDampMode() gdclass.PhysicalBone3DDampMode {
-	return gdclass.PhysicalBone3DDampMode(class(self).GetAngularDampMode())
+func (self Instance) AngularDampMode() DampMode {
+	return DampMode(class(self).GetAngularDampMode())
 }
 
-func (self Instance) SetAngularDampMode(value gdclass.PhysicalBone3DDampMode) {
+func (self Instance) SetAngularDampMode(value DampMode) {
 	class(self).SetAngularDampMode(value)
 }
 
@@ -343,7 +350,7 @@ func (self class) ApplyImpulse(impulse Vector3.XYZ, position Vector3.XYZ) { //gd
 }
 
 //go:nosplit
-func (self class) SetJointType(joint_type gdclass.PhysicalBone3DJointType) { //gd:PhysicalBone3D.set_joint_type
+func (self class) SetJointType(joint_type JointType) { //gd:PhysicalBone3D.set_joint_type
 	var frame = callframe.New()
 	callframe.Arg(frame, joint_type)
 	var r_ret = callframe.Nil
@@ -352,9 +359,9 @@ func (self class) SetJointType(joint_type gdclass.PhysicalBone3DJointType) { //g
 }
 
 //go:nosplit
-func (self class) GetJointType() gdclass.PhysicalBone3DJointType { //gd:PhysicalBone3D.get_joint_type
+func (self class) GetJointType() JointType { //gd:PhysicalBone3D.get_joint_type
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.PhysicalBone3DJointType](frame)
+	var r_ret = callframe.Ret[JointType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_get_joint_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -534,7 +541,7 @@ func (self class) GetGravityScale() float64 { //gd:PhysicalBone3D.get_gravity_sc
 }
 
 //go:nosplit
-func (self class) SetLinearDampMode(linear_damp_mode gdclass.PhysicalBone3DDampMode) { //gd:PhysicalBone3D.set_linear_damp_mode
+func (self class) SetLinearDampMode(linear_damp_mode DampMode) { //gd:PhysicalBone3D.set_linear_damp_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, linear_damp_mode)
 	var r_ret = callframe.Nil
@@ -543,9 +550,9 @@ func (self class) SetLinearDampMode(linear_damp_mode gdclass.PhysicalBone3DDampM
 }
 
 //go:nosplit
-func (self class) GetLinearDampMode() gdclass.PhysicalBone3DDampMode { //gd:PhysicalBone3D.get_linear_damp_mode
+func (self class) GetLinearDampMode() DampMode { //gd:PhysicalBone3D.get_linear_damp_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.PhysicalBone3DDampMode](frame)
+	var r_ret = callframe.Ret[DampMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_get_linear_damp_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -553,7 +560,7 @@ func (self class) GetLinearDampMode() gdclass.PhysicalBone3DDampMode { //gd:Phys
 }
 
 //go:nosplit
-func (self class) SetAngularDampMode(angular_damp_mode gdclass.PhysicalBone3DDampMode) { //gd:PhysicalBone3D.set_angular_damp_mode
+func (self class) SetAngularDampMode(angular_damp_mode DampMode) { //gd:PhysicalBone3D.set_angular_damp_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, angular_damp_mode)
 	var r_ret = callframe.Nil
@@ -562,9 +569,9 @@ func (self class) SetAngularDampMode(angular_damp_mode gdclass.PhysicalBone3DDam
 }
 
 //go:nosplit
-func (self class) GetAngularDampMode() gdclass.PhysicalBone3DDampMode { //gd:PhysicalBone3D.get_angular_damp_mode
+func (self class) GetAngularDampMode() DampMode { //gd:PhysicalBone3D.get_angular_damp_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.PhysicalBone3DDampMode](frame)
+	var r_ret = callframe.Ret[DampMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicalBone3D.Bind_get_angular_damp_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -735,7 +742,7 @@ func init() {
 	})
 }
 
-type DampMode = gdclass.PhysicalBone3DDampMode //gd:PhysicalBone3D.DampMode
+type DampMode int //gd:PhysicalBone3D.DampMode
 
 const (
 	/*In this mode, the body's damping value is added to any value set in areas or the default value.*/
@@ -744,7 +751,7 @@ const (
 	DampModeReplace DampMode = 1
 )
 
-type JointType = gdclass.PhysicalBone3DJointType //gd:PhysicalBone3D.JointType
+type JointType int //gd:PhysicalBone3D.JointType
 
 const (
 	/*No joint is applied to the PhysicsBone3D.*/

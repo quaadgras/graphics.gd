@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Gradient"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/Texture"
@@ -29,6 +30,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -44,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,6 +62,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -118,11 +125,11 @@ func (self Instance) SetUseHdr(value bool) {
 	class(self).SetUseHdr(value)
 }
 
-func (self Instance) Fill() gdclass.GradientTexture2DFill {
-	return gdclass.GradientTexture2DFill(class(self).GetFill())
+func (self Instance) Fill() Fill {
+	return Fill(class(self).GetFill())
 }
 
-func (self Instance) SetFill(value gdclass.GradientTexture2DFill) {
+func (self Instance) SetFill(value Fill) {
 	class(self).SetFill(value)
 }
 
@@ -142,11 +149,11 @@ func (self Instance) SetFillTo(value Vector2.XY) {
 	class(self).SetFillTo(Vector2.XY(value))
 }
 
-func (self Instance) Repeat() gdclass.GradientTexture2DRepeat {
-	return gdclass.GradientTexture2DRepeat(class(self).GetRepeat())
+func (self Instance) Repeat() Repeat {
+	return Repeat(class(self).GetRepeat())
 }
 
-func (self Instance) SetRepeat(value gdclass.GradientTexture2DRepeat) {
+func (self Instance) SetRepeat(value Repeat) {
 	class(self).SetRepeat(value)
 }
 
@@ -207,7 +214,7 @@ func (self class) IsUsingHdr() bool { //gd:GradientTexture2D.is_using_hdr
 }
 
 //go:nosplit
-func (self class) SetFill(fill gdclass.GradientTexture2DFill) { //gd:GradientTexture2D.set_fill
+func (self class) SetFill(fill Fill) { //gd:GradientTexture2D.set_fill
 	var frame = callframe.New()
 	callframe.Arg(frame, fill)
 	var r_ret = callframe.Nil
@@ -216,9 +223,9 @@ func (self class) SetFill(fill gdclass.GradientTexture2DFill) { //gd:GradientTex
 }
 
 //go:nosplit
-func (self class) GetFill() gdclass.GradientTexture2DFill { //gd:GradientTexture2D.get_fill
+func (self class) GetFill() Fill { //gd:GradientTexture2D.get_fill
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.GradientTexture2DFill](frame)
+	var r_ret = callframe.Ret[Fill](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GradientTexture2D.Bind_get_fill, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -264,7 +271,7 @@ func (self class) GetFillTo() Vector2.XY { //gd:GradientTexture2D.get_fill_to
 }
 
 //go:nosplit
-func (self class) SetRepeat(repeat gdclass.GradientTexture2DRepeat) { //gd:GradientTexture2D.set_repeat
+func (self class) SetRepeat(repeat Repeat) { //gd:GradientTexture2D.set_repeat
 	var frame = callframe.New()
 	callframe.Arg(frame, repeat)
 	var r_ret = callframe.Nil
@@ -273,9 +280,9 @@ func (self class) SetRepeat(repeat gdclass.GradientTexture2DRepeat) { //gd:Gradi
 }
 
 //go:nosplit
-func (self class) GetRepeat() gdclass.GradientTexture2DRepeat { //gd:GradientTexture2D.get_repeat
+func (self class) GetRepeat() Repeat { //gd:GradientTexture2D.get_repeat
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.GradientTexture2DRepeat](frame)
+	var r_ret = callframe.Ret[Repeat](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GradientTexture2D.Bind_get_repeat, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -330,7 +337,7 @@ func init() {
 	})
 }
 
-type Fill = gdclass.GradientTexture2DFill //gd:GradientTexture2D.Fill
+type Fill int //gd:GradientTexture2D.Fill
 
 const (
 	/*The colors are linearly interpolated in a straight line.*/
@@ -341,7 +348,7 @@ const (
 	FillSquare Fill = 2
 )
 
-type Repeat = gdclass.GradientTexture2DRepeat //gd:GradientTexture2D.Repeat
+type Repeat int //gd:GradientTexture2D.Repeat
 
 const (
 	/*The gradient fill is restricted to the range defined by [member fill_from] to [member fill_to] offsets.*/

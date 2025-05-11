@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/UndoRedo"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -25,6 +26,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -40,6 +45,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -52,6 +58,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -95,7 +102,7 @@ The way actions are merged is dictated by the [param merge_mode] argument. See [
 If [param custom_context] object is provided, it will be used for deducing target history (instead of using the first operation).
 The way undo operation are ordered in actions is dictated by [param backward_undo_ops]. When [param backward_undo_ops] is [code]false[/code] undo option are ordered in the same order they were added. Which means the first operation to be added will be the first to be undone.
 */
-func (self Expanded) CreateAction(name string, merge_mode gdclass.UndoRedoMergeMode, custom_context Object.Instance, backward_undo_ops bool) { //gd:EditorUndoRedoManager.create_action
+func (self Expanded) CreateAction(name string, merge_mode UndoRedo.MergeMode, custom_context Object.Instance, backward_undo_ops bool) { //gd:EditorUndoRedoManager.create_action
 	Advanced(self).CreateAction(String.New(name), merge_mode, custom_context, backward_undo_ops)
 }
 
@@ -252,7 +259,7 @@ If [param custom_context] object is provided, it will be used for deducing targe
 The way undo operation are ordered in actions is dictated by [param backward_undo_ops]. When [param backward_undo_ops] is [code]false[/code] undo option are ordered in the same order they were added. Which means the first operation to be added will be the first to be undone.
 */
 //go:nosplit
-func (self class) CreateAction(name String.Readable, merge_mode gdclass.UndoRedoMergeMode, custom_context [1]gd.Object, backward_undo_ops bool) { //gd:EditorUndoRedoManager.create_action
+func (self class) CreateAction(name String.Readable, merge_mode UndoRedo.MergeMode, custom_context [1]gd.Object, backward_undo_ops bool) { //gd:EditorUndoRedoManager.create_action
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
 	callframe.Arg(frame, merge_mode)
@@ -468,7 +475,7 @@ func init() {
 	})
 }
 
-type SpecialHistory = gdclass.EditorUndoRedoManagerSpecialHistory //gd:EditorUndoRedoManager.SpecialHistory
+type SpecialHistory int //gd:EditorUndoRedoManager.SpecialHistory
 
 const (
 	/*Global history not associated with any scene, but with external resources etc.*/

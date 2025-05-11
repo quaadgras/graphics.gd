@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
@@ -30,6 +31,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -45,6 +50,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -57,6 +63,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -171,19 +178,19 @@ func (self Instance) SetScrollVerticalCustomStep(value Float.X) {
 	class(self).SetVerticalCustomStep(float64(value))
 }
 
-func (self Instance) HorizontalScrollMode() gdclass.ScrollContainerScrollMode {
-	return gdclass.ScrollContainerScrollMode(class(self).GetHorizontalScrollMode())
+func (self Instance) HorizontalScrollMode() ScrollMode {
+	return ScrollMode(class(self).GetHorizontalScrollMode())
 }
 
-func (self Instance) SetHorizontalScrollMode(value gdclass.ScrollContainerScrollMode) {
+func (self Instance) SetHorizontalScrollMode(value ScrollMode) {
 	class(self).SetHorizontalScrollMode(value)
 }
 
-func (self Instance) VerticalScrollMode() gdclass.ScrollContainerScrollMode {
-	return gdclass.ScrollContainerScrollMode(class(self).GetVerticalScrollMode())
+func (self Instance) VerticalScrollMode() ScrollMode {
+	return ScrollMode(class(self).GetVerticalScrollMode())
 }
 
-func (self Instance) SetVerticalScrollMode(value gdclass.ScrollContainerScrollMode) {
+func (self Instance) SetVerticalScrollMode(value ScrollMode) {
 	class(self).SetVerticalScrollMode(value)
 }
 
@@ -272,7 +279,7 @@ func (self class) GetVerticalCustomStep() float64 { //gd:ScrollContainer.get_ver
 }
 
 //go:nosplit
-func (self class) SetHorizontalScrollMode(enable gdclass.ScrollContainerScrollMode) { //gd:ScrollContainer.set_horizontal_scroll_mode
+func (self class) SetHorizontalScrollMode(enable ScrollMode) { //gd:ScrollContainer.set_horizontal_scroll_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -281,9 +288,9 @@ func (self class) SetHorizontalScrollMode(enable gdclass.ScrollContainerScrollMo
 }
 
 //go:nosplit
-func (self class) GetHorizontalScrollMode() gdclass.ScrollContainerScrollMode { //gd:ScrollContainer.get_horizontal_scroll_mode
+func (self class) GetHorizontalScrollMode() ScrollMode { //gd:ScrollContainer.get_horizontal_scroll_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ScrollContainerScrollMode](frame)
+	var r_ret = callframe.Ret[ScrollMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScrollContainer.Bind_get_horizontal_scroll_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -291,7 +298,7 @@ func (self class) GetHorizontalScrollMode() gdclass.ScrollContainerScrollMode { 
 }
 
 //go:nosplit
-func (self class) SetVerticalScrollMode(enable gdclass.ScrollContainerScrollMode) { //gd:ScrollContainer.set_vertical_scroll_mode
+func (self class) SetVerticalScrollMode(enable ScrollMode) { //gd:ScrollContainer.set_vertical_scroll_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, enable)
 	var r_ret = callframe.Nil
@@ -300,9 +307,9 @@ func (self class) SetVerticalScrollMode(enable gdclass.ScrollContainerScrollMode
 }
 
 //go:nosplit
-func (self class) GetVerticalScrollMode() gdclass.ScrollContainerScrollMode { //gd:ScrollContainer.get_vertical_scroll_mode
+func (self class) GetVerticalScrollMode() ScrollMode { //gd:ScrollContainer.get_vertical_scroll_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ScrollContainerScrollMode](frame)
+	var r_ret = callframe.Ret[ScrollMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScrollContainer.Bind_get_vertical_scroll_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -464,7 +471,7 @@ func init() {
 	})
 }
 
-type ScrollMode = gdclass.ScrollContainerScrollMode //gd:ScrollContainer.ScrollMode
+type ScrollMode int //gd:ScrollContainer.ScrollMode
 
 const (
 	/*Scrolling disabled, scrollbar will be invisible.*/

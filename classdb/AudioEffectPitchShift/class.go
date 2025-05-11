@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/AudioEffect"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
@@ -26,6 +27,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -41,6 +46,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -53,6 +59,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -107,11 +114,11 @@ func (self Instance) SetOversampling(value int) {
 	class(self).SetOversampling(int64(value))
 }
 
-func (self Instance) FftSize() gdclass.AudioEffectPitchShiftFFTSize {
-	return gdclass.AudioEffectPitchShiftFFTSize(class(self).GetFftSize())
+func (self Instance) FftSize() FFTSize {
+	return FFTSize(class(self).GetFftSize())
 }
 
-func (self Instance) SetFftSize(value gdclass.AudioEffectPitchShiftFFTSize) {
+func (self Instance) SetFftSize(value FFTSize) {
 	class(self).SetFftSize(value)
 }
 
@@ -154,7 +161,7 @@ func (self class) GetOversampling() int64 { //gd:AudioEffectPitchShift.get_overs
 }
 
 //go:nosplit
-func (self class) SetFftSize(size gdclass.AudioEffectPitchShiftFFTSize) { //gd:AudioEffectPitchShift.set_fft_size
+func (self class) SetFftSize(size FFTSize) { //gd:AudioEffectPitchShift.set_fft_size
 	var frame = callframe.New()
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Nil
@@ -163,9 +170,9 @@ func (self class) SetFftSize(size gdclass.AudioEffectPitchShiftFFTSize) { //gd:A
 }
 
 //go:nosplit
-func (self class) GetFftSize() gdclass.AudioEffectPitchShiftFFTSize { //gd:AudioEffectPitchShift.get_fft_size
+func (self class) GetFftSize() FFTSize { //gd:AudioEffectPitchShift.get_fft_size
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.AudioEffectPitchShiftFFTSize](frame)
+	var r_ret = callframe.Ret[FFTSize](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectPitchShift.Bind_get_fft_size, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -217,7 +224,7 @@ func init() {
 	})
 }
 
-type FFTSize = gdclass.AudioEffectPitchShiftFFTSize //gd:AudioEffectPitchShift.FFTSize
+type FFTSize int //gd:AudioEffectPitchShift.FFTSize
 
 const (
 	/*Use a buffer of 256 samples for the Fast Fourier transform. Lowest latency, but least stable over time.*/

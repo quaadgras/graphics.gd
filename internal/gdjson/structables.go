@@ -33,7 +33,7 @@ type SignalInfo struct {
 }
 
 type CompletionInfo struct {
-	Kind         any             `gd:"kind" type:"[1]gdclass.CodeEditCodeCompletionKind"`
+	Kind         any             `gd:"kind" type:"CodeCompletionKind"`
 	DisplayText  string          `gd:"display_text"`
 	InsertText   string          `gd:"insert_text"`
 	FontColor    Color.RGBA      `gd:"font_color"`

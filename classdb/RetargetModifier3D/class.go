@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/SkeletonModifier3D"
@@ -28,6 +29,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -43,6 +48,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,6 +61,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -152,11 +159,11 @@ func (self Instance) SetUseGlobalPose(value bool) {
 	class(self).SetUseGlobalPose(value)
 }
 
-func (self Instance) Enable() gdclass.RetargetModifier3DTransformFlag {
-	return gdclass.RetargetModifier3DTransformFlag(class(self).GetEnableFlags())
+func (self Instance) Enable() TransformFlag {
+	return TransformFlag(class(self).GetEnableFlags())
 }
 
-func (self Instance) SetEnable(value gdclass.RetargetModifier3DTransformFlag) {
+func (self Instance) SetEnable(value TransformFlag) {
 	class(self).SetEnableFlags(value)
 }
 
@@ -199,7 +206,7 @@ func (self class) IsUsingGlobalPose() bool { //gd:RetargetModifier3D.is_using_gl
 }
 
 //go:nosplit
-func (self class) SetEnableFlags(enable_flags gdclass.RetargetModifier3DTransformFlag) { //gd:RetargetModifier3D.set_enable_flags
+func (self class) SetEnableFlags(enable_flags TransformFlag) { //gd:RetargetModifier3D.set_enable_flags
 	var frame = callframe.New()
 	callframe.Arg(frame, enable_flags)
 	var r_ret = callframe.Nil
@@ -208,9 +215,9 @@ func (self class) SetEnableFlags(enable_flags gdclass.RetargetModifier3DTransfor
 }
 
 //go:nosplit
-func (self class) GetEnableFlags() gdclass.RetargetModifier3DTransformFlag { //gd:RetargetModifier3D.get_enable_flags
+func (self class) GetEnableFlags() TransformFlag { //gd:RetargetModifier3D.get_enable_flags
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RetargetModifier3DTransformFlag](frame)
+	var r_ret = callframe.Ret[TransformFlag](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RetargetModifier3D.Bind_get_enable_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -329,7 +336,7 @@ func init() {
 	})
 }
 
-type TransformFlag = gdclass.RetargetModifier3DTransformFlag //gd:RetargetModifier3D.TransformFlag
+type TransformFlag int //gd:RetargetModifier3D.TransformFlag
 
 const (
 	/*If set, allows to retarget the position.*/

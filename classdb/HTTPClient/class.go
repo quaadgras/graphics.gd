@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/StreamPeer"
 import "graphics.gd/classdb/TLSOptions"
 import "graphics.gd/variant/Array"
@@ -26,6 +27,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -41,6 +46,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -53,6 +59,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -104,7 +111,7 @@ The URL parameter is usually just the part after the host, so for [code]https://
 Headers are HTTP request headers. For available HTTP methods, see [enum Method].
 Sends the body data raw, as a byte array and does not encode it in any way.
 */
-func (self Instance) RequestRaw(method gdclass.HTTPClientMethod, url string, headers []string, body []byte) error { //gd:HTTPClient.request_raw
+func (self Instance) RequestRaw(method Method, url string, headers []string, body []byte) error { //gd:HTTPClient.request_raw
 	return error(gd.ToError(Advanced(self).RequestRaw(method, String.New(url), Packed.MakeStrings(headers...), Packed.Bytes(Packed.New(body...)))))
 }
 
@@ -129,7 +136,7 @@ var result = new HttpClient().Request(HttpClient.Method.Post, "index.php", heade
 [/codeblocks]
 [b]Note:[/b] The [param body] parameter is ignored if [param method] is [constant HTTPClient.METHOD_GET]. This is because GET methods can't contain request data. As a workaround, you can pass request data as a query string in the URL. See [method String.uri_encode] for an example.
 */
-func (self Instance) Request(method gdclass.HTTPClientMethod, url string, headers []string) error { //gd:HTTPClient.request
+func (self Instance) Request(method Method, url string, headers []string) error { //gd:HTTPClient.request
 	return error(gd.ToError(Advanced(self).Request(method, String.New(url), Packed.MakeStrings(headers...), String.New(""))))
 }
 
@@ -154,7 +161,7 @@ var result = new HttpClient().Request(HttpClient.Method.Post, "index.php", heade
 [/codeblocks]
 [b]Note:[/b] The [param body] parameter is ignored if [param method] is [constant HTTPClient.METHOD_GET]. This is because GET methods can't contain request data. As a workaround, you can pass request data as a query string in the URL. See [method String.uri_encode] for an example.
 */
-func (self Expanded) Request(method gdclass.HTTPClientMethod, url string, headers []string, body string) error { //gd:HTTPClient.request
+func (self Expanded) Request(method Method, url string, headers []string, body string) error { //gd:HTTPClient.request
 	return error(gd.ToError(Advanced(self).Request(method, String.New(url), Packed.MakeStrings(headers...), String.New(body))))
 }
 
@@ -227,8 +234,8 @@ func (self Instance) ReadResponseBodyChunk() []byte { //gd:HTTPClient.read_respo
 /*
 Returns a [enum Status] constant. Need to call [method poll] in order to get status updates.
 */
-func (self Instance) GetStatus() gdclass.HTTPClientStatus { //gd:HTTPClient.get_status
-	return gdclass.HTTPClientStatus(Advanced(self).GetStatus())
+func (self Instance) GetStatus() Status { //gd:HTTPClient.get_status
+	return Status(Advanced(self).GetStatus())
 }
 
 /*
@@ -380,7 +387,7 @@ Headers are HTTP request headers. For available HTTP methods, see [enum Method].
 Sends the body data raw, as a byte array and does not encode it in any way.
 */
 //go:nosplit
-func (self class) RequestRaw(method gdclass.HTTPClientMethod, url String.Readable, headers Packed.Strings, body Packed.Bytes) Error.Code { //gd:HTTPClient.request_raw
+func (self class) RequestRaw(method Method, url String.Readable, headers Packed.Strings, body Packed.Bytes) Error.Code { //gd:HTTPClient.request_raw
 	var frame = callframe.New()
 	callframe.Arg(frame, method)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(url)))
@@ -415,7 +422,7 @@ var result = new HttpClient().Request(HttpClient.Method.Post, "index.php", heade
 [b]Note:[/b] The [param body] parameter is ignored if [param method] is [constant HTTPClient.METHOD_GET]. This is because GET methods can't contain request data. As a workaround, you can pass request data as a query string in the URL. See [method String.uri_encode] for an example.
 */
 //go:nosplit
-func (self class) Request(method gdclass.HTTPClientMethod, url String.Readable, headers Packed.Strings, body String.Readable) Error.Code { //gd:HTTPClient.request
+func (self class) Request(method Method, url String.Readable, headers Packed.Strings, body String.Readable) Error.Code { //gd:HTTPClient.request
 	var frame = callframe.New()
 	callframe.Arg(frame, method)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(url)))
@@ -580,9 +587,9 @@ func (self class) IsBlockingModeEnabled() bool { //gd:HTTPClient.is_blocking_mod
 Returns a [enum Status] constant. Need to call [method poll] in order to get status updates.
 */
 //go:nosplit
-func (self class) GetStatus() gdclass.HTTPClientStatus { //gd:HTTPClient.get_status
+func (self class) GetStatus() Status { //gd:HTTPClient.get_status
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.HTTPClientStatus](frame)
+	var r_ret = callframe.Ret[Status](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPClient.Bind_get_status, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -701,7 +708,7 @@ func init() {
 	gdclass.Register("HTTPClient", func(ptr gd.Object) any { return [1]gdclass.HTTPClient{*(*gdclass.HTTPClient)(unsafe.Pointer(&ptr))} })
 }
 
-type Method = gdclass.HTTPClientMethod //gd:HTTPClient.Method
+type Method int //gd:HTTPClient.Method
 
 const (
 	/*HTTP GET method. The GET method requests a representation of the specified resource. Requests using GET should only retrieve data.*/
@@ -726,7 +733,7 @@ const (
 	MethodMax Method = 9
 )
 
-type Status = gdclass.HTTPClientStatus //gd:HTTPClient.Status
+type Status int //gd:HTTPClient.Status
 
 const (
 	/*Status: Disconnected from the server.*/
@@ -751,7 +758,7 @@ const (
 	StatusTlsHandshakeError Status = 9
 )
 
-type ResponseCode = gdclass.HTTPClientResponseCode //gd:HTTPClient.ResponseCode
+type ResponseCode int //gd:HTTPClient.ResponseCode
 
 const (
 	/*HTTP status code [code]100 Continue[/code]. Interim response that indicates everything so far is OK and that the client should continue with the request (or ignore this status if already finished).*/

@@ -11,9 +11,11 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Material"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/RenderingServer"
 import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -29,6 +31,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -44,6 +50,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,6 +63,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -103,11 +111,11 @@ func (self Instance) SetSize(value Vector3.XYZ) {
 	class(self).SetSize(Vector3.XYZ(value))
 }
 
-func (self Instance) Shape() gdclass.RenderingServerFogVolumeShape {
-	return gdclass.RenderingServerFogVolumeShape(class(self).GetShape())
+func (self Instance) Shape() RenderingServer.FogVolumeShape {
+	return RenderingServer.FogVolumeShape(class(self).GetShape())
 }
 
-func (self Instance) SetShape(value gdclass.RenderingServerFogVolumeShape) {
+func (self Instance) SetShape(value RenderingServer.FogVolumeShape) {
 	class(self).SetShape(value)
 }
 
@@ -139,7 +147,7 @@ func (self class) GetSize() Vector3.XYZ { //gd:FogVolume.get_size
 }
 
 //go:nosplit
-func (self class) SetShape(shape gdclass.RenderingServerFogVolumeShape) { //gd:FogVolume.set_shape
+func (self class) SetShape(shape RenderingServer.FogVolumeShape) { //gd:FogVolume.set_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
 	var r_ret = callframe.Nil
@@ -148,9 +156,9 @@ func (self class) SetShape(shape gdclass.RenderingServerFogVolumeShape) { //gd:F
 }
 
 //go:nosplit
-func (self class) GetShape() gdclass.RenderingServerFogVolumeShape { //gd:FogVolume.get_shape
+func (self class) GetShape() RenderingServer.FogVolumeShape { //gd:FogVolume.get_shape
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingServerFogVolumeShape](frame)
+	var r_ret = callframe.Ret[RenderingServer.FogVolumeShape](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogVolume.Bind_get_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

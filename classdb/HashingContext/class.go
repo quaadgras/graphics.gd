@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -24,6 +25,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -39,6 +44,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -51,6 +57,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -127,7 +134,7 @@ type Any interface {
 /*
 Starts a new hash computation of the given [param type] (e.g. [constant HASH_SHA256] to start computation of an SHA-256).
 */
-func (self Instance) Start(atype gdclass.HashingContextHashType) error { //gd:HashingContext.start
+func (self Instance) Start(atype HashType) error { //gd:HashingContext.start
 	return error(gd.ToError(Advanced(self).Start(atype)))
 }
 
@@ -169,7 +176,7 @@ func New() Instance {
 Starts a new hash computation of the given [param type] (e.g. [constant HASH_SHA256] to start computation of an SHA-256).
 */
 //go:nosplit
-func (self class) Start(atype gdclass.HashingContextHashType) Error.Code { //gd:HashingContext.start
+func (self class) Start(atype HashType) Error.Code { //gd:HashingContext.start
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	var r_ret = callframe.Ret[int64](frame)
@@ -235,7 +242,7 @@ func init() {
 	})
 }
 
-type HashType = gdclass.HashingContextHashType //gd:HashingContext.HashType
+type HashType int //gd:HashingContext.HashType
 
 const (
 	/*Hashing algorithm: MD5.*/

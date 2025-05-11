@@ -12,7 +12,9 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Image"
+import "graphics.gd/classdb/Input"
 import "graphics.gd/classdb/InputEvent"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/Texture2D"
@@ -35,6 +37,10 @@ import "graphics.gd/variant/Vector2i"
 import "graphics.gd/variant/Vector3i"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -50,6 +56,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -62,6 +69,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -84,7 +92,7 @@ func singleton() {
 /*
 Returns [code]true[/code] if the specified [param feature] is supported by the current [DisplayServer], [code]false[/code] otherwise.
 */
-func HasFeature(feature gdclass.DisplayServerFeature) bool { //gd:DisplayServer.has_feature
+func HasFeature(feature Feature) bool { //gd:DisplayServer.has_feature
 	once.Do(singleton)
 	return bool(Advanced().HasFeature(feature))
 }
@@ -168,7 +176,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddItem(menu_root string, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key) int { //gd:DisplayServer.global_menu_add_item
+func GlobalMenuAddItem(menu_root string, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key) int { //gd:DisplayServer.global_menu_add_item
 	once.Do(singleton)
 	return int(int(Advanced().GlobalMenuAddItem(String.New(menu_root), String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
 }
@@ -188,7 +196,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddItemOptions(menu_root string, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:DisplayServer.global_menu_add_item
+func GlobalMenuAddItemOptions(menu_root string, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key, index int) int { //gd:DisplayServer.global_menu_add_item
 	once.Do(singleton)
 	return int(int(Advanced().GlobalMenuAddItem(String.New(menu_root), String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
@@ -208,7 +216,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddCheckItem(menu_root string, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key) int { //gd:DisplayServer.global_menu_add_check_item
+func GlobalMenuAddCheckItem(menu_root string, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key) int { //gd:DisplayServer.global_menu_add_check_item
 	once.Do(singleton)
 	return int(int(Advanced().GlobalMenuAddCheckItem(String.New(menu_root), String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
 }
@@ -228,7 +236,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddCheckItemOptions(menu_root string, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:DisplayServer.global_menu_add_check_item
+func GlobalMenuAddCheckItemOptions(menu_root string, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key, index int) int { //gd:DisplayServer.global_menu_add_check_item
 	once.Do(singleton)
 	return int(int(Advanced().GlobalMenuAddCheckItem(String.New(menu_root), String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
@@ -248,7 +256,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddIconItem(menu_root string, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key) int { //gd:DisplayServer.global_menu_add_icon_item
+func GlobalMenuAddIconItem(menu_root string, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key) int { //gd:DisplayServer.global_menu_add_icon_item
 	once.Do(singleton)
 	return int(int(Advanced().GlobalMenuAddIconItem(String.New(menu_root), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
 }
@@ -268,7 +276,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddIconItemOptions(menu_root string, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:DisplayServer.global_menu_add_icon_item
+func GlobalMenuAddIconItemOptions(menu_root string, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key, index int) int { //gd:DisplayServer.global_menu_add_icon_item
 	once.Do(singleton)
 	return int(int(Advanced().GlobalMenuAddIconItem(String.New(menu_root), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
@@ -288,7 +296,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddIconCheckItem(menu_root string, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key) int { //gd:DisplayServer.global_menu_add_icon_check_item
+func GlobalMenuAddIconCheckItem(menu_root string, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key) int { //gd:DisplayServer.global_menu_add_icon_check_item
 	once.Do(singleton)
 	return int(int(Advanced().GlobalMenuAddIconCheckItem(String.New(menu_root), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
 }
@@ -308,7 +316,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddIconCheckItemOptions(menu_root string, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:DisplayServer.global_menu_add_icon_check_item
+func GlobalMenuAddIconCheckItemOptions(menu_root string, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key, index int) int { //gd:DisplayServer.global_menu_add_icon_check_item
 	once.Do(singleton)
 	return int(int(Advanced().GlobalMenuAddIconCheckItem(String.New(menu_root), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
@@ -329,7 +337,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddRadioCheckItem(menu_root string, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key) int { //gd:DisplayServer.global_menu_add_radio_check_item
+func GlobalMenuAddRadioCheckItem(menu_root string, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key) int { //gd:DisplayServer.global_menu_add_radio_check_item
 	once.Do(singleton)
 	return int(int(Advanced().GlobalMenuAddRadioCheckItem(String.New(menu_root), String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
 }
@@ -350,7 +358,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddRadioCheckItemOptions(menu_root string, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:DisplayServer.global_menu_add_radio_check_item
+func GlobalMenuAddRadioCheckItemOptions(menu_root string, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key, index int) int { //gd:DisplayServer.global_menu_add_radio_check_item
 	once.Do(singleton)
 	return int(int(Advanced().GlobalMenuAddRadioCheckItem(String.New(menu_root), String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
@@ -371,7 +379,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddIconRadioCheckItem(menu_root string, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key) int { //gd:DisplayServer.global_menu_add_icon_radio_check_item
+func GlobalMenuAddIconRadioCheckItem(menu_root string, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key) int { //gd:DisplayServer.global_menu_add_icon_radio_check_item
 	once.Do(singleton)
 	return int(int(Advanced().GlobalMenuAddIconRadioCheckItem(String.New(menu_root), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
 }
@@ -392,7 +400,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddIconRadioCheckItemOptions(menu_root string, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:DisplayServer.global_menu_add_icon_radio_check_item
+func GlobalMenuAddIconRadioCheckItemOptions(menu_root string, icon Texture2D.Instance, label string, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key, index int) int { //gd:DisplayServer.global_menu_add_icon_radio_check_item
 	once.Do(singleton)
 	return int(int(Advanced().GlobalMenuAddIconRadioCheckItem(String.New(menu_root), icon, String.New(label), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
@@ -414,7 +422,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddMultistateItem(menu_root string, label string, max_states int, default_state int, callback func(tag any), key_callback func(tag any), tag any, accelerator Key) int { //gd:DisplayServer.global_menu_add_multistate_item
+func GlobalMenuAddMultistateItem(menu_root string, label string, max_states int, default_state int, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key) int { //gd:DisplayServer.global_menu_add_multistate_item
 	once.Do(singleton)
 	return int(int(Advanced().GlobalMenuAddMultistateItem(String.New(menu_root), String.New(label), int64(max_states), int64(default_state), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(-1))))
 }
@@ -436,7 +444,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 "_help" - Help menu (macOS).
 [/codeblock]
 */
-func GlobalMenuAddMultistateItemOptions(menu_root string, label string, max_states int, default_state int, callback func(tag any), key_callback func(tag any), tag any, accelerator Key, index int) int { //gd:DisplayServer.global_menu_add_multistate_item
+func GlobalMenuAddMultistateItemOptions(menu_root string, label string, max_states int, default_state int, callback func(tag any), key_callback func(tag any), tag any, accelerator Input.Key, index int) int { //gd:DisplayServer.global_menu_add_multistate_item
 	once.Do(singleton)
 	return int(int(Advanced().GlobalMenuAddMultistateItem(String.New(menu_root), String.New(label), int64(max_states), int64(default_state), Callable.New(callback), Callable.New(key_callback), variant.New(tag), accelerator, int64(index))))
 }
@@ -572,9 +580,9 @@ func GlobalMenuGetItemSubmenu(menu_root string, idx int) string { //gd:DisplaySe
 Returns the accelerator of the item at index [param idx]. Accelerators are special combinations of keys that activate the item, no matter which control is focused.
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuGetItemAccelerator(menu_root string, idx int) Key { //gd:DisplayServer.global_menu_get_item_accelerator
+func GlobalMenuGetItemAccelerator(menu_root string, idx int) Input.Key { //gd:DisplayServer.global_menu_get_item_accelerator
 	once.Do(singleton)
-	return Key(Advanced().GlobalMenuGetItemAccelerator(String.New(menu_root), int64(idx)))
+	return Input.Key(Advanced().GlobalMenuGetItemAccelerator(String.New(menu_root), int64(idx)))
 }
 
 /*
@@ -731,7 +739,7 @@ func GlobalMenuSetItemSubmenu(menu_root string, idx int, submenu string) { //gd:
 Sets the accelerator of the item at index [param idx]. [param keycode] can be a single [enum Key], or a combination of [enum KeyModifierMask]s and [enum Key]s using bitwise OR such as [code]KEY_MASK_CTRL | KEY_A[/code] ([kbd]Ctrl + A[/kbd]).
 [b]Note:[/b] This method is implemented only on macOS.
 */
-func GlobalMenuSetItemAccelerator(menu_root string, idx int, keycode Key) { //gd:DisplayServer.global_menu_set_item_accelerator
+func GlobalMenuSetItemAccelerator(menu_root string, idx int, keycode Input.Key) { //gd:DisplayServer.global_menu_set_item_accelerator
 	once.Do(singleton)
 	Advanced().GlobalMenuSetItemAccelerator(String.New(menu_root), int64(idx), keycode)
 }
@@ -962,7 +970,7 @@ Adds a callback, which is called when the utterance has started, finished, cance
 [b]Note:[/b] This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
 [b]Note:[/b] [member ProjectSettings.audio/general/text_to_speech] should be [code]true[/code] to use text-to-speech.
 */
-func TtsSetUtteranceCallback(event gdclass.DisplayServerTTSUtteranceEvent, callable func(int, int)) { //gd:DisplayServer.tts_set_utterance_callback
+func TtsSetUtteranceCallback(event TTSUtteranceEvent, callable func(int, int)) { //gd:DisplayServer.tts_set_utterance_callback
 	once.Do(singleton)
 	Advanced().TtsSetUtteranceCallback(event, Callable.New(callable))
 }
@@ -1015,7 +1023,7 @@ func SetSystemThemeChangeCallback(callable func()) { //gd:DisplayServer.set_syst
 /*
 Sets the current mouse mode. See also [method mouse_get_mode].
 */
-func MouseSetMode(mouse_mode gdclass.DisplayServerMouseMode) { //gd:DisplayServer.mouse_set_mode
+func MouseSetMode(mouse_mode MouseModeValue) { //gd:DisplayServer.mouse_set_mode
 	once.Do(singleton)
 	Advanced().MouseSetMode(mouse_mode)
 }
@@ -1023,9 +1031,9 @@ func MouseSetMode(mouse_mode gdclass.DisplayServerMouseMode) { //gd:DisplayServe
 /*
 Returns the current mouse mode. See also [method mouse_set_mode].
 */
-func MouseGetMode() gdclass.DisplayServerMouseMode { //gd:DisplayServer.mouse_get_mode
+func MouseGetMode() MouseModeValue { //gd:DisplayServer.mouse_get_mode
 	once.Do(singleton)
-	return gdclass.DisplayServerMouseMode(Advanced().MouseGetMode())
+	return MouseModeValue(Advanced().MouseGetMode())
 }
 
 /*
@@ -1048,9 +1056,9 @@ func MouseGetPosition() Vector2i.XY { //gd:DisplayServer.mouse_get_position
 /*
 Returns the current state of mouse buttons (whether each button is pressed) as a bitmask. If multiple mouse buttons are pressed at the same time, the bits are added together. Equivalent to [method Input.get_mouse_button_mask].
 */
-func MouseGetButtonState() MouseButtonMask { //gd:DisplayServer.mouse_get_button_state
+func MouseGetButtonState() Input.MouseButtonMask { //gd:DisplayServer.mouse_get_button_state
 	once.Do(singleton)
-	return MouseButtonMask(Advanced().MouseGetButtonState())
+	return Input.MouseButtonMask(Advanced().MouseGetButtonState())
 }
 
 /*
@@ -1392,7 +1400,7 @@ func ScreenGetImageRect(rect Rect2i.PositionSize) Image.Instance { //gd:DisplayS
 Sets the [param screen]'s [param orientation]. See also [method screen_get_orientation].
 [b]Note:[/b] On iOS, this method has no effect if [member ProjectSettings.display/window/handheld/orientation] is not set to [constant SCREEN_SENSOR].
 */
-func ScreenSetOrientation(orientation gdclass.DisplayServerScreenOrientation) { //gd:DisplayServer.screen_set_orientation
+func ScreenSetOrientation(orientation ScreenOrientation) { //gd:DisplayServer.screen_set_orientation
 	once.Do(singleton)
 	Advanced().ScreenSetOrientation(orientation, int64(-1))
 }
@@ -1401,7 +1409,7 @@ func ScreenSetOrientation(orientation gdclass.DisplayServerScreenOrientation) { 
 Sets the [param screen]'s [param orientation]. See also [method screen_get_orientation].
 [b]Note:[/b] On iOS, this method has no effect if [member ProjectSettings.display/window/handheld/orientation] is not set to [constant SCREEN_SENSOR].
 */
-func ScreenSetOrientationOptions(orientation gdclass.DisplayServerScreenOrientation, screen int) { //gd:DisplayServer.screen_set_orientation
+func ScreenSetOrientationOptions(orientation ScreenOrientation, screen int) { //gd:DisplayServer.screen_set_orientation
 	once.Do(singleton)
 	Advanced().ScreenSetOrientation(orientation, int64(screen))
 }
@@ -1410,18 +1418,18 @@ func ScreenSetOrientationOptions(orientation gdclass.DisplayServerScreenOrientat
 Returns the [param screen]'s current orientation. See also [method screen_set_orientation].
 [b]Note:[/b] This method is implemented on Android and iOS.
 */
-func ScreenGetOrientation() gdclass.DisplayServerScreenOrientation { //gd:DisplayServer.screen_get_orientation
+func ScreenGetOrientation() ScreenOrientation { //gd:DisplayServer.screen_get_orientation
 	once.Do(singleton)
-	return gdclass.DisplayServerScreenOrientation(Advanced().ScreenGetOrientation(int64(-1)))
+	return ScreenOrientation(Advanced().ScreenGetOrientation(int64(-1)))
 }
 
 /*
 Returns the [param screen]'s current orientation. See also [method screen_set_orientation].
 [b]Note:[/b] This method is implemented on Android and iOS.
 */
-func ScreenGetOrientationOptions(screen int) gdclass.DisplayServerScreenOrientation { //gd:DisplayServer.screen_get_orientation
+func ScreenGetOrientationOptions(screen int) ScreenOrientation { //gd:DisplayServer.screen_get_orientation
 	once.Do(singleton)
-	return gdclass.DisplayServerScreenOrientation(Advanced().ScreenGetOrientation(int64(screen)))
+	return ScreenOrientation(Advanced().ScreenGetOrientation(int64(screen)))
 }
 
 /*
@@ -1470,7 +1478,7 @@ func GetWindowAtScreenPosition(position Vector2i.XY) int { //gd:DisplayServer.ge
 Returns internal structure pointers for use in plugins.
 [b]Note:[/b] This method is implemented on Android, Linux (X11/Wayland), macOS, and Windows.
 */
-func WindowGetNativeHandle(handle_type gdclass.DisplayServerHandleType, window_id int) int { //gd:DisplayServer.window_get_native_handle
+func WindowGetNativeHandle(handle_type HandleType, window_id int) int { //gd:DisplayServer.window_get_native_handle
 	once.Do(singleton)
 	return int(int(Advanced().WindowGetNativeHandle(handle_type, int64(window_id))))
 }
@@ -1479,7 +1487,7 @@ func WindowGetNativeHandle(handle_type gdclass.DisplayServerHandleType, window_i
 Returns internal structure pointers for use in plugins.
 [b]Note:[/b] This method is implemented on Android, Linux (X11/Wayland), macOS, and Windows.
 */
-func WindowGetNativeHandleOptions(handle_type gdclass.DisplayServerHandleType, window_id int) int { //gd:DisplayServer.window_get_native_handle
+func WindowGetNativeHandleOptions(handle_type HandleType, window_id int) int { //gd:DisplayServer.window_get_native_handle
 	once.Do(singleton)
 	return int(int(Advanced().WindowGetNativeHandle(handle_type, int64(window_id))))
 }
@@ -1772,7 +1780,7 @@ func WindowSetRectChangedCallbackOptions(callback func(rect Rect2i.PositionSize)
 Sets the [param callback] that will be called when an event occurs in the window specified by [param window_id].
 [b]Warning:[/b] Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
 */
-func WindowSetWindowEventCallback(callback func(event gdclass.DisplayServerWindowEvent), window_id int) { //gd:DisplayServer.window_set_window_event_callback
+func WindowSetWindowEventCallback(callback func(event WindowEvent), window_id int) { //gd:DisplayServer.window_set_window_event_callback
 	once.Do(singleton)
 	Advanced().WindowSetWindowEventCallback(Callable.New(callback), int64(window_id))
 }
@@ -1781,7 +1789,7 @@ func WindowSetWindowEventCallback(callback func(event gdclass.DisplayServerWindo
 Sets the [param callback] that will be called when an event occurs in the window specified by [param window_id].
 [b]Warning:[/b] Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
 */
-func WindowSetWindowEventCallbackOptions(callback func(event gdclass.DisplayServerWindowEvent), window_id int) { //gd:DisplayServer.window_set_window_event_callback
+func WindowSetWindowEventCallbackOptions(callback func(event WindowEvent), window_id int) { //gd:DisplayServer.window_set_window_event_callback
 	once.Do(singleton)
 	Advanced().WindowSetWindowEventCallback(Callable.New(callback), int64(window_id))
 }
@@ -1951,17 +1959,17 @@ func WindowGetSizeWithDecorationsOptions(window_id int) Vector2i.XY { //gd:Displ
 /*
 Returns the mode of the given window.
 */
-func WindowGetMode(window_id int) gdclass.DisplayServerWindowMode { //gd:DisplayServer.window_get_mode
+func WindowGetMode(window_id int) WindowMode { //gd:DisplayServer.window_get_mode
 	once.Do(singleton)
-	return gdclass.DisplayServerWindowMode(Advanced().WindowGetMode(int64(window_id)))
+	return WindowMode(Advanced().WindowGetMode(int64(window_id)))
 }
 
 /*
 Returns the mode of the given window.
 */
-func WindowGetModeOptions(window_id int) gdclass.DisplayServerWindowMode { //gd:DisplayServer.window_get_mode
+func WindowGetModeOptions(window_id int) WindowMode { //gd:DisplayServer.window_get_mode
 	once.Do(singleton)
-	return gdclass.DisplayServerWindowMode(Advanced().WindowGetMode(int64(window_id)))
+	return WindowMode(Advanced().WindowGetMode(int64(window_id)))
 }
 
 /*
@@ -1969,7 +1977,7 @@ Sets window mode for the given window to [param mode]. See [enum WindowMode] for
 [b]Note:[/b] On Android, setting it to [constant WINDOW_MODE_FULLSCREEN] or [constant WINDOW_MODE_EXCLUSIVE_FULLSCREEN] will enable immersive mode.
 [b]Note:[/b] Setting the window to full screen forcibly sets the borderless flag to [code]true[/code], so make sure to set it back to [code]false[/code] when not wanted.
 */
-func WindowSetMode(mode gdclass.DisplayServerWindowMode, window_id int) { //gd:DisplayServer.window_set_mode
+func WindowSetMode(mode WindowMode, window_id int) { //gd:DisplayServer.window_set_mode
 	once.Do(singleton)
 	Advanced().WindowSetMode(mode, int64(window_id))
 }
@@ -1979,7 +1987,7 @@ Sets window mode for the given window to [param mode]. See [enum WindowMode] for
 [b]Note:[/b] On Android, setting it to [constant WINDOW_MODE_FULLSCREEN] or [constant WINDOW_MODE_EXCLUSIVE_FULLSCREEN] will enable immersive mode.
 [b]Note:[/b] Setting the window to full screen forcibly sets the borderless flag to [code]true[/code], so make sure to set it back to [code]false[/code] when not wanted.
 */
-func WindowSetModeOptions(mode gdclass.DisplayServerWindowMode, window_id int) { //gd:DisplayServer.window_set_mode
+func WindowSetModeOptions(mode WindowMode, window_id int) { //gd:DisplayServer.window_set_mode
 	once.Do(singleton)
 	Advanced().WindowSetMode(mode, int64(window_id))
 }
@@ -1987,7 +1995,7 @@ func WindowSetModeOptions(mode gdclass.DisplayServerWindowMode, window_id int) {
 /*
 Enables or disables the given window's given [param flag]. See [enum WindowFlags] for possible values and their behavior.
 */
-func WindowSetFlag(flag gdclass.DisplayServerWindowFlags, enabled bool, window_id int) { //gd:DisplayServer.window_set_flag
+func WindowSetFlag(flag WindowFlags, enabled bool, window_id int) { //gd:DisplayServer.window_set_flag
 	once.Do(singleton)
 	Advanced().WindowSetFlag(flag, enabled, int64(window_id))
 }
@@ -1995,7 +2003,7 @@ func WindowSetFlag(flag gdclass.DisplayServerWindowFlags, enabled bool, window_i
 /*
 Enables or disables the given window's given [param flag]. See [enum WindowFlags] for possible values and their behavior.
 */
-func WindowSetFlagOptions(flag gdclass.DisplayServerWindowFlags, enabled bool, window_id int) { //gd:DisplayServer.window_set_flag
+func WindowSetFlagOptions(flag WindowFlags, enabled bool, window_id int) { //gd:DisplayServer.window_set_flag
 	once.Do(singleton)
 	Advanced().WindowSetFlag(flag, enabled, int64(window_id))
 }
@@ -2003,7 +2011,7 @@ func WindowSetFlagOptions(flag gdclass.DisplayServerWindowFlags, enabled bool, w
 /*
 Returns the current value of the given window's [param flag].
 */
-func WindowGetFlag(flag gdclass.DisplayServerWindowFlags, window_id int) bool { //gd:DisplayServer.window_get_flag
+func WindowGetFlag(flag WindowFlags, window_id int) bool { //gd:DisplayServer.window_get_flag
 	once.Do(singleton)
 	return bool(Advanced().WindowGetFlag(flag, int64(window_id)))
 }
@@ -2011,7 +2019,7 @@ func WindowGetFlag(flag gdclass.DisplayServerWindowFlags, window_id int) bool { 
 /*
 Returns the current value of the given window's [param flag].
 */
-func WindowGetFlagOptions(flag gdclass.DisplayServerWindowFlags, window_id int) bool { //gd:DisplayServer.window_get_flag
+func WindowGetFlagOptions(flag WindowFlags, window_id int) bool { //gd:DisplayServer.window_get_flag
 	once.Do(singleton)
 	return bool(Advanced().WindowGetFlag(flag, int64(window_id)))
 }
@@ -2172,7 +2180,7 @@ See [enum DisplayServer.VSyncMode] for possible values and how they affect the b
 Depending on the platform and used renderer, the engine will fall back to [constant VSYNC_ENABLED] if the desired mode is not supported.
 [b]Note:[/b] V-Sync modes other than [constant VSYNC_ENABLED] are only supported in the Forward+ and Mobile rendering methods, not Compatibility.
 */
-func WindowSetVsyncMode(vsync_mode gdclass.DisplayServerVSyncMode, window_id int) { //gd:DisplayServer.window_set_vsync_mode
+func WindowSetVsyncMode(vsync_mode VSyncMode, window_id int) { //gd:DisplayServer.window_set_vsync_mode
 	once.Do(singleton)
 	Advanced().WindowSetVsyncMode(vsync_mode, int64(window_id))
 }
@@ -2183,7 +2191,7 @@ See [enum DisplayServer.VSyncMode] for possible values and how they affect the b
 Depending on the platform and used renderer, the engine will fall back to [constant VSYNC_ENABLED] if the desired mode is not supported.
 [b]Note:[/b] V-Sync modes other than [constant VSYNC_ENABLED] are only supported in the Forward+ and Mobile rendering methods, not Compatibility.
 */
-func WindowSetVsyncModeOptions(vsync_mode gdclass.DisplayServerVSyncMode, window_id int) { //gd:DisplayServer.window_set_vsync_mode
+func WindowSetVsyncModeOptions(vsync_mode VSyncMode, window_id int) { //gd:DisplayServer.window_set_vsync_mode
 	once.Do(singleton)
 	Advanced().WindowSetVsyncMode(vsync_mode, int64(window_id))
 }
@@ -2191,17 +2199,17 @@ func WindowSetVsyncModeOptions(vsync_mode gdclass.DisplayServerVSyncMode, window
 /*
 Returns the V-Sync mode of the given window.
 */
-func WindowGetVsyncMode(window_id int) gdclass.DisplayServerVSyncMode { //gd:DisplayServer.window_get_vsync_mode
+func WindowGetVsyncMode(window_id int) VSyncMode { //gd:DisplayServer.window_get_vsync_mode
 	once.Do(singleton)
-	return gdclass.DisplayServerVSyncMode(Advanced().WindowGetVsyncMode(int64(window_id)))
+	return VSyncMode(Advanced().WindowGetVsyncMode(int64(window_id)))
 }
 
 /*
 Returns the V-Sync mode of the given window.
 */
-func WindowGetVsyncModeOptions(window_id int) gdclass.DisplayServerVSyncMode { //gd:DisplayServer.window_get_vsync_mode
+func WindowGetVsyncModeOptions(window_id int) VSyncMode { //gd:DisplayServer.window_get_vsync_mode
 	once.Do(singleton)
-	return gdclass.DisplayServerVSyncMode(Advanced().WindowGetVsyncMode(int64(window_id)))
+	return VSyncMode(Advanced().WindowGetVsyncMode(int64(window_id)))
 }
 
 /*
@@ -2260,7 +2268,7 @@ func WindowStartDragOptions(window_id int) { //gd:DisplayServer.window_start_dra
 Starts an interactive resize operation on the window with the given [param window_id], using the current mouse position. Call this method when handling a mouse button being pressed to simulate a pressed event on the window's edge.
 [b]Note:[/b] This method is implemented on Linux (X11/Wayland), macOS, and Windows.
 */
-func WindowStartResize(edge gdclass.DisplayServerWindowResizeEdge, window_id int) { //gd:DisplayServer.window_start_resize
+func WindowStartResize(edge WindowResizeEdge, window_id int) { //gd:DisplayServer.window_start_resize
 	once.Do(singleton)
 	Advanced().WindowStartResize(edge, int64(window_id))
 }
@@ -2269,7 +2277,7 @@ func WindowStartResize(edge gdclass.DisplayServerWindowResizeEdge, window_id int
 Starts an interactive resize operation on the window with the given [param window_id], using the current mouse position. Call this method when handling a mouse button being pressed to simulate a pressed event on the window's edge.
 [b]Note:[/b] This method is implemented on Linux (X11/Wayland), macOS, and Windows.
 */
-func WindowStartResizeOptions(edge gdclass.DisplayServerWindowResizeEdge, window_id int) { //gd:DisplayServer.window_start_resize
+func WindowStartResizeOptions(edge WindowResizeEdge, window_id int) { //gd:DisplayServer.window_start_resize
 	once.Do(singleton)
 	Advanced().WindowStartResize(edge, int64(window_id))
 }
@@ -2302,7 +2310,7 @@ Shows the virtual keyboard if the platform has one.
 [param cursor_start] and [param cursor_end] can optionally define the current text selection.
 [b]Note:[/b] This method is implemented on Android, iOS and Web.
 */
-func VirtualKeyboardShow(existing_text string, position Rect2.PositionSize, atype gdclass.DisplayServerVirtualKeyboardType) { //gd:DisplayServer.virtual_keyboard_show
+func VirtualKeyboardShow(existing_text string, position Rect2.PositionSize, atype VirtualKeyboardType) { //gd:DisplayServer.virtual_keyboard_show
 	once.Do(singleton)
 	Advanced().VirtualKeyboardShow(String.New(existing_text), Rect2.PositionSize(position), atype, int64(-1), int64(-1), int64(-1))
 }
@@ -2317,7 +2325,7 @@ Shows the virtual keyboard if the platform has one.
 [param cursor_start] and [param cursor_end] can optionally define the current text selection.
 [b]Note:[/b] This method is implemented on Android, iOS and Web.
 */
-func VirtualKeyboardShowOptions(existing_text string, position Rect2.PositionSize, atype gdclass.DisplayServerVirtualKeyboardType, max_length int, cursor_start int, cursor_end int) { //gd:DisplayServer.virtual_keyboard_show
+func VirtualKeyboardShowOptions(existing_text string, position Rect2.PositionSize, atype VirtualKeyboardType, max_length int, cursor_start int, cursor_end int) { //gd:DisplayServer.virtual_keyboard_show
 	once.Do(singleton)
 	Advanced().VirtualKeyboardShow(String.New(existing_text), Rect2.PositionSize(position), atype, int64(max_length), int64(cursor_start), int64(cursor_end))
 }
@@ -2350,7 +2358,7 @@ func HasHardwareKeyboard() bool { //gd:DisplayServer.has_hardware_keyboard
 /*
 Sets the default mouse cursor shape. The cursor's appearance will vary depending on the user's operating system and mouse cursor theme. See also [method cursor_get_shape] and [method cursor_set_custom_image].
 */
-func CursorSetShape(shape gdclass.DisplayServerCursorShape) { //gd:DisplayServer.cursor_set_shape
+func CursorSetShape(shape CursorShape) { //gd:DisplayServer.cursor_set_shape
 	once.Do(singleton)
 	Advanced().CursorSetShape(shape)
 }
@@ -2358,16 +2366,16 @@ func CursorSetShape(shape gdclass.DisplayServerCursorShape) { //gd:DisplayServer
 /*
 Returns the default mouse cursor shape set by [method cursor_set_shape].
 */
-func CursorGetShape() gdclass.DisplayServerCursorShape { //gd:DisplayServer.cursor_get_shape
+func CursorGetShape() CursorShape { //gd:DisplayServer.cursor_get_shape
 	once.Do(singleton)
-	return gdclass.DisplayServerCursorShape(Advanced().CursorGetShape())
+	return CursorShape(Advanced().CursorGetShape())
 }
 
 /*
 Sets a custom mouse cursor image for the given [param shape]. This means the user's operating system and mouse cursor theme will no longer influence the mouse cursor's appearance.
 [param cursor] can be either a [Texture2D] or an [Image], and it should not be larger than 256×256 to display correctly. Optionally, [param hotspot] can be set to offset the image's position relative to the click point. By default, [param hotspot] is set to the top-left corner of the image. See also [method cursor_set_shape].
 */
-func CursorSetCustomImage(cursor Resource.Instance, shape gdclass.DisplayServerCursorShape, hotspot Vector2.XY) { //gd:DisplayServer.cursor_set_custom_image
+func CursorSetCustomImage(cursor Resource.Instance, shape CursorShape, hotspot Vector2.XY) { //gd:DisplayServer.cursor_set_custom_image
 	once.Do(singleton)
 	Advanced().CursorSetCustomImage(cursor, shape, Vector2.XY(hotspot))
 }
@@ -2376,7 +2384,7 @@ func CursorSetCustomImage(cursor Resource.Instance, shape gdclass.DisplayServerC
 Sets a custom mouse cursor image for the given [param shape]. This means the user's operating system and mouse cursor theme will no longer influence the mouse cursor's appearance.
 [param cursor] can be either a [Texture2D] or an [Image], and it should not be larger than 256×256 to display correctly. Optionally, [param hotspot] can be set to offset the image's position relative to the click point. By default, [param hotspot] is set to the top-left corner of the image. See also [method cursor_set_shape].
 */
-func CursorSetCustomImageOptions(cursor Resource.Instance, shape gdclass.DisplayServerCursorShape, hotspot Vector2.XY) { //gd:DisplayServer.cursor_set_custom_image
+func CursorSetCustomImageOptions(cursor Resource.Instance, shape CursorShape, hotspot Vector2.XY) { //gd:DisplayServer.cursor_set_custom_image
 	once.Do(singleton)
 	Advanced().CursorSetCustomImage(cursor, shape, Vector2.XY(hotspot))
 }
@@ -2428,7 +2436,7 @@ Callbacks have the following arguments: [code]status: bool, selected_paths: Pack
 [b]Note:[/b] On Android and macOS, native file dialogs have no title.
 [b]Note:[/b] On macOS, sandboxed apps will save security-scoped bookmarks to retain access to the opened folders across multiple sessions. Use [method OS.get_granted_permissions] to get a list of saved bookmarks.
 */
-func FileDialogShow(title string, current_directory string, filename string, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters []string, callback func(status bool, selected_paths []string, selected_filter_index int)) error { //gd:DisplayServer.file_dialog_show
+func FileDialogShow(title string, current_directory string, filename string, show_hidden bool, mode FileDialogMode, filters []string, callback func(status bool, selected_paths []string, selected_filter_index int)) error { //gd:DisplayServer.file_dialog_show
 	once.Do(singleton)
 	return error(gd.ToError(Advanced().FileDialogShow(String.New(title), String.New(current_directory), String.New(filename), show_hidden, mode, Packed.MakeStrings(filters...), Callable.New(callback))))
 }
@@ -2448,7 +2456,7 @@ Callbacks have the following arguments: [code]status: bool, selected_paths: Pack
 [b]Note:[/b] On macOS, native file dialogs have no title.
 [b]Note:[/b] On macOS, sandboxed apps will save security-scoped bookmarks to retain access to the opened folders across multiple sessions. Use [method OS.get_granted_permissions] to get a list of saved bookmarks.
 */
-func FileDialogWithOptionsShow(title string, current_directory string, root string, filename string, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters []string, options []FileDialogOption, callback func(status bool, selected_paths []string, selected_filter_index int, selected_option map[any]any)) error { //gd:DisplayServer.file_dialog_with_options_show
+func FileDialogWithOptionsShow(title string, current_directory string, root string, filename string, show_hidden bool, mode FileDialogMode, filters []string, options []FileDialogOption, callback func(status bool, selected_paths []string, selected_filter_index int, selected_option map[any]any)) error { //gd:DisplayServer.file_dialog_with_options_show
 	once.Do(singleton)
 	return error(gd.ToError(Advanced().FileDialogWithOptionsShow(String.New(title), String.New(current_directory), String.New(root), String.New(filename), show_hidden, mode, Packed.MakeStrings(filters...), gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](options), Callable.New(callback))))
 }
@@ -2511,18 +2519,18 @@ func KeyboardGetLayoutName(index int) string { //gd:DisplayServer.keyboard_get_l
 Converts a physical (US QWERTY) [param keycode] to one in the active keyboard layout.
 [b]Note:[/b] This method is implemented on Linux (X11/Wayland), macOS and Windows.
 */
-func KeyboardGetKeycodeFromPhysical(keycode Key) Key { //gd:DisplayServer.keyboard_get_keycode_from_physical
+func KeyboardGetKeycodeFromPhysical(keycode Input.Key) Input.Key { //gd:DisplayServer.keyboard_get_keycode_from_physical
 	once.Do(singleton)
-	return Key(Advanced().KeyboardGetKeycodeFromPhysical(keycode))
+	return Input.Key(Advanced().KeyboardGetKeycodeFromPhysical(keycode))
 }
 
 /*
 Converts a physical (US QWERTY) [param keycode] to localized label printed on the key in the active keyboard layout.
 [b]Note:[/b] This method is implemented on Linux (X11/Wayland), macOS and Windows.
 */
-func KeyboardGetLabelFromPhysical(keycode Key) Key { //gd:DisplayServer.keyboard_get_label_from_physical
+func KeyboardGetLabelFromPhysical(keycode Input.Key) Input.Key { //gd:DisplayServer.keyboard_get_label_from_physical
 	once.Do(singleton)
-	return Key(Advanced().KeyboardGetLabelFromPhysical(keycode))
+	return Input.Key(Advanced().KeyboardGetLabelFromPhysical(keycode))
 }
 
 /*
@@ -2573,7 +2581,7 @@ func SetIcon(image Image.Instance) { //gd:DisplayServer.set_icon
 Creates a new application status indicator with the specified icon, tooltip, and activation callback.
 [param callback] should take two arguments: the pressed mouse button (one of the [enum MouseButton] constants) and the click position in screen coordinates (a [Vector2i]).
 */
-func CreateStatusIndicator(icon Texture2D.Instance, tooltip string, callback func(button MouseButton, click_position Vector2i.XY)) int { //gd:DisplayServer.create_status_indicator
+func CreateStatusIndicator(icon Texture2D.Instance, tooltip string, callback func(button Input.MouseButton, click_position Vector2i.XY)) int { //gd:DisplayServer.create_status_indicator
 	once.Do(singleton)
 	return int(int(Advanced().CreateStatusIndicator(icon, String.New(tooltip), Callable.New(callback))))
 }
@@ -2611,7 +2619,7 @@ func StatusIndicatorSetMenu(id int, menu_rid RID.NativeMenu) { //gd:DisplayServe
 Sets the application status indicator activation callback. [param callback] should take two arguments: [int] mouse button index (one of [enum MouseButton] values) and [Vector2i] click position in screen coordinates.
 [b]Note:[/b] This method is implemented on macOS and Windows.
 */
-func StatusIndicatorSetCallback(id int, callback func(button MouseButton, click_position Vector2i.XY)) { //gd:DisplayServer.status_indicator_set_callback
+func StatusIndicatorSetCallback(id int, callback func(button Input.MouseButton, click_position Vector2i.XY)) { //gd:DisplayServer.status_indicator_set_callback
 	once.Do(singleton)
 	Advanced().StatusIndicatorSetCallback(int64(id), Callable.New(callback))
 }
@@ -2725,7 +2733,7 @@ func (self Extension[T]) AsObject() [1]gd.Object     { return self.Super().AsObj
 Returns [code]true[/code] if the specified [param feature] is supported by the current [DisplayServer], [code]false[/code] otherwise.
 */
 //go:nosplit
-func (self class) HasFeature(feature gdclass.DisplayServerFeature) bool { //gd:DisplayServer.has_feature
+func (self class) HasFeature(feature Feature) bool { //gd:DisplayServer.has_feature
 	var frame = callframe.New()
 	callframe.Arg(frame, feature)
 	var r_ret = callframe.Ret[bool](frame)
@@ -2822,7 +2830,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [/codeblock]
 */
 //go:nosplit
-func (self class) GlobalMenuAddItem(menu_root String.Readable, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Key, index int64) int64 { //gd:DisplayServer.global_menu_add_item
+func (self class) GlobalMenuAddItem(menu_root String.Readable, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:DisplayServer.global_menu_add_item
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
@@ -2854,7 +2862,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [/codeblock]
 */
 //go:nosplit
-func (self class) GlobalMenuAddCheckItem(menu_root String.Readable, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Key, index int64) int64 { //gd:DisplayServer.global_menu_add_check_item
+func (self class) GlobalMenuAddCheckItem(menu_root String.Readable, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:DisplayServer.global_menu_add_check_item
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
@@ -2886,7 +2894,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [/codeblock]
 */
 //go:nosplit
-func (self class) GlobalMenuAddIconItem(menu_root String.Readable, icon [1]gdclass.Texture2D, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Key, index int64) int64 { //gd:DisplayServer.global_menu_add_icon_item
+func (self class) GlobalMenuAddIconItem(menu_root String.Readable, icon [1]gdclass.Texture2D, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:DisplayServer.global_menu_add_icon_item
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
@@ -2919,7 +2927,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [/codeblock]
 */
 //go:nosplit
-func (self class) GlobalMenuAddIconCheckItem(menu_root String.Readable, icon [1]gdclass.Texture2D, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Key, index int64) int64 { //gd:DisplayServer.global_menu_add_icon_check_item
+func (self class) GlobalMenuAddIconCheckItem(menu_root String.Readable, icon [1]gdclass.Texture2D, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:DisplayServer.global_menu_add_icon_check_item
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
@@ -2953,7 +2961,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [/codeblock]
 */
 //go:nosplit
-func (self class) GlobalMenuAddRadioCheckItem(menu_root String.Readable, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Key, index int64) int64 { //gd:DisplayServer.global_menu_add_radio_check_item
+func (self class) GlobalMenuAddRadioCheckItem(menu_root String.Readable, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:DisplayServer.global_menu_add_radio_check_item
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
@@ -2986,7 +2994,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [/codeblock]
 */
 //go:nosplit
-func (self class) GlobalMenuAddIconRadioCheckItem(menu_root String.Readable, icon [1]gdclass.Texture2D, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Key, index int64) int64 { //gd:DisplayServer.global_menu_add_icon_radio_check_item
+func (self class) GlobalMenuAddIconRadioCheckItem(menu_root String.Readable, icon [1]gdclass.Texture2D, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:DisplayServer.global_menu_add_icon_radio_check_item
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, pointers.Get(icon[0])[0])
@@ -3021,7 +3029,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 [/codeblock]
 */
 //go:nosplit
-func (self class) GlobalMenuAddMultistateItem(menu_root String.Readable, label String.Readable, max_states int64, default_state int64, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Key, index int64) int64 { //gd:DisplayServer.global_menu_add_multistate_item
+func (self class) GlobalMenuAddMultistateItem(menu_root String.Readable, label String.Readable, max_states int64, default_state int64, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:DisplayServer.global_menu_add_multistate_item
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
@@ -3230,11 +3238,11 @@ Returns the accelerator of the item at index [param idx]. Accelerators are speci
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuGetItemAccelerator(menu_root String.Readable, idx int64) Key { //gd:DisplayServer.global_menu_get_item_accelerator
+func (self class) GlobalMenuGetItemAccelerator(menu_root String.Readable, idx int64) Input.Key { //gd:DisplayServer.global_menu_get_item_accelerator
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[Key](frame)
+	var r_ret = callframe.Ret[Input.Key](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_global_menu_get_item_accelerator, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3499,7 +3507,7 @@ Sets the accelerator of the item at index [param idx]. [param keycode] can be a 
 [b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
-func (self class) GlobalMenuSetItemAccelerator(menu_root String.Readable, idx int64, keycode Key) { //gd:DisplayServer.global_menu_set_item_accelerator
+func (self class) GlobalMenuSetItemAccelerator(menu_root String.Readable, idx int64, keycode Input.Key) { //gd:DisplayServer.global_menu_set_item_accelerator
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(menu_root)))
 	callframe.Arg(frame, idx)
@@ -3821,7 +3829,7 @@ Adds a callback, which is called when the utterance has started, finished, cance
 [b]Note:[/b] [member ProjectSettings.audio/general/text_to_speech] should be [code]true[/code] to use text-to-speech.
 */
 //go:nosplit
-func (self class) TtsSetUtteranceCallback(event gdclass.DisplayServerTTSUtteranceEvent, callable Callable.Function) { //gd:DisplayServer.tts_set_utterance_callback
+func (self class) TtsSetUtteranceCallback(event TTSUtteranceEvent, callable Callable.Function) { //gd:DisplayServer.tts_set_utterance_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, event)
 	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callable)))
@@ -3903,7 +3911,7 @@ func (self class) SetSystemThemeChangeCallback(callable Callable.Function) { //g
 Sets the current mouse mode. See also [method mouse_get_mode].
 */
 //go:nosplit
-func (self class) MouseSetMode(mouse_mode gdclass.DisplayServerMouseMode) { //gd:DisplayServer.mouse_set_mode
+func (self class) MouseSetMode(mouse_mode MouseModeValue) { //gd:DisplayServer.mouse_set_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mouse_mode)
 	var r_ret = callframe.Nil
@@ -3915,9 +3923,9 @@ func (self class) MouseSetMode(mouse_mode gdclass.DisplayServerMouseMode) { //gd
 Returns the current mouse mode. See also [method mouse_set_mode].
 */
 //go:nosplit
-func (self class) MouseGetMode() gdclass.DisplayServerMouseMode { //gd:DisplayServer.mouse_get_mode
+func (self class) MouseGetMode() MouseModeValue { //gd:DisplayServer.mouse_get_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.DisplayServerMouseMode](frame)
+	var r_ret = callframe.Ret[MouseModeValue](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_mouse_get_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3954,9 +3962,9 @@ func (self class) MouseGetPosition() Vector2i.XY { //gd:DisplayServer.mouse_get_
 Returns the current state of mouse buttons (whether each button is pressed) as a bitmask. If multiple mouse buttons are pressed at the same time, the bits are added together. Equivalent to [method Input.get_mouse_button_mask].
 */
 //go:nosplit
-func (self class) MouseGetButtonState() MouseButtonMask { //gd:DisplayServer.mouse_get_button_state
+func (self class) MouseGetButtonState() Input.MouseButtonMask { //gd:DisplayServer.mouse_get_button_state
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[MouseButtonMask](frame)
+	var r_ret = callframe.Ret[Input.MouseButtonMask](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_mouse_get_button_state, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -4332,7 +4340,7 @@ Sets the [param screen]'s [param orientation]. See also [method screen_get_orien
 [b]Note:[/b] On iOS, this method has no effect if [member ProjectSettings.display/window/handheld/orientation] is not set to [constant SCREEN_SENSOR].
 */
 //go:nosplit
-func (self class) ScreenSetOrientation(orientation gdclass.DisplayServerScreenOrientation, screen int64) { //gd:DisplayServer.screen_set_orientation
+func (self class) ScreenSetOrientation(orientation ScreenOrientation, screen int64) { //gd:DisplayServer.screen_set_orientation
 	var frame = callframe.New()
 	callframe.Arg(frame, orientation)
 	callframe.Arg(frame, screen)
@@ -4346,10 +4354,10 @@ Returns the [param screen]'s current orientation. See also [method screen_set_or
 [b]Note:[/b] This method is implemented on Android and iOS.
 */
 //go:nosplit
-func (self class) ScreenGetOrientation(screen int64) gdclass.DisplayServerScreenOrientation { //gd:DisplayServer.screen_get_orientation
+func (self class) ScreenGetOrientation(screen int64) ScreenOrientation { //gd:DisplayServer.screen_get_orientation
 	var frame = callframe.New()
 	callframe.Arg(frame, screen)
-	var r_ret = callframe.Ret[gdclass.DisplayServerScreenOrientation](frame)
+	var r_ret = callframe.Ret[ScreenOrientation](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_screen_get_orientation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -4422,7 +4430,7 @@ Returns internal structure pointers for use in plugins.
 [b]Note:[/b] This method is implemented on Android, Linux (X11/Wayland), macOS, and Windows.
 */
 //go:nosplit
-func (self class) WindowGetNativeHandle(handle_type gdclass.DisplayServerHandleType, window_id int64) int64 { //gd:DisplayServer.window_get_native_handle
+func (self class) WindowGetNativeHandle(handle_type HandleType, window_id int64) int64 { //gd:DisplayServer.window_get_native_handle
 	var frame = callframe.New()
 	callframe.Arg(frame, handle_type)
 	callframe.Arg(frame, window_id)
@@ -4811,10 +4819,10 @@ func (self class) WindowGetSizeWithDecorations(window_id int64) Vector2i.XY { //
 Returns the mode of the given window.
 */
 //go:nosplit
-func (self class) WindowGetMode(window_id int64) gdclass.DisplayServerWindowMode { //gd:DisplayServer.window_get_mode
+func (self class) WindowGetMode(window_id int64) WindowMode { //gd:DisplayServer.window_get_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
-	var r_ret = callframe.Ret[gdclass.DisplayServerWindowMode](frame)
+	var r_ret = callframe.Ret[WindowMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_get_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -4827,7 +4835,7 @@ Sets window mode for the given window to [param mode]. See [enum WindowMode] for
 [b]Note:[/b] Setting the window to full screen forcibly sets the borderless flag to [code]true[/code], so make sure to set it back to [code]false[/code] when not wanted.
 */
 //go:nosplit
-func (self class) WindowSetMode(mode gdclass.DisplayServerWindowMode, window_id int64) { //gd:DisplayServer.window_set_mode
+func (self class) WindowSetMode(mode WindowMode, window_id int64) { //gd:DisplayServer.window_set_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	callframe.Arg(frame, window_id)
@@ -4840,7 +4848,7 @@ func (self class) WindowSetMode(mode gdclass.DisplayServerWindowMode, window_id 
 Enables or disables the given window's given [param flag]. See [enum WindowFlags] for possible values and their behavior.
 */
 //go:nosplit
-func (self class) WindowSetFlag(flag gdclass.DisplayServerWindowFlags, enabled bool, window_id int64) { //gd:DisplayServer.window_set_flag
+func (self class) WindowSetFlag(flag WindowFlags, enabled bool, window_id int64) { //gd:DisplayServer.window_set_flag
 	var frame = callframe.New()
 	callframe.Arg(frame, flag)
 	callframe.Arg(frame, enabled)
@@ -4854,7 +4862,7 @@ func (self class) WindowSetFlag(flag gdclass.DisplayServerWindowFlags, enabled b
 Returns the current value of the given window's [param flag].
 */
 //go:nosplit
-func (self class) WindowGetFlag(flag gdclass.DisplayServerWindowFlags, window_id int64) bool { //gd:DisplayServer.window_get_flag
+func (self class) WindowGetFlag(flag WindowFlags, window_id int64) bool { //gd:DisplayServer.window_get_flag
 	var frame = callframe.New()
 	callframe.Arg(frame, flag)
 	callframe.Arg(frame, window_id)
@@ -5008,7 +5016,7 @@ Depending on the platform and used renderer, the engine will fall back to [const
 [b]Note:[/b] V-Sync modes other than [constant VSYNC_ENABLED] are only supported in the Forward+ and Mobile rendering methods, not Compatibility.
 */
 //go:nosplit
-func (self class) WindowSetVsyncMode(vsync_mode gdclass.DisplayServerVSyncMode, window_id int64) { //gd:DisplayServer.window_set_vsync_mode
+func (self class) WindowSetVsyncMode(vsync_mode VSyncMode, window_id int64) { //gd:DisplayServer.window_set_vsync_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, vsync_mode)
 	callframe.Arg(frame, window_id)
@@ -5021,10 +5029,10 @@ func (self class) WindowSetVsyncMode(vsync_mode gdclass.DisplayServerVSyncMode, 
 Returns the V-Sync mode of the given window.
 */
 //go:nosplit
-func (self class) WindowGetVsyncMode(window_id int64) gdclass.DisplayServerVSyncMode { //gd:DisplayServer.window_get_vsync_mode
+func (self class) WindowGetVsyncMode(window_id int64) VSyncMode { //gd:DisplayServer.window_get_vsync_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, window_id)
-	var r_ret = callframe.Ret[gdclass.DisplayServerVSyncMode](frame)
+	var r_ret = callframe.Ret[VSyncMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_window_get_vsync_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -5091,7 +5099,7 @@ Starts an interactive resize operation on the window with the given [param windo
 [b]Note:[/b] This method is implemented on Linux (X11/Wayland), macOS, and Windows.
 */
 //go:nosplit
-func (self class) WindowStartResize(edge gdclass.DisplayServerWindowResizeEdge, window_id int64) { //gd:DisplayServer.window_start_resize
+func (self class) WindowStartResize(edge WindowResizeEdge, window_id int64) { //gd:DisplayServer.window_start_resize
 	var frame = callframe.New()
 	callframe.Arg(frame, edge)
 	callframe.Arg(frame, window_id)
@@ -5139,7 +5147,7 @@ Shows the virtual keyboard if the platform has one.
 [b]Note:[/b] This method is implemented on Android, iOS and Web.
 */
 //go:nosplit
-func (self class) VirtualKeyboardShow(existing_text String.Readable, position Rect2.PositionSize, atype gdclass.DisplayServerVirtualKeyboardType, max_length int64, cursor_start int64, cursor_end int64) { //gd:DisplayServer.virtual_keyboard_show
+func (self class) VirtualKeyboardShow(existing_text String.Readable, position Rect2.PositionSize, atype VirtualKeyboardType, max_length int64, cursor_start int64, cursor_end int64) { //gd:DisplayServer.virtual_keyboard_show
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(existing_text)))
 	callframe.Arg(frame, position)
@@ -5194,7 +5202,7 @@ func (self class) HasHardwareKeyboard() bool { //gd:DisplayServer.has_hardware_k
 Sets the default mouse cursor shape. The cursor's appearance will vary depending on the user's operating system and mouse cursor theme. See also [method cursor_get_shape] and [method cursor_set_custom_image].
 */
 //go:nosplit
-func (self class) CursorSetShape(shape gdclass.DisplayServerCursorShape) { //gd:DisplayServer.cursor_set_shape
+func (self class) CursorSetShape(shape CursorShape) { //gd:DisplayServer.cursor_set_shape
 	var frame = callframe.New()
 	callframe.Arg(frame, shape)
 	var r_ret = callframe.Nil
@@ -5206,9 +5214,9 @@ func (self class) CursorSetShape(shape gdclass.DisplayServerCursorShape) { //gd:
 Returns the default mouse cursor shape set by [method cursor_set_shape].
 */
 //go:nosplit
-func (self class) CursorGetShape() gdclass.DisplayServerCursorShape { //gd:DisplayServer.cursor_get_shape
+func (self class) CursorGetShape() CursorShape { //gd:DisplayServer.cursor_get_shape
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.DisplayServerCursorShape](frame)
+	var r_ret = callframe.Ret[CursorShape](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_cursor_get_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -5220,7 +5228,7 @@ Sets a custom mouse cursor image for the given [param shape]. This means the use
 [param cursor] can be either a [Texture2D] or an [Image], and it should not be larger than 256×256 to display correctly. Optionally, [param hotspot] can be set to offset the image's position relative to the click point. By default, [param hotspot] is set to the top-left corner of the image. See also [method cursor_set_shape].
 */
 //go:nosplit
-func (self class) CursorSetCustomImage(cursor [1]gdclass.Resource, shape gdclass.DisplayServerCursorShape, hotspot Vector2.XY) { //gd:DisplayServer.cursor_set_custom_image
+func (self class) CursorSetCustomImage(cursor [1]gdclass.Resource, shape CursorShape, hotspot Vector2.XY) { //gd:DisplayServer.cursor_set_custom_image
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(cursor[0])[0])
 	callframe.Arg(frame, shape)
@@ -5305,7 +5313,7 @@ Callbacks have the following arguments: [code]status: bool, selected_paths: Pack
 [b]Note:[/b] On macOS, sandboxed apps will save security-scoped bookmarks to retain access to the opened folders across multiple sessions. Use [method OS.get_granted_permissions] to get a list of saved bookmarks.
 */
 //go:nosplit
-func (self class) FileDialogShow(title String.Readable, current_directory String.Readable, filename String.Readable, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters Packed.Strings, callback Callable.Function) Error.Code { //gd:DisplayServer.file_dialog_show
+func (self class) FileDialogShow(title String.Readable, current_directory String.Readable, filename String.Readable, show_hidden bool, mode FileDialogMode, filters Packed.Strings, callback Callable.Function) Error.Code { //gd:DisplayServer.file_dialog_show
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(title)))
 	callframe.Arg(frame, pointers.Get(gd.InternalString(current_directory)))
@@ -5337,7 +5345,7 @@ Callbacks have the following arguments: [code]status: bool, selected_paths: Pack
 [b]Note:[/b] On macOS, sandboxed apps will save security-scoped bookmarks to retain access to the opened folders across multiple sessions. Use [method OS.get_granted_permissions] to get a list of saved bookmarks.
 */
 //go:nosplit
-func (self class) FileDialogWithOptionsShow(title String.Readable, current_directory String.Readable, root String.Readable, filename String.Readable, show_hidden bool, mode gdclass.DisplayServerFileDialogMode, filters Packed.Strings, options Array.Contains[Dictionary.Any], callback Callable.Function) Error.Code { //gd:DisplayServer.file_dialog_with_options_show
+func (self class) FileDialogWithOptionsShow(title String.Readable, current_directory String.Readable, root String.Readable, filename String.Readable, show_hidden bool, mode FileDialogMode, filters Packed.Strings, options Array.Contains[Dictionary.Any], callback Callable.Function) Error.Code { //gd:DisplayServer.file_dialog_with_options_show
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(title)))
 	callframe.Arg(frame, pointers.Get(gd.InternalString(current_directory)))
@@ -5443,10 +5451,10 @@ Converts a physical (US QWERTY) [param keycode] to one in the active keyboard la
 [b]Note:[/b] This method is implemented on Linux (X11/Wayland), macOS and Windows.
 */
 //go:nosplit
-func (self class) KeyboardGetKeycodeFromPhysical(keycode Key) Key { //gd:DisplayServer.keyboard_get_keycode_from_physical
+func (self class) KeyboardGetKeycodeFromPhysical(keycode Input.Key) Input.Key { //gd:DisplayServer.keyboard_get_keycode_from_physical
 	var frame = callframe.New()
 	callframe.Arg(frame, keycode)
-	var r_ret = callframe.Ret[Key](frame)
+	var r_ret = callframe.Ret[Input.Key](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_keyboard_get_keycode_from_physical, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -5458,10 +5466,10 @@ Converts a physical (US QWERTY) [param keycode] to localized label printed on th
 [b]Note:[/b] This method is implemented on Linux (X11/Wayland), macOS and Windows.
 */
 //go:nosplit
-func (self class) KeyboardGetLabelFromPhysical(keycode Key) Key { //gd:DisplayServer.keyboard_get_label_from_physical
+func (self class) KeyboardGetLabelFromPhysical(keycode Input.Key) Input.Key { //gd:DisplayServer.keyboard_get_label_from_physical
 	var frame = callframe.New()
 	callframe.Arg(frame, keycode)
-	var r_ret = callframe.Ret[Key](frame)
+	var r_ret = callframe.Ret[Input.Key](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DisplayServer.Bind_keyboard_get_label_from_physical, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -5760,7 +5768,7 @@ func init() {
 	})
 }
 
-type Feature = gdclass.DisplayServerFeature //gd:DisplayServer.Feature
+type Feature int //gd:DisplayServer.Feature
 
 const (
 	/*Display server supports global menu. This allows the application to display its menu items in the operating system's top bar. [b]macOS[/b]*/
@@ -5827,7 +5835,7 @@ const (
 	FeatureEmojiAndSymbolPicker Feature = 31
 )
 
-type MouseModeValue = gdclass.DisplayServerMouseMode //gd:DisplayServer.MouseMode
+type MouseModeValue int //gd:DisplayServer.MouseMode
 
 const (
 	/*Makes the mouse cursor visible if it is hidden.*/
@@ -5845,7 +5853,7 @@ const (
 	MouseModeMax MouseModeValue = 5
 )
 
-type ScreenOrientation = gdclass.DisplayServerScreenOrientation //gd:DisplayServer.ScreenOrientation
+type ScreenOrientation int //gd:DisplayServer.ScreenOrientation
 
 const (
 	/*Default landscape orientation.*/
@@ -5864,7 +5872,7 @@ const (
 	ScreenSensor ScreenOrientation = 6
 )
 
-type VirtualKeyboardType = gdclass.DisplayServerVirtualKeyboardType //gd:DisplayServer.VirtualKeyboardType
+type VirtualKeyboardType int //gd:DisplayServer.VirtualKeyboardType
 
 const (
 	/*Default text virtual keyboard.*/
@@ -5886,7 +5894,7 @@ const (
 	KeyboardTypeUrl VirtualKeyboardType = 7
 )
 
-type CursorShape = gdclass.DisplayServerCursorShape //gd:DisplayServer.CursorShape
+type CursorShape int //gd:DisplayServer.CursorShape
 
 const (
 	/*Arrow cursor shape. This is the default when not pointing anything that overrides the mouse cursor, such as a [LineEdit] or [TextEdit].*/
@@ -5927,7 +5935,7 @@ const (
 	CursorMax CursorShape = 17
 )
 
-type FileDialogMode = gdclass.DisplayServerFileDialogMode //gd:DisplayServer.FileDialogMode
+type FileDialogMode int //gd:DisplayServer.FileDialogMode
 
 const (
 	/*The native file dialog allows selecting one, and only one file.*/
@@ -5942,7 +5950,7 @@ const (
 	FileDialogModeSaveFile FileDialogMode = 4
 )
 
-type WindowMode = gdclass.DisplayServerWindowMode //gd:DisplayServer.WindowMode
+type WindowMode int //gd:DisplayServer.WindowMode
 
 const (
 	/*Windowed mode, i.e. [Window] doesn't occupy the whole screen (unless set to the size of the screen).*/
@@ -5969,7 +5977,7 @@ const (
 	WindowModeExclusiveFullscreen WindowMode = 4
 )
 
-type WindowFlags = gdclass.DisplayServerWindowFlags //gd:DisplayServer.WindowFlags
+type WindowFlags int //gd:DisplayServer.WindowFlags
 
 const (
 	/*The window can't be resized by dragging its resize grip. It's still possible to resize the window using [method window_set_size]. This flag is ignored for full screen windows.*/
@@ -6004,7 +6012,7 @@ const (
 	WindowFlagMax WindowFlags = 10
 )
 
-type WindowEvent = gdclass.DisplayServerWindowEvent //gd:DisplayServer.WindowEvent
+type WindowEvent int //gd:DisplayServer.WindowEvent
 
 const (
 	/*Sent when the mouse pointer enters the window.*/
@@ -6028,7 +6036,7 @@ const (
 	WindowEventTitlebarChange WindowEvent = 7
 )
 
-type WindowResizeEdge = gdclass.DisplayServerWindowResizeEdge //gd:DisplayServer.WindowResizeEdge
+type WindowResizeEdge int //gd:DisplayServer.WindowResizeEdge
 
 const (
 	/*Top-left edge of a window.*/
@@ -6051,7 +6059,7 @@ const (
 	WindowEdgeMax WindowResizeEdge = 8
 )
 
-type VSyncMode = gdclass.DisplayServerVSyncMode //gd:DisplayServer.VSyncMode
+type VSyncMode int //gd:DisplayServer.VSyncMode
 
 const (
 	/*No vertical synchronization, which means the engine will display frames as fast as possible (tearing may be visible). Framerate is unlimited (regardless of [member Engine.max_fps]).*/
@@ -6065,7 +6073,7 @@ const (
 	VsyncMailbox VSyncMode = 3
 )
 
-type HandleType = gdclass.DisplayServerHandleType //gd:DisplayServer.HandleType
+type HandleType int //gd:DisplayServer.HandleType
 
 const (
 	/*Display handle:
@@ -6103,7 +6111,7 @@ const (
 	EglConfig HandleType = 5
 )
 
-type TTSUtteranceEvent = gdclass.DisplayServerTTSUtteranceEvent //gd:DisplayServer.TTSUtteranceEvent
+type TTSUtteranceEvent int //gd:DisplayServer.TTSUtteranceEvent
 
 const (
 	/*Utterance has begun to be spoken.*/
@@ -6114,437 +6122,6 @@ const (
 	TtsUtteranceCanceled TTSUtteranceEvent = 2
 	/*Utterance reached a word or sentence boundary.*/
 	TtsUtteranceBoundary TTSUtteranceEvent = 3
-)
-
-type Key int
-
-const (
-	/*Enum value which doesn't correspond to any key. This is used to initialize [enum Key] properties with a generic state.*/
-	KeyNone Key = 0
-	/*Keycodes with this bit applied are non-printable.*/
-	KeySpecial Key = 4194304
-	/*Escape key.*/
-	KeyEscape Key = 4194305
-	/*Tab key.*/
-	KeyTab Key = 4194306
-	/*Shift + Tab key.*/
-	KeyBacktab Key = 4194307
-	/*Backspace key.*/
-	KeyBackspace Key = 4194308
-	/*Return key (on the main keyboard).*/
-	KeyEnter Key = 4194309
-	/*Enter key on the numeric keypad.*/
-	KeyKpEnter Key = 4194310
-	/*Insert key.*/
-	KeyInsert Key = 4194311
-	/*Delete key.*/
-	KeyDelete Key = 4194312
-	/*Pause key.*/
-	KeyPause Key = 4194313
-	/*Print Screen key.*/
-	KeyPrint Key = 4194314
-	/*System Request key.*/
-	KeySysreq Key = 4194315
-	/*Clear key.*/
-	KeyClear Key = 4194316
-	/*Home key.*/
-	KeyHome Key = 4194317
-	/*End key.*/
-	KeyEnd Key = 4194318
-	/*Left arrow key.*/
-	KeyLeft Key = 4194319
-	/*Up arrow key.*/
-	KeyUp Key = 4194320
-	/*Right arrow key.*/
-	KeyRight Key = 4194321
-	/*Down arrow key.*/
-	KeyDown Key = 4194322
-	/*Page Up key.*/
-	KeyPageup Key = 4194323
-	/*Page Down key.*/
-	KeyPagedown Key = 4194324
-	/*Shift key.*/
-	KeyShift Key = 4194325
-	/*Control key.*/
-	KeyCtrl Key = 4194326
-	/*Meta key.*/
-	KeyMeta Key = 4194327
-	/*Alt key.*/
-	KeyAlt Key = 4194328
-	/*Caps Lock key.*/
-	KeyCapslock Key = 4194329
-	/*Num Lock key.*/
-	KeyNumlock Key = 4194330
-	/*Scroll Lock key.*/
-	KeyScrolllock Key = 4194331
-	/*F1 key.*/
-	KeyF1 Key = 4194332
-	/*F2 key.*/
-	KeyF2 Key = 4194333
-	/*F3 key.*/
-	KeyF3 Key = 4194334
-	/*F4 key.*/
-	KeyF4 Key = 4194335
-	/*F5 key.*/
-	KeyF5 Key = 4194336
-	/*F6 key.*/
-	KeyF6 Key = 4194337
-	/*F7 key.*/
-	KeyF7 Key = 4194338
-	/*F8 key.*/
-	KeyF8 Key = 4194339
-	/*F9 key.*/
-	KeyF9 Key = 4194340
-	/*F10 key.*/
-	KeyF10 Key = 4194341
-	/*F11 key.*/
-	KeyF11 Key = 4194342
-	/*F12 key.*/
-	KeyF12 Key = 4194343
-	/*F13 key.*/
-	KeyF13 Key = 4194344
-	/*F14 key.*/
-	KeyF14 Key = 4194345
-	/*F15 key.*/
-	KeyF15 Key = 4194346
-	/*F16 key.*/
-	KeyF16 Key = 4194347
-	/*F17 key.*/
-	KeyF17 Key = 4194348
-	/*F18 key.*/
-	KeyF18 Key = 4194349
-	/*F19 key.*/
-	KeyF19 Key = 4194350
-	/*F20 key.*/
-	KeyF20 Key = 4194351
-	/*F21 key.*/
-	KeyF21 Key = 4194352
-	/*F22 key.*/
-	KeyF22 Key = 4194353
-	/*F23 key.*/
-	KeyF23 Key = 4194354
-	/*F24 key.*/
-	KeyF24 Key = 4194355
-	/*F25 key. Only supported on macOS and Linux due to a Windows limitation.*/
-	KeyF25 Key = 4194356
-	/*F26 key. Only supported on macOS and Linux due to a Windows limitation.*/
-	KeyF26 Key = 4194357
-	/*F27 key. Only supported on macOS and Linux due to a Windows limitation.*/
-	KeyF27 Key = 4194358
-	/*F28 key. Only supported on macOS and Linux due to a Windows limitation.*/
-	KeyF28 Key = 4194359
-	/*F29 key. Only supported on macOS and Linux due to a Windows limitation.*/
-	KeyF29 Key = 4194360
-	/*F30 key. Only supported on macOS and Linux due to a Windows limitation.*/
-	KeyF30 Key = 4194361
-	/*F31 key. Only supported on macOS and Linux due to a Windows limitation.*/
-	KeyF31 Key = 4194362
-	/*F32 key. Only supported on macOS and Linux due to a Windows limitation.*/
-	KeyF32 Key = 4194363
-	/*F33 key. Only supported on macOS and Linux due to a Windows limitation.*/
-	KeyF33 Key = 4194364
-	/*F34 key. Only supported on macOS and Linux due to a Windows limitation.*/
-	KeyF34 Key = 4194365
-	/*F35 key. Only supported on macOS and Linux due to a Windows limitation.*/
-	KeyF35 Key = 4194366
-	/*Multiply (*) key on the numeric keypad.*/
-	KeyKpMultiply Key = 4194433
-	/*Divide (/) key on the numeric keypad.*/
-	KeyKpDivide Key = 4194434
-	/*Subtract (-) key on the numeric keypad.*/
-	KeyKpSubtract Key = 4194435
-	/*Period (.) key on the numeric keypad.*/
-	KeyKpPeriod Key = 4194436
-	/*Add (+) key on the numeric keypad.*/
-	KeyKpAdd Key = 4194437
-	/*Number 0 on the numeric keypad.*/
-	KeyKp0 Key = 4194438
-	/*Number 1 on the numeric keypad.*/
-	KeyKp1 Key = 4194439
-	/*Number 2 on the numeric keypad.*/
-	KeyKp2 Key = 4194440
-	/*Number 3 on the numeric keypad.*/
-	KeyKp3 Key = 4194441
-	/*Number 4 on the numeric keypad.*/
-	KeyKp4 Key = 4194442
-	/*Number 5 on the numeric keypad.*/
-	KeyKp5 Key = 4194443
-	/*Number 6 on the numeric keypad.*/
-	KeyKp6 Key = 4194444
-	/*Number 7 on the numeric keypad.*/
-	KeyKp7 Key = 4194445
-	/*Number 8 on the numeric keypad.*/
-	KeyKp8 Key = 4194446
-	/*Number 9 on the numeric keypad.*/
-	KeyKp9 Key = 4194447
-	/*Context menu key.*/
-	KeyMenu Key = 4194370
-	/*Hyper key. (On Linux/X11 only).*/
-	KeyHyper Key = 4194371
-	/*Help key.*/
-	KeyHelp Key = 4194373
-	/*Back key.*/
-	KeyBack Key = 4194376
-	/*Forward key.*/
-	KeyForward Key = 4194377
-	/*Media stop key.*/
-	KeyStop Key = 4194378
-	/*Refresh key.*/
-	KeyRefresh Key = 4194379
-	/*Volume down key.*/
-	KeyVolumedown Key = 4194380
-	/*Mute volume key.*/
-	KeyVolumemute Key = 4194381
-	/*Volume up key.*/
-	KeyVolumeup Key = 4194382
-	/*Media play key.*/
-	KeyMediaplay Key = 4194388
-	/*Media stop key.*/
-	KeyMediastop Key = 4194389
-	/*Previous song key.*/
-	KeyMediaprevious Key = 4194390
-	/*Next song key.*/
-	KeyMedianext Key = 4194391
-	/*Media record key.*/
-	KeyMediarecord Key = 4194392
-	/*Home page key.*/
-	KeyHomepage Key = 4194393
-	/*Favorites key.*/
-	KeyFavorites Key = 4194394
-	/*Search key.*/
-	KeySearch Key = 4194395
-	/*Standby key.*/
-	KeyStandby Key = 4194396
-	/*Open URL / Launch Browser key.*/
-	KeyOpenurl Key = 4194397
-	/*Launch Mail key.*/
-	KeyLaunchmail Key = 4194398
-	/*Launch Media key.*/
-	KeyLaunchmedia Key = 4194399
-	/*Launch Shortcut 0 key.*/
-	KeyLaunch0 Key = 4194400
-	/*Launch Shortcut 1 key.*/
-	KeyLaunch1 Key = 4194401
-	/*Launch Shortcut 2 key.*/
-	KeyLaunch2 Key = 4194402
-	/*Launch Shortcut 3 key.*/
-	KeyLaunch3 Key = 4194403
-	/*Launch Shortcut 4 key.*/
-	KeyLaunch4 Key = 4194404
-	/*Launch Shortcut 5 key.*/
-	KeyLaunch5 Key = 4194405
-	/*Launch Shortcut 6 key.*/
-	KeyLaunch6 Key = 4194406
-	/*Launch Shortcut 7 key.*/
-	KeyLaunch7 Key = 4194407
-	/*Launch Shortcut 8 key.*/
-	KeyLaunch8 Key = 4194408
-	/*Launch Shortcut 9 key.*/
-	KeyLaunch9 Key = 4194409
-	/*Launch Shortcut A key.*/
-	KeyLauncha Key = 4194410
-	/*Launch Shortcut B key.*/
-	KeyLaunchb Key = 4194411
-	/*Launch Shortcut C key.*/
-	KeyLaunchc Key = 4194412
-	/*Launch Shortcut D key.*/
-	KeyLaunchd Key = 4194413
-	/*Launch Shortcut E key.*/
-	KeyLaunche Key = 4194414
-	/*Launch Shortcut F key.*/
-	KeyLaunchf Key = 4194415
-	/*"Globe" key on Mac / iPad keyboard.*/
-	KeyGlobe Key = 4194416
-	/*"On-screen keyboard" key on iPad keyboard.*/
-	KeyKeyboard Key = 4194417
-	/*英数 key on Mac keyboard.*/
-	KeyJisEisu Key = 4194418
-	/*かな key on Mac keyboard.*/
-	KeyJisKana Key = 4194419
-	/*Unknown key.*/
-	KeyUnknown Key = 8388607
-	/*Space key.*/
-	KeySpace Key = 32
-	/*Exclamation mark ([code]![/code]) key.*/
-	KeyExclam Key = 33
-	/*Double quotation mark ([code]"[/code]) key.*/
-	KeyQuotedbl Key = 34
-	/*Number sign or [i]hash[/i] ([code]#[/code]) key.*/
-	KeyNumbersign Key = 35
-	/*Dollar sign ([code]$[/code]) key.*/
-	KeyDollar Key = 36
-	/*Percent sign ([code]%[/code]) key.*/
-	KeyPercent Key = 37
-	/*Ampersand ([code]&[/code]) key.*/
-	KeyAmpersand Key = 38
-	/*Apostrophe ([code]'[/code]) key.*/
-	KeyApostrophe Key = 39
-	/*Left parenthesis ([code]([/code]) key.*/
-	KeyParenleft Key = 40
-	/*Right parenthesis ([code])[/code]) key.*/
-	KeyParenright Key = 41
-	/*Asterisk ([code]*[/code]) key.*/
-	KeyAsterisk Key = 42
-	/*Plus ([code]+[/code]) key.*/
-	KeyPlus Key = 43
-	/*Comma ([code],[/code]) key.*/
-	KeyComma Key = 44
-	/*Minus ([code]-[/code]) key.*/
-	KeyMinus Key = 45
-	/*Period ([code].[/code]) key.*/
-	KeyPeriod Key = 46
-	/*Slash ([code]/[/code]) key.*/
-	KeySlash Key = 47
-	/*Number 0 key.*/
-	Key0 Key = 48
-	/*Number 1 key.*/
-	Key1 Key = 49
-	/*Number 2 key.*/
-	Key2 Key = 50
-	/*Number 3 key.*/
-	Key3 Key = 51
-	/*Number 4 key.*/
-	Key4 Key = 52
-	/*Number 5 key.*/
-	Key5 Key = 53
-	/*Number 6 key.*/
-	Key6 Key = 54
-	/*Number 7 key.*/
-	Key7 Key = 55
-	/*Number 8 key.*/
-	Key8 Key = 56
-	/*Number 9 key.*/
-	Key9 Key = 57
-	/*Colon ([code]:[/code]) key.*/
-	KeyColon Key = 58
-	/*Semicolon ([code];[/code]) key.*/
-	KeySemicolon Key = 59
-	/*Less-than sign ([code]<[/code]) key.*/
-	KeyLess Key = 60
-	/*Equal sign ([code]=[/code]) key.*/
-	KeyEqual Key = 61
-	/*Greater-than sign ([code]>[/code]) key.*/
-	KeyGreater Key = 62
-	/*Question mark ([code]?[/code]) key.*/
-	KeyQuestion Key = 63
-	/*At sign ([code]@[/code]) key.*/
-	KeyAt Key = 64
-	/*A key.*/
-	KeyA Key = 65
-	/*B key.*/
-	KeyB Key = 66
-	/*C key.*/
-	KeyC Key = 67
-	/*D key.*/
-	KeyD Key = 68
-	/*E key.*/
-	KeyE Key = 69
-	/*F key.*/
-	KeyF Key = 70
-	/*G key.*/
-	KeyG Key = 71
-	/*H key.*/
-	KeyH Key = 72
-	/*I key.*/
-	KeyI Key = 73
-	/*J key.*/
-	KeyJ Key = 74
-	/*K key.*/
-	KeyK Key = 75
-	/*L key.*/
-	KeyL Key = 76
-	/*M key.*/
-	KeyM Key = 77
-	/*N key.*/
-	KeyN Key = 78
-	/*O key.*/
-	KeyO Key = 79
-	/*P key.*/
-	KeyP Key = 80
-	/*Q key.*/
-	KeyQ Key = 81
-	/*R key.*/
-	KeyR Key = 82
-	/*S key.*/
-	KeyS Key = 83
-	/*T key.*/
-	KeyT Key = 84
-	/*U key.*/
-	KeyU Key = 85
-	/*V key.*/
-	KeyV Key = 86
-	/*W key.*/
-	KeyW Key = 87
-	/*X key.*/
-	KeyX Key = 88
-	/*Y key.*/
-	KeyY Key = 89
-	/*Z key.*/
-	KeyZ Key = 90
-	/*Left bracket ([code][lb][/code]) key.*/
-	KeyBracketleft Key = 91
-	/*Backslash ([code]\[/code]) key.*/
-	KeyBackslash Key = 92
-	/*Right bracket ([code][rb][/code]) key.*/
-	KeyBracketright Key = 93
-	/*Caret ([code]^[/code]) key.*/
-	KeyAsciicircum Key = 94
-	/*Underscore ([code]_[/code]) key.*/
-	KeyUnderscore Key = 95
-	/*Backtick ([code]`[/code]) key.*/
-	KeyQuoteleft Key = 96
-	/*Left brace ([code]{[/code]) key.*/
-	KeyBraceleft Key = 123
-	/*Vertical bar or [i]pipe[/i] ([code]|[/code]) key.*/
-	KeyBar Key = 124
-	/*Right brace ([code]}[/code]) key.*/
-	KeyBraceright Key = 125
-	/*Tilde ([code]~[/code]) key.*/
-	KeyAsciitilde Key = 126
-	/*Yen symbol ([code]¥[/code]) key.*/
-	KeyYen Key = 165
-	/*Section sign ([code]§[/code]) key.*/
-	KeySection Key = 167
-)
-
-type MouseButton int
-
-const (
-	/*Enum value which doesn't correspond to any mouse button. This is used to initialize [enum MouseButton] properties with a generic state.*/
-	MouseButtonNone MouseButton = 0
-	/*Primary mouse button, usually assigned to the left button.*/
-	MouseButtonLeft MouseButton = 1
-	/*Secondary mouse button, usually assigned to the right button.*/
-	MouseButtonRight MouseButton = 2
-	/*Middle mouse button.*/
-	MouseButtonMiddle MouseButton = 3
-	/*Mouse wheel scrolling up.*/
-	MouseButtonWheelUp MouseButton = 4
-	/*Mouse wheel scrolling down.*/
-	MouseButtonWheelDown MouseButton = 5
-	/*Mouse wheel left button (only present on some mice).*/
-	MouseButtonWheelLeft MouseButton = 6
-	/*Mouse wheel right button (only present on some mice).*/
-	MouseButtonWheelRight MouseButton = 7
-	/*Extra mouse button 1. This is sometimes present, usually to the sides of the mouse.*/
-	MouseButtonXbutton1 MouseButton = 8
-	/*Extra mouse button 2. This is sometimes present, usually to the sides of the mouse.*/
-	MouseButtonXbutton2 MouseButton = 9
-)
-
-type MouseButtonMask int
-
-const (
-	/*Primary mouse button mask, usually for the left button.*/
-	MouseButtonMaskLeft MouseButtonMask = 1
-	/*Secondary mouse button mask, usually for the right button.*/
-	MouseButtonMaskRight MouseButtonMask = 2
-	/*Middle mouse button mask.*/
-	MouseButtonMaskMiddle MouseButtonMask = 4
-	/*Extra mouse button 1 mask.*/
-	MouseButtonMaskMbXbutton1 MouseButtonMask = 128
-	/*Extra mouse button 2 mask.*/
-	MouseButtonMaskMbXbutton2 MouseButtonMask = 256
 )
 
 type FileDialogOption struct {

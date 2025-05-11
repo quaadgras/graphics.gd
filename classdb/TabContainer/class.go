@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
@@ -32,6 +33,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -47,6 +52,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -59,6 +65,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -289,11 +296,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) TabAlignment() gdclass.TabBarAlignmentMode {
-	return gdclass.TabBarAlignmentMode(class(self).GetTabAlignment())
+func (self Instance) TabAlignment() TabBar.AlignmentMode {
+	return TabBar.AlignmentMode(class(self).GetTabAlignment())
 }
 
-func (self Instance) SetTabAlignment(value gdclass.TabBarAlignmentMode) {
+func (self Instance) SetTabAlignment(value TabBar.AlignmentMode) {
 	class(self).SetTabAlignment(value)
 }
 
@@ -305,11 +312,11 @@ func (self Instance) SetCurrentTab(value int) {
 	class(self).SetCurrentTab(int64(value))
 }
 
-func (self Instance) TabsPosition() gdclass.TabContainerTabPosition {
-	return gdclass.TabContainerTabPosition(class(self).GetTabsPosition())
+func (self Instance) TabsPosition() TabPosition {
+	return TabPosition(class(self).GetTabsPosition())
 }
 
-func (self Instance) SetTabsPosition(value gdclass.TabContainerTabPosition) {
+func (self Instance) SetTabsPosition(value TabPosition) {
 	class(self).SetTabsPosition(value)
 }
 
@@ -361,11 +368,11 @@ func (self Instance) SetUseHiddenTabsForMinSize(value bool) {
 	class(self).SetUseHiddenTabsForMinSize(value)
 }
 
-func (self Instance) TabFocusMode() gdclass.ControlFocusMode {
-	return gdclass.ControlFocusMode(class(self).GetTabFocusMode())
+func (self Instance) TabFocusMode() Control.FocusMode {
+	return Control.FocusMode(class(self).GetTabFocusMode())
 }
 
-func (self Instance) SetTabFocusMode(value gdclass.ControlFocusMode) {
+func (self Instance) SetTabFocusMode(value Control.FocusMode) {
 	class(self).SetTabFocusMode(value)
 }
 
@@ -490,7 +497,7 @@ func (self class) GetTabControl(tab_idx int64) [1]gdclass.Control { //gd:TabCont
 }
 
 //go:nosplit
-func (self class) SetTabAlignment(alignment gdclass.TabBarAlignmentMode) { //gd:TabContainer.set_tab_alignment
+func (self class) SetTabAlignment(alignment TabBar.AlignmentMode) { //gd:TabContainer.set_tab_alignment
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
 	var r_ret = callframe.Nil
@@ -499,9 +506,9 @@ func (self class) SetTabAlignment(alignment gdclass.TabBarAlignmentMode) { //gd:
 }
 
 //go:nosplit
-func (self class) GetTabAlignment() gdclass.TabBarAlignmentMode { //gd:TabContainer.get_tab_alignment
+func (self class) GetTabAlignment() TabBar.AlignmentMode { //gd:TabContainer.get_tab_alignment
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TabBarAlignmentMode](frame)
+	var r_ret = callframe.Ret[TabBar.AlignmentMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabContainer.Bind_get_tab_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -509,7 +516,7 @@ func (self class) GetTabAlignment() gdclass.TabBarAlignmentMode { //gd:TabContai
 }
 
 //go:nosplit
-func (self class) SetTabsPosition(tabs_position gdclass.TabContainerTabPosition) { //gd:TabContainer.set_tabs_position
+func (self class) SetTabsPosition(tabs_position TabPosition) { //gd:TabContainer.set_tabs_position
 	var frame = callframe.New()
 	callframe.Arg(frame, tabs_position)
 	var r_ret = callframe.Nil
@@ -518,9 +525,9 @@ func (self class) SetTabsPosition(tabs_position gdclass.TabContainerTabPosition)
 }
 
 //go:nosplit
-func (self class) GetTabsPosition() gdclass.TabContainerTabPosition { //gd:TabContainer.get_tabs_position
+func (self class) GetTabsPosition() TabPosition { //gd:TabContainer.get_tabs_position
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TabContainerTabPosition](frame)
+	var r_ret = callframe.Ret[TabPosition](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabContainer.Bind_get_tabs_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -913,7 +920,7 @@ func (self class) GetUseHiddenTabsForMinSize() bool { //gd:TabContainer.get_use_
 }
 
 //go:nosplit
-func (self class) SetTabFocusMode(focus_mode gdclass.ControlFocusMode) { //gd:TabContainer.set_tab_focus_mode
+func (self class) SetTabFocusMode(focus_mode Control.FocusMode) { //gd:TabContainer.set_tab_focus_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, focus_mode)
 	var r_ret = callframe.Nil
@@ -922,9 +929,9 @@ func (self class) SetTabFocusMode(focus_mode gdclass.ControlFocusMode) { //gd:Ta
 }
 
 //go:nosplit
-func (self class) GetTabFocusMode() gdclass.ControlFocusMode { //gd:TabContainer.get_tab_focus_mode
+func (self class) GetTabFocusMode() Control.FocusMode { //gd:TabContainer.get_tab_focus_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ControlFocusMode](frame)
+	var r_ret = callframe.Ret[Control.FocusMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabContainer.Bind_get_tab_focus_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1022,7 +1029,7 @@ func init() {
 	})
 }
 
-type TabPosition = gdclass.TabContainerTabPosition //gd:TabContainer.TabPosition
+type TabPosition int //gd:TabContainer.TabPosition
 
 const (
 	/*Places the tab bar at the top.*/

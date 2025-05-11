@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/BaseMaterial3D"
 import "graphics.gd/classdb/GeometryInstance3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
@@ -30,8 +32,13 @@ import "graphics.gd/variant/Rect2"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -47,6 +54,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -59,6 +67,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -158,19 +167,19 @@ func (self Instance) SetPixelSize(value Float.X) {
 	class(self).SetPixelSize(float64(value))
 }
 
-func (self Instance) Axis() gd.Vector3Axis {
-	return gd.Vector3Axis(class(self).GetAxis())
+func (self Instance) Axis() Vector3.Axis {
+	return Vector3.Axis(class(self).GetAxis())
 }
 
-func (self Instance) SetAxis(value gd.Vector3Axis) {
+func (self Instance) SetAxis(value Vector3.Axis) {
 	class(self).SetAxis(value)
 }
 
-func (self Instance) Billboard() gdclass.BaseMaterial3DBillboardMode {
-	return gdclass.BaseMaterial3DBillboardMode(class(self).GetBillboardMode())
+func (self Instance) Billboard() BaseMaterial3D.BillboardMode {
+	return BaseMaterial3D.BillboardMode(class(self).GetBillboardMode())
 }
 
-func (self Instance) SetBillboard(value gdclass.BaseMaterial3DBillboardMode) {
+func (self Instance) SetBillboard(value BaseMaterial3D.BillboardMode) {
 	class(self).SetBillboardMode(value)
 }
 
@@ -214,11 +223,11 @@ func (self Instance) SetFixedSize(value bool) {
 	class(self).SetDrawFlag(4, value)
 }
 
-func (self Instance) AlphaCut() gdclass.SpriteBase3DAlphaCutMode {
-	return gdclass.SpriteBase3DAlphaCutMode(class(self).GetAlphaCutMode())
+func (self Instance) AlphaCut() AlphaCutMode {
+	return AlphaCutMode(class(self).GetAlphaCutMode())
 }
 
-func (self Instance) SetAlphaCut(value gdclass.SpriteBase3DAlphaCutMode) {
+func (self Instance) SetAlphaCut(value AlphaCutMode) {
 	class(self).SetAlphaCutMode(value)
 }
 
@@ -238,11 +247,11 @@ func (self Instance) SetAlphaHashScale(value Float.X) {
 	class(self).SetAlphaHashScale(float64(value))
 }
 
-func (self Instance) AlphaAntialiasingMode() gdclass.BaseMaterial3DAlphaAntiAliasing {
-	return gdclass.BaseMaterial3DAlphaAntiAliasing(class(self).GetAlphaAntialiasing())
+func (self Instance) AlphaAntialiasingMode() BaseMaterial3D.AlphaAntiAliasing {
+	return BaseMaterial3D.AlphaAntiAliasing(class(self).GetAlphaAntialiasing())
 }
 
-func (self Instance) SetAlphaAntialiasingMode(value gdclass.BaseMaterial3DAlphaAntiAliasing) {
+func (self Instance) SetAlphaAntialiasingMode(value BaseMaterial3D.AlphaAntiAliasing) {
 	class(self).SetAlphaAntialiasing(value)
 }
 
@@ -254,11 +263,11 @@ func (self Instance) SetAlphaAntialiasingEdge(value Float.X) {
 	class(self).SetAlphaAntialiasingEdge(float64(value))
 }
 
-func (self Instance) TextureFilter() gdclass.BaseMaterial3DTextureFilter {
-	return gdclass.BaseMaterial3DTextureFilter(class(self).GetTextureFilter())
+func (self Instance) TextureFilter() BaseMaterial3D.TextureFilter {
+	return BaseMaterial3D.TextureFilter(class(self).GetTextureFilter())
 }
 
-func (self Instance) SetTextureFilter(value gdclass.BaseMaterial3DTextureFilter) {
+func (self Instance) SetTextureFilter(value BaseMaterial3D.TextureFilter) {
 	class(self).SetTextureFilter(value)
 }
 
@@ -404,7 +413,7 @@ func (self class) GetPixelSize() float64 { //gd:SpriteBase3D.get_pixel_size
 }
 
 //go:nosplit
-func (self class) SetAxis(axis gd.Vector3Axis) { //gd:SpriteBase3D.set_axis
+func (self class) SetAxis(axis Vector3.Axis) { //gd:SpriteBase3D.set_axis
 	var frame = callframe.New()
 	callframe.Arg(frame, axis)
 	var r_ret = callframe.Nil
@@ -413,9 +422,9 @@ func (self class) SetAxis(axis gd.Vector3Axis) { //gd:SpriteBase3D.set_axis
 }
 
 //go:nosplit
-func (self class) GetAxis() gd.Vector3Axis { //gd:SpriteBase3D.get_axis
+func (self class) GetAxis() Vector3.Axis { //gd:SpriteBase3D.get_axis
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.Vector3Axis](frame)
+	var r_ret = callframe.Ret[Vector3.Axis](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_get_axis, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -426,7 +435,7 @@ func (self class) GetAxis() gd.Vector3Axis { //gd:SpriteBase3D.get_axis
 If [code]true[/code], the specified flag will be enabled. See [enum SpriteBase3D.DrawFlags] for a list of flags.
 */
 //go:nosplit
-func (self class) SetDrawFlag(flag gdclass.SpriteBase3DDrawFlags, enabled bool) { //gd:SpriteBase3D.set_draw_flag
+func (self class) SetDrawFlag(flag DrawFlags, enabled bool) { //gd:SpriteBase3D.set_draw_flag
 	var frame = callframe.New()
 	callframe.Arg(frame, flag)
 	callframe.Arg(frame, enabled)
@@ -439,7 +448,7 @@ func (self class) SetDrawFlag(flag gdclass.SpriteBase3DDrawFlags, enabled bool) 
 Returns the value of the specified flag.
 */
 //go:nosplit
-func (self class) GetDrawFlag(flag gdclass.SpriteBase3DDrawFlags) bool { //gd:SpriteBase3D.get_draw_flag
+func (self class) GetDrawFlag(flag DrawFlags) bool { //gd:SpriteBase3D.get_draw_flag
 	var frame = callframe.New()
 	callframe.Arg(frame, flag)
 	var r_ret = callframe.Ret[bool](frame)
@@ -450,7 +459,7 @@ func (self class) GetDrawFlag(flag gdclass.SpriteBase3DDrawFlags) bool { //gd:Sp
 }
 
 //go:nosplit
-func (self class) SetAlphaCutMode(mode gdclass.SpriteBase3DAlphaCutMode) { //gd:SpriteBase3D.set_alpha_cut_mode
+func (self class) SetAlphaCutMode(mode AlphaCutMode) { //gd:SpriteBase3D.set_alpha_cut_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -459,9 +468,9 @@ func (self class) SetAlphaCutMode(mode gdclass.SpriteBase3DAlphaCutMode) { //gd:
 }
 
 //go:nosplit
-func (self class) GetAlphaCutMode() gdclass.SpriteBase3DAlphaCutMode { //gd:SpriteBase3D.get_alpha_cut_mode
+func (self class) GetAlphaCutMode() AlphaCutMode { //gd:SpriteBase3D.get_alpha_cut_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.SpriteBase3DAlphaCutMode](frame)
+	var r_ret = callframe.Ret[AlphaCutMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_get_alpha_cut_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -507,7 +516,7 @@ func (self class) GetAlphaHashScale() float64 { //gd:SpriteBase3D.get_alpha_hash
 }
 
 //go:nosplit
-func (self class) SetAlphaAntialiasing(alpha_aa gdclass.BaseMaterial3DAlphaAntiAliasing) { //gd:SpriteBase3D.set_alpha_antialiasing
+func (self class) SetAlphaAntialiasing(alpha_aa BaseMaterial3D.AlphaAntiAliasing) { //gd:SpriteBase3D.set_alpha_antialiasing
 	var frame = callframe.New()
 	callframe.Arg(frame, alpha_aa)
 	var r_ret = callframe.Nil
@@ -516,9 +525,9 @@ func (self class) SetAlphaAntialiasing(alpha_aa gdclass.BaseMaterial3DAlphaAntiA
 }
 
 //go:nosplit
-func (self class) GetAlphaAntialiasing() gdclass.BaseMaterial3DAlphaAntiAliasing { //gd:SpriteBase3D.get_alpha_antialiasing
+func (self class) GetAlphaAntialiasing() BaseMaterial3D.AlphaAntiAliasing { //gd:SpriteBase3D.get_alpha_antialiasing
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.BaseMaterial3DAlphaAntiAliasing](frame)
+	var r_ret = callframe.Ret[BaseMaterial3D.AlphaAntiAliasing](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_get_alpha_antialiasing, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -545,7 +554,7 @@ func (self class) GetAlphaAntialiasingEdge() float64 { //gd:SpriteBase3D.get_alp
 }
 
 //go:nosplit
-func (self class) SetBillboardMode(mode gdclass.BaseMaterial3DBillboardMode) { //gd:SpriteBase3D.set_billboard_mode
+func (self class) SetBillboardMode(mode BaseMaterial3D.BillboardMode) { //gd:SpriteBase3D.set_billboard_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -554,9 +563,9 @@ func (self class) SetBillboardMode(mode gdclass.BaseMaterial3DBillboardMode) { /
 }
 
 //go:nosplit
-func (self class) GetBillboardMode() gdclass.BaseMaterial3DBillboardMode { //gd:SpriteBase3D.get_billboard_mode
+func (self class) GetBillboardMode() BaseMaterial3D.BillboardMode { //gd:SpriteBase3D.get_billboard_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.BaseMaterial3DBillboardMode](frame)
+	var r_ret = callframe.Ret[BaseMaterial3D.BillboardMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_get_billboard_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -564,7 +573,7 @@ func (self class) GetBillboardMode() gdclass.BaseMaterial3DBillboardMode { //gd:
 }
 
 //go:nosplit
-func (self class) SetTextureFilter(mode gdclass.BaseMaterial3DTextureFilter) { //gd:SpriteBase3D.set_texture_filter
+func (self class) SetTextureFilter(mode BaseMaterial3D.TextureFilter) { //gd:SpriteBase3D.set_texture_filter
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -573,9 +582,9 @@ func (self class) SetTextureFilter(mode gdclass.BaseMaterial3DTextureFilter) { /
 }
 
 //go:nosplit
-func (self class) GetTextureFilter() gdclass.BaseMaterial3DTextureFilter { //gd:SpriteBase3D.get_texture_filter
+func (self class) GetTextureFilter() BaseMaterial3D.TextureFilter { //gd:SpriteBase3D.get_texture_filter
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.BaseMaterial3DTextureFilter](frame)
+	var r_ret = callframe.Ret[BaseMaterial3D.TextureFilter](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpriteBase3D.Bind_get_texture_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -654,7 +663,7 @@ func init() {
 	})
 }
 
-type DrawFlags = gdclass.SpriteBase3DDrawFlags //gd:SpriteBase3D.DrawFlags
+type DrawFlags int //gd:SpriteBase3D.DrawFlags
 
 const (
 	/*If set, the texture's transparency and the opacity are used to make those parts of the sprite invisible.*/
@@ -671,7 +680,7 @@ const (
 	FlagMax DrawFlags = 5
 )
 
-type AlphaCutMode = gdclass.SpriteBase3DAlphaCutMode //gd:SpriteBase3D.AlphaCutMode
+type AlphaCutMode int //gd:SpriteBase3D.AlphaCutMode
 
 const (
 	/*This mode performs standard alpha blending. It can display translucent areas, but transparency sorting issues may be visible when multiple transparent materials are overlapping.*/

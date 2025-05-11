@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/ArrayMesh"
 import "graphics.gd/classdb/ConcavePolygonShape3D"
 import "graphics.gd/classdb/GeometryInstance3D"
@@ -30,6 +31,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -45,6 +50,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -57,6 +63,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -156,11 +163,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Operation() gdclass.CSGShape3DOperation {
-	return gdclass.CSGShape3DOperation(class(self).GetOperation())
+func (self Instance) Operation() Operation {
+	return Operation(class(self).GetOperation())
 }
 
-func (self Instance) SetOperation(value gdclass.CSGShape3DOperation) {
+func (self Instance) SetOperation(value Operation) {
 	class(self).SetOperation(value)
 }
 
@@ -226,7 +233,7 @@ func (self class) IsRootShape() bool { //gd:CSGShape3D.is_root_shape
 }
 
 //go:nosplit
-func (self class) SetOperation(operation gdclass.CSGShape3DOperation) { //gd:CSGShape3D.set_operation
+func (self class) SetOperation(operation Operation) { //gd:CSGShape3D.set_operation
 	var frame = callframe.New()
 	callframe.Arg(frame, operation)
 	var r_ret = callframe.Nil
@@ -235,9 +242,9 @@ func (self class) SetOperation(operation gdclass.CSGShape3DOperation) { //gd:CSG
 }
 
 //go:nosplit
-func (self class) GetOperation() gdclass.CSGShape3DOperation { //gd:CSGShape3D.get_operation
+func (self class) GetOperation() Operation { //gd:CSGShape3D.get_operation
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.CSGShape3DOperation](frame)
+	var r_ret = callframe.Ret[Operation](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGShape3D.Bind_get_operation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -496,7 +503,7 @@ func init() {
 	gdclass.Register("CSGShape3D", func(ptr gd.Object) any { return [1]gdclass.CSGShape3D{*(*gdclass.CSGShape3D)(unsafe.Pointer(&ptr))} })
 }
 
-type Operation = gdclass.CSGShape3DOperation //gd:CSGShape3D.Operation
+type Operation int //gd:CSGShape3D.Operation
 
 const (
 	/*Geometry of both primitives is merged, intersecting geometry is removed.*/

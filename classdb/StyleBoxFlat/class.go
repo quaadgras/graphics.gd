@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/StyleBox"
 import "graphics.gd/variant/Array"
@@ -23,11 +24,16 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
 import "graphics.gd/variant/Path"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/Rect2"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -43,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,6 +62,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -383,7 +391,7 @@ func (self class) GetBorderWidthMin() int64 { //gd:StyleBoxFlat.get_border_width
 Sets the specified [enum Side]'s border width to [param width] pixels.
 */
 //go:nosplit
-func (self class) SetBorderWidth(margin Side, width int64) { //gd:StyleBoxFlat.set_border_width
+func (self class) SetBorderWidth(margin Rect2.Side, width int64) { //gd:StyleBoxFlat.set_border_width
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	callframe.Arg(frame, width)
@@ -396,7 +404,7 @@ func (self class) SetBorderWidth(margin Side, width int64) { //gd:StyleBoxFlat.s
 Returns the specified [enum Side]'s border width.
 */
 //go:nosplit
-func (self class) GetBorderWidth(margin Side) int64 { //gd:StyleBoxFlat.get_border_width
+func (self class) GetBorderWidth(margin Rect2.Side) int64 { //gd:StyleBoxFlat.get_border_width
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Ret[int64](frame)
@@ -441,7 +449,7 @@ func (self class) SetCornerRadiusAll(radius int64) { //gd:StyleBoxFlat.set_corne
 Sets the corner radius to [param radius] pixels for the given [param corner]. See [enum Corner] for possible values.
 */
 //go:nosplit
-func (self class) SetCornerRadius(corner Corner, radius int64) { //gd:StyleBoxFlat.set_corner_radius
+func (self class) SetCornerRadius(corner Rect2.Corner, radius int64) { //gd:StyleBoxFlat.set_corner_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, corner)
 	callframe.Arg(frame, radius)
@@ -454,7 +462,7 @@ func (self class) SetCornerRadius(corner Corner, radius int64) { //gd:StyleBoxFl
 Returns the given [param corner]'s radius. See [enum Corner] for possible values.
 */
 //go:nosplit
-func (self class) GetCornerRadius(corner Corner) int64 { //gd:StyleBoxFlat.get_corner_radius
+func (self class) GetCornerRadius(corner Rect2.Corner) int64 { //gd:StyleBoxFlat.get_corner_radius
 	var frame = callframe.New()
 	callframe.Arg(frame, corner)
 	var r_ret = callframe.Ret[int64](frame)
@@ -468,7 +476,7 @@ func (self class) GetCornerRadius(corner Corner) int64 { //gd:StyleBoxFlat.get_c
 Sets the expand margin to [param size] pixels for the specified [enum Side].
 */
 //go:nosplit
-func (self class) SetExpandMargin(margin Side, size float64) { //gd:StyleBoxFlat.set_expand_margin
+func (self class) SetExpandMargin(margin Rect2.Side, size float64) { //gd:StyleBoxFlat.set_expand_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	callframe.Arg(frame, size)
@@ -493,7 +501,7 @@ func (self class) SetExpandMarginAll(size float64) { //gd:StyleBoxFlat.set_expan
 Returns the size of the specified [enum Side]'s expand margin.
 */
 //go:nosplit
-func (self class) GetExpandMargin(margin Side) float64 { //gd:StyleBoxFlat.get_expand_margin
+func (self class) GetExpandMargin(margin Rect2.Side) float64 { //gd:StyleBoxFlat.get_expand_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Ret[float64](frame)
@@ -697,29 +705,3 @@ func init() {
 		return [1]gdclass.StyleBoxFlat{*(*gdclass.StyleBoxFlat)(unsafe.Pointer(&ptr))}
 	})
 }
-
-type Corner int
-
-const (
-	/*Top-left corner.*/
-	CornerTopLeft Corner = 0
-	/*Top-right corner.*/
-	CornerTopRight Corner = 1
-	/*Bottom-right corner.*/
-	CornerBottomRight Corner = 2
-	/*Bottom-left corner.*/
-	CornerBottomLeft Corner = 3
-)
-
-type Side int
-
-const (
-	/*Left side, usually used for [Control] or [StyleBox]-derived classes.*/
-	SideLeft Side = 0
-	/*Top side, usually used for [Control] or [StyleBox]-derived classes.*/
-	SideTop Side = 1
-	/*Right side, usually used for [Control] or [StyleBox]-derived classes.*/
-	SideRight Side = 2
-	/*Bottom side, usually used for [Control] or [StyleBox]-derived classes.*/
-	SideBottom Side = 3
-)

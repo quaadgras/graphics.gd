@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/AudioServer"
 import "graphics.gd/classdb/AudioStream"
 import "graphics.gd/classdb/AudioStreamPlayback"
 import "graphics.gd/variant/Array"
@@ -26,6 +28,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -41,6 +47,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -53,6 +60,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -89,7 +97,7 @@ The return value is a unique integer ID that is associated to this playback stre
 This ID becomes invalid when the stream ends (if it does not loop), when the [AudioStreamPlaybackPolyphonic] is stopped, or when [method stop_stream] is called.
 This function returns [constant INVALID_ID] if the amount of streams currently playing equals [member AudioStreamPolyphonic.polyphony]. If you need a higher amount of maximum polyphony, raise this value.
 */
-func (self Expanded) PlayStream(stream AudioStream.Instance, from_offset Float.X, volume_db Float.X, pitch_scale Float.X, playback_type gdclass.AudioServerPlaybackType, bus string) int { //gd:AudioStreamPlaybackPolyphonic.play_stream
+func (self Expanded) PlayStream(stream AudioStream.Instance, from_offset Float.X, volume_db Float.X, pitch_scale Float.X, playback_type AudioServer.PlaybackType, bus string) int { //gd:AudioStreamPlaybackPolyphonic.play_stream
 	return int(int(Advanced(self).PlayStream(stream, float64(from_offset), float64(volume_db), float64(pitch_scale), playback_type, String.Name(String.New(bus)))))
 }
 
@@ -148,7 +156,7 @@ This ID becomes invalid when the stream ends (if it does not loop), when the [Au
 This function returns [constant INVALID_ID] if the amount of streams currently playing equals [member AudioStreamPolyphonic.polyphony]. If you need a higher amount of maximum polyphony, raise this value.
 */
 //go:nosplit
-func (self class) PlayStream(stream [1]gdclass.AudioStream, from_offset float64, volume_db float64, pitch_scale float64, playback_type gdclass.AudioServerPlaybackType, bus String.Name) int64 { //gd:AudioStreamPlaybackPolyphonic.play_stream
+func (self class) PlayStream(stream [1]gdclass.AudioStream, from_offset float64, volume_db float64, pitch_scale float64, playback_type AudioServer.PlaybackType, bus String.Name) int64 { //gd:AudioStreamPlaybackPolyphonic.play_stream
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(stream[0])[0])
 	callframe.Arg(frame, from_offset)

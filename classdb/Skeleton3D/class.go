@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Skin"
@@ -31,6 +32,10 @@ import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -46,6 +51,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -58,6 +64,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -478,11 +485,11 @@ func (self Instance) SetShowRestOnly(value bool) {
 	class(self).SetShowRestOnly(value)
 }
 
-func (self Instance) ModifierCallbackModeProcess() gdclass.Skeleton3DModifierCallbackModeProcess {
-	return gdclass.Skeleton3DModifierCallbackModeProcess(class(self).GetModifierCallbackModeProcess())
+func (self Instance) ModifierCallbackModeProcess() ModifierCallbackModeProcess {
+	return ModifierCallbackModeProcess(class(self).GetModifierCallbackModeProcess())
 }
 
-func (self Instance) SetModifierCallbackModeProcess(value gdclass.Skeleton3DModifierCallbackModeProcess) {
+func (self Instance) SetModifierCallbackModeProcess(value ModifierCallbackModeProcess) {
 	class(self).SetModifierCallbackModeProcess(value)
 }
 
@@ -1055,7 +1062,7 @@ func (self class) IsShowRestOnly() bool { //gd:Skeleton3D.is_show_rest_only
 }
 
 //go:nosplit
-func (self class) SetModifierCallbackModeProcess(mode gdclass.Skeleton3DModifierCallbackModeProcess) { //gd:Skeleton3D.set_modifier_callback_mode_process
+func (self class) SetModifierCallbackModeProcess(mode ModifierCallbackModeProcess) { //gd:Skeleton3D.set_modifier_callback_mode_process
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -1064,9 +1071,9 @@ func (self class) SetModifierCallbackModeProcess(mode gdclass.Skeleton3DModifier
 }
 
 //go:nosplit
-func (self class) GetModifierCallbackModeProcess() gdclass.Skeleton3DModifierCallbackModeProcess { //gd:Skeleton3D.get_modifier_callback_mode_process
+func (self class) GetModifierCallbackModeProcess() ModifierCallbackModeProcess { //gd:Skeleton3D.get_modifier_callback_mode_process
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.Skeleton3DModifierCallbackModeProcess](frame)
+	var r_ret = callframe.Ret[ModifierCallbackModeProcess](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_modifier_callback_mode_process, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1248,7 +1255,7 @@ func init() {
 	gdclass.Register("Skeleton3D", func(ptr gd.Object) any { return [1]gdclass.Skeleton3D{*(*gdclass.Skeleton3D)(unsafe.Pointer(&ptr))} })
 }
 
-type ModifierCallbackModeProcess = gdclass.Skeleton3DModifierCallbackModeProcess //gd:Skeleton3D.ModifierCallbackModeProcess
+type ModifierCallbackModeProcess int //gd:Skeleton3D.ModifierCallbackModeProcess
 
 const (
 	/*Set a flag to process modification during physics frames (see [constant Node.NOTIFICATION_INTERNAL_PHYSICS_PROCESS]).*/

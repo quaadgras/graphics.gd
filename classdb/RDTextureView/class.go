@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/Rendering"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -24,6 +26,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -39,6 +45,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -51,6 +58,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -89,48 +97,48 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) FormatOverride() gdclass.RenderingDeviceDataFormat {
-	return gdclass.RenderingDeviceDataFormat(class(self).GetFormatOverride())
+func (self Instance) FormatOverride() Rendering.DataFormat {
+	return Rendering.DataFormat(class(self).GetFormatOverride())
 }
 
-func (self Instance) SetFormatOverride(value gdclass.RenderingDeviceDataFormat) {
+func (self Instance) SetFormatOverride(value Rendering.DataFormat) {
 	class(self).SetFormatOverride(value)
 }
 
-func (self Instance) SwizzleR() gdclass.RenderingDeviceTextureSwizzle {
-	return gdclass.RenderingDeviceTextureSwizzle(class(self).GetSwizzleR())
+func (self Instance) SwizzleR() Rendering.TextureSwizzle {
+	return Rendering.TextureSwizzle(class(self).GetSwizzleR())
 }
 
-func (self Instance) SetSwizzleR(value gdclass.RenderingDeviceTextureSwizzle) {
+func (self Instance) SetSwizzleR(value Rendering.TextureSwizzle) {
 	class(self).SetSwizzleR(value)
 }
 
-func (self Instance) SwizzleG() gdclass.RenderingDeviceTextureSwizzle {
-	return gdclass.RenderingDeviceTextureSwizzle(class(self).GetSwizzleG())
+func (self Instance) SwizzleG() Rendering.TextureSwizzle {
+	return Rendering.TextureSwizzle(class(self).GetSwizzleG())
 }
 
-func (self Instance) SetSwizzleG(value gdclass.RenderingDeviceTextureSwizzle) {
+func (self Instance) SetSwizzleG(value Rendering.TextureSwizzle) {
 	class(self).SetSwizzleG(value)
 }
 
-func (self Instance) SwizzleB() gdclass.RenderingDeviceTextureSwizzle {
-	return gdclass.RenderingDeviceTextureSwizzle(class(self).GetSwizzleB())
+func (self Instance) SwizzleB() Rendering.TextureSwizzle {
+	return Rendering.TextureSwizzle(class(self).GetSwizzleB())
 }
 
-func (self Instance) SetSwizzleB(value gdclass.RenderingDeviceTextureSwizzle) {
+func (self Instance) SetSwizzleB(value Rendering.TextureSwizzle) {
 	class(self).SetSwizzleB(value)
 }
 
-func (self Instance) SwizzleA() gdclass.RenderingDeviceTextureSwizzle {
-	return gdclass.RenderingDeviceTextureSwizzle(class(self).GetSwizzleA())
+func (self Instance) SwizzleA() Rendering.TextureSwizzle {
+	return Rendering.TextureSwizzle(class(self).GetSwizzleA())
 }
 
-func (self Instance) SetSwizzleA(value gdclass.RenderingDeviceTextureSwizzle) {
+func (self Instance) SetSwizzleA(value Rendering.TextureSwizzle) {
 	class(self).SetSwizzleA(value)
 }
 
 //go:nosplit
-func (self class) SetFormatOverride(p_member gdclass.RenderingDeviceDataFormat) { //gd:RDTextureView.set_format_override
+func (self class) SetFormatOverride(p_member Rendering.DataFormat) { //gd:RDTextureView.set_format_override
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -139,9 +147,9 @@ func (self class) SetFormatOverride(p_member gdclass.RenderingDeviceDataFormat) 
 }
 
 //go:nosplit
-func (self class) GetFormatOverride() gdclass.RenderingDeviceDataFormat { //gd:RDTextureView.get_format_override
+func (self class) GetFormatOverride() Rendering.DataFormat { //gd:RDTextureView.get_format_override
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingDeviceDataFormat](frame)
+	var r_ret = callframe.Ret[Rendering.DataFormat](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureView.Bind_get_format_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -149,7 +157,7 @@ func (self class) GetFormatOverride() gdclass.RenderingDeviceDataFormat { //gd:R
 }
 
 //go:nosplit
-func (self class) SetSwizzleR(p_member gdclass.RenderingDeviceTextureSwizzle) { //gd:RDTextureView.set_swizzle_r
+func (self class) SetSwizzleR(p_member Rendering.TextureSwizzle) { //gd:RDTextureView.set_swizzle_r
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -158,9 +166,9 @@ func (self class) SetSwizzleR(p_member gdclass.RenderingDeviceTextureSwizzle) { 
 }
 
 //go:nosplit
-func (self class) GetSwizzleR() gdclass.RenderingDeviceTextureSwizzle { //gd:RDTextureView.get_swizzle_r
+func (self class) GetSwizzleR() Rendering.TextureSwizzle { //gd:RDTextureView.get_swizzle_r
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingDeviceTextureSwizzle](frame)
+	var r_ret = callframe.Ret[Rendering.TextureSwizzle](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureView.Bind_get_swizzle_r, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -168,7 +176,7 @@ func (self class) GetSwizzleR() gdclass.RenderingDeviceTextureSwizzle { //gd:RDT
 }
 
 //go:nosplit
-func (self class) SetSwizzleG(p_member gdclass.RenderingDeviceTextureSwizzle) { //gd:RDTextureView.set_swizzle_g
+func (self class) SetSwizzleG(p_member Rendering.TextureSwizzle) { //gd:RDTextureView.set_swizzle_g
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -177,9 +185,9 @@ func (self class) SetSwizzleG(p_member gdclass.RenderingDeviceTextureSwizzle) { 
 }
 
 //go:nosplit
-func (self class) GetSwizzleG() gdclass.RenderingDeviceTextureSwizzle { //gd:RDTextureView.get_swizzle_g
+func (self class) GetSwizzleG() Rendering.TextureSwizzle { //gd:RDTextureView.get_swizzle_g
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingDeviceTextureSwizzle](frame)
+	var r_ret = callframe.Ret[Rendering.TextureSwizzle](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureView.Bind_get_swizzle_g, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -187,7 +195,7 @@ func (self class) GetSwizzleG() gdclass.RenderingDeviceTextureSwizzle { //gd:RDT
 }
 
 //go:nosplit
-func (self class) SetSwizzleB(p_member gdclass.RenderingDeviceTextureSwizzle) { //gd:RDTextureView.set_swizzle_b
+func (self class) SetSwizzleB(p_member Rendering.TextureSwizzle) { //gd:RDTextureView.set_swizzle_b
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -196,9 +204,9 @@ func (self class) SetSwizzleB(p_member gdclass.RenderingDeviceTextureSwizzle) { 
 }
 
 //go:nosplit
-func (self class) GetSwizzleB() gdclass.RenderingDeviceTextureSwizzle { //gd:RDTextureView.get_swizzle_b
+func (self class) GetSwizzleB() Rendering.TextureSwizzle { //gd:RDTextureView.get_swizzle_b
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingDeviceTextureSwizzle](frame)
+	var r_ret = callframe.Ret[Rendering.TextureSwizzle](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureView.Bind_get_swizzle_b, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -206,7 +214,7 @@ func (self class) GetSwizzleB() gdclass.RenderingDeviceTextureSwizzle { //gd:RDT
 }
 
 //go:nosplit
-func (self class) SetSwizzleA(p_member gdclass.RenderingDeviceTextureSwizzle) { //gd:RDTextureView.set_swizzle_a
+func (self class) SetSwizzleA(p_member Rendering.TextureSwizzle) { //gd:RDTextureView.set_swizzle_a
 	var frame = callframe.New()
 	callframe.Arg(frame, p_member)
 	var r_ret = callframe.Nil
@@ -215,9 +223,9 @@ func (self class) SetSwizzleA(p_member gdclass.RenderingDeviceTextureSwizzle) { 
 }
 
 //go:nosplit
-func (self class) GetSwizzleA() gdclass.RenderingDeviceTextureSwizzle { //gd:RDTextureView.get_swizzle_a
+func (self class) GetSwizzleA() Rendering.TextureSwizzle { //gd:RDTextureView.get_swizzle_a
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RenderingDeviceTextureSwizzle](frame)
+	var r_ret = callframe.Ret[Rendering.TextureSwizzle](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureView.Bind_get_swizzle_a, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

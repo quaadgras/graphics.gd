@@ -11,10 +11,12 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CollisionObject3D"
 import "graphics.gd/classdb/KinematicCollision3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/PhysicsServer3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -30,6 +32,10 @@ import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -45,6 +51,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -57,6 +64,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -285,7 +293,7 @@ func (self class) GetGravity() Vector3.XYZ { //gd:PhysicsBody3D.get_gravity
 Locks or unlocks the specified linear or rotational [param axis] depending on the value of [param lock].
 */
 //go:nosplit
-func (self class) SetAxisLock(axis gdclass.PhysicsServer3DBodyAxis, lock bool) { //gd:PhysicsBody3D.set_axis_lock
+func (self class) SetAxisLock(axis PhysicsServer3D.BodyAxis, lock bool) { //gd:PhysicsBody3D.set_axis_lock
 	var frame = callframe.New()
 	callframe.Arg(frame, axis)
 	callframe.Arg(frame, lock)
@@ -298,7 +306,7 @@ func (self class) SetAxisLock(axis gdclass.PhysicsServer3DBodyAxis, lock bool) {
 Returns [code]true[/code] if the specified linear or rotational [param axis] is locked.
 */
 //go:nosplit
-func (self class) GetAxisLock(axis gdclass.PhysicsServer3DBodyAxis) bool { //gd:PhysicsBody3D.get_axis_lock
+func (self class) GetAxisLock(axis PhysicsServer3D.BodyAxis) bool { //gd:PhysicsBody3D.get_axis_lock
 	var frame = callframe.New()
 	callframe.Arg(frame, axis)
 	var r_ret = callframe.Ret[bool](frame)

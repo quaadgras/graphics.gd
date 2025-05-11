@@ -11,13 +11,16 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CanvasLayer"
 import "graphics.gd/classdb/Font"
+import "graphics.gd/classdb/GUI"
 import "graphics.gd/classdb/InputEvent"
 import "graphics.gd/classdb/Material"
 import "graphics.gd/classdb/Mesh"
 import "graphics.gd/classdb/MultiMesh"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/TextServer"
 import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/classdb/World2D"
 import "graphics.gd/variant/Array"
@@ -37,6 +40,10 @@ import "graphics.gd/variant/Transform2D"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -52,6 +59,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -64,6 +72,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -510,7 +519,7 @@ DrawString(defaultFont, new Vector2(64, 64), "Hello world", HORIZONTAL_ALIGNMENT
 [/codeblocks]
 See also [method Font.draw_string].
 */
-func (self Expanded) DrawString(font Font.Instance, pos Vector2.XY, text string, alignment HorizontalAlignment, width Float.X, font_size int, modulate Color.RGBA, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:CanvasItem.draw_string
+func (self Expanded) DrawString(font Font.Instance, pos Vector2.XY, text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, modulate Color.RGBA, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) { //gd:CanvasItem.draw_string
 	Advanced(self).DrawString(font, Vector2.XY(pos), String.New(text), alignment, float64(width), int64(font_size), Color.RGBA(modulate), justification_flags, direction, orientation)
 }
 
@@ -524,7 +533,7 @@ func (self Instance) DrawMultilineString(font Font.Instance, pos Vector2.XY, tex
 /*
 Breaks [param text] into lines and draws it using the specified [param font] at the [param pos] (top-left corner). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
 */
-func (self Expanded) DrawMultilineString(font Font.Instance, pos Vector2.XY, text string, alignment HorizontalAlignment, width Float.X, font_size int, max_lines int, modulate Color.RGBA, brk_flags gdclass.TextServerLineBreakFlag, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:CanvasItem.draw_multiline_string
+func (self Expanded) DrawMultilineString(font Font.Instance, pos Vector2.XY, text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, max_lines int, modulate Color.RGBA, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) { //gd:CanvasItem.draw_multiline_string
 	Advanced(self).DrawMultilineString(font, Vector2.XY(pos), String.New(text), alignment, float64(width), int64(font_size), int64(max_lines), Color.RGBA(modulate), brk_flags, justification_flags, direction, orientation)
 }
 
@@ -538,7 +547,7 @@ func (self Instance) DrawStringOutline(font Font.Instance, pos Vector2.XY, text 
 /*
 Draws [param text] outline using the specified [param font] at the [param pos] (bottom-left corner using the baseline of the font). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
 */
-func (self Expanded) DrawStringOutline(font Font.Instance, pos Vector2.XY, text string, alignment HorizontalAlignment, width Float.X, font_size int, size int, modulate Color.RGBA, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:CanvasItem.draw_string_outline
+func (self Expanded) DrawStringOutline(font Font.Instance, pos Vector2.XY, text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, size int, modulate Color.RGBA, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) { //gd:CanvasItem.draw_string_outline
 	Advanced(self).DrawStringOutline(font, Vector2.XY(pos), String.New(text), alignment, float64(width), int64(font_size), int64(size), Color.RGBA(modulate), justification_flags, direction, orientation)
 }
 
@@ -552,7 +561,7 @@ func (self Instance) DrawMultilineStringOutline(font Font.Instance, pos Vector2.
 /*
 Breaks [param text] to the lines and draws text outline using the specified [param font] at the [param pos] (top-left corner). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
 */
-func (self Expanded) DrawMultilineStringOutline(font Font.Instance, pos Vector2.XY, text string, alignment HorizontalAlignment, width Float.X, font_size int, max_lines int, size int, modulate Color.RGBA, brk_flags gdclass.TextServerLineBreakFlag, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:CanvasItem.draw_multiline_string_outline
+func (self Expanded) DrawMultilineStringOutline(font Font.Instance, pos Vector2.XY, text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, max_lines int, size int, modulate Color.RGBA, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) { //gd:CanvasItem.draw_multiline_string_outline
 	Advanced(self).DrawMultilineStringOutline(font, Vector2.XY(pos), String.New(text), alignment, float64(width), int64(font_size), int64(max_lines), int64(size), Color.RGBA(modulate), brk_flags, justification_flags, direction, orientation)
 }
 
@@ -877,11 +886,11 @@ func (self Instance) SetTopLevel(value bool) {
 	class(self).SetAsTopLevel(value)
 }
 
-func (self Instance) ClipChildren() gdclass.CanvasItemClipChildrenMode {
-	return gdclass.CanvasItemClipChildrenMode(class(self).GetClipChildrenMode())
+func (self Instance) ClipChildren() ClipChildrenMode {
+	return ClipChildrenMode(class(self).GetClipChildrenMode())
 }
 
-func (self Instance) SetClipChildren(value gdclass.CanvasItemClipChildrenMode) {
+func (self Instance) SetClipChildren(value ClipChildrenMode) {
 	class(self).SetClipChildrenMode(value)
 }
 
@@ -925,19 +934,19 @@ func (self Instance) SetYSortEnabled(value bool) {
 	class(self).SetYSortEnabled(value)
 }
 
-func (self Instance) TextureFilter() gdclass.CanvasItemTextureFilter {
-	return gdclass.CanvasItemTextureFilter(class(self).GetTextureFilter())
+func (self Instance) TextureFilter() TextureFilter {
+	return TextureFilter(class(self).GetTextureFilter())
 }
 
-func (self Instance) SetTextureFilter(value gdclass.CanvasItemTextureFilter) {
+func (self Instance) SetTextureFilter(value TextureFilter) {
 	class(self).SetTextureFilter(value)
 }
 
-func (self Instance) TextureRepeat() gdclass.CanvasItemTextureRepeat {
-	return gdclass.CanvasItemTextureRepeat(class(self).GetTextureRepeat())
+func (self Instance) TextureRepeat() TextureRepeat {
+	return TextureRepeat(class(self).GetTextureRepeat())
 }
 
-func (self Instance) SetTextureRepeat(value gdclass.CanvasItemTextureRepeat) {
+func (self Instance) SetTextureRepeat(value TextureRepeat) {
 	class(self).SetTextureRepeat(value)
 }
 
@@ -1552,7 +1561,7 @@ DrawString(defaultFont, new Vector2(64, 64), "Hello world", HORIZONTAL_ALIGNMENT
 See also [method Font.draw_string].
 */
 //go:nosplit
-func (self class) DrawString(font [1]gdclass.Font, pos Vector2.XY, text String.Readable, alignment HorizontalAlignment, width float64, font_size int64, modulate Color.RGBA, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:CanvasItem.draw_string
+func (self class) DrawString(font [1]gdclass.Font, pos Vector2.XY, text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, modulate Color.RGBA, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) { //gd:CanvasItem.draw_string
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(font[0])[0])
 	callframe.Arg(frame, pos)
@@ -1573,7 +1582,7 @@ func (self class) DrawString(font [1]gdclass.Font, pos Vector2.XY, text String.R
 Breaks [param text] into lines and draws it using the specified [param font] at the [param pos] (top-left corner). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
 */
 //go:nosplit
-func (self class) DrawMultilineString(font [1]gdclass.Font, pos Vector2.XY, text String.Readable, alignment HorizontalAlignment, width float64, font_size int64, max_lines int64, modulate Color.RGBA, brk_flags gdclass.TextServerLineBreakFlag, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:CanvasItem.draw_multiline_string
+func (self class) DrawMultilineString(font [1]gdclass.Font, pos Vector2.XY, text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, max_lines int64, modulate Color.RGBA, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) { //gd:CanvasItem.draw_multiline_string
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(font[0])[0])
 	callframe.Arg(frame, pos)
@@ -1596,7 +1605,7 @@ func (self class) DrawMultilineString(font [1]gdclass.Font, pos Vector2.XY, text
 Draws [param text] outline using the specified [param font] at the [param pos] (bottom-left corner using the baseline of the font). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
 */
 //go:nosplit
-func (self class) DrawStringOutline(font [1]gdclass.Font, pos Vector2.XY, text String.Readable, alignment HorizontalAlignment, width float64, font_size int64, size int64, modulate Color.RGBA, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:CanvasItem.draw_string_outline
+func (self class) DrawStringOutline(font [1]gdclass.Font, pos Vector2.XY, text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, size int64, modulate Color.RGBA, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) { //gd:CanvasItem.draw_string_outline
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(font[0])[0])
 	callframe.Arg(frame, pos)
@@ -1618,7 +1627,7 @@ func (self class) DrawStringOutline(font [1]gdclass.Font, pos Vector2.XY, text S
 Breaks [param text] to the lines and draws text outline using the specified [param font] at the [param pos] (top-left corner). The text will have its color multiplied by [param modulate]. If [param width] is greater than or equal to 0, the text will be clipped if it exceeds the specified width.
 */
 //go:nosplit
-func (self class) DrawMultilineStringOutline(font [1]gdclass.Font, pos Vector2.XY, text String.Readable, alignment HorizontalAlignment, width float64, font_size int64, max_lines int64, size int64, modulate Color.RGBA, brk_flags gdclass.TextServerLineBreakFlag, justification_flags gdclass.TextServerJustificationFlag, direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) { //gd:CanvasItem.draw_multiline_string_outline
+func (self class) DrawMultilineStringOutline(font [1]gdclass.Font, pos Vector2.XY, text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, max_lines int64, size int64, modulate Color.RGBA, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) { //gd:CanvasItem.draw_multiline_string_outline
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(font[0])[0])
 	callframe.Arg(frame, pos)
@@ -2117,7 +2126,7 @@ func (self class) GetVisibilityLayerBit(layer int64) bool { //gd:CanvasItem.get_
 }
 
 //go:nosplit
-func (self class) SetTextureFilter(mode gdclass.CanvasItemTextureFilter) { //gd:CanvasItem.set_texture_filter
+func (self class) SetTextureFilter(mode TextureFilter) { //gd:CanvasItem.set_texture_filter
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -2126,9 +2135,9 @@ func (self class) SetTextureFilter(mode gdclass.CanvasItemTextureFilter) { //gd:
 }
 
 //go:nosplit
-func (self class) GetTextureFilter() gdclass.CanvasItemTextureFilter { //gd:CanvasItem.get_texture_filter
+func (self class) GetTextureFilter() TextureFilter { //gd:CanvasItem.get_texture_filter
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.CanvasItemTextureFilter](frame)
+	var r_ret = callframe.Ret[TextureFilter](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_texture_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2136,7 +2145,7 @@ func (self class) GetTextureFilter() gdclass.CanvasItemTextureFilter { //gd:Canv
 }
 
 //go:nosplit
-func (self class) SetTextureRepeat(mode gdclass.CanvasItemTextureRepeat) { //gd:CanvasItem.set_texture_repeat
+func (self class) SetTextureRepeat(mode TextureRepeat) { //gd:CanvasItem.set_texture_repeat
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -2145,9 +2154,9 @@ func (self class) SetTextureRepeat(mode gdclass.CanvasItemTextureRepeat) { //gd:
 }
 
 //go:nosplit
-func (self class) GetTextureRepeat() gdclass.CanvasItemTextureRepeat { //gd:CanvasItem.get_texture_repeat
+func (self class) GetTextureRepeat() TextureRepeat { //gd:CanvasItem.get_texture_repeat
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.CanvasItemTextureRepeat](frame)
+	var r_ret = callframe.Ret[TextureRepeat](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_texture_repeat, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2155,7 +2164,7 @@ func (self class) GetTextureRepeat() gdclass.CanvasItemTextureRepeat { //gd:Canv
 }
 
 //go:nosplit
-func (self class) SetClipChildrenMode(mode gdclass.CanvasItemClipChildrenMode) { //gd:CanvasItem.set_clip_children_mode
+func (self class) SetClipChildrenMode(mode ClipChildrenMode) { //gd:CanvasItem.set_clip_children_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -2164,9 +2173,9 @@ func (self class) SetClipChildrenMode(mode gdclass.CanvasItemClipChildrenMode) {
 }
 
 //go:nosplit
-func (self class) GetClipChildrenMode() gdclass.CanvasItemClipChildrenMode { //gd:CanvasItem.get_clip_children_mode
+func (self class) GetClipChildrenMode() ClipChildrenMode { //gd:CanvasItem.get_clip_children_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.CanvasItemClipChildrenMode](frame)
+	var r_ret = callframe.Ret[ClipChildrenMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_clip_children_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2216,7 +2225,7 @@ func init() {
 	gdclass.Register("CanvasItem", func(ptr gd.Object) any { return [1]gdclass.CanvasItem{*(*gdclass.CanvasItem)(unsafe.Pointer(&ptr))} })
 }
 
-type TextureFilter = gdclass.CanvasItemTextureFilter //gd:CanvasItem.TextureFilter
+type TextureFilter int //gd:CanvasItem.TextureFilter
 
 const (
 	/*The [CanvasItem] will inherit the filter from its parent.*/
@@ -2241,7 +2250,7 @@ const (
 	TextureFilterMax TextureFilter = 7
 )
 
-type TextureRepeat = gdclass.CanvasItemTextureRepeat //gd:CanvasItem.TextureRepeat
+type TextureRepeat int //gd:CanvasItem.TextureRepeat
 
 const (
 	/*The [CanvasItem] will inherit the filter from its parent.*/
@@ -2256,7 +2265,7 @@ const (
 	TextureRepeatMax TextureRepeat = 4
 )
 
-type ClipChildrenMode = gdclass.CanvasItemClipChildrenMode //gd:CanvasItem.ClipChildrenMode
+type ClipChildrenMode int //gd:CanvasItem.ClipChildrenMode
 
 const (
 	/*Child draws over parent and is not clipped.*/
@@ -2267,17 +2276,4 @@ const (
 	ClipChildrenAndDraw ClipChildrenMode = 2
 	/*Represents the size of the [enum ClipChildrenMode] enum.*/
 	ClipChildrenMax ClipChildrenMode = 3
-)
-
-type HorizontalAlignment int
-
-const (
-	/*Horizontal left alignment, usually for text-derived classes.*/
-	HorizontalAlignmentLeft HorizontalAlignment = 0
-	/*Horizontal center alignment, usually for text-derived classes.*/
-	HorizontalAlignmentCenter HorizontalAlignment = 1
-	/*Horizontal right alignment, usually for text-derived classes.*/
-	HorizontalAlignmentRight HorizontalAlignment = 2
-	/*Expand row to fit width, usually for text-derived classes.*/
-	HorizontalAlignmentFill HorizontalAlignment = 3
 )

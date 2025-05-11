@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/VisibleOnScreenNotifier3D"
@@ -28,6 +29,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -43,6 +48,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,6 +61,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -94,11 +101,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) EnableMode() gdclass.VisibleOnScreenEnabler3DEnableMode {
-	return gdclass.VisibleOnScreenEnabler3DEnableMode(class(self).GetEnableMode())
+func (self Instance) EnableMode() EnableMode {
+	return EnableMode(class(self).GetEnableMode())
 }
 
-func (self Instance) SetEnableMode(value gdclass.VisibleOnScreenEnabler3DEnableMode) {
+func (self Instance) SetEnableMode(value EnableMode) {
 	class(self).SetEnableMode(value)
 }
 
@@ -111,7 +118,7 @@ func (self Instance) SetEnableNodePath(value string) {
 }
 
 //go:nosplit
-func (self class) SetEnableMode(mode gdclass.VisibleOnScreenEnabler3DEnableMode) { //gd:VisibleOnScreenEnabler3D.set_enable_mode
+func (self class) SetEnableMode(mode EnableMode) { //gd:VisibleOnScreenEnabler3D.set_enable_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -120,9 +127,9 @@ func (self class) SetEnableMode(mode gdclass.VisibleOnScreenEnabler3DEnableMode)
 }
 
 //go:nosplit
-func (self class) GetEnableMode() gdclass.VisibleOnScreenEnabler3DEnableMode { //gd:VisibleOnScreenEnabler3D.get_enable_mode
+func (self class) GetEnableMode() EnableMode { //gd:VisibleOnScreenEnabler3D.get_enable_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.VisibleOnScreenEnabler3DEnableMode](frame)
+	var r_ret = callframe.Ret[EnableMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisibleOnScreenEnabler3D.Bind_get_enable_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -198,7 +205,7 @@ func init() {
 	})
 }
 
-type EnableMode = gdclass.VisibleOnScreenEnabler3DEnableMode //gd:VisibleOnScreenEnabler3D.EnableMode
+type EnableMode int //gd:VisibleOnScreenEnabler3D.EnableMode
 
 const (
 	/*Corresponds to [constant Node.PROCESS_MODE_INHERIT].*/

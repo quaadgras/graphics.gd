@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3DGizmo"
 import "graphics.gd/classdb/World3D"
@@ -31,6 +32,10 @@ import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -46,6 +51,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -58,6 +64,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -455,19 +462,19 @@ func (self Instance) SetScale(value Vector3.XYZ) {
 	class(self).SetScale(Vector3.XYZ(value))
 }
 
-func (self Instance) RotationEditMode() gdclass.Node3DRotationEditMode {
-	return gdclass.Node3DRotationEditMode(class(self).GetRotationEditMode())
+func (self Instance) RotationEditMode() RotationEditMode {
+	return RotationEditMode(class(self).GetRotationEditMode())
 }
 
-func (self Instance) SetRotationEditMode(value gdclass.Node3DRotationEditMode) {
+func (self Instance) SetRotationEditMode(value RotationEditMode) {
 	class(self).SetRotationEditMode(value)
 }
 
-func (self Instance) RotationOrder() EulerOrder {
-	return EulerOrder(class(self).GetRotationOrder())
+func (self Instance) RotationOrder() Angle.Order {
+	return Angle.Order(class(self).GetRotationOrder())
 }
 
-func (self Instance) SetRotationOrder(value EulerOrder) {
+func (self Instance) SetRotationOrder(value Angle.Order) {
 	class(self).SetRotationOrder(value)
 }
 
@@ -604,7 +611,7 @@ func (self class) GetRotationDegrees() Vector3.XYZ { //gd:Node3D.get_rotation_de
 }
 
 //go:nosplit
-func (self class) SetRotationOrder(order EulerOrder) { //gd:Node3D.set_rotation_order
+func (self class) SetRotationOrder(order Angle.Order) { //gd:Node3D.set_rotation_order
 	var frame = callframe.New()
 	callframe.Arg(frame, order)
 	var r_ret = callframe.Nil
@@ -613,9 +620,9 @@ func (self class) SetRotationOrder(order EulerOrder) { //gd:Node3D.set_rotation_
 }
 
 //go:nosplit
-func (self class) GetRotationOrder() EulerOrder { //gd:Node3D.get_rotation_order
+func (self class) GetRotationOrder() Angle.Order { //gd:Node3D.get_rotation_order
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[EulerOrder](frame)
+	var r_ret = callframe.Ret[Angle.Order](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_rotation_order, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -623,7 +630,7 @@ func (self class) GetRotationOrder() EulerOrder { //gd:Node3D.get_rotation_order
 }
 
 //go:nosplit
-func (self class) SetRotationEditMode(edit_mode gdclass.Node3DRotationEditMode) { //gd:Node3D.set_rotation_edit_mode
+func (self class) SetRotationEditMode(edit_mode RotationEditMode) { //gd:Node3D.set_rotation_edit_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, edit_mode)
 	var r_ret = callframe.Nil
@@ -632,9 +639,9 @@ func (self class) SetRotationEditMode(edit_mode gdclass.Node3DRotationEditMode) 
 }
 
 //go:nosplit
-func (self class) GetRotationEditMode() gdclass.Node3DRotationEditMode { //gd:Node3D.get_rotation_edit_mode
+func (self class) GetRotationEditMode() RotationEditMode { //gd:Node3D.get_rotation_edit_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.Node3DRotationEditMode](frame)
+	var r_ret = callframe.Ret[RotationEditMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_rotation_edit_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1348,7 +1355,7 @@ func init() {
 	gdclass.Register("Node3D", func(ptr gd.Object) any { return [1]gdclass.Node3D{*(*gdclass.Node3D)(unsafe.Pointer(&ptr))} })
 }
 
-type RotationEditMode = gdclass.Node3DRotationEditMode //gd:Node3D.RotationEditMode
+type RotationEditMode int //gd:Node3D.RotationEditMode
 
 const (
 	/*The rotation is edited using [Vector3] Euler angles.*/
@@ -1357,21 +1364,4 @@ const (
 	RotationEditModeQuaternion RotationEditMode = 1
 	/*The rotation is edited using a [Basis]. In this mode, [member scale] can't be edited separately.*/
 	RotationEditModeBasis RotationEditMode = 2
-)
-
-type EulerOrder int
-
-const (
-	/*Specifies that Euler angles should be in XYZ order. When composing, the order is X, Y, Z. When decomposing, the order is reversed, first Z, then Y, and X last.*/
-	EulerOrderXyz EulerOrder = 0
-	/*Specifies that Euler angles should be in XZY order. When composing, the order is X, Z, Y. When decomposing, the order is reversed, first Y, then Z, and X last.*/
-	EulerOrderXzy EulerOrder = 1
-	/*Specifies that Euler angles should be in YXZ order. When composing, the order is Y, X, Z. When decomposing, the order is reversed, first Z, then X, and Y last.*/
-	EulerOrderYxz EulerOrder = 2
-	/*Specifies that Euler angles should be in YZX order. When composing, the order is Y, Z, X. When decomposing, the order is reversed, first X, then Z, and Y last.*/
-	EulerOrderYzx EulerOrder = 3
-	/*Specifies that Euler angles should be in ZXY order. When composing, the order is Z, X, Y. When decomposing, the order is reversed, first Y, then X, and Z last.*/
-	EulerOrderZxy EulerOrder = 4
-	/*Specifies that Euler angles should be in ZYX order. When composing, the order is Z, Y, X. When decomposing, the order is reversed, first X, then Y, and Z last.*/
-	EulerOrderZyx EulerOrder = 5
 )

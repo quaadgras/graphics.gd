@@ -11,10 +11,12 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/HScrollBar"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/TextServer"
 import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/classdb/VScrollBar"
 import "graphics.gd/variant/Array"
@@ -34,6 +36,10 @@ import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -49,6 +55,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -61,6 +68,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -148,15 +156,15 @@ func (self Instance) GetItemIcon(idx int) Texture2D.Instance { //gd:ItemList.get
 /*
 Sets item's text base writing direction.
 */
-func (self Instance) SetItemTextDirection(idx int, direction gdclass.ControlTextDirection) { //gd:ItemList.set_item_text_direction
+func (self Instance) SetItemTextDirection(idx int, direction Control.TextDirection) { //gd:ItemList.set_item_text_direction
 	Advanced(self).SetItemTextDirection(int64(idx), direction)
 }
 
 /*
 Returns item's text base writing direction.
 */
-func (self Instance) GetItemTextDirection(idx int) gdclass.ControlTextDirection { //gd:ItemList.get_item_text_direction
-	return gdclass.ControlTextDirection(Advanced(self).GetItemTextDirection(int64(idx)))
+func (self Instance) GetItemTextDirection(idx int) Control.TextDirection { //gd:ItemList.get_item_text_direction
+	return Control.TextDirection(Advanced(self).GetItemTextDirection(int64(idx)))
 }
 
 /*
@@ -177,15 +185,15 @@ func (self Instance) GetItemLanguage(idx int) string { //gd:ItemList.get_item_la
 Sets the auto translate mode of the item associated with the specified index.
 Items use [constant Node.AUTO_TRANSLATE_MODE_INHERIT] by default, which uses the same auto translate mode as the [ItemList] itself.
 */
-func (self Instance) SetItemAutoTranslateMode(idx int, mode gdclass.NodeAutoTranslateMode) { //gd:ItemList.set_item_auto_translate_mode
+func (self Instance) SetItemAutoTranslateMode(idx int, mode Node.AutoTranslateMode) { //gd:ItemList.set_item_auto_translate_mode
 	Advanced(self).SetItemAutoTranslateMode(int64(idx), mode)
 }
 
 /*
 Returns item's auto translate mode.
 */
-func (self Instance) GetItemAutoTranslateMode(idx int) gdclass.NodeAutoTranslateMode { //gd:ItemList.get_item_auto_translate_mode
-	return gdclass.NodeAutoTranslateMode(Advanced(self).GetItemAutoTranslateMode(int64(idx)))
+func (self Instance) GetItemAutoTranslateMode(idx int) Node.AutoTranslateMode { //gd:ItemList.get_item_auto_translate_mode
+	return Node.AutoTranslateMode(Advanced(self).GetItemAutoTranslateMode(int64(idx)))
 }
 
 /*
@@ -491,11 +499,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) SelectMode() gdclass.ItemListSelectMode {
-	return gdclass.ItemListSelectMode(class(self).GetSelectMode())
+func (self Instance) SelectMode() SelectMode {
+	return SelectMode(class(self).GetSelectMode())
 }
 
-func (self Instance) SetSelectMode(value gdclass.ItemListSelectMode) {
+func (self Instance) SetSelectMode(value SelectMode) {
 	class(self).SetSelectMode(value)
 }
 
@@ -547,11 +555,11 @@ func (self Instance) SetAutoHeight(value bool) {
 	class(self).SetAutoHeight(value)
 }
 
-func (self Instance) TextOverrunBehavior() gdclass.TextServerOverrunBehavior {
-	return gdclass.TextServerOverrunBehavior(class(self).GetTextOverrunBehavior())
+func (self Instance) TextOverrunBehavior() TextServer.OverrunBehavior {
+	return TextServer.OverrunBehavior(class(self).GetTextOverrunBehavior())
 }
 
-func (self Instance) SetTextOverrunBehavior(value gdclass.TextServerOverrunBehavior) {
+func (self Instance) SetTextOverrunBehavior(value TextServer.OverrunBehavior) {
 	class(self).SetTextOverrunBehavior(value)
 }
 
@@ -595,11 +603,11 @@ func (self Instance) SetFixedColumnWidth(value int) {
 	class(self).SetFixedColumnWidth(int64(value))
 }
 
-func (self Instance) IconMode() gdclass.ItemListIconMode {
-	return gdclass.ItemListIconMode(class(self).GetIconMode())
+func (self Instance) IconMode() IconMode {
+	return IconMode(class(self).GetIconMode())
 }
 
-func (self Instance) SetIconMode(value gdclass.ItemListIconMode) {
+func (self Instance) SetIconMode(value IconMode) {
 	class(self).SetIconMode(value)
 }
 
@@ -710,7 +718,7 @@ func (self class) GetItemIcon(idx int64) [1]gdclass.Texture2D { //gd:ItemList.ge
 Sets item's text base writing direction.
 */
 //go:nosplit
-func (self class) SetItemTextDirection(idx int64, direction gdclass.ControlTextDirection) { //gd:ItemList.set_item_text_direction
+func (self class) SetItemTextDirection(idx int64, direction Control.TextDirection) { //gd:ItemList.set_item_text_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, direction)
@@ -723,10 +731,10 @@ func (self class) SetItemTextDirection(idx int64, direction gdclass.ControlTextD
 Returns item's text base writing direction.
 */
 //go:nosplit
-func (self class) GetItemTextDirection(idx int64) gdclass.ControlTextDirection { //gd:ItemList.get_item_text_direction
+func (self class) GetItemTextDirection(idx int64) Control.TextDirection { //gd:ItemList.get_item_text_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[gdclass.ControlTextDirection](frame)
+	var r_ret = callframe.Ret[Control.TextDirection](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_get_item_text_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -765,7 +773,7 @@ Sets the auto translate mode of the item associated with the specified index.
 Items use [constant Node.AUTO_TRANSLATE_MODE_INHERIT] by default, which uses the same auto translate mode as the [ItemList] itself.
 */
 //go:nosplit
-func (self class) SetItemAutoTranslateMode(idx int64, mode gdclass.NodeAutoTranslateMode) { //gd:ItemList.set_item_auto_translate_mode
+func (self class) SetItemAutoTranslateMode(idx int64, mode Node.AutoTranslateMode) { //gd:ItemList.set_item_auto_translate_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
 	callframe.Arg(frame, mode)
@@ -778,10 +786,10 @@ func (self class) SetItemAutoTranslateMode(idx int64, mode gdclass.NodeAutoTrans
 Returns item's auto translate mode.
 */
 //go:nosplit
-func (self class) GetItemAutoTranslateMode(idx int64) gdclass.NodeAutoTranslateMode { //gd:ItemList.get_item_auto_translate_mode
+func (self class) GetItemAutoTranslateMode(idx int64) Node.AutoTranslateMode { //gd:ItemList.get_item_auto_translate_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[gdclass.NodeAutoTranslateMode](frame)
+	var r_ret = callframe.Ret[Node.AutoTranslateMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_get_item_auto_translate_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1282,7 +1290,7 @@ func (self class) GetMaxColumns() int64 { //gd:ItemList.get_max_columns
 }
 
 //go:nosplit
-func (self class) SetSelectMode(mode gdclass.ItemListSelectMode) { //gd:ItemList.set_select_mode
+func (self class) SetSelectMode(mode SelectMode) { //gd:ItemList.set_select_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -1291,9 +1299,9 @@ func (self class) SetSelectMode(mode gdclass.ItemListSelectMode) { //gd:ItemList
 }
 
 //go:nosplit
-func (self class) GetSelectMode() gdclass.ItemListSelectMode { //gd:ItemList.get_select_mode
+func (self class) GetSelectMode() SelectMode { //gd:ItemList.get_select_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ItemListSelectMode](frame)
+	var r_ret = callframe.Ret[SelectMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_get_select_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1301,7 +1309,7 @@ func (self class) GetSelectMode() gdclass.ItemListSelectMode { //gd:ItemList.get
 }
 
 //go:nosplit
-func (self class) SetIconMode(mode gdclass.ItemListIconMode) { //gd:ItemList.set_icon_mode
+func (self class) SetIconMode(mode IconMode) { //gd:ItemList.set_icon_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -1310,9 +1318,9 @@ func (self class) SetIconMode(mode gdclass.ItemListIconMode) { //gd:ItemList.set
 }
 
 //go:nosplit
-func (self class) GetIconMode() gdclass.ItemListIconMode { //gd:ItemList.get_icon_mode
+func (self class) GetIconMode() IconMode { //gd:ItemList.get_icon_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ItemListIconMode](frame)
+	var r_ret = callframe.Ret[IconMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_get_icon_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1522,7 +1530,7 @@ func (self class) GetHScrollBar() [1]gdclass.HScrollBar { //gd:ItemList.get_h_sc
 }
 
 //go:nosplit
-func (self class) SetTextOverrunBehavior(overrun_behavior gdclass.TextServerOverrunBehavior) { //gd:ItemList.set_text_overrun_behavior
+func (self class) SetTextOverrunBehavior(overrun_behavior TextServer.OverrunBehavior) { //gd:ItemList.set_text_overrun_behavior
 	var frame = callframe.New()
 	callframe.Arg(frame, overrun_behavior)
 	var r_ret = callframe.Nil
@@ -1531,9 +1539,9 @@ func (self class) SetTextOverrunBehavior(overrun_behavior gdclass.TextServerOver
 }
 
 //go:nosplit
-func (self class) GetTextOverrunBehavior() gdclass.TextServerOverrunBehavior { //gd:ItemList.get_text_overrun_behavior
+func (self class) GetTextOverrunBehavior() TextServer.OverrunBehavior { //gd:ItemList.get_text_overrun_behavior
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TextServerOverrunBehavior](frame)
+	var r_ret = callframe.Ret[TextServer.OverrunBehavior](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ItemList.Bind_get_text_overrun_behavior, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1625,7 +1633,7 @@ func init() {
 	gdclass.Register("ItemList", func(ptr gd.Object) any { return [1]gdclass.ItemList{*(*gdclass.ItemList)(unsafe.Pointer(&ptr))} })
 }
 
-type IconMode = gdclass.ItemListIconMode //gd:ItemList.IconMode
+type IconMode int //gd:ItemList.IconMode
 
 const (
 	/*Icon is drawn above the text.*/
@@ -1634,7 +1642,7 @@ const (
 	IconModeLeft IconMode = 1
 )
 
-type SelectMode = gdclass.ItemListSelectMode //gd:ItemList.SelectMode
+type SelectMode int //gd:ItemList.SelectMode
 
 const (
 	/*Only allow selecting a single item.*/

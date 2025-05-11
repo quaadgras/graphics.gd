@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/AudioStream"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
@@ -26,6 +27,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -41,6 +46,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -53,6 +59,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -180,19 +187,19 @@ func (self Instance) SetData(value []byte) {
 	class(self).SetData(Packed.Bytes(Packed.New(value...)))
 }
 
-func (self Instance) Format() gdclass.AudioStreamWAVFormat {
-	return gdclass.AudioStreamWAVFormat(class(self).GetFormat())
+func (self Instance) Format() Format {
+	return Format(class(self).GetFormat())
 }
 
-func (self Instance) SetFormat(value gdclass.AudioStreamWAVFormat) {
+func (self Instance) SetFormat(value Format) {
 	class(self).SetFormat(value)
 }
 
-func (self Instance) LoopMode() gdclass.AudioStreamWAVLoopMode {
-	return gdclass.AudioStreamWAVLoopMode(class(self).GetLoopMode())
+func (self Instance) LoopMode() LoopMode {
+	return LoopMode(class(self).GetLoopMode())
 }
 
-func (self Instance) SetLoopMode(value gdclass.AudioStreamWAVLoopMode) {
+func (self Instance) SetLoopMode(value LoopMode) {
 	class(self).SetLoopMode(value)
 }
 
@@ -295,7 +302,7 @@ func (self class) GetData() Packed.Bytes { //gd:AudioStreamWAV.get_data
 }
 
 //go:nosplit
-func (self class) SetFormat(format gdclass.AudioStreamWAVFormat) { //gd:AudioStreamWAV.set_format
+func (self class) SetFormat(format Format) { //gd:AudioStreamWAV.set_format
 	var frame = callframe.New()
 	callframe.Arg(frame, format)
 	var r_ret = callframe.Nil
@@ -304,9 +311,9 @@ func (self class) SetFormat(format gdclass.AudioStreamWAVFormat) { //gd:AudioStr
 }
 
 //go:nosplit
-func (self class) GetFormat() gdclass.AudioStreamWAVFormat { //gd:AudioStreamWAV.get_format
+func (self class) GetFormat() Format { //gd:AudioStreamWAV.get_format
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.AudioStreamWAVFormat](frame)
+	var r_ret = callframe.Ret[Format](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamWAV.Bind_get_format, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -314,7 +321,7 @@ func (self class) GetFormat() gdclass.AudioStreamWAVFormat { //gd:AudioStreamWAV
 }
 
 //go:nosplit
-func (self class) SetLoopMode(loop_mode gdclass.AudioStreamWAVLoopMode) { //gd:AudioStreamWAV.set_loop_mode
+func (self class) SetLoopMode(loop_mode LoopMode) { //gd:AudioStreamWAV.set_loop_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, loop_mode)
 	var r_ret = callframe.Nil
@@ -323,9 +330,9 @@ func (self class) SetLoopMode(loop_mode gdclass.AudioStreamWAVLoopMode) { //gd:A
 }
 
 //go:nosplit
-func (self class) GetLoopMode() gdclass.AudioStreamWAVLoopMode { //gd:AudioStreamWAV.get_loop_mode
+func (self class) GetLoopMode() LoopMode { //gd:AudioStreamWAV.get_loop_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.AudioStreamWAVLoopMode](frame)
+	var r_ret = callframe.Ret[LoopMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamWAV.Bind_get_loop_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -466,7 +473,7 @@ func init() {
 	})
 }
 
-type Format = gdclass.AudioStreamWAVFormat //gd:AudioStreamWAV.Format
+type Format int //gd:AudioStreamWAV.Format
 
 const (
 	/*8-bit PCM audio codec.*/
@@ -479,7 +486,7 @@ const (
 	FormatQoa Format = 3
 )
 
-type LoopMode = gdclass.AudioStreamWAVLoopMode //gd:AudioStreamWAV.LoopMode
+type LoopMode int //gd:AudioStreamWAV.LoopMode
 
 const (
 	/*Audio does not loop.*/

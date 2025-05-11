@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Script"
 import "graphics.gd/classdb/ScriptLanguage"
 import "graphics.gd/variant/Array"
@@ -26,6 +27,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -41,6 +46,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -53,6 +59,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 type Instance [1]gdclass.ScriptLanguageExtension
@@ -93,7 +100,7 @@ type Interface interface {
 	CanMakeFunction() bool
 	OpenInExternalEditor(script Script.Instance, line int, column int) error
 	OverridesExternalEditor() bool
-	PreferredFileNameCasing() gdclass.ScriptLanguageScriptNameCasing
+	PreferredFileNameCasing() ScriptLanguage.ScriptNameCasing
 	CompleteCode(code string, path string, owner Object.Instance) map[any]any
 	LookupCode(code string, symbol string, path string, owner Object.Instance) map[any]any
 	AutoIndentCode(code string, from_line int, to_line int) string
@@ -168,10 +175,8 @@ func (self implementation) CanMakeFunction() (_ bool) { return }
 func (self implementation) OpenInExternalEditor(script Script.Instance, line int, column int) (_ error) {
 	return
 }
-func (self implementation) OverridesExternalEditor() (_ bool) { return }
-func (self implementation) PreferredFileNameCasing() (_ gdclass.ScriptLanguageScriptNameCasing) {
-	return
-}
+func (self implementation) OverridesExternalEditor() (_ bool)                            { return }
+func (self implementation) PreferredFileNameCasing() (_ ScriptLanguage.ScriptNameCasing) { return }
 func (self implementation) CompleteCode(code string, path string, owner Object.Instance) (_ map[any]any) {
 	return
 }
@@ -502,7 +507,7 @@ func (Instance) _overrides_external_editor(impl func(ptr unsafe.Pointer) bool) (
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _preferred_file_name_casing(impl func(ptr unsafe.Pointer) gdclass.ScriptLanguageScriptNameCasing) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _preferred_file_name_casing(impl func(ptr unsafe.Pointer) ScriptLanguage.ScriptNameCasing) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -1206,7 +1211,7 @@ func (class) _overrides_external_editor(impl func(ptr unsafe.Pointer) bool) (cb 
 	}
 }
 
-func (class) _preferred_file_name_casing(impl func(ptr unsafe.Pointer) gdclass.ScriptLanguageScriptNameCasing) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _preferred_file_name_casing(impl func(ptr unsafe.Pointer) ScriptLanguage.ScriptNameCasing) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -1894,7 +1899,7 @@ func init() {
 	})
 }
 
-type LookupResultType = gdclass.ScriptLanguageExtensionLookupResultType //gd:ScriptLanguageExtension.LookupResultType
+type LookupResultType int //gd:ScriptLanguageExtension.LookupResultType
 
 const (
 	LookupResultScriptLocation      LookupResultType = 0
@@ -1911,7 +1916,7 @@ const (
 	LookupResultMax                 LookupResultType = 11
 )
 
-type CodeCompletionLocation = gdclass.ScriptLanguageExtensionCodeCompletionLocation //gd:ScriptLanguageExtension.CodeCompletionLocation
+type CodeCompletionLocation int //gd:ScriptLanguageExtension.CodeCompletionLocation
 
 const (
 	/*The option is local to the location of the code completion query - e.g. a local variable. Subsequent value of location represent options from the outer class, the exact value represent how far they are (in terms of inner classes).*/
@@ -1924,7 +1929,7 @@ const (
 	LocationOther CodeCompletionLocation = 1024
 )
 
-type CodeCompletionKind = gdclass.ScriptLanguageExtensionCodeCompletionKind //gd:ScriptLanguageExtension.CodeCompletionKind
+type CodeCompletionKind int //gd:ScriptLanguageExtension.CodeCompletionKind
 
 const (
 	CodeCompletionKindClass     CodeCompletionKind = 0

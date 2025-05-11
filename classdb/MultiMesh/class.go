@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Mesh"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/AABB"
@@ -30,6 +31,10 @@ import "graphics.gd/variant/Transform2D"
 import "graphics.gd/variant/Transform3D"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -45,6 +50,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -57,6 +63,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -185,11 +192,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) TransformFormat() gdclass.MultiMeshTransformFormat {
-	return gdclass.MultiMeshTransformFormat(class(self).GetTransformFormat())
+func (self Instance) TransformFormat() TransformFormat {
+	return TransformFormat(class(self).GetTransformFormat())
 }
 
-func (self Instance) SetTransformFormat(value gdclass.MultiMeshTransformFormat) {
+func (self Instance) SetTransformFormat(value TransformFormat) {
 	class(self).SetTransformFormat(value)
 }
 
@@ -249,11 +256,11 @@ func (self Instance) SetBuffer(value []float32) {
 	class(self).SetBuffer(Packed.New(value...))
 }
 
-func (self Instance) PhysicsInterpolationQuality() gdclass.MultiMeshPhysicsInterpolationQuality {
-	return gdclass.MultiMeshPhysicsInterpolationQuality(class(self).GetPhysicsInterpolationQuality())
+func (self Instance) PhysicsInterpolationQuality() PhysicsInterpolationQuality {
+	return PhysicsInterpolationQuality(class(self).GetPhysicsInterpolationQuality())
 }
 
-func (self Instance) SetPhysicsInterpolationQuality(value gdclass.MultiMeshPhysicsInterpolationQuality) {
+func (self Instance) SetPhysicsInterpolationQuality(value PhysicsInterpolationQuality) {
 	class(self).SetPhysicsInterpolationQuality(value)
 }
 
@@ -315,7 +322,7 @@ func (self class) IsUsingCustomData() bool { //gd:MultiMesh.is_using_custom_data
 }
 
 //go:nosplit
-func (self class) SetTransformFormat(format gdclass.MultiMeshTransformFormat) { //gd:MultiMesh.set_transform_format
+func (self class) SetTransformFormat(format TransformFormat) { //gd:MultiMesh.set_transform_format
 	var frame = callframe.New()
 	callframe.Arg(frame, format)
 	var r_ret = callframe.Nil
@@ -324,9 +331,9 @@ func (self class) SetTransformFormat(format gdclass.MultiMeshTransformFormat) { 
 }
 
 //go:nosplit
-func (self class) GetTransformFormat() gdclass.MultiMeshTransformFormat { //gd:MultiMesh.get_transform_format
+func (self class) GetTransformFormat() TransformFormat { //gd:MultiMesh.get_transform_format
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.MultiMeshTransformFormat](frame)
+	var r_ret = callframe.Ret[TransformFormat](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiMesh.Bind_get_transform_format, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -372,7 +379,7 @@ func (self class) GetVisibleInstanceCount() int64 { //gd:MultiMesh.get_visible_i
 }
 
 //go:nosplit
-func (self class) SetPhysicsInterpolationQuality(quality gdclass.MultiMeshPhysicsInterpolationQuality) { //gd:MultiMesh.set_physics_interpolation_quality
+func (self class) SetPhysicsInterpolationQuality(quality PhysicsInterpolationQuality) { //gd:MultiMesh.set_physics_interpolation_quality
 	var frame = callframe.New()
 	callframe.Arg(frame, quality)
 	var r_ret = callframe.Nil
@@ -381,9 +388,9 @@ func (self class) SetPhysicsInterpolationQuality(quality gdclass.MultiMeshPhysic
 }
 
 //go:nosplit
-func (self class) GetPhysicsInterpolationQuality() gdclass.MultiMeshPhysicsInterpolationQuality { //gd:MultiMesh.get_physics_interpolation_quality
+func (self class) GetPhysicsInterpolationQuality() PhysicsInterpolationQuality { //gd:MultiMesh.get_physics_interpolation_quality
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.MultiMeshPhysicsInterpolationQuality](frame)
+	var r_ret = callframe.Ret[PhysicsInterpolationQuality](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiMesh.Bind_get_physics_interpolation_quality, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -616,7 +623,7 @@ func init() {
 	gdclass.Register("MultiMesh", func(ptr gd.Object) any { return [1]gdclass.MultiMesh{*(*gdclass.MultiMesh)(unsafe.Pointer(&ptr))} })
 }
 
-type TransformFormat = gdclass.MultiMeshTransformFormat //gd:MultiMesh.TransformFormat
+type TransformFormat int //gd:MultiMesh.TransformFormat
 
 const (
 	/*Use this when using 2D transforms.*/
@@ -625,7 +632,7 @@ const (
 	Transform3d TransformFormat = 1
 )
 
-type PhysicsInterpolationQuality = gdclass.MultiMeshPhysicsInterpolationQuality //gd:MultiMesh.PhysicsInterpolationQuality
+type PhysicsInterpolationQuality int //gd:MultiMesh.PhysicsInterpolationQuality
 
 const (
 	/*Always interpolate using Basis lerping, which can produce warping artifacts in some situations.*/

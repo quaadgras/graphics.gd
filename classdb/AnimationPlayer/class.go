@@ -11,8 +11,10 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/AnimationMixer"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Tween"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -26,6 +28,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -41,6 +47,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -53,6 +60,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -230,7 +238,7 @@ If [param name] is blank, it specifies [member assigned_animation].
 If [param duration] is a negative value, the duration is set to the interval between the current position and the first key, when [param from_end] is [code]true[/code], uses the interval between the current position and the last key instead.
 [b]Note:[/b] The [param duration] takes [member speed_scale] into account, but [param custom_speed] does not, because the capture cache is interpolated with the blend result and the result may contain multiple animations.
 */
-func (self Expanded) PlayWithCapture(name string, duration Float.X, custom_blend Float.X, custom_speed Float.X, from_end bool, trans_type gdclass.TweenTransitionType, ease_type gdclass.TweenEaseType) { //gd:AnimationPlayer.play_with_capture
+func (self Expanded) PlayWithCapture(name string, duration Float.X, custom_blend Float.X, custom_speed Float.X, from_end bool, trans_type Tween.TransitionType, ease_type Tween.EaseType) { //gd:AnimationPlayer.play_with_capture
 	Advanced(self).PlayWithCapture(String.Name(String.New(name)), float64(duration), float64(custom_blend), float64(custom_speed), from_end, trans_type, ease_type)
 }
 
@@ -376,29 +384,29 @@ func (self Expanded) SeekTo(seconds Float.X, update bool, update_only bool) { //
 /*
 Sets the process notification in which to update animations.
 */
-func (self Instance) SetProcessCallback(mode gdclass.AnimationPlayerAnimationProcessCallback) { //gd:AnimationPlayer.set_process_callback
+func (self Instance) SetProcessCallback(mode AnimationProcessCallback) { //gd:AnimationPlayer.set_process_callback
 	Advanced(self).SetProcessCallback(mode)
 }
 
 /*
 Returns the process notification in which to update animations.
 */
-func (self Instance) GetProcessCallback() gdclass.AnimationPlayerAnimationProcessCallback { //gd:AnimationPlayer.get_process_callback
-	return gdclass.AnimationPlayerAnimationProcessCallback(Advanced(self).GetProcessCallback())
+func (self Instance) GetProcessCallback() AnimationProcessCallback { //gd:AnimationPlayer.get_process_callback
+	return AnimationProcessCallback(Advanced(self).GetProcessCallback())
 }
 
 /*
 Sets the call mode used for "Call Method" tracks.
 */
-func (self Instance) SetMethodCallMode(mode gdclass.AnimationPlayerAnimationMethodCallMode) { //gd:AnimationPlayer.set_method_call_mode
+func (self Instance) SetMethodCallMode(mode AnimationMethodCallMode) { //gd:AnimationPlayer.set_method_call_mode
 	Advanced(self).SetMethodCallMode(mode)
 }
 
 /*
 Returns the call mode used for "Call Method" tracks.
 */
-func (self Instance) GetMethodCallMode() gdclass.AnimationPlayerAnimationMethodCallMode { //gd:AnimationPlayer.get_method_call_mode
-	return gdclass.AnimationPlayerAnimationMethodCallMode(Advanced(self).GetMethodCallMode())
+func (self Instance) GetMethodCallMode() AnimationMethodCallMode { //gd:AnimationPlayer.get_method_call_mode
+	return AnimationMethodCallMode(Advanced(self).GetMethodCallMode())
 }
 
 /*
@@ -482,19 +490,19 @@ func (self Instance) SetPlaybackAutoCaptureDuration(value Float.X) {
 	class(self).SetAutoCaptureDuration(float64(value))
 }
 
-func (self Instance) PlaybackAutoCaptureTransitionType() gdclass.TweenTransitionType {
-	return gdclass.TweenTransitionType(class(self).GetAutoCaptureTransitionType())
+func (self Instance) PlaybackAutoCaptureTransitionType() Tween.TransitionType {
+	return Tween.TransitionType(class(self).GetAutoCaptureTransitionType())
 }
 
-func (self Instance) SetPlaybackAutoCaptureTransitionType(value gdclass.TweenTransitionType) {
+func (self Instance) SetPlaybackAutoCaptureTransitionType(value Tween.TransitionType) {
 	class(self).SetAutoCaptureTransitionType(value)
 }
 
-func (self Instance) PlaybackAutoCaptureEaseType() gdclass.TweenEaseType {
-	return gdclass.TweenEaseType(class(self).GetAutoCaptureEaseType())
+func (self Instance) PlaybackAutoCaptureEaseType() Tween.EaseType {
+	return Tween.EaseType(class(self).GetAutoCaptureEaseType())
 }
 
-func (self Instance) SetPlaybackAutoCaptureEaseType(value gdclass.TweenEaseType) {
+func (self Instance) SetPlaybackAutoCaptureEaseType(value Tween.EaseType) {
 	class(self).SetAutoCaptureEaseType(value)
 }
 
@@ -636,7 +644,7 @@ func (self class) GetAutoCaptureDuration() float64 { //gd:AnimationPlayer.get_au
 }
 
 //go:nosplit
-func (self class) SetAutoCaptureTransitionType(auto_capture_transition_type gdclass.TweenTransitionType) { //gd:AnimationPlayer.set_auto_capture_transition_type
+func (self class) SetAutoCaptureTransitionType(auto_capture_transition_type Tween.TransitionType) { //gd:AnimationPlayer.set_auto_capture_transition_type
 	var frame = callframe.New()
 	callframe.Arg(frame, auto_capture_transition_type)
 	var r_ret = callframe.Nil
@@ -645,9 +653,9 @@ func (self class) SetAutoCaptureTransitionType(auto_capture_transition_type gdcl
 }
 
 //go:nosplit
-func (self class) GetAutoCaptureTransitionType() gdclass.TweenTransitionType { //gd:AnimationPlayer.get_auto_capture_transition_type
+func (self class) GetAutoCaptureTransitionType() Tween.TransitionType { //gd:AnimationPlayer.get_auto_capture_transition_type
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TweenTransitionType](frame)
+	var r_ret = callframe.Ret[Tween.TransitionType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_auto_capture_transition_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -655,7 +663,7 @@ func (self class) GetAutoCaptureTransitionType() gdclass.TweenTransitionType { /
 }
 
 //go:nosplit
-func (self class) SetAutoCaptureEaseType(auto_capture_ease_type gdclass.TweenEaseType) { //gd:AnimationPlayer.set_auto_capture_ease_type
+func (self class) SetAutoCaptureEaseType(auto_capture_ease_type Tween.EaseType) { //gd:AnimationPlayer.set_auto_capture_ease_type
 	var frame = callframe.New()
 	callframe.Arg(frame, auto_capture_ease_type)
 	var r_ret = callframe.Nil
@@ -664,9 +672,9 @@ func (self class) SetAutoCaptureEaseType(auto_capture_ease_type gdclass.TweenEas
 }
 
 //go:nosplit
-func (self class) GetAutoCaptureEaseType() gdclass.TweenEaseType { //gd:AnimationPlayer.get_auto_capture_ease_type
+func (self class) GetAutoCaptureEaseType() Tween.EaseType { //gd:AnimationPlayer.get_auto_capture_ease_type
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TweenEaseType](frame)
+	var r_ret = callframe.Ret[Tween.EaseType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_auto_capture_ease_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -785,7 +793,7 @@ If [param duration] is a negative value, the duration is set to the interval bet
 [b]Note:[/b] The [param duration] takes [member speed_scale] into account, but [param custom_speed] does not, because the capture cache is interpolated with the blend result and the result may contain multiple animations.
 */
 //go:nosplit
-func (self class) PlayWithCapture(name String.Name, duration float64, custom_blend float64, custom_speed float64, from_end bool, trans_type gdclass.TweenTransitionType, ease_type gdclass.TweenEaseType) { //gd:AnimationPlayer.play_with_capture
+func (self class) PlayWithCapture(name String.Name, duration float64, custom_blend float64, custom_speed float64, from_end bool, trans_type Tween.TransitionType, ease_type Tween.EaseType) { //gd:AnimationPlayer.play_with_capture
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, duration)
@@ -1101,7 +1109,7 @@ func (self class) SeekTo(seconds float64, update bool, update_only bool) { //gd:
 Sets the process notification in which to update animations.
 */
 //go:nosplit
-func (self class) SetProcessCallback(mode gdclass.AnimationPlayerAnimationProcessCallback) { //gd:AnimationPlayer.set_process_callback
+func (self class) SetProcessCallback(mode AnimationProcessCallback) { //gd:AnimationPlayer.set_process_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -1113,9 +1121,9 @@ func (self class) SetProcessCallback(mode gdclass.AnimationPlayerAnimationProces
 Returns the process notification in which to update animations.
 */
 //go:nosplit
-func (self class) GetProcessCallback() gdclass.AnimationPlayerAnimationProcessCallback { //gd:AnimationPlayer.get_process_callback
+func (self class) GetProcessCallback() AnimationProcessCallback { //gd:AnimationPlayer.get_process_callback
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.AnimationPlayerAnimationProcessCallback](frame)
+	var r_ret = callframe.Ret[AnimationProcessCallback](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_process_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1126,7 +1134,7 @@ func (self class) GetProcessCallback() gdclass.AnimationPlayerAnimationProcessCa
 Sets the call mode used for "Call Method" tracks.
 */
 //go:nosplit
-func (self class) SetMethodCallMode(mode gdclass.AnimationPlayerAnimationMethodCallMode) { //gd:AnimationPlayer.set_method_call_mode
+func (self class) SetMethodCallMode(mode AnimationMethodCallMode) { //gd:AnimationPlayer.set_method_call_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -1138,9 +1146,9 @@ func (self class) SetMethodCallMode(mode gdclass.AnimationPlayerAnimationMethodC
 Returns the call mode used for "Call Method" tracks.
 */
 //go:nosplit
-func (self class) GetMethodCallMode() gdclass.AnimationPlayerAnimationMethodCallMode { //gd:AnimationPlayer.get_method_call_mode
+func (self class) GetMethodCallMode() AnimationMethodCallMode { //gd:AnimationPlayer.get_method_call_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.AnimationPlayerAnimationMethodCallMode](frame)
+	var r_ret = callframe.Ret[AnimationMethodCallMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationPlayer.Bind_get_method_call_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1214,7 +1222,7 @@ func init() {
 	})
 }
 
-type AnimationProcessCallback = gdclass.AnimationPlayerAnimationProcessCallback //gd:AnimationPlayer.AnimationProcessCallback
+type AnimationProcessCallback int //gd:AnimationPlayer.AnimationProcessCallback
 
 const (
 	AnimationProcessPhysics AnimationProcessCallback = 0
@@ -1222,7 +1230,7 @@ const (
 	AnimationProcessManual  AnimationProcessCallback = 2
 )
 
-type AnimationMethodCallMode = gdclass.AnimationPlayerAnimationMethodCallMode //gd:AnimationPlayer.AnimationMethodCallMode
+type AnimationMethodCallMode int //gd:AnimationPlayer.AnimationMethodCallMode
 
 const (
 	AnimationMethodCallDeferred  AnimationMethodCallMode = 0

@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node2D"
@@ -23,11 +24,16 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
 import "graphics.gd/variant/Path"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/Rect2"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -43,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,6 +62,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -155,11 +163,11 @@ func (self Instance) SetOffset(value Vector2.XY) {
 	class(self).SetOffset(Vector2.XY(value))
 }
 
-func (self Instance) AnchorMode() gdclass.Camera2DAnchorMode {
-	return gdclass.Camera2DAnchorMode(class(self).GetAnchorMode())
+func (self Instance) AnchorMode() AnchorMode {
+	return AnchorMode(class(self).GetAnchorMode())
 }
 
-func (self Instance) SetAnchorMode(value gdclass.Camera2DAnchorMode) {
+func (self Instance) SetAnchorMode(value AnchorMode) {
 	class(self).SetAnchorMode(value)
 }
 
@@ -195,11 +203,11 @@ func (self Instance) SetCustomViewport(value Node.Instance) {
 	class(self).SetCustomViewport(value)
 }
 
-func (self Instance) ProcessCallback() gdclass.Camera2DCamera2DProcessCallback {
-	return gdclass.Camera2DCamera2DProcessCallback(class(self).GetProcessCallback())
+func (self Instance) ProcessCallback() Camera2DProcessCallback {
+	return Camera2DProcessCallback(class(self).GetProcessCallback())
 }
 
-func (self Instance) SetProcessCallback(value gdclass.Camera2DCamera2DProcessCallback) {
+func (self Instance) SetProcessCallback(value Camera2DProcessCallback) {
 	class(self).SetProcessCallback(value)
 }
 
@@ -383,7 +391,7 @@ func (self class) GetOffset() Vector2.XY { //gd:Camera2D.get_offset
 }
 
 //go:nosplit
-func (self class) SetAnchorMode(anchor_mode gdclass.Camera2DAnchorMode) { //gd:Camera2D.set_anchor_mode
+func (self class) SetAnchorMode(anchor_mode AnchorMode) { //gd:Camera2D.set_anchor_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, anchor_mode)
 	var r_ret = callframe.Nil
@@ -392,9 +400,9 @@ func (self class) SetAnchorMode(anchor_mode gdclass.Camera2DAnchorMode) { //gd:C
 }
 
 //go:nosplit
-func (self class) GetAnchorMode() gdclass.Camera2DAnchorMode { //gd:Camera2D.get_anchor_mode
+func (self class) GetAnchorMode() AnchorMode { //gd:Camera2D.get_anchor_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.Camera2DAnchorMode](frame)
+	var r_ret = callframe.Ret[AnchorMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_get_anchor_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -421,7 +429,7 @@ func (self class) IsIgnoringRotation() bool { //gd:Camera2D.is_ignoring_rotation
 }
 
 //go:nosplit
-func (self class) SetProcessCallback(mode gdclass.Camera2DCamera2DProcessCallback) { //gd:Camera2D.set_process_callback
+func (self class) SetProcessCallback(mode Camera2DProcessCallback) { //gd:Camera2D.set_process_callback
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -430,9 +438,9 @@ func (self class) SetProcessCallback(mode gdclass.Camera2DCamera2DProcessCallbac
 }
 
 //go:nosplit
-func (self class) GetProcessCallback() gdclass.Camera2DCamera2DProcessCallback { //gd:Camera2D.get_process_callback
+func (self class) GetProcessCallback() Camera2DProcessCallback { //gd:Camera2D.get_process_callback
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.Camera2DCamera2DProcessCallback](frame)
+	var r_ret = callframe.Ret[Camera2DProcessCallback](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Camera2D.Bind_get_process_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -486,7 +494,7 @@ func (self class) IsCurrent() bool { //gd:Camera2D.is_current
 Sets the camera limit for the specified [enum Side]. See also [member limit_bottom], [member limit_top], [member limit_left], and [member limit_right].
 */
 //go:nosplit
-func (self class) SetLimit(margin Side, limit int64) { //gd:Camera2D.set_limit
+func (self class) SetLimit(margin Rect2.Side, limit int64) { //gd:Camera2D.set_limit
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	callframe.Arg(frame, limit)
@@ -499,7 +507,7 @@ func (self class) SetLimit(margin Side, limit int64) { //gd:Camera2D.set_limit
 Returns the camera limit for the specified [enum Side]. See also [member limit_bottom], [member limit_top], [member limit_left], and [member limit_right].
 */
 //go:nosplit
-func (self class) GetLimit(margin Side) int64 { //gd:Camera2D.get_limit
+func (self class) GetLimit(margin Rect2.Side) int64 { //gd:Camera2D.get_limit
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Ret[int64](frame)
@@ -608,7 +616,7 @@ func (self class) GetDragHorizontalOffset() float64 { //gd:Camera2D.get_drag_hor
 Sets the specified [enum Side]'s margin. See also [member drag_bottom_margin], [member drag_top_margin], [member drag_left_margin], and [member drag_right_margin].
 */
 //go:nosplit
-func (self class) SetDragMargin(margin Side, drag_margin float64) { //gd:Camera2D.set_drag_margin
+func (self class) SetDragMargin(margin Rect2.Side, drag_margin float64) { //gd:Camera2D.set_drag_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	callframe.Arg(frame, drag_margin)
@@ -621,7 +629,7 @@ func (self class) SetDragMargin(margin Side, drag_margin float64) { //gd:Camera2
 Returns the specified [enum Side]'s margin. See also [member drag_bottom_margin], [member drag_top_margin], [member drag_left_margin], and [member drag_right_margin].
 */
 //go:nosplit
-func (self class) GetDragMargin(margin Side) float64 { //gd:Camera2D.get_drag_margin
+func (self class) GetDragMargin(margin Rect2.Side) float64 { //gd:Camera2D.get_drag_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Ret[float64](frame)
@@ -897,7 +905,7 @@ func init() {
 	gdclass.Register("Camera2D", func(ptr gd.Object) any { return [1]gdclass.Camera2D{*(*gdclass.Camera2D)(unsafe.Pointer(&ptr))} })
 }
 
-type AnchorMode = gdclass.Camera2DAnchorMode //gd:Camera2D.AnchorMode
+type AnchorMode int //gd:Camera2D.AnchorMode
 
 const (
 	/*The camera's position is fixed so that the top-left corner is always at the origin.*/
@@ -906,24 +914,11 @@ const (
 	AnchorModeDragCenter AnchorMode = 1
 )
 
-type Camera2DProcessCallback = gdclass.Camera2DCamera2DProcessCallback //gd:Camera2D.Camera2DProcessCallback
+type Camera2DProcessCallback int //gd:Camera2D.Camera2DProcessCallback
 
 const (
 	/*The camera updates during physics frames (see [constant Node.NOTIFICATION_INTERNAL_PHYSICS_PROCESS]).*/
 	Camera2dProcessPhysics Camera2DProcessCallback = 0
 	/*The camera updates during process frames (see [constant Node.NOTIFICATION_INTERNAL_PROCESS]).*/
 	Camera2dProcessIdle Camera2DProcessCallback = 1
-)
-
-type Side int
-
-const (
-	/*Left side, usually used for [Control] or [StyleBox]-derived classes.*/
-	SideLeft Side = 0
-	/*Top side, usually used for [Control] or [StyleBox]-derived classes.*/
-	SideTop Side = 1
-	/*Right side, usually used for [Control] or [StyleBox]-derived classes.*/
-	SideRight Side = 2
-	/*Bottom side, usually used for [Control] or [StyleBox]-derived classes.*/
-	SideBottom Side = 3
 )

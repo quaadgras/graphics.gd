@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -26,6 +27,10 @@ import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -41,6 +46,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -53,6 +59,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -139,11 +146,11 @@ func (self Instance) SetAngularVelocity(value Vector3.XYZ) {
 	class(self).SetAngularVelocity(Vector3.XYZ(value))
 }
 
-func (self Instance) TrackingConfidence() gdclass.XRPoseTrackingConfidence {
-	return gdclass.XRPoseTrackingConfidence(class(self).GetTrackingConfidence())
+func (self Instance) TrackingConfidence() TrackingConfidence {
+	return TrackingConfidence(class(self).GetTrackingConfidence())
 }
 
-func (self Instance) SetTrackingConfidence(value gdclass.XRPoseTrackingConfidence) {
+func (self Instance) SetTrackingConfidence(value TrackingConfidence) {
 	class(self).SetTrackingConfidence(value)
 }
 
@@ -256,7 +263,7 @@ func (self class) GetAngularVelocity() Vector3.XYZ { //gd:XRPose.get_angular_vel
 }
 
 //go:nosplit
-func (self class) SetTrackingConfidence(tracking_confidence gdclass.XRPoseTrackingConfidence) { //gd:XRPose.set_tracking_confidence
+func (self class) SetTrackingConfidence(tracking_confidence TrackingConfidence) { //gd:XRPose.set_tracking_confidence
 	var frame = callframe.New()
 	callframe.Arg(frame, tracking_confidence)
 	var r_ret = callframe.Nil
@@ -265,9 +272,9 @@ func (self class) SetTrackingConfidence(tracking_confidence gdclass.XRPoseTracki
 }
 
 //go:nosplit
-func (self class) GetTrackingConfidence() gdclass.XRPoseTrackingConfidence { //gd:XRPose.get_tracking_confidence
+func (self class) GetTrackingConfidence() TrackingConfidence { //gd:XRPose.get_tracking_confidence
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.XRPoseTrackingConfidence](frame)
+	var r_ret = callframe.Ret[TrackingConfidence](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPose.Bind_get_tracking_confidence, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -301,7 +308,7 @@ func init() {
 	gdclass.Register("XRPose", func(ptr gd.Object) any { return [1]gdclass.XRPose{*(*gdclass.XRPose)(unsafe.Pointer(&ptr))} })
 }
 
-type TrackingConfidence = gdclass.XRPoseTrackingConfidence //gd:XRPose.TrackingConfidence
+type TrackingConfidence int //gd:XRPose.TrackingConfidence
 
 const (
 	/*No tracking information is available for this pose.*/

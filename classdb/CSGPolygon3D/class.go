@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CSGPrimitive3D"
 import "graphics.gd/classdb/CSGShape3D"
 import "graphics.gd/classdb/GeometryInstance3D"
@@ -32,6 +33,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -47,6 +52,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -59,6 +65,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -105,11 +112,11 @@ func (self Instance) SetPolygon(value []Vector2.XY) {
 	class(self).SetPolygon(Packed.New(value...))
 }
 
-func (self Instance) Mode() gdclass.CSGPolygon3DMode {
-	return gdclass.CSGPolygon3DMode(class(self).GetMode())
+func (self Instance) Mode() Mode {
+	return Mode(class(self).GetMode())
 }
 
-func (self Instance) SetMode(value gdclass.CSGPolygon3DMode) {
+func (self Instance) SetMode(value Mode) {
 	class(self).SetMode(value)
 }
 
@@ -145,11 +152,11 @@ func (self Instance) SetPathNode(value string) {
 	class(self).SetPathNode(Path.ToNode(String.New(value)))
 }
 
-func (self Instance) PathIntervalType() gdclass.CSGPolygon3DPathIntervalType {
-	return gdclass.CSGPolygon3DPathIntervalType(class(self).GetPathIntervalType())
+func (self Instance) PathIntervalType() PathIntervalType {
+	return PathIntervalType(class(self).GetPathIntervalType())
 }
 
-func (self Instance) SetPathIntervalType(value gdclass.CSGPolygon3DPathIntervalType) {
+func (self Instance) SetPathIntervalType(value PathIntervalType) {
 	class(self).SetPathIntervalType(value)
 }
 
@@ -169,11 +176,11 @@ func (self Instance) SetPathSimplifyAngle(value Float.X) {
 	class(self).SetPathSimplifyAngle(float64(value))
 }
 
-func (self Instance) PathRotation() gdclass.CSGPolygon3DPathRotation {
-	return gdclass.CSGPolygon3DPathRotation(class(self).GetPathRotation())
+func (self Instance) PathRotation() PathRotation {
+	return PathRotation(class(self).GetPathRotation())
 }
 
-func (self Instance) SetPathRotation(value gdclass.CSGPolygon3DPathRotation) {
+func (self Instance) SetPathRotation(value PathRotation) {
 	class(self).SetPathRotation(value)
 }
 
@@ -253,7 +260,7 @@ func (self class) GetPolygon() Packed.Array[Vector2.XY] { //gd:CSGPolygon3D.get_
 }
 
 //go:nosplit
-func (self class) SetMode(mode gdclass.CSGPolygon3DMode) { //gd:CSGPolygon3D.set_mode
+func (self class) SetMode(mode Mode) { //gd:CSGPolygon3D.set_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -262,9 +269,9 @@ func (self class) SetMode(mode gdclass.CSGPolygon3DMode) { //gd:CSGPolygon3D.set
 }
 
 //go:nosplit
-func (self class) GetMode() gdclass.CSGPolygon3DMode { //gd:CSGPolygon3D.get_mode
+func (self class) GetMode() Mode { //gd:CSGPolygon3D.get_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.CSGPolygon3DMode](frame)
+	var r_ret = callframe.Ret[Mode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGPolygon3D.Bind_get_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -348,7 +355,7 @@ func (self class) GetPathNode() Path.ToNode { //gd:CSGPolygon3D.get_path_node
 }
 
 //go:nosplit
-func (self class) SetPathIntervalType(interval_type gdclass.CSGPolygon3DPathIntervalType) { //gd:CSGPolygon3D.set_path_interval_type
+func (self class) SetPathIntervalType(interval_type PathIntervalType) { //gd:CSGPolygon3D.set_path_interval_type
 	var frame = callframe.New()
 	callframe.Arg(frame, interval_type)
 	var r_ret = callframe.Nil
@@ -357,9 +364,9 @@ func (self class) SetPathIntervalType(interval_type gdclass.CSGPolygon3DPathInte
 }
 
 //go:nosplit
-func (self class) GetPathIntervalType() gdclass.CSGPolygon3DPathIntervalType { //gd:CSGPolygon3D.get_path_interval_type
+func (self class) GetPathIntervalType() PathIntervalType { //gd:CSGPolygon3D.get_path_interval_type
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.CSGPolygon3DPathIntervalType](frame)
+	var r_ret = callframe.Ret[PathIntervalType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGPolygon3D.Bind_get_path_interval_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -405,7 +412,7 @@ func (self class) GetPathSimplifyAngle() float64 { //gd:CSGPolygon3D.get_path_si
 }
 
 //go:nosplit
-func (self class) SetPathRotation(path_rotation gdclass.CSGPolygon3DPathRotation) { //gd:CSGPolygon3D.set_path_rotation
+func (self class) SetPathRotation(path_rotation PathRotation) { //gd:CSGPolygon3D.set_path_rotation
 	var frame = callframe.New()
 	callframe.Arg(frame, path_rotation)
 	var r_ret = callframe.Nil
@@ -414,9 +421,9 @@ func (self class) SetPathRotation(path_rotation gdclass.CSGPolygon3DPathRotation
 }
 
 //go:nosplit
-func (self class) GetPathRotation() gdclass.CSGPolygon3DPathRotation { //gd:CSGPolygon3D.get_path_rotation
+func (self class) GetPathRotation() PathRotation { //gd:CSGPolygon3D.get_path_rotation
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.CSGPolygon3DPathRotation](frame)
+	var r_ret = callframe.Ret[PathRotation](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CSGPolygon3D.Bind_get_path_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -618,7 +625,7 @@ func init() {
 	})
 }
 
-type Mode = gdclass.CSGPolygon3DMode //gd:CSGPolygon3D.Mode
+type Mode int //gd:CSGPolygon3D.Mode
 
 const (
 	/*The [member polygon] shape is extruded along the negative Z axis.*/
@@ -629,7 +636,7 @@ const (
 	ModePath Mode = 2
 )
 
-type PathRotation = gdclass.CSGPolygon3DPathRotation //gd:CSGPolygon3D.PathRotation
+type PathRotation int //gd:CSGPolygon3D.PathRotation
 
 const (
 	/*The [member polygon] shape is not rotated.
@@ -642,7 +649,7 @@ const (
 	PathRotationPathFollow PathRotation = 2
 )
 
-type PathIntervalType = gdclass.CSGPolygon3DPathIntervalType //gd:CSGPolygon3D.PathIntervalType
+type PathIntervalType int //gd:CSGPolygon3D.PathIntervalType
 
 const (
 	/*When [member mode] is set to [constant MODE_PATH], [member path_interval] will determine the distance, in meters, each interval of the path will extrude.*/

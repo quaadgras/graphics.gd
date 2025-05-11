@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/VisualInstance3D"
@@ -29,6 +30,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -44,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,6 +62,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -97,11 +104,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) UpdateMode() gdclass.ReflectionProbeUpdateMode {
-	return gdclass.ReflectionProbeUpdateMode(class(self).GetUpdateMode())
+func (self Instance) UpdateMode() UpdateMode {
+	return UpdateMode(class(self).GetUpdateMode())
 }
 
-func (self Instance) SetUpdateMode(value gdclass.ReflectionProbeUpdateMode) {
+func (self Instance) SetUpdateMode(value UpdateMode) {
 	class(self).SetUpdateMode(value)
 }
 
@@ -193,11 +200,11 @@ func (self Instance) SetMeshLodThreshold(value Float.X) {
 	class(self).SetMeshLodThreshold(float64(value))
 }
 
-func (self Instance) AmbientMode() gdclass.ReflectionProbeAmbientMode {
-	return gdclass.ReflectionProbeAmbientMode(class(self).GetAmbientMode())
+func (self Instance) AmbientMode() AmbientMode {
+	return AmbientMode(class(self).GetAmbientMode())
 }
 
-func (self Instance) SetAmbientMode(value gdclass.ReflectionProbeAmbientMode) {
+func (self Instance) SetAmbientMode(value AmbientMode) {
 	class(self).SetAmbientMode(value)
 }
 
@@ -256,7 +263,7 @@ func (self class) GetBlendDistance() float64 { //gd:ReflectionProbe.get_blend_di
 }
 
 //go:nosplit
-func (self class) SetAmbientMode(ambient gdclass.ReflectionProbeAmbientMode) { //gd:ReflectionProbe.set_ambient_mode
+func (self class) SetAmbientMode(ambient AmbientMode) { //gd:ReflectionProbe.set_ambient_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, ambient)
 	var r_ret = callframe.Nil
@@ -265,9 +272,9 @@ func (self class) SetAmbientMode(ambient gdclass.ReflectionProbeAmbientMode) { /
 }
 
 //go:nosplit
-func (self class) GetAmbientMode() gdclass.ReflectionProbeAmbientMode { //gd:ReflectionProbe.get_ambient_mode
+func (self class) GetAmbientMode() AmbientMode { //gd:ReflectionProbe.get_ambient_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ReflectionProbeAmbientMode](frame)
+	var r_ret = callframe.Ret[AmbientMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_get_ambient_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -484,7 +491,7 @@ func (self class) GetReflectionMask() int64 { //gd:ReflectionProbe.get_reflectio
 }
 
 //go:nosplit
-func (self class) SetUpdateMode(mode gdclass.ReflectionProbeUpdateMode) { //gd:ReflectionProbe.set_update_mode
+func (self class) SetUpdateMode(mode UpdateMode) { //gd:ReflectionProbe.set_update_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -493,9 +500,9 @@ func (self class) SetUpdateMode(mode gdclass.ReflectionProbeUpdateMode) { //gd:R
 }
 
 //go:nosplit
-func (self class) GetUpdateMode() gdclass.ReflectionProbeUpdateMode { //gd:ReflectionProbe.get_update_mode
+func (self class) GetUpdateMode() UpdateMode { //gd:ReflectionProbe.get_update_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ReflectionProbeUpdateMode](frame)
+	var r_ret = callframe.Ret[UpdateMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ReflectionProbe.Bind_get_update_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -539,7 +546,7 @@ func init() {
 	})
 }
 
-type UpdateMode = gdclass.ReflectionProbeUpdateMode //gd:ReflectionProbe.UpdateMode
+type UpdateMode int //gd:ReflectionProbe.UpdateMode
 
 const (
 	/*Update the probe once on the next frame (recommended for most objects). The corresponding radiance map will be generated over the following six frames. This takes more time to update than [constant UPDATE_ALWAYS], but it has a lower performance cost and can result in higher-quality reflections. The ReflectionProbe is updated when its transform changes, but not when nearby geometry changes. You can force a [ReflectionProbe] update by moving the [ReflectionProbe] slightly in any direction.*/
@@ -548,7 +555,7 @@ const (
 	UpdateAlways UpdateMode = 1
 )
 
-type AmbientMode = gdclass.ReflectionProbeAmbientMode //gd:ReflectionProbe.AmbientMode
+type AmbientMode int //gd:ReflectionProbe.AmbientMode
 
 const (
 	/*Do not apply any ambient lighting inside the [ReflectionProbe]'s box defined by its [member size].*/

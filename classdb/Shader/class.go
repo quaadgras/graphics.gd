@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/Texture"
 import "graphics.gd/variant/Array"
@@ -26,6 +27,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -41,6 +46,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -53,6 +59,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -77,8 +84,8 @@ type Any interface {
 /*
 Returns the shader mode for the shader.
 */
-func (self Instance) GetMode() gdclass.ShaderMode { //gd:Shader.get_mode
-	return gdclass.ShaderMode(Advanced(self).GetMode())
+func (self Instance) GetMode() Mode { //gd:Shader.get_mode
+	return Mode(Advanced(self).GetMode())
 }
 
 /*
@@ -172,9 +179,9 @@ func (self Instance) SetCode(value string) {
 Returns the shader mode for the shader.
 */
 //go:nosplit
-func (self class) GetMode() gdclass.ShaderMode { //gd:Shader.get_mode
+func (self class) GetMode() Mode { //gd:Shader.get_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ShaderMode](frame)
+	var r_ret = callframe.Ret[Mode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shader.Bind_get_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -293,7 +300,7 @@ func init() {
 	gdclass.Register("Shader", func(ptr gd.Object) any { return [1]gdclass.Shader{*(*gdclass.Shader)(unsafe.Pointer(&ptr))} })
 }
 
-type Mode = gdclass.ShaderMode //gd:Shader.Mode
+type Mode int //gd:Shader.Mode
 
 const (
 	/*Mode used to draw all 3D objects.*/

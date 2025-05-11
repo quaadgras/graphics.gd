@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/VisualShaderNode"
 import "graphics.gd/classdb/VisualShaderNodeParameter"
@@ -27,6 +28,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -42,6 +47,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -54,6 +60,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -92,48 +99,48 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) TextureType() gdclass.VisualShaderNodeTextureParameterTextureType {
-	return gdclass.VisualShaderNodeTextureParameterTextureType(class(self).GetTextureType())
+func (self Instance) TextureType() TextureType {
+	return TextureType(class(self).GetTextureType())
 }
 
-func (self Instance) SetTextureType(value gdclass.VisualShaderNodeTextureParameterTextureType) {
+func (self Instance) SetTextureType(value TextureType) {
 	class(self).SetTextureType(value)
 }
 
-func (self Instance) ColorDefault() gdclass.VisualShaderNodeTextureParameterColorDefault {
-	return gdclass.VisualShaderNodeTextureParameterColorDefault(class(self).GetColorDefault())
+func (self Instance) ColorDefault() ColorDefault {
+	return ColorDefault(class(self).GetColorDefault())
 }
 
-func (self Instance) SetColorDefault(value gdclass.VisualShaderNodeTextureParameterColorDefault) {
+func (self Instance) SetColorDefault(value ColorDefault) {
 	class(self).SetColorDefault(value)
 }
 
-func (self Instance) TextureFilter() gdclass.VisualShaderNodeTextureParameterTextureFilter {
-	return gdclass.VisualShaderNodeTextureParameterTextureFilter(class(self).GetTextureFilter())
+func (self Instance) TextureFilter() TextureFilter {
+	return TextureFilter(class(self).GetTextureFilter())
 }
 
-func (self Instance) SetTextureFilter(value gdclass.VisualShaderNodeTextureParameterTextureFilter) {
+func (self Instance) SetTextureFilter(value TextureFilter) {
 	class(self).SetTextureFilter(value)
 }
 
-func (self Instance) TextureRepeat() gdclass.VisualShaderNodeTextureParameterTextureRepeat {
-	return gdclass.VisualShaderNodeTextureParameterTextureRepeat(class(self).GetTextureRepeat())
+func (self Instance) TextureRepeat() TextureRepeat {
+	return TextureRepeat(class(self).GetTextureRepeat())
 }
 
-func (self Instance) SetTextureRepeat(value gdclass.VisualShaderNodeTextureParameterTextureRepeat) {
+func (self Instance) SetTextureRepeat(value TextureRepeat) {
 	class(self).SetTextureRepeat(value)
 }
 
-func (self Instance) TextureSource() gdclass.VisualShaderNodeTextureParameterTextureSource {
-	return gdclass.VisualShaderNodeTextureParameterTextureSource(class(self).GetTextureSource())
+func (self Instance) TextureSource() TextureSource {
+	return TextureSource(class(self).GetTextureSource())
 }
 
-func (self Instance) SetTextureSource(value gdclass.VisualShaderNodeTextureParameterTextureSource) {
+func (self Instance) SetTextureSource(value TextureSource) {
 	class(self).SetTextureSource(value)
 }
 
 //go:nosplit
-func (self class) SetTextureType(atype gdclass.VisualShaderNodeTextureParameterTextureType) { //gd:VisualShaderNodeTextureParameter.set_texture_type
+func (self class) SetTextureType(atype TextureType) { //gd:VisualShaderNodeTextureParameter.set_texture_type
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	var r_ret = callframe.Nil
@@ -142,9 +149,9 @@ func (self class) SetTextureType(atype gdclass.VisualShaderNodeTextureParameterT
 }
 
 //go:nosplit
-func (self class) GetTextureType() gdclass.VisualShaderNodeTextureParameterTextureType { //gd:VisualShaderNodeTextureParameter.get_texture_type
+func (self class) GetTextureType() TextureType { //gd:VisualShaderNodeTextureParameter.get_texture_type
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.VisualShaderNodeTextureParameterTextureType](frame)
+	var r_ret = callframe.Ret[TextureType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTextureParameter.Bind_get_texture_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -152,7 +159,7 @@ func (self class) GetTextureType() gdclass.VisualShaderNodeTextureParameterTextu
 }
 
 //go:nosplit
-func (self class) SetColorDefault(color gdclass.VisualShaderNodeTextureParameterColorDefault) { //gd:VisualShaderNodeTextureParameter.set_color_default
+func (self class) SetColorDefault(color ColorDefault) { //gd:VisualShaderNodeTextureParameter.set_color_default
 	var frame = callframe.New()
 	callframe.Arg(frame, color)
 	var r_ret = callframe.Nil
@@ -161,9 +168,9 @@ func (self class) SetColorDefault(color gdclass.VisualShaderNodeTextureParameter
 }
 
 //go:nosplit
-func (self class) GetColorDefault() gdclass.VisualShaderNodeTextureParameterColorDefault { //gd:VisualShaderNodeTextureParameter.get_color_default
+func (self class) GetColorDefault() ColorDefault { //gd:VisualShaderNodeTextureParameter.get_color_default
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.VisualShaderNodeTextureParameterColorDefault](frame)
+	var r_ret = callframe.Ret[ColorDefault](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTextureParameter.Bind_get_color_default, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -171,7 +178,7 @@ func (self class) GetColorDefault() gdclass.VisualShaderNodeTextureParameterColo
 }
 
 //go:nosplit
-func (self class) SetTextureFilter(filter gdclass.VisualShaderNodeTextureParameterTextureFilter) { //gd:VisualShaderNodeTextureParameter.set_texture_filter
+func (self class) SetTextureFilter(filter TextureFilter) { //gd:VisualShaderNodeTextureParameter.set_texture_filter
 	var frame = callframe.New()
 	callframe.Arg(frame, filter)
 	var r_ret = callframe.Nil
@@ -180,9 +187,9 @@ func (self class) SetTextureFilter(filter gdclass.VisualShaderNodeTextureParamet
 }
 
 //go:nosplit
-func (self class) GetTextureFilter() gdclass.VisualShaderNodeTextureParameterTextureFilter { //gd:VisualShaderNodeTextureParameter.get_texture_filter
+func (self class) GetTextureFilter() TextureFilter { //gd:VisualShaderNodeTextureParameter.get_texture_filter
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.VisualShaderNodeTextureParameterTextureFilter](frame)
+	var r_ret = callframe.Ret[TextureFilter](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTextureParameter.Bind_get_texture_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -190,7 +197,7 @@ func (self class) GetTextureFilter() gdclass.VisualShaderNodeTextureParameterTex
 }
 
 //go:nosplit
-func (self class) SetTextureRepeat(repeat gdclass.VisualShaderNodeTextureParameterTextureRepeat) { //gd:VisualShaderNodeTextureParameter.set_texture_repeat
+func (self class) SetTextureRepeat(repeat TextureRepeat) { //gd:VisualShaderNodeTextureParameter.set_texture_repeat
 	var frame = callframe.New()
 	callframe.Arg(frame, repeat)
 	var r_ret = callframe.Nil
@@ -199,9 +206,9 @@ func (self class) SetTextureRepeat(repeat gdclass.VisualShaderNodeTextureParamet
 }
 
 //go:nosplit
-func (self class) GetTextureRepeat() gdclass.VisualShaderNodeTextureParameterTextureRepeat { //gd:VisualShaderNodeTextureParameter.get_texture_repeat
+func (self class) GetTextureRepeat() TextureRepeat { //gd:VisualShaderNodeTextureParameter.get_texture_repeat
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.VisualShaderNodeTextureParameterTextureRepeat](frame)
+	var r_ret = callframe.Ret[TextureRepeat](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTextureParameter.Bind_get_texture_repeat, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -209,7 +216,7 @@ func (self class) GetTextureRepeat() gdclass.VisualShaderNodeTextureParameterTex
 }
 
 //go:nosplit
-func (self class) SetTextureSource(source gdclass.VisualShaderNodeTextureParameterTextureSource) { //gd:VisualShaderNodeTextureParameter.set_texture_source
+func (self class) SetTextureSource(source TextureSource) { //gd:VisualShaderNodeTextureParameter.set_texture_source
 	var frame = callframe.New()
 	callframe.Arg(frame, source)
 	var r_ret = callframe.Nil
@@ -218,9 +225,9 @@ func (self class) SetTextureSource(source gdclass.VisualShaderNodeTextureParamet
 }
 
 //go:nosplit
-func (self class) GetTextureSource() gdclass.VisualShaderNodeTextureParameterTextureSource { //gd:VisualShaderNodeTextureParameter.get_texture_source
+func (self class) GetTextureSource() TextureSource { //gd:VisualShaderNodeTextureParameter.get_texture_source
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.VisualShaderNodeTextureParameterTextureSource](frame)
+	var r_ret = callframe.Ret[TextureSource](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTextureParameter.Bind_get_texture_source, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -287,7 +294,7 @@ func init() {
 	})
 }
 
-type TextureType = gdclass.VisualShaderNodeTextureParameterTextureType //gd:VisualShaderNodeTextureParameter.TextureType
+type TextureType int //gd:VisualShaderNodeTextureParameter.TextureType
 
 const (
 	/*No hints are added to the uniform declaration.*/
@@ -302,7 +309,7 @@ const (
 	TypeMax TextureType = 4
 )
 
-type ColorDefault = gdclass.VisualShaderNodeTextureParameterColorDefault //gd:VisualShaderNodeTextureParameter.ColorDefault
+type ColorDefault int //gd:VisualShaderNodeTextureParameter.ColorDefault
 
 const (
 	/*Defaults to fully opaque white color.*/
@@ -315,7 +322,7 @@ const (
 	ColorDefaultMax ColorDefault = 3
 )
 
-type TextureFilter = gdclass.VisualShaderNodeTextureParameterTextureFilter //gd:VisualShaderNodeTextureParameter.TextureFilter
+type TextureFilter int //gd:VisualShaderNodeTextureParameter.TextureFilter
 
 const (
 	/*Sample the texture using the filter determined by the node this shader is attached to.*/
@@ -340,7 +347,7 @@ const (
 	FilterMax TextureFilter = 7
 )
 
-type TextureRepeat = gdclass.VisualShaderNodeTextureParameterTextureRepeat //gd:VisualShaderNodeTextureParameter.TextureRepeat
+type TextureRepeat int //gd:VisualShaderNodeTextureParameter.TextureRepeat
 
 const (
 	/*Sample the texture using the repeat mode determined by the node this shader is attached to.*/
@@ -353,7 +360,7 @@ const (
 	RepeatMax TextureRepeat = 3
 )
 
-type TextureSource = gdclass.VisualShaderNodeTextureParameterTextureSource //gd:VisualShaderNodeTextureParameter.TextureSource
+type TextureSource int //gd:VisualShaderNodeTextureParameter.TextureSource
 
 const (
 	/*The texture source is not specified in the shader.*/

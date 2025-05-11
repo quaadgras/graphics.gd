@@ -107,6 +107,27 @@ func importsForEngineType(class gdjson.Class, identifier, s string) iter.Seq[str
 				return
 			}
 		}
+		if strings.HasPrefix(s, "enum::") || strings.HasPrefix(s, "bitfield::") {
+			s = strings.TrimPrefix(s, "enum::")
+			s = strings.TrimPrefix(s, "bitfield::")
+			if rename := gdjson.Renumeration[s]; rename != "" {
+				s = rename
+			}
+			host, _, hasHost := strings.Cut(s, ".")
+			if hasHost {
+				if host == "RenderingDevice" {
+					host = "Rendering"
+				}
+				if class.Name != host {
+					if dependency, ok := ClassDB[host]; ok && !dependency.IsEnum {
+						if !yield("graphics.gd/classdb/" + host) {
+							return
+						}
+					}
+				}
+			}
+			s = host
+		}
 		switch s {
 		case "Vector2", "Vector2i", "Rect2", "Rect2i", "Vector3", "Vector3i", "Transform2D", "Vector4", "Vector4i",
 			"Plane", "Quaternion", "AABB", "Basis", "Transform3D", "Projection", "Color":

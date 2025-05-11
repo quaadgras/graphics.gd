@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/AudioEffect"
 import "graphics.gd/classdb/AudioStreamWAV"
 import "graphics.gd/classdb/Resource"
@@ -27,6 +28,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -42,6 +47,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -54,6 +60,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -116,11 +123,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Format() gdclass.AudioStreamWAVFormat {
-	return gdclass.AudioStreamWAVFormat(class(self).GetFormat())
+func (self Instance) Format() AudioStreamWAV.Format {
+	return AudioStreamWAV.Format(class(self).GetFormat())
 }
 
-func (self Instance) SetFormat(value gdclass.AudioStreamWAVFormat) {
+func (self Instance) SetFormat(value AudioStreamWAV.Format) {
 	class(self).SetFormat(value)
 }
 
@@ -150,7 +157,7 @@ func (self class) IsRecordingActive() bool { //gd:AudioEffectRecord.is_recording
 }
 
 //go:nosplit
-func (self class) SetFormat(format gdclass.AudioStreamWAVFormat) { //gd:AudioEffectRecord.set_format
+func (self class) SetFormat(format AudioStreamWAV.Format) { //gd:AudioEffectRecord.set_format
 	var frame = callframe.New()
 	callframe.Arg(frame, format)
 	var r_ret = callframe.Nil
@@ -159,9 +166,9 @@ func (self class) SetFormat(format gdclass.AudioStreamWAVFormat) { //gd:AudioEff
 }
 
 //go:nosplit
-func (self class) GetFormat() gdclass.AudioStreamWAVFormat { //gd:AudioEffectRecord.get_format
+func (self class) GetFormat() AudioStreamWAV.Format { //gd:AudioEffectRecord.get_format
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.AudioStreamWAVFormat](frame)
+	var r_ret = callframe.Ret[AudioStreamWAV.Format](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectRecord.Bind_get_format, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

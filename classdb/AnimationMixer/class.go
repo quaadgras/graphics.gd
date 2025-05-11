@@ -11,9 +11,11 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Animation"
 import "graphics.gd/classdb/AnimationLibrary"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Tween"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -29,6 +31,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -44,6 +50,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,6 +63,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -390,7 +398,7 @@ If the animation track specified by [param name] has an option [constant Animati
 After this it will interpolate with current animation blending result during the playback process for the time specified by [param duration], working like a crossfade.
 You can specify [param trans_type] as the curve for the interpolation. For better results, it may be appropriate to specify [constant Tween.TRANS_LINEAR] for cases where the first key of the track begins with a non-zero value or where the key value does not change, and [constant Tween.TRANS_QUAD] for cases where the key value changes linearly.
 */
-func (self Expanded) Capture(name string, duration Float.X, trans_type gdclass.TweenTransitionType, ease_type gdclass.TweenEaseType) { //gd:AnimationMixer.capture
+func (self Expanded) Capture(name string, duration Float.X, trans_type Tween.TransitionType, ease_type Tween.EaseType) { //gd:AnimationMixer.capture
 	Advanced(self).Capture(String.Name(String.New(name)), float64(duration), trans_type, ease_type)
 }
 
@@ -483,27 +491,27 @@ func (self Instance) SetAudioMaxPolyphony(value int) {
 	class(self).SetAudioMaxPolyphony(int64(value))
 }
 
-func (self Instance) CallbackModeProcess() gdclass.AnimationMixerAnimationCallbackModeProcess {
-	return gdclass.AnimationMixerAnimationCallbackModeProcess(class(self).GetCallbackModeProcess())
+func (self Instance) CallbackModeProcess() AnimationCallbackModeProcess {
+	return AnimationCallbackModeProcess(class(self).GetCallbackModeProcess())
 }
 
-func (self Instance) SetCallbackModeProcess(value gdclass.AnimationMixerAnimationCallbackModeProcess) {
+func (self Instance) SetCallbackModeProcess(value AnimationCallbackModeProcess) {
 	class(self).SetCallbackModeProcess(value)
 }
 
-func (self Instance) CallbackModeMethod() gdclass.AnimationMixerAnimationCallbackModeMethod {
-	return gdclass.AnimationMixerAnimationCallbackModeMethod(class(self).GetCallbackModeMethod())
+func (self Instance) CallbackModeMethod() AnimationCallbackModeMethod {
+	return AnimationCallbackModeMethod(class(self).GetCallbackModeMethod())
 }
 
-func (self Instance) SetCallbackModeMethod(value gdclass.AnimationMixerAnimationCallbackModeMethod) {
+func (self Instance) SetCallbackModeMethod(value AnimationCallbackModeMethod) {
 	class(self).SetCallbackModeMethod(value)
 }
 
-func (self Instance) CallbackModeDiscrete() gdclass.AnimationMixerAnimationCallbackModeDiscrete {
-	return gdclass.AnimationMixerAnimationCallbackModeDiscrete(class(self).GetCallbackModeDiscrete())
+func (self Instance) CallbackModeDiscrete() AnimationCallbackModeDiscrete {
+	return AnimationCallbackModeDiscrete(class(self).GetCallbackModeDiscrete())
 }
 
-func (self Instance) SetCallbackModeDiscrete(value gdclass.AnimationMixerAnimationCallbackModeDiscrete) {
+func (self Instance) SetCallbackModeDiscrete(value AnimationCallbackModeDiscrete) {
 	class(self).SetCallbackModeDiscrete(value)
 }
 
@@ -719,7 +727,7 @@ func (self class) GetRootNode() Path.ToNode { //gd:AnimationMixer.get_root_node
 }
 
 //go:nosplit
-func (self class) SetCallbackModeProcess(mode gdclass.AnimationMixerAnimationCallbackModeProcess) { //gd:AnimationMixer.set_callback_mode_process
+func (self class) SetCallbackModeProcess(mode AnimationCallbackModeProcess) { //gd:AnimationMixer.set_callback_mode_process
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -728,9 +736,9 @@ func (self class) SetCallbackModeProcess(mode gdclass.AnimationMixerAnimationCal
 }
 
 //go:nosplit
-func (self class) GetCallbackModeProcess() gdclass.AnimationMixerAnimationCallbackModeProcess { //gd:AnimationMixer.get_callback_mode_process
+func (self class) GetCallbackModeProcess() AnimationCallbackModeProcess { //gd:AnimationMixer.get_callback_mode_process
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.AnimationMixerAnimationCallbackModeProcess](frame)
+	var r_ret = callframe.Ret[AnimationCallbackModeProcess](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_callback_mode_process, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -738,7 +746,7 @@ func (self class) GetCallbackModeProcess() gdclass.AnimationMixerAnimationCallba
 }
 
 //go:nosplit
-func (self class) SetCallbackModeMethod(mode gdclass.AnimationMixerAnimationCallbackModeMethod) { //gd:AnimationMixer.set_callback_mode_method
+func (self class) SetCallbackModeMethod(mode AnimationCallbackModeMethod) { //gd:AnimationMixer.set_callback_mode_method
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -747,9 +755,9 @@ func (self class) SetCallbackModeMethod(mode gdclass.AnimationMixerAnimationCall
 }
 
 //go:nosplit
-func (self class) GetCallbackModeMethod() gdclass.AnimationMixerAnimationCallbackModeMethod { //gd:AnimationMixer.get_callback_mode_method
+func (self class) GetCallbackModeMethod() AnimationCallbackModeMethod { //gd:AnimationMixer.get_callback_mode_method
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.AnimationMixerAnimationCallbackModeMethod](frame)
+	var r_ret = callframe.Ret[AnimationCallbackModeMethod](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_callback_mode_method, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -757,7 +765,7 @@ func (self class) GetCallbackModeMethod() gdclass.AnimationMixerAnimationCallbac
 }
 
 //go:nosplit
-func (self class) SetCallbackModeDiscrete(mode gdclass.AnimationMixerAnimationCallbackModeDiscrete) { //gd:AnimationMixer.set_callback_mode_discrete
+func (self class) SetCallbackModeDiscrete(mode AnimationCallbackModeDiscrete) { //gd:AnimationMixer.set_callback_mode_discrete
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -766,9 +774,9 @@ func (self class) SetCallbackModeDiscrete(mode gdclass.AnimationMixerAnimationCa
 }
 
 //go:nosplit
-func (self class) GetCallbackModeDiscrete() gdclass.AnimationMixerAnimationCallbackModeDiscrete { //gd:AnimationMixer.get_callback_mode_discrete
+func (self class) GetCallbackModeDiscrete() AnimationCallbackModeDiscrete { //gd:AnimationMixer.get_callback_mode_discrete
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.AnimationMixerAnimationCallbackModeDiscrete](frame)
+	var r_ret = callframe.Ret[AnimationCallbackModeDiscrete](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_callback_mode_discrete, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1056,7 +1064,7 @@ After this it will interpolate with current animation blending result during the
 You can specify [param trans_type] as the curve for the interpolation. For better results, it may be appropriate to specify [constant Tween.TRANS_LINEAR] for cases where the first key of the track begins with a non-zero value or where the key value does not change, and [constant Tween.TRANS_QUAD] for cases where the key value changes linearly.
 */
 //go:nosplit
-func (self class) Capture(name String.Name, duration float64, trans_type gdclass.TweenTransitionType, ease_type gdclass.TweenEaseType) { //gd:AnimationMixer.capture
+func (self class) Capture(name String.Name, duration float64, trans_type Tween.TransitionType, ease_type Tween.EaseType) { //gd:AnimationMixer.capture
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, duration)
@@ -1171,7 +1179,7 @@ func init() {
 	})
 }
 
-type AnimationCallbackModeProcess = gdclass.AnimationMixerAnimationCallbackModeProcess //gd:AnimationMixer.AnimationCallbackModeProcess
+type AnimationCallbackModeProcess int //gd:AnimationMixer.AnimationCallbackModeProcess
 
 const (
 	/*Process animation during physics frames (see [constant Node.NOTIFICATION_INTERNAL_PHYSICS_PROCESS]). This is especially useful when animating physics bodies.*/
@@ -1182,7 +1190,7 @@ const (
 	AnimationCallbackModeProcessManual AnimationCallbackModeProcess = 2
 )
 
-type AnimationCallbackModeMethod = gdclass.AnimationMixerAnimationCallbackModeMethod //gd:AnimationMixer.AnimationCallbackModeMethod
+type AnimationCallbackModeMethod int //gd:AnimationMixer.AnimationCallbackModeMethod
 
 const (
 	/*Batch method calls during the animation process, then do the calls after events are processed. This avoids bugs involving deleting nodes or modifying the AnimationPlayer while playing.*/
@@ -1191,7 +1199,7 @@ const (
 	AnimationCallbackModeMethodImmediate AnimationCallbackModeMethod = 1
 )
 
-type AnimationCallbackModeDiscrete = gdclass.AnimationMixerAnimationCallbackModeDiscrete //gd:AnimationMixer.AnimationCallbackModeDiscrete
+type AnimationCallbackModeDiscrete int //gd:AnimationMixer.AnimationCallbackModeDiscrete
 
 const (
 	/*An [constant Animation.UPDATE_DISCRETE] track value takes precedence when blending [constant Animation.UPDATE_CONTINUOUS] or [constant Animation.UPDATE_CAPTURE] track values and [constant Animation.UPDATE_DISCRETE] track values.*/

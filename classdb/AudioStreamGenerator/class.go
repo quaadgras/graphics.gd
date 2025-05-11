@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/AudioStream"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
@@ -26,6 +27,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -41,6 +46,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -53,6 +59,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -153,11 +160,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) MixRateMode() gdclass.AudioStreamGeneratorAudioStreamGeneratorMixRate {
-	return gdclass.AudioStreamGeneratorAudioStreamGeneratorMixRate(class(self).GetMixRateMode())
+func (self Instance) MixRateMode() AudioStreamGeneratorMixRate {
+	return AudioStreamGeneratorMixRate(class(self).GetMixRateMode())
 }
 
-func (self Instance) SetMixRateMode(value gdclass.AudioStreamGeneratorAudioStreamGeneratorMixRate) {
+func (self Instance) SetMixRateMode(value AudioStreamGeneratorMixRate) {
 	class(self).SetMixRateMode(value)
 }
 
@@ -197,7 +204,7 @@ func (self class) GetMixRate() float64 { //gd:AudioStreamGenerator.get_mix_rate
 }
 
 //go:nosplit
-func (self class) SetMixRateMode(mode gdclass.AudioStreamGeneratorAudioStreamGeneratorMixRate) { //gd:AudioStreamGenerator.set_mix_rate_mode
+func (self class) SetMixRateMode(mode AudioStreamGeneratorMixRate) { //gd:AudioStreamGenerator.set_mix_rate_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -206,9 +213,9 @@ func (self class) SetMixRateMode(mode gdclass.AudioStreamGeneratorAudioStreamGen
 }
 
 //go:nosplit
-func (self class) GetMixRateMode() gdclass.AudioStreamGeneratorAudioStreamGeneratorMixRate { //gd:AudioStreamGenerator.get_mix_rate_mode
+func (self class) GetMixRateMode() AudioStreamGeneratorMixRate { //gd:AudioStreamGenerator.get_mix_rate_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.AudioStreamGeneratorAudioStreamGeneratorMixRate](frame)
+	var r_ret = callframe.Ret[AudioStreamGeneratorMixRate](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamGenerator.Bind_get_mix_rate_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -279,7 +286,7 @@ func init() {
 	})
 }
 
-type AudioStreamGeneratorMixRate = gdclass.AudioStreamGeneratorAudioStreamGeneratorMixRate //gd:AudioStreamGenerator.AudioStreamGeneratorMixRate
+type AudioStreamGeneratorMixRate int //gd:AudioStreamGenerator.AudioStreamGeneratorMixRate
 
 const (
 	/*Current [AudioServer] output mixing rate.*/

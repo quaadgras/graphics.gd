@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Camera3D"
 import "graphics.gd/classdb/InputEvent"
 import "graphics.gd/classdb/Node"
@@ -31,6 +32,10 @@ import "graphics.gd/variant/Transform3D"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -46,6 +51,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -58,6 +64,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -298,11 +305,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) DisableMode() gdclass.CollisionObject3DDisableMode {
-	return gdclass.CollisionObject3DDisableMode(class(self).GetDisableMode())
+func (self Instance) DisableMode() DisableMode {
+	return DisableMode(class(self).GetDisableMode())
 }
 
-func (self Instance) SetDisableMode(value gdclass.CollisionObject3DDisableMode) {
+func (self Instance) SetDisableMode(value DisableMode) {
 	class(self).SetDisableMode(value)
 }
 
@@ -498,7 +505,7 @@ func (self class) GetCollisionPriority() float64 { //gd:CollisionObject3D.get_co
 }
 
 //go:nosplit
-func (self class) SetDisableMode(mode gdclass.CollisionObject3DDisableMode) { //gd:CollisionObject3D.set_disable_mode
+func (self class) SetDisableMode(mode DisableMode) { //gd:CollisionObject3D.set_disable_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -507,9 +514,9 @@ func (self class) SetDisableMode(mode gdclass.CollisionObject3DDisableMode) { //
 }
 
 //go:nosplit
-func (self class) GetDisableMode() gdclass.CollisionObject3DDisableMode { //gd:CollisionObject3D.get_disable_mode
+func (self class) GetDisableMode() DisableMode { //gd:CollisionObject3D.get_disable_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.CollisionObject3DDisableMode](frame)
+	var r_ret = callframe.Ret[DisableMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject3D.Bind_get_disable_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -822,7 +829,7 @@ func init() {
 	})
 }
 
-type DisableMode = gdclass.CollisionObject3DDisableMode //gd:CollisionObject3D.DisableMode
+type DisableMode int //gd:CollisionObject3D.DisableMode
 
 const (
 	/*When [member Node.process_mode] is set to [constant Node.PROCESS_MODE_DISABLED], remove from the physics simulation to stop all physics interactions with this [CollisionObject3D].

@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/Node"
@@ -31,6 +32,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -46,6 +51,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -58,6 +64,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -577,7 +584,7 @@ Submits an item to the queue of potential candidates for the autocomplete menu. 
 [param location] indicates location of the option relative to the location of the code completion query. See [enum CodeEdit.CodeCompletionLocation] for how to set this value.
 [b]Note:[/b] This list will replace all current candidates.
 */
-func (self Instance) AddCodeCompletionOption(atype gdclass.CodeEditCodeCompletionKind, display_text string, insert_text string) { //gd:CodeEdit.add_code_completion_option
+func (self Instance) AddCodeCompletionOption(atype CodeCompletionKind, display_text string, insert_text string) { //gd:CodeEdit.add_code_completion_option
 	Advanced(self).AddCodeCompletionOption(atype, String.New(display_text), String.New(insert_text), Color.RGBA(gd.Color{1, 1, 1, 1}), [1]Resource.Instance{}[0], variant.New([1]any{}[0]), int64(1024))
 }
 
@@ -586,7 +593,7 @@ Submits an item to the queue of potential candidates for the autocomplete menu. 
 [param location] indicates location of the option relative to the location of the code completion query. See [enum CodeEdit.CodeCompletionLocation] for how to set this value.
 [b]Note:[/b] This list will replace all current candidates.
 */
-func (self Expanded) AddCodeCompletionOption(atype gdclass.CodeEditCodeCompletionKind, display_text string, insert_text string, text_color Color.RGBA, icon Resource.Instance, value any, location int) { //gd:CodeEdit.add_code_completion_option
+func (self Expanded) AddCodeCompletionOption(atype CodeCompletionKind, display_text string, insert_text string, text_color Color.RGBA, icon Resource.Instance, value any, location int) { //gd:CodeEdit.add_code_completion_option
 	Advanced(self).AddCodeCompletionOption(atype, String.New(display_text), String.New(insert_text), Color.RGBA(text_color), icon, variant.New(value), int64(location))
 }
 
@@ -1935,7 +1942,7 @@ Submits an item to the queue of potential candidates for the autocomplete menu. 
 [b]Note:[/b] This list will replace all current candidates.
 */
 //go:nosplit
-func (self class) AddCodeCompletionOption(atype gdclass.CodeEditCodeCompletionKind, display_text String.Readable, insert_text String.Readable, text_color Color.RGBA, icon [1]gdclass.Resource, value variant.Any, location int64) { //gd:CodeEdit.add_code_completion_option
+func (self class) AddCodeCompletionOption(atype CodeCompletionKind, display_text String.Readable, insert_text String.Readable, text_color Color.RGBA, icon [1]gdclass.Resource, value variant.Any, location int64) { //gd:CodeEdit.add_code_completion_option
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(display_text)))
@@ -2307,7 +2314,7 @@ func init() {
 	gdclass.Register("CodeEdit", func(ptr gd.Object) any { return [1]gdclass.CodeEdit{*(*gdclass.CodeEdit)(unsafe.Pointer(&ptr))} })
 }
 
-type CodeCompletionKind = gdclass.CodeEditCodeCompletionKind //gd:CodeEdit.CodeCompletionKind
+type CodeCompletionKind int //gd:CodeEdit.CodeCompletionKind
 
 const (
 	/*Marks the option as a class.*/
@@ -2332,7 +2339,7 @@ const (
 	KindPlainText CodeCompletionKind = 9
 )
 
-type CodeCompletionLocation = gdclass.CodeEditCodeCompletionLocation //gd:CodeEdit.CodeCompletionLocation
+type CodeCompletionLocation int //gd:CodeEdit.CodeCompletionLocation
 
 const (
 	/*The option is local to the location of the code completion query - e.g. a local variable. Subsequent value of location represent options from the outer class, the exact value represent how far they are (in terms of inner classes).*/
@@ -2346,9 +2353,9 @@ const (
 )
 
 type CompletionInfo struct {
-	Kind        [1]gdclass.CodeEditCodeCompletionKind `gd:"kind"`
-	DisplayText string                                `gd:"display_text"`
-	InsertText  string                                `gd:"insert_text"`
+	Kind        CodeCompletionKind `gd:"kind"`
+	DisplayText string             `gd:"display_text"`
+	InsertText  string             `gd:"insert_text"`
 	FontColor   struct {
 		R float32
 		G float32

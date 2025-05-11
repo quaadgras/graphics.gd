@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/AudioServer"
 import "graphics.gd/classdb/AudioStream"
 import "graphics.gd/classdb/AudioStreamPlayback"
 import "graphics.gd/classdb/CanvasItem"
@@ -29,6 +31,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -44,6 +50,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,6 +63,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -251,11 +259,11 @@ func (self Instance) SetAreaMask(value int) {
 	class(self).SetAreaMask(int64(value))
 }
 
-func (self Instance) PlaybackType() gdclass.AudioServerPlaybackType {
-	return gdclass.AudioServerPlaybackType(class(self).GetPlaybackType())
+func (self Instance) PlaybackType() AudioServer.PlaybackType {
+	return AudioServer.PlaybackType(class(self).GetPlaybackType())
 }
 
-func (self Instance) SetPlaybackType(value gdclass.AudioServerPlaybackType) {
+func (self Instance) SetPlaybackType(value AudioServer.PlaybackType) {
 	class(self).SetPlaybackType(value)
 }
 
@@ -581,7 +589,7 @@ func (self class) GetStreamPlayback() [1]gdclass.AudioStreamPlayback { //gd:Audi
 }
 
 //go:nosplit
-func (self class) SetPlaybackType(playback_type gdclass.AudioServerPlaybackType) { //gd:AudioStreamPlayer2D.set_playback_type
+func (self class) SetPlaybackType(playback_type AudioServer.PlaybackType) { //gd:AudioStreamPlayer2D.set_playback_type
 	var frame = callframe.New()
 	callframe.Arg(frame, playback_type)
 	var r_ret = callframe.Nil
@@ -590,9 +598,9 @@ func (self class) SetPlaybackType(playback_type gdclass.AudioServerPlaybackType)
 }
 
 //go:nosplit
-func (self class) GetPlaybackType() gdclass.AudioServerPlaybackType { //gd:AudioStreamPlayer2D.get_playback_type
+func (self class) GetPlaybackType() AudioServer.PlaybackType { //gd:AudioStreamPlayer2D.get_playback_type
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.AudioServerPlaybackType](frame)
+	var r_ret = callframe.Ret[AudioServer.PlaybackType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer2D.Bind_get_playback_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -24,6 +25,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -39,6 +44,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -51,6 +57,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -109,15 +116,15 @@ func (self Instance) HasExportFile(path string) bool { //gd:EditorExportPreset.h
 /*
 Returns file export mode for the specified file.
 */
-func (self Instance) GetFileExportMode(path string) gdclass.EditorExportPresetFileExportMode { //gd:EditorExportPreset.get_file_export_mode
-	return gdclass.EditorExportPresetFileExportMode(Advanced(self).GetFileExportMode(String.New(path), 0))
+func (self Instance) GetFileExportMode(path string) FileExportMode { //gd:EditorExportPreset.get_file_export_mode
+	return FileExportMode(Advanced(self).GetFileExportMode(String.New(path), 0))
 }
 
 /*
 Returns file export mode for the specified file.
 */
-func (self Expanded) GetFileExportMode(path string, def gdclass.EditorExportPresetFileExportMode) gdclass.EditorExportPresetFileExportMode { //gd:EditorExportPreset.get_file_export_mode
-	return gdclass.EditorExportPresetFileExportMode(Advanced(self).GetFileExportMode(String.New(path), def))
+func (self Expanded) GetFileExportMode(path string, def FileExportMode) FileExportMode { //gd:EditorExportPreset.get_file_export_mode
+	return FileExportMode(Advanced(self).GetFileExportMode(String.New(path), def))
 }
 
 /*
@@ -151,8 +158,8 @@ func (self Instance) IsDedicatedServer() bool { //gd:EditorExportPreset.is_dedic
 /*
 Returns export file filter mode selected in the "Resources" tab of the export dialog.
 */
-func (self Instance) GetExportFilter() gdclass.EditorExportPresetExportFilter { //gd:EditorExportPreset.get_export_filter
-	return gdclass.EditorExportPresetExportFilter(Advanced(self).GetExportFilter())
+func (self Instance) GetExportFilter() ExportFilter { //gd:EditorExportPreset.get_export_filter
+	return ExportFilter(Advanced(self).GetExportFilter())
 }
 
 /*
@@ -338,11 +345,11 @@ func (self class) HasExportFile(path String.Readable) bool { //gd:EditorExportPr
 Returns file export mode for the specified file.
 */
 //go:nosplit
-func (self class) GetFileExportMode(path String.Readable, def gdclass.EditorExportPresetFileExportMode) gdclass.EditorExportPresetFileExportMode { //gd:EditorExportPreset.get_file_export_mode
+func (self class) GetFileExportMode(path String.Readable, def FileExportMode) FileExportMode { //gd:EditorExportPreset.get_file_export_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, def)
-	var r_ret = callframe.Ret[gdclass.EditorExportPresetFileExportMode](frame)
+	var r_ret = callframe.Ret[FileExportMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_file_export_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -405,9 +412,9 @@ func (self class) IsDedicatedServer() bool { //gd:EditorExportPreset.is_dedicate
 Returns export file filter mode selected in the "Resources" tab of the export dialog.
 */
 //go:nosplit
-func (self class) GetExportFilter() gdclass.EditorExportPresetExportFilter { //gd:EditorExportPreset.get_export_filter
+func (self class) GetExportFilter() ExportFilter { //gd:EditorExportPreset.get_export_filter
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.EditorExportPresetExportFilter](frame)
+	var r_ret = callframe.Ret[ExportFilter](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_export_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -617,7 +624,7 @@ func init() {
 	})
 }
 
-type ExportFilter = gdclass.EditorExportPresetExportFilter //gd:EditorExportPreset.ExportFilter
+type ExportFilter int //gd:EditorExportPreset.ExportFilter
 
 const (
 	ExportAllResources       ExportFilter = 0
@@ -627,7 +634,7 @@ const (
 	ExportCustomized         ExportFilter = 4
 )
 
-type FileExportMode = gdclass.EditorExportPresetFileExportMode //gd:EditorExportPreset.FileExportMode
+type FileExportMode int //gd:EditorExportPreset.FileExportMode
 
 const (
 	ModeFileNotCustomized FileExportMode = 0
@@ -636,7 +643,7 @@ const (
 	ModeFileRemove        FileExportMode = 3
 )
 
-type ScriptExportMode = gdclass.EditorExportPresetScriptExportMode //gd:EditorExportPreset.ScriptExportMode
+type ScriptExportMode int //gd:EditorExportPreset.ScriptExportMode
 
 const (
 	ModeScriptText                   ScriptExportMode = 0

@@ -11,7 +11,9 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Shader"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -25,6 +27,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -40,6 +46,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -52,6 +59,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -76,7 +84,7 @@ type Interface interface {
 	//Only exposed for the purpose of overriding. You cannot call this function directly. Used internally by various editor tools. Used to access the RID of the [Material]'s [Shader].
 	GetShaderRid() RID.Any
 	//Only exposed for the purpose of overriding. You cannot call this function directly. Used internally by various editor tools.
-	GetShaderMode() gdclass.ShaderMode
+	GetShaderMode() Shader.Mode
 	//Only exposed for the purpose of overriding. You cannot call this function directly. Used internally to determine if [member next_pass] should be shown in the editor or not.
 	CanDoNextPass() bool
 	//Only exposed for the purpose of overriding. You cannot call this function directly. Used internally to determine if [member render_priority] should be shown in the editor or not.
@@ -88,10 +96,10 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetShaderRid() (_ RID.Any)             { return }
-func (self implementation) GetShaderMode() (_ gdclass.ShaderMode) { return }
-func (self implementation) CanDoNextPass() (_ bool)               { return }
-func (self implementation) CanUseRenderPriority() (_ bool)        { return }
+func (self implementation) GetShaderRid() (_ RID.Any)      { return }
+func (self implementation) GetShaderMode() (_ Shader.Mode) { return }
+func (self implementation) CanDoNextPass() (_ bool)        { return }
+func (self implementation) CanUseRenderPriority() (_ bool) { return }
 
 /*
 Only exposed for the purpose of overriding. You cannot call this function directly. Used internally by various editor tools. Used to access the RID of the [Material]'s [Shader].
@@ -107,7 +115,7 @@ func (Instance) _get_shader_rid(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.Ex
 /*
 Only exposed for the purpose of overriding. You cannot call this function directly. Used internally by various editor tools.
 */
-func (Instance) _get_shader_mode(impl func(ptr unsafe.Pointer) gdclass.ShaderMode) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_shader_mode(impl func(ptr unsafe.Pointer) Shader.Mode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -201,7 +209,7 @@ func (class) _get_shader_rid(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.Exten
 /*
 Only exposed for the purpose of overriding. You cannot call this function directly. Used internally by various editor tools.
 */
-func (class) _get_shader_mode(impl func(ptr unsafe.Pointer) gdclass.ShaderMode) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_shader_mode(impl func(ptr unsafe.Pointer) Shader.Mode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)

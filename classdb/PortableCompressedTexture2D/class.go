@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Image"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/Texture"
@@ -29,6 +30,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -44,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,6 +62,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -85,7 +92,7 @@ Initializes the compressed texture from a base image. The compression mode must 
 [param normal_map] is recommended to ensure optimum quality if this image will be used as a normal map.
 If lossy compression is requested, the quality setting can optionally be provided. This maps to Lossy WebP compression quality.
 */
-func (self Instance) CreateFromImage(image Image.Instance, compression_mode gdclass.PortableCompressedTexture2DCompressionMode) { //gd:PortableCompressedTexture2D.create_from_image
+func (self Instance) CreateFromImage(image Image.Instance, compression_mode CompressionMode) { //gd:PortableCompressedTexture2D.create_from_image
 	Advanced(self).CreateFromImage(image, compression_mode, false, float64(0.8))
 }
 
@@ -94,22 +101,22 @@ Initializes the compressed texture from a base image. The compression mode must 
 [param normal_map] is recommended to ensure optimum quality if this image will be used as a normal map.
 If lossy compression is requested, the quality setting can optionally be provided. This maps to Lossy WebP compression quality.
 */
-func (self Expanded) CreateFromImage(image Image.Instance, compression_mode gdclass.PortableCompressedTexture2DCompressionMode, normal_map bool, lossy_quality Float.X) { //gd:PortableCompressedTexture2D.create_from_image
+func (self Expanded) CreateFromImage(image Image.Instance, compression_mode CompressionMode, normal_map bool, lossy_quality Float.X) { //gd:PortableCompressedTexture2D.create_from_image
 	Advanced(self).CreateFromImage(image, compression_mode, normal_map, float64(lossy_quality))
 }
 
 /*
 Return the image format used (valid after initialized).
 */
-func (self Instance) GetFormat() gdclass.ImageFormat { //gd:PortableCompressedTexture2D.get_format
-	return gdclass.ImageFormat(Advanced(self).GetFormat())
+func (self Instance) GetFormat() Image.Format { //gd:PortableCompressedTexture2D.get_format
+	return Image.Format(Advanced(self).GetFormat())
 }
 
 /*
 Return the compression mode used (valid after initialized).
 */
-func (self Instance) GetCompressionMode() gdclass.PortableCompressedTexture2DCompressionMode { //gd:PortableCompressedTexture2D.get_compression_mode
-	return gdclass.PortableCompressedTexture2DCompressionMode(Advanced(self).GetCompressionMode())
+func (self Instance) GetCompressionMode() CompressionMode { //gd:PortableCompressedTexture2D.get_compression_mode
+	return CompressionMode(Advanced(self).GetCompressionMode())
 }
 
 /*
@@ -170,7 +177,7 @@ Initializes the compressed texture from a base image. The compression mode must 
 If lossy compression is requested, the quality setting can optionally be provided. This maps to Lossy WebP compression quality.
 */
 //go:nosplit
-func (self class) CreateFromImage(image [1]gdclass.Image, compression_mode gdclass.PortableCompressedTexture2DCompressionMode, normal_map bool, lossy_quality float64) { //gd:PortableCompressedTexture2D.create_from_image
+func (self class) CreateFromImage(image [1]gdclass.Image, compression_mode CompressionMode, normal_map bool, lossy_quality float64) { //gd:PortableCompressedTexture2D.create_from_image
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(image[0])[0])
 	callframe.Arg(frame, compression_mode)
@@ -185,9 +192,9 @@ func (self class) CreateFromImage(image [1]gdclass.Image, compression_mode gdcla
 Return the image format used (valid after initialized).
 */
 //go:nosplit
-func (self class) GetFormat() gdclass.ImageFormat { //gd:PortableCompressedTexture2D.get_format
+func (self class) GetFormat() Image.Format { //gd:PortableCompressedTexture2D.get_format
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ImageFormat](frame)
+	var r_ret = callframe.Ret[Image.Format](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PortableCompressedTexture2D.Bind_get_format, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -198,9 +205,9 @@ func (self class) GetFormat() gdclass.ImageFormat { //gd:PortableCompressedTextu
 Return the compression mode used (valid after initialized).
 */
 //go:nosplit
-func (self class) GetCompressionMode() gdclass.PortableCompressedTexture2DCompressionMode { //gd:PortableCompressedTexture2D.get_compression_mode
+func (self class) GetCompressionMode() CompressionMode { //gd:PortableCompressedTexture2D.get_compression_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.PortableCompressedTexture2DCompressionMode](frame)
+	var r_ret = callframe.Ret[CompressionMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PortableCompressedTexture2D.Bind_get_compression_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -324,7 +331,7 @@ func init() {
 	})
 }
 
-type CompressionMode = gdclass.PortableCompressedTexture2DCompressionMode //gd:PortableCompressedTexture2D.CompressionMode
+type CompressionMode int //gd:PortableCompressedTexture2D.CompressionMode
 
 const (
 	CompressionModeLossless       CompressionMode = 0

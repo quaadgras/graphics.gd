@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Curve"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
@@ -29,6 +30,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -44,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,6 +62,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -156,15 +163,15 @@ func (self Instance) IsEndBoneExtended(index int) bool { //gd:SpringBoneSimulato
 /*
 Sets the end bone tail direction of the bone chain when [method is_end_bone_extended] is [code]true[/code].
 */
-func (self Instance) SetEndBoneDirection(index int, bone_direction gdclass.SpringBoneSimulator3DBoneDirection) { //gd:SpringBoneSimulator3D.set_end_bone_direction
+func (self Instance) SetEndBoneDirection(index int, bone_direction BoneDirection) { //gd:SpringBoneSimulator3D.set_end_bone_direction
 	Advanced(self).SetEndBoneDirection(int64(index), bone_direction)
 }
 
 /*
 Returns the end bone's tail direction of the bone chain when [method is_end_bone_extended] is [code]true[/code].
 */
-func (self Instance) GetEndBoneDirection(index int) gdclass.SpringBoneSimulator3DBoneDirection { //gd:SpringBoneSimulator3D.get_end_bone_direction
-	return gdclass.SpringBoneSimulator3DBoneDirection(Advanced(self).GetEndBoneDirection(int64(index)))
+func (self Instance) GetEndBoneDirection(index int) BoneDirection { //gd:SpringBoneSimulator3D.get_end_bone_direction
+	return BoneDirection(Advanced(self).GetEndBoneDirection(int64(index)))
 }
 
 /*
@@ -187,15 +194,15 @@ Bone movement is calculated based on the difference in relative distance between
 For example, if the parent [Skeleton3D] is used as the center, the bones are considered to have not moved if the [Skeleton3D] moves in the world.
 In this case, only a change in the bone pose is considered to be a bone movement.
 */
-func (self Instance) SetCenterFrom(index int, center_from gdclass.SpringBoneSimulator3DCenterFrom) { //gd:SpringBoneSimulator3D.set_center_from
+func (self Instance) SetCenterFrom(index int, center_from CenterFrom) { //gd:SpringBoneSimulator3D.set_center_from
 	Advanced(self).SetCenterFrom(int64(index), center_from)
 }
 
 /*
 Returns what the center originates from in the bone chain.
 */
-func (self Instance) GetCenterFrom(index int) gdclass.SpringBoneSimulator3DCenterFrom { //gd:SpringBoneSimulator3D.get_center_from
-	return gdclass.SpringBoneSimulator3DCenterFrom(Advanced(self).GetCenterFrom(int64(index)))
+func (self Instance) GetCenterFrom(index int) CenterFrom { //gd:SpringBoneSimulator3D.get_center_from
+	return CenterFrom(Advanced(self).GetCenterFrom(int64(index)))
 }
 
 /*
@@ -260,15 +267,15 @@ Sets the rotation axis of the bone chain. If sets a specific axis, it acts like 
 The value is cached in each joint setting in the joint list.
 [b]Note:[/b] The rotation axis and the forward vector shouldn't be colinear to avoid unintended rotation since [SpringBoneSimulator3D] does not factor in twisting forces.
 */
-func (self Instance) SetRotationAxis(index int, axis gdclass.SpringBoneSimulator3DRotationAxis) { //gd:SpringBoneSimulator3D.set_rotation_axis
+func (self Instance) SetRotationAxis(index int, axis RotationAxis) { //gd:SpringBoneSimulator3D.set_rotation_axis
 	Advanced(self).SetRotationAxis(int64(index), axis)
 }
 
 /*
 Returns the rotation axis of the bone chain.
 */
-func (self Instance) GetRotationAxis(index int) gdclass.SpringBoneSimulator3DRotationAxis { //gd:SpringBoneSimulator3D.get_rotation_axis
-	return gdclass.SpringBoneSimulator3DRotationAxis(Advanced(self).GetRotationAxis(int64(index)))
+func (self Instance) GetRotationAxis(index int) RotationAxis { //gd:SpringBoneSimulator3D.get_rotation_axis
+	return RotationAxis(Advanced(self).GetRotationAxis(int64(index)))
 }
 
 /*
@@ -427,15 +434,15 @@ func (self Instance) GetJointBone(index int, joint int) int { //gd:SpringBoneSim
 /*
 Sets the rotation axis at [param joint] in the bone chain's joint list when [method is_config_individual] is [code]true[/code].
 */
-func (self Instance) SetJointRotationAxis(index int, joint int, axis gdclass.SpringBoneSimulator3DRotationAxis) { //gd:SpringBoneSimulator3D.set_joint_rotation_axis
+func (self Instance) SetJointRotationAxis(index int, joint int, axis RotationAxis) { //gd:SpringBoneSimulator3D.set_joint_rotation_axis
 	Advanced(self).SetJointRotationAxis(int64(index), int64(joint), axis)
 }
 
 /*
 Returns the rotation axis at [param joint] in the bone chain's joint list.
 */
-func (self Instance) GetJointRotationAxis(index int, joint int) gdclass.SpringBoneSimulator3DRotationAxis { //gd:SpringBoneSimulator3D.get_joint_rotation_axis
-	return gdclass.SpringBoneSimulator3DRotationAxis(Advanced(self).GetJointRotationAxis(int64(index), int64(joint)))
+func (self Instance) GetJointRotationAxis(index int, joint int) RotationAxis { //gd:SpringBoneSimulator3D.get_joint_rotation_axis
+	return RotationAxis(Advanced(self).GetJointRotationAxis(int64(index), int64(joint)))
 }
 
 /*
@@ -777,7 +784,7 @@ func (self class) IsEndBoneExtended(index int64) bool { //gd:SpringBoneSimulator
 Sets the end bone tail direction of the bone chain when [method is_end_bone_extended] is [code]true[/code].
 */
 //go:nosplit
-func (self class) SetEndBoneDirection(index int64, bone_direction gdclass.SpringBoneSimulator3DBoneDirection) { //gd:SpringBoneSimulator3D.set_end_bone_direction
+func (self class) SetEndBoneDirection(index int64, bone_direction BoneDirection) { //gd:SpringBoneSimulator3D.set_end_bone_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, bone_direction)
@@ -790,10 +797,10 @@ func (self class) SetEndBoneDirection(index int64, bone_direction gdclass.Spring
 Returns the end bone's tail direction of the bone chain when [method is_end_bone_extended] is [code]true[/code].
 */
 //go:nosplit
-func (self class) GetEndBoneDirection(index int64) gdclass.SpringBoneSimulator3DBoneDirection { //gd:SpringBoneSimulator3D.get_end_bone_direction
+func (self class) GetEndBoneDirection(index int64) BoneDirection { //gd:SpringBoneSimulator3D.get_end_bone_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[gdclass.SpringBoneSimulator3DBoneDirection](frame)
+	var r_ret = callframe.Ret[BoneDirection](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_end_bone_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -834,7 +841,7 @@ For example, if the parent [Skeleton3D] is used as the center, the bones are con
 In this case, only a change in the bone pose is considered to be a bone movement.
 */
 //go:nosplit
-func (self class) SetCenterFrom(index int64, center_from gdclass.SpringBoneSimulator3DCenterFrom) { //gd:SpringBoneSimulator3D.set_center_from
+func (self class) SetCenterFrom(index int64, center_from CenterFrom) { //gd:SpringBoneSimulator3D.set_center_from
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, center_from)
@@ -847,10 +854,10 @@ func (self class) SetCenterFrom(index int64, center_from gdclass.SpringBoneSimul
 Returns what the center originates from in the bone chain.
 */
 //go:nosplit
-func (self class) GetCenterFrom(index int64) gdclass.SpringBoneSimulator3DCenterFrom { //gd:SpringBoneSimulator3D.get_center_from
+func (self class) GetCenterFrom(index int64) CenterFrom { //gd:SpringBoneSimulator3D.get_center_from
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[gdclass.SpringBoneSimulator3DCenterFrom](frame)
+	var r_ret = callframe.Ret[CenterFrom](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_center_from, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -972,7 +979,7 @@ The value is cached in each joint setting in the joint list.
 [b]Note:[/b] The rotation axis and the forward vector shouldn't be colinear to avoid unintended rotation since [SpringBoneSimulator3D] does not factor in twisting forces.
 */
 //go:nosplit
-func (self class) SetRotationAxis(index int64, axis gdclass.SpringBoneSimulator3DRotationAxis) { //gd:SpringBoneSimulator3D.set_rotation_axis
+func (self class) SetRotationAxis(index int64, axis RotationAxis) { //gd:SpringBoneSimulator3D.set_rotation_axis
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, axis)
@@ -985,10 +992,10 @@ func (self class) SetRotationAxis(index int64, axis gdclass.SpringBoneSimulator3
 Returns the rotation axis of the bone chain.
 */
 //go:nosplit
-func (self class) GetRotationAxis(index int64) gdclass.SpringBoneSimulator3DRotationAxis { //gd:SpringBoneSimulator3D.get_rotation_axis
+func (self class) GetRotationAxis(index int64) RotationAxis { //gd:SpringBoneSimulator3D.get_rotation_axis
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[gdclass.SpringBoneSimulator3DRotationAxis](frame)
+	var r_ret = callframe.Ret[RotationAxis](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_rotation_axis, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1308,7 +1315,7 @@ func (self class) GetJointBone(index int64, joint int64) int64 { //gd:SpringBone
 Sets the rotation axis at [param joint] in the bone chain's joint list when [method is_config_individual] is [code]true[/code].
 */
 //go:nosplit
-func (self class) SetJointRotationAxis(index int64, joint int64, axis gdclass.SpringBoneSimulator3DRotationAxis) { //gd:SpringBoneSimulator3D.set_joint_rotation_axis
+func (self class) SetJointRotationAxis(index int64, joint int64, axis RotationAxis) { //gd:SpringBoneSimulator3D.set_joint_rotation_axis
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, joint)
@@ -1322,11 +1329,11 @@ func (self class) SetJointRotationAxis(index int64, joint int64, axis gdclass.Sp
 Returns the rotation axis at [param joint] in the bone chain's joint list.
 */
 //go:nosplit
-func (self class) GetJointRotationAxis(index int64, joint int64) gdclass.SpringBoneSimulator3DRotationAxis { //gd:SpringBoneSimulator3D.get_joint_rotation_axis
+func (self class) GetJointRotationAxis(index int64, joint int64) RotationAxis { //gd:SpringBoneSimulator3D.get_joint_rotation_axis
 	var frame = callframe.New()
 	callframe.Arg(frame, index)
 	callframe.Arg(frame, joint)
-	var r_ret = callframe.Ret[gdclass.SpringBoneSimulator3DRotationAxis](frame)
+	var r_ret = callframe.Ret[RotationAxis](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_joint_rotation_axis, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1707,7 +1714,7 @@ func init() {
 	})
 }
 
-type BoneDirection = gdclass.SpringBoneSimulator3DBoneDirection //gd:SpringBoneSimulator3D.BoneDirection
+type BoneDirection int //gd:SpringBoneSimulator3D.BoneDirection
 
 const (
 	/*Enumerated value for the +X axis.*/
@@ -1726,7 +1733,7 @@ const (
 	BoneDirectionFromParent BoneDirection = 6
 )
 
-type CenterFrom = gdclass.SpringBoneSimulator3DCenterFrom //gd:SpringBoneSimulator3D.CenterFrom
+type CenterFrom int //gd:SpringBoneSimulator3D.CenterFrom
 
 const (
 	/*The world origin is defined as center.*/
@@ -1739,7 +1746,7 @@ const (
 	CenterFromBone CenterFrom = 2
 )
 
-type RotationAxis = gdclass.SpringBoneSimulator3DRotationAxis //gd:SpringBoneSimulator3D.RotationAxis
+type RotationAxis int //gd:SpringBoneSimulator3D.RotationAxis
 
 const (
 	/*Enumerated value for the rotation of the X axis.*/

@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/GLTFDocumentExtension"
 import "graphics.gd/classdb/GLTFObjectModelProperty"
 import "graphics.gd/classdb/GLTFState"
@@ -29,6 +30,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -44,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,6 +62,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -242,11 +249,11 @@ func (self Instance) SetLossyQuality(value Float.X) {
 	class(self).SetLossyQuality(float64(value))
 }
 
-func (self Instance) RootNodeMode() gdclass.GLTFDocumentRootNodeMode {
-	return gdclass.GLTFDocumentRootNodeMode(class(self).GetRootNodeMode())
+func (self Instance) RootNodeMode() RootNodeMode {
+	return RootNodeMode(class(self).GetRootNodeMode())
 }
 
-func (self Instance) SetRootNodeMode(value gdclass.GLTFDocumentRootNodeMode) {
+func (self Instance) SetRootNodeMode(value RootNodeMode) {
 	class(self).SetRootNodeMode(value)
 }
 
@@ -289,7 +296,7 @@ func (self class) GetLossyQuality() float64 { //gd:GLTFDocument.get_lossy_qualit
 }
 
 //go:nosplit
-func (self class) SetRootNodeMode(root_node_mode gdclass.GLTFDocumentRootNodeMode) { //gd:GLTFDocument.set_root_node_mode
+func (self class) SetRootNodeMode(root_node_mode RootNodeMode) { //gd:GLTFDocument.set_root_node_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, root_node_mode)
 	var r_ret = callframe.Nil
@@ -298,9 +305,9 @@ func (self class) SetRootNodeMode(root_node_mode gdclass.GLTFDocumentRootNodeMod
 }
 
 //go:nosplit
-func (self class) GetRootNodeMode() gdclass.GLTFDocumentRootNodeMode { //gd:GLTFDocument.get_root_node_mode
+func (self class) GetRootNodeMode() RootNodeMode { //gd:GLTFDocument.get_root_node_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.GLTFDocumentRootNodeMode](frame)
+	var r_ret = callframe.Ret[RootNodeMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFDocument.Bind_get_root_node_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -515,7 +522,7 @@ func init() {
 	})
 }
 
-type RootNodeMode = gdclass.GLTFDocumentRootNodeMode //gd:GLTFDocument.RootNodeMode
+type RootNodeMode int //gd:GLTFDocument.RootNodeMode
 
 const (
 	/*Treat the Godot scene's root node as the root node of the glTF file, and mark it as the single root node via the [code]GODOT_single_root[/code] glTF extension. This will be parsed the same as [constant ROOT_NODE_MODE_KEEP_ROOT] if the implementation does not support [code]GODOT_single_root[/code].*/

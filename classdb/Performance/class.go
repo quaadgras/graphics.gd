@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -25,6 +26,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -40,6 +45,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -52,6 +58,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -86,7 +93,7 @@ GD.Print(Performance.GetMonitor(Performance.Monitor.TimeFps)); // Prints the FPS
 [/codeblocks]
 See [method get_custom_monitor] to query custom performance monitors' values.
 */
-func GetMonitor(monitor gdclass.PerformanceMonitor) Float.X { //gd:Performance.get_monitor
+func GetMonitor(monitor Monitor) Float.X { //gd:Performance.get_monitor
 	once.Do(singleton)
 	return Float.X(Float.X(Advanced().GetMonitor(monitor)))
 }
@@ -285,7 +292,7 @@ GD.Print(Performance.GetMonitor(Performance.Monitor.TimeFps)); // Prints the FPS
 See [method get_custom_monitor] to query custom performance monitors' values.
 */
 //go:nosplit
-func (self class) GetMonitor(monitor gdclass.PerformanceMonitor) float64 { //gd:Performance.get_monitor
+func (self class) GetMonitor(monitor Monitor) float64 { //gd:Performance.get_monitor
 	var frame = callframe.New()
 	callframe.Arg(frame, monitor)
 	var r_ret = callframe.Ret[float64](frame)
@@ -440,7 +447,7 @@ func init() {
 	gdclass.Register("Performance", func(ptr gd.Object) any { return [1]gdclass.Performance{*(*gdclass.Performance)(unsafe.Pointer(&ptr))} })
 }
 
-type Monitor = gdclass.PerformanceMonitor //gd:Performance.Monitor
+type Monitor int //gd:Performance.Monitor
 
 const (
 	/*The number of frames rendered in the last second. This metric is only updated once per second, even if queried more often. [i]Higher is better.[/i]*/

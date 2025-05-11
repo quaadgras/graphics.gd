@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/Tween"
 import "graphics.gd/classdb/Tweener"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -25,6 +27,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -40,6 +46,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -52,6 +59,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -82,15 +90,64 @@ func (self Instance) SetDelay(delay Float.X) Instance { //gd:MethodTweener.set_d
 /*
 Sets the type of used transition from [enum Tween.TransitionType]. If not set, the default transition is used from the [Tween] that contains this Tweener.
 */
-func (self Instance) SetTrans(trans gdclass.TweenTransitionType) Instance { //gd:MethodTweener.set_trans
+func (self Instance) SetTrans(trans Tween.TransitionType) Instance { //gd:MethodTweener.set_trans
 	return Instance(Advanced(self).SetTrans(trans))
 }
 
 /*
 Sets the type of used easing from [enum Tween.EaseType]. If not set, the default easing is used from the [Tween] that contains this Tweener.
 */
-func (self Instance) SetEase(ease gdclass.TweenEaseType) Instance { //gd:MethodTweener.set_ease
+func (self Instance) SetEase(ease Tween.EaseType) Instance { //gd:MethodTweener.set_ease
 	return Instance(Advanced(self).SetEase(ease))
+}
+
+/*
+Creates and appends a [MethodTweener]. This method is similar to a combination of [method tween_callback] and [method tween_property]. It calls a method over time with a tweened value provided as an argument. The value is tweened between [param from] and [param to] over the time specified by [param duration], in seconds. Use [method Callable.bind] to bind additional arguments for the call. You can use [method MethodTweener.set_ease] and [method MethodTweener.set_trans] to tweak the easing and transition of the value or [method MethodTweener.set_delay] to delay the tweening.
+[b]Example:[/b] Making a 3D object look from one point to another point:
+[codeblocks]
+[gdscript]
+var tween = create_tween()
+tween.tween_method(look_at.bind(Vector3.UP), Vector3(-1, 0, -1), Vector3(1, 0, -1), 1) # The look_at() method takes up vector as second argument.
+[/gdscript]
+[csharp]
+Tween tween = CreateTween();
+tween.TweenMethod(Callable.From((Vector3 target) => LookAt(target, Vector3.Up)), new Vector3(-1.0f, 0.0f, -1.0f), new Vector3(1.0f, 0.0f, -1.0f), 1.0f); // Use lambdas to bind additional arguments for the call.
+[/csharp]
+[/codeblocks]
+[b]Example:[/b] Setting the text of a [Label], using an intermediate method and after a delay:
+[codeblocks]
+[gdscript]
+func _ready():
+
+	var tween = create_tween()
+	tween.tween_method(set_label_text, 0, 10, 1).set_delay(1)
+
+func set_label_text(value: int):
+
+	$Label.text = "Counting " + str(value)
+
+[/gdscript]
+[csharp]
+public override void _Ready()
+
+	{
+	    base._Ready();
+
+	    Tween tween = CreateTween();
+	    tween.TweenMethod(Callable.From<int>(SetLabelText), 0.0f, 10.0f, 1.0f).SetDelay(1.0f);
+	}
+
+private void SetLabelText(int value)
+
+	{
+	    GetNode<Label>("Label").Text = $"Counting {value}";
+	}
+
+[/csharp]
+[/codeblocks]
+*/
+func Make(peer Tween.Instance, method Callable.Function, from any, to any, duration Float.X) Instance { //gd:Tween.tween_method
+	return Instance(Tween.Advanced(peer).TweenMethod(Callable.New(method), variant.New(from), variant.New(to), float64(duration)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -131,7 +188,7 @@ func (self class) SetDelay(delay float64) [1]gdclass.MethodTweener { //gd:Method
 Sets the type of used transition from [enum Tween.TransitionType]. If not set, the default transition is used from the [Tween] that contains this Tweener.
 */
 //go:nosplit
-func (self class) SetTrans(trans gdclass.TweenTransitionType) [1]gdclass.MethodTweener { //gd:MethodTweener.set_trans
+func (self class) SetTrans(trans Tween.TransitionType) [1]gdclass.MethodTweener { //gd:MethodTweener.set_trans
 	var frame = callframe.New()
 	callframe.Arg(frame, trans)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
@@ -145,7 +202,7 @@ func (self class) SetTrans(trans gdclass.TweenTransitionType) [1]gdclass.MethodT
 Sets the type of used easing from [enum Tween.EaseType]. If not set, the default easing is used from the [Tween] that contains this Tweener.
 */
 //go:nosplit
-func (self class) SetEase(ease gdclass.TweenEaseType) [1]gdclass.MethodTweener { //gd:MethodTweener.set_ease
+func (self class) SetEase(ease Tween.EaseType) [1]gdclass.MethodTweener { //gd:MethodTweener.set_ease
 	var frame = callframe.New()
 	callframe.Arg(frame, ease)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)

@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/WebRTCDataChannel"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -25,6 +26,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -40,6 +45,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -52,6 +58,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -233,22 +240,22 @@ func (self Instance) Close() { //gd:WebRTCPeerConnection.close
 /*
 Returns the connection state. See [enum ConnectionState].
 */
-func (self Instance) GetConnectionState() gdclass.WebRTCPeerConnectionConnectionState { //gd:WebRTCPeerConnection.get_connection_state
-	return gdclass.WebRTCPeerConnectionConnectionState(Advanced(self).GetConnectionState())
+func (self Instance) GetConnectionState() ConnectionState { //gd:WebRTCPeerConnection.get_connection_state
+	return ConnectionState(Advanced(self).GetConnectionState())
 }
 
 /*
 Returns the ICE [enum GatheringState] of the connection. This lets you detect, for example, when collection of ICE candidates has finished.
 */
-func (self Instance) GetGatheringState() gdclass.WebRTCPeerConnectionGatheringState { //gd:WebRTCPeerConnection.get_gathering_state
-	return gdclass.WebRTCPeerConnectionGatheringState(Advanced(self).GetGatheringState())
+func (self Instance) GetGatheringState() GatheringState { //gd:WebRTCPeerConnection.get_gathering_state
+	return GatheringState(Advanced(self).GetGatheringState())
 }
 
 /*
 Returns the signaling state on the local end of the connection while connecting or reconnecting to another peer.
 */
-func (self Instance) GetSignalingState() gdclass.WebRTCPeerConnectionSignalingState { //gd:WebRTCPeerConnection.get_signaling_state
-	return gdclass.WebRTCPeerConnectionSignalingState(Advanced(self).GetSignalingState())
+func (self Instance) GetSignalingState() SignalingState { //gd:WebRTCPeerConnection.get_signaling_state
+	return SignalingState(Advanced(self).GetSignalingState())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -435,9 +442,9 @@ func (self class) Close() { //gd:WebRTCPeerConnection.close
 Returns the connection state. See [enum ConnectionState].
 */
 //go:nosplit
-func (self class) GetConnectionState() gdclass.WebRTCPeerConnectionConnectionState { //gd:WebRTCPeerConnection.get_connection_state
+func (self class) GetConnectionState() ConnectionState { //gd:WebRTCPeerConnection.get_connection_state
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.WebRTCPeerConnectionConnectionState](frame)
+	var r_ret = callframe.Ret[ConnectionState](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_get_connection_state, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -448,9 +455,9 @@ func (self class) GetConnectionState() gdclass.WebRTCPeerConnectionConnectionSta
 Returns the ICE [enum GatheringState] of the connection. This lets you detect, for example, when collection of ICE candidates has finished.
 */
 //go:nosplit
-func (self class) GetGatheringState() gdclass.WebRTCPeerConnectionGatheringState { //gd:WebRTCPeerConnection.get_gathering_state
+func (self class) GetGatheringState() GatheringState { //gd:WebRTCPeerConnection.get_gathering_state
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.WebRTCPeerConnectionGatheringState](frame)
+	var r_ret = callframe.Ret[GatheringState](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_get_gathering_state, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -461,9 +468,9 @@ func (self class) GetGatheringState() gdclass.WebRTCPeerConnectionGatheringState
 Returns the signaling state on the local end of the connection while connecting or reconnecting to another peer.
 */
 //go:nosplit
-func (self class) GetSignalingState() gdclass.WebRTCPeerConnectionSignalingState { //gd:WebRTCPeerConnection.get_signaling_state
+func (self class) GetSignalingState() SignalingState { //gd:WebRTCPeerConnection.get_signaling_state
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.WebRTCPeerConnectionSignalingState](frame)
+	var r_ret = callframe.Ret[SignalingState](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_get_signaling_state, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -513,7 +520,7 @@ func init() {
 	})
 }
 
-type ConnectionState = gdclass.WebRTCPeerConnectionConnectionState //gd:WebRTCPeerConnection.ConnectionState
+type ConnectionState int //gd:WebRTCPeerConnection.ConnectionState
 
 const (
 	/*The connection is new, data channels and an offer can be created in this state.*/
@@ -530,7 +537,7 @@ const (
 	StateClosed ConnectionState = 5
 )
 
-type GatheringState = gdclass.WebRTCPeerConnectionGatheringState //gd:WebRTCPeerConnection.GatheringState
+type GatheringState int //gd:WebRTCPeerConnection.GatheringState
 
 const (
 	/*The peer connection was just created and hasn't done any networking yet.*/
@@ -541,7 +548,7 @@ const (
 	GatheringStateComplete GatheringState = 2
 )
 
-type SignalingState = gdclass.WebRTCPeerConnectionSignalingState //gd:WebRTCPeerConnection.SignalingState
+type SignalingState int //gd:WebRTCPeerConnection.SignalingState
 
 const (
 	/*There is no ongoing exchange of offer and answer underway. This may mean that the [WebRTCPeerConnection] is new ([constant STATE_NEW]) or that negotiation is complete and a connection has been established ([constant STATE_CONNECTED]).*/

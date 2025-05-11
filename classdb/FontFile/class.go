@@ -11,9 +11,11 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Font"
 import "graphics.gd/classdb/Image"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/TextServer"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -31,6 +33,10 @@ import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -46,6 +52,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -58,6 +65,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -200,14 +208,14 @@ func (self Instance) GetTransform(cache_index int) Transform2D.OriginXY { //gd:F
 /*
 Sets the spacing for [param spacing] (see [enum TextServer.SpacingType]) to [param value] in pixels (not relative to the font size).
 */
-func (self Instance) SetExtraSpacing(cache_index int, spacing gdclass.TextServerSpacingType, value int) { //gd:FontFile.set_extra_spacing
+func (self Instance) SetExtraSpacing(cache_index int, spacing TextServer.SpacingType, value int) { //gd:FontFile.set_extra_spacing
 	Advanced(self).SetExtraSpacing(int64(cache_index), spacing, int64(value))
 }
 
 /*
 Returns spacing for [param spacing] (see [enum TextServer.SpacingType]) in pixels (not relative to the font size).
 */
-func (self Instance) GetExtraSpacing(cache_index int, spacing gdclass.TextServerSpacingType) int { //gd:FontFile.get_extra_spacing
+func (self Instance) GetExtraSpacing(cache_index int, spacing TextServer.SpacingType) int { //gd:FontFile.get_extra_spacing
 	return int(int(Advanced(self).GetExtraSpacing(int64(cache_index), spacing)))
 }
 
@@ -618,11 +626,11 @@ func (self Instance) SetDisableEmbeddedBitmaps(value bool) {
 	class(self).SetDisableEmbeddedBitmaps(value)
 }
 
-func (self Instance) Antialiasing() gdclass.TextServerFontAntialiasing {
-	return gdclass.TextServerFontAntialiasing(class(self).GetAntialiasing())
+func (self Instance) Antialiasing() TextServer.FontAntialiasing {
+	return TextServer.FontAntialiasing(class(self).GetAntialiasing())
 }
 
-func (self Instance) SetAntialiasing(value gdclass.TextServerFontAntialiasing) {
+func (self Instance) SetAntialiasing(value TextServer.FontAntialiasing) {
 	class(self).SetAntialiasing(value)
 }
 
@@ -634,7 +642,7 @@ func (self Instance) SetStyleName(value string) {
 	class(self).SetFontStyleName(String.New(value))
 }
 
-func (self Instance) SetFontStyle(value gdclass.TextServerFontStyle) {
+func (self Instance) SetFontStyle(value TextServer.FontStyle) {
 	class(self).SetFontStyle(value)
 }
 
@@ -646,11 +654,11 @@ func (self Instance) SetFontStretch(value int) {
 	class(self).SetFontStretch(int64(value))
 }
 
-func (self Instance) SubpixelPositioning() gdclass.TextServerSubpixelPositioning {
-	return gdclass.TextServerSubpixelPositioning(class(self).GetSubpixelPositioning())
+func (self Instance) SubpixelPositioning() TextServer.SubpixelPositioning {
+	return TextServer.SubpixelPositioning(class(self).GetSubpixelPositioning())
 }
 
-func (self Instance) SetSubpixelPositioning(value gdclass.TextServerSubpixelPositioning) {
+func (self Instance) SetSubpixelPositioning(value TextServer.SubpixelPositioning) {
 	class(self).SetSubpixelPositioning(value)
 }
 
@@ -702,11 +710,11 @@ func (self Instance) SetForceAutohinter(value bool) {
 	class(self).SetForceAutohinter(value)
 }
 
-func (self Instance) Hinting() gdclass.TextServerHinting {
-	return gdclass.TextServerHinting(class(self).GetHinting())
+func (self Instance) Hinting() TextServer.Hinting {
+	return TextServer.Hinting(class(self).GetHinting())
 }
 
-func (self Instance) SetHinting(value gdclass.TextServerHinting) {
+func (self Instance) SetHinting(value TextServer.Hinting) {
 	class(self).SetHinting(value)
 }
 
@@ -726,11 +734,11 @@ func (self Instance) SetFixedSize(value int) {
 	class(self).SetFixedSize(int64(value))
 }
 
-func (self Instance) FixedSizeScaleMode() gdclass.TextServerFixedSizeScaleMode {
-	return gdclass.TextServerFixedSizeScaleMode(class(self).GetFixedSizeScaleMode())
+func (self Instance) FixedSizeScaleMode() TextServer.FixedSizeScaleMode {
+	return TextServer.FixedSizeScaleMode(class(self).GetFixedSizeScaleMode())
 }
 
-func (self Instance) SetFixedSizeScaleMode(value gdclass.TextServerFixedSizeScaleMode) {
+func (self Instance) SetFixedSizeScaleMode(value TextServer.FixedSizeScaleMode) {
 	class(self).SetFixedSizeScaleMode(value)
 }
 
@@ -810,7 +818,7 @@ func (self class) SetFontStyleName(name String.Readable) { //gd:FontFile.set_fon
 }
 
 //go:nosplit
-func (self class) SetFontStyle(style gdclass.TextServerFontStyle) { //gd:FontFile.set_font_style
+func (self class) SetFontStyle(style TextServer.FontStyle) { //gd:FontFile.set_font_style
 	var frame = callframe.New()
 	callframe.Arg(frame, style)
 	var r_ret = callframe.Nil
@@ -837,7 +845,7 @@ func (self class) SetFontStretch(stretch int64) { //gd:FontFile.set_font_stretch
 }
 
 //go:nosplit
-func (self class) SetAntialiasing(antialiasing gdclass.TextServerFontAntialiasing) { //gd:FontFile.set_antialiasing
+func (self class) SetAntialiasing(antialiasing TextServer.FontAntialiasing) { //gd:FontFile.set_antialiasing
 	var frame = callframe.New()
 	callframe.Arg(frame, antialiasing)
 	var r_ret = callframe.Nil
@@ -846,9 +854,9 @@ func (self class) SetAntialiasing(antialiasing gdclass.TextServerFontAntialiasin
 }
 
 //go:nosplit
-func (self class) GetAntialiasing() gdclass.TextServerFontAntialiasing { //gd:FontFile.get_antialiasing
+func (self class) GetAntialiasing() TextServer.FontAntialiasing { //gd:FontFile.get_antialiasing
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TextServerFontAntialiasing](frame)
+	var r_ret = callframe.Ret[TextServer.FontAntialiasing](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_antialiasing, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -970,7 +978,7 @@ func (self class) GetFixedSize() int64 { //gd:FontFile.get_fixed_size
 }
 
 //go:nosplit
-func (self class) SetFixedSizeScaleMode(fixed_size_scale_mode gdclass.TextServerFixedSizeScaleMode) { //gd:FontFile.set_fixed_size_scale_mode
+func (self class) SetFixedSizeScaleMode(fixed_size_scale_mode TextServer.FixedSizeScaleMode) { //gd:FontFile.set_fixed_size_scale_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, fixed_size_scale_mode)
 	var r_ret = callframe.Nil
@@ -979,9 +987,9 @@ func (self class) SetFixedSizeScaleMode(fixed_size_scale_mode gdclass.TextServer
 }
 
 //go:nosplit
-func (self class) GetFixedSizeScaleMode() gdclass.TextServerFixedSizeScaleMode { //gd:FontFile.get_fixed_size_scale_mode
+func (self class) GetFixedSizeScaleMode() TextServer.FixedSizeScaleMode { //gd:FontFile.get_fixed_size_scale_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TextServerFixedSizeScaleMode](frame)
+	var r_ret = callframe.Ret[TextServer.FixedSizeScaleMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_fixed_size_scale_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1027,7 +1035,7 @@ func (self class) IsForceAutohinter() bool { //gd:FontFile.is_force_autohinter
 }
 
 //go:nosplit
-func (self class) SetHinting(hinting gdclass.TextServerHinting) { //gd:FontFile.set_hinting
+func (self class) SetHinting(hinting TextServer.Hinting) { //gd:FontFile.set_hinting
 	var frame = callframe.New()
 	callframe.Arg(frame, hinting)
 	var r_ret = callframe.Nil
@@ -1036,9 +1044,9 @@ func (self class) SetHinting(hinting gdclass.TextServerHinting) { //gd:FontFile.
 }
 
 //go:nosplit
-func (self class) GetHinting() gdclass.TextServerHinting { //gd:FontFile.get_hinting
+func (self class) GetHinting() TextServer.Hinting { //gd:FontFile.get_hinting
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TextServerHinting](frame)
+	var r_ret = callframe.Ret[TextServer.Hinting](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_hinting, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1046,7 +1054,7 @@ func (self class) GetHinting() gdclass.TextServerHinting { //gd:FontFile.get_hin
 }
 
 //go:nosplit
-func (self class) SetSubpixelPositioning(subpixel_positioning gdclass.TextServerSubpixelPositioning) { //gd:FontFile.set_subpixel_positioning
+func (self class) SetSubpixelPositioning(subpixel_positioning TextServer.SubpixelPositioning) { //gd:FontFile.set_subpixel_positioning
 	var frame = callframe.New()
 	callframe.Arg(frame, subpixel_positioning)
 	var r_ret = callframe.Nil
@@ -1055,9 +1063,9 @@ func (self class) SetSubpixelPositioning(subpixel_positioning gdclass.TextServer
 }
 
 //go:nosplit
-func (self class) GetSubpixelPositioning() gdclass.TextServerSubpixelPositioning { //gd:FontFile.get_subpixel_positioning
+func (self class) GetSubpixelPositioning() TextServer.SubpixelPositioning { //gd:FontFile.get_subpixel_positioning
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TextServerSubpixelPositioning](frame)
+	var r_ret = callframe.Ret[TextServer.SubpixelPositioning](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_subpixel_positioning, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1262,7 +1270,7 @@ func (self class) GetTransform(cache_index int64) Transform2D.OriginXY { //gd:Fo
 Sets the spacing for [param spacing] (see [enum TextServer.SpacingType]) to [param value] in pixels (not relative to the font size).
 */
 //go:nosplit
-func (self class) SetExtraSpacing(cache_index int64, spacing gdclass.TextServerSpacingType, value int64) { //gd:FontFile.set_extra_spacing
+func (self class) SetExtraSpacing(cache_index int64, spacing TextServer.SpacingType, value int64) { //gd:FontFile.set_extra_spacing
 	var frame = callframe.New()
 	callframe.Arg(frame, cache_index)
 	callframe.Arg(frame, spacing)
@@ -1276,7 +1284,7 @@ func (self class) SetExtraSpacing(cache_index int64, spacing gdclass.TextServerS
 Returns spacing for [param spacing] (see [enum TextServer.SpacingType]) in pixels (not relative to the font size).
 */
 //go:nosplit
-func (self class) GetExtraSpacing(cache_index int64, spacing gdclass.TextServerSpacingType) int64 { //gd:FontFile.get_extra_spacing
+func (self class) GetExtraSpacing(cache_index int64, spacing TextServer.SpacingType) int64 { //gd:FontFile.get_extra_spacing
 	var frame = callframe.New()
 	callframe.Arg(frame, cache_index)
 	callframe.Arg(frame, spacing)

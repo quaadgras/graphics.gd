@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/XRInterface"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -30,6 +31,10 @@ import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -45,6 +50,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -57,6 +63,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -90,11 +97,11 @@ type Interface interface {
 	//Returns a [Dictionary] with system information related to this interface.
 	GetSystemInfo() map[any]any
 	//Returns [code]true[/code] if this interface supports this play area mode.
-	SupportsPlayAreaMode(mode gdclass.XRInterfacePlayAreaMode) bool
+	SupportsPlayAreaMode(mode XRInterface.PlayAreaMode) bool
 	//Returns the play area mode that sets up our play area.
-	GetPlayAreaMode() gdclass.XRInterfacePlayAreaMode
+	GetPlayAreaMode() XRInterface.PlayAreaMode
 	//Set the play area mode for this interface.
-	SetPlayAreaMode(mode gdclass.XRInterfacePlayAreaMode) bool
+	SetPlayAreaMode(mode XRInterface.PlayAreaMode) bool
 	//Returns a [PackedVector3Array] that represents the play areas boundaries (if applicable).
 	GetPlayArea() []Vector3.XYZ
 	//Returns the size of our render target for this interface, this overrides the size of the [Viewport] marked as the xr viewport.
@@ -123,7 +130,7 @@ type Interface interface {
 	//Returns a [PackedStringArray] with pose names configured by this interface. Note that user configuration can override this list.
 	GetSuggestedPoseNames(tracker_name string) []string
 	//Returns a [enum XRInterface.TrackingStatus] specifying the current status of our tracking.
-	GetTrackingStatus() gdclass.XRInterfaceTrackingStatus
+	GetTrackingStatus() XRInterface.TrackingStatus
 	//Triggers a haptic pulse to be emitted on the specified tracker.
 	TriggerHapticPulse(action_name string, tracker_name string, frequency Float.X, amplitude Float.X, duration_sec Float.X, delay_sec Float.X)
 	//Return [code]true[/code] if anchor detection is enabled for this interface.
@@ -145,21 +152,19 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetName() (_ string)            { return }
-func (self implementation) GetCapabilities() (_ int)       { return }
-func (self implementation) IsInitialized() (_ bool)        { return }
-func (self implementation) Initialize() (_ bool)           { return }
-func (self implementation) Uninitialize()                  { return }
-func (self implementation) GetSystemInfo() (_ map[any]any) { return }
-func (self implementation) SupportsPlayAreaMode(mode gdclass.XRInterfacePlayAreaMode) (_ bool) {
-	return
-}
-func (self implementation) GetPlayAreaMode() (_ gdclass.XRInterfacePlayAreaMode)          { return }
-func (self implementation) SetPlayAreaMode(mode gdclass.XRInterfacePlayAreaMode) (_ bool) { return }
-func (self implementation) GetPlayArea() (_ []Vector3.XYZ)                                { return }
-func (self implementation) GetRenderTargetSize() (_ Vector2.XY)                           { return }
-func (self implementation) GetViewCount() (_ int)                                         { return }
-func (self implementation) GetCameraTransform() (_ Transform3D.BasisOrigin)               { return }
+func (self implementation) GetName() (_ string)                                         { return }
+func (self implementation) GetCapabilities() (_ int)                                    { return }
+func (self implementation) IsInitialized() (_ bool)                                     { return }
+func (self implementation) Initialize() (_ bool)                                        { return }
+func (self implementation) Uninitialize()                                               { return }
+func (self implementation) GetSystemInfo() (_ map[any]any)                              { return }
+func (self implementation) SupportsPlayAreaMode(mode XRInterface.PlayAreaMode) (_ bool) { return }
+func (self implementation) GetPlayAreaMode() (_ XRInterface.PlayAreaMode)               { return }
+func (self implementation) SetPlayAreaMode(mode XRInterface.PlayAreaMode) (_ bool)      { return }
+func (self implementation) GetPlayArea() (_ []Vector3.XYZ)                              { return }
+func (self implementation) GetRenderTargetSize() (_ Vector2.XY)                         { return }
+func (self implementation) GetViewCount() (_ int)                                       { return }
+func (self implementation) GetCameraTransform() (_ Transform3D.BasisOrigin)             { return }
 func (self implementation) GetTransformForView(view int, cam_transform Transform3D.BasisOrigin) (_ Transform3D.BasisOrigin) {
 	return
 }
@@ -173,10 +178,10 @@ func (self implementation) PreDrawViewport(render_target RID.Any) (_ bool) { ret
 func (self implementation) PostDrawViewport(render_target RID.Any, screen_rect Rect2.PositionSize) {
 	return
 }
-func (self implementation) EndFrame()                                                { return }
-func (self implementation) GetSuggestedTrackerNames() (_ []string)                   { return }
-func (self implementation) GetSuggestedPoseNames(tracker_name string) (_ []string)   { return }
-func (self implementation) GetTrackingStatus() (_ gdclass.XRInterfaceTrackingStatus) { return }
+func (self implementation) EndFrame()                                              { return }
+func (self implementation) GetSuggestedTrackerNames() (_ []string)                 { return }
+func (self implementation) GetSuggestedPoseNames(tracker_name string) (_ []string) { return }
+func (self implementation) GetTrackingStatus() (_ XRInterface.TrackingStatus)      { return }
 func (self implementation) TriggerHapticPulse(action_name string, tracker_name string, frequency Float.X, amplitude Float.X, duration_sec Float.X, delay_sec Float.X) {
 	return
 }
@@ -265,9 +270,9 @@ func (Instance) _get_system_info(impl func(ptr unsafe.Pointer) map[any]any) (cb 
 /*
 Returns [code]true[/code] if this interface supports this play area mode.
 */
-func (Instance) _supports_play_area_mode(impl func(ptr unsafe.Pointer, mode gdclass.XRInterfacePlayAreaMode) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _supports_play_area_mode(impl func(ptr unsafe.Pointer, mode XRInterface.PlayAreaMode) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var mode = gd.UnsafeGet[gdclass.XRInterfacePlayAreaMode](p_args, 0)
+		var mode = gd.UnsafeGet[XRInterface.PlayAreaMode](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, mode)
 		gd.UnsafeSet(p_back, ret)
@@ -277,7 +282,7 @@ func (Instance) _supports_play_area_mode(impl func(ptr unsafe.Pointer, mode gdcl
 /*
 Returns the play area mode that sets up our play area.
 */
-func (Instance) _get_play_area_mode(impl func(ptr unsafe.Pointer) gdclass.XRInterfacePlayAreaMode) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_play_area_mode(impl func(ptr unsafe.Pointer) XRInterface.PlayAreaMode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -288,9 +293,9 @@ func (Instance) _get_play_area_mode(impl func(ptr unsafe.Pointer) gdclass.XRInte
 /*
 Set the play area mode for this interface.
 */
-func (Instance) _set_play_area_mode(impl func(ptr unsafe.Pointer, mode gdclass.XRInterfacePlayAreaMode) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_play_area_mode(impl func(ptr unsafe.Pointer, mode XRInterface.PlayAreaMode) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var mode = gd.UnsafeGet[gdclass.XRInterfacePlayAreaMode](p_args, 0)
+		var mode = gd.UnsafeGet[XRInterface.PlayAreaMode](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, mode)
 		gd.UnsafeSet(p_back, ret)
@@ -477,7 +482,7 @@ func (Instance) _get_suggested_pose_names(impl func(ptr unsafe.Pointer, tracker_
 /*
 Returns a [enum XRInterface.TrackingStatus] specifying the current status of our tracking.
 */
-func (Instance) _get_tracking_status(impl func(ptr unsafe.Pointer) gdclass.XRInterfaceTrackingStatus) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_tracking_status(impl func(ptr unsafe.Pointer) XRInterface.TrackingStatus) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -690,9 +695,9 @@ func (class) _get_system_info(impl func(ptr unsafe.Pointer) Dictionary.Any) (cb 
 /*
 Returns [code]true[/code] if this interface supports this play area mode.
 */
-func (class) _supports_play_area_mode(impl func(ptr unsafe.Pointer, mode gdclass.XRInterfacePlayAreaMode) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _supports_play_area_mode(impl func(ptr unsafe.Pointer, mode XRInterface.PlayAreaMode) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var mode = gd.UnsafeGet[gdclass.XRInterfacePlayAreaMode](p_args, 0)
+		var mode = gd.UnsafeGet[XRInterface.PlayAreaMode](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, mode)
 		gd.UnsafeSet(p_back, ret)
@@ -702,7 +707,7 @@ func (class) _supports_play_area_mode(impl func(ptr unsafe.Pointer, mode gdclass
 /*
 Returns the play area mode that sets up our play area.
 */
-func (class) _get_play_area_mode(impl func(ptr unsafe.Pointer) gdclass.XRInterfacePlayAreaMode) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_play_area_mode(impl func(ptr unsafe.Pointer) XRInterface.PlayAreaMode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -713,9 +718,9 @@ func (class) _get_play_area_mode(impl func(ptr unsafe.Pointer) gdclass.XRInterfa
 /*
 Set the play area mode for this interface.
 */
-func (class) _set_play_area_mode(impl func(ptr unsafe.Pointer, mode gdclass.XRInterfacePlayAreaMode) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_play_area_mode(impl func(ptr unsafe.Pointer, mode XRInterface.PlayAreaMode) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var mode = gd.UnsafeGet[gdclass.XRInterfacePlayAreaMode](p_args, 0)
+		var mode = gd.UnsafeGet[XRInterface.PlayAreaMode](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, mode)
 		gd.UnsafeSet(p_back, ret)
@@ -903,7 +908,7 @@ func (class) _get_suggested_pose_names(impl func(ptr unsafe.Pointer, tracker_nam
 /*
 Returns a [enum XRInterface.TrackingStatus] specifying the current status of our tracking.
 */
-func (class) _get_tracking_status(impl func(ptr unsafe.Pointer) gdclass.XRInterfaceTrackingStatus) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_tracking_status(impl func(ptr unsafe.Pointer) XRInterface.TrackingStatus) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)

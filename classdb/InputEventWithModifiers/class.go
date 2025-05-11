@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/Input"
 import "graphics.gd/classdb/InputEvent"
 import "graphics.gd/classdb/InputEventFromWindow"
 import "graphics.gd/classdb/Resource"
@@ -27,6 +29,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -42,6 +48,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -54,6 +61,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -84,8 +92,8 @@ func (self Instance) IsCommandOrControlPressed() bool { //gd:InputEventWithModif
 /*
 Returns the keycode combination of modifier keys.
 */
-func (self Instance) GetModifiersMask() KeyModifierMask { //gd:InputEventWithModifiers.get_modifiers_mask
-	return KeyModifierMask(Advanced(self).GetModifiersMask())
+func (self Instance) GetModifiersMask() Input.KeyModifierMask { //gd:InputEventWithModifiers.get_modifiers_mask
+	return Input.KeyModifierMask(Advanced(self).GetModifiersMask())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -261,9 +269,9 @@ func (self class) IsMetaPressed() bool { //gd:InputEventWithModifiers.is_meta_pr
 Returns the keycode combination of modifier keys.
 */
 //go:nosplit
-func (self class) GetModifiersMask() KeyModifierMask { //gd:InputEventWithModifiers.get_modifiers_mask
+func (self class) GetModifiersMask() Input.KeyModifierMask { //gd:InputEventWithModifiers.get_modifiers_mask
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[KeyModifierMask](frame)
+	var r_ret = callframe.Ret[Input.KeyModifierMask](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventWithModifiers.Bind_get_modifiers_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -325,26 +333,3 @@ func init() {
 		return [1]gdclass.InputEventWithModifiers{*(*gdclass.InputEventWithModifiers)(unsafe.Pointer(&ptr))}
 	})
 }
-
-type KeyModifierMask int
-
-const (
-	/*Key Code mask.*/
-	KeyCodeMask KeyModifierMask = 8388607
-	/*Modifier key mask.*/
-	KeyModifierMaskDefault KeyModifierMask = 2130706432
-	/*Automatically remapped to [constant KEY_META] on macOS and [constant KEY_CTRL] on other platforms, this mask is never set in the actual events, and should be used for key mapping only.*/
-	KeyMaskCmdOrCtrl KeyModifierMask = 16777216
-	/*Shift key mask.*/
-	KeyMaskShift KeyModifierMask = 33554432
-	/*Alt or Option (on macOS) key mask.*/
-	KeyMaskAlt KeyModifierMask = 67108864
-	/*Command (on macOS) or Meta/Windows key mask.*/
-	KeyMaskMeta KeyModifierMask = 134217728
-	/*Control key mask.*/
-	KeyMaskCtrl KeyModifierMask = 268435456
-	/*Keypad key mask.*/
-	KeyMaskKpad KeyModifierMask = 536870912
-	/*Group Switch key mask.*/
-	KeyMaskGroupSwitch KeyModifierMask = 1073741824
-)

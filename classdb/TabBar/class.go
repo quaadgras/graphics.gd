@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/Node"
@@ -30,6 +31,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -45,6 +50,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -57,6 +63,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -130,15 +137,15 @@ func (self Instance) GetTabTooltip(tab_idx int) string { //gd:TabBar.get_tab_too
 /*
 Sets tab title base writing direction.
 */
-func (self Instance) SetTabTextDirection(tab_idx int, direction gdclass.ControlTextDirection) { //gd:TabBar.set_tab_text_direction
+func (self Instance) SetTabTextDirection(tab_idx int, direction Control.TextDirection) { //gd:TabBar.set_tab_text_direction
 	Advanced(self).SetTabTextDirection(int64(tab_idx), direction)
 }
 
 /*
 Returns tab title text base writing direction.
 */
-func (self Instance) GetTabTextDirection(tab_idx int) gdclass.ControlTextDirection { //gd:TabBar.get_tab_text_direction
-	return gdclass.ControlTextDirection(Advanced(self).GetTabTextDirection(int64(tab_idx)))
+func (self Instance) GetTabTextDirection(tab_idx int) Control.TextDirection { //gd:TabBar.get_tab_text_direction
+	return Control.TextDirection(Advanced(self).GetTabTextDirection(int64(tab_idx)))
 }
 
 /*
@@ -336,11 +343,11 @@ func (self Instance) SetCurrentTab(value int) {
 	class(self).SetCurrentTab(int64(value))
 }
 
-func (self Instance) TabAlignment() gdclass.TabBarAlignmentMode {
-	return gdclass.TabBarAlignmentMode(class(self).GetTabAlignment())
+func (self Instance) TabAlignment() AlignmentMode {
+	return AlignmentMode(class(self).GetTabAlignment())
 }
 
-func (self Instance) SetTabAlignment(value gdclass.TabBarAlignmentMode) {
+func (self Instance) SetTabAlignment(value AlignmentMode) {
 	class(self).SetTabAlignment(value)
 }
 
@@ -352,11 +359,11 @@ func (self Instance) SetClipTabs(value bool) {
 	class(self).SetClipTabs(value)
 }
 
-func (self Instance) TabCloseDisplayPolicy() gdclass.TabBarCloseButtonDisplayPolicy {
-	return gdclass.TabBarCloseButtonDisplayPolicy(class(self).GetTabCloseDisplayPolicy())
+func (self Instance) TabCloseDisplayPolicy() CloseButtonDisplayPolicy {
+	return CloseButtonDisplayPolicy(class(self).GetTabCloseDisplayPolicy())
 }
 
-func (self Instance) SetTabCloseDisplayPolicy(value gdclass.TabBarCloseButtonDisplayPolicy) {
+func (self Instance) SetTabCloseDisplayPolicy(value CloseButtonDisplayPolicy) {
 	class(self).SetTabCloseDisplayPolicy(value)
 }
 
@@ -560,7 +567,7 @@ func (self class) GetTabTooltip(tab_idx int64) String.Readable { //gd:TabBar.get
 Sets tab title base writing direction.
 */
 //go:nosplit
-func (self class) SetTabTextDirection(tab_idx int64, direction gdclass.ControlTextDirection) { //gd:TabBar.set_tab_text_direction
+func (self class) SetTabTextDirection(tab_idx int64, direction Control.TextDirection) { //gd:TabBar.set_tab_text_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
 	callframe.Arg(frame, direction)
@@ -573,10 +580,10 @@ func (self class) SetTabTextDirection(tab_idx int64, direction gdclass.ControlTe
 Returns tab title text base writing direction.
 */
 //go:nosplit
-func (self class) GetTabTextDirection(tab_idx int64) gdclass.ControlTextDirection { //gd:TabBar.get_tab_text_direction
+func (self class) GetTabTextDirection(tab_idx int64) Control.TextDirection { //gd:TabBar.get_tab_text_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, tab_idx)
-	var r_ret = callframe.Ret[gdclass.ControlTextDirection](frame)
+	var r_ret = callframe.Ret[Control.TextDirection](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_tab_text_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -812,7 +819,7 @@ func (self class) GetTabIdxAtPoint(point Vector2.XY) int64 { //gd:TabBar.get_tab
 }
 
 //go:nosplit
-func (self class) SetTabAlignment(alignment gdclass.TabBarAlignmentMode) { //gd:TabBar.set_tab_alignment
+func (self class) SetTabAlignment(alignment AlignmentMode) { //gd:TabBar.set_tab_alignment
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
 	var r_ret = callframe.Nil
@@ -821,9 +828,9 @@ func (self class) SetTabAlignment(alignment gdclass.TabBarAlignmentMode) { //gd:
 }
 
 //go:nosplit
-func (self class) GetTabAlignment() gdclass.TabBarAlignmentMode { //gd:TabBar.get_tab_alignment
+func (self class) GetTabAlignment() AlignmentMode { //gd:TabBar.get_tab_alignment
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TabBarAlignmentMode](frame)
+	var r_ret = callframe.Ret[AlignmentMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_tab_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -915,7 +922,7 @@ func (self class) MoveTab(from int64, to int64) { //gd:TabBar.move_tab
 }
 
 //go:nosplit
-func (self class) SetTabCloseDisplayPolicy(policy gdclass.TabBarCloseButtonDisplayPolicy) { //gd:TabBar.set_tab_close_display_policy
+func (self class) SetTabCloseDisplayPolicy(policy CloseButtonDisplayPolicy) { //gd:TabBar.set_tab_close_display_policy
 	var frame = callframe.New()
 	callframe.Arg(frame, policy)
 	var r_ret = callframe.Nil
@@ -924,9 +931,9 @@ func (self class) SetTabCloseDisplayPolicy(policy gdclass.TabBarCloseButtonDispl
 }
 
 //go:nosplit
-func (self class) GetTabCloseDisplayPolicy() gdclass.TabBarCloseButtonDisplayPolicy { //gd:TabBar.get_tab_close_display_policy
+func (self class) GetTabCloseDisplayPolicy() CloseButtonDisplayPolicy { //gd:TabBar.get_tab_close_display_policy
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TabBarCloseButtonDisplayPolicy](frame)
+	var r_ret = callframe.Ret[CloseButtonDisplayPolicy](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_tab_close_display_policy, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1144,7 +1151,7 @@ func init() {
 	gdclass.Register("TabBar", func(ptr gd.Object) any { return [1]gdclass.TabBar{*(*gdclass.TabBar)(unsafe.Pointer(&ptr))} })
 }
 
-type AlignmentMode = gdclass.TabBarAlignmentMode //gd:TabBar.AlignmentMode
+type AlignmentMode int //gd:TabBar.AlignmentMode
 
 const (
 	/*Places tabs to the left.*/
@@ -1157,7 +1164,7 @@ const (
 	AlignmentMax AlignmentMode = 3
 )
 
-type CloseButtonDisplayPolicy = gdclass.TabBarCloseButtonDisplayPolicy //gd:TabBar.CloseButtonDisplayPolicy
+type CloseButtonDisplayPolicy int //gd:TabBar.CloseButtonDisplayPolicy
 
 const (
 	/*Never show the close buttons.*/

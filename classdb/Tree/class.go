@@ -11,8 +11,10 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/GUI"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/TreeItem"
 import "graphics.gd/variant/Array"
@@ -30,6 +32,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -45,6 +51,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -57,6 +64,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -378,29 +386,29 @@ func (self Instance) GetColumnTitle(column int) string { //gd:Tree.get_column_ti
 /*
 Sets the column title alignment. Note that [constant @GlobalScope.HORIZONTAL_ALIGNMENT_FILL] is not supported for column titles.
 */
-func (self Instance) SetColumnTitleAlignment(column int, title_alignment HorizontalAlignment) { //gd:Tree.set_column_title_alignment
+func (self Instance) SetColumnTitleAlignment(column int, title_alignment GUI.HorizontalAlignment) { //gd:Tree.set_column_title_alignment
 	Advanced(self).SetColumnTitleAlignment(int64(column), title_alignment)
 }
 
 /*
 Returns the column title alignment.
 */
-func (self Instance) GetColumnTitleAlignment(column int) HorizontalAlignment { //gd:Tree.get_column_title_alignment
-	return HorizontalAlignment(Advanced(self).GetColumnTitleAlignment(int64(column)))
+func (self Instance) GetColumnTitleAlignment(column int) GUI.HorizontalAlignment { //gd:Tree.get_column_title_alignment
+	return GUI.HorizontalAlignment(Advanced(self).GetColumnTitleAlignment(int64(column)))
 }
 
 /*
 Sets column title base writing direction.
 */
-func (self Instance) SetColumnTitleDirection(column int, direction gdclass.ControlTextDirection) { //gd:Tree.set_column_title_direction
+func (self Instance) SetColumnTitleDirection(column int, direction Control.TextDirection) { //gd:Tree.set_column_title_direction
 	Advanced(self).SetColumnTitleDirection(int64(column), direction)
 }
 
 /*
 Returns column title base writing direction.
 */
-func (self Instance) GetColumnTitleDirection(column int) gdclass.ControlTextDirection { //gd:Tree.get_column_title_direction
-	return gdclass.ControlTextDirection(Advanced(self).GetColumnTitleDirection(int64(column)))
+func (self Instance) GetColumnTitleDirection(column int) Control.TextDirection { //gd:Tree.get_column_title_direction
+	return Control.TextDirection(Advanced(self).GetColumnTitleDirection(int64(column)))
 }
 
 /*
@@ -536,11 +544,11 @@ func (self Instance) SetDropModeFlags(value int) {
 	class(self).SetDropModeFlags(int64(value))
 }
 
-func (self Instance) SelectMode() gdclass.TreeSelectMode {
-	return gdclass.TreeSelectMode(class(self).GetSelectMode())
+func (self Instance) SelectMode() SelectMode {
+	return SelectMode(class(self).GetSelectMode())
 }
 
-func (self Instance) SetSelectMode(value gdclass.TreeSelectMode) {
+func (self Instance) SetSelectMode(value SelectMode) {
 	class(self).SetSelectMode(value)
 }
 
@@ -808,7 +816,7 @@ func (self class) GetPressedButton() int64 { //gd:Tree.get_pressed_button
 }
 
 //go:nosplit
-func (self class) SetSelectMode(mode gdclass.TreeSelectMode) { //gd:Tree.set_select_mode
+func (self class) SetSelectMode(mode SelectMode) { //gd:Tree.set_select_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -817,9 +825,9 @@ func (self class) SetSelectMode(mode gdclass.TreeSelectMode) { //gd:Tree.set_sel
 }
 
 //go:nosplit
-func (self class) GetSelectMode() gdclass.TreeSelectMode { //gd:Tree.get_select_mode
+func (self class) GetSelectMode() SelectMode { //gd:Tree.get_select_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TreeSelectMode](frame)
+	var r_ret = callframe.Ret[SelectMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_get_select_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1068,7 +1076,7 @@ func (self class) GetColumnTitle(column int64) String.Readable { //gd:Tree.get_c
 Sets the column title alignment. Note that [constant @GlobalScope.HORIZONTAL_ALIGNMENT_FILL] is not supported for column titles.
 */
 //go:nosplit
-func (self class) SetColumnTitleAlignment(column int64, title_alignment HorizontalAlignment) { //gd:Tree.set_column_title_alignment
+func (self class) SetColumnTitleAlignment(column int64, title_alignment GUI.HorizontalAlignment) { //gd:Tree.set_column_title_alignment
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, title_alignment)
@@ -1081,10 +1089,10 @@ func (self class) SetColumnTitleAlignment(column int64, title_alignment Horizont
 Returns the column title alignment.
 */
 //go:nosplit
-func (self class) GetColumnTitleAlignment(column int64) HorizontalAlignment { //gd:Tree.get_column_title_alignment
+func (self class) GetColumnTitleAlignment(column int64) GUI.HorizontalAlignment { //gd:Tree.get_column_title_alignment
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	var r_ret = callframe.Ret[HorizontalAlignment](frame)
+	var r_ret = callframe.Ret[GUI.HorizontalAlignment](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_get_column_title_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1095,7 +1103,7 @@ func (self class) GetColumnTitleAlignment(column int64) HorizontalAlignment { //
 Sets column title base writing direction.
 */
 //go:nosplit
-func (self class) SetColumnTitleDirection(column int64, direction gdclass.ControlTextDirection) { //gd:Tree.set_column_title_direction
+func (self class) SetColumnTitleDirection(column int64, direction Control.TextDirection) { //gd:Tree.set_column_title_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, direction)
@@ -1108,10 +1116,10 @@ func (self class) SetColumnTitleDirection(column int64, direction gdclass.Contro
 Returns column title base writing direction.
 */
 //go:nosplit
-func (self class) GetColumnTitleDirection(column int64) gdclass.ControlTextDirection { //gd:Tree.get_column_title_direction
+func (self class) GetColumnTitleDirection(column int64) Control.TextDirection { //gd:Tree.get_column_title_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
-	var r_ret = callframe.Ret[gdclass.ControlTextDirection](frame)
+	var r_ret = callframe.Ret[Control.TextDirection](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Tree.Bind_get_column_title_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1437,7 +1445,7 @@ func init() {
 	gdclass.Register("Tree", func(ptr gd.Object) any { return [1]gdclass.Tree{*(*gdclass.Tree)(unsafe.Pointer(&ptr))} })
 }
 
-type SelectMode = gdclass.TreeSelectMode //gd:Tree.SelectMode
+type SelectMode int //gd:Tree.SelectMode
 
 const (
 	/*Allows selection of a single cell at a time. From the perspective of items, only a single item is allowed to be selected. And there is only one column selected in the selected item.
@@ -1451,7 +1459,7 @@ const (
 	SelectMulti SelectMode = 2
 )
 
-type DropModeFlags = gdclass.TreeDropModeFlags //gd:Tree.DropModeFlags
+type DropModeFlags int //gd:Tree.DropModeFlags
 
 const (
 	/*Disables all drop sections, but still allows to detect the "on item" drop section by [method get_drop_section_at_position].
@@ -1463,17 +1471,4 @@ const (
 	/*Enables "above item" and "below item" drop sections. The "above item" drop section covers the top half of the item, and the "below item" drop section covers the bottom half.
 	  When combined with [constant DROP_MODE_ON_ITEM], these drop sections halves the height and stays on top / bottom accordingly.*/
 	DropModeInbetween DropModeFlags = 2
-)
-
-type HorizontalAlignment int
-
-const (
-	/*Horizontal left alignment, usually for text-derived classes.*/
-	HorizontalAlignmentLeft HorizontalAlignment = 0
-	/*Horizontal center alignment, usually for text-derived classes.*/
-	HorizontalAlignmentCenter HorizontalAlignment = 1
-	/*Horizontal right alignment, usually for text-derived classes.*/
-	HorizontalAlignmentRight HorizontalAlignment = 2
-	/*Expand row to fit width, usually for text-derived classes.*/
-	HorizontalAlignmentFill HorizontalAlignment = 3
 )

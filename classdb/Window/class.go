@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/DisplayServer"
 import "graphics.gd/classdb/Font"
 import "graphics.gd/classdb/InputEvent"
 import "graphics.gd/classdb/Node"
@@ -35,6 +37,10 @@ import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -50,6 +56,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -62,6 +69,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -218,7 +226,7 @@ func (self Instance) StartDrag() { //gd:Window.start_drag
 /*
 Starts an interactive resize operation on the window, using the current mouse position. Call this method when handling a mouse button being pressed to simulate a pressed event on the window's edge.
 */
-func (self Instance) StartResize(edge gdclass.DisplayServerWindowResizeEdge) { //gd:Window.start_resize
+func (self Instance) StartResize(edge DisplayServer.WindowResizeEdge) { //gd:Window.start_resize
 	Advanced(self).StartResize(edge)
 }
 
@@ -643,15 +651,15 @@ func (self Instance) GetThemeDefaultFontSize() int { //gd:Window.get_theme_defau
 /*
 Sets layout direction and text writing direction. Right-to-left layouts are necessary for certain languages (e.g. Arabic and Hebrew).
 */
-func (self Instance) SetLayoutDirection(direction gdclass.WindowLayoutDirection) { //gd:Window.set_layout_direction
+func (self Instance) SetLayoutDirection(direction LayoutDirection) { //gd:Window.set_layout_direction
 	Advanced(self).SetLayoutDirection(direction)
 }
 
 /*
 Returns layout direction and text writing direction.
 */
-func (self Instance) GetLayoutDirection() gdclass.WindowLayoutDirection { //gd:Window.get_layout_direction
-	return gdclass.WindowLayoutDirection(Advanced(self).GetLayoutDirection())
+func (self Instance) GetLayoutDirection() LayoutDirection { //gd:Window.get_layout_direction
+	return LayoutDirection(Advanced(self).GetLayoutDirection())
 }
 
 /*
@@ -849,11 +857,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Mode() gdclass.WindowMode {
-	return gdclass.WindowMode(class(self).GetMode())
+func (self Instance) Mode() Mode {
+	return Mode(class(self).GetMode())
 }
 
-func (self Instance) SetMode(value gdclass.WindowMode) {
+func (self Instance) SetMode(value Mode) {
 	class(self).SetMode(value)
 }
 
@@ -865,11 +873,11 @@ func (self Instance) SetTitle(value string) {
 	class(self).SetTitle(String.New(value))
 }
 
-func (self Instance) InitialPosition() gdclass.WindowWindowInitialPosition {
-	return gdclass.WindowWindowInitialPosition(class(self).GetInitialPosition())
+func (self Instance) InitialPosition() WindowInitialPosition {
+	return WindowInitialPosition(class(self).GetInitialPosition())
 }
 
-func (self Instance) SetInitialPosition(value gdclass.WindowWindowInitialPosition) {
+func (self Instance) SetInitialPosition(value WindowInitialPosition) {
 	class(self).SetInitialPosition(value)
 }
 
@@ -1065,27 +1073,27 @@ func (self Instance) SetContentScaleSize(value Vector2i.XY) {
 	class(self).SetContentScaleSize(Vector2i.XY(value))
 }
 
-func (self Instance) ContentScaleMode() gdclass.WindowContentScaleMode {
-	return gdclass.WindowContentScaleMode(class(self).GetContentScaleMode())
+func (self Instance) ContentScaleMode() ContentScaleMode {
+	return ContentScaleMode(class(self).GetContentScaleMode())
 }
 
-func (self Instance) SetContentScaleMode(value gdclass.WindowContentScaleMode) {
+func (self Instance) SetContentScaleMode(value ContentScaleMode) {
 	class(self).SetContentScaleMode(value)
 }
 
-func (self Instance) ContentScaleAspect() gdclass.WindowContentScaleAspect {
-	return gdclass.WindowContentScaleAspect(class(self).GetContentScaleAspect())
+func (self Instance) ContentScaleAspect() ContentScaleAspect {
+	return ContentScaleAspect(class(self).GetContentScaleAspect())
 }
 
-func (self Instance) SetContentScaleAspect(value gdclass.WindowContentScaleAspect) {
+func (self Instance) SetContentScaleAspect(value ContentScaleAspect) {
 	class(self).SetContentScaleAspect(value)
 }
 
-func (self Instance) ContentScaleStretch() gdclass.WindowContentScaleStretch {
-	return gdclass.WindowContentScaleStretch(class(self).GetContentScaleStretch())
+func (self Instance) ContentScaleStretch() ContentScaleStretch {
+	return ContentScaleStretch(class(self).GetContentScaleStretch())
 }
 
-func (self Instance) SetContentScaleStretch(value gdclass.WindowContentScaleStretch) {
+func (self Instance) SetContentScaleStretch(value ContentScaleStretch) {
 	class(self).SetContentScaleStretch(value)
 }
 
@@ -1165,7 +1173,7 @@ func (self class) GetWindowId() int64 { //gd:Window.get_window_id
 }
 
 //go:nosplit
-func (self class) SetInitialPosition(initial_position gdclass.WindowWindowInitialPosition) { //gd:Window.set_initial_position
+func (self class) SetInitialPosition(initial_position WindowInitialPosition) { //gd:Window.set_initial_position
 	var frame = callframe.New()
 	callframe.Arg(frame, initial_position)
 	var r_ret = callframe.Nil
@@ -1174,9 +1182,9 @@ func (self class) SetInitialPosition(initial_position gdclass.WindowWindowInitia
 }
 
 //go:nosplit
-func (self class) GetInitialPosition() gdclass.WindowWindowInitialPosition { //gd:Window.get_initial_position
+func (self class) GetInitialPosition() WindowInitialPosition { //gd:Window.get_initial_position
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.WindowWindowInitialPosition](frame)
+	var r_ret = callframe.Ret[WindowInitialPosition](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_initial_position, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1329,7 +1337,7 @@ func (self class) GetMinSize() Vector2i.XY { //gd:Window.get_min_size
 }
 
 //go:nosplit
-func (self class) SetMode(mode gdclass.WindowMode) { //gd:Window.set_mode
+func (self class) SetMode(mode Mode) { //gd:Window.set_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -1338,9 +1346,9 @@ func (self class) SetMode(mode gdclass.WindowMode) { //gd:Window.set_mode
 }
 
 //go:nosplit
-func (self class) GetMode() gdclass.WindowMode { //gd:Window.get_mode
+func (self class) GetMode() Mode { //gd:Window.get_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.WindowMode](frame)
+	var r_ret = callframe.Ret[Mode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1351,7 +1359,7 @@ func (self class) GetMode() gdclass.WindowMode { //gd:Window.get_mode
 Sets a specified window flag.
 */
 //go:nosplit
-func (self class) SetFlag(flag gdclass.WindowFlags, enabled bool) { //gd:Window.set_flag
+func (self class) SetFlag(flag Flags, enabled bool) { //gd:Window.set_flag
 	var frame = callframe.New()
 	callframe.Arg(frame, flag)
 	callframe.Arg(frame, enabled)
@@ -1364,7 +1372,7 @@ func (self class) SetFlag(flag gdclass.WindowFlags, enabled bool) { //gd:Window.
 Returns [code]true[/code] if the [param flag] is set.
 */
 //go:nosplit
-func (self class) GetFlag(flag gdclass.WindowFlags) bool { //gd:Window.get_flag
+func (self class) GetFlag(flag Flags) bool { //gd:Window.get_flag
 	var frame = callframe.New()
 	callframe.Arg(frame, flag)
 	var r_ret = callframe.Ret[bool](frame)
@@ -1572,7 +1580,7 @@ func (self class) StartDrag() { //gd:Window.start_drag
 Starts an interactive resize operation on the window, using the current mouse position. Call this method when handling a mouse button being pressed to simulate a pressed event on the window's edge.
 */
 //go:nosplit
-func (self class) StartResize(edge gdclass.DisplayServerWindowResizeEdge) { //gd:Window.start_resize
+func (self class) StartResize(edge DisplayServer.WindowResizeEdge) { //gd:Window.start_resize
 	var frame = callframe.New()
 	callframe.Arg(frame, edge)
 	var r_ret = callframe.Nil
@@ -1670,7 +1678,7 @@ func (self class) GetContentScaleSize() Vector2i.XY { //gd:Window.get_content_sc
 }
 
 //go:nosplit
-func (self class) SetContentScaleMode(mode gdclass.WindowContentScaleMode) { //gd:Window.set_content_scale_mode
+func (self class) SetContentScaleMode(mode ContentScaleMode) { //gd:Window.set_content_scale_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -1679,9 +1687,9 @@ func (self class) SetContentScaleMode(mode gdclass.WindowContentScaleMode) { //g
 }
 
 //go:nosplit
-func (self class) GetContentScaleMode() gdclass.WindowContentScaleMode { //gd:Window.get_content_scale_mode
+func (self class) GetContentScaleMode() ContentScaleMode { //gd:Window.get_content_scale_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.WindowContentScaleMode](frame)
+	var r_ret = callframe.Ret[ContentScaleMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_content_scale_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1689,7 +1697,7 @@ func (self class) GetContentScaleMode() gdclass.WindowContentScaleMode { //gd:Wi
 }
 
 //go:nosplit
-func (self class) SetContentScaleAspect(aspect gdclass.WindowContentScaleAspect) { //gd:Window.set_content_scale_aspect
+func (self class) SetContentScaleAspect(aspect ContentScaleAspect) { //gd:Window.set_content_scale_aspect
 	var frame = callframe.New()
 	callframe.Arg(frame, aspect)
 	var r_ret = callframe.Nil
@@ -1698,9 +1706,9 @@ func (self class) SetContentScaleAspect(aspect gdclass.WindowContentScaleAspect)
 }
 
 //go:nosplit
-func (self class) GetContentScaleAspect() gdclass.WindowContentScaleAspect { //gd:Window.get_content_scale_aspect
+func (self class) GetContentScaleAspect() ContentScaleAspect { //gd:Window.get_content_scale_aspect
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.WindowContentScaleAspect](frame)
+	var r_ret = callframe.Ret[ContentScaleAspect](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_content_scale_aspect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1708,7 +1716,7 @@ func (self class) GetContentScaleAspect() gdclass.WindowContentScaleAspect { //g
 }
 
 //go:nosplit
-func (self class) SetContentScaleStretch(stretch gdclass.WindowContentScaleStretch) { //gd:Window.set_content_scale_stretch
+func (self class) SetContentScaleStretch(stretch ContentScaleStretch) { //gd:Window.set_content_scale_stretch
 	var frame = callframe.New()
 	callframe.Arg(frame, stretch)
 	var r_ret = callframe.Nil
@@ -1717,9 +1725,9 @@ func (self class) SetContentScaleStretch(stretch gdclass.WindowContentScaleStret
 }
 
 //go:nosplit
-func (self class) GetContentScaleStretch() gdclass.WindowContentScaleStretch { //gd:Window.get_content_scale_stretch
+func (self class) GetContentScaleStretch() ContentScaleStretch { //gd:Window.get_content_scale_stretch
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.WindowContentScaleStretch](frame)
+	var r_ret = callframe.Ret[ContentScaleStretch](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_content_scale_stretch, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2382,7 +2390,7 @@ func (self class) GetThemeDefaultFontSize() int64 { //gd:Window.get_theme_defaul
 Sets layout direction and text writing direction. Right-to-left layouts are necessary for certain languages (e.g. Arabic and Hebrew).
 */
 //go:nosplit
-func (self class) SetLayoutDirection(direction gdclass.WindowLayoutDirection) { //gd:Window.set_layout_direction
+func (self class) SetLayoutDirection(direction LayoutDirection) { //gd:Window.set_layout_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, direction)
 	var r_ret = callframe.Nil
@@ -2394,9 +2402,9 @@ func (self class) SetLayoutDirection(direction gdclass.WindowLayoutDirection) { 
 Returns layout direction and text writing direction.
 */
 //go:nosplit
-func (self class) GetLayoutDirection() gdclass.WindowLayoutDirection { //gd:Window.get_layout_direction
+func (self class) GetLayoutDirection() LayoutDirection { //gd:Window.get_layout_direction
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.WindowLayoutDirection](frame)
+	var r_ret = callframe.Ret[LayoutDirection](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Window.Bind_get_layout_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2663,7 +2671,7 @@ func init() {
 	gdclass.Register("Window", func(ptr gd.Object) any { return [1]gdclass.Window{*(*gdclass.Window)(unsafe.Pointer(&ptr))} })
 }
 
-type Mode = gdclass.WindowMode //gd:Window.Mode
+type Mode int //gd:Window.Mode
 
 const (
 	/*Windowed mode, i.e. [Window] doesn't occupy the whole screen (unless set to the size of the screen).*/
@@ -2689,7 +2697,7 @@ const (
 	ModeExclusiveFullscreen Mode = 4
 )
 
-type Flags = gdclass.WindowFlags //gd:Window.Flags
+type Flags int //gd:Window.Flags
 
 const (
 	/*The window can't be resized by dragging its resize grip. It's still possible to resize the window using [member size]. This flag is ignored for full screen windows. Set with [member unresizable].*/
@@ -2725,7 +2733,7 @@ const (
 	FlagMax Flags = 10
 )
 
-type ContentScaleMode = gdclass.WindowContentScaleMode //gd:Window.ContentScaleMode
+type ContentScaleMode int //gd:Window.ContentScaleMode
 
 const (
 	/*The content will not be scaled to match the [Window]'s size.*/
@@ -2736,7 +2744,7 @@ const (
 	ContentScaleModeViewport ContentScaleMode = 2
 )
 
-type ContentScaleAspect = gdclass.WindowContentScaleAspect //gd:Window.ContentScaleAspect
+type ContentScaleAspect int //gd:Window.ContentScaleAspect
 
 const (
 	/*The aspect will be ignored. Scaling will simply stretch the content to fit the target size.*/
@@ -2751,7 +2759,7 @@ const (
 	ContentScaleAspectExpand ContentScaleAspect = 4
 )
 
-type ContentScaleStretch = gdclass.WindowContentScaleStretch //gd:Window.ContentScaleStretch
+type ContentScaleStretch int //gd:Window.ContentScaleStretch
 
 const (
 	/*The content will be stretched according to a fractional factor. This fills all the space available in the window, but allows "pixel wobble" to occur due to uneven pixel scaling.*/
@@ -2760,7 +2768,7 @@ const (
 	ContentScaleStretchInteger ContentScaleStretch = 1
 )
 
-type LayoutDirection = gdclass.WindowLayoutDirection //gd:Window.LayoutDirection
+type LayoutDirection int //gd:Window.LayoutDirection
 
 const (
 	/*Automatic layout direction, determined from the parent window layout direction.*/
@@ -2778,7 +2786,7 @@ const (
 	LayoutDirectionLocale LayoutDirection = 1
 )
 
-type WindowInitialPosition = gdclass.WindowWindowInitialPosition //gd:Window.WindowInitialPosition
+type WindowInitialPosition int //gd:Window.WindowInitialPosition
 
 const (
 	/*Initial window position is determined by [member position].*/

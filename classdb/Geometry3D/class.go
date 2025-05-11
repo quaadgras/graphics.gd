@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -27,6 +28,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -42,6 +47,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -54,6 +60,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -99,7 +106,7 @@ func BuildCylinderPlanes(radius Float.X, height Float.X, sides int) []Plane.Norm
 /*
 Returns an array of [Plane]s closely bounding a faceted cylinder centered at the origin with radius [param radius] and height [param height]. The parameter [param sides] defines how many planes will be generated for the round part of the cylinder. The parameter [param axis] describes the axis along which the cylinder is oriented (0 for X, 1 for Y, 2 for Z).
 */
-func BuildCylinderPlanesOptions(radius Float.X, height Float.X, sides int, axis gd.Vector3Axis) []Plane.NormalD { //gd:Geometry3D.build_cylinder_planes
+func BuildCylinderPlanesOptions(radius Float.X, height Float.X, sides int, axis Vector3.Axis) []Plane.NormalD { //gd:Geometry3D.build_cylinder_planes
 	once.Do(singleton)
 	return []Plane.NormalD(gd.ArrayAs[[]Plane.NormalD](gd.InternalArray(Advanced().BuildCylinderPlanes(float64(radius), float64(height), int64(sides), axis))))
 }
@@ -115,7 +122,7 @@ func BuildCapsulePlanes(radius Float.X, height Float.X, sides int, lats int) []P
 /*
 Returns an array of [Plane]s closely bounding a faceted capsule centered at the origin with radius [param radius] and height [param height]. The parameter [param sides] defines how many planes will be generated for the side part of the capsule, whereas [param lats] gives the number of latitudinal steps at the bottom and top of the capsule. The parameter [param axis] describes the axis along which the capsule is oriented (0 for X, 1 for Y, 2 for Z).
 */
-func BuildCapsulePlanesOptions(radius Float.X, height Float.X, sides int, lats int, axis gd.Vector3Axis) []Plane.NormalD { //gd:Geometry3D.build_capsule_planes
+func BuildCapsulePlanesOptions(radius Float.X, height Float.X, sides int, lats int, axis Vector3.Axis) []Plane.NormalD { //gd:Geometry3D.build_capsule_planes
 	once.Do(singleton)
 	return []Plane.NormalD(gd.ArrayAs[[]Plane.NormalD](gd.InternalArray(Advanced().BuildCapsulePlanes(float64(radius), float64(height), int64(sides), int64(lats), axis))))
 }
@@ -256,7 +263,7 @@ func (self class) BuildBoxPlanes(extents Vector3.XYZ) Array.Contains[Plane.Norma
 Returns an array of [Plane]s closely bounding a faceted cylinder centered at the origin with radius [param radius] and height [param height]. The parameter [param sides] defines how many planes will be generated for the round part of the cylinder. The parameter [param axis] describes the axis along which the cylinder is oriented (0 for X, 1 for Y, 2 for Z).
 */
 //go:nosplit
-func (self class) BuildCylinderPlanes(radius float64, height float64, sides int64, axis gd.Vector3Axis) Array.Contains[Plane.NormalD] { //gd:Geometry3D.build_cylinder_planes
+func (self class) BuildCylinderPlanes(radius float64, height float64, sides int64, axis Vector3.Axis) Array.Contains[Plane.NormalD] { //gd:Geometry3D.build_cylinder_planes
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
 	callframe.Arg(frame, height)
@@ -273,7 +280,7 @@ func (self class) BuildCylinderPlanes(radius float64, height float64, sides int6
 Returns an array of [Plane]s closely bounding a faceted capsule centered at the origin with radius [param radius] and height [param height]. The parameter [param sides] defines how many planes will be generated for the side part of the capsule, whereas [param lats] gives the number of latitudinal steps at the bottom and top of the capsule. The parameter [param axis] describes the axis along which the capsule is oriented (0 for X, 1 for Y, 2 for Z).
 */
 //go:nosplit
-func (self class) BuildCapsulePlanes(radius float64, height float64, sides int64, lats int64, axis gd.Vector3Axis) Array.Contains[Plane.NormalD] { //gd:Geometry3D.build_capsule_planes
+func (self class) BuildCapsulePlanes(radius float64, height float64, sides int64, lats int64, axis Vector3.Axis) Array.Contains[Plane.NormalD] { //gd:Geometry3D.build_capsule_planes
 	var frame = callframe.New()
 	callframe.Arg(frame, radius)
 	callframe.Arg(frame, height)

@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/AudioServer"
 import "graphics.gd/classdb/AudioStream"
 import "graphics.gd/classdb/AudioStreamPlayback"
 import "graphics.gd/classdb/Node"
@@ -28,6 +30,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -43,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,6 +62,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -154,11 +162,11 @@ func (self Instance) SetStream(value AudioStream.Instance) {
 	class(self).SetStream(value)
 }
 
-func (self Instance) AttenuationModel() gdclass.AudioStreamPlayer3DAttenuationModel {
-	return gdclass.AudioStreamPlayer3DAttenuationModel(class(self).GetAttenuationModel())
+func (self Instance) AttenuationModel() AttenuationModel {
+	return AttenuationModel(class(self).GetAttenuationModel())
 }
 
-func (self Instance) SetAttenuationModel(value gdclass.AudioStreamPlayer3DAttenuationModel) {
+func (self Instance) SetAttenuationModel(value AttenuationModel) {
 	class(self).SetAttenuationModel(value)
 }
 
@@ -266,11 +274,11 @@ func (self Instance) SetAreaMask(value int) {
 	class(self).SetAreaMask(int64(value))
 }
 
-func (self Instance) PlaybackType() gdclass.AudioServerPlaybackType {
-	return gdclass.AudioServerPlaybackType(class(self).GetPlaybackType())
+func (self Instance) PlaybackType() AudioServer.PlaybackType {
+	return AudioServer.PlaybackType(class(self).GetPlaybackType())
 }
 
-func (self Instance) SetPlaybackType(value gdclass.AudioServerPlaybackType) {
+func (self Instance) SetPlaybackType(value AudioServer.PlaybackType) {
 	class(self).SetPlaybackType(value)
 }
 
@@ -314,11 +322,11 @@ func (self Instance) SetAttenuationFilterDb(value Float.X) {
 	class(self).SetAttenuationFilterDb(float64(value))
 }
 
-func (self Instance) DopplerTracking() gdclass.AudioStreamPlayer3DDopplerTracking {
-	return gdclass.AudioStreamPlayer3DDopplerTracking(class(self).GetDopplerTracking())
+func (self Instance) DopplerTracking() DopplerTracking {
+	return DopplerTracking(class(self).GetDopplerTracking())
 }
 
-func (self Instance) SetDopplerTracking(value gdclass.AudioStreamPlayer3DDopplerTracking) {
+func (self Instance) SetDopplerTracking(value DopplerTracking) {
 	class(self).SetDopplerTracking(value)
 }
 
@@ -675,7 +683,7 @@ func (self class) GetAttenuationFilterDb() float64 { //gd:AudioStreamPlayer3D.ge
 }
 
 //go:nosplit
-func (self class) SetAttenuationModel(model gdclass.AudioStreamPlayer3DAttenuationModel) { //gd:AudioStreamPlayer3D.set_attenuation_model
+func (self class) SetAttenuationModel(model AttenuationModel) { //gd:AudioStreamPlayer3D.set_attenuation_model
 	var frame = callframe.New()
 	callframe.Arg(frame, model)
 	var r_ret = callframe.Nil
@@ -684,9 +692,9 @@ func (self class) SetAttenuationModel(model gdclass.AudioStreamPlayer3DAttenuati
 }
 
 //go:nosplit
-func (self class) GetAttenuationModel() gdclass.AudioStreamPlayer3DAttenuationModel { //gd:AudioStreamPlayer3D.get_attenuation_model
+func (self class) GetAttenuationModel() AttenuationModel { //gd:AudioStreamPlayer3D.get_attenuation_model
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.AudioStreamPlayer3DAttenuationModel](frame)
+	var r_ret = callframe.Ret[AttenuationModel](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_attenuation_model, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -694,7 +702,7 @@ func (self class) GetAttenuationModel() gdclass.AudioStreamPlayer3DAttenuationMo
 }
 
 //go:nosplit
-func (self class) SetDopplerTracking(mode gdclass.AudioStreamPlayer3DDopplerTracking) { //gd:AudioStreamPlayer3D.set_doppler_tracking
+func (self class) SetDopplerTracking(mode DopplerTracking) { //gd:AudioStreamPlayer3D.set_doppler_tracking
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -703,9 +711,9 @@ func (self class) SetDopplerTracking(mode gdclass.AudioStreamPlayer3DDopplerTrac
 }
 
 //go:nosplit
-func (self class) GetDopplerTracking() gdclass.AudioStreamPlayer3DDopplerTracking { //gd:AudioStreamPlayer3D.get_doppler_tracking
+func (self class) GetDopplerTracking() DopplerTracking { //gd:AudioStreamPlayer3D.get_doppler_tracking
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.AudioStreamPlayer3DDopplerTracking](frame)
+	var r_ret = callframe.Ret[DopplerTracking](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_doppler_tracking, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -796,7 +804,7 @@ func (self class) GetStreamPlayback() [1]gdclass.AudioStreamPlayback { //gd:Audi
 }
 
 //go:nosplit
-func (self class) SetPlaybackType(playback_type gdclass.AudioServerPlaybackType) { //gd:AudioStreamPlayer3D.set_playback_type
+func (self class) SetPlaybackType(playback_type AudioServer.PlaybackType) { //gd:AudioStreamPlayer3D.set_playback_type
 	var frame = callframe.New()
 	callframe.Arg(frame, playback_type)
 	var r_ret = callframe.Nil
@@ -805,9 +813,9 @@ func (self class) SetPlaybackType(playback_type gdclass.AudioServerPlaybackType)
 }
 
 //go:nosplit
-func (self class) GetPlaybackType() gdclass.AudioServerPlaybackType { //gd:AudioStreamPlayer3D.get_playback_type
+func (self class) GetPlaybackType() AudioServer.PlaybackType { //gd:AudioStreamPlayer3D.get_playback_type
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.AudioServerPlaybackType](frame)
+	var r_ret = callframe.Ret[AudioServer.PlaybackType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer3D.Bind_get_playback_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -848,7 +856,7 @@ func init() {
 	})
 }
 
-type AttenuationModel = gdclass.AudioStreamPlayer3DAttenuationModel //gd:AudioStreamPlayer3D.AttenuationModel
+type AttenuationModel int //gd:AudioStreamPlayer3D.AttenuationModel
 
 const (
 	/*Attenuation of loudness according to linear distance.*/
@@ -861,7 +869,7 @@ const (
 	AttenuationDisabled AttenuationModel = 3
 )
 
-type DopplerTracking = gdclass.AudioStreamPlayer3DDopplerTracking //gd:AudioStreamPlayer3D.DopplerTracking
+type DopplerTracking int //gd:AudioStreamPlayer3D.DopplerTracking
 
 const (
 	/*Disables doppler tracking.*/

@@ -11,11 +11,13 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/HScrollBar"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/PopupMenu"
+import "graphics.gd/classdb/TextServer"
 import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/classdb/VScrollBar"
 import "graphics.gd/variant/Array"
@@ -36,6 +38,10 @@ import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -51,6 +57,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -63,6 +70,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -467,7 +475,7 @@ func (self Expanded) PastePrimaryClipboard(caret_index int) { //gd:TextEdit.past
 Starts an action, will end the current action if [param action] is different.
 An action will also end after a call to [method end_action], after [member ProjectSettings.gui/timers/text_edit_idle_detect_sec] is triggered or a new undoable step outside the [method start_action] and [method end_action] calls.
 */
-func (self Instance) StartAction(action gdclass.TextEditEditAction) { //gd:TextEdit.start_action
+func (self Instance) StartAction(action EditAction) { //gd:TextEdit.start_action
 	Advanced(self).StartAction(action)
 }
 
@@ -926,15 +934,15 @@ func (self Expanded) GetWordUnderCaret(caret_index int) string { //gd:TextEdit.g
 /*
 Sets the current selection mode.
 */
-func (self Instance) SetSelectionMode(mode gdclass.TextEditSelectionMode) { //gd:TextEdit.set_selection_mode
+func (self Instance) SetSelectionMode(mode SelectionMode) { //gd:TextEdit.set_selection_mode
 	Advanced(self).SetSelectionMode(mode)
 }
 
 /*
 Returns the current selection mode.
 */
-func (self Instance) GetSelectionMode() gdclass.TextEditSelectionMode { //gd:TextEdit.get_selection_mode
-	return gdclass.TextEditSelectionMode(Advanced(self).GetSelectionMode())
+func (self Instance) GetSelectionMode() SelectionMode { //gd:TextEdit.get_selection_mode
+	return SelectionMode(Advanced(self).GetSelectionMode())
 }
 
 /*
@@ -1429,15 +1437,15 @@ func (self Instance) GetGutterName(gutter int) string { //gd:TextEdit.get_gutter
 /*
 Sets the type of gutter at the given index. Gutters can contain icons, text, or custom visuals. See [enum TextEdit.GutterType] for options.
 */
-func (self Instance) SetGutterType(gutter int, atype gdclass.TextEditGutterType) { //gd:TextEdit.set_gutter_type
+func (self Instance) SetGutterType(gutter int, atype GutterType) { //gd:TextEdit.set_gutter_type
 	Advanced(self).SetGutterType(int64(gutter), atype)
 }
 
 /*
 Returns the type of the gutter at the given index. Gutters can contain icons, text, or custom visuals. See [enum TextEdit.GutterType] for options.
 */
-func (self Instance) GetGutterType(gutter int) gdclass.TextEditGutterType { //gd:TextEdit.get_gutter_type
-	return gdclass.TextEditGutterType(Advanced(self).GetGutterType(int64(gutter)))
+func (self Instance) GetGutterType(gutter int) GutterType { //gd:TextEdit.get_gutter_type
+	return GutterType(Advanced(self).GetGutterType(int64(gutter)))
 }
 
 /*
@@ -1825,19 +1833,19 @@ func (self Instance) SetEmptySelectionClipboardEnabled(value bool) {
 	class(self).SetEmptySelectionClipboardEnabled(value)
 }
 
-func (self Instance) WrapMode() gdclass.TextEditLineWrappingMode {
-	return gdclass.TextEditLineWrappingMode(class(self).GetLineWrappingMode())
+func (self Instance) WrapMode() LineWrappingMode {
+	return LineWrappingMode(class(self).GetLineWrappingMode())
 }
 
-func (self Instance) SetWrapMode(value gdclass.TextEditLineWrappingMode) {
+func (self Instance) SetWrapMode(value LineWrappingMode) {
 	class(self).SetLineWrappingMode(value)
 }
 
-func (self Instance) AutowrapMode() gdclass.TextServerAutowrapMode {
-	return gdclass.TextServerAutowrapMode(class(self).GetAutowrapMode())
+func (self Instance) AutowrapMode() TextServer.AutowrapMode {
+	return TextServer.AutowrapMode(class(self).GetAutowrapMode())
 }
 
-func (self Instance) SetAutowrapMode(value gdclass.TextServerAutowrapMode) {
+func (self Instance) SetAutowrapMode(value TextServer.AutowrapMode) {
 	class(self).SetAutowrapMode(value)
 }
 
@@ -1921,11 +1929,11 @@ func (self Instance) SetMinimapWidth(value int) {
 	class(self).SetMinimapWidth(int64(value))
 }
 
-func (self Instance) CaretType() gdclass.TextEditCaretType {
-	return gdclass.TextEditCaretType(class(self).GetCaretType())
+func (self Instance) CaretType() CaretType {
+	return CaretType(class(self).GetCaretType())
 }
 
-func (self Instance) SetCaretType(value gdclass.TextEditCaretType) {
+func (self Instance) SetCaretType(value CaretType) {
 	class(self).SetCaretType(value)
 }
 
@@ -2041,11 +2049,11 @@ func (self Instance) SetDrawSpaces(value bool) {
 	class(self).SetDrawSpaces(value)
 }
 
-func (self Instance) TextDirection() gdclass.ControlTextDirection {
-	return gdclass.ControlTextDirection(class(self).GetTextDirection())
+func (self Instance) TextDirection() Control.TextDirection {
+	return Control.TextDirection(class(self).GetTextDirection())
 }
 
-func (self Instance) SetTextDirection(value gdclass.ControlTextDirection) {
+func (self Instance) SetTextDirection(value Control.TextDirection) {
 	class(self).SetTextDirection(value)
 }
 
@@ -2057,11 +2065,11 @@ func (self Instance) SetLanguage(value string) {
 	class(self).SetLanguage(String.New(value))
 }
 
-func (self Instance) StructuredTextBidiOverride() gdclass.TextServerStructuredTextParser {
-	return gdclass.TextServerStructuredTextParser(class(self).GetStructuredTextBidiOverride())
+func (self Instance) StructuredTextBidiOverride() TextServer.StructuredTextParser {
+	return TextServer.StructuredTextParser(class(self).GetStructuredTextBidiOverride())
 }
 
-func (self Instance) SetStructuredTextBidiOverride(value gdclass.TextServerStructuredTextParser) {
+func (self Instance) SetStructuredTextBidiOverride(value TextServer.StructuredTextParser) {
 	class(self).SetStructuredTextBidiOverride(value)
 }
 
@@ -2196,7 +2204,7 @@ func (self class) IsEditable() bool { //gd:TextEdit.is_editable
 }
 
 //go:nosplit
-func (self class) SetTextDirection(direction gdclass.ControlTextDirection) { //gd:TextEdit.set_text_direction
+func (self class) SetTextDirection(direction Control.TextDirection) { //gd:TextEdit.set_text_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, direction)
 	var r_ret = callframe.Nil
@@ -2205,9 +2213,9 @@ func (self class) SetTextDirection(direction gdclass.ControlTextDirection) { //g
 }
 
 //go:nosplit
-func (self class) GetTextDirection() gdclass.ControlTextDirection { //gd:TextEdit.get_text_direction
+func (self class) GetTextDirection() Control.TextDirection { //gd:TextEdit.get_text_direction
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ControlTextDirection](frame)
+	var r_ret = callframe.Ret[Control.TextDirection](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_text_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2234,7 +2242,7 @@ func (self class) GetLanguage() String.Readable { //gd:TextEdit.get_language
 }
 
 //go:nosplit
-func (self class) SetStructuredTextBidiOverride(parser gdclass.TextServerStructuredTextParser) { //gd:TextEdit.set_structured_text_bidi_override
+func (self class) SetStructuredTextBidiOverride(parser TextServer.StructuredTextParser) { //gd:TextEdit.set_structured_text_bidi_override
 	var frame = callframe.New()
 	callframe.Arg(frame, parser)
 	var r_ret = callframe.Nil
@@ -2243,9 +2251,9 @@ func (self class) SetStructuredTextBidiOverride(parser gdclass.TextServerStructu
 }
 
 //go:nosplit
-func (self class) GetStructuredTextBidiOverride() gdclass.TextServerStructuredTextParser { //gd:TextEdit.get_structured_text_bidi_override
+func (self class) GetStructuredTextBidiOverride() TextServer.StructuredTextParser { //gd:TextEdit.get_structured_text_bidi_override
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TextServerStructuredTextParser](frame)
+	var r_ret = callframe.Ret[TextServer.StructuredTextParser](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_structured_text_bidi_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2810,7 +2818,7 @@ Starts an action, will end the current action if [param action] is different.
 An action will also end after a call to [method end_action], after [member ProjectSettings.gui/timers/text_edit_idle_detect_sec] is triggered or a new undoable step outside the [method start_action] and [method end_action] calls.
 */
 //go:nosplit
-func (self class) StartAction(action gdclass.TextEditEditAction) { //gd:TextEdit.start_action
+func (self class) StartAction(action EditAction) { //gd:TextEdit.start_action
 	var frame = callframe.New()
 	callframe.Arg(frame, action)
 	var r_ret = callframe.Nil
@@ -3139,7 +3147,7 @@ func (self class) IsMouseOverSelection(edges bool, caret_index int64) bool { //g
 }
 
 //go:nosplit
-func (self class) SetCaretType(atype gdclass.TextEditCaretType) { //gd:TextEdit.set_caret_type
+func (self class) SetCaretType(atype CaretType) { //gd:TextEdit.set_caret_type
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	var r_ret = callframe.Nil
@@ -3148,9 +3156,9 @@ func (self class) SetCaretType(atype gdclass.TextEditCaretType) { //gd:TextEdit.
 }
 
 //go:nosplit
-func (self class) GetCaretType() gdclass.TextEditCaretType { //gd:TextEdit.get_caret_type
+func (self class) GetCaretType() CaretType { //gd:TextEdit.get_caret_type
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TextEditCaretType](frame)
+	var r_ret = callframe.Ret[CaretType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_caret_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3681,7 +3689,7 @@ func (self class) IsDragAndDropSelectionEnabled() bool { //gd:TextEdit.is_drag_a
 Sets the current selection mode.
 */
 //go:nosplit
-func (self class) SetSelectionMode(mode gdclass.TextEditSelectionMode) { //gd:TextEdit.set_selection_mode
+func (self class) SetSelectionMode(mode SelectionMode) { //gd:TextEdit.set_selection_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -3693,9 +3701,9 @@ func (self class) SetSelectionMode(mode gdclass.TextEditSelectionMode) { //gd:Te
 Returns the current selection mode.
 */
 //go:nosplit
-func (self class) GetSelectionMode() gdclass.TextEditSelectionMode { //gd:TextEdit.get_selection_mode
+func (self class) GetSelectionMode() SelectionMode { //gd:TextEdit.get_selection_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TextEditSelectionMode](frame)
+	var r_ret = callframe.Ret[SelectionMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3981,7 +3989,7 @@ func (self class) DeleteSelection(caret_index int64) { //gd:TextEdit.delete_sele
 }
 
 //go:nosplit
-func (self class) SetLineWrappingMode(mode gdclass.TextEditLineWrappingMode) { //gd:TextEdit.set_line_wrapping_mode
+func (self class) SetLineWrappingMode(mode LineWrappingMode) { //gd:TextEdit.set_line_wrapping_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -3990,9 +3998,9 @@ func (self class) SetLineWrappingMode(mode gdclass.TextEditLineWrappingMode) { /
 }
 
 //go:nosplit
-func (self class) GetLineWrappingMode() gdclass.TextEditLineWrappingMode { //gd:TextEdit.get_line_wrapping_mode
+func (self class) GetLineWrappingMode() LineWrappingMode { //gd:TextEdit.get_line_wrapping_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TextEditLineWrappingMode](frame)
+	var r_ret = callframe.Ret[LineWrappingMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_wrapping_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -4000,7 +4008,7 @@ func (self class) GetLineWrappingMode() gdclass.TextEditLineWrappingMode { //gd:
 }
 
 //go:nosplit
-func (self class) SetAutowrapMode(autowrap_mode gdclass.TextServerAutowrapMode) { //gd:TextEdit.set_autowrap_mode
+func (self class) SetAutowrapMode(autowrap_mode TextServer.AutowrapMode) { //gd:TextEdit.set_autowrap_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, autowrap_mode)
 	var r_ret = callframe.Nil
@@ -4009,9 +4017,9 @@ func (self class) SetAutowrapMode(autowrap_mode gdclass.TextServerAutowrapMode) 
 }
 
 //go:nosplit
-func (self class) GetAutowrapMode() gdclass.TextServerAutowrapMode { //gd:TextEdit.get_autowrap_mode
+func (self class) GetAutowrapMode() TextServer.AutowrapMode { //gd:TextEdit.get_autowrap_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TextServerAutowrapMode](frame)
+	var r_ret = callframe.Ret[TextServer.AutowrapMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_autowrap_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -4511,7 +4519,7 @@ func (self class) GetGutterName(gutter int64) String.Readable { //gd:TextEdit.ge
 Sets the type of gutter at the given index. Gutters can contain icons, text, or custom visuals. See [enum TextEdit.GutterType] for options.
 */
 //go:nosplit
-func (self class) SetGutterType(gutter int64, atype gdclass.TextEditGutterType) { //gd:TextEdit.set_gutter_type
+func (self class) SetGutterType(gutter int64, atype GutterType) { //gd:TextEdit.set_gutter_type
 	var frame = callframe.New()
 	callframe.Arg(frame, gutter)
 	callframe.Arg(frame, atype)
@@ -4524,10 +4532,10 @@ func (self class) SetGutterType(gutter int64, atype gdclass.TextEditGutterType) 
 Returns the type of the gutter at the given index. Gutters can contain icons, text, or custom visuals. See [enum TextEdit.GutterType] for options.
 */
 //go:nosplit
-func (self class) GetGutterType(gutter int64) gdclass.TextEditGutterType { //gd:TextEdit.get_gutter_type
+func (self class) GetGutterType(gutter int64) GutterType { //gd:TextEdit.get_gutter_type
 	var frame = callframe.New()
 	callframe.Arg(frame, gutter)
-	var r_ret = callframe.Ret[gdclass.TextEditGutterType](frame)
+	var r_ret = callframe.Ret[GutterType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_gutter_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -5189,7 +5197,7 @@ func init() {
 	gdclass.Register("TextEdit", func(ptr gd.Object) any { return [1]gdclass.TextEdit{*(*gdclass.TextEdit)(unsafe.Pointer(&ptr))} })
 }
 
-type MenuItems = gdclass.TextEditMenuItems //gd:TextEdit.MenuItems
+type MenuItems int //gd:TextEdit.MenuItems
 
 const (
 	/*Cuts (copies and clears) the selected text.*/
@@ -5258,7 +5266,7 @@ const (
 	MenuMax MenuItems = 31
 )
 
-type EditAction = gdclass.TextEditEditAction //gd:TextEdit.EditAction
+type EditAction int //gd:TextEdit.EditAction
 
 const (
 	/*No current action.*/
@@ -5271,7 +5279,7 @@ const (
 	ActionDelete EditAction = 3
 )
 
-type SearchFlags = gdclass.TextEditSearchFlags //gd:TextEdit.SearchFlags
+type SearchFlags int //gd:TextEdit.SearchFlags
 
 const (
 	/*Match case when searching.*/
@@ -5282,7 +5290,7 @@ const (
 	SearchBackwards SearchFlags = 4
 )
 
-type CaretType = gdclass.TextEditCaretType //gd:TextEdit.CaretType
+type CaretType int //gd:TextEdit.CaretType
 
 const (
 	/*Vertical line caret.*/
@@ -5291,7 +5299,7 @@ const (
 	CaretTypeBlock CaretType = 1
 )
 
-type SelectionMode = gdclass.TextEditSelectionMode //gd:TextEdit.SelectionMode
+type SelectionMode int //gd:TextEdit.SelectionMode
 
 const (
 	/*Not selecting.*/
@@ -5306,7 +5314,7 @@ const (
 	SelectionModeLine SelectionMode = 4
 )
 
-type LineWrappingMode = gdclass.TextEditLineWrappingMode //gd:TextEdit.LineWrappingMode
+type LineWrappingMode int //gd:TextEdit.LineWrappingMode
 
 const (
 	/*Line wrapping is disabled.*/
@@ -5315,7 +5323,7 @@ const (
 	LineWrappingBoundary LineWrappingMode = 1
 )
 
-type GutterType = gdclass.TextEditGutterType //gd:TextEdit.GutterType
+type GutterType int //gd:TextEdit.GutterType
 
 const (
 	/*When a gutter is set to string using [method set_gutter_type], it is used to contain text set via the [method set_line_gutter_text] method.*/

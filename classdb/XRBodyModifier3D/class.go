@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/SkeletonModifier3D"
@@ -27,6 +28,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -42,6 +47,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -54,6 +60,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -101,19 +108,19 @@ func (self Instance) SetBodyTracker(value string) {
 	class(self).SetBodyTracker(String.Name(String.New(value)))
 }
 
-func (self Instance) BodyUpdate() gdclass.XRBodyModifier3DBodyUpdate {
-	return gdclass.XRBodyModifier3DBodyUpdate(class(self).GetBodyUpdate())
+func (self Instance) BodyUpdate() BodyUpdate {
+	return BodyUpdate(class(self).GetBodyUpdate())
 }
 
-func (self Instance) SetBodyUpdate(value gdclass.XRBodyModifier3DBodyUpdate) {
+func (self Instance) SetBodyUpdate(value BodyUpdate) {
 	class(self).SetBodyUpdate(value)
 }
 
-func (self Instance) BoneUpdate() gdclass.XRBodyModifier3DBoneUpdate {
-	return gdclass.XRBodyModifier3DBoneUpdate(class(self).GetBoneUpdate())
+func (self Instance) BoneUpdate() BoneUpdate {
+	return BoneUpdate(class(self).GetBoneUpdate())
 }
 
-func (self Instance) SetBoneUpdate(value gdclass.XRBodyModifier3DBoneUpdate) {
+func (self Instance) SetBoneUpdate(value BoneUpdate) {
 	class(self).SetBoneUpdate(value)
 }
 
@@ -137,7 +144,7 @@ func (self class) GetBodyTracker() String.Name { //gd:XRBodyModifier3D.get_body_
 }
 
 //go:nosplit
-func (self class) SetBodyUpdate(body_update gdclass.XRBodyModifier3DBodyUpdate) { //gd:XRBodyModifier3D.set_body_update
+func (self class) SetBodyUpdate(body_update BodyUpdate) { //gd:XRBodyModifier3D.set_body_update
 	var frame = callframe.New()
 	callframe.Arg(frame, body_update)
 	var r_ret = callframe.Nil
@@ -146,9 +153,9 @@ func (self class) SetBodyUpdate(body_update gdclass.XRBodyModifier3DBodyUpdate) 
 }
 
 //go:nosplit
-func (self class) GetBodyUpdate() gdclass.XRBodyModifier3DBodyUpdate { //gd:XRBodyModifier3D.get_body_update
+func (self class) GetBodyUpdate() BodyUpdate { //gd:XRBodyModifier3D.get_body_update
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.XRBodyModifier3DBodyUpdate](frame)
+	var r_ret = callframe.Ret[BodyUpdate](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRBodyModifier3D.Bind_get_body_update, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -156,7 +163,7 @@ func (self class) GetBodyUpdate() gdclass.XRBodyModifier3DBodyUpdate { //gd:XRBo
 }
 
 //go:nosplit
-func (self class) SetBoneUpdate(bone_update gdclass.XRBodyModifier3DBoneUpdate) { //gd:XRBodyModifier3D.set_bone_update
+func (self class) SetBoneUpdate(bone_update BoneUpdate) { //gd:XRBodyModifier3D.set_bone_update
 	var frame = callframe.New()
 	callframe.Arg(frame, bone_update)
 	var r_ret = callframe.Nil
@@ -165,9 +172,9 @@ func (self class) SetBoneUpdate(bone_update gdclass.XRBodyModifier3DBoneUpdate) 
 }
 
 //go:nosplit
-func (self class) GetBoneUpdate() gdclass.XRBodyModifier3DBoneUpdate { //gd:XRBodyModifier3D.get_bone_update
+func (self class) GetBoneUpdate() BoneUpdate { //gd:XRBodyModifier3D.get_bone_update
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.XRBodyModifier3DBoneUpdate](frame)
+	var r_ret = callframe.Ret[BoneUpdate](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRBodyModifier3D.Bind_get_bone_update, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -211,7 +218,7 @@ func init() {
 	})
 }
 
-type BodyUpdate = gdclass.XRBodyModifier3DBodyUpdate //gd:XRBodyModifier3D.BodyUpdate
+type BodyUpdate int //gd:XRBodyModifier3D.BodyUpdate
 
 const (
 	/*The skeleton's upper body joints are updated.*/
@@ -222,7 +229,7 @@ const (
 	BodyUpdateHands BodyUpdate = 4
 )
 
-type BoneUpdate = gdclass.XRBodyModifier3DBoneUpdate //gd:XRBodyModifier3D.BoneUpdate
+type BoneUpdate int //gd:XRBodyModifier3D.BoneUpdate
 
 const (
 	/*The skeleton's bones are fully updated (both position and rotation) to match the tracked bones.*/

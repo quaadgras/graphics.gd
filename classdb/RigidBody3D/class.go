@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CollisionObject3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
@@ -32,6 +33,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -47,6 +52,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -59,6 +65,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -281,11 +288,11 @@ func (self Instance) SetGravityScale(value Float.X) {
 	class(self).SetGravityScale(float64(value))
 }
 
-func (self Instance) CenterOfMassMode() gdclass.RigidBody3DCenterOfMassMode {
-	return gdclass.RigidBody3DCenterOfMassMode(class(self).GetCenterOfMassMode())
+func (self Instance) CenterOfMassMode() CenterOfMassMode {
+	return CenterOfMassMode(class(self).GetCenterOfMassMode())
 }
 
-func (self Instance) SetCenterOfMassMode(value gdclass.RigidBody3DCenterOfMassMode) {
+func (self Instance) SetCenterOfMassMode(value CenterOfMassMode) {
 	class(self).SetCenterOfMassMode(value)
 }
 
@@ -337,11 +344,11 @@ func (self Instance) SetFreeze(value bool) {
 	class(self).SetFreezeEnabled(value)
 }
 
-func (self Instance) FreezeMode() gdclass.RigidBody3DFreezeMode {
-	return gdclass.RigidBody3DFreezeMode(class(self).GetFreezeMode())
+func (self Instance) FreezeMode() FreezeMode {
+	return FreezeMode(class(self).GetFreezeMode())
 }
 
-func (self Instance) SetFreezeMode(value gdclass.RigidBody3DFreezeMode) {
+func (self Instance) SetFreezeMode(value FreezeMode) {
 	class(self).SetFreezeMode(value)
 }
 
@@ -385,11 +392,11 @@ func (self Instance) SetLinearVelocity(value Vector3.XYZ) {
 	class(self).SetLinearVelocity(Vector3.XYZ(value))
 }
 
-func (self Instance) LinearDampMode() gdclass.RigidBody3DDampMode {
-	return gdclass.RigidBody3DDampMode(class(self).GetLinearDampMode())
+func (self Instance) LinearDampMode() DampMode {
+	return DampMode(class(self).GetLinearDampMode())
 }
 
-func (self Instance) SetLinearDampMode(value gdclass.RigidBody3DDampMode) {
+func (self Instance) SetLinearDampMode(value DampMode) {
 	class(self).SetLinearDampMode(value)
 }
 
@@ -409,11 +416,11 @@ func (self Instance) SetAngularVelocity(value Vector3.XYZ) {
 	class(self).SetAngularVelocity(Vector3.XYZ(value))
 }
 
-func (self Instance) AngularDampMode() gdclass.RigidBody3DDampMode {
-	return gdclass.RigidBody3DDampMode(class(self).GetAngularDampMode())
+func (self Instance) AngularDampMode() DampMode {
+	return DampMode(class(self).GetAngularDampMode())
 }
 
-func (self Instance) SetAngularDampMode(value gdclass.RigidBody3DDampMode) {
+func (self Instance) SetAngularDampMode(value DampMode) {
 	class(self).SetAngularDampMode(value)
 }
 
@@ -493,7 +500,7 @@ func (self class) GetInertia() Vector3.XYZ { //gd:RigidBody3D.get_inertia
 }
 
 //go:nosplit
-func (self class) SetCenterOfMassMode(mode gdclass.RigidBody3DCenterOfMassMode) { //gd:RigidBody3D.set_center_of_mass_mode
+func (self class) SetCenterOfMassMode(mode CenterOfMassMode) { //gd:RigidBody3D.set_center_of_mass_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -502,9 +509,9 @@ func (self class) SetCenterOfMassMode(mode gdclass.RigidBody3DCenterOfMassMode) 
 }
 
 //go:nosplit
-func (self class) GetCenterOfMassMode() gdclass.RigidBody3DCenterOfMassMode { //gd:RigidBody3D.get_center_of_mass_mode
+func (self class) GetCenterOfMassMode() CenterOfMassMode { //gd:RigidBody3D.get_center_of_mass_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RigidBody3DCenterOfMassMode](frame)
+	var r_ret = callframe.Ret[CenterOfMassMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_center_of_mass_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -620,7 +627,7 @@ func (self class) GetGravityScale() float64 { //gd:RigidBody3D.get_gravity_scale
 }
 
 //go:nosplit
-func (self class) SetLinearDampMode(linear_damp_mode gdclass.RigidBody3DDampMode) { //gd:RigidBody3D.set_linear_damp_mode
+func (self class) SetLinearDampMode(linear_damp_mode DampMode) { //gd:RigidBody3D.set_linear_damp_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, linear_damp_mode)
 	var r_ret = callframe.Nil
@@ -629,9 +636,9 @@ func (self class) SetLinearDampMode(linear_damp_mode gdclass.RigidBody3DDampMode
 }
 
 //go:nosplit
-func (self class) GetLinearDampMode() gdclass.RigidBody3DDampMode { //gd:RigidBody3D.get_linear_damp_mode
+func (self class) GetLinearDampMode() DampMode { //gd:RigidBody3D.get_linear_damp_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RigidBody3DDampMode](frame)
+	var r_ret = callframe.Ret[DampMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_linear_damp_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -639,7 +646,7 @@ func (self class) GetLinearDampMode() gdclass.RigidBody3DDampMode { //gd:RigidBo
 }
 
 //go:nosplit
-func (self class) SetAngularDampMode(angular_damp_mode gdclass.RigidBody3DDampMode) { //gd:RigidBody3D.set_angular_damp_mode
+func (self class) SetAngularDampMode(angular_damp_mode DampMode) { //gd:RigidBody3D.set_angular_damp_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, angular_damp_mode)
 	var r_ret = callframe.Nil
@@ -648,9 +655,9 @@ func (self class) SetAngularDampMode(angular_damp_mode gdclass.RigidBody3DDampMo
 }
 
 //go:nosplit
-func (self class) GetAngularDampMode() gdclass.RigidBody3DDampMode { //gd:RigidBody3D.get_angular_damp_mode
+func (self class) GetAngularDampMode() DampMode { //gd:RigidBody3D.get_angular_damp_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RigidBody3DDampMode](frame)
+	var r_ret = callframe.Ret[DampMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_angular_damp_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1034,7 +1041,7 @@ func (self class) IsFreezeEnabled() bool { //gd:RigidBody3D.is_freeze_enabled
 }
 
 //go:nosplit
-func (self class) SetFreezeMode(freeze_mode gdclass.RigidBody3DFreezeMode) { //gd:RigidBody3D.set_freeze_mode
+func (self class) SetFreezeMode(freeze_mode FreezeMode) { //gd:RigidBody3D.set_freeze_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, freeze_mode)
 	var r_ret = callframe.Nil
@@ -1043,9 +1050,9 @@ func (self class) SetFreezeMode(freeze_mode gdclass.RigidBody3DFreezeMode) { //g
 }
 
 //go:nosplit
-func (self class) GetFreezeMode() gdclass.RigidBody3DFreezeMode { //gd:RigidBody3D.get_freeze_mode
+func (self class) GetFreezeMode() FreezeMode { //gd:RigidBody3D.get_freeze_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.RigidBody3DFreezeMode](frame)
+	var r_ret = callframe.Ret[FreezeMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RigidBody3D.Bind_get_freeze_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1134,7 +1141,7 @@ func init() {
 	gdclass.Register("RigidBody3D", func(ptr gd.Object) any { return [1]gdclass.RigidBody3D{*(*gdclass.RigidBody3D)(unsafe.Pointer(&ptr))} })
 }
 
-type FreezeMode = gdclass.RigidBody3DFreezeMode //gd:RigidBody3D.FreezeMode
+type FreezeMode int //gd:RigidBody3D.FreezeMode
 
 const (
 	/*Static body freeze mode (default). The body is not affected by gravity and forces. It can be only moved by user code and doesn't collide with other bodies along its path.*/
@@ -1143,7 +1150,7 @@ const (
 	FreezeModeKinematic FreezeMode = 1
 )
 
-type CenterOfMassMode = gdclass.RigidBody3DCenterOfMassMode //gd:RigidBody3D.CenterOfMassMode
+type CenterOfMassMode int //gd:RigidBody3D.CenterOfMassMode
 
 const (
 	/*In this mode, the body's center of mass is calculated automatically based on its shapes. This assumes that the shapes' origins are also their center of mass.*/
@@ -1152,7 +1159,7 @@ const (
 	CenterOfMassModeCustom CenterOfMassMode = 1
 )
 
-type DampMode = gdclass.RigidBody3DDampMode //gd:RigidBody3D.DampMode
+type DampMode int //gd:RigidBody3D.DampMode
 
 const (
 	/*In this mode, the body's damping value is added to any value set in areas or the default value.*/

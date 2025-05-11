@@ -11,10 +11,13 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/BaseButton"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/GUI"
 import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/TextServer"
 import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -29,6 +32,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -44,6 +51,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,6 +64,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -152,27 +161,27 @@ func (self Instance) SetFlat(value bool) {
 	class(self).SetFlat(value)
 }
 
-func (self Instance) Alignment() HorizontalAlignment {
-	return HorizontalAlignment(class(self).GetTextAlignment())
+func (self Instance) Alignment() GUI.HorizontalAlignment {
+	return GUI.HorizontalAlignment(class(self).GetTextAlignment())
 }
 
-func (self Instance) SetAlignment(value HorizontalAlignment) {
+func (self Instance) SetAlignment(value GUI.HorizontalAlignment) {
 	class(self).SetTextAlignment(value)
 }
 
-func (self Instance) TextOverrunBehavior() gdclass.TextServerOverrunBehavior {
-	return gdclass.TextServerOverrunBehavior(class(self).GetTextOverrunBehavior())
+func (self Instance) TextOverrunBehavior() TextServer.OverrunBehavior {
+	return TextServer.OverrunBehavior(class(self).GetTextOverrunBehavior())
 }
 
-func (self Instance) SetTextOverrunBehavior(value gdclass.TextServerOverrunBehavior) {
+func (self Instance) SetTextOverrunBehavior(value TextServer.OverrunBehavior) {
 	class(self).SetTextOverrunBehavior(value)
 }
 
-func (self Instance) AutowrapMode() gdclass.TextServerAutowrapMode {
-	return gdclass.TextServerAutowrapMode(class(self).GetAutowrapMode())
+func (self Instance) AutowrapMode() TextServer.AutowrapMode {
+	return TextServer.AutowrapMode(class(self).GetAutowrapMode())
 }
 
-func (self Instance) SetAutowrapMode(value gdclass.TextServerAutowrapMode) {
+func (self Instance) SetAutowrapMode(value TextServer.AutowrapMode) {
 	class(self).SetAutowrapMode(value)
 }
 
@@ -184,19 +193,19 @@ func (self Instance) SetClipText(value bool) {
 	class(self).SetClipText(value)
 }
 
-func (self Instance) IconAlignment() HorizontalAlignment {
-	return HorizontalAlignment(class(self).GetIconAlignment())
+func (self Instance) IconAlignment() GUI.HorizontalAlignment {
+	return GUI.HorizontalAlignment(class(self).GetIconAlignment())
 }
 
-func (self Instance) SetIconAlignment(value HorizontalAlignment) {
+func (self Instance) SetIconAlignment(value GUI.HorizontalAlignment) {
 	class(self).SetIconAlignment(value)
 }
 
-func (self Instance) VerticalIconAlignment() VerticalAlignment {
-	return VerticalAlignment(class(self).GetVerticalIconAlignment())
+func (self Instance) VerticalIconAlignment() GUI.VerticalAlignment {
+	return GUI.VerticalAlignment(class(self).GetVerticalIconAlignment())
 }
 
-func (self Instance) SetVerticalIconAlignment(value VerticalAlignment) {
+func (self Instance) SetVerticalIconAlignment(value GUI.VerticalAlignment) {
 	class(self).SetVerticalIconAlignment(value)
 }
 
@@ -208,11 +217,11 @@ func (self Instance) SetExpandIcon(value bool) {
 	class(self).SetExpandIcon(value)
 }
 
-func (self Instance) TextDirection() gdclass.ControlTextDirection {
-	return gdclass.ControlTextDirection(class(self).GetTextDirection())
+func (self Instance) TextDirection() Control.TextDirection {
+	return Control.TextDirection(class(self).GetTextDirection())
 }
 
-func (self Instance) SetTextDirection(value gdclass.ControlTextDirection) {
+func (self Instance) SetTextDirection(value Control.TextDirection) {
 	class(self).SetTextDirection(value)
 }
 
@@ -244,7 +253,7 @@ func (self class) GetText() String.Readable { //gd:Button.get_text
 }
 
 //go:nosplit
-func (self class) SetTextOverrunBehavior(overrun_behavior gdclass.TextServerOverrunBehavior) { //gd:Button.set_text_overrun_behavior
+func (self class) SetTextOverrunBehavior(overrun_behavior TextServer.OverrunBehavior) { //gd:Button.set_text_overrun_behavior
 	var frame = callframe.New()
 	callframe.Arg(frame, overrun_behavior)
 	var r_ret = callframe.Nil
@@ -253,9 +262,9 @@ func (self class) SetTextOverrunBehavior(overrun_behavior gdclass.TextServerOver
 }
 
 //go:nosplit
-func (self class) GetTextOverrunBehavior() gdclass.TextServerOverrunBehavior { //gd:Button.get_text_overrun_behavior
+func (self class) GetTextOverrunBehavior() TextServer.OverrunBehavior { //gd:Button.get_text_overrun_behavior
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TextServerOverrunBehavior](frame)
+	var r_ret = callframe.Ret[TextServer.OverrunBehavior](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Button.Bind_get_text_overrun_behavior, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -263,7 +272,7 @@ func (self class) GetTextOverrunBehavior() gdclass.TextServerOverrunBehavior { /
 }
 
 //go:nosplit
-func (self class) SetAutowrapMode(autowrap_mode gdclass.TextServerAutowrapMode) { //gd:Button.set_autowrap_mode
+func (self class) SetAutowrapMode(autowrap_mode TextServer.AutowrapMode) { //gd:Button.set_autowrap_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, autowrap_mode)
 	var r_ret = callframe.Nil
@@ -272,9 +281,9 @@ func (self class) SetAutowrapMode(autowrap_mode gdclass.TextServerAutowrapMode) 
 }
 
 //go:nosplit
-func (self class) GetAutowrapMode() gdclass.TextServerAutowrapMode { //gd:Button.get_autowrap_mode
+func (self class) GetAutowrapMode() TextServer.AutowrapMode { //gd:Button.get_autowrap_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TextServerAutowrapMode](frame)
+	var r_ret = callframe.Ret[TextServer.AutowrapMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Button.Bind_get_autowrap_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -282,7 +291,7 @@ func (self class) GetAutowrapMode() gdclass.TextServerAutowrapMode { //gd:Button
 }
 
 //go:nosplit
-func (self class) SetTextDirection(direction gdclass.ControlTextDirection) { //gd:Button.set_text_direction
+func (self class) SetTextDirection(direction Control.TextDirection) { //gd:Button.set_text_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, direction)
 	var r_ret = callframe.Nil
@@ -291,9 +300,9 @@ func (self class) SetTextDirection(direction gdclass.ControlTextDirection) { //g
 }
 
 //go:nosplit
-func (self class) GetTextDirection() gdclass.ControlTextDirection { //gd:Button.get_text_direction
+func (self class) GetTextDirection() Control.TextDirection { //gd:Button.get_text_direction
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ControlTextDirection](frame)
+	var r_ret = callframe.Ret[Control.TextDirection](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Button.Bind_get_text_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -377,7 +386,7 @@ func (self class) GetClipText() bool { //gd:Button.get_clip_text
 }
 
 //go:nosplit
-func (self class) SetTextAlignment(alignment HorizontalAlignment) { //gd:Button.set_text_alignment
+func (self class) SetTextAlignment(alignment GUI.HorizontalAlignment) { //gd:Button.set_text_alignment
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
 	var r_ret = callframe.Nil
@@ -386,9 +395,9 @@ func (self class) SetTextAlignment(alignment HorizontalAlignment) { //gd:Button.
 }
 
 //go:nosplit
-func (self class) GetTextAlignment() HorizontalAlignment { //gd:Button.get_text_alignment
+func (self class) GetTextAlignment() GUI.HorizontalAlignment { //gd:Button.get_text_alignment
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[HorizontalAlignment](frame)
+	var r_ret = callframe.Ret[GUI.HorizontalAlignment](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Button.Bind_get_text_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -396,7 +405,7 @@ func (self class) GetTextAlignment() HorizontalAlignment { //gd:Button.get_text_
 }
 
 //go:nosplit
-func (self class) SetIconAlignment(icon_alignment HorizontalAlignment) { //gd:Button.set_icon_alignment
+func (self class) SetIconAlignment(icon_alignment GUI.HorizontalAlignment) { //gd:Button.set_icon_alignment
 	var frame = callframe.New()
 	callframe.Arg(frame, icon_alignment)
 	var r_ret = callframe.Nil
@@ -405,9 +414,9 @@ func (self class) SetIconAlignment(icon_alignment HorizontalAlignment) { //gd:Bu
 }
 
 //go:nosplit
-func (self class) GetIconAlignment() HorizontalAlignment { //gd:Button.get_icon_alignment
+func (self class) GetIconAlignment() GUI.HorizontalAlignment { //gd:Button.get_icon_alignment
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[HorizontalAlignment](frame)
+	var r_ret = callframe.Ret[GUI.HorizontalAlignment](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Button.Bind_get_icon_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -415,7 +424,7 @@ func (self class) GetIconAlignment() HorizontalAlignment { //gd:Button.get_icon_
 }
 
 //go:nosplit
-func (self class) SetVerticalIconAlignment(vertical_icon_alignment VerticalAlignment) { //gd:Button.set_vertical_icon_alignment
+func (self class) SetVerticalIconAlignment(vertical_icon_alignment GUI.VerticalAlignment) { //gd:Button.set_vertical_icon_alignment
 	var frame = callframe.New()
 	callframe.Arg(frame, vertical_icon_alignment)
 	var r_ret = callframe.Nil
@@ -424,9 +433,9 @@ func (self class) SetVerticalIconAlignment(vertical_icon_alignment VerticalAlign
 }
 
 //go:nosplit
-func (self class) GetVerticalIconAlignment() VerticalAlignment { //gd:Button.get_vertical_icon_alignment
+func (self class) GetVerticalIconAlignment() GUI.VerticalAlignment { //gd:Button.get_vertical_icon_alignment
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[VerticalAlignment](frame)
+	var r_ret = callframe.Ret[GUI.VerticalAlignment](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Button.Bind_get_vertical_icon_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -493,29 +502,3 @@ func (self Instance) Virtual(name string) reflect.Value {
 func init() {
 	gdclass.Register("Button", func(ptr gd.Object) any { return [1]gdclass.Button{*(*gdclass.Button)(unsafe.Pointer(&ptr))} })
 }
-
-type HorizontalAlignment int
-
-const (
-	/*Horizontal left alignment, usually for text-derived classes.*/
-	HorizontalAlignmentLeft HorizontalAlignment = 0
-	/*Horizontal center alignment, usually for text-derived classes.*/
-	HorizontalAlignmentCenter HorizontalAlignment = 1
-	/*Horizontal right alignment, usually for text-derived classes.*/
-	HorizontalAlignmentRight HorizontalAlignment = 2
-	/*Expand row to fit width, usually for text-derived classes.*/
-	HorizontalAlignmentFill HorizontalAlignment = 3
-)
-
-type VerticalAlignment int
-
-const (
-	/*Vertical top alignment, usually for text-derived classes.*/
-	VerticalAlignmentTop VerticalAlignment = 0
-	/*Vertical center alignment, usually for text-derived classes.*/
-	VerticalAlignmentCenter VerticalAlignment = 1
-	/*Vertical bottom alignment, usually for text-derived classes.*/
-	VerticalAlignmentBottom VerticalAlignment = 2
-	/*Expand rows to fit height, usually for text-derived classes.*/
-	VerticalAlignmentFill VerticalAlignment = 3
-)

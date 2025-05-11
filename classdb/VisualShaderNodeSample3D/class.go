@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/VisualShaderNode"
 import "graphics.gd/variant/Array"
@@ -26,6 +27,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -41,6 +46,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -53,6 +59,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -91,16 +98,16 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Source() gdclass.VisualShaderNodeSample3DSource {
-	return gdclass.VisualShaderNodeSample3DSource(class(self).GetSource())
+func (self Instance) Source() Source {
+	return Source(class(self).GetSource())
 }
 
-func (self Instance) SetSource(value gdclass.VisualShaderNodeSample3DSource) {
+func (self Instance) SetSource(value Source) {
 	class(self).SetSource(value)
 }
 
 //go:nosplit
-func (self class) SetSource(value gdclass.VisualShaderNodeSample3DSource) { //gd:VisualShaderNodeSample3D.set_source
+func (self class) SetSource(value Source) { //gd:VisualShaderNodeSample3D.set_source
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -109,9 +116,9 @@ func (self class) SetSource(value gdclass.VisualShaderNodeSample3DSource) { //gd
 }
 
 //go:nosplit
-func (self class) GetSource() gdclass.VisualShaderNodeSample3DSource { //gd:VisualShaderNodeSample3D.get_source
+func (self class) GetSource() Source { //gd:VisualShaderNodeSample3D.get_source
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.VisualShaderNodeSample3DSource](frame)
+	var r_ret = callframe.Ret[Source](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeSample3D.Bind_get_source, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -167,7 +174,7 @@ func init() {
 	})
 }
 
-type Source = gdclass.VisualShaderNodeSample3DSource //gd:VisualShaderNodeSample3D.Source
+type Source int //gd:VisualShaderNodeSample3D.Source
 
 const (
 	/*Creates internal uniform and provides a way to assign it within node.*/

@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/AudioServer"
 import "graphics.gd/classdb/Image"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -26,6 +28,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -41,6 +47,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -53,6 +60,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -82,7 +90,7 @@ type Interface interface {
 	//Called when the audio sample rate used for recording the audio is requested by the engine. The value returned must be specified in Hz. Defaults to 48000 Hz if [method _get_audio_mix_rate] is not overridden.
 	GetAudioMixRate() int
 	//Called when the audio speaker mode used for recording the audio is requested by the engine. This can affect the number of output channels in the resulting audio file/stream. Defaults to [constant AudioServer.SPEAKER_MODE_STEREO] if [method _get_audio_speaker_mode] is not overridden.
-	GetAudioSpeakerMode() gdclass.AudioServerSpeakerMode
+	GetAudioSpeakerMode() AudioServer.SpeakerMode
 	//Called when the engine determines whether this [MovieWriter] is able to handle the file at [param path]. Must return [code]true[/code] if this [MovieWriter] is able to handle the given file path, [code]false[/code] otherwise. Typically, [method _handles_file] is overridden as follows to allow the user to record a file at any path with a given file extension:
 	//[codeblock]
 	//func _handles_file(path):
@@ -105,9 +113,9 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetAudioMixRate() (_ int)                                { return }
-func (self implementation) GetAudioSpeakerMode() (_ gdclass.AudioServerSpeakerMode) { return }
-func (self implementation) HandlesFile(path string) (_ bool)                        { return }
+func (self implementation) GetAudioMixRate() (_ int)                         { return }
+func (self implementation) GetAudioSpeakerMode() (_ AudioServer.SpeakerMode) { return }
+func (self implementation) HandlesFile(path string) (_ bool)                 { return }
 func (self implementation) WriteBegin(movie_size Vector2i.XY, fps int, base_path string) (_ error) {
 	return
 }
@@ -130,7 +138,7 @@ func (Instance) _get_audio_mix_rate(impl func(ptr unsafe.Pointer) int) (cb gd.Ex
 /*
 Called when the audio speaker mode used for recording the audio is requested by the engine. This can affect the number of output channels in the resulting audio file/stream. Defaults to [constant AudioServer.SPEAKER_MODE_STEREO] if [method _get_audio_speaker_mode] is not overridden.
 */
-func (Instance) _get_audio_speaker_mode(impl func(ptr unsafe.Pointer) gdclass.AudioServerSpeakerMode) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_audio_speaker_mode(impl func(ptr unsafe.Pointer) AudioServer.SpeakerMode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -252,7 +260,7 @@ func (class) _get_audio_mix_rate(impl func(ptr unsafe.Pointer) int64) (cb gd.Ext
 /*
 Called when the audio speaker mode used for recording the audio is requested by the engine. This can affect the number of output channels in the resulting audio file/stream. Defaults to [constant AudioServer.SPEAKER_MODE_STEREO] if [method _get_audio_speaker_mode] is not overridden.
 */
-func (class) _get_audio_speaker_mode(impl func(ptr unsafe.Pointer) gdclass.AudioServerSpeakerMode) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_audio_speaker_mode(impl func(ptr unsafe.Pointer) AudioServer.SpeakerMode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)

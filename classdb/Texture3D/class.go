@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Image"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/Texture"
@@ -27,6 +28,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -42,6 +47,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -54,6 +60,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -77,7 +84,7 @@ type Any interface {
 }
 type Interface interface {
 	//Called when the [Texture3D]'s format is queried.
-	GetFormat() gdclass.ImageFormat
+	GetFormat() Image.Format
 	//Called when the [Texture3D]'s width is queried.
 	GetWidth() int
 	//Called when the [Texture3D]'s height is queried.
@@ -95,17 +102,17 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetFormat() (_ gdclass.ImageFormat) { return }
-func (self implementation) GetWidth() (_ int)                  { return }
-func (self implementation) GetHeight() (_ int)                 { return }
-func (self implementation) GetDepth() (_ int)                  { return }
-func (self implementation) HasMipmaps() (_ bool)               { return }
-func (self implementation) GetData() (_ []Image.Instance)      { return }
+func (self implementation) GetFormat() (_ Image.Format)   { return }
+func (self implementation) GetWidth() (_ int)             { return }
+func (self implementation) GetHeight() (_ int)            { return }
+func (self implementation) GetDepth() (_ int)             { return }
+func (self implementation) HasMipmaps() (_ bool)          { return }
+func (self implementation) GetData() (_ []Image.Instance) { return }
 
 /*
 Called when the [Texture3D]'s format is queried.
 */
-func (Instance) _get_format(impl func(ptr unsafe.Pointer) gdclass.ImageFormat) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_format(impl func(ptr unsafe.Pointer) Image.Format) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -176,8 +183,8 @@ func (Instance) _get_data(impl func(ptr unsafe.Pointer) []Image.Instance) (cb gd
 /*
 Returns the current format being used by this texture. See [enum Image.Format] for details.
 */
-func (self Instance) GetFormat() gdclass.ImageFormat { //gd:Texture3D.get_format
-	return gdclass.ImageFormat(Advanced(self).GetFormat())
+func (self Instance) GetFormat() Image.Format { //gd:Texture3D.get_format
+	return Image.Format(Advanced(self).GetFormat())
 }
 
 /*
@@ -245,7 +252,7 @@ func New() Instance {
 /*
 Called when the [Texture3D]'s format is queried.
 */
-func (class) _get_format(impl func(ptr unsafe.Pointer) gdclass.ImageFormat) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_format(impl func(ptr unsafe.Pointer) Image.Format) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -317,9 +324,9 @@ func (class) _get_data(impl func(ptr unsafe.Pointer) Array.Contains[[1]gdclass.I
 Returns the current format being used by this texture. See [enum Image.Format] for details.
 */
 //go:nosplit
-func (self class) GetFormat() gdclass.ImageFormat { //gd:Texture3D.get_format
+func (self class) GetFormat() Image.Format { //gd:Texture3D.get_format
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ImageFormat](frame)
+	var r_ret = callframe.Ret[Image.Format](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture3D.Bind_get_format, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

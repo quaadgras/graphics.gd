@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -24,6 +25,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -39,6 +44,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -51,6 +57,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -112,7 +119,7 @@ type Any interface {
 Creates a new [FileAccess] object and opens the file for writing or reading, depending on the flags.
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
-func Open(path string, flags gdclass.FileAccessModeFlags) Instance { //gd:FileAccess.open
+func Open(path string, flags ModeFlags) Instance { //gd:FileAccess.open
 	self := Instance{}
 	return Instance(Advanced(self).Open(String.New(path), flags))
 }
@@ -122,7 +129,7 @@ Creates a new [FileAccess] object and opens an encrypted file in write or read m
 [b]Note:[/b] The provided key must be 32 bytes long.
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
-func OpenEncrypted(path string, mode_flags gdclass.FileAccessModeFlags, key []byte, iv []byte) Instance { //gd:FileAccess.open_encrypted
+func OpenEncrypted(path string, mode_flags ModeFlags, key []byte, iv []byte) Instance { //gd:FileAccess.open_encrypted
 	self := Instance{}
 	return Instance(Advanced(self).OpenEncrypted(String.New(path), mode_flags, Packed.Bytes(Packed.New(key...)), Packed.Bytes(Packed.New(iv...))))
 }
@@ -132,7 +139,7 @@ Creates a new [FileAccess] object and opens an encrypted file in write or read m
 [b]Note:[/b] The provided key must be 32 bytes long.
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
-func OpenEncryptedOptions(path string, mode_flags gdclass.FileAccessModeFlags, key []byte, iv []byte) Instance { //gd:FileAccess.open_encrypted
+func OpenEncryptedOptions(path string, mode_flags ModeFlags, key []byte, iv []byte) Instance { //gd:FileAccess.open_encrypted
 	self := Instance{}
 	return Instance(Advanced(self).OpenEncrypted(String.New(path), mode_flags, Packed.Bytes(Packed.New(key...)), Packed.Bytes(Packed.New(iv...))))
 }
@@ -141,7 +148,7 @@ func OpenEncryptedOptions(path string, mode_flags gdclass.FileAccessModeFlags, k
 Creates a new [FileAccess] object and opens an encrypted file in write or read mode. You need to pass a password to encrypt/decrypt it.
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
-func OpenEncryptedWithPass(path string, mode_flags gdclass.FileAccessModeFlags, pass string) Instance { //gd:FileAccess.open_encrypted_with_pass
+func OpenEncryptedWithPass(path string, mode_flags ModeFlags, pass string) Instance { //gd:FileAccess.open_encrypted_with_pass
 	self := Instance{}
 	return Instance(Advanced(self).OpenEncryptedWithPass(String.New(path), mode_flags, String.New(pass)))
 }
@@ -151,7 +158,7 @@ Creates a new [FileAccess] object and opens a compressed file for reading or wri
 [b]Note:[/b] [method open_compressed] can only read files that were saved by Godot, not third-party compression formats. See [url=https://github.com/godotengine/godot/issues/28999]GitHub issue #28999[/url] for a workaround.
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
-func OpenCompressed(path string, mode_flags gdclass.FileAccessModeFlags, compression_mode gdclass.FileAccessCompressionMode) Instance { //gd:FileAccess.open_compressed
+func OpenCompressed(path string, mode_flags ModeFlags, compression_mode CompressionMode) Instance { //gd:FileAccess.open_compressed
 	self := Instance{}
 	return Instance(Advanced(self).OpenCompressed(String.New(path), mode_flags, compression_mode))
 }
@@ -161,7 +168,7 @@ Creates a new [FileAccess] object and opens a compressed file for reading or wri
 [b]Note:[/b] [method open_compressed] can only read files that were saved by Godot, not third-party compression formats. See [url=https://github.com/godotengine/godot/issues/28999]GitHub issue #28999[/url] for a workaround.
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
-func OpenCompressedOptions(path string, mode_flags gdclass.FileAccessModeFlags, compression_mode gdclass.FileAccessCompressionMode) Instance { //gd:FileAccess.open_compressed
+func OpenCompressedOptions(path string, mode_flags ModeFlags, compression_mode CompressionMode) Instance { //gd:FileAccess.open_compressed
 	self := Instance{}
 	return Instance(Advanced(self).OpenCompressed(String.New(path), mode_flags, compression_mode))
 }
@@ -688,16 +695,16 @@ func GetModifiedTime(file string) int { //gd:FileAccess.get_modified_time
 Returns file UNIX permissions.
 [b]Note:[/b] This method is implemented on iOS, Linux/BSD, and macOS.
 */
-func GetUnixPermissions(file string) gdclass.FileAccessUnixPermissionFlags { //gd:FileAccess.get_unix_permissions
+func GetUnixPermissions(file string) UnixPermissionFlags { //gd:FileAccess.get_unix_permissions
 	self := Instance{}
-	return gdclass.FileAccessUnixPermissionFlags(Advanced(self).GetUnixPermissions(String.New(file)))
+	return UnixPermissionFlags(Advanced(self).GetUnixPermissions(String.New(file)))
 }
 
 /*
 Sets file UNIX permissions.
 [b]Note:[/b] This method is implemented on iOS, Linux/BSD, and macOS.
 */
-func SetUnixPermissions(file string, permissions gdclass.FileAccessUnixPermissionFlags) error { //gd:FileAccess.set_unix_permissions
+func SetUnixPermissions(file string, permissions UnixPermissionFlags) error { //gd:FileAccess.set_unix_permissions
 	self := Instance{}
 	return error(gd.ToError(Advanced(self).SetUnixPermissions(String.New(file), permissions)))
 }
@@ -771,7 +778,7 @@ Creates a new [FileAccess] object and opens the file for writing or reading, dep
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
 //go:nosplit
-func (self class) Open(path String.Readable, flags gdclass.FileAccessModeFlags) [1]gdclass.FileAccess { //gd:FileAccess.open
+func (self class) Open(path String.Readable, flags ModeFlags) [1]gdclass.FileAccess { //gd:FileAccess.open
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, flags)
@@ -788,7 +795,7 @@ Creates a new [FileAccess] object and opens an encrypted file in write or read m
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
 //go:nosplit
-func (self class) OpenEncrypted(path String.Readable, mode_flags gdclass.FileAccessModeFlags, key Packed.Bytes, iv Packed.Bytes) [1]gdclass.FileAccess { //gd:FileAccess.open_encrypted
+func (self class) OpenEncrypted(path String.Readable, mode_flags ModeFlags, key Packed.Bytes, iv Packed.Bytes) [1]gdclass.FileAccess { //gd:FileAccess.open_encrypted
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, mode_flags)
@@ -806,7 +813,7 @@ Creates a new [FileAccess] object and opens an encrypted file in write or read m
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
 //go:nosplit
-func (self class) OpenEncryptedWithPass(path String.Readable, mode_flags gdclass.FileAccessModeFlags, pass String.Readable) [1]gdclass.FileAccess { //gd:FileAccess.open_encrypted_with_pass
+func (self class) OpenEncryptedWithPass(path String.Readable, mode_flags ModeFlags, pass String.Readable) [1]gdclass.FileAccess { //gd:FileAccess.open_encrypted_with_pass
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, mode_flags)
@@ -824,7 +831,7 @@ Creates a new [FileAccess] object and opens a compressed file for reading or wri
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
 //go:nosplit
-func (self class) OpenCompressed(path String.Readable, mode_flags gdclass.FileAccessModeFlags, compression_mode gdclass.FileAccessCompressionMode) [1]gdclass.FileAccess { //gd:FileAccess.open_compressed
+func (self class) OpenCompressed(path String.Readable, mode_flags ModeFlags, compression_mode CompressionMode) [1]gdclass.FileAccess { //gd:FileAccess.open_compressed
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, mode_flags)
@@ -1603,10 +1610,10 @@ Returns file UNIX permissions.
 [b]Note:[/b] This method is implemented on iOS, Linux/BSD, and macOS.
 */
 //go:nosplit
-func (self class) GetUnixPermissions(file String.Readable) gdclass.FileAccessUnixPermissionFlags { //gd:FileAccess.get_unix_permissions
+func (self class) GetUnixPermissions(file String.Readable) UnixPermissionFlags { //gd:FileAccess.get_unix_permissions
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(file)))
-	var r_ret = callframe.Ret[gdclass.FileAccessUnixPermissionFlags](frame)
+	var r_ret = callframe.Ret[UnixPermissionFlags](frame)
 	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.FileAccess.Bind_get_unix_permissions, frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1618,7 +1625,7 @@ Sets file UNIX permissions.
 [b]Note:[/b] This method is implemented on iOS, Linux/BSD, and macOS.
 */
 //go:nosplit
-func (self class) SetUnixPermissions(file String.Readable, permissions gdclass.FileAccessUnixPermissionFlags) Error.Code { //gd:FileAccess.set_unix_permissions
+func (self class) SetUnixPermissions(file String.Readable, permissions UnixPermissionFlags) Error.Code { //gd:FileAccess.set_unix_permissions
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(file)))
 	callframe.Arg(frame, permissions)
@@ -1718,7 +1725,7 @@ func init() {
 	gdclass.Register("FileAccess", func(ptr gd.Object) any { return [1]gdclass.FileAccess{*(*gdclass.FileAccess)(unsafe.Pointer(&ptr))} })
 }
 
-type ModeFlags = gdclass.FileAccessModeFlags //gd:FileAccess.ModeFlags
+type ModeFlags int //gd:FileAccess.ModeFlags
 
 const (
 	/*Opens the file for read operations. The cursor is positioned at the beginning of the file.*/
@@ -1733,7 +1740,7 @@ const (
 	WriteRead ModeFlags = 7
 )
 
-type CompressionMode = gdclass.FileAccessCompressionMode //gd:FileAccess.CompressionMode
+type CompressionMode int //gd:FileAccess.CompressionMode
 
 const (
 	/*Uses the [url=https://fastlz.org/]FastLZ[/url] compression method.*/
@@ -1748,7 +1755,7 @@ const (
 	CompressionBrotli CompressionMode = 4
 )
 
-type UnixPermissionFlags = gdclass.FileAccessUnixPermissionFlags //gd:FileAccess.UnixPermissionFlags
+type UnixPermissionFlags int //gd:FileAccess.UnixPermissionFlags
 
 const (
 	/*Read for owner bit.*/

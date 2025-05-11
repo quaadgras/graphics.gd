@@ -29,6 +29,13 @@ const (
 	OrderZYX Order = 5
 )
 
+type Direction int
+
+const (
+	Clockwise        Direction = 0
+	CounterClockwise Direction = 1
+)
+
 type vector2 = struct {
 	X Float.X
 	Y Float.X

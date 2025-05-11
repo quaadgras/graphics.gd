@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/BoxContainer"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Container"
@@ -30,6 +31,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -45,6 +50,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -57,6 +63,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -88,7 +95,7 @@ func (self Instance) PushToast(message string) { //gd:EditorToaster.push_toast
 /*
 Pushes a toast notification to the editor for display.
 */
-func (self Expanded) PushToast(message string, severity gdclass.EditorToasterSeverity, tooltip string) { //gd:EditorToaster.push_toast
+func (self Expanded) PushToast(message string, severity Severity, tooltip string) { //gd:EditorToaster.push_toast
 	Advanced(self).PushToast(String.New(message), severity, String.New(tooltip))
 }
 
@@ -115,7 +122,7 @@ func New() Instance {
 Pushes a toast notification to the editor for display.
 */
 //go:nosplit
-func (self class) PushToast(message String.Readable, severity gdclass.EditorToasterSeverity, tooltip String.Readable) { //gd:EditorToaster.push_toast
+func (self class) PushToast(message String.Readable, severity Severity, tooltip String.Readable) { //gd:EditorToaster.push_toast
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(message)))
 	callframe.Arg(frame, severity)
@@ -185,7 +192,7 @@ func init() {
 	})
 }
 
-type Severity = gdclass.EditorToasterSeverity //gd:EditorToaster.Severity
+type Severity int //gd:EditorToaster.Severity
 
 const (
 	/*Toast will display with an INFO severity.*/

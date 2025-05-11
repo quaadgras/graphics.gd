@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Joint3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
@@ -27,6 +28,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -42,6 +47,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -54,6 +60,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -73,40 +80,40 @@ type Any interface {
 	AsGeneric6DOFJoint3D() Instance
 }
 
-func (self Instance) SetParamX(param gdclass.Generic6DOFJoint3DParam, value Float.X) { //gd:Generic6DOFJoint3D.set_param_x
+func (self Instance) SetParamX(param Param, value Float.X) { //gd:Generic6DOFJoint3D.set_param_x
 	Advanced(self).SetParamX(param, float64(value))
 }
-func (self Instance) GetParamX(param gdclass.Generic6DOFJoint3DParam) Float.X { //gd:Generic6DOFJoint3D.get_param_x
+func (self Instance) GetParamX(param Param) Float.X { //gd:Generic6DOFJoint3D.get_param_x
 	return Float.X(Float.X(Advanced(self).GetParamX(param)))
 }
-func (self Instance) SetParamY(param gdclass.Generic6DOFJoint3DParam, value Float.X) { //gd:Generic6DOFJoint3D.set_param_y
+func (self Instance) SetParamY(param Param, value Float.X) { //gd:Generic6DOFJoint3D.set_param_y
 	Advanced(self).SetParamY(param, float64(value))
 }
-func (self Instance) GetParamY(param gdclass.Generic6DOFJoint3DParam) Float.X { //gd:Generic6DOFJoint3D.get_param_y
+func (self Instance) GetParamY(param Param) Float.X { //gd:Generic6DOFJoint3D.get_param_y
 	return Float.X(Float.X(Advanced(self).GetParamY(param)))
 }
-func (self Instance) SetParamZ(param gdclass.Generic6DOFJoint3DParam, value Float.X) { //gd:Generic6DOFJoint3D.set_param_z
+func (self Instance) SetParamZ(param Param, value Float.X) { //gd:Generic6DOFJoint3D.set_param_z
 	Advanced(self).SetParamZ(param, float64(value))
 }
-func (self Instance) GetParamZ(param gdclass.Generic6DOFJoint3DParam) Float.X { //gd:Generic6DOFJoint3D.get_param_z
+func (self Instance) GetParamZ(param Param) Float.X { //gd:Generic6DOFJoint3D.get_param_z
 	return Float.X(Float.X(Advanced(self).GetParamZ(param)))
 }
-func (self Instance) SetFlagX(flag gdclass.Generic6DOFJoint3DFlag, value bool) { //gd:Generic6DOFJoint3D.set_flag_x
+func (self Instance) SetFlagX(flag Flag, value bool) { //gd:Generic6DOFJoint3D.set_flag_x
 	Advanced(self).SetFlagX(flag, value)
 }
-func (self Instance) GetFlagX(flag gdclass.Generic6DOFJoint3DFlag) bool { //gd:Generic6DOFJoint3D.get_flag_x
+func (self Instance) GetFlagX(flag Flag) bool { //gd:Generic6DOFJoint3D.get_flag_x
 	return bool(Advanced(self).GetFlagX(flag))
 }
-func (self Instance) SetFlagY(flag gdclass.Generic6DOFJoint3DFlag, value bool) { //gd:Generic6DOFJoint3D.set_flag_y
+func (self Instance) SetFlagY(flag Flag, value bool) { //gd:Generic6DOFJoint3D.set_flag_y
 	Advanced(self).SetFlagY(flag, value)
 }
-func (self Instance) GetFlagY(flag gdclass.Generic6DOFJoint3DFlag) bool { //gd:Generic6DOFJoint3D.get_flag_y
+func (self Instance) GetFlagY(flag Flag) bool { //gd:Generic6DOFJoint3D.get_flag_y
 	return bool(Advanced(self).GetFlagY(flag))
 }
-func (self Instance) SetFlagZ(flag gdclass.Generic6DOFJoint3DFlag, value bool) { //gd:Generic6DOFJoint3D.set_flag_z
+func (self Instance) SetFlagZ(flag Flag, value bool) { //gd:Generic6DOFJoint3D.set_flag_z
 	Advanced(self).SetFlagZ(flag, value)
 }
-func (self Instance) GetFlagZ(flag gdclass.Generic6DOFJoint3DFlag) bool { //gd:Generic6DOFJoint3D.get_flag_z
+func (self Instance) GetFlagZ(flag Flag) bool { //gd:Generic6DOFJoint3D.get_flag_z
 	return bool(Advanced(self).GetFlagZ(flag))
 }
 
@@ -130,7 +137,7 @@ func New() Instance {
 }
 
 //go:nosplit
-func (self class) SetParamX(param gdclass.Generic6DOFJoint3DParam, value float64) { //gd:Generic6DOFJoint3D.set_param_x
+func (self class) SetParamX(param Param, value float64) { //gd:Generic6DOFJoint3D.set_param_x
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, value)
@@ -140,7 +147,7 @@ func (self class) SetParamX(param gdclass.Generic6DOFJoint3DParam, value float64
 }
 
 //go:nosplit
-func (self class) GetParamX(param gdclass.Generic6DOFJoint3DParam) float64 { //gd:Generic6DOFJoint3D.get_param_x
+func (self class) GetParamX(param Param) float64 { //gd:Generic6DOFJoint3D.get_param_x
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[float64](frame)
@@ -151,7 +158,7 @@ func (self class) GetParamX(param gdclass.Generic6DOFJoint3DParam) float64 { //g
 }
 
 //go:nosplit
-func (self class) SetParamY(param gdclass.Generic6DOFJoint3DParam, value float64) { //gd:Generic6DOFJoint3D.set_param_y
+func (self class) SetParamY(param Param, value float64) { //gd:Generic6DOFJoint3D.set_param_y
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, value)
@@ -161,7 +168,7 @@ func (self class) SetParamY(param gdclass.Generic6DOFJoint3DParam, value float64
 }
 
 //go:nosplit
-func (self class) GetParamY(param gdclass.Generic6DOFJoint3DParam) float64 { //gd:Generic6DOFJoint3D.get_param_y
+func (self class) GetParamY(param Param) float64 { //gd:Generic6DOFJoint3D.get_param_y
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[float64](frame)
@@ -172,7 +179,7 @@ func (self class) GetParamY(param gdclass.Generic6DOFJoint3DParam) float64 { //g
 }
 
 //go:nosplit
-func (self class) SetParamZ(param gdclass.Generic6DOFJoint3DParam, value float64) { //gd:Generic6DOFJoint3D.set_param_z
+func (self class) SetParamZ(param Param, value float64) { //gd:Generic6DOFJoint3D.set_param_z
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	callframe.Arg(frame, value)
@@ -182,7 +189,7 @@ func (self class) SetParamZ(param gdclass.Generic6DOFJoint3DParam, value float64
 }
 
 //go:nosplit
-func (self class) GetParamZ(param gdclass.Generic6DOFJoint3DParam) float64 { //gd:Generic6DOFJoint3D.get_param_z
+func (self class) GetParamZ(param Param) float64 { //gd:Generic6DOFJoint3D.get_param_z
 	var frame = callframe.New()
 	callframe.Arg(frame, param)
 	var r_ret = callframe.Ret[float64](frame)
@@ -193,7 +200,7 @@ func (self class) GetParamZ(param gdclass.Generic6DOFJoint3DParam) float64 { //g
 }
 
 //go:nosplit
-func (self class) SetFlagX(flag gdclass.Generic6DOFJoint3DFlag, value bool) { //gd:Generic6DOFJoint3D.set_flag_x
+func (self class) SetFlagX(flag Flag, value bool) { //gd:Generic6DOFJoint3D.set_flag_x
 	var frame = callframe.New()
 	callframe.Arg(frame, flag)
 	callframe.Arg(frame, value)
@@ -203,7 +210,7 @@ func (self class) SetFlagX(flag gdclass.Generic6DOFJoint3DFlag, value bool) { //
 }
 
 //go:nosplit
-func (self class) GetFlagX(flag gdclass.Generic6DOFJoint3DFlag) bool { //gd:Generic6DOFJoint3D.get_flag_x
+func (self class) GetFlagX(flag Flag) bool { //gd:Generic6DOFJoint3D.get_flag_x
 	var frame = callframe.New()
 	callframe.Arg(frame, flag)
 	var r_ret = callframe.Ret[bool](frame)
@@ -214,7 +221,7 @@ func (self class) GetFlagX(flag gdclass.Generic6DOFJoint3DFlag) bool { //gd:Gene
 }
 
 //go:nosplit
-func (self class) SetFlagY(flag gdclass.Generic6DOFJoint3DFlag, value bool) { //gd:Generic6DOFJoint3D.set_flag_y
+func (self class) SetFlagY(flag Flag, value bool) { //gd:Generic6DOFJoint3D.set_flag_y
 	var frame = callframe.New()
 	callframe.Arg(frame, flag)
 	callframe.Arg(frame, value)
@@ -224,7 +231,7 @@ func (self class) SetFlagY(flag gdclass.Generic6DOFJoint3DFlag, value bool) { //
 }
 
 //go:nosplit
-func (self class) GetFlagY(flag gdclass.Generic6DOFJoint3DFlag) bool { //gd:Generic6DOFJoint3D.get_flag_y
+func (self class) GetFlagY(flag Flag) bool { //gd:Generic6DOFJoint3D.get_flag_y
 	var frame = callframe.New()
 	callframe.Arg(frame, flag)
 	var r_ret = callframe.Ret[bool](frame)
@@ -235,7 +242,7 @@ func (self class) GetFlagY(flag gdclass.Generic6DOFJoint3DFlag) bool { //gd:Gene
 }
 
 //go:nosplit
-func (self class) SetFlagZ(flag gdclass.Generic6DOFJoint3DFlag, value bool) { //gd:Generic6DOFJoint3D.set_flag_z
+func (self class) SetFlagZ(flag Flag, value bool) { //gd:Generic6DOFJoint3D.set_flag_z
 	var frame = callframe.New()
 	callframe.Arg(frame, flag)
 	callframe.Arg(frame, value)
@@ -245,7 +252,7 @@ func (self class) SetFlagZ(flag gdclass.Generic6DOFJoint3DFlag, value bool) { //
 }
 
 //go:nosplit
-func (self class) GetFlagZ(flag gdclass.Generic6DOFJoint3DFlag) bool { //gd:Generic6DOFJoint3D.get_flag_z
+func (self class) GetFlagZ(flag Flag) bool { //gd:Generic6DOFJoint3D.get_flag_z
 	var frame = callframe.New()
 	callframe.Arg(frame, flag)
 	var r_ret = callframe.Ret[bool](frame)
@@ -288,7 +295,7 @@ func init() {
 	})
 }
 
-type Param = gdclass.Generic6DOFJoint3DParam //gd:Generic6DOFJoint3D.Param
+type Param int //gd:Generic6DOFJoint3D.Param
 
 const (
 	/*The minimum difference between the pivot points' axes.*/
@@ -333,7 +340,7 @@ const (
 	ParamMax Param = 22
 )
 
-type Flag = gdclass.Generic6DOFJoint3DFlag //gd:Generic6DOFJoint3D.Flag
+type Flag int //gd:Generic6DOFJoint3D.Flag
 
 const (
 	/*If enabled, linear motion is possible within the given limits.*/

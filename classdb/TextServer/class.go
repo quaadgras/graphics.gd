@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/GUI"
 import "graphics.gd/classdb/Image"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -31,6 +33,10 @@ import "graphics.gd/variant/Vector2i"
 import "graphics.gd/variant/Vector3i"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -46,6 +52,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -58,6 +65,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -91,7 +99,7 @@ type Any interface {
 /*
 Returns [code]true[/code] if the server supports a feature.
 */
-func (self Instance) HasFeature(feature gdclass.TextServerFeature) bool { //gd:TextServer.has_feature
+func (self Instance) HasFeature(feature Feature) bool { //gd:TextServer.has_feature
 	return bool(Advanced(self).HasFeature(feature))
 }
 
@@ -227,15 +235,15 @@ func (self Instance) FontGetFaceCount(font_rid RID.Font) int { //gd:TextServer.f
 Sets the font style flags, see [enum FontStyle].
 [b]Note:[/b] This value is used for font matching only and will not affect font rendering. Use [method font_set_face_index], [method font_set_variation_coordinates], [method font_set_embolden], or [method font_set_transform] instead.
 */
-func (self Instance) FontSetStyle(font_rid RID.Font, style gdclass.TextServerFontStyle) { //gd:TextServer.font_set_style
+func (self Instance) FontSetStyle(font_rid RID.Font, style FontStyle) { //gd:TextServer.font_set_style
 	Advanced(self).FontSetStyle(RID.Any(font_rid), style)
 }
 
 /*
 Returns font style flags, see [enum FontStyle].
 */
-func (self Instance) FontGetStyle(font_rid RID.Font) gdclass.TextServerFontStyle { //gd:TextServer.font_get_style
-	return gdclass.TextServerFontStyle(Advanced(self).FontGetStyle(RID.Any(font_rid)))
+func (self Instance) FontGetStyle(font_rid RID.Font) FontStyle { //gd:TextServer.font_get_style
+	return FontStyle(Advanced(self).FontGetStyle(RID.Any(font_rid)))
 }
 
 /*
@@ -306,15 +314,15 @@ func (self Instance) FontGetStretch(font_rid RID.Font) int { //gd:TextServer.fon
 /*
 Sets font anti-aliasing mode.
 */
-func (self Instance) FontSetAntialiasing(font_rid RID.Font, antialiasing gdclass.TextServerFontAntialiasing) { //gd:TextServer.font_set_antialiasing
+func (self Instance) FontSetAntialiasing(font_rid RID.Font, antialiasing FontAntialiasing) { //gd:TextServer.font_set_antialiasing
 	Advanced(self).FontSetAntialiasing(RID.Any(font_rid), antialiasing)
 }
 
 /*
 Returns font anti-aliasing mode.
 */
-func (self Instance) FontGetAntialiasing(font_rid RID.Font) gdclass.TextServerFontAntialiasing { //gd:TextServer.font_get_antialiasing
-	return gdclass.TextServerFontAntialiasing(Advanced(self).FontGetAntialiasing(RID.Any(font_rid)))
+func (self Instance) FontGetAntialiasing(font_rid RID.Font) FontAntialiasing { //gd:TextServer.font_get_antialiasing
+	return FontAntialiasing(Advanced(self).FontGetAntialiasing(RID.Any(font_rid)))
 }
 
 /*
@@ -405,15 +413,15 @@ func (self Instance) FontGetFixedSize(font_rid RID.Font) int { //gd:TextServer.f
 /*
 Sets bitmap font scaling mode. This property is used only if [code]fixed_size[/code] is greater than zero.
 */
-func (self Instance) FontSetFixedSizeScaleMode(font_rid RID.Font, fixed_size_scale_mode gdclass.TextServerFixedSizeScaleMode) { //gd:TextServer.font_set_fixed_size_scale_mode
+func (self Instance) FontSetFixedSizeScaleMode(font_rid RID.Font, fixed_size_scale_mode FixedSizeScaleMode) { //gd:TextServer.font_set_fixed_size_scale_mode
 	Advanced(self).FontSetFixedSizeScaleMode(RID.Any(font_rid), fixed_size_scale_mode)
 }
 
 /*
 Returns bitmap font scaling mode.
 */
-func (self Instance) FontGetFixedSizeScaleMode(font_rid RID.Font) gdclass.TextServerFixedSizeScaleMode { //gd:TextServer.font_get_fixed_size_scale_mode
-	return gdclass.TextServerFixedSizeScaleMode(Advanced(self).FontGetFixedSizeScaleMode(RID.Any(font_rid)))
+func (self Instance) FontGetFixedSizeScaleMode(font_rid RID.Font) FixedSizeScaleMode { //gd:TextServer.font_get_fixed_size_scale_mode
+	return FixedSizeScaleMode(Advanced(self).FontGetFixedSizeScaleMode(RID.Any(font_rid)))
 }
 
 /*
@@ -447,29 +455,29 @@ func (self Instance) FontIsForceAutohinter(font_rid RID.Font) bool { //gd:TextSe
 /*
 Sets font hinting mode. Used by dynamic fonts only.
 */
-func (self Instance) FontSetHinting(font_rid RID.Font, hinting gdclass.TextServerHinting) { //gd:TextServer.font_set_hinting
+func (self Instance) FontSetHinting(font_rid RID.Font, hinting Hinting) { //gd:TextServer.font_set_hinting
 	Advanced(self).FontSetHinting(RID.Any(font_rid), hinting)
 }
 
 /*
 Returns the font hinting mode. Used by dynamic fonts only.
 */
-func (self Instance) FontGetHinting(font_rid RID.Font) gdclass.TextServerHinting { //gd:TextServer.font_get_hinting
-	return gdclass.TextServerHinting(Advanced(self).FontGetHinting(RID.Any(font_rid)))
+func (self Instance) FontGetHinting(font_rid RID.Font) Hinting { //gd:TextServer.font_get_hinting
+	return Hinting(Advanced(self).FontGetHinting(RID.Any(font_rid)))
 }
 
 /*
 Sets font subpixel glyph positioning mode.
 */
-func (self Instance) FontSetSubpixelPositioning(font_rid RID.Font, subpixel_positioning gdclass.TextServerSubpixelPositioning) { //gd:TextServer.font_set_subpixel_positioning
+func (self Instance) FontSetSubpixelPositioning(font_rid RID.Font, subpixel_positioning SubpixelPositioning) { //gd:TextServer.font_set_subpixel_positioning
 	Advanced(self).FontSetSubpixelPositioning(RID.Any(font_rid), subpixel_positioning)
 }
 
 /*
 Returns font subpixel glyph positioning mode.
 */
-func (self Instance) FontGetSubpixelPositioning(font_rid RID.Font) gdclass.TextServerSubpixelPositioning { //gd:TextServer.font_get_subpixel_positioning
-	return gdclass.TextServerSubpixelPositioning(Advanced(self).FontGetSubpixelPositioning(RID.Any(font_rid)))
+func (self Instance) FontGetSubpixelPositioning(font_rid RID.Font) SubpixelPositioning { //gd:TextServer.font_get_subpixel_positioning
+	return SubpixelPositioning(Advanced(self).FontGetSubpixelPositioning(RID.Any(font_rid)))
 }
 
 /*
@@ -503,14 +511,14 @@ func (self Instance) FontGetEmbolden(font_rid RID.Font) Float.X { //gd:TextServe
 /*
 Sets the spacing for [param spacing] (see [enum TextServer.SpacingType]) to [param value] in pixels (not relative to the font size).
 */
-func (self Instance) FontSetSpacing(font_rid RID.Font, spacing gdclass.TextServerSpacingType, value int) { //gd:TextServer.font_set_spacing
+func (self Instance) FontSetSpacing(font_rid RID.Font, spacing SpacingType, value int) { //gd:TextServer.font_set_spacing
 	Advanced(self).FontSetSpacing(RID.Any(font_rid), spacing, int64(value))
 }
 
 /*
 Returns the spacing for [param spacing] (see [enum TextServer.SpacingType]) in pixels (not relative to the font size).
 */
-func (self Instance) FontGetSpacing(font_rid RID.Font, spacing gdclass.TextServerSpacingType) int { //gd:TextServer.font_get_spacing
+func (self Instance) FontGetSpacing(font_rid RID.Font, spacing SpacingType) int { //gd:TextServer.font_get_spacing
 	return int(int(Advanced(self).FontGetSpacing(RID.Any(font_rid), spacing)))
 }
 
@@ -1100,7 +1108,7 @@ Creates a new buffer for complex text layout, with the given [param direction] a
 [b]Note:[/b] Direction is ignored if server does not support [constant FEATURE_BIDI_LAYOUT] feature (supported by [TextServerAdvanced]).
 [b]Note:[/b] Orientation is ignored if server does not support [constant FEATURE_VERTICAL_LAYOUT] feature (supported by [TextServerAdvanced]).
 */
-func (self Expanded) CreateShapedText(direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) RID.TextBuffer { //gd:TextServer.create_shaped_text
+func (self Expanded) CreateShapedText(direction Direction, orientation Orientation) RID.TextBuffer { //gd:TextServer.create_shaped_text
 	return RID.TextBuffer(Advanced(self).CreateShapedText(direction, orientation))
 }
 
@@ -1123,22 +1131,22 @@ func (self Instance) ShapedTextSetDirection(shaped RID.TextBuffer) { //gd:TextSe
 Sets desired text direction. If set to [constant DIRECTION_AUTO], direction will be detected based on the buffer contents and current locale.
 [b]Note:[/b] Direction is ignored if server does not support [constant FEATURE_BIDI_LAYOUT] feature (supported by [TextServerAdvanced]).
 */
-func (self Expanded) ShapedTextSetDirection(shaped RID.TextBuffer, direction gdclass.TextServerDirection) { //gd:TextServer.shaped_text_set_direction
+func (self Expanded) ShapedTextSetDirection(shaped RID.TextBuffer, direction Direction) { //gd:TextServer.shaped_text_set_direction
 	Advanced(self).ShapedTextSetDirection(RID.Any(shaped), direction)
 }
 
 /*
 Returns direction of the text.
 */
-func (self Instance) ShapedTextGetDirection(shaped RID.TextBuffer) gdclass.TextServerDirection { //gd:TextServer.shaped_text_get_direction
-	return gdclass.TextServerDirection(Advanced(self).ShapedTextGetDirection(RID.Any(shaped)))
+func (self Instance) ShapedTextGetDirection(shaped RID.TextBuffer) Direction { //gd:TextServer.shaped_text_get_direction
+	return Direction(Advanced(self).ShapedTextGetDirection(RID.Any(shaped)))
 }
 
 /*
 Returns direction of the text, inferred by the BiDi algorithm.
 */
-func (self Instance) ShapedTextGetInferredDirection(shaped RID.TextBuffer) gdclass.TextServerDirection { //gd:TextServer.shaped_text_get_inferred_direction
-	return gdclass.TextServerDirection(Advanced(self).ShapedTextGetInferredDirection(RID.Any(shaped)))
+func (self Instance) ShapedTextGetInferredDirection(shaped RID.TextBuffer) Direction { //gd:TextServer.shaped_text_get_inferred_direction
+	return Direction(Advanced(self).ShapedTextGetInferredDirection(RID.Any(shaped)))
 }
 
 /*
@@ -1189,15 +1197,15 @@ func (self Instance) ShapedTextSetOrientation(shaped RID.TextBuffer) { //gd:Text
 Sets desired text orientation.
 [b]Note:[/b] Orientation is ignored if server does not support [constant FEATURE_VERTICAL_LAYOUT] feature (supported by [TextServerAdvanced]).
 */
-func (self Expanded) ShapedTextSetOrientation(shaped RID.TextBuffer, orientation gdclass.TextServerOrientation) { //gd:TextServer.shaped_text_set_orientation
+func (self Expanded) ShapedTextSetOrientation(shaped RID.TextBuffer, orientation Orientation) { //gd:TextServer.shaped_text_set_orientation
 	Advanced(self).ShapedTextSetOrientation(RID.Any(shaped), orientation)
 }
 
 /*
 Returns text orientation.
 */
-func (self Instance) ShapedTextGetOrientation(shaped RID.TextBuffer) gdclass.TextServerOrientation { //gd:TextServer.shaped_text_get_orientation
-	return gdclass.TextServerOrientation(Advanced(self).ShapedTextGetOrientation(RID.Any(shaped)))
+func (self Instance) ShapedTextGetOrientation(shaped RID.TextBuffer) Orientation { //gd:TextServer.shaped_text_get_orientation
+	return Orientation(Advanced(self).ShapedTextGetOrientation(RID.Any(shaped)))
 }
 
 /*
@@ -1232,14 +1240,14 @@ func (self Instance) ShapedTextGetPreserveControl(shaped RID.TextBuffer) bool { 
 /*
 Sets extra spacing added between glyphs or lines in pixels.
 */
-func (self Instance) ShapedTextSetSpacing(shaped RID.TextBuffer, spacing gdclass.TextServerSpacingType, value int) { //gd:TextServer.shaped_text_set_spacing
+func (self Instance) ShapedTextSetSpacing(shaped RID.TextBuffer, spacing SpacingType, value int) { //gd:TextServer.shaped_text_set_spacing
 	Advanced(self).ShapedTextSetSpacing(RID.Any(shaped), spacing, int64(value))
 }
 
 /*
 Returns extra spacing added between glyphs or lines in pixels.
 */
-func (self Instance) ShapedTextGetSpacing(shaped RID.TextBuffer, spacing gdclass.TextServerSpacingType) int { //gd:TextServer.shaped_text_get_spacing
+func (self Instance) ShapedTextGetSpacing(shaped RID.TextBuffer, spacing SpacingType) int { //gd:TextServer.shaped_text_get_spacing
 	return int(int(Advanced(self).ShapedTextGetSpacing(RID.Any(shaped), spacing)))
 }
 
@@ -1267,7 +1275,7 @@ func (self Instance) ShapedTextAddObject(shaped RID.TextBuffer, key any, size Ve
 /*
 Adds inline object to the text buffer, [param key] must be unique. In the text, object is represented as [param length] object replacement characters.
 */
-func (self Expanded) ShapedTextAddObject(shaped RID.TextBuffer, key any, size Vector2.XY, inline_align InlineAlignment, length int, baseline Float.X) bool { //gd:TextServer.shaped_text_add_object
+func (self Expanded) ShapedTextAddObject(shaped RID.TextBuffer, key any, size Vector2.XY, inline_align GUI.InlineAlignment, length int, baseline Float.X) bool { //gd:TextServer.shaped_text_add_object
 	return bool(Advanced(self).ShapedTextAddObject(RID.Any(shaped), variant.New(key), Vector2.XY(size), inline_align, int64(length), float64(baseline)))
 }
 
@@ -1281,7 +1289,7 @@ func (self Instance) ShapedTextResizeObject(shaped RID.TextBuffer, key any, size
 /*
 Sets new size and alignment of embedded object.
 */
-func (self Expanded) ShapedTextResizeObject(shaped RID.TextBuffer, key any, size Vector2.XY, inline_align InlineAlignment, baseline Float.X) bool { //gd:TextServer.shaped_text_resize_object
+func (self Expanded) ShapedTextResizeObject(shaped RID.TextBuffer, key any, size Vector2.XY, inline_align GUI.InlineAlignment, baseline Float.X) bool { //gd:TextServer.shaped_text_resize_object
 	return bool(Advanced(self).ShapedTextResizeObject(RID.Any(shaped), variant.New(key), Vector2.XY(size), inline_align, float64(baseline)))
 }
 
@@ -1344,7 +1352,7 @@ func (self Instance) ShapedTextFitToWidth(shaped RID.TextBuffer, width Float.X) 
 /*
 Adjusts text width to fit to specified width, returns new text width.
 */
-func (self Expanded) ShapedTextFitToWidth(shaped RID.TextBuffer, width Float.X, justification_flags gdclass.TextServerJustificationFlag) Float.X { //gd:TextServer.shaped_text_fit_to_width
+func (self Expanded) ShapedTextFitToWidth(shaped RID.TextBuffer, width Float.X, justification_flags JustificationFlag) Float.X { //gd:TextServer.shaped_text_fit_to_width
 	return Float.X(Float.X(Advanced(self).ShapedTextFitToWidth(RID.Any(shaped), float64(width), justification_flags)))
 }
 
@@ -1424,7 +1432,7 @@ func (self Instance) ShapedTextGetLineBreaksAdv(shaped RID.TextBuffer, width []f
 /*
 Breaks text to the lines and columns. Returns character ranges for each segment.
 */
-func (self Expanded) ShapedTextGetLineBreaksAdv(shaped RID.TextBuffer, width []float32, start int, once bool, break_flags gdclass.TextServerLineBreakFlag) []int32 { //gd:TextServer.shaped_text_get_line_breaks_adv
+func (self Expanded) ShapedTextGetLineBreaksAdv(shaped RID.TextBuffer, width []float32, start int, once bool, break_flags LineBreakFlag) []int32 { //gd:TextServer.shaped_text_get_line_breaks_adv
 	return []int32(slices.Collect(Advanced(self).ShapedTextGetLineBreaksAdv(RID.Any(shaped), Packed.New(width...), int64(start), once, break_flags).Values()))
 }
 
@@ -1438,7 +1446,7 @@ func (self Instance) ShapedTextGetLineBreaks(shaped RID.TextBuffer, width Float.
 /*
 Breaks text to the lines and returns character ranges for each line.
 */
-func (self Expanded) ShapedTextGetLineBreaks(shaped RID.TextBuffer, width Float.X, start int, break_flags gdclass.TextServerLineBreakFlag) []int32 { //gd:TextServer.shaped_text_get_line_breaks
+func (self Expanded) ShapedTextGetLineBreaks(shaped RID.TextBuffer, width Float.X, start int, break_flags LineBreakFlag) []int32 { //gd:TextServer.shaped_text_get_line_breaks
 	return []int32(slices.Collect(Advanced(self).ShapedTextGetLineBreaks(RID.Any(shaped), float64(width), int64(start), break_flags).Values()))
 }
 
@@ -1452,7 +1460,7 @@ func (self Instance) ShapedTextGetWordBreaks(shaped RID.TextBuffer) []int32 { //
 /*
 Breaks text into words and returns array of character ranges. Use [param grapheme_flags] to set what characters are used for breaking (see [enum GraphemeFlag]).
 */
-func (self Expanded) ShapedTextGetWordBreaks(shaped RID.TextBuffer, grapheme_flags gdclass.TextServerGraphemeFlag, skip_grapheme_flags gdclass.TextServerGraphemeFlag) []int32 { //gd:TextServer.shaped_text_get_word_breaks
+func (self Expanded) ShapedTextGetWordBreaks(shaped RID.TextBuffer, grapheme_flags GraphemeFlag, skip_grapheme_flags GraphemeFlag) []int32 { //gd:TextServer.shaped_text_get_word_breaks
 	return []int32(slices.Collect(Advanced(self).ShapedTextGetWordBreaks(RID.Any(shaped), grapheme_flags, skip_grapheme_flags).Values()))
 }
 
@@ -1503,7 +1511,7 @@ func (self Instance) ShapedTextOverrunTrimToWidth(shaped RID.TextBuffer) { //gd:
 /*
 Trims text if it exceeds the given width.
 */
-func (self Expanded) ShapedTextOverrunTrimToWidth(shaped RID.TextBuffer, width Float.X, overrun_trim_flags gdclass.TextServerTextOverrunFlag) { //gd:TextServer.shaped_text_overrun_trim_to_width
+func (self Expanded) ShapedTextOverrunTrimToWidth(shaped RID.TextBuffer, width Float.X, overrun_trim_flags TextOverrunFlag) { //gd:TextServer.shaped_text_overrun_trim_to_width
 	Advanced(self).ShapedTextOverrunTrimToWidth(RID.Any(shaped), float64(width), overrun_trim_flags)
 }
 
@@ -1696,8 +1704,8 @@ func (self Expanded) ShapedTextDrawOutline(shaped RID.TextBuffer, canvas RID.Can
 /*
 Returns dominant direction of in the range of text.
 */
-func (self Instance) ShapedTextGetDominantDirectionInRange(shaped RID.TextBuffer, start int, end int) gdclass.TextServerDirection { //gd:TextServer.shaped_text_get_dominant_direction_in_range
-	return gdclass.TextServerDirection(Advanced(self).ShapedTextGetDominantDirectionInRange(RID.Any(shaped), int64(start), int64(end)))
+func (self Instance) ShapedTextGetDominantDirectionInRange(shaped RID.TextBuffer, start int, end int) Direction { //gd:TextServer.shaped_text_get_dominant_direction_in_range
+	return Direction(Advanced(self).ShapedTextGetDominantDirectionInRange(RID.Any(shaped), int64(start), int64(end)))
 }
 
 /*
@@ -1904,7 +1912,7 @@ func (self Expanded) StringToTitle(s string, language string) string { //gd:Text
 /*
 Default implementation of the BiDi algorithm override function. See [enum StructuredTextParser] for more info.
 */
-func (self Instance) ParseStructuredText(parser_type gdclass.TextServerStructuredTextParser, args []any, text string) []Vector3i.XYZ { //gd:TextServer.parse_structured_text
+func (self Instance) ParseStructuredText(parser_type StructuredTextParser, args []any, text string) []Vector3i.XYZ { //gd:TextServer.parse_structured_text
 	return []Vector3i.XYZ(gd.ArrayAs[[]Vector3i.XYZ](gd.InternalArray(Advanced(self).ParseStructuredText(parser_type, gd.EngineArrayFromSlice(args), String.New(text)))))
 }
 
@@ -1932,7 +1940,7 @@ func New() Instance {
 Returns [code]true[/code] if the server supports a feature.
 */
 //go:nosplit
-func (self class) HasFeature(feature gdclass.TextServerFeature) bool { //gd:TextServer.has_feature
+func (self class) HasFeature(feature Feature) bool { //gd:TextServer.has_feature
 	var frame = callframe.New()
 	callframe.Arg(frame, feature)
 	var r_ret = callframe.Ret[bool](frame)
@@ -2191,7 +2199,7 @@ Sets the font style flags, see [enum FontStyle].
 [b]Note:[/b] This value is used for font matching only and will not affect font rendering. Use [method font_set_face_index], [method font_set_variation_coordinates], [method font_set_embolden], or [method font_set_transform] instead.
 */
 //go:nosplit
-func (self class) FontSetStyle(font_rid RID.Any, style gdclass.TextServerFontStyle) { //gd:TextServer.font_set_style
+func (self class) FontSetStyle(font_rid RID.Any, style FontStyle) { //gd:TextServer.font_set_style
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
 	callframe.Arg(frame, style)
@@ -2204,10 +2212,10 @@ func (self class) FontSetStyle(font_rid RID.Any, style gdclass.TextServerFontSty
 Returns font style flags, see [enum FontStyle].
 */
 //go:nosplit
-func (self class) FontGetStyle(font_rid RID.Any) gdclass.TextServerFontStyle { //gd:TextServer.font_get_style
+func (self class) FontGetStyle(font_rid RID.Any) FontStyle { //gd:TextServer.font_get_style
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	var r_ret = callframe.Ret[gdclass.TextServerFontStyle](frame)
+	var r_ret = callframe.Ret[FontStyle](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_style, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2342,7 +2350,7 @@ func (self class) FontGetStretch(font_rid RID.Any) int64 { //gd:TextServer.font_
 Sets font anti-aliasing mode.
 */
 //go:nosplit
-func (self class) FontSetAntialiasing(font_rid RID.Any, antialiasing gdclass.TextServerFontAntialiasing) { //gd:TextServer.font_set_antialiasing
+func (self class) FontSetAntialiasing(font_rid RID.Any, antialiasing FontAntialiasing) { //gd:TextServer.font_set_antialiasing
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
 	callframe.Arg(frame, antialiasing)
@@ -2355,10 +2363,10 @@ func (self class) FontSetAntialiasing(font_rid RID.Any, antialiasing gdclass.Tex
 Returns font anti-aliasing mode.
 */
 //go:nosplit
-func (self class) FontGetAntialiasing(font_rid RID.Any) gdclass.TextServerFontAntialiasing { //gd:TextServer.font_get_antialiasing
+func (self class) FontGetAntialiasing(font_rid RID.Any) FontAntialiasing { //gd:TextServer.font_get_antialiasing
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	var r_ret = callframe.Ret[gdclass.TextServerFontAntialiasing](frame)
+	var r_ret = callframe.Ret[FontAntialiasing](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_antialiasing, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2532,7 +2540,7 @@ func (self class) FontGetFixedSize(font_rid RID.Any) int64 { //gd:TextServer.fon
 Sets bitmap font scaling mode. This property is used only if [code]fixed_size[/code] is greater than zero.
 */
 //go:nosplit
-func (self class) FontSetFixedSizeScaleMode(font_rid RID.Any, fixed_size_scale_mode gdclass.TextServerFixedSizeScaleMode) { //gd:TextServer.font_set_fixed_size_scale_mode
+func (self class) FontSetFixedSizeScaleMode(font_rid RID.Any, fixed_size_scale_mode FixedSizeScaleMode) { //gd:TextServer.font_set_fixed_size_scale_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
 	callframe.Arg(frame, fixed_size_scale_mode)
@@ -2545,10 +2553,10 @@ func (self class) FontSetFixedSizeScaleMode(font_rid RID.Any, fixed_size_scale_m
 Returns bitmap font scaling mode.
 */
 //go:nosplit
-func (self class) FontGetFixedSizeScaleMode(font_rid RID.Any) gdclass.TextServerFixedSizeScaleMode { //gd:TextServer.font_get_fixed_size_scale_mode
+func (self class) FontGetFixedSizeScaleMode(font_rid RID.Any) FixedSizeScaleMode { //gd:TextServer.font_get_fixed_size_scale_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	var r_ret = callframe.Ret[gdclass.TextServerFixedSizeScaleMode](frame)
+	var r_ret = callframe.Ret[FixedSizeScaleMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_fixed_size_scale_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2613,7 +2621,7 @@ func (self class) FontIsForceAutohinter(font_rid RID.Any) bool { //gd:TextServer
 Sets font hinting mode. Used by dynamic fonts only.
 */
 //go:nosplit
-func (self class) FontSetHinting(font_rid RID.Any, hinting gdclass.TextServerHinting) { //gd:TextServer.font_set_hinting
+func (self class) FontSetHinting(font_rid RID.Any, hinting Hinting) { //gd:TextServer.font_set_hinting
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
 	callframe.Arg(frame, hinting)
@@ -2626,10 +2634,10 @@ func (self class) FontSetHinting(font_rid RID.Any, hinting gdclass.TextServerHin
 Returns the font hinting mode. Used by dynamic fonts only.
 */
 //go:nosplit
-func (self class) FontGetHinting(font_rid RID.Any) gdclass.TextServerHinting { //gd:TextServer.font_get_hinting
+func (self class) FontGetHinting(font_rid RID.Any) Hinting { //gd:TextServer.font_get_hinting
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	var r_ret = callframe.Ret[gdclass.TextServerHinting](frame)
+	var r_ret = callframe.Ret[Hinting](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_hinting, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2640,7 +2648,7 @@ func (self class) FontGetHinting(font_rid RID.Any) gdclass.TextServerHinting { /
 Sets font subpixel glyph positioning mode.
 */
 //go:nosplit
-func (self class) FontSetSubpixelPositioning(font_rid RID.Any, subpixel_positioning gdclass.TextServerSubpixelPositioning) { //gd:TextServer.font_set_subpixel_positioning
+func (self class) FontSetSubpixelPositioning(font_rid RID.Any, subpixel_positioning SubpixelPositioning) { //gd:TextServer.font_set_subpixel_positioning
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
 	callframe.Arg(frame, subpixel_positioning)
@@ -2653,10 +2661,10 @@ func (self class) FontSetSubpixelPositioning(font_rid RID.Any, subpixel_position
 Returns font subpixel glyph positioning mode.
 */
 //go:nosplit
-func (self class) FontGetSubpixelPositioning(font_rid RID.Any) gdclass.TextServerSubpixelPositioning { //gd:TextServer.font_get_subpixel_positioning
+func (self class) FontGetSubpixelPositioning(font_rid RID.Any) SubpixelPositioning { //gd:TextServer.font_get_subpixel_positioning
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
-	var r_ret = callframe.Ret[gdclass.TextServerSubpixelPositioning](frame)
+	var r_ret = callframe.Ret[SubpixelPositioning](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_subpixel_positioning, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2721,7 +2729,7 @@ func (self class) FontGetEmbolden(font_rid RID.Any) float64 { //gd:TextServer.fo
 Sets the spacing for [param spacing] (see [enum TextServer.SpacingType]) to [param value] in pixels (not relative to the font size).
 */
 //go:nosplit
-func (self class) FontSetSpacing(font_rid RID.Any, spacing gdclass.TextServerSpacingType, value int64) { //gd:TextServer.font_set_spacing
+func (self class) FontSetSpacing(font_rid RID.Any, spacing SpacingType, value int64) { //gd:TextServer.font_set_spacing
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
 	callframe.Arg(frame, spacing)
@@ -2735,7 +2743,7 @@ func (self class) FontSetSpacing(font_rid RID.Any, spacing gdclass.TextServerSpa
 Returns the spacing for [param spacing] (see [enum TextServer.SpacingType]) in pixels (not relative to the font size).
 */
 //go:nosplit
-func (self class) FontGetSpacing(font_rid RID.Any, spacing gdclass.TextServerSpacingType) int64 { //gd:TextServer.font_get_spacing
+func (self class) FontGetSpacing(font_rid RID.Any, spacing SpacingType) int64 { //gd:TextServer.font_get_spacing
 	var frame = callframe.New()
 	callframe.Arg(frame, font_rid)
 	callframe.Arg(frame, spacing)
@@ -3881,7 +3889,7 @@ Creates a new buffer for complex text layout, with the given [param direction] a
 [b]Note:[/b] Orientation is ignored if server does not support [constant FEATURE_VERTICAL_LAYOUT] feature (supported by [TextServerAdvanced]).
 */
 //go:nosplit
-func (self class) CreateShapedText(direction gdclass.TextServerDirection, orientation gdclass.TextServerOrientation) RID.Any { //gd:TextServer.create_shaped_text
+func (self class) CreateShapedText(direction Direction, orientation Orientation) RID.Any { //gd:TextServer.create_shaped_text
 	var frame = callframe.New()
 	callframe.Arg(frame, direction)
 	callframe.Arg(frame, orientation)
@@ -3909,7 +3917,7 @@ Sets desired text direction. If set to [constant DIRECTION_AUTO], direction will
 [b]Note:[/b] Direction is ignored if server does not support [constant FEATURE_BIDI_LAYOUT] feature (supported by [TextServerAdvanced]).
 */
 //go:nosplit
-func (self class) ShapedTextSetDirection(shaped RID.Any, direction gdclass.TextServerDirection) { //gd:TextServer.shaped_text_set_direction
+func (self class) ShapedTextSetDirection(shaped RID.Any, direction Direction) { //gd:TextServer.shaped_text_set_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
 	callframe.Arg(frame, direction)
@@ -3922,10 +3930,10 @@ func (self class) ShapedTextSetDirection(shaped RID.Any, direction gdclass.TextS
 Returns direction of the text.
 */
 //go:nosplit
-func (self class) ShapedTextGetDirection(shaped RID.Any) gdclass.TextServerDirection { //gd:TextServer.shaped_text_get_direction
+func (self class) ShapedTextGetDirection(shaped RID.Any) Direction { //gd:TextServer.shaped_text_get_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
-	var r_ret = callframe.Ret[gdclass.TextServerDirection](frame)
+	var r_ret = callframe.Ret[Direction](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_text_get_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -3936,10 +3944,10 @@ func (self class) ShapedTextGetDirection(shaped RID.Any) gdclass.TextServerDirec
 Returns direction of the text, inferred by the BiDi algorithm.
 */
 //go:nosplit
-func (self class) ShapedTextGetInferredDirection(shaped RID.Any) gdclass.TextServerDirection { //gd:TextServer.shaped_text_get_inferred_direction
+func (self class) ShapedTextGetInferredDirection(shaped RID.Any) Direction { //gd:TextServer.shaped_text_get_inferred_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
-	var r_ret = callframe.Ret[gdclass.TextServerDirection](frame)
+	var r_ret = callframe.Ret[Direction](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_text_get_inferred_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -4019,7 +4027,7 @@ Sets desired text orientation.
 [b]Note:[/b] Orientation is ignored if server does not support [constant FEATURE_VERTICAL_LAYOUT] feature (supported by [TextServerAdvanced]).
 */
 //go:nosplit
-func (self class) ShapedTextSetOrientation(shaped RID.Any, orientation gdclass.TextServerOrientation) { //gd:TextServer.shaped_text_set_orientation
+func (self class) ShapedTextSetOrientation(shaped RID.Any, orientation Orientation) { //gd:TextServer.shaped_text_set_orientation
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
 	callframe.Arg(frame, orientation)
@@ -4032,10 +4040,10 @@ func (self class) ShapedTextSetOrientation(shaped RID.Any, orientation gdclass.T
 Returns text orientation.
 */
 //go:nosplit
-func (self class) ShapedTextGetOrientation(shaped RID.Any) gdclass.TextServerOrientation { //gd:TextServer.shaped_text_get_orientation
+func (self class) ShapedTextGetOrientation(shaped RID.Any) Orientation { //gd:TextServer.shaped_text_get_orientation
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
-	var r_ret = callframe.Ret[gdclass.TextServerOrientation](frame)
+	var r_ret = callframe.Ret[Orientation](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_text_get_orientation, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -4101,7 +4109,7 @@ func (self class) ShapedTextGetPreserveControl(shaped RID.Any) bool { //gd:TextS
 Sets extra spacing added between glyphs or lines in pixels.
 */
 //go:nosplit
-func (self class) ShapedTextSetSpacing(shaped RID.Any, spacing gdclass.TextServerSpacingType, value int64) { //gd:TextServer.shaped_text_set_spacing
+func (self class) ShapedTextSetSpacing(shaped RID.Any, spacing SpacingType, value int64) { //gd:TextServer.shaped_text_set_spacing
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
 	callframe.Arg(frame, spacing)
@@ -4115,7 +4123,7 @@ func (self class) ShapedTextSetSpacing(shaped RID.Any, spacing gdclass.TextServe
 Returns extra spacing added between glyphs or lines in pixels.
 */
 //go:nosplit
-func (self class) ShapedTextGetSpacing(shaped RID.Any, spacing gdclass.TextServerSpacingType) int64 { //gd:TextServer.shaped_text_get_spacing
+func (self class) ShapedTextGetSpacing(shaped RID.Any, spacing SpacingType) int64 { //gd:TextServer.shaped_text_get_spacing
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
 	callframe.Arg(frame, spacing)
@@ -4150,7 +4158,7 @@ func (self class) ShapedTextAddString(shaped RID.Any, text String.Readable, font
 Adds inline object to the text buffer, [param key] must be unique. In the text, object is represented as [param length] object replacement characters.
 */
 //go:nosplit
-func (self class) ShapedTextAddObject(shaped RID.Any, key variant.Any, size Vector2.XY, inline_align InlineAlignment, length int64, baseline float64) bool { //gd:TextServer.shaped_text_add_object
+func (self class) ShapedTextAddObject(shaped RID.Any, key variant.Any, size Vector2.XY, inline_align GUI.InlineAlignment, length int64, baseline float64) bool { //gd:TextServer.shaped_text_add_object
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
 	callframe.Arg(frame, pointers.Get(gd.InternalVariant(key)))
@@ -4169,7 +4177,7 @@ func (self class) ShapedTextAddObject(shaped RID.Any, key variant.Any, size Vect
 Sets new size and alignment of embedded object.
 */
 //go:nosplit
-func (self class) ShapedTextResizeObject(shaped RID.Any, key variant.Any, size Vector2.XY, inline_align InlineAlignment, baseline float64) bool { //gd:TextServer.shaped_text_resize_object
+func (self class) ShapedTextResizeObject(shaped RID.Any, key variant.Any, size Vector2.XY, inline_align GUI.InlineAlignment, baseline float64) bool { //gd:TextServer.shaped_text_resize_object
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
 	callframe.Arg(frame, pointers.Get(gd.InternalVariant(key)))
@@ -4277,7 +4285,7 @@ func (self class) ShapedTextGetParent(shaped RID.Any) RID.Any { //gd:TextServer.
 Adjusts text width to fit to specified width, returns new text width.
 */
 //go:nosplit
-func (self class) ShapedTextFitToWidth(shaped RID.Any, width float64, justification_flags gdclass.TextServerJustificationFlag) float64 { //gd:TextServer.shaped_text_fit_to_width
+func (self class) ShapedTextFitToWidth(shaped RID.Any, width float64, justification_flags JustificationFlag) float64 { //gd:TextServer.shaped_text_fit_to_width
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
 	callframe.Arg(frame, width)
@@ -4407,7 +4415,7 @@ func (self class) ShapedTextGetRange(shaped RID.Any) Vector2i.XY { //gd:TextServ
 Breaks text to the lines and columns. Returns character ranges for each segment.
 */
 //go:nosplit
-func (self class) ShapedTextGetLineBreaksAdv(shaped RID.Any, width Packed.Array[float32], start int64, once bool, break_flags gdclass.TextServerLineBreakFlag) Packed.Array[int32] { //gd:TextServer.shaped_text_get_line_breaks_adv
+func (self class) ShapedTextGetLineBreaksAdv(shaped RID.Any, width Packed.Array[float32], start int64, once bool, break_flags LineBreakFlag) Packed.Array[int32] { //gd:TextServer.shaped_text_get_line_breaks_adv
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](width)))
@@ -4425,7 +4433,7 @@ func (self class) ShapedTextGetLineBreaksAdv(shaped RID.Any, width Packed.Array[
 Breaks text to the lines and returns character ranges for each line.
 */
 //go:nosplit
-func (self class) ShapedTextGetLineBreaks(shaped RID.Any, width float64, start int64, break_flags gdclass.TextServerLineBreakFlag) Packed.Array[int32] { //gd:TextServer.shaped_text_get_line_breaks
+func (self class) ShapedTextGetLineBreaks(shaped RID.Any, width float64, start int64, break_flags LineBreakFlag) Packed.Array[int32] { //gd:TextServer.shaped_text_get_line_breaks
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
 	callframe.Arg(frame, width)
@@ -4442,7 +4450,7 @@ func (self class) ShapedTextGetLineBreaks(shaped RID.Any, width float64, start i
 Breaks text into words and returns array of character ranges. Use [param grapheme_flags] to set what characters are used for breaking (see [enum GraphemeFlag]).
 */
 //go:nosplit
-func (self class) ShapedTextGetWordBreaks(shaped RID.Any, grapheme_flags gdclass.TextServerGraphemeFlag, skip_grapheme_flags gdclass.TextServerGraphemeFlag) Packed.Array[int32] { //gd:TextServer.shaped_text_get_word_breaks
+func (self class) ShapedTextGetWordBreaks(shaped RID.Any, grapheme_flags GraphemeFlag, skip_grapheme_flags GraphemeFlag) Packed.Array[int32] { //gd:TextServer.shaped_text_get_word_breaks
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
 	callframe.Arg(frame, grapheme_flags)
@@ -4514,7 +4522,7 @@ func (self class) ShapedTextGetEllipsisGlyphCount(shaped RID.Any) int64 { //gd:T
 Trims text if it exceeds the given width.
 */
 //go:nosplit
-func (self class) ShapedTextOverrunTrimToWidth(shaped RID.Any, width float64, overrun_trim_flags gdclass.TextServerTextOverrunFlag) { //gd:TextServer.shaped_text_overrun_trim_to_width
+func (self class) ShapedTextOverrunTrimToWidth(shaped RID.Any, width float64, overrun_trim_flags TextOverrunFlag) { //gd:TextServer.shaped_text_overrun_trim_to_width
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
 	callframe.Arg(frame, width)
@@ -4873,12 +4881,12 @@ func (self class) ShapedTextDrawOutline(shaped RID.Any, canvas RID.Any, pos Vect
 Returns dominant direction of in the range of text.
 */
 //go:nosplit
-func (self class) ShapedTextGetDominantDirectionInRange(shaped RID.Any, start int64, end int64) gdclass.TextServerDirection { //gd:TextServer.shaped_text_get_dominant_direction_in_range
+func (self class) ShapedTextGetDominantDirectionInRange(shaped RID.Any, start int64, end int64) Direction { //gd:TextServer.shaped_text_get_dominant_direction_in_range
 	var frame = callframe.New()
 	callframe.Arg(frame, shaped)
 	callframe.Arg(frame, start)
 	callframe.Arg(frame, end)
-	var r_ret = callframe.Ret[gdclass.TextServerDirection](frame)
+	var r_ret = callframe.Ret[Direction](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_shaped_text_get_dominant_direction_in_range, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -5113,7 +5121,7 @@ func (self class) StringToTitle(s String.Readable, language String.Readable) Str
 Default implementation of the BiDi algorithm override function. See [enum StructuredTextParser] for more info.
 */
 //go:nosplit
-func (self class) ParseStructuredText(parser_type gdclass.TextServerStructuredTextParser, args Array.Any, text String.Readable) Array.Contains[Vector3i.XYZ] { //gd:TextServer.parse_structured_text
+func (self class) ParseStructuredText(parser_type StructuredTextParser, args Array.Any, text String.Readable) Array.Contains[Vector3i.XYZ] { //gd:TextServer.parse_structured_text
 	var frame = callframe.New()
 	callframe.Arg(frame, parser_type)
 	callframe.Arg(frame, pointers.Get(gd.InternalArray(args)))
@@ -5152,7 +5160,7 @@ func init() {
 	gdclass.Register("TextServer", func(ptr gd.Object) any { return [1]gdclass.TextServer{*(*gdclass.TextServer)(unsafe.Pointer(&ptr))} })
 }
 
-type FontAntialiasing = gdclass.TextServerFontAntialiasing //gd:TextServer.FontAntialiasing
+type FontAntialiasing int //gd:TextServer.FontAntialiasing
 
 const (
 	/*Font glyphs are rasterized as 1-bit bitmaps.*/
@@ -5165,7 +5173,7 @@ const (
 	FontAntialiasingLcd FontAntialiasing = 2
 )
 
-type FontLCDSubpixelLayout = gdclass.TextServerFontLCDSubpixelLayout //gd:TextServer.FontLCDSubpixelLayout
+type FontLCDSubpixelLayout int //gd:TextServer.FontLCDSubpixelLayout
 
 const (
 	/*Unknown or unsupported subpixel layout, LCD subpixel antialiasing is disabled.*/
@@ -5182,7 +5190,7 @@ const (
 	FontLcdSubpixelLayoutMax FontLCDSubpixelLayout = 5
 )
 
-type Direction = gdclass.TextServerDirection //gd:TextServer.Direction
+type Direction int //gd:TextServer.Direction
 
 const (
 	/*Text direction is determined based on contents and current locale.*/
@@ -5195,7 +5203,7 @@ const (
 	DirectionInherited Direction = 3
 )
 
-type Orientation = gdclass.TextServerOrientation //gd:TextServer.Orientation
+type Orientation int //gd:TextServer.Orientation
 
 const (
 	/*Text is written horizontally.*/
@@ -5205,7 +5213,7 @@ const (
 	OrientationVertical Orientation = 1
 )
 
-type JustificationFlag = gdclass.TextServerJustificationFlag //gd:TextServer.JustificationFlag
+type JustificationFlag int //gd:TextServer.JustificationFlag
 
 const (
 	/*Do not justify text.*/
@@ -5228,7 +5236,7 @@ const (
 	JustificationDoNotSkipSingleLine JustificationFlag = 128
 )
 
-type AutowrapMode = gdclass.TextServerAutowrapMode //gd:TextServer.AutowrapMode
+type AutowrapMode int //gd:TextServer.AutowrapMode
 
 const (
 	/*Autowrap is disabled.*/
@@ -5241,7 +5249,7 @@ const (
 	AutowrapWordSmart AutowrapMode = 3
 )
 
-type LineBreakFlag = gdclass.TextServerLineBreakFlag //gd:TextServer.LineBreakFlag
+type LineBreakFlag int //gd:TextServer.LineBreakFlag
 
 const (
 	/*Do not break the line.*/
@@ -5260,7 +5268,7 @@ const (
 	BreakTrimIndent LineBreakFlag = 32
 )
 
-type VisibleCharactersBehavior = gdclass.TextServerVisibleCharactersBehavior //gd:TextServer.VisibleCharactersBehavior
+type VisibleCharactersBehavior int //gd:TextServer.VisibleCharactersBehavior
 
 const (
 	/*Trims text before the shaping. e.g, increasing [member Label.visible_characters] or [member RichTextLabel.visible_characters] value is visually identical to typing the text.
@@ -5276,7 +5284,7 @@ const (
 	VcGlyphsRtl VisibleCharactersBehavior = 4
 )
 
-type OverrunBehavior = gdclass.TextServerOverrunBehavior //gd:TextServer.OverrunBehavior
+type OverrunBehavior int //gd:TextServer.OverrunBehavior
 
 const (
 	/*No text trimming is performed.*/
@@ -5291,7 +5299,7 @@ const (
 	OverrunTrimWordEllipsis OverrunBehavior = 4
 )
 
-type TextOverrunFlag = gdclass.TextServerTextOverrunFlag //gd:TextServer.TextOverrunFlag
+type TextOverrunFlag int //gd:TextServer.TextOverrunFlag
 
 const (
 	/*No trimming is performed.*/
@@ -5308,7 +5316,7 @@ const (
 	OverrunJustificationAware TextOverrunFlag = 16
 )
 
-type GraphemeFlag = gdclass.TextServerGraphemeFlag //gd:TextServer.GraphemeFlag
+type GraphemeFlag int //gd:TextServer.GraphemeFlag
 
 const (
 	/*Grapheme is supported by the font, and can be drawn.*/
@@ -5341,7 +5349,7 @@ const (
 	GraphemeIsSoftHyphen GraphemeFlag = 8192
 )
 
-type Hinting = gdclass.TextServerHinting //gd:TextServer.Hinting
+type Hinting int //gd:TextServer.Hinting
 
 const (
 	/*Disables font hinting (smoother but less crisp).*/
@@ -5353,7 +5361,7 @@ const (
 	HintingNormal Hinting = 2
 )
 
-type SubpixelPositioning = gdclass.TextServerSubpixelPositioning //gd:TextServer.SubpixelPositioning
+type SubpixelPositioning int //gd:TextServer.SubpixelPositioning
 
 const (
 	/*Glyph horizontal position is rounded to the whole pixel size, each glyph is rasterized once.*/
@@ -5373,7 +5381,7 @@ const (
 	SubpixelPositioningOneQuarterMaxSize SubpixelPositioning = 16
 )
 
-type Feature = gdclass.TextServerFeature //gd:TextServer.Feature
+type Feature int //gd:TextServer.Feature
 
 const (
 	/*TextServer supports simple text layouts.*/
@@ -5408,7 +5416,7 @@ const (
 	FeatureUnicodeSecurity Feature = 16384
 )
 
-type ContourPointTag = gdclass.TextServerContourPointTag //gd:TextServer.ContourPointTag
+type ContourPointTag int //gd:TextServer.ContourPointTag
 
 const (
 	/*Contour point is on the curve.*/
@@ -5419,7 +5427,7 @@ const (
 	ContourCurveTagOffCubic ContourPointTag = 2
 )
 
-type SpacingType = gdclass.TextServerSpacingType //gd:TextServer.SpacingType
+type SpacingType int //gd:TextServer.SpacingType
 
 const (
 	/*Spacing for each glyph.*/
@@ -5434,7 +5442,7 @@ const (
 	SpacingMax SpacingType = 4
 )
 
-type FontStyle = gdclass.TextServerFontStyle //gd:TextServer.FontStyle
+type FontStyle int //gd:TextServer.FontStyle
 
 const (
 	/*Font is bold.*/
@@ -5445,7 +5453,7 @@ const (
 	FontFixedWidth FontStyle = 4
 )
 
-type StructuredTextParser = gdclass.TextServerStructuredTextParser //gd:TextServer.StructuredTextParser
+type StructuredTextParser int //gd:TextServer.StructuredTextParser
 
 const (
 	/*Use default Unicode BiDi algorithm.*/
@@ -5464,7 +5472,7 @@ const (
 	StructuredTextCustom StructuredTextParser = 6
 )
 
-type FixedSizeScaleMode = gdclass.TextServerFixedSizeScaleMode //gd:TextServer.FixedSizeScaleMode
+type FixedSizeScaleMode int //gd:TextServer.FixedSizeScaleMode
 
 const (
 	/*Bitmap font is not scaled.*/
@@ -5473,35 +5481,4 @@ const (
 	FixedSizeScaleIntegerOnly FixedSizeScaleMode = 1
 	/*Bitmap font is scaled to an arbitrary (fractional) size. This is the recommended option for non-pixel art fonts.*/
 	FixedSizeScaleEnabled FixedSizeScaleMode = 2
-)
-
-type InlineAlignment int
-
-const (
-	/*Aligns the top of the inline object (e.g. image, table) to the position of the text specified by [code]INLINE_ALIGNMENT_TO_*[/code] constant.*/
-	InlineAlignmentTopTo InlineAlignment = 0
-	/*Aligns the center of the inline object (e.g. image, table) to the position of the text specified by [code]INLINE_ALIGNMENT_TO_*[/code] constant.*/
-	InlineAlignmentCenterTo InlineAlignment = 1
-	/*Aligns the baseline (user defined) of the inline object (e.g. image, table) to the position of the text specified by [code]INLINE_ALIGNMENT_TO_*[/code] constant.*/
-	InlineAlignmentBaselineTo InlineAlignment = 3
-	/*Aligns the bottom of the inline object (e.g. image, table) to the position of the text specified by [code]INLINE_ALIGNMENT_TO_*[/code] constant.*/
-	InlineAlignmentBottomTo InlineAlignment = 2
-	/*Aligns the position of the inline object (e.g. image, table) specified by [code]INLINE_ALIGNMENT_*_TO[/code] constant to the top of the text.*/
-	InlineAlignmentToTop InlineAlignment = 0
-	/*Aligns the position of the inline object (e.g. image, table) specified by [code]INLINE_ALIGNMENT_*_TO[/code] constant to the center of the text.*/
-	InlineAlignmentToCenter InlineAlignment = 4
-	/*Aligns the position of the inline object (e.g. image, table) specified by [code]INLINE_ALIGNMENT_*_TO[/code] constant to the baseline of the text.*/
-	InlineAlignmentToBaseline InlineAlignment = 8
-	/*Aligns inline object (e.g. image, table) to the bottom of the text.*/
-	InlineAlignmentToBottom InlineAlignment = 12
-	/*Aligns top of the inline object (e.g. image, table) to the top of the text. Equivalent to [code]INLINE_ALIGNMENT_TOP_TO | INLINE_ALIGNMENT_TO_TOP[/code].*/
-	InlineAlignmentTop InlineAlignment = 0
-	/*Aligns center of the inline object (e.g. image, table) to the center of the text. Equivalent to [code]INLINE_ALIGNMENT_CENTER_TO | INLINE_ALIGNMENT_TO_CENTER[/code].*/
-	InlineAlignmentCenter InlineAlignment = 5
-	/*Aligns bottom of the inline object (e.g. image, table) to the bottom of the text. Equivalent to [code]INLINE_ALIGNMENT_BOTTOM_TO | INLINE_ALIGNMENT_TO_BOTTOM[/code].*/
-	InlineAlignmentBottom InlineAlignment = 14
-	/*A bit mask for [code]INLINE_ALIGNMENT_*_TO[/code] alignment constants.*/
-	InlineAlignmentImageMask InlineAlignment = 3
-	/*A bit mask for [code]INLINE_ALIGNMENT_TO_*[/code] alignment constants.*/
-	InlineAlignmentTextMask InlineAlignment = 12
 )

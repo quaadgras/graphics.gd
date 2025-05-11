@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Curve"
 import "graphics.gd/classdb/Gradient"
@@ -32,6 +33,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -47,6 +52,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -59,6 +65,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -207,35 +214,35 @@ func (self Instance) SetTexture(value Texture2D.Instance) {
 	class(self).SetTexture(value)
 }
 
-func (self Instance) TextureMode() gdclass.Line2DLineTextureMode {
-	return gdclass.Line2DLineTextureMode(class(self).GetTextureMode())
+func (self Instance) TextureMode() LineTextureMode {
+	return LineTextureMode(class(self).GetTextureMode())
 }
 
-func (self Instance) SetTextureMode(value gdclass.Line2DLineTextureMode) {
+func (self Instance) SetTextureMode(value LineTextureMode) {
 	class(self).SetTextureMode(value)
 }
 
-func (self Instance) JointMode() gdclass.Line2DLineJointMode {
-	return gdclass.Line2DLineJointMode(class(self).GetJointMode())
+func (self Instance) JointMode() LineJointMode {
+	return LineJointMode(class(self).GetJointMode())
 }
 
-func (self Instance) SetJointMode(value gdclass.Line2DLineJointMode) {
+func (self Instance) SetJointMode(value LineJointMode) {
 	class(self).SetJointMode(value)
 }
 
-func (self Instance) BeginCapMode() gdclass.Line2DLineCapMode {
-	return gdclass.Line2DLineCapMode(class(self).GetBeginCapMode())
+func (self Instance) BeginCapMode() LineCapMode {
+	return LineCapMode(class(self).GetBeginCapMode())
 }
 
-func (self Instance) SetBeginCapMode(value gdclass.Line2DLineCapMode) {
+func (self Instance) SetBeginCapMode(value LineCapMode) {
 	class(self).SetBeginCapMode(value)
 }
 
-func (self Instance) EndCapMode() gdclass.Line2DLineCapMode {
-	return gdclass.Line2DLineCapMode(class(self).GetEndCapMode())
+func (self Instance) EndCapMode() LineCapMode {
+	return LineCapMode(class(self).GetEndCapMode())
 }
 
-func (self Instance) SetEndCapMode(value gdclass.Line2DLineCapMode) {
+func (self Instance) SetEndCapMode(value LineCapMode) {
 	class(self).SetEndCapMode(value)
 }
 
@@ -474,7 +481,7 @@ func (self class) GetTexture() [1]gdclass.Texture2D { //gd:Line2D.get_texture
 }
 
 //go:nosplit
-func (self class) SetTextureMode(mode gdclass.Line2DLineTextureMode) { //gd:Line2D.set_texture_mode
+func (self class) SetTextureMode(mode LineTextureMode) { //gd:Line2D.set_texture_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -483,9 +490,9 @@ func (self class) SetTextureMode(mode gdclass.Line2DLineTextureMode) { //gd:Line
 }
 
 //go:nosplit
-func (self class) GetTextureMode() gdclass.Line2DLineTextureMode { //gd:Line2D.get_texture_mode
+func (self class) GetTextureMode() LineTextureMode { //gd:Line2D.get_texture_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.Line2DLineTextureMode](frame)
+	var r_ret = callframe.Ret[LineTextureMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Line2D.Bind_get_texture_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -493,7 +500,7 @@ func (self class) GetTextureMode() gdclass.Line2DLineTextureMode { //gd:Line2D.g
 }
 
 //go:nosplit
-func (self class) SetJointMode(mode gdclass.Line2DLineJointMode) { //gd:Line2D.set_joint_mode
+func (self class) SetJointMode(mode LineJointMode) { //gd:Line2D.set_joint_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -502,9 +509,9 @@ func (self class) SetJointMode(mode gdclass.Line2DLineJointMode) { //gd:Line2D.s
 }
 
 //go:nosplit
-func (self class) GetJointMode() gdclass.Line2DLineJointMode { //gd:Line2D.get_joint_mode
+func (self class) GetJointMode() LineJointMode { //gd:Line2D.get_joint_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.Line2DLineJointMode](frame)
+	var r_ret = callframe.Ret[LineJointMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Line2D.Bind_get_joint_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -512,7 +519,7 @@ func (self class) GetJointMode() gdclass.Line2DLineJointMode { //gd:Line2D.get_j
 }
 
 //go:nosplit
-func (self class) SetBeginCapMode(mode gdclass.Line2DLineCapMode) { //gd:Line2D.set_begin_cap_mode
+func (self class) SetBeginCapMode(mode LineCapMode) { //gd:Line2D.set_begin_cap_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -521,9 +528,9 @@ func (self class) SetBeginCapMode(mode gdclass.Line2DLineCapMode) { //gd:Line2D.
 }
 
 //go:nosplit
-func (self class) GetBeginCapMode() gdclass.Line2DLineCapMode { //gd:Line2D.get_begin_cap_mode
+func (self class) GetBeginCapMode() LineCapMode { //gd:Line2D.get_begin_cap_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.Line2DLineCapMode](frame)
+	var r_ret = callframe.Ret[LineCapMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Line2D.Bind_get_begin_cap_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -531,7 +538,7 @@ func (self class) GetBeginCapMode() gdclass.Line2DLineCapMode { //gd:Line2D.get_
 }
 
 //go:nosplit
-func (self class) SetEndCapMode(mode gdclass.Line2DLineCapMode) { //gd:Line2D.set_end_cap_mode
+func (self class) SetEndCapMode(mode LineCapMode) { //gd:Line2D.set_end_cap_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -540,9 +547,9 @@ func (self class) SetEndCapMode(mode gdclass.Line2DLineCapMode) { //gd:Line2D.se
 }
 
 //go:nosplit
-func (self class) GetEndCapMode() gdclass.Line2DLineCapMode { //gd:Line2D.get_end_cap_mode
+func (self class) GetEndCapMode() LineCapMode { //gd:Line2D.get_end_cap_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.Line2DLineCapMode](frame)
+	var r_ret = callframe.Ret[LineCapMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Line2D.Bind_get_end_cap_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -639,7 +646,7 @@ func init() {
 	gdclass.Register("Line2D", func(ptr gd.Object) any { return [1]gdclass.Line2D{*(*gdclass.Line2D)(unsafe.Pointer(&ptr))} })
 }
 
-type LineJointMode = gdclass.Line2DLineJointMode //gd:Line2D.LineJointMode
+type LineJointMode int //gd:Line2D.LineJointMode
 
 const (
 	/*Makes the polyline's joints pointy, connecting the sides of the two segments by extending them until they intersect. If the rotation of a joint is too big (based on [member sharp_limit]), the joint falls back to [constant LINE_JOINT_BEVEL] to prevent very long miters.*/
@@ -650,7 +657,7 @@ const (
 	LineJointRound LineJointMode = 2
 )
 
-type LineCapMode = gdclass.Line2DLineCapMode //gd:Line2D.LineCapMode
+type LineCapMode int //gd:Line2D.LineCapMode
 
 const (
 	/*Draws no line cap.*/
@@ -661,7 +668,7 @@ const (
 	LineCapRound LineCapMode = 2
 )
 
-type LineTextureMode = gdclass.Line2DLineTextureMode //gd:Line2D.LineTextureMode
+type LineTextureMode int //gd:Line2D.LineTextureMode
 
 const (
 	/*Takes the left pixels of the texture and renders them over the whole polyline.*/

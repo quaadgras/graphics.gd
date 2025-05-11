@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -24,6 +25,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -39,6 +44,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -51,6 +57,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -509,7 +516,7 @@ func (self Instance) CreateCommit(msg string, author string, id string, unix_tim
 /*
 Helper function to create a [Dictionary] used by editor to read the status of a file.
 */
-func (self Instance) CreateStatusFile(file_path string, change_type gdclass.EditorVCSInterfaceChangeType, area gdclass.EditorVCSInterfaceTreeArea) StatusFile { //gd:EditorVCSInterface.create_status_file
+func (self Instance) CreateStatusFile(file_path string, change_type ChangeType, area TreeArea) StatusFile { //gd:EditorVCSInterface.create_status_file
 	return StatusFile(gd.DictionaryAs[StatusFile](Advanced(self).CreateStatusFile(String.New(file_path), change_type, area)))
 }
 
@@ -952,7 +959,7 @@ func (self class) CreateCommit(msg String.Readable, author String.Readable, id S
 Helper function to create a [Dictionary] used by editor to read the status of a file.
 */
 //go:nosplit
-func (self class) CreateStatusFile(file_path String.Readable, change_type gdclass.EditorVCSInterfaceChangeType, area gdclass.EditorVCSInterfaceTreeArea) Dictionary.Any { //gd:EditorVCSInterface.create_status_file
+func (self class) CreateStatusFile(file_path String.Readable, change_type ChangeType, area TreeArea) Dictionary.Any { //gd:EditorVCSInterface.create_status_file
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(file_path)))
 	callframe.Arg(frame, change_type)
@@ -1120,7 +1127,7 @@ func init() {
 	})
 }
 
-type ChangeType = gdclass.EditorVCSInterfaceChangeType //gd:EditorVCSInterface.ChangeType
+type ChangeType int //gd:EditorVCSInterface.ChangeType
 
 const (
 	/*A new file has been added.*/
@@ -1137,7 +1144,7 @@ const (
 	ChangeTypeUnmerged ChangeType = 5
 )
 
-type TreeArea = gdclass.EditorVCSInterfaceTreeArea //gd:EditorVCSInterface.TreeArea
+type TreeArea int //gd:EditorVCSInterface.TreeArea
 
 const (
 	/*A commit is encountered from the commit area.*/

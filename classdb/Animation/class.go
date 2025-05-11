@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -29,6 +30,10 @@ import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector3"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -44,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,6 +62,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -103,14 +110,14 @@ type Any interface {
 /*
 Adds a track to the Animation.
 */
-func (self Instance) AddTrack(atype gdclass.AnimationTrackType) int { //gd:Animation.add_track
+func (self Instance) AddTrack(atype TrackType) int { //gd:Animation.add_track
 	return int(int(Advanced(self).AddTrack(atype, int64(-1))))
 }
 
 /*
 Adds a track to the Animation.
 */
-func (self Expanded) AddTrack(atype gdclass.AnimationTrackType, at_position int) int { //gd:Animation.add_track
+func (self Expanded) AddTrack(atype TrackType, at_position int) int { //gd:Animation.add_track
 	return int(int(Advanced(self).AddTrack(atype, int64(at_position))))
 }
 
@@ -131,8 +138,8 @@ func (self Instance) GetTrackCount() int { //gd:Animation.get_track_count
 /*
 Gets the type of a track.
 */
-func (self Instance) TrackGetType(track_idx int) gdclass.AnimationTrackType { //gd:Animation.track_get_type
-	return gdclass.AnimationTrackType(Advanced(self).TrackGetType(int64(track_idx)))
+func (self Instance) TrackGetType(track_idx int) TrackType { //gd:Animation.track_get_type
+	return TrackType(Advanced(self).TrackGetType(int64(track_idx)))
 }
 
 /*
@@ -153,7 +160,7 @@ func (self Instance) TrackSetPath(track_idx int, path string) { //gd:Animation.t
 /*
 Returns the index of the specified track. If the track is not found, return -1.
 */
-func (self Instance) FindTrack(path string, atype gdclass.AnimationTrackType) int { //gd:Animation.find_track
+func (self Instance) FindTrack(path string, atype TrackType) int { //gd:Animation.find_track
 	return int(int(Advanced(self).FindTrack(Path.ToNode(String.New(path)), atype)))
 }
 
@@ -390,22 +397,22 @@ If [param limit] is [code]true[/code], it does not return keys outside the anima
 If [param backward] is [code]true[/code], the direction is reversed in methods that rely on one directional processing.
 For example, in case [param find_mode] is [constant FIND_MODE_NEAREST], if there is no key in the current position just after seeked, the first key found is retrieved by searching before the position, but if [param backward] is [code]true[/code], the first key found is retrieved after the position.
 */
-func (self Expanded) TrackFindKey(track_idx int, time Float.X, find_mode gdclass.AnimationFindMode, limit bool, backward bool) int { //gd:Animation.track_find_key
+func (self Expanded) TrackFindKey(track_idx int, time Float.X, find_mode FindMode, limit bool, backward bool) int { //gd:Animation.track_find_key
 	return int(int(Advanced(self).TrackFindKey(int64(track_idx), float64(time), find_mode, limit, backward)))
 }
 
 /*
 Sets the interpolation type of a given track.
 */
-func (self Instance) TrackSetInterpolationType(track_idx int, interpolation gdclass.AnimationInterpolationType) { //gd:Animation.track_set_interpolation_type
+func (self Instance) TrackSetInterpolationType(track_idx int, interpolation InterpolationType) { //gd:Animation.track_set_interpolation_type
 	Advanced(self).TrackSetInterpolationType(int64(track_idx), interpolation)
 }
 
 /*
 Returns the interpolation type of a given track.
 */
-func (self Instance) TrackGetInterpolationType(track_idx int) gdclass.AnimationInterpolationType { //gd:Animation.track_get_interpolation_type
-	return gdclass.AnimationInterpolationType(Advanced(self).TrackGetInterpolationType(int64(track_idx)))
+func (self Instance) TrackGetInterpolationType(track_idx int) InterpolationType { //gd:Animation.track_get_interpolation_type
+	return InterpolationType(Advanced(self).TrackGetInterpolationType(int64(track_idx)))
 }
 
 /*
@@ -432,15 +439,15 @@ func (self Instance) TrackIsCompressed(track_idx int) bool { //gd:Animation.trac
 /*
 Sets the update mode (see [enum UpdateMode]) of a value track.
 */
-func (self Instance) ValueTrackSetUpdateMode(track_idx int, mode gdclass.AnimationUpdateMode) { //gd:Animation.value_track_set_update_mode
+func (self Instance) ValueTrackSetUpdateMode(track_idx int, mode UpdateMode) { //gd:Animation.value_track_set_update_mode
 	Advanced(self).ValueTrackSetUpdateMode(int64(track_idx), mode)
 }
 
 /*
 Returns the update mode of a value track.
 */
-func (self Instance) ValueTrackGetUpdateMode(track_idx int) gdclass.AnimationUpdateMode { //gd:Animation.value_track_get_update_mode
-	return gdclass.AnimationUpdateMode(Advanced(self).ValueTrackGetUpdateMode(int64(track_idx)))
+func (self Instance) ValueTrackGetUpdateMode(track_idx int) UpdateMode { //gd:Animation.value_track_get_update_mode
+	return UpdateMode(Advanced(self).ValueTrackGetUpdateMode(int64(track_idx)))
 }
 
 /*
@@ -789,11 +796,11 @@ func (self Instance) SetLength(value Float.X) {
 	class(self).SetLength(float64(value))
 }
 
-func (self Instance) LoopMode() gdclass.AnimationLoopMode {
-	return gdclass.AnimationLoopMode(class(self).GetLoopMode())
+func (self Instance) LoopMode() LoopMode {
+	return LoopMode(class(self).GetLoopMode())
 }
 
-func (self Instance) SetLoopMode(value gdclass.AnimationLoopMode) {
+func (self Instance) SetLoopMode(value LoopMode) {
 	class(self).SetLoopMode(value)
 }
 
@@ -813,7 +820,7 @@ func (self Instance) CaptureIncluded() bool {
 Adds a track to the Animation.
 */
 //go:nosplit
-func (self class) AddTrack(atype gdclass.AnimationTrackType, at_position int64) int64 { //gd:Animation.add_track
+func (self class) AddTrack(atype TrackType, at_position int64) int64 { //gd:Animation.add_track
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	callframe.Arg(frame, at_position)
@@ -853,10 +860,10 @@ func (self class) GetTrackCount() int64 { //gd:Animation.get_track_count
 Gets the type of a track.
 */
 //go:nosplit
-func (self class) TrackGetType(track_idx int64) gdclass.AnimationTrackType { //gd:Animation.track_get_type
+func (self class) TrackGetType(track_idx int64) TrackType { //gd:Animation.track_get_type
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
-	var r_ret = callframe.Ret[gdclass.AnimationTrackType](frame)
+	var r_ret = callframe.Ret[TrackType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_get_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -895,7 +902,7 @@ func (self class) TrackSetPath(track_idx int64, path Path.ToNode) { //gd:Animati
 Returns the index of the specified track. If the track is not found, return -1.
 */
 //go:nosplit
-func (self class) FindTrack(path Path.ToNode, atype gdclass.AnimationTrackType) int64 { //gd:Animation.find_track
+func (self class) FindTrack(path Path.ToNode, atype TrackType) int64 { //gd:Animation.find_track
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
 	callframe.Arg(frame, atype)
@@ -1289,7 +1296,7 @@ If [param backward] is [code]true[/code], the direction is reversed in methods t
 For example, in case [param find_mode] is [constant FIND_MODE_NEAREST], if there is no key in the current position just after seeked, the first key found is retrieved by searching before the position, but if [param backward] is [code]true[/code], the first key found is retrieved after the position.
 */
 //go:nosplit
-func (self class) TrackFindKey(track_idx int64, time float64, find_mode gdclass.AnimationFindMode, limit bool, backward bool) int64 { //gd:Animation.track_find_key
+func (self class) TrackFindKey(track_idx int64, time float64, find_mode FindMode, limit bool, backward bool) int64 { //gd:Animation.track_find_key
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, time)
@@ -1307,7 +1314,7 @@ func (self class) TrackFindKey(track_idx int64, time float64, find_mode gdclass.
 Sets the interpolation type of a given track.
 */
 //go:nosplit
-func (self class) TrackSetInterpolationType(track_idx int64, interpolation gdclass.AnimationInterpolationType) { //gd:Animation.track_set_interpolation_type
+func (self class) TrackSetInterpolationType(track_idx int64, interpolation InterpolationType) { //gd:Animation.track_set_interpolation_type
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, interpolation)
@@ -1320,10 +1327,10 @@ func (self class) TrackSetInterpolationType(track_idx int64, interpolation gdcla
 Returns the interpolation type of a given track.
 */
 //go:nosplit
-func (self class) TrackGetInterpolationType(track_idx int64) gdclass.AnimationInterpolationType { //gd:Animation.track_get_interpolation_type
+func (self class) TrackGetInterpolationType(track_idx int64) InterpolationType { //gd:Animation.track_get_interpolation_type
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
-	var r_ret = callframe.Ret[gdclass.AnimationInterpolationType](frame)
+	var r_ret = callframe.Ret[InterpolationType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_track_get_interpolation_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1375,7 +1382,7 @@ func (self class) TrackIsCompressed(track_idx int64) bool { //gd:Animation.track
 Sets the update mode (see [enum UpdateMode]) of a value track.
 */
 //go:nosplit
-func (self class) ValueTrackSetUpdateMode(track_idx int64, mode gdclass.AnimationUpdateMode) { //gd:Animation.value_track_set_update_mode
+func (self class) ValueTrackSetUpdateMode(track_idx int64, mode UpdateMode) { //gd:Animation.value_track_set_update_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
 	callframe.Arg(frame, mode)
@@ -1388,10 +1395,10 @@ func (self class) ValueTrackSetUpdateMode(track_idx int64, mode gdclass.Animatio
 Returns the update mode of a value track.
 */
 //go:nosplit
-func (self class) ValueTrackGetUpdateMode(track_idx int64) gdclass.AnimationUpdateMode { //gd:Animation.value_track_get_update_mode
+func (self class) ValueTrackGetUpdateMode(track_idx int64) UpdateMode { //gd:Animation.value_track_get_update_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, track_idx)
-	var r_ret = callframe.Ret[gdclass.AnimationUpdateMode](frame)
+	var r_ret = callframe.Ret[UpdateMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_value_track_get_update_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1903,7 +1910,7 @@ func (self class) GetLength() float64 { //gd:Animation.get_length
 }
 
 //go:nosplit
-func (self class) SetLoopMode(loop_mode gdclass.AnimationLoopMode) { //gd:Animation.set_loop_mode
+func (self class) SetLoopMode(loop_mode LoopMode) { //gd:Animation.set_loop_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, loop_mode)
 	var r_ret = callframe.Nil
@@ -1912,9 +1919,9 @@ func (self class) SetLoopMode(loop_mode gdclass.AnimationLoopMode) { //gd:Animat
 }
 
 //go:nosplit
-func (self class) GetLoopMode() gdclass.AnimationLoopMode { //gd:Animation.get_loop_mode
+func (self class) GetLoopMode() LoopMode { //gd:Animation.get_loop_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.AnimationLoopMode](frame)
+	var r_ret = callframe.Ret[LoopMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Animation.Bind_get_loop_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -2037,7 +2044,7 @@ func init() {
 	gdclass.Register("Animation", func(ptr gd.Object) any { return [1]gdclass.Animation{*(*gdclass.Animation)(unsafe.Pointer(&ptr))} })
 }
 
-type TrackType = gdclass.AnimationTrackType //gd:Animation.TrackType
+type TrackType int //gd:Animation.TrackType
 
 const (
 	/*Value tracks set values in node properties, but only those which can be interpolated. For 3D position/rotation/scale, using the dedicated [constant TYPE_POSITION_3D], [constant TYPE_ROTATION_3D] and [constant TYPE_SCALE_3D] track types instead of [constant TYPE_VALUE] is recommended for performance reasons.*/
@@ -2060,7 +2067,7 @@ const (
 	TypeAnimation TrackType = 8
 )
 
-type InterpolationType = gdclass.AnimationInterpolationType //gd:Animation.InterpolationType
+type InterpolationType int //gd:Animation.InterpolationType
 
 const (
 	/*No interpolation (nearest value).*/
@@ -2077,7 +2084,7 @@ const (
 	InterpolationCubicAngle InterpolationType = 4
 )
 
-type UpdateMode = gdclass.AnimationUpdateMode //gd:Animation.UpdateMode
+type UpdateMode int //gd:Animation.UpdateMode
 
 const (
 	/*Update between keyframes and hold the value.*/
@@ -2088,7 +2095,7 @@ const (
 	UpdateCapture UpdateMode = 2
 )
 
-type LoopMode = gdclass.AnimationLoopMode //gd:Animation.LoopMode
+type LoopMode int //gd:Animation.LoopMode
 
 const (
 	/*At both ends of the animation, the animation will stop playing.*/
@@ -2099,7 +2106,7 @@ const (
 	LoopPingpong LoopMode = 2
 )
 
-type LoopedFlag = gdclass.AnimationLoopedFlag //gd:Animation.LoopedFlag
+type LoopedFlag int //gd:Animation.LoopedFlag
 
 const (
 	/*This flag indicates that the animation proceeds without any looping.*/
@@ -2110,7 +2117,7 @@ const (
 	LoopedFlagStart LoopedFlag = 2
 )
 
-type FindMode = gdclass.AnimationFindMode //gd:Animation.FindMode
+type FindMode int //gd:Animation.FindMode
 
 const (
 	/*Finds the nearest time key.*/

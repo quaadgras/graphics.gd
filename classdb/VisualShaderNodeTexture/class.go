@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/classdb/VisualShaderNode"
@@ -27,6 +28,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -42,6 +47,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -54,6 +60,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -92,11 +99,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Source() gdclass.VisualShaderNodeTextureSource {
-	return gdclass.VisualShaderNodeTextureSource(class(self).GetSource())
+func (self Instance) Source() Source {
+	return Source(class(self).GetSource())
 }
 
-func (self Instance) SetSource(value gdclass.VisualShaderNodeTextureSource) {
+func (self Instance) SetSource(value Source) {
 	class(self).SetSource(value)
 }
 
@@ -108,16 +115,16 @@ func (self Instance) SetTexture(value Texture2D.Instance) {
 	class(self).SetTexture(value)
 }
 
-func (self Instance) TextureType() gdclass.VisualShaderNodeTextureTextureType {
-	return gdclass.VisualShaderNodeTextureTextureType(class(self).GetTextureType())
+func (self Instance) TextureType() TextureType {
+	return TextureType(class(self).GetTextureType())
 }
 
-func (self Instance) SetTextureType(value gdclass.VisualShaderNodeTextureTextureType) {
+func (self Instance) SetTextureType(value TextureType) {
 	class(self).SetTextureType(value)
 }
 
 //go:nosplit
-func (self class) SetSource(value gdclass.VisualShaderNodeTextureSource) { //gd:VisualShaderNodeTexture.set_source
+func (self class) SetSource(value Source) { //gd:VisualShaderNodeTexture.set_source
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -126,9 +133,9 @@ func (self class) SetSource(value gdclass.VisualShaderNodeTextureSource) { //gd:
 }
 
 //go:nosplit
-func (self class) GetSource() gdclass.VisualShaderNodeTextureSource { //gd:VisualShaderNodeTexture.get_source
+func (self class) GetSource() Source { //gd:VisualShaderNodeTexture.get_source
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.VisualShaderNodeTextureSource](frame)
+	var r_ret = callframe.Ret[Source](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTexture.Bind_get_source, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -155,7 +162,7 @@ func (self class) GetTexture() [1]gdclass.Texture2D { //gd:VisualShaderNodeTextu
 }
 
 //go:nosplit
-func (self class) SetTextureType(value gdclass.VisualShaderNodeTextureTextureType) { //gd:VisualShaderNodeTexture.set_texture_type
+func (self class) SetTextureType(value TextureType) { //gd:VisualShaderNodeTexture.set_texture_type
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
 	var r_ret = callframe.Nil
@@ -164,9 +171,9 @@ func (self class) SetTextureType(value gdclass.VisualShaderNodeTextureTextureTyp
 }
 
 //go:nosplit
-func (self class) GetTextureType() gdclass.VisualShaderNodeTextureTextureType { //gd:VisualShaderNodeTexture.get_texture_type
+func (self class) GetTextureType() TextureType { //gd:VisualShaderNodeTexture.get_texture_type
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.VisualShaderNodeTextureTextureType](frame)
+	var r_ret = callframe.Ret[TextureType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTexture.Bind_get_texture_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -222,7 +229,7 @@ func init() {
 	})
 }
 
-type Source = gdclass.VisualShaderNodeTextureSource //gd:VisualShaderNodeTexture.Source
+type Source int //gd:VisualShaderNodeTexture.Source
 
 const (
 	/*Use the texture given as an argument for this function.*/
@@ -245,7 +252,7 @@ const (
 	SourceMax Source = 8
 )
 
-type TextureType = gdclass.VisualShaderNodeTextureTextureType //gd:VisualShaderNodeTexture.TextureType
+type TextureType int //gd:VisualShaderNodeTexture.TextureType
 
 const (
 	/*No hints are added to the uniform declaration.*/

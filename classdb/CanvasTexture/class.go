@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/Texture"
 import "graphics.gd/classdb/Texture2D"
@@ -28,6 +30,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -43,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,6 +62,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -134,19 +142,19 @@ func (self Instance) SetSpecularShininess(value Float.X) {
 	class(self).SetSpecularShininess(float64(value))
 }
 
-func (self Instance) TextureFilter() gdclass.CanvasItemTextureFilter {
-	return gdclass.CanvasItemTextureFilter(class(self).GetTextureFilter())
+func (self Instance) TextureFilter() CanvasItem.TextureFilter {
+	return CanvasItem.TextureFilter(class(self).GetTextureFilter())
 }
 
-func (self Instance) SetTextureFilter(value gdclass.CanvasItemTextureFilter) {
+func (self Instance) SetTextureFilter(value CanvasItem.TextureFilter) {
 	class(self).SetTextureFilter(value)
 }
 
-func (self Instance) TextureRepeat() gdclass.CanvasItemTextureRepeat {
-	return gdclass.CanvasItemTextureRepeat(class(self).GetTextureRepeat())
+func (self Instance) TextureRepeat() CanvasItem.TextureRepeat {
+	return CanvasItem.TextureRepeat(class(self).GetTextureRepeat())
 }
 
-func (self Instance) SetTextureRepeat(value gdclass.CanvasItemTextureRepeat) {
+func (self Instance) SetTextureRepeat(value CanvasItem.TextureRepeat) {
 	class(self).SetTextureRepeat(value)
 }
 
@@ -246,7 +254,7 @@ func (self class) GetSpecularShininess() float64 { //gd:CanvasTexture.get_specul
 }
 
 //go:nosplit
-func (self class) SetTextureFilter(filter gdclass.CanvasItemTextureFilter) { //gd:CanvasTexture.set_texture_filter
+func (self class) SetTextureFilter(filter CanvasItem.TextureFilter) { //gd:CanvasTexture.set_texture_filter
 	var frame = callframe.New()
 	callframe.Arg(frame, filter)
 	var r_ret = callframe.Nil
@@ -255,9 +263,9 @@ func (self class) SetTextureFilter(filter gdclass.CanvasItemTextureFilter) { //g
 }
 
 //go:nosplit
-func (self class) GetTextureFilter() gdclass.CanvasItemTextureFilter { //gd:CanvasTexture.get_texture_filter
+func (self class) GetTextureFilter() CanvasItem.TextureFilter { //gd:CanvasTexture.get_texture_filter
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.CanvasItemTextureFilter](frame)
+	var r_ret = callframe.Ret[CanvasItem.TextureFilter](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasTexture.Bind_get_texture_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -265,7 +273,7 @@ func (self class) GetTextureFilter() gdclass.CanvasItemTextureFilter { //gd:Canv
 }
 
 //go:nosplit
-func (self class) SetTextureRepeat(repeat gdclass.CanvasItemTextureRepeat) { //gd:CanvasTexture.set_texture_repeat
+func (self class) SetTextureRepeat(repeat CanvasItem.TextureRepeat) { //gd:CanvasTexture.set_texture_repeat
 	var frame = callframe.New()
 	callframe.Arg(frame, repeat)
 	var r_ret = callframe.Nil
@@ -274,9 +282,9 @@ func (self class) SetTextureRepeat(repeat gdclass.CanvasItemTextureRepeat) { //g
 }
 
 //go:nosplit
-func (self class) GetTextureRepeat() gdclass.CanvasItemTextureRepeat { //gd:CanvasTexture.get_texture_repeat
+func (self class) GetTextureRepeat() CanvasItem.TextureRepeat { //gd:CanvasTexture.get_texture_repeat
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.CanvasItemTextureRepeat](frame)
+	var r_ret = callframe.Ret[CanvasItem.TextureRepeat](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasTexture.Bind_get_texture_repeat, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

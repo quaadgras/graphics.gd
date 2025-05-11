@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node2D"
@@ -28,6 +29,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -43,6 +48,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,6 +61,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -138,11 +145,11 @@ func (self Instance) SetEnergy(value Float.X) {
 	class(self).SetEnergy(float64(value))
 }
 
-func (self Instance) BlendMode() gdclass.Light2DBlendMode {
-	return gdclass.Light2DBlendMode(class(self).GetBlendMode())
+func (self Instance) BlendMode() BlendMode {
+	return BlendMode(class(self).GetBlendMode())
 }
 
-func (self Instance) SetBlendMode(value gdclass.Light2DBlendMode) {
+func (self Instance) SetBlendMode(value BlendMode) {
 	class(self).SetBlendMode(value)
 }
 
@@ -202,11 +209,11 @@ func (self Instance) SetShadowColor(value Color.RGBA) {
 	class(self).SetShadowColor(Color.RGBA(value))
 }
 
-func (self Instance) ShadowFilter() gdclass.Light2DShadowFilter {
-	return gdclass.Light2DShadowFilter(class(self).GetShadowFilter())
+func (self Instance) ShadowFilter() ShadowFilter {
+	return ShadowFilter(class(self).GetShadowFilter())
 }
 
-func (self Instance) SetShadowFilter(value gdclass.Light2DShadowFilter) {
+func (self Instance) SetShadowFilter(value ShadowFilter) {
 	class(self).SetShadowFilter(value)
 }
 
@@ -455,7 +462,7 @@ func (self class) GetShadowSmooth() float64 { //gd:Light2D.get_shadow_smooth
 }
 
 //go:nosplit
-func (self class) SetShadowFilter(filter gdclass.Light2DShadowFilter) { //gd:Light2D.set_shadow_filter
+func (self class) SetShadowFilter(filter ShadowFilter) { //gd:Light2D.set_shadow_filter
 	var frame = callframe.New()
 	callframe.Arg(frame, filter)
 	var r_ret = callframe.Nil
@@ -464,9 +471,9 @@ func (self class) SetShadowFilter(filter gdclass.Light2DShadowFilter) { //gd:Lig
 }
 
 //go:nosplit
-func (self class) GetShadowFilter() gdclass.Light2DShadowFilter { //gd:Light2D.get_shadow_filter
+func (self class) GetShadowFilter() ShadowFilter { //gd:Light2D.get_shadow_filter
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.Light2DShadowFilter](frame)
+	var r_ret = callframe.Ret[ShadowFilter](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Light2D.Bind_get_shadow_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -493,7 +500,7 @@ func (self class) GetShadowColor() Color.RGBA { //gd:Light2D.get_shadow_color
 }
 
 //go:nosplit
-func (self class) SetBlendMode(mode gdclass.Light2DBlendMode) { //gd:Light2D.set_blend_mode
+func (self class) SetBlendMode(mode BlendMode) { //gd:Light2D.set_blend_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -502,9 +509,9 @@ func (self class) SetBlendMode(mode gdclass.Light2DBlendMode) { //gd:Light2D.set
 }
 
 //go:nosplit
-func (self class) GetBlendMode() gdclass.Light2DBlendMode { //gd:Light2D.get_blend_mode
+func (self class) GetBlendMode() BlendMode { //gd:Light2D.get_blend_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.Light2DBlendMode](frame)
+	var r_ret = callframe.Ret[BlendMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Light2D.Bind_get_blend_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -569,7 +576,7 @@ func init() {
 	gdclass.Register("Light2D", func(ptr gd.Object) any { return [1]gdclass.Light2D{*(*gdclass.Light2D)(unsafe.Pointer(&ptr))} })
 }
 
-type ShadowFilter = gdclass.Light2DShadowFilter //gd:Light2D.ShadowFilter
+type ShadowFilter int //gd:Light2D.ShadowFilter
 
 const (
 	/*No filter applies to the shadow map. This provides hard shadow edges and is the fastest to render. See [member shadow_filter].*/
@@ -580,7 +587,7 @@ const (
 	ShadowFilterPcf13 ShadowFilter = 2
 )
 
-type BlendMode = gdclass.Light2DBlendMode //gd:Light2D.BlendMode
+type BlendMode int //gd:Light2D.BlendMode
 
 const (
 	/*Adds the value of pixels corresponding to the Light2D to the values of pixels under it. This is the common behavior of a light.*/

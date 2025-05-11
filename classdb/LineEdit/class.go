@@ -11,10 +11,13 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/GUI"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/PopupMenu"
+import "graphics.gd/classdb/TextServer"
 import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -29,6 +32,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -44,6 +51,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -56,6 +64,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -383,11 +392,11 @@ func (self Instance) SetPlaceholderText(value string) {
 	class(self).SetPlaceholder(String.New(value))
 }
 
-func (self Instance) Alignment() HorizontalAlignment {
-	return HorizontalAlignment(class(self).GetHorizontalAlignment())
+func (self Instance) Alignment() GUI.HorizontalAlignment {
+	return GUI.HorizontalAlignment(class(self).GetHorizontalAlignment())
 }
 
-func (self Instance) SetAlignment(value HorizontalAlignment) {
+func (self Instance) SetAlignment(value GUI.HorizontalAlignment) {
 	class(self).SetHorizontalAlignment(value)
 }
 
@@ -447,11 +456,11 @@ func (self Instance) SetVirtualKeyboardEnabled(value bool) {
 	class(self).SetVirtualKeyboardEnabled(value)
 }
 
-func (self Instance) VirtualKeyboardType() gdclass.LineEditVirtualKeyboardType {
-	return gdclass.LineEditVirtualKeyboardType(class(self).GetVirtualKeyboardType())
+func (self Instance) VirtualKeyboardType() VirtualKeyboardType {
+	return VirtualKeyboardType(class(self).GetVirtualKeyboardType())
 }
 
-func (self Instance) SetVirtualKeyboardType(value gdclass.LineEditVirtualKeyboardType) {
+func (self Instance) SetVirtualKeyboardType(value VirtualKeyboardType) {
 	class(self).SetVirtualKeyboardType(value)
 }
 
@@ -591,11 +600,11 @@ func (self Instance) SetSecretCharacter(value string) {
 	class(self).SetSecretCharacter(String.New(value))
 }
 
-func (self Instance) TextDirection() gdclass.ControlTextDirection {
-	return gdclass.ControlTextDirection(class(self).GetTextDirection())
+func (self Instance) TextDirection() Control.TextDirection {
+	return Control.TextDirection(class(self).GetTextDirection())
 }
 
-func (self Instance) SetTextDirection(value gdclass.ControlTextDirection) {
+func (self Instance) SetTextDirection(value Control.TextDirection) {
 	class(self).SetTextDirection(value)
 }
 
@@ -607,11 +616,11 @@ func (self Instance) SetLanguage(value string) {
 	class(self).SetLanguage(String.New(value))
 }
 
-func (self Instance) StructuredTextBidiOverride() gdclass.TextServerStructuredTextParser {
-	return gdclass.TextServerStructuredTextParser(class(self).GetStructuredTextBidiOverride())
+func (self Instance) StructuredTextBidiOverride() TextServer.StructuredTextParser {
+	return TextServer.StructuredTextParser(class(self).GetStructuredTextBidiOverride())
 }
 
-func (self Instance) SetStructuredTextBidiOverride(value gdclass.TextServerStructuredTextParser) {
+func (self Instance) SetStructuredTextBidiOverride(value TextServer.StructuredTextParser) {
 	class(self).SetStructuredTextBidiOverride(value)
 }
 
@@ -659,7 +668,7 @@ func (self class) ApplyIme() { //gd:LineEdit.apply_ime
 }
 
 //go:nosplit
-func (self class) SetHorizontalAlignment(alignment HorizontalAlignment) { //gd:LineEdit.set_horizontal_alignment
+func (self class) SetHorizontalAlignment(alignment GUI.HorizontalAlignment) { //gd:LineEdit.set_horizontal_alignment
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
 	var r_ret = callframe.Nil
@@ -668,9 +677,9 @@ func (self class) SetHorizontalAlignment(alignment HorizontalAlignment) { //gd:L
 }
 
 //go:nosplit
-func (self class) GetHorizontalAlignment() HorizontalAlignment { //gd:LineEdit.get_horizontal_alignment
+func (self class) GetHorizontalAlignment() GUI.HorizontalAlignment { //gd:LineEdit.get_horizontal_alignment
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[HorizontalAlignment](frame)
+	var r_ret = callframe.Ret[GUI.HorizontalAlignment](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_get_horizontal_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -909,7 +918,7 @@ func (self class) SetDrawControlChars(enable bool) { //gd:LineEdit.set_draw_cont
 }
 
 //go:nosplit
-func (self class) SetTextDirection(direction gdclass.ControlTextDirection) { //gd:LineEdit.set_text_direction
+func (self class) SetTextDirection(direction Control.TextDirection) { //gd:LineEdit.set_text_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, direction)
 	var r_ret = callframe.Nil
@@ -918,9 +927,9 @@ func (self class) SetTextDirection(direction gdclass.ControlTextDirection) { //g
 }
 
 //go:nosplit
-func (self class) GetTextDirection() gdclass.ControlTextDirection { //gd:LineEdit.get_text_direction
+func (self class) GetTextDirection() Control.TextDirection { //gd:LineEdit.get_text_direction
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.ControlTextDirection](frame)
+	var r_ret = callframe.Ret[Control.TextDirection](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_get_text_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -947,7 +956,7 @@ func (self class) GetLanguage() String.Readable { //gd:LineEdit.get_language
 }
 
 //go:nosplit
-func (self class) SetStructuredTextBidiOverride(parser gdclass.TextServerStructuredTextParser) { //gd:LineEdit.set_structured_text_bidi_override
+func (self class) SetStructuredTextBidiOverride(parser TextServer.StructuredTextParser) { //gd:LineEdit.set_structured_text_bidi_override
 	var frame = callframe.New()
 	callframe.Arg(frame, parser)
 	var r_ret = callframe.Nil
@@ -956,9 +965,9 @@ func (self class) SetStructuredTextBidiOverride(parser gdclass.TextServerStructu
 }
 
 //go:nosplit
-func (self class) GetStructuredTextBidiOverride() gdclass.TextServerStructuredTextParser { //gd:LineEdit.get_structured_text_bidi_override
+func (self class) GetStructuredTextBidiOverride() TextServer.StructuredTextParser { //gd:LineEdit.get_structured_text_bidi_override
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TextServerStructuredTextParser](frame)
+	var r_ret = callframe.Ret[TextServer.StructuredTextParser](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_get_structured_text_bidi_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1378,7 +1387,7 @@ func (self class) IsVirtualKeyboardEnabled() bool { //gd:LineEdit.is_virtual_key
 }
 
 //go:nosplit
-func (self class) SetVirtualKeyboardType(atype gdclass.LineEditVirtualKeyboardType) { //gd:LineEdit.set_virtual_keyboard_type
+func (self class) SetVirtualKeyboardType(atype VirtualKeyboardType) { //gd:LineEdit.set_virtual_keyboard_type
 	var frame = callframe.New()
 	callframe.Arg(frame, atype)
 	var r_ret = callframe.Nil
@@ -1387,9 +1396,9 @@ func (self class) SetVirtualKeyboardType(atype gdclass.LineEditVirtualKeyboardTy
 }
 
 //go:nosplit
-func (self class) GetVirtualKeyboardType() gdclass.LineEditVirtualKeyboardType { //gd:LineEdit.get_virtual_keyboard_type
+func (self class) GetVirtualKeyboardType() VirtualKeyboardType { //gd:LineEdit.get_virtual_keyboard_type
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.LineEditVirtualKeyboardType](frame)
+	var r_ret = callframe.Ret[VirtualKeyboardType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LineEdit.Bind_get_virtual_keyboard_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -1618,7 +1627,7 @@ func init() {
 	gdclass.Register("LineEdit", func(ptr gd.Object) any { return [1]gdclass.LineEdit{*(*gdclass.LineEdit)(unsafe.Pointer(&ptr))} })
 }
 
-type MenuItems = gdclass.LineEditMenuItems //gd:LineEdit.MenuItems
+type MenuItems int //gd:LineEdit.MenuItems
 
 const (
 	/*Cuts (copies and clears) the selected text.*/
@@ -1688,7 +1697,7 @@ const (
 	MenuMax MenuItems = 31
 )
 
-type VirtualKeyboardType = gdclass.LineEditVirtualKeyboardType //gd:LineEdit.VirtualKeyboardType
+type VirtualKeyboardType int //gd:LineEdit.VirtualKeyboardType
 
 const (
 	/*Default text virtual keyboard.*/
@@ -1708,17 +1717,4 @@ const (
 	KeyboardTypePassword VirtualKeyboardType = 6
 	/*Virtual keyboard with additional keys to assist with typing URLs.*/
 	KeyboardTypeUrl VirtualKeyboardType = 7
-)
-
-type HorizontalAlignment int
-
-const (
-	/*Horizontal left alignment, usually for text-derived classes.*/
-	HorizontalAlignmentLeft HorizontalAlignment = 0
-	/*Horizontal center alignment, usually for text-derived classes.*/
-	HorizontalAlignmentCenter HorizontalAlignment = 1
-	/*Horizontal right alignment, usually for text-derived classes.*/
-	HorizontalAlignmentRight HorizontalAlignment = 2
-	/*Expand row to fit width, usually for text-derived classes.*/
-	HorizontalAlignmentFill HorizontalAlignment = 3
 )

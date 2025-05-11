@@ -11,8 +11,10 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Font"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/TextServer"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -26,6 +28,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -41,6 +47,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -53,6 +60,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -119,11 +127,11 @@ func (self Instance) SetFontStretch(value int) {
 	class(self).SetFontStretch(int64(value))
 }
 
-func (self Instance) Antialiasing() gdclass.TextServerFontAntialiasing {
-	return gdclass.TextServerFontAntialiasing(class(self).GetAntialiasing())
+func (self Instance) Antialiasing() TextServer.FontAntialiasing {
+	return TextServer.FontAntialiasing(class(self).GetAntialiasing())
 }
 
-func (self Instance) SetAntialiasing(value gdclass.TextServerFontAntialiasing) {
+func (self Instance) SetAntialiasing(value TextServer.FontAntialiasing) {
 	class(self).SetAntialiasing(value)
 }
 
@@ -159,19 +167,19 @@ func (self Instance) SetForceAutohinter(value bool) {
 	class(self).SetForceAutohinter(value)
 }
 
-func (self Instance) Hinting() gdclass.TextServerHinting {
-	return gdclass.TextServerHinting(class(self).GetHinting())
+func (self Instance) Hinting() TextServer.Hinting {
+	return TextServer.Hinting(class(self).GetHinting())
 }
 
-func (self Instance) SetHinting(value gdclass.TextServerHinting) {
+func (self Instance) SetHinting(value TextServer.Hinting) {
 	class(self).SetHinting(value)
 }
 
-func (self Instance) SubpixelPositioning() gdclass.TextServerSubpixelPositioning {
-	return gdclass.TextServerSubpixelPositioning(class(self).GetSubpixelPositioning())
+func (self Instance) SubpixelPositioning() TextServer.SubpixelPositioning {
+	return TextServer.SubpixelPositioning(class(self).GetSubpixelPositioning())
 }
 
-func (self Instance) SetSubpixelPositioning(value gdclass.TextServerSubpixelPositioning) {
+func (self Instance) SetSubpixelPositioning(value TextServer.SubpixelPositioning) {
 	class(self).SetSubpixelPositioning(value)
 }
 
@@ -216,7 +224,7 @@ func (self Instance) SetOversampling(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetAntialiasing(antialiasing gdclass.TextServerFontAntialiasing) { //gd:SystemFont.set_antialiasing
+func (self class) SetAntialiasing(antialiasing TextServer.FontAntialiasing) { //gd:SystemFont.set_antialiasing
 	var frame = callframe.New()
 	callframe.Arg(frame, antialiasing)
 	var r_ret = callframe.Nil
@@ -225,9 +233,9 @@ func (self class) SetAntialiasing(antialiasing gdclass.TextServerFontAntialiasin
 }
 
 //go:nosplit
-func (self class) GetAntialiasing() gdclass.TextServerFontAntialiasing { //gd:SystemFont.get_antialiasing
+func (self class) GetAntialiasing() TextServer.FontAntialiasing { //gd:SystemFont.get_antialiasing
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TextServerFontAntialiasing](frame)
+	var r_ret = callframe.Ret[TextServer.FontAntialiasing](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SystemFont.Bind_get_antialiasing, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -311,7 +319,7 @@ func (self class) IsForceAutohinter() bool { //gd:SystemFont.is_force_autohinter
 }
 
 //go:nosplit
-func (self class) SetHinting(hinting gdclass.TextServerHinting) { //gd:SystemFont.set_hinting
+func (self class) SetHinting(hinting TextServer.Hinting) { //gd:SystemFont.set_hinting
 	var frame = callframe.New()
 	callframe.Arg(frame, hinting)
 	var r_ret = callframe.Nil
@@ -320,9 +328,9 @@ func (self class) SetHinting(hinting gdclass.TextServerHinting) { //gd:SystemFon
 }
 
 //go:nosplit
-func (self class) GetHinting() gdclass.TextServerHinting { //gd:SystemFont.get_hinting
+func (self class) GetHinting() TextServer.Hinting { //gd:SystemFont.get_hinting
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TextServerHinting](frame)
+	var r_ret = callframe.Ret[TextServer.Hinting](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SystemFont.Bind_get_hinting, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -330,7 +338,7 @@ func (self class) GetHinting() gdclass.TextServerHinting { //gd:SystemFont.get_h
 }
 
 //go:nosplit
-func (self class) SetSubpixelPositioning(subpixel_positioning gdclass.TextServerSubpixelPositioning) { //gd:SystemFont.set_subpixel_positioning
+func (self class) SetSubpixelPositioning(subpixel_positioning TextServer.SubpixelPositioning) { //gd:SystemFont.set_subpixel_positioning
 	var frame = callframe.New()
 	callframe.Arg(frame, subpixel_positioning)
 	var r_ret = callframe.Nil
@@ -339,9 +347,9 @@ func (self class) SetSubpixelPositioning(subpixel_positioning gdclass.TextServer
 }
 
 //go:nosplit
-func (self class) GetSubpixelPositioning() gdclass.TextServerSubpixelPositioning { //gd:SystemFont.get_subpixel_positioning
+func (self class) GetSubpixelPositioning() TextServer.SubpixelPositioning { //gd:SystemFont.get_subpixel_positioning
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TextServerSubpixelPositioning](frame)
+	var r_ret = callframe.Ret[TextServer.SubpixelPositioning](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SystemFont.Bind_get_subpixel_positioning, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

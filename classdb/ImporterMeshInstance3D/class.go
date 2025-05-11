@@ -11,6 +11,8 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/GeometryInstance3D"
 import "graphics.gd/classdb/ImporterMesh"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
@@ -28,6 +30,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -43,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,6 +62,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 type Instance [1]gdclass.ImporterMeshInstance3D
@@ -120,11 +128,11 @@ func (self Instance) SetLayerMask(value int) {
 	class(self).SetLayerMask(int64(value))
 }
 
-func (self Instance) CastShadow() gdclass.GeometryInstance3DShadowCastingSetting {
-	return gdclass.GeometryInstance3DShadowCastingSetting(class(self).GetCastShadowsSetting())
+func (self Instance) CastShadow() GeometryInstance3D.ShadowCastingSetting {
+	return GeometryInstance3D.ShadowCastingSetting(class(self).GetCastShadowsSetting())
 }
 
-func (self Instance) SetCastShadow(value gdclass.GeometryInstance3DShadowCastingSetting) {
+func (self Instance) SetCastShadow(value GeometryInstance3D.ShadowCastingSetting) {
 	class(self).SetCastShadowsSetting(value)
 }
 
@@ -160,11 +168,11 @@ func (self Instance) SetVisibilityRangeEndMargin(value Float.X) {
 	class(self).SetVisibilityRangeEndMargin(float64(value))
 }
 
-func (self Instance) VisibilityRangeFadeMode() gdclass.GeometryInstance3DVisibilityRangeFadeMode {
-	return gdclass.GeometryInstance3DVisibilityRangeFadeMode(class(self).GetVisibilityRangeFadeMode())
+func (self Instance) VisibilityRangeFadeMode() GeometryInstance3D.VisibilityRangeFadeMode {
+	return GeometryInstance3D.VisibilityRangeFadeMode(class(self).GetVisibilityRangeFadeMode())
 }
 
-func (self Instance) SetVisibilityRangeFadeMode(value gdclass.GeometryInstance3DVisibilityRangeFadeMode) {
+func (self Instance) SetVisibilityRangeFadeMode(value GeometryInstance3D.VisibilityRangeFadeMode) {
 	class(self).SetVisibilityRangeFadeMode(value)
 }
 
@@ -245,7 +253,7 @@ func (self class) GetLayerMask() int64 { //gd:ImporterMeshInstance3D.get_layer_m
 }
 
 //go:nosplit
-func (self class) SetCastShadowsSetting(shadow_casting_setting gdclass.GeometryInstance3DShadowCastingSetting) { //gd:ImporterMeshInstance3D.set_cast_shadows_setting
+func (self class) SetCastShadowsSetting(shadow_casting_setting GeometryInstance3D.ShadowCastingSetting) { //gd:ImporterMeshInstance3D.set_cast_shadows_setting
 	var frame = callframe.New()
 	callframe.Arg(frame, shadow_casting_setting)
 	var r_ret = callframe.Nil
@@ -254,9 +262,9 @@ func (self class) SetCastShadowsSetting(shadow_casting_setting gdclass.GeometryI
 }
 
 //go:nosplit
-func (self class) GetCastShadowsSetting() gdclass.GeometryInstance3DShadowCastingSetting { //gd:ImporterMeshInstance3D.get_cast_shadows_setting
+func (self class) GetCastShadowsSetting() GeometryInstance3D.ShadowCastingSetting { //gd:ImporterMeshInstance3D.get_cast_shadows_setting
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.GeometryInstance3DShadowCastingSetting](frame)
+	var r_ret = callframe.Ret[GeometryInstance3D.ShadowCastingSetting](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMeshInstance3D.Bind_get_cast_shadows_setting, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -340,7 +348,7 @@ func (self class) GetVisibilityRangeBegin() float64 { //gd:ImporterMeshInstance3
 }
 
 //go:nosplit
-func (self class) SetVisibilityRangeFadeMode(mode gdclass.GeometryInstance3DVisibilityRangeFadeMode) { //gd:ImporterMeshInstance3D.set_visibility_range_fade_mode
+func (self class) SetVisibilityRangeFadeMode(mode GeometryInstance3D.VisibilityRangeFadeMode) { //gd:ImporterMeshInstance3D.set_visibility_range_fade_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -349,9 +357,9 @@ func (self class) SetVisibilityRangeFadeMode(mode gdclass.GeometryInstance3DVisi
 }
 
 //go:nosplit
-func (self class) GetVisibilityRangeFadeMode() gdclass.GeometryInstance3DVisibilityRangeFadeMode { //gd:ImporterMeshInstance3D.get_visibility_range_fade_mode
+func (self class) GetVisibilityRangeFadeMode() GeometryInstance3D.VisibilityRangeFadeMode { //gd:ImporterMeshInstance3D.get_visibility_range_fade_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.GeometryInstance3DVisibilityRangeFadeMode](frame)
+	var r_ret = callframe.Ret[GeometryInstance3D.VisibilityRangeFadeMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImporterMeshInstance3D.Bind_get_visibility_range_fade_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()

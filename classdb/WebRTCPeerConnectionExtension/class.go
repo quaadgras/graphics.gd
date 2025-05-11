@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/WebRTCDataChannel"
 import "graphics.gd/classdb/WebRTCPeerConnection"
 import "graphics.gd/variant/Array"
@@ -26,6 +27,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -41,6 +46,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -53,6 +59,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 type Instance [1]gdclass.WebRTCPeerConnectionExtension
@@ -67,9 +74,9 @@ type Any interface {
 	AsWebRTCPeerConnectionExtension() Instance
 }
 type Interface interface {
-	GetConnectionState() gdclass.WebRTCPeerConnectionConnectionState
-	GetGatheringState() gdclass.WebRTCPeerConnectionGatheringState
-	GetSignalingState() gdclass.WebRTCPeerConnectionSignalingState
+	GetConnectionState() WebRTCPeerConnection.ConnectionState
+	GetGatheringState() WebRTCPeerConnection.GatheringState
+	GetSignalingState() WebRTCPeerConnection.SignalingState
 	Initialize(p_config map[any]any) error
 	CreateDataChannel(p_label string, p_config map[any]any) WebRTCDataChannel.Instance
 	CreateOffer() error
@@ -85,12 +92,10 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetConnectionState() (_ gdclass.WebRTCPeerConnectionConnectionState) {
-	return
-}
-func (self implementation) GetGatheringState() (_ gdclass.WebRTCPeerConnectionGatheringState) { return }
-func (self implementation) GetSignalingState() (_ gdclass.WebRTCPeerConnectionSignalingState) { return }
-func (self implementation) Initialize(p_config map[any]any) (_ error)                         { return }
+func (self implementation) GetConnectionState() (_ WebRTCPeerConnection.ConnectionState) { return }
+func (self implementation) GetGatheringState() (_ WebRTCPeerConnection.GatheringState)   { return }
+func (self implementation) GetSignalingState() (_ WebRTCPeerConnection.SignalingState)   { return }
+func (self implementation) Initialize(p_config map[any]any) (_ error)                    { return }
 func (self implementation) CreateDataChannel(p_label string, p_config map[any]any) (_ WebRTCDataChannel.Instance) {
 	return
 }
@@ -102,21 +107,21 @@ func (self implementation) AddIceCandidate(p_sdp_mid_name string, p_sdp_mline_in
 }
 func (self implementation) Poll() (_ error) { return }
 func (self implementation) Close()          { return }
-func (Instance) _get_connection_state(impl func(ptr unsafe.Pointer) gdclass.WebRTCPeerConnectionConnectionState) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_connection_state(impl func(ptr unsafe.Pointer) WebRTCPeerConnection.ConnectionState) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _get_gathering_state(impl func(ptr unsafe.Pointer) gdclass.WebRTCPeerConnectionGatheringState) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_gathering_state(impl func(ptr unsafe.Pointer) WebRTCPeerConnection.GatheringState) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _get_signaling_state(impl func(ptr unsafe.Pointer) gdclass.WebRTCPeerConnectionSignalingState) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_signaling_state(impl func(ptr unsafe.Pointer) WebRTCPeerConnection.SignalingState) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -253,7 +258,7 @@ func New() Instance {
 	return casted
 }
 
-func (class) _get_connection_state(impl func(ptr unsafe.Pointer) gdclass.WebRTCPeerConnectionConnectionState) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_connection_state(impl func(ptr unsafe.Pointer) WebRTCPeerConnection.ConnectionState) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -261,7 +266,7 @@ func (class) _get_connection_state(impl func(ptr unsafe.Pointer) gdclass.WebRTCP
 	}
 }
 
-func (class) _get_gathering_state(impl func(ptr unsafe.Pointer) gdclass.WebRTCPeerConnectionGatheringState) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_gathering_state(impl func(ptr unsafe.Pointer) WebRTCPeerConnection.GatheringState) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)
@@ -269,7 +274,7 @@ func (class) _get_gathering_state(impl func(ptr unsafe.Pointer) gdclass.WebRTCPe
 	}
 }
 
-func (class) _get_signaling_state(impl func(ptr unsafe.Pointer) gdclass.WebRTCPeerConnectionSignalingState) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_signaling_state(impl func(ptr unsafe.Pointer) WebRTCPeerConnection.SignalingState) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self)

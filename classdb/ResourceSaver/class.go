@@ -12,6 +12,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/ResourceFormatSaver"
 import "graphics.gd/variant/Array"
@@ -27,6 +28,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -42,6 +47,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -54,6 +60,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -79,7 +86,7 @@ The [param flags] bitmask can be specified to customize the save behavior using 
 Returns [constant OK] on success.
 [b]Note:[/b] When the project is running, any generated UID associated with the resource will not be saved as the required code is only executed in editor mode.
 */
-func Save(resource Resource.Instance, path string, flags gdclass.ResourceSaverSaverFlags) error { //gd:ResourceSaver.save
+func Save(resource Resource.Instance, path string, flags SaverFlags) error { //gd:ResourceSaver.save
 	once.Do(singleton)
 	return error(gd.ToError(Advanced().Save(resource, String.New(path), flags)))
 }
@@ -90,7 +97,7 @@ The [param flags] bitmask can be specified to customize the save behavior using 
 Returns [constant OK] on success.
 [b]Note:[/b] When the project is running, any generated UID associated with the resource will not be saved as the required code is only executed in editor mode.
 */
-func SaveOptions(resource Resource.Instance, path string, flags gdclass.ResourceSaverSaverFlags) error { //gd:ResourceSaver.save
+func SaveOptions(resource Resource.Instance, path string, flags SaverFlags) error { //gd:ResourceSaver.save
 	once.Do(singleton)
 	return error(gd.ToError(Advanced().Save(resource, String.New(path), flags)))
 }
@@ -167,7 +174,7 @@ Returns [constant OK] on success.
 [b]Note:[/b] When the project is running, any generated UID associated with the resource will not be saved as the required code is only executed in editor mode.
 */
 //go:nosplit
-func (self class) Save(resource [1]gdclass.Resource, path String.Readable, flags gdclass.ResourceSaverSaverFlags) Error.Code { //gd:ResourceSaver.save
+func (self class) Save(resource [1]gdclass.Resource, path String.Readable, flags SaverFlags) Error.Code { //gd:ResourceSaver.save
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(resource[0])[0])
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
@@ -252,7 +259,7 @@ func init() {
 	})
 }
 
-type SaverFlags = gdclass.ResourceSaverSaverFlags //gd:ResourceSaver.SaverFlags
+type SaverFlags int //gd:ResourceSaver.SaverFlags
 
 const (
 	/*No resource saving option.*/

@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node2D"
@@ -28,6 +29,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -43,6 +48,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,6 +61,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -93,11 +100,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) CopyMode() gdclass.BackBufferCopyCopyMode {
-	return gdclass.BackBufferCopyCopyMode(class(self).GetCopyMode())
+func (self Instance) CopyMode() CopyMode {
+	return CopyMode(class(self).GetCopyMode())
 }
 
-func (self Instance) SetCopyMode(value gdclass.BackBufferCopyCopyMode) {
+func (self Instance) SetCopyMode(value CopyMode) {
 	class(self).SetCopyMode(value)
 }
 
@@ -129,7 +136,7 @@ func (self class) GetRect() Rect2.PositionSize { //gd:BackBufferCopy.get_rect
 }
 
 //go:nosplit
-func (self class) SetCopyMode(copy_mode gdclass.BackBufferCopyCopyMode) { //gd:BackBufferCopy.set_copy_mode
+func (self class) SetCopyMode(copy_mode CopyMode) { //gd:BackBufferCopy.set_copy_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, copy_mode)
 	var r_ret = callframe.Nil
@@ -138,9 +145,9 @@ func (self class) SetCopyMode(copy_mode gdclass.BackBufferCopyCopyMode) { //gd:B
 }
 
 //go:nosplit
-func (self class) GetCopyMode() gdclass.BackBufferCopyCopyMode { //gd:BackBufferCopy.get_copy_mode
+func (self class) GetCopyMode() CopyMode { //gd:BackBufferCopy.get_copy_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.BackBufferCopyCopyMode](frame)
+	var r_ret = callframe.Ret[CopyMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BackBufferCopy.Bind_get_copy_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -182,7 +189,7 @@ func init() {
 	})
 }
 
-type CopyMode = gdclass.BackBufferCopyCopyMode //gd:BackBufferCopy.CopyMode
+type CopyMode int //gd:BackBufferCopy.CopyMode
 
 const (
 	/*Disables the buffering mode. This means the [BackBufferCopy] node will directly use the portion of screen it covers.*/

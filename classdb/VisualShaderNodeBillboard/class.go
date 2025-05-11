@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/VisualShaderNode"
 import "graphics.gd/variant/Array"
@@ -26,6 +27,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -41,6 +46,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -53,6 +59,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -91,11 +98,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) BillboardType() gdclass.VisualShaderNodeBillboardBillboardType {
-	return gdclass.VisualShaderNodeBillboardBillboardType(class(self).GetBillboardType())
+func (self Instance) BillboardType() BillboardType {
+	return BillboardType(class(self).GetBillboardType())
 }
 
-func (self Instance) SetBillboardType(value gdclass.VisualShaderNodeBillboardBillboardType) {
+func (self Instance) SetBillboardType(value BillboardType) {
 	class(self).SetBillboardType(value)
 }
 
@@ -108,7 +115,7 @@ func (self Instance) SetKeepScale(value bool) {
 }
 
 //go:nosplit
-func (self class) SetBillboardType(billboard_type gdclass.VisualShaderNodeBillboardBillboardType) { //gd:VisualShaderNodeBillboard.set_billboard_type
+func (self class) SetBillboardType(billboard_type BillboardType) { //gd:VisualShaderNodeBillboard.set_billboard_type
 	var frame = callframe.New()
 	callframe.Arg(frame, billboard_type)
 	var r_ret = callframe.Nil
@@ -117,9 +124,9 @@ func (self class) SetBillboardType(billboard_type gdclass.VisualShaderNodeBillbo
 }
 
 //go:nosplit
-func (self class) GetBillboardType() gdclass.VisualShaderNodeBillboardBillboardType { //gd:VisualShaderNodeBillboard.get_billboard_type
+func (self class) GetBillboardType() BillboardType { //gd:VisualShaderNodeBillboard.get_billboard_type
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.VisualShaderNodeBillboardBillboardType](frame)
+	var r_ret = callframe.Ret[BillboardType](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeBillboard.Bind_get_billboard_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -196,7 +203,7 @@ func init() {
 	})
 }
 
-type BillboardType = gdclass.VisualShaderNodeBillboardBillboardType //gd:VisualShaderNodeBillboard.BillboardType
+type BillboardType int //gd:VisualShaderNodeBillboard.BillboardType
 
 const (
 	/*Billboarding is disabled and the node does nothing.*/

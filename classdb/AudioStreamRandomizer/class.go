@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/AudioStream"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
@@ -26,6 +27,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -41,6 +46,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -53,6 +59,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -149,11 +156,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) PlaybackMode() gdclass.AudioStreamRandomizerPlaybackMode {
-	return gdclass.AudioStreamRandomizerPlaybackMode(class(self).GetPlaybackMode())
+func (self Instance) PlaybackMode() PlaybackMode {
+	return PlaybackMode(class(self).GetPlaybackMode())
 }
 
-func (self Instance) SetPlaybackMode(value gdclass.AudioStreamRandomizerPlaybackMode) {
+func (self Instance) SetPlaybackMode(value PlaybackMode) {
 	class(self).SetPlaybackMode(value)
 }
 
@@ -332,7 +339,7 @@ func (self class) GetRandomVolumeOffsetDb() float64 { //gd:AudioStreamRandomizer
 }
 
 //go:nosplit
-func (self class) SetPlaybackMode(mode gdclass.AudioStreamRandomizerPlaybackMode) { //gd:AudioStreamRandomizer.set_playback_mode
+func (self class) SetPlaybackMode(mode PlaybackMode) { //gd:AudioStreamRandomizer.set_playback_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -341,9 +348,9 @@ func (self class) SetPlaybackMode(mode gdclass.AudioStreamRandomizerPlaybackMode
 }
 
 //go:nosplit
-func (self class) GetPlaybackMode() gdclass.AudioStreamRandomizerPlaybackMode { //gd:AudioStreamRandomizer.get_playback_mode
+func (self class) GetPlaybackMode() PlaybackMode { //gd:AudioStreamRandomizer.get_playback_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.AudioStreamRandomizerPlaybackMode](frame)
+	var r_ret = callframe.Ret[PlaybackMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamRandomizer.Bind_get_playback_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -395,7 +402,7 @@ func init() {
 	})
 }
 
-type PlaybackMode = gdclass.AudioStreamRandomizerPlaybackMode //gd:AudioStreamRandomizer.PlaybackMode
+type PlaybackMode int //gd:AudioStreamRandomizer.PlaybackMode
 
 const (
 	/*Pick a stream at random according to the probability weights chosen for each stream, but avoid playing the same stream twice in a row whenever possible. If only 1 sound is present in the pool, the same sound will always play, effectively allowing repeats to occur.*/

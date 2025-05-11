@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/Node"
@@ -26,11 +27,16 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
 import "graphics.gd/variant/Path"
 import "graphics.gd/variant/RID"
+import "graphics.gd/variant/Rect2"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -46,6 +52,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -58,6 +65,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -436,7 +444,7 @@ func (self class) GetFillDegrees() float64 { //gd:TextureProgressBar.get_fill_de
 Sets the stretch margin with the specified index. See [member stretch_margin_bottom] and related properties.
 */
 //go:nosplit
-func (self class) SetStretchMargin(margin Side, value int64) { //gd:TextureProgressBar.set_stretch_margin
+func (self class) SetStretchMargin(margin Rect2.Side, value int64) { //gd:TextureProgressBar.set_stretch_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	callframe.Arg(frame, value)
@@ -449,7 +457,7 @@ func (self class) SetStretchMargin(margin Side, value int64) { //gd:TextureProgr
 Returns the stretch margin with the specified index. See [member stretch_margin_bottom] and related properties.
 */
 //go:nosplit
-func (self class) GetStretchMargin(margin Side) int64 { //gd:TextureProgressBar.get_stretch_margin
+func (self class) GetStretchMargin(margin Rect2.Side) int64 { //gd:TextureProgressBar.get_stretch_margin
 	var frame = callframe.New()
 	callframe.Arg(frame, margin)
 	var r_ret = callframe.Ret[int64](frame)
@@ -518,7 +526,7 @@ func init() {
 	})
 }
 
-type FillMode = gdclass.TextureProgressBarFillMode //gd:TextureProgressBar.FillMode
+type FillMode int //gd:TextureProgressBar.FillMode
 
 const (
 	/*The [member texture_progress] fills from left to right.*/
@@ -539,17 +547,4 @@ const (
 	FillBilinearTopAndBottom FillMode = 7
 	/*Turns the node into a radial bar. The [member texture_progress] fills radially from the center, expanding both clockwise and counterclockwise. See [member radial_center_offset], [member radial_initial_angle] and [member radial_fill_degrees] to control the way the bar fills up.*/
 	FillClockwiseAndCounterClockwise FillMode = 8
-)
-
-type Side int
-
-const (
-	/*Left side, usually used for [Control] or [StyleBox]-derived classes.*/
-	SideLeft Side = 0
-	/*Top side, usually used for [Control] or [StyleBox]-derived classes.*/
-	SideTop Side = 1
-	/*Right side, usually used for [Control] or [StyleBox]-derived classes.*/
-	SideRight Side = 2
-	/*Bottom side, usually used for [Control] or [StyleBox]-derived classes.*/
-	SideBottom Side = 3
 )

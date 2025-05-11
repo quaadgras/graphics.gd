@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
@@ -28,6 +29,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -43,6 +48,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,6 +61,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -135,11 +142,11 @@ func (self Instance) SetDraggingEnabled(value bool) {
 	class(self).SetDraggingEnabled(value)
 }
 
-func (self Instance) DraggerVisibility() gdclass.SplitContainerDraggerVisibility {
-	return gdclass.SplitContainerDraggerVisibility(class(self).GetDraggerVisibility())
+func (self Instance) DraggerVisibility() DraggerVisibility {
+	return DraggerVisibility(class(self).GetDraggerVisibility())
 }
 
-func (self Instance) SetDraggerVisibility(value gdclass.SplitContainerDraggerVisibility) {
+func (self Instance) SetDraggerVisibility(value DraggerVisibility) {
 	class(self).SetDraggerVisibility(value)
 }
 
@@ -233,7 +240,7 @@ func (self class) IsCollapsed() bool { //gd:SplitContainer.is_collapsed
 }
 
 //go:nosplit
-func (self class) SetDraggerVisibility(mode gdclass.SplitContainerDraggerVisibility) { //gd:SplitContainer.set_dragger_visibility
+func (self class) SetDraggerVisibility(mode DraggerVisibility) { //gd:SplitContainer.set_dragger_visibility
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -242,9 +249,9 @@ func (self class) SetDraggerVisibility(mode gdclass.SplitContainerDraggerVisibil
 }
 
 //go:nosplit
-func (self class) GetDraggerVisibility() gdclass.SplitContainerDraggerVisibility { //gd:SplitContainer.get_dragger_visibility
+func (self class) GetDraggerVisibility() DraggerVisibility { //gd:SplitContainer.get_dragger_visibility
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.SplitContainerDraggerVisibility](frame)
+	var r_ret = callframe.Ret[DraggerVisibility](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_get_dragger_visibility, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -439,7 +446,7 @@ func init() {
 	})
 }
 
-type DraggerVisibility = gdclass.SplitContainerDraggerVisibility //gd:SplitContainer.DraggerVisibility
+type DraggerVisibility int //gd:SplitContainer.DraggerVisibility
 
 const (
 	/*The split dragger icon is always visible when [theme_item autohide] is [code]false[/code], otherwise visible only when the cursor hovers it.

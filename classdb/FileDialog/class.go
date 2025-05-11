@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/AcceptDialog"
 import "graphics.gd/classdb/ConfirmationDialog"
 import "graphics.gd/classdb/LineEdit"
@@ -31,6 +32,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -46,6 +51,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -58,6 +64,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -226,19 +233,19 @@ func (self Instance) SetModeOverridesTitle(value bool) {
 	class(self).SetModeOverridesTitle(value)
 }
 
-func (self Instance) FileMode() gdclass.FileDialogFileMode {
-	return gdclass.FileDialogFileMode(class(self).GetFileMode())
+func (self Instance) FileMode() FileMode {
+	return FileMode(class(self).GetFileMode())
 }
 
-func (self Instance) SetFileMode(value gdclass.FileDialogFileMode) {
+func (self Instance) SetFileMode(value FileMode) {
 	class(self).SetFileMode(value)
 }
 
-func (self Instance) Access() gdclass.FileDialogAccess {
-	return gdclass.FileDialogAccess(class(self).GetAccess())
+func (self Instance) Access() Access {
+	return Access(class(self).GetAccess())
 }
 
-func (self Instance) SetAccess(value gdclass.FileDialogAccess) {
+func (self Instance) SetAccess(value Access) {
 	class(self).SetAccess(value)
 }
 
@@ -594,7 +601,7 @@ func (self class) IsModeOverridingTitle() bool { //gd:FileDialog.is_mode_overrid
 }
 
 //go:nosplit
-func (self class) SetFileMode(mode gdclass.FileDialogFileMode) { //gd:FileDialog.set_file_mode
+func (self class) SetFileMode(mode FileMode) { //gd:FileDialog.set_file_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -603,9 +610,9 @@ func (self class) SetFileMode(mode gdclass.FileDialogFileMode) { //gd:FileDialog
 }
 
 //go:nosplit
-func (self class) GetFileMode() gdclass.FileDialogFileMode { //gd:FileDialog.get_file_mode
+func (self class) GetFileMode() FileMode { //gd:FileDialog.get_file_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.FileDialogFileMode](frame)
+	var r_ret = callframe.Ret[FileMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_file_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -642,7 +649,7 @@ func (self class) GetLineEdit() [1]gdclass.LineEdit { //gd:FileDialog.get_line_e
 }
 
 //go:nosplit
-func (self class) SetAccess(access gdclass.FileDialogAccess) { //gd:FileDialog.set_access
+func (self class) SetAccess(access Access) { //gd:FileDialog.set_access
 	var frame = callframe.New()
 	callframe.Arg(frame, access)
 	var r_ret = callframe.Nil
@@ -651,9 +658,9 @@ func (self class) SetAccess(access gdclass.FileDialogAccess) { //gd:FileDialog.s
 }
 
 //go:nosplit
-func (self class) GetAccess() gdclass.FileDialogAccess { //gd:FileDialog.get_access
+func (self class) GetAccess() Access { //gd:FileDialog.get_access
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.FileDialogAccess](frame)
+	var r_ret = callframe.Ret[Access](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_access, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -805,7 +812,7 @@ func init() {
 	gdclass.Register("FileDialog", func(ptr gd.Object) any { return [1]gdclass.FileDialog{*(*gdclass.FileDialog)(unsafe.Pointer(&ptr))} })
 }
 
-type FileMode = gdclass.FileDialogFileMode //gd:FileDialog.FileMode
+type FileMode int //gd:FileDialog.FileMode
 
 const (
 	/*The dialog allows selecting one, and only one file.*/
@@ -820,7 +827,7 @@ const (
 	FileModeSaveFile FileMode = 4
 )
 
-type Access = gdclass.FileDialogAccess //gd:FileDialog.Access
+type Access int //gd:FileDialog.Access
 
 const (
 	/*The dialog only allows accessing files under the [Resource] path ([code]res://[/code]).*/

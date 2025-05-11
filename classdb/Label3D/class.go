@@ -11,10 +11,14 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/BaseMaterial3D"
 import "graphics.gd/classdb/Font"
+import "graphics.gd/classdb/GUI"
 import "graphics.gd/classdb/GeometryInstance3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
+import "graphics.gd/classdb/TextServer"
 import "graphics.gd/classdb/TriangleMesh"
 import "graphics.gd/classdb/VisualInstance3D"
 import "graphics.gd/variant/Array"
@@ -32,6 +36,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -47,6 +55,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -59,6 +68,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -119,11 +129,11 @@ func (self Instance) SetOffset(value Vector2.XY) {
 	class(self).SetOffset(Vector2.XY(value))
 }
 
-func (self Instance) Billboard() gdclass.BaseMaterial3DBillboardMode {
-	return gdclass.BaseMaterial3DBillboardMode(class(self).GetBillboardMode())
+func (self Instance) Billboard() BaseMaterial3D.BillboardMode {
+	return BaseMaterial3D.BillboardMode(class(self).GetBillboardMode())
 }
 
-func (self Instance) SetBillboard(value gdclass.BaseMaterial3DBillboardMode) {
+func (self Instance) SetBillboard(value BaseMaterial3D.BillboardMode) {
 	class(self).SetBillboardMode(value)
 }
 
@@ -159,11 +169,11 @@ func (self Instance) SetFixedSize(value bool) {
 	class(self).SetDrawFlag(3, value)
 }
 
-func (self Instance) AlphaCut() gdclass.Label3DAlphaCutMode {
-	return gdclass.Label3DAlphaCutMode(class(self).GetAlphaCutMode())
+func (self Instance) AlphaCut() AlphaCutMode {
+	return AlphaCutMode(class(self).GetAlphaCutMode())
 }
 
-func (self Instance) SetAlphaCut(value gdclass.Label3DAlphaCutMode) {
+func (self Instance) SetAlphaCut(value AlphaCutMode) {
 	class(self).SetAlphaCutMode(value)
 }
 
@@ -183,11 +193,11 @@ func (self Instance) SetAlphaHashScale(value Float.X) {
 	class(self).SetAlphaHashScale(float64(value))
 }
 
-func (self Instance) AlphaAntialiasingMode() gdclass.BaseMaterial3DAlphaAntiAliasing {
-	return gdclass.BaseMaterial3DAlphaAntiAliasing(class(self).GetAlphaAntialiasing())
+func (self Instance) AlphaAntialiasingMode() BaseMaterial3D.AlphaAntiAliasing {
+	return BaseMaterial3D.AlphaAntiAliasing(class(self).GetAlphaAntialiasing())
 }
 
-func (self Instance) SetAlphaAntialiasingMode(value gdclass.BaseMaterial3DAlphaAntiAliasing) {
+func (self Instance) SetAlphaAntialiasingMode(value BaseMaterial3D.AlphaAntiAliasing) {
 	class(self).SetAlphaAntialiasing(value)
 }
 
@@ -199,11 +209,11 @@ func (self Instance) SetAlphaAntialiasingEdge(value Float.X) {
 	class(self).SetAlphaAntialiasingEdge(float64(value))
 }
 
-func (self Instance) TextureFilter() gdclass.BaseMaterial3DTextureFilter {
-	return gdclass.BaseMaterial3DTextureFilter(class(self).GetTextureFilter())
+func (self Instance) TextureFilter() BaseMaterial3D.TextureFilter {
+	return BaseMaterial3D.TextureFilter(class(self).GetTextureFilter())
 }
 
-func (self Instance) SetTextureFilter(value gdclass.BaseMaterial3DTextureFilter) {
+func (self Instance) SetTextureFilter(value BaseMaterial3D.TextureFilter) {
 	class(self).SetTextureFilter(value)
 }
 
@@ -271,19 +281,19 @@ func (self Instance) SetOutlineSize(value int) {
 	class(self).SetOutlineSize(int64(value))
 }
 
-func (self Instance) HorizontalAlignment() HorizontalAlignment {
-	return HorizontalAlignment(class(self).GetHorizontalAlignment())
+func (self Instance) HorizontalAlignment() GUI.HorizontalAlignment {
+	return GUI.HorizontalAlignment(class(self).GetHorizontalAlignment())
 }
 
-func (self Instance) SetHorizontalAlignment(value HorizontalAlignment) {
+func (self Instance) SetHorizontalAlignment(value GUI.HorizontalAlignment) {
 	class(self).SetHorizontalAlignment(value)
 }
 
-func (self Instance) VerticalAlignment() VerticalAlignment {
-	return VerticalAlignment(class(self).GetVerticalAlignment())
+func (self Instance) VerticalAlignment() GUI.VerticalAlignment {
+	return GUI.VerticalAlignment(class(self).GetVerticalAlignment())
 }
 
-func (self Instance) SetVerticalAlignment(value VerticalAlignment) {
+func (self Instance) SetVerticalAlignment(value GUI.VerticalAlignment) {
 	class(self).SetVerticalAlignment(value)
 }
 
@@ -303,19 +313,19 @@ func (self Instance) SetLineSpacing(value Float.X) {
 	class(self).SetLineSpacing(float64(value))
 }
 
-func (self Instance) AutowrapMode() gdclass.TextServerAutowrapMode {
-	return gdclass.TextServerAutowrapMode(class(self).GetAutowrapMode())
+func (self Instance) AutowrapMode() TextServer.AutowrapMode {
+	return TextServer.AutowrapMode(class(self).GetAutowrapMode())
 }
 
-func (self Instance) SetAutowrapMode(value gdclass.TextServerAutowrapMode) {
+func (self Instance) SetAutowrapMode(value TextServer.AutowrapMode) {
 	class(self).SetAutowrapMode(value)
 }
 
-func (self Instance) JustificationFlags() gdclass.TextServerJustificationFlag {
-	return gdclass.TextServerJustificationFlag(class(self).GetJustificationFlags())
+func (self Instance) JustificationFlags() TextServer.JustificationFlag {
+	return TextServer.JustificationFlag(class(self).GetJustificationFlags())
 }
 
-func (self Instance) SetJustificationFlags(value gdclass.TextServerJustificationFlag) {
+func (self Instance) SetJustificationFlags(value TextServer.JustificationFlag) {
 	class(self).SetJustificationFlags(value)
 }
 
@@ -327,11 +337,11 @@ func (self Instance) SetWidth(value Float.X) {
 	class(self).SetWidth(float64(value))
 }
 
-func (self Instance) TextDirection() gdclass.TextServerDirection {
-	return gdclass.TextServerDirection(class(self).GetTextDirection())
+func (self Instance) TextDirection() TextServer.Direction {
+	return TextServer.Direction(class(self).GetTextDirection())
 }
 
-func (self Instance) SetTextDirection(value gdclass.TextServerDirection) {
+func (self Instance) SetTextDirection(value TextServer.Direction) {
 	class(self).SetTextDirection(value)
 }
 
@@ -343,11 +353,11 @@ func (self Instance) SetLanguage(value string) {
 	class(self).SetLanguage(String.New(value))
 }
 
-func (self Instance) StructuredTextBidiOverride() gdclass.TextServerStructuredTextParser {
-	return gdclass.TextServerStructuredTextParser(class(self).GetStructuredTextBidiOverride())
+func (self Instance) StructuredTextBidiOverride() TextServer.StructuredTextParser {
+	return TextServer.StructuredTextParser(class(self).GetStructuredTextBidiOverride())
 }
 
-func (self Instance) SetStructuredTextBidiOverride(value gdclass.TextServerStructuredTextParser) {
+func (self Instance) SetStructuredTextBidiOverride(value TextServer.StructuredTextParser) {
 	class(self).SetStructuredTextBidiOverride(value)
 }
 
@@ -360,7 +370,7 @@ func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) {
 }
 
 //go:nosplit
-func (self class) SetHorizontalAlignment(alignment HorizontalAlignment) { //gd:Label3D.set_horizontal_alignment
+func (self class) SetHorizontalAlignment(alignment GUI.HorizontalAlignment) { //gd:Label3D.set_horizontal_alignment
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
 	var r_ret = callframe.Nil
@@ -369,9 +379,9 @@ func (self class) SetHorizontalAlignment(alignment HorizontalAlignment) { //gd:L
 }
 
 //go:nosplit
-func (self class) GetHorizontalAlignment() HorizontalAlignment { //gd:Label3D.get_horizontal_alignment
+func (self class) GetHorizontalAlignment() GUI.HorizontalAlignment { //gd:Label3D.get_horizontal_alignment
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[HorizontalAlignment](frame)
+	var r_ret = callframe.Ret[GUI.HorizontalAlignment](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label3D.Bind_get_horizontal_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -379,7 +389,7 @@ func (self class) GetHorizontalAlignment() HorizontalAlignment { //gd:Label3D.ge
 }
 
 //go:nosplit
-func (self class) SetVerticalAlignment(alignment VerticalAlignment) { //gd:Label3D.set_vertical_alignment
+func (self class) SetVerticalAlignment(alignment GUI.VerticalAlignment) { //gd:Label3D.set_vertical_alignment
 	var frame = callframe.New()
 	callframe.Arg(frame, alignment)
 	var r_ret = callframe.Nil
@@ -388,9 +398,9 @@ func (self class) SetVerticalAlignment(alignment VerticalAlignment) { //gd:Label
 }
 
 //go:nosplit
-func (self class) GetVerticalAlignment() VerticalAlignment { //gd:Label3D.get_vertical_alignment
+func (self class) GetVerticalAlignment() GUI.VerticalAlignment { //gd:Label3D.get_vertical_alignment
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[VerticalAlignment](frame)
+	var r_ret = callframe.Ret[GUI.VerticalAlignment](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label3D.Bind_get_vertical_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -455,7 +465,7 @@ func (self class) GetText() String.Readable { //gd:Label3D.get_text
 }
 
 //go:nosplit
-func (self class) SetTextDirection(direction gdclass.TextServerDirection) { //gd:Label3D.set_text_direction
+func (self class) SetTextDirection(direction TextServer.Direction) { //gd:Label3D.set_text_direction
 	var frame = callframe.New()
 	callframe.Arg(frame, direction)
 	var r_ret = callframe.Nil
@@ -464,9 +474,9 @@ func (self class) SetTextDirection(direction gdclass.TextServerDirection) { //gd
 }
 
 //go:nosplit
-func (self class) GetTextDirection() gdclass.TextServerDirection { //gd:Label3D.get_text_direction
+func (self class) GetTextDirection() TextServer.Direction { //gd:Label3D.get_text_direction
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TextServerDirection](frame)
+	var r_ret = callframe.Ret[TextServer.Direction](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label3D.Bind_get_text_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -493,7 +503,7 @@ func (self class) GetLanguage() String.Readable { //gd:Label3D.get_language
 }
 
 //go:nosplit
-func (self class) SetStructuredTextBidiOverride(parser gdclass.TextServerStructuredTextParser) { //gd:Label3D.set_structured_text_bidi_override
+func (self class) SetStructuredTextBidiOverride(parser TextServer.StructuredTextParser) { //gd:Label3D.set_structured_text_bidi_override
 	var frame = callframe.New()
 	callframe.Arg(frame, parser)
 	var r_ret = callframe.Nil
@@ -502,9 +512,9 @@ func (self class) SetStructuredTextBidiOverride(parser gdclass.TextServerStructu
 }
 
 //go:nosplit
-func (self class) GetStructuredTextBidiOverride() gdclass.TextServerStructuredTextParser { //gd:Label3D.get_structured_text_bidi_override
+func (self class) GetStructuredTextBidiOverride() TextServer.StructuredTextParser { //gd:Label3D.get_structured_text_bidi_override
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TextServerStructuredTextParser](frame)
+	var r_ret = callframe.Ret[TextServer.StructuredTextParser](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label3D.Bind_get_structured_text_bidi_override, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -664,7 +674,7 @@ func (self class) GetLineSpacing() float64 { //gd:Label3D.get_line_spacing
 }
 
 //go:nosplit
-func (self class) SetAutowrapMode(autowrap_mode gdclass.TextServerAutowrapMode) { //gd:Label3D.set_autowrap_mode
+func (self class) SetAutowrapMode(autowrap_mode TextServer.AutowrapMode) { //gd:Label3D.set_autowrap_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, autowrap_mode)
 	var r_ret = callframe.Nil
@@ -673,9 +683,9 @@ func (self class) SetAutowrapMode(autowrap_mode gdclass.TextServerAutowrapMode) 
 }
 
 //go:nosplit
-func (self class) GetAutowrapMode() gdclass.TextServerAutowrapMode { //gd:Label3D.get_autowrap_mode
+func (self class) GetAutowrapMode() TextServer.AutowrapMode { //gd:Label3D.get_autowrap_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TextServerAutowrapMode](frame)
+	var r_ret = callframe.Ret[TextServer.AutowrapMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label3D.Bind_get_autowrap_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -683,7 +693,7 @@ func (self class) GetAutowrapMode() gdclass.TextServerAutowrapMode { //gd:Label3
 }
 
 //go:nosplit
-func (self class) SetJustificationFlags(justification_flags gdclass.TextServerJustificationFlag) { //gd:Label3D.set_justification_flags
+func (self class) SetJustificationFlags(justification_flags TextServer.JustificationFlag) { //gd:Label3D.set_justification_flags
 	var frame = callframe.New()
 	callframe.Arg(frame, justification_flags)
 	var r_ret = callframe.Nil
@@ -692,9 +702,9 @@ func (self class) SetJustificationFlags(justification_flags gdclass.TextServerJu
 }
 
 //go:nosplit
-func (self class) GetJustificationFlags() gdclass.TextServerJustificationFlag { //gd:Label3D.get_justification_flags
+func (self class) GetJustificationFlags() TextServer.JustificationFlag { //gd:Label3D.get_justification_flags
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.TextServerJustificationFlag](frame)
+	var r_ret = callframe.Ret[TextServer.JustificationFlag](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label3D.Bind_get_justification_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -762,7 +772,7 @@ func (self class) GetOffset() Vector2.XY { //gd:Label3D.get_offset
 If [code]true[/code], the specified flag will be enabled. See [enum Label3D.DrawFlags] for a list of flags.
 */
 //go:nosplit
-func (self class) SetDrawFlag(flag gdclass.Label3DDrawFlags, enabled bool) { //gd:Label3D.set_draw_flag
+func (self class) SetDrawFlag(flag DrawFlags, enabled bool) { //gd:Label3D.set_draw_flag
 	var frame = callframe.New()
 	callframe.Arg(frame, flag)
 	callframe.Arg(frame, enabled)
@@ -775,7 +785,7 @@ func (self class) SetDrawFlag(flag gdclass.Label3DDrawFlags, enabled bool) { //g
 Returns the value of the specified flag.
 */
 //go:nosplit
-func (self class) GetDrawFlag(flag gdclass.Label3DDrawFlags) bool { //gd:Label3D.get_draw_flag
+func (self class) GetDrawFlag(flag DrawFlags) bool { //gd:Label3D.get_draw_flag
 	var frame = callframe.New()
 	callframe.Arg(frame, flag)
 	var r_ret = callframe.Ret[bool](frame)
@@ -786,7 +796,7 @@ func (self class) GetDrawFlag(flag gdclass.Label3DDrawFlags) bool { //gd:Label3D
 }
 
 //go:nosplit
-func (self class) SetBillboardMode(mode gdclass.BaseMaterial3DBillboardMode) { //gd:Label3D.set_billboard_mode
+func (self class) SetBillboardMode(mode BaseMaterial3D.BillboardMode) { //gd:Label3D.set_billboard_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -795,9 +805,9 @@ func (self class) SetBillboardMode(mode gdclass.BaseMaterial3DBillboardMode) { /
 }
 
 //go:nosplit
-func (self class) GetBillboardMode() gdclass.BaseMaterial3DBillboardMode { //gd:Label3D.get_billboard_mode
+func (self class) GetBillboardMode() BaseMaterial3D.BillboardMode { //gd:Label3D.get_billboard_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.BaseMaterial3DBillboardMode](frame)
+	var r_ret = callframe.Ret[BaseMaterial3D.BillboardMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label3D.Bind_get_billboard_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -805,7 +815,7 @@ func (self class) GetBillboardMode() gdclass.BaseMaterial3DBillboardMode { //gd:
 }
 
 //go:nosplit
-func (self class) SetAlphaCutMode(mode gdclass.Label3DAlphaCutMode) { //gd:Label3D.set_alpha_cut_mode
+func (self class) SetAlphaCutMode(mode AlphaCutMode) { //gd:Label3D.set_alpha_cut_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -814,9 +824,9 @@ func (self class) SetAlphaCutMode(mode gdclass.Label3DAlphaCutMode) { //gd:Label
 }
 
 //go:nosplit
-func (self class) GetAlphaCutMode() gdclass.Label3DAlphaCutMode { //gd:Label3D.get_alpha_cut_mode
+func (self class) GetAlphaCutMode() AlphaCutMode { //gd:Label3D.get_alpha_cut_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.Label3DAlphaCutMode](frame)
+	var r_ret = callframe.Ret[AlphaCutMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label3D.Bind_get_alpha_cut_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -862,7 +872,7 @@ func (self class) GetAlphaHashScale() float64 { //gd:Label3D.get_alpha_hash_scal
 }
 
 //go:nosplit
-func (self class) SetAlphaAntialiasing(alpha_aa gdclass.BaseMaterial3DAlphaAntiAliasing) { //gd:Label3D.set_alpha_antialiasing
+func (self class) SetAlphaAntialiasing(alpha_aa BaseMaterial3D.AlphaAntiAliasing) { //gd:Label3D.set_alpha_antialiasing
 	var frame = callframe.New()
 	callframe.Arg(frame, alpha_aa)
 	var r_ret = callframe.Nil
@@ -871,9 +881,9 @@ func (self class) SetAlphaAntialiasing(alpha_aa gdclass.BaseMaterial3DAlphaAntiA
 }
 
 //go:nosplit
-func (self class) GetAlphaAntialiasing() gdclass.BaseMaterial3DAlphaAntiAliasing { //gd:Label3D.get_alpha_antialiasing
+func (self class) GetAlphaAntialiasing() BaseMaterial3D.AlphaAntiAliasing { //gd:Label3D.get_alpha_antialiasing
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.BaseMaterial3DAlphaAntiAliasing](frame)
+	var r_ret = callframe.Ret[BaseMaterial3D.AlphaAntiAliasing](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label3D.Bind_get_alpha_antialiasing, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -900,7 +910,7 @@ func (self class) GetAlphaAntialiasingEdge() float64 { //gd:Label3D.get_alpha_an
 }
 
 //go:nosplit
-func (self class) SetTextureFilter(mode gdclass.BaseMaterial3DTextureFilter) { //gd:Label3D.set_texture_filter
+func (self class) SetTextureFilter(mode BaseMaterial3D.TextureFilter) { //gd:Label3D.set_texture_filter
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -909,9 +919,9 @@ func (self class) SetTextureFilter(mode gdclass.BaseMaterial3DTextureFilter) { /
 }
 
 //go:nosplit
-func (self class) GetTextureFilter() gdclass.BaseMaterial3DTextureFilter { //gd:Label3D.get_texture_filter
+func (self class) GetTextureFilter() BaseMaterial3D.TextureFilter { //gd:Label3D.get_texture_filter
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.BaseMaterial3DTextureFilter](frame)
+	var r_ret = callframe.Ret[BaseMaterial3D.TextureFilter](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Label3D.Bind_get_texture_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -975,7 +985,7 @@ func init() {
 	gdclass.Register("Label3D", func(ptr gd.Object) any { return [1]gdclass.Label3D{*(*gdclass.Label3D)(unsafe.Pointer(&ptr))} })
 }
 
-type DrawFlags = gdclass.Label3DDrawFlags //gd:Label3D.DrawFlags
+type DrawFlags int //gd:Label3D.DrawFlags
 
 const (
 	/*If set, lights in the environment affect the label.*/
@@ -990,7 +1000,7 @@ const (
 	FlagMax DrawFlags = 4
 )
 
-type AlphaCutMode = gdclass.Label3DAlphaCutMode //gd:Label3D.AlphaCutMode
+type AlphaCutMode int //gd:Label3D.AlphaCutMode
 
 const (
 	/*This mode performs standard alpha blending. It can display translucent areas, but transparency sorting issues may be visible when multiple transparent materials are overlapping. [member GeometryInstance3D.cast_shadow] has no effect when this transparency mode is used; the [Label3D] will never cast shadows.*/
@@ -1004,30 +1014,4 @@ const (
 	AlphaCutOpaquePrepass AlphaCutMode = 2
 	/*This mode draws cuts off all values below a spatially-deterministic threshold, the rest will remain opaque.*/
 	AlphaCutHash AlphaCutMode = 3
-)
-
-type HorizontalAlignment int
-
-const (
-	/*Horizontal left alignment, usually for text-derived classes.*/
-	HorizontalAlignmentLeft HorizontalAlignment = 0
-	/*Horizontal center alignment, usually for text-derived classes.*/
-	HorizontalAlignmentCenter HorizontalAlignment = 1
-	/*Horizontal right alignment, usually for text-derived classes.*/
-	HorizontalAlignmentRight HorizontalAlignment = 2
-	/*Expand row to fit width, usually for text-derived classes.*/
-	HorizontalAlignmentFill HorizontalAlignment = 3
-)
-
-type VerticalAlignment int
-
-const (
-	/*Vertical top alignment, usually for text-derived classes.*/
-	VerticalAlignmentTop VerticalAlignment = 0
-	/*Vertical center alignment, usually for text-derived classes.*/
-	VerticalAlignmentCenter VerticalAlignment = 1
-	/*Vertical bottom alignment, usually for text-derived classes.*/
-	VerticalAlignmentBottom VerticalAlignment = 2
-	/*Expand rows to fit height, usually for text-derived classes.*/
-	VerticalAlignmentFill VerticalAlignment = 3
 )

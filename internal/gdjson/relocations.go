@@ -27,6 +27,8 @@ var Relocations = map[string]string{
 	"Shape3D.get_debug_mesh":                         "ArrayMesh.get_debug",
 	"Resource.get_local_scene":                       "Node.resource_local_scene",
 	"StyleBox.draw":                                  "",
+	"Tween.tween_property":                           "PropertyTweener.Make",
+	"Tween.tween_method":                             "MethodTweener.Make",
 }
 
 var RelocationsReverse = map[string]map[string]string{}

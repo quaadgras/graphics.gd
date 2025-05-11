@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/classdb/Light3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
@@ -28,6 +29,10 @@ import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -43,6 +48,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -55,6 +61,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -92,11 +99,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) DirectionalShadowMode() gdclass.DirectionalLight3DShadowMode {
-	return gdclass.DirectionalLight3DShadowMode(class(self).GetShadowMode())
+func (self Instance) DirectionalShadowMode() ShadowMode {
+	return ShadowMode(class(self).GetShadowMode())
 }
 
-func (self Instance) SetDirectionalShadowMode(value gdclass.DirectionalLight3DShadowMode) {
+func (self Instance) SetDirectionalShadowMode(value ShadowMode) {
 	class(self).SetShadowMode(value)
 }
 
@@ -108,16 +115,16 @@ func (self Instance) SetDirectionalShadowBlendSplits(value bool) {
 	class(self).SetBlendSplits(value)
 }
 
-func (self Instance) SkyMode() gdclass.DirectionalLight3DSkyMode {
-	return gdclass.DirectionalLight3DSkyMode(class(self).GetSkyMode())
+func (self Instance) SkyMode() SkyMode {
+	return SkyMode(class(self).GetSkyMode())
 }
 
-func (self Instance) SetSkyMode(value gdclass.DirectionalLight3DSkyMode) {
+func (self Instance) SetSkyMode(value SkyMode) {
 	class(self).SetSkyMode(value)
 }
 
 //go:nosplit
-func (self class) SetShadowMode(mode gdclass.DirectionalLight3DShadowMode) { //gd:DirectionalLight3D.set_shadow_mode
+func (self class) SetShadowMode(mode ShadowMode) { //gd:DirectionalLight3D.set_shadow_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -126,9 +133,9 @@ func (self class) SetShadowMode(mode gdclass.DirectionalLight3DShadowMode) { //g
 }
 
 //go:nosplit
-func (self class) GetShadowMode() gdclass.DirectionalLight3DShadowMode { //gd:DirectionalLight3D.get_shadow_mode
+func (self class) GetShadowMode() ShadowMode { //gd:DirectionalLight3D.get_shadow_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.DirectionalLight3DShadowMode](frame)
+	var r_ret = callframe.Ret[ShadowMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirectionalLight3D.Bind_get_shadow_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -155,7 +162,7 @@ func (self class) IsBlendSplitsEnabled() bool { //gd:DirectionalLight3D.is_blend
 }
 
 //go:nosplit
-func (self class) SetSkyMode(mode gdclass.DirectionalLight3DSkyMode) { //gd:DirectionalLight3D.set_sky_mode
+func (self class) SetSkyMode(mode SkyMode) { //gd:DirectionalLight3D.set_sky_mode
 	var frame = callframe.New()
 	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
@@ -164,9 +171,9 @@ func (self class) SetSkyMode(mode gdclass.DirectionalLight3DSkyMode) { //gd:Dire
 }
 
 //go:nosplit
-func (self class) GetSkyMode() gdclass.DirectionalLight3DSkyMode { //gd:DirectionalLight3D.get_sky_mode
+func (self class) GetSkyMode() SkyMode { //gd:DirectionalLight3D.get_sky_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.DirectionalLight3DSkyMode](frame)
+	var r_ret = callframe.Ret[SkyMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirectionalLight3D.Bind_get_sky_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -215,7 +222,7 @@ func init() {
 	})
 }
 
-type ShadowMode = gdclass.DirectionalLight3DShadowMode //gd:DirectionalLight3D.ShadowMode
+type ShadowMode int //gd:DirectionalLight3D.ShadowMode
 
 const (
 	/*Renders the entire scene's shadow map from an orthogonal point of view. This is the fastest directional shadow mode. May result in blurrier shadows on close objects.*/
@@ -226,7 +233,7 @@ const (
 	ShadowParallel4Splits ShadowMode = 2
 )
 
-type SkyMode = gdclass.DirectionalLight3DSkyMode //gd:DirectionalLight3D.SkyMode
+type SkyMode int //gd:DirectionalLight3D.SkyMode
 
 const (
 	/*Makes the light visible in both scene lighting and sky rendering.*/

@@ -11,6 +11,7 @@ import "graphics.gd/internal/callframe"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -25,6 +26,10 @@ import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
 
 var _ Object.ID
+
+type _ gdclass.Node
+
+var _ gd.Object
 var _ RefCounted.Instance
 var _ unsafe.Pointer
 var _ reflect.Type
@@ -40,6 +45,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Angle.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -52,6 +58,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
+T should be the type that is embedding this [Extension]
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -122,27 +129,27 @@ func (self Instance) SetNavigationLayers(value int) {
 	class(self).SetNavigationLayers(int64(value))
 }
 
-func (self Instance) PathfindingAlgorithm() gdclass.NavigationPathQueryParameters2DPathfindingAlgorithm {
-	return gdclass.NavigationPathQueryParameters2DPathfindingAlgorithm(class(self).GetPathfindingAlgorithm())
+func (self Instance) PathfindingAlgorithm() PathfindingAlgorithm {
+	return PathfindingAlgorithm(class(self).GetPathfindingAlgorithm())
 }
 
-func (self Instance) SetPathfindingAlgorithm(value gdclass.NavigationPathQueryParameters2DPathfindingAlgorithm) {
+func (self Instance) SetPathfindingAlgorithm(value PathfindingAlgorithm) {
 	class(self).SetPathfindingAlgorithm(value)
 }
 
-func (self Instance) PathPostprocessing() gdclass.NavigationPathQueryParameters2DPathPostProcessing {
-	return gdclass.NavigationPathQueryParameters2DPathPostProcessing(class(self).GetPathPostprocessing())
+func (self Instance) PathPostprocessing() PathPostProcessing {
+	return PathPostProcessing(class(self).GetPathPostprocessing())
 }
 
-func (self Instance) SetPathPostprocessing(value gdclass.NavigationPathQueryParameters2DPathPostProcessing) {
+func (self Instance) SetPathPostprocessing(value PathPostProcessing) {
 	class(self).SetPathPostprocessing(value)
 }
 
-func (self Instance) MetadataFlags() gdclass.NavigationPathQueryParameters2DPathMetadataFlags {
-	return gdclass.NavigationPathQueryParameters2DPathMetadataFlags(class(self).GetMetadataFlags())
+func (self Instance) MetadataFlags() PathMetadataFlags {
+	return PathMetadataFlags(class(self).GetMetadataFlags())
 }
 
-func (self Instance) SetMetadataFlags(value gdclass.NavigationPathQueryParameters2DPathMetadataFlags) {
+func (self Instance) SetMetadataFlags(value PathMetadataFlags) {
 	class(self).SetMetadataFlags(value)
 }
 
@@ -163,7 +170,7 @@ func (self Instance) SetSimplifyEpsilon(value Float.X) {
 }
 
 //go:nosplit
-func (self class) SetPathfindingAlgorithm(pathfinding_algorithm gdclass.NavigationPathQueryParameters2DPathfindingAlgorithm) { //gd:NavigationPathQueryParameters2D.set_pathfinding_algorithm
+func (self class) SetPathfindingAlgorithm(pathfinding_algorithm PathfindingAlgorithm) { //gd:NavigationPathQueryParameters2D.set_pathfinding_algorithm
 	var frame = callframe.New()
 	callframe.Arg(frame, pathfinding_algorithm)
 	var r_ret = callframe.Nil
@@ -172,9 +179,9 @@ func (self class) SetPathfindingAlgorithm(pathfinding_algorithm gdclass.Navigati
 }
 
 //go:nosplit
-func (self class) GetPathfindingAlgorithm() gdclass.NavigationPathQueryParameters2DPathfindingAlgorithm { //gd:NavigationPathQueryParameters2D.get_pathfinding_algorithm
+func (self class) GetPathfindingAlgorithm() PathfindingAlgorithm { //gd:NavigationPathQueryParameters2D.get_pathfinding_algorithm
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.NavigationPathQueryParameters2DPathfindingAlgorithm](frame)
+	var r_ret = callframe.Ret[PathfindingAlgorithm](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_pathfinding_algorithm, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -182,7 +189,7 @@ func (self class) GetPathfindingAlgorithm() gdclass.NavigationPathQueryParameter
 }
 
 //go:nosplit
-func (self class) SetPathPostprocessing(path_postprocessing gdclass.NavigationPathQueryParameters2DPathPostProcessing) { //gd:NavigationPathQueryParameters2D.set_path_postprocessing
+func (self class) SetPathPostprocessing(path_postprocessing PathPostProcessing) { //gd:NavigationPathQueryParameters2D.set_path_postprocessing
 	var frame = callframe.New()
 	callframe.Arg(frame, path_postprocessing)
 	var r_ret = callframe.Nil
@@ -191,9 +198,9 @@ func (self class) SetPathPostprocessing(path_postprocessing gdclass.NavigationPa
 }
 
 //go:nosplit
-func (self class) GetPathPostprocessing() gdclass.NavigationPathQueryParameters2DPathPostProcessing { //gd:NavigationPathQueryParameters2D.get_path_postprocessing
+func (self class) GetPathPostprocessing() PathPostProcessing { //gd:NavigationPathQueryParameters2D.get_path_postprocessing
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.NavigationPathQueryParameters2DPathPostProcessing](frame)
+	var r_ret = callframe.Ret[PathPostProcessing](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_path_postprocessing, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -277,7 +284,7 @@ func (self class) GetNavigationLayers() int64 { //gd:NavigationPathQueryParamete
 }
 
 //go:nosplit
-func (self class) SetMetadataFlags(flags gdclass.NavigationPathQueryParameters2DPathMetadataFlags) { //gd:NavigationPathQueryParameters2D.set_metadata_flags
+func (self class) SetMetadataFlags(flags PathMetadataFlags) { //gd:NavigationPathQueryParameters2D.set_metadata_flags
 	var frame = callframe.New()
 	callframe.Arg(frame, flags)
 	var r_ret = callframe.Nil
@@ -286,9 +293,9 @@ func (self class) SetMetadataFlags(flags gdclass.NavigationPathQueryParameters2D
 }
 
 //go:nosplit
-func (self class) GetMetadataFlags() gdclass.NavigationPathQueryParameters2DPathMetadataFlags { //gd:NavigationPathQueryParameters2D.get_metadata_flags
+func (self class) GetMetadataFlags() PathMetadataFlags { //gd:NavigationPathQueryParameters2D.get_metadata_flags
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[gdclass.NavigationPathQueryParameters2DPathMetadataFlags](frame)
+	var r_ret = callframe.Ret[PathMetadataFlags](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_metadata_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
@@ -368,14 +375,14 @@ func init() {
 	})
 }
 
-type PathfindingAlgorithm = gdclass.NavigationPathQueryParameters2DPathfindingAlgorithm //gd:NavigationPathQueryParameters2D.PathfindingAlgorithm
+type PathfindingAlgorithm int //gd:NavigationPathQueryParameters2D.PathfindingAlgorithm
 
 const (
 	/*The path query uses the default A* pathfinding algorithm.*/
 	PathfindingAlgorithmAstar PathfindingAlgorithm = 0
 )
 
-type PathPostProcessing = gdclass.NavigationPathQueryParameters2DPathPostProcessing //gd:NavigationPathQueryParameters2D.PathPostProcessing
+type PathPostProcessing int //gd:NavigationPathQueryParameters2D.PathPostProcessing
 
 const (
 	/*Applies a funnel algorithm to the raw path corridor found by the pathfinding algorithm. This will result in the shortest path possible inside the path corridor. This postprocessing very much depends on the navigation mesh polygon layout and the created corridor. Especially tile- or gridbased layouts can face artificial corners with diagonal movement due to a jagged path corridor imposed by the cell shapes.*/
@@ -386,7 +393,7 @@ const (
 	PathPostprocessingNone PathPostProcessing = 2
 )
 
-type PathMetadataFlags = gdclass.NavigationPathQueryParameters2DPathMetadataFlags //gd:NavigationPathQueryParameters2D.PathMetadataFlags
+type PathMetadataFlags int //gd:NavigationPathQueryParameters2D.PathMetadataFlags
 
 const (
 	/*Don't include any additional metadata about the returned path.*/
