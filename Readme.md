@@ -25,6 +25,7 @@ import (
 	"graphics.gd/startup"
 
 	"graphics.gd/classdb/Control"
+	"graphics.gd/classdb/GUI"
 	"graphics.gd/classdb/Label"
 	"graphics.gd/classdb/SceneTree"
 )
@@ -33,12 +34,13 @@ func main() {
 	startup.LoadingScene() // setup the SceneTree and wait until we have access to engine functionality
 	hello := Label.New()
 	hello.AsControl().SetAnchorsPreset(Control.PresetFullRect) // expand the label to take up the whole screen.
-	hello.SetHorizontalAlignment(Label.HorizontalAlignmentCenter)
-	hello.SetVerticalAlignment(Label.VerticalAlignmentCenter)
+	hello.SetHorizontalAlignment(GUI.HorizontalAlignmentCenter)
+	hello.SetVerticalAlignment(GUI.VerticalAlignmentCenter)
 	hello.SetText("Hello, World!")
 	SceneTree.Add(hello)
 	startup.Scene() // starts up the scene and blocks until the engine shuts down.
 }
+
 ```
 
 You can help fund the project, motivate development and prioritise issues [here](https://buy.stripe.com/4gw14maETbnX3vOcMM)
