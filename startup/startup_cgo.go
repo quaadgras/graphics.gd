@@ -141,7 +141,6 @@ typedef uintptr_t pointer;
 typedef const char* string;
 typedef char32_t rune;
 typedef uint8_t * bytes;
-typedef GDExtensionBool bool;
 
 // TODO the amount of code here can probably be reduced by stenciling out the various
 // function signatures, such that we can call every function that takes 1 pointer arg,
@@ -481,14 +480,14 @@ static inline void callable_custom_create(pointer fn, pointer r_ret, GDExtension
 	((GDExtensionInterfaceCallableCustomCreate)fn)((GDExtensionUninitializedTypePtr)r_ret, p_callable_custom_info);
 }
 
-extern bool set_func(pointer p_instance, void* p_name, void* p_value);
-extern bool get_func(pointer p_instance, void* p_name, void* r_ret);
+extern GDExtensionBool set_func(pointer p_instance, void* p_name, void* p_value);
+extern GDExtensionBool get_func(pointer p_instance, void* p_name, void* r_ret);
 extern GDExtensionPropertyInfo *get_property_list_func(pointer p_instance, uint32_t *r_count);
 extern void free_property_list_func(pointer p_instance, GDExtensionPropertyInfo *p_list);
-extern bool property_can_revert_func(pointer p_instance, void* p_name);
-extern bool property_get_revert_func(pointer p_instance, void* p_name, void* r_ret);
+extern GDExtensionBool property_can_revert_func(pointer p_instance, void* p_name);
+extern GDExtensionBool property_get_revert_func(pointer p_instance, void* p_name, void* r_ret);
 //extern *validate_property_func;
-extern void notification_func(pointer p_instance, int32_t p_notification, bool reversed);
+extern void notification_func(pointer p_instance, int32_t p_notification, GDExtensionBool reversed);
 extern void to_string_func(pointer p_instance, void* valid, void* r_ret);
 extern void reference_func(pointer p_instance);
 extern void unreference_func(pointer p_instance);
