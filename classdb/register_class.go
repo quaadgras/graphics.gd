@@ -599,6 +599,9 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 		}
 		return
 	}
+	if field.Anonymous {
+		return
+	}
 	if rvalue.Elem().Kind() == reflect.Pointer {
 		rvalue.Elem().Set(reflect.New(rvalue.Elem().Type().Elem()))
 		value = rvalue.Elem().Interface()
