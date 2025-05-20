@@ -57,7 +57,7 @@ func TestArrayConversions(t *testing.T) {
 
 func BenchmarkAllocsForArrayReturnedByEngine(t *testing.B) {
 	t.ReportAllocs()
-	for i := 0; i < t.N; i++ {
+	for t.Loop() {
 		Engine.Advanced().GetCopyrightInfo()
 	}
 }

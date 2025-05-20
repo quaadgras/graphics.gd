@@ -5,7 +5,6 @@ import (
 	"testing"
 	"time"
 
-	"graphics.gd/classdb"
 	"graphics.gd/classdb/GDScript"
 	"graphics.gd/classdb/Node"
 	"graphics.gd/classdb/Resource"
@@ -48,11 +47,11 @@ var convert_types_test string
 var doneConversionsTest = make(chan error, 100)
 
 type Converter struct {
-	classdb.Extension[Converter, Node.Instance]
+	Node.Extension[Converter]
 }
 
 type CustomConverterObject struct {
-	classdb.Extension[CustomConverterObject, Object.Instance]
+	Object.Extension[CustomConverterObject]
 
 	Value int
 }

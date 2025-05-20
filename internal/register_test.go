@@ -12,13 +12,11 @@ import (
 	"graphics.gd/classdb/Node2D"
 	gd "graphics.gd/internal"
 	internal "graphics.gd/internal"
-	"graphics.gd/variant/String"
-	"graphics.gd/variant/StringName"
 )
 
 func TestRegister(t *testing.T) {
 	type TestingSimpleClass struct {
-		classdb.Extension[TestingSimpleClass, Node2D.Advanced]
+		Node2D.Extension[TestingSimpleClass]
 	}
 	classdb.Register[TestingSimpleClass]()
 
@@ -34,29 +32,26 @@ func TestRegister(t *testing.T) {
 	if name := class_name.String(); name != "TestingSimpleClass" {
 		t.Fatal(name)
 	}
-	class.Super().AsNode().SetName(String.New("SimpleClass"))
+	class.AsNode().SetName("SimpleClass")
 }
 
-type TestingMyClassWithConstants struct {
-	classdb.Extension[TestingMyClassWithConstants, Node2D.Advanced]
-}
+func TestEmbedding(t *testing.T) {
+	type TestingEmbeddedClass struct {
+		Node2D.Extension[TestingEmbeddedClass]
+	}
+	classdb.Register[TestingEmbeddedClass]()
 
-func (*TestingMyClassWithConstants) OnRegister() {
-	/*godot.Register(gd.Enum[MyClassWithConstants, int]{
-	Name: "MyEnum",
-	Values: map[string]int{
-		"Value1": 1,
-		"Value2": 2,
-	},
-	})*/
-}
+	var node = Node.New()
 
-func TestRegisterConstants(t *testing.T) {
-	classdb.Register[TestingMyClassWithConstants]()
+	type Embeds struct {
+		TestingEmbeddedClass
+	}
+	embeds := new(Embeds)
+	node.AddChild(embeds.AsNode())
 }
 
 type TestingSingleton struct {
-	classdb.Extension[TestingSingleton, Node.Advanced]
+	Node.Extension[TestingSingleton]
 }
 
 func (TestingSingleton) Ready() {
@@ -65,5 +60,5 @@ func (TestingSingleton) Ready() {
 
 func TestSingleton(t *testing.T) {
 	classdb.Register[TestingSingleton]()
-	Engine.Advanced().RegisterSingleton(StringName.New("HelloWorld"), new(TestingSingleton).AsObject())
+	Engine.RegisterSingleton("HelloWorld", new(TestingSingleton).AsObject())
 }

@@ -11,7 +11,7 @@ import (
 )
 
 type CustomSignal struct {
-	classdb.Extension[CustomSignal, Node2D.Instance]
+	Node2D.Extension[CustomSignal]
 
 	HealthChanged chan<- func() (old, new int)
 
