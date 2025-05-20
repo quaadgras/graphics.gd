@@ -81,3 +81,7 @@ func (class *Extension[T, S]) AsObject() [1]gd.Object {
 	pointers.Get(obj[0])
 	return obj
 }
+
+func (class *Extension[T, S]) UnsafePointer() unsafe.Pointer {
+    return unsafe.Pointer(class)
+}
