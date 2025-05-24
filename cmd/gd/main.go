@@ -29,6 +29,7 @@ import (
 	_ "embed"
 
 	"graphics.gd/cmd/gd/internal/golang"
+	"graphics.gd/docgen"
 	"runtime.link/api/xray"
 )
 
@@ -320,6 +321,14 @@ func wrap() error {
 	case "fix":
 		return fix()
 	case "run", "build":
+		wd, err := os.Getwd()
+		if err != nil {
+			return xray.New(err)
+		}
+		err = docgen.Process(wd)
+		if err != nil {
+			return xray.New(err)
+		}
 		copy(args, os.Args[1:])
 		args[0] = "build"
 		args = append(args, "-o", libraryPath)

@@ -25,6 +25,7 @@ import (
 	"graphics.gd/variant/Signal"
 	"graphics.gd/variant/String"
 
+	"graphics.gd/docgen"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdclass"
 	"graphics.gd/internal/pointers"
@@ -251,6 +252,7 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 	class.Name = classNameString
 	class.Inherits = inherits
 	class.Version = "4.0"
+	pkgDocs, docsOk := docgen.LoadFor(rtype)
 	extractDocTag := func(tag reflect.StructTag) string {
 		_, docs, _ := strings.Cut(string(tag), "\n")
 		docs = strings.Replace(docs, "\t", "", -1)
@@ -268,6 +270,13 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 		}
 		class.BriefDescription = brief
 		class.Description = whole
+	}
+	if docsOk {
+		classDocs := pkgDocs.GetTypeDoc(rtype).Doc
+		if classDocs != "" {
+			class.Description = classDocs
+			class.BriefDescription = strings.Split(classDocs, "\n")[0]
+		}
 	}
 	ungroupedFields := make([]reflect.StructField, 0)
 	groupedFields := map[string][]reflect.StructField{}
@@ -312,6 +321,12 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 			if docs, ok := docs[member.Name]; ok {
 				member.Description = extractDoc(docs)
 			}
+			if docsOk {
+				doc := pkgDocs.GetTypeDoc(rtype).GetFieldDoc(field).Doc
+				if doc != "" {
+					member.Description = doc
+				}
+			}
 			member.Type = ptype.Type.String()
 			class.Members = append(class.Members, member)
 			gd.Global.ClassDB.RegisterClassProperty(gd.Global.ExtensionToken, className, ptype, gd.NewStringName(""), gd.NewStringName(""))
@@ -343,6 +358,12 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 		var method xmlMethod
 		method.Name = name
 		method.Description = extractDoc(docs[name])
+		if docsOk {
+			doc := pkgDocs.GetTypeDoc(rtype).GetMethodDoc(rtype.Method(i)).Doc
+			if doc != "" {
+				method.Description = doc
+			}
+		}
 		class.Methods = append(class.Methods, method)
 	}
 	gd.NewCallable(func() {
