@@ -269,12 +269,22 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 		class.BriefDescription = brief
 		class.Description = whole
 	}
+	ungroupedFields := make([]reflect.StructField, 0)
+	groupedFields := map[string][]reflect.StructField{}
 	for _, field := range reflect.VisibleFields(rtype) {
-		if !field.IsExported() || field.Anonymous || field.Name == "Object" {
+		groupName := field.Tag.Get("gdGroup")
+		if groupName == "" {
+			ungroupedFields = append(ungroupedFields, field)
 			continue
 		}
+		groupedFields[groupName] = append(groupedFields[groupName], field)
+	}
+	registerField := func(field reflect.StructField) {
+		if !field.IsExported() || field.Anonymous || field.Name == "Object" {
+			return
+		}
 		if _, ok := field.Type.MethodByName("AsNode"); ok || field.Type.Kind() == reflect.Chan {
-			continue
+			return
 		}
 		name := String.ToSnakeCase(field.Name)
 		if field.Tag.Get("gd") != "" {
@@ -289,7 +299,7 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 				signal.Description = extractDoc(docs)
 			}
 			class.Signals = append(class.Signals, signal)
-			continue
+			return
 		}
 		ptype, ok := propertyOf(className, field)
 		if ok {
@@ -305,6 +315,20 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 			member.Type = ptype.Type.String()
 			class.Members = append(class.Members, member)
 			gd.Global.ClassDB.RegisterClassProperty(gd.Global.ExtensionToken, className, ptype, gd.NewStringName(""), gd.NewStringName(""))
+		}
+	}
+	for _, field := range ungroupedFields {
+		registerField(field)
+	}
+	for groupName, fields := range groupedFields {
+		gd.Global.ClassDB.RegisterClassPropertyGroup(
+			gd.Global.ExtensionToken,
+			className,
+			gd.NewString(groupName),
+			gd.NewString(""),
+		)
+		for _, field := range fields {
+			registerField(field)
 		}
 	}
 	rtype = reflect.PointerTo(rtype)
