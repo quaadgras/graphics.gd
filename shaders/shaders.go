@@ -53,7 +53,7 @@ Uniforms are added as fields to the shader struct. They can be written with [Set
 RenderingServer/GeometryInstance3D packages.
 
 	type MyShader struct {
-		CanvasItem.Shader
+		CanvasItem.Shader[MyShader]
 
 		MyUniform vec2.XY `gd:"my_uniform"`
 
