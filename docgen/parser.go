@@ -173,6 +173,7 @@ func parseDocumentation(path string) (AllPackages, error) {
 			Name:  dp.Name,
 			Doc:   dp.Doc,
 			Types: extractTypes(dp),
+			Funcs: make(map[string]*FuncDoc),
 		}
 		// construct the docs for top-level functions
 		for _, f := range dp.Funcs {
