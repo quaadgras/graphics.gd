@@ -248,7 +248,7 @@ func convertName(fnName string) string {
 }
 
 func registerClassInformation(className gd.StringName, classNameString string, inherits string, rtype reflect.Type, docs map[string]string, method_renames map[uintptr]string) {
-	var class xmlDocumentation
+	var class docgen.XML
 	class.Name = classNameString
 	class.Inherits = inherits
 	class.Version = "4.0"
@@ -300,7 +300,7 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 			name = field.Tag.Get("gd")
 		}
 		if reflect.PointerTo(field.Type).Implements(reflect.TypeFor[Signal.Pointer]()) {
-			var signal xmlSignal
+			var signal docgen.Signal
 			name, _, _ = strings.Cut(name, "(")
 			signal.Name = name
 			signal.Description = extractDocTag(field.Tag)
@@ -312,7 +312,7 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 		}
 		ptype, ok := propertyOf(className, field)
 		if ok {
-			var member xmlMember
+			var member docgen.Member
 			member.Name = name
 			member.Description = extractDocTag(field.Tag)
 			if member.Description != "" {
@@ -347,7 +347,7 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 		}
 	}
 	rtype = reflect.PointerTo(rtype)
-	for i := 0; i < rtype.NumMethod(); i++ {
+	for i := range rtype.NumMethod() {
 		name := String.ToSnakeCase(rtype.Method(i).Name)
 		if rename, ok := method_renames[rtype.Method(i).Func.Pointer()]; ok {
 			name = rename
@@ -355,7 +355,7 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 		if _, ok := docs[name]; !ok {
 			continue
 		}
-		var method xmlMethod
+		var method docgen.Method
 		method.Name = name
 		method.Description = extractDoc(docs[name])
 		if docsOk {
