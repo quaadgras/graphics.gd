@@ -3,7 +3,11 @@ package classdb
 import (
 	"encoding/xml"
 	"fmt"
+	"io"
+	"maps"
+	"os"
 	"path"
+	"path/filepath"
 	"reflect"
 	"runtime"
 	"strings"
@@ -149,9 +153,7 @@ func Register[T Class](exports ...any) {
 		for _, export := range exports {
 			switch export := export.(type) {
 			case map[string]string:
-				for name, value := range export {
-					documentation[name] = value
-				}
+				maps.Copy(documentation, export)
 			case map[string]int:
 				for name, value := range export {
 					gd.Global.ClassDB.RegisterClassIntegerConstant(gd.Global.ExtensionToken,
@@ -240,19 +242,45 @@ func convertName(fnName string) string {
 	}
 	fnName = strings.ToLower(fnName)
 	joins := []string{}
-	split := strings.Split(fnName, "_")
-	for _, word := range split {
+	for word := range strings.SplitSeq(fnName, "_") {
 		joins = append(joins, cases.Title(language.English).String(word))
 	}
 	return strings.Join(joins, "")
 }
 
+var preloaded_documentation = make(map[string]docgen.Class)
+
+func init() {
+	gd.StartupFunctions = append(gd.StartupFunctions, func() {
+		if EngineClass.IsEditorHint() {
+			path := gd.Global.GetLibraryPath(gd.Global.ExtensionToken)
+			data, err := os.Open(filepath.Join(filepath.Dir(path.String()), "library_documentation.xml"))
+			if err != nil {
+				EngineClass.Raise(err)
+			}
+			var dec = xml.NewDecoder(data)
+			var docs docgen.XML
+			for {
+				if err := dec.Decode(&docs); err != nil {
+					if err == io.EOF {
+						break
+					}
+					EngineClass.Raise(fmt.Errorf("failed to unmarshal library documentation: %w", err))
+					break
+				}
+			}
+			for _, class := range docs {
+				preloaded_documentation[class.Name] = class
+			}
+		}
+	})
+}
+
 func registerClassInformation(className gd.StringName, classNameString string, inherits string, rtype reflect.Type, docs map[string]string, method_renames map[uintptr]string) {
-	var class docgen.XML
+	var class = preloaded_documentation[classNameString]
 	class.Name = classNameString
 	class.Inherits = inherits
 	class.Version = "4.0"
-	pkgDocs, docsOk := docgen.LoadFor(rtype)
 	extractDocTag := func(tag reflect.StructTag) string {
 		_, docs, _ := strings.Cut(string(tag), "\n")
 		docs = strings.Replace(docs, "\t", "", -1)
@@ -268,14 +296,9 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 		if brief != "" {
 			brief = classNameString + " " + brief
 		}
-		class.BriefDescription = brief
-		class.Description = whole
-	}
-	if docsOk {
-		classDocs := pkgDocs.GetTypeDoc(rtype).Doc
-		if classDocs != "" {
-			class.Description = classDocs
-			class.BriefDescription = strings.Split(classDocs, "\n")[0]
+		if docs != "" {
+			class.BriefDescription = brief
+			class.Description = whole
 		}
 	}
 	ungroupedFields := make([]reflect.StructField, 0)
@@ -312,23 +335,29 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 		}
 		ptype, ok := propertyOf(className, field)
 		if ok {
-			var member docgen.Member
+			var exists bool
+			var member = new(docgen.Member)
+			for i := range class.Members {
+				if class.Members[i].Name == name {
+					member = &class.Members[i]
+					exists = true
+					break
+				}
+			}
 			member.Name = name
-			member.Description = extractDocTag(field.Tag)
+			if doctag := extractDocTag(field.Tag); doctag != "" {
+				member.Description = doctag
+			}
 			if member.Description != "" {
 				member.Description = member.Name + " " + member.Description
 			}
 			if docs, ok := docs[member.Name]; ok {
 				member.Description = extractDoc(docs)
 			}
-			if docsOk {
-				doc := pkgDocs.GetTypeDoc(rtype).GetFieldDoc(field).Doc
-				if doc != "" {
-					member.Description = doc
-				}
-			}
 			member.Type = ptype.Type.String()
-			class.Members = append(class.Members, member)
+			if !exists {
+				class.Members = append(class.Members, *member)
+			}
 			gd.Global.ClassDB.RegisterClassProperty(gd.Global.ExtensionToken, className, ptype, gd.NewStringName(""), gd.NewStringName(""))
 		}
 	}
@@ -355,16 +384,22 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 		if _, ok := docs[name]; !ok {
 			continue
 		}
-		var method docgen.Method
-		method.Name = name
-		method.Description = extractDoc(docs[name])
-		if docsOk {
-			doc := pkgDocs.GetTypeDoc(rtype).GetMethodDoc(rtype.Method(i)).Doc
-			if doc != "" {
-				method.Description = doc
+		var exists bool
+		var method = new(docgen.Method)
+		for i := range class.Methods {
+			if class.Methods[i].Name == name {
+				method = &class.Methods[i]
+				exists = true
+				break
 			}
 		}
-		class.Methods = append(class.Methods, method)
+		method.Name = name
+		if docs := extractDoc(docs[name]); docs != "" {
+			method.Description = docs
+		}
+		if !exists {
+			class.Methods = append(class.Methods, *method)
+		}
 	}
 	gd.NewCallable(func() {
 		if EngineClass.IsEditorHint() {

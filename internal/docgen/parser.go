@@ -1,189 +1,146 @@
 package docgen
 
 import (
-	"bytes"
 	"fmt"
 	"go/ast"
 	"go/doc"
-	"go/parser"
-	"go/printer"
-	"go/token"
-	"golang.org/x/tools/go/packages"
-	"path/filepath"
+	"go/types"
 	"reflect"
 	"strings"
+
+	"golang.org/x/tools/go/packages"
+	"graphics.gd/variant/String"
 )
 
-var fset = token.NewFileSet()
-
-type AllPackages map[string]*PackageDoc
-
-type PackageDoc struct {
-	Name  string
-	Doc   string
-	Funcs map[string]*FuncDoc
-	Types map[string]*TypeDoc
-}
-
-type FuncDoc struct {
-	Name string
-	Doc  string
-}
-
-func (pd *PackageDoc) GetTypeDoc(typ reflect.Type) *TypeDoc {
-	typeDoc, ok := pd.Types[typ.Name()]
-	if !ok {
-		return &TypeDoc{}
+func parseDocumentation(path string) (XML, error) {
+	cfg := &packages.Config{
+		Mode: packages.NeedName | packages.NeedFiles | packages.NeedSyntax | packages.NeedTypes | packages.NeedImports,
+		Dir:  path,
 	}
-	return typeDoc
-}
-
-func (pd *PackageDoc) GetFuncDoc(fn reflect.Value) *FuncDoc {
-	fnName := fn.Type().Name()
-	fnDoc, ok := pd.Funcs[fnName]
-	if !ok {
-		return &FuncDoc{}
+	pkgs, err := packages.Load(cfg, "graphics.gd/internal/gdclass", ".")
+	if err != nil {
+		return XML{}, fmt.Errorf("load error: %w", err)
 	}
-	return fnDoc
-}
-
-type TypeDoc struct {
-	Name    string
-	Doc     string
-	Fields  map[string]*FieldDoc
-	Methods map[string]*FuncDoc
-}
-
-type FieldDoc struct {
-	Names []string
-	Type  string
-	Doc   string
-}
-
-func (td *TypeDoc) GetFieldDoc(fld reflect.StructField) *FieldDoc {
-	if fld.Anonymous {
-		return &FieldDoc{}
-	}
-	if fldDoc, ok := td.Fields[fld.Name]; ok {
-		return fldDoc
-	}
-	return &FieldDoc{}
-}
-
-func (td *TypeDoc) GetMethodDoc(fn reflect.Method) *FuncDoc {
-	if fnDoc, ok := td.Methods[fn.Name]; ok {
-		return fnDoc
-	}
-	return &FuncDoc{}
-}
-
-// extractTypes extracts the types (structs) from the provided package documentation.
-func extractTypes(docPkg *doc.Package) map[string]*TypeDoc {
-	out := make(map[string]*TypeDoc)
-	for _, t := range docPkg.Types {
-		td := &TypeDoc{
-			Name:    t.Name,
-			Doc:     strings.TrimSpace(t.Doc),
-			Fields:  make(map[string]*FieldDoc),
-			Methods: make(map[string]*FuncDoc),
+	var gdclassInterface *types.Interface
+	for _, pkg := range pkgs {
+		if pkg.Name == "gdclass" {
+			gdclassInterface = pkg.Types.Scope().Lookup("Interface").Type().(*types.Named).Underlying().(*types.Interface)
+			break
 		}
+	}
+	var seen = make(map[string]bool)
+	seen["graphics.gd/internal/gdclass"] = true
+	var docs XML
+	for _, pkg := range pkgs {
+		docs.generateFromPackage(pkg, seen, gdclassInterface)
+	}
+	return docs, nil
+}
 
-		// get the fields
-		for _, spec := range t.Decl.Specs {
+func documentMemberSignals(members *[]Member, signals *[]Signal, ttype *types.Named, dtype *doc.Type) {
+	asStruct, ok := ttype.Underlying().(*types.Struct)
+	if !ok {
+		return
+	}
+	var comments = make(map[string]string)
+	if dtype != nil {
+		for _, spec := range dtype.Decl.Specs {
 			ts, _ := spec.(*ast.TypeSpec)
 			st, ok := ts.Type.(*ast.StructType)
 			if !ok {
 				continue
 			}
-			for _, f := range st.Fields.List {
-				// collect the field names (anonymous fields get no Names)
-				names := make([]string, 0, len(f.Names))
-				for _, n := range f.Names {
-					names = append(names, n.Name)
-				}
-				// pretty-print the type expression
-				var buf bytes.Buffer
-				err := printer.Fprint(&buf, fset, f.Type)
-				if err != nil {
-					continue
-				}
-
-				// get any comment or doc on the field
-				fieldDoc := ""
-				if f.Doc != nil {
-					fieldDoc = strings.TrimSpace(f.Doc.Text())
-				} else if f.Comment != nil {
-					fieldDoc = strings.TrimSpace(f.Comment.Text())
-				}
-				for _, name := range names {
-					td.Fields[name] = &FieldDoc{
-						Names: names,
-						Type:  buf.String(),
-						Doc:   fieldDoc,
+			for _, field := range st.Fields.List {
+				for _, name := range field.Names {
+					if field.Doc != nil {
+						comments[name.Name] = strings.TrimSpace(field.Doc.Text())
+					} else if field.Comment != nil {
+						comments[name.Name] = strings.TrimSpace(field.Comment.Text())
 					}
 				}
 			}
 		}
-
-		// get the methods
-		for _, m := range t.Methods {
-			td.Methods[m.Name] = &FuncDoc{
-				Name: m.Name,
-				Doc:  strings.TrimSpace(m.Doc),
+	}
+	for i := range asStruct.NumFields() {
+		field := asStruct.Field(i)
+		if field.Anonymous() {
+			asNamed, ok := field.Type().(*types.Named)
+			if ok {
+				documentMemberSignals(members, signals, asNamed, nil) // TODO/FIXME get the doc from the package that defines the named type.
 			}
-		}
-
-		out[td.Name] = td
-	}
-	return out
-}
-
-func parseDocumentation(path string) (AllPackages, error) {
-	cfg := &packages.Config{
-		Mode: packages.NeedName | packages.NeedFiles | packages.NeedSyntax,
-		Dir:  path,
-	}
-	// load all the packages in the provided path
-	pkgs, err := packages.Load(cfg, "./...")
-	if err != nil {
-		return nil, fmt.Errorf("load error: %w", err)
-	}
-
-	all := make(AllPackages)
-	for _, p := range pkgs {
-		if len(p.GoFiles) == 0 {
 			continue
 		}
-		// get the directory of the package
-		pkgDir := filepath.Dir(p.GoFiles[0])
-
-		astPkgs, err := parser.ParseDir(fset, pkgDir, nil, parser.ParseComments)
-		if err != nil {
-			return nil, fmt.Errorf("parse error for %q: %w", p.PkgPath, err)
+		if !field.Exported() {
+			continue
 		}
-
-		astPkg, ok := astPkgs[p.Name]
-		if !ok {
-			return nil, fmt.Errorf("AST package %q not found in %s", p.Name, pkgDir)
+		name := String.ToSnakeCase(field.Name())
+		if rename, ok := reflect.StructTag(asStruct.Tag(i)).Lookup("gd"); ok {
+			if rename == "-" {
+				continue // skip this field
+			}
+			name = rename
 		}
-		dp := doc.New(astPkg, p.PkgPath, 0)
+		*members = append(*members, Member{
+			Name:        name,
+			Description: comments[field.Name()],
+		})
+	}
+}
 
-		// construct the package documentation
-		pd := &PackageDoc{
-			Name:  dp.Name,
-			Doc:   dp.Doc,
-			Types: extractTypes(dp),
-			Funcs: make(map[string]*FuncDoc),
-		}
-		// construct the docs for top-level functions
-		for _, f := range dp.Funcs {
-			pd.Funcs[f.Name] = &FuncDoc{
-				Name: f.Name,
-				Doc:  f.Doc,
+func (docs *XML) generateFromPackage(pkg *packages.Package, seen map[string]bool, gdclassInterface *types.Interface) error {
+	if strings.HasPrefix(pkg.PkgPath, "graphics.gd") || !strings.Contains(pkg.PkgPath, ".") {
+		return nil
+	}
+	if seen[pkg.PkgPath] {
+		return nil
+	}
+	seen[pkg.PkgPath] = true
+	dp, err := doc.NewFromFiles(pkg.Fset, pkg.Syntax, pkg.PkgPath)
+	if err != nil {
+		return fmt.Errorf("failed to create doc from files for package %q: %w", pkg.PkgPath, err)
+	}
+	for _, documented := range dp.Types {
+		obj := pkg.Types.Scope().Lookup(documented.Name)
+		if typeName, ok := obj.(*types.TypeName); ok {
+			named, ok := typeName.Type().(*types.Named)
+			if !ok {
+				continue
+			}
+			underlying := named.Underlying()
+			structType, isStruct := underlying.(*types.Struct)
+			if !isStruct || structType.NumFields() == 0 || !structType.Field(0).Anonymous() {
+				continue
+			}
+			if types.Implements(typeName.Type(), gdclassInterface) {
+				var members []Member
+				var methods []Method
+				var signals []Signal
+				documentMemberSignals(&members, &signals, named, documented)
+				for _, method := range documented.Methods {
+					name := String.ToSnakeCase(method.Name)
+					doc := strings.TrimSpace(method.Doc)
+					if strings.HasPrefix(doc, method.Name) {
+						doc = name + strings.TrimPrefix(doc, method.Name)
+					}
+					methods = append(methods, Method{
+						Name:        name,
+						Description: doc,
+					})
+				}
+				*docs = append(*docs, Class{
+					Name:        typeName.Name(),
+					Version:     "4.0",
+					Description: strings.TrimSpace(documented.Doc),
+					Members:     members,
+					Methods:     methods,
+				})
 			}
 		}
-		all[p.PkgPath] = pd
 	}
-
-	return all, nil
+	for _, imp := range pkg.Imports {
+		if err := docs.generateFromPackage(imp, seen, gdclassInterface); err != nil {
+			return err
+		}
+	}
+	return nil
 }

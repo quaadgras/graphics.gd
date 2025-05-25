@@ -2,7 +2,9 @@ package docgen
 
 import "encoding/xml"
 
-type XML struct {
+type XML []Class
+
+type Class struct {
 	XMLName xml.Name `xml:"class"`
 
 	Name     string `xml:"name,attr"`

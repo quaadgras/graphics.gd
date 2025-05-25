@@ -20,7 +20,7 @@ import (
 
 func registerMethods(class gd.StringName, rtype reflect.Type, renames map[uintptr]string) {
 	classTypePtr := reflect.PointerTo(rtype)
-	for i := 0; i < classTypePtr.NumMethod(); i++ {
+	for i := range classTypePtr.NumMethod() {
 		i := i
 
 		var hasContext bool = false
@@ -29,7 +29,7 @@ func registerMethods(class gd.StringName, rtype reflect.Type, renames map[uintpt
 		if !method.IsExported() || method.Type.NumIn() < 1 {
 			continue
 		}
-		if strings.HasPrefix(method.Name, "As") || method.Name == "Super" {
+		if strings.HasPrefix(method.Name, "As") || method.Name == "Super" || method.Name == "UnsafePointer" {
 			continue
 		}
 		parent, ok := rtype.FieldByName("Class")

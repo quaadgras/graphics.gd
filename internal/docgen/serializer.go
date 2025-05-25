@@ -1,7 +1,7 @@
 package docgen
 
 import (
-	"encoding/gob"
+	"encoding/xml"
 	"errors"
 	"fmt"
 	"os"
@@ -72,13 +72,14 @@ func writeInit(outPath string) error {
 	return nil
 }
 
-func serializeDocs(docs AllPackages, outPath string) error {
+func serializeDocs(docs []Class, outPath string) error {
 	file, err := os.Create(outPath)
 	if err != nil {
 		return fmt.Errorf("failed to create doc gob file: %w", err)
 	}
 	defer file.Close()
-	enc := gob.NewEncoder(file)
+	enc := xml.NewEncoder(file)
+	enc.Indent("", "\t")
 	if err := enc.Encode(docs); err != nil {
 		return fmt.Errorf("failed to encode docs: %w", err)
 	}
