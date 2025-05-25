@@ -75,6 +75,12 @@ take caution when embedding types, as their fields and methods
 will be promoted. They will be exported as snake_case by default,
 for fields, the exported name can be adjusted with the 'gd' tag.
 
+The following struct tags can be used to adjust the behavior of
+class members within The Engine:
+
+  - range can be used to specify the range hint of the member.
+  - group can be used to group members together in the editor.
+
 This function accepts a variable number of additional arguments,
 they may either be func, map[string]any (where each any is a func),
 map[string]string or map[string]int, these arguments can be used to
