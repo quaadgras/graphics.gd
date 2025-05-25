@@ -12,6 +12,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
+import "graphics.gd/variant/Euler"
 import "graphics.gd/classdb/Camera3D"
 import "graphics.gd/classdb/EditorNode3DGizmo"
 import "graphics.gd/classdb/Node3D"
@@ -55,6 +56,7 @@ var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
+var _ Euler.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*

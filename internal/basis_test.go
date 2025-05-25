@@ -6,6 +6,7 @@ import (
 	"graphics.gd/classdb/GDScript"
 	"graphics.gd/variant/Angle"
 	"graphics.gd/variant/Basis"
+	"graphics.gd/variant/Euler"
 	"graphics.gd/variant/Object"
 
 	_ "embed"
@@ -24,9 +25,9 @@ func TestBasis(t *testing.T) {
 	script.Reload()
 	runner.SetScript(script)
 
-	angles := Angle.Euler3D{-1, 0.2, 0}
+	angles := Euler.Radians{-1, 0.2, 0}
 	engine := Object.Call(runner, "test_basis", angles).(Basis.XYZ)
-	if engine != Basis.Euler(angles, Angle.OrderYXZ) {
-		t.Fatalf("Expected %v, got %v", Object.Call(runner, "test_basis", angles), Basis.Euler(angles, Angle.OrderYXZ))
+	if engine != Basis.FromEuler(angles, Angle.OrderYXZ) {
+		t.Fatalf("Expected %v, got %v", Object.Call(runner, "test_basis", angles), Basis.FromEuler(angles, Angle.OrderYXZ))
 	}
 }

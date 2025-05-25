@@ -79,7 +79,7 @@ func (name Name) ToUnderlying(val string) string {
 	return val
 }
 
-func (name Name) ConvertToSimple(val string) string {
+func (name Name) ConvertToSimple(val, simple string) string {
 	if strings.HasPrefix(val, "(") {
 		val = strings.TrimPrefix(val, "(")
 		val = strings.TrimSuffix(val, ")")
@@ -87,12 +87,17 @@ func (name Name) ConvertToSimple(val string) string {
 	if strings.HasPrefix(string(name), "Array.Contains[") {
 		return fmt.Sprintf("gd.ArrayFromSlice[%v](%v)", name, val)
 	}
+	switch simple {
+	case "Euler.Degrees", "Euler.Radians":
+		return fmt.Sprintf("%v.Vector3()", val)
+	}
 	switch name {
 	case "Array.Any":
 		if val == "Array.Nil" {
 			return "Array.Nil"
 		}
 		return fmt.Sprintf("gd.EngineArrayFromSlice(%v)", val)
+
 	case "Dictionary.Any":
 		if val == "Dictionary.Nil" {
 			return "Dictionary.Nil"
@@ -136,6 +141,12 @@ func (name Name) ConvertToSimple(val string) string {
 func (name Name) ConvertToGo(val string, simple string) string {
 	if strings.HasPrefix(string(name), "Array.Contains[") {
 		return fmt.Sprintf("gd.ArrayAs[%s](gd.InternalArray(%s))", simple, val)
+	}
+	switch simple {
+	case "Euler.Radians":
+		return fmt.Sprintf("Vector3.EulerRadians(%v)", val)
+	case "Euler.Degrees":
+		return fmt.Sprintf("Vector3.EulerDegrees(%v)", val)
 	}
 	switch name {
 	case "String.Readable", "Path.ToNode", "String.Name":

@@ -12,12 +12,6 @@ const Tau Radians = 2 * Pi
 type Radians Float.X
 type Degrees Float.X
 
-type Euler3D = struct {
-	X Radians
-	Y Radians
-	Z Radians
-}
-
 type Order int
 
 const (

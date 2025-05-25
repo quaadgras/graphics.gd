@@ -12,6 +12,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
+import "graphics.gd/variant/Euler"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3DGizmo"
 import "graphics.gd/classdb/World3D"
@@ -52,6 +53,7 @@ var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
+var _ Euler.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -238,14 +240,14 @@ func (self Instance) IsTransformNotificationEnabled() bool { //gd:Node3D.is_tran
 /*
 Rotates the local transformation around axis, a unit [Vector3], by specified angle in radians.
 */
-func (self Instance) Rotate(axis Vector3.XYZ, angle Float.X) { //gd:Node3D.rotate
+func (self Instance) Rotate(axis Vector3.XYZ, angle Angle.Radians) { //gd:Node3D.rotate
 	Advanced(self).Rotate(Vector3.XYZ(axis), float64(angle))
 }
 
 /*
 Rotates the global (world) transformation around axis, a unit [Vector3], by specified angle in radians. The rotation axis is in global coordinate system.
 */
-func (self Instance) GlobalRotate(axis Vector3.XYZ, angle Float.X) { //gd:Node3D.global_rotate
+func (self Instance) GlobalRotate(axis Vector3.XYZ, angle Angle.Radians) { //gd:Node3D.global_rotate
 	Advanced(self).GlobalRotate(Vector3.XYZ(axis), float64(angle))
 }
 
@@ -266,7 +268,7 @@ func (self Instance) GlobalTranslate(offset Vector3.XYZ) { //gd:Node3D.global_tr
 /*
 Rotates the local transformation around axis, a unit [Vector3], by specified angle in radians. The rotation axis is in object-local coordinate system.
 */
-func (self Instance) RotateObjectLocal(axis Vector3.XYZ, angle Float.X) { //gd:Node3D.rotate_object_local
+func (self Instance) RotateObjectLocal(axis Vector3.XYZ, angle Angle.Radians) { //gd:Node3D.rotate_object_local
 	Advanced(self).RotateObjectLocal(Vector3.XYZ(axis), float64(angle))
 }
 
@@ -287,21 +289,21 @@ func (self Instance) TranslateObjectLocal(offset Vector3.XYZ) { //gd:Node3D.tran
 /*
 Rotates the local transformation around the X axis by angle in radians.
 */
-func (self Instance) RotateX(angle Float.X) { //gd:Node3D.rotate_x
+func (self Instance) RotateX(angle Angle.Radians) { //gd:Node3D.rotate_x
 	Advanced(self).RotateX(float64(angle))
 }
 
 /*
 Rotates the local transformation around the Y axis by angle in radians.
 */
-func (self Instance) RotateY(angle Float.X) { //gd:Node3D.rotate_y
+func (self Instance) RotateY(angle Angle.Radians) { //gd:Node3D.rotate_y
 	Advanced(self).RotateY(float64(angle))
 }
 
 /*
 Rotates the local transformation around the Z axis by angle in radians.
 */
-func (self Instance) RotateZ(angle Float.X) { //gd:Node3D.rotate_z
+func (self Instance) RotateZ(angle Angle.Radians) { //gd:Node3D.rotate_z
 	Advanced(self).RotateZ(float64(angle))
 }
 
@@ -422,20 +424,20 @@ func (self Instance) SetPosition(value Vector3.XYZ) {
 	class(self).SetPosition(Vector3.XYZ(value))
 }
 
-func (self Instance) Rotation() Vector3.XYZ {
-	return Vector3.XYZ(class(self).GetRotation())
+func (self Instance) Rotation() Euler.Radians {
+	return Euler.Radians(Vector3.EulerRadians(class(self).GetRotation()))
 }
 
-func (self Instance) SetRotation(value Vector3.XYZ) {
-	class(self).SetRotation(Vector3.XYZ(value))
+func (self Instance) SetRotation(value Euler.Radians) {
+	class(self).SetRotation(value.Vector3())
 }
 
-func (self Instance) RotationDegrees() Vector3.XYZ {
-	return Vector3.XYZ(class(self).GetRotationDegrees())
+func (self Instance) RotationDegrees() Euler.Degrees {
+	return Euler.Degrees(Vector3.EulerDegrees(class(self).GetRotationDegrees()))
 }
 
-func (self Instance) SetRotationDegrees(value Vector3.XYZ) {
-	class(self).SetRotationDegrees(Vector3.XYZ(value))
+func (self Instance) SetRotationDegrees(value Euler.Degrees) {
+	class(self).SetRotationDegrees(value.Vector3())
 }
 
 func (self Instance) Quaternion() Quaternion.IJKX {
@@ -502,20 +504,20 @@ func (self Instance) SetGlobalBasis(value Basis.XYZ) {
 	class(self).SetGlobalBasis(Basis.XYZ(value))
 }
 
-func (self Instance) GlobalRotation() Vector3.XYZ {
-	return Vector3.XYZ(class(self).GetGlobalRotation())
+func (self Instance) GlobalRotation() Euler.Radians {
+	return Euler.Radians(Vector3.EulerRadians(class(self).GetGlobalRotation()))
 }
 
-func (self Instance) SetGlobalRotation(value Vector3.XYZ) {
-	class(self).SetGlobalRotation(Vector3.XYZ(value))
+func (self Instance) SetGlobalRotation(value Euler.Radians) {
+	class(self).SetGlobalRotation(value.Vector3())
 }
 
-func (self Instance) GlobalRotationDegrees() Vector3.XYZ {
-	return Vector3.XYZ(class(self).GetGlobalRotationDegrees())
+func (self Instance) GlobalRotationDegrees() Euler.Degrees {
+	return Euler.Degrees(Vector3.EulerDegrees(class(self).GetGlobalRotationDegrees()))
 }
 
-func (self Instance) SetGlobalRotationDegrees(value Vector3.XYZ) {
-	class(self).SetGlobalRotationDegrees(Vector3.XYZ(value))
+func (self Instance) SetGlobalRotationDegrees(value Euler.Degrees) {
+	class(self).SetGlobalRotationDegrees(value.Vector3())
 }
 
 func (self Instance) Visible() bool {

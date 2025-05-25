@@ -6,6 +6,7 @@ import (
 
 	"graphics.gd/variant/Angle"
 	"graphics.gd/variant/Basis"
+	"graphics.gd/variant/Euler"
 	"graphics.gd/variant/Float"
 	"graphics.gd/variant/Int"
 	"graphics.gd/variant/Vector3"
@@ -47,8 +48,8 @@ func New() IJKX { //gd:Quaternion()
 	return Identity
 }
 
-// Euler constructs a Quaternion from Euler angles in YXZ rotation order.
-func Euler(e Angle.Euler3D) IJKX { //gd:Quaternion.from_euler
+// FromEuler constructs a Quaternion from Euler angles in YXZ rotation order.
+func FromEuler(e Euler.Radians) IJKX { //gd:Quaternion.from_euler
 	var (
 		half_a1 = e.Y * 0.5
 		half_a2 = e.X * 0.5
@@ -116,11 +117,11 @@ func Axis(q IJKX) Vector3.XYZ { //gd:Quaternion.get_axis
 	return Vector3.New(q.I*r, q.J*r, q.K*r)
 }
 
-// EulerAngles returns the quaternion's rotation in the form of Euler angles. The Euler order depends on the order
+// EulerRadians returns the quaternion's rotation in the form of Euler angles. The Euler order depends on the order
 // parameter, for example using the YXZ convention: since this method decomposes, first Z, then X, and Y last. See
 // the EulerOrder enum for possible values. The returned vector contains the rotation angles in the format
 // (X angle, Y angle, Z angle).
-func EulerAngles(order Angle.Order, q IJKX) Angle.Euler3D { //gd:Quaternion.get_euler
+func EulerRadians(order Angle.Order, q IJKX) Euler.Radians { //gd:Quaternion.get_euler
 	return Basis.AsEulerAngles(AsBasis(q), order)
 }
 

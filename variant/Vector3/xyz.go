@@ -5,6 +5,7 @@ import (
 	"math"
 
 	"graphics.gd/variant/Angle"
+	"graphics.gd/variant/Euler"
 	"graphics.gd/variant/Float"
 	"graphics.gd/variant/Int"
 	"graphics.gd/variant/Vector2"
@@ -628,4 +629,22 @@ func basis_rotates_axis_angle(axis XYZ, angle Angle.Radians) basis {
 // Random returns a new vector with each component set to a random value between 0 and 1.
 func Random() XYZ {
 	return XYZ{Float.Random(), Float.Random(), Float.Random()}
+}
+
+// EulerRadians returns the vector as Euler angles in radians.
+func EulerRadians(v XYZ) Euler.Radians {
+	return Euler.Radians{
+		X: Angle.Radians(v.X),
+		Y: Angle.Radians(v.Y),
+		Z: Angle.Radians(v.Z),
+	}
+}
+
+// EulerDegrees returns the vector as Euler angles in degrees.
+func EulerDegrees(v XYZ) Euler.Degrees {
+	return Euler.Degrees{
+		X: Angle.Degrees(v.X),
+		Y: Angle.Degrees(v.Y),
+		Z: Angle.Degrees(v.Z),
+	}
 }

@@ -17,6 +17,8 @@ var Distinctions = map[string][][3]string{
 	"InputEvent":                     {{"device value", "int", "Input.Device"}},
 	"Material":                       {{"render_priority ", "int", "RenderPriority"}},
 	"MultiplayerPeer":                {{"set_target_peer id", "int", "TargetPeer"}},
+	"Node3D":                         {{"angle", "float", "Angle.Radians"}, {"rotation_degrees ", "Vector3", "Euler.Degrees"}, {"rotation ", "Vector3", "Euler.Radians"}},
+	"Node2D":                         {{"radians", "float", "Angle.Radians"}, {"rotation_degrees ", "float", "Angle.Degrees"}, {"rotation ", "float", "Angle.Radians"}},
 	"RenderingServer":                {{"emit_flags", "int", "ParticlesEmitFlag"}},
 	"ResourceUID":                    {{"id", "int", "Resource.UID"}},
 	"VisualShader":                   {{"node", "int", "NodeID"}, {"id ", "int", "NodeID"}},

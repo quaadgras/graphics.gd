@@ -9,12 +9,12 @@ import (
 	"graphics.gd/internal/callframe"
 	"graphics.gd/internal/pointers"
 	VariantPkg "graphics.gd/variant"
-	"graphics.gd/variant/Angle"
 	ArrayType "graphics.gd/variant/Array"
 	BasisType "graphics.gd/variant/Basis"
 	CallableType "graphics.gd/variant/Callable"
 	DictionaryType "graphics.gd/variant/Dictionary"
 	"graphics.gd/variant/Enum"
+	"graphics.gd/variant/Euler"
 	FloatType "graphics.gd/variant/Float"
 	PackedType "graphics.gd/variant/Packed"
 	"graphics.gd/variant/Path"
@@ -247,7 +247,10 @@ func NewVariant(v any) Variant {
 		case Vector3:
 			var arg = callframe.Arg(frame, val)
 			Global.variant.FromType[TypeVector3](ret, arg.Addr())
-		case Angle.Euler3D:
+		case Euler.Radians:
+			var arg = callframe.Arg(frame, val)
+			Global.variant.FromType[TypeVector3](ret, arg.Addr())
+		case Euler.Degrees:
 			var arg = callframe.Arg(frame, val)
 			Global.variant.FromType[TypeVector3](ret, arg.Addr())
 		case Vector3i:

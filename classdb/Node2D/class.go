@@ -12,6 +12,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
+import "graphics.gd/variant/Euler"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
@@ -49,6 +50,7 @@ var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
+var _ Euler.Radians
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -86,7 +88,7 @@ type Any interface {
 /*
 Applies a rotation to the node, in radians, starting from its current rotation.
 */
-func (self Instance) Rotate(radians Float.X) { //gd:Node2D.rotate
+func (self Instance) Rotate(radians Angle.Radians) { //gd:Node2D.rotate
 	Advanced(self).Rotate(float64(radians))
 }
 
@@ -203,19 +205,19 @@ func (self Instance) SetPosition(value Vector2.XY) {
 	class(self).SetPosition(Vector2.XY(value))
 }
 
-func (self Instance) Rotation() Float.X {
-	return Float.X(Float.X(class(self).GetRotation()))
+func (self Instance) Rotation() Angle.Radians {
+	return Angle.Radians(Float.X(class(self).GetRotation()))
 }
 
-func (self Instance) SetRotation(value Float.X) {
+func (self Instance) SetRotation(value Angle.Radians) {
 	class(self).SetRotation(float64(value))
 }
 
-func (self Instance) RotationDegrees() Float.X {
-	return Float.X(Float.X(class(self).GetRotationDegrees()))
+func (self Instance) RotationDegrees() Angle.Degrees {
+	return Angle.Degrees(Float.X(class(self).GetRotationDegrees()))
 }
 
-func (self Instance) SetRotationDegrees(value Float.X) {
+func (self Instance) SetRotationDegrees(value Angle.Degrees) {
 	class(self).SetRotationDegrees(float64(value))
 }
 
@@ -247,19 +249,19 @@ func (self Instance) SetGlobalPosition(value Vector2.XY) {
 	class(self).SetGlobalPosition(Vector2.XY(value))
 }
 
-func (self Instance) GlobalRotation() Float.X {
-	return Float.X(Float.X(class(self).GetGlobalRotation()))
+func (self Instance) GlobalRotation() Angle.Radians {
+	return Angle.Radians(Float.X(class(self).GetGlobalRotation()))
 }
 
-func (self Instance) SetGlobalRotation(value Float.X) {
+func (self Instance) SetGlobalRotation(value Angle.Radians) {
 	class(self).SetGlobalRotation(float64(value))
 }
 
-func (self Instance) GlobalRotationDegrees() Float.X {
-	return Float.X(Float.X(class(self).GetGlobalRotationDegrees()))
+func (self Instance) GlobalRotationDegrees() Angle.Degrees {
+	return Angle.Degrees(Float.X(class(self).GetGlobalRotationDegrees()))
 }
 
-func (self Instance) SetGlobalRotationDegrees(value Float.X) {
+func (self Instance) SetGlobalRotationDegrees(value Angle.Degrees) {
 	class(self).SetGlobalRotationDegrees(float64(value))
 }
 

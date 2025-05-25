@@ -153,7 +153,8 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 				val = `gd.NewVariant(` + val + `)`
 			}
 		}
-		fmt.Fprint(&call, gdtype.Name(gdtype.EngineTypeAsGoType(class.Name, arg.Meta, arg.Type)).ConvertToSimple(val))
+		simple := classDB.convertTypeSimple(class, class.Name+"."+method.Name+"."+arg.Name, arg.Meta, arg.Type)
+		fmt.Fprint(&call, gdtype.Name(gdtype.EngineTypeAsGoType(class.Name, arg.Meta, arg.Type)).ConvertToSimple(val, simple))
 	}
 	if method.IsVararg {
 		if len(method.Arguments) > 0 {
@@ -277,7 +278,8 @@ func (classDB ClassDB) simpleRelocatedCall(w io.Writer, class gdjson.Class, meth
 				val = `gd.NewVariant(` + val + `)`
 			}
 		}
-		fmt.Fprint(&call, gdtype.Name(gdtype.EngineTypeAsGoType(class.Name, arg.Meta, arg.Type)).ConvertToSimple(val))
+		simple := classDB.convertTypeSimple(class, class.Name+"."+method.Name+"."+arg.Name, arg.Meta, arg.Type)
+		fmt.Fprint(&call, gdtype.Name(gdtype.EngineTypeAsGoType(class.Name, arg.Meta, arg.Type)).ConvertToSimple(val, simple))
 	}
 	if method.IsVararg {
 		if len(method.Arguments) > 0 {
@@ -332,7 +334,8 @@ func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method
 	}
 	fmt.Fprintf(w, ")\n")
 	if resultSimple != "" {
-		ret := gdtype.Name(resultExpert).ToUnderlying(gdtype.Name(resultExpert).ConvertToSimple("ret"))
+		simple := classDB.convertTypeSimple(class, "", method.ReturnValue.Meta, method.ReturnValue.Type)
+		ret := gdtype.Name(resultExpert).ToUnderlying(gdtype.Name(resultExpert).ConvertToSimple("ret", simple))
 		if needsLifetime {
 			fmt.Fprintf(w, "ptr, ok := %s\n", gdtype.Name(resultExpert).EndPointer(ret))
 			fmt.Fprintf(w, "\n\t\tif !ok {\n")

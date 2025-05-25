@@ -5,6 +5,7 @@ import (
 	"unsafe"
 
 	"graphics.gd/variant/Angle"
+	"graphics.gd/variant/Euler"
 	"graphics.gd/variant/Float"
 	"graphics.gd/variant/Vector3"
 )
@@ -128,9 +129,9 @@ func Outer(v, with Vector3.XYZ) XYZ { //gd:Vector3.outer
 	}
 }
 
-// Euler constructs a pure rotation Basis matrix from Euler angles in the specified Euler rotation order.
+// FromEuler constructs a pure rotation Basis matrix from Euler angles in the specified Euler rotation order.
 // By default, use YXZ order (most common). See the EulerOrder enum for possible values.
-func Euler(e Angle.Euler3D, order Angle.Order) XYZ { //gd:Basis.from_euler
+func FromEuler(e Euler.Radians, order Angle.Order) XYZ { //gd:Basis.from_euler
 	var (
 		c, s Float.X
 	)
@@ -236,7 +237,7 @@ func Determinant(m XYZ) Float.X { //gd:Basis.determinant
 //
 // Consider using the [Basis.Quaternion] method instead, which returns a [Quaternion]
 // quaternion instead of [EulerAngles].
-func AsEulerAngles(b XYZ, order Angle.Order) Angle.Euler3D { //gd:Basis.get_euler
+func AsEulerAngles(b XYZ, order Angle.Order) Euler.Radians { //gd:Basis.get_euler
 	switch order {
 	case Angle.OrderXYZ:
 		// Euler angles in XYZ convention.
@@ -245,7 +246,7 @@ func AsEulerAngles(b XYZ, order Angle.Order) Angle.Euler3D { //gd:Basis.get_eule
 		// rot =  cy*cz          -cy*sz           sy
 		//        cz*sx*sy+cx*sz  cx*cz-sx*sy*sz -cy*sx
 		//       -cx*cz*sy+sx*sz  cz*sx+cx*sy*sz  cx*cy
-		var euler Angle.Euler3D
+		var euler Euler.Radians
 		var sy = b.X.Z
 		if sy < (1.0 - Float.Epsilon) {
 			if sy > -(1.0 - Float.Epsilon) {
@@ -279,7 +280,7 @@ func AsEulerAngles(b XYZ, order Angle.Order) Angle.Euler3D { //gd:Basis.get_eule
 		//        sx*sy+cx*cy*sz    cx*cz           cx*sz*sy-cy*sx
 		//        cy*sx*sz          cz*sx           cx*cy+sx*sz*sy
 
-		var euler Angle.Euler3D
+		var euler Euler.Radians
 		var sz = b.X.Y
 		if sz < (1.0 - Float.Epsilon) {
 			if sz > -(1.0 - Float.Epsilon) {
@@ -307,7 +308,7 @@ func AsEulerAngles(b XYZ, order Angle.Order) Angle.Euler3D { //gd:Basis.get_eule
 		//        cx*sz             cx*cz                 -sx
 		//        cy*sx*sz-cz*sy    cy*cz*sx+sy*sz        cy*cx
 
-		var euler Angle.Euler3D
+		var euler Euler.Radians
 
 		var m12 = b.Y.Z
 
@@ -344,7 +345,7 @@ func AsEulerAngles(b XYZ, order Angle.Order) Angle.Euler3D { //gd:Basis.get_eule
 		//        sz                cz*cx              -cz*sx
 		//        -cz*sy            cy*sx+cx*sy*sz     cy*cx-sy*sz*sx
 
-		var euler Angle.Euler3D
+		var euler Euler.Radians
 		var sz = b.Y.X
 		if sz < (1.0 - Float.Epsilon) {
 			if sz > -(1.0 - Float.Epsilon) {
@@ -371,7 +372,7 @@ func AsEulerAngles(b XYZ, order Angle.Order) Angle.Euler3D { //gd:Basis.get_eule
 		// rot =  cz*cy-sz*sx*sy    -cx*sz                cz*sy+cy*sz*sx
 		//        cy*sz+cz*sx*sy    cz*cx                 sz*sy-cz*cy*sx
 		//        -cx*sy            sx                    cx*cy
-		var euler Angle.Euler3D
+		var euler Euler.Radians
 		var sx = b.Z.Y
 		if sx < (1.0 - Float.Epsilon) {
 			if sx > -(1.0 - Float.Epsilon) {
@@ -398,7 +399,7 @@ func AsEulerAngles(b XYZ, order Angle.Order) Angle.Euler3D { //gd:Basis.get_eule
 		// rot =  cz*cy             cz*sy*sx-cx*sz        sz*sx+cz*cx*cy
 		//        cy*sz             cz*cx+sz*sy*sx        cx*sz*sy-cz*sx
 		//        -sy               cy*sx                 cy*cx
-		var euler Angle.Euler3D
+		var euler Euler.Radians
 		var sy = b.Z.X
 		if sy < (1.0 - Float.Epsilon) {
 			if sy > -(1.0 - Float.Epsilon) {

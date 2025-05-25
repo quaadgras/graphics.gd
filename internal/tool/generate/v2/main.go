@@ -152,6 +152,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	fmt.Fprintln(file, `import "graphics.gd/internal/gdclass"`)
 	fmt.Fprintln(file, `import "graphics.gd/variant"`)
 	fmt.Fprintln(file, `import "graphics.gd/variant/Angle"`)
+	fmt.Fprintln(file, `import "graphics.gd/variant/Euler"`)
 	if class.Inherits != "" {
 		super := classDB[class.Inherits]
 		for super.Name != "" && super.Name != "Object" && super.Name != "RefCounted" && !classDB[super.Name].IsSingleton {
@@ -181,6 +182,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	fmt.Fprintln(file, "var _ Error.Code")
 	fmt.Fprintln(file, "var _ Float.X")
 	fmt.Fprintln(file, "var _ Angle.Radians")
+	fmt.Fprintln(file, "var _ Euler.Radians")
 	fmt.Fprintln(file, "var _ = slices.Delete[[]struct{}, struct{}]")
 	fmt.Fprintln(file)
 	var local_enums = make(map[string]bool)
