@@ -25,8 +25,8 @@ import (
 	"graphics.gd/variant/Signal"
 	"graphics.gd/variant/String"
 
-	"graphics.gd/docgen"
 	gd "graphics.gd/internal"
+	"graphics.gd/internal/docgen"
 	"graphics.gd/internal/gdclass"
 	"graphics.gd/internal/pointers"
 )

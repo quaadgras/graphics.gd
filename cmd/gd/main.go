@@ -29,7 +29,7 @@ import (
 	_ "embed"
 
 	"graphics.gd/cmd/gd/internal/golang"
-	"graphics.gd/docgen"
+	"graphics.gd/internal/docgen"
 	"runtime.link/api/xray"
 )
 
