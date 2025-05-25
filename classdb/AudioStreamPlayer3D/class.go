@@ -292,19 +292,19 @@ func (self Instance) SetEmissionAngleEnabled(value bool) {
 	class(self).SetEmissionAngleEnabled(value)
 }
 
-func (self Instance) EmissionAngleDegrees() Float.X {
-	return Float.X(Float.X(class(self).GetEmissionAngle()))
+func (self Instance) EmissionAngleDegrees() Angle.Radians {
+	return Angle.Radians(Float.X(class(self).GetEmissionAngle()))
 }
 
-func (self Instance) SetEmissionAngleDegrees(value Float.X) {
+func (self Instance) SetEmissionAngleDegrees(value Angle.Radians) {
 	class(self).SetEmissionAngle(float64(value))
 }
 
-func (self Instance) EmissionAngleFilterAttenuationDb() Float.X {
-	return Float.X(Float.X(class(self).GetEmissionAngleFilterAttenuationDb()))
+func (self Instance) EmissionAngleFilterAttenuationDb() Angle.Radians {
+	return Angle.Radians(Float.X(class(self).GetEmissionAngleFilterAttenuationDb()))
 }
 
-func (self Instance) SetEmissionAngleFilterAttenuationDb(value Float.X) {
+func (self Instance) SetEmissionAngleFilterAttenuationDb(value Angle.Radians) {
 	class(self).SetEmissionAngleFilterAttenuationDb(float64(value))
 }
 

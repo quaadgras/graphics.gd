@@ -116,11 +116,11 @@ func (self Instance) SetAspectRatio(value Float.X) {
 	class(self).SetAspectRatio(float64(value))
 }
 
-func (self Instance) CentralAngle() Float.X {
-	return Float.X(Float.X(class(self).GetCentralAngle()))
+func (self Instance) CentralAngle() Angle.Radians {
+	return Angle.Radians(Float.X(class(self).GetCentralAngle()))
 }
 
-func (self Instance) SetCentralAngle(value Float.X) {
+func (self Instance) SetCentralAngle(value Angle.Radians) {
 	class(self).SetCentralAngle(float64(value))
 }
 

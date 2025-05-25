@@ -628,7 +628,7 @@ func (self Instance) DrawSetTransform(position Vector2.XY) { //gd:CanvasItem.dra
 Sets a custom transform for drawing via components. Anything drawn afterwards will be transformed by this.
 [b]Note:[/b] [member FontFile.oversampling] does [i]not[/i] take [param scale] into account. This means that scaling up/down will cause bitmap fonts and rasterized (non-MSDF) dynamic fonts to appear blurry or pixelated. To ensure text remains crisp regardless of scale, you can enable MSDF font rendering by enabling [member ProjectSettings.gui/theme/default_font_multichannel_signed_distance_field] (applies to the default project font only), or enabling [b]Multichannel Signed Distance Field[/b] in the import options of a DynamicFont for custom fonts. On system fonts, [member SystemFont.multichannel_signed_distance_field] can be enabled in the inspector.
 */
-func (self Expanded) DrawSetTransform(position Vector2.XY, rotation Float.X, scale Vector2.XY) { //gd:CanvasItem.draw_set_transform
+func (self Expanded) DrawSetTransform(position Vector2.XY, rotation Angle.Radians, scale Vector2.XY) { //gd:CanvasItem.draw_set_transform
 	Advanced(self).DrawSetTransform(Vector2.XY(position), float64(rotation), Vector2.XY(scale))
 }
 

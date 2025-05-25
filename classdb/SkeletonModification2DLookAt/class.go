@@ -83,15 +83,15 @@ type Any interface {
 /*
 Sets the amount of additional rotation that is to be applied after executing the modification. This allows for offsetting the results by the inputted rotation amount.
 */
-func (self Instance) SetAdditionalRotation(rotation Float.X) { //gd:SkeletonModification2DLookAt.set_additional_rotation
+func (self Instance) SetAdditionalRotation(rotation Angle.Radians) { //gd:SkeletonModification2DLookAt.set_additional_rotation
 	Advanced(self).SetAdditionalRotation(float64(rotation))
 }
 
 /*
 Returns the amount of additional rotation that is applied after the LookAt modification executes.
 */
-func (self Instance) GetAdditionalRotation() Float.X { //gd:SkeletonModification2DLookAt.get_additional_rotation
-	return Float.X(Float.X(Advanced(self).GetAdditionalRotation()))
+func (self Instance) GetAdditionalRotation() Angle.Radians { //gd:SkeletonModification2DLookAt.get_additional_rotation
+	return Angle.Radians(Float.X(Advanced(self).GetAdditionalRotation()))
 }
 
 /*
@@ -111,29 +111,29 @@ func (self Instance) GetEnableConstraint() bool { //gd:SkeletonModification2DLoo
 /*
 Sets the constraint's minimum allowed angle.
 */
-func (self Instance) SetConstraintAngleMin(angle_min Float.X) { //gd:SkeletonModification2DLookAt.set_constraint_angle_min
+func (self Instance) SetConstraintAngleMin(angle_min Angle.Radians) { //gd:SkeletonModification2DLookAt.set_constraint_angle_min
 	Advanced(self).SetConstraintAngleMin(float64(angle_min))
 }
 
 /*
 Returns the constraint's minimum allowed angle.
 */
-func (self Instance) GetConstraintAngleMin() Float.X { //gd:SkeletonModification2DLookAt.get_constraint_angle_min
-	return Float.X(Float.X(Advanced(self).GetConstraintAngleMin()))
+func (self Instance) GetConstraintAngleMin() Angle.Radians { //gd:SkeletonModification2DLookAt.get_constraint_angle_min
+	return Angle.Radians(Float.X(Advanced(self).GetConstraintAngleMin()))
 }
 
 /*
 Sets the constraint's maximum allowed angle.
 */
-func (self Instance) SetConstraintAngleMax(angle_max Float.X) { //gd:SkeletonModification2DLookAt.set_constraint_angle_max
+func (self Instance) SetConstraintAngleMax(angle_max Angle.Radians) { //gd:SkeletonModification2DLookAt.set_constraint_angle_max
 	Advanced(self).SetConstraintAngleMax(float64(angle_max))
 }
 
 /*
 Returns the constraint's maximum allowed angle.
 */
-func (self Instance) GetConstraintAngleMax() Float.X { //gd:SkeletonModification2DLookAt.get_constraint_angle_max
-	return Float.X(Float.X(Advanced(self).GetConstraintAngleMax()))
+func (self Instance) GetConstraintAngleMax() Angle.Radians { //gd:SkeletonModification2DLookAt.get_constraint_angle_max
+	return Angle.Radians(Float.X(Advanced(self).GetConstraintAngleMax()))
 }
 
 /*

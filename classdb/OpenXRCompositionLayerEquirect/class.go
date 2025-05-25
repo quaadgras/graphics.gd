@@ -108,27 +108,27 @@ func (self Instance) SetRadius(value Float.X) {
 	class(self).SetRadius(float64(value))
 }
 
-func (self Instance) CentralHorizontalAngle() Float.X {
-	return Float.X(Float.X(class(self).GetCentralHorizontalAngle()))
+func (self Instance) CentralHorizontalAngle() Angle.Radians {
+	return Angle.Radians(Float.X(class(self).GetCentralHorizontalAngle()))
 }
 
-func (self Instance) SetCentralHorizontalAngle(value Float.X) {
+func (self Instance) SetCentralHorizontalAngle(value Angle.Radians) {
 	class(self).SetCentralHorizontalAngle(float64(value))
 }
 
-func (self Instance) UpperVerticalAngle() Float.X {
-	return Float.X(Float.X(class(self).GetUpperVerticalAngle()))
+func (self Instance) UpperVerticalAngle() Angle.Radians {
+	return Angle.Radians(Float.X(class(self).GetUpperVerticalAngle()))
 }
 
-func (self Instance) SetUpperVerticalAngle(value Float.X) {
+func (self Instance) SetUpperVerticalAngle(value Angle.Radians) {
 	class(self).SetUpperVerticalAngle(float64(value))
 }
 
-func (self Instance) LowerVerticalAngle() Float.X {
-	return Float.X(Float.X(class(self).GetLowerVerticalAngle()))
+func (self Instance) LowerVerticalAngle() Angle.Radians {
+	return Angle.Radians(Float.X(class(self).GetLowerVerticalAngle()))
 }
 
-func (self Instance) SetLowerVerticalAngle(value Float.X) {
+func (self Instance) SetLowerVerticalAngle(value Angle.Radians) {
 	class(self).SetLowerVerticalAngle(float64(value))
 }
 

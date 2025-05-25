@@ -162,7 +162,7 @@ func (self Instance) GetIsSetup() bool { //gd:SkeletonModification2D.get_is_setu
 /*
 Takes an angle and clamps it so it is within the passed-in [param min] and [param max] range. [param invert] will inversely clamp the angle, clamping it to the range outside of the given bounds.
 */
-func (self Instance) ClampAngle(angle Float.X, min Float.X, max Float.X, invert bool) Float.X { //gd:SkeletonModification2D.clamp_angle
+func (self Instance) ClampAngle(angle Angle.Radians, min Angle.Radians, max Angle.Radians, invert bool) Float.X { //gd:SkeletonModification2D.clamp_angle
 	return Float.X(Float.X(Advanced(self).ClampAngle(float64(angle), float64(min), float64(max), invert)))
 }
 

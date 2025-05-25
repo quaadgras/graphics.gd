@@ -1545,19 +1545,19 @@ func (self Instance) GlobalPosition() Vector2.XY {
 	return Vector2.XY(class(self).GetGlobalPosition())
 }
 
-func (self Instance) Rotation() Float.X {
-	return Float.X(Float.X(class(self).GetRotation()))
+func (self Instance) Rotation() Angle.Radians {
+	return Angle.Radians(Float.X(class(self).GetRotation()))
 }
 
-func (self Instance) SetRotation(value Float.X) {
+func (self Instance) SetRotation(value Angle.Radians) {
 	class(self).SetRotation(float64(value))
 }
 
-func (self Instance) RotationDegrees() Float.X {
-	return Float.X(Float.X(class(self).GetRotationDegrees()))
+func (self Instance) RotationDegrees() Angle.Radians {
+	return Angle.Radians(Float.X(class(self).GetRotationDegrees()))
 }
 
-func (self Instance) SetRotationDegrees(value Float.X) {
+func (self Instance) SetRotationDegrees(value Angle.Radians) {
 	class(self).SetRotationDegrees(float64(value))
 }
 

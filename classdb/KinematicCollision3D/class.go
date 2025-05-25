@@ -141,15 +141,15 @@ func (self Expanded) GetNormal(collision_index int) Vector3.XYZ { //gd:Kinematic
 /*
 Returns the collision angle according to [param up_direction], which is [constant Vector3.UP] by default. This value is always positive.
 */
-func (self Instance) GetAngle() Float.X { //gd:KinematicCollision3D.get_angle
-	return Float.X(Float.X(Advanced(self).GetAngle(int64(0), Vector3.XYZ(gd.Vector3{0, 1, 0}))))
+func (self Instance) GetAngle() Angle.Radians { //gd:KinematicCollision3D.get_angle
+	return Angle.Radians(Float.X(Advanced(self).GetAngle(int64(0), Vector3.XYZ(gd.Vector3{0, 1, 0}))))
 }
 
 /*
 Returns the collision angle according to [param up_direction], which is [constant Vector3.UP] by default. This value is always positive.
 */
-func (self Expanded) GetAngle(collision_index int, up_direction Vector3.XYZ) Float.X { //gd:KinematicCollision3D.get_angle
-	return Float.X(Float.X(Advanced(self).GetAngle(int64(collision_index), Vector3.XYZ(up_direction))))
+func (self Expanded) GetAngle(collision_index int, up_direction Vector3.XYZ) Angle.Radians { //gd:KinematicCollision3D.get_angle
+	return Angle.Radians(Float.X(Advanced(self).GetAngle(int64(collision_index), Vector3.XYZ(up_direction))))
 }
 
 /*

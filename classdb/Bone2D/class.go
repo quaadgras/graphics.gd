@@ -138,7 +138,7 @@ func (self Instance) GetLength() Float.X { //gd:Bone2D.get_length
 Sets the bone angle for the [Bone2D]. This is typically set to the rotation from the [Bone2D] to a child [Bone2D] node.
 [b]Note:[/b] This is different from the [Bone2D]'s rotation. The bone's angle is the rotation of the bone shown by the gizmo, which is unaffected by the [Bone2D]'s [member Node2D.transform].
 */
-func (self Instance) SetBoneAngle(angle Float.X) { //gd:Bone2D.set_bone_angle
+func (self Instance) SetBoneAngle(angle Angle.Radians) { //gd:Bone2D.set_bone_angle
 	Advanced(self).SetBoneAngle(float64(angle))
 }
 
@@ -146,8 +146,8 @@ func (self Instance) SetBoneAngle(angle Float.X) { //gd:Bone2D.set_bone_angle
 Returns the angle of the bone in the [Bone2D].
 [b]Note:[/b] This is different from the [Bone2D]'s rotation. The bone's angle is the rotation of the bone shown by the gizmo, which is unaffected by the [Bone2D]'s [member Node2D.transform].
 */
-func (self Instance) GetBoneAngle() Float.X { //gd:Bone2D.get_bone_angle
-	return Float.X(Float.X(Advanced(self).GetBoneAngle()))
+func (self Instance) GetBoneAngle() Angle.Radians { //gd:Bone2D.get_bone_angle
+	return Angle.Radians(Float.X(Advanced(self).GetBoneAngle()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

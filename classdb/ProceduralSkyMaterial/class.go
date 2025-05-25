@@ -184,11 +184,11 @@ func (self Instance) SetGroundEnergyMultiplier(value Float.X) {
 	class(self).SetGroundEnergyMultiplier(float64(value))
 }
 
-func (self Instance) SunAngleMax() Float.X {
-	return Float.X(Float.X(class(self).GetSunAngleMax()))
+func (self Instance) SunAngleMax() Angle.Radians {
+	return Angle.Radians(Float.X(class(self).GetSunAngleMax()))
 }
 
-func (self Instance) SetSunAngleMax(value Float.X) {
+func (self Instance) SetSunAngleMax(value Angle.Radians) {
 	class(self).SetSunAngleMax(float64(value))
 }
 

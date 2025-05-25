@@ -364,11 +364,11 @@ func (self Instance) SetEmissionRingInnerRadius(value Float.X) {
 	class(self).SetEmissionRingInnerRadius(float64(value))
 }
 
-func (self Instance) EmissionRingConeAngle() Float.X {
-	return Float.X(Float.X(class(self).GetEmissionRingConeAngle()))
+func (self Instance) EmissionRingConeAngle() Angle.Radians {
+	return Angle.Radians(Float.X(class(self).GetEmissionRingConeAngle()))
 }
 
-func (self Instance) SetEmissionRingConeAngle(value Float.X) {
+func (self Instance) SetEmissionRingConeAngle(value Angle.Radians) {
 	class(self).SetEmissionRingConeAngle(float64(value))
 }
 
@@ -588,19 +588,19 @@ func (self Instance) SetDampingCurve(value Curve.Instance) {
 	class(self).SetParamCurve(6, value)
 }
 
-func (self Instance) AngleMin() Float.X {
-	return Float.X(Float.X(class(self).GetParamMin(7)))
+func (self Instance) AngleMin() Angle.Radians {
+	return Angle.Radians(Float.X(class(self).GetParamMin(7)))
 }
 
-func (self Instance) SetAngleMin(value Float.X) {
+func (self Instance) SetAngleMin(value Angle.Radians) {
 	class(self).SetParamMin(7, float64(value))
 }
 
-func (self Instance) AngleMax() Float.X {
-	return Float.X(Float.X(class(self).GetParamMax(7)))
+func (self Instance) AngleMax() Angle.Radians {
+	return Angle.Radians(Float.X(class(self).GetParamMax(7)))
 }
 
-func (self Instance) SetAngleMax(value Float.X) {
+func (self Instance) SetAngleMax(value Angle.Radians) {
 	class(self).SetParamMax(7, float64(value))
 }
 

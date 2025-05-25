@@ -169,19 +169,19 @@ func (self Instance) SetRange(value Float.X) {
 	class(self).SetRange(float64(value))
 }
 
-func (self Instance) InnerConeAngle() Float.X {
-	return Float.X(Float.X(class(self).GetInnerConeAngle()))
+func (self Instance) InnerConeAngle() Angle.Radians {
+	return Angle.Radians(Float.X(class(self).GetInnerConeAngle()))
 }
 
-func (self Instance) SetInnerConeAngle(value Float.X) {
+func (self Instance) SetInnerConeAngle(value Angle.Radians) {
 	class(self).SetInnerConeAngle(float64(value))
 }
 
-func (self Instance) OuterConeAngle() Float.X {
-	return Float.X(Float.X(class(self).GetOuterConeAngle()))
+func (self Instance) OuterConeAngle() Angle.Radians {
+	return Angle.Radians(Float.X(class(self).GetOuterConeAngle()))
 }
 
-func (self Instance) SetOuterConeAngle(value Float.X) {
+func (self Instance) SetOuterConeAngle(value Angle.Radians) {
 	class(self).SetOuterConeAngle(float64(value))
 }
 

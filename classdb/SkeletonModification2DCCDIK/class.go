@@ -142,29 +142,29 @@ func (self Instance) GetCcdikJointEnableConstraint(joint_idx int) bool { //gd:Sk
 /*
 Sets the minimum angle constraint for the joint at [param joint_idx].
 */
-func (self Instance) SetCcdikJointConstraintAngleMin(joint_idx int, angle_min Float.X) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_constraint_angle_min
+func (self Instance) SetCcdikJointConstraintAngleMin(joint_idx int, angle_min Angle.Radians) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_constraint_angle_min
 	Advanced(self).SetCcdikJointConstraintAngleMin(int64(joint_idx), float64(angle_min))
 }
 
 /*
 Returns the minimum angle constraint for the joint at [param joint_idx].
 */
-func (self Instance) GetCcdikJointConstraintAngleMin(joint_idx int) Float.X { //gd:SkeletonModification2DCCDIK.get_ccdik_joint_constraint_angle_min
-	return Float.X(Float.X(Advanced(self).GetCcdikJointConstraintAngleMin(int64(joint_idx))))
+func (self Instance) GetCcdikJointConstraintAngleMin(joint_idx int) Angle.Radians { //gd:SkeletonModification2DCCDIK.get_ccdik_joint_constraint_angle_min
+	return Angle.Radians(Float.X(Advanced(self).GetCcdikJointConstraintAngleMin(int64(joint_idx))))
 }
 
 /*
 Sets the maximum angle constraint for the joint at [param joint_idx].
 */
-func (self Instance) SetCcdikJointConstraintAngleMax(joint_idx int, angle_max Float.X) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_constraint_angle_max
+func (self Instance) SetCcdikJointConstraintAngleMax(joint_idx int, angle_max Angle.Radians) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_constraint_angle_max
 	Advanced(self).SetCcdikJointConstraintAngleMax(int64(joint_idx), float64(angle_max))
 }
 
 /*
 Returns the maximum angle constraint for the joint at [param joint_idx].
 */
-func (self Instance) GetCcdikJointConstraintAngleMax(joint_idx int) Float.X { //gd:SkeletonModification2DCCDIK.get_ccdik_joint_constraint_angle_max
-	return Float.X(Float.X(Advanced(self).GetCcdikJointConstraintAngleMax(int64(joint_idx))))
+func (self Instance) GetCcdikJointConstraintAngleMax(joint_idx int) Angle.Radians { //gd:SkeletonModification2DCCDIK.get_ccdik_joint_constraint_angle_max
+	return Angle.Radians(Float.X(Advanced(self).GetCcdikJointConstraintAngleMax(int64(joint_idx))))
 }
 
 /*

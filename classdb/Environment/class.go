@@ -185,12 +185,12 @@ func (self Instance) SetSkyCustomFov(value Float.X) {
 	class(self).SetSkyCustomFov(float64(value))
 }
 
-func (self Instance) SkyRotation() Vector3.XYZ {
-	return Vector3.XYZ(class(self).GetSkyRotation())
+func (self Instance) SkyRotation() Euler.Radians {
+	return Euler.Radians(Vector3.EulerRadians(class(self).GetSkyRotation()))
 }
 
-func (self Instance) SetSkyRotation(value Vector3.XYZ) {
-	class(self).SetSkyRotation(Vector3.XYZ(value))
+func (self Instance) SetSkyRotation(value Euler.Radians) {
+	class(self).SetSkyRotation(value.Vector3())
 }
 
 func (self Instance) AmbientLightSource() AmbientSource {

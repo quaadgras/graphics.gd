@@ -145,11 +145,11 @@ func (self Instance) SetCenterRegion(value Float.X) {
 	class(self).SetCenterRegion(float64(value))
 }
 
-func (self Instance) WedgeAngle() Float.X {
-	return Float.X(Float.X(class(self).GetWedgeAngle()))
+func (self Instance) WedgeAngle() Angle.Radians {
+	return Angle.Radians(Float.X(class(self).GetWedgeAngle()))
 }
 
-func (self Instance) SetWedgeAngle(value Float.X) {
+func (self Instance) SetWedgeAngle(value Angle.Radians) {
 	class(self).SetWedgeAngle(float64(value))
 }
 

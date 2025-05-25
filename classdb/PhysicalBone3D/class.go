@@ -197,12 +197,12 @@ func (self Instance) SetJointOffset(value Transform3D.BasisOrigin) {
 	class(self).SetJointOffset(Transform3D.BasisOrigin(value))
 }
 
-func (self Instance) JointRotation() Vector3.XYZ {
-	return Vector3.XYZ(class(self).GetJointRotation())
+func (self Instance) JointRotation() Euler.Radians {
+	return Euler.Radians(Vector3.EulerRadians(class(self).GetJointRotation()))
 }
 
-func (self Instance) SetJointRotation(value Vector3.XYZ) {
-	class(self).SetJointRotation(Vector3.XYZ(value))
+func (self Instance) SetJointRotation(value Euler.Radians) {
+	class(self).SetJointRotation(value.Vector3())
 }
 
 func (self Instance) BodyOffset() Transform3D.BasisOrigin {

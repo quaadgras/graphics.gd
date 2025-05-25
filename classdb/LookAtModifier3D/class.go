@@ -262,11 +262,11 @@ func (self Instance) SetSymmetryLimitation(value bool) {
 	class(self).SetSymmetryLimitation(value)
 }
 
-func (self Instance) PrimaryLimitAngle() Float.X {
-	return Float.X(Float.X(class(self).GetPrimaryLimitAngle()))
+func (self Instance) PrimaryLimitAngle() Angle.Radians {
+	return Angle.Radians(Float.X(class(self).GetPrimaryLimitAngle()))
 }
 
-func (self Instance) SetPrimaryLimitAngle(value Float.X) {
+func (self Instance) SetPrimaryLimitAngle(value Angle.Radians) {
 	class(self).SetPrimaryLimitAngle(float64(value))
 }
 
@@ -278,11 +278,11 @@ func (self Instance) SetPrimaryDampThreshold(value Float.X) {
 	class(self).SetPrimaryDampThreshold(float64(value))
 }
 
-func (self Instance) PrimaryPositiveLimitAngle() Float.X {
-	return Float.X(Float.X(class(self).GetPrimaryPositiveLimitAngle()))
+func (self Instance) PrimaryPositiveLimitAngle() Angle.Radians {
+	return Angle.Radians(Float.X(class(self).GetPrimaryPositiveLimitAngle()))
 }
 
-func (self Instance) SetPrimaryPositiveLimitAngle(value Float.X) {
+func (self Instance) SetPrimaryPositiveLimitAngle(value Angle.Radians) {
 	class(self).SetPrimaryPositiveLimitAngle(float64(value))
 }
 
@@ -294,11 +294,11 @@ func (self Instance) SetPrimaryPositiveDampThreshold(value Float.X) {
 	class(self).SetPrimaryPositiveDampThreshold(float64(value))
 }
 
-func (self Instance) PrimaryNegativeLimitAngle() Float.X {
-	return Float.X(Float.X(class(self).GetPrimaryNegativeLimitAngle()))
+func (self Instance) PrimaryNegativeLimitAngle() Angle.Radians {
+	return Angle.Radians(Float.X(class(self).GetPrimaryNegativeLimitAngle()))
 }
 
-func (self Instance) SetPrimaryNegativeLimitAngle(value Float.X) {
+func (self Instance) SetPrimaryNegativeLimitAngle(value Angle.Radians) {
 	class(self).SetPrimaryNegativeLimitAngle(float64(value))
 }
 
@@ -310,11 +310,11 @@ func (self Instance) SetPrimaryNegativeDampThreshold(value Float.X) {
 	class(self).SetPrimaryNegativeDampThreshold(float64(value))
 }
 
-func (self Instance) SecondaryLimitAngle() Float.X {
-	return Float.X(Float.X(class(self).GetSecondaryLimitAngle()))
+func (self Instance) SecondaryLimitAngle() Angle.Radians {
+	return Angle.Radians(Float.X(class(self).GetSecondaryLimitAngle()))
 }
 
-func (self Instance) SetSecondaryLimitAngle(value Float.X) {
+func (self Instance) SetSecondaryLimitAngle(value Angle.Radians) {
 	class(self).SetSecondaryLimitAngle(float64(value))
 }
 
@@ -326,11 +326,11 @@ func (self Instance) SetSecondaryDampThreshold(value Float.X) {
 	class(self).SetSecondaryDampThreshold(float64(value))
 }
 
-func (self Instance) SecondaryPositiveLimitAngle() Float.X {
-	return Float.X(Float.X(class(self).GetSecondaryPositiveLimitAngle()))
+func (self Instance) SecondaryPositiveLimitAngle() Angle.Radians {
+	return Angle.Radians(Float.X(class(self).GetSecondaryPositiveLimitAngle()))
 }
 
-func (self Instance) SetSecondaryPositiveLimitAngle(value Float.X) {
+func (self Instance) SetSecondaryPositiveLimitAngle(value Angle.Radians) {
 	class(self).SetSecondaryPositiveLimitAngle(float64(value))
 }
 
@@ -342,11 +342,11 @@ func (self Instance) SetSecondaryPositiveDampThreshold(value Float.X) {
 	class(self).SetSecondaryPositiveDampThreshold(float64(value))
 }
 
-func (self Instance) SecondaryNegativeLimitAngle() Float.X {
-	return Float.X(Float.X(class(self).GetSecondaryNegativeLimitAngle()))
+func (self Instance) SecondaryNegativeLimitAngle() Angle.Radians {
+	return Angle.Radians(Float.X(class(self).GetSecondaryNegativeLimitAngle()))
 }
 
-func (self Instance) SetSecondaryNegativeLimitAngle(value Float.X) {
+func (self Instance) SetSecondaryNegativeLimitAngle(value Angle.Radians) {
 	class(self).SetSecondaryNegativeLimitAngle(float64(value))
 }
 

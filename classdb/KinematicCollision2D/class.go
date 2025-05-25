@@ -113,15 +113,15 @@ func (self Instance) GetRemainder() Vector2.XY { //gd:KinematicCollision2D.get_r
 /*
 Returns the collision angle according to [param up_direction], which is [constant Vector2.UP] by default. This value is always positive.
 */
-func (self Instance) GetAngle() Float.X { //gd:KinematicCollision2D.get_angle
-	return Float.X(Float.X(Advanced(self).GetAngle(Vector2.XY(gd.Vector2{0, -1}))))
+func (self Instance) GetAngle() Angle.Radians { //gd:KinematicCollision2D.get_angle
+	return Angle.Radians(Float.X(Advanced(self).GetAngle(Vector2.XY(gd.Vector2{0, -1}))))
 }
 
 /*
 Returns the collision angle according to [param up_direction], which is [constant Vector2.UP] by default. This value is always positive.
 */
-func (self Expanded) GetAngle(up_direction Vector2.XY) Float.X { //gd:KinematicCollision2D.get_angle
-	return Float.X(Float.X(Advanced(self).GetAngle(Vector2.XY(up_direction))))
+func (self Expanded) GetAngle(up_direction Vector2.XY) Angle.Radians { //gd:KinematicCollision2D.get_angle
+	return Angle.Radians(Float.X(Advanced(self).GetAngle(Vector2.XY(up_direction))))
 }
 
 /*
