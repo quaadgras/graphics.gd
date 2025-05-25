@@ -147,7 +147,7 @@ func (self Instance) Reset() { //gd:ENetPacketPeer.reset
 /*
 Queues a [param packet] to be sent over the specified [param channel]. See [code]FLAG_*[/code] constants for available packet flags.
 */
-func (self Instance) Send(channel int, packet []byte, flags int) error { //gd:ENetPacketPeer.send
+func (self Instance) Send(channel int, packet []byte, flags Flags) error { //gd:ENetPacketPeer.send
 	return error(gd.ToError(Advanced(self).Send(int64(channel), Packed.Bytes(Packed.New(packet...)), int64(flags))))
 }
 

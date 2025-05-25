@@ -179,11 +179,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) RenderPriority() int {
-	return int(int(class(self).GetRenderPriority()))
+func (self Instance) RenderPriority() RenderPriority {
+	return RenderPriority(int(class(self).GetRenderPriority()))
 }
 
-func (self Instance) SetRenderPriority(value int) {
+func (self Instance) SetRenderPriority(value RenderPriority) {
 	class(self).SetRenderPriority(int64(value))
 }
 

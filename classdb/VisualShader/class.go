@@ -125,8 +125,8 @@ func (self Instance) GetNodeList(atype Type) []int32 { //gd:VisualShader.get_nod
 /*
 Returns next valid node ID that can be added to the shader graph.
 */
-func (self Instance) GetValidNodeId(atype Type) int { //gd:VisualShader.get_valid_node_id
-	return int(int(Advanced(self).GetValidNodeId(atype)))
+func (self Instance) GetValidNodeId(atype Type) NodeID { //gd:VisualShader.get_valid_node_id
+	return NodeID(int(Advanced(self).GetValidNodeId(atype)))
 }
 
 /*
@@ -146,35 +146,35 @@ func (self Instance) ReplaceNode(atype Type, id int, new_class string) { //gd:Vi
 /*
 Returns [code]true[/code] if the specified node and port connection exist.
 */
-func (self Instance) IsNodeConnection(atype Type, from_node int, from_port int, to_node int, to_port int) bool { //gd:VisualShader.is_node_connection
+func (self Instance) IsNodeConnection(atype Type, from_node NodeID, from_port int, to_node NodeID, to_port int) bool { //gd:VisualShader.is_node_connection
 	return bool(Advanced(self).IsNodeConnection(atype, int64(from_node), int64(from_port), int64(to_node), int64(to_port)))
 }
 
 /*
 Returns [code]true[/code] if the specified nodes and ports can be connected together.
 */
-func (self Instance) CanConnectNodes(atype Type, from_node int, from_port int, to_node int, to_port int) bool { //gd:VisualShader.can_connect_nodes
+func (self Instance) CanConnectNodes(atype Type, from_node NodeID, from_port int, to_node NodeID, to_port int) bool { //gd:VisualShader.can_connect_nodes
 	return bool(Advanced(self).CanConnectNodes(atype, int64(from_node), int64(from_port), int64(to_node), int64(to_port)))
 }
 
 /*
 Connects the specified nodes and ports.
 */
-func (self Instance) ConnectNodes(atype Type, from_node int, from_port int, to_node int, to_port int) error { //gd:VisualShader.connect_nodes
+func (self Instance) ConnectNodes(atype Type, from_node NodeID, from_port int, to_node NodeID, to_port int) error { //gd:VisualShader.connect_nodes
 	return error(gd.ToError(Advanced(self).ConnectNodes(atype, int64(from_node), int64(from_port), int64(to_node), int64(to_port))))
 }
 
 /*
 Connects the specified nodes and ports.
 */
-func (self Instance) DisconnectNodes(atype Type, from_node int, from_port int, to_node int, to_port int) { //gd:VisualShader.disconnect_nodes
+func (self Instance) DisconnectNodes(atype Type, from_node NodeID, from_port int, to_node NodeID, to_port int) { //gd:VisualShader.disconnect_nodes
 	Advanced(self).DisconnectNodes(atype, int64(from_node), int64(from_port), int64(to_node), int64(to_port))
 }
 
 /*
 Connects the specified nodes and ports, even if they can't be connected. Such connection is invalid and will not function properly.
 */
-func (self Instance) ConnectNodesForced(atype Type, from_node int, from_port int, to_node int, to_port int) { //gd:VisualShader.connect_nodes_forced
+func (self Instance) ConnectNodesForced(atype Type, from_node NodeID, from_port int, to_node NodeID, to_port int) { //gd:VisualShader.connect_nodes_forced
 	Advanced(self).ConnectNodesForced(atype, int64(from_node), int64(from_port), int64(to_node), int64(to_port))
 }
 

@@ -12,6 +12,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/AudioStreamInteractive"
 import "graphics.gd/classdb/AudioStreamPlayback"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -87,7 +88,7 @@ func (self Instance) SwitchToClipByName(clip_name string) { //gd:AudioStreamPlay
 /*
 Switch to a clip (by index).
 */
-func (self Instance) SwitchToClip(clip_index int) { //gd:AudioStreamPlaybackInteractive.switch_to_clip
+func (self Instance) SwitchToClip(clip_index AudioStreamInteractive.Clip) { //gd:AudioStreamPlaybackInteractive.switch_to_clip
 	Advanced(self).SwitchToClip(int64(clip_index))
 }
 
@@ -100,8 +101,8 @@ var playing_clip_name = stream.get_clip_name(get_stream_playback().get_current_c
 [/gdscript]
 [/codeblocks]
 */
-func (self Instance) GetCurrentClipIndex() int { //gd:AudioStreamPlaybackInteractive.get_current_clip_index
-	return int(int(Advanced(self).GetCurrentClipIndex()))
+func (self Instance) GetCurrentClipIndex() AudioStreamInteractive.Clip { //gd:AudioStreamPlaybackInteractive.get_current_clip_index
+	return AudioStreamInteractive.Clip(int(Advanced(self).GetCurrentClipIndex()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

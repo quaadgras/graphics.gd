@@ -104,28 +104,28 @@ func (self Expanded) PlayStream(stream AudioStream.Instance, from_offset Float.X
 /*
 Change the stream volume (in db). The [param stream] argument is an integer ID returned by [method play_stream].
 */
-func (self Instance) SetStreamVolume(stream int, volume_db Float.X) { //gd:AudioStreamPlaybackPolyphonic.set_stream_volume
+func (self Instance) SetStreamVolume(stream Stream, volume_db Float.X) { //gd:AudioStreamPlaybackPolyphonic.set_stream_volume
 	Advanced(self).SetStreamVolume(int64(stream), float64(volume_db))
 }
 
 /*
 Change the stream pitch scale. The [param stream] argument is an integer ID returned by [method play_stream].
 */
-func (self Instance) SetStreamPitchScale(stream int, pitch_scale Float.X) { //gd:AudioStreamPlaybackPolyphonic.set_stream_pitch_scale
+func (self Instance) SetStreamPitchScale(stream Stream, pitch_scale Float.X) { //gd:AudioStreamPlaybackPolyphonic.set_stream_pitch_scale
 	Advanced(self).SetStreamPitchScale(int64(stream), float64(pitch_scale))
 }
 
 /*
 Returns [code]true[/code] if the stream associated with the given integer ID is still playing. Check [method play_stream] for information on when this ID becomes invalid.
 */
-func (self Instance) IsStreamPlaying(stream int) bool { //gd:AudioStreamPlaybackPolyphonic.is_stream_playing
+func (self Instance) IsStreamPlaying(stream Stream) bool { //gd:AudioStreamPlaybackPolyphonic.is_stream_playing
 	return bool(Advanced(self).IsStreamPlaying(int64(stream)))
 }
 
 /*
 Stop a stream. The [param stream] argument is an integer ID returned by [method play_stream], which becomes invalid after calling this function.
 */
-func (self Instance) StopStream(stream int) { //gd:AudioStreamPlaybackPolyphonic.stop_stream
+func (self Instance) StopStream(stream Stream) { //gd:AudioStreamPlaybackPolyphonic.stop_stream
 	Advanced(self).StopStream(int64(stream))
 }
 

@@ -31,6 +31,9 @@ func ImportsForClass(class gdjson.Class) iter.Seq[string] {
 		if class.Name == "ResourceUID" {
 			imports["graphics.gd/classdb/Resource"] = true
 		}
+		if class.Name == "AudioStreamPlaybackInteractive" {
+			imports["graphics.gd/classdb/AudioStreamInteractive"] = true
+		}
 		if class.Inherits != "" {
 			super := ClassDB[class.Inherits]
 			for super.Name != "" && super.Name != "Object" && super.Name != "RefCounted" && !ClassDB[super.Name].IsSingleton {

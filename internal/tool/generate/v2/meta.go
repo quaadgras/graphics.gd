@@ -116,6 +116,28 @@ func importsVariant(class gdjson.Class, identifier, s string) iter.Seq[string] {
 var StructablesInThisPackageGlobalHack = make(map[reflect.Type]bool)
 
 func (classDB ClassDB) convertTypeSimple(class gdjson.Class, lookup, meta string, gdType string) string {
+	distinctions := gdjson.Distinctions[class.Name]
+	for _, distinction := range distinctions {
+		pattern := distinction[0]
+		if gdType != distinction[1] {
+			continue
+		}
+		matchFunction, matchArgument, hasFunctionMatch := strings.Cut(pattern, " ")
+		if !hasFunctionMatch {
+			matchArgument = pattern
+		}
+		_, thisFunc, _ := strings.Cut(lookup, ".")
+		thisFunc, thisArg, _ := strings.Cut(thisFunc, ".")
+		if hasFunctionMatch {
+			if !strings.Contains(thisFunc, matchFunction) {
+				continue
+			}
+		}
+		if !strings.Contains(thisArg, matchArgument) {
+			continue
+		}
+		return distinction[2]
+	}
 	if strings.HasPrefix(gdType, "typedarray::") {
 		gdType = strings.TrimPrefix(gdType, "typedarray::")
 		meta, rest, ok := strings.Cut(gdType, ":")

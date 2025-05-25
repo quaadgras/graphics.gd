@@ -131,10 +131,10 @@ type Any interface {
 type Interface interface {
 	//Called when estimating the cost between a point and the path's ending point.
 	//Note that this function is hidden in the default [AStar3D] class.
-	EstimateCost(from_id int, end_id int) Float.X
+	EstimateCost(from_id Point, end_id Point) Float.X
 	//Called when computing the cost between two connected points.
 	//Note that this function is hidden in the default [AStar3D] class.
-	ComputeCost(from_id int, to_id int) Float.X
+	ComputeCost(from_id Point, to_id Point) Float.X
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -142,8 +142,8 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) EstimateCost(from_id int, end_id int) (_ Float.X) { return }
-func (self implementation) ComputeCost(from_id int, to_id int) (_ Float.X)   { return }
+func (self implementation) EstimateCost(from_id Point, end_id Point) (_ Float.X) { return }
+func (self implementation) ComputeCost(from_id Point, to_id Point) (_ Float.X)   { return }
 
 /*
 Called when estimating the cost between a point and the path's ending point.
@@ -195,7 +195,7 @@ astar.AddPoint(1, new Vector3(1, 0, 0), 4); // Adds the point (1, 0, 0) with wei
 [/codeblocks]
 If there already exists a point for the given [param id], its position and weight scale are updated to the given values.
 */
-func (self Instance) AddPoint(id int, position Vector3.XYZ) { //gd:AStar3D.add_point
+func (self Instance) AddPoint(id Point, position Vector3.XYZ) { //gd:AStar3D.add_point
 	Advanced(self).AddPoint(int64(id), Vector3.XYZ(position), float64(1.0))
 }
 
@@ -214,49 +214,49 @@ astar.AddPoint(1, new Vector3(1, 0, 0), 4); // Adds the point (1, 0, 0) with wei
 [/codeblocks]
 If there already exists a point for the given [param id], its position and weight scale are updated to the given values.
 */
-func (self Expanded) AddPoint(id int, position Vector3.XYZ, weight_scale Float.X) { //gd:AStar3D.add_point
+func (self Expanded) AddPoint(id Point, position Vector3.XYZ, weight_scale Float.X) { //gd:AStar3D.add_point
 	Advanced(self).AddPoint(int64(id), Vector3.XYZ(position), float64(weight_scale))
 }
 
 /*
 Returns the position of the point associated with the given [param id].
 */
-func (self Instance) GetPointPosition(id int) Vector3.XYZ { //gd:AStar3D.get_point_position
+func (self Instance) GetPointPosition(id Point) Vector3.XYZ { //gd:AStar3D.get_point_position
 	return Vector3.XYZ(Advanced(self).GetPointPosition(int64(id)))
 }
 
 /*
 Sets the [param position] for the point with the given [param id].
 */
-func (self Instance) SetPointPosition(id int, position Vector3.XYZ) { //gd:AStar3D.set_point_position
+func (self Instance) SetPointPosition(id Point, position Vector3.XYZ) { //gd:AStar3D.set_point_position
 	Advanced(self).SetPointPosition(int64(id), Vector3.XYZ(position))
 }
 
 /*
 Returns the weight scale of the point associated with the given [param id].
 */
-func (self Instance) GetPointWeightScale(id int) Float.X { //gd:AStar3D.get_point_weight_scale
+func (self Instance) GetPointWeightScale(id Point) Float.X { //gd:AStar3D.get_point_weight_scale
 	return Float.X(Float.X(Advanced(self).GetPointWeightScale(int64(id))))
 }
 
 /*
 Sets the [param weight_scale] for the point with the given [param id]. The [param weight_scale] is multiplied by the result of [method _compute_cost] when determining the overall cost of traveling across a segment from a neighboring point to this point.
 */
-func (self Instance) SetPointWeightScale(id int, weight_scale Float.X) { //gd:AStar3D.set_point_weight_scale
+func (self Instance) SetPointWeightScale(id Point, weight_scale Float.X) { //gd:AStar3D.set_point_weight_scale
 	Advanced(self).SetPointWeightScale(int64(id), float64(weight_scale))
 }
 
 /*
 Removes the point associated with the given [param id] from the points pool.
 */
-func (self Instance) RemovePoint(id int) { //gd:AStar3D.remove_point
+func (self Instance) RemovePoint(id Point) { //gd:AStar3D.remove_point
 	Advanced(self).RemovePoint(int64(id))
 }
 
 /*
 Returns whether a point associated with the given [param id] exists.
 */
-func (self Instance) HasPoint(id int) bool { //gd:AStar3D.has_point
+func (self Instance) HasPoint(id Point) bool { //gd:AStar3D.has_point
 	return bool(Advanced(self).HasPoint(int64(id)))
 }
 
@@ -288,35 +288,35 @@ long[] neighbors = astar.GetPointConnections(1); // Returns [2, 3]
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) GetPointConnections(id int) []int64 { //gd:AStar3D.get_point_connections
-	return []int64(slices.Collect(Advanced(self).GetPointConnections(int64(id)).Values()))
+func (self Instance) GetPointConnections(id Point) []Point { //gd:AStar3D.get_point_connections
+	return []Point(gd.IntsCollectAs[Point](Advanced(self).GetPointConnections(int64(id)).Values()))
 }
 
 /*
 Returns an array of all point IDs.
 */
-func (self Instance) GetPointIds() []int64 { //gd:AStar3D.get_point_ids
-	return []int64(slices.Collect(Advanced(self).GetPointIds().Values()))
+func (self Instance) GetPointIds() []Point { //gd:AStar3D.get_point_ids
+	return []Point(gd.IntsCollectAs[Point](Advanced(self).GetPointIds().Values()))
 }
 
 /*
 Disables or enables the specified point for pathfinding. Useful for making a temporary obstacle.
 */
-func (self Instance) SetPointDisabled(id int) { //gd:AStar3D.set_point_disabled
+func (self Instance) SetPointDisabled(id Point) { //gd:AStar3D.set_point_disabled
 	Advanced(self).SetPointDisabled(int64(id), true)
 }
 
 /*
 Disables or enables the specified point for pathfinding. Useful for making a temporary obstacle.
 */
-func (self Expanded) SetPointDisabled(id int, disabled bool) { //gd:AStar3D.set_point_disabled
+func (self Expanded) SetPointDisabled(id Point, disabled bool) { //gd:AStar3D.set_point_disabled
 	Advanced(self).SetPointDisabled(int64(id), disabled)
 }
 
 /*
 Returns whether a point is disabled or not for pathfinding. By default, all points are enabled.
 */
-func (self Instance) IsPointDisabled(id int) bool { //gd:AStar3D.is_point_disabled
+func (self Instance) IsPointDisabled(id Point) bool { //gd:AStar3D.is_point_disabled
 	return bool(Advanced(self).IsPointDisabled(int64(id)))
 }
 
@@ -337,7 +337,7 @@ astar.ConnectPoints(1, 2, false);
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) ConnectPoints(id int, to_id int) { //gd:AStar3D.connect_points
+func (self Instance) ConnectPoints(id Point, to_id Point) { //gd:AStar3D.connect_points
 	Advanced(self).ConnectPoints(int64(id), int64(to_id), true)
 }
 
@@ -358,35 +358,35 @@ astar.ConnectPoints(1, 2, false);
 [/csharp]
 [/codeblocks]
 */
-func (self Expanded) ConnectPoints(id int, to_id int, bidirectional bool) { //gd:AStar3D.connect_points
+func (self Expanded) ConnectPoints(id Point, to_id Point, bidirectional bool) { //gd:AStar3D.connect_points
 	Advanced(self).ConnectPoints(int64(id), int64(to_id), bidirectional)
 }
 
 /*
 Deletes the segment between the given points. If [param bidirectional] is [code]false[/code], only movement from [param id] to [param to_id] is prevented, and a unidirectional segment possibly remains.
 */
-func (self Instance) DisconnectPoints(id int, to_id int) { //gd:AStar3D.disconnect_points
+func (self Instance) DisconnectPoints(id Point, to_id Point) { //gd:AStar3D.disconnect_points
 	Advanced(self).DisconnectPoints(int64(id), int64(to_id), true)
 }
 
 /*
 Deletes the segment between the given points. If [param bidirectional] is [code]false[/code], only movement from [param id] to [param to_id] is prevented, and a unidirectional segment possibly remains.
 */
-func (self Expanded) DisconnectPoints(id int, to_id int, bidirectional bool) { //gd:AStar3D.disconnect_points
+func (self Expanded) DisconnectPoints(id Point, to_id Point, bidirectional bool) { //gd:AStar3D.disconnect_points
 	Advanced(self).DisconnectPoints(int64(id), int64(to_id), bidirectional)
 }
 
 /*
 Returns whether the two given points are directly connected by a segment. If [param bidirectional] is [code]false[/code], returns whether movement from [param id] to [param to_id] is possible through this segment.
 */
-func (self Instance) ArePointsConnected(id int, to_id int) bool { //gd:AStar3D.are_points_connected
+func (self Instance) ArePointsConnected(id Point, to_id Point) bool { //gd:AStar3D.are_points_connected
 	return bool(Advanced(self).ArePointsConnected(int64(id), int64(to_id), true))
 }
 
 /*
 Returns whether the two given points are directly connected by a segment. If [param bidirectional] is [code]false[/code], returns whether movement from [param id] to [param to_id] is possible through this segment.
 */
-func (self Expanded) ArePointsConnected(id int, to_id int, bidirectional bool) bool { //gd:AStar3D.are_points_connected
+func (self Expanded) ArePointsConnected(id Point, to_id Point, bidirectional bool) bool { //gd:AStar3D.are_points_connected
 	return bool(Advanced(self).ArePointsConnected(int64(id), int64(to_id), bidirectional))
 }
 
@@ -464,7 +464,7 @@ If there is no valid path to the target, and [param allow_partial_path] is [code
 [b]Note:[/b] This method is not thread-safe. If called from a [Thread], it will return an empty array and will print an error message.
 Additionally, when [param allow_partial_path] is [code]true[/code] and [param to_id] is disabled the search may take an unusually long time to finish.
 */
-func (self Instance) GetPointPath(from_id int, to_id int) []Vector3.XYZ { //gd:AStar3D.get_point_path
+func (self Instance) GetPointPath(from_id Point, to_id Point) []Vector3.XYZ { //gd:AStar3D.get_point_path
 	return []Vector3.XYZ(slices.Collect(Advanced(self).GetPointPath(int64(from_id), int64(to_id), false).Values()))
 }
 
@@ -474,7 +474,7 @@ If there is no valid path to the target, and [param allow_partial_path] is [code
 [b]Note:[/b] This method is not thread-safe. If called from a [Thread], it will return an empty array and will print an error message.
 Additionally, when [param allow_partial_path] is [code]true[/code] and [param to_id] is disabled the search may take an unusually long time to finish.
 */
-func (self Expanded) GetPointPath(from_id int, to_id int, allow_partial_path bool) []Vector3.XYZ { //gd:AStar3D.get_point_path
+func (self Expanded) GetPointPath(from_id Point, to_id Point, allow_partial_path bool) []Vector3.XYZ { //gd:AStar3D.get_point_path
 	return []Vector3.XYZ(slices.Collect(Advanced(self).GetPointPath(int64(from_id), int64(to_id), allow_partial_path).Values()))
 }
 
@@ -512,8 +512,8 @@ long[] res = astar.GetIdPath(1, 3); // Returns [1, 2, 3]
 [/codeblocks]
 If you change the 2nd point's weight to 3, then the result will be [code][1, 4, 3][/code] instead, because now even though the distance is longer, it's "easier" to get through point 4 than through point 2.
 */
-func (self Instance) GetIdPath(from_id int, to_id int) []int64 { //gd:AStar3D.get_id_path
-	return []int64(slices.Collect(Advanced(self).GetIdPath(int64(from_id), int64(to_id), false).Values()))
+func (self Instance) GetIdPath(from_id Point, to_id Point) []Point { //gd:AStar3D.get_id_path
+	return []Point(gd.IntsCollectAs[Point](Advanced(self).GetIdPath(int64(from_id), int64(to_id), false).Values()))
 }
 
 /*
@@ -550,8 +550,8 @@ long[] res = astar.GetIdPath(1, 3); // Returns [1, 2, 3]
 [/codeblocks]
 If you change the 2nd point's weight to 3, then the result will be [code][1, 4, 3][/code] instead, because now even though the distance is longer, it's "easier" to get through point 4 than through point 2.
 */
-func (self Expanded) GetIdPath(from_id int, to_id int, allow_partial_path bool) []int64 { //gd:AStar3D.get_id_path
-	return []int64(slices.Collect(Advanced(self).GetIdPath(int64(from_id), int64(to_id), allow_partial_path).Values()))
+func (self Expanded) GetIdPath(from_id Point, to_id Point, allow_partial_path bool) []Point { //gd:AStar3D.get_id_path
+	return []Point(gd.IntsCollectAs[Point](Advanced(self).GetIdPath(int64(from_id), int64(to_id), allow_partial_path).Values()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

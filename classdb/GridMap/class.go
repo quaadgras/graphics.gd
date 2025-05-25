@@ -138,7 +138,7 @@ Sets the mesh index for the cell referenced by its grid coordinates.
 A negative item index such as [constant INVALID_CELL_ITEM] will clear the cell.
 Optionally, the item's orientation can be passed. For valid orientation values, see [method get_orthogonal_index_from_basis].
 */
-func (self Instance) SetCellItem(position Vector3i.XYZ, item int) { //gd:GridMap.set_cell_item
+func (self Instance) SetCellItem(position Vector3i.XYZ, item CellItem) { //gd:GridMap.set_cell_item
 	Advanced(self).SetCellItem(Vector3i.XYZ(position), int64(item), int64(0))
 }
 
@@ -147,22 +147,22 @@ Sets the mesh index for the cell referenced by its grid coordinates.
 A negative item index such as [constant INVALID_CELL_ITEM] will clear the cell.
 Optionally, the item's orientation can be passed. For valid orientation values, see [method get_orthogonal_index_from_basis].
 */
-func (self Expanded) SetCellItem(position Vector3i.XYZ, item int, orientation int) { //gd:GridMap.set_cell_item
+func (self Expanded) SetCellItem(position Vector3i.XYZ, item CellItem, orientation int) { //gd:GridMap.set_cell_item
 	Advanced(self).SetCellItem(Vector3i.XYZ(position), int64(item), int64(orientation))
 }
 
 /*
 The [MeshLibrary] item index located at the given grid coordinates. If the cell is empty, [constant INVALID_CELL_ITEM] will be returned.
 */
-func (self Instance) GetCellItem(position Vector3i.XYZ) int { //gd:GridMap.get_cell_item
-	return int(int(Advanced(self).GetCellItem(Vector3i.XYZ(position))))
+func (self Instance) GetCellItem(position Vector3i.XYZ) CellItem { //gd:GridMap.get_cell_item
+	return CellItem(int(Advanced(self).GetCellItem(Vector3i.XYZ(position))))
 }
 
 /*
 The orientation of the cell at the given grid coordinates. [code]-1[/code] is returned if the cell is empty.
 */
-func (self Instance) GetCellItemOrientation(position Vector3i.XYZ) int { //gd:GridMap.get_cell_item_orientation
-	return int(int(Advanced(self).GetCellItemOrientation(Vector3i.XYZ(position))))
+func (self Instance) GetCellItemOrientation(position Vector3i.XYZ) CellItem { //gd:GridMap.get_cell_item_orientation
+	return CellItem(int(Advanced(self).GetCellItemOrientation(Vector3i.XYZ(position))))
 }
 
 /*
@@ -224,7 +224,7 @@ func (self Instance) GetUsedCells() []Vector3i.XYZ { //gd:GridMap.get_used_cells
 /*
 Returns an array of all cells with the given item index specified in [param item].
 */
-func (self Instance) GetUsedCellsByItem(item int) []Vector3i.XYZ { //gd:GridMap.get_used_cells_by_item
+func (self Instance) GetUsedCellsByItem(item CellItem) []Vector3i.XYZ { //gd:GridMap.get_used_cells_by_item
 	return []Vector3i.XYZ(gd.ArrayAs[[]Vector3i.XYZ](gd.InternalArray(Advanced(self).GetUsedCellsByItem(int64(item)))))
 }
 

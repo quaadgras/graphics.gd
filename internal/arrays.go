@@ -11,6 +11,14 @@ import (
 	ArrayVariant "graphics.gd/variant/Array"
 )
 
+func IntsCollectAs[T, S ~int | ~int64 | ~int32](seq iter.Seq[S]) []T {
+	var result = make([]T, 0)
+	for value := range seq {
+		result = append(result, T(value))
+	}
+	return result
+}
+
 func (a Array) Index(index int64) Variant {
 	return Global.Array.Index(a, index)
 }

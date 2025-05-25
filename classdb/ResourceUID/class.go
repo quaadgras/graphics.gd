@@ -82,7 +82,7 @@ func singleton() {
 /*
 Converts the given UID to a [code]uid://[/code] string value.
 */
-func IdToText(id int) string { //gd:ResourceUID.id_to_text
+func IdToText(id Resource.UID) string { //gd:ResourceUID.id_to_text
 	once.Do(singleton)
 	return string(Advanced().IdToText(int64(id)).String())
 }
@@ -107,7 +107,7 @@ func CreateId() int { //gd:ResourceUID.create_id
 /*
 Returns whether the given UID value is known to the cache.
 */
-func HasId(id int) bool { //gd:ResourceUID.has_id
+func HasId(id Resource.UID) bool { //gd:ResourceUID.has_id
 	once.Do(singleton)
 	return bool(Advanced().HasId(int64(id)))
 }
@@ -116,7 +116,7 @@ func HasId(id int) bool { //gd:ResourceUID.has_id
 Adds a new UID value which is mapped to the given resource path.
 Fails with an error if the UID already exists, so be sure to check [method has_id] beforehand, or use [method set_id] instead.
 */
-func AddId(id int, path string) { //gd:ResourceUID.add_id
+func AddId(id Resource.UID, path string) { //gd:ResourceUID.add_id
 	once.Do(singleton)
 	Advanced().AddId(int64(id), String.New(path))
 }
@@ -125,7 +125,7 @@ func AddId(id int, path string) { //gd:ResourceUID.add_id
 Updates the resource path of an existing UID.
 Fails with an error if the UID does not exist, so be sure to check [method has_id] beforehand, or use [method add_id] instead.
 */
-func SetId(id int, path string) { //gd:ResourceUID.set_id
+func SetId(id Resource.UID, path string) { //gd:ResourceUID.set_id
 	once.Do(singleton)
 	Advanced().SetId(int64(id), String.New(path))
 }
@@ -134,7 +134,7 @@ func SetId(id int, path string) { //gd:ResourceUID.set_id
 Returns the path that the given UID value refers to.
 Fails with an error if the UID does not exist, so be sure to check [method has_id] beforehand.
 */
-func GetIdPath(id int) string { //gd:ResourceUID.get_id_path
+func GetIdPath(id Resource.UID) string { //gd:ResourceUID.get_id_path
 	once.Do(singleton)
 	return string(Advanced().GetIdPath(int64(id)).String())
 }
@@ -143,7 +143,7 @@ func GetIdPath(id int) string { //gd:ResourceUID.get_id_path
 Removes a loaded UID value from the cache.
 Fails with an error if the UID does not exist, so be sure to check [method has_id] beforehand.
 */
-func RemoveId(id int) { //gd:ResourceUID.remove_id
+func RemoveId(id Resource.UID) { //gd:ResourceUID.remove_id
 	once.Do(singleton)
 	Advanced().RemoveId(int64(id))
 }

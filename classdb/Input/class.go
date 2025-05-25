@@ -129,7 +129,7 @@ func IsMouseButtonPressed(button MouseButton) bool { //gd:Input.is_mouse_button_
 /*
 Returns [code]true[/code] if you are pressing the joypad button (see [enum JoyButton]).
 */
-func IsJoyButtonPressed(device int, button JoyButton) bool { //gd:Input.is_joy_button_pressed
+func IsJoyButtonPressed(device Device, button JoyButton) bool { //gd:Input.is_joy_button_pressed
 	once.Do(singleton)
 	return bool(Advanced().IsJoyButtonPressed(int64(device), button))
 }
@@ -295,7 +295,7 @@ func RemoveJoyMapping(guid string) { //gd:Input.remove_joy_mapping
 /*
 Returns [code]true[/code] if the system knows the specified device. This means that it sets all button and axis indices. Unknown joypads are not expected to match these constants, but you can still retrieve events from them.
 */
-func IsJoyKnown(device int) bool { //gd:Input.is_joy_known
+func IsJoyKnown(device Device) bool { //gd:Input.is_joy_known
 	once.Do(singleton)
 	return bool(Advanced().IsJoyKnown(int64(device)))
 }
@@ -303,7 +303,7 @@ func IsJoyKnown(device int) bool { //gd:Input.is_joy_known
 /*
 Returns the current value of the joypad axis at given index (see [enum JoyAxis]).
 */
-func GetJoyAxis(device int, axis JoyAxis) Float.X { //gd:Input.get_joy_axis
+func GetJoyAxis(device Device, axis JoyAxis) Float.X { //gd:Input.get_joy_axis
 	once.Do(singleton)
 	return Float.X(Float.X(Advanced().GetJoyAxis(int64(device), axis)))
 }
@@ -311,7 +311,7 @@ func GetJoyAxis(device int, axis JoyAxis) Float.X { //gd:Input.get_joy_axis
 /*
 Returns the name of the joypad at the specified device index, e.g. [code]PS4 Controller[/code]. Godot uses the [url=https://github.com/gabomdq/SDL_GameControllerDB]SDL2 game controller database[/url] to determine gamepad names.
 */
-func GetJoyName(device int) string { //gd:Input.get_joy_name
+func GetJoyName(device Device) string { //gd:Input.get_joy_name
 	once.Do(singleton)
 	return string(Advanced().GetJoyName(int64(device)).String())
 }
@@ -320,7 +320,7 @@ func GetJoyName(device int) string { //gd:Input.get_joy_name
 Returns an SDL2-compatible device GUID on platforms that use gamepad remapping, e.g. [code]030000004c050000c405000000010000[/code]. Returns an empty string if it cannot be found. Godot uses the [url=https://github.com/gabomdq/SDL_GameControllerDB]SDL2 game controller database[/url] to determine gamepad names and mappings based on this GUID.
 On Windows, all XInput joypad GUIDs will be overridden by Godot to [code]__XINPUT_DEVICE__[/code], because their mappings are the same.
 */
-func GetJoyGuid(device int) string { //gd:Input.get_joy_guid
+func GetJoyGuid(device Device) string { //gd:Input.get_joy_guid
 	once.Do(singleton)
 	return string(Advanced().GetJoyGuid(int64(device)).String())
 }
@@ -338,7 +338,7 @@ On Linux:
 [code]steam_input_index[/code]: The Steam Input gamepad index, if the device is not a Steam Input device this key won't be present.
 [b]Note:[/b] The returned dictionary is always empty on Web, iOS, Android, and macOS.
 */
-func GetJoyInfo(device int) JoyInfo { //gd:Input.get_joy_info
+func GetJoyInfo(device Device) JoyInfo { //gd:Input.get_joy_info
 	once.Do(singleton)
 	return JoyInfo(gd.DictionaryAs[JoyInfo](Advanced().GetJoyInfo(int64(device))))
 }
@@ -363,7 +363,7 @@ func GetConnectedJoypads() []int { //gd:Input.get_connected_joypads
 /*
 Returns the strength of the joypad vibration: x is the strength of the weak motor, and y is the strength of the strong motor.
 */
-func GetJoyVibrationStrength(device int) Vector2.XY { //gd:Input.get_joy_vibration_strength
+func GetJoyVibrationStrength(device Device) Vector2.XY { //gd:Input.get_joy_vibration_strength
 	once.Do(singleton)
 	return Vector2.XY(Advanced().GetJoyVibrationStrength(int64(device)))
 }
@@ -371,7 +371,7 @@ func GetJoyVibrationStrength(device int) Vector2.XY { //gd:Input.get_joy_vibrati
 /*
 Returns the duration of the current vibration effect in seconds.
 */
-func GetJoyVibrationDuration(device int) Float.X { //gd:Input.get_joy_vibration_duration
+func GetJoyVibrationDuration(device Device) Float.X { //gd:Input.get_joy_vibration_duration
 	once.Do(singleton)
 	return Float.X(Float.X(Advanced().GetJoyVibrationDuration(int64(device))))
 }
@@ -381,7 +381,7 @@ Starts to vibrate the joypad. Joypads usually come with two rumble motors, a str
 [b]Note:[/b] Not every hardware is compatible with long effect durations; it is recommended to restart an effect if it has to be played for more than a few seconds.
 [b]Note:[/b] For macOS, vibration is only supported in macOS 11 and later.
 */
-func StartJoyVibration(device int, weak_magnitude Float.X, strong_magnitude Float.X, duration Float.X) { //gd:Input.start_joy_vibration
+func StartJoyVibration(device Device, weak_magnitude Float.X, strong_magnitude Float.X, duration Float.X) { //gd:Input.start_joy_vibration
 	once.Do(singleton)
 	Advanced().StartJoyVibration(int64(device), float64(weak_magnitude), float64(strong_magnitude), float64(duration))
 }
@@ -391,7 +391,7 @@ Starts to vibrate the joypad. Joypads usually come with two rumble motors, a str
 [b]Note:[/b] Not every hardware is compatible with long effect durations; it is recommended to restart an effect if it has to be played for more than a few seconds.
 [b]Note:[/b] For macOS, vibration is only supported in macOS 11 and later.
 */
-func StartJoyVibrationOptions(device int, weak_magnitude Float.X, strong_magnitude Float.X, duration Float.X) { //gd:Input.start_joy_vibration
+func StartJoyVibrationOptions(device Device, weak_magnitude Float.X, strong_magnitude Float.X, duration Float.X) { //gd:Input.start_joy_vibration
 	once.Do(singleton)
 	Advanced().StartJoyVibration(int64(device), float64(weak_magnitude), float64(strong_magnitude), float64(duration))
 }
@@ -399,7 +399,7 @@ func StartJoyVibrationOptions(device int, weak_magnitude Float.X, strong_magnitu
 /*
 Stops the vibration of the joypad started with [method start_joy_vibration].
 */
-func StopJoyVibration(device int) { //gd:Input.stop_joy_vibration
+func StopJoyVibration(device Device) { //gd:Input.stop_joy_vibration
 	once.Do(singleton)
 	Advanced().StopJoyVibration(int64(device))
 }

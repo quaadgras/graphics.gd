@@ -116,7 +116,7 @@ func MoveBus(index int, to_index int) { //gd:AudioServer.move_bus
 /*
 Sets the name of the bus at index [param bus_idx] to [param name].
 */
-func SetBusName(bus_idx int, name string) { //gd:AudioServer.set_bus_name
+func SetBusName(bus_idx Bus, name string) { //gd:AudioServer.set_bus_name
 	once.Do(singleton)
 	Advanced().SetBusName(int64(bus_idx), String.New(name))
 }
@@ -124,7 +124,7 @@ func SetBusName(bus_idx int, name string) { //gd:AudioServer.set_bus_name
 /*
 Returns the name of the bus with the index [param bus_idx].
 */
-func GetBusName(bus_idx int) string { //gd:AudioServer.get_bus_name
+func GetBusName(bus_idx Bus) string { //gd:AudioServer.get_bus_name
 	once.Do(singleton)
 	return string(Advanced().GetBusName(int64(bus_idx)).String())
 }
@@ -140,7 +140,7 @@ func GetBusIndex(bus_name string) int { //gd:AudioServer.get_bus_index
 /*
 Returns the number of channels of the bus at index [param bus_idx].
 */
-func GetBusChannels(bus_idx int) int { //gd:AudioServer.get_bus_channels
+func GetBusChannels(bus_idx Bus) int { //gd:AudioServer.get_bus_channels
 	once.Do(singleton)
 	return int(int(Advanced().GetBusChannels(int64(bus_idx))))
 }
@@ -148,7 +148,7 @@ func GetBusChannels(bus_idx int) int { //gd:AudioServer.get_bus_channels
 /*
 Sets the volume in decibels of the bus at index [param bus_idx] to [param volume_db].
 */
-func SetBusVolumeDb(bus_idx int, volume_db Float.X) { //gd:AudioServer.set_bus_volume_db
+func SetBusVolumeDb(bus_idx Bus, volume_db Float.X) { //gd:AudioServer.set_bus_volume_db
 	once.Do(singleton)
 	Advanced().SetBusVolumeDb(int64(bus_idx), float64(volume_db))
 }
@@ -156,7 +156,7 @@ func SetBusVolumeDb(bus_idx int, volume_db Float.X) { //gd:AudioServer.set_bus_v
 /*
 Returns the volume of the bus at index [param bus_idx] in dB.
 */
-func GetBusVolumeDb(bus_idx int) Float.X { //gd:AudioServer.get_bus_volume_db
+func GetBusVolumeDb(bus_idx Bus) Float.X { //gd:AudioServer.get_bus_volume_db
 	once.Do(singleton)
 	return Float.X(Float.X(Advanced().GetBusVolumeDb(int64(bus_idx))))
 }
@@ -165,7 +165,7 @@ func GetBusVolumeDb(bus_idx int) Float.X { //gd:AudioServer.get_bus_volume_db
 Sets the volume as a linear value of the bus at index [param bus_idx] to [param volume_linear].
 [b]Note:[/b] Using this method is equivalent to calling [method set_bus_volume_db] with the result of [method @GlobalScope.linear_to_db] on a value.
 */
-func SetBusVolumeLinear(bus_idx int, volume_linear Float.X) { //gd:AudioServer.set_bus_volume_linear
+func SetBusVolumeLinear(bus_idx Bus, volume_linear Float.X) { //gd:AudioServer.set_bus_volume_linear
 	once.Do(singleton)
 	Advanced().SetBusVolumeLinear(int64(bus_idx), float64(volume_linear))
 }
@@ -174,7 +174,7 @@ func SetBusVolumeLinear(bus_idx int, volume_linear Float.X) { //gd:AudioServer.s
 Returns the volume of the bus at index [param bus_idx] as a linear value.
 [b]Note:[/b] The returned value is equivalent to the result of [method @GlobalScope.db_to_linear] on the result of [method get_bus_volume_db].
 */
-func GetBusVolumeLinear(bus_idx int) Float.X { //gd:AudioServer.get_bus_volume_linear
+func GetBusVolumeLinear(bus_idx Bus) Float.X { //gd:AudioServer.get_bus_volume_linear
 	once.Do(singleton)
 	return Float.X(Float.X(Advanced().GetBusVolumeLinear(int64(bus_idx))))
 }
@@ -182,7 +182,7 @@ func GetBusVolumeLinear(bus_idx int) Float.X { //gd:AudioServer.get_bus_volume_l
 /*
 Connects the output of the bus at [param bus_idx] to the bus named [param send].
 */
-func SetBusSend(bus_idx int, send string) { //gd:AudioServer.set_bus_send
+func SetBusSend(bus_idx Bus, send string) { //gd:AudioServer.set_bus_send
 	once.Do(singleton)
 	Advanced().SetBusSend(int64(bus_idx), String.Name(String.New(send)))
 }
@@ -190,7 +190,7 @@ func SetBusSend(bus_idx int, send string) { //gd:AudioServer.set_bus_send
 /*
 Returns the name of the bus that the bus at index [param bus_idx] sends to.
 */
-func GetBusSend(bus_idx int) string { //gd:AudioServer.get_bus_send
+func GetBusSend(bus_idx Bus) string { //gd:AudioServer.get_bus_send
 	once.Do(singleton)
 	return string(Advanced().GetBusSend(int64(bus_idx)).String())
 }
@@ -198,7 +198,7 @@ func GetBusSend(bus_idx int) string { //gd:AudioServer.get_bus_send
 /*
 If [code]true[/code], the bus at index [param bus_idx] is in solo mode.
 */
-func SetBusSolo(bus_idx int, enable bool) { //gd:AudioServer.set_bus_solo
+func SetBusSolo(bus_idx Bus, enable bool) { //gd:AudioServer.set_bus_solo
 	once.Do(singleton)
 	Advanced().SetBusSolo(int64(bus_idx), enable)
 }
@@ -206,7 +206,7 @@ func SetBusSolo(bus_idx int, enable bool) { //gd:AudioServer.set_bus_solo
 /*
 If [code]true[/code], the bus at index [param bus_idx] is in solo mode.
 */
-func IsBusSolo(bus_idx int) bool { //gd:AudioServer.is_bus_solo
+func IsBusSolo(bus_idx Bus) bool { //gd:AudioServer.is_bus_solo
 	once.Do(singleton)
 	return bool(Advanced().IsBusSolo(int64(bus_idx)))
 }
@@ -214,7 +214,7 @@ func IsBusSolo(bus_idx int) bool { //gd:AudioServer.is_bus_solo
 /*
 If [code]true[/code], the bus at index [param bus_idx] is muted.
 */
-func SetBusMute(bus_idx int, enable bool) { //gd:AudioServer.set_bus_mute
+func SetBusMute(bus_idx Bus, enable bool) { //gd:AudioServer.set_bus_mute
 	once.Do(singleton)
 	Advanced().SetBusMute(int64(bus_idx), enable)
 }
@@ -222,7 +222,7 @@ func SetBusMute(bus_idx int, enable bool) { //gd:AudioServer.set_bus_mute
 /*
 If [code]true[/code], the bus at index [param bus_idx] is muted.
 */
-func IsBusMute(bus_idx int) bool { //gd:AudioServer.is_bus_mute
+func IsBusMute(bus_idx Bus) bool { //gd:AudioServer.is_bus_mute
 	once.Do(singleton)
 	return bool(Advanced().IsBusMute(int64(bus_idx)))
 }
@@ -230,7 +230,7 @@ func IsBusMute(bus_idx int) bool { //gd:AudioServer.is_bus_mute
 /*
 If [code]true[/code], the bus at index [param bus_idx] is bypassing effects.
 */
-func SetBusBypassEffects(bus_idx int, enable bool) { //gd:AudioServer.set_bus_bypass_effects
+func SetBusBypassEffects(bus_idx Bus, enable bool) { //gd:AudioServer.set_bus_bypass_effects
 	once.Do(singleton)
 	Advanced().SetBusBypassEffects(int64(bus_idx), enable)
 }
@@ -238,7 +238,7 @@ func SetBusBypassEffects(bus_idx int, enable bool) { //gd:AudioServer.set_bus_by
 /*
 If [code]true[/code], the bus at index [param bus_idx] is bypassing effects.
 */
-func IsBusBypassingEffects(bus_idx int) bool { //gd:AudioServer.is_bus_bypassing_effects
+func IsBusBypassingEffects(bus_idx Bus) bool { //gd:AudioServer.is_bus_bypassing_effects
 	once.Do(singleton)
 	return bool(Advanced().IsBusBypassingEffects(int64(bus_idx)))
 }
@@ -246,7 +246,7 @@ func IsBusBypassingEffects(bus_idx int) bool { //gd:AudioServer.is_bus_bypassing
 /*
 Adds an [AudioEffect] effect to the bus [param bus_idx] at [param at_position].
 */
-func AddBusEffect(bus_idx int, effect AudioEffect.Instance) { //gd:AudioServer.add_bus_effect
+func AddBusEffect(bus_idx Bus, effect AudioEffect.Instance) { //gd:AudioServer.add_bus_effect
 	once.Do(singleton)
 	Advanced().AddBusEffect(int64(bus_idx), effect, int64(-1))
 }
@@ -254,7 +254,7 @@ func AddBusEffect(bus_idx int, effect AudioEffect.Instance) { //gd:AudioServer.a
 /*
 Adds an [AudioEffect] effect to the bus [param bus_idx] at [param at_position].
 */
-func AddBusEffectOptions(bus_idx int, effect AudioEffect.Instance, at_position int) { //gd:AudioServer.add_bus_effect
+func AddBusEffectOptions(bus_idx Bus, effect AudioEffect.Instance, at_position int) { //gd:AudioServer.add_bus_effect
 	once.Do(singleton)
 	Advanced().AddBusEffect(int64(bus_idx), effect, int64(at_position))
 }
@@ -262,7 +262,7 @@ func AddBusEffectOptions(bus_idx int, effect AudioEffect.Instance, at_position i
 /*
 Removes the effect at index [param effect_idx] from the bus at index [param bus_idx].
 */
-func RemoveBusEffect(bus_idx int, effect_idx int) { //gd:AudioServer.remove_bus_effect
+func RemoveBusEffect(bus_idx Bus, effect_idx Effect) { //gd:AudioServer.remove_bus_effect
 	once.Do(singleton)
 	Advanced().RemoveBusEffect(int64(bus_idx), int64(effect_idx))
 }
@@ -270,7 +270,7 @@ func RemoveBusEffect(bus_idx int, effect_idx int) { //gd:AudioServer.remove_bus_
 /*
 Returns the number of effects on the bus at [param bus_idx].
 */
-func GetBusEffectCount(bus_idx int) int { //gd:AudioServer.get_bus_effect_count
+func GetBusEffectCount(bus_idx Bus) int { //gd:AudioServer.get_bus_effect_count
 	once.Do(singleton)
 	return int(int(Advanced().GetBusEffectCount(int64(bus_idx))))
 }
@@ -278,7 +278,7 @@ func GetBusEffectCount(bus_idx int) int { //gd:AudioServer.get_bus_effect_count
 /*
 Returns the [AudioEffect] at position [param effect_idx] in bus [param bus_idx].
 */
-func GetBusEffect(bus_idx int, effect_idx int) AudioEffect.Instance { //gd:AudioServer.get_bus_effect
+func GetBusEffect(bus_idx Bus, effect_idx Effect) AudioEffect.Instance { //gd:AudioServer.get_bus_effect
 	once.Do(singleton)
 	return AudioEffect.Instance(Advanced().GetBusEffect(int64(bus_idx), int64(effect_idx)))
 }
@@ -286,7 +286,7 @@ func GetBusEffect(bus_idx int, effect_idx int) AudioEffect.Instance { //gd:Audio
 /*
 Returns the [AudioEffectInstance] assigned to the given bus and effect indices (and optionally channel).
 */
-func GetBusEffectInstance(bus_idx int, effect_idx int, channel int) AudioEffectInstance.Instance { //gd:AudioServer.get_bus_effect_instance
+func GetBusEffectInstance(bus_idx Bus, effect_idx Effect, channel int) AudioEffectInstance.Instance { //gd:AudioServer.get_bus_effect_instance
 	once.Do(singleton)
 	return AudioEffectInstance.Instance(Advanced().GetBusEffectInstance(int64(bus_idx), int64(effect_idx), int64(channel)))
 }
@@ -294,7 +294,7 @@ func GetBusEffectInstance(bus_idx int, effect_idx int, channel int) AudioEffectI
 /*
 Returns the [AudioEffectInstance] assigned to the given bus and effect indices (and optionally channel).
 */
-func GetBusEffectInstanceOptions(bus_idx int, effect_idx int, channel int) AudioEffectInstance.Instance { //gd:AudioServer.get_bus_effect_instance
+func GetBusEffectInstanceOptions(bus_idx Bus, effect_idx Effect, channel int) AudioEffectInstance.Instance { //gd:AudioServer.get_bus_effect_instance
 	once.Do(singleton)
 	return AudioEffectInstance.Instance(Advanced().GetBusEffectInstance(int64(bus_idx), int64(effect_idx), int64(channel)))
 }
@@ -302,7 +302,7 @@ func GetBusEffectInstanceOptions(bus_idx int, effect_idx int, channel int) Audio
 /*
 Swaps the position of two effects in bus [param bus_idx].
 */
-func SwapBusEffects(bus_idx int, effect_idx int, by_effect_idx int) { //gd:AudioServer.swap_bus_effects
+func SwapBusEffects(bus_idx Bus, effect_idx Effect, by_effect_idx Effect) { //gd:AudioServer.swap_bus_effects
 	once.Do(singleton)
 	Advanced().SwapBusEffects(int64(bus_idx), int64(effect_idx), int64(by_effect_idx))
 }
@@ -310,7 +310,7 @@ func SwapBusEffects(bus_idx int, effect_idx int, by_effect_idx int) { //gd:Audio
 /*
 If [code]true[/code], the effect at index [param effect_idx] on the bus at index [param bus_idx] is enabled.
 */
-func SetBusEffectEnabled(bus_idx int, effect_idx int, enabled bool) { //gd:AudioServer.set_bus_effect_enabled
+func SetBusEffectEnabled(bus_idx Bus, effect_idx Effect, enabled bool) { //gd:AudioServer.set_bus_effect_enabled
 	once.Do(singleton)
 	Advanced().SetBusEffectEnabled(int64(bus_idx), int64(effect_idx), enabled)
 }
@@ -318,7 +318,7 @@ func SetBusEffectEnabled(bus_idx int, effect_idx int, enabled bool) { //gd:Audio
 /*
 If [code]true[/code], the effect at index [param effect_idx] on the bus at index [param bus_idx] is enabled.
 */
-func IsBusEffectEnabled(bus_idx int, effect_idx int) bool { //gd:AudioServer.is_bus_effect_enabled
+func IsBusEffectEnabled(bus_idx Bus, effect_idx Effect) bool { //gd:AudioServer.is_bus_effect_enabled
 	once.Do(singleton)
 	return bool(Advanced().IsBusEffectEnabled(int64(bus_idx), int64(effect_idx)))
 }
@@ -326,7 +326,7 @@ func IsBusEffectEnabled(bus_idx int, effect_idx int) bool { //gd:AudioServer.is_
 /*
 Returns the peak volume of the left speaker at bus index [param bus_idx] and channel index [param channel].
 */
-func GetBusPeakVolumeLeftDb(bus_idx int, channel int) Float.X { //gd:AudioServer.get_bus_peak_volume_left_db
+func GetBusPeakVolumeLeftDb(bus_idx Bus, channel int) Float.X { //gd:AudioServer.get_bus_peak_volume_left_db
 	once.Do(singleton)
 	return Float.X(Float.X(Advanced().GetBusPeakVolumeLeftDb(int64(bus_idx), int64(channel))))
 }
@@ -334,7 +334,7 @@ func GetBusPeakVolumeLeftDb(bus_idx int, channel int) Float.X { //gd:AudioServer
 /*
 Returns the peak volume of the right speaker at bus index [param bus_idx] and channel index [param channel].
 */
-func GetBusPeakVolumeRightDb(bus_idx int, channel int) Float.X { //gd:AudioServer.get_bus_peak_volume_right_db
+func GetBusPeakVolumeRightDb(bus_idx Bus, channel int) Float.X { //gd:AudioServer.get_bus_peak_volume_right_db
 	once.Do(singleton)
 	return Float.X(Float.X(Advanced().GetBusPeakVolumeRightDb(int64(bus_idx), int64(channel))))
 }

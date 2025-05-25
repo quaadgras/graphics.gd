@@ -150,7 +150,19 @@ func (name Name) ConvertToGo(val string, simple string) string {
 		return fmt.Sprintf("%v.Bytes()", val)
 	case "Packed.Strings":
 		return fmt.Sprintf("%v.Strings()", val)
-	case "Packed.Array[int32]", "Packed.Array[int64]", "Packed.Array[float32]", "Packed.Array[float64]",
+	case "Packed.Array[int32]":
+		elem := strings.TrimPrefix(string(simple), "[]")
+		if elem == "int32" {
+			return fmt.Sprintf("slices.Collect(%v.Values())", val)
+		}
+		return fmt.Sprintf("gd.IntsCollectAs[%s](%v.Values())", elem, val)
+	case "Packed.Array[int64]":
+		elem := strings.TrimPrefix(string(simple), "[]")
+		if elem == "int64" {
+			return fmt.Sprintf("slices.Collect(%v.Values())", val)
+		}
+		return fmt.Sprintf("gd.IntsCollectAs[%s](%v.Values())", elem, val)
+	case "Packed.Array[float32]", "Packed.Array[float64]",
 		"Packed.Array[Vector2.XY]", "Packed.Array[Vector3.XYZ]", "Packed.Array[Vector4.XYZW]", "Packed.Array[Color.RGBA]":
 		return fmt.Sprintf("slices.Collect(%v.Values())", val)
 	case "variant.Any":

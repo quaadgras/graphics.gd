@@ -1776,7 +1776,7 @@ func ParticlesSetSubemitter(particles RID.Particles, subemitter_particles RID.Pa
 /*
 Manually emits particles from the [param particles] instance.
 */
-func ParticlesEmit(particles RID.Particles, transform Transform3D.BasisOrigin, velocity Vector3.XYZ, color Color.RGBA, custom Color.RGBA, emit_flags int) { //gd:RenderingServer.particles_emit
+func ParticlesEmit(particles RID.Particles, transform Transform3D.BasisOrigin, velocity Vector3.XYZ, color Color.RGBA, custom Color.RGBA, emit_flags ParticlesEmitFlag) { //gd:RenderingServer.particles_emit
 	once.Do(singleton)
 	Advanced().ParticlesEmit(RID.Any(particles), Transform3D.BasisOrigin(transform), Vector3.XYZ(velocity), Color.RGBA(color), Color.RGBA(custom), int64(emit_flags))
 }

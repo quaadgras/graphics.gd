@@ -431,11 +431,11 @@ func (self Instance) SetAnimations(value []GLTFAnimation.Instance) {
 	class(self).SetAnimations(gd.ArrayFromSlice[Array.Contains[[1]gdclass.GLTFAnimation]](value))
 }
 
-func (self Instance) HandleBinaryImage() int {
-	return int(int(class(self).GetHandleBinaryImage()))
+func (self Instance) HandleBinaryImage() BinaryHandler {
+	return BinaryHandler(int(class(self).GetHandleBinaryImage()))
 }
 
-func (self Instance) SetHandleBinaryImage(value int) {
+func (self Instance) SetHandleBinaryImage(value BinaryHandler) {
 	class(self).SetHandleBinaryImage(int64(value))
 }
 

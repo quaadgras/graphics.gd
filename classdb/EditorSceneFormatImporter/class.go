@@ -85,7 +85,7 @@ type Interface interface {
 	//Return supported file extensions for this scene importer.
 	GetExtensions() []string
 	//Perform the bulk of the scene import logic here, for example using [GLTFDocument] or [FBXDocument].
-	ImportScene(path string, flags int, options map[any]any) Object.Instance
+	ImportScene(path string, flags Flags, options map[any]any) Object.Instance
 	//Override to add general import options. These will appear in the main import dock on the editor. Add options via [method add_import_option] and [method add_import_option_advanced].
 	//[b]Note:[/b] All [EditorSceneFormatImporter] and [EditorScenePostImportPlugin] instances will add options for all files. It is good practice to check the file extension when [param path] is non-empty.
 	//When the user is editing project settings, [param path] will be empty. It is recommended to add all options when [param path] is empty to allow the user to customize Import Defaults.
@@ -100,7 +100,7 @@ type Implementation = implementation
 type implementation struct{}
 
 func (self implementation) GetExtensions() (_ []string) { return }
-func (self implementation) ImportScene(path string, flags int, options map[any]any) (_ Object.Instance) {
+func (self implementation) ImportScene(path string, flags Flags, options map[any]any) (_ Object.Instance) {
 	return
 }
 func (self implementation) GetImportOptions(path string) { return }
@@ -197,7 +197,7 @@ func (self Instance) AddImportOptionAdvanced(atype variant.Type, name string, de
 /*
 Add a specific import option. This function can only be called from [method _get_import_options].
 */
-func (self Expanded) AddImportOptionAdvanced(atype variant.Type, name string, default_value any, hint ClassDB.PropertyHint, hint_string string, usage_flags int) { //gd:EditorSceneFormatImporter.add_import_option_advanced
+func (self Expanded) AddImportOptionAdvanced(atype variant.Type, name string, default_value any, hint ClassDB.PropertyHint, hint_string string, usage_flags Flags) { //gd:EditorSceneFormatImporter.add_import_option_advanced
 	Advanced(self).AddImportOptionAdvanced(atype, String.New(name), variant.New(default_value), hint, String.New(hint_string), int64(usage_flags))
 }
 

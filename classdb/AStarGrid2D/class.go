@@ -105,10 +105,10 @@ type Any interface {
 type Interface interface {
 	//Called when estimating the cost between a point and the path's ending point.
 	//Note that this function is hidden in the default [AStarGrid2D] class.
-	EstimateCost(from_id Vector2i.XY, end_id Vector2i.XY) Float.X
+	EstimateCost(from_id Point, end_id Point) Float.X
 	//Called when computing the cost between two connected points.
 	//Note that this function is hidden in the default [AStarGrid2D] class.
-	ComputeCost(from_id Vector2i.XY, to_id Vector2i.XY) Float.X
+	ComputeCost(from_id Point, to_id Point) Float.X
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -116,8 +116,8 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) EstimateCost(from_id Vector2i.XY, end_id Vector2i.XY) (_ Float.X) { return }
-func (self implementation) ComputeCost(from_id Vector2i.XY, to_id Vector2i.XY) (_ Float.X)   { return }
+func (self implementation) EstimateCost(from_id Point, end_id Point) (_ Float.X) { return }
+func (self implementation) ComputeCost(from_id Point, to_id Point) (_ Float.X)   { return }
 
 /*
 Called when estimating the cost between a point and the path's ending point.
@@ -157,7 +157,7 @@ func (self Instance) IsInBounds(x int, y int) bool { //gd:AStarGrid2D.is_in_boun
 /*
 Returns [code]true[/code] if the [param id] vector is a valid grid coordinate, i.e. if it is inside [member region]. Equivalent to [code]region.has_point(id)[/code].
 */
-func (self Instance) IsInBoundsv(id Vector2i.XY) bool { //gd:AStarGrid2D.is_in_boundsv
+func (self Instance) IsInBoundsv(id Point) bool { //gd:AStarGrid2D.is_in_boundsv
 	return bool(Advanced(self).IsInBoundsv(Vector2i.XY(id)))
 }
 
@@ -180,7 +180,7 @@ func (self Instance) Update() { //gd:AStarGrid2D.update
 Disables or enables the specified point for pathfinding. Useful for making an obstacle. By default, all points are enabled.
 [b]Note:[/b] Calling [method update] is not needed after the call of this function.
 */
-func (self Instance) SetPointSolid(id Vector2i.XY) { //gd:AStarGrid2D.set_point_solid
+func (self Instance) SetPointSolid(id Point) { //gd:AStarGrid2D.set_point_solid
 	Advanced(self).SetPointSolid(Vector2i.XY(id), true)
 }
 
@@ -188,14 +188,14 @@ func (self Instance) SetPointSolid(id Vector2i.XY) { //gd:AStarGrid2D.set_point_
 Disables or enables the specified point for pathfinding. Useful for making an obstacle. By default, all points are enabled.
 [b]Note:[/b] Calling [method update] is not needed after the call of this function.
 */
-func (self Expanded) SetPointSolid(id Vector2i.XY, solid bool) { //gd:AStarGrid2D.set_point_solid
+func (self Expanded) SetPointSolid(id Point, solid bool) { //gd:AStarGrid2D.set_point_solid
 	Advanced(self).SetPointSolid(Vector2i.XY(id), solid)
 }
 
 /*
 Returns [code]true[/code] if a point is disabled for pathfinding. By default, all points are enabled.
 */
-func (self Instance) IsPointSolid(id Vector2i.XY) bool { //gd:AStarGrid2D.is_point_solid
+func (self Instance) IsPointSolid(id Point) bool { //gd:AStarGrid2D.is_point_solid
 	return bool(Advanced(self).IsPointSolid(Vector2i.XY(id)))
 }
 
@@ -203,14 +203,14 @@ func (self Instance) IsPointSolid(id Vector2i.XY) bool { //gd:AStarGrid2D.is_poi
 Sets the [param weight_scale] for the point with the given [param id]. The [param weight_scale] is multiplied by the result of [method _compute_cost] when determining the overall cost of traveling across a segment from a neighboring point to this point.
 [b]Note:[/b] Calling [method update] is not needed after the call of this function.
 */
-func (self Instance) SetPointWeightScale(id Vector2i.XY, weight_scale Float.X) { //gd:AStarGrid2D.set_point_weight_scale
+func (self Instance) SetPointWeightScale(id Point, weight_scale Float.X) { //gd:AStarGrid2D.set_point_weight_scale
 	Advanced(self).SetPointWeightScale(Vector2i.XY(id), float64(weight_scale))
 }
 
 /*
 Returns the weight scale of the point associated with the given [param id].
 */
-func (self Instance) GetPointWeightScale(id Vector2i.XY) Float.X { //gd:AStarGrid2D.get_point_weight_scale
+func (self Instance) GetPointWeightScale(id Point) Float.X { //gd:AStarGrid2D.get_point_weight_scale
 	return Float.X(Float.X(Advanced(self).GetPointWeightScale(Vector2i.XY(id))))
 }
 
@@ -248,7 +248,7 @@ func (self Instance) Clear() { //gd:AStarGrid2D.clear
 /*
 Returns the position of the point associated with the given [param id].
 */
-func (self Instance) GetPointPosition(id Vector2i.XY) Vector2.XY { //gd:AStarGrid2D.get_point_position
+func (self Instance) GetPointPosition(id Point) Vector2.XY { //gd:AStarGrid2D.get_point_position
 	return Vector2.XY(Advanced(self).GetPointPosition(Vector2i.XY(id)))
 }
 
@@ -265,7 +265,7 @@ If there is no valid path to the target, and [param allow_partial_path] is [code
 [b]Note:[/b] This method is not thread-safe. If called from a [Thread], it will return an empty array and will print an error message.
 Additionally, when [param allow_partial_path] is [code]true[/code] and [param to_id] is solid the search may take an unusually long time to finish.
 */
-func (self Instance) GetPointPath(from_id Vector2i.XY, to_id Vector2i.XY) []Vector2.XY { //gd:AStarGrid2D.get_point_path
+func (self Instance) GetPointPath(from_id Point, to_id Point) []Vector2.XY { //gd:AStarGrid2D.get_point_path
 	return []Vector2.XY(slices.Collect(Advanced(self).GetPointPath(Vector2i.XY(from_id), Vector2i.XY(to_id), false).Values()))
 }
 
@@ -275,7 +275,7 @@ If there is no valid path to the target, and [param allow_partial_path] is [code
 [b]Note:[/b] This method is not thread-safe. If called from a [Thread], it will return an empty array and will print an error message.
 Additionally, when [param allow_partial_path] is [code]true[/code] and [param to_id] is solid the search may take an unusually long time to finish.
 */
-func (self Expanded) GetPointPath(from_id Vector2i.XY, to_id Vector2i.XY, allow_partial_path bool) []Vector2.XY { //gd:AStarGrid2D.get_point_path
+func (self Expanded) GetPointPath(from_id Point, to_id Point, allow_partial_path bool) []Vector2.XY { //gd:AStarGrid2D.get_point_path
 	return []Vector2.XY(slices.Collect(Advanced(self).GetPointPath(Vector2i.XY(from_id), Vector2i.XY(to_id), allow_partial_path).Values()))
 }
 
@@ -284,8 +284,8 @@ Returns an array with the IDs of the points that form the path found by AStar2D 
 If there is no valid path to the target, and [param allow_partial_path] is [code]true[/code], returns a path to the point closest to the target that can be reached.
 [b]Note:[/b] When [param allow_partial_path] is [code]true[/code] and [param to_id] is solid the search may take an unusually long time to finish.
 */
-func (self Instance) GetIdPath(from_id Vector2i.XY, to_id Vector2i.XY) []Vector2i.XY { //gd:AStarGrid2D.get_id_path
-	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](gd.InternalArray(Advanced(self).GetIdPath(Vector2i.XY(from_id), Vector2i.XY(to_id), false))))
+func (self Instance) GetIdPath(from_id Point, to_id Point) []Point { //gd:AStarGrid2D.get_id_path
+	return []Point(gd.ArrayAs[[]Point](gd.InternalArray(Advanced(self).GetIdPath(Vector2i.XY(from_id), Vector2i.XY(to_id), false))))
 }
 
 /*
@@ -293,8 +293,8 @@ Returns an array with the IDs of the points that form the path found by AStar2D 
 If there is no valid path to the target, and [param allow_partial_path] is [code]true[/code], returns a path to the point closest to the target that can be reached.
 [b]Note:[/b] When [param allow_partial_path] is [code]true[/code] and [param to_id] is solid the search may take an unusually long time to finish.
 */
-func (self Expanded) GetIdPath(from_id Vector2i.XY, to_id Vector2i.XY, allow_partial_path bool) []Vector2i.XY { //gd:AStarGrid2D.get_id_path
-	return []Vector2i.XY(gd.ArrayAs[[]Vector2i.XY](gd.InternalArray(Advanced(self).GetIdPath(Vector2i.XY(from_id), Vector2i.XY(to_id), allow_partial_path))))
+func (self Expanded) GetIdPath(from_id Point, to_id Point, allow_partial_path bool) []Point { //gd:AStarGrid2D.get_id_path
+	return []Point(gd.ArrayAs[[]Point](gd.InternalArray(Advanced(self).GetIdPath(Vector2i.XY(from_id), Vector2i.XY(to_id), allow_partial_path))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

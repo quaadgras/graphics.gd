@@ -85,7 +85,7 @@ type Any interface {
 Sets the peer to which packets will be sent.
 The [param id] can be one of: [constant TARGET_PEER_BROADCAST] to send to all connected peers, [constant TARGET_PEER_SERVER] to send to the peer acting as server, a valid peer ID to send to that specific peer, a negative peer ID to send to all peers except that one. By default, the target peer is [constant TARGET_PEER_BROADCAST].
 */
-func (self Instance) SetTargetPeer(id int) { //gd:MultiplayerPeer.set_target_peer
+func (self Instance) SetTargetPeer(id TargetPeer) { //gd:MultiplayerPeer.set_target_peer
 	Advanced(self).SetTargetPeer(int64(id))
 }
 
