@@ -4,7 +4,7 @@ var Distinctions = map[string][][3]string{
 	"AStar2D":                        {{"id", "int", "Point"}, {"get_id_path ", "PackedInt64Array", "[]Point"}, {"get_point_connections ", "PackedInt64Array", "[]Point"}, {"get_point_ids ", "PackedInt64Array", "[]Point"}},
 	"AStar3D":                        {{"id", "int", "Point"}, {"get_id_path ", "PackedInt64Array", "[]Point"}, {"get_point_connections ", "PackedInt64Array", "[]Point"}, {"get_point_ids ", "PackedInt64Array", "[]Point"}},
 	"AStarGrid2D":                    {{"id", "Vector2i", "Point"}, {"get_id_path ", "typedarray::Vector2i", "[]Point"}, {"get_point_connections ", "typedarray::Vector2i", "[]Point"}, {"get_point_ids ", "typedarray::Vector2i", "[]Point"}},
-	"AudioServer":                    {{"bus_idx", "int", "Bus"}, {"effect_idx", "int", "Effect"}},
+	"AudioServer":                    {{"bus_idx", "int", "Bus"}, {"effect_idx", "int", "Effect"}, {"bus index", "int", "Bus"}},
 	"AudioStreamInteractive":         {{"clip", "int", "Clip"}},
 	"AudioStreamPlaybackInteractive": {{"clip", "int", "AudioStreamInteractive.Clip"}, {"get_current_clip_index ", "int", "AudioStreamInteractive.Clip"}},
 	"AudioStreamPlaybackPolyphonic":  {{"stream", "int", "Stream"}},

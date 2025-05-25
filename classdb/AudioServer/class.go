@@ -84,7 +84,7 @@ func singleton() {
 /*
 Removes the bus at index [param index].
 */
-func RemoveBus(index int) { //gd:AudioServer.remove_bus
+func RemoveBus(index Bus) { //gd:AudioServer.remove_bus
 	once.Do(singleton)
 	Advanced().RemoveBus(int64(index))
 }
@@ -108,7 +108,7 @@ func AddBusOptions(at_position int) { //gd:AudioServer.add_bus
 /*
 Moves the bus from index [param index] to index [param to_index].
 */
-func MoveBus(index int, to_index int) { //gd:AudioServer.move_bus
+func MoveBus(index Bus, to_index Bus) { //gd:AudioServer.move_bus
 	once.Do(singleton)
 	Advanced().MoveBus(int64(index), int64(to_index))
 }
