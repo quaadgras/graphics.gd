@@ -281,7 +281,7 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 	ungroupedFields := make([]reflect.StructField, 0)
 	groupedFields := map[string][]reflect.StructField{}
 	for _, field := range reflect.VisibleFields(rtype) {
-		groupName := field.Tag.Get("gdGroup")
+		groupName := field.Tag.Get("group")
 		if groupName == "" {
 			ungroupedFields = append(ungroupedFields, field)
 			continue
