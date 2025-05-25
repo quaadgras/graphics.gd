@@ -684,3 +684,7 @@ const (
 	/*Enable auto-advance, but instead of specifying a clip, the playback will return to hold (see [method add_transition]).*/
 	AutoAdvanceReturnToHold AutoAdvanceMode = 2
 )
+
+type Clip int
+
+const ClipAny Clip = -1 //gd:AudioStreamInteractive.CLIP_ANY

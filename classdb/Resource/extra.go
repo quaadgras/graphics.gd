@@ -18,6 +18,10 @@ import (
 // ID that uniquely identifies a resource.
 type ID = gd.RID
 
+// UID uniquely identifies a resource that has been imported into the graphics directory.
+// Remains valid even if the resource is relocated or renamed.
+type UID int
+
 // New allocates a unique ID which can be used by the implementation to construct an RID.
 // This is used mainly from native extensions to implement servers.
 func AllocateID() ID { //gd:rid_allocate_id

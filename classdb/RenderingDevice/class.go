@@ -3291,3 +3291,6 @@ func init() {
 		return [1]gdclass.RenderingDevice{*(*gdclass.RenderingDevice)(unsafe.Pointer(&ptr))}
 	})
 }
+
+const InvalidId = -1       //gd:RenderingDevice.INVALID_ID
+const InvalidFormatId = -1 //gd:RenderingDevice.INVALID_FORMAT_ID

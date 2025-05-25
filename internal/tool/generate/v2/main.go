@@ -12,6 +12,7 @@ import (
 
 	"graphics.gd/internal/gdjson"
 	"graphics.gd/internal/gdtype"
+	"graphics.gd/variant/String"
 	"runtime.link/api/xray"
 )
 
@@ -492,6 +493,25 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		generateEnum(file, "", enum, "")
 	}
 	generateStructables(file)
+	var constTypes = make(map[string]bool)
+	for _, retype := range gdjson.Consitution[class.Name] {
+		if strings.Contains(retype, ".") || retype == "" || retype == "-" || retype == "int" || constTypes[retype] {
+			continue
+		}
+		constTypes[retype] = true
+		fmt.Fprintf(file, "type %s int\n", retype)
+	}
+	for _, constant := range class.Constants {
+		for prefix, retype := range gdjson.Consitution[class.Name] {
+			if strings.HasPrefix(constant.Name, prefix) {
+				if retype != "-" {
+					fmt.Fprintf(file, "const %s %s = %v //gd:%s.%s\n",
+						String.ToPascalCase(constant.Name), retype, constant.Value, class.Name, constant.Name)
+					break
+				}
+			}
+		}
+	}
 	return nil
 }
 

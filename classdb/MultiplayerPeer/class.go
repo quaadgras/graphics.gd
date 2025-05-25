@@ -471,3 +471,8 @@ const (
 	/*Packets must be received and resend attempts should be made until the packets are acknowledged. Packets must be received in the order they were sent in. Most reliable transfer mode, but potentially the slowest due to the overhead. Use for critical data that must be transmitted and arrive in order, for example an ability being triggered or a chat message. Consider carefully if the information really is critical, and use sparingly.*/
 	TransferModeReliable TransferMode = 2
 )
+
+type TargetPeer int
+
+const TargetPeerBroadcast TargetPeer = 0 //gd:MultiplayerPeer.TARGET_PEER_BROADCAST
+const TargetPeerServer TargetPeer = 1    //gd:MultiplayerPeer.TARGET_PEER_SERVER

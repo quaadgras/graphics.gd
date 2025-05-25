@@ -543,3 +543,11 @@ const (
 	/*The interval over which the lowest mean round trip time should be measured for use by the throttle mechanism (in milliseconds). The default value is [code]5000[/code].*/
 	PeerPacketThrottleInterval PeerStatistic = 13
 )
+
+type Flags int
+
+const PacketLossScale = 65536          //gd:ENetPacketPeer.PACKET_LOSS_SCALE
+const PacketThrottleScale = 32         //gd:ENetPacketPeer.PACKET_THROTTLE_SCALE
+const FlagReliable Flags = 1           //gd:ENetPacketPeer.FLAG_RELIABLE
+const FlagUnsequenced Flags = 2        //gd:ENetPacketPeer.FLAG_UNSEQUENCED
+const FlagUnreliableFragment Flags = 8 //gd:ENetPacketPeer.FLAG_UNRELIABLE_FRAGMENT

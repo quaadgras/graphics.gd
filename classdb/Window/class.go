@@ -2802,3 +2802,5 @@ const (
 	/*Initial window position is the center of the screen containing the window with the keyboard focus.*/
 	WindowInitialPositionCenterScreenWithKeyboardFocus WindowInitialPosition = 5
 )
+const NotificationVisibilityChanged Object.Notification = 30 //gd:Window.NOTIFICATION_VISIBILITY_CHANGED
+const NotificationThemeChanged Object.Notification = 32      //gd:Window.NOTIFICATION_THEME_CHANGED

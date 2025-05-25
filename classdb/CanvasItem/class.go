@@ -2277,3 +2277,10 @@ const (
 	/*Represents the size of the [enum ClipChildrenMode] enum.*/
 	ClipChildrenMax ClipChildrenMode = 3
 )
+const NotificationTransformChanged Object.Notification = 2000    //gd:CanvasItem.NOTIFICATION_TRANSFORM_CHANGED
+const NotificationLocalTransformChanged Object.Notification = 35 //gd:CanvasItem.NOTIFICATION_LOCAL_TRANSFORM_CHANGED
+const NotificationDraw Object.Notification = 30                  //gd:CanvasItem.NOTIFICATION_DRAW
+const NotificationVisibilityChanged Object.Notification = 31     //gd:CanvasItem.NOTIFICATION_VISIBILITY_CHANGED
+const NotificationEnterCanvas Object.Notification = 32           //gd:CanvasItem.NOTIFICATION_ENTER_CANVAS
+const NotificationExitCanvas Object.Notification = 33            //gd:CanvasItem.NOTIFICATION_EXIT_CANVAS
+const NotificationWorld2dChanged Object.Notification = 36        //gd:CanvasItem.NOTIFICATION_WORLD_2D_CHANGED

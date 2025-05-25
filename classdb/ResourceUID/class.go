@@ -13,6 +13,7 @@ import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
+import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -289,3 +290,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 func init() {
 	gdclass.Register("ResourceUID", func(ptr gd.Object) any { return [1]gdclass.ResourceUID{*(*gdclass.ResourceUID)(unsafe.Pointer(&ptr))} })
 }
+
+const InvalidId Resource.UID = -1 //gd:ResourceUID.INVALID_ID

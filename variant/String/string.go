@@ -1258,6 +1258,13 @@ func ToLower[S Any](s S) S { //gd:String.to_lower
 
 // ToPascalCase returns the string converted to PascalCase.
 func ToPascalCase[S Any](s S) S { //gd:String.to_pascal_case
+	if strings.Contains(As[string](s), "_") {
+		var result strings.Builder
+		for word := range strings.SplitSeq(As[string](s), "_") {
+			result.WriteString(Title(strings.ToLower(word)))
+		}
+		return As[S](result.String())
+	}
 	return As[S](strings.ReplaceAll(Title(strings.ToLower(As[string](s))), " ", ""))
 }
 

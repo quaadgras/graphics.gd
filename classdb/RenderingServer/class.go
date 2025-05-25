@@ -13216,3 +13216,20 @@ type PropertyInfo struct {
 	Usage      int          `gd:"usage"`
 }
 type Surface map[interface{}]interface{}
+type ParticlesEmitFlag int
+
+const ArrayWeightsSize int = 4                             //gd:RenderingServer.ARRAY_WEIGHTS_SIZE
+const CanvasItemZMin int = -4096                           //gd:RenderingServer.CANVAS_ITEM_Z_MIN
+const CanvasItemZMax int = 4096                            //gd:RenderingServer.CANVAS_ITEM_Z_MAX
+const MaxGlowLevels int = 7                                //gd:RenderingServer.MAX_GLOW_LEVELS
+const MaxCursors int = 8                                   //gd:RenderingServer.MAX_CURSORS
+const Max2dDirectionalLights int = 8                       //gd:RenderingServer.MAX_2D_DIRECTIONAL_LIGHTS
+const MaxMeshSurfaces int = 256                            //gd:RenderingServer.MAX_MESH_SURFACES
+const MaterialRenderPriorityMin int = -128                 //gd:RenderingServer.MATERIAL_RENDER_PRIORITY_MIN
+const MaterialRenderPriorityMax int = 127                  //gd:RenderingServer.MATERIAL_RENDER_PRIORITY_MAX
+const ArrayCustomCount int = 4                             //gd:RenderingServer.ARRAY_CUSTOM_COUNT
+const ParticlesEmitFlagPosition ParticlesEmitFlag = 1      //gd:RenderingServer.PARTICLES_EMIT_FLAG_POSITION
+const ParticlesEmitFlagRotationScale ParticlesEmitFlag = 2 //gd:RenderingServer.PARTICLES_EMIT_FLAG_ROTATION_SCALE
+const ParticlesEmitFlagVelocity ParticlesEmitFlag = 4      //gd:RenderingServer.PARTICLES_EMIT_FLAG_VELOCITY
+const ParticlesEmitFlagColor ParticlesEmitFlag = 8         //gd:RenderingServer.PARTICLES_EMIT_FLAG_COLOR
+const ParticlesEmitFlagCustom ParticlesEmitFlag = 16       //gd:RenderingServer.PARTICLES_EMIT_FLAG_CUSTOM

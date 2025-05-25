@@ -1075,3 +1075,4 @@ const (
 	TransformAlignYToVelocity           TransformAlign = 2
 	TransformAlignZBillboardYToVelocity TransformAlign = 3
 )
+const MaxDrawPasses int = 4 //gd:GPUParticles3D.MAX_DRAW_PASSES

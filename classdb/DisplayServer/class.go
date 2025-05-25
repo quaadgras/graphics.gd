@@ -6134,3 +6134,14 @@ type TextToSpeechVoice struct {
 	ID       string `gd:"id"`
 	Language string `gd:"language"`
 }
+type Screen int
+type Window int
+type StatusIndicator int
+
+const ScreenWithMouseFocus Screen = -4        //gd:DisplayServer.SCREEN_WITH_MOUSE_FOCUS
+const ScreenWithKeyboardFocus Screen = -3     //gd:DisplayServer.SCREEN_WITH_KEYBOARD_FOCUS
+const ScreenPrimary Screen = -2               //gd:DisplayServer.SCREEN_PRIMARY
+const ScreenOfMainWindow Screen = -1          //gd:DisplayServer.SCREEN_OF_MAIN_WINDOW
+const MainWindowId Window = 0                 //gd:DisplayServer.MAIN_WINDOW_ID
+const InvalidWindowId Window = -1             //gd:DisplayServer.INVALID_WINDOW_ID
+const InvalidIndicatorId StatusIndicator = -1 //gd:DisplayServer.INVALID_INDICATOR_ID

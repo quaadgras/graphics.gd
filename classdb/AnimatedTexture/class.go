@@ -369,3 +369,5 @@ func init() {
 		return [1]gdclass.AnimatedTexture{*(*gdclass.AnimatedTexture)(unsafe.Pointer(&ptr))}
 	})
 }
+
+const MaxFrames int = 256 //gd:AnimatedTexture.MAX_FRAMES

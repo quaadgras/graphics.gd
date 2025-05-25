@@ -261,3 +261,5 @@ func init() {
 		return [1]gdclass.RDFramebufferPass{*(*gdclass.RDFramebufferPass)(unsafe.Pointer(&ptr))}
 	})
 }
+
+const AttachmentUnused = -1 //gd:RDFramebufferPass.ATTACHMENT_UNUSED

@@ -253,3 +253,5 @@ func init() {
 		return [1]gdclass.AudioStreamSynchronized{*(*gdclass.AudioStreamSynchronized)(unsafe.Pointer(&ptr))}
 	})
 }
+
+const MaxStreams int = 32 //gd:AudioStreamSynchronized.MAX_STREAMS

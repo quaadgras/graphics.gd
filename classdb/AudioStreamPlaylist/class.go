@@ -805,3 +805,5 @@ func init() {
 		return [1]gdclass.AudioStreamPlaylist{*(*gdclass.AudioStreamPlaylist)(unsafe.Pointer(&ptr))}
 	})
 }
+
+const MaxStreams int = 64 //gd:AudioStreamPlaylist.MAX_STREAMS

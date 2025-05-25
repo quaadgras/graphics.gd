@@ -659,3 +659,8 @@ const (
 	/*Represents the size of the [enum VaryingType] enum.*/
 	VaryingTypeMax VaryingType = 8
 )
+
+type NodeID int
+
+const NodeIdInvalid NodeID = -1 //gd:VisualShader.NODE_ID_INVALID
+const NodeIdOutput NodeID = 0   //gd:VisualShader.NODE_ID_OUTPUT

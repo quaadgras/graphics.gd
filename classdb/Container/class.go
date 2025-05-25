@@ -273,3 +273,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 func init() {
 	gdclass.Register("Container", func(ptr gd.Object) any { return [1]gdclass.Container{*(*gdclass.Container)(unsafe.Pointer(&ptr))} })
 }
+
+const NotificationPreSortChildren Object.Notification = 50 //gd:Container.NOTIFICATION_PRE_SORT_CHILDREN
+const NotificationSortChildren Object.Notification = 51    //gd:Container.NOTIFICATION_SORT_CHILDREN

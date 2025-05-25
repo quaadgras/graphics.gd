@@ -350,3 +350,8 @@ func (self Instance) Virtual(name string) reflect.Value {
 func init() {
 	gdclass.Register("Material", func(ptr gd.Object) any { return [1]gdclass.Material{*(*gdclass.Material)(unsafe.Pointer(&ptr))} })
 }
+
+type RenderPriority int
+
+const RenderPriorityMax RenderPriority = 127  //gd:Material.RENDER_PRIORITY_MAX
+const RenderPriorityMin RenderPriority = -128 //gd:Material.RENDER_PRIORITY_MIN

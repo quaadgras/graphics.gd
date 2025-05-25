@@ -1365,3 +1365,8 @@ const (
 	/*The rotation is edited using a [Basis]. In this mode, [member scale] can't be edited separately.*/
 	RotationEditModeBasis RotationEditMode = 2
 )
+const NotificationTransformChanged Object.Notification = 2000    //gd:Node3D.NOTIFICATION_TRANSFORM_CHANGED
+const NotificationEnterWorld Object.Notification = 41            //gd:Node3D.NOTIFICATION_ENTER_WORLD
+const NotificationExitWorld Object.Notification = 42             //gd:Node3D.NOTIFICATION_EXIT_WORLD
+const NotificationVisibilityChanged Object.Notification = 43     //gd:Node3D.NOTIFICATION_VISIBILITY_CHANGED
+const NotificationLocalTransformChanged Object.Notification = 44 //gd:Node3D.NOTIFICATION_LOCAL_TRANSFORM_CHANGED

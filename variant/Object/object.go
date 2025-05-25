@@ -23,6 +23,14 @@ func (id ID) Instance() Instance {
 	return Instance(gd.Global.Object.GetInstanceFromID(gd.ObjectID(id)))
 }
 
+type Notification int
+
+const (
+	NotificationPostInitialize    Notification = 0 // Notification received when the object is initialized, before its script is attached. Used internally.
+	NotificationPreDelete         Notification = 1 // Notification received when the object is about to be deleted. Can be used like destructors in object-oriented programming languages.
+	NotificationExtensionReloaded Notification = 2 // Notification received when the object finishes hot reloading. This notification is only sent for extensions classes and derived.
+)
+
 /*
 Instance is an advanced Variant type. All classes in the engine inherit from Object. Each class may define new properties, methods or
 signals, which are available to all inheriting classes. For example, a Sprite2D instance is able to call Node.add_child because it

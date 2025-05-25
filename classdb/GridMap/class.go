@@ -954,3 +954,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 func init() {
 	gdclass.Register("GridMap", func(ptr gd.Object) any { return [1]gdclass.GridMap{*(*gdclass.GridMap)(unsafe.Pointer(&ptr))} })
 }
+
+type CellItem int
+
+const InvalidCellItem CellItem = -1 //gd:GridMap.INVALID_CELL_ITEM

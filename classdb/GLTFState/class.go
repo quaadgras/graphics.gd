@@ -1249,3 +1249,10 @@ func (self Instance) Virtual(name string) reflect.Value {
 func init() {
 	gdclass.Register("GLTFState", func(ptr gd.Object) any { return [1]gdclass.GLTFState{*(*gdclass.GLTFState)(unsafe.Pointer(&ptr))} })
 }
+
+type BinaryHandler int
+
+const HandleBinaryDiscardTextures BinaryHandler = 0     //gd:GLTFState.HANDLE_BINARY_DISCARD_TEXTURES
+const HandleBinaryExtractTextures BinaryHandler = 1     //gd:GLTFState.HANDLE_BINARY_EXTRACT_TEXTURES
+const HandleBinaryEmbedAsBasisu BinaryHandler = 2       //gd:GLTFState.HANDLE_BINARY_EMBED_AS_BASISU
+const HandleBinaryEmbedAsUncompressed BinaryHandler = 3 //gd:GLTFState.HANDLE_BINARY_EMBED_AS_UNCOMPRESSED

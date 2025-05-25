@@ -373,3 +373,13 @@ func init() {
 		return [1]gdclass.EditorSceneFormatImporter{*(*gdclass.EditorSceneFormatImporter)(unsafe.Pointer(&ptr))}
 	})
 }
+
+type Flags int
+
+const ImportScene Flags = 1                        //gd:EditorSceneFormatImporter.IMPORT_SCENE
+const ImportAnimation Flags = 2                    //gd:EditorSceneFormatImporter.IMPORT_ANIMATION
+const ImportFailOnMissingDependencies Flags = 4    //gd:EditorSceneFormatImporter.IMPORT_FAIL_ON_MISSING_DEPENDENCIES
+const ImportGenerateTangentArrays Flags = 8        //gd:EditorSceneFormatImporter.IMPORT_GENERATE_TANGENT_ARRAYS
+const ImportUseNamedSkinBinds Flags = 16           //gd:EditorSceneFormatImporter.IMPORT_USE_NAMED_SKIN_BINDS
+const ImportDiscardMeshesAndMaterials Flags = 32   //gd:EditorSceneFormatImporter.IMPORT_DISCARD_MESHES_AND_MATERIALS
+const ImportForceDisableMeshCompression Flags = 64 //gd:EditorSceneFormatImporter.IMPORT_FORCE_DISABLE_MESH_COMPRESSION

@@ -1263,3 +1263,4 @@ const (
 	/*Set a flag to process modification during process frames (see [constant Node.NOTIFICATION_INTERNAL_PROCESS]).*/
 	ModifierCallbackModeProcessIdle ModifierCallbackModeProcess = 1
 )
+const NotificationUpdateSkeleton Object.Notification = 50 //gd:Skeleton3D.NOTIFICATION_UPDATE_SKELETON

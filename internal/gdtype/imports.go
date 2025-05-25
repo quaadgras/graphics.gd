@@ -28,6 +28,9 @@ func ImportsForClass(class gdjson.Class) iter.Seq[string] {
 		if class.Name == "TextEdit" {
 			imports["graphics.gd/variant/Rect2"] = true
 		}
+		if class.Name == "ResourceUID" {
+			imports["graphics.gd/classdb/Resource"] = true
+		}
 		if class.Inherits != "" {
 			super := ClassDB[class.Inherits]
 			for super.Name != "" && super.Name != "Object" && super.Name != "RefCounted" && !ClassDB[super.Name].IsSingleton {

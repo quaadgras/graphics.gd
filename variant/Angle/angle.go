@@ -75,7 +75,7 @@ func Asinh[X Float.Any](x X) Radians { //gd:asinh
 // Difference returns the difference between the two angles, in the range of [-Pi, +Pi].
 // When from and to are opposite, returns -Pi if from is smaller than to, or Pi otherwise.
 func Difference(from, to Radians) Radians { //gd:angle_difference
-	diff := Float.Mod(to - from, Tau)
+	diff := Float.Mod(to-from, Tau)
 	return Float.Mod(2*diff, Tau) - diff
 }
 

@@ -410,3 +410,6 @@ type LocalInterface struct {
 	Friendly  string       `gd:"friendly"`
 	Addresses []netip.Addr `gd:"addresses"`
 }
+
+const ResolverMaxQueries = 256 //gd:IP.RESOLVER_MAX_QUERIES
+const ResolverInvalidId = -1   //gd:IP.RESOLVER_INVALID_ID

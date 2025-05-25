@@ -266,3 +266,7 @@ func init() {
 		return [1]gdclass.AudioStreamPlaybackPolyphonic{*(*gdclass.AudioStreamPlaybackPolyphonic)(unsafe.Pointer(&ptr))}
 	})
 }
+
+type Stream int
+
+const InvalidId Stream = -1 //gd:AudioStreamPlaybackPolyphonic.INVALID_ID

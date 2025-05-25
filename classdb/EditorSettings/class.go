@@ -564,3 +564,5 @@ type PropertyInfo struct {
 	Type       reflect.Type `gd:"type"`
 	Usage      int          `gd:"usage"`
 }
+
+const NotificationEditorSettingsChanged Object.Notification = 10000 //gd:EditorSettings.NOTIFICATION_EDITOR_SETTINGS_CHANGED

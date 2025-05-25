@@ -2045,3 +2045,6 @@ type Metrics struct {
 	RootMeanSquared float32 `gd:"root_mean_squared"`
 	PeakSNR         float32 `gd:"peak_snr"`
 }
+
+const MaxWidth = 1.6777216e+07  //gd:Image.MAX_WIDTH
+const MaxHeight = 1.6777216e+07 //gd:Image.MAX_HEIGHT

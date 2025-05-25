@@ -998,3 +998,6 @@ const (
 	/*Represents the size of the [enum TileAnimationMode] enum.*/
 	TileAnimationModeMax TileAnimationMode = 2
 )
+const TransformFlipH = 4096      //gd:TileSetAtlasSource.TRANSFORM_FLIP_H
+const TransformFlipV = 8192      //gd:TileSetAtlasSource.TRANSFORM_FLIP_V
+const TransformTranspose = 16384 //gd:TileSetAtlasSource.TRANSFORM_TRANSPOSE

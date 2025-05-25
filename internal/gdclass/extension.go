@@ -83,5 +83,5 @@ func (class *Extension[T, S]) AsObject() [1]gd.Object {
 }
 
 func (class *Extension[T, S]) UnsafePointer() unsafe.Pointer {
-    return unsafe.Pointer(class)
+	return unsafe.Pointer(class)
 }

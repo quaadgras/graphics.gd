@@ -3989,3 +3989,14 @@ const (
 	/*Right-to-left text writing direction.*/
 	TextDirectionRtl TextDirection = 2
 )
+const NotificationResized Object.Notification = 40                //gd:Control.NOTIFICATION_RESIZED
+const NotificationMouseEnter Object.Notification = 41             //gd:Control.NOTIFICATION_MOUSE_ENTER
+const NotificationMouseExit Object.Notification = 42              //gd:Control.NOTIFICATION_MOUSE_EXIT
+const NotificationMouseEnterSelf Object.Notification = 60         //gd:Control.NOTIFICATION_MOUSE_ENTER_SELF
+const NotificationMouseExitSelf Object.Notification = 61          //gd:Control.NOTIFICATION_MOUSE_EXIT_SELF
+const NotificationFocusEnter Object.Notification = 43             //gd:Control.NOTIFICATION_FOCUS_ENTER
+const NotificationFocusExit Object.Notification = 44              //gd:Control.NOTIFICATION_FOCUS_EXIT
+const NotificationThemeChanged Object.Notification = 45           //gd:Control.NOTIFICATION_THEME_CHANGED
+const NotificationScrollBegin Object.Notification = 47            //gd:Control.NOTIFICATION_SCROLL_BEGIN
+const NotificationScrollEnd Object.Notification = 48              //gd:Control.NOTIFICATION_SCROLL_END
+const NotificationLayoutDirectionChanged Object.Notification = 49 //gd:Control.NOTIFICATION_LAYOUT_DIRECTION_CHANGED
