@@ -1,7 +1,6 @@
 package main
 
 import (
-	"iter"
 	"reflect"
 	"strings"
 
@@ -68,51 +67,6 @@ func fixReserved(name string) string {
 	}
 }
 
-func importsVariant(class gdjson.Class, identifier, s string) iter.Seq[string] {
-	return func(yield func(string) bool) {
-		if strings.HasPrefix(s, "typedarray::") {
-			s = strings.TrimPrefix(s, "typedarray::")
-			for pkg := range importsVariant(class, identifier, s) {
-				if !yield(pkg) {
-					return
-				}
-			}
-			return
-		}
-		switch s {
-		case "Float", "float":
-			yield("graphics.gd/variant/Float")
-		case "Vector2", "Vector2i", "Rect2", "Rect2i", "Vector3", "Vector3i", "Transform2D", "Vector4", "Vector4i",
-			"Plane", "Quaternion", "AABB", "Basis", "Transform3D", "Projection", "Color":
-			yield("graphics.gd/variant/" + s)
-		case "PackedVector2Array":
-			yield("graphics.gd/variant/Vector2")
-		case "PackedVector3Array":
-			yield("graphics.gd/variant/Vector3")
-		case "PackedVector4Array":
-			yield("graphics.gd/variant/Vector4")
-		case "PackedColorArray":
-			yield("graphics.gd/variant/Color")
-		case "Callable":
-			details := gdjson.Callables[identifier]
-			if len(details) == 0 {
-				return
-			}
-			for _, detail := range details {
-				if detail == "void" {
-					continue
-				}
-				detail, _, _ = strings.Cut(detail, " ")
-				for pkg := range importsVariant(class, "", detail) {
-					if !yield(pkg) {
-						return
-					}
-				}
-			}
-		}
-	}
-}
-
 var StructablesInThisPackageGlobalHack = make(map[reflect.Type]bool)
 
 func (classDB ClassDB) convertTypeSimple(class gdjson.Class, lookup, meta string, gdType string) string {
@@ -133,7 +87,7 @@ func (classDB ClassDB) convertTypeSimple(class gdjson.Class, lookup, meta string
 				continue
 			}
 		}
-		if !strings.Contains(thisArg, matchArgument) {
+		if (matchArgument == "" && thisArg != "") || !strings.Contains(thisArg, matchArgument) {
 			continue
 		}
 		return distinction[2]

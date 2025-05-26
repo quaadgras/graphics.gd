@@ -186,15 +186,15 @@ func (self Instance) GetRealVelocity() Vector3.XYZ { //gd:CharacterBody3D.get_re
 /*
 Returns the floor's collision angle at the last collision point according to [param up_direction], which is [constant Vector3.UP] by default. This value is always positive and only valid after calling [method move_and_slide] and when [method is_on_floor] returns [code]true[/code].
 */
-func (self Instance) GetFloorAngle() Float.X { //gd:CharacterBody3D.get_floor_angle
-	return Float.X(Float.X(Advanced(self).GetFloorAngle(Vector3.XYZ(gd.Vector3{0, 1, 0}))))
+func (self Instance) GetFloorAngle() Angle.Radians { //gd:CharacterBody3D.get_floor_angle
+	return Angle.Radians(Float.X(Advanced(self).GetFloorAngle(Vector3.XYZ(gd.Vector3{0, 1, 0}))))
 }
 
 /*
 Returns the floor's collision angle at the last collision point according to [param up_direction], which is [constant Vector3.UP] by default. This value is always positive and only valid after calling [method move_and_slide] and when [method is_on_floor] returns [code]true[/code].
 */
-func (self Expanded) GetFloorAngle(up_direction Vector3.XYZ) Float.X { //gd:CharacterBody3D.get_floor_angle
-	return Float.X(Float.X(Advanced(self).GetFloorAngle(Vector3.XYZ(up_direction))))
+func (self Expanded) GetFloorAngle(up_direction Vector3.XYZ) Angle.Radians { //gd:CharacterBody3D.get_floor_angle
+	return Angle.Radians(Float.X(Advanced(self).GetFloorAngle(Vector3.XYZ(up_direction))))
 }
 
 /*
@@ -291,11 +291,11 @@ func (self Instance) SetMaxSlides(value int) {
 	class(self).SetMaxSlides(int64(value))
 }
 
-func (self Instance) WallMinSlideAngle() Float.X {
-	return Float.X(Float.X(class(self).GetWallMinSlideAngle()))
+func (self Instance) WallMinSlideAngle() Angle.Radians {
+	return Angle.Radians(Float.X(class(self).GetWallMinSlideAngle()))
 }
 
-func (self Instance) SetWallMinSlideAngle(value Float.X) {
+func (self Instance) SetWallMinSlideAngle(value Angle.Radians) {
 	class(self).SetWallMinSlideAngle(float64(value))
 }
 
@@ -323,11 +323,11 @@ func (self Instance) SetFloorBlockOnWall(value bool) {
 	class(self).SetFloorBlockOnWallEnabled(value)
 }
 
-func (self Instance) FloorMaxAngle() Float.X {
-	return Float.X(Float.X(class(self).GetFloorMaxAngle()))
+func (self Instance) FloorMaxAngle() Angle.Radians {
+	return Angle.Radians(Float.X(class(self).GetFloorMaxAngle()))
 }
 
-func (self Instance) SetFloorMaxAngle(value Float.X) {
+func (self Instance) SetFloorMaxAngle(value Angle.Radians) {
 	class(self).SetFloorMaxAngle(float64(value))
 }
 

@@ -238,7 +238,7 @@ Generates all lods for this ImporterMesh.
 The number of generated lods can be accessed using [method get_surface_lod_count], and each LOD is available in [method get_surface_lod_size] and [method get_surface_lod_indices].
 [param bone_transform_array] is an [Array] which can be either empty or contain [Transform3D]s which, for each of the mesh's bone IDs, will apply mesh skinning when generating the LOD mesh variations. This is usually used to account for discrepancies in scale between the mesh itself and its skinning data.
 */
-func (self Instance) GenerateLods(normal_merge_angle Float.X, normal_split_angle Float.X, bone_transform_array []any) { //gd:ImporterMesh.generate_lods
+func (self Instance) GenerateLods(normal_merge_angle Angle.Degrees, normal_split_angle Angle.Degrees, bone_transform_array []any) { //gd:ImporterMesh.generate_lods
 	Advanced(self).GenerateLods(float64(normal_merge_angle), float64(normal_split_angle), gd.EngineArrayFromSlice(bone_transform_array))
 }
 

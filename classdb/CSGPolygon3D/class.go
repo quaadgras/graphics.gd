@@ -170,11 +170,11 @@ func (self Instance) SetPathInterval(value Float.X) {
 	class(self).SetPathInterval(float64(value))
 }
 
-func (self Instance) PathSimplifyAngle() Float.X {
-	return Float.X(Float.X(class(self).GetPathSimplifyAngle()))
+func (self Instance) PathSimplifyAngle() Angle.Radians {
+	return Angle.Radians(Float.X(class(self).GetPathSimplifyAngle()))
 }
 
-func (self Instance) SetPathSimplifyAngle(value Float.X) {
+func (self Instance) SetPathSimplifyAngle(value Angle.Radians) {
 	class(self).SetPathSimplifyAngle(float64(value))
 }
 

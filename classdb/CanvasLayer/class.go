@@ -155,11 +155,11 @@ func (self Instance) SetOffset(value Vector2.XY) {
 	class(self).SetOffset(Vector2.XY(value))
 }
 
-func (self Instance) Rotation() Float.X {
-	return Float.X(Float.X(class(self).GetRotation()))
+func (self Instance) Rotation() Angle.Radians {
+	return Angle.Radians(Float.X(class(self).GetRotation()))
 }
 
-func (self Instance) SetRotation(value Float.X) {
+func (self Instance) SetRotation(value Angle.Radians) {
 	class(self).SetRotation(float64(value))
 }
 

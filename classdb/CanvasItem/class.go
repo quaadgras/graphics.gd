@@ -244,7 +244,7 @@ Draws an unfilled arc between the given angles with a uniform [param color] and 
 If [param width] is negative, it will be ignored and the arc will be drawn using [constant RenderingServer.PRIMITIVE_LINE_STRIP]. This means that when the CanvasItem is scaled, the arc will remain thin. If this behavior is not desired, then pass a positive [param width] like [code]1.0[/code].
 The arc is drawn from [param start_angle] towards the value of [param end_angle] so in clockwise direction if [code]start_angle < end_angle[/code] and counter-clockwise otherwise. Passing the same angles but in reversed order will produce the same arc. If absolute difference of [param start_angle] and [param end_angle] is greater than [constant @GDScript.TAU] radians, then a full circle arc is drawn (i.e. arc will not overlap itself).
 */
-func (self Instance) DrawArc(center Vector2.XY, radius Float.X, start_angle Float.X, end_angle Float.X, point_count int, color Color.RGBA) { //gd:CanvasItem.draw_arc
+func (self Instance) DrawArc(center Vector2.XY, radius Float.X, start_angle Angle.Radians, end_angle Angle.Radians, point_count int, color Color.RGBA) { //gd:CanvasItem.draw_arc
 	Advanced(self).DrawArc(Vector2.XY(center), float64(radius), float64(start_angle), float64(end_angle), int64(point_count), Color.RGBA(color), float64(-1.0), false)
 }
 
@@ -253,7 +253,7 @@ Draws an unfilled arc between the given angles with a uniform [param color] and 
 If [param width] is negative, it will be ignored and the arc will be drawn using [constant RenderingServer.PRIMITIVE_LINE_STRIP]. This means that when the CanvasItem is scaled, the arc will remain thin. If this behavior is not desired, then pass a positive [param width] like [code]1.0[/code].
 The arc is drawn from [param start_angle] towards the value of [param end_angle] so in clockwise direction if [code]start_angle < end_angle[/code] and counter-clockwise otherwise. Passing the same angles but in reversed order will produce the same arc. If absolute difference of [param start_angle] and [param end_angle] is greater than [constant @GDScript.TAU] radians, then a full circle arc is drawn (i.e. arc will not overlap itself).
 */
-func (self Expanded) DrawArc(center Vector2.XY, radius Float.X, start_angle Float.X, end_angle Float.X, point_count int, color Color.RGBA, width Float.X, antialiased bool) { //gd:CanvasItem.draw_arc
+func (self Expanded) DrawArc(center Vector2.XY, radius Float.X, start_angle Angle.Radians, end_angle Angle.Radians, point_count int, color Color.RGBA, width Float.X, antialiased bool) { //gd:CanvasItem.draw_arc
 	Advanced(self).DrawArc(Vector2.XY(center), float64(radius), float64(start_angle), float64(end_angle), int64(point_count), Color.RGBA(color), float64(width), antialiased)
 }
 

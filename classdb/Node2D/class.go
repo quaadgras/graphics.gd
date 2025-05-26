@@ -153,8 +153,8 @@ func (self Instance) LookAt(point Vector2.XY) { //gd:Node2D.look_at
 Returns the angle between the node and the [param point] in radians.
 [url=https://raw.githubusercontent.com/godotengine/godot-docs/master/img/node2d_get_angle_to.png]Illustration of the returned angle.[/url]
 */
-func (self Instance) GetAngleTo(point Vector2.XY) Float.X { //gd:Node2D.get_angle_to
-	return Float.X(Float.X(Advanced(self).GetAngleTo(Vector2.XY(point))))
+func (self Instance) GetAngleTo(point Vector2.XY) Angle.Radians { //gd:Node2D.get_angle_to
+	return Angle.Radians(Float.X(Advanced(self).GetAngleTo(Vector2.XY(point))))
 }
 
 /*

@@ -113,11 +113,11 @@ func (self Instance) SetFillMode(value int) {
 	class(self).SetFillMode(int64(value))
 }
 
-func (self Instance) RadialInitialAngle() Float.X {
-	return Float.X(Float.X(class(self).GetRadialInitialAngle()))
+func (self Instance) RadialInitialAngle() Angle.Radians {
+	return Angle.Radians(Float.X(class(self).GetRadialInitialAngle()))
 }
 
-func (self Instance) SetRadialInitialAngle(value Float.X) {
+func (self Instance) SetRadialInitialAngle(value Angle.Radians) {
 	class(self).SetRadialInitialAngle(float64(value))
 }
 

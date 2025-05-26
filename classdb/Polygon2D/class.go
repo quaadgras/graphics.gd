@@ -207,11 +207,11 @@ func (self Instance) SetTextureScale(value Vector2.XY) {
 	class(self).SetTextureScale(Vector2.XY(value))
 }
 
-func (self Instance) TextureRotation() Float.X {
-	return Float.X(Float.X(class(self).GetTextureRotation()))
+func (self Instance) TextureRotation() Angle.Radians {
+	return Angle.Radians(Float.X(class(self).GetTextureRotation()))
 }
 
-func (self Instance) SetTextureRotation(value Float.X) {
+func (self Instance) SetTextureRotation(value Angle.Radians) {
 	class(self).SetTextureRotation(float64(value))
 }
 
