@@ -639,7 +639,7 @@ func linkJS(API *gd.API) {
 		for i := range buf {
 			buf[i] = uint32(read_result_buffer.Invoke(0, 0, i).Int())
 		}
-		return pointers.Let[gd.Variant](*(*[3]uint64)(unsafe.Pointer(&buf)))
+		return pointers.Raw[gd.Variant](*(*[3]uint64)(unsafe.Pointer(&buf))).Copy()
 	}
 	array_set_typed := dlsym("array_set_typed")
 	API.Array.SetTyped = func(self gd.Array, t gd.VariantType, className gd.StringName, script gd.Object) {
@@ -658,7 +658,7 @@ func linkJS(API *gd.API) {
 		for i := range buf {
 			buf[i] = uint32(read_result_buffer.Invoke(0, 0, i).Int())
 		}
-		return pointers.Let[gd.Variant](*(*[3]uint64)(unsafe.Pointer(&buf)))
+		return pointers.Raw[gd.Variant](*(*[3]uint64)(unsafe.Pointer(&buf))).Copy()
 	}
 }
 

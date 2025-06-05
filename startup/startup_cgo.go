@@ -1727,7 +1727,7 @@ func linkCGO(API *gd.API) {
 			C.GDExtensionInt(i),
 		)
 		var ptr = (*[3]uint64)(r_ret)
-		var ret = pointers.Let[gd.Variant](*ptr)
+		var ret = pointers.Raw[gd.Variant](*ptr)
 		frame.Free()
 		return ret.Copy()
 	}
@@ -1788,9 +1788,9 @@ func linkCGO(API *gd.API) {
 			C.uintptr_t(p_key.Uintptr()),
 		)
 		var r_ret = *(*[3]uint64)(ptr)
-		var ret = pointers.New[gd.Variant](r_ret)
+		var ret = pointers.Raw[gd.Variant](r_ret)
 		frame.Free()
-		return ret
+		return API.Variants.NewCopy(ret)
 	}
 	API.Dictionary.SetIndex = func(dict gd.Dictionary, key, val gd.Variant) {
 		var frame = callframe.New()
