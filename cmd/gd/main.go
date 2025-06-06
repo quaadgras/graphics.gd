@@ -33,8 +33,6 @@ import (
 	"runtime.link/api/xray"
 )
 
-const version = "4.4"
-
 // These are our initial Godot project template files, we create
 // these automatically when the user runs the 'gd' command. They
 // are minimally setup for including the Go shared library such
@@ -75,56 +73,81 @@ func main() {
 	}
 }
 
-func installGodot(gobin string) (string, error) {
-	switch runtime.GOOS {
-	case "android":
-		return "echo", nil
-	case "darwin":
-		if _, err := exec.LookPath("brew"); err != nil {
-			return "", fmt.Errorf("gd: cannot install godot without homebrew")
-		}
-		fmt.Println("gd: installing Godot stable for macOS (via brew)")
-		if err := exec.Command("brew", "install", "godot").Run(); err != nil {
-			return "", fmt.Errorf("gd: failed to 'brew install godot': %w", err)
-		}
-		return "godot", nil
-	case "linux":
-		fmt.Println("gd: downloading Godot v" + version + " stable for linux")
-		resp, err := http.Get("https://github.com/godotengine/godot-builds/releases/download/" + version + "-stable/Godot_v" + version + "-stable_linux.x86_64.zip")
-		if err != nil {
-			return "", xray.New(err)
-		}
-		defer resp.Body.Close()
-		if resp.StatusCode != 200 {
-			return "", xray.New(err)
-		}
-		data, err := io.ReadAll(resp.Body)
-		if err != nil {
-			return "", xray.New(err)
-		}
-		archive, err := zip.NewReader(bytes.NewReader(data), int64(len(data)))
-		if err != nil {
-			return "", xray.New(err)
-		}
-		inZip, err := archive.Open("Godot_v" + version + "-stable_linux.x86_64")
-		if err != nil {
-			return "", xray.New(err)
-		}
-		defer inZip.Close()
-		//executable
-		binPath := filepath.Join(gobin, "godot-"+version)
-		file, err := os.OpenFile(binPath, os.O_CREATE|os.O_WRONLY, 0755)
-		if err != nil {
-			return "", xray.New(err)
-		}
-		defer file.Close()
-		if _, err = io.Copy(file, inZip); err != nil {
-			return "", xray.New(err)
-		}
-		return binPath, nil
-	default:
-		return "", fmt.Errorf("gd: installing godot for GOOS %v is not supported", runtime.GOOS)
+func useEngine() (string, error) {
+	gopath := os.Getenv("GOPATH")
+	if gopath == "" {
+		gopath = build.Default.GOPATH
 	}
+	gobin := os.Getenv("GOBIN")
+	if gobin == "" {
+		gobin = filepath.Join(gopath, "bin")
+	}
+	engine, err := exec.LookPath(engineCmd)
+	if err == nil {
+		if current, err := exec.Command(engine, "--version").CombinedOutput(); err == nil {
+			if strings.HasPrefix(string(current), version+".") {
+				return engine, nil
+			}
+		}
+	}
+	// Use existing engine if available and the correct version.
+	if binary, err := exec.LookPath(engineCmd + "-" + version); err == nil {
+		return binary, nil
+	}
+	engineBin := filepath.Join(gobin + engineCmd + "-" + version)
+	info, err := os.Stat(engineBin)
+	if err != nil {
+		if !errors.Is(err, fs.ErrNotExist) {
+			return "", xray.New(err)
+		}
+		fmt.Println(engineBin)
+		engine, err := installEngine(gobin)
+		if err != nil {
+			return "", xray.New(err)
+		}
+		return engine, nil
+	}
+	if info.Mode()&0o111 == 0 {
+		if err := os.Chmod(engineBin, 0o755); err != nil {
+			return "", xray.New(err)
+		}
+	}
+	return filepath.Join(gobin, engine+"-"+version), nil
+}
+
+func download(gobin, unzip, url string) (string, error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		return "", xray.New(err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != 200 {
+		return "", xray.New(err)
+	}
+	data, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return "", xray.New(err)
+	}
+	archive, err := zip.NewReader(bytes.NewReader(data), int64(len(data)))
+	if err != nil {
+		return "", xray.New(err)
+	}
+	inZip, err := archive.Open(unzip)
+	if err != nil {
+		return "", xray.New(err)
+	}
+	defer inZip.Close()
+	//executable
+	binPath := filepath.Join(gobin, engineCmd+"-"+version)
+	file, err := os.OpenFile(binPath, os.O_CREATE|os.O_WRONLY, 0755)
+	if err != nil {
+		return "", xray.New(err)
+	}
+	defer file.Close()
+	if _, err = io.Copy(file, inZip); err != nil {
+		return "", xray.New(err)
+	}
+	return binPath, nil
 }
 
 type WebServer struct {
@@ -135,47 +158,6 @@ func (s WebServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Cross-Origin-Embedder-Policy", "require-corp")
 	w.Header().Set("Cross-Origin-Opener-Policy", "same-origin")
 	s.Handler.ServeHTTP(w, r)
-}
-
-func useGodot() (string, error) {
-	gopath := os.Getenv("GOPATH")
-	if gopath == "" {
-		gopath = build.Default.GOPATH
-	}
-	gobin := os.Getenv("GOBIN")
-	if gobin == "" {
-		gobin = filepath.Join(gopath, "bin")
-	}
-	godot, err := exec.LookPath("godot")
-	if err == nil {
-		if current, err := exec.Command(godot, "--version").CombinedOutput(); err == nil {
-			if strings.HasPrefix(string(current), version+".") {
-				return godot, nil
-			}
-		}
-	}
-	// Use existing godot if available and the correct version.
-	if binary, err := exec.LookPath("godot-" + version); err == nil {
-		return binary, nil
-	}
-	godotBin := filepath.Join(gobin + "godot-" + version)
-	info, err := os.Stat(godotBin)
-	if err != nil {
-		if !errors.Is(err, fs.ErrNotExist) {
-			return "", xray.New(err)
-		}
-		godot, err := installGodot(gobin)
-		if err != nil {
-			return "", xray.New(err)
-		}
-		return godot, nil
-	}
-	if info.Mode()&0o111 == 0 {
-		if err := os.Chmod(godotBin, 0o755); err != nil {
-			return "", xray.New(err)
-		}
-	}
-	return filepath.Join(gobin, "godot-"+version), nil
 }
 
 func wrap() error {
@@ -189,9 +171,9 @@ func wrap() error {
 	if GOARCH != "amd64" && GOARCH != "arm64" && GOARCH != "wasm" {
 		return errors.New("gd requires an amd64, wasm, or arm64 system")
 	}
-	godot, err := useGodot()
+	engine, err := useEngine()
 	if err != nil {
-		return fmt.Errorf("gd requires Godot v%s to be installed as a binary at $GOPATH/bin/godot-%s: %w", version, version, err)
+		return fmt.Errorf("gd requires %s v%s to be installed as a binary at $GOPATH/bin/%s-%s: %w", engineCmd, version, engineCmd, version, err)
 	}
 	wd, err := os.Getwd()
 	if err != nil {
@@ -288,16 +270,20 @@ func wrap() error {
 		)); err != nil {
 			return xray.New(err)
 		}
-		if err := setupFile(true, graphics+"/library.gdextension", library_gdextension); err != nil {
+		var gdextension_version = version
+		if engineCmd == "blazium" {
+			gdextension_version = "4.1.0"
+		}
+		if err := setupFile(true, graphics+"/library.gdextension", library_gdextension, gdextension_version); err != nil {
 			return xray.New(err)
 		}
 		if _, err := os.Stat(graphics + "/.godot"); os.IsNotExist(err) {
-			godot := exec.Command(godot, "--import", "--headless")
-			godot.Dir = graphics
-			godot.Stderr = os.Stderr
-			godot.Stdout = os.Stdout
-			godot.Stdin = os.Stdin
-			return xray.New(godot.Run())
+			engine := exec.Command(engine, "--import", "--headless")
+			engine.Dir = graphics
+			engine.Stderr = os.Stderr
+			engine.Stdout = os.Stdout
+			engine.Stdin = os.Stdin
+			return xray.New(engine.Run())
 		}
 		if err := setupFile(false, graphics+"/.godot/extension_list.cfg", extension_list_cfg); err != nil {
 			return xray.New(err)
@@ -414,7 +400,7 @@ func wrap() error {
 	}
 	switch os.Args[1] {
 	case "run":
-		godot := exec.Command(godot, runGodotArgs...)
+		godot := exec.Command(engine, runGodotArgs...)
 		godot.Dir = graphics
 		godot.Stderr = os.Stderr
 		godot.Stdout = os.Stdout
@@ -449,12 +435,12 @@ func wrap() error {
 				args = append(args, arg)
 			}
 		}
-		godot := exec.Command(godot, args...)
-		godot.Dir = graphics
-		godot.Stderr = os.Stderr
-		godot.Stdout = os.Stdout
-		godot.Stdin = os.Stdin
-		return xray.New(godot.Run())
+		engine := exec.Command(engine, args...)
+		engine.Dir = graphics
+		engine.Stderr = os.Stderr
+		engine.Stdout = os.Stdout
+		engine.Stdin = os.Stdin
+		return xray.New(engine.Run())
 	}
 	return nil
 }
