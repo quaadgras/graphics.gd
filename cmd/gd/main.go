@@ -216,6 +216,14 @@ func wrap() error {
 		graphics = "/sdcard/gd/" + filepath.Base(wd)
 	}
 	setup := func() error {
+		wd, err := os.Getwd()
+		if err != nil {
+			return xray.New(err)
+		}
+		err = docgen.Process(wd)
+		if err != nil {
+			return xray.New(err)
+		}
 		if GOOS == "js" {
 			if err := os.MkdirAll(graphics+"/.godot/public", 0o755); err != nil {
 				return xray.New(err)
@@ -321,14 +329,6 @@ func wrap() error {
 	case "fix":
 		return fix()
 	case "run", "build":
-		wd, err := os.Getwd()
-		if err != nil {
-			return xray.New(err)
-		}
-		err = docgen.Process(wd)
-		if err != nil {
-			return xray.New(err)
-		}
 		copy(args, os.Args[1:])
 		args[0] = "build"
 		args = append(args, "-o", libraryPath)

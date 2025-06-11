@@ -22,7 +22,7 @@ func Process(packagePath string) error {
 func serializeDocs(docs XML, outPath string) error {
 	file, err := os.Create(outPath)
 	if err != nil {
-		return fmt.Errorf("failed to create doc gob file: %w", err)
+		return fmt.Errorf("failed to create xml documentation file: %w", err)
 	}
 	defer file.Close()
 	enc := xml.NewEncoder(file)
