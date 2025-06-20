@@ -27,9 +27,14 @@ func installEngine(gobin string) (string, error) {
 		}
 		return "godot", nil
 	case "linux":
-		fmt.Println("gd: downloading Godot v" + version + " stable for linux")
-		return download(gobin, "Godot_v"+version+"-stable_linux.x86_64",
-			"https://github.com/godotengine/godot-builds/releases/download/"+version+"-stable/Godot_v"+version+"-stable_linux.x86_64.zip")
+		var arch = "x86_64"
+		switch runtime.GOARCH {
+		case "arm64":
+			arch = "arm64"
+		}
+		fmt.Println("gd: downloading Godot v" + version + " stable for linux/" + arch)
+		return download(gobin, "Godot_v"+version+"-stable_linux."+arch,
+			"https://github.com/godotengine/godot-builds/releases/download/"+version+"-stable/Godot_v"+version+"-stable_linux."+arch+".zip")
 	default:
 		return "", fmt.Errorf("gd: installing "+engineCmd+" automatically for GOOS %v is not supported (please install it yourself)", runtime.GOOS)
 	}

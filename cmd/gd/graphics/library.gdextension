@@ -6,6 +6,7 @@ compatibility_minimum = "%v"
 [libraries]
 
 linux.x86_64   = "linux_amd64.so"
+linux.arm64    = "linux_arm64.so"
 windows.x86_64 = "windows_amd64.dll"
 android.arm64  = "libandroid_arm64.so"
 macos.release = "darwin_universal.dylib"
