@@ -9,7 +9,7 @@ _Why use graphics.gd?_
 * Unlike with other options, RIDs, callables and dictionary arguments are all distinctly typed.
 * A good balance of performance and convenience.
 * General-purpose pure-Go 'variant' packages, reuse them in any Go project.
-* Recompile your code quickly, with a build experience similar to a scripting language.
+* After the first build, recompile quickly, with an experience similar to a scripting language.
 
 Not just a wrapper! graphics.gd has been holistically designed and curated from the ground up to provide a cohesive way to interface with the engine.
 
