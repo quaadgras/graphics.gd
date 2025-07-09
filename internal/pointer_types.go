@@ -1,6 +1,8 @@
 package gd
 
 import (
+	"reflect"
+
 	"graphics.gd/internal/pointers"
 )
 
@@ -16,3 +18,20 @@ type RefCounted pointers.Trio[Object]
 type enginePointer = EnginePointer
 type packedPointers = PackedPointers
 type VariantPointers = [3]uint64
+
+// TransferOwnershipToEngine releases the ownership of the given value. Use it on non-RefCounted
+// Object return values passed back to the engine.
+//
+// used to fix cases of https://github.com/grow-graphics/gd/issues/147
+func TransferOwnershipToEngine(val any) {
+	rtype := reflect.TypeOf(val)
+	switch rtype.Kind() {
+	case reflect.Array:
+		if rtype.Size() == 1 {
+			class, ok := val.(IsClass)
+			if ok {
+				pointers.End(class.AsObject()[0])
+			}
+		}
+	}
+}
