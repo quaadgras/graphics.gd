@@ -2,6 +2,7 @@ package classdb
 
 import (
 	"encoding/xml"
+	"errors"
 	"fmt"
 	"io"
 	"maps"
@@ -262,6 +263,10 @@ func init() {
 			path := gd.Global.GetLibraryPath(gd.Global.ExtensionToken)
 			data, err := os.Open(filepath.Join(filepath.Dir(path.String()), "library_documentation.xml"))
 			if err != nil {
+				if errors.Is(err, os.ErrNotExist) {
+					return
+				}
+
 				EngineClass.Raise(err)
 			}
 			var dec = xml.NewDecoder(data)
