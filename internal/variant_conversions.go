@@ -85,8 +85,8 @@ func NewVariant(v any) Variant {
 			return NewVariant(value.Elem().Interface())
 		}
 	case reflect.Array:
-		if rtype.Elem().Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
-			obj := value.Index(0).Interface().(IsClass).AsObject()
+		if rtype.Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
+			obj := value.Interface().(IsClass).AsObject()
 			if pointers.Get(obj[0]) == ([3]uint64{}) {
 				return Global.Variants.NewNil()
 			}

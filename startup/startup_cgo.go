@@ -2661,19 +2661,18 @@ func get_rid_func(p_instance uintptr) C.uint64_t {
 //export callable_call
 func callable_call(p_callable uintptr, p_args unsafe.Pointer, count C.GDExtensionInt, p_ret unsafe.Pointer, issue *C.GDExtensionCallError) {
 	fn := cgo.Handle(p_callable).Value().(func(...gd.Variant) (gd.Variant, error))
-
 	var slice = unsafe.Slice((**[3]uint64)(p_args), int(count))
-
 	var args = make([]gd.Variant, 0, len(slice))
 	for _, elem := range slice {
 		args = append(args, pointers.Let[gd.Variant](*elem))
 	}
 	ret, err := fn(args...)
 	if err != nil {
+		*issue = C.GDExtensionCallError{}
 		issue.error = 7 // TODO no generic error>
 		return
 	}
-	*(*[3]uint64)(p_ret) = pointers.Get(ret)
+	*(*[3]uint64)(p_ret), _ = pointers.End(ret)
 	*issue = C.GDExtensionCallError{}
 }
 

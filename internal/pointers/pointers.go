@@ -81,7 +81,7 @@ const (
 
 // matches ignores the most significant 2 bits.
 func (r revision) matches(other revision) bool {
-	return r&0x3FFFFFFFFFFFFFFF == other&0x3FFFFFFFFFFFFFFF
+	return r&0b00111111111111111111111111111111111111111111111111111111111111 == other&0b00111111111111111111111111111111111111111111111111111111111111
 }
 
 // isPinned returns true if the pointer is pinned.
@@ -327,7 +327,7 @@ func Get[T Generic[T, P], P Size](ptr T) P {
 	}
 	rev := revision(arr[addr+offsetRevision].Load())
 	if !rev.matches(p.revision) {
-		fmt.Printf("%b != %b\b", rev, p.revision)
+		fmt.Printf("%b != %b\b", rev&0b00111111111111111111111111111111111111111111111111111111111111, p.revision&0b00111111111111111111111111111111111111111111111111111111111111)
 		panic("expired pointer")
 	}
 	if !rev.isActive() {

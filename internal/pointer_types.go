@@ -25,9 +25,12 @@ type VariantPointers = [3]uint64
 // used to fix cases of https://github.com/grow-graphics/gd/issues/147
 func TransferOwnershipToEngine(val any) {
 	rtype := reflect.TypeOf(val)
+	if rtype == nil {
+		return
+	}
 	switch rtype.Kind() {
 	case reflect.Array:
-		if rtype.Size() == 1 {
+		if rtype.Len() == 1 {
 			class, ok := val.(IsClass)
 			if ok {
 				pointers.End(class.AsObject()[0])
