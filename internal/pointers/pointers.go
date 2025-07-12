@@ -81,7 +81,7 @@ const (
 
 // matches ignores the most significant 2 bits.
 func (r revision) matches(other revision) bool {
-	return r&0b00111111111111111111111111111111111111111111111111111111111111 == other&0b00111111111111111111111111111111111111111111111111111111111111
+	return r&0b0011111111111111111111111111111111111111111111111111111111111111 == other&0b001111111111111111111111111111111111111111111111111111111111111
 }
 
 // isPinned returns true if the pointer is pinned.
@@ -297,6 +297,18 @@ func end(rev revision, s int, p uint64) bool {
 		}
 	}
 	return false
+}
+
+// Cut either gets the pointer, or ends it, depending on the parameter passed.
+func Cut[T Generic[T, P], P Size](ptr T, end bool) P {
+	if end {
+		raw, ok := End(ptr)
+		if !ok {
+			panic("pointer already freed")
+		}
+		return raw
+	}
+	return Get[T, P](ptr)
 }
 
 // Get returns the underlying pointer value, or panics if the pointer

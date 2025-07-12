@@ -14,7 +14,7 @@ import (
 
 var basis_test string = `extends Object
 
-func test_basis(angles) -> Basis:
+func test_basis(angles):
     return Basis.from_euler(angles)
 `
 

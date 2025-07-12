@@ -29,8 +29,7 @@ func NewCallable(fn any) Callable {
 			return Global.Variants.NewNil(), nil
 		}
 		result := results[0].Interface()
-		TransferOwnershipToEngine(result)
-		return NewVariant(result), nil
+		return CutVariant(result, true), nil
 	})
 }
 
@@ -41,8 +40,7 @@ func InternalCallable(fn CallableType.Function) Callable {
 			converted[i] = VariantPkg.New(arg.Interface())
 		}
 		result := fn.Call(converted...).Interface()
-		TransferOwnershipToEngine(result)
-		return NewVariant(result), nil
+		return CutVariant(result, true), nil
 	})
 }
 

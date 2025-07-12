@@ -6,6 +6,7 @@ import (
 	"graphics.gd/classdb"
 	"graphics.gd/classdb/GDScript"
 	"graphics.gd/classdb/Node"
+	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Object"
 )
@@ -22,7 +23,7 @@ func get_node() -> Node:
 	return node
 `
 
-func TestCallable(t *testing.T) {
+func TestCallables(t *testing.T) {
 	var runner = Object.New()
 	var script = GDScript.New().AsScript()
 	script.SetSourceCode(callable_test)
@@ -34,8 +35,9 @@ func TestCallable(t *testing.T) {
 		node.SetName("TestNode")
 		return node
 	}))
-	//pointers.Cycle()
-	//pointers.Cycle()
+	pointers.Cycle()
+	runner.ClassName()
+	pointers.Cycle()
 
 	var node Node.Instance = Object.Call(runner, "get_node").(classdb.Node)
 	if node.Name() != "TestNode" {
