@@ -889,7 +889,7 @@ func (self class) GetFileAsBytes(path String.Readable) Packed.Bytes { //gd:FileA
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.FileAccess.Bind_get_file_as_bytes, frame.Array(0), r_ret.Addr())
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1164,7 +1164,7 @@ func (self class) GetBuffer(length int64) Packed.Bytes { //gd:FileAccess.get_buf
 	callframe.Arg(frame, length)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -1200,7 +1200,7 @@ func (self class) GetCsvLine(delim String.Readable) Packed.Strings { //gd:FileAc
 	callframe.Arg(frame, pointers.Get(gd.InternalString(delim)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_get_csv_line, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

@@ -618,7 +618,7 @@ func (self class) GetFiles() Packed.Strings { //gd:DirAccess.get_files
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_get_files, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -634,7 +634,7 @@ func (self class) GetFilesAt(path String.Readable) Packed.Strings { //gd:DirAcce
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.DirAccess.Bind_get_files_at, frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -649,7 +649,7 @@ func (self class) GetDirectories() Packed.Strings { //gd:DirAccess.get_directori
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_get_directories, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -665,7 +665,7 @@ func (self class) GetDirectoriesAt(path String.Readable) Packed.Strings { //gd:D
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.DirAccess.Bind_get_directories_at, frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

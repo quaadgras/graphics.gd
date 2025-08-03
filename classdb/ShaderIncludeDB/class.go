@@ -129,7 +129,7 @@ func (self class) ListBuiltInIncludeFiles() Packed.Strings { //gd:ShaderIncludeD
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.ShaderIncludeDB.Bind_list_built_in_include_files, frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

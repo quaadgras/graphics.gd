@@ -220,7 +220,7 @@ func (self class) Base64ToRaw(base64_str String.Readable) Packed.Bytes { //gd:Ma
 	callframe.Arg(frame, pointers.Get(gd.InternalString(base64_str)))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Marshalls.Bind_base64_to_raw, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

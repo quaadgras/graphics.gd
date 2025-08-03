@@ -1017,7 +1017,7 @@ func (self class) GetTileMapDataAsArray() Packed.Bytes { //gd:TileMapLayer.get_t
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_get_tile_map_data_as_array, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

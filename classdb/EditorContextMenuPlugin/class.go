@@ -102,7 +102,7 @@ Called when creating a context menu, custom options can be added by using the [m
 */
 func (Instance) _popup_menu(impl func(ptr unsafe.Pointer, paths []string)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var paths = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
+		var paths = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
 		defer pointers.End(gd.InternalPackedStrings(paths))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, paths.Strings())
@@ -245,7 +245,7 @@ Called when creating a context menu, custom options can be added by using the [m
 */
 func (class) _popup_menu(impl func(ptr unsafe.Pointer, paths Packed.Strings)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var paths = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
+		var paths = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
 		defer pointers.End(gd.InternalPackedStrings(paths))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, paths)

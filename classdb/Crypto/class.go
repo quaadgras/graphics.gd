@@ -286,7 +286,7 @@ func (self class) GenerateRandomBytes(size int64) Packed.Bytes { //gd:Crypto.gen
 	callframe.Arg(frame, size)
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_generate_random_bytes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -350,7 +350,7 @@ func (self class) Sign(hash_type HashingContext.HashType, hash Packed.Bytes, key
 	callframe.Arg(frame, pointers.Get(key[0])[0])
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_sign, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -383,7 +383,7 @@ func (self class) Encrypt(key [1]gdclass.CryptoKey, plaintext Packed.Bytes) Pack
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](plaintext))))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_encrypt, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -399,7 +399,7 @@ func (self class) Decrypt(key [1]gdclass.CryptoKey, ciphertext Packed.Bytes) Pac
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](ciphertext))))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_decrypt, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }
@@ -416,7 +416,7 @@ func (self class) HmacDigest(hash_type HashingContext.HashType, key Packed.Bytes
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](msg))))
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_hmac_digest, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret.Get()))))
 	frame.Free()
 	return ret
 }

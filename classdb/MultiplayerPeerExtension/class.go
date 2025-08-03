@@ -238,7 +238,7 @@ Called when a packet needs to be sent by the [MultiplayerAPI], if [method _put_p
 */
 func (Instance) _put_packet_script(impl func(ptr unsafe.Pointer, p_buffer []byte) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var p_buffer = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
+		var p_buffer = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
 		defer pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](p_buffer)))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, p_buffer.Bytes())
@@ -536,7 +536,7 @@ Called when a packet needs to be sent by the [MultiplayerAPI], if [method _put_p
 */
 func (class) _put_packet_script(impl func(ptr unsafe.Pointer, p_buffer Packed.Bytes) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var p_buffer = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
+		var p_buffer = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
 		defer pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](p_buffer)))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, p_buffer)

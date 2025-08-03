@@ -256,7 +256,7 @@ func (Instance) _export_file(impl func(ptr unsafe.Pointer, path string, atype st
 		defer pointers.End(gd.InternalString(path))
 		var atype = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
 		defer pointers.End(gd.InternalString(atype))
-		var features = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 2)))))
+		var features = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 2)))))
 		defer pointers.End(gd.InternalPackedStrings(features))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, path.String(), atype.String(), features.Strings())
@@ -268,7 +268,7 @@ Virtual method to be overridden by the user. It is called when the export starts
 */
 func (Instance) _export_begin(impl func(ptr unsafe.Pointer, features []string, is_debug bool, path string, flags int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var features = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
+		var features = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
 		defer pointers.End(gd.InternalPackedStrings(features))
 		var is_debug = gd.UnsafeGet[bool](p_args, 1)
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
@@ -298,7 +298,7 @@ func (Instance) _begin_customize_resources(impl func(ptr unsafe.Pointer, platfor
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
 		defer pointers.End(platform[0])
-		var features = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
+		var features = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
 		defer pointers.End(gd.InternalPackedStrings(features))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, features.Strings())
@@ -346,7 +346,7 @@ func (Instance) _begin_customize_scenes(impl func(ptr unsafe.Pointer, platform E
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
 		defer pointers.End(platform[0])
-		var features = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
+		var features = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
 		defer pointers.End(gd.InternalPackedStrings(features))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, features.Strings())
@@ -838,7 +838,7 @@ func (class) _export_file(impl func(ptr unsafe.Pointer, path String.Readable, at
 		defer pointers.End(gd.InternalString(path))
 		var atype = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
 		defer pointers.End(gd.InternalString(atype))
-		var features = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 2)))))
+		var features = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 2)))))
 		defer pointers.End(gd.InternalPackedStrings(features))
 		self := reflect.ValueOf(class).UnsafePointer()
 		impl(self, path, atype, features)
@@ -850,7 +850,7 @@ Virtual method to be overridden by the user. It is called when the export starts
 */
 func (class) _export_begin(impl func(ptr unsafe.Pointer, features Packed.Strings, is_debug bool, path String.Readable, flags int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var features = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
+		var features = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
 		defer pointers.End(gd.InternalPackedStrings(features))
 		var is_debug = gd.UnsafeGet[bool](p_args, 1)
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
@@ -880,7 +880,7 @@ func (class) _begin_customize_resources(impl func(ptr unsafe.Pointer, platform [
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
 		defer pointers.End(platform[0])
-		var features = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
+		var features = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
 		defer pointers.End(gd.InternalPackedStrings(features))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, features)
@@ -928,7 +928,7 @@ func (class) _begin_customize_scenes(impl func(ptr unsafe.Pointer, platform [1]g
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
 
 		defer pointers.End(platform[0])
-		var features = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
+		var features = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
 		defer pointers.End(gd.InternalPackedStrings(features))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, platform, features)

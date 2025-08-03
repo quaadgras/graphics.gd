@@ -211,16 +211,16 @@ func (name Name) LoadFromRawPointerValue(val string) string {
 	case "String.Name":
 		return fmt.Sprintf("String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](%s))))", val)
 	case "Packed.Bytes":
-		return fmt.Sprintf("Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](%s))))", val)
+		return fmt.Sprintf("Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](%s))))", val)
 	case "Packed.Strings":
-		return fmt.Sprintf("Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](%s))))", val)
+		return fmt.Sprintf("Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](%s))))", val)
 	case "Packed.Array[int32]", "Packed.Array[int64]", "Packed.Array[float32]", "Packed.Array[float64]",
 		"Packed.Array[Vector2.XY]", "Packed.Array[Vector3.XYZ]", "Packed.Array[Vector4.XYZW]", "Packed.Array[Color.RGBA]":
 		elem := strings.TrimPrefix(string(name), "Packed.Array[")
 		elem = strings.TrimSuffix(elem, "]")
 		title, _, _ := strings.Cut(elem, ".")
 		title = strings.Title(title)
-		return fmt.Sprintf("Packed.Array[%s](Array.Through(gd.PackedProxy[gd.Packed%sArray, %s]{}, pointers.Pack(pointers.New[gd.PackedStringArray](%s))))",
+		return fmt.Sprintf("Packed.Array[%s](Array.Through(gd.PackedProxy[gd.Packed%sArray, %s]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](%s))))",
 			elem, title, elem, val)
 	case "variant.Any":
 		return fmt.Sprintf("variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](%s)))", val)

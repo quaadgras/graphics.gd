@@ -2,6 +2,7 @@ package Engine
 
 import (
 	"fmt"
+	"runtime"
 
 	gd "graphics.gd/internal"
 )
@@ -56,7 +57,13 @@ func Print(v ...any) { //gd:prints printraw printt
 
 // Raise pushes an error message to Godot's built-in debugger and to the OS terminal.
 func Raise(err error) { //gd:push_error
-	gd.PushError(gd.NewVariant(err.Error()))
+	pc, file, line, ok := runtime.Caller(1)
+	if ok {
+		name := runtime.FuncForPC(pc).Name()
+		gd.Global.PrintErrorMessage("", err.Error(), name, file, int32(line), false)
+	} else {
+		gd.PushError(gd.NewVariant(err.Error()))
+	}
 }
 
 // RaiseWarning pushes a warning message to Godot's built-in debugger and to the OS terminal.
