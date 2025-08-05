@@ -59,6 +59,9 @@ var (
 	//
 	//go:embed internal/macos
 	macos_sdk embed.FS
+
+	//go:embed internal/ios/Info.plist
+	info_plist string
 )
 
 func setupFile(force bool, name, embed string, args ...any) error {
@@ -330,6 +333,8 @@ func wrap() error {
 		runGodotArgs = []string{"--headless", "--export-debug", "Web"}
 	case "android":
 		libraryPath = "lib" + libraryPath + ".so"
+	case "ios":
+		libraryPath += ".a"
 	default:
 		libraryPath += ".so"
 	}
@@ -346,7 +351,9 @@ func wrap() error {
 		copy(args, os.Args[1:])
 		args[0] = "build"
 		args = append(args, "-o", libraryPath)
-		if GOOS != "js" {
+		if GOOS == "ios" {
+			args = append(args, "-buildmode=c-archive")
+		} else if GOOS != "js" {
 			args = append(args, "-buildmode=c-shared")
 		}
 	case "test":
@@ -406,7 +413,12 @@ func wrap() error {
 			}
 			switch GOOS {
 			case "windows":
-				golang.Env = append(golang.Env, "CC=zig cc -target x86_64-windows-gnu")
+				switch arches[i] {
+				case "amd64":
+					golang.Env = append(golang.Env, "CC=zig cc -target x86_64-windows-gnu")
+				case "arm64":
+					golang.Env = append(golang.Env, "CC=zig cc -target aarch64-windows-gnu")
+				}
 			case "darwin":
 				setupFiles(macos_sdk, "internal/macos", graphics+"/../releases/mac/sdk")
 				MACOS_SDK, err := filepath.Abs(graphics + "/../releases/mac/sdk")
@@ -420,7 +432,19 @@ func wrap() error {
 					golang.Env = append(golang.Env, "CC=zig cc -target aarch64-macos -F "+MACOS_SDK+"/Frameworks -L"+MACOS_SDK+"/lib -I"+MACOS_SDK+"/include")
 				}
 			case "linux":
-				golang.Env = append(golang.Env, "CC=zig cc -target x86_64-linux-gnu")
+				switch arches[i] {
+				case "amd64":
+					golang.Env = append(golang.Env, "CC=zig cc -target x86_64-linux-gnu")
+				case "arm64":
+					golang.Env = append(golang.Env, "CC=zig cc -target aarch64-linux-gnu")
+				}
+			case "ios":
+				setupFiles(macos_sdk, "internal/macos", graphics+"/../releases/mac/sdk")
+				MACOS_SDK, err := filepath.Abs(graphics + "/../releases/mac/sdk")
+				if err != nil {
+					return xray.New(err)
+				}
+				golang.Env = append(golang.Env, "CC=zig cc -target aarch64-macos -F "+MACOS_SDK+"/Frameworks -L"+MACOS_SDK+"/lib -I"+MACOS_SDK+"/include")
 			}
 		}
 		golang.Stderr = capture
@@ -431,6 +455,17 @@ func wrap() error {
 			<-parsingDone
 			checkForFixes(undefinedSymbols)
 			return err
+		}
+		if GOOS == "ios" { // create the xcframework
+			if err := os.MkdirAll(graphics+"/go.xcframework/ios_arm64", 0755); err != nil {
+				return xray.New(err)
+			}
+			if err := os.Rename(graphics+"/ios_arm64.a", graphics+"/go.xcframework/ios_arm64/libgo.a"); err != nil {
+				return xray.New(err)
+			}
+			if err := setupFile(true, graphics+"/go.xcframework/Info.plist", info_plist); err != nil {
+				return xray.New(err)
+			}
 		}
 	}
 	if GOOS == "darwin" && (GOARCH == "amd64" || GOARCH == "arm64") {
