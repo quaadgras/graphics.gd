@@ -63,10 +63,10 @@ static inline void variant_destroy(pointer fn, pointer p_self) {
 	((GDExtensionInterfaceVariantDestroy)fn)((GDExtensionVariantPtr)p_self);
 }
 static inline void variant_call(pointer fn, pointer p_self, pointer p_method, pointer p_args, GDExtensionInt p_argument_count, pointer r_ret, GDExtensionCallError *r_error) {
-	((GDExtensionInterfaceVariantCall)fn)((GDExtensionVariantPtr)p_self, (GDExtensionConstStringNamePtr)p_method, (GDExtensionConstVariantPtr)p_args, (GDExtensionInt)p_argument_count, (GDExtensionUninitializedVariantPtr)r_ret, r_error);
+	((GDExtensionInterfaceVariantCall)fn)((GDExtensionVariantPtr)p_self, (GDExtensionConstStringNamePtr)p_method, (const GDExtensionConstVariantPtr*)p_args, (GDExtensionInt)p_argument_count, (GDExtensionUninitializedVariantPtr)r_ret, r_error);
 }
 static inline void variant_call_static(pointer fn, GDExtensionVariantType p_type, pointer p_method, pointer p_args, GDExtensionInt p_argument_count, pointer r_ret, GDExtensionCallError *r_error) {
-	((GDExtensionInterfaceVariantCallStatic)fn)((GDExtensionVariantType)p_type, (GDExtensionConstStringNamePtr)p_method, (GDExtensionConstVariantPtr)p_args, (GDExtensionInt)p_argument_count, (GDExtensionUninitializedVariantPtr)r_ret, r_error);
+	((GDExtensionInterfaceVariantCallStatic)fn)((GDExtensionVariantType)p_type, (GDExtensionConstStringNamePtr)p_method, (const GDExtensionConstVariantPtr*)p_args, (GDExtensionInt)p_argument_count, (GDExtensionUninitializedVariantPtr)r_ret, r_error);
 }
 static inline void variant_evaluate(pointer fn, GDExtensionVariantOperator p_operator, pointer p_a, pointer p_b, pointer r_ret, pointer r_valid) {
 	((GDExtensionInterfaceVariantEvaluate)fn)(p_operator, (GDExtensionConstVariantPtr)p_a, (GDExtensionConstVariantPtr)p_b, (GDExtensionUninitializedVariantPtr)r_ret, (GDExtensionBool*)r_valid);
@@ -171,7 +171,7 @@ static inline pointer variant_get_ptr_constructor(pointer fn, GDExtensionVariant
 	return (pointer)((GDExtensionInterfaceVariantGetPtrConstructor)fn)(p_type, p_constructor);
 }
 static inline void call_variant_ptr_constructor(pointer fn, pointer r_ret, pointer r_arg) {
-	((GDExtensionPtrConstructor)fn)((GDExtensionUninitializedVariantPtr)r_ret, (void*)r_arg);
+	((GDExtensionPtrConstructor)fn)((GDExtensionUninitializedVariantPtr)r_ret, (const GDExtensionConstTypePtr*)r_arg);
 }
 static inline pointer variant_get_ptr_destructor(pointer fn, GDExtensionVariantType p_type) {
 	return (pointer)((GDExtensionInterfaceVariantGetPtrDestructor)fn)(p_type);
@@ -180,7 +180,7 @@ static inline void call_variant_ptr_destructor(pointer fn, pointer r_arg) {
 	((GDExtensionPtrDestructor)fn)((GDExtensionVariantPtr)r_arg);
 }
 static inline void variant_construct(pointer fn, GDExtensionVariantType p_type, pointer p_base, pointer p_args, int32_t p_argument_count, GDExtensionCallError *r_error) {
-	((GDExtensionInterfaceVariantConstruct)fn)(p_type, (GDExtensionUninitializedVariantPtr)p_base, (GDExtensionConstVariantPtr)p_args, p_argument_count, r_error);
+	((GDExtensionInterfaceVariantConstruct)fn)(p_type, (GDExtensionUninitializedVariantPtr)p_base, (const GDExtensionConstVariantPtr*)p_args, p_argument_count, r_error);
 }
 static inline pointer variant_get_ptr_setter(pointer fn, GDExtensionVariantType p_type, pointer p_member) {
 	return (pointer)((GDExtensionInterfaceVariantGetPtrSetter)fn)(p_type, (GDExtensionConstStringNamePtr)p_member);
@@ -231,7 +231,7 @@ static inline pointer variant_get_ptr_utility_function(pointer fn, pointer p_nam
 	return (pointer)((GDExtensionInterfaceVariantGetPtrUtilityFunction)fn)((GDExtensionConstStringNamePtr)p_name, hash);
 }
 static inline void call_variant_ptr_utility_function(pointer fn, pointer r_ret, pointer r_arg, int count) {
-	((GDExtensionPtrUtilityFunction)fn)((GDExtensionUninitializedVariantPtr)r_ret, (GDExtensionConstVariantPtr)r_arg, count);
+	((GDExtensionPtrUtilityFunction)fn)((GDExtensionUninitializedVariantPtr)r_ret, (const GDExtensionConstVariantPtr*)r_arg, count);
 }
 static inline void string_new_with_utf8_chars_and_len(pointer fn, pointer r_ret, string p_chars, GDExtensionInt p_len) {
 	((GDExtensionInterfaceStringNewWithUtf8CharsAndLen)fn)((GDExtensionUninitializedStringPtr)r_ret, p_chars, p_len);
@@ -288,10 +288,10 @@ static inline void *dictionary_operator_index(pointer fn, pointer p_self, pointe
 	return ((GDExtensionInterfaceDictionaryOperatorIndex)fn)((GDExtensionTypePtr)p_self, (GDExtensionConstVariantPtr)p_key);
 }
 static inline void object_method_bind_call(pointer fn, pointer p_method_bind, pointer p_instance, pointer p_args, GDExtensionInt count, pointer r_ret, GDExtensionCallError *r_error) {
-	((GDExtensionInterfaceObjectMethodBindCall)fn)((GDExtensionMethodBindPtr)p_method_bind, (GDExtensionObjectPtr)p_instance, (GDExtensionConstVariantPtr)p_args, count, (GDExtensionUninitializedVariantPtr)r_ret, r_error);
+	((GDExtensionInterfaceObjectMethodBindCall)fn)((GDExtensionMethodBindPtr)p_method_bind, (GDExtensionObjectPtr)p_instance, (const GDExtensionConstVariantPtr*)p_args, count, (GDExtensionUninitializedVariantPtr)r_ret, r_error);
 }
 static inline void object_method_bind_ptrcall(pointer fn, pointer p_method_bind, pointer p_instance, pointer p_args, pointer r_ret) {
-	((GDExtensionInterfaceObjectMethodBindPtrcall)fn)((GDExtensionMethodBindPtr)p_method_bind, (GDExtensionObjectPtr)p_instance, (GDExtensionConstVariantPtr)p_args, (GDExtensionUninitializedVariantPtr)r_ret);
+	((GDExtensionInterfaceObjectMethodBindPtrcall)fn)((GDExtensionMethodBindPtr)p_method_bind, (GDExtensionObjectPtr)p_instance, (const GDExtensionConstVariantPtr*)p_args, (GDExtensionUninitializedVariantPtr)r_ret);
 }
 static inline void object_destroy(pointer fn, pointer p_self) {
 	((GDExtensionInterfaceObjectDestroy)fn)((GDExtensionObjectPtr)p_self);
@@ -347,7 +347,7 @@ static inline void get_library_path(pointer fn, pointer p_token, pointer r_ret) 
 extern EXPORT void callable_call(pointer p_userdata, void* args, GDExtensionInt count, void* r_ret, GDExtensionCallError *r_error);
 
 static inline void callable_custom_create(pointer fn, pointer r_ret, GDExtensionCallableCustomInfo *p_callable_custom_info) {
-	p_callable_custom_info->call_func = (void*)callable_call;
+	p_callable_custom_info->call_func = (GDExtensionCallableCustomCall)callable_call;
 	((GDExtensionInterfaceCallableCustomCreate)fn)((GDExtensionUninitializedTypePtr)r_ret, p_callable_custom_info);
 }
 
@@ -369,23 +369,23 @@ extern EXPORT void call_virtual_with_data_func(pointer p_instance, void* name, p
 extern EXPORT uint64_t get_rid_func(pointer p_instance);
 
 static inline void classdb_register_extension_class2(pointer fn, pointer p_library, pointer p_class_name, pointer p_parent_class_name, GDExtensionClassCreationInfo2 *p_extension_funcs) {
-	p_extension_funcs->set_func = (void*)set_func;
-	p_extension_funcs->get_func = (void*)get_func;
-	p_extension_funcs->get_property_list_func = (void*)get_property_list_func;
-	p_extension_funcs->free_property_list_func = (void*)free_property_list_func;
-	p_extension_funcs->property_can_revert_func = (void*)property_can_revert_func;
-	p_extension_funcs->property_get_revert_func = (void*)property_get_revert_func;
+	p_extension_funcs->set_func = (GDExtensionClassSet)set_func;
+	p_extension_funcs->get_func = (GDExtensionClassGet)get_func;
+	p_extension_funcs->get_property_list_func = (GDExtensionClassGetPropertyList)get_property_list_func;
+	p_extension_funcs->free_property_list_func = (GDExtensionClassFreePropertyList)free_property_list_func;
+	p_extension_funcs->property_can_revert_func = (GDExtensionClassPropertyCanRevert)property_can_revert_func;
+	p_extension_funcs->property_get_revert_func = (GDExtensionClassPropertyGetRevert)property_get_revert_func;
 	//p_extension_funcs.validate_property_func = (void*)validate_property_func;
-	p_extension_funcs->notification_func = (void*)notification_func;
-	p_extension_funcs->to_string_func = (void*)to_string_func;
-	p_extension_funcs->reference_func = (void*)reference_func;
-	p_extension_funcs->unreference_func = (void*)unreference_func;
-	p_extension_funcs->create_instance_func = (void*)create_instance_func;
-	p_extension_funcs->free_instance_func = (void*)free_instance_func;
+	p_extension_funcs->notification_func = (GDExtensionClassNotification2)notification_func;
+	p_extension_funcs->to_string_func = (GDExtensionClassToString)to_string_func;
+	p_extension_funcs->reference_func = (GDExtensionClassReference)reference_func;
+	p_extension_funcs->unreference_func = (GDExtensionClassUnreference)unreference_func;
+	p_extension_funcs->create_instance_func = (GDExtensionClassCreateInstance)create_instance_func;
+	p_extension_funcs->free_instance_func = (GDExtensionClassFreeInstance)free_instance_func;
 	p_extension_funcs->recreate_instance_func = 0;
-	p_extension_funcs->get_virtual_call_data_func = (void*)get_virtual_call_data_func;
-	p_extension_funcs->call_virtual_with_data_func = (void*)call_virtual_with_data_func;
-	p_extension_funcs->get_rid_func = (void*)get_rid_func;
+	p_extension_funcs->get_virtual_call_data_func = (GDExtensionClassGetVirtualCallData)get_virtual_call_data_func;
+	p_extension_funcs->call_virtual_with_data_func = (GDExtensionClassCallVirtualWithData)call_virtual_with_data_func;
+	p_extension_funcs->get_rid_func = (GDExtensionClassGetRID)get_rid_func;
 	((GDExtensionInterfaceClassdbRegisterExtensionClass2)fn)((GDExtensionClassLibraryPtr)p_library, (GDExtensionConstStringNamePtr)p_class_name, (GDExtensionConstStringNamePtr)p_parent_class_name, p_extension_funcs);
 }
 
@@ -393,8 +393,8 @@ extern EXPORT void method_call(pointer p_method, pointer p_userdata, void* args,
 extern EXPORT void method_ptrcall(pointer p_method, pointer p_userdata, void* args, void* r_ret);
 
 static inline void classdb_register_extension_class_method(pointer fn, pointer p_library, pointer p_class_name, GDExtensionClassMethodInfo *p_method_bind_info) {
-	p_method_bind_info->call_func = (void*)method_call;
-	p_method_bind_info->ptrcall_func = (void*)method_ptrcall;
+	p_method_bind_info->call_func = (GDExtensionClassMethodCall)method_call;
+	p_method_bind_info->ptrcall_func = (GDExtensionClassMethodPtrCall)method_ptrcall;
 	((GDExtensionInterfaceClassdbRegisterExtensionClassMethod)fn)((GDExtensionClassLibraryPtr)p_library, (GDExtensionConstStringNamePtr)p_class_name, p_method_bind_info);
 }
 static inline void classdb_register_extension_class_integer_constant(pointer fn, pointer p_library, pointer p_class_name, pointer p_enum_name, pointer p_constant_name, int64_t p_constant_value, GDExtensionBool p_is_bitfield) {
