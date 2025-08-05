@@ -13,6 +13,7 @@ import (
 	"archive/zip"
 	"bufio"
 	"bytes"
+	"embed"
 	"errors"
 	"fmt"
 	"go/build"
@@ -26,8 +27,7 @@ import (
 	"strings"
 	"time"
 
-	_ "embed"
-
+	lipo "github.com/konoui/lipo/cmd"
 	"graphics.gd/cmd/gd/internal/golang"
 	"graphics.gd/internal/docgen"
 	"runtime.link/api/xray"
@@ -52,6 +52,13 @@ var (
 
 	//go:embed graphics/export_presets.cfg
 	export_presets_cfg string
+
+	// macos_sdk is a manually prepared "MacOS SDK" designed to support cross-compilation of Go code to arm64/amd64 targets using "zig cc".
+	// the SDK was constructed by adding each undefined symbol / missing library observed from compilation errors on Linux GOOS=darwin as
+	// .tbd files placed in the expected locations.
+	//
+	//go:embed internal/macos
+	macos_sdk embed.FS
 )
 
 func setupFile(force bool, name, embed string, args ...any) error {
@@ -64,6 +71,27 @@ func setupFile(force bool, name, embed string, args ...any) error {
 		}
 	}
 	return nil
+}
+
+// setupFiles writes the contents of an embed.FS to the target directory on the OS filesystem.
+func setupFiles(embedded embed.FS, embedRoot, targetDir string) error {
+	if err := os.MkdirAll(targetDir, 0755); err != nil {
+		return err
+	}
+	return fs.WalkDir(embedded, embedRoot, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		targetPath := filepath.Join(targetDir, filepath.FromSlash(strings.TrimPrefix(path, embedRoot)))
+		if d.IsDir() {
+			return os.MkdirAll(targetPath, 0755)
+		}
+		data, err := embedded.ReadFile(path)
+		if err != nil {
+			return err
+		}
+		return os.WriteFile(targetPath, data, 0644)
+	})
 }
 
 func main() {
@@ -333,7 +361,7 @@ func wrap() error {
 	}
 	builds = append(builds, args)
 	arches := []string{GOARCH}
-	if runtime.GOOS == "darwin" && (GOARCH == "amd64" || GOARCH == "arm64") {
+	if GOOS == "darwin" && (GOARCH == "amd64" || GOARCH == "arm64") {
 		// GOARCH possible values = "amd64", "arm64"
 		missingArch := "arm64"
 		if GOARCH == "arm64" {
@@ -371,6 +399,30 @@ func wrap() error {
 			golang.Env = append(os.Environ(), "CGO_ENABLED=1")
 		}
 		golang.Env = append(golang.Env, "GOARCH="+arches[i])
+		if GOOS != runtime.GOOS {
+			_, err := exec.LookPath("zig")
+			if err != nil {
+				return fmt.Errorf("gd requires zig to be installed and available in your PATH for cross-compilation: %w", err)
+			}
+			switch GOOS {
+			case "windows":
+				golang.Env = append(golang.Env, "CC=zig cc -target x86_64-windows-gnu")
+			case "darwin":
+				setupFiles(macos_sdk, "internal/macos", graphics+"/../releases/mac/sdk")
+				MACOS_SDK, err := filepath.Abs(graphics + "/../releases/mac/sdk")
+				if err != nil {
+					return xray.New(err)
+				}
+				switch arches[i] {
+				case "amd64":
+					golang.Env = append(golang.Env, "CC=zig cc -target x86_64-macos -F "+MACOS_SDK+"/Frameworks -L"+MACOS_SDK+"/lib -I"+MACOS_SDK+"/include")
+				case "arm64":
+					golang.Env = append(golang.Env, "CC=zig cc -target aarch64-macos -F "+MACOS_SDK+"/Frameworks -L"+MACOS_SDK+"/lib -I"+MACOS_SDK+"/include")
+				}
+			case "linux":
+				golang.Env = append(golang.Env, "CC=zig cc -target x86_64-linux-gnu")
+			}
+		}
 		golang.Stderr = capture
 		golang.Stdout = os.Stdout
 		golang.Stdin = os.Stdin
@@ -381,18 +433,10 @@ func wrap() error {
 			return err
 		}
 	}
-	if runtime.GOOS == "darwin" && (GOARCH == "amd64" || GOARCH == "arm64") {
-		// check if command is available in the system
-		_, err := exec.LookPath("lipo")
-		if err != nil {
-			return fmt.Errorf("gd: lipo command not found in the system, please install it!")
-		}
-		lipoCommand := exec.Command("lipo", "-create", graphics+"/darwin_amd64.dylib", graphics+"/darwin_arm64.dylib", "-output", graphics+"/darwin_universal.dylib")
-		lipoCommand.Stderr = os.Stderr
-		lipoCommand.Stdout = os.Stdout
-		lipoCommand.Stdin = os.Stdin
-		if err := lipoCommand.Run(); err != nil {
-			return err
+	if GOOS == "darwin" && (GOARCH == "amd64" || GOARCH == "arm64") {
+		err := lipo.Execute(os.Stdout, os.Stdin, []string{"-create", graphics + "/darwin_amd64.dylib", graphics + "/darwin_arm64.dylib", "-output", graphics + "/darwin_universal.dylib"})
+		if err != 0 {
+			return errors.New("lipo execution failed")
 		}
 	}
 	if err := setup(); err != nil {

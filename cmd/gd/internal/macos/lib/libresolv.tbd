@@ -1,0 +1,10 @@
+--- !tapi-tbd
+tbd-version:  4
+install-name: '/usr/lib/libresolv.9.dylib'  # expected location for the implementation on macos.
+targets:
+ - x86_64-macos
+ - arm64-macos
+exports:
+ - targets: [ x86_64-macos, arm64-macos ]
+   symbols: [ _res_9_search, _res_9_ninit, _res_9_nsearch, _res_9_nclose ] # the required symbols to compile Go code, see net/cgo_unix_cgo_res.go
+...

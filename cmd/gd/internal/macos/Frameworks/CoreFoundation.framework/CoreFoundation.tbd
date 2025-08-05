@@ -1,0 +1,23 @@
+--- !tapi-tbd
+tbd-version:  4
+install-name: '/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation'  # expected location for the implementation on macos, see crypto/x509/internal/macos
+targets:
+ - x86_64-macos
+ - arm64-macos
+exports:
+ - targets: [ x86_64-macos, arm64-macos ]
+   symbols: # the required symbols to compile Go code, see crypto/x509/internal/macos
+    - _CFArrayAppendValue
+    - _CFArrayCreateMutable
+    - _CFArrayGetCount
+    - _CFArrayGetValueAtIndex
+    - _CFDataCreate
+    - _CFDataGetBytePtr
+    - _CFDataGetLength
+    - _CFDateCreate
+    - _CFErrorCopyDescription
+    - _CFErrorGetCode
+    - _CFRelease
+    - _CFStringCreateExternalRepresentation
+    - _CFStringCreateWithBytes
+...

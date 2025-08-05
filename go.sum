@@ -1,5 +1,9 @@
 github.com/google/go-cmp v0.6.0 h1:ofyhxvXcZhMsU5ulbFiLKl/XBFqE1GSq7atu8tAmTRI=
 github.com/google/go-cmp v0.6.0/go.mod h1:17dUlkBOakJ0+DkrSSNjCkIjxS6bF9zb3elmeNGIjoY=
+github.com/konoui/go-qsort v0.1.0 h1:0Os/0X0Fce6B54jqN26aR+J5uOExN+0t7nb9zs6zzzE=
+github.com/konoui/go-qsort v0.1.0/go.mod h1:UOsvdDPBzyQDk9Tb21hETK6KYXGYQTnoZB5qeKA1ARs=
+github.com/konoui/lipo v0.10.0 h1:1P2VkBSB6I38kgmyznvAjy9gmAqybK22pJt9iyx5CgY=
+github.com/konoui/lipo v0.10.0/go.mod h1:R+0EgDVrLKKS37SumAO8zhpEprjjoKEkrT3QqKQE35k=
 github.com/tetratelabs/wazero v1.8.2 h1:yIgLR/b2bN31bjxwXHD8a3d+BogigR952csSDdLYEv4=
 github.com/tetratelabs/wazero v1.8.2/go.mod h1:yAI0XTsMBhREkM/YDAK/zNou3GoiAce1P6+rp/wQhjs=
 golang.org/x/mod v0.24.0 h1:ZfthKaKaT4NrhGVZHO1/WDTwGES4De8KtWO0SIbNJMU=

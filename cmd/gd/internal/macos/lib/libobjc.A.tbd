@@ -1,0 +1,9 @@
+--- !tapi-tbd
+# The Zig compiler requires this library to be available,
+# otherwise it segfaults - no symbols are required by Go.
+tbd-version:  4
+install-name: '/usr/lib/libobjc.A.dylib' # expected location for the implementation on macos
+targets:
+ - x86_64-macos
+ - arm64-macos
+...

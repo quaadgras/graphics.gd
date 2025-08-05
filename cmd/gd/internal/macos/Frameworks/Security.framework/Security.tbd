@@ -1,0 +1,18 @@
+--- !tapi-tbd
+tbd-version:  4
+install-name: '/System/Library/Frameworks/Security.framework/Versions/A/Security'  # expected location for the implementation on macos, see crypto/x509/internal/macos
+targets:
+ - x86_64-macos
+ - arm64-macos
+exports:
+ - targets: [ x86_64-macos, arm64-macos ]
+   symbols: # the required symbols to compile Go code, see crypto/x509/internal/macos
+    - _SecCertificateCopyData
+    - _SecCertificateCreateWithData
+    - _SecPolicyCreateSSL
+    - _SecTrustCreateWithCertificates
+    - _SecTrustEvaluateWithError
+    - _SecTrustGetCertificateAtIndex
+    - _SecTrustGetCertificateCount
+    - _SecTrustSetVerifyDate
+...
