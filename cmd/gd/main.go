@@ -53,6 +53,9 @@ var (
 	//go:embed graphics/export_presets.cfg
 	export_presets_cfg string
 
+	//go:embed graphics/gitignore
+	gitignore string
+
 	// macos_sdk is a manually prepared "MacOS SDK" designed to support cross-compilation of Go code to arm64/amd64 targets using "zig cc".
 	// the SDK was constructed by adding each undefined symbol / missing library observed from compilation errors on Linux GOOS=darwin as
 	// .tbd files placed in the expected locations.
@@ -297,6 +300,9 @@ func wrap() error {
 			return xray.New(err)
 		}
 		if err := setupFile(false, graphics+"/export_presets.cfg", export_presets_cfg, filepath.Base(wd)); err != nil {
+			return xray.New(err)
+		}
+		if err := setupFile(false, graphics+"/.gitignore", gitignore); err != nil {
 			return xray.New(err)
 		}
 		var gdextension_version = version
