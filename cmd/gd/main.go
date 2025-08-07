@@ -296,9 +296,7 @@ func wrap() error {
 		if err := setupFile(false, graphics+"/project.godot", project_godot, filepath.Base(wd)); err != nil {
 			return xray.New(err)
 		}
-		if err := setupFile(false, graphics+"/export_presets.cfg", export_presets_cfg, filepath.Join(
-			".godot", "godot.web.template_debug.wasm32.zip",
-		)); err != nil {
+		if err := setupFile(false, graphics+"/export_presets.cfg", export_presets_cfg, filepath.Base(wd)); err != nil {
 			return xray.New(err)
 		}
 		var gdextension_version = version
@@ -497,6 +495,57 @@ func wrap() error {
 			return xray.New(http.ListenAndServe(":"+PORT, nil))
 		}
 		return nil
+	case "build":
+		switch GOOS {
+		case "windows":
+			switch GOARCH {
+			case "amd64":
+				runGodotArgs = []string{"--headless", "--export-release", "Windows x86_64"}
+			case "arm64":
+				runGodotArgs = []string{"--headless", "--export-release", "Windows arm64"}
+			}
+		case "linux":
+			switch GOARCH {
+			case "amd64":
+				runGodotArgs = []string{"--headless", "--export-release", "Linux x86_64"}
+			case "arm64":
+				runGodotArgs = []string{"--headless", "--export-release", "Linux arm64"}
+			}
+		case "darwin":
+			switch GOARCH {
+			case "amd64", "arm64":
+				runGodotArgs = []string{"--headless", "--export-release", "macOS"}
+			}
+		case "ios":
+			switch GOARCH {
+			case "arm64":
+				runGodotArgs = []string{"--headless", "--export-release", "iOS"}
+			}
+		case "android":
+			switch GOARCH {
+			case "arm64":
+				runGodotArgs = []string{"--headless", "--export-release", "Android"}
+			}
+		case "js":
+			switch GOARCH {
+			case "wasm":
+				runGodotArgs = []string{"--headless", "--export-release", "Web"}
+			}
+		}
+		if runGodotArgs == nil {
+			return fmt.Errorf("gd: cannot build for GOOS %s and GOARCH %s", GOOS, GOARCH)
+		}
+		if err := os.MkdirAll(graphics+"/../releases/"+GOOS+"/"+GOARCH, 0755); err != nil {
+			return xray.New(err)
+		}
+		godot := exec.Command(engine, runGodotArgs...)
+		godot.Dir = graphics
+		godot.Stderr = os.Stderr
+		godot.Stdout = os.Stdout
+		godot.Stdin = os.Stdin
+		if err := godot.Run(); err != nil {
+			return xray.New(err)
+		}
 	case "test":
 		args := []string{"--headless"}
 		for _, arg := range os.Args[2:] {
