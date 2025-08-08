@@ -12,7 +12,8 @@ _Why use graphics.gd?_
 * After the first build, recompile quickly, with an experience similar to a scripting language.
 * Cross-compile builds targeting windows/linux/macos from any platform.
 
-Not just a wrapper! graphics.gd has been holistically designed and curated from the ground up to provide a cohesive way to interface with the engine.
+Not just a wrapper! graphics.gd has been holistically designed and curated from the ground up to provide a 
+cohesive way to interface with the underlying engine.
 
 We would love you to take part in our [active discussions](https://github.com/quaadgras/graphics.gd/discussions)
 section with any questions, comments or feedback you may have. Show us what you're building!
