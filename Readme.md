@@ -105,7 +105,7 @@ Engine, please open an issue if you determine there to be any issues here.
 Start with a main.go file, model your project in Go using structs to represent the
 world, space or state of your project. Go is an excellent language for textual
 representation. Use the `gd` command to launch the Engine's editor when you want to
-create visual representation of your structures. The editor is excellent for importing
+create visual resources for your project. The editor is excellent for importing
 media, managing assets and designing the visual and spatial aspects  of a project.
 
 **NOTE:** Don't forget to write tests!
