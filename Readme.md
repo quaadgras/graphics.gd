@@ -53,7 +53,7 @@ It enables you to start developing a new project from a single `main.go` file,
 to install it, make sure that your `$GOPATH/bin` is in your `$PATH` and run:
 
 ```sh
-	go install graphics.gd/cmd/gd@master
+	go install graphics.gd/cmd/gd@release
 ```
 
 Now when you can run `gd run`, `gd test` on the main package in your project's

@@ -5,6 +5,8 @@
 /.vscode/settings.json
 /example/src/src
 /example/bin/example.so
+/node_modules
+/dist
 example/bin/
 /bin/example.so
 /gdextension/header.h
@@ -20,3 +22,4 @@ example/bin/
 /go.work.sum
 .idea
 internal/extension_api.json
+package-lock.json
