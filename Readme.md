@@ -14,7 +14,7 @@ _Why use graphics.gd?_
 
 Not just a wrapper! graphics.gd has been holistically designed and curated from the ground up to provide a cohesive way to interface with the engine.
 
-We would love you to take part in our [active discussions](https://github.com/grow-graphics/gd/discussions)
+We would love you to take part in our [active discussions](https://github.com/quaadgras/graphics.gd/discussions)
 section with any questions, comments or feedback you may have. Show us what you're building!
 
 ```go
@@ -179,8 +179,8 @@ We've got some ideas to reduce allocations for Script -> Go calls, when
 arguments fit entirely within registers. TBA.
 
 ## Examples
-There are a number of examples in the [examples](https://github.com/grow-graphics/eg)
-repo. All examples are designed to be run with `gd run` without any additional setup.
+There are a number of examples in the [samples](https://github.com/quaadgras/graphics.gd/tree/samples)
+branch. All the samples are designed to be run with `gd run` without any additional setup.
 
 ## Supported Platforms
 

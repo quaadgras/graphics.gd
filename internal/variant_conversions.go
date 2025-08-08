@@ -31,7 +31,7 @@ func NewVariant(v any) Variant {
 // CutVariant is like NewVariant but when cut is true, releases the ownership
 // of the given value. Use it on return values passed back to the engine.
 //
-// used to fix cases of https://github.com/grow-graphics/gd/issues/147
+// used to fix cases of https://github.com/quaadgras/graphics.gd/issues/147
 func CutVariant(v any, cut bool) Variant {
 	if v == nil {
 		return Global.Variants.NewNil()

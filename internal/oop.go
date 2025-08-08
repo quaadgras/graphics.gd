@@ -21,7 +21,7 @@ func PointerWithOwnershipTransferredToGo[T pointers.Generic[T, [3]uint64]](ptr E
 		return T{}
 	}
 	if runtime.GOOS == "js" {
-		// See https://github.com/grow-graphics/gd/issues/103
+		// See https://github.com/quaadgras/graphics.gd/issues/103
 		// in some cases, objects will crash on free after calling
 		// certain methods if we don't call a known-safe method on
 		// them first. Probably has something to do with complex
