@@ -192,11 +192,11 @@ branch. All the samples are designed to be run with `gd run` without any additio
 * IOS     (should work, untested)
 * Web     (experimental) `GOOS=js GOARCH=wasm gd run`
 
-## Known Limitations
+## Platform Restrictions
 
 * No support for Go 'scripts'.
 * 64bit only (arm64 && amd64).
-* No console support, will likely be achieved in the future with WASM.
+* No support for video game consoles, may be achieved in the future with WASM.
 
 ## Contributing
 
