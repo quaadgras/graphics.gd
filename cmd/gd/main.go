@@ -22,6 +22,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"path"
 	"path/filepath"
 	"runtime"
 	"strings"
@@ -29,6 +30,7 @@ import (
 
 	lipo "github.com/konoui/lipo/cmd"
 	"graphics.gd/cmd/gd/internal/golang"
+	"graphics.gd/cmd/gd/internal/vpk"
 	"graphics.gd/internal/docgen"
 	"runtime.link/api/xray"
 )
@@ -367,6 +369,65 @@ func wrap() error {
 		} else {
 			os.Args[1] = "run"
 		}
+	case "release":
+		if _, err := exec.LookPath("vpk"); err != nil {
+			return fmt.Errorf("gd: vpk command not found")
+		}
+		if len(os.Args) < 3 {
+			return fmt.Errorf("gd: release command requires a version argument")
+		}
+		version := os.Args[2]
+		mod, err := os.Open(wd + "/go.mod")
+		if err != nil {
+			return xray.New(err)
+		}
+		defer mod.Close()
+		scanner := bufio.NewScanner(mod)
+		scanner.Split(bufio.ScanLines)
+		scanner.Scan()
+		module := scanner.Text()
+		module = strings.TrimPrefix(module, "module ")
+		org := path.Base(path.Dir(module))
+		targets := []string{
+			"linux/arm64",
+			"linux/amd64",
+			"windows/amd64",
+			"windows/arm64",
+			// "darwin/universal", // FIXME/TODO vpk does not support cross compilation yet
+		}
+		/*var icon string
+		if _, err := os.Stat(wd + "/graphics/icon.svg"); err == nil {
+			icon = wd + "/graphics/icon.svg"
+		}
+		if _, err := os.Stat(wd + "/graphics/icon.png"); err == nil {
+			icon = wd + "/graphics/icon.png"
+			}*/
+		for _, target := range targets {
+			if _, err := os.Stat(wd + "/releases/" + target); os.IsNotExist(err) {
+				continue
+			}
+			var extension string
+			var Velopack vpk.Commands
+			switch {
+			case strings.HasPrefix(target, "linux/"):
+				Velopack = vpk.CMD.Linux
+			case strings.HasPrefix(target, "darwin/"):
+				Velopack = vpk.CMD.OSX
+			case strings.HasPrefix(target, "windows/"):
+				Velopack = vpk.CMD.Windows
+				extension = ".exe"
+			}
+			if err := Velopack.Pack(vpk.Package{
+				ID:      org + "." + path.Base(wd),
+				Version: version,
+				Dir:     wd + "/releases/" + target,
+				MainEXE: path.Base(wd) + extension,
+				Output:  wd + "/releases",
+			}); err != nil {
+				return xray.New(err)
+			}
+		}
+		return nil
 	default:
 		copy(args, os.Args[1:])
 	}
@@ -424,8 +485,8 @@ func wrap() error {
 					golang.Env = append(golang.Env, "CC=zig cc -target aarch64-windows-gnu")
 				}
 			case "darwin":
-				setupFiles(macos_sdk, "internal/macos", graphics+"/../releases/mac/sdk")
-				MACOS_SDK, err := filepath.Abs(graphics + "/../releases/mac/sdk")
+				setupFiles(macos_sdk, "internal/macos", graphics+"/../releases/darwin/sdk")
+				MACOS_SDK, err := filepath.Abs(graphics + "/../releases/darwin/sdk")
 				if err != nil {
 					return xray.New(err)
 				}
@@ -443,8 +504,8 @@ func wrap() error {
 					golang.Env = append(golang.Env, "CC=zig cc -target aarch64-linux-gnu")
 				}
 			case "ios":
-				setupFiles(macos_sdk, "internal/macos", graphics+"/../releases/mac/sdk")
-				MACOS_SDK, err := filepath.Abs(graphics + "/../releases/mac/sdk")
+				setupFiles(macos_sdk, "internal/macos", graphics+"/../releases/darwin/sdk")
+				MACOS_SDK, err := filepath.Abs(graphics + "/../releases/darwin/sdk")
 				if err != nil {
 					return xray.New(err)
 				}
@@ -521,6 +582,7 @@ func wrap() error {
 			switch GOARCH {
 			case "amd64", "arm64":
 				runGodotArgs = []string{"--headless", "--export-release", "macOS"}
+				GOARCH = "universal"
 			}
 		case "ios":
 			switch GOARCH {
