@@ -4,4 +4,5 @@
 *.dylib
 *.exe
 *.a
+*.xcframework
 library_documentation.xml
