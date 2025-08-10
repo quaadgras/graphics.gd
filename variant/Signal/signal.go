@@ -139,6 +139,12 @@ type Solo[A any] struct {
 	Any
 }
 
+// Call connects the specified function to this signal. The function will be called
+// whenever this signal is emitted.
+func (signal Solo[A]) Call(fn func(A)) {
+	signal.Any.Attach(Callable.New(fn))
+}
+
 // Emit the value to all connected signal handlers. Safe to call from any goroutine.
 func (signal Solo[A]) Emit(a A) {
 	Callable.Defer(Callable.New(func() {
@@ -150,6 +156,12 @@ func (signal Solo[A]) Emit(a A) {
 // to register it as a signal.
 type Pair[A, B any] struct {
 	Any
+}
+
+// Call connects the specified function to this signal. The function will be called
+// whenever this signal is emitted.
+func (signal Pair[A, B]) Call(fn func(A, B)) {
+	signal.Any.Attach(Callable.New(fn))
 }
 
 // Emit the pair of values to all connected signal handlers. Safe to call from any goroutine.
@@ -165,6 +177,12 @@ type Trio[A, B, C any] struct {
 	Any
 }
 
+// Call connects the specified function to this signal. The function will be called
+// whenever this signal is emitted.
+func (signal Trio[A, B, C]) Call(fn func(A, B, C)) {
+	signal.Any.Attach(Callable.New(fn))
+}
+
 // Emit the pair of values to all connected signal handlers. Safe to call from any goroutine.
 func (signal Trio[A, B, C]) Emit(a A, b B, c C) {
 	Callable.Defer(Callable.New(func() {
@@ -176,6 +194,12 @@ func (signal Trio[A, B, C]) Emit(a A, b B, c C) {
 // to register it as a signal.
 type Quad[A, B, C, D any] struct {
 	Any
+}
+
+// Call connects the specified function to this signal. The function will be called
+// whenever this signal is emitted.
+func (signal Quad[A, B, C, D]) Call(fn func(A, B, C, D)) {
+	signal.Any.Attach(Callable.New(fn))
 }
 
 // Emit the pair of values to all connected signal handlers. Safe to call from any goroutine.
@@ -191,6 +215,12 @@ type Quin[A, B, C, D, E any] struct {
 	Any
 }
 
+// Call connects the specified function to this signal. The function will be called
+// whenever this signal is emitted.
+func (signal Quin[A, B, C, D, E]) Call(fn func(A, B, C, D, E)) {
+	signal.Any.Attach(Callable.New(fn))
+}
+
 // Emit the pair of values to all connected signal handlers. Safe to call from any goroutine.
 // This function is safe to call from any goroutine.
 func (signal Quin[A, B, C, D, E]) Emit(a A, b B, c C, d D, e E) {
@@ -203,6 +233,12 @@ func (signal Quin[A, B, C, D, E]) Emit(a A, b B, c C, d D, e E) {
 // to register it as a signal.
 type Hexa[A, B, C, D, E, F any] struct {
 	Any
+}
+
+// Call connects the specified function to this signal. The function will be called
+// whenever this signal is emitted.
+func (signal Hexa[A, B, C, D, E, F]) Call(fn func(A, B, C, D, E, F)) {
+	signal.Any.Attach(Callable.New(fn))
 }
 
 // Emit the pair of values to all connected signal handlers. Safe to call from any goroutine.
