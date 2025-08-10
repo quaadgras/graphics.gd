@@ -22,6 +22,12 @@ func (goRuntime) Ready() {
 
 func (gr goRuntime) AsNode() NodeClass.Instance { return gr.Super().AsNode() }
 
+func (gr goRuntime) ExitTree() {
+	gd.NewCallable(func() {
+		SceneTreeClass.Add(new(goRuntime)) // we need the GoRuntime to be present in the scene tree
+	}).CallDeferred()
+}
+
 func (goRuntime) Process(delta Float.X) {
 	gd.NewCallable(func() {
 		Callable.Cycle()

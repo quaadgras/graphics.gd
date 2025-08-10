@@ -390,6 +390,9 @@ func wrap() error {
 		module := scanner.Text()
 		module = strings.TrimPrefix(module, "module ")
 		org := path.Base(path.Dir(module))
+		if strings.Count(org, ".") > 1 {
+			org = ""
+		}
 		targets := []string{
 			"linux/arm64",
 			"linux/amd64",
