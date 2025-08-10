@@ -3,13 +3,16 @@ package SceneTree
 import (
 	"graphics.gd/classdb/Engine"
 	"graphics.gd/classdb/Node"
+	"graphics.gd/classdb/Window"
 	"graphics.gd/variant/Object"
 )
 
 // Add the given node to the scene tree.
 func Add(node Node.Any) {
 	if tree, ok := Object.As[Instance](Engine.GetMainLoop()); ok {
-		tree.Root().AsNode().AddChild(node.AsNode())
+		if root := tree.Root(); root != Window.Nil {
+			root.AsNode().AddChild(node.AsNode())
+		}
 	}
 }
 
@@ -18,6 +21,8 @@ func AddNamed(name string, node Node.Any) {
 	if tree, ok := Object.As[Instance](Engine.GetMainLoop()); ok {
 		node := node.AsNode()
 		node.SetName(name)
-		tree.Root().AsNode().AddChild(node)
+		if root := tree.Root(); root != Window.Nil {
+			root.AsNode().AddChild(node)
+		}
 	}
 }

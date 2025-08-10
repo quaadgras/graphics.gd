@@ -2,6 +2,7 @@ package startup
 
 import (
 	"graphics.gd/classdb"
+
 	NodeClass "graphics.gd/classdb/Node"
 	SceneTreeClass "graphics.gd/classdb/SceneTree"
 	gd "graphics.gd/internal"
