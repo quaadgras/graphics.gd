@@ -30,6 +30,7 @@ import (
 
 	lipo "github.com/konoui/lipo/cmd"
 	"graphics.gd/cmd/gd/internal/golang"
+	"graphics.gd/cmd/gd/internal/upx"
 	"graphics.gd/cmd/gd/internal/vpk"
 	"graphics.gd/internal/docgen"
 	"runtime.link/api/xray"
@@ -362,6 +363,7 @@ func wrap() error {
 		} else if GOOS != "js" {
 			args = append(args, "-buildmode=c-shared")
 		}
+		args = append(args, "-ldflags=-s -w")
 	case "test":
 		args = []string{"test", "-c", "-o", libraryPath}
 		if GOOS != "js" {
@@ -563,6 +565,10 @@ func wrap() error {
 		}
 		return nil
 	case "build":
+		if _, err := exec.LookPath("upx"); err == nil {
+			os.Chmod(libraryPath, 0o755)
+			upx.CMD.Compress(libraryPath)
+		}
 		switch GOOS {
 		case "windows":
 			switch GOARCH {
