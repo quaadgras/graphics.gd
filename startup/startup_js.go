@@ -1,7 +1,6 @@
 package startup
 
 import (
-	"fmt"
 	"math"
 	"syscall/js"
 	"unsafe"
