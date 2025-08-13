@@ -247,7 +247,7 @@ func wrap() error {
 			if err := os.MkdirAll(graphics+"/.godot/public", 0o755); err != nil {
 				return xray.New(err)
 			}
-			path := filepath.Join(graphics, ".godot", "public", "wasm_exec.js")
+			path := filepath.Join(graphics, "..", "releases", "js", "wasm", "wasm_exec.js")
 			if _, err := os.Stat(path); os.IsNotExist(err) {
 				GOROOT := golang.CMD.Env.GOROOT()
 				wasm_exec, err := os.Open(filepath.Join(GOROOT, "lib", "wasm", "wasm_exec.js"))
@@ -336,7 +336,7 @@ func wrap() error {
 	case "darwin":
 		libraryPath += ".dylib"
 	case "js":
-		libraryPath = filepath.Join(graphics, ".godot", "public", "library.wasm")
+		libraryPath = filepath.Join(graphics, "..", "releases", "js", "wasm", "library.wasm")
 		runGodotArgs = []string{"--headless", "--export-debug", "Web"}
 	case "android":
 		libraryPath = "lib" + libraryPath + ".so"
@@ -571,7 +571,7 @@ func wrap() error {
 				PORT = "8080"
 			}
 			fmt.Println("gd: serving wasm/js on http://localhost:" + PORT)
-			http.Handle("/", WebServer{http.FileServer(http.Dir(filepath.Join(graphics, ".godot/public")))})
+			http.Handle("/", WebServer{http.FileServer(http.Dir(filepath.Join(graphics + "/../releases/" + GOOS + "/" + GOARCH)))})
 			return xray.New(http.ListenAndServe(":"+PORT, nil))
 		}
 		return nil
