@@ -284,7 +284,7 @@ func wrap() error {
 				return xray.New(err)
 			}
 			if (os.IsNotExist(statErr) || (statErr == nil && last_modified.After(stat.ModTime()))) && resp.Body != nil {
-				fmt.Println("gd: downloading latest graphics.gd/godot.web.template_debug.wasm32.zip")
+				fmt.Println("gd: downloading latest graphics.gd/godot.web.template_release.wasm32.zip")
 				data, err := io.ReadAll(resp.Body)
 				if err != nil {
 					return xray.New(err)
@@ -293,7 +293,7 @@ func wrap() error {
 					return xray.New(err)
 				}
 			} else if resp.Body == nil || resp.StatusCode != 200 {
-				return fmt.Errorf("gd: failed to download godot.web.template_debug.wasm32.zip: %v (is your gd command out of date?)", resp.Status)
+				return fmt.Errorf("gd: failed to download godot.web.template_release.wasm32.zip: %v (is your gd command out of date?)", resp.Status)
 			}
 		}
 		if err := setupFile(false, graphics+"/main.tscn", main_tscn); err != nil {
