@@ -552,6 +552,11 @@ func wrap() error {
 	}
 	switch os.Args[1] {
 	case "run":
+		if GOOS == "js" {
+			if err := os.MkdirAll(graphics+"/../releases/"+GOOS+"/"+GOARCH, 0755); err != nil {
+				return xray.New(err)
+			}
+		}
 		godot := exec.Command(engine, runGodotArgs...)
 		godot.Dir = graphics
 		godot.Stderr = os.Stderr
