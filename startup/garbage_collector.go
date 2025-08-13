@@ -18,7 +18,7 @@ type goRuntime struct {
 }
 
 func (goRuntime) Ready() {
-
+	Callable.Cycle()
 }
 
 func (gr goRuntime) AsNode() NodeClass.Instance { return gr.Super().AsNode() }
