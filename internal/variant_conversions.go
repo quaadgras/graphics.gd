@@ -566,11 +566,21 @@ func variantAsPointerType[T pointers.Generic[T, Size], Size pointers.Size](varia
 
 func variantAsObject(variant Variant) Object {
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[[3]uint64](frame)
+	var r_ret = callframe.Ret[EnginePointer](frame)
 	Global.variant.IntoType[TypeObject](r_ret.Addr(), callframe.Arg(frame, pointers.Get(variant)))
 	var ret = r_ret.Get()
 	frame.Free()
-	return PointerMustAssertInstanceID[Object](EnginePointer(ret[0]))
+	return PointerMustAssertInstanceID[Object](EnginePointer(ret))
+}
+
+func LetVariantAsObject(variant Variant) Object {
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[EnginePointer](frame)
+	Global.variant.IntoType[TypeObject](r_ret.Addr(), callframe.Arg(frame, pointers.Get(variant)))
+	var ret = r_ret.Get()
+	frame.Free()
+	fmt.Println(ret)
+	return pointers.Let[Object]([3]uint64{uint64(ret)})
 }
 
 func LetVariantAsPointerType[T pointers.Generic[T, Size], Size pointers.Size](variant Variant, vtype VariantType) T {

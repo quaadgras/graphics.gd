@@ -1,6 +1,7 @@
 package startup
 
 import (
+	"fmt"
 	"math"
 	"syscall/js"
 	"unsafe"
@@ -118,6 +119,10 @@ func linkJS(API *gd.API) {
 			Value: version.Get("string").String(),
 		}
 	}
+	print_error_message := dlsym("print_error_with_message")
+	API.PrintErrorMessage = func(code string, message string, function string, file string, line int32, notifyEditor bool) {
+		print_error_message.Invoke(code, message, function, file, line, notifyEditor)
+	}
 	get_native_struct_size := dlsym("get_native_struct_size")
 	API.GetNativeStructSize = func(name gd.StringName) uintptr {
 		return uintptr(get_native_struct_size.Invoke(pointers.Get(name)[0]).Int())
@@ -176,6 +181,15 @@ func linkJS(API *gd.API) {
 		variant_destroy.Invoke(
 			vnt[0], vnt[1], vnt[2], vnt[3], vnt[4], vnt[5],
 		)
+	}
+	variant_stringify := dlsym("variant_stringify")
+	API.Variants.Stringify = func(v gd.Variant) gd.String {
+		var raw = pointers.Get(v)
+		var vnt = *(*[6]uint32)(unsafe.Pointer(&raw))
+		result := variant_stringify.Invoke(
+			vnt[0], vnt[1], vnt[2], vnt[3], vnt[4], vnt[5],
+		).Int()
+		return pointers.Let[gd.String]([1]gd.EnginePointer{gd.EnginePointer(result)})
 	}
 	variant_get_ptr_constructor := dlsym("variant_get_ptr_constructor")
 	call_variant_get_ptr_constructor := dlsym("call_variant_get_ptr_constructor")

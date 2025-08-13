@@ -34,9 +34,9 @@ func convertVariantToDesiredGoType(value Variant, rtype reflect.Type) (reflect.V
 	case reflect.Array:
 		if rtype.Elem().Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
 			if value.Type() != TypeObject {
-				return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
+				return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %s to %s", value.Type(), rtype))
 			}
-			object := [1]Object{LetVariantAsPointerType[Object](value, TypeObject)}
+			object := [1]Object{LetVariantAsObject(value)}
 			casted := Global.Object.CastTo(object, Global.ClassDB.GetClassTag(NewStringName(classNameOf(rtype))))
 			var result = reflect.New(rtype)
 			*(*[1]Object)(result.UnsafePointer()) = casted
