@@ -13,7 +13,7 @@ import (
 	"runtime.link/api"
 )
 
-type VariantType int
+type VariantType int32
 
 func (t VariantType) String() string {
 	return Global.Variants.GetTypeName(t).String()
@@ -70,11 +70,11 @@ type API struct {
 		Stringify                 func(self Variant) String
 		GetType                   func(self Variant) VariantType
 		HasMethod                 func(self Variant, method StringName) bool
-		HasMember                 func(self Variant, member StringName) bool
+		HasMember                 func(self VariantType, member StringName) bool
 		HasKey                    func(self Variant, key Variant) (hasKey, valid bool)
 		GetTypeName               func(self VariantType) String
-		CanConvert                func(self Variant, to VariantType) bool
-		CanConvertStrict          func(self Variant, to VariantType) bool
+		CanConvert                func(from VariantType, to VariantType) bool
+		CanConvertStrict          func(from VariantType, to VariantType) bool
 		FromTypeConstructor       func(VariantType) func(ret callframe.Ptr[VariantPointers], arg callframe.Addr)
 		ToTypeConstructor         func(VariantType) func(ret callframe.Addr, arg callframe.Ptr[VariantPointers])
 		PointerOperatorEvaluator  func(op Operator, a, b VariantType) func(a, b, ret callframe.Addr)
@@ -91,6 +91,7 @@ type API struct {
 		GetPointerKeyedChecker    func(VariantType) func(base, key callframe.Addr) uint32
 		GetConstantValue          func(t VariantType, name StringName) Variant
 		GetPointerUtilityFunction func(name StringName, hash Int) func(ret callframe.Addr, args callframe.Args, c int32)
+		GetObjectInstanceID       func(self Variant) ObjectID
 	}
 	Strings struct {
 		New        func(string) String

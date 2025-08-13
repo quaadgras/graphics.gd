@@ -128,8 +128,8 @@ static inline GDExtensionVariantType variant_get_type(pointer fn, pointer p_self
 static inline GDExtensionBool variant_has_method(pointer fn, pointer p_self, pointer p_method) {
 	return ((GDExtensionInterfaceVariantHasMethod)fn)((GDExtensionConstVariantPtr)p_self, (GDExtensionConstStringNamePtr)p_method);
 }
-static inline GDExtensionBool variant_has_member(pointer fn, pointer p_self, pointer p_member) {
-	return ((GDExtensionInterfaceVariantHasMember)fn)((GDExtensionVariantType)p_self, (GDExtensionConstStringNamePtr)p_member);
+static inline GDExtensionBool variant_has_member(pointer fn, GDExtensionVariantType p_type, pointer p_member) {
+	return ((GDExtensionInterfaceVariantHasMember)fn)((GDExtensionVariantType)p_type, (GDExtensionConstStringNamePtr)p_member);
 }
 static inline GDExtensionBool variant_has_key(pointer fn, pointer p_self, pointer p_key, pointer r_valid) {
 	return ((GDExtensionInterfaceVariantHasKey)fn)((GDExtensionConstVariantPtr)p_self, (GDExtensionConstVariantPtr)p_key, (GDExtensionBool*)r_valid);
@@ -137,11 +137,11 @@ static inline GDExtensionBool variant_has_key(pointer fn, pointer p_self, pointe
 static inline void variant_get_type_name(pointer fn, GDExtensionVariantType p_type, pointer r_ret) {
 	((GDExtensionInterfaceVariantGetTypeName)fn)(p_type, (GDExtensionUninitializedStringPtr)r_ret);
 }
-static inline GDExtensionBool variant_can_convert(pointer fn, pointer p_self, GDExtensionVariantType p_type) {
-	return ((GDExtensionInterfaceVariantCanConvert)fn)((GDExtensionVariantType)p_self, p_type);
+static inline GDExtensionBool variant_can_convert(pointer fn, GDExtensionVariantType p_self, GDExtensionVariantType p_type) {
+	return ((GDExtensionInterfaceVariantCanConvert)fn)(p_self, p_type);
 }
-static inline GDExtensionBool variant_can_convert_strict(pointer fn, pointer p_self, GDExtensionVariantType p_type) {
-	return ((GDExtensionInterfaceVariantCanConvertStrict)fn)((GDExtensionVariantType)p_self, p_type);
+static inline GDExtensionBool variant_can_convert_strict(pointer fn, GDExtensionVariantType p_self, GDExtensionVariantType p_type) {
+	return ((GDExtensionInterfaceVariantCanConvertStrict)fn)(p_self, p_type);
 }
 static inline pointer get_variant_from_type_constructor(pointer fn, GDExtensionVariantType p_type) {
 	return (pointer)((GDExtensionInterfaceGetVariantFromTypeConstructor)fn)(p_type);

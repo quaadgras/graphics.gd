@@ -770,13 +770,12 @@ func linkCGO(API *gd.API) {
 		return ret != 0
 	}
 	variant_has_member := dlsymGD("variant_has_member")
-	API.Variants.HasMember = func(self gd.Variant, member gd.StringName) bool {
+	API.Variants.HasMember = func(vtype gd.VariantType, member gd.StringName) bool {
 		var frame = callframe.New()
-		var p_self = callframe.Arg(frame, pointers.Get(self))
 		var p_member = callframe.Arg(frame, pointers.Get(member))
 		var ret = C.variant_has_member(
 			C.uintptr_t(uintptr(variant_has_member)),
-			C.uintptr_t(p_self.Uintptr()),
+			C.GDExtensionVariantType(vtype),
 			C.uintptr_t(p_member.Uintptr()),
 		)
 		frame.Free()
@@ -815,24 +814,22 @@ func linkCGO(API *gd.API) {
 		return ret
 	}
 	variant_can_convert := dlsymGD("variant_can_convert")
-	API.Variants.CanConvert = func(self gd.Variant, toType gd.VariantType) bool {
+	API.Variants.CanConvert = func(from gd.VariantType, toType gd.VariantType) bool {
 		var frame = callframe.New()
-		var p_self = callframe.Arg(frame, pointers.Get(self))
 		var ret = C.variant_can_convert(
 			C.uintptr_t(uintptr(variant_can_convert)),
-			C.uintptr_t(p_self.Uintptr()),
+			C.GDExtensionVariantType(from),
 			C.GDExtensionVariantType(toType),
 		)
 		frame.Free()
 		return ret != 0
 	}
 	variant_can_convert_strict := dlsymGD("variant_can_convert_strict")
-	API.Variants.CanConvertStrict = func(self gd.Variant, toType gd.VariantType) bool {
+	API.Variants.CanConvertStrict = func(from gd.VariantType, toType gd.VariantType) bool {
 		var frame = callframe.New()
-		var p_self = callframe.Arg(frame, pointers.Get(self))
 		var ret = C.variant_can_convert_strict(
 			C.uintptr_t(uintptr(variant_can_convert_strict)),
-			C.uintptr_t(p_self.Uintptr()),
+			C.GDExtensionVariantType(from),
 			C.GDExtensionVariantType(toType),
 		)
 		frame.Free()
