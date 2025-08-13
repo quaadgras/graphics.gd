@@ -22,6 +22,7 @@ func init() {
 		dlsym = func(s string) js.Value {
 			return get_proc_func.Invoke(s)
 		}
+		gd.Global.ExtensionToken = gd.ExtensionToken(uint32(args[1].Int()))
 		linkJS(&gd.Global)
 		initialization := args[2]
 		initialization.Set("minimum_initialization_level", uint32(gd.GDExtensionInitializationLevelScene))
