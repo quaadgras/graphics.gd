@@ -337,7 +337,7 @@ func wrap() error {
 		libraryPath += ".dylib"
 	case "js":
 		libraryPath = filepath.Join(graphics, "..", "releases", "js", "wasm", "library.wasm")
-		runGodotArgs = []string{"--headless", "--export-debug", "Web"}
+		runGodotArgs = []string{"--headless", "--export-release", "Web"}
 	case "android":
 		libraryPath = "lib" + libraryPath + ".so"
 	case "ios":
