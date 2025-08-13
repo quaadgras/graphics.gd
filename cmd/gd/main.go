@@ -412,10 +412,12 @@ func wrap() error {
 				continue
 			}
 			var extension string
+			var icon string
 			var Velopack vpk.Commands
 			switch {
 			case strings.HasPrefix(target, "linux/"):
 				Velopack = vpk.CMD.Linux
+				icon = wd + "/graphics/icon.svg"
 			case strings.HasPrefix(target, "darwin/"):
 				Velopack = vpk.CMD.OSX
 			case strings.HasPrefix(target, "windows/"):
@@ -428,6 +430,7 @@ func wrap() error {
 				Dir:     wd + "/releases/" + target,
 				MainEXE: path.Base(wd) + extension,
 				Output:  wd + "/releases",
+				Icon:    icon,
 			}); err != nil {
 				return xray.New(err)
 			}
