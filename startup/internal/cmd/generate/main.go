@@ -378,4 +378,8 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Error generating startup_cgo_v2.go: %v\n", err)
 		os.Exit(1)
 	}
+	if err := generate_gdextension_web_cgo_callbacks(); err != nil {
+		fmt.Fprintf(os.Stderr, "Error generating web cgo callbacks: %v\n", err)
+		os.Exit(1)
+	}
 }

@@ -100,8 +100,9 @@ func go_on_extension_instance_set(p0 C.uintptr_t, p1 C.uintptr_t, p2 C.uint64_t,
 }
 
 //export go_on_extension_instance_get
-func go_on_extension_instance_get(p0 C.uintptr_t, p1 C.uintptr_t, p2 *C.void) {
-	gdextension.On.Extension.Instance.Get(gdextension.ExtensionInstanceID(p0), gdextension.StringName(p1), gdextension.Call(p2))
+func go_on_extension_instance_get(p0 C.uintptr_t, p1 C.uintptr_t, p2 *C.void) C.bool {
+	_, result := gdextension.On.Extension.Instance.Get(gdextension.ExtensionInstanceID(p0), gdextension.StringName(p1), gdextension.Call(p2))
+	return C.bool(result)
 }
 
 //export go_on_extension_instance_property_list
@@ -136,8 +137,8 @@ func go_on_extension_instance_stringify(p0 C.uintptr_t) C.uintptr_t {
 }
 
 //export go_on_extension_instance_reference
-func go_on_extension_instance_reference(p0 C.uintptr_t, p1 C.bool) {
-	gdextension.On.Extension.Instance.Reference(gdextension.ExtensionInstanceID(p0), bool(p1))
+func go_on_extension_instance_reference(p0 C.uintptr_t, p1 C.bool) C.bool {
+	return C.bool(gdextension.On.Extension.Instance.Reference(gdextension.ExtensionInstanceID(p0), bool(p1)))
 }
 
 //export go_on_extension_instance_rid
@@ -743,8 +744,8 @@ func init() {
 		result = bool(C.gd_variant_type_convertable(C.uint32_t(p0), C.uint32_t(p1), C.bool(p2)))
 		return
 	}
-	gdextension.Host.VariantTypes.SetupArray = func(p0 gdextension.Array, p1 gdextension.VariantType, p2 gdextension.StringName, p3 gdextension.Variant) (result bool) {
-		result = bool(C.gd_variant_type_setup_array(C.uintptr_t(p0), C.uint32_t(p1), C.uintptr_t(p2), C.uint64_t(p3[0]), C.uint64_t(p3[1]), C.uint64_t(p3[2])))
+	gdextension.Host.VariantTypes.SetupArray = func(p0 gdextension.Array, p1 gdextension.VariantType, p2 gdextension.StringName, p3 gdextension.Variant) {
+		C.gd_variant_type_setup_array(C.uintptr_t(p0), C.uint32_t(p1), C.uintptr_t(p2), C.uint64_t(p3[0]), C.uint64_t(p3[1]), C.uint64_t(p3[2]))
 		return
 	}
 	gdextension.Host.VariantTypes.SetupDictionary = func(p0 gdextension.Dictionary, p1 gdextension.VariantType, p2 gdextension.StringName, p3 gdextension.Variant, p4 gdextension.VariantType, p5 gdextension.StringName, p6 gdextension.Variant) {
@@ -773,6 +774,10 @@ func init() {
 	}
 	gdextension.Host.VariantTypes.Getter = func(p0 gdextension.VariantType, p1 gdextension.StringName) (result gdextension.FunctionID) {
 		result = gdextension.FunctionID(C.gd_variant_type_getter(C.uint32_t(p0), C.uintptr_t(p1)))
+		return
+	}
+	gdextension.Host.VariantTypes.HasProperty = func(p0 gdextension.VariantType, p1 gdextension.StringName) (result bool) {
+		result = bool(C.gd_variant_type_has_property(C.uint32_t(p0), C.uintptr_t(p1)))
 		return
 	}
 	gdextension.Host.VariantTypes.Unsafe.Call = func(p0 gdextension.FunctionID, p1 int64, p2 gdextension.CallAccepts[interface{}]) (_ gdextension.CallReturns[interface{}]) {
@@ -837,10 +842,6 @@ func init() {
 	}
 	gdextension.Host.Variants.Get.Field = func(p0 gdextension.Variant, p1 gdextension.StringName, p2 gdextension.Call) (_ gdextension.CallReturns[gdextension.Variant], result bool) {
 		result = bool(C.gd_variant_get_field(C.uint64_t(p0[0]), C.uint64_t(p0[1]), C.uint64_t(p0[2]), C.uintptr_t(p1), unsafe.Pointer(p2)))
-		return
-	}
-	gdextension.Host.Variants.Has.Field = func(p0 gdextension.Variant, p1 gdextension.StringName) (result bool) {
-		result = bool(C.gd_variant_has_field(C.uint64_t(p0[0]), C.uint64_t(p0[1]), C.uint64_t(p0[2]), C.uintptr_t(p1)))
 		return
 	}
 	gdextension.Host.Variants.Has.Index = func(p0 gdextension.Variant, p1 gdextension.Variant) (result bool) {

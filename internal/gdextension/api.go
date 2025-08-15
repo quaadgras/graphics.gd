@@ -33,14 +33,14 @@ type Callbacks struct {
 		}
 		Instance struct {
 			Set                func(instance ExtensionInstanceID, field StringName, value Variant) bool                                                         `gd:"on_extension_instance_set"`
-			Get                func(instance ExtensionInstanceID, field StringName, result Call) CallReturns[Variant]                                           `gd:"on_extension_instance_get"`
+			Get                func(instance ExtensionInstanceID, field StringName, result Call) (CallReturns[Variant], bool)                                   `gd:"on_extension_instance_get"`
 			PropertyList       func(instance ExtensionInstanceID) PropertyList                                                                                  `gd:"on_extension_instance_property_list"`
 			PropertyHasDefault func(instance ExtensionInstanceID, field StringName) bool                                                                        `gd:"on_extension_instance_property_has_default"`
 			PropertyGetDefault func(instance ExtensionInstanceID, field StringName, result Call) (CallReturns[Variant], bool)                                   `gd:"on_extension_instance_property_get_default"`
 			PropertyValidation func(instance ExtensionInstanceID, field PropertyList) bool                                                                      `gd:"on_extension_instance_property_validation"`
 			Notification       func(instance ExtensionInstanceID, reverse bool)                                                                                 `gd:"on_extension_instance_notification"`
 			Stringify          func(instance ExtensionInstanceID) String                                                                                        `gd:"on_extension_instance_stringify"`
-			Reference          func(instance ExtensionInstanceID, increment bool)                                                                               `gd:"on_extension_instance_reference"`
+			Reference          func(instance ExtensionInstanceID, increment bool) bool                                                                          `gd:"on_extension_instance_reference"`
 			RID                func(instance ExtensionInstanceID) uint64                                                                                        `gd:"on_extension_instance_rid"`
 			Call               func(instance ExtensionInstanceID, fn FunctionID, arg_count int64, args CallAccepts[Variant]) (CallReturns[Variant], MaybeError) `gd:"on_extension_instance_call"`
 			CallChecked        func(instance ExtensionInstanceID, fn FunctionID, args CallAccepts[Variant]) CallReturns[Variant]                                `gd:"on_extension_instance_call_checked"`
@@ -151,7 +151,6 @@ type API struct {
 			Field func(v Variant, field StringName, result Call) (CallReturns[Variant], bool)      `gd:"variant_get_field"`
 		}
 		Has struct {
-			Field  func(v Variant, field StringName) bool  `gd:"variant_has_field"`
 			Index  func(v Variant, index Variant) bool     `gd:"variant_has_index"`
 			Method func(v Variant, method StringName) bool `gd:"variant_has_method"`
 		}
@@ -181,7 +180,7 @@ type API struct {
 		Make            func(vtype VariantType, arg_count int32, args CallAccepts[Variant]) (CallReturns[Variant], MaybeError)                                                          `gd:"variant_type_make"`
 		Call            func(vtype VariantType, static StringName, arg_count int64, args CallAccepts[Variant]) (CallReturns[Variant], MaybeError)                                       `gd:"variant_type_call"`
 		Convertable     func(vtype VariantType, to VariantType, strict bool) bool                                                                                                       `gd:"variant_type_convertable"`
-		SetupArray      func(array Array, vtype VariantType, class_name StringName, script Variant) bool                                                                                `gd:"variant_type_setup_array"`
+		SetupArray      func(array Array, vtype VariantType, class_name StringName, script Variant)                                                                                     `gd:"variant_type_setup_array"`
 		SetupDictionary func(dict Dictionary, key_type VariantType, key_class_name StringName, key_script Variant, val_type VariantType, val_class_name StringName, val_script Variant) `gd:"variant_type_setup_dictionary"`
 		FetchConstant   func(vtype VariantType, constant StringName, result Call) CallReturns[Variant]                                                                                  `gd:"variant_type_fetch_constant"`
 		BuiltinMethod   func(vtype VariantType, builtin StringName, hash int64) FunctionID                                                                                              `gd:"variant_type_builtin_method"`
@@ -189,6 +188,7 @@ type API struct {
 		Evaluator       func(op VariantOperator, a, b VariantType) FunctionID                                                                                                           `gd:"variant_type_evaluator"`
 		Setter          func(vtype VariantType, field StringName) FunctionID                                                                                                            `gd:"variant_type_setter"`
 		Getter          func(vtype VariantType, field StringName) FunctionID                                                                                                            `gd:"variant_type_getter"`
+		HasProperty     func(vtype VariantType, field StringName) bool                                                                                                                  `gd:"variant_type_has_property"`
 
 		Unsafe struct {
 			Call func(fn FunctionID, arg_count int64, args CallAccepts[any]) CallReturns[any] `gd:"variant_type_unsafe_call"`
