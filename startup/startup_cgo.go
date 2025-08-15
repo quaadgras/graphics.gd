@@ -1,5 +1,7 @@
 //go:build cgo
 
+//go:generate go run ./internal/cmd/generate
+//go:generate go fmt .
 package startup
 
 /*

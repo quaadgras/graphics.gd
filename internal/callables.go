@@ -4,12 +4,47 @@ package gd
 
 import (
 	"reflect"
+	"runtime/cgo"
+	"structs"
 
+	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 	VariantPkg "graphics.gd/variant"
 	ArrayType "graphics.gd/variant/Array"
 	CallableType "graphics.gd/variant/Callable"
 )
+
+func init() {
+	type Callframe struct {
+		_ structs.HostLayout
+
+		r_return *gdextension.Variant
+		r_error  *gdextension.CallError
+		p_args   **gdextension.Variant
+		p_argc   int64
+	}
+
+	gdextension.On.Callables.Call = func(fn gdextension.FunctionID, arg_count int64, args gdextension.CallAccepts[gdextension.Variant]) (gdextension.CallReturns[gdextension.Variant], gdextension.MaybeError) {
+		frame := (*Callframe)(args)
+		result, _ := cgo.Handle(fn).Value().(func(args []*Variant) (Variant, error))(nil)
+		frame.r_error.Type = 0
+		*frame.r_return, _ = pointers.End(result)
+		return gdextension.CallReturns[gdextension.Variant]{}, gdextension.MaybeError{}
+	}
+	gdextension.On.Callables.Hash = func(fn gdextension.FunctionID) int64 {
+		return int64(fn)
+	}
+	gdextension.On.Callables.Validation = func(fn gdextension.FunctionID) bool {
+		return fn != 0
+	}
+	gdextension.On.Callables.Stringify = func(fn gdextension.FunctionID, call gdextension.Call) (gdextension.String, gdextension.MaybeError) {
+		frame := (*Callframe)(call)
+		s := NewString(reflect.ValueOf(cgo.Handle(fn).Value()).String())
+		raw, _ := pointers.End(s)
+		frame.r_error.Type = 0
+		return gdextension.String(raw[0]), gdextension.MaybeError{}
+	}
+}
 
 // Callable creates a new callable out of the given function which must only accept
 // godot-compatible types and return up to one godot-compatible type.

@@ -49,3 +49,34 @@ func bench():
 	result = obj[0].Callv(bench, array)
 	obj[0].Free()
 }
+
+func BenchmarkCallable(B *testing.B) {
+	B.ReportAllocs()
+	var script = GDScript.New().AsScript()
+	script.SetSourceCode(`extends Object
+var n: int
+func bench(c):
+	var sum = 0
+	for i in range(n):
+		sum += c.call()
+	return sum
+`)
+	script.Reload()
+	obj := Object.New()
+	obj.SetScript(script)
+	obj[0].Set(gd.NewStringName("n"), gd.NewVariant(B.N))
+	bench := gd.NewStringName("bench")
+	array := gd.NewArray()
+	array.PushFront(gd.NewVariant(gd.NewCallable(func() int {
+		return 1
+	})))
+	var result gd.Variant
+	B.Cleanup(func() {
+		if result.Interface().(int64) != int64(B.N) {
+			B.Fail()
+		}
+	})
+	B.ResetTimer()
+	result = obj[0].Callv(bench, array)
+	obj[0].Free()
+}

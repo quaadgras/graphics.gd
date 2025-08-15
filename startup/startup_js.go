@@ -165,6 +165,19 @@ func linkJS(API *gd.API) {
 		}
 		return pointers.New[gd.Callable](*(*[2]uint64)(unsafe.Pointer(&raw)))
 	}
+	variant_copy := dlsym("variant_new_copy")
+	API.Variants.NewCopy = func(src gd.Variant) gd.Variant {
+		var raw = pointers.Get(src)
+		var vnt = *(*[6]uint32)(unsafe.Pointer(&raw))
+		variant_copy.Invoke(
+			vnt[0], vnt[1], vnt[2], vnt[3], vnt[4], vnt[5],
+		)
+		var result [6]uint32
+		for j := range result {
+			result[j] = uint32(read_result_buffer.Invoke(0, 0, j).Int())
+		}
+		return pointers.New[gd.Variant](*(*[3]uint64)(unsafe.Pointer(&raw)))
+	}
 	variant_get_type := dlsym("variant_get_type")
 	API.Variants.GetType = func(v gd.Variant) gd.VariantType {
 		var raw = pointers.Get(v)
@@ -322,14 +335,28 @@ func linkJS(API *gd.API) {
 		}
 		return pointers.New[gd.Variant](*(*[3]uint64)(unsafe.Pointer(&raw))), nil
 	}
+	object_get_instance_from_id := dlsym("object_get_instance_from_id")
+	API.Object.GetInstanceFromID = func(id gd.ObjectID) [1]gd.Object {
+		var ret = object_get_instance_from_id.Invoke(math.Float64frombits(uint64(id))).Int()
+		if ret == 0 {
+			return [1]gd.Object{}
+		}
+		return [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](gd.EnginePointer(ret))}
+	}
 	object_method_bind_ptrcall := dlsym("object_method_bind_ptrcall")
 	API.Object.MethodBindPointerCall = func(method gd.MethodBind, obj [1]gd.Object, arg callframe.Args, ret callframe.Addr) {
-		var self uint32
+		var self [3]uint64
 		if obj != ([1]gd.Object{}) {
-			self = uint32(pointers.Get(obj[0])[0])
+			self = pointers.Get(obj[0])
+		}
+		if self[1] != 0 {
+			var ret = object_get_instance_from_id.Invoke(math.Float64frombits(self[1])).Int()
+			if ret == 0 {
+				panic("use after free")
+			}
 		}
 		writeCallFrameArguments(0, arg)
-		object_method_bind_ptrcall.Invoke(uint32(method), self)
+		object_method_bind_ptrcall.Invoke(uint32(method), self[0])
 		readCallFrameResult(0, ret)
 	}
 	API.Object.MethodBindPointerCallStatic = func(method gd.MethodBind, arg callframe.Args, ret callframe.Addr) {
@@ -340,11 +367,6 @@ func linkJS(API *gd.API) {
 	global_get_singleton := dlsym("global_get_singleton")
 	API.Object.GetSingleton = func(name gd.StringName) [1]gd.Object {
 		return [1]gd.Object{pointers.Raw[gd.Object]([3]uint64{uint64(global_get_singleton.Invoke(pointers.Get(name)[0]).Int())})}
-	}
-	object_get_instance_from_id := dlsym("object_get_instance_from_id")
-	API.Object.GetInstanceFromID = func(id gd.ObjectID) [1]gd.Object {
-		fid := math.Float64frombits(uint64(id))
-		return [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(object_get_instance_from_id.Invoke(fid).Int())})}
 	}
 	object_set_instance := dlsym("object_set_instance")
 	API.Object.SetInstance = func(o [1]gd.Object, sn gd.StringName, oi gd.ObjectInterface) {

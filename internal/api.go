@@ -4,6 +4,7 @@ package gd
 
 import (
 	"reflect"
+	"structs"
 	"unsafe"
 
 	"graphics.gd/internal/callframe"
@@ -238,6 +239,8 @@ const (
 )
 
 type CallError struct {
+	_ structs.HostLayout
+
 	ErrorType CallErrorType
 	Argument  int32
 	Expected  int32

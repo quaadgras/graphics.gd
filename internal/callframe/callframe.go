@@ -83,6 +83,26 @@ func (frame *Frame) Array(i int) Args {
 	}
 }
 
+func Get32[I, J int | int32 | uint32 | uint64](frame *Frame, i I, j J) uint32 {
+	return frame.buf[i][j]
+}
+
+func Set32[I, J int | int32 | uint32 | uint64](frame *Frame, i I, j J, value uint32) {
+	frame.buf[i][j] = value
+}
+
+func Get64[I, J int | int32 | uint32 | uint64](frame *Frame, i I, j J) uint64 {
+	return *(*uint64)(unsafe.Pointer(&frame.buf[i][j*2]))
+}
+
+func Set64[I, J int | int32 | uint32 | uint64](frame *Frame, i I, j J, value uint64) {
+	*(*uint64)(unsafe.Pointer(&frame.buf[i][j*2])) = value
+}
+
+func GetPtr[T comparable, I int | int32 | uint32 | uint64](frame *Frame, i I) Ptr[T] {
+	return Ptr[T]{void: &frame.buf[i]}
+}
+
 // Free recycles the [Frame]. Do not reuse the frame after
 // calling this method.
 func (frame *Frame) Free() {

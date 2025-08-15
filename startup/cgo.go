@@ -16,6 +16,8 @@ import (
 	"runtime.link/api/stub"
 )
 
+//#include "gdextension_interface.h"
+//#include "startup_cgo_v2.h"
 import "C"
 
 // little hack to enable `gd test` to work, we strip away the headless flag
@@ -37,6 +39,11 @@ func init() {
 
 //export loadExtension
 func loadExtension(lookupFunc uintptr, classes, configuration unsafe.Pointer) uint8 {
+	C.cgo_extension_init(
+		*(*C.GDExtensionInterfaceGetProcAddress)(unsafe.Pointer(&lookupFunc)),
+		*(*C.GDExtensionClassLibraryPtr)(classes),
+		(*C.GDExtensionInitialization)(configuration),
+	)
 	dlsymGD = func(s string) unsafe.Pointer {
 		return get_proc_address(lookupFunc, s)
 	}

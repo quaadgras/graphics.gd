@@ -44,5 +44,9 @@ func TestAliasFreed(t *testing.T) {
 
 	child.AsObject()[0].Free()
 
-	alias.Name()
+	if alias.Name() == "Hello" {
+		t.Error("access alias after free")
+	} else {
+		t.Error("corrupted name")
+	}
 }
