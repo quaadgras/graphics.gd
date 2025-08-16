@@ -66,7 +66,7 @@ func go_on_callable_get_argument_count(p0 C.uintptr_t, p1 *C.void) C.int64_t {
 
 //export go_on_editor_class_in_use_detection
 func go_on_editor_class_in_use_detection(p0 C.uintptr_t, p1 C.uintptr_t, p2 *C.void) {
-	gdextension.On.Editor.ClassInUseDetection(gdextension.PackedArray{uintptr(p0), uintptr(p1)}, gdextension.Call(p2))
+	gdextension.On.Editor.ClassInUseDetection(gdextension.PackedArray{gdextension.Pointer(p0), gdextension.Pointer(p1)}, gdextension.Call(p2))
 }
 
 //export go_on_extension_binding_created

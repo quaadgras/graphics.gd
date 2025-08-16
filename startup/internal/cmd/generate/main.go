@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"iter"
@@ -370,16 +371,14 @@ func ctypeOf(rtype reflect.Type) string {
 }
 
 func main() {
-	if err := generate_header_file(); err != nil {
-		fmt.Fprintf(os.Stderr, "Error generating header file: %v\n", err)
-		os.Exit(1)
-	}
-	if err := generate_startup_cgo(); err != nil {
-		fmt.Fprintf(os.Stderr, "Error generating startup_cgo_v2.go: %v\n", err)
-		os.Exit(1)
-	}
-	if err := generate_gdextension_web_cgo_callbacks(); err != nil {
-		fmt.Fprintf(os.Stderr, "Error generating web cgo callbacks: %v\n", err)
+	if err := errors.Join(
+		generate_header_file(),
+		generate_startup_js(),
+		generate_startup_cgo(),
+		generate_gdextension_web_cgo(),
+		generate_gdextension_web_cgo_callbacks(),
+	); err != nil {
+		fmt.Fprintf(os.Stderr, "Error generating files: %v\n", err)
 		os.Exit(1)
 	}
 }

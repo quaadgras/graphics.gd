@@ -3,7 +3,6 @@ package gdextension
 
 import (
 	"structs"
-	"unsafe"
 
 	"graphics.gd/variant/Color"
 	"graphics.gd/variant/Vector2"
@@ -409,20 +408,18 @@ const (
 	InitEditor  InitializationLevel = 3
 )
 
-type String uintptr
+type String Pointer
 
-type StringName uintptr
-type PackedArray [2]uintptr
-type Array uintptr
-type Dictionary uintptr
+type StringName Pointer
+type PackedArray [2]Pointer
+type Array Pointer
+type Dictionary Pointer
 type Callable [2]uint64
 
-type Pointer uintptr
-
-type Object uintptr
-type ObjectType uintptr
+type Object Pointer
+type ObjectType Pointer
 type ObjectID uint64
-type RefCounted uintptr
+type RefCounted Pointer
 
 type Variant [3]uint64
 type VariantType uint32
@@ -430,25 +427,24 @@ type VariantOperator uint32
 
 type Iterator [3]uint64
 
-type ClassLibrary uintptr
+type ClassLibrary Pointer
 
-type TaskID uintptr
-type FunctionID uintptr
-type CallableID uintptr
+type TaskID Pointer
+type FunctionID Pointer
+type CallableID Pointer
 
-type ExtensionClassID uintptr
-type ExtensionInstanceID uintptr
-type ExtensionBindingID uintptr
+type ExtensionClassID Pointer
+type ExtensionInstanceID Pointer
+type ExtensionBindingID Pointer
 
-type ScriptInstance uintptr
+type ScriptInstance Pointer
 
-type Call unsafe.Pointer
 type CallReturns[T any] struct{}
-type CallAccepts[T any] unsafe.Pointer
+type CallAccepts[T any] Call
 type MaybeError struct{}
 
-type PropertyList uintptr
-type MethodList uintptr
+type PropertyList Pointer
+type MethodList Pointer
 
 const (
 	Equal VariantOperator = iota
