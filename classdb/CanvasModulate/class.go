@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +53,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -111,20 +115,13 @@ func (self Instance) SetColor(value Color.RGBA) {
 
 //go:nosplit
 func (self class) SetColor(color Color.RGBA) { //gd:CanvasModulate.set_color
-	var frame = callframe.New()
-	callframe.Arg(frame, color)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasModulate.Bind_set_color, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasModulate.Bind_set_color, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 //go:nosplit
 func (self class) GetColor() Color.RGBA { //gd:CanvasModulate.get_color
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Color.RGBA](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasModulate.Bind_get_color, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Color.RGBA](self.AsObject(), gd.Global.Methods.CanvasModulate.Bind_get_color, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsCanvasModulate() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

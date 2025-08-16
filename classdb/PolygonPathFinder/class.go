@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -50,6 +52,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -201,46 +205,36 @@ polygonPathFinder.Setup(points, connections);
 */
 //go:nosplit
 func (self class) Setup(points Packed.Array[Vector2.XY], connections Packed.Array[int32]) { //gd:PolygonPathFinder.setup
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)))
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](connections)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PolygonPathFinder.Bind_setup, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PolygonPathFinder.Bind_setup, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
+		points      gdextension.PackedArray
+		connections gdextension.PackedArray
+	}{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](connections)))}))
 }
 
 //go:nosplit
 func (self class) FindPath(from Vector2.XY, to Vector2.XY) Packed.Array[Vector2.XY] { //gd:PolygonPathFinder.find_path
-	var frame = callframe.New()
-	callframe.Arg(frame, from)
-	callframe.Arg(frame, to)
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PolygonPathFinder.Bind_find_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.PolygonPathFinder.Bind_find_path, gdextension.SizePackedArray|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
+		from Vector2.XY
+		to   Vector2.XY
+	}{from, to}))
+	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) GetIntersections(from Vector2.XY, to Vector2.XY) Packed.Array[Vector2.XY] { //gd:PolygonPathFinder.get_intersections
-	var frame = callframe.New()
-	callframe.Arg(frame, from)
-	callframe.Arg(frame, to)
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PolygonPathFinder.Bind_get_intersections, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.PolygonPathFinder.Bind_get_intersections, gdextension.SizePackedArray|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
+		from Vector2.XY
+		to   Vector2.XY
+	}{from, to}))
+	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) GetClosestPoint(point Vector2.XY) Vector2.XY { //gd:PolygonPathFinder.get_closest_point
-	var frame = callframe.New()
-	callframe.Arg(frame, point)
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PolygonPathFinder.Bind_get_closest_point, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.PolygonPathFinder.Bind_get_closest_point, gdextension.SizeVector2|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ point Vector2.XY }{point}))
+	var ret = r_ret
 	return ret
 }
 
@@ -272,43 +266,30 @@ GD.Print(polygonPathFinder.IsPointInside(new Vector2(1.0f, 1.0f))); // Prints Fa
 */
 //go:nosplit
 func (self class) IsPointInside(point Vector2.XY) bool { //gd:PolygonPathFinder.is_point_inside
-	var frame = callframe.New()
-	callframe.Arg(frame, point)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PolygonPathFinder.Bind_is_point_inside, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.PolygonPathFinder.Bind_is_point_inside, gdextension.SizeBool|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ point Vector2.XY }{point}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPointPenalty(idx int64, penalty float64) { //gd:PolygonPathFinder.set_point_penalty
-	var frame = callframe.New()
-	callframe.Arg(frame, idx)
-	callframe.Arg(frame, penalty)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PolygonPathFinder.Bind_set_point_penalty, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PolygonPathFinder.Bind_set_point_penalty, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+		idx     int64
+		penalty float64
+	}{idx, penalty}))
 }
 
 //go:nosplit
 func (self class) GetPointPenalty(idx int64) float64 { //gd:PolygonPathFinder.get_point_penalty
-	var frame = callframe.New()
-	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PolygonPathFinder.Bind_get_point_penalty, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.PolygonPathFinder.Bind_get_point_penalty, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetBounds() Rect2.PositionSize { //gd:PolygonPathFinder.get_bounds
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Rect2.PositionSize](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PolygonPathFinder.Bind_get_bounds, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Rect2.PositionSize](self.AsObject(), gd.Global.Methods.PolygonPathFinder.Bind_get_bounds, gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsPolygonPathFinder() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

@@ -9,6 +9,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +53,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -158,12 +162,10 @@ Bakes the [param navigation_mesh] with source geometry collected starting from t
 */
 //go:nosplit
 func (self class) Bake(navigation_mesh [1]gdclass.NavigationMesh, root_node [1]gdclass.Node) { //gd:NavigationMeshGenerator.bake
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(navigation_mesh[0])[0])
-	callframe.Arg(frame, pointers.Get(root_node[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshGenerator.Bind_bake, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMeshGenerator.Bind_bake, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+		navigation_mesh gdextension.Object
+		root_node       gdextension.Object
+	}{gdextension.Object(pointers.Get(navigation_mesh[0])[0]), gdextension.Object(pointers.Get(root_node[0])[0])}))
 }
 
 /*
@@ -171,11 +173,7 @@ Removes all polygons and vertices from the provided [param navigation_mesh] reso
 */
 //go:nosplit
 func (self class) Clear(navigation_mesh [1]gdclass.NavigationMesh) { //gd:NavigationMeshGenerator.clear
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(navigation_mesh[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshGenerator.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMeshGenerator.Bind_clear, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ navigation_mesh gdextension.Object }{gdextension.Object(pointers.Get(navigation_mesh[0])[0])}))
 }
 
 /*
@@ -185,14 +183,12 @@ Parses the [SceneTree] for source geometry according to the properties of [param
 */
 //go:nosplit
 func (self class) ParseSourceGeometryData(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, root_node [1]gdclass.Node, callback Callable.Function) { //gd:NavigationMeshGenerator.parse_source_geometry_data
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(navigation_mesh[0])[0])
-	callframe.Arg(frame, pointers.Get(source_geometry_data[0])[0])
-	callframe.Arg(frame, pointers.Get(root_node[0])[0])
-	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshGenerator.Bind_parse_source_geometry_data, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMeshGenerator.Bind_parse_source_geometry_data, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeCallable<<16), unsafe.Pointer(&struct {
+		navigation_mesh      gdextension.Object
+		source_geometry_data gdextension.Object
+		root_node            gdextension.Object
+		callback             gdextension.Callable
+	}{gdextension.Object(pointers.Get(navigation_mesh[0])[0]), gdextension.Object(pointers.Get(source_geometry_data[0])[0]), gdextension.Object(pointers.Get(root_node[0])[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
 }
 
 /*
@@ -200,13 +196,11 @@ Bakes the provided [param navigation_mesh] with the data from the provided [para
 */
 //go:nosplit
 func (self class) BakeFromSourceGeometryData(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, callback Callable.Function) { //gd:NavigationMeshGenerator.bake_from_source_geometry_data
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(navigation_mesh[0])[0])
-	callframe.Arg(frame, pointers.Get(source_geometry_data[0])[0])
-	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationMeshGenerator.Bind_bake_from_source_geometry_data, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMeshGenerator.Bind_bake_from_source_geometry_data, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeCallable<<12), unsafe.Pointer(&struct {
+		navigation_mesh      gdextension.Object
+		source_geometry_data gdextension.Object
+		callback             gdextension.Callable
+	}{gdextension.Object(pointers.Get(navigation_mesh[0])[0]), gdextension.Object(pointers.Get(source_geometry_data[0])[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
 }
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

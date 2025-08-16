@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -47,6 +49,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -178,12 +182,8 @@ Internally, this uses the same decoding mechanism as the [method @GlobalScope.by
 */
 //go:nosplit
 func (self class) GetVar(allow_objects bool) variant.Any { //gd:PacketPeer.get_var
-	var frame = callframe.New()
-	callframe.Arg(frame, allow_objects)
-	var r_ret = callframe.Ret[[3]uint64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeer.Bind_get_var, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[3]uint64](self.AsObject(), gd.Global.Methods.PacketPeer.Bind_get_var, gdextension.SizeVariant|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ allow_objects bool }{allow_objects}))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
 
@@ -193,13 +193,11 @@ Internally, this uses the same encoding mechanism as the [method @GlobalScope.va
 */
 //go:nosplit
 func (self class) PutVar(v variant.Any, full_objects bool) Error.Code { //gd:PacketPeer.put_var
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(v)))
-	callframe.Arg(frame, full_objects)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeer.Bind_put_var, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.PacketPeer.Bind_put_var, gdextension.SizeInt|(gdextension.SizeVariant<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		v            gdextension.Variant
+		full_objects bool
+	}{gdextension.Variant(pointers.Get(gd.InternalVariant(v))), full_objects}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -208,11 +206,8 @@ Gets a raw packet.
 */
 //go:nosplit
 func (self class) GetPacket() Packed.Bytes { //gd:PacketPeer.get_packet
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeer.Bind_get_packet, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.PacketPeer.Bind_get_packet, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
 
@@ -221,12 +216,8 @@ Sends a raw packet.
 */
 //go:nosplit
 func (self class) PutPacket(buffer Packed.Bytes) Error.Code { //gd:PacketPeer.put_packet
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeer.Bind_put_packet, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.PacketPeer.Bind_put_packet, gdextension.SizeInt|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ buffer gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))))}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -235,11 +226,8 @@ Returns the error state of the last packet received (via [method get_packet] and
 */
 //go:nosplit
 func (self class) GetPacketError() Error.Code { //gd:PacketPeer.get_packet_error
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeer.Bind_get_packet_error, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.PacketPeer.Bind_get_packet_error, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -248,31 +236,21 @@ Returns the number of packets currently available in the ring-buffer.
 */
 //go:nosplit
 func (self class) GetAvailablePacketCount() int64 { //gd:PacketPeer.get_available_packet_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeer.Bind_get_available_packet_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.PacketPeer.Bind_get_available_packet_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetEncodeBufferMaxSize() int64 { //gd:PacketPeer.get_encode_buffer_max_size
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeer.Bind_get_encode_buffer_max_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.PacketPeer.Bind_get_encode_buffer_max_size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEncodeBufferMaxSize(max_size int64) { //gd:PacketPeer.set_encode_buffer_max_size
-	var frame = callframe.New()
-	callframe.Arg(frame, max_size)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeer.Bind_set_encode_buffer_max_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PacketPeer.Bind_set_encode_buffer_max_size, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ max_size int64 }{max_size}))
 }
 func (self class) AsPacketPeer() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsPacketPeer() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

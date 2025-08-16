@@ -450,8 +450,6 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 		fmt.Fprintf(w, "args ...%sVariant", prefix)
 	}
 	fmt.Fprintf(w, ") %v { //gd:%s.%s\n", result, class.Name, method.Name)
-	fmt.Fprintf(w, "\tvar frame = callframe.New()\n")
-
 	var static = ""
 	if method.IsStatic {
 		static = "Static"
@@ -460,9 +458,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 	if method.IsStatic {
 		self = ""
 	}
-
 	if ctype == callVarargs {
-		fmt.Fprintf(w, "\tdefer frame.Free()\n")
 		fmt.Fprintf(w, "var fixed = [...]gd.Variant{")
 		for i, arg := range method.Arguments {
 			if i > 0 {
@@ -483,77 +479,78 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 		fmt.Fprintf(w, "}\n")
 		return
 	}
-
-	for _, arg := range method.Arguments {
+	var callResult = result
+	if isPtr {
+		callResult = ptrKind
+	}
+	if result != "" {
+		fmt.Fprintf(w, "\tvar r_ret = ")
+	} else {
+		callResult = "struct{}"
+	}
+	fmt.Fprintf(w, "gdunsafe.Call%s[%s](%s gd.Global.Methods.%v.Bind_%v, %v, unsafe.Pointer(&struct{", static, callResult, self, class.Name, method.Name, shapeOf(class, method))
+	for i, arg := range method.Arguments {
+		if i > 0 {
+			fmt.Fprint(w, "; ")
+		}
+		argType := gdtype.EngineTypeAsGoType(class.Name, arg.Meta, arg.Type)
+		fmt.Fprintf(w, "%s %s", fixReserved(arg.Name), gdtype.Name(argType).CallframeType())
+	}
+	fmt.Fprint(w, "}{")
+	for i, arg := range method.Arguments {
+		if i > 0 {
+			fmt.Fprint(w, ", ")
+		}
 		_, ok := classDB[arg.Type]
 		if ok {
 			switch semantics := gdjson.ClassMethodOwnership[class.Name][method.Name][arg.Name]; semantics {
 			case gdjson.OwnershipTransferred, gdjson.LifetimeBoundToClass:
-				fmt.Fprintf(w, "\tcallframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(%v[0].AsObject()[0]))\n", fixReserved(arg.Name))
+				fmt.Fprintf(w, "\tgdextension.Object(gd.PointerWithOwnershipTransferredToGodot(%v[0].AsObject()[0]))", fixReserved(arg.Name))
 			case gdjson.RefCountedManagement, gdjson.IsTemporaryReference, gdjson.MustAssertInstanceID, gdjson.ReversesTheOwnership:
-				fmt.Fprintf(w, "\tcallframe.Arg(frame, pointers.Get(%v[0])[0])\n", fixReserved(arg.Name))
+				fmt.Fprintf(w, "\tgdextension.Object(pointers.Get(%v[0])[0])", fixReserved(arg.Name))
 			default:
 				panic("unknown ownership: " + fmt.Sprint(semantics))
 			}
 			continue
 		}
 		argType := gdtype.EngineTypeAsGoType(class.Name, arg.Meta, arg.Type)
-		fmt.Fprint(w, gdtype.Name(argType).LoadOntoCallFrame(fixReserved(arg.Name)))
+		fmt.Fprint(w, gdtype.Name(argType).CallframeValue(fixReserved(arg.Name)))
 	}
-	if method.IsVararg {
-		fmt.Fprintf(w, "\tfor _, arg := range args {\n")
-		fmt.Fprintf(w, "\t\tcallframe.Arg(frame, pointers.Get(arg))\n")
-		fmt.Fprintf(w, "\t}\n")
-	}
-	if isPtr {
-		fmt.Fprintf(w, "\tvar r_ret = callframe.Ret[%v](frame)\n", ptrKind)
-	} else {
-		if result != "" {
-			fmt.Fprintf(w, "\tvar r_ret = callframe.Ret[%v](frame)\n", result)
-		} else {
-			fmt.Fprintf(w, "\tvar r_ret = callframe.Nil\n")
-		}
-	}
-	if method.IsVararg {
-		fmt.Fprintf(w, "\tif len(args) > 0 { panic(`varargs not supported for class methods yet`); }\n")
-	}
-	fmt.Fprintf(w, "\tgd.Global.Object.MethodBindPointerCall%s(gd.Global.Methods.%v.Bind_%v,%s frame.Array(0), r_ret.Addr())\n", static, class.Name, method.Name, self)
-
+	fmt.Fprint(w, "}))\n")
 	if isPtr {
 		_, ok := classDB[strings.TrimPrefix(result, "[1]gdclass.")]
 		if ok || result == "[1]gd.Object" {
 			if result == "[1]gd.Object" {
 				switch semantics := gdjson.ClassMethodOwnership[class.Name][method.Name]["return value"]; semantics {
 				case gdjson.RefCountedManagement, gdjson.OwnershipTransferred:
-					fmt.Fprintf(w, "\tvar ret = [1]gd.Object{%sPointerWithOwnershipTransferredToGo[gd.Object](r_ret.Get())}\n", prefix)
+					fmt.Fprintf(w, "\tvar ret = [1]gd.Object{%sPointerWithOwnershipTransferredToGo[gd.Object](r_ret)}\n", prefix)
 				case gdjson.LifetimeBoundToClass:
-					fmt.Fprintf(w, "\tvar ret = [1]gd.Object{%sPointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret.Get())}\n", prefix)
+					fmt.Fprintf(w, "\tvar ret = [1]gd.Object{%sPointerLifetimeBoundTo[gd.Object](self.AsObject(), r_ret)}\n", prefix)
 				case gdjson.MustAssertInstanceID:
-					fmt.Fprintf(w, "\tvar ret = [1]gd.Object{%sPointerMustAssertInstanceID[gd.Object](r_ret.Get())}\n", prefix)
+					fmt.Fprintf(w, "\tvar ret = [1]gd.Object{%sPointerMustAssertInstanceID[gd.Object](r_ret)}\n", prefix)
 				default:
 					panic("unknown ownership: " + fmt.Sprint(semantics))
 				}
 			} else {
 				switch semantics := gdjson.ClassMethodOwnership[class.Name][method.Name]["return value"]; semantics {
 				case gdjson.RefCountedManagement, gdjson.OwnershipTransferred:
-					fmt.Fprintf(w, "\tvar ret = [1]gdclass.%s{"+prefix+"PointerWithOwnershipTransferredToGo[gdclass.%[1]s](r_ret.Get())}\n", method.ReturnValue.Type)
+					fmt.Fprintf(w, "\tvar ret = [1]gdclass.%s{"+prefix+"PointerWithOwnershipTransferredToGo[gdclass.%[1]s](r_ret)}\n", method.ReturnValue.Type)
 				case gdjson.LifetimeBoundToClass:
-					fmt.Fprintf(w, "\tvar ret = [1]gdclass.%s{"+prefix+"PointerLifetimeBoundTo[gdclass.%[1]s](self.AsObject(), r_ret.Get())}\n", method.ReturnValue.Type)
+					fmt.Fprintf(w, "\tvar ret = [1]gdclass.%s{"+prefix+"PointerLifetimeBoundTo[gdclass.%[1]s](self.AsObject(), r_ret)}\n", method.ReturnValue.Type)
 				case gdjson.MustAssertInstanceID:
-					fmt.Fprintf(w, "\tvar ret = [1]gdclass.%s{"+prefix+"PointerMustAssertInstanceID[gdclass.%[1]s](r_ret.Get())}\n", method.ReturnValue.Type)
+					fmt.Fprintf(w, "\tvar ret = [1]gdclass.%s{"+prefix+"PointerMustAssertInstanceID[gdclass.%[1]s](r_ret)}\n", method.ReturnValue.Type)
 				case gdjson.IsTemporaryReference:
-					fmt.Fprintf(w, "\tvar ret = [1]gdclass.%s{"+prefix+"PointerBorrowedTemporarily[gdclass.%[1]s](r_ret.Get())}\n", method.ReturnValue.Type)
+					fmt.Fprintf(w, "\tvar ret = [1]gdclass.%s{"+prefix+"PointerBorrowedTemporarily[gdclass.%[1]s](r_ret)}\n", method.ReturnValue.Type)
 				default:
 					panic("unknown ownership: " + fmt.Sprint(semantics))
 				}
 			}
 		} else {
-			fmt.Fprintf(w, "\tvar ret = %s\n", gdtype.Name(result).LoadFromRawPointerValue("r_ret.Get()"))
+			fmt.Fprintf(w, "\tvar ret = %s\n", gdtype.Name(result).LoadFromRawPointerValue("r_ret"))
 		}
 	} else if result != "" {
-		fmt.Fprintf(w, "\tvar ret = %s\n", gdtype.Name(result).LoadFromRawPointerValue("r_ret.Get()"))
+		fmt.Fprintf(w, "\tvar ret = %s\n", gdtype.Name(result).LoadFromRawPointerValue("r_ret"))
 	}
-	fmt.Fprintf(w, "\tframe.Free()\n")
 
 	if method.Name == "queue_free" {
 		fmt.Fprintf(w, "\tpointers.End(self.AsObject()[0])\n")
@@ -573,4 +570,49 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 		fmt.Fprintf(w, "\treturn ret\n")
 	}*/
 	fmt.Fprintf(w, "}")
+}
+
+func shapeOf(class gdjson.Class, method gdjson.Method) string {
+	var result = method.ReturnValue.Type
+	if result == "" {
+		result = method.ReturnType
+	}
+	var shape string
+	if result != "" {
+		shape += sizeOf(class.Name, method.ReturnValue.Meta, result)
+	} else {
+		shape = "0"
+	}
+	for i, arg := range method.Arguments {
+		shape += "|(" + sizeOf(class.Name, arg.Meta, arg.Type) + "<<" + fmt.Sprint(4*(i+1)) + ")"
+	}
+	return shape
+}
+
+func sizeOf(name, meta, gdType string) string {
+	if strings.HasPrefix(gdType, "typedarray::") {
+		return "gdextension.SizeArray"
+	}
+	switch gdType {
+	case "int", "Int":
+		return "gdextension.SizeInt"
+	case "float", "Float":
+		return "gdextension.SizeFloat"
+	case "bool", "Bool":
+		return "gdextension.SizeBool"
+	case "StringName", "Vector2", "Vector2i", "Rect2", "Rect2i", "Vector3", "Vector3i", "Transform2D",
+		"Vector4", "Vector4i", "Plane", "Quaternion", "AABB", "Basis", "Transform3D", "Projection", "Color", "RID",
+		"NodePath", "Signal", "Array", "Dictionary", "String", "Callable", "Variant", "Object":
+		return "gdextension.Size" + gdType
+	case "PackedInt32Array", "PackedInt64Array", "PackedFloat32Array", "PackedFloat64Array", "PackedVector2Array", "PackedVector3Array", "PackedVector4Array", "PackedColorArray", "PackedStringArray", "PackedByteArray":
+		return "gdextension.SizePackedArray"
+	// strange C++ cases
+	case "const uint8_t **", "const void*", "const uint8_t*", "const uint8_t *", "float*", "int32_t*", "void*", "uint8_t*":
+		return "gdextension.Pointer"
+	default:
+		if strings.HasPrefix(gdType, "enum::") || strings.HasPrefix(gdType, "bitfield::") {
+			return "gdextension.SizeInt"
+		}
+		return "gdextension.SizeObject"
+	}
 }

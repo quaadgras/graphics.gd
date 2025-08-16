@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +51,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -150,115 +154,73 @@ func (self Instance) SetParticlesAnimLoop(value bool) {
 
 //go:nosplit
 func (self class) SetBlendMode(blend_mode BlendMode) { //gd:CanvasItemMaterial.set_blend_mode
-	var frame = callframe.New()
-	callframe.Arg(frame, blend_mode)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItemMaterial.Bind_set_blend_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItemMaterial.Bind_set_blend_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ blend_mode BlendMode }{blend_mode}))
 }
 
 //go:nosplit
 func (self class) GetBlendMode() BlendMode { //gd:CanvasItemMaterial.get_blend_mode
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[BlendMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItemMaterial.Bind_get_blend_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[BlendMode](self.AsObject(), gd.Global.Methods.CanvasItemMaterial.Bind_get_blend_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLightMode(light_mode LightMode) { //gd:CanvasItemMaterial.set_light_mode
-	var frame = callframe.New()
-	callframe.Arg(frame, light_mode)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItemMaterial.Bind_set_light_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItemMaterial.Bind_set_light_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ light_mode LightMode }{light_mode}))
 }
 
 //go:nosplit
 func (self class) GetLightMode() LightMode { //gd:CanvasItemMaterial.get_light_mode
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[LightMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItemMaterial.Bind_get_light_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[LightMode](self.AsObject(), gd.Global.Methods.CanvasItemMaterial.Bind_get_light_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetParticlesAnimation(particles_anim bool) { //gd:CanvasItemMaterial.set_particles_animation
-	var frame = callframe.New()
-	callframe.Arg(frame, particles_anim)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItemMaterial.Bind_set_particles_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItemMaterial.Bind_set_particles_animation, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ particles_anim bool }{particles_anim}))
 }
 
 //go:nosplit
 func (self class) GetParticlesAnimation() bool { //gd:CanvasItemMaterial.get_particles_animation
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItemMaterial.Bind_get_particles_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CanvasItemMaterial.Bind_get_particles_animation, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetParticlesAnimHFrames(frames int64) { //gd:CanvasItemMaterial.set_particles_anim_h_frames
-	var frame = callframe.New()
-	callframe.Arg(frame, frames)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItemMaterial.Bind_set_particles_anim_h_frames, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItemMaterial.Bind_set_particles_anim_h_frames, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ frames int64 }{frames}))
 }
 
 //go:nosplit
 func (self class) GetParticlesAnimHFrames() int64 { //gd:CanvasItemMaterial.get_particles_anim_h_frames
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItemMaterial.Bind_get_particles_anim_h_frames, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.CanvasItemMaterial.Bind_get_particles_anim_h_frames, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetParticlesAnimVFrames(frames int64) { //gd:CanvasItemMaterial.set_particles_anim_v_frames
-	var frame = callframe.New()
-	callframe.Arg(frame, frames)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItemMaterial.Bind_set_particles_anim_v_frames, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItemMaterial.Bind_set_particles_anim_v_frames, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ frames int64 }{frames}))
 }
 
 //go:nosplit
 func (self class) GetParticlesAnimVFrames() int64 { //gd:CanvasItemMaterial.get_particles_anim_v_frames
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItemMaterial.Bind_get_particles_anim_v_frames, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.CanvasItemMaterial.Bind_get_particles_anim_v_frames, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetParticlesAnimLoop(loop bool) { //gd:CanvasItemMaterial.set_particles_anim_loop
-	var frame = callframe.New()
-	callframe.Arg(frame, loop)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItemMaterial.Bind_set_particles_anim_loop, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItemMaterial.Bind_set_particles_anim_loop, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ loop bool }{loop}))
 }
 
 //go:nosplit
 func (self class) GetParticlesAnimLoop() bool { //gd:CanvasItemMaterial.get_particles_anim_loop
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItemMaterial.Bind_get_particles_anim_loop, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CanvasItemMaterial.Bind_get_particles_anim_loop, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsCanvasItemMaterial() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

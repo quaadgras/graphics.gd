@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +50,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -118,39 +122,25 @@ func (self Instance) SetRecordingProperties(value bool) {
 
 //go:nosplit
 func (self class) SetOriginalClass(name String.Readable) { //gd:MissingResource.set_original_class
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MissingResource.Bind_set_original_class, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MissingResource.Bind_set_original_class, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
 }
 
 //go:nosplit
 func (self class) GetOriginalClass() String.Readable { //gd:MissingResource.get_original_class
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MissingResource.Bind_get_original_class, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.MissingResource.Bind_get_original_class, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRecordingProperties(enable bool) { //gd:MissingResource.set_recording_properties
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MissingResource.Bind_set_recording_properties, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MissingResource.Bind_set_recording_properties, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsRecordingProperties() bool { //gd:MissingResource.is_recording_properties
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MissingResource.Bind_is_recording_properties, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.MissingResource.Bind_is_recording_properties, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsMissingResource() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

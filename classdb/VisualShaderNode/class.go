@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +50,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -172,31 +176,20 @@ Returns the input port which should be connected by default when this node is cr
 */
 //go:nosplit
 func (self class) GetDefaultInputPort(atype PortType) int64 { //gd:VisualShaderNode.get_default_input_port
-	var frame = callframe.New()
-	callframe.Arg(frame, atype)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNode.Bind_get_default_input_port, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.VisualShaderNode.Bind_get_default_input_port, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype PortType }{atype}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOutputPortForPreview(port int64) { //gd:VisualShaderNode.set_output_port_for_preview
-	var frame = callframe.New()
-	callframe.Arg(frame, port)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNode.Bind_set_output_port_for_preview, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNode.Bind_set_output_port_for_preview, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ port int64 }{port}))
 }
 
 //go:nosplit
 func (self class) GetOutputPortForPreview() int64 { //gd:VisualShaderNode.get_output_port_for_preview
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNode.Bind_get_output_port_for_preview, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.VisualShaderNode.Bind_get_output_port_for_preview, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -205,13 +198,11 @@ Sets the default [param value] for the selected input [param port].
 */
 //go:nosplit
 func (self class) SetInputPortDefaultValue(port int64, value variant.Any, prev_value variant.Any) { //gd:VisualShaderNode.set_input_port_default_value
-	var frame = callframe.New()
-	callframe.Arg(frame, port)
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(prev_value)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNode.Bind_set_input_port_default_value, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNode.Bind_set_input_port_default_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVariant<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
+		port       int64
+		value      gdextension.Variant
+		prev_value gdextension.Variant
+	}{port, gdextension.Variant(pointers.Get(gd.InternalVariant(value))), gdextension.Variant(pointers.Get(gd.InternalVariant(prev_value)))}))
 }
 
 /*
@@ -219,12 +210,8 @@ Returns the default value of the input [param port].
 */
 //go:nosplit
 func (self class) GetInputPortDefaultValue(port int64) variant.Any { //gd:VisualShaderNode.get_input_port_default_value
-	var frame = callframe.New()
-	callframe.Arg(frame, port)
-	var r_ret = callframe.Ret[[3]uint64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNode.Bind_get_input_port_default_value, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[3]uint64](self.AsObject(), gd.Global.Methods.VisualShaderNode.Bind_get_input_port_default_value, gdextension.SizeVariant|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ port int64 }{port}))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
 
@@ -233,11 +220,7 @@ Removes the default value of the input [param port].
 */
 //go:nosplit
 func (self class) RemoveInputPortDefaultValue(port int64) { //gd:VisualShaderNode.remove_input_port_default_value
-	var frame = callframe.New()
-	callframe.Arg(frame, port)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNode.Bind_remove_input_port_default_value, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNode.Bind_remove_input_port_default_value, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ port int64 }{port}))
 }
 
 /*
@@ -245,10 +228,7 @@ Clears the default input ports value.
 */
 //go:nosplit
 func (self class) ClearDefaultInputValues() { //gd:VisualShaderNode.clear_default_input_values
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNode.Bind_clear_default_input_values, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNode.Bind_clear_default_input_values, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -256,11 +236,7 @@ Sets the default input ports values using an [Array] of the form [code][index0, 
 */
 //go:nosplit
 func (self class) SetDefaultInputValues(values Array.Any) { //gd:VisualShaderNode.set_default_input_values
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(values)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNode.Bind_set_default_input_values, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNode.Bind_set_default_input_values, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ values gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(values))[0])}))
 }
 
 /*
@@ -268,30 +244,20 @@ Returns an [Array] containing default values for all of the input ports of the n
 */
 //go:nosplit
 func (self class) GetDefaultInputValues() Array.Any { //gd:VisualShaderNode.get_default_input_values
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNode.Bind_get_default_input_values, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.VisualShaderNode.Bind_get_default_input_values, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFrame(frame_ int64) { //gd:VisualShaderNode.set_frame
-	var frame = callframe.New()
-	callframe.Arg(frame, frame_)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNode.Bind_set_frame, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNode.Bind_set_frame, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ frame_ int64 }{frame_}))
 }
 
 //go:nosplit
 func (self class) GetFrame() int64 { //gd:VisualShaderNode.get_frame
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNode.Bind_get_frame, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.VisualShaderNode.Bind_get_frame, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsVisualShaderNode() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

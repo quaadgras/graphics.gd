@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -50,6 +52,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -145,58 +149,37 @@ func (self Instance) SetUseMipmaps(value bool) {
 
 //go:nosplit
 func (self class) SetFitMargin(fit_margin float64) { //gd:CanvasGroup.set_fit_margin
-	var frame = callframe.New()
-	callframe.Arg(frame, fit_margin)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasGroup.Bind_set_fit_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasGroup.Bind_set_fit_margin, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ fit_margin float64 }{fit_margin}))
 }
 
 //go:nosplit
 func (self class) GetFitMargin() float64 { //gd:CanvasGroup.get_fit_margin
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasGroup.Bind_get_fit_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.CanvasGroup.Bind_get_fit_margin, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetClearMargin(clear_margin float64) { //gd:CanvasGroup.set_clear_margin
-	var frame = callframe.New()
-	callframe.Arg(frame, clear_margin)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasGroup.Bind_set_clear_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasGroup.Bind_set_clear_margin, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ clear_margin float64 }{clear_margin}))
 }
 
 //go:nosplit
 func (self class) GetClearMargin() float64 { //gd:CanvasGroup.get_clear_margin
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasGroup.Bind_get_clear_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.CanvasGroup.Bind_get_clear_margin, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseMipmaps(use_mipmaps bool) { //gd:CanvasGroup.set_use_mipmaps
-	var frame = callframe.New()
-	callframe.Arg(frame, use_mipmaps)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasGroup.Bind_set_use_mipmaps, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasGroup.Bind_set_use_mipmaps, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ use_mipmaps bool }{use_mipmaps}))
 }
 
 //go:nosplit
 func (self class) IsUsingMipmaps() bool { //gd:CanvasGroup.is_using_mipmaps
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasGroup.Bind_is_using_mipmaps, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CanvasGroup.Bind_is_using_mipmaps, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsCanvasGroup() Advanced           { return *((*Advanced)(unsafe.Pointer(&self))) }

@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +53,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -439,148 +443,100 @@ func (self Instance) SetTransform(value Transform3D.BasisOrigin) {
 
 //go:nosplit
 func (self class) GetTotalGravity() Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_total_gravity
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_total_gravity, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_total_gravity, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetTotalLinearDamp() float64 { //gd:PhysicsDirectBodyState3D.get_total_linear_damp
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_total_linear_damp, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_total_linear_damp, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetTotalAngularDamp() float64 { //gd:PhysicsDirectBodyState3D.get_total_angular_damp
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_total_angular_damp, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_total_angular_damp, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetCenterOfMass() Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_center_of_mass
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_center_of_mass, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_center_of_mass, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetCenterOfMassLocal() Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_center_of_mass_local
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_center_of_mass_local, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_center_of_mass_local, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetPrincipalInertiaAxes() Basis.XYZ { //gd:PhysicsDirectBodyState3D.get_principal_inertia_axes
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Basis.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_principal_inertia_axes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Basis.Transposed(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[Basis.XYZ](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_principal_inertia_axes, gdextension.SizeBasis, unsafe.Pointer(&struct{}{}))
+	var ret = Basis.Transposed(r_ret)
 	return ret
 }
 
 //go:nosplit
 func (self class) GetInverseMass() float64 { //gd:PhysicsDirectBodyState3D.get_inverse_mass
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_inverse_mass, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_inverse_mass, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetInverseInertia() Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_inverse_inertia
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_inverse_inertia, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_inverse_inertia, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetInverseInertiaTensor() Basis.XYZ { //gd:PhysicsDirectBodyState3D.get_inverse_inertia_tensor
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Basis.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_inverse_inertia_tensor, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Basis.Transposed(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[Basis.XYZ](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_inverse_inertia_tensor, gdextension.SizeBasis, unsafe.Pointer(&struct{}{}))
+	var ret = Basis.Transposed(r_ret)
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLinearVelocity(velocity Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.set_linear_velocity
-	var frame = callframe.New()
-	callframe.Arg(frame, velocity)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_set_linear_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_set_linear_velocity, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ velocity Vector3.XYZ }{velocity}))
 }
 
 //go:nosplit
 func (self class) GetLinearVelocity() Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_linear_velocity
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_linear_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_linear_velocity, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAngularVelocity(velocity Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.set_angular_velocity
-	var frame = callframe.New()
-	callframe.Arg(frame, velocity)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_set_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_set_angular_velocity, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ velocity Vector3.XYZ }{velocity}))
 }
 
 //go:nosplit
 func (self class) GetAngularVelocity() Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_angular_velocity
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_angular_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_angular_velocity, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTransform(transform Transform3D.BasisOrigin) { //gd:PhysicsDirectBodyState3D.set_transform
-	var frame = callframe.New()
-	callframe.Arg(frame, gd.Transposed(transform))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_set_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_set_transform, 0|(gdextension.SizeTransform3D<<4), unsafe.Pointer(&struct{ transform Transform3D.BasisOrigin }{gd.Transposed(transform)}))
 }
 
 //go:nosplit
 func (self class) GetTransform() Transform3D.BasisOrigin { //gd:PhysicsDirectBodyState3D.get_transform
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = gd.Transposed(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[Transform3D.BasisOrigin](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_transform, gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
+	var ret = gd.Transposed(r_ret)
 	return ret
 }
 
@@ -589,12 +545,8 @@ Returns the body's velocity at the given relative position, including both trans
 */
 //go:nosplit
 func (self class) GetVelocityAtLocalPosition(local_position Vector3.XYZ) Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_velocity_at_local_position
-	var frame = callframe.New()
-	callframe.Arg(frame, local_position)
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_velocity_at_local_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_velocity_at_local_position, gdextension.SizeVector3|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ local_position Vector3.XYZ }{local_position}))
+	var ret = r_ret
 	return ret
 }
 
@@ -605,11 +557,7 @@ This is equivalent to using [method apply_impulse] at the body's center of mass.
 */
 //go:nosplit
 func (self class) ApplyCentralImpulse(impulse Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.apply_central_impulse
-	var frame = callframe.New()
-	callframe.Arg(frame, impulse)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_apply_central_impulse, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_apply_central_impulse, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ impulse Vector3.XYZ }{impulse}))
 }
 
 /*
@@ -619,12 +567,10 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 */
 //go:nosplit
 func (self class) ApplyImpulse(impulse Vector3.XYZ, position Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.apply_impulse
-	var frame = callframe.New()
-	callframe.Arg(frame, impulse)
-	callframe.Arg(frame, position)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_apply_impulse, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_apply_impulse, 0|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+		impulse  Vector3.XYZ
+		position Vector3.XYZ
+	}{impulse, position}))
 }
 
 /*
@@ -634,11 +580,7 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 */
 //go:nosplit
 func (self class) ApplyTorqueImpulse(impulse Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.apply_torque_impulse
-	var frame = callframe.New()
-	callframe.Arg(frame, impulse)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_apply_torque_impulse, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_apply_torque_impulse, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ impulse Vector3.XYZ }{impulse}))
 }
 
 /*
@@ -647,11 +589,7 @@ This is equivalent to using [method apply_force] at the body's center of mass.
 */
 //go:nosplit
 func (self class) ApplyCentralForce(force Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.apply_central_force
-	var frame = callframe.New()
-	callframe.Arg(frame, force)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_apply_central_force, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_apply_central_force, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ force Vector3.XYZ }{force}))
 }
 
 /*
@@ -660,12 +598,10 @@ Applies a positioned force to the body. A force is time dependent and meant to b
 */
 //go:nosplit
 func (self class) ApplyForce(force Vector3.XYZ, position Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.apply_force
-	var frame = callframe.New()
-	callframe.Arg(frame, force)
-	callframe.Arg(frame, position)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_apply_force, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_apply_force, 0|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+		force    Vector3.XYZ
+		position Vector3.XYZ
+	}{force, position}))
 }
 
 /*
@@ -674,11 +610,7 @@ Applies a rotational force without affecting position. A force is time dependent
 */
 //go:nosplit
 func (self class) ApplyTorque(torque Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.apply_torque
-	var frame = callframe.New()
-	callframe.Arg(frame, torque)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_apply_torque, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_apply_torque, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ torque Vector3.XYZ }{torque}))
 }
 
 /*
@@ -687,11 +619,7 @@ This is equivalent to using [method add_constant_force] at the body's center of 
 */
 //go:nosplit
 func (self class) AddConstantCentralForce(force Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.add_constant_central_force
-	var frame = callframe.New()
-	callframe.Arg(frame, force)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_add_constant_central_force, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_add_constant_central_force, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ force Vector3.XYZ }{force}))
 }
 
 /*
@@ -700,12 +628,10 @@ Adds a constant positioned force to the body that keeps being applied over time 
 */
 //go:nosplit
 func (self class) AddConstantForce(force Vector3.XYZ, position Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.add_constant_force
-	var frame = callframe.New()
-	callframe.Arg(frame, force)
-	callframe.Arg(frame, position)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_add_constant_force, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_add_constant_force, 0|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+		force    Vector3.XYZ
+		position Vector3.XYZ
+	}{force, position}))
 }
 
 /*
@@ -713,11 +639,7 @@ Adds a constant rotational force without affecting position that keeps being app
 */
 //go:nosplit
 func (self class) AddConstantTorque(torque Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.add_constant_torque
-	var frame = callframe.New()
-	callframe.Arg(frame, torque)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_add_constant_torque, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_add_constant_torque, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ torque Vector3.XYZ }{torque}))
 }
 
 /*
@@ -726,11 +648,7 @@ See [method add_constant_force] and [method add_constant_central_force].
 */
 //go:nosplit
 func (self class) SetConstantForce(force Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.set_constant_force
-	var frame = callframe.New()
-	callframe.Arg(frame, force)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_set_constant_force, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_set_constant_force, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ force Vector3.XYZ }{force}))
 }
 
 /*
@@ -739,11 +657,8 @@ See [method add_constant_force] and [method add_constant_central_force].
 */
 //go:nosplit
 func (self class) GetConstantForce() Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_constant_force
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_constant_force, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_constant_force, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -753,11 +668,7 @@ See [method add_constant_torque].
 */
 //go:nosplit
 func (self class) SetConstantTorque(torque Vector3.XYZ) { //gd:PhysicsDirectBodyState3D.set_constant_torque
-	var frame = callframe.New()
-	callframe.Arg(frame, torque)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_set_constant_torque, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_set_constant_torque, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ torque Vector3.XYZ }{torque}))
 }
 
 /*
@@ -766,30 +677,20 @@ See [method add_constant_torque].
 */
 //go:nosplit
 func (self class) GetConstantTorque() Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_constant_torque
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_constant_torque, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_constant_torque, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSleepState(enabled bool) { //gd:PhysicsDirectBodyState3D.set_sleep_state
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_set_sleep_state, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_set_sleep_state, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsSleeping() bool { //gd:PhysicsDirectBodyState3D.is_sleeping
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_is_sleeping, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_is_sleeping, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -799,11 +700,8 @@ Returns the number of contacts this body has with other bodies.
 */
 //go:nosplit
 func (self class) GetContactCount() int64 { //gd:PhysicsDirectBodyState3D.get_contact_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_contact_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_contact_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -812,12 +710,8 @@ Returns the position of the contact point on the body in the global coordinate s
 */
 //go:nosplit
 func (self class) GetContactLocalPosition(contact_idx int64) Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_contact_local_position
-	var frame = callframe.New()
-	callframe.Arg(frame, contact_idx)
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_contact_local_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_contact_local_position, gdextension.SizeVector3|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ contact_idx int64 }{contact_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -826,12 +720,8 @@ Returns the local normal at the contact point.
 */
 //go:nosplit
 func (self class) GetContactLocalNormal(contact_idx int64) Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_contact_local_normal
-	var frame = callframe.New()
-	callframe.Arg(frame, contact_idx)
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_contact_local_normal, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_contact_local_normal, gdextension.SizeVector3|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ contact_idx int64 }{contact_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -840,12 +730,8 @@ Impulse created by the contact.
 */
 //go:nosplit
 func (self class) GetContactImpulse(contact_idx int64) Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_contact_impulse
-	var frame = callframe.New()
-	callframe.Arg(frame, contact_idx)
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_contact_impulse, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_contact_impulse, gdextension.SizeVector3|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ contact_idx int64 }{contact_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -854,12 +740,8 @@ Returns the local shape index of the collision.
 */
 //go:nosplit
 func (self class) GetContactLocalShape(contact_idx int64) int64 { //gd:PhysicsDirectBodyState3D.get_contact_local_shape
-	var frame = callframe.New()
-	callframe.Arg(frame, contact_idx)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_contact_local_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_contact_local_shape, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ contact_idx int64 }{contact_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -868,12 +750,8 @@ Returns the linear velocity vector at the body's contact point.
 */
 //go:nosplit
 func (self class) GetContactLocalVelocityAtPosition(contact_idx int64) Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_contact_local_velocity_at_position
-	var frame = callframe.New()
-	callframe.Arg(frame, contact_idx)
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_contact_local_velocity_at_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_contact_local_velocity_at_position, gdextension.SizeVector3|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ contact_idx int64 }{contact_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -882,12 +760,8 @@ Returns the collider's [RID].
 */
 //go:nosplit
 func (self class) GetContactCollider(contact_idx int64) RID.Any { //gd:PhysicsDirectBodyState3D.get_contact_collider
-	var frame = callframe.New()
-	callframe.Arg(frame, contact_idx)
-	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_contact_collider, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_contact_collider, gdextension.SizeRID|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ contact_idx int64 }{contact_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -896,12 +770,8 @@ Returns the position of the contact point on the collider in the global coordina
 */
 //go:nosplit
 func (self class) GetContactColliderPosition(contact_idx int64) Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_contact_collider_position
-	var frame = callframe.New()
-	callframe.Arg(frame, contact_idx)
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_contact_collider_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_contact_collider_position, gdextension.SizeVector3|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ contact_idx int64 }{contact_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -910,12 +780,8 @@ Returns the collider's object id.
 */
 //go:nosplit
 func (self class) GetContactColliderId(contact_idx int64) int64 { //gd:PhysicsDirectBodyState3D.get_contact_collider_id
-	var frame = callframe.New()
-	callframe.Arg(frame, contact_idx)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_contact_collider_id, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_contact_collider_id, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ contact_idx int64 }{contact_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -924,12 +790,8 @@ Returns the collider object.
 */
 //go:nosplit
 func (self class) GetContactColliderObject(contact_idx int64) [1]gd.Object { //gd:PhysicsDirectBodyState3D.get_contact_collider_object
-	var frame = callframe.New()
-	callframe.Arg(frame, contact_idx)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_contact_collider_object, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_contact_collider_object, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ contact_idx int64 }{contact_idx}))
+	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret)}
 	return ret
 }
 
@@ -938,12 +800,8 @@ Returns the collider's shape index.
 */
 //go:nosplit
 func (self class) GetContactColliderShape(contact_idx int64) int64 { //gd:PhysicsDirectBodyState3D.get_contact_collider_shape
-	var frame = callframe.New()
-	callframe.Arg(frame, contact_idx)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_contact_collider_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_contact_collider_shape, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ contact_idx int64 }{contact_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -952,22 +810,15 @@ Returns the linear velocity vector at the collider's contact point.
 */
 //go:nosplit
 func (self class) GetContactColliderVelocityAtPosition(contact_idx int64) Vector3.XYZ { //gd:PhysicsDirectBodyState3D.get_contact_collider_velocity_at_position
-	var frame = callframe.New()
-	callframe.Arg(frame, contact_idx)
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_contact_collider_velocity_at_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_contact_collider_velocity_at_position, gdextension.SizeVector3|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ contact_idx int64 }{contact_idx}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetStep() float64 { //gd:PhysicsDirectBodyState3D.get_step
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_step, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_step, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -976,10 +827,7 @@ Updates the body's linear and angular velocity by applying gravity and damping f
 */
 //go:nosplit
 func (self class) IntegrateForces() { //gd:PhysicsDirectBodyState3D.integrate_forces
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_integrate_forces, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_integrate_forces, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -987,11 +835,8 @@ Returns the current state of the space, useful for queries.
 */
 //go:nosplit
 func (self class) GetSpaceState() [1]gdclass.PhysicsDirectSpaceState3D { //gd:PhysicsDirectBodyState3D.get_space_state
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_space_state, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.PhysicsDirectSpaceState3D{gd.PointerMustAssertInstanceID[gdclass.PhysicsDirectSpaceState3D](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.PhysicsDirectBodyState3D.Bind_get_space_state, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.PhysicsDirectSpaceState3D{gd.PointerMustAssertInstanceID[gdclass.PhysicsDirectSpaceState3D](r_ret)}
 	return ret
 }
 func (self class) AsPhysicsDirectBodyState3D() Advanced { return *((*Advanced)(unsafe.Pointer(&self))) }

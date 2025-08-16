@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +53,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -204,11 +208,7 @@ func (self Instance) SetInputCount(value int) {
 
 //go:nosplit
 func (self class) SetInputCount(input_count int64) { //gd:AnimationNodeTransition.set_input_count
-	var frame = callframe.New()
-	callframe.Arg(frame, input_count)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeTransition.Bind_set_input_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationNodeTransition.Bind_set_input_count, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ input_count int64 }{input_count}))
 }
 
 /*
@@ -216,12 +216,10 @@ Enables or disables auto-advance for the given [param input] index. If enabled, 
 */
 //go:nosplit
 func (self class) SetInputAsAutoAdvance(input int64, enable bool) { //gd:AnimationNodeTransition.set_input_as_auto_advance
-	var frame = callframe.New()
-	callframe.Arg(frame, input)
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeTransition.Bind_set_input_as_auto_advance, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationNodeTransition.Bind_set_input_as_auto_advance, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		input  int64
+		enable bool
+	}{input, enable}))
 }
 
 /*
@@ -229,12 +227,8 @@ Returns [code]true[/code] if auto-advance is enabled for the given [param input]
 */
 //go:nosplit
 func (self class) IsInputSetAsAutoAdvance(input int64) bool { //gd:AnimationNodeTransition.is_input_set_as_auto_advance
-	var frame = callframe.New()
-	callframe.Arg(frame, input)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeTransition.Bind_is_input_set_as_auto_advance, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.AnimationNodeTransition.Bind_is_input_set_as_auto_advance, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ input int64 }{input}))
+	var ret = r_ret
 	return ret
 }
 
@@ -243,12 +237,10 @@ If [code]true[/code], breaks the loop at the end of the loop cycle for transitio
 */
 //go:nosplit
 func (self class) SetInputBreakLoopAtEnd(input int64, enable bool) { //gd:AnimationNodeTransition.set_input_break_loop_at_end
-	var frame = callframe.New()
-	callframe.Arg(frame, input)
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeTransition.Bind_set_input_break_loop_at_end, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationNodeTransition.Bind_set_input_break_loop_at_end, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		input  int64
+		enable bool
+	}{input, enable}))
 }
 
 /*
@@ -256,12 +248,8 @@ Returns whether the animation breaks the loop at the end of the loop cycle for t
 */
 //go:nosplit
 func (self class) IsInputLoopBrokenAtEnd(input int64) bool { //gd:AnimationNodeTransition.is_input_loop_broken_at_end
-	var frame = callframe.New()
-	callframe.Arg(frame, input)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeTransition.Bind_is_input_loop_broken_at_end, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.AnimationNodeTransition.Bind_is_input_loop_broken_at_end, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ input int64 }{input}))
+	var ret = r_ret
 	return ret
 }
 
@@ -270,12 +258,10 @@ If [code]true[/code], the destination animation is restarted when the animation 
 */
 //go:nosplit
 func (self class) SetInputReset(input int64, enable bool) { //gd:AnimationNodeTransition.set_input_reset
-	var frame = callframe.New()
-	callframe.Arg(frame, input)
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeTransition.Bind_set_input_reset, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationNodeTransition.Bind_set_input_reset, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		input  int64
+		enable bool
+	}{input, enable}))
 }
 
 /*
@@ -283,69 +269,44 @@ Returns whether the animation restarts when the animation transitions from the o
 */
 //go:nosplit
 func (self class) IsInputReset(input int64) bool { //gd:AnimationNodeTransition.is_input_reset
-	var frame = callframe.New()
-	callframe.Arg(frame, input)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeTransition.Bind_is_input_reset, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.AnimationNodeTransition.Bind_is_input_reset, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ input int64 }{input}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetXfadeTime(time float64) { //gd:AnimationNodeTransition.set_xfade_time
-	var frame = callframe.New()
-	callframe.Arg(frame, time)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeTransition.Bind_set_xfade_time, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationNodeTransition.Bind_set_xfade_time, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ time float64 }{time}))
 }
 
 //go:nosplit
 func (self class) GetXfadeTime() float64 { //gd:AnimationNodeTransition.get_xfade_time
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeTransition.Bind_get_xfade_time, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.AnimationNodeTransition.Bind_get_xfade_time, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetXfadeCurve(curve [1]gdclass.Curve) { //gd:AnimationNodeTransition.set_xfade_curve
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(curve[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeTransition.Bind_set_xfade_curve, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationNodeTransition.Bind_set_xfade_curve, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(pointers.Get(curve[0])[0])}))
 }
 
 //go:nosplit
 func (self class) GetXfadeCurve() [1]gdclass.Curve { //gd:AnimationNodeTransition.get_xfade_curve
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeTransition.Bind_get_xfade_curve, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.AnimationNodeTransition.Bind_get_xfade_curve, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAllowTransitionToSelf(enable bool) { //gd:AnimationNodeTransition.set_allow_transition_to_self
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeTransition.Bind_set_allow_transition_to_self, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationNodeTransition.Bind_set_allow_transition_to_self, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsAllowTransitionToSelf() bool { //gd:AnimationNodeTransition.is_allow_transition_to_self
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeTransition.Bind_is_allow_transition_to_self, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.AnimationNodeTransition.Bind_is_allow_transition_to_self, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsAnimationNodeTransition() Advanced { return *((*Advanced)(unsafe.Pointer(&self))) }

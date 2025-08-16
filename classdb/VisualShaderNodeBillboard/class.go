@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +51,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -118,39 +122,25 @@ func (self Instance) SetKeepScale(value bool) {
 
 //go:nosplit
 func (self class) SetBillboardType(billboard_type BillboardType) { //gd:VisualShaderNodeBillboard.set_billboard_type
-	var frame = callframe.New()
-	callframe.Arg(frame, billboard_type)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeBillboard.Bind_set_billboard_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeBillboard.Bind_set_billboard_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ billboard_type BillboardType }{billboard_type}))
 }
 
 //go:nosplit
 func (self class) GetBillboardType() BillboardType { //gd:VisualShaderNodeBillboard.get_billboard_type
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[BillboardType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeBillboard.Bind_get_billboard_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[BillboardType](self.AsObject(), gd.Global.Methods.VisualShaderNodeBillboard.Bind_get_billboard_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetKeepScaleEnabled(enabled bool) { //gd:VisualShaderNodeBillboard.set_keep_scale_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeBillboard.Bind_set_keep_scale_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeBillboard.Bind_set_keep_scale_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsKeepScaleEnabled() bool { //gd:VisualShaderNodeBillboard.is_keep_scale_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeBillboard.Bind_is_keep_scale_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.VisualShaderNodeBillboard.Bind_is_keep_scale_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsVisualShaderNodeBillboard() Advanced {

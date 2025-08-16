@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +53,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -1292,13 +1296,11 @@ In case of a directory code-sign will error if you place non code object in dire
 */
 //go:nosplit
 func (self class) AddSharedObject(path String.Readable, tags Packed.Strings, target String.Readable) { //gd:EditorExportPlugin.add_shared_object
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(tags)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(target)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_shared_object, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorExportPlugin.Bind_add_shared_object, 0|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
+		path   gdextension.String
+		tags   gdextension.PackedArray
+		target gdextension.String
+	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(tags))), gdextension.String(pointers.Get(gd.InternalString(target))[0])}))
 }
 
 /*
@@ -1306,11 +1308,7 @@ Adds a static lib from the given [param path] to the iOS project.
 */
 //go:nosplit
 func (self class) AddIosProjectStaticLib(path String.Readable) { //gd:EditorExportPlugin.add_ios_project_static_lib
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_ios_project_static_lib, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorExportPlugin.Bind_add_ios_project_static_lib, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
 }
 
 /*
@@ -1320,13 +1318,11 @@ When called inside [method _export_file] and [param remap] is [code]true[/code],
 */
 //go:nosplit
 func (self class) AddFile(path String.Readable, file Packed.Bytes, remap bool) { //gd:EditorExportPlugin.add_file
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](file))))
-	callframe.Arg(frame, remap)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_file, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorExportPlugin.Bind_add_file, 0|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+		path  gdextension.String
+		file  gdextension.PackedArray
+		remap bool
+	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](file)))), remap}))
 }
 
 /*
@@ -1334,11 +1330,7 @@ Adds a static library (*.a) or dynamic library (*.dylib, *.framework) to Linking
 */
 //go:nosplit
 func (self class) AddIosFramework(path String.Readable) { //gd:EditorExportPlugin.add_ios_framework
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_ios_framework, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorExportPlugin.Bind_add_ios_framework, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
 }
 
 /*
@@ -1348,11 +1340,7 @@ Adds a dynamic library (*.dylib, *.framework) to Linking Phase in iOS's Xcode pr
 */
 //go:nosplit
 func (self class) AddIosEmbeddedFramework(path String.Readable) { //gd:EditorExportPlugin.add_ios_embedded_framework
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_ios_embedded_framework, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorExportPlugin.Bind_add_ios_embedded_framework, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
 }
 
 /*
@@ -1360,11 +1348,7 @@ Adds content for iOS Property List files.
 */
 //go:nosplit
 func (self class) AddIosPlistContent(plist_content String.Readable) { //gd:EditorExportPlugin.add_ios_plist_content
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(plist_content)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_ios_plist_content, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorExportPlugin.Bind_add_ios_plist_content, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ plist_content gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(plist_content))[0])}))
 }
 
 /*
@@ -1372,11 +1356,7 @@ Adds linker flags for the iOS export.
 */
 //go:nosplit
 func (self class) AddIosLinkerFlags(flags String.Readable) { //gd:EditorExportPlugin.add_ios_linker_flags
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(flags)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_ios_linker_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorExportPlugin.Bind_add_ios_linker_flags, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ flags gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(flags))[0])}))
 }
 
 /*
@@ -1384,11 +1364,7 @@ Adds an iOS bundle file from the given [param path] to the exported project.
 */
 //go:nosplit
 func (self class) AddIosBundleFile(path String.Readable) { //gd:EditorExportPlugin.add_ios_bundle_file
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_ios_bundle_file, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorExportPlugin.Bind_add_ios_bundle_file, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
 }
 
 /*
@@ -1396,11 +1372,7 @@ Adds a C++ code to the iOS export. The final code is created from the code appen
 */
 //go:nosplit
 func (self class) AddIosCppCode(code String.Readable) { //gd:EditorExportPlugin.add_ios_cpp_code
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(code)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_ios_cpp_code, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorExportPlugin.Bind_add_ios_cpp_code, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ code gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(code))[0])}))
 }
 
 /*
@@ -1409,11 +1381,7 @@ Adds file or directory matching [param path] to [code]PlugIns[/code] directory o
 */
 //go:nosplit
 func (self class) AddMacosPluginFile(path String.Readable) { //gd:EditorExportPlugin.add_macos_plugin_file
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_add_macos_plugin_file, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorExportPlugin.Bind_add_macos_plugin_file, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
 }
 
 /*
@@ -1421,10 +1389,7 @@ To be called inside [method _export_file]. Skips the current file, so it's not i
 */
 //go:nosplit
 func (self class) Skip() { //gd:EditorExportPlugin.skip
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_skip, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorExportPlugin.Bind_skip, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1432,12 +1397,8 @@ Returns the current value of an export option supplied by [method _get_export_op
 */
 //go:nosplit
 func (self class) GetOption(name String.Name) variant.Any { //gd:EditorExportPlugin.get_option
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
-	var r_ret = callframe.Ret[[3]uint64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_get_option, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[3]uint64](self.AsObject(), gd.Global.Methods.EditorExportPlugin.Bind_get_option, gdextension.SizeVariant|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
 
@@ -1446,11 +1407,8 @@ Returns currently used export preset.
 */
 //go:nosplit
 func (self class) GetExportPreset() [1]gdclass.EditorExportPreset { //gd:EditorExportPlugin.get_export_preset
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_get_export_preset, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.EditorExportPreset{gd.PointerWithOwnershipTransferredToGo[gdclass.EditorExportPreset](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorExportPlugin.Bind_get_export_preset, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.EditorExportPreset{gd.PointerWithOwnershipTransferredToGo[gdclass.EditorExportPreset](r_ret)}
 	return ret
 }
 
@@ -1459,11 +1417,8 @@ Returns currently used export platform.
 */
 //go:nosplit
 func (self class) GetExportPlatform() [1]gdclass.EditorExportPlatform { //gd:EditorExportPlugin.get_export_platform
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPlugin.Bind_get_export_platform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.EditorExportPlatform{gd.PointerWithOwnershipTransferredToGo[gdclass.EditorExportPlatform](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorExportPlugin.Bind_get_export_platform, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.EditorExportPlatform{gd.PointerWithOwnershipTransferredToGo[gdclass.EditorExportPlatform](r_ret)}
 	return ret
 }
 func (self class) AsEditorExportPlugin() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

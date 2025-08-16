@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -52,6 +54,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -4166,12 +4170,8 @@ Returns [code]true[/code] if the body with the given [RID] is being excluded fro
 */
 //go:nosplit
 func (self class) BodyTestMotionIsExcludingBody(body RID.Any) bool { //gd:PhysicsServer2DExtension.body_test_motion_is_excluding_body
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2DExtension.Bind_body_test_motion_is_excluding_body, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.PhysicsServer2DExtension.Bind_body_test_motion_is_excluding_body, gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var ret = r_ret
 	return ret
 }
 
@@ -4180,12 +4180,8 @@ Returns [code]true[/code] if the object with the given instance ID is being excl
 */
 //go:nosplit
 func (self class) BodyTestMotionIsExcludingObject(obj int64) bool { //gd:PhysicsServer2DExtension.body_test_motion_is_excluding_object
-	var frame = callframe.New()
-	callframe.Arg(frame, obj)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2DExtension.Bind_body_test_motion_is_excluding_object, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.PhysicsServer2DExtension.Bind_body_test_motion_is_excluding_object, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ obj int64 }{obj}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsPhysicsServer2DExtension() Advanced { return *((*Advanced)(unsafe.Pointer(&self))) }

@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -50,6 +52,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -133,12 +137,10 @@ Sets the value of the specified parameter.
 */
 //go:nosplit
 func (self class) SetParam(param Param, value float64) { //gd:HingeJoint3D.set_param
-	var frame = callframe.New()
-	callframe.Arg(frame, param)
-	callframe.Arg(frame, value)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HingeJoint3D.Bind_set_param, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.HingeJoint3D.Bind_set_param, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+		param Param
+		value float64
+	}{param, value}))
 }
 
 /*
@@ -146,12 +148,8 @@ Returns the value of the specified parameter.
 */
 //go:nosplit
 func (self class) GetParam(param Param) float64 { //gd:HingeJoint3D.get_param
-	var frame = callframe.New()
-	callframe.Arg(frame, param)
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HingeJoint3D.Bind_get_param, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.HingeJoint3D.Bind_get_param, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ param Param }{param}))
+	var ret = r_ret
 	return ret
 }
 
@@ -160,12 +158,10 @@ If [code]true[/code], enables the specified flag.
 */
 //go:nosplit
 func (self class) SetFlag(flag Flag, enabled bool) { //gd:HingeJoint3D.set_flag
-	var frame = callframe.New()
-	callframe.Arg(frame, flag)
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HingeJoint3D.Bind_set_flag, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.HingeJoint3D.Bind_set_flag, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		flag    Flag
+		enabled bool
+	}{flag, enabled}))
 }
 
 /*
@@ -173,12 +169,8 @@ Returns the value of the specified flag.
 */
 //go:nosplit
 func (self class) GetFlag(flag Flag) bool { //gd:HingeJoint3D.get_flag
-	var frame = callframe.New()
-	callframe.Arg(frame, flag)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HingeJoint3D.Bind_get_flag, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.HingeJoint3D.Bind_get_flag, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flag Flag }{flag}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsHingeJoint3D() Advanced            { return *((*Advanced)(unsafe.Pointer(&self))) }

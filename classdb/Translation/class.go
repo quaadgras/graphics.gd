@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +50,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -312,20 +316,13 @@ func (class) _get_message(impl func(ptr unsafe.Pointer, src_message String.Name,
 
 //go:nosplit
 func (self class) SetLocale(locale String.Readable) { //gd:Translation.set_locale
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(locale)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_set_locale, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Translation.Bind_set_locale, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ locale gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(locale))[0])}))
 }
 
 //go:nosplit
 func (self class) GetLocale() String.Readable { //gd:Translation.get_locale
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_get_locale, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Translation.Bind_get_locale, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -335,13 +332,11 @@ An additional context could be used to specify the translation context or differ
 */
 //go:nosplit
 func (self class) AddMessage(src_message String.Name, xlated_message String.Name, context String.Name) { //gd:Translation.add_message
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(src_message)))
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(xlated_message)))
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(context)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_add_message, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Translation.Bind_add_message, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeStringName<<12), unsafe.Pointer(&struct {
+		src_message    gdextension.StringName
+		xlated_message gdextension.StringName
+		context        gdextension.StringName
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(src_message))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(xlated_message))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(context))[0])}))
 }
 
 /*
@@ -350,13 +345,11 @@ An additional context could be used to specify the translation context or differ
 */
 //go:nosplit
 func (self class) AddPluralMessage(src_message String.Name, xlated_messages Packed.Strings, context String.Name) { //gd:Translation.add_plural_message
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(src_message)))
-	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(xlated_messages)))
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(context)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_add_plural_message, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Translation.Bind_add_plural_message, 0|(gdextension.SizeStringName<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeStringName<<12), unsafe.Pointer(&struct {
+		src_message     gdextension.StringName
+		xlated_messages gdextension.PackedArray
+		context         gdextension.StringName
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(src_message))[0]), gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(xlated_messages))), gdextension.StringName(pointers.Get(gd.InternalStringName(context))[0])}))
 }
 
 /*
@@ -364,13 +357,11 @@ Returns a message's translation.
 */
 //go:nosplit
 func (self class) GetMessage(src_message String.Name, context String.Name) String.Name { //gd:Translation.get_message
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(src_message)))
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(context)))
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_get_message, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Translation.Bind_get_message, gdextension.SizeStringName|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+		src_message gdextension.StringName
+		context     gdextension.StringName
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(src_message))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(context))[0])}))
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
@@ -380,15 +371,13 @@ The number [param n] is the number or quantity of the plural object. It will be 
 */
 //go:nosplit
 func (self class) GetPluralMessage(src_message String.Name, src_plural_message String.Name, n int64, context String.Name) String.Name { //gd:Translation.get_plural_message
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(src_message)))
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(src_plural_message)))
-	callframe.Arg(frame, n)
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(context)))
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_get_plural_message, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Translation.Bind_get_plural_message, gdextension.SizeStringName|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeStringName<<16), unsafe.Pointer(&struct {
+		src_message        gdextension.StringName
+		src_plural_message gdextension.StringName
+		n                  int64
+		context            gdextension.StringName
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(src_message))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(src_plural_message))[0]), n, gdextension.StringName(pointers.Get(gd.InternalStringName(context))[0])}))
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
@@ -397,12 +386,10 @@ Erases a message.
 */
 //go:nosplit
 func (self class) EraseMessage(src_message String.Name, context String.Name) { //gd:Translation.erase_message
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(src_message)))
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(context)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_erase_message, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Translation.Bind_erase_message, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+		src_message gdextension.StringName
+		context     gdextension.StringName
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(src_message))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(context))[0])}))
 }
 
 /*
@@ -410,11 +397,8 @@ Returns all the messages (keys).
 */
 //go:nosplit
 func (self class) GetMessageList() Packed.Strings { //gd:Translation.get_message_list
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_get_message_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.Translation.Bind_get_message_list, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -423,11 +407,8 @@ Returns all the messages (translated text).
 */
 //go:nosplit
 func (self class) GetTranslatedMessageList() Packed.Strings { //gd:Translation.get_translated_message_list
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_get_translated_message_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.Translation.Bind_get_translated_message_list, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -436,11 +417,8 @@ Returns the number of existing messages.
 */
 //go:nosplit
 func (self class) GetMessageCount() int64 { //gd:Translation.get_message_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Translation.Bind_get_message_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Translation.Bind_get_message_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsTranslation() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

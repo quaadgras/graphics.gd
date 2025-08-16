@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -54,6 +56,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -466,49 +470,32 @@ Returns the object's [RID].
 */
 //go:nosplit
 func (self class) GetRid() RID.Any { //gd:CollisionObject2D.get_rid
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_get_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.CollisionObject2D.Bind_get_rid, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollisionLayer(layer int64) { //gd:CollisionObject2D.set_collision_layer
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_set_collision_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CollisionObject2D.Bind_set_collision_layer, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer int64 }{layer}))
 }
 
 //go:nosplit
 func (self class) GetCollisionLayer() int64 { //gd:CollisionObject2D.get_collision_layer
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_get_collision_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.CollisionObject2D.Bind_get_collision_layer, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollisionMask(mask int64) { //gd:CollisionObject2D.set_collision_mask
-	var frame = callframe.New()
-	callframe.Arg(frame, mask)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_set_collision_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CollisionObject2D.Bind_set_collision_mask, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mask int64 }{mask}))
 }
 
 //go:nosplit
 func (self class) GetCollisionMask() int64 { //gd:CollisionObject2D.get_collision_mask
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_get_collision_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.CollisionObject2D.Bind_get_collision_mask, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -517,12 +504,10 @@ Based on [param value], enables or disables the specified layer in the [member c
 */
 //go:nosplit
 func (self class) SetCollisionLayerValue(layer_number int64, value bool) { //gd:CollisionObject2D.set_collision_layer_value
-	var frame = callframe.New()
-	callframe.Arg(frame, layer_number)
-	callframe.Arg(frame, value)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_set_collision_layer_value, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CollisionObject2D.Bind_set_collision_layer_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		layer_number int64
+		value        bool
+	}{layer_number, value}))
 }
 
 /*
@@ -530,12 +515,8 @@ Returns whether or not the specified layer of the [member collision_layer] is en
 */
 //go:nosplit
 func (self class) GetCollisionLayerValue(layer_number int64) bool { //gd:CollisionObject2D.get_collision_layer_value
-	var frame = callframe.New()
-	callframe.Arg(frame, layer_number)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_get_collision_layer_value, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CollisionObject2D.Bind_get_collision_layer_value, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_number int64 }{layer_number}))
+	var ret = r_ret
 	return ret
 }
 
@@ -544,12 +525,10 @@ Based on [param value], enables or disables the specified layer in the [member c
 */
 //go:nosplit
 func (self class) SetCollisionMaskValue(layer_number int64, value bool) { //gd:CollisionObject2D.set_collision_mask_value
-	var frame = callframe.New()
-	callframe.Arg(frame, layer_number)
-	callframe.Arg(frame, value)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_set_collision_mask_value, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CollisionObject2D.Bind_set_collision_mask_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		layer_number int64
+		value        bool
+	}{layer_number, value}))
 }
 
 /*
@@ -557,69 +536,44 @@ Returns whether or not the specified layer of the [member collision_mask] is ena
 */
 //go:nosplit
 func (self class) GetCollisionMaskValue(layer_number int64) bool { //gd:CollisionObject2D.get_collision_mask_value
-	var frame = callframe.New()
-	callframe.Arg(frame, layer_number)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_get_collision_mask_value, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CollisionObject2D.Bind_get_collision_mask_value, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_number int64 }{layer_number}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollisionPriority(priority float64) { //gd:CollisionObject2D.set_collision_priority
-	var frame = callframe.New()
-	callframe.Arg(frame, priority)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_set_collision_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CollisionObject2D.Bind_set_collision_priority, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ priority float64 }{priority}))
 }
 
 //go:nosplit
 func (self class) GetCollisionPriority() float64 { //gd:CollisionObject2D.get_collision_priority
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_get_collision_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.CollisionObject2D.Bind_get_collision_priority, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDisableMode(mode DisableMode) { //gd:CollisionObject2D.set_disable_mode
-	var frame = callframe.New()
-	callframe.Arg(frame, mode)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_set_disable_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CollisionObject2D.Bind_set_disable_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode DisableMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetDisableMode() DisableMode { //gd:CollisionObject2D.get_disable_mode
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[DisableMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_get_disable_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[DisableMode](self.AsObject(), gd.Global.Methods.CollisionObject2D.Bind_get_disable_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPickable(enabled bool) { //gd:CollisionObject2D.set_pickable
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_set_pickable, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CollisionObject2D.Bind_set_pickable, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsPickable() bool { //gd:CollisionObject2D.is_pickable
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_is_pickable, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CollisionObject2D.Bind_is_pickable, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -628,12 +582,8 @@ Creates a new shape owner for the given object. Returns [code]owner_id[/code] of
 */
 //go:nosplit
 func (self class) CreateShapeOwner(owner [1]gd.Object) int64 { //gd:CollisionObject2D.create_shape_owner
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(owner[0])[0])
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_create_shape_owner, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.CollisionObject2D.Bind_create_shape_owner, gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ owner gdextension.Object }{gdextension.Object(pointers.Get(owner[0])[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -642,11 +592,7 @@ Removes the given shape owner.
 */
 //go:nosplit
 func (self class) RemoveShapeOwner(owner_id int64) { //gd:CollisionObject2D.remove_shape_owner
-	var frame = callframe.New()
-	callframe.Arg(frame, owner_id)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_remove_shape_owner, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CollisionObject2D.Bind_remove_shape_owner, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ owner_id int64 }{owner_id}))
 }
 
 /*
@@ -654,11 +600,8 @@ Returns an [Array] of [code]owner_id[/code] identifiers. You can use these ids i
 */
 //go:nosplit
 func (self class) GetShapeOwners() Packed.Array[int32] { //gd:CollisionObject2D.get_shape_owners
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_get_shape_owners, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.CollisionObject2D.Bind_get_shape_owners, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -667,12 +610,10 @@ Sets the [Transform2D] of the given shape owner.
 */
 //go:nosplit
 func (self class) ShapeOwnerSetTransform(owner_id int64, transform Transform2D.OriginXY) { //gd:CollisionObject2D.shape_owner_set_transform
-	var frame = callframe.New()
-	callframe.Arg(frame, owner_id)
-	callframe.Arg(frame, transform)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_shape_owner_set_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CollisionObject2D.Bind_shape_owner_set_transform, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform2D<<8), unsafe.Pointer(&struct {
+		owner_id  int64
+		transform Transform2D.OriginXY
+	}{owner_id, transform}))
 }
 
 /*
@@ -680,12 +621,8 @@ Returns the shape owner's [Transform2D].
 */
 //go:nosplit
 func (self class) ShapeOwnerGetTransform(owner_id int64) Transform2D.OriginXY { //gd:CollisionObject2D.shape_owner_get_transform
-	var frame = callframe.New()
-	callframe.Arg(frame, owner_id)
-	var r_ret = callframe.Ret[Transform2D.OriginXY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_shape_owner_get_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Transform2D.OriginXY](self.AsObject(), gd.Global.Methods.CollisionObject2D.Bind_shape_owner_get_transform, gdextension.SizeTransform2D|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ owner_id int64 }{owner_id}))
+	var ret = r_ret
 	return ret
 }
 
@@ -694,12 +631,8 @@ Returns the parent object of the given shape owner.
 */
 //go:nosplit
 func (self class) ShapeOwnerGetOwner(owner_id int64) [1]gd.Object { //gd:CollisionObject2D.shape_owner_get_owner
-	var frame = callframe.New()
-	callframe.Arg(frame, owner_id)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_shape_owner_get_owner, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.CollisionObject2D.Bind_shape_owner_get_owner, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ owner_id int64 }{owner_id}))
+	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret)}
 	return ret
 }
 
@@ -708,12 +641,10 @@ If [code]true[/code], disables the given shape owner.
 */
 //go:nosplit
 func (self class) ShapeOwnerSetDisabled(owner_id int64, disabled bool) { //gd:CollisionObject2D.shape_owner_set_disabled
-	var frame = callframe.New()
-	callframe.Arg(frame, owner_id)
-	callframe.Arg(frame, disabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_shape_owner_set_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CollisionObject2D.Bind_shape_owner_set_disabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		owner_id int64
+		disabled bool
+	}{owner_id, disabled}))
 }
 
 /*
@@ -721,12 +652,8 @@ If [code]true[/code], the shape owner and its shapes are disabled.
 */
 //go:nosplit
 func (self class) IsShapeOwnerDisabled(owner_id int64) bool { //gd:CollisionObject2D.is_shape_owner_disabled
-	var frame = callframe.New()
-	callframe.Arg(frame, owner_id)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_is_shape_owner_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CollisionObject2D.Bind_is_shape_owner_disabled, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ owner_id int64 }{owner_id}))
+	var ret = r_ret
 	return ret
 }
 
@@ -735,12 +662,10 @@ If [param enable] is [code]true[/code], collisions for the shape owner originati
 */
 //go:nosplit
 func (self class) ShapeOwnerSetOneWayCollision(owner_id int64, enable bool) { //gd:CollisionObject2D.shape_owner_set_one_way_collision
-	var frame = callframe.New()
-	callframe.Arg(frame, owner_id)
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_shape_owner_set_one_way_collision, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CollisionObject2D.Bind_shape_owner_set_one_way_collision, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		owner_id int64
+		enable   bool
+	}{owner_id, enable}))
 }
 
 /*
@@ -748,12 +673,8 @@ Returns [code]true[/code] if collisions for the shape owner originating from thi
 */
 //go:nosplit
 func (self class) IsShapeOwnerOneWayCollisionEnabled(owner_id int64) bool { //gd:CollisionObject2D.is_shape_owner_one_way_collision_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, owner_id)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_is_shape_owner_one_way_collision_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CollisionObject2D.Bind_is_shape_owner_one_way_collision_enabled, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ owner_id int64 }{owner_id}))
+	var ret = r_ret
 	return ret
 }
 
@@ -762,12 +683,10 @@ Sets the [code]one_way_collision_margin[/code] of the shape owner identified by 
 */
 //go:nosplit
 func (self class) ShapeOwnerSetOneWayCollisionMargin(owner_id int64, margin float64) { //gd:CollisionObject2D.shape_owner_set_one_way_collision_margin
-	var frame = callframe.New()
-	callframe.Arg(frame, owner_id)
-	callframe.Arg(frame, margin)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_shape_owner_set_one_way_collision_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CollisionObject2D.Bind_shape_owner_set_one_way_collision_margin, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+		owner_id int64
+		margin   float64
+	}{owner_id, margin}))
 }
 
 /*
@@ -775,12 +694,8 @@ Returns the [code]one_way_collision_margin[/code] of the shape owner identified 
 */
 //go:nosplit
 func (self class) GetShapeOwnerOneWayCollisionMargin(owner_id int64) float64 { //gd:CollisionObject2D.get_shape_owner_one_way_collision_margin
-	var frame = callframe.New()
-	callframe.Arg(frame, owner_id)
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_get_shape_owner_one_way_collision_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.CollisionObject2D.Bind_get_shape_owner_one_way_collision_margin, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ owner_id int64 }{owner_id}))
+	var ret = r_ret
 	return ret
 }
 
@@ -789,12 +704,10 @@ Adds a [Shape2D] to the shape owner.
 */
 //go:nosplit
 func (self class) ShapeOwnerAddShape(owner_id int64, shape [1]gdclass.Shape2D) { //gd:CollisionObject2D.shape_owner_add_shape
-	var frame = callframe.New()
-	callframe.Arg(frame, owner_id)
-	callframe.Arg(frame, pointers.Get(shape[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_shape_owner_add_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CollisionObject2D.Bind_shape_owner_add_shape, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+		owner_id int64
+		shape    gdextension.Object
+	}{owner_id, gdextension.Object(pointers.Get(shape[0])[0])}))
 }
 
 /*
@@ -802,12 +715,8 @@ Returns the number of shapes the given shape owner contains.
 */
 //go:nosplit
 func (self class) ShapeOwnerGetShapeCount(owner_id int64) int64 { //gd:CollisionObject2D.shape_owner_get_shape_count
-	var frame = callframe.New()
-	callframe.Arg(frame, owner_id)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_shape_owner_get_shape_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.CollisionObject2D.Bind_shape_owner_get_shape_count, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ owner_id int64 }{owner_id}))
+	var ret = r_ret
 	return ret
 }
 
@@ -816,13 +725,11 @@ Returns the [Shape2D] with the given ID from the given shape owner.
 */
 //go:nosplit
 func (self class) ShapeOwnerGetShape(owner_id int64, shape_id int64) [1]gdclass.Shape2D { //gd:CollisionObject2D.shape_owner_get_shape
-	var frame = callframe.New()
-	callframe.Arg(frame, owner_id)
-	callframe.Arg(frame, shape_id)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_shape_owner_get_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Shape2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Shape2D](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.CollisionObject2D.Bind_shape_owner_get_shape, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		owner_id int64
+		shape_id int64
+	}{owner_id, shape_id}))
+	var ret = [1]gdclass.Shape2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Shape2D](r_ret)}
 	return ret
 }
 
@@ -831,13 +738,11 @@ Returns the child index of the [Shape2D] with the given ID from the given shape 
 */
 //go:nosplit
 func (self class) ShapeOwnerGetShapeIndex(owner_id int64, shape_id int64) int64 { //gd:CollisionObject2D.shape_owner_get_shape_index
-	var frame = callframe.New()
-	callframe.Arg(frame, owner_id)
-	callframe.Arg(frame, shape_id)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_shape_owner_get_shape_index, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.CollisionObject2D.Bind_shape_owner_get_shape_index, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		owner_id int64
+		shape_id int64
+	}{owner_id, shape_id}))
+	var ret = r_ret
 	return ret
 }
 
@@ -846,12 +751,10 @@ Removes a shape from the given shape owner.
 */
 //go:nosplit
 func (self class) ShapeOwnerRemoveShape(owner_id int64, shape_id int64) { //gd:CollisionObject2D.shape_owner_remove_shape
-	var frame = callframe.New()
-	callframe.Arg(frame, owner_id)
-	callframe.Arg(frame, shape_id)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_shape_owner_remove_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CollisionObject2D.Bind_shape_owner_remove_shape, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		owner_id int64
+		shape_id int64
+	}{owner_id, shape_id}))
 }
 
 /*
@@ -859,11 +762,7 @@ Removes all shapes from the shape owner.
 */
 //go:nosplit
 func (self class) ShapeOwnerClearShapes(owner_id int64) { //gd:CollisionObject2D.shape_owner_clear_shapes
-	var frame = callframe.New()
-	callframe.Arg(frame, owner_id)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_shape_owner_clear_shapes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CollisionObject2D.Bind_shape_owner_clear_shapes, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ owner_id int64 }{owner_id}))
 }
 
 /*
@@ -871,12 +770,8 @@ Returns the [code]owner_id[/code] of the given shape.
 */
 //go:nosplit
 func (self class) ShapeFindOwner(shape_index int64) int64 { //gd:CollisionObject2D.shape_find_owner
-	var frame = callframe.New()
-	callframe.Arg(frame, shape_index)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CollisionObject2D.Bind_shape_find_owner, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.CollisionObject2D.Bind_shape_find_owner, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ shape_index int64 }{shape_index}))
+	var ret = r_ret
 	return ret
 }
 func (self Instance) OnInputEvent(cb func(viewport Node.Instance, event InputEvent.Instance, shape_idx int)) {

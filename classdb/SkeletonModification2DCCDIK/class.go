@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +51,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -228,58 +232,37 @@ func (self Instance) SetCcdikDataChainLength(value int) {
 
 //go:nosplit
 func (self class) SetTargetNode(target_nodepath Path.ToNode) { //gd:SkeletonModification2DCCDIK.set_target_node
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(target_nodepath)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_target_node, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_target_node, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ target_nodepath gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(target_nodepath))[0])}))
 }
 
 //go:nosplit
 func (self class) GetTargetNode() Path.ToNode { //gd:SkeletonModification2DCCDIK.get_target_node
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_target_node, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_target_node, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTipNode(tip_nodepath Path.ToNode) { //gd:SkeletonModification2DCCDIK.set_tip_node
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(tip_nodepath)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_tip_node, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_tip_node, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ tip_nodepath gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(tip_nodepath))[0])}))
 }
 
 //go:nosplit
 func (self class) GetTipNode() Path.ToNode { //gd:SkeletonModification2DCCDIK.get_tip_node
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_tip_node, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_tip_node, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCcdikDataChainLength(length int64) { //gd:SkeletonModification2DCCDIK.set_ccdik_data_chain_length
-	var frame = callframe.New()
-	callframe.Arg(frame, length)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_ccdik_data_chain_length, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_ccdik_data_chain_length, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ length int64 }{length}))
 }
 
 //go:nosplit
 func (self class) GetCcdikDataChainLength() int64 { //gd:SkeletonModification2DCCDIK.get_ccdik_data_chain_length
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_ccdik_data_chain_length, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_ccdik_data_chain_length, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -288,12 +271,10 @@ Sets the [Bone2D] node assigned to the CCDIK joint at [param joint_idx].
 */
 //go:nosplit
 func (self class) SetCcdikJointBone2dNode(joint_idx int64, bone2d_nodepath Path.ToNode) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_bone2d_node
-	var frame = callframe.New()
-	callframe.Arg(frame, joint_idx)
-	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(bone2d_nodepath)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_ccdik_joint_bone2d_node, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_ccdik_joint_bone2d_node, 0|(gdextension.SizeInt<<4)|(gdextension.SizeNodePath<<8), unsafe.Pointer(&struct {
+		joint_idx       int64
+		bone2d_nodepath gdextension.NodePath
+	}{joint_idx, gdextension.NodePath(pointers.Get(gd.InternalNodePath(bone2d_nodepath))[0])}))
 }
 
 /*
@@ -301,12 +282,8 @@ Returns the [Bone2D] node assigned to the CCDIK joint at [param joint_idx].
 */
 //go:nosplit
 func (self class) GetCcdikJointBone2dNode(joint_idx int64) Path.ToNode { //gd:SkeletonModification2DCCDIK.get_ccdik_joint_bone2d_node
-	var frame = callframe.New()
-	callframe.Arg(frame, joint_idx)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_ccdik_joint_bone2d_node, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_ccdik_joint_bone2d_node, gdextension.SizeNodePath|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_idx int64 }{joint_idx}))
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
@@ -315,12 +292,10 @@ Sets the bone index, [param bone_idx], of the CCDIK joint at [param joint_idx]. 
 */
 //go:nosplit
 func (self class) SetCcdikJointBoneIndex(joint_idx int64, bone_idx int64) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_bone_index
-	var frame = callframe.New()
-	callframe.Arg(frame, joint_idx)
-	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_ccdik_joint_bone_index, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_ccdik_joint_bone_index, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		joint_idx int64
+		bone_idx  int64
+	}{joint_idx, bone_idx}))
 }
 
 /*
@@ -328,12 +303,8 @@ Returns the index of the [Bone2D] node assigned to the CCDIK joint at [param joi
 */
 //go:nosplit
 func (self class) GetCcdikJointBoneIndex(joint_idx int64) int64 { //gd:SkeletonModification2DCCDIK.get_ccdik_joint_bone_index
-	var frame = callframe.New()
-	callframe.Arg(frame, joint_idx)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_ccdik_joint_bone_index, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_ccdik_joint_bone_index, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_idx int64 }{joint_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -342,12 +313,10 @@ Sets whether the joint at [param joint_idx] is set to rotate from the joint, [co
 */
 //go:nosplit
 func (self class) SetCcdikJointRotateFromJoint(joint_idx int64, rotate_from_joint bool) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_rotate_from_joint
-	var frame = callframe.New()
-	callframe.Arg(frame, joint_idx)
-	callframe.Arg(frame, rotate_from_joint)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_ccdik_joint_rotate_from_joint, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_ccdik_joint_rotate_from_joint, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		joint_idx         int64
+		rotate_from_joint bool
+	}{joint_idx, rotate_from_joint}))
 }
 
 /*
@@ -355,12 +324,8 @@ Returns whether the joint at [param joint_idx] is set to rotate from the joint, 
 */
 //go:nosplit
 func (self class) GetCcdikJointRotateFromJoint(joint_idx int64) bool { //gd:SkeletonModification2DCCDIK.get_ccdik_joint_rotate_from_joint
-	var frame = callframe.New()
-	callframe.Arg(frame, joint_idx)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_ccdik_joint_rotate_from_joint, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_ccdik_joint_rotate_from_joint, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_idx int64 }{joint_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -369,12 +334,10 @@ Determines whether angle constraints on the CCDIK joint at [param joint_idx] are
 */
 //go:nosplit
 func (self class) SetCcdikJointEnableConstraint(joint_idx int64, enable_constraint bool) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_enable_constraint
-	var frame = callframe.New()
-	callframe.Arg(frame, joint_idx)
-	callframe.Arg(frame, enable_constraint)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_ccdik_joint_enable_constraint, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_ccdik_joint_enable_constraint, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		joint_idx         int64
+		enable_constraint bool
+	}{joint_idx, enable_constraint}))
 }
 
 /*
@@ -382,12 +345,8 @@ Returns whether angle constraints on the CCDIK joint at [param joint_idx] are en
 */
 //go:nosplit
 func (self class) GetCcdikJointEnableConstraint(joint_idx int64) bool { //gd:SkeletonModification2DCCDIK.get_ccdik_joint_enable_constraint
-	var frame = callframe.New()
-	callframe.Arg(frame, joint_idx)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_ccdik_joint_enable_constraint, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_ccdik_joint_enable_constraint, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_idx int64 }{joint_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -396,12 +355,10 @@ Sets the minimum angle constraint for the joint at [param joint_idx].
 */
 //go:nosplit
 func (self class) SetCcdikJointConstraintAngleMin(joint_idx int64, angle_min float64) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_constraint_angle_min
-	var frame = callframe.New()
-	callframe.Arg(frame, joint_idx)
-	callframe.Arg(frame, angle_min)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_ccdik_joint_constraint_angle_min, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_ccdik_joint_constraint_angle_min, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+		joint_idx int64
+		angle_min float64
+	}{joint_idx, angle_min}))
 }
 
 /*
@@ -409,12 +366,8 @@ Returns the minimum angle constraint for the joint at [param joint_idx].
 */
 //go:nosplit
 func (self class) GetCcdikJointConstraintAngleMin(joint_idx int64) float64 { //gd:SkeletonModification2DCCDIK.get_ccdik_joint_constraint_angle_min
-	var frame = callframe.New()
-	callframe.Arg(frame, joint_idx)
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_ccdik_joint_constraint_angle_min, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_ccdik_joint_constraint_angle_min, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_idx int64 }{joint_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -423,12 +376,10 @@ Sets the maximum angle constraint for the joint at [param joint_idx].
 */
 //go:nosplit
 func (self class) SetCcdikJointConstraintAngleMax(joint_idx int64, angle_max float64) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_constraint_angle_max
-	var frame = callframe.New()
-	callframe.Arg(frame, joint_idx)
-	callframe.Arg(frame, angle_max)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_ccdik_joint_constraint_angle_max, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_ccdik_joint_constraint_angle_max, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+		joint_idx int64
+		angle_max float64
+	}{joint_idx, angle_max}))
 }
 
 /*
@@ -436,12 +387,8 @@ Returns the maximum angle constraint for the joint at [param joint_idx].
 */
 //go:nosplit
 func (self class) GetCcdikJointConstraintAngleMax(joint_idx int64) float64 { //gd:SkeletonModification2DCCDIK.get_ccdik_joint_constraint_angle_max
-	var frame = callframe.New()
-	callframe.Arg(frame, joint_idx)
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_ccdik_joint_constraint_angle_max, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_ccdik_joint_constraint_angle_max, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_idx int64 }{joint_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -451,12 +398,10 @@ An inverted joint constraint only constraints the CCDIK joint to the angles [i]o
 */
 //go:nosplit
 func (self class) SetCcdikJointConstraintAngleInvert(joint_idx int64, invert bool) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_constraint_angle_invert
-	var frame = callframe.New()
-	callframe.Arg(frame, joint_idx)
-	callframe.Arg(frame, invert)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_ccdik_joint_constraint_angle_invert, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonModification2DCCDIK.Bind_set_ccdik_joint_constraint_angle_invert, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		joint_idx int64
+		invert    bool
+	}{joint_idx, invert}))
 }
 
 /*
@@ -464,12 +409,8 @@ Returns whether the CCDIK joint at [param joint_idx] uses an inverted joint cons
 */
 //go:nosplit
 func (self class) GetCcdikJointConstraintAngleInvert(joint_idx int64) bool { //gd:SkeletonModification2DCCDIK.get_ccdik_joint_constraint_angle_invert
-	var frame = callframe.New()
-	callframe.Arg(frame, joint_idx)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_ccdik_joint_constraint_angle_invert, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.SkeletonModification2DCCDIK.Bind_get_ccdik_joint_constraint_angle_invert, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_idx int64 }{joint_idx}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsSkeletonModification2DCCDIK() Advanced {

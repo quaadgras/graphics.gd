@@ -9,6 +9,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +51,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -165,11 +169,7 @@ Registers a [TextServer] interface.
 */
 //go:nosplit
 func (self class) AddInterface(intf [1]gdclass.TextServer) { //gd:TextServerManager.add_interface
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(intf[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServerManager.Bind_add_interface, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextServerManager.Bind_add_interface, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ intf gdextension.Object }{gdextension.Object(pointers.Get(intf[0])[0])}))
 }
 
 /*
@@ -177,11 +177,8 @@ Returns the number of interfaces currently registered.
 */
 //go:nosplit
 func (self class) GetInterfaceCount() int64 { //gd:TextServerManager.get_interface_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServerManager.Bind_get_interface_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextServerManager.Bind_get_interface_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -190,11 +187,7 @@ Removes an interface. All fonts and shaped text caches should be freed before re
 */
 //go:nosplit
 func (self class) RemoveInterface(intf [1]gdclass.TextServer) { //gd:TextServerManager.remove_interface
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(intf[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServerManager.Bind_remove_interface, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextServerManager.Bind_remove_interface, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ intf gdextension.Object }{gdextension.Object(pointers.Get(intf[0])[0])}))
 }
 
 /*
@@ -202,12 +195,8 @@ Returns the interface registered at a given index.
 */
 //go:nosplit
 func (self class) GetInterface(idx int64) [1]gdclass.TextServer { //gd:TextServerManager.get_interface
-	var frame = callframe.New()
-	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServerManager.Bind_get_interface, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.TextServer{gd.PointerWithOwnershipTransferredToGo[gdclass.TextServer](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.TextServerManager.Bind_get_interface, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var ret = [1]gdclass.TextServer{gd.PointerWithOwnershipTransferredToGo[gdclass.TextServer](r_ret)}
 	return ret
 }
 
@@ -216,11 +205,8 @@ Returns a list of available interfaces, with the index and name of each interfac
 */
 //go:nosplit
 func (self class) GetInterfaces() Array.Contains[Dictionary.Any] { //gd:TextServerManager.get_interfaces
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServerManager.Bind_get_interfaces, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.TextServerManager.Bind_get_interfaces, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -229,12 +215,8 @@ Finds an interface by its [param name].
 */
 //go:nosplit
 func (self class) FindInterface(name String.Readable) [1]gdclass.TextServer { //gd:TextServerManager.find_interface
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServerManager.Bind_find_interface, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.TextServer{gd.PointerWithOwnershipTransferredToGo[gdclass.TextServer](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.TextServerManager.Bind_find_interface, gdextension.SizeObject|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	var ret = [1]gdclass.TextServer{gd.PointerWithOwnershipTransferredToGo[gdclass.TextServer](r_ret)}
 	return ret
 }
 
@@ -243,11 +225,7 @@ Sets the primary [TextServer] interface.
 */
 //go:nosplit
 func (self class) SetPrimaryInterface(index [1]gdclass.TextServer) { //gd:TextServerManager.set_primary_interface
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(index[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServerManager.Bind_set_primary_interface, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextServerManager.Bind_set_primary_interface, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ index gdextension.Object }{gdextension.Object(pointers.Get(index[0])[0])}))
 }
 
 /*
@@ -255,11 +233,8 @@ Returns the primary [TextServer] interface currently in use.
 */
 //go:nosplit
 func (self class) GetPrimaryInterface() [1]gdclass.TextServer { //gd:TextServerManager.get_primary_interface
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServerManager.Bind_get_primary_interface, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.TextServer{gd.PointerWithOwnershipTransferredToGo[gdclass.TextServer](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.TextServerManager.Bind_get_primary_interface, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.TextServer{gd.PointerWithOwnershipTransferredToGo[gdclass.TextServer](r_ret)}
 	return ret
 }
 func OnInterfaceAdded(cb func(interface_name string)) {

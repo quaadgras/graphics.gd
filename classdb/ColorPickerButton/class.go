@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -55,6 +57,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -141,20 +145,13 @@ func (self Instance) SetEditAlpha(value bool) {
 
 //go:nosplit
 func (self class) SetPickColor(color Color.RGBA) { //gd:ColorPickerButton.set_pick_color
-	var frame = callframe.New()
-	callframe.Arg(frame, color)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPickerButton.Bind_set_pick_color, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ColorPickerButton.Bind_set_pick_color, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 //go:nosplit
 func (self class) GetPickColor() Color.RGBA { //gd:ColorPickerButton.get_pick_color
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Color.RGBA](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPickerButton.Bind_get_pick_color, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Color.RGBA](self.AsObject(), gd.Global.Methods.ColorPickerButton.Bind_get_pick_color, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -164,11 +161,8 @@ Returns the [ColorPicker] that this node toggles.
 */
 //go:nosplit
 func (self class) GetPicker() [1]gdclass.ColorPicker { //gd:ColorPickerButton.get_picker
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPickerButton.Bind_get_picker, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.ColorPicker{gd.PointerLifetimeBoundTo[gdclass.ColorPicker](self.AsObject(), r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.ColorPickerButton.Bind_get_picker, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.ColorPicker{gd.PointerLifetimeBoundTo[gdclass.ColorPicker](self.AsObject(), r_ret)}
 	return ret
 }
 
@@ -178,30 +172,20 @@ Returns the control's [PopupPanel] which allows you to connect to popup signals.
 */
 //go:nosplit
 func (self class) GetPopup() [1]gdclass.PopupPanel { //gd:ColorPickerButton.get_popup
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPickerButton.Bind_get_popup, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.PopupPanel{gd.PointerLifetimeBoundTo[gdclass.PopupPanel](self.AsObject(), r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.ColorPickerButton.Bind_get_popup, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.PopupPanel{gd.PointerLifetimeBoundTo[gdclass.PopupPanel](self.AsObject(), r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEditAlpha(show bool) { //gd:ColorPickerButton.set_edit_alpha
-	var frame = callframe.New()
-	callframe.Arg(frame, show)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPickerButton.Bind_set_edit_alpha, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ColorPickerButton.Bind_set_edit_alpha, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ show bool }{show}))
 }
 
 //go:nosplit
 func (self class) IsEditingAlpha() bool { //gd:ColorPickerButton.is_editing_alpha
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPickerButton.Bind_is_editing_alpha, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.ColorPickerButton.Bind_is_editing_alpha, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self Instance) OnColorChanged(cb func(color Color.RGBA)) {

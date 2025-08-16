@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +51,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -138,20 +142,13 @@ func (self Instance) SetStreamCount(value int) {
 
 //go:nosplit
 func (self class) SetStreamCount(stream_count int64) { //gd:AudioStreamSynchronized.set_stream_count
-	var frame = callframe.New()
-	callframe.Arg(frame, stream_count)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamSynchronized.Bind_set_stream_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioStreamSynchronized.Bind_set_stream_count, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ stream_count int64 }{stream_count}))
 }
 
 //go:nosplit
 func (self class) GetStreamCount() int64 { //gd:AudioStreamSynchronized.get_stream_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamSynchronized.Bind_get_stream_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.AudioStreamSynchronized.Bind_get_stream_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -160,12 +157,10 @@ Set one of the synchronized streams, by index.
 */
 //go:nosplit
 func (self class) SetSyncStream(stream_index int64, audio_stream [1]gdclass.AudioStream) { //gd:AudioStreamSynchronized.set_sync_stream
-	var frame = callframe.New()
-	callframe.Arg(frame, stream_index)
-	callframe.Arg(frame, pointers.Get(audio_stream[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamSynchronized.Bind_set_sync_stream, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioStreamSynchronized.Bind_set_sync_stream, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+		stream_index int64
+		audio_stream gdextension.Object
+	}{stream_index, gdextension.Object(pointers.Get(audio_stream[0])[0])}))
 }
 
 /*
@@ -173,12 +168,8 @@ Get one of the synchronized streams, by index.
 */
 //go:nosplit
 func (self class) GetSyncStream(stream_index int64) [1]gdclass.AudioStream { //gd:AudioStreamSynchronized.get_sync_stream
-	var frame = callframe.New()
-	callframe.Arg(frame, stream_index)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamSynchronized.Bind_get_sync_stream, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.AudioStream{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStream](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.AudioStreamSynchronized.Bind_get_sync_stream, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ stream_index int64 }{stream_index}))
+	var ret = [1]gdclass.AudioStream{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStream](r_ret)}
 	return ret
 }
 
@@ -187,12 +178,10 @@ Set the volume of one of the synchronized streams, by index.
 */
 //go:nosplit
 func (self class) SetSyncStreamVolume(stream_index int64, volume_db float64) { //gd:AudioStreamSynchronized.set_sync_stream_volume
-	var frame = callframe.New()
-	callframe.Arg(frame, stream_index)
-	callframe.Arg(frame, volume_db)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamSynchronized.Bind_set_sync_stream_volume, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioStreamSynchronized.Bind_set_sync_stream_volume, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+		stream_index int64
+		volume_db    float64
+	}{stream_index, volume_db}))
 }
 
 /*
@@ -200,12 +189,8 @@ Get the volume of one of the synchronized streams, by index.
 */
 //go:nosplit
 func (self class) GetSyncStreamVolume(stream_index int64) float64 { //gd:AudioStreamSynchronized.get_sync_stream_volume
-	var frame = callframe.New()
-	callframe.Arg(frame, stream_index)
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamSynchronized.Bind_get_sync_stream_volume, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.AudioStreamSynchronized.Bind_get_sync_stream_volume, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ stream_index int64 }{stream_index}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsAudioStreamSynchronized() Advanced { return *((*Advanced)(unsafe.Pointer(&self))) }

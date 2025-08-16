@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -47,6 +49,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -199,12 +203,8 @@ Opens the zip archive at the given [param path] and reads its file index.
 */
 //go:nosplit
 func (self class) Open(path String.Readable) Error.Code { //gd:ZIPReader.open
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ZIPReader.Bind_open, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ZIPReader.Bind_open, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -213,11 +213,8 @@ Closes the underlying resources used by this instance.
 */
 //go:nosplit
 func (self class) Close() Error.Code { //gd:ZIPReader.close
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ZIPReader.Bind_close, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ZIPReader.Bind_close, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -227,11 +224,8 @@ Must be called after [method open].
 */
 //go:nosplit
 func (self class) GetFiles() Packed.Strings { //gd:ZIPReader.get_files
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ZIPReader.Bind_get_files, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.ZIPReader.Bind_get_files, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -241,13 +235,11 @@ Must be called after [method open].
 */
 //go:nosplit
 func (self class) ReadFile(path String.Readable, case_sensitive bool) Packed.Bytes { //gd:ZIPReader.read_file
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	callframe.Arg(frame, case_sensitive)
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ZIPReader.Bind_read_file, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.ZIPReader.Bind_read_file, gdextension.SizePackedArray|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		path           gdextension.String
+		case_sensitive bool
+	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), case_sensitive}))
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
 
@@ -257,13 +249,11 @@ Must be called after [method open].
 */
 //go:nosplit
 func (self class) FileExists(path String.Readable, case_sensitive bool) bool { //gd:ZIPReader.file_exists
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	callframe.Arg(frame, case_sensitive)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ZIPReader.Bind_file_exists, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.ZIPReader.Bind_file_exists, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		path           gdextension.String
+		case_sensitive bool
+	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), case_sensitive}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsZIPReader() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -47,6 +49,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -200,13 +204,11 @@ You can optionally specify names of variables that may appear in the expression 
 */
 //go:nosplit
 func (self class) Parse(expression String.Readable, input_names Packed.Strings) Error.Code { //gd:Expression.parse
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(expression)))
-	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(input_names)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Expression.Bind_parse, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Expression.Bind_parse, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
+		expression  gdextension.String
+		input_names gdextension.PackedArray
+	}{gdextension.String(pointers.Get(gd.InternalString(expression))[0]), gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(input_names)))}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -216,15 +218,13 @@ If you defined input variables in [method parse], you can specify their values i
 */
 //go:nosplit
 func (self class) Execute(inputs Array.Any, base_instance [1]gd.Object, show_error bool, const_calls_only bool) variant.Any { //gd:Expression.execute
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(inputs)))
-	callframe.Arg(frame, pointers.Get(base_instance[0])[0])
-	callframe.Arg(frame, show_error)
-	callframe.Arg(frame, const_calls_only)
-	var r_ret = callframe.Ret[[3]uint64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Expression.Bind_execute, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[3]uint64](self.AsObject(), gd.Global.Methods.Expression.Bind_execute, gdextension.SizeVariant|(gdextension.SizeArray<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+		inputs           gdextension.Array
+		base_instance    gdextension.Object
+		show_error       bool
+		const_calls_only bool
+	}{gdextension.Array(pointers.Get(gd.InternalArray(inputs))[0]), gdextension.Object(pointers.Get(base_instance[0])[0]), show_error, const_calls_only}))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
 
@@ -233,11 +233,8 @@ Returns [code]true[/code] if [method execute] has failed.
 */
 //go:nosplit
 func (self class) HasExecuteFailed() bool { //gd:Expression.has_execute_failed
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Expression.Bind_has_execute_failed, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Expression.Bind_has_execute_failed, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -246,11 +243,8 @@ Returns the error text if [method parse] or [method execute] has failed.
 */
 //go:nosplit
 func (self class) GetErrorText() String.Readable { //gd:Expression.get_error_text
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Expression.Bind_get_error_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Expression.Bind_get_error_text, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) AsExpression() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

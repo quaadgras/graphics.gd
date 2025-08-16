@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -47,6 +49,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -515,12 +519,8 @@ Returns [code]null[/code] if opening the directory failed. You can use [method g
 */
 //go:nosplit
 func (self class) Open(path String.Readable) [1]gdclass.DirAccess { //gd:DirAccess.open
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.DirAccess.Bind_open, frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.DirAccess{gd.PointerWithOwnershipTransferredToGo[gdclass.DirAccess](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.CallStatic[gd.EnginePointer](gd.Global.Methods.DirAccess.Bind_open, gdextension.SizeObject|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var ret = [1]gdclass.DirAccess{gd.PointerWithOwnershipTransferredToGo[gdclass.DirAccess](r_ret)}
 	return ret
 }
 
@@ -529,11 +529,8 @@ Returns the result of the last [method open] call in the current thread.
 */
 //go:nosplit
 func (self class) GetOpenError() Error.Code { //gd:DirAccess.get_open_error
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.DirAccess.Bind_get_open_error, frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.CallStatic[int64](gd.Global.Methods.DirAccess.Bind_get_open_error, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -545,13 +542,11 @@ Returns [code]null[/code] if opening the directory failed. You can use [method g
 */
 //go:nosplit
 func (self class) CreateTemp(prefix String.Readable, keep bool) [1]gdclass.DirAccess { //gd:DirAccess.create_temp
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(prefix)))
-	callframe.Arg(frame, keep)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.DirAccess.Bind_create_temp, frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.DirAccess{gd.PointerWithOwnershipTransferredToGo[gdclass.DirAccess](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.CallStatic[gd.EnginePointer](gd.Global.Methods.DirAccess.Bind_create_temp, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		prefix gdextension.String
+		keep   bool
+	}{gdextension.String(pointers.Get(gd.InternalString(prefix))[0]), keep}))
+	var ret = [1]gdclass.DirAccess{gd.PointerWithOwnershipTransferredToGo[gdclass.DirAccess](r_ret)}
 	return ret
 }
 
@@ -562,11 +557,8 @@ Affected by [member include_hidden] and [member include_navigational].
 */
 //go:nosplit
 func (self class) ListDirBegin() Error.Code { //gd:DirAccess.list_dir_begin
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_list_dir_begin, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.DirAccess.Bind_list_dir_begin, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -576,11 +568,8 @@ The name of the file or directory is returned (and not its full path). Once the 
 */
 //go:nosplit
 func (self class) GetNext() String.Readable { //gd:DirAccess.get_next
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_get_next, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.DirAccess.Bind_get_next, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -589,11 +578,8 @@ Returns whether the current item processed with the last [method get_next] call 
 */
 //go:nosplit
 func (self class) CurrentIsDir() bool { //gd:DirAccess.current_is_dir
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_current_is_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.DirAccess.Bind_current_is_dir, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -602,10 +588,7 @@ Closes the current stream opened with [method list_dir_begin] (whether it has be
 */
 //go:nosplit
 func (self class) ListDirEnd() { //gd:DirAccess.list_dir_end
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_list_dir_end, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.DirAccess.Bind_list_dir_end, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -615,11 +598,8 @@ Affected by [member include_hidden].
 */
 //go:nosplit
 func (self class) GetFiles() Packed.Strings { //gd:DirAccess.get_files
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_get_files, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.DirAccess.Bind_get_files, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -630,12 +610,8 @@ Use [method get_files] if you want more control of what gets included.
 */
 //go:nosplit
 func (self class) GetFilesAt(path String.Readable) Packed.Strings { //gd:DirAccess.get_files_at
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.DirAccess.Bind_get_files_at, frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.CallStatic[gd.PackedPointers](gd.Global.Methods.DirAccess.Bind_get_files_at, gdextension.SizePackedArray|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -646,11 +622,8 @@ Affected by [member include_hidden] and [member include_navigational].
 */
 //go:nosplit
 func (self class) GetDirectories() Packed.Strings { //gd:DirAccess.get_directories
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_get_directories, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.DirAccess.Bind_get_directories, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -661,12 +634,8 @@ Use [method get_directories] if you want more control of what gets included.
 */
 //go:nosplit
 func (self class) GetDirectoriesAt(path String.Readable) Packed.Strings { //gd:DirAccess.get_directories_at
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.DirAccess.Bind_get_directories_at, frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.CallStatic[gd.PackedPointers](gd.Global.Methods.DirAccess.Bind_get_directories_at, gdextension.SizePackedArray|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -678,11 +647,8 @@ On other platforms, the method returns 0.
 */
 //go:nosplit
 func (self class) GetDriveCount() int64 { //gd:DirAccess.get_drive_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.DirAccess.Bind_get_drive_count, frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.CallStatic[int64](gd.Global.Methods.DirAccess.Bind_get_drive_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -694,12 +660,8 @@ On other platforms, or if the requested drive does not exist, the method returns
 */
 //go:nosplit
 func (self class) GetDriveName(idx int64) String.Readable { //gd:DirAccess.get_drive_name
-	var frame = callframe.New()
-	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.DirAccess.Bind_get_drive_name, frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.CallStatic[[1]gd.EnginePointer](gd.Global.Methods.DirAccess.Bind_get_drive_name, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -708,11 +670,8 @@ Returns the currently opened directory's drive index. See [method get_drive_name
 */
 //go:nosplit
 func (self class) GetCurrentDrive() int64 { //gd:DirAccess.get_current_drive
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_get_current_drive, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.DirAccess.Bind_get_current_drive, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -723,12 +682,8 @@ Returns one of the [enum Error] code constants ([constant OK] on success).
 */
 //go:nosplit
 func (self class) ChangeDir(to_dir String.Readable) Error.Code { //gd:DirAccess.change_dir
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(to_dir)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_change_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.DirAccess.Bind_change_dir, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ to_dir gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(to_dir))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -737,12 +692,8 @@ Returns the absolute path to the currently opened directory (e.g. [code]res://fo
 */
 //go:nosplit
 func (self class) GetCurrentDir(include_drive bool) String.Readable { //gd:DirAccess.get_current_dir
-	var frame = callframe.New()
-	callframe.Arg(frame, include_drive)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_get_current_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.DirAccess.Bind_get_current_dir, gdextension.SizeString|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ include_drive bool }{include_drive}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -752,12 +703,8 @@ Returns one of the [enum Error] code constants ([constant OK] on success).
 */
 //go:nosplit
 func (self class) MakeDir(path String.Readable) Error.Code { //gd:DirAccess.make_dir
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_make_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.DirAccess.Bind_make_dir, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -766,12 +713,8 @@ Static version of [method make_dir]. Supports only absolute paths.
 */
 //go:nosplit
 func (self class) MakeDirAbsolute(path String.Readable) Error.Code { //gd:DirAccess.make_dir_absolute
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.DirAccess.Bind_make_dir_absolute, frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.CallStatic[int64](gd.Global.Methods.DirAccess.Bind_make_dir_absolute, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -781,12 +724,8 @@ Returns one of the [enum Error] code constants ([constant OK] on success).
 */
 //go:nosplit
 func (self class) MakeDirRecursive(path String.Readable) Error.Code { //gd:DirAccess.make_dir_recursive
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_make_dir_recursive, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.DirAccess.Bind_make_dir_recursive, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -795,12 +734,8 @@ Static version of [method make_dir_recursive]. Supports only absolute paths.
 */
 //go:nosplit
 func (self class) MakeDirRecursiveAbsolute(path String.Readable) Error.Code { //gd:DirAccess.make_dir_recursive_absolute
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.DirAccess.Bind_make_dir_recursive_absolute, frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.CallStatic[int64](gd.Global.Methods.DirAccess.Bind_make_dir_recursive_absolute, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -811,12 +746,8 @@ For a static equivalent, use [method FileAccess.file_exists].
 */
 //go:nosplit
 func (self class) FileExists(path String.Readable) bool { //gd:DirAccess.file_exists
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_file_exists, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.DirAccess.Bind_file_exists, gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -826,12 +757,8 @@ Returns whether the target directory exists. The argument can be relative to the
 */
 //go:nosplit
 func (self class) DirExists(path String.Readable) bool { //gd:DirAccess.dir_exists
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_dir_exists, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.DirAccess.Bind_dir_exists, gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -841,12 +768,8 @@ Static version of [method dir_exists]. Supports only absolute paths.
 */
 //go:nosplit
 func (self class) DirExistsAbsolute(path String.Readable) bool { //gd:DirAccess.dir_exists_absolute
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.DirAccess.Bind_dir_exists_absolute, frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.CallStatic[bool](gd.Global.Methods.DirAccess.Bind_dir_exists_absolute, gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -855,11 +778,8 @@ Returns the available space on the current directory's disk, in bytes. Returns [
 */
 //go:nosplit
 func (self class) GetSpaceLeft() int64 { //gd:DirAccess.get_space_left
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_get_space_left, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.DirAccess.Bind_get_space_left, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -870,14 +790,12 @@ Returns one of the [enum Error] code constants ([constant OK] on success).
 */
 //go:nosplit
 func (self class) Copy(from String.Readable, to String.Readable, chmod_flags int64) Error.Code { //gd:DirAccess.copy
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(from)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(to)))
-	callframe.Arg(frame, chmod_flags)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_copy, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.DirAccess.Bind_copy, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+		from        gdextension.String
+		to          gdextension.String
+		chmod_flags int64
+	}{gdextension.String(pointers.Get(gd.InternalString(from))[0]), gdextension.String(pointers.Get(gd.InternalString(to))[0]), chmod_flags}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -886,14 +804,12 @@ Static version of [method copy]. Supports only absolute paths.
 */
 //go:nosplit
 func (self class) CopyAbsolute(from String.Readable, to String.Readable, chmod_flags int64) Error.Code { //gd:DirAccess.copy_absolute
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(from)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(to)))
-	callframe.Arg(frame, chmod_flags)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.DirAccess.Bind_copy_absolute, frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.CallStatic[int64](gd.Global.Methods.DirAccess.Bind_copy_absolute, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+		from        gdextension.String
+		to          gdextension.String
+		chmod_flags int64
+	}{gdextension.String(pointers.Get(gd.InternalString(from))[0]), gdextension.String(pointers.Get(gd.InternalString(to))[0]), chmod_flags}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -903,13 +819,11 @@ Returns one of the [enum Error] code constants ([constant OK] on success).
 */
 //go:nosplit
 func (self class) Rename(from String.Readable, to String.Readable) Error.Code { //gd:DirAccess.rename
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(from)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(to)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_rename, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.DirAccess.Bind_rename, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+		from gdextension.String
+		to   gdextension.String
+	}{gdextension.String(pointers.Get(gd.InternalString(from))[0]), gdextension.String(pointers.Get(gd.InternalString(to))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -918,13 +832,11 @@ Static version of [method rename]. Supports only absolute paths.
 */
 //go:nosplit
 func (self class) RenameAbsolute(from String.Readable, to String.Readable) Error.Code { //gd:DirAccess.rename_absolute
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(from)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(to)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.DirAccess.Bind_rename_absolute, frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.CallStatic[int64](gd.Global.Methods.DirAccess.Bind_rename_absolute, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+		from gdextension.String
+		to   gdextension.String
+	}{gdextension.String(pointers.Get(gd.InternalString(from))[0]), gdextension.String(pointers.Get(gd.InternalString(to))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -935,12 +847,8 @@ Returns one of the [enum Error] code constants ([constant OK] on success).
 */
 //go:nosplit
 func (self class) Remove(path String.Readable) Error.Code { //gd:DirAccess.remove
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_remove, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.DirAccess.Bind_remove, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -949,12 +857,8 @@ Static version of [method remove]. Supports only absolute paths.
 */
 //go:nosplit
 func (self class) RemoveAbsolute(path String.Readable) Error.Code { //gd:DirAccess.remove_absolute
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.DirAccess.Bind_remove_absolute, frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.CallStatic[int64](gd.Global.Methods.DirAccess.Bind_remove_absolute, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -964,12 +868,8 @@ Returns [code]true[/code] if the file or directory is a symbolic link, directory
 */
 //go:nosplit
 func (self class) IsLink(path String.Readable) bool { //gd:DirAccess.is_link
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_is_link, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.DirAccess.Bind_is_link, gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -979,12 +879,8 @@ Returns target of the symbolic link.
 */
 //go:nosplit
 func (self class) ReadLink(path String.Readable) String.Readable { //gd:DirAccess.read_link
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_read_link, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.DirAccess.Bind_read_link, gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -995,13 +891,11 @@ Creates symbolic link between files or folders.
 */
 //go:nosplit
 func (self class) CreateLink(source String.Readable, target String.Readable) Error.Code { //gd:DirAccess.create_link
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(source)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(target)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_create_link, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.DirAccess.Bind_create_link, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+		source gdextension.String
+		target gdextension.String
+	}{gdextension.String(pointers.Get(gd.InternalString(source))[0]), gdextension.String(pointers.Get(gd.InternalString(target))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -1011,50 +905,32 @@ Returns [code]true[/code] if the directory is a macOS bundle.
 */
 //go:nosplit
 func (self class) IsBundle(path String.Readable) bool { //gd:DirAccess.is_bundle
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_is_bundle, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.DirAccess.Bind_is_bundle, gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIncludeNavigational(enable bool) { //gd:DirAccess.set_include_navigational
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_set_include_navigational, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.DirAccess.Bind_set_include_navigational, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) GetIncludeNavigational() bool { //gd:DirAccess.get_include_navigational
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_get_include_navigational, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.DirAccess.Bind_get_include_navigational, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIncludeHidden(enable bool) { //gd:DirAccess.set_include_hidden
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_set_include_hidden, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.DirAccess.Bind_set_include_hidden, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) GetIncludeHidden() bool { //gd:DirAccess.get_include_hidden
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_get_include_hidden, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.DirAccess.Bind_get_include_hidden, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1064,12 +940,8 @@ Returns [code]true[/code] if the file system or directory use case sensitive fil
 */
 //go:nosplit
 func (self class) IsCaseSensitive(path String.Readable) bool { //gd:DirAccess.is_case_sensitive
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirAccess.Bind_is_case_sensitive, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.DirAccess.Bind_is_case_sensitive, gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsDirAccess() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

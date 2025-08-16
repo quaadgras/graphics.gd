@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -52,6 +54,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -149,87 +153,56 @@ Get parent [Skeleton3D] node of the parent [SpringBoneSimulator3D] if found.
 */
 //go:nosplit
 func (self class) GetSkeleton() [1]gdclass.Skeleton3D { //gd:SpringBoneCollision3D.get_skeleton
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneCollision3D.Bind_get_skeleton, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Skeleton3D{gd.PointerMustAssertInstanceID[gdclass.Skeleton3D](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.SpringBoneCollision3D.Bind_get_skeleton, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.Skeleton3D{gd.PointerMustAssertInstanceID[gdclass.Skeleton3D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBoneName(bone_name String.Readable) { //gd:SpringBoneCollision3D.set_bone_name
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(bone_name)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneCollision3D.Bind_set_bone_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SpringBoneCollision3D.Bind_set_bone_name, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ bone_name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(bone_name))[0])}))
 }
 
 //go:nosplit
 func (self class) GetBoneName() String.Readable { //gd:SpringBoneCollision3D.get_bone_name
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneCollision3D.Bind_get_bone_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.SpringBoneCollision3D.Bind_get_bone_name, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBone(bone int64) { //gd:SpringBoneCollision3D.set_bone
-	var frame = callframe.New()
-	callframe.Arg(frame, bone)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneCollision3D.Bind_set_bone, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SpringBoneCollision3D.Bind_set_bone, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone int64 }{bone}))
 }
 
 //go:nosplit
 func (self class) GetBone() int64 { //gd:SpringBoneCollision3D.get_bone
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneCollision3D.Bind_get_bone, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.SpringBoneCollision3D.Bind_get_bone, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPositionOffset(offset Vector3.XYZ) { //gd:SpringBoneCollision3D.set_position_offset
-	var frame = callframe.New()
-	callframe.Arg(frame, offset)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneCollision3D.Bind_set_position_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SpringBoneCollision3D.Bind_set_position_offset, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ offset Vector3.XYZ }{offset}))
 }
 
 //go:nosplit
 func (self class) GetPositionOffset() Vector3.XYZ { //gd:SpringBoneCollision3D.get_position_offset
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneCollision3D.Bind_get_position_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.SpringBoneCollision3D.Bind_get_position_offset, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRotationOffset(offset Quaternion.IJKX) { //gd:SpringBoneCollision3D.set_rotation_offset
-	var frame = callframe.New()
-	callframe.Arg(frame, offset)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneCollision3D.Bind_set_rotation_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SpringBoneCollision3D.Bind_set_rotation_offset, 0|(gdextension.SizeQuaternion<<4), unsafe.Pointer(&struct{ offset Quaternion.IJKX }{offset}))
 }
 
 //go:nosplit
 func (self class) GetRotationOffset() Quaternion.IJKX { //gd:SpringBoneCollision3D.get_rotation_offset
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Quaternion.IJKX](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneCollision3D.Bind_get_rotation_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Quaternion.IJKX](self.AsObject(), gd.Global.Methods.SpringBoneCollision3D.Bind_get_rotation_offset, gdextension.SizeQuaternion, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsSpringBoneCollision3D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

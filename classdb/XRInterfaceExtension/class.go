@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -53,6 +55,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -1004,31 +1008,22 @@ func (class) _get_velocity_texture(impl func(ptr unsafe.Pointer) RID.Any) (cb gd
 
 //go:nosplit
 func (self class) GetColorTexture() RID.Any { //gd:XRInterfaceExtension.get_color_texture
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterfaceExtension.Bind_get_color_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.XRInterfaceExtension.Bind_get_color_texture, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetDepthTexture() RID.Any { //gd:XRInterfaceExtension.get_depth_texture
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterfaceExtension.Bind_get_depth_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.XRInterfaceExtension.Bind_get_depth_texture, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetVelocityTexture() RID.Any { //gd:XRInterfaceExtension.get_velocity_texture
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterfaceExtension.Bind_get_velocity_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.XRInterfaceExtension.Bind_get_velocity_texture, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1037,21 +1032,19 @@ Blits our render results to screen optionally applying lens distortion. This can
 */
 //go:nosplit
 func (self class) AddBlit(render_target RID.Any, src_rect Rect2.PositionSize, dst_rect Rect2i.PositionSize, use_layer bool, layer int64, apply_lens_distortion bool, eye_center Vector2.XY, k1 float64, k2 float64, upscale float64, aspect_ratio float64) { //gd:XRInterfaceExtension.add_blit
-	var frame = callframe.New()
-	callframe.Arg(frame, render_target)
-	callframe.Arg(frame, src_rect)
-	callframe.Arg(frame, dst_rect)
-	callframe.Arg(frame, use_layer)
-	callframe.Arg(frame, layer)
-	callframe.Arg(frame, apply_lens_distortion)
-	callframe.Arg(frame, eye_center)
-	callframe.Arg(frame, k1)
-	callframe.Arg(frame, k2)
-	callframe.Arg(frame, upscale)
-	callframe.Arg(frame, aspect_ratio)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterfaceExtension.Bind_add_blit, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.XRInterfaceExtension.Bind_add_blit, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRect2i<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeBool<<24)|(gdextension.SizeVector2<<28)|(gdextension.SizeFloat<<32)|(gdextension.SizeFloat<<36)|(gdextension.SizeFloat<<40)|(gdextension.SizeFloat<<44), unsafe.Pointer(&struct {
+		render_target         RID.Any
+		src_rect              Rect2.PositionSize
+		dst_rect              Rect2i.PositionSize
+		use_layer             bool
+		layer                 int64
+		apply_lens_distortion bool
+		eye_center            Vector2.XY
+		k1                    float64
+		k2                    float64
+		upscale               float64
+		aspect_ratio          float64
+	}{render_target, src_rect, dst_rect, use_layer, layer, apply_lens_distortion, eye_center, k1, k2, upscale, aspect_ratio}))
 }
 
 /*
@@ -1059,12 +1052,8 @@ Returns a valid [RID] for a texture to which we should render the current frame 
 */
 //go:nosplit
 func (self class) GetRenderTargetTexture(render_target RID.Any) RID.Any { //gd:XRInterfaceExtension.get_render_target_texture
-	var frame = callframe.New()
-	callframe.Arg(frame, render_target)
-	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRInterfaceExtension.Bind_get_render_target_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.XRInterfaceExtension.Bind_get_render_target_texture, gdextension.SizeRID|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ render_target RID.Any }{render_target}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsXRInterfaceExtension() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

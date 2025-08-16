@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -53,6 +55,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -553,13 +557,11 @@ global_library.add_animation("animation_name", animation_resource)
 */
 //go:nosplit
 func (self class) AddAnimationLibrary(name String.Name, library [1]gdclass.AnimationLibrary) Error.Code { //gd:AnimationMixer.add_animation_library
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
-	callframe.Arg(frame, pointers.Get(library[0])[0])
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_add_animation_library, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_add_animation_library, gdextension.SizeInt|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+		name    gdextension.StringName
+		library gdextension.Object
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Object(pointers.Get(library[0])[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -568,11 +570,7 @@ Removes the [AnimationLibrary] associated with the key [param name].
 */
 //go:nosplit
 func (self class) RemoveAnimationLibrary(name String.Name) { //gd:AnimationMixer.remove_animation_library
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_remove_animation_library, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_remove_animation_library, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
 }
 
 /*
@@ -580,12 +578,10 @@ Moves the [AnimationLibrary] associated with the key [param name] to the key [pa
 */
 //go:nosplit
 func (self class) RenameAnimationLibrary(name String.Name, newname String.Name) { //gd:AnimationMixer.rename_animation_library
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(newname)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_rename_animation_library, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_rename_animation_library, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+		name    gdextension.StringName
+		newname gdextension.StringName
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(newname))[0])}))
 }
 
 /*
@@ -593,12 +589,8 @@ Returns [code]true[/code] if the [AnimationMixer] stores an [AnimationLibrary] w
 */
 //go:nosplit
 func (self class) HasAnimationLibrary(name String.Name) bool { //gd:AnimationMixer.has_animation_library
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_has_animation_library, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_has_animation_library, gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -608,12 +600,8 @@ To get the [AnimationMixer]'s global animation library, use [code]get_animation_
 */
 //go:nosplit
 func (self class) GetAnimationLibrary(name String.Name) [1]gdclass.AnimationLibrary { //gd:AnimationMixer.get_animation_library
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_animation_library, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.AnimationLibrary{gd.PointerWithOwnershipTransferredToGo[gdclass.AnimationLibrary](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_get_animation_library, gdextension.SizeObject|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var ret = [1]gdclass.AnimationLibrary{gd.PointerWithOwnershipTransferredToGo[gdclass.AnimationLibrary](r_ret)}
 	return ret
 }
 
@@ -622,11 +610,8 @@ Returns the list of stored library keys.
 */
 //go:nosplit
 func (self class) GetAnimationLibraryList() Array.Contains[String.Name] { //gd:AnimationMixer.get_animation_library_list
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_animation_library_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_get_animation_library_list, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -635,12 +620,8 @@ Returns [code]true[/code] if the [AnimationMixer] stores an [Animation] with key
 */
 //go:nosplit
 func (self class) HasAnimation(name String.Name) bool { //gd:AnimationMixer.has_animation
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_has_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_has_animation, gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -649,12 +630,8 @@ Returns the [Animation] with the key [param name]. If the animation does not exi
 */
 //go:nosplit
 func (self class) GetAnimation(name String.Name) [1]gdclass.Animation { //gd:AnimationMixer.get_animation
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Animation{gd.PointerWithOwnershipTransferredToGo[gdclass.Animation](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_get_animation, gdextension.SizeObject|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var ret = [1]gdclass.Animation{gd.PointerWithOwnershipTransferredToGo[gdclass.Animation](r_ret)}
 	return ret
 }
 
@@ -663,182 +640,116 @@ Returns the list of stored animation keys.
 */
 //go:nosplit
 func (self class) GetAnimationList() Packed.Strings { //gd:AnimationMixer.get_animation_list
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_animation_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_get_animation_list, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetActive(active bool) { //gd:AnimationMixer.set_active
-	var frame = callframe.New()
-	callframe.Arg(frame, active)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_set_active, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_set_active, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ active bool }{active}))
 }
 
 //go:nosplit
 func (self class) IsActive() bool { //gd:AnimationMixer.is_active
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_is_active, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_is_active, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDeterministic(deterministic bool) { //gd:AnimationMixer.set_deterministic
-	var frame = callframe.New()
-	callframe.Arg(frame, deterministic)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_set_deterministic, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_set_deterministic, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ deterministic bool }{deterministic}))
 }
 
 //go:nosplit
 func (self class) IsDeterministic() bool { //gd:AnimationMixer.is_deterministic
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_is_deterministic, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_is_deterministic, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRootNode(path Path.ToNode) { //gd:AnimationMixer.set_root_node
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_set_root_node, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_set_root_node, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0])}))
 }
 
 //go:nosplit
 func (self class) GetRootNode() Path.ToNode { //gd:AnimationMixer.get_root_node
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_root_node, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_get_root_node, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCallbackModeProcess(mode AnimationCallbackModeProcess) { //gd:AnimationMixer.set_callback_mode_process
-	var frame = callframe.New()
-	callframe.Arg(frame, mode)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_set_callback_mode_process, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_set_callback_mode_process, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode AnimationCallbackModeProcess }{mode}))
 }
 
 //go:nosplit
 func (self class) GetCallbackModeProcess() AnimationCallbackModeProcess { //gd:AnimationMixer.get_callback_mode_process
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[AnimationCallbackModeProcess](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_callback_mode_process, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[AnimationCallbackModeProcess](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_get_callback_mode_process, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCallbackModeMethod(mode AnimationCallbackModeMethod) { //gd:AnimationMixer.set_callback_mode_method
-	var frame = callframe.New()
-	callframe.Arg(frame, mode)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_set_callback_mode_method, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_set_callback_mode_method, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode AnimationCallbackModeMethod }{mode}))
 }
 
 //go:nosplit
 func (self class) GetCallbackModeMethod() AnimationCallbackModeMethod { //gd:AnimationMixer.get_callback_mode_method
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[AnimationCallbackModeMethod](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_callback_mode_method, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[AnimationCallbackModeMethod](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_get_callback_mode_method, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCallbackModeDiscrete(mode AnimationCallbackModeDiscrete) { //gd:AnimationMixer.set_callback_mode_discrete
-	var frame = callframe.New()
-	callframe.Arg(frame, mode)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_set_callback_mode_discrete, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_set_callback_mode_discrete, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode AnimationCallbackModeDiscrete }{mode}))
 }
 
 //go:nosplit
 func (self class) GetCallbackModeDiscrete() AnimationCallbackModeDiscrete { //gd:AnimationMixer.get_callback_mode_discrete
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[AnimationCallbackModeDiscrete](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_callback_mode_discrete, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[AnimationCallbackModeDiscrete](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_get_callback_mode_discrete, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAudioMaxPolyphony(max_polyphony int64) { //gd:AnimationMixer.set_audio_max_polyphony
-	var frame = callframe.New()
-	callframe.Arg(frame, max_polyphony)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_set_audio_max_polyphony, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_set_audio_max_polyphony, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ max_polyphony int64 }{max_polyphony}))
 }
 
 //go:nosplit
 func (self class) GetAudioMaxPolyphony() int64 { //gd:AnimationMixer.get_audio_max_polyphony
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_audio_max_polyphony, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_get_audio_max_polyphony, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRootMotionTrack(path Path.ToNode) { //gd:AnimationMixer.set_root_motion_track
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_set_root_motion_track, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_set_root_motion_track, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0])}))
 }
 
 //go:nosplit
 func (self class) GetRootMotionTrack() Path.ToNode { //gd:AnimationMixer.get_root_motion_track
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_root_motion_track, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_get_root_motion_track, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRootMotionLocal(enabled bool) { //gd:AnimationMixer.set_root_motion_local
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_set_root_motion_local, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_set_root_motion_local, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsRootMotionLocal() bool { //gd:AnimationMixer.is_root_motion_local
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_is_root_motion_local, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_is_root_motion_local, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -888,11 +799,8 @@ func _process(delta):
 */
 //go:nosplit
 func (self class) GetRootMotionPosition() Vector3.XYZ { //gd:AnimationMixer.get_root_motion_position
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_root_motion_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_get_root_motion_position, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -912,11 +820,8 @@ func _process(delta):
 */
 //go:nosplit
 func (self class) GetRootMotionRotation() Quaternion.IJKX { //gd:AnimationMixer.get_root_motion_rotation
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Quaternion.IJKX](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_root_motion_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Quaternion.IJKX](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_get_root_motion_rotation, gdextension.SizeQuaternion, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -942,11 +847,8 @@ func _process(delta):
 */
 //go:nosplit
 func (self class) GetRootMotionScale() Vector3.XYZ { //gd:AnimationMixer.get_root_motion_scale
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_root_motion_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_get_root_motion_scale, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -971,11 +873,8 @@ However, if the animation loops, an unintended discrete change may occur, so thi
 */
 //go:nosplit
 func (self class) GetRootMotionPositionAccumulator() Vector3.XYZ { //gd:AnimationMixer.get_root_motion_position_accumulator
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_root_motion_position_accumulator, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_get_root_motion_position_accumulator, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1001,11 +900,8 @@ However, if the animation loops, an unintended discrete change may occur, so thi
 */
 //go:nosplit
 func (self class) GetRootMotionRotationAccumulator() Quaternion.IJKX { //gd:AnimationMixer.get_root_motion_rotation_accumulator
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Quaternion.IJKX](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_root_motion_rotation_accumulator, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Quaternion.IJKX](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_get_root_motion_rotation_accumulator, gdextension.SizeQuaternion, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1029,11 +925,8 @@ However, if the animation loops, an unintended discrete change may occur, so thi
 */
 //go:nosplit
 func (self class) GetRootMotionScaleAccumulator() Vector3.XYZ { //gd:AnimationMixer.get_root_motion_scale_accumulator
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_get_root_motion_scale_accumulator, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_get_root_motion_scale_accumulator, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1042,10 +935,7 @@ func (self class) GetRootMotionScaleAccumulator() Vector3.XYZ { //gd:AnimationMi
 */
 //go:nosplit
 func (self class) ClearCaches() { //gd:AnimationMixer.clear_caches
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_clear_caches, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_clear_caches, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1053,11 +943,7 @@ Manually advance the animations by the specified time (in seconds).
 */
 //go:nosplit
 func (self class) Advance(delta float64) { //gd:AnimationMixer.advance
-	var frame = callframe.New()
-	callframe.Arg(frame, delta)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_advance, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_advance, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ delta float64 }{delta}))
 }
 
 /*
@@ -1067,32 +953,23 @@ You can specify [param trans_type] as the curve for the interpolation. For bette
 */
 //go:nosplit
 func (self class) Capture(name String.Name, duration float64, trans_type Tween.TransitionType, ease_type Tween.EaseType) { //gd:AnimationMixer.capture
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
-	callframe.Arg(frame, duration)
-	callframe.Arg(frame, trans_type)
-	callframe.Arg(frame, ease_type)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_capture, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_capture, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
+		name       gdextension.StringName
+		duration   float64
+		trans_type Tween.TransitionType
+		ease_type  Tween.EaseType
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), duration, trans_type, ease_type}))
 }
 
 //go:nosplit
 func (self class) SetResetOnSaveEnabled(enabled bool) { //gd:AnimationMixer.set_reset_on_save_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_set_reset_on_save_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_set_reset_on_save_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsResetOnSaveEnabled() bool { //gd:AnimationMixer.is_reset_on_save_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_is_reset_on_save_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_is_reset_on_save_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1101,12 +978,8 @@ Returns the key of [param animation] or an empty [StringName] if not found.
 */
 //go:nosplit
 func (self class) FindAnimation(animation [1]gdclass.Animation) String.Name { //gd:AnimationMixer.find_animation
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(animation[0])[0])
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_find_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_find_animation, gdextension.SizeStringName|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ animation gdextension.Object }{gdextension.Object(pointers.Get(animation[0])[0])}))
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
@@ -1115,12 +988,8 @@ Returns the key for the [AnimationLibrary] that contains [param animation] or an
 */
 //go:nosplit
 func (self class) FindAnimationLibrary(animation [1]gdclass.Animation) String.Name { //gd:AnimationMixer.find_animation_library
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(animation[0])[0])
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationMixer.Bind_find_animation_library, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.AnimationMixer.Bind_find_animation_library, gdextension.SizeStringName|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ animation gdextension.Object }{gdextension.Object(pointers.Get(animation[0])[0])}))
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 func (self Instance) OnAnimationListChanged(cb func()) {

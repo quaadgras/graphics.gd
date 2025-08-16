@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -47,6 +49,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -124,59 +128,38 @@ func (self Instance) SetDescription(value string) {
 
 //go:nosplit
 func (self class) GetTrackerType() Type { //gd:XRTracker.get_tracker_type
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Type](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRTracker.Bind_get_tracker_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Type](self.AsObject(), gd.Global.Methods.XRTracker.Bind_get_tracker_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTrackerType(atype Type) { //gd:XRTracker.set_tracker_type
-	var frame = callframe.New()
-	callframe.Arg(frame, atype)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRTracker.Bind_set_tracker_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.XRTracker.Bind_set_tracker_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype Type }{atype}))
 }
 
 //go:nosplit
 func (self class) GetTrackerName() String.Name { //gd:XRTracker.get_tracker_name
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRTracker.Bind_get_tracker_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.XRTracker.Bind_get_tracker_name, gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTrackerName(name String.Name) { //gd:XRTracker.set_tracker_name
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRTracker.Bind_set_tracker_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.XRTracker.Bind_set_tracker_name, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
 }
 
 //go:nosplit
 func (self class) GetTrackerDesc() String.Readable { //gd:XRTracker.get_tracker_desc
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRTracker.Bind_get_tracker_desc, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.XRTracker.Bind_get_tracker_desc, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTrackerDesc(description String.Readable) { //gd:XRTracker.set_tracker_desc
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(description)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRTracker.Bind_set_tracker_desc, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.XRTracker.Bind_set_tracker_desc, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ description gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(description))[0])}))
 }
 func (self class) AsXRTracker() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsXRTracker() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

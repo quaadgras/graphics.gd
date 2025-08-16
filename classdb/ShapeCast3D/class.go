@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -54,6 +56,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -324,105 +328,66 @@ This method does nothing.
 */
 //go:nosplit
 func (self class) ResourceChanged(resource [1]gdclass.Resource) { //gd:ShapeCast3D.resource_changed
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(resource[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_resource_changed, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_resource_changed, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ resource gdextension.Object }{gdextension.Object(pointers.Get(resource[0])[0])}))
 }
 
 //go:nosplit
 func (self class) SetEnabled(enabled bool) { //gd:ShapeCast3D.set_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_set_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_set_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsEnabled() bool { //gd:ShapeCast3D.is_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_is_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_is_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShape(shape [1]gdclass.Shape3D) { //gd:ShapeCast3D.set_shape
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(shape[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_set_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_set_shape, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ shape gdextension.Object }{gdextension.Object(pointers.Get(shape[0])[0])}))
 }
 
 //go:nosplit
 func (self class) GetShape() [1]gdclass.Shape3D { //gd:ShapeCast3D.get_shape
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_get_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Shape3D{gd.PointerWithOwnershipTransferredToGo[gdclass.Shape3D](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_get_shape, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.Shape3D{gd.PointerWithOwnershipTransferredToGo[gdclass.Shape3D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTargetPosition(local_point Vector3.XYZ) { //gd:ShapeCast3D.set_target_position
-	var frame = callframe.New()
-	callframe.Arg(frame, local_point)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_set_target_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_set_target_position, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ local_point Vector3.XYZ }{local_point}))
 }
 
 //go:nosplit
 func (self class) GetTargetPosition() Vector3.XYZ { //gd:ShapeCast3D.get_target_position
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_get_target_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_get_target_position, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMargin(margin float64) { //gd:ShapeCast3D.set_margin
-	var frame = callframe.New()
-	callframe.Arg(frame, margin)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_set_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_set_margin, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ margin float64 }{margin}))
 }
 
 //go:nosplit
 func (self class) GetMargin() float64 { //gd:ShapeCast3D.get_margin
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_get_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_get_margin, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaxResults(max_results int64) { //gd:ShapeCast3D.set_max_results
-	var frame = callframe.New()
-	callframe.Arg(frame, max_results)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_set_max_results, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_set_max_results, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ max_results int64 }{max_results}))
 }
 
 //go:nosplit
 func (self class) GetMaxResults() int64 { //gd:ShapeCast3D.get_max_results
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_get_max_results, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_get_max_results, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -431,11 +396,8 @@ Returns whether any object is intersecting with the shape's vector (considering 
 */
 //go:nosplit
 func (self class) IsColliding() bool { //gd:ShapeCast3D.is_colliding
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_is_colliding, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_is_colliding, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -444,11 +406,8 @@ The number of collisions detected at the point of impact. Use this to iterate ov
 */
 //go:nosplit
 func (self class) GetCollisionCount() int64 { //gd:ShapeCast3D.get_collision_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_get_collision_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_get_collision_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -458,10 +417,7 @@ Updates the collision information for the shape immediately, without waiting for
 */
 //go:nosplit
 func (self class) ForceShapecastUpdate() { //gd:ShapeCast3D.force_shapecast_update
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_force_shapecast_update, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_force_shapecast_update, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -469,12 +425,8 @@ Returns the collided [Object] of one of the multiple collisions at [param index]
 */
 //go:nosplit
 func (self class) GetCollider(index int64) [1]gd.Object { //gd:ShapeCast3D.get_collider
-	var frame = callframe.New()
-	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_get_collider, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_get_collider, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret)}
 	return ret
 }
 
@@ -483,12 +435,8 @@ Returns the [RID] of the collided object of one of the multiple collisions at [p
 */
 //go:nosplit
 func (self class) GetColliderRid(index int64) RID.Any { //gd:ShapeCast3D.get_collider_rid
-	var frame = callframe.New()
-	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_get_collider_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_get_collider_rid, gdextension.SizeRID|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var ret = r_ret
 	return ret
 }
 
@@ -497,12 +445,8 @@ Returns the shape ID of the colliding shape of one of the multiple collisions at
 */
 //go:nosplit
 func (self class) GetColliderShape(index int64) int64 { //gd:ShapeCast3D.get_collider_shape
-	var frame = callframe.New()
-	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_get_collider_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_get_collider_shape, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var ret = r_ret
 	return ret
 }
 
@@ -512,12 +456,8 @@ Returns the collision point of one of the multiple collisions at [param index] w
 */
 //go:nosplit
 func (self class) GetCollisionPoint(index int64) Vector3.XYZ { //gd:ShapeCast3D.get_collision_point
-	var frame = callframe.New()
-	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_get_collision_point, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_get_collision_point, gdextension.SizeVector3|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var ret = r_ret
 	return ret
 }
 
@@ -526,12 +466,8 @@ Returns the normal of one of the multiple collisions at [param index] of the int
 */
 //go:nosplit
 func (self class) GetCollisionNormal(index int64) Vector3.XYZ { //gd:ShapeCast3D.get_collision_normal
-	var frame = callframe.New()
-	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_get_collision_normal, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_get_collision_normal, gdextension.SizeVector3|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var ret = r_ret
 	return ret
 }
 
@@ -540,11 +476,8 @@ Returns the fraction from this cast's origin to its [member target_position] of 
 */
 //go:nosplit
 func (self class) GetClosestCollisionSafeFraction() float64 { //gd:ShapeCast3D.get_closest_collision_safe_fraction
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_get_closest_collision_safe_fraction, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_get_closest_collision_safe_fraction, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -554,11 +487,8 @@ In ideal conditions this would be the same as [method get_closest_collision_safe
 */
 //go:nosplit
 func (self class) GetClosestCollisionUnsafeFraction() float64 { //gd:ShapeCast3D.get_closest_collision_unsafe_fraction
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_get_closest_collision_unsafe_fraction, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_get_closest_collision_unsafe_fraction, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -567,11 +497,7 @@ Adds a collision exception so the shape does not report collisions with the spec
 */
 //go:nosplit
 func (self class) AddExceptionRid(rid RID.Any) { //gd:ShapeCast3D.add_exception_rid
-	var frame = callframe.New()
-	callframe.Arg(frame, rid)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_add_exception_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_add_exception_rid, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
 }
 
 /*
@@ -579,11 +505,7 @@ Adds a collision exception so the shape does not report collisions with the spec
 */
 //go:nosplit
 func (self class) AddException(node [1]gdclass.CollisionObject3D) { //gd:ShapeCast3D.add_exception
-	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(node[0].AsObject()[0]))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_add_exception, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_add_exception, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(node[0].AsObject()[0]))}))
 }
 
 /*
@@ -591,11 +513,7 @@ Removes a collision exception so the shape does report collisions with the speci
 */
 //go:nosplit
 func (self class) RemoveExceptionRid(rid RID.Any) { //gd:ShapeCast3D.remove_exception_rid
-	var frame = callframe.New()
-	callframe.Arg(frame, rid)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_remove_exception_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_remove_exception_rid, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
 }
 
 /*
@@ -603,11 +521,7 @@ Removes a collision exception so the shape does report collisions with the speci
 */
 //go:nosplit
 func (self class) RemoveException(node [1]gdclass.CollisionObject3D) { //gd:ShapeCast3D.remove_exception
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(node[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_remove_exception, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_remove_exception, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(pointers.Get(node[0])[0])}))
 }
 
 /*
@@ -615,28 +529,18 @@ Removes all collision exceptions for this shape.
 */
 //go:nosplit
 func (self class) ClearExceptions() { //gd:ShapeCast3D.clear_exceptions
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_clear_exceptions, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_clear_exceptions, 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) SetCollisionMask(mask int64) { //gd:ShapeCast3D.set_collision_mask
-	var frame = callframe.New()
-	callframe.Arg(frame, mask)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_set_collision_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_set_collision_mask, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mask int64 }{mask}))
 }
 
 //go:nosplit
 func (self class) GetCollisionMask() int64 { //gd:ShapeCast3D.get_collision_mask
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_get_collision_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_get_collision_mask, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -645,12 +549,10 @@ Based on [param value], enables or disables the specified layer in the [member c
 */
 //go:nosplit
 func (self class) SetCollisionMaskValue(layer_number int64, value bool) { //gd:ShapeCast3D.set_collision_mask_value
-	var frame = callframe.New()
-	callframe.Arg(frame, layer_number)
-	callframe.Arg(frame, value)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_set_collision_mask_value, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_set_collision_mask_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		layer_number int64
+		value        bool
+	}{layer_number, value}))
 }
 
 /*
@@ -658,98 +560,63 @@ Returns whether or not the specified layer of the [member collision_mask] is ena
 */
 //go:nosplit
 func (self class) GetCollisionMaskValue(layer_number int64) bool { //gd:ShapeCast3D.get_collision_mask_value
-	var frame = callframe.New()
-	callframe.Arg(frame, layer_number)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_get_collision_mask_value, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_get_collision_mask_value, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_number int64 }{layer_number}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetExcludeParentBody(mask bool) { //gd:ShapeCast3D.set_exclude_parent_body
-	var frame = callframe.New()
-	callframe.Arg(frame, mask)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_set_exclude_parent_body, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_set_exclude_parent_body, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ mask bool }{mask}))
 }
 
 //go:nosplit
 func (self class) GetExcludeParentBody() bool { //gd:ShapeCast3D.get_exclude_parent_body
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_get_exclude_parent_body, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_get_exclude_parent_body, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollideWithAreas(enable bool) { //gd:ShapeCast3D.set_collide_with_areas
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_set_collide_with_areas, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_set_collide_with_areas, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsCollideWithAreasEnabled() bool { //gd:ShapeCast3D.is_collide_with_areas_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_is_collide_with_areas_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_is_collide_with_areas_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollideWithBodies(enable bool) { //gd:ShapeCast3D.set_collide_with_bodies
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_set_collide_with_bodies, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_set_collide_with_bodies, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsCollideWithBodiesEnabled() bool { //gd:ShapeCast3D.is_collide_with_bodies_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_is_collide_with_bodies_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_is_collide_with_bodies_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetCollisionResult() Array.Any { //gd:ShapeCast3D.get_collision_result
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_get_collision_result, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_get_collision_result, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDebugShapeCustomColor(debug_shape_custom_color Color.RGBA) { //gd:ShapeCast3D.set_debug_shape_custom_color
-	var frame = callframe.New()
-	callframe.Arg(frame, debug_shape_custom_color)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_set_debug_shape_custom_color, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_set_debug_shape_custom_color, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ debug_shape_custom_color Color.RGBA }{debug_shape_custom_color}))
 }
 
 //go:nosplit
 func (self class) GetDebugShapeCustomColor() Color.RGBA { //gd:ShapeCast3D.get_debug_shape_custom_color
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Color.RGBA](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_get_debug_shape_custom_color, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Color.RGBA](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_get_debug_shape_custom_color, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsShapeCast3D() Advanced           { return *((*Advanced)(unsafe.Pointer(&self))) }

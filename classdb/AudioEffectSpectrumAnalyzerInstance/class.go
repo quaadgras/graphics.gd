@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +51,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -125,14 +129,12 @@ Returns the magnitude of the frequencies from [param from_hz] to [param to_hz] i
 */
 //go:nosplit
 func (self class) GetMagnitudeForFrequencyRange(from_hz float64, to_hz float64, mode MagnitudeMode) Vector2.XY { //gd:AudioEffectSpectrumAnalyzerInstance.get_magnitude_for_frequency_range
-	var frame = callframe.New()
-	callframe.Arg(frame, from_hz)
-	callframe.Arg(frame, to_hz)
-	callframe.Arg(frame, mode)
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectSpectrumAnalyzerInstance.Bind_get_magnitude_for_frequency_range, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.AudioEffectSpectrumAnalyzerInstance.Bind_get_magnitude_for_frequency_range, gdextension.SizeVector2|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+		from_hz float64
+		to_hz   float64
+		mode    MagnitudeMode
+	}{from_hz, to_hz, mode}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsAudioEffectSpectrumAnalyzerInstance() Advanced {

@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +50,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -149,13 +153,11 @@ Start the stream in compression mode with the given [param buffer_size], if [par
 */
 //go:nosplit
 func (self class) StartCompression(use_deflate bool, buffer_size int64) Error.Code { //gd:StreamPeerGZIP.start_compression
-	var frame = callframe.New()
-	callframe.Arg(frame, use_deflate)
-	callframe.Arg(frame, buffer_size)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerGZIP.Bind_start_compression, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.StreamPeerGZIP.Bind_start_compression, gdextension.SizeInt|(gdextension.SizeBool<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		use_deflate bool
+		buffer_size int64
+	}{use_deflate, buffer_size}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -164,13 +166,11 @@ Start the stream in decompression mode with the given [param buffer_size], if [p
 */
 //go:nosplit
 func (self class) StartDecompression(use_deflate bool, buffer_size int64) Error.Code { //gd:StreamPeerGZIP.start_decompression
-	var frame = callframe.New()
-	callframe.Arg(frame, use_deflate)
-	callframe.Arg(frame, buffer_size)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerGZIP.Bind_start_decompression, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.StreamPeerGZIP.Bind_start_decompression, gdextension.SizeInt|(gdextension.SizeBool<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		use_deflate bool
+		buffer_size int64
+	}{use_deflate, buffer_size}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -179,11 +179,8 @@ Finalizes the stream, compressing or decompressing any buffered chunk left.
 */
 //go:nosplit
 func (self class) Finish() Error.Code { //gd:StreamPeerGZIP.finish
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerGZIP.Bind_finish, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.StreamPeerGZIP.Bind_finish, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -192,10 +189,7 @@ Clears this stream, resetting the internal state.
 */
 //go:nosplit
 func (self class) Clear() { //gd:StreamPeerGZIP.clear
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerGZIP.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.StreamPeerGZIP.Bind_clear, 0, unsafe.Pointer(&struct{}{}))
 }
 func (self class) AsStreamPeerGZIP() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsStreamPeerGZIP() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

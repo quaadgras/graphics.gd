@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -50,6 +52,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -198,20 +202,13 @@ func (self Instance) SetInteractionProfiles(value []any) {
 
 //go:nosplit
 func (self class) SetActionSets(action_sets Array.Any) { //gd:OpenXRActionMap.set_action_sets
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(action_sets)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionMap.Bind_set_action_sets, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRActionMap.Bind_set_action_sets, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ action_sets gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(action_sets))[0])}))
 }
 
 //go:nosplit
 func (self class) GetActionSets() Array.Any { //gd:OpenXRActionMap.get_action_sets
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionMap.Bind_get_action_sets, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.OpenXRActionMap.Bind_get_action_sets, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -220,11 +217,8 @@ Retrieve the number of actions sets in our action map.
 */
 //go:nosplit
 func (self class) GetActionSetCount() int64 { //gd:OpenXRActionMap.get_action_set_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionMap.Bind_get_action_set_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OpenXRActionMap.Bind_get_action_set_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -233,12 +227,8 @@ Retrieve an action set by name.
 */
 //go:nosplit
 func (self class) FindActionSet(name String.Readable) [1]gdclass.OpenXRActionSet { //gd:OpenXRActionMap.find_action_set
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionMap.Bind_find_action_set, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.OpenXRActionSet{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRActionSet](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.OpenXRActionMap.Bind_find_action_set, gdextension.SizeObject|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	var ret = [1]gdclass.OpenXRActionSet{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRActionSet](r_ret)}
 	return ret
 }
 
@@ -247,12 +237,8 @@ Retrieve the action set at this index.
 */
 //go:nosplit
 func (self class) GetActionSet(idx int64) [1]gdclass.OpenXRActionSet { //gd:OpenXRActionMap.get_action_set
-	var frame = callframe.New()
-	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionMap.Bind_get_action_set, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.OpenXRActionSet{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRActionSet](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.OpenXRActionMap.Bind_get_action_set, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var ret = [1]gdclass.OpenXRActionSet{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRActionSet](r_ret)}
 	return ret
 }
 
@@ -261,11 +247,7 @@ Add an action set.
 */
 //go:nosplit
 func (self class) AddActionSet(action_set [1]gdclass.OpenXRActionSet) { //gd:OpenXRActionMap.add_action_set
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(action_set[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionMap.Bind_add_action_set, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRActionMap.Bind_add_action_set, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ action_set gdextension.Object }{gdextension.Object(pointers.Get(action_set[0])[0])}))
 }
 
 /*
@@ -273,29 +255,18 @@ Remove an action set.
 */
 //go:nosplit
 func (self class) RemoveActionSet(action_set [1]gdclass.OpenXRActionSet) { //gd:OpenXRActionMap.remove_action_set
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(action_set[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionMap.Bind_remove_action_set, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRActionMap.Bind_remove_action_set, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ action_set gdextension.Object }{gdextension.Object(pointers.Get(action_set[0])[0])}))
 }
 
 //go:nosplit
 func (self class) SetInteractionProfiles(interaction_profiles Array.Any) { //gd:OpenXRActionMap.set_interaction_profiles
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(interaction_profiles)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionMap.Bind_set_interaction_profiles, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRActionMap.Bind_set_interaction_profiles, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ interaction_profiles gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(interaction_profiles))[0])}))
 }
 
 //go:nosplit
 func (self class) GetInteractionProfiles() Array.Any { //gd:OpenXRActionMap.get_interaction_profiles
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionMap.Bind_get_interaction_profiles, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.OpenXRActionMap.Bind_get_interaction_profiles, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -304,11 +275,8 @@ Retrieve the number of interaction profiles in our action map.
 */
 //go:nosplit
 func (self class) GetInteractionProfileCount() int64 { //gd:OpenXRActionMap.get_interaction_profile_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionMap.Bind_get_interaction_profile_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OpenXRActionMap.Bind_get_interaction_profile_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -317,12 +285,8 @@ Find an interaction profile by its name (path).
 */
 //go:nosplit
 func (self class) FindInteractionProfile(name String.Readable) [1]gdclass.OpenXRInteractionProfile { //gd:OpenXRActionMap.find_interaction_profile
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionMap.Bind_find_interaction_profile, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.OpenXRInteractionProfile{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRInteractionProfile](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.OpenXRActionMap.Bind_find_interaction_profile, gdextension.SizeObject|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	var ret = [1]gdclass.OpenXRInteractionProfile{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRInteractionProfile](r_ret)}
 	return ret
 }
 
@@ -331,12 +295,8 @@ Get the interaction profile at this index.
 */
 //go:nosplit
 func (self class) GetInteractionProfile(idx int64) [1]gdclass.OpenXRInteractionProfile { //gd:OpenXRActionMap.get_interaction_profile
-	var frame = callframe.New()
-	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionMap.Bind_get_interaction_profile, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.OpenXRInteractionProfile{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRInteractionProfile](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.OpenXRActionMap.Bind_get_interaction_profile, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var ret = [1]gdclass.OpenXRInteractionProfile{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRInteractionProfile](r_ret)}
 	return ret
 }
 
@@ -345,11 +305,7 @@ Add an interaction profile.
 */
 //go:nosplit
 func (self class) AddInteractionProfile(interaction_profile [1]gdclass.OpenXRInteractionProfile) { //gd:OpenXRActionMap.add_interaction_profile
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(interaction_profile[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionMap.Bind_add_interaction_profile, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRActionMap.Bind_add_interaction_profile, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ interaction_profile gdextension.Object }{gdextension.Object(pointers.Get(interaction_profile[0])[0])}))
 }
 
 /*
@@ -357,11 +313,7 @@ Remove an interaction profile.
 */
 //go:nosplit
 func (self class) RemoveInteractionProfile(interaction_profile [1]gdclass.OpenXRInteractionProfile) { //gd:OpenXRActionMap.remove_interaction_profile
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(interaction_profile[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionMap.Bind_remove_interaction_profile, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRActionMap.Bind_remove_interaction_profile, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ interaction_profile gdextension.Object }{gdextension.Object(pointers.Get(interaction_profile[0])[0])}))
 }
 
 /*
@@ -369,10 +321,7 @@ Setup this action set with our default actions.
 */
 //go:nosplit
 func (self class) CreateDefaultActionSets() { //gd:OpenXRActionMap.create_default_action_sets
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRActionMap.Bind_create_default_action_sets, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRActionMap.Bind_create_default_action_sets, 0, unsafe.Pointer(&struct{}{}))
 }
 func (self class) AsOpenXRActionMap() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsOpenXRActionMap() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

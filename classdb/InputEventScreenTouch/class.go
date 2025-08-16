@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +53,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -136,76 +140,47 @@ func (self Instance) SetDoubleTap(value bool) {
 
 //go:nosplit
 func (self class) SetIndex(index int64) { //gd:InputEventScreenTouch.set_index
-	var frame = callframe.New()
-	callframe.Arg(frame, index)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventScreenTouch.Bind_set_index, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputEventScreenTouch.Bind_set_index, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 }
 
 //go:nosplit
 func (self class) GetIndex() int64 { //gd:InputEventScreenTouch.get_index
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventScreenTouch.Bind_get_index, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.InputEventScreenTouch.Bind_get_index, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPosition(position Vector2.XY) { //gd:InputEventScreenTouch.set_position
-	var frame = callframe.New()
-	callframe.Arg(frame, position)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventScreenTouch.Bind_set_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputEventScreenTouch.Bind_set_position, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
 }
 
 //go:nosplit
 func (self class) GetPosition() Vector2.XY { //gd:InputEventScreenTouch.get_position
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventScreenTouch.Bind_get_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.InputEventScreenTouch.Bind_get_position, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPressed(pressed bool) { //gd:InputEventScreenTouch.set_pressed
-	var frame = callframe.New()
-	callframe.Arg(frame, pressed)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventScreenTouch.Bind_set_pressed, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputEventScreenTouch.Bind_set_pressed, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ pressed bool }{pressed}))
 }
 
 //go:nosplit
 func (self class) SetCanceled(canceled bool) { //gd:InputEventScreenTouch.set_canceled
-	var frame = callframe.New()
-	callframe.Arg(frame, canceled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventScreenTouch.Bind_set_canceled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputEventScreenTouch.Bind_set_canceled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ canceled bool }{canceled}))
 }
 
 //go:nosplit
 func (self class) SetDoubleTap(double_tap bool) { //gd:InputEventScreenTouch.set_double_tap
-	var frame = callframe.New()
-	callframe.Arg(frame, double_tap)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventScreenTouch.Bind_set_double_tap, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputEventScreenTouch.Bind_set_double_tap, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ double_tap bool }{double_tap}))
 }
 
 //go:nosplit
 func (self class) IsDoubleTap() bool { //gd:InputEventScreenTouch.is_double_tap
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventScreenTouch.Bind_is_double_tap, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.InputEventScreenTouch.Bind_is_double_tap, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsInputEventScreenTouch() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

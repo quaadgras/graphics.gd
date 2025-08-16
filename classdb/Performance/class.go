@@ -9,6 +9,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +50,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -295,12 +299,8 @@ See [method get_custom_monitor] to query custom performance monitors' values.
 */
 //go:nosplit
 func (self class) GetMonitor(monitor Monitor) float64 { //gd:Performance.get_monitor
-	var frame = callframe.New()
-	callframe.Arg(frame, monitor)
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_get_monitor, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Performance.Bind_get_monitor, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ monitor Monitor }{monitor}))
+	var ret = r_ret
 	return ret
 }
 
@@ -358,13 +358,11 @@ Callables are called with arguments supplied in argument array.
 */
 //go:nosplit
 func (self class) AddCustomMonitor(id String.Name, callable Callable.Function, arguments Array.Any) { //gd:Performance.add_custom_monitor
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(id)))
-	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callable)))
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(arguments)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_add_custom_monitor, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Performance.Bind_add_custom_monitor, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeArray<<12), unsafe.Pointer(&struct {
+		id        gdextension.StringName
+		callable  gdextension.Callable
+		arguments gdextension.Array
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(id))[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(callable))), gdextension.Array(pointers.Get(gd.InternalArray(arguments))[0])}))
 }
 
 /*
@@ -372,11 +370,7 @@ Removes the custom monitor with given [param id]. Prints an error if the given [
 */
 //go:nosplit
 func (self class) RemoveCustomMonitor(id String.Name) { //gd:Performance.remove_custom_monitor
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(id)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_remove_custom_monitor, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Performance.Bind_remove_custom_monitor, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ id gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(id))[0])}))
 }
 
 /*
@@ -384,12 +378,8 @@ Returns [code]true[/code] if custom monitor with the given [param id] is present
 */
 //go:nosplit
 func (self class) HasCustomMonitor(id String.Name) bool { //gd:Performance.has_custom_monitor
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(id)))
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_has_custom_monitor, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Performance.Bind_has_custom_monitor, gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ id gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(id))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -398,12 +388,8 @@ Returns the value of custom monitor with given [param id]. The callable is calle
 */
 //go:nosplit
 func (self class) GetCustomMonitor(id String.Name) variant.Any { //gd:Performance.get_custom_monitor
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(id)))
-	var r_ret = callframe.Ret[[3]uint64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_get_custom_monitor, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[3]uint64](self.AsObject(), gd.Global.Methods.Performance.Bind_get_custom_monitor, gdextension.SizeVariant|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ id gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(id))[0])}))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
 
@@ -412,11 +398,8 @@ Returns the last tick in which custom monitor was added/removed (in microseconds
 */
 //go:nosplit
 func (self class) GetMonitorModificationTime() int64 { //gd:Performance.get_monitor_modification_time
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_get_monitor_modification_time, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Performance.Bind_get_monitor_modification_time, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -425,11 +408,8 @@ Returns the names of active custom monitors in an [Array].
 */
 //go:nosplit
 func (self class) GetCustomMonitorNames() Array.Contains[String.Name] { //gd:Performance.get_custom_monitor_names
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Performance.Bind_get_custom_monitor_names, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Performance.Bind_get_custom_monitor_names, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 func (self class) Virtual(name string) reflect.Value {

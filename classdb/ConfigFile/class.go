@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -47,6 +49,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -327,13 +331,11 @@ Assigns a value to the specified key of the specified section. If either the sec
 */
 //go:nosplit
 func (self class) SetValue(section String.Readable, key String.Readable, value variant.Any) { //gd:ConfigFile.set_value
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(section)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(key)))
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_set_value, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ConfigFile.Bind_set_value, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
+		section gdextension.String
+		key     gdextension.String
+		value   gdextension.Variant
+	}{gdextension.String(pointers.Get(gd.InternalString(section))[0]), gdextension.String(pointers.Get(gd.InternalString(key))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
 }
 
 /*
@@ -341,14 +343,12 @@ Returns the current value for the specified section and key. If either the secti
 */
 //go:nosplit
 func (self class) GetValue(section String.Readable, key String.Readable, def variant.Any) variant.Any { //gd:ConfigFile.get_value
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(section)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(key)))
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(def)))
-	var r_ret = callframe.Ret[[3]uint64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_get_value, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[3]uint64](self.AsObject(), gd.Global.Methods.ConfigFile.Bind_get_value, gdextension.SizeVariant|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
+		section gdextension.String
+		key     gdextension.String
+		def     gdextension.Variant
+	}{gdextension.String(pointers.Get(gd.InternalString(section))[0]), gdextension.String(pointers.Get(gd.InternalString(key))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(def)))}))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
 
@@ -357,12 +357,8 @@ Returns [code]true[/code] if the specified section exists.
 */
 //go:nosplit
 func (self class) HasSection(section String.Readable) bool { //gd:ConfigFile.has_section
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(section)))
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_has_section, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.ConfigFile.Bind_has_section, gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ section gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(section))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -371,13 +367,11 @@ Returns [code]true[/code] if the specified section-key pair exists.
 */
 //go:nosplit
 func (self class) HasSectionKey(section String.Readable, key String.Readable) bool { //gd:ConfigFile.has_section_key
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(section)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(key)))
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_has_section_key, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.ConfigFile.Bind_has_section_key, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+		section gdextension.String
+		key     gdextension.String
+	}{gdextension.String(pointers.Get(gd.InternalString(section))[0]), gdextension.String(pointers.Get(gd.InternalString(key))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -386,11 +380,8 @@ Returns an array of all defined section identifiers.
 */
 //go:nosplit
 func (self class) GetSections() Packed.Strings { //gd:ConfigFile.get_sections
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_get_sections, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.ConfigFile.Bind_get_sections, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -399,12 +390,8 @@ Returns an array of all defined key identifiers in the specified section. Raises
 */
 //go:nosplit
 func (self class) GetSectionKeys(section String.Readable) Packed.Strings { //gd:ConfigFile.get_section_keys
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(section)))
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_get_section_keys, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.ConfigFile.Bind_get_section_keys, gdextension.SizePackedArray|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ section gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(section))[0])}))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -413,11 +400,7 @@ Deletes the specified section along with all the key-value pairs inside. Raises 
 */
 //go:nosplit
 func (self class) EraseSection(section String.Readable) { //gd:ConfigFile.erase_section
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(section)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_erase_section, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ConfigFile.Bind_erase_section, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ section gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(section))[0])}))
 }
 
 /*
@@ -425,12 +408,10 @@ Deletes the specified key in a section. Raises an error if either the section or
 */
 //go:nosplit
 func (self class) EraseSectionKey(section String.Readable, key String.Readable) { //gd:ConfigFile.erase_section_key
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(section)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(key)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_erase_section_key, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ConfigFile.Bind_erase_section_key, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+		section gdextension.String
+		key     gdextension.String
+	}{gdextension.String(pointers.Get(gd.InternalString(section))[0]), gdextension.String(pointers.Get(gd.InternalString(key))[0])}))
 }
 
 /*
@@ -439,12 +420,8 @@ Returns [constant OK] on success, or one of the other [enum Error] values if the
 */
 //go:nosplit
 func (self class) Load(path String.Readable) Error.Code { //gd:ConfigFile.load
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_load, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ConfigFile.Bind_load, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -454,12 +431,8 @@ Returns [constant OK] on success, or one of the other [enum Error] values if the
 */
 //go:nosplit
 func (self class) Parse(data String.Readable) Error.Code { //gd:ConfigFile.parse
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(data)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_parse, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ConfigFile.Bind_parse, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ data gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(data))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -469,12 +442,8 @@ Returns [constant OK] on success, or one of the other [enum Error] values if the
 */
 //go:nosplit
 func (self class) Save(path String.Readable) Error.Code { //gd:ConfigFile.save
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_save, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ConfigFile.Bind_save, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -483,11 +452,8 @@ Obtain the text version of this config file (the same text that would be written
 */
 //go:nosplit
 func (self class) EncodeToText() String.Readable { //gd:ConfigFile.encode_to_text
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_encode_to_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.ConfigFile.Bind_encode_to_text, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -497,13 +463,11 @@ Returns [constant OK] on success, or one of the other [enum Error] values if the
 */
 //go:nosplit
 func (self class) LoadEncrypted(path String.Readable, key Packed.Bytes) Error.Code { //gd:ConfigFile.load_encrypted
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key))))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_load_encrypted, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ConfigFile.Bind_load_encrypted, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
+		path gdextension.String
+		key  gdextension.PackedArray
+	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key))))}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -513,13 +477,11 @@ Returns [constant OK] on success, or one of the other [enum Error] values if the
 */
 //go:nosplit
 func (self class) LoadEncryptedPass(path String.Readable, password String.Readable) Error.Code { //gd:ConfigFile.load_encrypted_pass
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(password)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_load_encrypted_pass, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ConfigFile.Bind_load_encrypted_pass, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+		path     gdextension.String
+		password gdextension.String
+	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), gdextension.String(pointers.Get(gd.InternalString(password))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -529,13 +491,11 @@ Returns [constant OK] on success, or one of the other [enum Error] values if the
 */
 //go:nosplit
 func (self class) SaveEncrypted(path String.Readable, key Packed.Bytes) Error.Code { //gd:ConfigFile.save_encrypted
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key))))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_save_encrypted, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ConfigFile.Bind_save_encrypted, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
+		path gdextension.String
+		key  gdextension.PackedArray
+	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key))))}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -545,13 +505,11 @@ Returns [constant OK] on success, or one of the other [enum Error] values if the
 */
 //go:nosplit
 func (self class) SaveEncryptedPass(path String.Readable, password String.Readable) Error.Code { //gd:ConfigFile.save_encrypted_pass
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(password)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_save_encrypted_pass, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ConfigFile.Bind_save_encrypted_pass, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+		path     gdextension.String
+		password gdextension.String
+	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), gdextension.String(pointers.Get(gd.InternalString(password))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -560,10 +518,7 @@ Removes the entire contents of the config.
 */
 //go:nosplit
 func (self class) Clear() { //gd:ConfigFile.clear
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ConfigFile.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ConfigFile.Bind_clear, 0, unsafe.Pointer(&struct{}{}))
 }
 func (self class) AsConfigFile() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsConfigFile() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

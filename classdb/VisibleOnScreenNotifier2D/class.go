@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +53,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -121,20 +125,13 @@ func (self Instance) SetRect(value Rect2.PositionSize) {
 
 //go:nosplit
 func (self class) SetRect(rect Rect2.PositionSize) { //gd:VisibleOnScreenNotifier2D.set_rect
-	var frame = callframe.New()
-	callframe.Arg(frame, rect)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisibleOnScreenNotifier2D.Bind_set_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisibleOnScreenNotifier2D.Bind_set_rect, 0|(gdextension.SizeRect2<<4), unsafe.Pointer(&struct{ rect Rect2.PositionSize }{rect}))
 }
 
 //go:nosplit
 func (self class) GetRect() Rect2.PositionSize { //gd:VisibleOnScreenNotifier2D.get_rect
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Rect2.PositionSize](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisibleOnScreenNotifier2D.Bind_get_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Rect2.PositionSize](self.AsObject(), gd.Global.Methods.VisibleOnScreenNotifier2D.Bind_get_rect, gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -144,11 +141,8 @@ If [code]true[/code], the bounding rectangle is on the screen.
 */
 //go:nosplit
 func (self class) IsOnScreen() bool { //gd:VisibleOnScreenNotifier2D.is_on_screen
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisibleOnScreenNotifier2D.Bind_is_on_screen, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.VisibleOnScreenNotifier2D.Bind_is_on_screen, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self Instance) OnScreenEntered(cb func()) {

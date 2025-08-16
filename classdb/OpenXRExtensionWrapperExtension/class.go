@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -47,6 +49,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -1116,11 +1120,8 @@ Returns the created [OpenXRAPIExtension], which can be used to access the OpenXR
 */
 //go:nosplit
 func (self class) GetOpenxrApi() [1]gdclass.OpenXRAPIExtension { //gd:OpenXRExtensionWrapperExtension.get_openxr_api
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRExtensionWrapperExtension.Bind_get_openxr_api, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.OpenXRAPIExtension{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRAPIExtension](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.OpenXRExtensionWrapperExtension.Bind_get_openxr_api, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.OpenXRAPIExtension{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRAPIExtension](r_ret)}
 	return ret
 }
 
@@ -1129,10 +1130,7 @@ Registers the extension. This should happen at core module initialization level.
 */
 //go:nosplit
 func (self class) RegisterExtensionWrapper() { //gd:OpenXRExtensionWrapperExtension.register_extension_wrapper
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRExtensionWrapperExtension.Bind_register_extension_wrapper, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRExtensionWrapperExtension.Bind_register_extension_wrapper, 0, unsafe.Pointer(&struct{}{}))
 }
 func (self class) AsOpenXRExtensionWrapperExtension() Advanced {
 	return *((*Advanced)(unsafe.Pointer(&self)))

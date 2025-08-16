@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +53,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -225,30 +229,20 @@ Returns the [RID] of this link on the [NavigationServer2D].
 */
 //go:nosplit
 func (self class) GetRid() RID.Any { //gd:NavigationLink2D.get_rid
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationLink2D.Bind_get_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.NavigationLink2D.Bind_get_rid, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnabled(enabled bool) { //gd:NavigationLink2D.set_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationLink2D.Bind_set_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationLink2D.Bind_set_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsEnabled() bool { //gd:NavigationLink2D.is_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationLink2D.Bind_is_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.NavigationLink2D.Bind_is_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -257,11 +251,7 @@ Sets the [RID] of the navigation map this link should use. By default the link w
 */
 //go:nosplit
 func (self class) SetNavigationMap(navigation_map RID.Any) { //gd:NavigationLink2D.set_navigation_map
-	var frame = callframe.New()
-	callframe.Arg(frame, navigation_map)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationLink2D.Bind_set_navigation_map, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationLink2D.Bind_set_navigation_map, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ navigation_map RID.Any }{navigation_map}))
 }
 
 /*
@@ -269,49 +259,32 @@ Returns the current navigation map [RID] used by this link.
 */
 //go:nosplit
 func (self class) GetNavigationMap() RID.Any { //gd:NavigationLink2D.get_navigation_map
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationLink2D.Bind_get_navigation_map, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.NavigationLink2D.Bind_get_navigation_map, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBidirectional(bidirectional bool) { //gd:NavigationLink2D.set_bidirectional
-	var frame = callframe.New()
-	callframe.Arg(frame, bidirectional)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationLink2D.Bind_set_bidirectional, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationLink2D.Bind_set_bidirectional, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ bidirectional bool }{bidirectional}))
 }
 
 //go:nosplit
 func (self class) IsBidirectional() bool { //gd:NavigationLink2D.is_bidirectional
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationLink2D.Bind_is_bidirectional, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.NavigationLink2D.Bind_is_bidirectional, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNavigationLayers(navigation_layers int64) { //gd:NavigationLink2D.set_navigation_layers
-	var frame = callframe.New()
-	callframe.Arg(frame, navigation_layers)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationLink2D.Bind_set_navigation_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationLink2D.Bind_set_navigation_layers, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ navigation_layers int64 }{navigation_layers}))
 }
 
 //go:nosplit
 func (self class) GetNavigationLayers() int64 { //gd:NavigationLink2D.get_navigation_layers
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationLink2D.Bind_get_navigation_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.NavigationLink2D.Bind_get_navigation_layers, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -320,12 +293,10 @@ Based on [param value], enables or disables the specified layer in the [member n
 */
 //go:nosplit
 func (self class) SetNavigationLayerValue(layer_number int64, value bool) { //gd:NavigationLink2D.set_navigation_layer_value
-	var frame = callframe.New()
-	callframe.Arg(frame, layer_number)
-	callframe.Arg(frame, value)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationLink2D.Bind_set_navigation_layer_value, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationLink2D.Bind_set_navigation_layer_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		layer_number int64
+		value        bool
+	}{layer_number, value}))
 }
 
 /*
@@ -333,50 +304,32 @@ Returns whether or not the specified layer of the [member navigation_layers] bit
 */
 //go:nosplit
 func (self class) GetNavigationLayerValue(layer_number int64) bool { //gd:NavigationLink2D.get_navigation_layer_value
-	var frame = callframe.New()
-	callframe.Arg(frame, layer_number)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationLink2D.Bind_get_navigation_layer_value, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.NavigationLink2D.Bind_get_navigation_layer_value, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_number int64 }{layer_number}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStartPosition(position Vector2.XY) { //gd:NavigationLink2D.set_start_position
-	var frame = callframe.New()
-	callframe.Arg(frame, position)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationLink2D.Bind_set_start_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationLink2D.Bind_set_start_position, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
 }
 
 //go:nosplit
 func (self class) GetStartPosition() Vector2.XY { //gd:NavigationLink2D.get_start_position
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationLink2D.Bind_get_start_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.NavigationLink2D.Bind_get_start_position, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEndPosition(position Vector2.XY) { //gd:NavigationLink2D.set_end_position
-	var frame = callframe.New()
-	callframe.Arg(frame, position)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationLink2D.Bind_set_end_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationLink2D.Bind_set_end_position, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
 }
 
 //go:nosplit
 func (self class) GetEndPosition() Vector2.XY { //gd:NavigationLink2D.get_end_position
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationLink2D.Bind_get_end_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.NavigationLink2D.Bind_get_end_position, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -385,11 +338,7 @@ Sets the [member start_position] that is relative to the link from a global [par
 */
 //go:nosplit
 func (self class) SetGlobalStartPosition(position Vector2.XY) { //gd:NavigationLink2D.set_global_start_position
-	var frame = callframe.New()
-	callframe.Arg(frame, position)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationLink2D.Bind_set_global_start_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationLink2D.Bind_set_global_start_position, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
 }
 
 /*
@@ -397,11 +346,8 @@ Returns the [member start_position] that is relative to the link as a global pos
 */
 //go:nosplit
 func (self class) GetGlobalStartPosition() Vector2.XY { //gd:NavigationLink2D.get_global_start_position
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationLink2D.Bind_get_global_start_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.NavigationLink2D.Bind_get_global_start_position, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -410,11 +356,7 @@ Sets the [member end_position] that is relative to the link from a global [param
 */
 //go:nosplit
 func (self class) SetGlobalEndPosition(position Vector2.XY) { //gd:NavigationLink2D.set_global_end_position
-	var frame = callframe.New()
-	callframe.Arg(frame, position)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationLink2D.Bind_set_global_end_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationLink2D.Bind_set_global_end_position, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
 }
 
 /*
@@ -422,49 +364,32 @@ Returns the [member end_position] that is relative to the link as a global posit
 */
 //go:nosplit
 func (self class) GetGlobalEndPosition() Vector2.XY { //gd:NavigationLink2D.get_global_end_position
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationLink2D.Bind_get_global_end_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.NavigationLink2D.Bind_get_global_end_position, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnterCost(enter_cost float64) { //gd:NavigationLink2D.set_enter_cost
-	var frame = callframe.New()
-	callframe.Arg(frame, enter_cost)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationLink2D.Bind_set_enter_cost, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationLink2D.Bind_set_enter_cost, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ enter_cost float64 }{enter_cost}))
 }
 
 //go:nosplit
 func (self class) GetEnterCost() float64 { //gd:NavigationLink2D.get_enter_cost
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationLink2D.Bind_get_enter_cost, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.NavigationLink2D.Bind_get_enter_cost, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTravelCost(travel_cost float64) { //gd:NavigationLink2D.set_travel_cost
-	var frame = callframe.New()
-	callframe.Arg(frame, travel_cost)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationLink2D.Bind_set_travel_cost, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationLink2D.Bind_set_travel_cost, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ travel_cost float64 }{travel_cost}))
 }
 
 //go:nosplit
 func (self class) GetTravelCost() float64 { //gd:NavigationLink2D.get_travel_cost
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationLink2D.Bind_get_travel_cost, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.NavigationLink2D.Bind_get_travel_cost, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsNavigationLink2D() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

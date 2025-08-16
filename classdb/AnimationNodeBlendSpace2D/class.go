@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +53,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -266,13 +270,11 @@ Adds a new point that represents a [param node] at the position set by [param po
 */
 //go:nosplit
 func (self class) AddBlendPoint(node [1]gdclass.AnimationRootNode, pos Vector2.XY, at_index int64) { //gd:AnimationNodeBlendSpace2D.add_blend_point
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(node[0])[0])
-	callframe.Arg(frame, pos)
-	callframe.Arg(frame, at_index)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_add_blend_point, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_add_blend_point, 0|(gdextension.SizeObject<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+		node     gdextension.Object
+		pos      Vector2.XY
+		at_index int64
+	}{gdextension.Object(pointers.Get(node[0])[0]), pos, at_index}))
 }
 
 /*
@@ -280,12 +282,10 @@ Updates the position of the point at index [param point] in the blend space.
 */
 //go:nosplit
 func (self class) SetBlendPointPosition(point int64, pos Vector2.XY) { //gd:AnimationNodeBlendSpace2D.set_blend_point_position
-	var frame = callframe.New()
-	callframe.Arg(frame, point)
-	callframe.Arg(frame, pos)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_set_blend_point_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_set_blend_point_position, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
+		point int64
+		pos   Vector2.XY
+	}{point, pos}))
 }
 
 /*
@@ -293,12 +293,8 @@ Returns the position of the point at index [param point].
 */
 //go:nosplit
 func (self class) GetBlendPointPosition(point int64) Vector2.XY { //gd:AnimationNodeBlendSpace2D.get_blend_point_position
-	var frame = callframe.New()
-	callframe.Arg(frame, point)
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_get_blend_point_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_get_blend_point_position, gdextension.SizeVector2|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ point int64 }{point}))
+	var ret = r_ret
 	return ret
 }
 
@@ -307,12 +303,10 @@ Changes the [AnimationNode] referenced by the point at index [param point].
 */
 //go:nosplit
 func (self class) SetBlendPointNode(point int64, node [1]gdclass.AnimationRootNode) { //gd:AnimationNodeBlendSpace2D.set_blend_point_node
-	var frame = callframe.New()
-	callframe.Arg(frame, point)
-	callframe.Arg(frame, pointers.Get(node[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_set_blend_point_node, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_set_blend_point_node, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+		point int64
+		node  gdextension.Object
+	}{point, gdextension.Object(pointers.Get(node[0])[0])}))
 }
 
 /*
@@ -320,12 +314,8 @@ Returns the [AnimationRootNode] referenced by the point at index [param point].
 */
 //go:nosplit
 func (self class) GetBlendPointNode(point int64) [1]gdclass.AnimationRootNode { //gd:AnimationNodeBlendSpace2D.get_blend_point_node
-	var frame = callframe.New()
-	callframe.Arg(frame, point)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_get_blend_point_node, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.AnimationRootNode{gd.PointerWithOwnershipTransferredToGo[gdclass.AnimationRootNode](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_get_blend_point_node, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ point int64 }{point}))
+	var ret = [1]gdclass.AnimationRootNode{gd.PointerWithOwnershipTransferredToGo[gdclass.AnimationRootNode](r_ret)}
 	return ret
 }
 
@@ -334,11 +324,7 @@ Removes the point at index [param point] from the blend space.
 */
 //go:nosplit
 func (self class) RemoveBlendPoint(point int64) { //gd:AnimationNodeBlendSpace2D.remove_blend_point
-	var frame = callframe.New()
-	callframe.Arg(frame, point)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_remove_blend_point, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_remove_blend_point, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ point int64 }{point}))
 }
 
 /*
@@ -346,11 +332,8 @@ Returns the number of points in the blend space.
 */
 //go:nosplit
 func (self class) GetBlendPointCount() int64 { //gd:AnimationNodeBlendSpace2D.get_blend_point_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_get_blend_point_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_get_blend_point_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -359,14 +342,12 @@ Creates a new triangle using three points [param x], [param y], and [param z]. T
 */
 //go:nosplit
 func (self class) AddTriangle(x int64, y int64, z int64, at_index int64) { //gd:AnimationNodeBlendSpace2D.add_triangle
-	var frame = callframe.New()
-	callframe.Arg(frame, x)
-	callframe.Arg(frame, y)
-	callframe.Arg(frame, z)
-	callframe.Arg(frame, at_index)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_add_triangle, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_add_triangle, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
+		x        int64
+		y        int64
+		z        int64
+		at_index int64
+	}{x, y, z, at_index}))
 }
 
 /*
@@ -374,13 +355,11 @@ Returns the position of the point at index [param point] in the triangle of inde
 */
 //go:nosplit
 func (self class) GetTrianglePoint(triangle int64, point int64) int64 { //gd:AnimationNodeBlendSpace2D.get_triangle_point
-	var frame = callframe.New()
-	callframe.Arg(frame, triangle)
-	callframe.Arg(frame, point)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_get_triangle_point, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_get_triangle_point, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		triangle int64
+		point    int64
+	}{triangle, point}))
+	var ret = r_ret
 	return ret
 }
 
@@ -389,11 +368,7 @@ Removes the triangle at index [param triangle] from the blend space.
 */
 //go:nosplit
 func (self class) RemoveTriangle(triangle int64) { //gd:AnimationNodeBlendSpace2D.remove_triangle
-	var frame = callframe.New()
-	callframe.Arg(frame, triangle)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_remove_triangle, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_remove_triangle, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ triangle int64 }{triangle}))
 }
 
 /*
@@ -401,163 +376,104 @@ Returns the number of triangles in the blend space.
 */
 //go:nosplit
 func (self class) GetTriangleCount() int64 { //gd:AnimationNodeBlendSpace2D.get_triangle_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_get_triangle_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_get_triangle_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMinSpace(min_space Vector2.XY) { //gd:AnimationNodeBlendSpace2D.set_min_space
-	var frame = callframe.New()
-	callframe.Arg(frame, min_space)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_set_min_space, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_set_min_space, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ min_space Vector2.XY }{min_space}))
 }
 
 //go:nosplit
 func (self class) GetMinSpace() Vector2.XY { //gd:AnimationNodeBlendSpace2D.get_min_space
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_get_min_space, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_get_min_space, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaxSpace(max_space Vector2.XY) { //gd:AnimationNodeBlendSpace2D.set_max_space
-	var frame = callframe.New()
-	callframe.Arg(frame, max_space)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_set_max_space, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_set_max_space, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ max_space Vector2.XY }{max_space}))
 }
 
 //go:nosplit
 func (self class) GetMaxSpace() Vector2.XY { //gd:AnimationNodeBlendSpace2D.get_max_space
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_get_max_space, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_get_max_space, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSnap(snap Vector2.XY) { //gd:AnimationNodeBlendSpace2D.set_snap
-	var frame = callframe.New()
-	callframe.Arg(frame, snap)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_set_snap, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_set_snap, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ snap Vector2.XY }{snap}))
 }
 
 //go:nosplit
 func (self class) GetSnap() Vector2.XY { //gd:AnimationNodeBlendSpace2D.get_snap
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_get_snap, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_get_snap, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetXLabel(text String.Readable) { //gd:AnimationNodeBlendSpace2D.set_x_label
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_set_x_label, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_set_x_label, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(text))[0])}))
 }
 
 //go:nosplit
 func (self class) GetXLabel() String.Readable { //gd:AnimationNodeBlendSpace2D.get_x_label
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_get_x_label, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_get_x_label, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetYLabel(text String.Readable) { //gd:AnimationNodeBlendSpace2D.set_y_label
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_set_y_label, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_set_y_label, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(text))[0])}))
 }
 
 //go:nosplit
 func (self class) GetYLabel() String.Readable { //gd:AnimationNodeBlendSpace2D.get_y_label
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_get_y_label, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_get_y_label, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoTriangles(enable bool) { //gd:AnimationNodeBlendSpace2D.set_auto_triangles
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_set_auto_triangles, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_set_auto_triangles, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) GetAutoTriangles() bool { //gd:AnimationNodeBlendSpace2D.get_auto_triangles
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_get_auto_triangles, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_get_auto_triangles, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBlendMode(mode BlendMode) { //gd:AnimationNodeBlendSpace2D.set_blend_mode
-	var frame = callframe.New()
-	callframe.Arg(frame, mode)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_set_blend_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_set_blend_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode BlendMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetBlendMode() BlendMode { //gd:AnimationNodeBlendSpace2D.get_blend_mode
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[BlendMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_get_blend_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[BlendMode](self.AsObject(), gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_get_blend_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseSync(enable bool) { //gd:AnimationNodeBlendSpace2D.set_use_sync
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_set_use_sync, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_set_use_sync, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsUsingSync() bool { //gd:AnimationNodeBlendSpace2D.is_using_sync
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_is_using_sync, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.AnimationNodeBlendSpace2D.Bind_is_using_sync, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self Instance) OnTrianglesUpdated(cb func()) {

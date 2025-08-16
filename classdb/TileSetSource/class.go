@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +51,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -153,11 +157,8 @@ Returns how many tiles this atlas source defines (not including alternative tile
 */
 //go:nosplit
 func (self class) GetTilesCount() int64 { //gd:TileSetSource.get_tiles_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetSource.Bind_get_tiles_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TileSetSource.Bind_get_tiles_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -166,12 +167,8 @@ Returns the tile coordinates ID of the tile with index [param index].
 */
 //go:nosplit
 func (self class) GetTileId(index int64) Vector2i.XY { //gd:TileSetSource.get_tile_id
-	var frame = callframe.New()
-	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[Vector2i.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetSource.Bind_get_tile_id, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2i.XY](self.AsObject(), gd.Global.Methods.TileSetSource.Bind_get_tile_id, gdextension.SizeVector2i|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var ret = r_ret
 	return ret
 }
 
@@ -180,12 +177,8 @@ Returns if this atlas has a tile with coordinates ID [param atlas_coords].
 */
 //go:nosplit
 func (self class) HasTile(atlas_coords Vector2i.XY) bool { //gd:TileSetSource.has_tile
-	var frame = callframe.New()
-	callframe.Arg(frame, atlas_coords)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetSource.Bind_has_tile, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TileSetSource.Bind_has_tile, gdextension.SizeBool|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ atlas_coords Vector2i.XY }{atlas_coords}))
+	var ret = r_ret
 	return ret
 }
 
@@ -196,12 +189,8 @@ Returns -1 if there is not tile at the given coords.
 */
 //go:nosplit
 func (self class) GetAlternativeTilesCount(atlas_coords Vector2i.XY) int64 { //gd:TileSetSource.get_alternative_tiles_count
-	var frame = callframe.New()
-	callframe.Arg(frame, atlas_coords)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetSource.Bind_get_alternative_tiles_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TileSetSource.Bind_get_alternative_tiles_count, gdextension.SizeInt|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ atlas_coords Vector2i.XY }{atlas_coords}))
+	var ret = r_ret
 	return ret
 }
 
@@ -210,13 +199,11 @@ Returns the alternative ID for the tile with coordinates ID [param atlas_coords]
 */
 //go:nosplit
 func (self class) GetAlternativeTileId(atlas_coords Vector2i.XY, index int64) int64 { //gd:TileSetSource.get_alternative_tile_id
-	var frame = callframe.New()
-	callframe.Arg(frame, atlas_coords)
-	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetSource.Bind_get_alternative_tile_id, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TileSetSource.Bind_get_alternative_tile_id, gdextension.SizeInt|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		atlas_coords Vector2i.XY
+		index        int64
+	}{atlas_coords, index}))
+	var ret = r_ret
 	return ret
 }
 
@@ -225,13 +212,11 @@ Returns if the base tile at coordinates [param atlas_coords] has an alternative 
 */
 //go:nosplit
 func (self class) HasAlternativeTile(atlas_coords Vector2i.XY, alternative_tile int64) bool { //gd:TileSetSource.has_alternative_tile
-	var frame = callframe.New()
-	callframe.Arg(frame, atlas_coords)
-	callframe.Arg(frame, alternative_tile)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileSetSource.Bind_has_alternative_tile, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TileSetSource.Bind_has_alternative_tile, gdextension.SizeBool|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		atlas_coords     Vector2i.XY
+		alternative_tile int64
+	}{atlas_coords, alternative_tile}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsTileSetSource() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

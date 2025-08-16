@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +53,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -206,10 +210,7 @@ Queue resort of the contained children. This is called automatically anyway, but
 */
 //go:nosplit
 func (self class) QueueSort() { //gd:Container.queue_sort
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Container.Bind_queue_sort, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Container.Bind_queue_sort, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -217,12 +218,10 @@ Fit a child control in a given rect. This is mainly a helper for creating custom
 */
 //go:nosplit
 func (self class) FitChildInRect(child [1]gdclass.Control, rect Rect2.PositionSize) { //gd:Container.fit_child_in_rect
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(child[0])[0])
-	callframe.Arg(frame, rect)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Container.Bind_fit_child_in_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Container.Bind_fit_child_in_rect, 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2<<8), unsafe.Pointer(&struct {
+		child gdextension.Object
+		rect  Rect2.PositionSize
+	}{gdextension.Object(pointers.Get(child[0])[0]), rect}))
 }
 func (self Instance) OnPreSortChildren(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("pre_sort_children"), gd.NewCallable(cb), 0)

@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +50,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -165,13 +169,11 @@ If [param bind_address] is set to any valid address (e.g. [code]"192.168.1.101"[
 */
 //go:nosplit
 func (self class) Listen(port int64, bind_address String.Readable) Error.Code { //gd:TCPServer.listen
-	var frame = callframe.New()
-	callframe.Arg(frame, port)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(bind_address)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TCPServer.Bind_listen, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TCPServer.Bind_listen, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+		port         int64
+		bind_address gdextension.String
+	}{port, gdextension.String(pointers.Get(gd.InternalString(bind_address))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -180,11 +182,8 @@ Returns [code]true[/code] if a connection is available for taking.
 */
 //go:nosplit
 func (self class) IsConnectionAvailable() bool { //gd:TCPServer.is_connection_available
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TCPServer.Bind_is_connection_available, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TCPServer.Bind_is_connection_available, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -193,11 +192,8 @@ Returns [code]true[/code] if the server is currently listening for connections.
 */
 //go:nosplit
 func (self class) IsListening() bool { //gd:TCPServer.is_listening
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TCPServer.Bind_is_listening, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TCPServer.Bind_is_listening, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -206,11 +202,8 @@ Returns the local port this server is listening to.
 */
 //go:nosplit
 func (self class) GetLocalPort() int64 { //gd:TCPServer.get_local_port
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TCPServer.Bind_get_local_port, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TCPServer.Bind_get_local_port, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -219,11 +212,8 @@ If a connection is available, returns a StreamPeerTCP with the connection.
 */
 //go:nosplit
 func (self class) TakeConnection() [1]gdclass.StreamPeerTCP { //gd:TCPServer.take_connection
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TCPServer.Bind_take_connection, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.StreamPeerTCP{gd.PointerWithOwnershipTransferredToGo[gdclass.StreamPeerTCP](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.TCPServer.Bind_take_connection, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.StreamPeerTCP{gd.PointerWithOwnershipTransferredToGo[gdclass.StreamPeerTCP](r_ret)}
 	return ret
 }
 
@@ -232,10 +222,7 @@ Stops listening.
 */
 //go:nosplit
 func (self class) Stop() { //gd:TCPServer.stop
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TCPServer.Bind_stop, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TCPServer.Bind_stop, 0, unsafe.Pointer(&struct{}{}))
 }
 func (self class) AsTCPServer() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsTCPServer() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +51,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -126,12 +130,10 @@ Sets band's gain at the specified index, in dB.
 */
 //go:nosplit
 func (self class) SetBandGainDb(band_idx int64, volume_db float64) { //gd:AudioEffectEQ.set_band_gain_db
-	var frame = callframe.New()
-	callframe.Arg(frame, band_idx)
-	callframe.Arg(frame, volume_db)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectEQ.Bind_set_band_gain_db, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioEffectEQ.Bind_set_band_gain_db, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+		band_idx  int64
+		volume_db float64
+	}{band_idx, volume_db}))
 }
 
 /*
@@ -139,12 +141,8 @@ Returns the band's gain at the specified index, in dB.
 */
 //go:nosplit
 func (self class) GetBandGainDb(band_idx int64) float64 { //gd:AudioEffectEQ.get_band_gain_db
-	var frame = callframe.New()
-	callframe.Arg(frame, band_idx)
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectEQ.Bind_get_band_gain_db, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.AudioEffectEQ.Bind_get_band_gain_db, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ band_idx int64 }{band_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -153,11 +151,8 @@ Returns the number of bands of the equalizer.
 */
 //go:nosplit
 func (self class) GetBandCount() int64 { //gd:AudioEffectEQ.get_band_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectEQ.Bind_get_band_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.AudioEffectEQ.Bind_get_band_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsAudioEffectEQ() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

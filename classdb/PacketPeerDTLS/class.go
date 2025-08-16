@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -50,6 +52,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -145,10 +149,7 @@ Poll the connection to check for incoming packets. Call this frequently to updat
 */
 //go:nosplit
 func (self class) Poll() { //gd:PacketPeerDTLS.poll
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeerDTLS.Bind_poll, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PacketPeerDTLS.Bind_poll, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -156,14 +157,12 @@ Connects a [param packet_peer] beginning the DTLS handshake using the underlying
 */
 //go:nosplit
 func (self class) ConnectToPeer(packet_peer [1]gdclass.PacketPeerUDP, hostname String.Readable, client_options [1]gdclass.TLSOptions) Error.Code { //gd:PacketPeerDTLS.connect_to_peer
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(packet_peer[0])[0])
-	callframe.Arg(frame, pointers.Get(gd.InternalString(hostname)))
-	callframe.Arg(frame, pointers.Get(client_options[0])[0])
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeerDTLS.Bind_connect_to_peer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.PacketPeerDTLS.Bind_connect_to_peer, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
+		packet_peer    gdextension.Object
+		hostname       gdextension.String
+		client_options gdextension.Object
+	}{gdextension.Object(pointers.Get(packet_peer[0])[0]), gdextension.String(pointers.Get(gd.InternalString(hostname))[0]), gdextension.Object(pointers.Get(client_options[0])[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -172,11 +171,8 @@ Returns the status of the connection. See [enum Status] for values.
 */
 //go:nosplit
 func (self class) GetStatus() Status { //gd:PacketPeerDTLS.get_status
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Status](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeerDTLS.Bind_get_status, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Status](self.AsObject(), gd.Global.Methods.PacketPeerDTLS.Bind_get_status, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -185,10 +181,7 @@ Disconnects this peer, terminating the DTLS session.
 */
 //go:nosplit
 func (self class) DisconnectFromPeer() { //gd:PacketPeerDTLS.disconnect_from_peer
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeerDTLS.Bind_disconnect_from_peer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PacketPeerDTLS.Bind_disconnect_from_peer, 0, unsafe.Pointer(&struct{}{}))
 }
 func (self class) AsPacketPeerDTLS() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsPacketPeerDTLS() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

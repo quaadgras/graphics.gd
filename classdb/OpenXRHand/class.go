@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +51,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -144,96 +148,61 @@ func (self Instance) SetBoneUpdate(value BoneUpdate) {
 
 //go:nosplit
 func (self class) SetHand(hand Hands) { //gd:OpenXRHand.set_hand
-	var frame = callframe.New()
-	callframe.Arg(frame, hand)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRHand.Bind_set_hand, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRHand.Bind_set_hand, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ hand Hands }{hand}))
 }
 
 //go:nosplit
 func (self class) GetHand() Hands { //gd:OpenXRHand.get_hand
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Hands](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRHand.Bind_get_hand, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Hands](self.AsObject(), gd.Global.Methods.OpenXRHand.Bind_get_hand, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHandSkeleton(hand_skeleton Path.ToNode) { //gd:OpenXRHand.set_hand_skeleton
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(hand_skeleton)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRHand.Bind_set_hand_skeleton, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRHand.Bind_set_hand_skeleton, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ hand_skeleton gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(hand_skeleton))[0])}))
 }
 
 //go:nosplit
 func (self class) GetHandSkeleton() Path.ToNode { //gd:OpenXRHand.get_hand_skeleton
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRHand.Bind_get_hand_skeleton, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.OpenXRHand.Bind_get_hand_skeleton, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMotionRange(motion_range MotionRange) { //gd:OpenXRHand.set_motion_range
-	var frame = callframe.New()
-	callframe.Arg(frame, motion_range)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRHand.Bind_set_motion_range, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRHand.Bind_set_motion_range, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ motion_range MotionRange }{motion_range}))
 }
 
 //go:nosplit
 func (self class) GetMotionRange() MotionRange { //gd:OpenXRHand.get_motion_range
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[MotionRange](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRHand.Bind_get_motion_range, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[MotionRange](self.AsObject(), gd.Global.Methods.OpenXRHand.Bind_get_motion_range, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSkeletonRig(skeleton_rig SkeletonRig) { //gd:OpenXRHand.set_skeleton_rig
-	var frame = callframe.New()
-	callframe.Arg(frame, skeleton_rig)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRHand.Bind_set_skeleton_rig, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRHand.Bind_set_skeleton_rig, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ skeleton_rig SkeletonRig }{skeleton_rig}))
 }
 
 //go:nosplit
 func (self class) GetSkeletonRig() SkeletonRig { //gd:OpenXRHand.get_skeleton_rig
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[SkeletonRig](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRHand.Bind_get_skeleton_rig, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[SkeletonRig](self.AsObject(), gd.Global.Methods.OpenXRHand.Bind_get_skeleton_rig, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBoneUpdate(bone_update BoneUpdate) { //gd:OpenXRHand.set_bone_update
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_update)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRHand.Bind_set_bone_update, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRHand.Bind_set_bone_update, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_update BoneUpdate }{bone_update}))
 }
 
 //go:nosplit
 func (self class) GetBoneUpdate() BoneUpdate { //gd:OpenXRHand.get_bone_update
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[BoneUpdate](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRHand.Bind_get_bone_update, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[BoneUpdate](self.AsObject(), gd.Global.Methods.OpenXRHand.Bind_get_bone_update, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsOpenXRHand() Advanced            { return *((*Advanced)(unsafe.Pointer(&self))) }

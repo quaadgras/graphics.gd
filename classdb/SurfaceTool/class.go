@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -56,6 +58,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -419,11 +423,7 @@ By default, only 4 bone influences are used ([constant SKIN_4_WEIGHTS]).
 */
 //go:nosplit
 func (self class) SetSkinWeightCount(count SkinWeightCount) { //gd:SurfaceTool.set_skin_weight_count
-	var frame = callframe.New()
-	callframe.Arg(frame, count)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_skin_weight_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SurfaceTool.Bind_set_skin_weight_count, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ count SkinWeightCount }{count}))
 }
 
 /*
@@ -433,11 +433,8 @@ Returns [constant SKIN_8_WEIGHTS] if up to 8 influences are used.
 */
 //go:nosplit
 func (self class) GetSkinWeightCount() SkinWeightCount { //gd:SurfaceTool.get_skin_weight_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[SkinWeightCount](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_get_skin_weight_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[SkinWeightCount](self.AsObject(), gd.Global.Methods.SurfaceTool.Bind_get_skin_weight_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -447,12 +444,10 @@ Must be invoked after [method begin] and should be set before [method commit] or
 */
 //go:nosplit
 func (self class) SetCustomFormat(channel_index int64, format CustomFormat) { //gd:SurfaceTool.set_custom_format
-	var frame = callframe.New()
-	callframe.Arg(frame, channel_index)
-	callframe.Arg(frame, format)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_custom_format, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SurfaceTool.Bind_set_custom_format, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		channel_index int64
+		format        CustomFormat
+	}{channel_index, format}))
 }
 
 /*
@@ -460,12 +455,8 @@ Returns the format for custom [param channel_index] (currently up to 4). Returns
 */
 //go:nosplit
 func (self class) GetCustomFormat(channel_index int64) CustomFormat { //gd:SurfaceTool.get_custom_format
-	var frame = callframe.New()
-	callframe.Arg(frame, channel_index)
-	var r_ret = callframe.Ret[CustomFormat](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_get_custom_format, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[CustomFormat](self.AsObject(), gd.Global.Methods.SurfaceTool.Bind_get_custom_format, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ channel_index int64 }{channel_index}))
+	var ret = r_ret
 	return ret
 }
 
@@ -474,11 +465,7 @@ Called before adding any vertices. Takes the primitive type as an argument (e.g.
 */
 //go:nosplit
 func (self class) Begin(primitive Mesh.PrimitiveType) { //gd:SurfaceTool.begin
-	var frame = callframe.New()
-	callframe.Arg(frame, primitive)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_begin, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SurfaceTool.Bind_begin, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ primitive Mesh.PrimitiveType }{primitive}))
 }
 
 /*
@@ -486,11 +473,7 @@ Specifies the position of current vertex. Should be called after specifying othe
 */
 //go:nosplit
 func (self class) AddVertex(vertex Vector3.XYZ) { //gd:SurfaceTool.add_vertex
-	var frame = callframe.New()
-	callframe.Arg(frame, vertex)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_add_vertex, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SurfaceTool.Bind_add_vertex, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ vertex Vector3.XYZ }{vertex}))
 }
 
 /*
@@ -499,11 +482,7 @@ Specifies a [Color] to use for the [i]next[/i] vertex. If every vertex needs to 
 */
 //go:nosplit
 func (self class) SetColor(color Color.RGBA) { //gd:SurfaceTool.set_color
-	var frame = callframe.New()
-	callframe.Arg(frame, color)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_color, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SurfaceTool.Bind_set_color, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 /*
@@ -511,11 +490,7 @@ Specifies a normal to use for the [i]next[/i] vertex. If every vertex needs to h
 */
 //go:nosplit
 func (self class) SetNormal(normal Vector3.XYZ) { //gd:SurfaceTool.set_normal
-	var frame = callframe.New()
-	callframe.Arg(frame, normal)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_normal, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SurfaceTool.Bind_set_normal, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ normal Vector3.XYZ }{normal}))
 }
 
 /*
@@ -523,11 +498,7 @@ Specifies a tangent to use for the [i]next[/i] vertex. If every vertex needs to 
 */
 //go:nosplit
 func (self class) SetTangent(tangent Plane.NormalD) { //gd:SurfaceTool.set_tangent
-	var frame = callframe.New()
-	callframe.Arg(frame, tangent)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_tangent, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SurfaceTool.Bind_set_tangent, 0|(gdextension.SizePlane<<4), unsafe.Pointer(&struct{ tangent Plane.NormalD }{tangent}))
 }
 
 /*
@@ -535,11 +506,7 @@ Specifies a set of UV coordinates to use for the [i]next[/i] vertex. If every ve
 */
 //go:nosplit
 func (self class) SetUv(uv Vector2.XY) { //gd:SurfaceTool.set_uv
-	var frame = callframe.New()
-	callframe.Arg(frame, uv)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_uv, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SurfaceTool.Bind_set_uv, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ uv Vector2.XY }{uv}))
 }
 
 /*
@@ -547,11 +514,7 @@ Specifies an optional second set of UV coordinates to use for the [i]next[/i] ve
 */
 //go:nosplit
 func (self class) SetUv2(uv2 Vector2.XY) { //gd:SurfaceTool.set_uv2
-	var frame = callframe.New()
-	callframe.Arg(frame, uv2)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_uv2, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SurfaceTool.Bind_set_uv2, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ uv2 Vector2.XY }{uv2}))
 }
 
 /*
@@ -559,11 +522,7 @@ Specifies an array of bones to use for the [i]next[/i] vertex. [param bones] mus
 */
 //go:nosplit
 func (self class) SetBones(bones Packed.Array[int32]) { //gd:SurfaceTool.set_bones
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](bones)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_bones, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SurfaceTool.Bind_set_bones, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ bones gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](bones)))}))
 }
 
 /*
@@ -571,11 +530,7 @@ Specifies weight values to use for the [i]next[/i] vertex. [param weights] must 
 */
 //go:nosplit
 func (self class) SetWeights(weights Packed.Array[float32]) { //gd:SurfaceTool.set_weights
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](weights)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_weights, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SurfaceTool.Bind_set_weights, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ weights gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](weights)))}))
 }
 
 /*
@@ -584,12 +539,10 @@ Sets the custom value on this vertex for [param channel_index].
 */
 //go:nosplit
 func (self class) SetCustom(channel_index int64, custom_color Color.RGBA) { //gd:SurfaceTool.set_custom
-	var frame = callframe.New()
-	callframe.Arg(frame, channel_index)
-	callframe.Arg(frame, custom_color)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_custom, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SurfaceTool.Bind_set_custom, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
+		channel_index int64
+		custom_color  Color.RGBA
+	}{channel_index, custom_color}))
 }
 
 /*
@@ -598,11 +551,7 @@ Specifies the smooth group to use for the [i]next[/i] vertex. If this is never c
 */
 //go:nosplit
 func (self class) SetSmoothGroup(index int64) { //gd:SurfaceTool.set_smooth_group
-	var frame = callframe.New()
-	callframe.Arg(frame, index)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_smooth_group, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SurfaceTool.Bind_set_smooth_group, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 }
 
 /*
@@ -611,16 +560,14 @@ Requires the primitive type be set to [constant Mesh.PRIMITIVE_TRIANGLES].
 */
 //go:nosplit
 func (self class) AddTriangleFan(vertices Packed.Array[Vector3.XYZ], uvs Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], uv2s Packed.Array[Vector2.XY], normals Packed.Array[Vector3.XYZ], tangents Array.Contains[Plane.NormalD]) { //gd:SurfaceTool.add_triangle_fan
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](vertices)))
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs)))
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors)))
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uv2s)))
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](normals)))
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(tangents)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_add_triangle_fan, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SurfaceTool.Bind_add_triangle_fan, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizePackedArray<<16)|(gdextension.SizePackedArray<<20)|(gdextension.SizeArray<<24), unsafe.Pointer(&struct {
+		vertices gdextension.PackedArray
+		uvs      gdextension.PackedArray
+		colors   gdextension.PackedArray
+		uv2s     gdextension.PackedArray
+		normals  gdextension.PackedArray
+		tangents gdextension.Array
+	}{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](vertices))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uv2s))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](normals))), gdextension.Array(pointers.Get(gd.InternalArray(tangents))[0])}))
 }
 
 /*
@@ -628,11 +575,7 @@ Adds a vertex to index array if you are using indexed vertices. Does not need to
 */
 //go:nosplit
 func (self class) AddIndex(index int64) { //gd:SurfaceTool.add_index
-	var frame = callframe.New()
-	callframe.Arg(frame, index)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_add_index, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SurfaceTool.Bind_add_index, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 }
 
 /*
@@ -640,10 +583,7 @@ Shrinks the vertex array by creating an index array. This can improve performanc
 */
 //go:nosplit
 func (self class) Index() { //gd:SurfaceTool.index
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_index, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SurfaceTool.Bind_index, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -651,10 +591,7 @@ Removes the index array by expanding the vertex array.
 */
 //go:nosplit
 func (self class) Deindex() { //gd:SurfaceTool.deindex
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_deindex, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SurfaceTool.Bind_deindex, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -664,11 +601,7 @@ Generates normals from vertices so you do not have to do it manually. If [param 
 */
 //go:nosplit
 func (self class) GenerateNormals(flip bool) { //gd:SurfaceTool.generate_normals
-	var frame = callframe.New()
-	callframe.Arg(frame, flip)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_generate_normals, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SurfaceTool.Bind_generate_normals, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ flip bool }{flip}))
 }
 
 /*
@@ -676,10 +609,7 @@ Generates a tangent vector for each vertex. Requires that each vertex already ha
 */
 //go:nosplit
 func (self class) GenerateTangents() { //gd:SurfaceTool.generate_tangents
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_generate_tangents, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SurfaceTool.Bind_generate_tangents, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -687,10 +617,7 @@ Optimizes triangle sorting for performance. Requires that [method get_primitive_
 */
 //go:nosplit
 func (self class) OptimizeIndicesForCache() { //gd:SurfaceTool.optimize_indices_for_cache
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_optimize_indices_for_cache, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SurfaceTool.Bind_optimize_indices_for_cache, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -698,11 +625,8 @@ Returns the axis-aligned bounding box of the vertex positions.
 */
 //go:nosplit
 func (self class) GetAabb() AABB.PositionSize { //gd:SurfaceTool.get_aabb
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[AABB.PositionSize](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_get_aabb, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[AABB.PositionSize](self.AsObject(), gd.Global.Methods.SurfaceTool.Bind_get_aabb, gdextension.SizeAABB, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -711,13 +635,11 @@ Generates an LOD for a given [param nd_threshold] in linear units (square root o
 */
 //go:nosplit
 func (self class) GenerateLod(nd_threshold float64, target_index_count int64) Packed.Array[int32] { //gd:SurfaceTool.generate_lod
-	var frame = callframe.New()
-	callframe.Arg(frame, nd_threshold)
-	callframe.Arg(frame, target_index_count)
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_generate_lod, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.SurfaceTool.Bind_generate_lod, gdextension.SizePackedArray|(gdextension.SizeFloat<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		nd_threshold       float64
+		target_index_count int64
+	}{nd_threshold, target_index_count}))
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -726,11 +648,7 @@ Sets [Material] to be used by the [Mesh] you are constructing.
 */
 //go:nosplit
 func (self class) SetMaterial(material [1]gdclass.Material) { //gd:SurfaceTool.set_material
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(material[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_set_material, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SurfaceTool.Bind_set_material, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(pointers.Get(material[0])[0])}))
 }
 
 /*
@@ -738,11 +656,8 @@ Returns the type of mesh geometry, such as [constant Mesh.PRIMITIVE_TRIANGLES].
 */
 //go:nosplit
 func (self class) GetPrimitiveType() Mesh.PrimitiveType { //gd:SurfaceTool.get_primitive_type
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Mesh.PrimitiveType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_get_primitive_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Mesh.PrimitiveType](self.AsObject(), gd.Global.Methods.SurfaceTool.Bind_get_primitive_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -751,10 +666,7 @@ Clear all information passed into the surface tool so far.
 */
 //go:nosplit
 func (self class) Clear() { //gd:SurfaceTool.clear
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SurfaceTool.Bind_clear, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -762,12 +674,10 @@ Creates a vertex array from an existing [Mesh].
 */
 //go:nosplit
 func (self class) CreateFrom(existing [1]gdclass.Mesh, surface int64) { //gd:SurfaceTool.create_from
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(existing[0])[0])
-	callframe.Arg(frame, surface)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_create_from, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SurfaceTool.Bind_create_from, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		existing gdextension.Object
+		surface  int64
+	}{gdextension.Object(pointers.Get(existing[0])[0]), surface}))
 }
 
 /*
@@ -775,12 +685,10 @@ Creates this SurfaceTool from existing vertex arrays such as returned by [method
 */
 //go:nosplit
 func (self class) CreateFromArrays(arrays Array.Any, primitive_type Mesh.PrimitiveType) { //gd:SurfaceTool.create_from_arrays
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(arrays)))
-	callframe.Arg(frame, primitive_type)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_create_from_arrays, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SurfaceTool.Bind_create_from_arrays, 0|(gdextension.SizeArray<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		arrays         gdextension.Array
+		primitive_type Mesh.PrimitiveType
+	}{gdextension.Array(pointers.Get(gd.InternalArray(arrays))[0]), primitive_type}))
 }
 
 /*
@@ -788,13 +696,11 @@ Creates a vertex array from the specified blend shape of an existing [Mesh]. Thi
 */
 //go:nosplit
 func (self class) CreateFromBlendShape(existing [1]gdclass.Mesh, surface int64, blend_shape String.Readable) { //gd:SurfaceTool.create_from_blend_shape
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(existing[0])[0])
-	callframe.Arg(frame, surface)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(blend_shape)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_create_from_blend_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SurfaceTool.Bind_create_from_blend_shape, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
+		existing    gdextension.Object
+		surface     int64
+		blend_shape gdextension.String
+	}{gdextension.Object(pointers.Get(existing[0])[0]), surface, gdextension.String(pointers.Get(gd.InternalString(blend_shape))[0])}))
 }
 
 /*
@@ -802,13 +708,11 @@ Append vertices from a given [Mesh] surface onto the current vertex array with s
 */
 //go:nosplit
 func (self class) AppendFrom(existing [1]gdclass.Mesh, surface int64, transform Transform3D.BasisOrigin) { //gd:SurfaceTool.append_from
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(existing[0])[0])
-	callframe.Arg(frame, surface)
-	callframe.Arg(frame, gd.Transposed(transform))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_append_from, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SurfaceTool.Bind_append_from, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeTransform3D<<12), unsafe.Pointer(&struct {
+		existing  gdextension.Object
+		surface   int64
+		transform Transform3D.BasisOrigin
+	}{gdextension.Object(pointers.Get(existing[0])[0]), surface, gd.Transposed(transform)}))
 }
 
 /*
@@ -817,13 +721,11 @@ The [param flags] argument can be the bitwise OR of [constant Mesh.ARRAY_FLAG_US
 */
 //go:nosplit
 func (self class) Commit(existing [1]gdclass.ArrayMesh, flags int64) [1]gdclass.ArrayMesh { //gd:SurfaceTool.commit
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(existing[0])[0])
-	callframe.Arg(frame, flags)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_commit, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.ArrayMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.ArrayMesh](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.SurfaceTool.Bind_commit, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		existing gdextension.Object
+		flags    int64
+	}{gdextension.Object(pointers.Get(existing[0])[0]), flags}))
+	var ret = [1]gdclass.ArrayMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.ArrayMesh](r_ret)}
 	return ret
 }
 
@@ -832,11 +734,8 @@ Commits the data to the same format used by [method ArrayMesh.add_surface_from_a
 */
 //go:nosplit
 func (self class) CommitToArrays() Array.Any { //gd:SurfaceTool.commit_to_arrays
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SurfaceTool.Bind_commit_to_arrays, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.SurfaceTool.Bind_commit_to_arrays, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 func (self class) AsSurfaceTool() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

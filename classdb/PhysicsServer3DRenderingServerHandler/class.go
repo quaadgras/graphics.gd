@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +51,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -214,12 +218,10 @@ Sets the position for the [SoftBody3D] vertex at the index specified by [param v
 */
 //go:nosplit
 func (self class) SetVertex(vertex_id int64, vertex Vector3.XYZ) { //gd:PhysicsServer3DRenderingServerHandler.set_vertex
-	var frame = callframe.New()
-	callframe.Arg(frame, vertex_id)
-	callframe.Arg(frame, vertex)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3DRenderingServerHandler.Bind_set_vertex, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer3DRenderingServerHandler.Bind_set_vertex, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+		vertex_id int64
+		vertex    Vector3.XYZ
+	}{vertex_id, vertex}))
 }
 
 /*
@@ -227,12 +229,10 @@ Sets the normal for the [SoftBody3D] vertex at the index specified by [param ver
 */
 //go:nosplit
 func (self class) SetNormal(vertex_id int64, normal Vector3.XYZ) { //gd:PhysicsServer3DRenderingServerHandler.set_normal
-	var frame = callframe.New()
-	callframe.Arg(frame, vertex_id)
-	callframe.Arg(frame, normal)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3DRenderingServerHandler.Bind_set_normal, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer3DRenderingServerHandler.Bind_set_normal, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+		vertex_id int64
+		normal    Vector3.XYZ
+	}{vertex_id, normal}))
 }
 
 /*
@@ -240,11 +240,7 @@ Sets the bounding box for the [SoftBody3D].
 */
 //go:nosplit
 func (self class) SetAabb(aabb AABB.PositionSize) { //gd:PhysicsServer3DRenderingServerHandler.set_aabb
-	var frame = callframe.New()
-	callframe.Arg(frame, aabb)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3DRenderingServerHandler.Bind_set_aabb, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer3DRenderingServerHandler.Bind_set_aabb, 0|(gdextension.SizeAABB<<4), unsafe.Pointer(&struct{ aabb AABB.PositionSize }{aabb}))
 }
 func (self class) AsPhysicsServer3DRenderingServerHandler() Advanced {
 	return *((*Advanced)(unsafe.Pointer(&self)))

@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +53,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -193,12 +197,8 @@ ResourceSaver.save(cubemap_array, "res://cubemap_array.res", ResourceSaver.FLAG_
 */
 //go:nosplit
 func (self class) CreateFromImages(images Array.Contains[[1]gdclass.Image]) Error.Code { //gd:ImageTextureLayered.create_from_images
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(images)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTextureLayered.Bind_create_from_images, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ImageTextureLayered.Bind_create_from_images, gdextension.SizeInt|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ images gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(images))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -210,12 +210,10 @@ The update is immediate: it's synchronized with drawing.
 */
 //go:nosplit
 func (self class) UpdateLayer(image [1]gdclass.Image, layer int64) { //gd:ImageTextureLayered.update_layer
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(image[0])[0])
-	callframe.Arg(frame, layer)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTextureLayered.Bind_update_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ImageTextureLayered.Bind_update_layer, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		image gdextension.Object
+		layer int64
+	}{gdextension.Object(pointers.Get(image[0])[0]), layer}))
 }
 func (self class) AsImageTextureLayered() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsImageTextureLayered() Instance { return *((*Instance)(unsafe.Pointer(&self))) }

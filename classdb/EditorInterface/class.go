@@ -9,6 +9,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -71,6 +73,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -814,11 +818,7 @@ Restarts the editor. This closes the editor and then opens the same project. If 
 */
 //go:nosplit
 func (self class) RestartEditor(save bool) { //gd:EditorInterface.restart_editor
-	var frame = callframe.New()
-	callframe.Arg(frame, save)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_restart_editor, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_restart_editor, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ save bool }{save}))
 }
 
 /*
@@ -827,11 +827,8 @@ Returns the editor's [EditorCommandPalette] instance.
 */
 //go:nosplit
 func (self class) GetCommandPalette() [1]gdclass.EditorCommandPalette { //gd:EditorInterface.get_command_palette
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_command_palette, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.EditorCommandPalette{gd.PointerLifetimeBoundTo[gdclass.EditorCommandPalette](self.AsObject(), r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_get_command_palette, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.EditorCommandPalette{gd.PointerLifetimeBoundTo[gdclass.EditorCommandPalette](self.AsObject(), r_ret)}
 	return ret
 }
 
@@ -840,11 +837,8 @@ Returns the editor's [EditorFileSystem] instance.
 */
 //go:nosplit
 func (self class) GetResourceFilesystem() [1]gdclass.EditorFileSystem { //gd:EditorInterface.get_resource_filesystem
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_resource_filesystem, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.EditorFileSystem{gd.PointerLifetimeBoundTo[gdclass.EditorFileSystem](self.AsObject(), r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_get_resource_filesystem, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.EditorFileSystem{gd.PointerLifetimeBoundTo[gdclass.EditorFileSystem](self.AsObject(), r_ret)}
 	return ret
 }
 
@@ -853,11 +847,8 @@ Returns the [EditorPaths] singleton.
 */
 //go:nosplit
 func (self class) GetEditorPaths() [1]gdclass.EditorPaths { //gd:EditorInterface.get_editor_paths
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_editor_paths, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.EditorPaths{gd.PointerLifetimeBoundTo[gdclass.EditorPaths](self.AsObject(), r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_get_editor_paths, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.EditorPaths{gd.PointerLifetimeBoundTo[gdclass.EditorPaths](self.AsObject(), r_ret)}
 	return ret
 }
 
@@ -866,11 +857,8 @@ Returns the editor's [EditorResourcePreview] instance.
 */
 //go:nosplit
 func (self class) GetResourcePreviewer() [1]gdclass.EditorResourcePreview { //gd:EditorInterface.get_resource_previewer
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_resource_previewer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.EditorResourcePreview{gd.PointerLifetimeBoundTo[gdclass.EditorResourcePreview](self.AsObject(), r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_get_resource_previewer, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.EditorResourcePreview{gd.PointerLifetimeBoundTo[gdclass.EditorResourcePreview](self.AsObject(), r_ret)}
 	return ret
 }
 
@@ -879,11 +867,8 @@ Returns the editor's [EditorSelection] instance.
 */
 //go:nosplit
 func (self class) GetSelection() [1]gdclass.EditorSelection { //gd:EditorInterface.get_selection
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_selection, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.EditorSelection{gd.PointerLifetimeBoundTo[gdclass.EditorSelection](self.AsObject(), r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_get_selection, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.EditorSelection{gd.PointerLifetimeBoundTo[gdclass.EditorSelection](self.AsObject(), r_ret)}
 	return ret
 }
 
@@ -892,11 +877,8 @@ Returns the editor's [EditorSettings] instance.
 */
 //go:nosplit
 func (self class) GetEditorSettings() [1]gdclass.EditorSettings { //gd:EditorInterface.get_editor_settings
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_editor_settings, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.EditorSettings{gd.PointerWithOwnershipTransferredToGo[gdclass.EditorSettings](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_get_editor_settings, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.EditorSettings{gd.PointerWithOwnershipTransferredToGo[gdclass.EditorSettings](r_ret)}
 	return ret
 }
 
@@ -905,11 +887,8 @@ Returns the editor's [EditorToaster].
 */
 //go:nosplit
 func (self class) GetEditorToaster() [1]gdclass.EditorToaster { //gd:EditorInterface.get_editor_toaster
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_editor_toaster, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.EditorToaster{gd.PointerLifetimeBoundTo[gdclass.EditorToaster](self.AsObject(), r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_get_editor_toaster, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.EditorToaster{gd.PointerLifetimeBoundTo[gdclass.EditorToaster](self.AsObject(), r_ret)}
 	return ret
 }
 
@@ -918,11 +897,8 @@ Returns the editor's [EditorUndoRedoManager].
 */
 //go:nosplit
 func (self class) GetEditorUndoRedo() [1]gdclass.EditorUndoRedoManager { //gd:EditorInterface.get_editor_undo_redo
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_editor_undo_redo, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.EditorUndoRedoManager{gd.PointerLifetimeBoundTo[gdclass.EditorUndoRedoManager](self.AsObject(), r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_get_editor_undo_redo, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.EditorUndoRedoManager{gd.PointerLifetimeBoundTo[gdclass.EditorUndoRedoManager](self.AsObject(), r_ret)}
 	return ret
 }
 
@@ -931,13 +907,11 @@ Returns mesh previews rendered at the given size as an [Array] of [Texture2D]s.
 */
 //go:nosplit
 func (self class) MakeMeshPreviews(meshes Array.Contains[[1]gdclass.Mesh], preview_size int64) Array.Contains[[1]gdclass.Texture2D] { //gd:EditorInterface.make_mesh_previews
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(meshes)))
-	callframe.Arg(frame, preview_size)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_make_mesh_previews, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Texture2D]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_make_mesh_previews, gdextension.SizeArray|(gdextension.SizeArray<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		meshes       gdextension.Array
+		preview_size int64
+	}{gdextension.Array(pointers.Get(gd.InternalArray(meshes))[0]), preview_size}))
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Texture2D]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -946,12 +920,10 @@ Sets the enabled status of a plugin. The plugin name is the same as its director
 */
 //go:nosplit
 func (self class) SetPluginEnabled(plugin String.Readable, enabled bool) { //gd:EditorInterface.set_plugin_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(plugin)))
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_set_plugin_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_set_plugin_enabled, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		plugin  gdextension.String
+		enabled bool
+	}{gdextension.String(pointers.Get(gd.InternalString(plugin))[0]), enabled}))
 }
 
 /*
@@ -959,12 +931,8 @@ Returns [code]true[/code] if the specified [param plugin] is enabled. The plugin
 */
 //go:nosplit
 func (self class) IsPluginEnabled(plugin String.Readable) bool { //gd:EditorInterface.is_plugin_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(plugin)))
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_is_plugin_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_is_plugin_enabled, gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ plugin gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(plugin))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -974,11 +942,8 @@ Returns the editor's [Theme].
 */
 //go:nosplit
 func (self class) GetEditorTheme() [1]gdclass.Theme { //gd:EditorInterface.get_editor_theme
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_editor_theme, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Theme{gd.PointerWithOwnershipTransferredToGo[gdclass.Theme](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_get_editor_theme, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.Theme{gd.PointerWithOwnershipTransferredToGo[gdclass.Theme](r_ret)}
 	return ret
 }
 
@@ -988,11 +953,8 @@ Returns the main container of Godot editor's window. For example, you can use it
 */
 //go:nosplit
 func (self class) GetBaseControl() [1]gdclass.Control { //gd:EditorInterface.get_base_control
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_base_control, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Control{gd.PointerLifetimeBoundTo[gdclass.Control](self.AsObject(), r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_get_base_control, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.Control{gd.PointerLifetimeBoundTo[gdclass.Control](self.AsObject(), r_ret)}
 	return ret
 }
 
@@ -1003,11 +965,8 @@ Returns the editor control responsible for main screen plugins and tools. Use it
 */
 //go:nosplit
 func (self class) GetEditorMainScreen() [1]gdclass.VBoxContainer { //gd:EditorInterface.get_editor_main_screen
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_editor_main_screen, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.VBoxContainer{gd.PointerLifetimeBoundTo[gdclass.VBoxContainer](self.AsObject(), r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_get_editor_main_screen, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.VBoxContainer{gd.PointerLifetimeBoundTo[gdclass.VBoxContainer](self.AsObject(), r_ret)}
 	return ret
 }
 
@@ -1017,11 +976,8 @@ Returns the editor's [ScriptEditor] instance.
 */
 //go:nosplit
 func (self class) GetScriptEditor() [1]gdclass.ScriptEditor { //gd:EditorInterface.get_script_editor
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_script_editor, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.ScriptEditor{gd.PointerLifetimeBoundTo[gdclass.ScriptEditor](self.AsObject(), r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_get_script_editor, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.ScriptEditor{gd.PointerLifetimeBoundTo[gdclass.ScriptEditor](self.AsObject(), r_ret)}
 	return ret
 }
 
@@ -1030,11 +986,8 @@ Returns the 2D editor [SubViewport]. It does not have a camera. Instead, the vie
 */
 //go:nosplit
 func (self class) GetEditorViewport2d() [1]gdclass.SubViewport { //gd:EditorInterface.get_editor_viewport_2d
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_editor_viewport_2d, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.SubViewport{gd.PointerLifetimeBoundTo[gdclass.SubViewport](self.AsObject(), r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_get_editor_viewport_2d, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.SubViewport{gd.PointerLifetimeBoundTo[gdclass.SubViewport](self.AsObject(), r_ret)}
 	return ret
 }
 
@@ -1043,12 +996,8 @@ Returns the specified 3D editor [SubViewport], from [code]0[/code] to [code]3[/c
 */
 //go:nosplit
 func (self class) GetEditorViewport3d(idx int64) [1]gdclass.SubViewport { //gd:EditorInterface.get_editor_viewport_3d
-	var frame = callframe.New()
-	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_editor_viewport_3d, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.SubViewport{gd.PointerLifetimeBoundTo[gdclass.SubViewport](self.AsObject(), r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_get_editor_viewport_3d, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var ret = [1]gdclass.SubViewport{gd.PointerLifetimeBoundTo[gdclass.SubViewport](self.AsObject(), r_ret)}
 	return ret
 }
 
@@ -1057,29 +1006,18 @@ Sets the editor's current main screen to the one specified in [param name]. [par
 */
 //go:nosplit
 func (self class) SetMainScreenEditor(name String.Readable) { //gd:EditorInterface.set_main_screen_editor
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_set_main_screen_editor, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_set_main_screen_editor, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
 }
 
 //go:nosplit
 func (self class) SetDistractionFreeMode(enter bool) { //gd:EditorInterface.set_distraction_free_mode
-	var frame = callframe.New()
-	callframe.Arg(frame, enter)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_set_distraction_free_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_set_distraction_free_mode, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enter bool }{enter}))
 }
 
 //go:nosplit
 func (self class) IsDistractionFreeModeEnabled() bool { //gd:EditorInterface.is_distraction_free_mode_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_is_distraction_free_mode_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_is_distraction_free_mode_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1091,11 +1029,8 @@ Returns [code]true[/code] if multiple window support is enabled in the editor. M
 */
 //go:nosplit
 func (self class) IsMultiWindowEnabled() bool { //gd:EditorInterface.is_multi_window_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_is_multi_window_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_is_multi_window_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1105,11 +1040,8 @@ Returns the actual scale of the editor UI ([code]1.0[/code] being 100% scale). T
 */
 //go:nosplit
 func (self class) GetEditorScale() float64 { //gd:EditorInterface.get_editor_scale
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_editor_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_get_editor_scale, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1119,12 +1051,10 @@ See also [method Window.set_unparent_when_invisible].
 */
 //go:nosplit
 func (self class) PopupDialog(dialog [1]gdclass.Window, rect Rect2i.PositionSize) { //gd:EditorInterface.popup_dialog
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(dialog[0])[0])
-	callframe.Arg(frame, rect)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_popup_dialog, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_popup_dialog, 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2i<<8), unsafe.Pointer(&struct {
+		dialog gdextension.Object
+		rect   Rect2i.PositionSize
+	}{gdextension.Object(pointers.Get(dialog[0])[0]), rect}))
 }
 
 /*
@@ -1133,12 +1063,10 @@ See also [method Window.set_unparent_when_invisible].
 */
 //go:nosplit
 func (self class) PopupDialogCentered(dialog [1]gdclass.Window, minsize Vector2i.XY) { //gd:EditorInterface.popup_dialog_centered
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(dialog[0])[0])
-	callframe.Arg(frame, minsize)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_popup_dialog_centered, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_popup_dialog_centered, 0|(gdextension.SizeObject<<4)|(gdextension.SizeVector2i<<8), unsafe.Pointer(&struct {
+		dialog  gdextension.Object
+		minsize Vector2i.XY
+	}{gdextension.Object(pointers.Get(dialog[0])[0]), minsize}))
 }
 
 /*
@@ -1147,12 +1075,10 @@ See also [method Window.set_unparent_when_invisible].
 */
 //go:nosplit
 func (self class) PopupDialogCenteredRatio(dialog [1]gdclass.Window, ratio float64) { //gd:EditorInterface.popup_dialog_centered_ratio
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(dialog[0])[0])
-	callframe.Arg(frame, ratio)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_popup_dialog_centered_ratio, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_popup_dialog_centered_ratio, 0|(gdextension.SizeObject<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+		dialog gdextension.Object
+		ratio  float64
+	}{gdextension.Object(pointers.Get(dialog[0])[0]), ratio}))
 }
 
 /*
@@ -1161,13 +1087,11 @@ See also [method Window.set_unparent_when_invisible].
 */
 //go:nosplit
 func (self class) PopupDialogCenteredClamped(dialog [1]gdclass.Window, minsize Vector2i.XY, fallback_ratio float64) { //gd:EditorInterface.popup_dialog_centered_clamped
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(dialog[0])[0])
-	callframe.Arg(frame, minsize)
-	callframe.Arg(frame, fallback_ratio)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_popup_dialog_centered_clamped, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_popup_dialog_centered_clamped, 0|(gdextension.SizeObject<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+		dialog         gdextension.Object
+		minsize        Vector2i.XY
+		fallback_ratio float64
+	}{gdextension.Object(pointers.Get(dialog[0])[0]), minsize, fallback_ratio}))
 }
 
 /*
@@ -1177,11 +1101,8 @@ In order to get a reference to the [EditorFeatureProfile], you must load the fea
 */
 //go:nosplit
 func (self class) GetCurrentFeatureProfile() String.Readable { //gd:EditorInterface.get_current_feature_profile
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_current_feature_profile, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_get_current_feature_profile, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -1192,11 +1113,7 @@ A feature profile can be created programmatically using the [EditorFeatureProfil
 */
 //go:nosplit
 func (self class) SetCurrentFeatureProfile(profile_name String.Readable) { //gd:EditorInterface.set_current_feature_profile
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(profile_name)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_set_current_feature_profile, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_set_current_feature_profile, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ profile_name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(profile_name))[0])}))
 }
 
 /*
@@ -1216,13 +1133,11 @@ func _on_node_selected(node_path):
 */
 //go:nosplit
 func (self class) PopupNodeSelector(callback Callable.Function, valid_types Array.Contains[String.Name], current_value [1]gdclass.Node) { //gd:EditorInterface.popup_node_selector
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(valid_types)))
-	callframe.Arg(frame, pointers.Get(current_value[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_popup_node_selector, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_popup_node_selector, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
+		callback      gdextension.Callable
+		valid_types   gdextension.Array
+		current_value gdextension.Object
+	}{gdextension.Callable(pointers.Get(gd.InternalCallable(callback))), gdextension.Array(pointers.Get(gd.InternalArray(valid_types))[0]), gdextension.Object(pointers.Get(current_value[0])[0])}))
 }
 
 /*
@@ -1241,14 +1156,12 @@ func _on_property_selected(property_path):
 */
 //go:nosplit
 func (self class) PopupPropertySelector(obj [1]gd.Object, callback Callable.Function, type_filter Packed.Array[int32], current_value String.Readable) { //gd:EditorInterface.popup_property_selector
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(obj[0])[0])
-	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](type_filter)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(current_value)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_popup_property_selector, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_popup_property_selector, 0|(gdextension.SizeObject<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeString<<16), unsafe.Pointer(&struct {
+		obj           gdextension.Object
+		callback      gdextension.Callable
+		type_filter   gdextension.PackedArray
+		current_value gdextension.String
+	}{gdextension.Object(pointers.Get(obj[0])[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(callback))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](type_filter))), gdextension.String(pointers.Get(gd.InternalString(current_value))[0])}))
 }
 
 /*
@@ -1256,13 +1169,11 @@ Pops up an editor dialog for selecting a method from [param object]. The [param 
 */
 //go:nosplit
 func (self class) PopupMethodSelector(obj [1]gd.Object, callback Callable.Function, current_value String.Readable) { //gd:EditorInterface.popup_method_selector
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(obj[0])[0])
-	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(current_value)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_popup_method_selector, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_popup_method_selector, 0|(gdextension.SizeObject<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
+		obj           gdextension.Object
+		callback      gdextension.Callable
+		current_value gdextension.String
+	}{gdextension.Object(pointers.Get(obj[0])[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(callback))), gdextension.String(pointers.Get(gd.InternalString(current_value))[0])}))
 }
 
 /*
@@ -1270,12 +1181,10 @@ Pops up an editor dialog for quick selecting a resource file. The [param callbac
 */
 //go:nosplit
 func (self class) PopupQuickOpen(callback Callable.Function, base_types Array.Contains[String.Name]) { //gd:EditorInterface.popup_quick_open
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(base_types)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_popup_quick_open, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_popup_quick_open, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeArray<<8), unsafe.Pointer(&struct {
+		callback   gdextension.Callable
+		base_types gdextension.Array
+	}{gdextension.Callable(pointers.Get(gd.InternalCallable(callback))), gdextension.Array(pointers.Get(gd.InternalArray(base_types))[0])}))
 }
 
 /*
@@ -1289,15 +1198,13 @@ The [param type_blocklist] contains a list of type names, and the types in the b
 */
 //go:nosplit
 func (self class) PopupCreateDialog(callback Callable.Function, base_type String.Name, current_type String.Readable, dialog_title String.Readable, type_blocklist Array.Contains[String.Name]) { //gd:EditorInterface.popup_create_dialog
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(base_type)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(current_type)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(dialog_title)))
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(type_blocklist)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_popup_create_dialog, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_popup_create_dialog, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16)|(gdextension.SizeArray<<20), unsafe.Pointer(&struct {
+		callback       gdextension.Callable
+		base_type      gdextension.StringName
+		current_type   gdextension.String
+		dialog_title   gdextension.String
+		type_blocklist gdextension.Array
+	}{gdextension.Callable(pointers.Get(gd.InternalCallable(callback))), gdextension.StringName(pointers.Get(gd.InternalStringName(base_type))[0]), gdextension.String(pointers.Get(gd.InternalString(current_type))[0]), gdextension.String(pointers.Get(gd.InternalString(dialog_title))[0]), gdextension.Array(pointers.Get(gd.InternalArray(type_blocklist))[0])}))
 }
 
 /*
@@ -1306,11 +1213,8 @@ Returns the editor's [FileSystemDock] instance.
 */
 //go:nosplit
 func (self class) GetFileSystemDock() [1]gdclass.FileSystemDock { //gd:EditorInterface.get_file_system_dock
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_file_system_dock, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.FileSystemDock{gd.PointerLifetimeBoundTo[gdclass.FileSystemDock](self.AsObject(), r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_get_file_system_dock, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.FileSystemDock{gd.PointerLifetimeBoundTo[gdclass.FileSystemDock](self.AsObject(), r_ret)}
 	return ret
 }
 
@@ -1319,11 +1223,7 @@ Selects the file, with the path provided by [param file], in the FileSystem dock
 */
 //go:nosplit
 func (self class) SelectFile(file String.Readable) { //gd:EditorInterface.select_file
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(file)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_select_file, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_select_file, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ file gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(file))[0])}))
 }
 
 /*
@@ -1331,11 +1231,8 @@ Returns an array containing the paths of the currently selected files (and direc
 */
 //go:nosplit
 func (self class) GetSelectedPaths() Packed.Strings { //gd:EditorInterface.get_selected_paths
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_selected_paths, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_get_selected_paths, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -1344,11 +1241,8 @@ Returns the current path being viewed in the [FileSystemDock].
 */
 //go:nosplit
 func (self class) GetCurrentPath() String.Readable { //gd:EditorInterface.get_current_path
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_current_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_get_current_path, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -1357,11 +1251,8 @@ Returns the current directory being viewed in the [FileSystemDock]. If a file is
 */
 //go:nosplit
 func (self class) GetCurrentDirectory() String.Readable { //gd:EditorInterface.get_current_directory
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_current_directory, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_get_current_directory, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -1371,11 +1262,8 @@ Returns the editor's [EditorInspector] instance.
 */
 //go:nosplit
 func (self class) GetInspector() [1]gdclass.EditorInspector { //gd:EditorInterface.get_inspector
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_inspector, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.EditorInspector{gd.PointerLifetimeBoundTo[gdclass.EditorInspector](self.AsObject(), r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_get_inspector, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.EditorInspector{gd.PointerLifetimeBoundTo[gdclass.EditorInspector](self.AsObject(), r_ret)}
 	return ret
 }
 
@@ -1384,13 +1272,11 @@ Shows the given property on the given [param object] in the editor's Inspector d
 */
 //go:nosplit
 func (self class) InspectObject(obj [1]gd.Object, for_property String.Readable, inspector_only bool) { //gd:EditorInterface.inspect_object
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(obj[0])[0])
-	callframe.Arg(frame, pointers.Get(gd.InternalString(for_property)))
-	callframe.Arg(frame, inspector_only)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_inspect_object, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_inspect_object, 0|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+		obj            gdextension.Object
+		for_property   gdextension.String
+		inspector_only bool
+	}{gdextension.Object(pointers.Get(obj[0])[0]), gdextension.String(pointers.Get(gd.InternalString(for_property))[0]), inspector_only}))
 }
 
 /*
@@ -1398,11 +1284,7 @@ Edits the given [Resource]. If the resource is a [Script] you can also edit it w
 */
 //go:nosplit
 func (self class) EditResource(resource [1]gdclass.Resource) { //gd:EditorInterface.edit_resource
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(resource[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_edit_resource, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_edit_resource, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ resource gdextension.Object }{gdextension.Object(pointers.Get(resource[0])[0])}))
 }
 
 /*
@@ -1410,11 +1292,7 @@ Edits the given [Node]. The node will be also selected if it's inside the scene 
 */
 //go:nosplit
 func (self class) EditNode(node [1]gdclass.Node) { //gd:EditorInterface.edit_node
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(node[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_edit_node, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_edit_node, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(pointers.Get(node[0])[0])}))
 }
 
 /*
@@ -1422,14 +1300,12 @@ Edits the given [Script]. The line and column on which to open the script can al
 */
 //go:nosplit
 func (self class) EditScript(script [1]gdclass.Script, line int64, column int64, grab_focus bool) { //gd:EditorInterface.edit_script
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(script[0])[0])
-	callframe.Arg(frame, line)
-	callframe.Arg(frame, column)
-	callframe.Arg(frame, grab_focus)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_edit_script, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_edit_script, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+		script     gdextension.Object
+		line       int64
+		column     int64
+		grab_focus bool
+	}{gdextension.Object(pointers.Get(script[0])[0]), line, column, grab_focus}))
 }
 
 /*
@@ -1437,12 +1313,10 @@ Opens the scene at the given path. If [param set_inherited] is [code]true[/code]
 */
 //go:nosplit
 func (self class) OpenSceneFromPath(scene_filepath String.Readable, set_inherited bool) { //gd:EditorInterface.open_scene_from_path
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(scene_filepath)))
-	callframe.Arg(frame, set_inherited)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_open_scene_from_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_open_scene_from_path, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		scene_filepath gdextension.String
+		set_inherited  bool
+	}{gdextension.String(pointers.Get(gd.InternalString(scene_filepath))[0]), set_inherited}))
 }
 
 /*
@@ -1450,11 +1324,7 @@ Reloads the scene at the given path.
 */
 //go:nosplit
 func (self class) ReloadSceneFromPath(scene_filepath String.Readable) { //gd:EditorInterface.reload_scene_from_path
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(scene_filepath)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_reload_scene_from_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_reload_scene_from_path, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ scene_filepath gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(scene_filepath))[0])}))
 }
 
 /*
@@ -1462,11 +1332,8 @@ Returns an [Array] with the file paths of the currently opened scenes.
 */
 //go:nosplit
 func (self class) GetOpenScenes() Packed.Strings { //gd:EditorInterface.get_open_scenes
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_open_scenes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_get_open_scenes, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -1475,11 +1342,8 @@ Returns the edited (current) scene's root [Node].
 */
 //go:nosplit
 func (self class) GetEditedSceneRoot() [1]gdclass.Node { //gd:EditorInterface.get_edited_scene_root
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_edited_scene_root, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_get_edited_scene_root, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret)}
 	return ret
 }
 
@@ -1488,11 +1352,8 @@ Saves the currently active scene. Returns either [constant OK] or [constant ERR_
 */
 //go:nosplit
 func (self class) SaveScene() Error.Code { //gd:EditorInterface.save_scene
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_save_scene, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_save_scene, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -1501,12 +1362,10 @@ Saves the currently active scene as a file at [param path].
 */
 //go:nosplit
 func (self class) SaveSceneAs(path String.Readable, with_preview bool) { //gd:EditorInterface.save_scene_as
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	callframe.Arg(frame, with_preview)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_save_scene_as, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_save_scene_as, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		path         gdextension.String
+		with_preview bool
+	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), with_preview}))
 }
 
 /*
@@ -1514,10 +1373,7 @@ Saves all opened scenes in the editor.
 */
 //go:nosplit
 func (self class) SaveAllScenes() { //gd:EditorInterface.save_all_scenes
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_save_all_scenes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_save_all_scenes, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1525,10 +1381,7 @@ Marks the current scene tab as unsaved.
 */
 //go:nosplit
 func (self class) MarkSceneAsUnsaved() { //gd:EditorInterface.mark_scene_as_unsaved
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_mark_scene_as_unsaved, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_mark_scene_as_unsaved, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1536,10 +1389,7 @@ Plays the main scene.
 */
 //go:nosplit
 func (self class) PlayMainScene() { //gd:EditorInterface.play_main_scene
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_play_main_scene, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_play_main_scene, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1547,10 +1397,7 @@ Plays the currently active scene.
 */
 //go:nosplit
 func (self class) PlayCurrentScene() { //gd:EditorInterface.play_current_scene
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_play_current_scene, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_play_current_scene, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1558,11 +1405,7 @@ Plays the scene specified by its filepath.
 */
 //go:nosplit
 func (self class) PlayCustomScene(scene_filepath String.Readable) { //gd:EditorInterface.play_custom_scene
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(scene_filepath)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_play_custom_scene, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_play_custom_scene, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ scene_filepath gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(scene_filepath))[0])}))
 }
 
 /*
@@ -1570,10 +1413,7 @@ Stops the scene that is currently playing.
 */
 //go:nosplit
 func (self class) StopPlayingScene() { //gd:EditorInterface.stop_playing_scene
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_stop_playing_scene, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_stop_playing_scene, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1581,11 +1421,8 @@ Returns [code]true[/code] if a scene is currently being played, [code]false[/cod
 */
 //go:nosplit
 func (self class) IsPlayingScene() bool { //gd:EditorInterface.is_playing_scene
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_is_playing_scene, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_is_playing_scene, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1594,30 +1431,20 @@ Returns the name of the scene that is being played. If no scene is currently bei
 */
 //go:nosplit
 func (self class) GetPlayingScene() String.Readable { //gd:EditorInterface.get_playing_scene
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_get_playing_scene, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_get_playing_scene, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMovieMakerEnabled(enabled bool) { //gd:EditorInterface.set_movie_maker_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_set_movie_maker_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_set_movie_maker_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsMovieMakerEnabled() bool { //gd:EditorInterface.is_movie_maker_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInterface.Bind_is_movie_maker_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_is_movie_maker_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) Virtual(name string) reflect.Value {

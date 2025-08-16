@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +53,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -171,16 +175,14 @@ Create server that listens to connections via [param port]. The port needs to be
 */
 //go:nosplit
 func (self class) CreateServer(port int64, max_clients int64, max_channels int64, in_bandwidth int64, out_bandwidth int64) Error.Code { //gd:ENetMultiplayerPeer.create_server
-	var frame = callframe.New()
-	callframe.Arg(frame, port)
-	callframe.Arg(frame, max_clients)
-	callframe.Arg(frame, max_channels)
-	callframe.Arg(frame, in_bandwidth)
-	callframe.Arg(frame, out_bandwidth)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetMultiplayerPeer.Bind_create_server, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ENetMultiplayerPeer.Bind_create_server, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
+		port          int64
+		max_clients   int64
+		max_channels  int64
+		in_bandwidth  int64
+		out_bandwidth int64
+	}{port, max_clients, max_channels, in_bandwidth, out_bandwidth}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -189,17 +191,15 @@ Create client that connects to a server at [param address] using specified [para
 */
 //go:nosplit
 func (self class) CreateClient(address String.Readable, port int64, channel_count int64, in_bandwidth int64, out_bandwidth int64, local_port int64) Error.Code { //gd:ENetMultiplayerPeer.create_client
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(address)))
-	callframe.Arg(frame, port)
-	callframe.Arg(frame, channel_count)
-	callframe.Arg(frame, in_bandwidth)
-	callframe.Arg(frame, out_bandwidth)
-	callframe.Arg(frame, local_port)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetMultiplayerPeer.Bind_create_client, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ENetMultiplayerPeer.Bind_create_client, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24), unsafe.Pointer(&struct {
+		address       gdextension.String
+		port          int64
+		channel_count int64
+		in_bandwidth  int64
+		out_bandwidth int64
+		local_port    int64
+	}{gdextension.String(pointers.Get(gd.InternalString(address))[0]), port, channel_count, in_bandwidth, out_bandwidth, local_port}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -208,12 +208,8 @@ Initialize this [MultiplayerPeer] in mesh mode. The provided [param unique_id] w
 */
 //go:nosplit
 func (self class) CreateMesh(unique_id int64) Error.Code { //gd:ENetMultiplayerPeer.create_mesh
-	var frame = callframe.New()
-	callframe.Arg(frame, unique_id)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetMultiplayerPeer.Bind_create_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ENetMultiplayerPeer.Bind_create_mesh, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ unique_id int64 }{unique_id}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -223,13 +219,11 @@ Add a new remote peer with the given [param peer_id] connected to the given [par
 */
 //go:nosplit
 func (self class) AddMeshPeer(peer_id int64, host [1]gdclass.ENetConnection) Error.Code { //gd:ENetMultiplayerPeer.add_mesh_peer
-	var frame = callframe.New()
-	callframe.Arg(frame, peer_id)
-	callframe.Arg(frame, pointers.Get(host[0])[0])
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetMultiplayerPeer.Bind_add_mesh_peer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ENetMultiplayerPeer.Bind_add_mesh_peer, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+		peer_id int64
+		host    gdextension.Object
+	}{peer_id, gdextension.Object(pointers.Get(host[0])[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -238,20 +232,13 @@ The IP used when creating a server. This is set to the wildcard [code]"*"[/code]
 */
 //go:nosplit
 func (self class) SetBindIp(ip String.Readable) { //gd:ENetMultiplayerPeer.set_bind_ip
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(ip)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetMultiplayerPeer.Bind_set_bind_ip, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ENetMultiplayerPeer.Bind_set_bind_ip, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ ip gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(ip))[0])}))
 }
 
 //go:nosplit
 func (self class) GetHost() [1]gdclass.ENetConnection { //gd:ENetMultiplayerPeer.get_host
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetMultiplayerPeer.Bind_get_host, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.ENetConnection{gd.PointerWithOwnershipTransferredToGo[gdclass.ENetConnection](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.ENetMultiplayerPeer.Bind_get_host, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.ENetConnection{gd.PointerWithOwnershipTransferredToGo[gdclass.ENetConnection](r_ret)}
 	return ret
 }
 
@@ -260,12 +247,8 @@ Returns the [ENetPacketPeer] associated to the given [param id].
 */
 //go:nosplit
 func (self class) GetPeer(id int64) [1]gdclass.ENetPacketPeer { //gd:ENetMultiplayerPeer.get_peer
-	var frame = callframe.New()
-	callframe.Arg(frame, id)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetMultiplayerPeer.Bind_get_peer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.ENetPacketPeer{gd.PointerWithOwnershipTransferredToGo[gdclass.ENetPacketPeer](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.ENetMultiplayerPeer.Bind_get_peer, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var ret = [1]gdclass.ENetPacketPeer{gd.PointerWithOwnershipTransferredToGo[gdclass.ENetPacketPeer](r_ret)}
 	return ret
 }
 func (self class) AsENetMultiplayerPeer() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -50,6 +52,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -356,11 +360,8 @@ Returns the current format being used by this texture. See [enum Image.Format] f
 */
 //go:nosplit
 func (self class) GetFormat() Image.Format { //gd:TextureLayered.get_format
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Image.Format](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureLayered.Bind_get_format, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Image.Format](self.AsObject(), gd.Global.Methods.TextureLayered.Bind_get_format, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -369,11 +370,8 @@ Returns the [TextureLayered]'s type. The type determines how the data is accesse
 */
 //go:nosplit
 func (self class) GetLayeredType() LayeredType { //gd:TextureLayered.get_layered_type
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[LayeredType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureLayered.Bind_get_layered_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[LayeredType](self.AsObject(), gd.Global.Methods.TextureLayered.Bind_get_layered_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -382,11 +380,8 @@ Returns the width of the texture in pixels. Width is typically represented by th
 */
 //go:nosplit
 func (self class) GetWidth() int64 { //gd:TextureLayered.get_width
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureLayered.Bind_get_width, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextureLayered.Bind_get_width, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -395,11 +390,8 @@ Returns the height of the texture in pixels. Height is typically represented by 
 */
 //go:nosplit
 func (self class) GetHeight() int64 { //gd:TextureLayered.get_height
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureLayered.Bind_get_height, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextureLayered.Bind_get_height, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -408,11 +400,8 @@ Returns the number of referenced [Image]s.
 */
 //go:nosplit
 func (self class) GetLayers() int64 { //gd:TextureLayered.get_layers
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureLayered.Bind_get_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextureLayered.Bind_get_layers, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -421,11 +410,8 @@ Returns [code]true[/code] if the layers have generated mipmaps.
 */
 //go:nosplit
 func (self class) HasMipmaps() bool { //gd:TextureLayered.has_mipmaps
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureLayered.Bind_has_mipmaps, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextureLayered.Bind_has_mipmaps, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -434,12 +420,8 @@ Returns an [Image] resource with the data from specified [param layer].
 */
 //go:nosplit
 func (self class) GetLayerData(layer int64) [1]gdclass.Image { //gd:TextureLayered.get_layer_data
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextureLayered.Bind_get_layer_data, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.TextureLayered.Bind_get_layer_data, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer int64 }{layer}))
+	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
 	return ret
 }
 func (self class) AsTextureLayered() Advanced          { return *((*Advanced)(unsafe.Pointer(&self))) }

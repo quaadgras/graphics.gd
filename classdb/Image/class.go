@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +53,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -798,11 +802,8 @@ Returns the image's width.
 */
 //go:nosplit
 func (self class) GetWidth() int64 { //gd:Image.get_width
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_get_width, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Image.Bind_get_width, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -811,11 +812,8 @@ Returns the image's height.
 */
 //go:nosplit
 func (self class) GetHeight() int64 { //gd:Image.get_height
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_get_height, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Image.Bind_get_height, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -824,11 +822,8 @@ Returns the image's size (width and height).
 */
 //go:nosplit
 func (self class) GetSize() Vector2i.XY { //gd:Image.get_size
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2i.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2i.XY](self.AsObject(), gd.Global.Methods.Image.Bind_get_size, gdextension.SizeVector2i, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -837,11 +832,8 @@ Returns [code]true[/code] if the image has generated mipmaps.
 */
 //go:nosplit
 func (self class) HasMipmaps() bool { //gd:Image.has_mipmaps
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_has_mipmaps, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Image.Bind_has_mipmaps, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -850,11 +842,8 @@ Returns the image's format. See [enum Format] constants.
 */
 //go:nosplit
 func (self class) GetFormat() Format { //gd:Image.get_format
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Format](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_get_format, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Format](self.AsObject(), gd.Global.Methods.Image.Bind_get_format, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -863,11 +852,8 @@ Returns a copy of the image's raw data.
 */
 //go:nosplit
 func (self class) GetData() Packed.Bytes { //gd:Image.get_data
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_get_data, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.Image.Bind_get_data, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
 
@@ -876,11 +862,8 @@ Returns size (in bytes) of the image's raw data.
 */
 //go:nosplit
 func (self class) GetDataSize() int64 { //gd:Image.get_data_size
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_get_data_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Image.Bind_get_data_size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -889,11 +872,7 @@ Converts the image's format. See [enum Format] constants.
 */
 //go:nosplit
 func (self class) Convert(format Format) { //gd:Image.convert
-	var frame = callframe.New()
-	callframe.Arg(frame, format)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_convert, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Image.Bind_convert, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ format Format }{format}))
 }
 
 /*
@@ -901,11 +880,8 @@ Returns the number of mipmap levels or 0 if the image has no mipmaps. The larges
 */
 //go:nosplit
 func (self class) GetMipmapCount() int64 { //gd:Image.get_mipmap_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_get_mipmap_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Image.Bind_get_mipmap_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -914,12 +890,8 @@ Returns the offset where the image's mipmap with index [param mipmap] is stored 
 */
 //go:nosplit
 func (self class) GetMipmapOffset(mipmap int64) int64 { //gd:Image.get_mipmap_offset
-	var frame = callframe.New()
-	callframe.Arg(frame, mipmap)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_get_mipmap_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Image.Bind_get_mipmap_offset, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mipmap int64 }{mipmap}))
+	var ret = r_ret
 	return ret
 }
 
@@ -928,12 +900,10 @@ Resizes the image to the nearest power of 2 for the width and height. If [param 
 */
 //go:nosplit
 func (self class) ResizeToPo2(square bool, interpolation Interpolation) { //gd:Image.resize_to_po2
-	var frame = callframe.New()
-	callframe.Arg(frame, square)
-	callframe.Arg(frame, interpolation)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_resize_to_po2, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Image.Bind_resize_to_po2, 0|(gdextension.SizeBool<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		square        bool
+		interpolation Interpolation
+	}{square, interpolation}))
 }
 
 /*
@@ -941,13 +911,11 @@ Resizes the image to the given [param width] and [param height]. New pixels are 
 */
 //go:nosplit
 func (self class) Resize(width int64, height int64, interpolation Interpolation) { //gd:Image.resize
-	var frame = callframe.New()
-	callframe.Arg(frame, width)
-	callframe.Arg(frame, height)
-	callframe.Arg(frame, interpolation)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_resize, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Image.Bind_resize, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+		width         int64
+		height        int64
+		interpolation Interpolation
+	}{width, height, interpolation}))
 }
 
 /*
@@ -955,10 +923,7 @@ Shrinks the image by a factor of 2 on each axis (this divides the pixel count by
 */
 //go:nosplit
 func (self class) ShrinkX2() { //gd:Image.shrink_x2
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_shrink_x2, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Image.Bind_shrink_x2, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -966,12 +931,10 @@ Crops the image to the given [param width] and [param height]. If the specified 
 */
 //go:nosplit
 func (self class) Crop(width int64, height int64) { //gd:Image.crop
-	var frame = callframe.New()
-	callframe.Arg(frame, width)
-	callframe.Arg(frame, height)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_crop, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Image.Bind_crop, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		width  int64
+		height int64
+	}{width, height}))
 }
 
 /*
@@ -979,10 +942,7 @@ Flips the image horizontally.
 */
 //go:nosplit
 func (self class) FlipX() { //gd:Image.flip_x
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_flip_x, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Image.Bind_flip_x, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -990,10 +950,7 @@ Flips the image vertically.
 */
 //go:nosplit
 func (self class) FlipY() { //gd:Image.flip_y
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_flip_y, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Image.Bind_flip_y, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1002,12 +959,8 @@ It is possible to check if the image has mipmaps by calling [method has_mipmaps]
 */
 //go:nosplit
 func (self class) GenerateMipmaps(renormalize bool) Error.Code { //gd:Image.generate_mipmaps
-	var frame = callframe.New()
-	callframe.Arg(frame, renormalize)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_generate_mipmaps, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Image.Bind_generate_mipmaps, gdextension.SizeInt|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ renormalize bool }{renormalize}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -1016,10 +969,7 @@ Removes the image's mipmaps.
 */
 //go:nosplit
 func (self class) ClearMipmaps() { //gd:Image.clear_mipmaps
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_clear_mipmaps, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Image.Bind_clear_mipmaps, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1027,15 +977,13 @@ Creates an empty image of given size and format. See [enum Format] constants. If
 */
 //go:nosplit
 func (self class) Create(width int64, height int64, use_mipmaps bool, format Format) [1]gdclass.Image { //gd:Image.create
-	var frame = callframe.New()
-	callframe.Arg(frame, width)
-	callframe.Arg(frame, height)
-	callframe.Arg(frame, use_mipmaps)
-	callframe.Arg(frame, format)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.Image.Bind_create, frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.CallStatic[gd.EnginePointer](gd.Global.Methods.Image.Bind_create, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
+		width       int64
+		height      int64
+		use_mipmaps bool
+		format      Format
+	}{width, height, use_mipmaps, format}))
+	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
 	return ret
 }
 
@@ -1044,15 +992,13 @@ Creates an empty image of given size and format. See [enum Format] constants. If
 */
 //go:nosplit
 func (self class) CreateEmpty(width int64, height int64, use_mipmaps bool, format Format) [1]gdclass.Image { //gd:Image.create_empty
-	var frame = callframe.New()
-	callframe.Arg(frame, width)
-	callframe.Arg(frame, height)
-	callframe.Arg(frame, use_mipmaps)
-	callframe.Arg(frame, format)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.Image.Bind_create_empty, frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.CallStatic[gd.EnginePointer](gd.Global.Methods.Image.Bind_create_empty, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
+		width       int64
+		height      int64
+		use_mipmaps bool
+		format      Format
+	}{width, height, use_mipmaps, format}))
+	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
 	return ret
 }
 
@@ -1061,16 +1007,14 @@ Creates a new image of given size and format. See [enum Format] constants. Fills
 */
 //go:nosplit
 func (self class) CreateFromData(width int64, height int64, use_mipmaps bool, format Format, data Packed.Bytes) [1]gdclass.Image { //gd:Image.create_from_data
-	var frame = callframe.New()
-	callframe.Arg(frame, width)
-	callframe.Arg(frame, height)
-	callframe.Arg(frame, use_mipmaps)
-	callframe.Arg(frame, format)
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.Image.Bind_create_from_data, frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.CallStatic[gd.EnginePointer](gd.Global.Methods.Image.Bind_create_from_data, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeInt<<16)|(gdextension.SizePackedArray<<20), unsafe.Pointer(&struct {
+		width       int64
+		height      int64
+		use_mipmaps bool
+		format      Format
+		data        gdextension.PackedArray
+	}{width, height, use_mipmaps, format, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))}))
+	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
 	return ret
 }
 
@@ -1079,15 +1023,13 @@ Overwrites data of an existing [Image]. Non-static equivalent of [method create_
 */
 //go:nosplit
 func (self class) SetData(width int64, height int64, use_mipmaps bool, format Format, data Packed.Bytes) { //gd:Image.set_data
-	var frame = callframe.New()
-	callframe.Arg(frame, width)
-	callframe.Arg(frame, height)
-	callframe.Arg(frame, use_mipmaps)
-	callframe.Arg(frame, format)
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_set_data, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Image.Bind_set_data, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeInt<<16)|(gdextension.SizePackedArray<<20), unsafe.Pointer(&struct {
+		width       int64
+		height      int64
+		use_mipmaps bool
+		format      Format
+		data        gdextension.PackedArray
+	}{width, height, use_mipmaps, format, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))}))
 }
 
 /*
@@ -1095,11 +1037,8 @@ Returns [code]true[/code] if the image has no data.
 */
 //go:nosplit
 func (self class) IsEmpty() bool { //gd:Image.is_empty
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_is_empty, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Image.Bind_is_empty, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1110,12 +1049,8 @@ See also [ImageTexture] description for usage examples.
 */
 //go:nosplit
 func (self class) Load(path String.Readable) Error.Code { //gd:Image.load
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Image.Bind_load, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -1124,12 +1059,8 @@ Creates a new [Image] and loads data from the specified file.
 */
 //go:nosplit
 func (self class) LoadFromFile(path String.Readable) [1]gdclass.Image { //gd:Image.load_from_file
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.Image.Bind_load_from_file, frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.CallStatic[gd.EnginePointer](gd.Global.Methods.Image.Bind_load_from_file, gdextension.SizeObject|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
 	return ret
 }
 
@@ -1138,12 +1069,8 @@ Saves the image as a PNG file to the file at [param path].
 */
 //go:nosplit
 func (self class) SavePng(path String.Readable) Error.Code { //gd:Image.save_png
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_save_png, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Image.Bind_save_png, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -1152,11 +1079,8 @@ Saves the image as a PNG file to a byte array.
 */
 //go:nosplit
 func (self class) SavePngToBuffer() Packed.Bytes { //gd:Image.save_png_to_buffer
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_save_png_to_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.Image.Bind_save_png_to_buffer, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
 
@@ -1166,13 +1090,11 @@ Saves the image as a JPEG file to [param path] with the specified [param quality
 */
 //go:nosplit
 func (self class) SaveJpg(path String.Readable, quality float64) Error.Code { //gd:Image.save_jpg
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	callframe.Arg(frame, quality)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_save_jpg, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Image.Bind_save_jpg, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+		path    gdextension.String
+		quality float64
+	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), quality}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -1182,12 +1104,8 @@ Saves the image as a JPEG file to a byte array with the specified [param quality
 */
 //go:nosplit
 func (self class) SaveJpgToBuffer(quality float64) Packed.Bytes { //gd:Image.save_jpg_to_buffer
-	var frame = callframe.New()
-	callframe.Arg(frame, quality)
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_save_jpg_to_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.Image.Bind_save_jpg_to_buffer, gdextension.SizePackedArray|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ quality float64 }{quality}))
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
 
@@ -1197,13 +1115,11 @@ Saves the image as an EXR file to [param path]. If [param grayscale] is [code]tr
 */
 //go:nosplit
 func (self class) SaveExr(path String.Readable, grayscale bool) Error.Code { //gd:Image.save_exr
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	callframe.Arg(frame, grayscale)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_save_exr, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Image.Bind_save_exr, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		path      gdextension.String
+		grayscale bool
+	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), grayscale}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -1213,12 +1129,8 @@ Saves the image as an EXR file to a byte array. If [param grayscale] is [code]tr
 */
 //go:nosplit
 func (self class) SaveExrToBuffer(grayscale bool) Packed.Bytes { //gd:Image.save_exr_to_buffer
-	var frame = callframe.New()
-	callframe.Arg(frame, grayscale)
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_save_exr_to_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.Image.Bind_save_exr_to_buffer, gdextension.SizePackedArray|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ grayscale bool }{grayscale}))
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
 
@@ -1228,14 +1140,12 @@ Saves the image as a WebP (Web Picture) file to the file at [param path]. By def
 */
 //go:nosplit
 func (self class) SaveWebp(path String.Readable, lossy bool, quality float64) Error.Code { //gd:Image.save_webp
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	callframe.Arg(frame, lossy)
-	callframe.Arg(frame, quality)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_save_webp, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Image.Bind_save_webp, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+		path    gdextension.String
+		lossy   bool
+		quality float64
+	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), lossy, quality}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -1245,13 +1155,11 @@ Saves the image as a WebP (Web Picture) file to a byte array. By default it will
 */
 //go:nosplit
 func (self class) SaveWebpToBuffer(lossy bool, quality float64) Packed.Bytes { //gd:Image.save_webp_to_buffer
-	var frame = callframe.New()
-	callframe.Arg(frame, lossy)
-	callframe.Arg(frame, quality)
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_save_webp_to_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.Image.Bind_save_webp_to_buffer, gdextension.SizePackedArray|(gdextension.SizeBool<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+		lossy   bool
+		quality float64
+	}{lossy, quality}))
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
 
@@ -1260,11 +1168,8 @@ Returns [constant ALPHA_BLEND] if the image has data for alpha values. Returns [
 */
 //go:nosplit
 func (self class) DetectAlpha() AlphaMode { //gd:Image.detect_alpha
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[AlphaMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_detect_alpha, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[AlphaMode](self.AsObject(), gd.Global.Methods.Image.Bind_detect_alpha, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1273,11 +1178,8 @@ Returns [code]true[/code] if all the image's pixels have an alpha value of 0. Re
 */
 //go:nosplit
 func (self class) IsInvisible() bool { //gd:Image.is_invisible
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_is_invisible, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Image.Bind_is_invisible, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1286,12 +1188,8 @@ Returns the color channels used by this image, as one of the [enum UsedChannels]
 */
 //go:nosplit
 func (self class) DetectUsedChannels(source CompressSource) UsedChannels { //gd:Image.detect_used_channels
-	var frame = callframe.New()
-	callframe.Arg(frame, source)
-	var r_ret = callframe.Ret[UsedChannels](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_detect_used_channels, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[UsedChannels](self.AsObject(), gd.Global.Methods.Image.Bind_detect_used_channels, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ source CompressSource }{source}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1302,14 +1200,12 @@ For ASTC compression, the [param astc_format] parameter must be supplied.
 */
 //go:nosplit
 func (self class) Compress(mode CompressMode, source CompressSource, astc_format ASTCFormat) Error.Code { //gd:Image.compress
-	var frame = callframe.New()
-	callframe.Arg(frame, mode)
-	callframe.Arg(frame, source)
-	callframe.Arg(frame, astc_format)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_compress, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Image.Bind_compress, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+		mode        CompressMode
+		source      CompressSource
+		astc_format ASTCFormat
+	}{mode, source, astc_format}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -1320,14 +1216,12 @@ For ASTC compression, the [param astc_format] parameter must be supplied.
 */
 //go:nosplit
 func (self class) CompressFromChannels(mode CompressMode, channels UsedChannels, astc_format ASTCFormat) Error.Code { //gd:Image.compress_from_channels
-	var frame = callframe.New()
-	callframe.Arg(frame, mode)
-	callframe.Arg(frame, channels)
-	callframe.Arg(frame, astc_format)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_compress_from_channels, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Image.Bind_compress_from_channels, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+		mode        CompressMode
+		channels    UsedChannels
+		astc_format ASTCFormat
+	}{mode, channels, astc_format}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -1337,11 +1231,8 @@ Decompresses the image if it is VRAM compressed in a supported format. Returns [
 */
 //go:nosplit
 func (self class) Decompress() Error.Code { //gd:Image.decompress
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_decompress, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Image.Bind_decompress, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -1350,11 +1241,8 @@ Returns [code]true[/code] if the image is compressed.
 */
 //go:nosplit
 func (self class) IsCompressed() bool { //gd:Image.is_compressed
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_is_compressed, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Image.Bind_is_compressed, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1363,11 +1251,7 @@ Rotates the image in the specified [param direction] by [code]90[/code] degrees.
 */
 //go:nosplit
 func (self class) Rotate90(direction Angle.Direction) { //gd:Image.rotate_90
-	var frame = callframe.New()
-	callframe.Arg(frame, direction)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_rotate_90, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Image.Bind_rotate_90, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ direction Angle.Direction }{direction}))
 }
 
 /*
@@ -1375,10 +1259,7 @@ Rotates the image by [code]180[/code] degrees. The width and height of the image
 */
 //go:nosplit
 func (self class) Rotate180() { //gd:Image.rotate_180
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_rotate_180, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Image.Bind_rotate_180, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1386,10 +1267,7 @@ Blends low-alpha pixels with nearby pixels.
 */
 //go:nosplit
 func (self class) FixAlphaEdges() { //gd:Image.fix_alpha_edges
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_fix_alpha_edges, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Image.Bind_fix_alpha_edges, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1397,10 +1275,7 @@ Multiplies color values with alpha values. Resulting color values for a pixel ar
 */
 //go:nosplit
 func (self class) PremultiplyAlpha() { //gd:Image.premultiply_alpha
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_premultiply_alpha, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Image.Bind_premultiply_alpha, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1408,10 +1283,7 @@ Converts the raw data from the sRGB colorspace to a linear scale. Only works on 
 */
 //go:nosplit
 func (self class) SrgbToLinear() { //gd:Image.srgb_to_linear
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_srgb_to_linear, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Image.Bind_srgb_to_linear, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1419,10 +1291,7 @@ Converts the entire image from the linear colorspace to the sRGB colorspace. Onl
 */
 //go:nosplit
 func (self class) LinearToSrgb() { //gd:Image.linear_to_srgb
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_linear_to_srgb, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Image.Bind_linear_to_srgb, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1430,10 +1299,7 @@ Converts the image's data to represent coordinates on a 3D plane. This is used w
 */
 //go:nosplit
 func (self class) NormalMapToXy() { //gd:Image.normal_map_to_xy
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_normal_map_to_xy, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Image.Bind_normal_map_to_xy, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1441,11 +1307,8 @@ Converts a standard RGBE (Red Green Blue Exponent) image to an sRGB image.
 */
 //go:nosplit
 func (self class) RgbeToSrgb() [1]gdclass.Image { //gd:Image.rgbe_to_srgb
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_rgbe_to_srgb, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Image.Bind_rgbe_to_srgb, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
 	return ret
 }
 
@@ -1454,11 +1317,7 @@ Converts a bump map to a normal map. A bump map provides a height offset per-pix
 */
 //go:nosplit
 func (self class) BumpMapToNormalMap(bump_scale float64) { //gd:Image.bump_map_to_normal_map
-	var frame = callframe.New()
-	callframe.Arg(frame, bump_scale)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_bump_map_to_normal_map, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Image.Bind_bump_map_to_normal_map, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ bump_scale float64 }{bump_scale}))
 }
 
 /*
@@ -1467,13 +1326,11 @@ The dictionary contains [code]max[/code], [code]mean[/code], [code]mean_squared[
 */
 //go:nosplit
 func (self class) ComputeImageMetrics(compared_image [1]gdclass.Image, use_luma bool) Dictionary.Any { //gd:Image.compute_image_metrics
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(compared_image[0])[0])
-	callframe.Arg(frame, use_luma)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_compute_image_metrics, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Image.Bind_compute_image_metrics, gdextension.SizeDictionary|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		compared_image gdextension.Object
+		use_luma       bool
+	}{gdextension.Object(pointers.Get(compared_image[0])[0]), use_luma}))
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 
@@ -1483,13 +1340,11 @@ Copies [param src_rect] from [param src] image to this image at coordinates [par
 */
 //go:nosplit
 func (self class) BlitRect(src [1]gdclass.Image, src_rect Rect2i.PositionSize, dst Vector2i.XY) { //gd:Image.blit_rect
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(src[0])[0])
-	callframe.Arg(frame, src_rect)
-	callframe.Arg(frame, dst)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_blit_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Image.Bind_blit_rect, 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2i<<8)|(gdextension.SizeVector2i<<12), unsafe.Pointer(&struct {
+		src      gdextension.Object
+		src_rect Rect2i.PositionSize
+		dst      Vector2i.XY
+	}{gdextension.Object(pointers.Get(src[0])[0]), src_rect, dst}))
 }
 
 /*
@@ -1497,14 +1352,12 @@ Blits [param src_rect] area from [param src] image to this image at the coordina
 */
 //go:nosplit
 func (self class) BlitRectMask(src [1]gdclass.Image, mask [1]gdclass.Image, src_rect Rect2i.PositionSize, dst Vector2i.XY) { //gd:Image.blit_rect_mask
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(src[0])[0])
-	callframe.Arg(frame, pointers.Get(mask[0])[0])
-	callframe.Arg(frame, src_rect)
-	callframe.Arg(frame, dst)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_blit_rect_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Image.Bind_blit_rect_mask, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeRect2i<<12)|(gdextension.SizeVector2i<<16), unsafe.Pointer(&struct {
+		src      gdextension.Object
+		mask     gdextension.Object
+		src_rect Rect2i.PositionSize
+		dst      Vector2i.XY
+	}{gdextension.Object(pointers.Get(src[0])[0]), gdextension.Object(pointers.Get(mask[0])[0]), src_rect, dst}))
 }
 
 /*
@@ -1512,13 +1365,11 @@ Alpha-blends [param src_rect] from [param src] image to this image at coordinate
 */
 //go:nosplit
 func (self class) BlendRect(src [1]gdclass.Image, src_rect Rect2i.PositionSize, dst Vector2i.XY) { //gd:Image.blend_rect
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(src[0])[0])
-	callframe.Arg(frame, src_rect)
-	callframe.Arg(frame, dst)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_blend_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Image.Bind_blend_rect, 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2i<<8)|(gdextension.SizeVector2i<<12), unsafe.Pointer(&struct {
+		src      gdextension.Object
+		src_rect Rect2i.PositionSize
+		dst      Vector2i.XY
+	}{gdextension.Object(pointers.Get(src[0])[0]), src_rect, dst}))
 }
 
 /*
@@ -1526,14 +1377,12 @@ Alpha-blends [param src_rect] from [param src] image to this image using [param 
 */
 //go:nosplit
 func (self class) BlendRectMask(src [1]gdclass.Image, mask [1]gdclass.Image, src_rect Rect2i.PositionSize, dst Vector2i.XY) { //gd:Image.blend_rect_mask
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(src[0])[0])
-	callframe.Arg(frame, pointers.Get(mask[0])[0])
-	callframe.Arg(frame, src_rect)
-	callframe.Arg(frame, dst)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_blend_rect_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Image.Bind_blend_rect_mask, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeRect2i<<12)|(gdextension.SizeVector2i<<16), unsafe.Pointer(&struct {
+		src      gdextension.Object
+		mask     gdextension.Object
+		src_rect Rect2i.PositionSize
+		dst      Vector2i.XY
+	}{gdextension.Object(pointers.Get(src[0])[0]), gdextension.Object(pointers.Get(mask[0])[0]), src_rect, dst}))
 }
 
 /*
@@ -1541,11 +1390,7 @@ Fills the image with [param color].
 */
 //go:nosplit
 func (self class) Fill(color Color.RGBA) { //gd:Image.fill
-	var frame = callframe.New()
-	callframe.Arg(frame, color)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_fill, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Image.Bind_fill, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 /*
@@ -1553,12 +1398,10 @@ Fills [param rect] with [param color].
 */
 //go:nosplit
 func (self class) FillRect(rect Rect2i.PositionSize, color Color.RGBA) { //gd:Image.fill_rect
-	var frame = callframe.New()
-	callframe.Arg(frame, rect)
-	callframe.Arg(frame, color)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_fill_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Image.Bind_fill_rect, 0|(gdextension.SizeRect2i<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
+		rect  Rect2i.PositionSize
+		color Color.RGBA
+	}{rect, color}))
 }
 
 /*
@@ -1566,11 +1409,8 @@ Returns a [Rect2i] enclosing the visible portion of the image, considering each 
 */
 //go:nosplit
 func (self class) GetUsedRect() Rect2i.PositionSize { //gd:Image.get_used_rect
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Rect2i.PositionSize](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_get_used_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Rect2i.PositionSize](self.AsObject(), gd.Global.Methods.Image.Bind_get_used_rect, gdextension.SizeRect2i, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1579,12 +1419,8 @@ Returns a new [Image] that is a copy of this [Image]'s area specified with [para
 */
 //go:nosplit
 func (self class) GetRegion(region Rect2i.PositionSize) [1]gdclass.Image { //gd:Image.get_region
-	var frame = callframe.New()
-	callframe.Arg(frame, region)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_get_region, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Image.Bind_get_region, gdextension.SizeObject|(gdextension.SizeRect2i<<4), unsafe.Pointer(&struct{ region Rect2i.PositionSize }{region}))
+	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
 	return ret
 }
 
@@ -1593,11 +1429,7 @@ Copies [param src] image to this image.
 */
 //go:nosplit
 func (self class) CopyFrom(src [1]gdclass.Image) { //gd:Image.copy_from
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(src[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_copy_from, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Image.Bind_copy_from, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ src gdextension.Object }{gdextension.Object(pointers.Get(src[0])[0])}))
 }
 
 /*
@@ -1606,12 +1438,8 @@ This is the same as [method get_pixel], but with a [Vector2i] argument instead o
 */
 //go:nosplit
 func (self class) GetPixelv(point Vector2i.XY) Color.RGBA { //gd:Image.get_pixelv
-	var frame = callframe.New()
-	callframe.Arg(frame, point)
-	var r_ret = callframe.Ret[Color.RGBA](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_get_pixelv, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Color.RGBA](self.AsObject(), gd.Global.Methods.Image.Bind_get_pixelv, gdextension.SizeColor|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ point Vector2i.XY }{point}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1621,13 +1449,11 @@ This is the same as [method get_pixelv], but with two integer arguments instead 
 */
 //go:nosplit
 func (self class) GetPixel(x int64, y int64) Color.RGBA { //gd:Image.get_pixel
-	var frame = callframe.New()
-	callframe.Arg(frame, x)
-	callframe.Arg(frame, y)
-	var r_ret = callframe.Ret[Color.RGBA](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_get_pixel, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Color.RGBA](self.AsObject(), gd.Global.Methods.Image.Bind_get_pixel, gdextension.SizeColor|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		x int64
+		y int64
+	}{x, y}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1653,12 +1479,10 @@ This is the same as [method set_pixel], but with a [Vector2i] argument instead o
 */
 //go:nosplit
 func (self class) SetPixelv(point Vector2i.XY, color Color.RGBA) { //gd:Image.set_pixelv
-	var frame = callframe.New()
-	callframe.Arg(frame, point)
-	callframe.Arg(frame, color)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_set_pixelv, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Image.Bind_set_pixelv, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
+		point Vector2i.XY
+		color Color.RGBA
+	}{point, color}))
 }
 
 /*
@@ -1683,13 +1507,11 @@ This is the same as [method set_pixelv], but with a two integer arguments instea
 */
 //go:nosplit
 func (self class) SetPixel(x int64, y int64, color Color.RGBA) { //gd:Image.set_pixel
-	var frame = callframe.New()
-	callframe.Arg(frame, x)
-	callframe.Arg(frame, y)
-	callframe.Arg(frame, color)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_set_pixel, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Image.Bind_set_pixel, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeColor<<12), unsafe.Pointer(&struct {
+		x     int64
+		y     int64
+		color Color.RGBA
+	}{x, y, color}))
 }
 
 /*
@@ -1697,13 +1519,11 @@ Adjusts this image's [param brightness], [param contrast], and [param saturation
 */
 //go:nosplit
 func (self class) AdjustBcs(brightness float64, contrast float64, saturation float64) { //gd:Image.adjust_bcs
-	var frame = callframe.New()
-	callframe.Arg(frame, brightness)
-	callframe.Arg(frame, contrast)
-	callframe.Arg(frame, saturation)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_adjust_bcs, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Image.Bind_adjust_bcs, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+		brightness float64
+		contrast   float64
+		saturation float64
+	}{brightness, contrast, saturation}))
 }
 
 /*
@@ -1711,12 +1531,8 @@ Loads an image from the binary contents of a PNG file.
 */
 //go:nosplit
 func (self class) LoadPngFromBuffer(buffer Packed.Bytes) Error.Code { //gd:Image.load_png_from_buffer
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load_png_from_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Image.Bind_load_png_from_buffer, gdextension.SizeInt|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ buffer gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))))}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -1725,12 +1541,8 @@ Loads an image from the binary contents of a JPEG file.
 */
 //go:nosplit
 func (self class) LoadJpgFromBuffer(buffer Packed.Bytes) Error.Code { //gd:Image.load_jpg_from_buffer
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load_jpg_from_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Image.Bind_load_jpg_from_buffer, gdextension.SizeInt|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ buffer gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))))}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -1739,12 +1551,8 @@ Loads an image from the binary contents of a WebP file.
 */
 //go:nosplit
 func (self class) LoadWebpFromBuffer(buffer Packed.Bytes) Error.Code { //gd:Image.load_webp_from_buffer
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load_webp_from_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Image.Bind_load_webp_from_buffer, gdextension.SizeInt|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ buffer gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))))}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -1754,12 +1562,8 @@ Loads an image from the binary contents of a TGA file.
 */
 //go:nosplit
 func (self class) LoadTgaFromBuffer(buffer Packed.Bytes) Error.Code { //gd:Image.load_tga_from_buffer
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load_tga_from_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Image.Bind_load_tga_from_buffer, gdextension.SizeInt|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ buffer gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))))}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -1770,12 +1574,8 @@ Loads an image from the binary contents of a BMP file.
 */
 //go:nosplit
 func (self class) LoadBmpFromBuffer(buffer Packed.Bytes) Error.Code { //gd:Image.load_bmp_from_buffer
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load_bmp_from_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Image.Bind_load_bmp_from_buffer, gdextension.SizeInt|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ buffer gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))))}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -1786,12 +1586,8 @@ Loads an image from the binary contents of a [url=https://github.com/KhronosGrou
 */
 //go:nosplit
 func (self class) LoadKtxFromBuffer(buffer Packed.Bytes) Error.Code { //gd:Image.load_ktx_from_buffer
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load_ktx_from_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Image.Bind_load_ktx_from_buffer, gdextension.SizeInt|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ buffer gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))))}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -1802,13 +1598,11 @@ Loads an image from the UTF-8 binary contents of an [b]uncompressed[/b] SVG file
 */
 //go:nosplit
 func (self class) LoadSvgFromBuffer(buffer Packed.Bytes, scale float64) Error.Code { //gd:Image.load_svg_from_buffer
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))))
-	callframe.Arg(frame, scale)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load_svg_from_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Image.Bind_load_svg_from_buffer, gdextension.SizeInt|(gdextension.SizePackedArray<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+		buffer gdextension.PackedArray
+		scale  float64
+	}{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer)))), scale}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -1818,13 +1612,11 @@ Loads an image from the string contents of an SVG file ([b].svg[/b]).
 */
 //go:nosplit
 func (self class) LoadSvgFromString(svg_str String.Readable, scale float64) Error.Code { //gd:Image.load_svg_from_string
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(svg_str)))
-	callframe.Arg(frame, scale)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_load_svg_from_string, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Image.Bind_load_svg_from_string, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+		svg_str gdextension.String
+		scale   float64
+	}{gdextension.String(pointers.Get(gd.InternalString(svg_str))[0]), scale}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 func (self class) AsImage() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

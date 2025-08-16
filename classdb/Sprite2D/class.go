@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -54,6 +56,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -245,115 +249,73 @@ func (self Instance) SetRegionFilterClipEnabled(value bool) {
 
 //go:nosplit
 func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:Sprite2D.set_texture
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(texture[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite2D.Bind_set_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Sprite2D.Bind_set_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(pointers.Get(texture[0])[0])}))
 }
 
 //go:nosplit
 func (self class) GetTexture() [1]gdclass.Texture2D { //gd:Sprite2D.get_texture
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite2D.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Sprite2D.Bind_get_texture, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCentered(centered bool) { //gd:Sprite2D.set_centered
-	var frame = callframe.New()
-	callframe.Arg(frame, centered)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite2D.Bind_set_centered, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Sprite2D.Bind_set_centered, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ centered bool }{centered}))
 }
 
 //go:nosplit
 func (self class) IsCentered() bool { //gd:Sprite2D.is_centered
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite2D.Bind_is_centered, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Sprite2D.Bind_is_centered, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOffset(offset Vector2.XY) { //gd:Sprite2D.set_offset
-	var frame = callframe.New()
-	callframe.Arg(frame, offset)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite2D.Bind_set_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Sprite2D.Bind_set_offset, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
 }
 
 //go:nosplit
 func (self class) GetOffset() Vector2.XY { //gd:Sprite2D.get_offset
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite2D.Bind_get_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.Sprite2D.Bind_get_offset, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFlipH(flip_h bool) { //gd:Sprite2D.set_flip_h
-	var frame = callframe.New()
-	callframe.Arg(frame, flip_h)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite2D.Bind_set_flip_h, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Sprite2D.Bind_set_flip_h, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ flip_h bool }{flip_h}))
 }
 
 //go:nosplit
 func (self class) IsFlippedH() bool { //gd:Sprite2D.is_flipped_h
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite2D.Bind_is_flipped_h, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Sprite2D.Bind_is_flipped_h, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFlipV(flip_v bool) { //gd:Sprite2D.set_flip_v
-	var frame = callframe.New()
-	callframe.Arg(frame, flip_v)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite2D.Bind_set_flip_v, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Sprite2D.Bind_set_flip_v, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ flip_v bool }{flip_v}))
 }
 
 //go:nosplit
 func (self class) IsFlippedV() bool { //gd:Sprite2D.is_flipped_v
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite2D.Bind_is_flipped_v, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Sprite2D.Bind_is_flipped_v, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRegionEnabled(enabled bool) { //gd:Sprite2D.set_region_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite2D.Bind_set_region_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Sprite2D.Bind_set_region_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsRegionEnabled() bool { //gd:Sprite2D.is_region_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite2D.Bind_is_region_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Sprite2D.Bind_is_region_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -363,126 +325,80 @@ Returns [code]true[/code], if the pixel at the given position is opaque and [cod
 */
 //go:nosplit
 func (self class) IsPixelOpaque(pos Vector2.XY) bool { //gd:Sprite2D.is_pixel_opaque
-	var frame = callframe.New()
-	callframe.Arg(frame, pos)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite2D.Bind_is_pixel_opaque, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Sprite2D.Bind_is_pixel_opaque, gdextension.SizeBool|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ pos Vector2.XY }{pos}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRegionRect(rect Rect2.PositionSize) { //gd:Sprite2D.set_region_rect
-	var frame = callframe.New()
-	callframe.Arg(frame, rect)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite2D.Bind_set_region_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Sprite2D.Bind_set_region_rect, 0|(gdextension.SizeRect2<<4), unsafe.Pointer(&struct{ rect Rect2.PositionSize }{rect}))
 }
 
 //go:nosplit
 func (self class) GetRegionRect() Rect2.PositionSize { //gd:Sprite2D.get_region_rect
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Rect2.PositionSize](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite2D.Bind_get_region_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Rect2.PositionSize](self.AsObject(), gd.Global.Methods.Sprite2D.Bind_get_region_rect, gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRegionFilterClipEnabled(enabled bool) { //gd:Sprite2D.set_region_filter_clip_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite2D.Bind_set_region_filter_clip_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Sprite2D.Bind_set_region_filter_clip_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsRegionFilterClipEnabled() bool { //gd:Sprite2D.is_region_filter_clip_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite2D.Bind_is_region_filter_clip_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Sprite2D.Bind_is_region_filter_clip_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFrame(frame_ int64) { //gd:Sprite2D.set_frame
-	var frame = callframe.New()
-	callframe.Arg(frame, frame_)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite2D.Bind_set_frame, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Sprite2D.Bind_set_frame, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ frame_ int64 }{frame_}))
 }
 
 //go:nosplit
 func (self class) GetFrame() int64 { //gd:Sprite2D.get_frame
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite2D.Bind_get_frame, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Sprite2D.Bind_get_frame, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFrameCoords(coords Vector2i.XY) { //gd:Sprite2D.set_frame_coords
-	var frame = callframe.New()
-	callframe.Arg(frame, coords)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite2D.Bind_set_frame_coords, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Sprite2D.Bind_set_frame_coords, 0|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ coords Vector2i.XY }{coords}))
 }
 
 //go:nosplit
 func (self class) GetFrameCoords() Vector2i.XY { //gd:Sprite2D.get_frame_coords
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2i.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite2D.Bind_get_frame_coords, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2i.XY](self.AsObject(), gd.Global.Methods.Sprite2D.Bind_get_frame_coords, gdextension.SizeVector2i, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVframes(vframes int64) { //gd:Sprite2D.set_vframes
-	var frame = callframe.New()
-	callframe.Arg(frame, vframes)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite2D.Bind_set_vframes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Sprite2D.Bind_set_vframes, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ vframes int64 }{vframes}))
 }
 
 //go:nosplit
 func (self class) GetVframes() int64 { //gd:Sprite2D.get_vframes
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite2D.Bind_get_vframes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Sprite2D.Bind_get_vframes, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHframes(hframes int64) { //gd:Sprite2D.set_hframes
-	var frame = callframe.New()
-	callframe.Arg(frame, hframes)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite2D.Bind_set_hframes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Sprite2D.Bind_set_hframes, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ hframes int64 }{hframes}))
 }
 
 //go:nosplit
 func (self class) GetHframes() int64 { //gd:Sprite2D.get_hframes
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite2D.Bind_get_hframes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Sprite2D.Bind_get_hframes, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -515,11 +431,8 @@ public override void _Input(InputEvent @event)
 */
 //go:nosplit
 func (self class) GetRect() Rect2.PositionSize { //gd:Sprite2D.get_rect
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Rect2.PositionSize](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sprite2D.Bind_get_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Rect2.PositionSize](self.AsObject(), gd.Global.Methods.Sprite2D.Bind_get_rect, gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self Instance) OnFrameChanged(cb func()) {

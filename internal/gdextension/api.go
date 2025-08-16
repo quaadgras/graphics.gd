@@ -5,10 +5,22 @@ import (
 	"structs"
 	"unsafe"
 
+	"graphics.gd/variant/AABB"
+	"graphics.gd/variant/Basis"
 	"graphics.gd/variant/Color"
+	"graphics.gd/variant/Plane"
+	"graphics.gd/variant/Projection"
+	"graphics.gd/variant/Quaternion"
+	"graphics.gd/variant/Rect2"
+	"graphics.gd/variant/Rect2i"
+	"graphics.gd/variant/Transform2D"
+	"graphics.gd/variant/Transform3D"
 	"graphics.gd/variant/Vector2"
+	"graphics.gd/variant/Vector2i"
 	"graphics.gd/variant/Vector3"
+	"graphics.gd/variant/Vector3i"
 	"graphics.gd/variant/Vector4"
+	"graphics.gd/variant/Vector4i"
 	"runtime.link/api"
 	"runtime.link/api/stub"
 )
@@ -411,9 +423,9 @@ const (
 )
 
 type String Pointer
-
 type StringName Pointer
-type PackedArray [2]Pointer
+type NodePath Pointer
+
 type Array Pointer
 type Dictionary Pointer
 type Callable [2]uint64
@@ -523,7 +535,7 @@ const (
 type Shape uint64
 
 func (shape Shape) SizeResult() (size int) {
-	switch int(shape & 0xF) {
+	switch shape & 0xF {
 	case SizeBytes0:
 		return 0
 	case SizeBytes1:
@@ -561,7 +573,7 @@ func (shape Shape) SizeResult() (size int) {
 
 func (shape Shape) SizeArguments() (size int) {
 	for i := 1; i < 16; i++ {
-		switch int((shape >> (i * 4)) & 0xF) {
+		switch (shape >> (i * 4)) & 0xF {
 		case SizeBytes0:
 			continue
 		case SizeBytes1:
@@ -600,7 +612,7 @@ func (shape Shape) SizeArguments() (size int) {
 }
 
 const (
-	SizeBytes0 = iota
+	SizeBytes0 Shape = iota
 	SizeBytes1
 	SizeBytes2
 	SizeBytes4
@@ -660,6 +672,125 @@ const (
 	TypePackedVector4Array VariantType = 38
 	TypeMax                VariantType = 39
 )
+
+const (
+	SizeVariant     Shape = SizeBytes24
+	SizeBool        Shape = SizeBytes1
+	SizeInt         Shape = SizeBytes8
+	SizeFloat       Shape = SizeBytes8
+	SizeVector2     Shape = SizeBytes8
+	SizeVector3     Shape = SizeBytes12
+	SizeVector4     Shape = SizeBytes16
+	SizeColor       Shape = SizeBytes16
+	SizeRect2       Shape = SizeBytes16
+	SizeRect2i      Shape = SizeBytes16
+	SizeVector2i    Shape = SizeBytes8
+	SizeVector3i    Shape = SizeBytes12
+	SizeVector4i    Shape = SizeBytes16
+	SizeTransform2D Shape = SizeBytes24
+	SizeTransform3D Shape = SizeBytes48
+	SizePlane       Shape = SizeBytes16
+	SizeQuaternion  Shape = SizeBytes16
+	SizeAABB        Shape = SizeBytes24
+	SizeBasis       Shape = SizeBytes36
+	SizeProjection  Shape = SizeBytes64
+	SizeRID         Shape = SizeBytes8
+	SizeCallable    Shape = SizeBytes16
+	SizeSignal      Shape = SizeBytes16
+)
+
+func init() {
+	if SizeVariant.SizeResult() != int(unsafe.Sizeof(Variant{})) {
+		panic("Size of Variant does not match expected size")
+	}
+	if SizeBool.SizeResult() != int(unsafe.Sizeof(bool(false))) {
+		panic("Size of Bool does not match expected size")
+	}
+	if SizeInt.SizeResult() != int(unsafe.Sizeof(int64(0))) {
+		panic("Size of Int does not match expected size")
+	}
+	if SizeFloat.SizeResult() != int(unsafe.Sizeof(float64(0))) {
+		panic("Size of Float does not match expected size")
+	}
+	if SizeString.SizeResult() != int(unsafe.Sizeof(String(0))) {
+		panic("Size of String does not match expected size")
+	}
+	if SizeVector2.SizeResult() != int(unsafe.Sizeof(Vector2.XY{})) {
+		panic("Size of Vector2 does not match expected size")
+	}
+	if SizeVector3.SizeResult() != int(unsafe.Sizeof(Vector3.XYZ{})) {
+		panic("Size of Vector3 does not match expected size")
+	}
+	if SizeVector4.SizeResult() != int(unsafe.Sizeof(Vector4.XYZW{})) {
+		panic("Size of Vector4 does not match expected size")
+	}
+	if SizeColor.SizeResult() != int(unsafe.Sizeof(Color.RGBA{})) {
+		panic("Size of Color does not match expected size")
+	}
+	if SizeRect2.SizeResult() != int(unsafe.Sizeof(Rect2.PositionSize{})) {
+		panic("Size of Rect2 does not match expected size")
+	}
+	if SizeRect2i.SizeResult() != int(unsafe.Sizeof(Rect2i.PositionSize{})) {
+		panic("Size of Rect2i does not match expected size")
+	}
+	if SizeVector2i.SizeResult() != int(unsafe.Sizeof(Vector2i.XY{})) {
+		panic("Size of Vector2i does not match expected size")
+	}
+	if SizeVector3i.SizeResult() != int(unsafe.Sizeof(Vector3i.XYZ{})) {
+		panic("Size of Vector3i does not match expected size")
+	}
+	if SizeVector4i.SizeResult() != int(unsafe.Sizeof(Vector4i.XYZW{})) {
+		panic("Size of Vector4i does not match expected size")
+	}
+	if SizeTransform2D.SizeResult() != int(unsafe.Sizeof(Transform2D.OriginXY{})) {
+		panic("Size of Transform2D does not match expected size")
+	}
+	if SizeTransform3D.SizeResult() != int(unsafe.Sizeof(Transform3D.BasisOrigin{})) {
+		panic("Size of Transform3D does not match expected size")
+	}
+	if SizePlane.SizeResult() != int(unsafe.Sizeof(Plane.NormalD{})) {
+		panic("Size of Plane does not match expected size")
+	}
+	if SizeQuaternion.SizeResult() != int(unsafe.Sizeof(Quaternion.IJKX{})) {
+		panic("Size of Quaternion does not match expected size")
+	}
+	if SizeAABB.SizeResult() != int(unsafe.Sizeof(AABB.PositionSize{})) {
+		panic("Size of AABB does not match expected size")
+	}
+	if SizeBasis.SizeResult() != int(unsafe.Sizeof(Basis.XYZ{})) {
+		panic("Size of Basis does not match expected size")
+	}
+	if SizeProjection.SizeResult() != int(unsafe.Sizeof(Projection.XYZW{})) {
+		panic("Size of Projection does not match expected size")
+	}
+	if SizeStringName.SizeResult() != int(unsafe.Sizeof(StringName(0))) {
+		panic("Size of StringName does not match expected size")
+	}
+	if SizeNodePath.SizeResult() != int(unsafe.Sizeof([1]Pointer{})) {
+		panic("Size of NodePath does not match expected size")
+	}
+	if SizeRID.SizeResult() != int(unsafe.Sizeof([1]uint64{})) {
+		panic("Size of RID does not match expected size")
+	}
+	if SizeObject.SizeResult() != int(unsafe.Sizeof(Object(0))) {
+		panic("Size of Object does not match expected size")
+	}
+	if SizeCallable.SizeResult() != int(unsafe.Sizeof(Callable{})) {
+		panic("Size of Callable does not match expected size")
+	}
+	if SizeSignal.SizeResult() != int(unsafe.Sizeof([2]uint64{})) {
+		panic("Size of Signal does not match expected size")
+	}
+	if SizeDictionary.SizeResult() != int(unsafe.Sizeof(Dictionary(0))) {
+		panic("Size of Dictionary does not match expected size")
+	}
+	if SizeArray.SizeResult() != int(unsafe.Sizeof(Array(0))) {
+		panic("Size of Array does not match expected size")
+	}
+	if SizePackedArray.SizeResult() != int(unsafe.Sizeof(PackedArray{})) {
+		panic("Size of PackedArray does not match expected size")
+	}
+}
 
 type CallError struct {
 	_ structs.HostLayout

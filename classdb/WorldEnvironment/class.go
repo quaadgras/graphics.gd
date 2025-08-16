@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +53,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -129,58 +133,37 @@ func (self Instance) SetCompositor(value Compositor.Instance) {
 
 //go:nosplit
 func (self class) SetEnvironment(env [1]gdclass.Environment) { //gd:WorldEnvironment.set_environment
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(env[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorldEnvironment.Bind_set_environment, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.WorldEnvironment.Bind_set_environment, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ env gdextension.Object }{gdextension.Object(pointers.Get(env[0])[0])}))
 }
 
 //go:nosplit
 func (self class) GetEnvironment() [1]gdclass.Environment { //gd:WorldEnvironment.get_environment
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorldEnvironment.Bind_get_environment, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Environment{gd.PointerWithOwnershipTransferredToGo[gdclass.Environment](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.WorldEnvironment.Bind_get_environment, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.Environment{gd.PointerWithOwnershipTransferredToGo[gdclass.Environment](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCameraAttributes(camera_attributes [1]gdclass.CameraAttributes) { //gd:WorldEnvironment.set_camera_attributes
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(camera_attributes[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorldEnvironment.Bind_set_camera_attributes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.WorldEnvironment.Bind_set_camera_attributes, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ camera_attributes gdextension.Object }{gdextension.Object(pointers.Get(camera_attributes[0])[0])}))
 }
 
 //go:nosplit
 func (self class) GetCameraAttributes() [1]gdclass.CameraAttributes { //gd:WorldEnvironment.get_camera_attributes
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorldEnvironment.Bind_get_camera_attributes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.CameraAttributes{gd.PointerWithOwnershipTransferredToGo[gdclass.CameraAttributes](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.WorldEnvironment.Bind_get_camera_attributes, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.CameraAttributes{gd.PointerWithOwnershipTransferredToGo[gdclass.CameraAttributes](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCompositor(compositor [1]gdclass.Compositor) { //gd:WorldEnvironment.set_compositor
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(compositor[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorldEnvironment.Bind_set_compositor, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.WorldEnvironment.Bind_set_compositor, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ compositor gdextension.Object }{gdextension.Object(pointers.Get(compositor[0])[0])}))
 }
 
 //go:nosplit
 func (self class) GetCompositor() [1]gdclass.Compositor { //gd:WorldEnvironment.get_compositor
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WorldEnvironment.Bind_get_compositor, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Compositor{gd.PointerWithOwnershipTransferredToGo[gdclass.Compositor](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.WorldEnvironment.Bind_get_compositor, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.Compositor{gd.PointerWithOwnershipTransferredToGo[gdclass.Compositor](r_ret)}
 	return ret
 }
 func (self class) AsWorldEnvironment() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

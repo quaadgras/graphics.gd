@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +50,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -177,12 +181,10 @@ Sends the given [param message] to the attached remote instance, optionally pass
 */
 //go:nosplit
 func (self class) SendMessage(message String.Readable, data Array.Any) { //gd:EditorDebuggerSession.send_message
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(message)))
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(data)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorDebuggerSession.Bind_send_message, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorDebuggerSession.Bind_send_message, 0|(gdextension.SizeString<<4)|(gdextension.SizeArray<<8), unsafe.Pointer(&struct {
+		message gdextension.String
+		data    gdextension.Array
+	}{gdextension.String(pointers.Get(gd.InternalString(message))[0]), gdextension.Array(pointers.Get(gd.InternalArray(data))[0])}))
 }
 
 /*
@@ -190,13 +192,11 @@ Toggle the given [param profiler] on the attached remote instance, optionally pa
 */
 //go:nosplit
 func (self class) ToggleProfiler(profiler String.Readable, enable bool, data Array.Any) { //gd:EditorDebuggerSession.toggle_profiler
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(profiler)))
-	callframe.Arg(frame, enable)
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(data)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorDebuggerSession.Bind_toggle_profiler, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorDebuggerSession.Bind_toggle_profiler, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeArray<<12), unsafe.Pointer(&struct {
+		profiler gdextension.String
+		enable   bool
+		data     gdextension.Array
+	}{gdextension.String(pointers.Get(gd.InternalString(profiler))[0]), enable, gdextension.Array(pointers.Get(gd.InternalArray(data))[0])}))
 }
 
 /*
@@ -204,11 +204,8 @@ Returns [code]true[/code] if the attached remote instance is currently in the de
 */
 //go:nosplit
 func (self class) IsBreaked() bool { //gd:EditorDebuggerSession.is_breaked
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorDebuggerSession.Bind_is_breaked, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.EditorDebuggerSession.Bind_is_breaked, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -217,11 +214,8 @@ Returns [code]true[/code] if the attached remote instance can be debugged.
 */
 //go:nosplit
 func (self class) IsDebuggable() bool { //gd:EditorDebuggerSession.is_debuggable
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorDebuggerSession.Bind_is_debuggable, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.EditorDebuggerSession.Bind_is_debuggable, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -230,11 +224,8 @@ Returns [code]true[/code] if the debug session is currently attached to a remote
 */
 //go:nosplit
 func (self class) IsActive() bool { //gd:EditorDebuggerSession.is_active
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorDebuggerSession.Bind_is_active, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.EditorDebuggerSession.Bind_is_active, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -243,11 +234,7 @@ Adds the given [param control] to the debug session UI in the debugger bottom pa
 */
 //go:nosplit
 func (self class) AddSessionTab(control [1]gdclass.Control) { //gd:EditorDebuggerSession.add_session_tab
-	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0]))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorDebuggerSession.Bind_add_session_tab, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorDebuggerSession.Bind_add_session_tab, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ control gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0]))}))
 }
 
 /*
@@ -255,11 +242,7 @@ Removes the given [param control] from the debug session UI in the debugger bott
 */
 //go:nosplit
 func (self class) RemoveSessionTab(control [1]gdclass.Control) { //gd:EditorDebuggerSession.remove_session_tab
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(control[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorDebuggerSession.Bind_remove_session_tab, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorDebuggerSession.Bind_remove_session_tab, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ control gdextension.Object }{gdextension.Object(pointers.Get(control[0])[0])}))
 }
 
 /*
@@ -267,13 +250,11 @@ Enables or disables a specific breakpoint based on [param enabled], updating the
 */
 //go:nosplit
 func (self class) SetBreakpoint(path String.Readable, line int64, enabled bool) { //gd:EditorDebuggerSession.set_breakpoint
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	callframe.Arg(frame, line)
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorDebuggerSession.Bind_set_breakpoint, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorDebuggerSession.Bind_set_breakpoint, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+		path    gdextension.String
+		line    int64
+		enabled bool
+	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), line, enabled}))
 }
 func (self Instance) OnStarted(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("started"), gd.NewCallable(cb), 0)

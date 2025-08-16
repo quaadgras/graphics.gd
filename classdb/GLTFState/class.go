@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -63,6 +65,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -454,12 +458,10 @@ Appends an extension to the list of extensions used by this glTF file during ser
 */
 //go:nosplit
 func (self class) AddUsedExtension(extension_name String.Readable, required bool) { //gd:GLTFState.add_used_extension
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(extension_name)))
-	callframe.Arg(frame, required)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_add_used_extension, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFState.Bind_add_used_extension, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		extension_name gdextension.String
+		required       bool
+	}{gdextension.String(pointers.Get(gd.InternalString(extension_name))[0]), required}))
 }
 
 /*
@@ -467,13 +469,11 @@ Appends the given byte array data to the buffers and creates a [GLTFBufferView] 
 */
 //go:nosplit
 func (self class) AppendDataToBuffers(data Packed.Bytes, deduplication bool) int64 { //gd:GLTFState.append_data_to_buffers
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))
-	callframe.Arg(frame, deduplication)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_append_data_to_buffers, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.GLTFState.Bind_append_data_to_buffers, gdextension.SizeInt|(gdextension.SizePackedArray<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		data          gdextension.PackedArray
+		deduplication bool
+	}{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))), deduplication}))
+	var ret = r_ret
 	return ret
 }
 
@@ -484,129 +484,85 @@ The [param parent_node_index] parameter is the index of the parent [GLTFNode] in
 */
 //go:nosplit
 func (self class) AppendGltfNode(gltf_node [1]gdclass.GLTFNode, godot_scene_node [1]gdclass.Node, parent_node_index int64) int64 { //gd:GLTFState.append_gltf_node
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gltf_node[0])[0])
-	callframe.Arg(frame, pointers.Get(godot_scene_node[0])[0])
-	callframe.Arg(frame, parent_node_index)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_append_gltf_node, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.GLTFState.Bind_append_gltf_node, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+		gltf_node         gdextension.Object
+		godot_scene_node  gdextension.Object
+		parent_node_index int64
+	}{gdextension.Object(pointers.Get(gltf_node[0])[0]), gdextension.Object(pointers.Get(godot_scene_node[0])[0]), parent_node_index}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetJson() Dictionary.Any { //gd:GLTFState.get_json
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_json, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.GLTFState.Bind_get_json, gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetJson(json Dictionary.Any) { //gd:GLTFState.set_json
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(json)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_json, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFState.Bind_set_json, 0|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ json gdextension.Dictionary }{gdextension.Dictionary(pointers.Get(gd.InternalDictionary(json))[0])}))
 }
 
 //go:nosplit
 func (self class) GetMajorVersion() int64 { //gd:GLTFState.get_major_version
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_major_version, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.GLTFState.Bind_get_major_version, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMajorVersion(major_version int64) { //gd:GLTFState.set_major_version
-	var frame = callframe.New()
-	callframe.Arg(frame, major_version)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_major_version, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFState.Bind_set_major_version, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ major_version int64 }{major_version}))
 }
 
 //go:nosplit
 func (self class) GetMinorVersion() int64 { //gd:GLTFState.get_minor_version
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_minor_version, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.GLTFState.Bind_get_minor_version, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMinorVersion(minor_version int64) { //gd:GLTFState.set_minor_version
-	var frame = callframe.New()
-	callframe.Arg(frame, minor_version)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_minor_version, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFState.Bind_set_minor_version, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ minor_version int64 }{minor_version}))
 }
 
 //go:nosplit
 func (self class) GetCopyright() String.Readable { //gd:GLTFState.get_copyright
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_copyright, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.GLTFState.Bind_get_copyright, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCopyright(copyright String.Readable) { //gd:GLTFState.set_copyright
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(copyright)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_copyright, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFState.Bind_set_copyright, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ copyright gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(copyright))[0])}))
 }
 
 //go:nosplit
 func (self class) GetGlbData() Packed.Bytes { //gd:GLTFState.get_glb_data
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_glb_data, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.GLTFState.Bind_get_glb_data, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGlbData(glb_data Packed.Bytes) { //gd:GLTFState.set_glb_data
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](glb_data))))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_glb_data, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFState.Bind_set_glb_data, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ glb_data gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](glb_data))))}))
 }
 
 //go:nosplit
 func (self class) GetUseNamedSkinBinds() bool { //gd:GLTFState.get_use_named_skin_binds
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_use_named_skin_binds, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.GLTFState.Bind_get_use_named_skin_binds, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseNamedSkinBinds(use_named_skin_binds bool) { //gd:GLTFState.set_use_named_skin_binds
-	var frame = callframe.New()
-	callframe.Arg(frame, use_named_skin_binds)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_use_named_skin_binds, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFState.Bind_set_use_named_skin_binds, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ use_named_skin_binds bool }{use_named_skin_binds}))
 }
 
 /*
@@ -614,11 +570,8 @@ Returns an array of all [GLTFNode]s in the glTF file. These are the nodes that [
 */
 //go:nosplit
 func (self class) GetNodes() Array.Contains[[1]gdclass.GLTFNode] { //gd:GLTFState.get_nodes
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_nodes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.GLTFNode]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.GLTFState.Bind_get_nodes, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.GLTFNode]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -627,68 +580,43 @@ Sets the [GLTFNode]s in the state. These are the nodes that [member GLTFNode.chi
 */
 //go:nosplit
 func (self class) SetNodes(nodes Array.Contains[[1]gdclass.GLTFNode]) { //gd:GLTFState.set_nodes
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(nodes)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_nodes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFState.Bind_set_nodes, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ nodes gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(nodes))[0])}))
 }
 
 //go:nosplit
 func (self class) GetBuffers() Array.Contains[Packed.Bytes] { //gd:GLTFState.get_buffers
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_buffers, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[Packed.Bytes]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.GLTFState.Bind_get_buffers, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[Packed.Bytes]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBuffers(buffers Array.Contains[Packed.Bytes]) { //gd:GLTFState.set_buffers
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(buffers)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_buffers, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFState.Bind_set_buffers, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ buffers gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(buffers))[0])}))
 }
 
 //go:nosplit
 func (self class) GetBufferViews() Array.Contains[[1]gdclass.GLTFBufferView] { //gd:GLTFState.get_buffer_views
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_buffer_views, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.GLTFBufferView]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.GLTFState.Bind_get_buffer_views, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.GLTFBufferView]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBufferViews(buffer_views Array.Contains[[1]gdclass.GLTFBufferView]) { //gd:GLTFState.set_buffer_views
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(buffer_views)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_buffer_views, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFState.Bind_set_buffer_views, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ buffer_views gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(buffer_views))[0])}))
 }
 
 //go:nosplit
 func (self class) GetAccessors() Array.Contains[[1]gdclass.GLTFAccessor] { //gd:GLTFState.get_accessors
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_accessors, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.GLTFAccessor]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.GLTFState.Bind_get_accessors, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.GLTFAccessor]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAccessors(accessors Array.Contains[[1]gdclass.GLTFAccessor]) { //gd:GLTFState.set_accessors
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(accessors)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_accessors, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFState.Bind_set_accessors, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ accessors gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(accessors))[0])}))
 }
 
 /*
@@ -696,11 +624,8 @@ Returns an array of all [GLTFMesh]es in the glTF file. These are the meshes that
 */
 //go:nosplit
 func (self class) GetMeshes() Array.Contains[[1]gdclass.GLTFMesh] { //gd:GLTFState.get_meshes
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_meshes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.GLTFMesh]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.GLTFState.Bind_get_meshes, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.GLTFMesh]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -709,11 +634,7 @@ Sets the [GLTFMesh]es in the state. These are the meshes that the [member GLTFNo
 */
 //go:nosplit
 func (self class) SetMeshes(meshes Array.Contains[[1]gdclass.GLTFMesh]) { //gd:GLTFState.set_meshes
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(meshes)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_meshes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFState.Bind_set_meshes, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ meshes gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(meshes))[0])}))
 }
 
 /*
@@ -721,12 +642,8 @@ Returns the number of [AnimationPlayer] nodes in this [GLTFState]. These nodes a
 */
 //go:nosplit
 func (self class) GetAnimationPlayersCount(idx int64) int64 { //gd:GLTFState.get_animation_players_count
-	var frame = callframe.New()
-	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_animation_players_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.GLTFState.Bind_get_animation_players_count, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -735,127 +652,81 @@ Returns the [AnimationPlayer] node with the given index. These nodes are only us
 */
 //go:nosplit
 func (self class) GetAnimationPlayer(idx int64) [1]gdclass.AnimationPlayer { //gd:GLTFState.get_animation_player
-	var frame = callframe.New()
-	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_animation_player, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.AnimationPlayer{gd.PointerMustAssertInstanceID[gdclass.AnimationPlayer](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.GLTFState.Bind_get_animation_player, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var ret = [1]gdclass.AnimationPlayer{gd.PointerMustAssertInstanceID[gdclass.AnimationPlayer](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) GetMaterials() Array.Contains[[1]gdclass.Material] { //gd:GLTFState.get_materials
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_materials, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Material]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.GLTFState.Bind_get_materials, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Material]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaterials(materials Array.Contains[[1]gdclass.Material]) { //gd:GLTFState.set_materials
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(materials)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_materials, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFState.Bind_set_materials, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ materials gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(materials))[0])}))
 }
 
 //go:nosplit
 func (self class) GetSceneName() String.Readable { //gd:GLTFState.get_scene_name
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_scene_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.GLTFState.Bind_get_scene_name, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSceneName(scene_name String.Readable) { //gd:GLTFState.set_scene_name
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(scene_name)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_scene_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFState.Bind_set_scene_name, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ scene_name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(scene_name))[0])}))
 }
 
 //go:nosplit
 func (self class) GetBasePath() String.Readable { //gd:GLTFState.get_base_path
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_base_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.GLTFState.Bind_get_base_path, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBasePath(base_path String.Readable) { //gd:GLTFState.set_base_path
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(base_path)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_base_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFState.Bind_set_base_path, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ base_path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(base_path))[0])}))
 }
 
 //go:nosplit
 func (self class) GetFilename() String.Readable { //gd:GLTFState.get_filename
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_filename, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.GLTFState.Bind_get_filename, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFilename(filename String.Readable) { //gd:GLTFState.set_filename
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(filename)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_filename, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFState.Bind_set_filename, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ filename gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(filename))[0])}))
 }
 
 //go:nosplit
 func (self class) GetRootNodes() Packed.Array[int32] { //gd:GLTFState.get_root_nodes
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_root_nodes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.GLTFState.Bind_get_root_nodes, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRootNodes(root_nodes Packed.Array[int32]) { //gd:GLTFState.set_root_nodes
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](root_nodes)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_root_nodes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFState.Bind_set_root_nodes, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ root_nodes gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](root_nodes)))}))
 }
 
 //go:nosplit
 func (self class) GetTextures() Array.Contains[[1]gdclass.GLTFTexture] { //gd:GLTFState.get_textures
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_textures, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.GLTFTexture]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.GLTFState.Bind_get_textures, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.GLTFTexture]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextures(textures Array.Contains[[1]gdclass.GLTFTexture]) { //gd:GLTFState.set_textures
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(textures)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_textures, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFState.Bind_set_textures, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ textures gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(textures))[0])}))
 }
 
 /*
@@ -863,11 +734,8 @@ Retrieves the array of texture samplers that are used by the textures contained 
 */
 //go:nosplit
 func (self class) GetTextureSamplers() Array.Contains[[1]gdclass.GLTFTextureSampler] { //gd:GLTFState.get_texture_samplers
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_texture_samplers, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.GLTFTextureSampler]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.GLTFState.Bind_get_texture_samplers, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.GLTFTextureSampler]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -876,11 +744,7 @@ Sets the array of texture samplers that are used by the textures contained in th
 */
 //go:nosplit
 func (self class) SetTextureSamplers(texture_samplers Array.Contains[[1]gdclass.GLTFTextureSampler]) { //gd:GLTFState.set_texture_samplers
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(texture_samplers)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_texture_samplers, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFState.Bind_set_texture_samplers, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ texture_samplers gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(texture_samplers))[0])}))
 }
 
 /*
@@ -888,11 +752,8 @@ Gets the images of the glTF file as an array of [Texture2D]s. These are the imag
 */
 //go:nosplit
 func (self class) GetImages() Array.Contains[[1]gdclass.Texture2D] { //gd:GLTFState.get_images
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_images, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Texture2D]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.GLTFState.Bind_get_images, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Texture2D]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -901,11 +762,7 @@ Sets the images in the state stored as an array of [Texture2D]s. This can be use
 */
 //go:nosplit
 func (self class) SetImages(images Array.Contains[[1]gdclass.Texture2D]) { //gd:GLTFState.set_images
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(images)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_images, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFState.Bind_set_images, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ images gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(images))[0])}))
 }
 
 /*
@@ -913,11 +770,8 @@ Returns an array of all [GLTFSkin]s in the glTF file. These are the skins that t
 */
 //go:nosplit
 func (self class) GetSkins() Array.Contains[[1]gdclass.GLTFSkin] { //gd:GLTFState.get_skins
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_skins, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.GLTFSkin]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.GLTFState.Bind_get_skins, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.GLTFSkin]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -926,11 +780,7 @@ Sets the [GLTFSkin]s in the state. These are the skins that the [member GLTFNode
 */
 //go:nosplit
 func (self class) SetSkins(skins Array.Contains[[1]gdclass.GLTFSkin]) { //gd:GLTFState.set_skins
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(skins)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_skins, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFState.Bind_set_skins, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ skins gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(skins))[0])}))
 }
 
 /*
@@ -938,11 +788,8 @@ Returns an array of all [GLTFCamera]s in the glTF file. These are the cameras th
 */
 //go:nosplit
 func (self class) GetCameras() Array.Contains[[1]gdclass.GLTFCamera] { //gd:GLTFState.get_cameras
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_cameras, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.GLTFCamera]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.GLTFState.Bind_get_cameras, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.GLTFCamera]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -951,11 +798,7 @@ Sets the [GLTFCamera]s in the state. These are the cameras that the [member GLTF
 */
 //go:nosplit
 func (self class) SetCameras(cameras Array.Contains[[1]gdclass.GLTFCamera]) { //gd:GLTFState.set_cameras
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(cameras)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_cameras, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFState.Bind_set_cameras, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ cameras gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(cameras))[0])}))
 }
 
 /*
@@ -963,11 +806,8 @@ Returns an array of all [GLTFLight]s in the glTF file. These are the lights that
 */
 //go:nosplit
 func (self class) GetLights() Array.Contains[[1]gdclass.GLTFLight] { //gd:GLTFState.get_lights
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_lights, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.GLTFLight]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.GLTFState.Bind_get_lights, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.GLTFLight]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -976,11 +816,7 @@ Sets the [GLTFLight]s in the state. These are the lights that the [member GLTFNo
 */
 //go:nosplit
 func (self class) SetLights(lights Array.Contains[[1]gdclass.GLTFLight]) { //gd:GLTFState.set_lights
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(lights)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_lights, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFState.Bind_set_lights, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ lights gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(lights))[0])}))
 }
 
 /*
@@ -988,11 +824,8 @@ Returns an array of unique node names. This is used in both the import process a
 */
 //go:nosplit
 func (self class) GetUniqueNames() Array.Contains[String.Readable] { //gd:GLTFState.get_unique_names
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_unique_names, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.GLTFState.Bind_get_unique_names, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -1001,11 +834,7 @@ Sets the unique node names in the state. This is used in both the import process
 */
 //go:nosplit
 func (self class) SetUniqueNames(unique_names Array.Contains[String.Readable]) { //gd:GLTFState.set_unique_names
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(unique_names)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_unique_names, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFState.Bind_set_unique_names, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ unique_names gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(unique_names))[0])}))
 }
 
 /*
@@ -1013,11 +842,8 @@ Returns an array of unique animation names. This is only used during the import 
 */
 //go:nosplit
 func (self class) GetUniqueAnimationNames() Array.Contains[String.Readable] { //gd:GLTFState.get_unique_animation_names
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_unique_animation_names, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.GLTFState.Bind_get_unique_animation_names, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -1026,11 +852,7 @@ Sets the unique animation names in the state. This is only used during the impor
 */
 //go:nosplit
 func (self class) SetUniqueAnimationNames(unique_animation_names Array.Contains[String.Readable]) { //gd:GLTFState.set_unique_animation_names
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(unique_animation_names)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_unique_animation_names, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFState.Bind_set_unique_animation_names, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ unique_animation_names gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(unique_animation_names))[0])}))
 }
 
 /*
@@ -1038,11 +860,8 @@ Returns an array of all [GLTFSkeleton]s in the glTF file. These are the skeleton
 */
 //go:nosplit
 func (self class) GetSkeletons() Array.Contains[[1]gdclass.GLTFSkeleton] { //gd:GLTFState.get_skeletons
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_skeletons, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.GLTFSkeleton]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.GLTFState.Bind_get_skeletons, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.GLTFSkeleton]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -1051,49 +870,31 @@ Sets the [GLTFSkeleton]s in the state. These are the skeletons that the [member 
 */
 //go:nosplit
 func (self class) SetSkeletons(skeletons Array.Contains[[1]gdclass.GLTFSkeleton]) { //gd:GLTFState.set_skeletons
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(skeletons)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_skeletons, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFState.Bind_set_skeletons, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ skeletons gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(skeletons))[0])}))
 }
 
 //go:nosplit
 func (self class) GetCreateAnimations() bool { //gd:GLTFState.get_create_animations
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_create_animations, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.GLTFState.Bind_get_create_animations, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCreateAnimations(create_animations bool) { //gd:GLTFState.set_create_animations
-	var frame = callframe.New()
-	callframe.Arg(frame, create_animations)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_create_animations, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFState.Bind_set_create_animations, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ create_animations bool }{create_animations}))
 }
 
 //go:nosplit
 func (self class) GetImportAsSkeletonBones() bool { //gd:GLTFState.get_import_as_skeleton_bones
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_import_as_skeleton_bones, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.GLTFState.Bind_get_import_as_skeleton_bones, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetImportAsSkeletonBones(import_as_skeleton_bones bool) { //gd:GLTFState.set_import_as_skeleton_bones
-	var frame = callframe.New()
-	callframe.Arg(frame, import_as_skeleton_bones)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_import_as_skeleton_bones, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFState.Bind_set_import_as_skeleton_bones, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ import_as_skeleton_bones bool }{import_as_skeleton_bones}))
 }
 
 /*
@@ -1101,11 +902,8 @@ Returns an array of all [GLTFAnimation]s in the glTF file. When importing, these
 */
 //go:nosplit
 func (self class) GetAnimations() Array.Contains[[1]gdclass.GLTFAnimation] { //gd:GLTFState.get_animations
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_animations, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.GLTFAnimation]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.GLTFState.Bind_get_animations, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.GLTFAnimation]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -1114,11 +912,7 @@ Sets the [GLTFAnimation]s in the state. When importing, these will be generated 
 */
 //go:nosplit
 func (self class) SetAnimations(animations Array.Contains[[1]gdclass.GLTFAnimation]) { //gd:GLTFState.set_animations
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(animations)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_animations, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFState.Bind_set_animations, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ animations gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(animations))[0])}))
 }
 
 /*
@@ -1127,12 +921,8 @@ Returns the Godot scene node that corresponds to the same index as the [GLTFNode
 */
 //go:nosplit
 func (self class) GetSceneNode(idx int64) [1]gdclass.Node { //gd:GLTFState.get_scene_node
-	var frame = callframe.New()
-	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_scene_node, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.GLTFState.Bind_get_scene_node, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret)}
 	return ret
 }
 
@@ -1142,12 +932,8 @@ Returns the index of the [GLTFNode] corresponding to this Godot scene node. This
 */
 //go:nosplit
 func (self class) GetNodeIndex(scene_node [1]gdclass.Node) int64 { //gd:GLTFState.get_node_index
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(scene_node[0])[0])
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_node_index, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.GLTFState.Bind_get_node_index, gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ scene_node gdextension.Object }{gdextension.Object(pointers.Get(scene_node[0])[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1157,12 +943,8 @@ The argument should be the [GLTFDocumentExtension] name (does not have to match 
 */
 //go:nosplit
 func (self class) GetAdditionalData(extension_name String.Name) variant.Any { //gd:GLTFState.get_additional_data
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(extension_name)))
-	var r_ret = callframe.Ret[[3]uint64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_additional_data, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[3]uint64](self.AsObject(), gd.Global.Methods.GLTFState.Bind_get_additional_data, gdextension.SizeVariant|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ extension_name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(extension_name))[0])}))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
 
@@ -1172,49 +954,33 @@ The first argument should be the [GLTFDocumentExtension] name (does not have to 
 */
 //go:nosplit
 func (self class) SetAdditionalData(extension_name String.Name, additional_data variant.Any) { //gd:GLTFState.set_additional_data
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(extension_name)))
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(additional_data)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_additional_data, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFState.Bind_set_additional_data, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
+		extension_name  gdextension.StringName
+		additional_data gdextension.Variant
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(extension_name))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(additional_data)))}))
 }
 
 //go:nosplit
 func (self class) GetHandleBinaryImage() int64 { //gd:GLTFState.get_handle_binary_image
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_handle_binary_image, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.GLTFState.Bind_get_handle_binary_image, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHandleBinaryImage(method int64) { //gd:GLTFState.set_handle_binary_image
-	var frame = callframe.New()
-	callframe.Arg(frame, method)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_handle_binary_image, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFState.Bind_set_handle_binary_image, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ method int64 }{method}))
 }
 
 //go:nosplit
 func (self class) SetBakeFps(value float64) { //gd:GLTFState.set_bake_fps
-	var frame = callframe.New()
-	callframe.Arg(frame, value)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_set_bake_fps, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFState.Bind_set_bake_fps, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ value float64 }{value}))
 }
 
 //go:nosplit
 func (self class) GetBakeFps() float64 { //gd:GLTFState.get_bake_fps
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFState.Bind_get_bake_fps, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.GLTFState.Bind_get_bake_fps, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsGLTFState() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -54,6 +56,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -394,11 +398,8 @@ Returns [code]true[/code] if the body collided, otherwise, returns [code]false[/
 */
 //go:nosplit
 func (self class) MoveAndSlide() bool { //gd:CharacterBody2D.move_and_slide
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_move_and_slide, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_move_and_slide, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -407,294 +408,186 @@ Allows to manually apply a snap to the floor regardless of the body's velocity. 
 */
 //go:nosplit
 func (self class) ApplyFloorSnap() { //gd:CharacterBody2D.apply_floor_snap
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_apply_floor_snap, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_apply_floor_snap, 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) SetVelocity(velocity Vector2.XY) { //gd:CharacterBody2D.set_velocity
-	var frame = callframe.New()
-	callframe.Arg(frame, velocity)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_set_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_set_velocity, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ velocity Vector2.XY }{velocity}))
 }
 
 //go:nosplit
 func (self class) GetVelocity() Vector2.XY { //gd:CharacterBody2D.get_velocity
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_get_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_get_velocity, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSafeMargin(margin float64) { //gd:CharacterBody2D.set_safe_margin
-	var frame = callframe.New()
-	callframe.Arg(frame, margin)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_set_safe_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_set_safe_margin, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ margin float64 }{margin}))
 }
 
 //go:nosplit
 func (self class) GetSafeMargin() float64 { //gd:CharacterBody2D.get_safe_margin
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_get_safe_margin, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_get_safe_margin, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) IsFloorStopOnSlopeEnabled() bool { //gd:CharacterBody2D.is_floor_stop_on_slope_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_is_floor_stop_on_slope_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_is_floor_stop_on_slope_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFloorStopOnSlopeEnabled(enabled bool) { //gd:CharacterBody2D.set_floor_stop_on_slope_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_set_floor_stop_on_slope_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_set_floor_stop_on_slope_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) SetFloorConstantSpeedEnabled(enabled bool) { //gd:CharacterBody2D.set_floor_constant_speed_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_set_floor_constant_speed_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_set_floor_constant_speed_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsFloorConstantSpeedEnabled() bool { //gd:CharacterBody2D.is_floor_constant_speed_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_is_floor_constant_speed_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_is_floor_constant_speed_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFloorBlockOnWallEnabled(enabled bool) { //gd:CharacterBody2D.set_floor_block_on_wall_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_set_floor_block_on_wall_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_set_floor_block_on_wall_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsFloorBlockOnWallEnabled() bool { //gd:CharacterBody2D.is_floor_block_on_wall_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_is_floor_block_on_wall_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_is_floor_block_on_wall_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSlideOnCeilingEnabled(enabled bool) { //gd:CharacterBody2D.set_slide_on_ceiling_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_set_slide_on_ceiling_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_set_slide_on_ceiling_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsSlideOnCeilingEnabled() bool { //gd:CharacterBody2D.is_slide_on_ceiling_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_is_slide_on_ceiling_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_is_slide_on_ceiling_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPlatformFloorLayers(exclude_layer int64) { //gd:CharacterBody2D.set_platform_floor_layers
-	var frame = callframe.New()
-	callframe.Arg(frame, exclude_layer)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_set_platform_floor_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_set_platform_floor_layers, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ exclude_layer int64 }{exclude_layer}))
 }
 
 //go:nosplit
 func (self class) GetPlatformFloorLayers() int64 { //gd:CharacterBody2D.get_platform_floor_layers
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_get_platform_floor_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_get_platform_floor_layers, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPlatformWallLayers(exclude_layer int64) { //gd:CharacterBody2D.set_platform_wall_layers
-	var frame = callframe.New()
-	callframe.Arg(frame, exclude_layer)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_set_platform_wall_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_set_platform_wall_layers, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ exclude_layer int64 }{exclude_layer}))
 }
 
 //go:nosplit
 func (self class) GetPlatformWallLayers() int64 { //gd:CharacterBody2D.get_platform_wall_layers
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_get_platform_wall_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_get_platform_wall_layers, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetMaxSlides() int64 { //gd:CharacterBody2D.get_max_slides
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_get_max_slides, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_get_max_slides, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaxSlides(max_slides int64) { //gd:CharacterBody2D.set_max_slides
-	var frame = callframe.New()
-	callframe.Arg(frame, max_slides)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_set_max_slides, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_set_max_slides, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ max_slides int64 }{max_slides}))
 }
 
 //go:nosplit
 func (self class) GetFloorMaxAngle() float64 { //gd:CharacterBody2D.get_floor_max_angle
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_get_floor_max_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_get_floor_max_angle, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFloorMaxAngle(radians float64) { //gd:CharacterBody2D.set_floor_max_angle
-	var frame = callframe.New()
-	callframe.Arg(frame, radians)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_set_floor_max_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_set_floor_max_angle, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radians float64 }{radians}))
 }
 
 //go:nosplit
 func (self class) GetFloorSnapLength() float64 { //gd:CharacterBody2D.get_floor_snap_length
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_get_floor_snap_length, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_get_floor_snap_length, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFloorSnapLength(floor_snap_length float64) { //gd:CharacterBody2D.set_floor_snap_length
-	var frame = callframe.New()
-	callframe.Arg(frame, floor_snap_length)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_set_floor_snap_length, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_set_floor_snap_length, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ floor_snap_length float64 }{floor_snap_length}))
 }
 
 //go:nosplit
 func (self class) GetWallMinSlideAngle() float64 { //gd:CharacterBody2D.get_wall_min_slide_angle
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_get_wall_min_slide_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_get_wall_min_slide_angle, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetWallMinSlideAngle(radians float64) { //gd:CharacterBody2D.set_wall_min_slide_angle
-	var frame = callframe.New()
-	callframe.Arg(frame, radians)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_set_wall_min_slide_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_set_wall_min_slide_angle, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radians float64 }{radians}))
 }
 
 //go:nosplit
 func (self class) GetUpDirection() Vector2.XY { //gd:CharacterBody2D.get_up_direction
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_get_up_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_get_up_direction, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUpDirection(up_direction Vector2.XY) { //gd:CharacterBody2D.set_up_direction
-	var frame = callframe.New()
-	callframe.Arg(frame, up_direction)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_set_up_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_set_up_direction, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ up_direction Vector2.XY }{up_direction}))
 }
 
 //go:nosplit
 func (self class) SetMotionMode(mode MotionMode) { //gd:CharacterBody2D.set_motion_mode
-	var frame = callframe.New()
-	callframe.Arg(frame, mode)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_set_motion_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_set_motion_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode MotionMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetMotionMode() MotionMode { //gd:CharacterBody2D.get_motion_mode
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[MotionMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_get_motion_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[MotionMode](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_get_motion_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPlatformOnLeave(on_leave_apply_velocity PlatformOnLeave) { //gd:CharacterBody2D.set_platform_on_leave
-	var frame = callframe.New()
-	callframe.Arg(frame, on_leave_apply_velocity)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_set_platform_on_leave, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_set_platform_on_leave, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ on_leave_apply_velocity PlatformOnLeave }{on_leave_apply_velocity}))
 }
 
 //go:nosplit
 func (self class) GetPlatformOnLeave() PlatformOnLeave { //gd:CharacterBody2D.get_platform_on_leave
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[PlatformOnLeave](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_get_platform_on_leave, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[PlatformOnLeave](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_get_platform_on_leave, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -703,11 +596,8 @@ Returns [code]true[/code] if the body collided with the floor on the last call o
 */
 //go:nosplit
 func (self class) IsOnFloor() bool { //gd:CharacterBody2D.is_on_floor
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_is_on_floor, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_is_on_floor, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -716,11 +606,8 @@ Returns [code]true[/code] if the body collided only with the floor on the last c
 */
 //go:nosplit
 func (self class) IsOnFloorOnly() bool { //gd:CharacterBody2D.is_on_floor_only
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_is_on_floor_only, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_is_on_floor_only, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -729,11 +616,8 @@ Returns [code]true[/code] if the body collided with the ceiling on the last call
 */
 //go:nosplit
 func (self class) IsOnCeiling() bool { //gd:CharacterBody2D.is_on_ceiling
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_is_on_ceiling, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_is_on_ceiling, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -742,11 +626,8 @@ Returns [code]true[/code] if the body collided only with the ceiling on the last
 */
 //go:nosplit
 func (self class) IsOnCeilingOnly() bool { //gd:CharacterBody2D.is_on_ceiling_only
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_is_on_ceiling_only, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_is_on_ceiling_only, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -755,11 +636,8 @@ Returns [code]true[/code] if the body collided with a wall on the last call of [
 */
 //go:nosplit
 func (self class) IsOnWall() bool { //gd:CharacterBody2D.is_on_wall
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_is_on_wall, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_is_on_wall, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -768,11 +646,8 @@ Returns [code]true[/code] if the body collided only with a wall on the last call
 */
 //go:nosplit
 func (self class) IsOnWallOnly() bool { //gd:CharacterBody2D.is_on_wall_only
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_is_on_wall_only, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_is_on_wall_only, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -782,11 +657,8 @@ Returns the collision normal of the floor at the last collision point. Only vali
 */
 //go:nosplit
 func (self class) GetFloorNormal() Vector2.XY { //gd:CharacterBody2D.get_floor_normal
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_get_floor_normal, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_get_floor_normal, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -796,11 +668,8 @@ Returns the collision normal of the wall at the last collision point. Only valid
 */
 //go:nosplit
 func (self class) GetWallNormal() Vector2.XY { //gd:CharacterBody2D.get_wall_normal
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_get_wall_normal, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_get_wall_normal, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -809,11 +678,8 @@ Returns the last motion applied to the [CharacterBody2D] during the last call to
 */
 //go:nosplit
 func (self class) GetLastMotion() Vector2.XY { //gd:CharacterBody2D.get_last_motion
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_get_last_motion, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_get_last_motion, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -822,11 +688,8 @@ Returns the travel (position delta) that occurred during the last call to [metho
 */
 //go:nosplit
 func (self class) GetPositionDelta() Vector2.XY { //gd:CharacterBody2D.get_position_delta
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_get_position_delta, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_get_position_delta, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -835,11 +698,8 @@ Returns the current real velocity since the last call to [method move_and_slide]
 */
 //go:nosplit
 func (self class) GetRealVelocity() Vector2.XY { //gd:CharacterBody2D.get_real_velocity
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_get_real_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_get_real_velocity, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -848,12 +708,8 @@ Returns the floor's collision angle at the last collision point according to [pa
 */
 //go:nosplit
 func (self class) GetFloorAngle(up_direction Vector2.XY) float64 { //gd:CharacterBody2D.get_floor_angle
-	var frame = callframe.New()
-	callframe.Arg(frame, up_direction)
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_get_floor_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_get_floor_angle, gdextension.SizeFloat|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ up_direction Vector2.XY }{up_direction}))
+	var ret = r_ret
 	return ret
 }
 
@@ -862,11 +718,8 @@ Returns the linear velocity of the platform at the last collision point. Only va
 */
 //go:nosplit
 func (self class) GetPlatformVelocity() Vector2.XY { //gd:CharacterBody2D.get_platform_velocity
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_get_platform_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_get_platform_velocity, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -875,11 +728,8 @@ Returns the number of times the body collided and changed direction during the l
 */
 //go:nosplit
 func (self class) GetSlideCollisionCount() int64 { //gd:CharacterBody2D.get_slide_collision_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_get_slide_collision_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_get_slide_collision_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -903,12 +753,8 @@ for (int i = 0; i < GetSlideCollisionCount(); i++)
 */
 //go:nosplit
 func (self class) GetSlideCollision(slide_idx int64) [1]gdclass.KinematicCollision2D { //gd:CharacterBody2D.get_slide_collision
-	var frame = callframe.New()
-	callframe.Arg(frame, slide_idx)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_get_slide_collision, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.KinematicCollision2D{gd.PointerWithOwnershipTransferredToGo[gdclass.KinematicCollision2D](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_get_slide_collision, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ slide_idx int64 }{slide_idx}))
+	var ret = [1]gdclass.KinematicCollision2D{gd.PointerWithOwnershipTransferredToGo[gdclass.KinematicCollision2D](r_ret)}
 	return ret
 }
 
@@ -917,11 +763,8 @@ Returns a [KinematicCollision2D], which contains information about the latest co
 */
 //go:nosplit
 func (self class) GetLastSlideCollision() [1]gdclass.KinematicCollision2D { //gd:CharacterBody2D.get_last_slide_collision
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CharacterBody2D.Bind_get_last_slide_collision, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.KinematicCollision2D{gd.PointerWithOwnershipTransferredToGo[gdclass.KinematicCollision2D](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.CharacterBody2D.Bind_get_last_slide_collision, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.KinematicCollision2D{gd.PointerWithOwnershipTransferredToGo[gdclass.KinematicCollision2D](r_ret)}
 	return ret
 }
 func (self class) AsCharacterBody2D() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +51,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -132,11 +136,7 @@ Switch to a clip (by name).
 */
 //go:nosplit
 func (self class) SwitchToClipByName(clip_name String.Name) { //gd:AudioStreamPlaybackInteractive.switch_to_clip_by_name
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(clip_name)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlaybackInteractive.Bind_switch_to_clip_by_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioStreamPlaybackInteractive.Bind_switch_to_clip_by_name, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ clip_name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(clip_name))[0])}))
 }
 
 /*
@@ -144,11 +144,7 @@ Switch to a clip (by index).
 */
 //go:nosplit
 func (self class) SwitchToClip(clip_index int64) { //gd:AudioStreamPlaybackInteractive.switch_to_clip
-	var frame = callframe.New()
-	callframe.Arg(frame, clip_index)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlaybackInteractive.Bind_switch_to_clip, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioStreamPlaybackInteractive.Bind_switch_to_clip, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ clip_index int64 }{clip_index}))
 }
 
 /*
@@ -162,11 +158,8 @@ var playing_clip_name = stream.get_clip_name(get_stream_playback().get_current_c
 */
 //go:nosplit
 func (self class) GetCurrentClipIndex() int64 { //gd:AudioStreamPlaybackInteractive.get_current_clip_index
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlaybackInteractive.Bind_get_current_clip_index, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.AudioStreamPlaybackInteractive.Bind_get_current_clip_index, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsAudioStreamPlaybackInteractive() Advanced {

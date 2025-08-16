@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -53,6 +55,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -130,58 +134,37 @@ func (self Instance) SetGlobalPosition(value Vector2.XY) {
 
 //go:nosplit
 func (self class) SetButtonMask(button_mask Input.MouseButtonMask) { //gd:InputEventMouse.set_button_mask
-	var frame = callframe.New()
-	callframe.Arg(frame, button_mask)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMouse.Bind_set_button_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputEventMouse.Bind_set_button_mask, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ button_mask Input.MouseButtonMask }{button_mask}))
 }
 
 //go:nosplit
 func (self class) GetButtonMask() Input.MouseButtonMask { //gd:InputEventMouse.get_button_mask
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Input.MouseButtonMask](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMouse.Bind_get_button_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Input.MouseButtonMask](self.AsObject(), gd.Global.Methods.InputEventMouse.Bind_get_button_mask, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPosition(position Vector2.XY) { //gd:InputEventMouse.set_position
-	var frame = callframe.New()
-	callframe.Arg(frame, position)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMouse.Bind_set_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputEventMouse.Bind_set_position, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
 }
 
 //go:nosplit
 func (self class) GetPosition() Vector2.XY { //gd:InputEventMouse.get_position
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMouse.Bind_get_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.InputEventMouse.Bind_get_position, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGlobalPosition(global_position Vector2.XY) { //gd:InputEventMouse.set_global_position
-	var frame = callframe.New()
-	callframe.Arg(frame, global_position)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMouse.Bind_set_global_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputEventMouse.Bind_set_global_position, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ global_position Vector2.XY }{global_position}))
 }
 
 //go:nosplit
 func (self class) GetGlobalPosition() Vector2.XY { //gd:InputEventMouse.get_global_position
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMouse.Bind_get_global_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.InputEventMouse.Bind_get_global_position, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsInputEventMouse() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

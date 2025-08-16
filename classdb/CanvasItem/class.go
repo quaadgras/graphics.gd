@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -62,6 +64,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -984,30 +988,20 @@ Returns the canvas item RID used by [RenderingServer] for this item.
 */
 //go:nosplit
 func (self class) GetCanvasItem() RID.Any { //gd:CanvasItem.get_canvas_item
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_canvas_item, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_get_canvas_item, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVisible(visible bool) { //gd:CanvasItem.set_visible
-	var frame = callframe.New()
-	callframe.Arg(frame, visible)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_set_visible, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ visible bool }{visible}))
 }
 
 //go:nosplit
 func (self class) IsVisible() bool { //gd:CanvasItem.is_visible
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_is_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_is_visible, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1018,11 +1012,8 @@ Visibility is checked only in parent nodes that inherit from [CanvasItem], [Canv
 */
 //go:nosplit
 func (self class) IsVisibleInTree() bool { //gd:CanvasItem.is_visible_in_tree
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_is_visible_in_tree, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_is_visible_in_tree, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1031,10 +1022,7 @@ Show the [CanvasItem] if it's currently hidden. This is equivalent to setting [m
 */
 //go:nosplit
 func (self class) Show() { //gd:CanvasItem.show
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_show, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_show, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1042,10 +1030,7 @@ Hide the [CanvasItem] if it's currently visible. This is equivalent to setting [
 */
 //go:nosplit
 func (self class) Hide() { //gd:CanvasItem.hide
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_hide, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_hide, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1053,10 +1038,7 @@ Queues the [CanvasItem] to redraw. During idle time, if [CanvasItem] is visible,
 */
 //go:nosplit
 func (self class) QueueRedraw() { //gd:CanvasItem.queue_redraw
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_queue_redraw, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_queue_redraw, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1065,161 +1047,102 @@ Internally, the node is moved to the bottom of parent's child list. The method h
 */
 //go:nosplit
 func (self class) MoveToFront() { //gd:CanvasItem.move_to_front
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_move_to_front, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_move_to_front, 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) SetAsTopLevel(enable bool) { //gd:CanvasItem.set_as_top_level
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_as_top_level, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_set_as_top_level, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsSetAsTopLevel() bool { //gd:CanvasItem.is_set_as_top_level
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_is_set_as_top_level, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_is_set_as_top_level, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLightMask(light_mask int64) { //gd:CanvasItem.set_light_mask
-	var frame = callframe.New()
-	callframe.Arg(frame, light_mask)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_light_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_set_light_mask, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ light_mask int64 }{light_mask}))
 }
 
 //go:nosplit
 func (self class) GetLightMask() int64 { //gd:CanvasItem.get_light_mask
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_light_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_get_light_mask, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetModulate(modulate Color.RGBA) { //gd:CanvasItem.set_modulate
-	var frame = callframe.New()
-	callframe.Arg(frame, modulate)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_modulate, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_set_modulate, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ modulate Color.RGBA }{modulate}))
 }
 
 //go:nosplit
 func (self class) GetModulate() Color.RGBA { //gd:CanvasItem.get_modulate
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Color.RGBA](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_modulate, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Color.RGBA](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_get_modulate, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSelfModulate(self_modulate Color.RGBA) { //gd:CanvasItem.set_self_modulate
-	var frame = callframe.New()
-	callframe.Arg(frame, self_modulate)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_self_modulate, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_set_self_modulate, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ self_modulate Color.RGBA }{self_modulate}))
 }
 
 //go:nosplit
 func (self class) GetSelfModulate() Color.RGBA { //gd:CanvasItem.get_self_modulate
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Color.RGBA](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_self_modulate, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Color.RGBA](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_get_self_modulate, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetZIndex(z_index int64) { //gd:CanvasItem.set_z_index
-	var frame = callframe.New()
-	callframe.Arg(frame, z_index)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_z_index, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_set_z_index, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ z_index int64 }{z_index}))
 }
 
 //go:nosplit
 func (self class) GetZIndex() int64 { //gd:CanvasItem.get_z_index
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_z_index, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_get_z_index, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetZAsRelative(enable bool) { //gd:CanvasItem.set_z_as_relative
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_z_as_relative, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_set_z_as_relative, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsZRelative() bool { //gd:CanvasItem.is_z_relative
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_is_z_relative, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_is_z_relative, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetYSortEnabled(enabled bool) { //gd:CanvasItem.set_y_sort_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_y_sort_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_set_y_sort_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsYSortEnabled() bool { //gd:CanvasItem.is_y_sort_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_is_y_sort_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_is_y_sort_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDrawBehindParent(enable bool) { //gd:CanvasItem.set_draw_behind_parent
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_draw_behind_parent, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_set_draw_behind_parent, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsDrawBehindParentEnabled() bool { //gd:CanvasItem.is_draw_behind_parent_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_is_draw_behind_parent_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_is_draw_behind_parent_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1229,15 +1152,13 @@ If [param width] is negative, then a two-point primitive will be drawn instead o
 */
 //go:nosplit
 func (self class) DrawLine(from Vector2.XY, to Vector2.XY, color Color.RGBA, width float64, antialiased bool) { //gd:CanvasItem.draw_line
-	var frame = callframe.New()
-	callframe.Arg(frame, from)
-	callframe.Arg(frame, to)
-	callframe.Arg(frame, color)
-	callframe.Arg(frame, width)
-	callframe.Arg(frame, antialiased)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_line, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_draw_line, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeColor<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeBool<<20), unsafe.Pointer(&struct {
+		from        Vector2.XY
+		to          Vector2.XY
+		color       Color.RGBA
+		width       float64
+		antialiased bool
+	}{from, to, color, width, antialiased}))
 }
 
 /*
@@ -1249,17 +1170,15 @@ If [param antialiased] is [code]true[/code], half transparent "feathers" will be
 */
 //go:nosplit
 func (self class) DrawDashedLine(from Vector2.XY, to Vector2.XY, color Color.RGBA, width float64, dash float64, aligned bool, antialiased bool) { //gd:CanvasItem.draw_dashed_line
-	var frame = callframe.New()
-	callframe.Arg(frame, from)
-	callframe.Arg(frame, to)
-	callframe.Arg(frame, color)
-	callframe.Arg(frame, width)
-	callframe.Arg(frame, dash)
-	callframe.Arg(frame, aligned)
-	callframe.Arg(frame, antialiased)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_dashed_line, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_draw_dashed_line, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeColor<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeBool<<24)|(gdextension.SizeBool<<28), unsafe.Pointer(&struct {
+		from        Vector2.XY
+		to          Vector2.XY
+		color       Color.RGBA
+		width       float64
+		dash        float64
+		aligned     bool
+		antialiased bool
+	}{from, to, color, width, dash, aligned, antialiased}))
 }
 
 /*
@@ -1268,14 +1187,12 @@ If [param width] is negative, it will be ignored and the polyline will be drawn 
 */
 //go:nosplit
 func (self class) DrawPolyline(points Packed.Array[Vector2.XY], color Color.RGBA, width float64, antialiased bool) { //gd:CanvasItem.draw_polyline
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)))
-	callframe.Arg(frame, color)
-	callframe.Arg(frame, width)
-	callframe.Arg(frame, antialiased)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_polyline, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_draw_polyline, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizeColor<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+		points      gdextension.PackedArray
+		color       Color.RGBA
+		width       float64
+		antialiased bool
+	}{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points))), color, width, antialiased}))
 }
 
 /*
@@ -1284,14 +1201,12 @@ If [param width] is negative, it will be ignored and the polyline will be drawn 
 */
 //go:nosplit
 func (self class) DrawPolylineColors(points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], width float64, antialiased bool) { //gd:CanvasItem.draw_polyline_colors
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)))
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors)))
-	callframe.Arg(frame, width)
-	callframe.Arg(frame, antialiased)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_polyline_colors, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_draw_polyline_colors, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+		points      gdextension.PackedArray
+		colors      gdextension.PackedArray
+		width       float64
+		antialiased bool
+	}{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors))), width, antialiased}))
 }
 
 /*
@@ -1301,18 +1216,16 @@ The arc is drawn from [param start_angle] towards the value of [param end_angle]
 */
 //go:nosplit
 func (self class) DrawArc(center Vector2.XY, radius float64, start_angle float64, end_angle float64, point_count int64, color Color.RGBA, width float64, antialiased bool) { //gd:CanvasItem.draw_arc
-	var frame = callframe.New()
-	callframe.Arg(frame, center)
-	callframe.Arg(frame, radius)
-	callframe.Arg(frame, start_angle)
-	callframe.Arg(frame, end_angle)
-	callframe.Arg(frame, point_count)
-	callframe.Arg(frame, color)
-	callframe.Arg(frame, width)
-	callframe.Arg(frame, antialiased)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_arc, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_draw_arc, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeColor<<24)|(gdextension.SizeFloat<<28)|(gdextension.SizeBool<<32), unsafe.Pointer(&struct {
+		center      Vector2.XY
+		radius      float64
+		start_angle float64
+		end_angle   float64
+		point_count int64
+		color       Color.RGBA
+		width       float64
+		antialiased bool
+	}{center, radius, start_angle, end_angle, point_count, color, width, antialiased}))
 }
 
 /*
@@ -1322,14 +1235,12 @@ If [param width] is negative, then two-point primitives will be drawn instead of
 */
 //go:nosplit
 func (self class) DrawMultiline(points Packed.Array[Vector2.XY], color Color.RGBA, width float64, antialiased bool) { //gd:CanvasItem.draw_multiline
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)))
-	callframe.Arg(frame, color)
-	callframe.Arg(frame, width)
-	callframe.Arg(frame, antialiased)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_multiline, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_draw_multiline, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizeColor<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+		points      gdextension.PackedArray
+		color       Color.RGBA
+		width       float64
+		antialiased bool
+	}{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points))), color, width, antialiased}))
 }
 
 /*
@@ -1339,14 +1250,12 @@ If [param width] is negative, then two-point primitives will be drawn instead of
 */
 //go:nosplit
 func (self class) DrawMultilineColors(points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], width float64, antialiased bool) { //gd:CanvasItem.draw_multiline_colors
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)))
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors)))
-	callframe.Arg(frame, width)
-	callframe.Arg(frame, antialiased)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_multiline_colors, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_draw_multiline_colors, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+		points      gdextension.PackedArray
+		colors      gdextension.PackedArray
+		width       float64
+		antialiased bool
+	}{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors))), width, antialiased}))
 }
 
 /*
@@ -1358,15 +1267,13 @@ If [param antialiased] is [code]true[/code], half transparent "feathers" will be
 */
 //go:nosplit
 func (self class) DrawRect(rect Rect2.PositionSize, color Color.RGBA, filled bool, width float64, antialiased bool) { //gd:CanvasItem.draw_rect
-	var frame = callframe.New()
-	callframe.Arg(frame, rect)
-	callframe.Arg(frame, color)
-	callframe.Arg(frame, filled)
-	callframe.Arg(frame, width)
-	callframe.Arg(frame, antialiased)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_draw_rect, 0|(gdextension.SizeRect2<<4)|(gdextension.SizeColor<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeBool<<20), unsafe.Pointer(&struct {
+		rect        Rect2.PositionSize
+		color       Color.RGBA
+		filled      bool
+		width       float64
+		antialiased bool
+	}{rect, color, filled, width, antialiased}))
 }
 
 /*
@@ -1378,16 +1285,14 @@ If [param antialiased] is [code]true[/code], half transparent "feathers" will be
 */
 //go:nosplit
 func (self class) DrawCircle(position Vector2.XY, radius float64, color Color.RGBA, filled bool, width float64, antialiased bool) { //gd:CanvasItem.draw_circle
-	var frame = callframe.New()
-	callframe.Arg(frame, position)
-	callframe.Arg(frame, radius)
-	callframe.Arg(frame, color)
-	callframe.Arg(frame, filled)
-	callframe.Arg(frame, width)
-	callframe.Arg(frame, antialiased)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_circle, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_draw_circle, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeColor<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeBool<<24), unsafe.Pointer(&struct {
+		position    Vector2.XY
+		radius      float64
+		color       Color.RGBA
+		filled      bool
+		width       float64
+		antialiased bool
+	}{position, radius, color, filled, width, antialiased}))
 }
 
 /*
@@ -1395,13 +1300,11 @@ Draws a texture at a given position.
 */
 //go:nosplit
 func (self class) DrawTexture(texture [1]gdclass.Texture2D, position Vector2.XY, modulate Color.RGBA) { //gd:CanvasItem.draw_texture
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(texture[0])[0])
-	callframe.Arg(frame, position)
-	callframe.Arg(frame, modulate)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_draw_texture, 0|(gdextension.SizeObject<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeColor<<12), unsafe.Pointer(&struct {
+		texture  gdextension.Object
+		position Vector2.XY
+		modulate Color.RGBA
+	}{gdextension.Object(pointers.Get(texture[0])[0]), position, modulate}))
 }
 
 /*
@@ -1409,15 +1312,13 @@ Draws a textured rectangle at a given position, optionally modulated by a color.
 */
 //go:nosplit
 func (self class) DrawTextureRect(texture [1]gdclass.Texture2D, rect Rect2.PositionSize, tile bool, modulate Color.RGBA, transpose bool) { //gd:CanvasItem.draw_texture_rect
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(texture[0])[0])
-	callframe.Arg(frame, rect)
-	callframe.Arg(frame, tile)
-	callframe.Arg(frame, modulate)
-	callframe.Arg(frame, transpose)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_texture_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_draw_texture_rect, 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeBool<<20), unsafe.Pointer(&struct {
+		texture   gdextension.Object
+		rect      Rect2.PositionSize
+		tile      bool
+		modulate  Color.RGBA
+		transpose bool
+	}{gdextension.Object(pointers.Get(texture[0])[0]), rect, tile, modulate, transpose}))
 }
 
 /*
@@ -1425,16 +1326,14 @@ Draws a textured rectangle from a texture's region (specified by [param src_rect
 */
 //go:nosplit
 func (self class) DrawTextureRectRegion(texture [1]gdclass.Texture2D, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool) { //gd:CanvasItem.draw_texture_rect_region
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(texture[0])[0])
-	callframe.Arg(frame, rect)
-	callframe.Arg(frame, src_rect)
-	callframe.Arg(frame, modulate)
-	callframe.Arg(frame, transpose)
-	callframe.Arg(frame, clip_uv)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_texture_rect_region, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_draw_texture_rect_region, 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRect2<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeBool<<24), unsafe.Pointer(&struct {
+		texture   gdextension.Object
+		rect      Rect2.PositionSize
+		src_rect  Rect2.PositionSize
+		modulate  Color.RGBA
+		transpose bool
+		clip_uv   bool
+	}{gdextension.Object(pointers.Get(texture[0])[0]), rect, src_rect, modulate, transpose, clip_uv}))
 }
 
 /*
@@ -1444,17 +1343,15 @@ Value of the [param pixel_range] should the same that was used during distance f
 */
 //go:nosplit
 func (self class) DrawMsdfTextureRectRegion(texture [1]gdclass.Texture2D, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, outline float64, pixel_range float64, scale float64) { //gd:CanvasItem.draw_msdf_texture_rect_region
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(texture[0])[0])
-	callframe.Arg(frame, rect)
-	callframe.Arg(frame, src_rect)
-	callframe.Arg(frame, modulate)
-	callframe.Arg(frame, outline)
-	callframe.Arg(frame, pixel_range)
-	callframe.Arg(frame, scale)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_msdf_texture_rect_region, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_draw_msdf_texture_rect_region, 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRect2<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeFloat<<24)|(gdextension.SizeFloat<<28), unsafe.Pointer(&struct {
+		texture     gdextension.Object
+		rect        Rect2.PositionSize
+		src_rect    Rect2.PositionSize
+		modulate    Color.RGBA
+		outline     float64
+		pixel_range float64
+		scale       float64
+	}{gdextension.Object(pointers.Get(texture[0])[0]), rect, src_rect, modulate, outline, pixel_range, scale}))
 }
 
 /*
@@ -1469,14 +1366,12 @@ dst.a = modulate.a + dst.a * (1.0 - modulate.a);
 */
 //go:nosplit
 func (self class) DrawLcdTextureRectRegion(texture [1]gdclass.Texture2D, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA) { //gd:CanvasItem.draw_lcd_texture_rect_region
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(texture[0])[0])
-	callframe.Arg(frame, rect)
-	callframe.Arg(frame, src_rect)
-	callframe.Arg(frame, modulate)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_lcd_texture_rect_region, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_draw_lcd_texture_rect_region, 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRect2<<12)|(gdextension.SizeColor<<16), unsafe.Pointer(&struct {
+		texture  gdextension.Object
+		rect     Rect2.PositionSize
+		src_rect Rect2.PositionSize
+		modulate Color.RGBA
+	}{gdextension.Object(pointers.Get(texture[0])[0]), rect, src_rect, modulate}))
 }
 
 /*
@@ -1484,12 +1379,10 @@ Draws a styled rectangle.
 */
 //go:nosplit
 func (self class) DrawStyleBox(style_box [1]gdclass.StyleBox, rect Rect2.PositionSize) { //gd:CanvasItem.draw_style_box
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(style_box[0])[0])
-	callframe.Arg(frame, rect)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_style_box, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_draw_style_box, 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2<<8), unsafe.Pointer(&struct {
+		style_box gdextension.Object
+		rect      Rect2.PositionSize
+	}{gdextension.Object(pointers.Get(style_box[0])[0]), rect}))
 }
 
 /*
@@ -1497,14 +1390,12 @@ Draws a custom primitive. 1 point for a point, 2 points for a line, 3 points for
 */
 //go:nosplit
 func (self class) DrawPrimitive(points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], uvs Packed.Array[Vector2.XY], texture [1]gdclass.Texture2D) { //gd:CanvasItem.draw_primitive
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)))
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors)))
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs)))
-	callframe.Arg(frame, pointers.Get(texture[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_primitive, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_draw_primitive, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeObject<<16), unsafe.Pointer(&struct {
+		points  gdextension.PackedArray
+		colors  gdextension.PackedArray
+		uvs     gdextension.PackedArray
+		texture gdextension.Object
+	}{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs))), gdextension.Object(pointers.Get(texture[0])[0])}))
 }
 
 /*
@@ -1513,14 +1404,12 @@ Draws a solid polygon of any number of points, convex or concave. Unlike [method
 */
 //go:nosplit
 func (self class) DrawPolygon(points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], uvs Packed.Array[Vector2.XY], texture [1]gdclass.Texture2D) { //gd:CanvasItem.draw_polygon
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)))
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors)))
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs)))
-	callframe.Arg(frame, pointers.Get(texture[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_draw_polygon, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeObject<<16), unsafe.Pointer(&struct {
+		points  gdextension.PackedArray
+		colors  gdextension.PackedArray
+		uvs     gdextension.PackedArray
+		texture gdextension.Object
+	}{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs))), gdextension.Object(pointers.Get(texture[0])[0])}))
 }
 
 /*
@@ -1529,14 +1418,12 @@ Draws a colored polygon of any number of points, convex or concave. Unlike [meth
 */
 //go:nosplit
 func (self class) DrawColoredPolygon(points Packed.Array[Vector2.XY], color Color.RGBA, uvs Packed.Array[Vector2.XY], texture [1]gdclass.Texture2D) { //gd:CanvasItem.draw_colored_polygon
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)))
-	callframe.Arg(frame, color)
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs)))
-	callframe.Arg(frame, pointers.Get(texture[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_colored_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_draw_colored_polygon, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizeColor<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeObject<<16), unsafe.Pointer(&struct {
+		points  gdextension.PackedArray
+		color   Color.RGBA
+		uvs     gdextension.PackedArray
+		texture gdextension.Object
+	}{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points))), color, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs))), gdextension.Object(pointers.Get(texture[0])[0])}))
 }
 
 /*
@@ -1564,20 +1451,18 @@ See also [method Font.draw_string].
 */
 //go:nosplit
 func (self class) DrawString(font [1]gdclass.Font, pos Vector2.XY, text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, modulate Color.RGBA, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) { //gd:CanvasItem.draw_string
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(font[0])[0])
-	callframe.Arg(frame, pos)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
-	callframe.Arg(frame, alignment)
-	callframe.Arg(frame, width)
-	callframe.Arg(frame, font_size)
-	callframe.Arg(frame, modulate)
-	callframe.Arg(frame, justification_flags)
-	callframe.Arg(frame, direction)
-	callframe.Arg(frame, orientation)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_string, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_draw_string, 0|(gdextension.SizeObject<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeColor<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeInt<<36)|(gdextension.SizeInt<<40), unsafe.Pointer(&struct {
+		font                gdextension.Object
+		pos                 Vector2.XY
+		text                gdextension.String
+		alignment           GUI.HorizontalAlignment
+		width               float64
+		font_size           int64
+		modulate            Color.RGBA
+		justification_flags TextServer.JustificationFlag
+		direction           TextServer.Direction
+		orientation         TextServer.Orientation
+	}{gdextension.Object(pointers.Get(font[0])[0]), pos, gdextension.String(pointers.Get(gd.InternalString(text))[0]), alignment, width, font_size, modulate, justification_flags, direction, orientation}))
 }
 
 /*
@@ -1585,22 +1470,20 @@ Breaks [param text] into lines and draws it using the specified [param font] at 
 */
 //go:nosplit
 func (self class) DrawMultilineString(font [1]gdclass.Font, pos Vector2.XY, text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, max_lines int64, modulate Color.RGBA, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) { //gd:CanvasItem.draw_multiline_string
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(font[0])[0])
-	callframe.Arg(frame, pos)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
-	callframe.Arg(frame, alignment)
-	callframe.Arg(frame, width)
-	callframe.Arg(frame, font_size)
-	callframe.Arg(frame, max_lines)
-	callframe.Arg(frame, modulate)
-	callframe.Arg(frame, brk_flags)
-	callframe.Arg(frame, justification_flags)
-	callframe.Arg(frame, direction)
-	callframe.Arg(frame, orientation)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_multiline_string, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_draw_multiline_string, 0|(gdextension.SizeObject<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeColor<<32)|(gdextension.SizeInt<<36)|(gdextension.SizeInt<<40)|(gdextension.SizeInt<<44)|(gdextension.SizeInt<<48), unsafe.Pointer(&struct {
+		font                gdextension.Object
+		pos                 Vector2.XY
+		text                gdextension.String
+		alignment           GUI.HorizontalAlignment
+		width               float64
+		font_size           int64
+		max_lines           int64
+		modulate            Color.RGBA
+		brk_flags           TextServer.LineBreakFlag
+		justification_flags TextServer.JustificationFlag
+		direction           TextServer.Direction
+		orientation         TextServer.Orientation
+	}{gdextension.Object(pointers.Get(font[0])[0]), pos, gdextension.String(pointers.Get(gd.InternalString(text))[0]), alignment, width, font_size, max_lines, modulate, brk_flags, justification_flags, direction, orientation}))
 }
 
 /*
@@ -1608,21 +1491,19 @@ Draws [param text] outline using the specified [param font] at the [param pos] (
 */
 //go:nosplit
 func (self class) DrawStringOutline(font [1]gdclass.Font, pos Vector2.XY, text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, size int64, modulate Color.RGBA, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) { //gd:CanvasItem.draw_string_outline
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(font[0])[0])
-	callframe.Arg(frame, pos)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
-	callframe.Arg(frame, alignment)
-	callframe.Arg(frame, width)
-	callframe.Arg(frame, font_size)
-	callframe.Arg(frame, size)
-	callframe.Arg(frame, modulate)
-	callframe.Arg(frame, justification_flags)
-	callframe.Arg(frame, direction)
-	callframe.Arg(frame, orientation)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_string_outline, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_draw_string_outline, 0|(gdextension.SizeObject<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeColor<<32)|(gdextension.SizeInt<<36)|(gdextension.SizeInt<<40)|(gdextension.SizeInt<<44), unsafe.Pointer(&struct {
+		font                gdextension.Object
+		pos                 Vector2.XY
+		text                gdextension.String
+		alignment           GUI.HorizontalAlignment
+		width               float64
+		font_size           int64
+		size                int64
+		modulate            Color.RGBA
+		justification_flags TextServer.JustificationFlag
+		direction           TextServer.Direction
+		orientation         TextServer.Orientation
+	}{gdextension.Object(pointers.Get(font[0])[0]), pos, gdextension.String(pointers.Get(gd.InternalString(text))[0]), alignment, width, font_size, size, modulate, justification_flags, direction, orientation}))
 }
 
 /*
@@ -1630,23 +1511,21 @@ Breaks [param text] to the lines and draws text outline using the specified [par
 */
 //go:nosplit
 func (self class) DrawMultilineStringOutline(font [1]gdclass.Font, pos Vector2.XY, text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, max_lines int64, size int64, modulate Color.RGBA, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) { //gd:CanvasItem.draw_multiline_string_outline
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(font[0])[0])
-	callframe.Arg(frame, pos)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
-	callframe.Arg(frame, alignment)
-	callframe.Arg(frame, width)
-	callframe.Arg(frame, font_size)
-	callframe.Arg(frame, max_lines)
-	callframe.Arg(frame, size)
-	callframe.Arg(frame, modulate)
-	callframe.Arg(frame, brk_flags)
-	callframe.Arg(frame, justification_flags)
-	callframe.Arg(frame, direction)
-	callframe.Arg(frame, orientation)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_multiline_string_outline, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_draw_multiline_string_outline, 0|(gdextension.SizeObject<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeColor<<36)|(gdextension.SizeInt<<40)|(gdextension.SizeInt<<44)|(gdextension.SizeInt<<48)|(gdextension.SizeInt<<52), unsafe.Pointer(&struct {
+		font                gdextension.Object
+		pos                 Vector2.XY
+		text                gdextension.String
+		alignment           GUI.HorizontalAlignment
+		width               float64
+		font_size           int64
+		max_lines           int64
+		size                int64
+		modulate            Color.RGBA
+		brk_flags           TextServer.LineBreakFlag
+		justification_flags TextServer.JustificationFlag
+		direction           TextServer.Direction
+		orientation         TextServer.Orientation
+	}{gdextension.Object(pointers.Get(font[0])[0]), pos, gdextension.String(pointers.Get(gd.InternalString(text))[0]), alignment, width, font_size, max_lines, size, modulate, brk_flags, justification_flags, direction, orientation}))
 }
 
 /*
@@ -1654,15 +1533,13 @@ Draws a string first character using a custom font.
 */
 //go:nosplit
 func (self class) DrawChar(font [1]gdclass.Font, pos Vector2.XY, char String.Readable, font_size int64, modulate Color.RGBA) { //gd:CanvasItem.draw_char
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(font[0])[0])
-	callframe.Arg(frame, pos)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(char)))
-	callframe.Arg(frame, font_size)
-	callframe.Arg(frame, modulate)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_char, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_draw_char, 0|(gdextension.SizeObject<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeColor<<20), unsafe.Pointer(&struct {
+		font      gdextension.Object
+		pos       Vector2.XY
+		char      gdextension.String
+		font_size int64
+		modulate  Color.RGBA
+	}{gdextension.Object(pointers.Get(font[0])[0]), pos, gdextension.String(pointers.Get(gd.InternalString(char))[0]), font_size, modulate}))
 }
 
 /*
@@ -1670,16 +1547,14 @@ Draws a string first character outline using a custom font.
 */
 //go:nosplit
 func (self class) DrawCharOutline(font [1]gdclass.Font, pos Vector2.XY, char String.Readable, font_size int64, size int64, modulate Color.RGBA) { //gd:CanvasItem.draw_char_outline
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(font[0])[0])
-	callframe.Arg(frame, pos)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(char)))
-	callframe.Arg(frame, font_size)
-	callframe.Arg(frame, size)
-	callframe.Arg(frame, modulate)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_char_outline, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_draw_char_outline, 0|(gdextension.SizeObject<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeColor<<24), unsafe.Pointer(&struct {
+		font      gdextension.Object
+		pos       Vector2.XY
+		char      gdextension.String
+		font_size int64
+		size      int64
+		modulate  Color.RGBA
+	}{gdextension.Object(pointers.Get(font[0])[0]), pos, gdextension.String(pointers.Get(gd.InternalString(char))[0]), font_size, size, modulate}))
 }
 
 /*
@@ -1687,14 +1562,12 @@ Draws a [Mesh] in 2D, using the provided texture. See [MeshInstance2D] for relat
 */
 //go:nosplit
 func (self class) DrawMesh(mesh [1]gdclass.Mesh, texture [1]gdclass.Texture2D, transform Transform2D.OriginXY, modulate Color.RGBA) { //gd:CanvasItem.draw_mesh
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(mesh[0])[0])
-	callframe.Arg(frame, pointers.Get(texture[0])[0])
-	callframe.Arg(frame, transform)
-	callframe.Arg(frame, modulate)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_draw_mesh, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeTransform2D<<12)|(gdextension.SizeColor<<16), unsafe.Pointer(&struct {
+		mesh      gdextension.Object
+		texture   gdextension.Object
+		transform Transform2D.OriginXY
+		modulate  Color.RGBA
+	}{gdextension.Object(pointers.Get(mesh[0])[0]), gdextension.Object(pointers.Get(texture[0])[0]), transform, modulate}))
 }
 
 /*
@@ -1702,12 +1575,10 @@ Draws a [MultiMesh] in 2D with the provided texture. See [MultiMeshInstance2D] f
 */
 //go:nosplit
 func (self class) DrawMultimesh(multimesh [1]gdclass.MultiMesh, texture [1]gdclass.Texture2D) { //gd:CanvasItem.draw_multimesh
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(multimesh[0])[0])
-	callframe.Arg(frame, pointers.Get(texture[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_multimesh, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_draw_multimesh, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+		multimesh gdextension.Object
+		texture   gdextension.Object
+	}{gdextension.Object(pointers.Get(multimesh[0])[0]), gdextension.Object(pointers.Get(texture[0])[0])}))
 }
 
 /*
@@ -1716,13 +1587,11 @@ Sets a custom transform for drawing via components. Anything drawn afterwards wi
 */
 //go:nosplit
 func (self class) DrawSetTransform(position Vector2.XY, rotation float64, scale Vector2.XY) { //gd:CanvasItem.draw_set_transform
-	var frame = callframe.New()
-	callframe.Arg(frame, position)
-	callframe.Arg(frame, rotation)
-	callframe.Arg(frame, scale)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_set_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_draw_set_transform, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeVector2<<12), unsafe.Pointer(&struct {
+		position Vector2.XY
+		rotation float64
+		scale    Vector2.XY
+	}{position, rotation, scale}))
 }
 
 /*
@@ -1730,11 +1599,7 @@ Sets a custom transform for drawing via matrix. Anything drawn afterwards will b
 */
 //go:nosplit
 func (self class) DrawSetTransformMatrix(xform Transform2D.OriginXY) { //gd:CanvasItem.draw_set_transform_matrix
-	var frame = callframe.New()
-	callframe.Arg(frame, xform)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_set_transform_matrix, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_draw_set_transform_matrix, 0|(gdextension.SizeTransform2D<<4), unsafe.Pointer(&struct{ xform Transform2D.OriginXY }{xform}))
 }
 
 /*
@@ -1742,14 +1607,12 @@ Subsequent drawing commands will be ignored unless they fall within the specifie
 */
 //go:nosplit
 func (self class) DrawAnimationSlice(animation_length float64, slice_begin float64, slice_end float64, offset float64) { //gd:CanvasItem.draw_animation_slice
-	var frame = callframe.New()
-	callframe.Arg(frame, animation_length)
-	callframe.Arg(frame, slice_begin)
-	callframe.Arg(frame, slice_end)
-	callframe.Arg(frame, offset)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_animation_slice, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_draw_animation_slice, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16), unsafe.Pointer(&struct {
+		animation_length float64
+		slice_begin      float64
+		slice_end        float64
+		offset           float64
+	}{animation_length, slice_begin, slice_end, offset}))
 }
 
 /*
@@ -1757,10 +1620,7 @@ After submitting all animations slices via [method draw_animation_slice], this f
 */
 //go:nosplit
 func (self class) DrawEndAnimation() { //gd:CanvasItem.draw_end_animation
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_draw_end_animation, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_draw_end_animation, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1768,11 +1628,8 @@ Returns the transform matrix of this item.
 */
 //go:nosplit
 func (self class) GetTransform() Transform2D.OriginXY { //gd:CanvasItem.get_transform
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Transform2D.OriginXY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Transform2D.OriginXY](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_get_transform, gdextension.SizeTransform2D, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1781,11 +1638,8 @@ Returns the global transform matrix of this item, i.e. the combined transform up
 */
 //go:nosplit
 func (self class) GetGlobalTransform() Transform2D.OriginXY { //gd:CanvasItem.get_global_transform
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Transform2D.OriginXY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_global_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Transform2D.OriginXY](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_get_global_transform, gdextension.SizeTransform2D, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1794,11 +1648,8 @@ Returns the transform from the local coordinate system of this [CanvasItem] to t
 */
 //go:nosplit
 func (self class) GetGlobalTransformWithCanvas() Transform2D.OriginXY { //gd:CanvasItem.get_global_transform_with_canvas
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Transform2D.OriginXY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_global_transform_with_canvas, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Transform2D.OriginXY](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_get_global_transform_with_canvas, gdextension.SizeTransform2D, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1807,11 +1658,8 @@ Returns the transform from the coordinate system of the canvas, this item is in,
 */
 //go:nosplit
 func (self class) GetViewportTransform() Transform2D.OriginXY { //gd:CanvasItem.get_viewport_transform
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Transform2D.OriginXY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_viewport_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Transform2D.OriginXY](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_get_viewport_transform, gdextension.SizeTransform2D, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1820,11 +1668,8 @@ Returns the viewport's boundaries as a [Rect2].
 */
 //go:nosplit
 func (self class) GetViewportRect() Rect2.PositionSize { //gd:CanvasItem.get_viewport_rect
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Rect2.PositionSize](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_viewport_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Rect2.PositionSize](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_get_viewport_rect, gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1833,11 +1678,8 @@ Returns the transform from the coordinate system of the canvas, this item is in,
 */
 //go:nosplit
 func (self class) GetCanvasTransform() Transform2D.OriginXY { //gd:CanvasItem.get_canvas_transform
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Transform2D.OriginXY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_canvas_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Transform2D.OriginXY](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_get_canvas_transform, gdextension.SizeTransform2D, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1847,11 +1689,8 @@ Equals to [method get_global_transform] if the window is embedded (see [member V
 */
 //go:nosplit
 func (self class) GetScreenTransform() Transform2D.OriginXY { //gd:CanvasItem.get_screen_transform
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Transform2D.OriginXY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_screen_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Transform2D.OriginXY](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_get_screen_transform, gdextension.SizeTransform2D, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1860,11 +1699,8 @@ Returns the mouse's position in this [CanvasItem] using the local coordinate sys
 */
 //go:nosplit
 func (self class) GetLocalMousePosition() Vector2.XY { //gd:CanvasItem.get_local_mouse_position
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_local_mouse_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_get_local_mouse_position, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1874,11 +1710,8 @@ Returns the mouse's position in the [CanvasLayer] that this [CanvasItem] is in u
 */
 //go:nosplit
 func (self class) GetGlobalMousePosition() Vector2.XY { //gd:CanvasItem.get_global_mouse_position
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_global_mouse_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_get_global_mouse_position, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1887,11 +1720,8 @@ Returns the [RID] of the [World2D] canvas where this item is in.
 */
 //go:nosplit
 func (self class) GetCanvas() RID.Any { //gd:CanvasItem.get_canvas
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_canvas, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_get_canvas, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1900,11 +1730,8 @@ Returns the [CanvasLayer] that contains this node, or [code]null[/code] if the n
 */
 //go:nosplit
 func (self class) GetCanvasLayerNode() [1]gdclass.CanvasLayer { //gd:CanvasItem.get_canvas_layer_node
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_canvas_layer_node, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.CanvasLayer{gd.PointerLifetimeBoundTo[gdclass.CanvasLayer](self.AsObject(), r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_get_canvas_layer_node, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.CanvasLayer{gd.PointerLifetimeBoundTo[gdclass.CanvasLayer](self.AsObject(), r_ret)}
 	return ret
 }
 
@@ -1913,30 +1740,20 @@ Returns the [World2D] where this item is in.
 */
 //go:nosplit
 func (self class) GetWorld2d() [1]gdclass.World2D { //gd:CanvasItem.get_world_2d
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_world_2d, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.World2D{gd.PointerWithOwnershipTransferredToGo[gdclass.World2D](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_get_world_2d, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.World2D{gd.PointerWithOwnershipTransferredToGo[gdclass.World2D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaterial(material [1]gdclass.Material) { //gd:CanvasItem.set_material
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(material[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_material, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_set_material, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(pointers.Get(material[0])[0])}))
 }
 
 //go:nosplit
 func (self class) GetMaterial() [1]gdclass.Material { //gd:CanvasItem.get_material
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_material, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_get_material, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret)}
 	return ret
 }
 
@@ -1947,12 +1764,10 @@ Set the value of a shader uniform for this instance only ([url=$DOCS_URL/tutoria
 */
 //go:nosplit
 func (self class) SetInstanceShaderParameter(name String.Name, value variant.Any) { //gd:CanvasItem.set_instance_shader_parameter
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_instance_shader_parameter, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_set_instance_shader_parameter, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
+		name  gdextension.StringName
+		value gdextension.Variant
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
 }
 
 /*
@@ -1960,31 +1775,20 @@ Get the value of a shader parameter as set on this instance.
 */
 //go:nosplit
 func (self class) GetInstanceShaderParameter(name String.Name) variant.Any { //gd:CanvasItem.get_instance_shader_parameter
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
-	var r_ret = callframe.Ret[[3]uint64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_instance_shader_parameter, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[3]uint64](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_get_instance_shader_parameter, gdextension.SizeVariant|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseParentMaterial(enable bool) { //gd:CanvasItem.set_use_parent_material
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_use_parent_material, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_set_use_parent_material, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) GetUseParentMaterial() bool { //gd:CanvasItem.get_use_parent_material
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_use_parent_material, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_get_use_parent_material, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1993,11 +1797,7 @@ If [param enable] is [code]true[/code], this node will receive [constant NOTIFIC
 */
 //go:nosplit
 func (self class) SetNotifyLocalTransform(enable bool) { //gd:CanvasItem.set_notify_local_transform
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_notify_local_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_set_notify_local_transform, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 /*
@@ -2005,11 +1805,8 @@ Returns [code]true[/code] if local transform notifications are communicated to c
 */
 //go:nosplit
 func (self class) IsLocalTransformNotificationEnabled() bool { //gd:CanvasItem.is_local_transform_notification_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_is_local_transform_notification_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_is_local_transform_notification_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2018,11 +1815,7 @@ If [param enable] is [code]true[/code], this node will receive [constant NOTIFIC
 */
 //go:nosplit
 func (self class) SetNotifyTransform(enable bool) { //gd:CanvasItem.set_notify_transform
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_notify_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_set_notify_transform, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 /*
@@ -2030,11 +1823,8 @@ Returns [code]true[/code] if global transform notifications are communicated to 
 */
 //go:nosplit
 func (self class) IsTransformNotificationEnabled() bool { //gd:CanvasItem.is_transform_notification_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_is_transform_notification_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_is_transform_notification_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2043,10 +1833,7 @@ Forces the transform to update. Transform changes in physics are not instant for
 */
 //go:nosplit
 func (self class) ForceUpdateTransform() { //gd:CanvasItem.force_update_transform
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_force_update_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_force_update_transform, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -2058,12 +1845,8 @@ var viewport_point = get_global_transform_with_canvas() * local_point
 */
 //go:nosplit
 func (self class) MakeCanvasPositionLocal(viewport_point Vector2.XY) Vector2.XY { //gd:CanvasItem.make_canvas_position_local
-	var frame = callframe.New()
-	callframe.Arg(frame, viewport_point)
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_make_canvas_position_local, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_make_canvas_position_local, gdextension.SizeVector2|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ viewport_point Vector2.XY }{viewport_point}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2072,31 +1855,20 @@ Transformations issued by [param event]'s inputs are applied in local space inst
 */
 //go:nosplit
 func (self class) MakeInputLocal(event [1]gdclass.InputEvent) [1]gdclass.InputEvent { //gd:CanvasItem.make_input_local
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(event[0])[0])
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_make_input_local, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.InputEvent{gd.PointerWithOwnershipTransferredToGo[gdclass.InputEvent](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_make_input_local, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ event gdextension.Object }{gdextension.Object(pointers.Get(event[0])[0])}))
+	var ret = [1]gdclass.InputEvent{gd.PointerWithOwnershipTransferredToGo[gdclass.InputEvent](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVisibilityLayer(layer int64) { //gd:CanvasItem.set_visibility_layer
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_visibility_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_set_visibility_layer, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer int64 }{layer}))
 }
 
 //go:nosplit
 func (self class) GetVisibilityLayer() int64 { //gd:CanvasItem.get_visibility_layer
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_visibility_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_get_visibility_layer, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2105,12 +1877,10 @@ Set/clear individual bits on the rendering visibility layer. This simplifies edi
 */
 //go:nosplit
 func (self class) SetVisibilityLayerBit(layer int64, enabled bool) { //gd:CanvasItem.set_visibility_layer_bit
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_visibility_layer_bit, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_set_visibility_layer_bit, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		layer   int64
+		enabled bool
+	}{layer, enabled}))
 }
 
 /*
@@ -2118,69 +1888,44 @@ Returns an individual bit on the rendering visibility layer.
 */
 //go:nosplit
 func (self class) GetVisibilityLayerBit(layer int64) bool { //gd:CanvasItem.get_visibility_layer_bit
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_visibility_layer_bit, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_get_visibility_layer_bit, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer int64 }{layer}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextureFilter(mode TextureFilter) { //gd:CanvasItem.set_texture_filter
-	var frame = callframe.New()
-	callframe.Arg(frame, mode)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_texture_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_set_texture_filter, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode TextureFilter }{mode}))
 }
 
 //go:nosplit
 func (self class) GetTextureFilter() TextureFilter { //gd:CanvasItem.get_texture_filter
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[TextureFilter](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_texture_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[TextureFilter](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_get_texture_filter, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextureRepeat(mode TextureRepeat) { //gd:CanvasItem.set_texture_repeat
-	var frame = callframe.New()
-	callframe.Arg(frame, mode)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_texture_repeat, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_set_texture_repeat, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode TextureRepeat }{mode}))
 }
 
 //go:nosplit
 func (self class) GetTextureRepeat() TextureRepeat { //gd:CanvasItem.get_texture_repeat
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[TextureRepeat](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_texture_repeat, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[TextureRepeat](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_get_texture_repeat, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetClipChildrenMode(mode ClipChildrenMode) { //gd:CanvasItem.set_clip_children_mode
-	var frame = callframe.New()
-	callframe.Arg(frame, mode)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_clip_children_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_set_clip_children_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode ClipChildrenMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetClipChildrenMode() ClipChildrenMode { //gd:CanvasItem.get_clip_children_mode
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[ClipChildrenMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_clip_children_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[ClipChildrenMode](self.AsObject(), gd.Global.Methods.CanvasItem.Bind_get_clip_children_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self Instance) OnDraw(cb func()) {

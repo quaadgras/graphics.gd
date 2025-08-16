@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -50,6 +52,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -238,71 +242,49 @@ func (class) _value_changed(impl func(ptr unsafe.Pointer, new_value float64)) (c
 
 //go:nosplit
 func (self class) GetValue() float64 { //gd:Range.get_value
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_get_value, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Range.Bind_get_value, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetMin() float64 { //gd:Range.get_min
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_get_min, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Range.Bind_get_min, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetMax() float64 { //gd:Range.get_max
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_get_max, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Range.Bind_get_max, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetStep() float64 { //gd:Range.get_step
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_get_step, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Range.Bind_get_step, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetPage() float64 { //gd:Range.get_page
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_get_page, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Range.Bind_get_page, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetAsRatio() float64 { //gd:Range.get_as_ratio
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_get_as_ratio, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Range.Bind_get_as_ratio, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetValue(value float64) { //gd:Range.set_value
-	var frame = callframe.New()
-	callframe.Arg(frame, value)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_set_value, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Range.Bind_set_value, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ value float64 }{value}))
 }
 
 /*
@@ -310,131 +292,79 @@ Sets the [Range]'s current value to the specified [param value], without emittin
 */
 //go:nosplit
 func (self class) SetValueNoSignal(value float64) { //gd:Range.set_value_no_signal
-	var frame = callframe.New()
-	callframe.Arg(frame, value)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_set_value_no_signal, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Range.Bind_set_value_no_signal, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ value float64 }{value}))
 }
 
 //go:nosplit
 func (self class) SetMin(minimum float64) { //gd:Range.set_min
-	var frame = callframe.New()
-	callframe.Arg(frame, minimum)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_set_min, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Range.Bind_set_min, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ minimum float64 }{minimum}))
 }
 
 //go:nosplit
 func (self class) SetMax(maximum float64) { //gd:Range.set_max
-	var frame = callframe.New()
-	callframe.Arg(frame, maximum)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_set_max, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Range.Bind_set_max, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ maximum float64 }{maximum}))
 }
 
 //go:nosplit
 func (self class) SetStep(step float64) { //gd:Range.set_step
-	var frame = callframe.New()
-	callframe.Arg(frame, step)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_set_step, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Range.Bind_set_step, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ step float64 }{step}))
 }
 
 //go:nosplit
 func (self class) SetPage(pagesize float64) { //gd:Range.set_page
-	var frame = callframe.New()
-	callframe.Arg(frame, pagesize)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_set_page, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Range.Bind_set_page, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ pagesize float64 }{pagesize}))
 }
 
 //go:nosplit
 func (self class) SetAsRatio(value float64) { //gd:Range.set_as_ratio
-	var frame = callframe.New()
-	callframe.Arg(frame, value)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_set_as_ratio, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Range.Bind_set_as_ratio, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ value float64 }{value}))
 }
 
 //go:nosplit
 func (self class) SetUseRoundedValues(enabled bool) { //gd:Range.set_use_rounded_values
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_set_use_rounded_values, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Range.Bind_set_use_rounded_values, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsUsingRoundedValues() bool { //gd:Range.is_using_rounded_values
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_is_using_rounded_values, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Range.Bind_is_using_rounded_values, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetExpRatio(enabled bool) { //gd:Range.set_exp_ratio
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_set_exp_ratio, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Range.Bind_set_exp_ratio, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsRatioExp() bool { //gd:Range.is_ratio_exp
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_is_ratio_exp, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Range.Bind_is_ratio_exp, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAllowGreater(allow bool) { //gd:Range.set_allow_greater
-	var frame = callframe.New()
-	callframe.Arg(frame, allow)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_set_allow_greater, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Range.Bind_set_allow_greater, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ allow bool }{allow}))
 }
 
 //go:nosplit
 func (self class) IsGreaterAllowed() bool { //gd:Range.is_greater_allowed
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_is_greater_allowed, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Range.Bind_is_greater_allowed, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAllowLesser(allow bool) { //gd:Range.set_allow_lesser
-	var frame = callframe.New()
-	callframe.Arg(frame, allow)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_set_allow_lesser, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Range.Bind_set_allow_lesser, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ allow bool }{allow}))
 }
 
 //go:nosplit
 func (self class) IsLesserAllowed() bool { //gd:Range.is_lesser_allowed
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_is_lesser_allowed, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Range.Bind_is_lesser_allowed, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -443,11 +373,7 @@ Binds two [Range]s together along with any ranges previously grouped with either
 */
 //go:nosplit
 func (self class) Share(with [1]gdclass.Node) { //gd:Range.share
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(with[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_share, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Range.Bind_share, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ with gdextension.Object }{gdextension.Object(pointers.Get(with[0])[0])}))
 }
 
 /*
@@ -455,10 +381,7 @@ Stops the [Range] from sharing its member variables with any other.
 */
 //go:nosplit
 func (self class) Unshare() { //gd:Range.unshare
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Range.Bind_unshare, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Range.Bind_unshare, 0, unsafe.Pointer(&struct{}{}))
 }
 func (self Instance) OnValueChanged(cb func(value Float.X)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("value_changed"), gd.NewCallable(cb), 0)

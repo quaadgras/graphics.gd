@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -50,6 +52,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -138,11 +142,7 @@ If [code]true[/code], the sound will be recorded. Note that restarting the recor
 */
 //go:nosplit
 func (self class) SetRecordingActive(record bool) { //gd:AudioEffectRecord.set_recording_active
-	var frame = callframe.New()
-	callframe.Arg(frame, record)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectRecord.Bind_set_recording_active, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioEffectRecord.Bind_set_recording_active, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ record bool }{record}))
 }
 
 /*
@@ -150,30 +150,20 @@ Returns whether the recording is active or not.
 */
 //go:nosplit
 func (self class) IsRecordingActive() bool { //gd:AudioEffectRecord.is_recording_active
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectRecord.Bind_is_recording_active, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.AudioEffectRecord.Bind_is_recording_active, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFormat(format AudioStreamWAV.Format) { //gd:AudioEffectRecord.set_format
-	var frame = callframe.New()
-	callframe.Arg(frame, format)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectRecord.Bind_set_format, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioEffectRecord.Bind_set_format, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ format AudioStreamWAV.Format }{format}))
 }
 
 //go:nosplit
 func (self class) GetFormat() AudioStreamWAV.Format { //gd:AudioEffectRecord.get_format
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[AudioStreamWAV.Format](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectRecord.Bind_get_format, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[AudioStreamWAV.Format](self.AsObject(), gd.Global.Methods.AudioEffectRecord.Bind_get_format, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -182,11 +172,8 @@ Returns the recorded sample.
 */
 //go:nosplit
 func (self class) GetRecording() [1]gdclass.AudioStreamWAV { //gd:AudioEffectRecord.get_recording
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectRecord.Bind_get_recording, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.AudioStreamWAV{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamWAV](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.AudioEffectRecord.Bind_get_recording, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.AudioStreamWAV{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamWAV](r_ret)}
 	return ret
 }
 func (self class) AsAudioEffectRecord() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

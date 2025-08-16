@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +53,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -287,96 +291,61 @@ func (self Instance) SetGlobalTransform(value Transform2D.OriginXY) {
 
 //go:nosplit
 func (self class) SetPosition(position Vector2.XY) { //gd:Node2D.set_position
-	var frame = callframe.New()
-	callframe.Arg(frame, position)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_set_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node2D.Bind_set_position, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
 }
 
 //go:nosplit
 func (self class) SetRotation(radians float64) { //gd:Node2D.set_rotation
-	var frame = callframe.New()
-	callframe.Arg(frame, radians)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_set_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node2D.Bind_set_rotation, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radians float64 }{radians}))
 }
 
 //go:nosplit
 func (self class) SetRotationDegrees(degrees float64) { //gd:Node2D.set_rotation_degrees
-	var frame = callframe.New()
-	callframe.Arg(frame, degrees)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_set_rotation_degrees, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node2D.Bind_set_rotation_degrees, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ degrees float64 }{degrees}))
 }
 
 //go:nosplit
 func (self class) SetSkew(radians float64) { //gd:Node2D.set_skew
-	var frame = callframe.New()
-	callframe.Arg(frame, radians)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_set_skew, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node2D.Bind_set_skew, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radians float64 }{radians}))
 }
 
 //go:nosplit
 func (self class) SetScale(scale Vector2.XY) { //gd:Node2D.set_scale
-	var frame = callframe.New()
-	callframe.Arg(frame, scale)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_set_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node2D.Bind_set_scale, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ scale Vector2.XY }{scale}))
 }
 
 //go:nosplit
 func (self class) GetPosition() Vector2.XY { //gd:Node2D.get_position
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_get_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.Node2D.Bind_get_position, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetRotation() float64 { //gd:Node2D.get_rotation
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_get_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Node2D.Bind_get_rotation, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetRotationDegrees() float64 { //gd:Node2D.get_rotation_degrees
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_get_rotation_degrees, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Node2D.Bind_get_rotation_degrees, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetSkew() float64 { //gd:Node2D.get_skew
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_get_skew, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Node2D.Bind_get_skew, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetScale() Vector2.XY { //gd:Node2D.get_scale
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_get_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.Node2D.Bind_get_scale, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -385,11 +354,7 @@ Applies a rotation to the node, in radians, starting from its current rotation.
 */
 //go:nosplit
 func (self class) Rotate(radians float64) { //gd:Node2D.rotate
-	var frame = callframe.New()
-	callframe.Arg(frame, radians)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_rotate, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node2D.Bind_rotate, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radians float64 }{radians}))
 }
 
 /*
@@ -397,12 +362,10 @@ Applies a local translation on the node's X axis based on the [method Node._proc
 */
 //go:nosplit
 func (self class) MoveLocalX(delta float64, scaled bool) { //gd:Node2D.move_local_x
-	var frame = callframe.New()
-	callframe.Arg(frame, delta)
-	callframe.Arg(frame, scaled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_move_local_x, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node2D.Bind_move_local_x, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		delta  float64
+		scaled bool
+	}{delta, scaled}))
 }
 
 /*
@@ -410,12 +373,10 @@ Applies a local translation on the node's Y axis based on the [method Node._proc
 */
 //go:nosplit
 func (self class) MoveLocalY(delta float64, scaled bool) { //gd:Node2D.move_local_y
-	var frame = callframe.New()
-	callframe.Arg(frame, delta)
-	callframe.Arg(frame, scaled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_move_local_y, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node2D.Bind_move_local_y, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		delta  float64
+		scaled bool
+	}{delta, scaled}))
 }
 
 /*
@@ -423,11 +384,7 @@ Translates the node by the given [param offset] in local coordinates.
 */
 //go:nosplit
 func (self class) Translate(offset Vector2.XY) { //gd:Node2D.translate
-	var frame = callframe.New()
-	callframe.Arg(frame, offset)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_translate, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node2D.Bind_translate, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
 }
 
 /*
@@ -435,11 +392,7 @@ Adds the [param offset] vector to the node's global position.
 */
 //go:nosplit
 func (self class) GlobalTranslate(offset Vector2.XY) { //gd:Node2D.global_translate
-	var frame = callframe.New()
-	callframe.Arg(frame, offset)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_global_translate, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node2D.Bind_global_translate, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
 }
 
 /*
@@ -447,124 +400,77 @@ Multiplies the current scale by the [param ratio] vector.
 */
 //go:nosplit
 func (self class) ApplyScale(ratio Vector2.XY) { //gd:Node2D.apply_scale
-	var frame = callframe.New()
-	callframe.Arg(frame, ratio)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_apply_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node2D.Bind_apply_scale, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ ratio Vector2.XY }{ratio}))
 }
 
 //go:nosplit
 func (self class) SetGlobalPosition(position Vector2.XY) { //gd:Node2D.set_global_position
-	var frame = callframe.New()
-	callframe.Arg(frame, position)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_set_global_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node2D.Bind_set_global_position, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
 }
 
 //go:nosplit
 func (self class) GetGlobalPosition() Vector2.XY { //gd:Node2D.get_global_position
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_get_global_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.Node2D.Bind_get_global_position, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGlobalRotation(radians float64) { //gd:Node2D.set_global_rotation
-	var frame = callframe.New()
-	callframe.Arg(frame, radians)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_set_global_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node2D.Bind_set_global_rotation, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radians float64 }{radians}))
 }
 
 //go:nosplit
 func (self class) SetGlobalRotationDegrees(degrees float64) { //gd:Node2D.set_global_rotation_degrees
-	var frame = callframe.New()
-	callframe.Arg(frame, degrees)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_set_global_rotation_degrees, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node2D.Bind_set_global_rotation_degrees, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ degrees float64 }{degrees}))
 }
 
 //go:nosplit
 func (self class) GetGlobalRotation() float64 { //gd:Node2D.get_global_rotation
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_get_global_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Node2D.Bind_get_global_rotation, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetGlobalRotationDegrees() float64 { //gd:Node2D.get_global_rotation_degrees
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_get_global_rotation_degrees, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Node2D.Bind_get_global_rotation_degrees, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGlobalSkew(radians float64) { //gd:Node2D.set_global_skew
-	var frame = callframe.New()
-	callframe.Arg(frame, radians)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_set_global_skew, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node2D.Bind_set_global_skew, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radians float64 }{radians}))
 }
 
 //go:nosplit
 func (self class) GetGlobalSkew() float64 { //gd:Node2D.get_global_skew
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_get_global_skew, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Node2D.Bind_get_global_skew, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGlobalScale(scale Vector2.XY) { //gd:Node2D.set_global_scale
-	var frame = callframe.New()
-	callframe.Arg(frame, scale)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_set_global_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node2D.Bind_set_global_scale, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ scale Vector2.XY }{scale}))
 }
 
 //go:nosplit
 func (self class) GetGlobalScale() Vector2.XY { //gd:Node2D.get_global_scale
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_get_global_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.Node2D.Bind_get_global_scale, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTransform(xform Transform2D.OriginXY) { //gd:Node2D.set_transform
-	var frame = callframe.New()
-	callframe.Arg(frame, xform)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_set_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node2D.Bind_set_transform, 0|(gdextension.SizeTransform2D<<4), unsafe.Pointer(&struct{ xform Transform2D.OriginXY }{xform}))
 }
 
 //go:nosplit
 func (self class) SetGlobalTransform(xform Transform2D.OriginXY) { //gd:Node2D.set_global_transform
-	var frame = callframe.New()
-	callframe.Arg(frame, xform)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_set_global_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node2D.Bind_set_global_transform, 0|(gdextension.SizeTransform2D<<4), unsafe.Pointer(&struct{ xform Transform2D.OriginXY }{xform}))
 }
 
 /*
@@ -573,11 +479,7 @@ Rotates the node so that its local +X axis points towards the [param point], whi
 */
 //go:nosplit
 func (self class) LookAt(point Vector2.XY) { //gd:Node2D.look_at
-	var frame = callframe.New()
-	callframe.Arg(frame, point)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_look_at, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node2D.Bind_look_at, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ point Vector2.XY }{point}))
 }
 
 /*
@@ -586,12 +488,8 @@ Returns the angle between the node and the [param point] in radians.
 */
 //go:nosplit
 func (self class) GetAngleTo(point Vector2.XY) float64 { //gd:Node2D.get_angle_to
-	var frame = callframe.New()
-	callframe.Arg(frame, point)
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_get_angle_to, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Node2D.Bind_get_angle_to, gdextension.SizeFloat|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ point Vector2.XY }{point}))
+	var ret = r_ret
 	return ret
 }
 
@@ -600,12 +498,8 @@ Transforms the provided global position into a position in local coordinate spac
 */
 //go:nosplit
 func (self class) ToLocal(global_point Vector2.XY) Vector2.XY { //gd:Node2D.to_local
-	var frame = callframe.New()
-	callframe.Arg(frame, global_point)
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_to_local, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.Node2D.Bind_to_local, gdextension.SizeVector2|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ global_point Vector2.XY }{global_point}))
+	var ret = r_ret
 	return ret
 }
 
@@ -614,12 +508,8 @@ Transforms the provided local position into a position in global coordinate spac
 */
 //go:nosplit
 func (self class) ToGlobal(local_point Vector2.XY) Vector2.XY { //gd:Node2D.to_global
-	var frame = callframe.New()
-	callframe.Arg(frame, local_point)
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_to_global, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.Node2D.Bind_to_global, gdextension.SizeVector2|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ local_point Vector2.XY }{local_point}))
+	var ret = r_ret
 	return ret
 }
 
@@ -628,12 +518,8 @@ Returns the [Transform2D] relative to this node's parent.
 */
 //go:nosplit
 func (self class) GetRelativeTransformToParent(parent [1]gdclass.Node) Transform2D.OriginXY { //gd:Node2D.get_relative_transform_to_parent
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(parent[0])[0])
-	var r_ret = callframe.Ret[Transform2D.OriginXY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node2D.Bind_get_relative_transform_to_parent, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Transform2D.OriginXY](self.AsObject(), gd.Global.Methods.Node2D.Bind_get_relative_transform_to_parent, gdextension.SizeTransform2D|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ parent gdextension.Object }{gdextension.Object(pointers.Get(parent[0])[0])}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsNode2D() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

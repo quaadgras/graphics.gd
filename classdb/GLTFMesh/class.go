@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -50,6 +52,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -151,78 +155,50 @@ func (self Instance) SetInstanceMaterials(value []Material.Instance) {
 
 //go:nosplit
 func (self class) GetOriginalName() String.Readable { //gd:GLTFMesh.get_original_name
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFMesh.Bind_get_original_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.GLTFMesh.Bind_get_original_name, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOriginalName(original_name String.Readable) { //gd:GLTFMesh.set_original_name
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(original_name)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFMesh.Bind_set_original_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFMesh.Bind_set_original_name, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ original_name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(original_name))[0])}))
 }
 
 //go:nosplit
 func (self class) GetMesh() [1]gdclass.ImporterMesh { //gd:GLTFMesh.get_mesh
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFMesh.Bind_get_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.ImporterMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.ImporterMesh](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.GLTFMesh.Bind_get_mesh, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.ImporterMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.ImporterMesh](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMesh(mesh [1]gdclass.ImporterMesh) { //gd:GLTFMesh.set_mesh
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(mesh[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFMesh.Bind_set_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFMesh.Bind_set_mesh, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mesh gdextension.Object }{gdextension.Object(pointers.Get(mesh[0])[0])}))
 }
 
 //go:nosplit
 func (self class) GetBlendWeights() Packed.Array[float32] { //gd:GLTFMesh.get_blend_weights
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFMesh.Bind_get_blend_weights, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.GLTFMesh.Bind_get_blend_weights, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBlendWeights(blend_weights Packed.Array[float32]) { //gd:GLTFMesh.set_blend_weights
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](blend_weights)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFMesh.Bind_set_blend_weights, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFMesh.Bind_set_blend_weights, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ blend_weights gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](blend_weights)))}))
 }
 
 //go:nosplit
 func (self class) GetInstanceMaterials() Array.Contains[[1]gdclass.Material] { //gd:GLTFMesh.get_instance_materials
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFMesh.Bind_get_instance_materials, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Material]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.GLTFMesh.Bind_get_instance_materials, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Material]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInstanceMaterials(instance_materials Array.Contains[[1]gdclass.Material]) { //gd:GLTFMesh.set_instance_materials
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(instance_materials)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFMesh.Bind_set_instance_materials, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFMesh.Bind_set_instance_materials, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ instance_materials gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(instance_materials))[0])}))
 }
 
 /*
@@ -231,12 +207,8 @@ The argument should be the [GLTFDocumentExtension] name (does not have to match 
 */
 //go:nosplit
 func (self class) GetAdditionalData(extension_name String.Name) variant.Any { //gd:GLTFMesh.get_additional_data
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(extension_name)))
-	var r_ret = callframe.Ret[[3]uint64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFMesh.Bind_get_additional_data, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[3]uint64](self.AsObject(), gd.Global.Methods.GLTFMesh.Bind_get_additional_data, gdextension.SizeVariant|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ extension_name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(extension_name))[0])}))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
 
@@ -246,12 +218,10 @@ The first argument should be the [GLTFDocumentExtension] name (does not have to 
 */
 //go:nosplit
 func (self class) SetAdditionalData(extension_name String.Name, additional_data variant.Any) { //gd:GLTFMesh.set_additional_data
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(extension_name)))
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(additional_data)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFMesh.Bind_set_additional_data, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFMesh.Bind_set_additional_data, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
+		extension_name  gdextension.StringName
+		additional_data gdextension.Variant
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(extension_name))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(additional_data)))}))
 }
 func (self class) AsGLTFMesh() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsGLTFMesh() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

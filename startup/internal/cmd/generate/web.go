@@ -235,9 +235,16 @@ func generate_startup_js() error {
 			}
 		}
 		if result := getReturn(fn.Type); result != nil {
-			fmt.Fprintf(f, "\t\tresult = %s(", goTypeOf(result))
+			switch result.Kind() {
+			case reflect.Uint64:
+				fmt.Fprintf(f, "\t\tresult = %s(math.Float64bits(", goTypeOf(result))
+			case reflect.Int64:
+				fmt.Fprintf(f, "\t\tresult = %s(gdmemory.Int64frombits(math.Float64bits(", goTypeOf(result))
+			default:
+				fmt.Fprintf(f, "\t\tresult = %s(", goTypeOf(result))
+			}
 		}
-		fmt.Fprintf(f, "\t\tgd_%s.Invoke(", name)
+		fmt.Fprintf(f, "gd_%s.Invoke(", name)
 		for i := range fn.NumIn() {
 			if i > 0 {
 				fmt.Fprint(f, ", ")
@@ -256,7 +263,7 @@ func generate_startup_js() error {
 			case reflect.Slice:
 				fmt.Fprintf(f, "buf%d, len(p%d)", i, i)
 			case reflect.UnsafePointer:
-				fmt.Fprintf(f, "mem%d", i)
+				fmt.Fprintf(f, "uint32(mem%d)", i)
 			default:
 				fmt.Fprint(f, toJSValue(argName(arg, i), arg))
 			}
@@ -264,12 +271,16 @@ func generate_startup_js() error {
 		if result := getReturn(fn.Type); result != nil {
 			fmt.Fprint(f, ")")
 			switch result.Kind() {
-			case reflect.Uint8, reflect.Uintptr, reflect.Int32, reflect.Int64, reflect.Uint32, reflect.Uint64, reflect.UnsafePointer, reflect.Uint16, reflect.Int:
+			case reflect.Uint8, reflect.Uintptr, reflect.Int32, reflect.Uint32, reflect.UnsafePointer, reflect.Uint16, reflect.Int:
 				fmt.Fprintf(f, ".Int()")
 			case reflect.Float32, reflect.Float64:
 				fmt.Fprintf(f, ".Float()")
 			case reflect.Bool:
 				fmt.Fprintf(f, ".Bool()")
+			case reflect.Int64:
+				fmt.Fprintf(f, ".Float()))")
+			case reflect.Uint64:
+				fmt.Fprintf(f, ".Float())")
 			}
 		}
 		fmt.Fprint(f, ")\n")
@@ -312,16 +323,26 @@ func jsTypeOf(rtype reflect.Type) string {
 
 func fromJS(rtype reflect.Type, value string) string {
 	switch rtype.Kind() {
-	case reflect.Uint8, reflect.Uintptr, reflect.Int32, reflect.Int64, reflect.Uint32, reflect.Uint64, reflect.UnsafePointer, reflect.Int:
+	case reflect.Uint8, reflect.Uintptr, reflect.Int32, reflect.Uint32, reflect.UnsafePointer, reflect.Int:
 		return fmt.Sprintf("%s.Int()", value)
 	case reflect.Bool:
 		return fmt.Sprintf("%s.Bool()", value)
+	case reflect.Uint64:
+		return fmt.Sprintf("math.Float64bits(%s.Float())", value)
+	case reflect.Int64:
+		return fmt.Sprintf("gdmemory.Int64frombits(math.Float64bits(%s.Float()))", value)
 	default:
 		return value
 	}
 }
 
 func toJSValue(value string, rtype reflect.Type) string {
+	if rtype == reflect.TypeFor[gdextension.PackedArray]() {
+		return toJSValue(value, reflect.TypeFor[[2]uint32]())
+	}
+	if rtype == reflect.TypeFor[gdextension.Pointer]() {
+		return toJSValue(value, reflect.TypeFor[uint32]())
+	}
 	switch rtype.Kind() {
 	case reflect.Int32, reflect.Uint32:
 		return fmt.Sprintf("%s(%s)", strings.ToLower(rtype.Kind().String()), value)

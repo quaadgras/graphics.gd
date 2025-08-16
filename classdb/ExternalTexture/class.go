@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +53,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -126,11 +130,7 @@ func (self Instance) SetSize(value Vector2.XY) {
 
 //go:nosplit
 func (self class) SetSize(size Vector2.XY) { //gd:ExternalTexture.set_size
-	var frame = callframe.New()
-	callframe.Arg(frame, size)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ExternalTexture.Bind_set_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ExternalTexture.Bind_set_size, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ size Vector2.XY }{size}))
 }
 
 /*
@@ -139,11 +139,8 @@ Depending on your use case, you may need to pass this to platform APIs, for exam
 */
 //go:nosplit
 func (self class) GetExternalTextureId() int64 { //gd:ExternalTexture.get_external_texture_id
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ExternalTexture.Bind_get_external_texture_id, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ExternalTexture.Bind_get_external_texture_id, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -153,11 +150,7 @@ Depending on your use case, you may need to call this with data received from a 
 */
 //go:nosplit
 func (self class) SetExternalBufferId(external_buffer_id int64) { //gd:ExternalTexture.set_external_buffer_id
-	var frame = callframe.New()
-	callframe.Arg(frame, external_buffer_id)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ExternalTexture.Bind_set_external_buffer_id, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ExternalTexture.Bind_set_external_buffer_id, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ external_buffer_id int64 }{external_buffer_id}))
 }
 func (self class) AsExternalTexture() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsExternalTexture() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

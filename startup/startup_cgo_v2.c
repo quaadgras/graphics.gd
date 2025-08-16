@@ -471,14 +471,18 @@ void prepare_variants(void **frame, uint32_t argc, ANY args) {
         head += 24;
     }
 }
+// Helper macro to align a value to the next multiple of 'align'
+#define ALIGN_UP(value, align) (((value) + ((align) - 1)) & ~((align) - 1))
 
 uint8_t prepare_callframe(void **frame, UINT64 shape, ANY args) {
-    uint8_t *head = (uint8_t*)args;
+    uint8_t *head = (uint8_t *)args;
+    ptrdiff_t offset = 0; // Track current offset in the frame
     for (int i = 1; i < 16; i++) {
         uint32_t code = (UINT64_FROM(shape) >> (i * 4)) & 0xF;
         uint32_t size;
+        // Determine size based on code
         switch (code) {
-            case 0: size = 0; frame[i-1] = 0; return i;
+            case 0: size = 0; frame[i-1] = NULL; return i; // Early return for zero-sized argument
             case 1: size = 1; break;
             case 2: size = 2; break;
             case 3: size = 4; break;
@@ -495,12 +499,14 @@ uint8_t prepare_callframe(void **frame, UINT64 shape, ANY args) {
             case 14: size = 96; break;
             case 15: size = 128; break;
         }
-        frame[i-1] = head;
-        head += size;
+        // Align to the minimum of the argument's size or 8 bytes (Go's max alignment on 64-bit systems)
+        uint32_t alignment = (size > 8) ? 8 : size;
+        offset = ALIGN_UP(offset, alignment);
+        frame[i-1] = head + offset;     // Set frame pointer to the aligned address
+        offset += size;                 // Move offset forward by the size of the current argument
     }
     return 15;
 }
-
 
 uintptr_t gd_builtin_name(uintptr_t name, INT64 hash) { return (uintptr_t)gdextension_variant_get_ptr_utility_function((GDExtensionConstStringNamePtr)name, INT64_FROM(hash));}
 void gd_builtin_call(uintptr_t fn, void *result, UINT64 shape, ANY args) {
@@ -1657,6 +1663,7 @@ EMSCRIPTEN_BINDINGS(my_module) {
 	function("gd_memory_edit_u16", &gd_memory_edit_u16, allow_raw_pointers());
 	function("gd_memory_edit_u32", &gd_memory_edit_u32, allow_raw_pointers());
 	function("gd_memory_edit_u64", &gd_memory_edit_u64, allow_raw_pointers());
+	function("gd_memory_edit_128", &gd_memory_edit_128, allow_raw_pointers());
 	function("gd_memory_edit_256", &gd_memory_edit_256, allow_raw_pointers());
 	function("gd_memory_edit_512", &gd_memory_edit_512, allow_raw_pointers());
 	function("gd_memory_load_byte", &gd_memory_load_byte, allow_raw_pointers());

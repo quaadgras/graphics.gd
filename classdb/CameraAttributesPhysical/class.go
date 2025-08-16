@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +51,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -176,115 +180,73 @@ func (self Instance) SetAutoExposureMaxExposureValue(value Float.X) {
 
 //go:nosplit
 func (self class) SetAperture(aperture float64) { //gd:CameraAttributesPhysical.set_aperture
-	var frame = callframe.New()
-	callframe.Arg(frame, aperture)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_set_aperture, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CameraAttributesPhysical.Bind_set_aperture, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ aperture float64 }{aperture}))
 }
 
 //go:nosplit
 func (self class) GetAperture() float64 { //gd:CameraAttributesPhysical.get_aperture
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_get_aperture, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.CameraAttributesPhysical.Bind_get_aperture, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShutterSpeed(shutter_speed float64) { //gd:CameraAttributesPhysical.set_shutter_speed
-	var frame = callframe.New()
-	callframe.Arg(frame, shutter_speed)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_set_shutter_speed, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CameraAttributesPhysical.Bind_set_shutter_speed, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ shutter_speed float64 }{shutter_speed}))
 }
 
 //go:nosplit
 func (self class) GetShutterSpeed() float64 { //gd:CameraAttributesPhysical.get_shutter_speed
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_get_shutter_speed, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.CameraAttributesPhysical.Bind_get_shutter_speed, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFocalLength(focal_length float64) { //gd:CameraAttributesPhysical.set_focal_length
-	var frame = callframe.New()
-	callframe.Arg(frame, focal_length)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_set_focal_length, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CameraAttributesPhysical.Bind_set_focal_length, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ focal_length float64 }{focal_length}))
 }
 
 //go:nosplit
 func (self class) GetFocalLength() float64 { //gd:CameraAttributesPhysical.get_focal_length
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_get_focal_length, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.CameraAttributesPhysical.Bind_get_focal_length, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFocusDistance(focus_distance float64) { //gd:CameraAttributesPhysical.set_focus_distance
-	var frame = callframe.New()
-	callframe.Arg(frame, focus_distance)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_set_focus_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CameraAttributesPhysical.Bind_set_focus_distance, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ focus_distance float64 }{focus_distance}))
 }
 
 //go:nosplit
 func (self class) GetFocusDistance() float64 { //gd:CameraAttributesPhysical.get_focus_distance
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_get_focus_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.CameraAttributesPhysical.Bind_get_focus_distance, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNear(near float64) { //gd:CameraAttributesPhysical.set_near
-	var frame = callframe.New()
-	callframe.Arg(frame, near)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_set_near, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CameraAttributesPhysical.Bind_set_near, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ near float64 }{near}))
 }
 
 //go:nosplit
 func (self class) GetNear() float64 { //gd:CameraAttributesPhysical.get_near
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_get_near, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.CameraAttributesPhysical.Bind_get_near, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFar(far float64) { //gd:CameraAttributesPhysical.set_far
-	var frame = callframe.New()
-	callframe.Arg(frame, far)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_set_far, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CameraAttributesPhysical.Bind_set_far, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ far float64 }{far}))
 }
 
 //go:nosplit
 func (self class) GetFar() float64 { //gd:CameraAttributesPhysical.get_far
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_get_far, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.CameraAttributesPhysical.Bind_get_far, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -293,49 +255,32 @@ Returns the vertical field of view that corresponds to the [member frustum_focal
 */
 //go:nosplit
 func (self class) GetFov() float64 { //gd:CameraAttributesPhysical.get_fov
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_get_fov, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.CameraAttributesPhysical.Bind_get_fov, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoExposureMaxExposureValue(exposure_value_max float64) { //gd:CameraAttributesPhysical.set_auto_exposure_max_exposure_value
-	var frame = callframe.New()
-	callframe.Arg(frame, exposure_value_max)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_set_auto_exposure_max_exposure_value, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CameraAttributesPhysical.Bind_set_auto_exposure_max_exposure_value, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ exposure_value_max float64 }{exposure_value_max}))
 }
 
 //go:nosplit
 func (self class) GetAutoExposureMaxExposureValue() float64 { //gd:CameraAttributesPhysical.get_auto_exposure_max_exposure_value
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_get_auto_exposure_max_exposure_value, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.CameraAttributesPhysical.Bind_get_auto_exposure_max_exposure_value, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoExposureMinExposureValue(exposure_value_min float64) { //gd:CameraAttributesPhysical.set_auto_exposure_min_exposure_value
-	var frame = callframe.New()
-	callframe.Arg(frame, exposure_value_min)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_set_auto_exposure_min_exposure_value, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CameraAttributesPhysical.Bind_set_auto_exposure_min_exposure_value, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ exposure_value_min float64 }{exposure_value_min}))
 }
 
 //go:nosplit
 func (self class) GetAutoExposureMinExposureValue() float64 { //gd:CameraAttributesPhysical.get_auto_exposure_min_exposure_value
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraAttributesPhysical.Bind_get_auto_exposure_min_exposure_value, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.CameraAttributesPhysical.Bind_get_auto_exposure_min_exposure_value, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsCameraAttributesPhysical() Advanced { return *((*Advanced)(unsafe.Pointer(&self))) }

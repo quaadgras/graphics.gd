@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +51,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -265,31 +269,21 @@ Returns the unique ID for this feed.
 */
 //go:nosplit
 func (self class) GetId() int64 { //gd:CameraFeed.get_id
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraFeed.Bind_get_id, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.CameraFeed.Bind_get_id, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) IsActive() bool { //gd:CameraFeed.is_active
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraFeed.Bind_is_active, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CameraFeed.Bind_is_active, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetActive(active bool) { //gd:CameraFeed.set_active
-	var frame = callframe.New()
-	callframe.Arg(frame, active)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraFeed.Bind_set_active, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CameraFeed.Bind_set_active, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ active bool }{active}))
 }
 
 /*
@@ -297,11 +291,8 @@ Returns the camera's name.
 */
 //go:nosplit
 func (self class) GetName() String.Readable { //gd:CameraFeed.get_name
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraFeed.Bind_get_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.CameraFeed.Bind_get_name, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -310,11 +301,7 @@ Sets the camera's name.
 */
 //go:nosplit
 func (self class) SetName(name String.Readable) { //gd:CameraFeed.set_name
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraFeed.Bind_set_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CameraFeed.Bind_set_name, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
 }
 
 /*
@@ -322,11 +309,8 @@ Returns the position of camera on the device.
 */
 //go:nosplit
 func (self class) GetPosition() FeedPosition { //gd:CameraFeed.get_position
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[FeedPosition](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraFeed.Bind_get_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[FeedPosition](self.AsObject(), gd.Global.Methods.CameraFeed.Bind_get_position, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -335,30 +319,19 @@ Sets the position of this camera.
 */
 //go:nosplit
 func (self class) SetPosition(position FeedPosition) { //gd:CameraFeed.set_position
-	var frame = callframe.New()
-	callframe.Arg(frame, position)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraFeed.Bind_set_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CameraFeed.Bind_set_position, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ position FeedPosition }{position}))
 }
 
 //go:nosplit
 func (self class) GetTransform() Transform2D.OriginXY { //gd:CameraFeed.get_transform
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Transform2D.OriginXY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraFeed.Bind_get_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Transform2D.OriginXY](self.AsObject(), gd.Global.Methods.CameraFeed.Bind_get_transform, gdextension.SizeTransform2D, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTransform(transform Transform2D.OriginXY) { //gd:CameraFeed.set_transform
-	var frame = callframe.New()
-	callframe.Arg(frame, transform)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraFeed.Bind_set_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CameraFeed.Bind_set_transform, 0|(gdextension.SizeTransform2D<<4), unsafe.Pointer(&struct{ transform Transform2D.OriginXY }{transform}))
 }
 
 /*
@@ -366,11 +339,7 @@ Sets RGB image for this feed.
 */
 //go:nosplit
 func (self class) SetRgbImage(rgb_image [1]gdclass.Image) { //gd:CameraFeed.set_rgb_image
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(rgb_image[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraFeed.Bind_set_rgb_image, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CameraFeed.Bind_set_rgb_image, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ rgb_image gdextension.Object }{gdextension.Object(pointers.Get(rgb_image[0])[0])}))
 }
 
 /*
@@ -378,11 +347,7 @@ Sets YCbCr image for this feed.
 */
 //go:nosplit
 func (self class) SetYcbcrImage(ycbcr_image [1]gdclass.Image) { //gd:CameraFeed.set_ycbcr_image
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(ycbcr_image[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraFeed.Bind_set_ycbcr_image, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CameraFeed.Bind_set_ycbcr_image, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ ycbcr_image gdextension.Object }{gdextension.Object(pointers.Get(ycbcr_image[0])[0])}))
 }
 
 /*
@@ -390,12 +355,10 @@ Sets the feed as external feed provided by another library.
 */
 //go:nosplit
 func (self class) SetExternal(width int64, height int64) { //gd:CameraFeed.set_external
-	var frame = callframe.New()
-	callframe.Arg(frame, width)
-	callframe.Arg(frame, height)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraFeed.Bind_set_external, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CameraFeed.Bind_set_external, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		width  int64
+		height int64
+	}{width, height}))
 }
 
 /*
@@ -403,12 +366,8 @@ Returns the texture backend ID (usable by some external libraries that need a ha
 */
 //go:nosplit
 func (self class) GetTextureTexId(feed_image_type ImageType) int64 { //gd:CameraFeed.get_texture_tex_id
-	var frame = callframe.New()
-	callframe.Arg(frame, feed_image_type)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraFeed.Bind_get_texture_tex_id, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.CameraFeed.Bind_get_texture_tex_id, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ feed_image_type ImageType }{feed_image_type}))
+	var ret = r_ret
 	return ret
 }
 
@@ -417,21 +376,15 @@ Returns feed image data type.
 */
 //go:nosplit
 func (self class) GetDatatype() FeedDataType { //gd:CameraFeed.get_datatype
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[FeedDataType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraFeed.Bind_get_datatype, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[FeedDataType](self.AsObject(), gd.Global.Methods.CameraFeed.Bind_get_datatype, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetFormats() Array.Any { //gd:CameraFeed.get_formats
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraFeed.Bind_get_formats, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.CameraFeed.Bind_get_formats, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -443,13 +396,11 @@ Sets the feed format parameters for the given index in the [member formats] arra
 */
 //go:nosplit
 func (self class) SetFormat(index int64, parameters Dictionary.Any) bool { //gd:CameraFeed.set_format
-	var frame = callframe.New()
-	callframe.Arg(frame, index)
-	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(parameters)))
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CameraFeed.Bind_set_format, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CameraFeed.Bind_set_format, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeDictionary<<8), unsafe.Pointer(&struct {
+		index      int64
+		parameters gdextension.Dictionary
+	}{index, gdextension.Dictionary(pointers.Get(gd.InternalDictionary(parameters))[0])}))
+	var ret = r_ret
 	return ret
 }
 func (self Instance) OnFrameChanged(cb func()) {

@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -55,6 +57,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -758,12 +762,8 @@ Loads an AngelCode BMFont (.fnt, .font) bitmap font from file [param path].
 */
 //go:nosplit
 func (self class) LoadBitmapFont(path String.Readable) Error.Code { //gd:FontFile.load_bitmap_font
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_load_bitmap_font, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.FontFile.Bind_load_bitmap_font, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -773,342 +773,215 @@ Loads a TrueType (.ttf), OpenType (.otf), WOFF (.woff), WOFF2 (.woff2) or Type 1
 */
 //go:nosplit
 func (self class) LoadDynamicFont(path String.Readable) Error.Code { //gd:FontFile.load_dynamic_font
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_load_dynamic_font, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.FontFile.Bind_load_dynamic_font, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
 //go:nosplit
 func (self class) SetData(data Packed.Bytes) { //gd:FontFile.set_data
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_data, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_data, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ data gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))}))
 }
 
 //go:nosplit
 func (self class) GetData() Packed.Bytes { //gd:FontFile.get_data
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_data, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_data, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFontName(name String.Readable) { //gd:FontFile.set_font_name
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_font_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_font_name, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
 }
 
 //go:nosplit
 func (self class) SetFontStyleName(name String.Readable) { //gd:FontFile.set_font_style_name
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_font_style_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_font_style_name, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
 }
 
 //go:nosplit
 func (self class) SetFontStyle(style TextServer.FontStyle) { //gd:FontFile.set_font_style
-	var frame = callframe.New()
-	callframe.Arg(frame, style)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_font_style, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_font_style, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ style TextServer.FontStyle }{style}))
 }
 
 //go:nosplit
 func (self class) SetFontWeight(weight int64) { //gd:FontFile.set_font_weight
-	var frame = callframe.New()
-	callframe.Arg(frame, weight)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_font_weight, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_font_weight, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ weight int64 }{weight}))
 }
 
 //go:nosplit
 func (self class) SetFontStretch(stretch int64) { //gd:FontFile.set_font_stretch
-	var frame = callframe.New()
-	callframe.Arg(frame, stretch)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_font_stretch, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_font_stretch, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ stretch int64 }{stretch}))
 }
 
 //go:nosplit
 func (self class) SetAntialiasing(antialiasing TextServer.FontAntialiasing) { //gd:FontFile.set_antialiasing
-	var frame = callframe.New()
-	callframe.Arg(frame, antialiasing)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_antialiasing, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_antialiasing, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ antialiasing TextServer.FontAntialiasing }{antialiasing}))
 }
 
 //go:nosplit
 func (self class) GetAntialiasing() TextServer.FontAntialiasing { //gd:FontFile.get_antialiasing
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[TextServer.FontAntialiasing](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_antialiasing, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[TextServer.FontAntialiasing](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_antialiasing, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDisableEmbeddedBitmaps(disable_embedded_bitmaps bool) { //gd:FontFile.set_disable_embedded_bitmaps
-	var frame = callframe.New()
-	callframe.Arg(frame, disable_embedded_bitmaps)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_disable_embedded_bitmaps, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_disable_embedded_bitmaps, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ disable_embedded_bitmaps bool }{disable_embedded_bitmaps}))
 }
 
 //go:nosplit
 func (self class) GetDisableEmbeddedBitmaps() bool { //gd:FontFile.get_disable_embedded_bitmaps
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_disable_embedded_bitmaps, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_disable_embedded_bitmaps, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGenerateMipmaps(generate_mipmaps bool) { //gd:FontFile.set_generate_mipmaps
-	var frame = callframe.New()
-	callframe.Arg(frame, generate_mipmaps)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_generate_mipmaps, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_generate_mipmaps, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ generate_mipmaps bool }{generate_mipmaps}))
 }
 
 //go:nosplit
 func (self class) GetGenerateMipmaps() bool { //gd:FontFile.get_generate_mipmaps
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_generate_mipmaps, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_generate_mipmaps, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMultichannelSignedDistanceField(msdf bool) { //gd:FontFile.set_multichannel_signed_distance_field
-	var frame = callframe.New()
-	callframe.Arg(frame, msdf)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_multichannel_signed_distance_field, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_multichannel_signed_distance_field, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ msdf bool }{msdf}))
 }
 
 //go:nosplit
 func (self class) IsMultichannelSignedDistanceField() bool { //gd:FontFile.is_multichannel_signed_distance_field
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_is_multichannel_signed_distance_field, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.FontFile.Bind_is_multichannel_signed_distance_field, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMsdfPixelRange(msdf_pixel_range int64) { //gd:FontFile.set_msdf_pixel_range
-	var frame = callframe.New()
-	callframe.Arg(frame, msdf_pixel_range)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_msdf_pixel_range, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_msdf_pixel_range, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ msdf_pixel_range int64 }{msdf_pixel_range}))
 }
 
 //go:nosplit
 func (self class) GetMsdfPixelRange() int64 { //gd:FontFile.get_msdf_pixel_range
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_msdf_pixel_range, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_msdf_pixel_range, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMsdfSize(msdf_size int64) { //gd:FontFile.set_msdf_size
-	var frame = callframe.New()
-	callframe.Arg(frame, msdf_size)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_msdf_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_msdf_size, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ msdf_size int64 }{msdf_size}))
 }
 
 //go:nosplit
 func (self class) GetMsdfSize() int64 { //gd:FontFile.get_msdf_size
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_msdf_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_msdf_size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFixedSize(fixed_size int64) { //gd:FontFile.set_fixed_size
-	var frame = callframe.New()
-	callframe.Arg(frame, fixed_size)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_fixed_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_fixed_size, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ fixed_size int64 }{fixed_size}))
 }
 
 //go:nosplit
 func (self class) GetFixedSize() int64 { //gd:FontFile.get_fixed_size
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_fixed_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_fixed_size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFixedSizeScaleMode(fixed_size_scale_mode TextServer.FixedSizeScaleMode) { //gd:FontFile.set_fixed_size_scale_mode
-	var frame = callframe.New()
-	callframe.Arg(frame, fixed_size_scale_mode)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_fixed_size_scale_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_fixed_size_scale_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ fixed_size_scale_mode TextServer.FixedSizeScaleMode }{fixed_size_scale_mode}))
 }
 
 //go:nosplit
 func (self class) GetFixedSizeScaleMode() TextServer.FixedSizeScaleMode { //gd:FontFile.get_fixed_size_scale_mode
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[TextServer.FixedSizeScaleMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_fixed_size_scale_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[TextServer.FixedSizeScaleMode](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_fixed_size_scale_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAllowSystemFallback(allow_system_fallback bool) { //gd:FontFile.set_allow_system_fallback
-	var frame = callframe.New()
-	callframe.Arg(frame, allow_system_fallback)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_allow_system_fallback, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_allow_system_fallback, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ allow_system_fallback bool }{allow_system_fallback}))
 }
 
 //go:nosplit
 func (self class) IsAllowSystemFallback() bool { //gd:FontFile.is_allow_system_fallback
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_is_allow_system_fallback, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.FontFile.Bind_is_allow_system_fallback, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetForceAutohinter(force_autohinter bool) { //gd:FontFile.set_force_autohinter
-	var frame = callframe.New()
-	callframe.Arg(frame, force_autohinter)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_force_autohinter, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_force_autohinter, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ force_autohinter bool }{force_autohinter}))
 }
 
 //go:nosplit
 func (self class) IsForceAutohinter() bool { //gd:FontFile.is_force_autohinter
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_is_force_autohinter, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.FontFile.Bind_is_force_autohinter, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHinting(hinting TextServer.Hinting) { //gd:FontFile.set_hinting
-	var frame = callframe.New()
-	callframe.Arg(frame, hinting)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_hinting, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_hinting, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ hinting TextServer.Hinting }{hinting}))
 }
 
 //go:nosplit
 func (self class) GetHinting() TextServer.Hinting { //gd:FontFile.get_hinting
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[TextServer.Hinting](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_hinting, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[TextServer.Hinting](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_hinting, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSubpixelPositioning(subpixel_positioning TextServer.SubpixelPositioning) { //gd:FontFile.set_subpixel_positioning
-	var frame = callframe.New()
-	callframe.Arg(frame, subpixel_positioning)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_subpixel_positioning, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_subpixel_positioning, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
+		subpixel_positioning TextServer.SubpixelPositioning
+	}{subpixel_positioning}))
 }
 
 //go:nosplit
 func (self class) GetSubpixelPositioning() TextServer.SubpixelPositioning { //gd:FontFile.get_subpixel_positioning
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[TextServer.SubpixelPositioning](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_subpixel_positioning, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[TextServer.SubpixelPositioning](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_subpixel_positioning, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetKeepRoundingRemainders(keep_rounding_remainders bool) { //gd:FontFile.set_keep_rounding_remainders
-	var frame = callframe.New()
-	callframe.Arg(frame, keep_rounding_remainders)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_keep_rounding_remainders, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_keep_rounding_remainders, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ keep_rounding_remainders bool }{keep_rounding_remainders}))
 }
 
 //go:nosplit
 func (self class) GetKeepRoundingRemainders() bool { //gd:FontFile.get_keep_rounding_remainders
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_keep_rounding_remainders, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_keep_rounding_remainders, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOversampling(oversampling float64) { //gd:FontFile.set_oversampling
-	var frame = callframe.New()
-	callframe.Arg(frame, oversampling)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_oversampling, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_oversampling, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ oversampling float64 }{oversampling}))
 }
 
 //go:nosplit
 func (self class) GetOversampling() float64 { //gd:FontFile.get_oversampling
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_oversampling, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_oversampling, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1117,11 +990,8 @@ Returns number of the font cache entries.
 */
 //go:nosplit
 func (self class) GetCacheCount() int64 { //gd:FontFile.get_cache_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_cache_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_cache_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1130,10 +1000,7 @@ Removes all font cache entries.
 */
 //go:nosplit
 func (self class) ClearCache() { //gd:FontFile.clear_cache
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_clear_cache, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_clear_cache, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1141,11 +1008,7 @@ Removes specified font cache entry.
 */
 //go:nosplit
 func (self class) RemoveCache(cache_index int64) { //gd:FontFile.remove_cache
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_remove_cache, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_remove_cache, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ cache_index int64 }{cache_index}))
 }
 
 /*
@@ -1153,12 +1016,8 @@ Returns list of the font sizes in the cache. Each size is [Vector2i] with font s
 */
 //go:nosplit
 func (self class) GetSizeCacheList(cache_index int64) Array.Contains[Vector2i.XY] { //gd:FontFile.get_size_cache_list
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_size_cache_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[Vector2i.XY]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_size_cache_list, gdextension.SizeArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ cache_index int64 }{cache_index}))
+	var ret = Array.Through(gd.ArrayProxy[Vector2i.XY]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -1167,11 +1026,7 @@ Removes all font sizes from the cache entry.
 */
 //go:nosplit
 func (self class) ClearSizeCache(cache_index int64) { //gd:FontFile.clear_size_cache
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_clear_size_cache, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_clear_size_cache, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ cache_index int64 }{cache_index}))
 }
 
 /*
@@ -1179,12 +1034,10 @@ Removes specified font size from the cache entry.
 */
 //go:nosplit
 func (self class) RemoveSizeCache(cache_index int64, size Vector2i.XY) { //gd:FontFile.remove_size_cache
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_remove_size_cache, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_remove_size_cache, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8), unsafe.Pointer(&struct {
+		cache_index int64
+		size        Vector2i.XY
+	}{cache_index, size}))
 }
 
 /*
@@ -1192,12 +1045,10 @@ Sets variation coordinates for the specified font cache entry. See [method Font.
 */
 //go:nosplit
 func (self class) SetVariationCoordinates(cache_index int64, variation_coordinates Dictionary.Any) { //gd:FontFile.set_variation_coordinates
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(variation_coordinates)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_variation_coordinates, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_variation_coordinates, 0|(gdextension.SizeInt<<4)|(gdextension.SizeDictionary<<8), unsafe.Pointer(&struct {
+		cache_index           int64
+		variation_coordinates gdextension.Dictionary
+	}{cache_index, gdextension.Dictionary(pointers.Get(gd.InternalDictionary(variation_coordinates))[0])}))
 }
 
 /*
@@ -1205,12 +1056,8 @@ Returns variation coordinates for the specified font cache entry. See [method Fo
 */
 //go:nosplit
 func (self class) GetVariationCoordinates(cache_index int64) Dictionary.Any { //gd:FontFile.get_variation_coordinates
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_variation_coordinates, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_variation_coordinates, gdextension.SizeDictionary|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ cache_index int64 }{cache_index}))
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 
@@ -1219,12 +1066,10 @@ Sets embolden strength, if is not equal to zero, emboldens the font outlines. Ne
 */
 //go:nosplit
 func (self class) SetEmbolden(cache_index int64, strength float64) { //gd:FontFile.set_embolden
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, strength)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_embolden, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_embolden, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+		cache_index int64
+		strength    float64
+	}{cache_index, strength}))
 }
 
 /*
@@ -1232,12 +1077,8 @@ Returns embolden strength, if is not equal to zero, emboldens the font outlines.
 */
 //go:nosplit
 func (self class) GetEmbolden(cache_index int64) float64 { //gd:FontFile.get_embolden
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_embolden, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_embolden, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ cache_index int64 }{cache_index}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1246,12 +1087,10 @@ Sets 2D transform, applied to the font outlines, can be used for slanting, flipp
 */
 //go:nosplit
 func (self class) SetTransform(cache_index int64, transform Transform2D.OriginXY) { //gd:FontFile.set_transform
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, transform)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_transform, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform2D<<8), unsafe.Pointer(&struct {
+		cache_index int64
+		transform   Transform2D.OriginXY
+	}{cache_index, transform}))
 }
 
 /*
@@ -1259,12 +1098,8 @@ Returns 2D transform, applied to the font outlines, can be used for slanting, fl
 */
 //go:nosplit
 func (self class) GetTransform(cache_index int64) Transform2D.OriginXY { //gd:FontFile.get_transform
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	var r_ret = callframe.Ret[Transform2D.OriginXY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Transform2D.OriginXY](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_transform, gdextension.SizeTransform2D|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ cache_index int64 }{cache_index}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1273,13 +1108,11 @@ Sets the spacing for [param spacing] (see [enum TextServer.SpacingType]) to [par
 */
 //go:nosplit
 func (self class) SetExtraSpacing(cache_index int64, spacing TextServer.SpacingType, value int64) { //gd:FontFile.set_extra_spacing
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, spacing)
-	callframe.Arg(frame, value)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_extra_spacing, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_extra_spacing, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+		cache_index int64
+		spacing     TextServer.SpacingType
+		value       int64
+	}{cache_index, spacing, value}))
 }
 
 /*
@@ -1287,13 +1120,11 @@ Returns spacing for [param spacing] (see [enum TextServer.SpacingType]) in pixel
 */
 //go:nosplit
 func (self class) GetExtraSpacing(cache_index int64, spacing TextServer.SpacingType) int64 { //gd:FontFile.get_extra_spacing
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, spacing)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_extra_spacing, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_extra_spacing, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		cache_index int64
+		spacing     TextServer.SpacingType
+	}{cache_index, spacing}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1302,12 +1133,10 @@ Sets extra baseline offset (as a fraction of font height).
 */
 //go:nosplit
 func (self class) SetExtraBaselineOffset(cache_index int64, baseline_offset float64) { //gd:FontFile.set_extra_baseline_offset
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, baseline_offset)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_extra_baseline_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_extra_baseline_offset, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+		cache_index     int64
+		baseline_offset float64
+	}{cache_index, baseline_offset}))
 }
 
 /*
@@ -1315,12 +1144,8 @@ Returns extra baseline offset (as a fraction of font height).
 */
 //go:nosplit
 func (self class) GetExtraBaselineOffset(cache_index int64) float64 { //gd:FontFile.get_extra_baseline_offset
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_extra_baseline_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_extra_baseline_offset, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ cache_index int64 }{cache_index}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1329,12 +1154,10 @@ Sets an active face index in the TrueType / OpenType collection.
 */
 //go:nosplit
 func (self class) SetFaceIndex(cache_index int64, face_index int64) { //gd:FontFile.set_face_index
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, face_index)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_face_index, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_face_index, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		cache_index int64
+		face_index  int64
+	}{cache_index, face_index}))
 }
 
 /*
@@ -1342,12 +1165,8 @@ Returns an active face index in the TrueType / OpenType collection.
 */
 //go:nosplit
 func (self class) GetFaceIndex(cache_index int64) int64 { //gd:FontFile.get_face_index
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_face_index, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_face_index, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ cache_index int64 }{cache_index}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1356,13 +1175,11 @@ Sets the font ascent (number of pixels above the baseline).
 */
 //go:nosplit
 func (self class) SetCacheAscent(cache_index int64, size int64, ascent float64) { //gd:FontFile.set_cache_ascent
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	callframe.Arg(frame, ascent)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_cache_ascent, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_cache_ascent, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+		cache_index int64
+		size        int64
+		ascent      float64
+	}{cache_index, size, ascent}))
 }
 
 /*
@@ -1370,13 +1187,11 @@ Returns the font ascent (number of pixels above the baseline).
 */
 //go:nosplit
 func (self class) GetCacheAscent(cache_index int64, size int64) float64 { //gd:FontFile.get_cache_ascent
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_cache_ascent, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_cache_ascent, gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		cache_index int64
+		size        int64
+	}{cache_index, size}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1385,13 +1200,11 @@ Sets the font descent (number of pixels below the baseline).
 */
 //go:nosplit
 func (self class) SetCacheDescent(cache_index int64, size int64, descent float64) { //gd:FontFile.set_cache_descent
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	callframe.Arg(frame, descent)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_cache_descent, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_cache_descent, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+		cache_index int64
+		size        int64
+		descent     float64
+	}{cache_index, size, descent}))
 }
 
 /*
@@ -1399,13 +1212,11 @@ Returns the font descent (number of pixels below the baseline).
 */
 //go:nosplit
 func (self class) GetCacheDescent(cache_index int64, size int64) float64 { //gd:FontFile.get_cache_descent
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_cache_descent, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_cache_descent, gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		cache_index int64
+		size        int64
+	}{cache_index, size}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1414,13 +1225,11 @@ Sets pixel offset of the underline below the baseline.
 */
 //go:nosplit
 func (self class) SetCacheUnderlinePosition(cache_index int64, size int64, underline_position float64) { //gd:FontFile.set_cache_underline_position
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	callframe.Arg(frame, underline_position)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_cache_underline_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_cache_underline_position, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+		cache_index        int64
+		size               int64
+		underline_position float64
+	}{cache_index, size, underline_position}))
 }
 
 /*
@@ -1428,13 +1237,11 @@ Returns pixel offset of the underline below the baseline.
 */
 //go:nosplit
 func (self class) GetCacheUnderlinePosition(cache_index int64, size int64) float64 { //gd:FontFile.get_cache_underline_position
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_cache_underline_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_cache_underline_position, gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		cache_index int64
+		size        int64
+	}{cache_index, size}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1443,13 +1250,11 @@ Sets thickness of the underline in pixels.
 */
 //go:nosplit
 func (self class) SetCacheUnderlineThickness(cache_index int64, size int64, underline_thickness float64) { //gd:FontFile.set_cache_underline_thickness
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	callframe.Arg(frame, underline_thickness)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_cache_underline_thickness, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_cache_underline_thickness, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+		cache_index         int64
+		size                int64
+		underline_thickness float64
+	}{cache_index, size, underline_thickness}))
 }
 
 /*
@@ -1457,13 +1262,11 @@ Returns thickness of the underline in pixels.
 */
 //go:nosplit
 func (self class) GetCacheUnderlineThickness(cache_index int64, size int64) float64 { //gd:FontFile.get_cache_underline_thickness
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_cache_underline_thickness, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_cache_underline_thickness, gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		cache_index int64
+		size        int64
+	}{cache_index, size}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1472,13 +1275,11 @@ Sets scaling factor of the color bitmap font.
 */
 //go:nosplit
 func (self class) SetCacheScale(cache_index int64, size int64, scale float64) { //gd:FontFile.set_cache_scale
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	callframe.Arg(frame, scale)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_cache_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_cache_scale, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+		cache_index int64
+		size        int64
+		scale       float64
+	}{cache_index, size, scale}))
 }
 
 /*
@@ -1486,13 +1287,11 @@ Returns scaling factor of the color bitmap font.
 */
 //go:nosplit
 func (self class) GetCacheScale(cache_index int64, size int64) float64 { //gd:FontFile.get_cache_scale
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_cache_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_cache_scale, gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		cache_index int64
+		size        int64
+	}{cache_index, size}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1501,13 +1300,11 @@ Returns number of textures used by font cache entry.
 */
 //go:nosplit
 func (self class) GetTextureCount(cache_index int64, size Vector2i.XY) int64 { //gd:FontFile.get_texture_count
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_texture_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_texture_count, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8), unsafe.Pointer(&struct {
+		cache_index int64
+		size        Vector2i.XY
+	}{cache_index, size}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1517,12 +1314,10 @@ Removes all textures from font cache entry.
 */
 //go:nosplit
 func (self class) ClearTextures(cache_index int64, size Vector2i.XY) { //gd:FontFile.clear_textures
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_clear_textures, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_clear_textures, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8), unsafe.Pointer(&struct {
+		cache_index int64
+		size        Vector2i.XY
+	}{cache_index, size}))
 }
 
 /*
@@ -1531,13 +1326,11 @@ Removes specified texture from the cache entry.
 */
 //go:nosplit
 func (self class) RemoveTexture(cache_index int64, size Vector2i.XY, texture_index int64) { //gd:FontFile.remove_texture
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	callframe.Arg(frame, texture_index)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_remove_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_remove_texture, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+		cache_index   int64
+		size          Vector2i.XY
+		texture_index int64
+	}{cache_index, size, texture_index}))
 }
 
 /*
@@ -1545,14 +1338,12 @@ Sets font cache texture image.
 */
 //go:nosplit
 func (self class) SetTextureImage(cache_index int64, size Vector2i.XY, texture_index int64, image [1]gdclass.Image) { //gd:FontFile.set_texture_image
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	callframe.Arg(frame, texture_index)
-	callframe.Arg(frame, pointers.Get(image[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_texture_image, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_texture_image, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeObject<<16), unsafe.Pointer(&struct {
+		cache_index   int64
+		size          Vector2i.XY
+		texture_index int64
+		image         gdextension.Object
+	}{cache_index, size, texture_index, gdextension.Object(pointers.Get(image[0])[0])}))
 }
 
 /*
@@ -1560,14 +1351,12 @@ Returns a copy of the font cache texture image.
 */
 //go:nosplit
 func (self class) GetTextureImage(cache_index int64, size Vector2i.XY, texture_index int64) [1]gdclass.Image { //gd:FontFile.get_texture_image
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	callframe.Arg(frame, texture_index)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_texture_image, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_texture_image, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+		cache_index   int64
+		size          Vector2i.XY
+		texture_index int64
+	}{cache_index, size, texture_index}))
+	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
 	return ret
 }
 
@@ -1576,14 +1365,12 @@ Sets array containing glyph packing data.
 */
 //go:nosplit
 func (self class) SetTextureOffsets(cache_index int64, size Vector2i.XY, texture_index int64, offset Packed.Array[int32]) { //gd:FontFile.set_texture_offsets
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	callframe.Arg(frame, texture_index)
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](offset)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_texture_offsets, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_texture_offsets, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12)|(gdextension.SizePackedArray<<16), unsafe.Pointer(&struct {
+		cache_index   int64
+		size          Vector2i.XY
+		texture_index int64
+		offset        gdextension.PackedArray
+	}{cache_index, size, texture_index, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](offset)))}))
 }
 
 /*
@@ -1591,14 +1378,12 @@ Returns a copy of the array containing glyph packing data.
 */
 //go:nosplit
 func (self class) GetTextureOffsets(cache_index int64, size Vector2i.XY, texture_index int64) Packed.Array[int32] { //gd:FontFile.get_texture_offsets
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	callframe.Arg(frame, texture_index)
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_texture_offsets, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_texture_offsets, gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+		cache_index   int64
+		size          Vector2i.XY
+		texture_index int64
+	}{cache_index, size, texture_index}))
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -1607,13 +1392,11 @@ Returns list of rendered glyphs in the cache entry.
 */
 //go:nosplit
 func (self class) GetGlyphList(cache_index int64, size Vector2i.XY) Packed.Array[int32] { //gd:FontFile.get_glyph_list
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_glyph_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_glyph_list, gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8), unsafe.Pointer(&struct {
+		cache_index int64
+		size        Vector2i.XY
+	}{cache_index, size}))
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -1623,12 +1406,10 @@ Removes all rendered glyph information from the cache entry.
 */
 //go:nosplit
 func (self class) ClearGlyphs(cache_index int64, size Vector2i.XY) { //gd:FontFile.clear_glyphs
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_clear_glyphs, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_clear_glyphs, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8), unsafe.Pointer(&struct {
+		cache_index int64
+		size        Vector2i.XY
+	}{cache_index, size}))
 }
 
 /*
@@ -1637,13 +1418,11 @@ Removes specified rendered glyph information from the cache entry.
 */
 //go:nosplit
 func (self class) RemoveGlyph(cache_index int64, size Vector2i.XY, glyph int64) { //gd:FontFile.remove_glyph
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	callframe.Arg(frame, glyph)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_remove_glyph, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_remove_glyph, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+		cache_index int64
+		size        Vector2i.XY
+		glyph       int64
+	}{cache_index, size, glyph}))
 }
 
 /*
@@ -1652,14 +1431,12 @@ Sets glyph advance (offset of the next glyph).
 */
 //go:nosplit
 func (self class) SetGlyphAdvance(cache_index int64, size int64, glyph int64, advance Vector2.XY) { //gd:FontFile.set_glyph_advance
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	callframe.Arg(frame, glyph)
-	callframe.Arg(frame, advance)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_glyph_advance, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_glyph_advance, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeVector2<<16), unsafe.Pointer(&struct {
+		cache_index int64
+		size        int64
+		glyph       int64
+		advance     Vector2.XY
+	}{cache_index, size, glyph, advance}))
 }
 
 /*
@@ -1668,14 +1445,12 @@ Returns glyph advance (offset of the next glyph).
 */
 //go:nosplit
 func (self class) GetGlyphAdvance(cache_index int64, size int64, glyph int64) Vector2.XY { //gd:FontFile.get_glyph_advance
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	callframe.Arg(frame, glyph)
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_glyph_advance, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_glyph_advance, gdextension.SizeVector2|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+		cache_index int64
+		size        int64
+		glyph       int64
+	}{cache_index, size, glyph}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1684,14 +1459,12 @@ Sets glyph offset from the baseline.
 */
 //go:nosplit
 func (self class) SetGlyphOffset(cache_index int64, size Vector2i.XY, glyph int64, offset Vector2.XY) { //gd:FontFile.set_glyph_offset
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	callframe.Arg(frame, glyph)
-	callframe.Arg(frame, offset)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_glyph_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_glyph_offset, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeVector2<<16), unsafe.Pointer(&struct {
+		cache_index int64
+		size        Vector2i.XY
+		glyph       int64
+		offset      Vector2.XY
+	}{cache_index, size, glyph, offset}))
 }
 
 /*
@@ -1699,14 +1472,12 @@ Returns glyph offset from the baseline.
 */
 //go:nosplit
 func (self class) GetGlyphOffset(cache_index int64, size Vector2i.XY, glyph int64) Vector2.XY { //gd:FontFile.get_glyph_offset
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	callframe.Arg(frame, glyph)
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_glyph_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_glyph_offset, gdextension.SizeVector2|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+		cache_index int64
+		size        Vector2i.XY
+		glyph       int64
+	}{cache_index, size, glyph}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1715,14 +1486,12 @@ Sets glyph size.
 */
 //go:nosplit
 func (self class) SetGlyphSize(cache_index int64, size Vector2i.XY, glyph int64, gl_size Vector2.XY) { //gd:FontFile.set_glyph_size
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	callframe.Arg(frame, glyph)
-	callframe.Arg(frame, gl_size)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_glyph_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_glyph_size, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeVector2<<16), unsafe.Pointer(&struct {
+		cache_index int64
+		size        Vector2i.XY
+		glyph       int64
+		gl_size     Vector2.XY
+	}{cache_index, size, glyph, gl_size}))
 }
 
 /*
@@ -1730,14 +1499,12 @@ Returns glyph size.
 */
 //go:nosplit
 func (self class) GetGlyphSize(cache_index int64, size Vector2i.XY, glyph int64) Vector2.XY { //gd:FontFile.get_glyph_size
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	callframe.Arg(frame, glyph)
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_glyph_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_glyph_size, gdextension.SizeVector2|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+		cache_index int64
+		size        Vector2i.XY
+		glyph       int64
+	}{cache_index, size, glyph}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1746,14 +1513,12 @@ Sets rectangle in the cache texture containing the glyph.
 */
 //go:nosplit
 func (self class) SetGlyphUvRect(cache_index int64, size Vector2i.XY, glyph int64, uv_rect Rect2.PositionSize) { //gd:FontFile.set_glyph_uv_rect
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	callframe.Arg(frame, glyph)
-	callframe.Arg(frame, uv_rect)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_glyph_uv_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_glyph_uv_rect, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeRect2<<16), unsafe.Pointer(&struct {
+		cache_index int64
+		size        Vector2i.XY
+		glyph       int64
+		uv_rect     Rect2.PositionSize
+	}{cache_index, size, glyph, uv_rect}))
 }
 
 /*
@@ -1761,14 +1526,12 @@ Returns rectangle in the cache texture containing the glyph.
 */
 //go:nosplit
 func (self class) GetGlyphUvRect(cache_index int64, size Vector2i.XY, glyph int64) Rect2.PositionSize { //gd:FontFile.get_glyph_uv_rect
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	callframe.Arg(frame, glyph)
-	var r_ret = callframe.Ret[Rect2.PositionSize](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_glyph_uv_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Rect2.PositionSize](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_glyph_uv_rect, gdextension.SizeRect2|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+		cache_index int64
+		size        Vector2i.XY
+		glyph       int64
+	}{cache_index, size, glyph}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1777,14 +1540,12 @@ Sets index of the cache texture containing the glyph.
 */
 //go:nosplit
 func (self class) SetGlyphTextureIdx(cache_index int64, size Vector2i.XY, glyph int64, texture_idx int64) { //gd:FontFile.set_glyph_texture_idx
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	callframe.Arg(frame, glyph)
-	callframe.Arg(frame, texture_idx)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_glyph_texture_idx, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_glyph_texture_idx, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
+		cache_index int64
+		size        Vector2i.XY
+		glyph       int64
+		texture_idx int64
+	}{cache_index, size, glyph, texture_idx}))
 }
 
 /*
@@ -1792,14 +1553,12 @@ Returns index of the cache texture containing the glyph.
 */
 //go:nosplit
 func (self class) GetGlyphTextureIdx(cache_index int64, size Vector2i.XY, glyph int64) int64 { //gd:FontFile.get_glyph_texture_idx
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	callframe.Arg(frame, glyph)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_glyph_texture_idx, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_glyph_texture_idx, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+		cache_index int64
+		size        Vector2i.XY
+		glyph       int64
+	}{cache_index, size, glyph}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1808,13 +1567,11 @@ Returns list of the kerning overrides.
 */
 //go:nosplit
 func (self class) GetKerningList(cache_index int64, size int64) Array.Contains[Vector2i.XY] { //gd:FontFile.get_kerning_list
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_kerning_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[Vector2i.XY]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_kerning_list, gdextension.SizeArray|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		cache_index int64
+		size        int64
+	}{cache_index, size}))
+	var ret = Array.Through(gd.ArrayProxy[Vector2i.XY]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -1823,12 +1580,10 @@ Removes all kerning overrides.
 */
 //go:nosplit
 func (self class) ClearKerningMap(cache_index int64, size int64) { //gd:FontFile.clear_kerning_map
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_clear_kerning_map, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_clear_kerning_map, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		cache_index int64
+		size        int64
+	}{cache_index, size}))
 }
 
 /*
@@ -1836,13 +1591,11 @@ Removes kerning override for the pair of glyphs.
 */
 //go:nosplit
 func (self class) RemoveKerning(cache_index int64, size int64, glyph_pair Vector2i.XY) { //gd:FontFile.remove_kerning
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	callframe.Arg(frame, glyph_pair)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_remove_kerning, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_remove_kerning, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVector2i<<12), unsafe.Pointer(&struct {
+		cache_index int64
+		size        int64
+		glyph_pair  Vector2i.XY
+	}{cache_index, size, glyph_pair}))
 }
 
 /*
@@ -1850,14 +1603,12 @@ Sets kerning for the pair of glyphs.
 */
 //go:nosplit
 func (self class) SetKerning(cache_index int64, size int64, glyph_pair Vector2i.XY, kerning Vector2.XY) { //gd:FontFile.set_kerning
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	callframe.Arg(frame, glyph_pair)
-	callframe.Arg(frame, kerning)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_kerning, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_kerning, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVector2i<<12)|(gdextension.SizeVector2<<16), unsafe.Pointer(&struct {
+		cache_index int64
+		size        int64
+		glyph_pair  Vector2i.XY
+		kerning     Vector2.XY
+	}{cache_index, size, glyph_pair, kerning}))
 }
 
 /*
@@ -1865,14 +1616,12 @@ Returns kerning for the pair of glyphs.
 */
 //go:nosplit
 func (self class) GetKerning(cache_index int64, size int64, glyph_pair Vector2i.XY) Vector2.XY { //gd:FontFile.get_kerning
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	callframe.Arg(frame, glyph_pair)
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_kerning, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_kerning, gdextension.SizeVector2|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVector2i<<12), unsafe.Pointer(&struct {
+		cache_index int64
+		size        int64
+		glyph_pair  Vector2i.XY
+	}{cache_index, size, glyph_pair}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1881,14 +1630,12 @@ Renders the range of characters to the font cache texture.
 */
 //go:nosplit
 func (self class) RenderRange(cache_index int64, size Vector2i.XY, start int64, end int64) { //gd:FontFile.render_range
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	callframe.Arg(frame, start)
-	callframe.Arg(frame, end)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_render_range, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_render_range, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
+		cache_index int64
+		size        Vector2i.XY
+		start       int64
+		end         int64
+	}{cache_index, size, start, end}))
 }
 
 /*
@@ -1896,13 +1643,11 @@ Renders specified glyph to the font cache texture.
 */
 //go:nosplit
 func (self class) RenderGlyph(cache_index int64, size Vector2i.XY, index int64) { //gd:FontFile.render_glyph
-	var frame = callframe.New()
-	callframe.Arg(frame, cache_index)
-	callframe.Arg(frame, size)
-	callframe.Arg(frame, index)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_render_glyph, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_render_glyph, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+		cache_index int64
+		size        Vector2i.XY
+		index       int64
+	}{cache_index, size, index}))
 }
 
 /*
@@ -1910,12 +1655,10 @@ Adds override for [method Font.is_language_supported].
 */
 //go:nosplit
 func (self class) SetLanguageSupportOverride(language String.Readable, supported bool) { //gd:FontFile.set_language_support_override
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
-	callframe.Arg(frame, supported)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_language_support_override, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_language_support_override, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		language  gdextension.String
+		supported bool
+	}{gdextension.String(pointers.Get(gd.InternalString(language))[0]), supported}))
 }
 
 /*
@@ -1923,12 +1666,8 @@ Returns [code]true[/code] if support override is enabled for the [param language
 */
 //go:nosplit
 func (self class) GetLanguageSupportOverride(language String.Readable) bool { //gd:FontFile.get_language_support_override
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_language_support_override, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_language_support_override, gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ language gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1937,11 +1676,7 @@ Remove language support override.
 */
 //go:nosplit
 func (self class) RemoveLanguageSupportOverride(language String.Readable) { //gd:FontFile.remove_language_support_override
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_remove_language_support_override, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_remove_language_support_override, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ language gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
 }
 
 /*
@@ -1949,11 +1684,8 @@ Returns list of language support overrides.
 */
 //go:nosplit
 func (self class) GetLanguageSupportOverrides() Packed.Strings { //gd:FontFile.get_language_support_overrides
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_language_support_overrides, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_language_support_overrides, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -1962,12 +1694,10 @@ Adds override for [method Font.is_script_supported].
 */
 //go:nosplit
 func (self class) SetScriptSupportOverride(script String.Readable, supported bool) { //gd:FontFile.set_script_support_override
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(script)))
-	callframe.Arg(frame, supported)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_script_support_override, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_script_support_override, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		script    gdextension.String
+		supported bool
+	}{gdextension.String(pointers.Get(gd.InternalString(script))[0]), supported}))
 }
 
 /*
@@ -1975,12 +1705,8 @@ Returns [code]true[/code] if support override is enabled for the [param script].
 */
 //go:nosplit
 func (self class) GetScriptSupportOverride(script String.Readable) bool { //gd:FontFile.get_script_support_override
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(script)))
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_script_support_override, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_script_support_override, gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ script gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(script))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1989,11 +1715,7 @@ Removes script support override.
 */
 //go:nosplit
 func (self class) RemoveScriptSupportOverride(script String.Readable) { //gd:FontFile.remove_script_support_override
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(script)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_remove_script_support_override, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_remove_script_support_override, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ script gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(script))[0])}))
 }
 
 /*
@@ -2001,30 +1723,20 @@ Returns list of script support overrides.
 */
 //go:nosplit
 func (self class) GetScriptSupportOverrides() Packed.Strings { //gd:FontFile.get_script_support_overrides
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_script_support_overrides, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_script_support_overrides, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOpentypeFeatureOverrides(overrides Dictionary.Any) { //gd:FontFile.set_opentype_feature_overrides
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(overrides)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_opentype_feature_overrides, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontFile.Bind_set_opentype_feature_overrides, 0|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ overrides gdextension.Dictionary }{gdextension.Dictionary(pointers.Get(gd.InternalDictionary(overrides))[0])}))
 }
 
 //go:nosplit
 func (self class) GetOpentypeFeatureOverrides() Dictionary.Any { //gd:FontFile.get_opentype_feature_overrides
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_opentype_feature_overrides, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_opentype_feature_overrides, gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 
@@ -2033,14 +1745,12 @@ Returns the glyph index of a [param char], optionally modified by the [param var
 */
 //go:nosplit
 func (self class) GetGlyphIndex(size int64, char int64, variation_selector int64) int64 { //gd:FontFile.get_glyph_index
-	var frame = callframe.New()
-	callframe.Arg(frame, size)
-	callframe.Arg(frame, char)
-	callframe.Arg(frame, variation_selector)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_glyph_index, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_glyph_index, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+		size               int64
+		char               int64
+		variation_selector int64
+	}{size, char, variation_selector}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2049,13 +1759,11 @@ Returns character code associated with [param glyph_index], or [code]0[/code] if
 */
 //go:nosplit
 func (self class) GetCharFromGlyphIndex(size int64, glyph_index int64) int64 { //gd:FontFile.get_char_from_glyph_index
-	var frame = callframe.New()
-	callframe.Arg(frame, size)
-	callframe.Arg(frame, glyph_index)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_char_from_glyph_index, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.FontFile.Bind_get_char_from_glyph_index, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		size        int64
+		glyph_index int64
+	}{size, glyph_index}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsFontFile() Advanced          { return *((*Advanced)(unsafe.Pointer(&self))) }

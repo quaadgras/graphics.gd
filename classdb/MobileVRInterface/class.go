@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +51,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -192,192 +196,122 @@ func (self Instance) SetVrsStrength(value Float.X) {
 
 //go:nosplit
 func (self class) SetEyeHeight(eye_height float64) { //gd:MobileVRInterface.set_eye_height
-	var frame = callframe.New()
-	callframe.Arg(frame, eye_height)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_set_eye_height, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MobileVRInterface.Bind_set_eye_height, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ eye_height float64 }{eye_height}))
 }
 
 //go:nosplit
 func (self class) GetEyeHeight() float64 { //gd:MobileVRInterface.get_eye_height
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_get_eye_height, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.MobileVRInterface.Bind_get_eye_height, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIod(iod float64) { //gd:MobileVRInterface.set_iod
-	var frame = callframe.New()
-	callframe.Arg(frame, iod)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_set_iod, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MobileVRInterface.Bind_set_iod, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ iod float64 }{iod}))
 }
 
 //go:nosplit
 func (self class) GetIod() float64 { //gd:MobileVRInterface.get_iod
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_get_iod, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.MobileVRInterface.Bind_get_iod, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDisplayWidth(display_width float64) { //gd:MobileVRInterface.set_display_width
-	var frame = callframe.New()
-	callframe.Arg(frame, display_width)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_set_display_width, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MobileVRInterface.Bind_set_display_width, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ display_width float64 }{display_width}))
 }
 
 //go:nosplit
 func (self class) GetDisplayWidth() float64 { //gd:MobileVRInterface.get_display_width
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_get_display_width, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.MobileVRInterface.Bind_get_display_width, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDisplayToLens(display_to_lens float64) { //gd:MobileVRInterface.set_display_to_lens
-	var frame = callframe.New()
-	callframe.Arg(frame, display_to_lens)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_set_display_to_lens, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MobileVRInterface.Bind_set_display_to_lens, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ display_to_lens float64 }{display_to_lens}))
 }
 
 //go:nosplit
 func (self class) GetDisplayToLens() float64 { //gd:MobileVRInterface.get_display_to_lens
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_get_display_to_lens, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.MobileVRInterface.Bind_get_display_to_lens, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOffsetRect(offset_rect Rect2.PositionSize) { //gd:MobileVRInterface.set_offset_rect
-	var frame = callframe.New()
-	callframe.Arg(frame, offset_rect)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_set_offset_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MobileVRInterface.Bind_set_offset_rect, 0|(gdextension.SizeRect2<<4), unsafe.Pointer(&struct{ offset_rect Rect2.PositionSize }{offset_rect}))
 }
 
 //go:nosplit
 func (self class) GetOffsetRect() Rect2.PositionSize { //gd:MobileVRInterface.get_offset_rect
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Rect2.PositionSize](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_get_offset_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Rect2.PositionSize](self.AsObject(), gd.Global.Methods.MobileVRInterface.Bind_get_offset_rect, gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOversample(oversample float64) { //gd:MobileVRInterface.set_oversample
-	var frame = callframe.New()
-	callframe.Arg(frame, oversample)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_set_oversample, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MobileVRInterface.Bind_set_oversample, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ oversample float64 }{oversample}))
 }
 
 //go:nosplit
 func (self class) GetOversample() float64 { //gd:MobileVRInterface.get_oversample
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_get_oversample, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.MobileVRInterface.Bind_get_oversample, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetK1(k float64) { //gd:MobileVRInterface.set_k1
-	var frame = callframe.New()
-	callframe.Arg(frame, k)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_set_k1, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MobileVRInterface.Bind_set_k1, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ k float64 }{k}))
 }
 
 //go:nosplit
 func (self class) GetK1() float64 { //gd:MobileVRInterface.get_k1
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_get_k1, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.MobileVRInterface.Bind_get_k1, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetK2(k float64) { //gd:MobileVRInterface.set_k2
-	var frame = callframe.New()
-	callframe.Arg(frame, k)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_set_k2, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MobileVRInterface.Bind_set_k2, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ k float64 }{k}))
 }
 
 //go:nosplit
 func (self class) GetK2() float64 { //gd:MobileVRInterface.get_k2
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_get_k2, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.MobileVRInterface.Bind_get_k2, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetVrsMinRadius() float64 { //gd:MobileVRInterface.get_vrs_min_radius
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_get_vrs_min_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.MobileVRInterface.Bind_get_vrs_min_radius, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVrsMinRadius(radius float64) { //gd:MobileVRInterface.set_vrs_min_radius
-	var frame = callframe.New()
-	callframe.Arg(frame, radius)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_set_vrs_min_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MobileVRInterface.Bind_set_vrs_min_radius, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radius float64 }{radius}))
 }
 
 //go:nosplit
 func (self class) GetVrsStrength() float64 { //gd:MobileVRInterface.get_vrs_strength
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_get_vrs_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.MobileVRInterface.Bind_get_vrs_strength, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVrsStrength(strength float64) { //gd:MobileVRInterface.set_vrs_strength
-	var frame = callframe.New()
-	callframe.Arg(frame, strength)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MobileVRInterface.Bind_set_vrs_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MobileVRInterface.Bind_set_vrs_strength, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ strength float64 }{strength}))
 }
 func (self class) AsMobileVRInterface() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsMobileVRInterface() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

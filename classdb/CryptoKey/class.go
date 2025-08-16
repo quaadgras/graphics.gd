@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +50,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -175,13 +179,11 @@ Saves a key to the given [param path]. If [param public_only] is [code]true[/cod
 */
 //go:nosplit
 func (self class) Save(path String.Readable, public_only bool) Error.Code { //gd:CryptoKey.save
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	callframe.Arg(frame, public_only)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CryptoKey.Bind_save, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.CryptoKey.Bind_save, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		path        gdextension.String
+		public_only bool
+	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), public_only}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -191,13 +193,11 @@ Loads a key from [param path]. If [param public_only] is [code]true[/code], only
 */
 //go:nosplit
 func (self class) Load(path String.Readable, public_only bool) Error.Code { //gd:CryptoKey.load
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	callframe.Arg(frame, public_only)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CryptoKey.Bind_load, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.CryptoKey.Bind_load, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		path        gdextension.String
+		public_only bool
+	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), public_only}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -206,11 +206,8 @@ Returns [code]true[/code] if this CryptoKey only has the public part, and not th
 */
 //go:nosplit
 func (self class) IsPublicOnly() bool { //gd:CryptoKey.is_public_only
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CryptoKey.Bind_is_public_only, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CryptoKey.Bind_is_public_only, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -219,12 +216,8 @@ Returns a string containing the key in PEM format. If [param public_only] is [co
 */
 //go:nosplit
 func (self class) SaveToString(public_only bool) String.Readable { //gd:CryptoKey.save_to_string
-	var frame = callframe.New()
-	callframe.Arg(frame, public_only)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CryptoKey.Bind_save_to_string, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.CryptoKey.Bind_save_to_string, gdextension.SizeString|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ public_only bool }{public_only}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -233,13 +226,11 @@ Loads a key from the given [param string_key]. If [param public_only] is [code]t
 */
 //go:nosplit
 func (self class) LoadFromString(string_key String.Readable, public_only bool) Error.Code { //gd:CryptoKey.load_from_string
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(string_key)))
-	callframe.Arg(frame, public_only)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CryptoKey.Bind_load_from_string, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.CryptoKey.Bind_load_from_string, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		string_key  gdextension.String
+		public_only bool
+	}{gdextension.String(pointers.Get(gd.InternalString(string_key))[0]), public_only}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 func (self class) AsCryptoKey() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

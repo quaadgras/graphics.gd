@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -50,6 +52,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -272,400 +276,253 @@ func (self Instance) SetDomainWarpFractalGain(value Float.X) {
 
 //go:nosplit
 func (self class) SetNoiseType(atype NoiseType) { //gd:FastNoiseLite.set_noise_type
-	var frame = callframe.New()
-	callframe.Arg(frame, atype)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_set_noise_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_set_noise_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype NoiseType }{atype}))
 }
 
 //go:nosplit
 func (self class) GetNoiseType() NoiseType { //gd:FastNoiseLite.get_noise_type
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[NoiseType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_noise_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[NoiseType](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_get_noise_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSeed(seed int64) { //gd:FastNoiseLite.set_seed
-	var frame = callframe.New()
-	callframe.Arg(frame, seed)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_set_seed, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_set_seed, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ seed int64 }{seed}))
 }
 
 //go:nosplit
 func (self class) GetSeed() int64 { //gd:FastNoiseLite.get_seed
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_seed, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_get_seed, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFrequency(freq float64) { //gd:FastNoiseLite.set_frequency
-	var frame = callframe.New()
-	callframe.Arg(frame, freq)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_set_frequency, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_set_frequency, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ freq float64 }{freq}))
 }
 
 //go:nosplit
 func (self class) GetFrequency() float64 { //gd:FastNoiseLite.get_frequency
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_frequency, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_get_frequency, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOffset(offset Vector3.XYZ) { //gd:FastNoiseLite.set_offset
-	var frame = callframe.New()
-	callframe.Arg(frame, offset)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_set_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_set_offset, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ offset Vector3.XYZ }{offset}))
 }
 
 //go:nosplit
 func (self class) GetOffset() Vector3.XYZ { //gd:FastNoiseLite.get_offset
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_get_offset, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFractalType(atype FractalType) { //gd:FastNoiseLite.set_fractal_type
-	var frame = callframe.New()
-	callframe.Arg(frame, atype)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_set_fractal_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_set_fractal_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype FractalType }{atype}))
 }
 
 //go:nosplit
 func (self class) GetFractalType() FractalType { //gd:FastNoiseLite.get_fractal_type
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[FractalType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_fractal_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[FractalType](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_get_fractal_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFractalOctaves(octave_count int64) { //gd:FastNoiseLite.set_fractal_octaves
-	var frame = callframe.New()
-	callframe.Arg(frame, octave_count)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_set_fractal_octaves, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_set_fractal_octaves, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ octave_count int64 }{octave_count}))
 }
 
 //go:nosplit
 func (self class) GetFractalOctaves() int64 { //gd:FastNoiseLite.get_fractal_octaves
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_fractal_octaves, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_get_fractal_octaves, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFractalLacunarity(lacunarity float64) { //gd:FastNoiseLite.set_fractal_lacunarity
-	var frame = callframe.New()
-	callframe.Arg(frame, lacunarity)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_set_fractal_lacunarity, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_set_fractal_lacunarity, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ lacunarity float64 }{lacunarity}))
 }
 
 //go:nosplit
 func (self class) GetFractalLacunarity() float64 { //gd:FastNoiseLite.get_fractal_lacunarity
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_fractal_lacunarity, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_get_fractal_lacunarity, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFractalGain(gain float64) { //gd:FastNoiseLite.set_fractal_gain
-	var frame = callframe.New()
-	callframe.Arg(frame, gain)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_set_fractal_gain, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_set_fractal_gain, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ gain float64 }{gain}))
 }
 
 //go:nosplit
 func (self class) GetFractalGain() float64 { //gd:FastNoiseLite.get_fractal_gain
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_fractal_gain, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_get_fractal_gain, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFractalWeightedStrength(weighted_strength float64) { //gd:FastNoiseLite.set_fractal_weighted_strength
-	var frame = callframe.New()
-	callframe.Arg(frame, weighted_strength)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_set_fractal_weighted_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_set_fractal_weighted_strength, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ weighted_strength float64 }{weighted_strength}))
 }
 
 //go:nosplit
 func (self class) GetFractalWeightedStrength() float64 { //gd:FastNoiseLite.get_fractal_weighted_strength
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_fractal_weighted_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_get_fractal_weighted_strength, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFractalPingPongStrength(ping_pong_strength float64) { //gd:FastNoiseLite.set_fractal_ping_pong_strength
-	var frame = callframe.New()
-	callframe.Arg(frame, ping_pong_strength)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_set_fractal_ping_pong_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_set_fractal_ping_pong_strength, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ ping_pong_strength float64 }{ping_pong_strength}))
 }
 
 //go:nosplit
 func (self class) GetFractalPingPongStrength() float64 { //gd:FastNoiseLite.get_fractal_ping_pong_strength
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_fractal_ping_pong_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_get_fractal_ping_pong_strength, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCellularDistanceFunction(fn CellularDistanceFunction) { //gd:FastNoiseLite.set_cellular_distance_function
-	var frame = callframe.New()
-	callframe.Arg(frame, fn)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_set_cellular_distance_function, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_set_cellular_distance_function, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ fn CellularDistanceFunction }{fn}))
 }
 
 //go:nosplit
 func (self class) GetCellularDistanceFunction() CellularDistanceFunction { //gd:FastNoiseLite.get_cellular_distance_function
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[CellularDistanceFunction](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_cellular_distance_function, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[CellularDistanceFunction](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_get_cellular_distance_function, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCellularJitter(jitter float64) { //gd:FastNoiseLite.set_cellular_jitter
-	var frame = callframe.New()
-	callframe.Arg(frame, jitter)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_set_cellular_jitter, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_set_cellular_jitter, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ jitter float64 }{jitter}))
 }
 
 //go:nosplit
 func (self class) GetCellularJitter() float64 { //gd:FastNoiseLite.get_cellular_jitter
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_cellular_jitter, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_get_cellular_jitter, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCellularReturnType(ret CellularReturnType) { //gd:FastNoiseLite.set_cellular_return_type
-	var frame = callframe.New()
-	callframe.Arg(frame, ret)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_set_cellular_return_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_set_cellular_return_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ ret CellularReturnType }{ret}))
 }
 
 //go:nosplit
 func (self class) GetCellularReturnType() CellularReturnType { //gd:FastNoiseLite.get_cellular_return_type
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[CellularReturnType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_cellular_return_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[CellularReturnType](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_get_cellular_return_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDomainWarpEnabled(domain_warp_enabled bool) { //gd:FastNoiseLite.set_domain_warp_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, domain_warp_enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_set_domain_warp_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_set_domain_warp_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ domain_warp_enabled bool }{domain_warp_enabled}))
 }
 
 //go:nosplit
 func (self class) IsDomainWarpEnabled() bool { //gd:FastNoiseLite.is_domain_warp_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_is_domain_warp_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_is_domain_warp_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDomainWarpType(domain_warp_type DomainWarpType) { //gd:FastNoiseLite.set_domain_warp_type
-	var frame = callframe.New()
-	callframe.Arg(frame, domain_warp_type)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_set_domain_warp_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_set_domain_warp_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ domain_warp_type DomainWarpType }{domain_warp_type}))
 }
 
 //go:nosplit
 func (self class) GetDomainWarpType() DomainWarpType { //gd:FastNoiseLite.get_domain_warp_type
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[DomainWarpType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_domain_warp_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[DomainWarpType](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_get_domain_warp_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDomainWarpAmplitude(domain_warp_amplitude float64) { //gd:FastNoiseLite.set_domain_warp_amplitude
-	var frame = callframe.New()
-	callframe.Arg(frame, domain_warp_amplitude)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_set_domain_warp_amplitude, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_set_domain_warp_amplitude, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ domain_warp_amplitude float64 }{domain_warp_amplitude}))
 }
 
 //go:nosplit
 func (self class) GetDomainWarpAmplitude() float64 { //gd:FastNoiseLite.get_domain_warp_amplitude
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_domain_warp_amplitude, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_get_domain_warp_amplitude, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDomainWarpFrequency(domain_warp_frequency float64) { //gd:FastNoiseLite.set_domain_warp_frequency
-	var frame = callframe.New()
-	callframe.Arg(frame, domain_warp_frequency)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_set_domain_warp_frequency, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_set_domain_warp_frequency, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ domain_warp_frequency float64 }{domain_warp_frequency}))
 }
 
 //go:nosplit
 func (self class) GetDomainWarpFrequency() float64 { //gd:FastNoiseLite.get_domain_warp_frequency
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_domain_warp_frequency, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_get_domain_warp_frequency, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDomainWarpFractalType(domain_warp_fractal_type DomainWarpFractalType) { //gd:FastNoiseLite.set_domain_warp_fractal_type
-	var frame = callframe.New()
-	callframe.Arg(frame, domain_warp_fractal_type)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_set_domain_warp_fractal_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_set_domain_warp_fractal_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ domain_warp_fractal_type DomainWarpFractalType }{domain_warp_fractal_type}))
 }
 
 //go:nosplit
 func (self class) GetDomainWarpFractalType() DomainWarpFractalType { //gd:FastNoiseLite.get_domain_warp_fractal_type
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[DomainWarpFractalType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_domain_warp_fractal_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[DomainWarpFractalType](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_get_domain_warp_fractal_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDomainWarpFractalOctaves(domain_warp_octave_count int64) { //gd:FastNoiseLite.set_domain_warp_fractal_octaves
-	var frame = callframe.New()
-	callframe.Arg(frame, domain_warp_octave_count)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_set_domain_warp_fractal_octaves, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_set_domain_warp_fractal_octaves, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ domain_warp_octave_count int64 }{domain_warp_octave_count}))
 }
 
 //go:nosplit
 func (self class) GetDomainWarpFractalOctaves() int64 { //gd:FastNoiseLite.get_domain_warp_fractal_octaves
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_domain_warp_fractal_octaves, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_get_domain_warp_fractal_octaves, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDomainWarpFractalLacunarity(domain_warp_lacunarity float64) { //gd:FastNoiseLite.set_domain_warp_fractal_lacunarity
-	var frame = callframe.New()
-	callframe.Arg(frame, domain_warp_lacunarity)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_set_domain_warp_fractal_lacunarity, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_set_domain_warp_fractal_lacunarity, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ domain_warp_lacunarity float64 }{domain_warp_lacunarity}))
 }
 
 //go:nosplit
 func (self class) GetDomainWarpFractalLacunarity() float64 { //gd:FastNoiseLite.get_domain_warp_fractal_lacunarity
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_domain_warp_fractal_lacunarity, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_get_domain_warp_fractal_lacunarity, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDomainWarpFractalGain(domain_warp_gain float64) { //gd:FastNoiseLite.set_domain_warp_fractal_gain
-	var frame = callframe.New()
-	callframe.Arg(frame, domain_warp_gain)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_set_domain_warp_fractal_gain, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_set_domain_warp_fractal_gain, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ domain_warp_gain float64 }{domain_warp_gain}))
 }
 
 //go:nosplit
 func (self class) GetDomainWarpFractalGain() float64 { //gd:FastNoiseLite.get_domain_warp_fractal_gain
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FastNoiseLite.Bind_get_domain_warp_fractal_gain, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.FastNoiseLite.Bind_get_domain_warp_fractal_gain, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsFastNoiseLite() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

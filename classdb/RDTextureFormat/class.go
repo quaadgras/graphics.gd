@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +50,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -203,210 +207,133 @@ func (self Instance) SetIsDiscardable(value bool) {
 
 //go:nosplit
 func (self class) SetFormat(p_member Rendering.DataFormat) { //gd:RDTextureFormat.set_format
-	var frame = callframe.New()
-	callframe.Arg(frame, p_member)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_set_format, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RDTextureFormat.Bind_set_format, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.DataFormat }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetFormat() Rendering.DataFormat { //gd:RDTextureFormat.get_format
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Rendering.DataFormat](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_get_format, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Rendering.DataFormat](self.AsObject(), gd.Global.Methods.RDTextureFormat.Bind_get_format, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetWidth(p_member int64) { //gd:RDTextureFormat.set_width
-	var frame = callframe.New()
-	callframe.Arg(frame, p_member)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_set_width, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RDTextureFormat.Bind_set_width, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member int64 }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetWidth() int64 { //gd:RDTextureFormat.get_width
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_get_width, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RDTextureFormat.Bind_get_width, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHeight(p_member int64) { //gd:RDTextureFormat.set_height
-	var frame = callframe.New()
-	callframe.Arg(frame, p_member)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_set_height, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RDTextureFormat.Bind_set_height, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member int64 }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetHeight() int64 { //gd:RDTextureFormat.get_height
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_get_height, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RDTextureFormat.Bind_get_height, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDepth(p_member int64) { //gd:RDTextureFormat.set_depth
-	var frame = callframe.New()
-	callframe.Arg(frame, p_member)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_set_depth, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RDTextureFormat.Bind_set_depth, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member int64 }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetDepth() int64 { //gd:RDTextureFormat.get_depth
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_get_depth, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RDTextureFormat.Bind_get_depth, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetArrayLayers(p_member int64) { //gd:RDTextureFormat.set_array_layers
-	var frame = callframe.New()
-	callframe.Arg(frame, p_member)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_set_array_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RDTextureFormat.Bind_set_array_layers, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member int64 }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetArrayLayers() int64 { //gd:RDTextureFormat.get_array_layers
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_get_array_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RDTextureFormat.Bind_get_array_layers, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMipmaps(p_member int64) { //gd:RDTextureFormat.set_mipmaps
-	var frame = callframe.New()
-	callframe.Arg(frame, p_member)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_set_mipmaps, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RDTextureFormat.Bind_set_mipmaps, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member int64 }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetMipmaps() int64 { //gd:RDTextureFormat.get_mipmaps
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_get_mipmaps, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RDTextureFormat.Bind_get_mipmaps, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextureType(p_member Rendering.TextureType) { //gd:RDTextureFormat.set_texture_type
-	var frame = callframe.New()
-	callframe.Arg(frame, p_member)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_set_texture_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RDTextureFormat.Bind_set_texture_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.TextureType }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetTextureType() Rendering.TextureType { //gd:RDTextureFormat.get_texture_type
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Rendering.TextureType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_get_texture_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Rendering.TextureType](self.AsObject(), gd.Global.Methods.RDTextureFormat.Bind_get_texture_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSamples(p_member Rendering.TextureSamples) { //gd:RDTextureFormat.set_samples
-	var frame = callframe.New()
-	callframe.Arg(frame, p_member)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_set_samples, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RDTextureFormat.Bind_set_samples, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.TextureSamples }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetSamples() Rendering.TextureSamples { //gd:RDTextureFormat.get_samples
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Rendering.TextureSamples](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_get_samples, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Rendering.TextureSamples](self.AsObject(), gd.Global.Methods.RDTextureFormat.Bind_get_samples, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUsageBits(p_member Rendering.TextureUsageBits) { //gd:RDTextureFormat.set_usage_bits
-	var frame = callframe.New()
-	callframe.Arg(frame, p_member)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_set_usage_bits, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RDTextureFormat.Bind_set_usage_bits, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.TextureUsageBits }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetUsageBits() Rendering.TextureUsageBits { //gd:RDTextureFormat.get_usage_bits
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Rendering.TextureUsageBits](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_get_usage_bits, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Rendering.TextureUsageBits](self.AsObject(), gd.Global.Methods.RDTextureFormat.Bind_get_usage_bits, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIsResolveBuffer(p_member bool) { //gd:RDTextureFormat.set_is_resolve_buffer
-	var frame = callframe.New()
-	callframe.Arg(frame, p_member)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_set_is_resolve_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RDTextureFormat.Bind_set_is_resolve_buffer, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ p_member bool }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetIsResolveBuffer() bool { //gd:RDTextureFormat.get_is_resolve_buffer
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_get_is_resolve_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RDTextureFormat.Bind_get_is_resolve_buffer, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIsDiscardable(p_member bool) { //gd:RDTextureFormat.set_is_discardable
-	var frame = callframe.New()
-	callframe.Arg(frame, p_member)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_set_is_discardable, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RDTextureFormat.Bind_set_is_discardable, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ p_member bool }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetIsDiscardable() bool { //gd:RDTextureFormat.get_is_discardable
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_get_is_discardable, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RDTextureFormat.Bind_get_is_discardable, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -415,11 +342,7 @@ Adds [param format] as a valid format for the corresponding [RDTextureView]'s [m
 */
 //go:nosplit
 func (self class) AddShareableFormat(format Rendering.DataFormat) { //gd:RDTextureFormat.add_shareable_format
-	var frame = callframe.New()
-	callframe.Arg(frame, format)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_add_shareable_format, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RDTextureFormat.Bind_add_shareable_format, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ format Rendering.DataFormat }{format}))
 }
 
 /*
@@ -427,11 +350,7 @@ Removes [param format] from the list of valid formats that the corresponding [RD
 */
 //go:nosplit
 func (self class) RemoveShareableFormat(format Rendering.DataFormat) { //gd:RDTextureFormat.remove_shareable_format
-	var frame = callframe.New()
-	callframe.Arg(frame, format)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_remove_shareable_format, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RDTextureFormat.Bind_remove_shareable_format, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ format Rendering.DataFormat }{format}))
 }
 func (self class) AsRDTextureFormat() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsRDTextureFormat() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

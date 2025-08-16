@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +50,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -214,39 +218,25 @@ func (self Instance) SetTransferChannel(value int) {
 
 //go:nosplit
 func (self class) SetTransferChannel(channel int64) { //gd:MultiplayerPeer.set_transfer_channel
-	var frame = callframe.New()
-	callframe.Arg(frame, channel)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerPeer.Bind_set_transfer_channel, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MultiplayerPeer.Bind_set_transfer_channel, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ channel int64 }{channel}))
 }
 
 //go:nosplit
 func (self class) GetTransferChannel() int64 { //gd:MultiplayerPeer.get_transfer_channel
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerPeer.Bind_get_transfer_channel, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.MultiplayerPeer.Bind_get_transfer_channel, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTransferMode(mode TransferMode) { //gd:MultiplayerPeer.set_transfer_mode
-	var frame = callframe.New()
-	callframe.Arg(frame, mode)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerPeer.Bind_set_transfer_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MultiplayerPeer.Bind_set_transfer_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode TransferMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetTransferMode() TransferMode { //gd:MultiplayerPeer.get_transfer_mode
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[TransferMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerPeer.Bind_get_transfer_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[TransferMode](self.AsObject(), gd.Global.Methods.MultiplayerPeer.Bind_get_transfer_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -256,11 +246,7 @@ The [param id] can be one of: [constant TARGET_PEER_BROADCAST] to send to all co
 */
 //go:nosplit
 func (self class) SetTargetPeer(id int64) { //gd:MultiplayerPeer.set_target_peer
-	var frame = callframe.New()
-	callframe.Arg(frame, id)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerPeer.Bind_set_target_peer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MultiplayerPeer.Bind_set_target_peer, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
 }
 
 /*
@@ -268,11 +254,8 @@ Returns the ID of the [MultiplayerPeer] who sent the next available packet. See 
 */
 //go:nosplit
 func (self class) GetPacketPeer() int64 { //gd:MultiplayerPeer.get_packet_peer
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerPeer.Bind_get_packet_peer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.MultiplayerPeer.Bind_get_packet_peer, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -281,11 +264,8 @@ Returns the channel over which the next available packet was received. See [meth
 */
 //go:nosplit
 func (self class) GetPacketChannel() int64 { //gd:MultiplayerPeer.get_packet_channel
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerPeer.Bind_get_packet_channel, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.MultiplayerPeer.Bind_get_packet_channel, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -294,11 +274,8 @@ Returns the transfer mode the remote peer used to send the next available packet
 */
 //go:nosplit
 func (self class) GetPacketMode() TransferMode { //gd:MultiplayerPeer.get_packet_mode
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[TransferMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerPeer.Bind_get_packet_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[TransferMode](self.AsObject(), gd.Global.Methods.MultiplayerPeer.Bind_get_packet_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -307,10 +284,7 @@ Waits up to 1 second to receive a new network event.
 */
 //go:nosplit
 func (self class) Poll() { //gd:MultiplayerPeer.poll
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerPeer.Bind_poll, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MultiplayerPeer.Bind_poll, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -318,10 +292,7 @@ Immediately close the multiplayer peer returning to the state [constant CONNECTI
 */
 //go:nosplit
 func (self class) Close() { //gd:MultiplayerPeer.close
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerPeer.Bind_close, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MultiplayerPeer.Bind_close, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -329,12 +300,10 @@ Disconnects the given [param peer] from this host. If [param force] is [code]tru
 */
 //go:nosplit
 func (self class) DisconnectPeer(peer int64, force bool) { //gd:MultiplayerPeer.disconnect_peer
-	var frame = callframe.New()
-	callframe.Arg(frame, peer)
-	callframe.Arg(frame, force)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerPeer.Bind_disconnect_peer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MultiplayerPeer.Bind_disconnect_peer, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		peer  int64
+		force bool
+	}{peer, force}))
 }
 
 /*
@@ -342,11 +311,8 @@ Returns the current state of the connection. See [enum ConnectionStatus].
 */
 //go:nosplit
 func (self class) GetConnectionStatus() ConnectionStatus { //gd:MultiplayerPeer.get_connection_status
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[ConnectionStatus](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerPeer.Bind_get_connection_status, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[ConnectionStatus](self.AsObject(), gd.Global.Methods.MultiplayerPeer.Bind_get_connection_status, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -355,11 +321,8 @@ Returns the ID of this [MultiplayerPeer].
 */
 //go:nosplit
 func (self class) GetUniqueId() int64 { //gd:MultiplayerPeer.get_unique_id
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerPeer.Bind_get_unique_id, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.MultiplayerPeer.Bind_get_unique_id, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -368,30 +331,20 @@ Returns a randomly generated integer that can be used as a network unique ID.
 */
 //go:nosplit
 func (self class) GenerateUniqueId() int64 { //gd:MultiplayerPeer.generate_unique_id
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerPeer.Bind_generate_unique_id, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.MultiplayerPeer.Bind_generate_unique_id, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRefuseNewConnections(enable bool) { //gd:MultiplayerPeer.set_refuse_new_connections
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerPeer.Bind_set_refuse_new_connections, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MultiplayerPeer.Bind_set_refuse_new_connections, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsRefusingNewConnections() bool { //gd:MultiplayerPeer.is_refusing_new_connections
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerPeer.Bind_is_refusing_new_connections, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.MultiplayerPeer.Bind_is_refusing_new_connections, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -400,11 +353,8 @@ Returns [code]true[/code] if the server can act as a relay in the current config
 */
 //go:nosplit
 func (self class) IsServerRelaySupported() bool { //gd:MultiplayerPeer.is_server_relay_supported
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MultiplayerPeer.Bind_is_server_relay_supported, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.MultiplayerPeer.Bind_is_server_relay_supported, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self Instance) OnPeerConnected(cb func(id int)) {

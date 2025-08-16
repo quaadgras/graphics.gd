@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -50,6 +52,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -412,15 +416,13 @@ Returns [constant OK] if request is successfully created. (Does not imply that t
 */
 //go:nosplit
 func (self class) Request(url String.Readable, custom_headers Packed.Strings, method HTTPClient.Method, request_data String.Readable) Error.Code { //gd:HTTPRequest.request
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(url)))
-	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(custom_headers)))
-	callframe.Arg(frame, method)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(request_data)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_request, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.HTTPRequest.Bind_request, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeString<<16), unsafe.Pointer(&struct {
+		url            gdextension.String
+		custom_headers gdextension.PackedArray
+		method         HTTPClient.Method
+		request_data   gdextension.String
+	}{gdextension.String(pointers.Get(gd.InternalString(url))[0]), gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(custom_headers))), method, gdextension.String(pointers.Get(gd.InternalString(request_data))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -430,15 +432,13 @@ Returns [constant OK] if request is successfully created. (Does not imply that t
 */
 //go:nosplit
 func (self class) RequestRaw(url String.Readable, custom_headers Packed.Strings, method HTTPClient.Method, request_data_raw Packed.Bytes) Error.Code { //gd:HTTPRequest.request_raw
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(url)))
-	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(custom_headers)))
-	callframe.Arg(frame, method)
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](request_data_raw))))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_request_raw, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.HTTPRequest.Bind_request_raw, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12)|(gdextension.SizePackedArray<<16), unsafe.Pointer(&struct {
+		url              gdextension.String
+		custom_headers   gdextension.PackedArray
+		method           HTTPClient.Method
+		request_data_raw gdextension.PackedArray
+	}{gdextension.String(pointers.Get(gd.InternalString(url))[0]), gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(custom_headers))), method, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](request_data_raw))))}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -447,10 +447,7 @@ Cancels the current request.
 */
 //go:nosplit
 func (self class) CancelRequest() { //gd:HTTPRequest.cancel_request
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_cancel_request, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.HTTPRequest.Bind_cancel_request, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -458,11 +455,7 @@ Sets the [TLSOptions] to be used when connecting to an HTTPS server. See [method
 */
 //go:nosplit
 func (self class) SetTlsOptions(client_options [1]gdclass.TLSOptions) { //gd:HTTPRequest.set_tls_options
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(client_options[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_set_tls_options, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.HTTPRequest.Bind_set_tls_options, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ client_options gdextension.Object }{gdextension.Object(pointers.Get(client_options[0])[0])}))
 }
 
 /*
@@ -470,106 +463,68 @@ Returns the current status of the underlying [HTTPClient]. See [enum HTTPClient.
 */
 //go:nosplit
 func (self class) GetHttpClientStatus() HTTPClient.Status { //gd:HTTPRequest.get_http_client_status
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[HTTPClient.Status](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_get_http_client_status, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[HTTPClient.Status](self.AsObject(), gd.Global.Methods.HTTPRequest.Bind_get_http_client_status, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseThreads(enable bool) { //gd:HTTPRequest.set_use_threads
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_set_use_threads, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.HTTPRequest.Bind_set_use_threads, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsUsingThreads() bool { //gd:HTTPRequest.is_using_threads
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_is_using_threads, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.HTTPRequest.Bind_is_using_threads, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAcceptGzip(enable bool) { //gd:HTTPRequest.set_accept_gzip
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_set_accept_gzip, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.HTTPRequest.Bind_set_accept_gzip, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsAcceptingGzip() bool { //gd:HTTPRequest.is_accepting_gzip
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_is_accepting_gzip, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.HTTPRequest.Bind_is_accepting_gzip, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBodySizeLimit(bytes int64) { //gd:HTTPRequest.set_body_size_limit
-	var frame = callframe.New()
-	callframe.Arg(frame, bytes)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_set_body_size_limit, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.HTTPRequest.Bind_set_body_size_limit, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bytes int64 }{bytes}))
 }
 
 //go:nosplit
 func (self class) GetBodySizeLimit() int64 { //gd:HTTPRequest.get_body_size_limit
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_get_body_size_limit, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.HTTPRequest.Bind_get_body_size_limit, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaxRedirects(amount int64) { //gd:HTTPRequest.set_max_redirects
-	var frame = callframe.New()
-	callframe.Arg(frame, amount)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_set_max_redirects, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.HTTPRequest.Bind_set_max_redirects, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ amount int64 }{amount}))
 }
 
 //go:nosplit
 func (self class) GetMaxRedirects() int64 { //gd:HTTPRequest.get_max_redirects
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_get_max_redirects, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.HTTPRequest.Bind_get_max_redirects, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDownloadFile(path String.Readable) { //gd:HTTPRequest.set_download_file
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_set_download_file, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.HTTPRequest.Bind_set_download_file, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
 }
 
 //go:nosplit
 func (self class) GetDownloadFile() String.Readable { //gd:HTTPRequest.get_download_file
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_get_download_file, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.HTTPRequest.Bind_get_download_file, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -578,11 +533,8 @@ Returns the number of bytes this HTTPRequest downloaded.
 */
 //go:nosplit
 func (self class) GetDownloadedBytes() int64 { //gd:HTTPRequest.get_downloaded_bytes
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_get_downloaded_bytes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.HTTPRequest.Bind_get_downloaded_bytes, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -592,49 +544,32 @@ Returns the response body length.
 */
 //go:nosplit
 func (self class) GetBodySize() int64 { //gd:HTTPRequest.get_body_size
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_get_body_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.HTTPRequest.Bind_get_body_size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTimeout(timeout float64) { //gd:HTTPRequest.set_timeout
-	var frame = callframe.New()
-	callframe.Arg(frame, timeout)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_set_timeout, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.HTTPRequest.Bind_set_timeout, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ timeout float64 }{timeout}))
 }
 
 //go:nosplit
 func (self class) GetTimeout() float64 { //gd:HTTPRequest.get_timeout
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_get_timeout, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.HTTPRequest.Bind_get_timeout, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDownloadChunkSize(chunk_size int64) { //gd:HTTPRequest.set_download_chunk_size
-	var frame = callframe.New()
-	callframe.Arg(frame, chunk_size)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_set_download_chunk_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.HTTPRequest.Bind_set_download_chunk_size, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ chunk_size int64 }{chunk_size}))
 }
 
 //go:nosplit
 func (self class) GetDownloadChunkSize() int64 { //gd:HTTPRequest.get_download_chunk_size
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_get_download_chunk_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.HTTPRequest.Bind_get_download_chunk_size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -644,12 +579,10 @@ The proxy server is unset if [param host] is empty or [param port] is -1.
 */
 //go:nosplit
 func (self class) SetHttpProxy(host String.Readable, port int64) { //gd:HTTPRequest.set_http_proxy
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(host)))
-	callframe.Arg(frame, port)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_set_http_proxy, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.HTTPRequest.Bind_set_http_proxy, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		host gdextension.String
+		port int64
+	}{gdextension.String(pointers.Get(gd.InternalString(host))[0]), port}))
 }
 
 /*
@@ -658,12 +591,10 @@ The proxy server is unset if [param host] is empty or [param port] is -1.
 */
 //go:nosplit
 func (self class) SetHttpsProxy(host String.Readable, port int64) { //gd:HTTPRequest.set_https_proxy
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(host)))
-	callframe.Arg(frame, port)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HTTPRequest.Bind_set_https_proxy, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.HTTPRequest.Bind_set_https_proxy, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		host gdextension.String
+		port int64
+	}{gdextension.String(pointers.Get(gd.InternalString(host))[0]), port}))
 }
 func (self Instance) OnRequestCompleted(cb func(result int, response_code int, headers []string, body []byte)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("request_completed"), gd.NewCallable(cb), 0)

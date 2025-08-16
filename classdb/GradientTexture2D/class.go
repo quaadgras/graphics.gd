@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -52,6 +54,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -161,133 +165,83 @@ func (self Instance) SetRepeat(value Repeat) {
 
 //go:nosplit
 func (self class) SetGradient(gradient [1]gdclass.Gradient) { //gd:GradientTexture2D.set_gradient
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gradient[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GradientTexture2D.Bind_set_gradient, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GradientTexture2D.Bind_set_gradient, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ gradient gdextension.Object }{gdextension.Object(pointers.Get(gradient[0])[0])}))
 }
 
 //go:nosplit
 func (self class) GetGradient() [1]gdclass.Gradient { //gd:GradientTexture2D.get_gradient
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GradientTexture2D.Bind_get_gradient, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Gradient{gd.PointerWithOwnershipTransferredToGo[gdclass.Gradient](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.GradientTexture2D.Bind_get_gradient, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.Gradient{gd.PointerWithOwnershipTransferredToGo[gdclass.Gradient](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetWidth(width int64) { //gd:GradientTexture2D.set_width
-	var frame = callframe.New()
-	callframe.Arg(frame, width)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GradientTexture2D.Bind_set_width, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GradientTexture2D.Bind_set_width, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ width int64 }{width}))
 }
 
 //go:nosplit
 func (self class) SetHeight(height int64) { //gd:GradientTexture2D.set_height
-	var frame = callframe.New()
-	callframe.Arg(frame, height)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GradientTexture2D.Bind_set_height, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GradientTexture2D.Bind_set_height, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ height int64 }{height}))
 }
 
 //go:nosplit
 func (self class) SetUseHdr(enabled bool) { //gd:GradientTexture2D.set_use_hdr
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GradientTexture2D.Bind_set_use_hdr, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GradientTexture2D.Bind_set_use_hdr, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsUsingHdr() bool { //gd:GradientTexture2D.is_using_hdr
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GradientTexture2D.Bind_is_using_hdr, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.GradientTexture2D.Bind_is_using_hdr, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFill(fill Fill) { //gd:GradientTexture2D.set_fill
-	var frame = callframe.New()
-	callframe.Arg(frame, fill)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GradientTexture2D.Bind_set_fill, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GradientTexture2D.Bind_set_fill, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ fill Fill }{fill}))
 }
 
 //go:nosplit
 func (self class) GetFill() Fill { //gd:GradientTexture2D.get_fill
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Fill](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GradientTexture2D.Bind_get_fill, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Fill](self.AsObject(), gd.Global.Methods.GradientTexture2D.Bind_get_fill, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFillFrom(fill_from Vector2.XY) { //gd:GradientTexture2D.set_fill_from
-	var frame = callframe.New()
-	callframe.Arg(frame, fill_from)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GradientTexture2D.Bind_set_fill_from, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GradientTexture2D.Bind_set_fill_from, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ fill_from Vector2.XY }{fill_from}))
 }
 
 //go:nosplit
 func (self class) GetFillFrom() Vector2.XY { //gd:GradientTexture2D.get_fill_from
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GradientTexture2D.Bind_get_fill_from, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.GradientTexture2D.Bind_get_fill_from, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFillTo(fill_to Vector2.XY) { //gd:GradientTexture2D.set_fill_to
-	var frame = callframe.New()
-	callframe.Arg(frame, fill_to)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GradientTexture2D.Bind_set_fill_to, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GradientTexture2D.Bind_set_fill_to, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ fill_to Vector2.XY }{fill_to}))
 }
 
 //go:nosplit
 func (self class) GetFillTo() Vector2.XY { //gd:GradientTexture2D.get_fill_to
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GradientTexture2D.Bind_get_fill_to, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.GradientTexture2D.Bind_get_fill_to, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRepeat(repeat Repeat) { //gd:GradientTexture2D.set_repeat
-	var frame = callframe.New()
-	callframe.Arg(frame, repeat)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GradientTexture2D.Bind_set_repeat, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GradientTexture2D.Bind_set_repeat, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ repeat Repeat }{repeat}))
 }
 
 //go:nosplit
 func (self class) GetRepeat() Repeat { //gd:GradientTexture2D.get_repeat
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Repeat](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GradientTexture2D.Bind_get_repeat, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Repeat](self.AsObject(), gd.Global.Methods.GradientTexture2D.Bind_get_repeat, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsGradientTexture2D() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

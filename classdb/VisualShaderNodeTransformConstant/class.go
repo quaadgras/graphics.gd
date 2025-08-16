@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +53,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -112,20 +116,13 @@ func (self Instance) SetConstant(value Transform3D.BasisOrigin) {
 
 //go:nosplit
 func (self class) SetConstant(constant Transform3D.BasisOrigin) { //gd:VisualShaderNodeTransformConstant.set_constant
-	var frame = callframe.New()
-	callframe.Arg(frame, gd.Transposed(constant))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTransformConstant.Bind_set_constant, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeTransformConstant.Bind_set_constant, 0|(gdextension.SizeTransform3D<<4), unsafe.Pointer(&struct{ constant Transform3D.BasisOrigin }{gd.Transposed(constant)}))
 }
 
 //go:nosplit
 func (self class) GetConstant() Transform3D.BasisOrigin { //gd:VisualShaderNodeTransformConstant.get_constant
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTransformConstant.Bind_get_constant, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = gd.Transposed(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[Transform3D.BasisOrigin](self.AsObject(), gd.Global.Methods.VisualShaderNodeTransformConstant.Bind_get_constant, gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
+	var ret = gd.Transposed(r_ret)
 	return ret
 }
 func (self class) AsVisualShaderNodeTransformConstant() Advanced {

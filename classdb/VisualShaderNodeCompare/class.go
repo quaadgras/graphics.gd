@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +51,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -126,58 +130,37 @@ func (self Instance) SetCondition(value Condition) {
 
 //go:nosplit
 func (self class) SetComparisonType(atype ComparisonType) { //gd:VisualShaderNodeCompare.set_comparison_type
-	var frame = callframe.New()
-	callframe.Arg(frame, atype)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCompare.Bind_set_comparison_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeCompare.Bind_set_comparison_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype ComparisonType }{atype}))
 }
 
 //go:nosplit
 func (self class) GetComparisonType() ComparisonType { //gd:VisualShaderNodeCompare.get_comparison_type
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[ComparisonType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCompare.Bind_get_comparison_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[ComparisonType](self.AsObject(), gd.Global.Methods.VisualShaderNodeCompare.Bind_get_comparison_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFunction(fn Function) { //gd:VisualShaderNodeCompare.set_function
-	var frame = callframe.New()
-	callframe.Arg(frame, fn)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCompare.Bind_set_function, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeCompare.Bind_set_function, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ fn Function }{fn}))
 }
 
 //go:nosplit
 func (self class) GetFunction() Function { //gd:VisualShaderNodeCompare.get_function
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Function](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCompare.Bind_get_function, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Function](self.AsObject(), gd.Global.Methods.VisualShaderNodeCompare.Bind_get_function, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCondition(condition Condition) { //gd:VisualShaderNodeCompare.set_condition
-	var frame = callframe.New()
-	callframe.Arg(frame, condition)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCompare.Bind_set_condition, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeCompare.Bind_set_condition, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ condition Condition }{condition}))
 }
 
 //go:nosplit
 func (self class) GetCondition() Condition { //gd:VisualShaderNodeCompare.get_condition
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Condition](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCompare.Bind_get_condition, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Condition](self.AsObject(), gd.Global.Methods.VisualShaderNodeCompare.Bind_get_condition, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsVisualShaderNodeCompare() Advanced { return *((*Advanced)(unsafe.Pointer(&self))) }

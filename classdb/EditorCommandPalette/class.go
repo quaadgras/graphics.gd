@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -52,6 +54,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -159,14 +163,12 @@ Adds a custom command to EditorCommandPalette.
 */
 //go:nosplit
 func (self class) AddCommand(command_name String.Readable, key_name String.Readable, binded_callable Callable.Function, shortcut_text String.Readable) { //gd:EditorCommandPalette.add_command
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(command_name)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(key_name)))
-	callframe.Arg(frame, pointers.Get(gd.InternalCallable(binded_callable)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(shortcut_text)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorCommandPalette.Bind_add_command, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorCommandPalette.Bind_add_command, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeString<<16), unsafe.Pointer(&struct {
+		command_name    gdextension.String
+		key_name        gdextension.String
+		binded_callable gdextension.Callable
+		shortcut_text   gdextension.String
+	}{gdextension.String(pointers.Get(gd.InternalString(command_name))[0]), gdextension.String(pointers.Get(gd.InternalString(key_name))[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(binded_callable))), gdextension.String(pointers.Get(gd.InternalString(shortcut_text))[0])}))
 }
 
 /*
@@ -175,11 +177,7 @@ Removes the custom command from EditorCommandPalette.
 */
 //go:nosplit
 func (self class) RemoveCommand(key_name String.Readable) { //gd:EditorCommandPalette.remove_command
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(key_name)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorCommandPalette.Bind_remove_command, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorCommandPalette.Bind_remove_command, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ key_name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(key_name))[0])}))
 }
 func (self class) AsEditorCommandPalette() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsEditorCommandPalette() Instance { return *((*Instance)(unsafe.Pointer(&self))) }

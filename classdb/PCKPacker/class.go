@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -47,6 +49,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -170,15 +174,13 @@ Creates a new PCK file at the file path [param pck_path]. The [code].pck[/code] 
 */
 //go:nosplit
 func (self class) PckStart(pck_path String.Readable, alignment int64, key String.Readable, encrypt_directory bool) Error.Code { //gd:PCKPacker.pck_start
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(pck_path)))
-	callframe.Arg(frame, alignment)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(key)))
-	callframe.Arg(frame, encrypt_directory)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PCKPacker.Bind_pck_start, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.PCKPacker.Bind_pck_start, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+		pck_path          gdextension.String
+		alignment         int64
+		key               gdextension.String
+		encrypt_directory bool
+	}{gdextension.String(pointers.Get(gd.InternalString(pck_path))[0]), alignment, gdextension.String(pointers.Get(gd.InternalString(key))[0]), encrypt_directory}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -187,14 +189,12 @@ Adds the [param source_path] file to the current PCK package at the [param targe
 */
 //go:nosplit
 func (self class) AddFile(target_path String.Readable, source_path String.Readable, encrypt bool) Error.Code { //gd:PCKPacker.add_file
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(target_path)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(source_path)))
-	callframe.Arg(frame, encrypt)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PCKPacker.Bind_add_file, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.PCKPacker.Bind_add_file, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+		target_path gdextension.String
+		source_path gdextension.String
+		encrypt     bool
+	}{gdextension.String(pointers.Get(gd.InternalString(target_path))[0]), gdextension.String(pointers.Get(gd.InternalString(source_path))[0]), encrypt}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -203,12 +203,8 @@ Registers a file removal of the [param target_path] internal path to the PCK. Th
 */
 //go:nosplit
 func (self class) AddFileRemoval(target_path String.Readable) Error.Code { //gd:PCKPacker.add_file_removal
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(target_path)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PCKPacker.Bind_add_file_removal, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.PCKPacker.Bind_add_file_removal, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ target_path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(target_path))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -217,12 +213,8 @@ Writes the files specified using all [method add_file] calls since the last flus
 */
 //go:nosplit
 func (self class) Flush(verbose bool) Error.Code { //gd:PCKPacker.flush
-	var frame = callframe.New()
-	callframe.Arg(frame, verbose)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PCKPacker.Bind_flush, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.PCKPacker.Bind_flush, gdextension.SizeInt|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ verbose bool }{verbose}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 func (self class) AsPCKPacker() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

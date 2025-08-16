@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +50,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -244,12 +248,8 @@ Returns the [Translation] instance that best matches [param locale]. Returns [co
 */
 //go:nosplit
 func (self class) GetTranslationObject(locale String.Readable) [1]gdclass.Translation { //gd:TranslationDomain.get_translation_object
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(locale)))
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationDomain.Bind_get_translation_object, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Translation{gd.PointerWithOwnershipTransferredToGo[gdclass.Translation](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.TranslationDomain.Bind_get_translation_object, gdextension.SizeObject|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ locale gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(locale))[0])}))
+	var ret = [1]gdclass.Translation{gd.PointerWithOwnershipTransferredToGo[gdclass.Translation](r_ret)}
 	return ret
 }
 
@@ -258,11 +258,7 @@ Adds a translation.
 */
 //go:nosplit
 func (self class) AddTranslation(translation [1]gdclass.Translation) { //gd:TranslationDomain.add_translation
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(translation[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationDomain.Bind_add_translation, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TranslationDomain.Bind_add_translation, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ translation gdextension.Object }{gdextension.Object(pointers.Get(translation[0])[0])}))
 }
 
 /*
@@ -270,11 +266,7 @@ Removes the given translation.
 */
 //go:nosplit
 func (self class) RemoveTranslation(translation [1]gdclass.Translation) { //gd:TranslationDomain.remove_translation
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(translation[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationDomain.Bind_remove_translation, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TranslationDomain.Bind_remove_translation, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ translation gdextension.Object }{gdextension.Object(pointers.Get(translation[0])[0])}))
 }
 
 /*
@@ -282,10 +274,7 @@ Removes all translations.
 */
 //go:nosplit
 func (self class) Clear() { //gd:TranslationDomain.clear
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationDomain.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TranslationDomain.Bind_clear, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -293,13 +282,11 @@ Returns the current locale's translation for the given message and context.
 */
 //go:nosplit
 func (self class) Translate(message String.Name, context String.Name) String.Name { //gd:TranslationDomain.translate
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(message)))
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(context)))
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationDomain.Bind_translate, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.TranslationDomain.Bind_translate, gdextension.SizeStringName|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+		message gdextension.StringName
+		context gdextension.StringName
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(message))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(context))[0])}))
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
@@ -309,187 +296,122 @@ The number [param n] is the number or quantity of the plural object. It will be 
 */
 //go:nosplit
 func (self class) TranslatePlural(message String.Name, message_plural String.Name, n int64, context String.Name) String.Name { //gd:TranslationDomain.translate_plural
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(message)))
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(message_plural)))
-	callframe.Arg(frame, n)
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(context)))
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationDomain.Bind_translate_plural, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.TranslationDomain.Bind_translate_plural, gdextension.SizeStringName|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeStringName<<16), unsafe.Pointer(&struct {
+		message        gdextension.StringName
+		message_plural gdextension.StringName
+		n              int64
+		context        gdextension.StringName
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(message))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(message_plural))[0]), n, gdextension.StringName(pointers.Get(gd.InternalStringName(context))[0])}))
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) IsPseudolocalizationEnabled() bool { //gd:TranslationDomain.is_pseudolocalization_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationDomain.Bind_is_pseudolocalization_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TranslationDomain.Bind_is_pseudolocalization_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPseudolocalizationEnabled(enabled bool) { //gd:TranslationDomain.set_pseudolocalization_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationDomain.Bind_set_pseudolocalization_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TranslationDomain.Bind_set_pseudolocalization_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsPseudolocalizationAccentsEnabled() bool { //gd:TranslationDomain.is_pseudolocalization_accents_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationDomain.Bind_is_pseudolocalization_accents_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TranslationDomain.Bind_is_pseudolocalization_accents_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPseudolocalizationAccentsEnabled(enabled bool) { //gd:TranslationDomain.set_pseudolocalization_accents_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationDomain.Bind_set_pseudolocalization_accents_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TranslationDomain.Bind_set_pseudolocalization_accents_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsPseudolocalizationDoubleVowelsEnabled() bool { //gd:TranslationDomain.is_pseudolocalization_double_vowels_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationDomain.Bind_is_pseudolocalization_double_vowels_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TranslationDomain.Bind_is_pseudolocalization_double_vowels_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPseudolocalizationDoubleVowelsEnabled(enabled bool) { //gd:TranslationDomain.set_pseudolocalization_double_vowels_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationDomain.Bind_set_pseudolocalization_double_vowels_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TranslationDomain.Bind_set_pseudolocalization_double_vowels_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsPseudolocalizationFakeBidiEnabled() bool { //gd:TranslationDomain.is_pseudolocalization_fake_bidi_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationDomain.Bind_is_pseudolocalization_fake_bidi_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TranslationDomain.Bind_is_pseudolocalization_fake_bidi_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPseudolocalizationFakeBidiEnabled(enabled bool) { //gd:TranslationDomain.set_pseudolocalization_fake_bidi_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationDomain.Bind_set_pseudolocalization_fake_bidi_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TranslationDomain.Bind_set_pseudolocalization_fake_bidi_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsPseudolocalizationOverrideEnabled() bool { //gd:TranslationDomain.is_pseudolocalization_override_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationDomain.Bind_is_pseudolocalization_override_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TranslationDomain.Bind_is_pseudolocalization_override_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPseudolocalizationOverrideEnabled(enabled bool) { //gd:TranslationDomain.set_pseudolocalization_override_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationDomain.Bind_set_pseudolocalization_override_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TranslationDomain.Bind_set_pseudolocalization_override_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsPseudolocalizationSkipPlaceholdersEnabled() bool { //gd:TranslationDomain.is_pseudolocalization_skip_placeholders_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationDomain.Bind_is_pseudolocalization_skip_placeholders_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TranslationDomain.Bind_is_pseudolocalization_skip_placeholders_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPseudolocalizationSkipPlaceholdersEnabled(enabled bool) { //gd:TranslationDomain.set_pseudolocalization_skip_placeholders_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationDomain.Bind_set_pseudolocalization_skip_placeholders_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TranslationDomain.Bind_set_pseudolocalization_skip_placeholders_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) GetPseudolocalizationExpansionRatio() float64 { //gd:TranslationDomain.get_pseudolocalization_expansion_ratio
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationDomain.Bind_get_pseudolocalization_expansion_ratio, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.TranslationDomain.Bind_get_pseudolocalization_expansion_ratio, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPseudolocalizationExpansionRatio(ratio float64) { //gd:TranslationDomain.set_pseudolocalization_expansion_ratio
-	var frame = callframe.New()
-	callframe.Arg(frame, ratio)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationDomain.Bind_set_pseudolocalization_expansion_ratio, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TranslationDomain.Bind_set_pseudolocalization_expansion_ratio, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ ratio float64 }{ratio}))
 }
 
 //go:nosplit
 func (self class) GetPseudolocalizationPrefix() String.Readable { //gd:TranslationDomain.get_pseudolocalization_prefix
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationDomain.Bind_get_pseudolocalization_prefix, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.TranslationDomain.Bind_get_pseudolocalization_prefix, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPseudolocalizationPrefix(prefix String.Readable) { //gd:TranslationDomain.set_pseudolocalization_prefix
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(prefix)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationDomain.Bind_set_pseudolocalization_prefix, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TranslationDomain.Bind_set_pseudolocalization_prefix, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ prefix gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(prefix))[0])}))
 }
 
 //go:nosplit
 func (self class) GetPseudolocalizationSuffix() String.Readable { //gd:TranslationDomain.get_pseudolocalization_suffix
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationDomain.Bind_get_pseudolocalization_suffix, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.TranslationDomain.Bind_get_pseudolocalization_suffix, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPseudolocalizationSuffix(suffix String.Readable) { //gd:TranslationDomain.set_pseudolocalization_suffix
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(suffix)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationDomain.Bind_set_pseudolocalization_suffix, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TranslationDomain.Bind_set_pseudolocalization_suffix, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ suffix gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(suffix))[0])}))
 }
 
 /*
@@ -497,12 +419,8 @@ Returns the pseudolocalized string based on the [param message] passed in.
 */
 //go:nosplit
 func (self class) Pseudolocalize(message String.Name) String.Name { //gd:TranslationDomain.pseudolocalize
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(message)))
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationDomain.Bind_pseudolocalize, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.TranslationDomain.Bind_pseudolocalize, gdextension.SizeStringName|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ message gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(message))[0])}))
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 func (self class) AsTranslationDomain() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

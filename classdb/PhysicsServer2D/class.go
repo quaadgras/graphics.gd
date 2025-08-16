@@ -9,6 +9,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -54,6 +56,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -1204,11 +1208,8 @@ Creates a 2D world boundary shape in the physics server, and returns the [RID] t
 */
 //go:nosplit
 func (self class) WorldBoundaryShapeCreate() RID.Any { //gd:PhysicsServer2D.world_boundary_shape_create
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_world_boundary_shape_create, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_world_boundary_shape_create, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1217,11 +1218,8 @@ Creates a 2D separation ray shape in the physics server, and returns the [RID] t
 */
 //go:nosplit
 func (self class) SeparationRayShapeCreate() RID.Any { //gd:PhysicsServer2D.separation_ray_shape_create
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_separation_ray_shape_create, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_separation_ray_shape_create, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1230,11 +1228,8 @@ Creates a 2D segment shape in the physics server, and returns the [RID] that ide
 */
 //go:nosplit
 func (self class) SegmentShapeCreate() RID.Any { //gd:PhysicsServer2D.segment_shape_create
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_segment_shape_create, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_segment_shape_create, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1243,11 +1238,8 @@ Creates a 2D circle shape in the physics server, and returns the [RID] that iden
 */
 //go:nosplit
 func (self class) CircleShapeCreate() RID.Any { //gd:PhysicsServer2D.circle_shape_create
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_circle_shape_create, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_circle_shape_create, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1256,11 +1248,8 @@ Creates a 2D rectangle shape in the physics server, and returns the [RID] that i
 */
 //go:nosplit
 func (self class) RectangleShapeCreate() RID.Any { //gd:PhysicsServer2D.rectangle_shape_create
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_rectangle_shape_create, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_rectangle_shape_create, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1269,11 +1258,8 @@ Creates a 2D capsule shape in the physics server, and returns the [RID] that ide
 */
 //go:nosplit
 func (self class) CapsuleShapeCreate() RID.Any { //gd:PhysicsServer2D.capsule_shape_create
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_capsule_shape_create, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_capsule_shape_create, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1282,11 +1268,8 @@ Creates a 2D convex polygon shape in the physics server, and returns the [RID] t
 */
 //go:nosplit
 func (self class) ConvexPolygonShapeCreate() RID.Any { //gd:PhysicsServer2D.convex_polygon_shape_create
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_convex_polygon_shape_create, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_convex_polygon_shape_create, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1295,11 +1278,8 @@ Creates a 2D concave polygon shape in the physics server, and returns the [RID] 
 */
 //go:nosplit
 func (self class) ConcavePolygonShapeCreate() RID.Any { //gd:PhysicsServer2D.concave_polygon_shape_create
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_concave_polygon_shape_create, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_concave_polygon_shape_create, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1317,12 +1297,10 @@ Sets the shape data that defines the configuration of the shape. The [param data
 */
 //go:nosplit
 func (self class) ShapeSetData(shape RID.Any, data variant.Any) { //gd:PhysicsServer2D.shape_set_data
-	var frame = callframe.New()
-	callframe.Arg(frame, shape)
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(data)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_shape_set_data, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_shape_set_data, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
+		shape RID.Any
+		data  gdextension.Variant
+	}{shape, gdextension.Variant(pointers.Get(gd.InternalVariant(data)))}))
 }
 
 /*
@@ -1330,12 +1308,8 @@ Returns the shape's type (see [enum ShapeType]).
 */
 //go:nosplit
 func (self class) ShapeGetType(shape RID.Any) ShapeType { //gd:PhysicsServer2D.shape_get_type
-	var frame = callframe.New()
-	callframe.Arg(frame, shape)
-	var r_ret = callframe.Ret[ShapeType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_shape_get_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[ShapeType](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_shape_get_type, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ shape RID.Any }{shape}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1344,12 +1318,8 @@ Returns the shape data that defines the configuration of the shape, such as the 
 */
 //go:nosplit
 func (self class) ShapeGetData(shape RID.Any) variant.Any { //gd:PhysicsServer2D.shape_get_data
-	var frame = callframe.New()
-	callframe.Arg(frame, shape)
-	var r_ret = callframe.Ret[[3]uint64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_shape_get_data, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[3]uint64](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_shape_get_data, gdextension.SizeVariant|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ shape RID.Any }{shape}))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
 
@@ -1358,11 +1328,8 @@ Creates a 2D space in the physics server, and returns the [RID] that identifies 
 */
 //go:nosplit
 func (self class) SpaceCreate() RID.Any { //gd:PhysicsServer2D.space_create
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_space_create, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_space_create, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1371,12 +1338,10 @@ Activates or deactivates the space. If [param active] is [code]false[/code], the
 */
 //go:nosplit
 func (self class) SpaceSetActive(space RID.Any, active bool) { //gd:PhysicsServer2D.space_set_active
-	var frame = callframe.New()
-	callframe.Arg(frame, space)
-	callframe.Arg(frame, active)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_space_set_active, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_space_set_active, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		space  RID.Any
+		active bool
+	}{space, active}))
 }
 
 /*
@@ -1384,12 +1349,8 @@ Returns [code]true[/code] if the space is active.
 */
 //go:nosplit
 func (self class) SpaceIsActive(space RID.Any) bool { //gd:PhysicsServer2D.space_is_active
-	var frame = callframe.New()
-	callframe.Arg(frame, space)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_space_is_active, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_space_is_active, gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ space RID.Any }{space}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1398,13 +1359,11 @@ Sets the value of the given space parameter. See [enum SpaceParameter] for the l
 */
 //go:nosplit
 func (self class) SpaceSetParam(space RID.Any, param SpaceParameter, value float64) { //gd:PhysicsServer2D.space_set_param
-	var frame = callframe.New()
-	callframe.Arg(frame, space)
-	callframe.Arg(frame, param)
-	callframe.Arg(frame, value)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_space_set_param, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_space_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+		space RID.Any
+		param SpaceParameter
+		value float64
+	}{space, param, value}))
 }
 
 /*
@@ -1412,13 +1371,11 @@ Returns the value of the given space parameter. See [enum SpaceParameter] for th
 */
 //go:nosplit
 func (self class) SpaceGetParam(space RID.Any, param SpaceParameter) float64 { //gd:PhysicsServer2D.space_get_param
-	var frame = callframe.New()
-	callframe.Arg(frame, space)
-	callframe.Arg(frame, param)
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_space_get_param, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_space_get_param, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		space RID.Any
+		param SpaceParameter
+	}{space, param}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1427,12 +1384,8 @@ Returns the state of a space, a [PhysicsDirectSpaceState2D]. This object can be 
 */
 //go:nosplit
 func (self class) SpaceGetDirectState(space RID.Any) [1]gdclass.PhysicsDirectSpaceState2D { //gd:PhysicsServer2D.space_get_direct_state
-	var frame = callframe.New()
-	callframe.Arg(frame, space)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_space_get_direct_state, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.PhysicsDirectSpaceState2D{gd.PointerMustAssertInstanceID[gdclass.PhysicsDirectSpaceState2D](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_space_get_direct_state, gdextension.SizeObject|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ space RID.Any }{space}))
+	var ret = [1]gdclass.PhysicsDirectSpaceState2D{gd.PointerMustAssertInstanceID[gdclass.PhysicsDirectSpaceState2D](r_ret)}
 	return ret
 }
 
@@ -1442,11 +1395,8 @@ Use [method area_add_shape] to add shapes to it, use [method area_set_transform]
 */
 //go:nosplit
 func (self class) AreaCreate() RID.Any { //gd:PhysicsServer2D.area_create
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_create, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_area_create, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1456,12 +1406,10 @@ Adds the area to the given space, after removing the area from the previously as
 */
 //go:nosplit
 func (self class) AreaSetSpace(area RID.Any, space RID.Any) { //gd:PhysicsServer2D.area_set_space
-	var frame = callframe.New()
-	callframe.Arg(frame, area)
-	callframe.Arg(frame, space)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_set_space, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_area_set_space, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+		area  RID.Any
+		space RID.Any
+	}{area, space}))
 }
 
 /*
@@ -1469,12 +1417,8 @@ Returns the [RID] of the space assigned to the area. Returns an empty [RID] if n
 */
 //go:nosplit
 func (self class) AreaGetSpace(area RID.Any) RID.Any { //gd:PhysicsServer2D.area_get_space
-	var frame = callframe.New()
-	callframe.Arg(frame, area)
-	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_get_space, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_area_get_space, gdextension.SizeRID|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ area RID.Any }{area}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1483,14 +1427,12 @@ Adds a shape to the area, with the given local transform. The shape (together wi
 */
 //go:nosplit
 func (self class) AreaAddShape(area RID.Any, shape RID.Any, transform Transform2D.OriginXY, disabled bool) { //gd:PhysicsServer2D.area_add_shape
-	var frame = callframe.New()
-	callframe.Arg(frame, area)
-	callframe.Arg(frame, shape)
-	callframe.Arg(frame, transform)
-	callframe.Arg(frame, disabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_add_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_area_add_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeTransform2D<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+		area      RID.Any
+		shape     RID.Any
+		transform Transform2D.OriginXY
+		disabled  bool
+	}{area, shape, transform, disabled}))
 }
 
 /*
@@ -1498,13 +1440,11 @@ Replaces the area's shape at the given index by another shape, while not affecti
 */
 //go:nosplit
 func (self class) AreaSetShape(area RID.Any, shape_idx int64, shape RID.Any) { //gd:PhysicsServer2D.area_set_shape
-	var frame = callframe.New()
-	callframe.Arg(frame, area)
-	callframe.Arg(frame, shape_idx)
-	callframe.Arg(frame, shape)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_set_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_area_set_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeRID<<12), unsafe.Pointer(&struct {
+		area      RID.Any
+		shape_idx int64
+		shape     RID.Any
+	}{area, shape_idx, shape}))
 }
 
 /*
@@ -1512,13 +1452,11 @@ Sets the local transform matrix of the area's shape with the given index.
 */
 //go:nosplit
 func (self class) AreaSetShapeTransform(area RID.Any, shape_idx int64, transform Transform2D.OriginXY) { //gd:PhysicsServer2D.area_set_shape_transform
-	var frame = callframe.New()
-	callframe.Arg(frame, area)
-	callframe.Arg(frame, shape_idx)
-	callframe.Arg(frame, transform)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_set_shape_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_area_set_shape_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeTransform2D<<12), unsafe.Pointer(&struct {
+		area      RID.Any
+		shape_idx int64
+		transform Transform2D.OriginXY
+	}{area, shape_idx, transform}))
 }
 
 /*
@@ -1526,13 +1464,11 @@ Sets the disabled property of the area's shape with the given index. If [param d
 */
 //go:nosplit
 func (self class) AreaSetShapeDisabled(area RID.Any, shape_idx int64, disabled bool) { //gd:PhysicsServer2D.area_set_shape_disabled
-	var frame = callframe.New()
-	callframe.Arg(frame, area)
-	callframe.Arg(frame, shape_idx)
-	callframe.Arg(frame, disabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_set_shape_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_area_set_shape_disabled, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+		area      RID.Any
+		shape_idx int64
+		disabled  bool
+	}{area, shape_idx, disabled}))
 }
 
 /*
@@ -1540,12 +1476,8 @@ Returns the number of shapes added to the area.
 */
 //go:nosplit
 func (self class) AreaGetShapeCount(area RID.Any) int64 { //gd:PhysicsServer2D.area_get_shape_count
-	var frame = callframe.New()
-	callframe.Arg(frame, area)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_get_shape_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_area_get_shape_count, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ area RID.Any }{area}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1554,13 +1486,11 @@ Returns the [RID] of the shape with the given index in the area's array of shape
 */
 //go:nosplit
 func (self class) AreaGetShape(area RID.Any, shape_idx int64) RID.Any { //gd:PhysicsServer2D.area_get_shape
-	var frame = callframe.New()
-	callframe.Arg(frame, area)
-	callframe.Arg(frame, shape_idx)
-	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_get_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_area_get_shape, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		area      RID.Any
+		shape_idx int64
+	}{area, shape_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1569,13 +1499,11 @@ Returns the local transform matrix of the shape with the given index in the area
 */
 //go:nosplit
 func (self class) AreaGetShapeTransform(area RID.Any, shape_idx int64) Transform2D.OriginXY { //gd:PhysicsServer2D.area_get_shape_transform
-	var frame = callframe.New()
-	callframe.Arg(frame, area)
-	callframe.Arg(frame, shape_idx)
-	var r_ret = callframe.Ret[Transform2D.OriginXY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_get_shape_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Transform2D.OriginXY](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_area_get_shape_transform, gdextension.SizeTransform2D|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		area      RID.Any
+		shape_idx int64
+	}{area, shape_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1584,12 +1512,10 @@ Removes the shape with the given index from the area's array of shapes. The shap
 */
 //go:nosplit
 func (self class) AreaRemoveShape(area RID.Any, shape_idx int64) { //gd:PhysicsServer2D.area_remove_shape
-	var frame = callframe.New()
-	callframe.Arg(frame, area)
-	callframe.Arg(frame, shape_idx)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_remove_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_area_remove_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		area      RID.Any
+		shape_idx int64
+	}{area, shape_idx}))
 }
 
 /*
@@ -1597,11 +1523,7 @@ Removes all shapes from the area. This does not delete the shapes themselves, so
 */
 //go:nosplit
 func (self class) AreaClearShapes(area RID.Any) { //gd:PhysicsServer2D.area_clear_shapes
-	var frame = callframe.New()
-	callframe.Arg(frame, area)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_clear_shapes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_area_clear_shapes, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ area RID.Any }{area}))
 }
 
 /*
@@ -1609,12 +1531,10 @@ Assigns the area to one or many physics layers, via a bitmask.
 */
 //go:nosplit
 func (self class) AreaSetCollisionLayer(area RID.Any, layer int64) { //gd:PhysicsServer2D.area_set_collision_layer
-	var frame = callframe.New()
-	callframe.Arg(frame, area)
-	callframe.Arg(frame, layer)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_set_collision_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_area_set_collision_layer, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		area  RID.Any
+		layer int64
+	}{area, layer}))
 }
 
 /*
@@ -1622,12 +1542,8 @@ Returns the physics layer or layers the area belongs to, as a bitmask.
 */
 //go:nosplit
 func (self class) AreaGetCollisionLayer(area RID.Any) int64 { //gd:PhysicsServer2D.area_get_collision_layer
-	var frame = callframe.New()
-	callframe.Arg(frame, area)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_get_collision_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_area_get_collision_layer, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ area RID.Any }{area}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1636,12 +1552,10 @@ Sets which physics layers the area will monitor, via a bitmask.
 */
 //go:nosplit
 func (self class) AreaSetCollisionMask(area RID.Any, mask int64) { //gd:PhysicsServer2D.area_set_collision_mask
-	var frame = callframe.New()
-	callframe.Arg(frame, area)
-	callframe.Arg(frame, mask)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_set_collision_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_area_set_collision_mask, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		area RID.Any
+		mask int64
+	}{area, mask}))
 }
 
 /*
@@ -1649,12 +1563,8 @@ Returns the physics layer or layers the area can contact with, as a bitmask.
 */
 //go:nosplit
 func (self class) AreaGetCollisionMask(area RID.Any) int64 { //gd:PhysicsServer2D.area_get_collision_mask
-	var frame = callframe.New()
-	callframe.Arg(frame, area)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_get_collision_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_area_get_collision_mask, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ area RID.Any }{area}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1663,13 +1573,11 @@ Sets the value of the given area parameter. See [enum AreaParameter] for the lis
 */
 //go:nosplit
 func (self class) AreaSetParam(area RID.Any, param AreaParameter, value variant.Any) { //gd:PhysicsServer2D.area_set_param
-	var frame = callframe.New()
-	callframe.Arg(frame, area)
-	callframe.Arg(frame, param)
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_set_param, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_area_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
+		area  RID.Any
+		param AreaParameter
+		value gdextension.Variant
+	}{area, param, gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
 }
 
 /*
@@ -1677,12 +1585,10 @@ Sets the transform matrix of the area.
 */
 //go:nosplit
 func (self class) AreaSetTransform(area RID.Any, transform Transform2D.OriginXY) { //gd:PhysicsServer2D.area_set_transform
-	var frame = callframe.New()
-	callframe.Arg(frame, area)
-	callframe.Arg(frame, transform)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_set_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_area_set_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform2D<<8), unsafe.Pointer(&struct {
+		area      RID.Any
+		transform Transform2D.OriginXY
+	}{area, transform}))
 }
 
 /*
@@ -1690,13 +1596,11 @@ Returns the value of the given area parameter. See [enum AreaParameter] for the 
 */
 //go:nosplit
 func (self class) AreaGetParam(area RID.Any, param AreaParameter) variant.Any { //gd:PhysicsServer2D.area_get_param
-	var frame = callframe.New()
-	callframe.Arg(frame, area)
-	callframe.Arg(frame, param)
-	var r_ret = callframe.Ret[[3]uint64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_get_param, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[3]uint64](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_area_get_param, gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		area  RID.Any
+		param AreaParameter
+	}{area, param}))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
 
@@ -1705,12 +1609,8 @@ Returns the transform matrix of the area.
 */
 //go:nosplit
 func (self class) AreaGetTransform(area RID.Any) Transform2D.OriginXY { //gd:PhysicsServer2D.area_get_transform
-	var frame = callframe.New()
-	callframe.Arg(frame, area)
-	var r_ret = callframe.Ret[Transform2D.OriginXY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_get_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Transform2D.OriginXY](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_area_get_transform, gdextension.SizeTransform2D|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ area RID.Any }{area}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1719,12 +1619,10 @@ Attaches the [code]ObjectID[/code] of an [Object] to the area. Use [method Objec
 */
 //go:nosplit
 func (self class) AreaAttachObjectInstanceId(area RID.Any, id int64) { //gd:PhysicsServer2D.area_attach_object_instance_id
-	var frame = callframe.New()
-	callframe.Arg(frame, area)
-	callframe.Arg(frame, id)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_attach_object_instance_id, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_area_attach_object_instance_id, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		area RID.Any
+		id   int64
+	}{area, id}))
 }
 
 /*
@@ -1732,12 +1630,8 @@ Returns the [code]ObjectID[/code] attached to the area. Use [method @GlobalScope
 */
 //go:nosplit
 func (self class) AreaGetObjectInstanceId(area RID.Any) int64 { //gd:PhysicsServer2D.area_get_object_instance_id
-	var frame = callframe.New()
-	callframe.Arg(frame, area)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_get_object_instance_id, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_area_get_object_instance_id, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ area RID.Any }{area}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1746,12 +1640,10 @@ Attaches the [code]ObjectID[/code] of a canvas to the area. Use [method Object.g
 */
 //go:nosplit
 func (self class) AreaAttachCanvasInstanceId(area RID.Any, id int64) { //gd:PhysicsServer2D.area_attach_canvas_instance_id
-	var frame = callframe.New()
-	callframe.Arg(frame, area)
-	callframe.Arg(frame, id)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_attach_canvas_instance_id, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_area_attach_canvas_instance_id, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		area RID.Any
+		id   int64
+	}{area, id}))
 }
 
 /*
@@ -1759,12 +1651,8 @@ Returns the [code]ObjectID[/code] of the canvas attached to the area. Use [metho
 */
 //go:nosplit
 func (self class) AreaGetCanvasInstanceId(area RID.Any) int64 { //gd:PhysicsServer2D.area_get_canvas_instance_id
-	var frame = callframe.New()
-	callframe.Arg(frame, area)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_get_canvas_instance_id, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_area_get_canvas_instance_id, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ area RID.Any }{area}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1779,12 +1667,10 @@ By counting (or keeping track of) the shapes that enter and exit, it can be dete
 */
 //go:nosplit
 func (self class) AreaSetMonitorCallback(area RID.Any, callback Callable.Function) { //gd:PhysicsServer2D.area_set_monitor_callback
-	var frame = callframe.New()
-	callframe.Arg(frame, area)
-	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_set_monitor_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_area_set_monitor_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
+		area     RID.Any
+		callback gdextension.Callable
+	}{area, gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
 }
 
 /*
@@ -1798,12 +1684,10 @@ By counting (or keeping track of) the shapes that enter and exit, it can be dete
 */
 //go:nosplit
 func (self class) AreaSetAreaMonitorCallback(area RID.Any, callback Callable.Function) { //gd:PhysicsServer2D.area_set_area_monitor_callback
-	var frame = callframe.New()
-	callframe.Arg(frame, area)
-	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_set_area_monitor_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_area_set_area_monitor_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
+		area     RID.Any
+		callback gdextension.Callable
+	}{area, gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
 }
 
 /*
@@ -1811,12 +1695,10 @@ Sets whether the area is monitorable or not. If [param monitorable] is [code]tru
 */
 //go:nosplit
 func (self class) AreaSetMonitorable(area RID.Any, monitorable bool) { //gd:PhysicsServer2D.area_set_monitorable
-	var frame = callframe.New()
-	callframe.Arg(frame, area)
-	callframe.Arg(frame, monitorable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_area_set_monitorable, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_area_set_monitorable, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		area        RID.Any
+		monitorable bool
+	}{area, monitorable}))
 }
 
 /*
@@ -1825,11 +1707,8 @@ Use [method body_add_shape] to add shapes to it, use [method body_set_state] to 
 */
 //go:nosplit
 func (self class) BodyCreate() RID.Any { //gd:PhysicsServer2D.body_create
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_create, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_create, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1841,12 +1720,10 @@ Adds the body to the given space, after removing the body from the previously as
 */
 //go:nosplit
 func (self class) BodySetSpace(body RID.Any, space RID.Any) { //gd:PhysicsServer2D.body_set_space
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, space)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_set_space, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_set_space, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+		body  RID.Any
+		space RID.Any
+	}{body, space}))
 }
 
 /*
@@ -1854,12 +1731,8 @@ Returns the [RID] of the space assigned to the body. Returns an empty [RID] if n
 */
 //go:nosplit
 func (self class) BodyGetSpace(body RID.Any) RID.Any { //gd:PhysicsServer2D.body_get_space
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_get_space, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_get_space, gdextension.SizeRID|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1868,12 +1741,10 @@ Sets the body's mode. See [enum BodyMode] for the list of available modes.
 */
 //go:nosplit
 func (self class) BodySetMode(body RID.Any, mode BodyMode) { //gd:PhysicsServer2D.body_set_mode
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, mode)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_set_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_set_mode, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		body RID.Any
+		mode BodyMode
+	}{body, mode}))
 }
 
 /*
@@ -1881,12 +1752,8 @@ Returns the body's mode (see [enum BodyMode]).
 */
 //go:nosplit
 func (self class) BodyGetMode(body RID.Any) BodyMode { //gd:PhysicsServer2D.body_get_mode
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	var r_ret = callframe.Ret[BodyMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_get_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[BodyMode](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_get_mode, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1895,14 +1762,12 @@ Adds a shape to the area, with the given local transform. The shape (together wi
 */
 //go:nosplit
 func (self class) BodyAddShape(body RID.Any, shape RID.Any, transform Transform2D.OriginXY, disabled bool) { //gd:PhysicsServer2D.body_add_shape
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, shape)
-	callframe.Arg(frame, transform)
-	callframe.Arg(frame, disabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_add_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_add_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeTransform2D<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+		body      RID.Any
+		shape     RID.Any
+		transform Transform2D.OriginXY
+		disabled  bool
+	}{body, shape, transform, disabled}))
 }
 
 /*
@@ -1910,13 +1775,11 @@ Replaces the body's shape at the given index by another shape, while not affecti
 */
 //go:nosplit
 func (self class) BodySetShape(body RID.Any, shape_idx int64, shape RID.Any) { //gd:PhysicsServer2D.body_set_shape
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, shape_idx)
-	callframe.Arg(frame, shape)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_set_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_set_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeRID<<12), unsafe.Pointer(&struct {
+		body      RID.Any
+		shape_idx int64
+		shape     RID.Any
+	}{body, shape_idx, shape}))
 }
 
 /*
@@ -1924,13 +1787,11 @@ Sets the local transform matrix of the body's shape with the given index.
 */
 //go:nosplit
 func (self class) BodySetShapeTransform(body RID.Any, shape_idx int64, transform Transform2D.OriginXY) { //gd:PhysicsServer2D.body_set_shape_transform
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, shape_idx)
-	callframe.Arg(frame, transform)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_set_shape_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_set_shape_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeTransform2D<<12), unsafe.Pointer(&struct {
+		body      RID.Any
+		shape_idx int64
+		transform Transform2D.OriginXY
+	}{body, shape_idx, transform}))
 }
 
 /*
@@ -1938,12 +1799,8 @@ Returns the number of shapes added to the body.
 */
 //go:nosplit
 func (self class) BodyGetShapeCount(body RID.Any) int64 { //gd:PhysicsServer2D.body_get_shape_count
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_get_shape_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_get_shape_count, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1952,13 +1809,11 @@ Returns the [RID] of the shape with the given index in the body's array of shape
 */
 //go:nosplit
 func (self class) BodyGetShape(body RID.Any, shape_idx int64) RID.Any { //gd:PhysicsServer2D.body_get_shape
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, shape_idx)
-	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_get_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_get_shape, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		body      RID.Any
+		shape_idx int64
+	}{body, shape_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1967,13 +1822,11 @@ Returns the local transform matrix of the shape with the given index in the area
 */
 //go:nosplit
 func (self class) BodyGetShapeTransform(body RID.Any, shape_idx int64) Transform2D.OriginXY { //gd:PhysicsServer2D.body_get_shape_transform
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, shape_idx)
-	var r_ret = callframe.Ret[Transform2D.OriginXY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_get_shape_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Transform2D.OriginXY](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_get_shape_transform, gdextension.SizeTransform2D|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		body      RID.Any
+		shape_idx int64
+	}{body, shape_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1982,12 +1835,10 @@ Removes the shape with the given index from the body's array of shapes. The shap
 */
 //go:nosplit
 func (self class) BodyRemoveShape(body RID.Any, shape_idx int64) { //gd:PhysicsServer2D.body_remove_shape
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, shape_idx)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_remove_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_remove_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		body      RID.Any
+		shape_idx int64
+	}{body, shape_idx}))
 }
 
 /*
@@ -1995,11 +1846,7 @@ Removes all shapes from the body. This does not delete the shapes themselves, so
 */
 //go:nosplit
 func (self class) BodyClearShapes(body RID.Any) { //gd:PhysicsServer2D.body_clear_shapes
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_clear_shapes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_clear_shapes, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
 }
 
 /*
@@ -2007,13 +1854,11 @@ Sets the disabled property of the body's shape with the given index. If [param d
 */
 //go:nosplit
 func (self class) BodySetShapeDisabled(body RID.Any, shape_idx int64, disabled bool) { //gd:PhysicsServer2D.body_set_shape_disabled
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, shape_idx)
-	callframe.Arg(frame, disabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_set_shape_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_set_shape_disabled, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+		body      RID.Any
+		shape_idx int64
+		disabled  bool
+	}{body, shape_idx, disabled}))
 }
 
 /*
@@ -2021,14 +1866,12 @@ Sets the one-way collision properties of the body's shape with the given index. 
 */
 //go:nosplit
 func (self class) BodySetShapeAsOneWayCollision(body RID.Any, shape_idx int64, enable bool, margin float64) { //gd:PhysicsServer2D.body_set_shape_as_one_way_collision
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, shape_idx)
-	callframe.Arg(frame, enable)
-	callframe.Arg(frame, margin)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_set_shape_as_one_way_collision, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_set_shape_as_one_way_collision, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeFloat<<16), unsafe.Pointer(&struct {
+		body      RID.Any
+		shape_idx int64
+		enable    bool
+		margin    float64
+	}{body, shape_idx, enable, margin}))
 }
 
 /*
@@ -2036,12 +1879,10 @@ Attaches the [code]ObjectID[/code] of an [Object] to the body. Use [method Objec
 */
 //go:nosplit
 func (self class) BodyAttachObjectInstanceId(body RID.Any, id int64) { //gd:PhysicsServer2D.body_attach_object_instance_id
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, id)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_attach_object_instance_id, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_attach_object_instance_id, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		body RID.Any
+		id   int64
+	}{body, id}))
 }
 
 /*
@@ -2049,12 +1890,8 @@ Returns the [code]ObjectID[/code] attached to the body. Use [method @GlobalScope
 */
 //go:nosplit
 func (self class) BodyGetObjectInstanceId(body RID.Any) int64 { //gd:PhysicsServer2D.body_get_object_instance_id
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_get_object_instance_id, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_get_object_instance_id, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2063,12 +1900,10 @@ Attaches the [code]ObjectID[/code] of a canvas to the body. Use [method Object.g
 */
 //go:nosplit
 func (self class) BodyAttachCanvasInstanceId(body RID.Any, id int64) { //gd:PhysicsServer2D.body_attach_canvas_instance_id
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, id)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_attach_canvas_instance_id, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_attach_canvas_instance_id, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		body RID.Any
+		id   int64
+	}{body, id}))
 }
 
 /*
@@ -2076,12 +1911,8 @@ Returns the [code]ObjectID[/code] of the canvas attached to the body. Use [metho
 */
 //go:nosplit
 func (self class) BodyGetCanvasInstanceId(body RID.Any) int64 { //gd:PhysicsServer2D.body_get_canvas_instance_id
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_get_canvas_instance_id, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_get_canvas_instance_id, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2091,12 +1922,10 @@ Continuous collision detection tries to predict where a moving body would collid
 */
 //go:nosplit
 func (self class) BodySetContinuousCollisionDetectionMode(body RID.Any, mode CCDMode) { //gd:PhysicsServer2D.body_set_continuous_collision_detection_mode
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, mode)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_set_continuous_collision_detection_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_set_continuous_collision_detection_mode, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		body RID.Any
+		mode CCDMode
+	}{body, mode}))
 }
 
 /*
@@ -2104,12 +1933,8 @@ Returns the body's continuous collision detection mode (see [enum CCDMode]).
 */
 //go:nosplit
 func (self class) BodyGetContinuousCollisionDetectionMode(body RID.Any) CCDMode { //gd:PhysicsServer2D.body_get_continuous_collision_detection_mode
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	var r_ret = callframe.Ret[CCDMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_get_continuous_collision_detection_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[CCDMode](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_get_continuous_collision_detection_mode, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2118,12 +1943,10 @@ Sets the physics layer or layers the body belongs to, via a bitmask.
 */
 //go:nosplit
 func (self class) BodySetCollisionLayer(body RID.Any, layer int64) { //gd:PhysicsServer2D.body_set_collision_layer
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, layer)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_set_collision_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_set_collision_layer, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		body  RID.Any
+		layer int64
+	}{body, layer}))
 }
 
 /*
@@ -2131,12 +1954,8 @@ Returns the physics layer or layers the body belongs to, as a bitmask.
 */
 //go:nosplit
 func (self class) BodyGetCollisionLayer(body RID.Any) int64 { //gd:PhysicsServer2D.body_get_collision_layer
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_get_collision_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_get_collision_layer, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2145,12 +1964,10 @@ Sets the physics layer or layers the body can collide with, via a bitmask.
 */
 //go:nosplit
 func (self class) BodySetCollisionMask(body RID.Any, mask int64) { //gd:PhysicsServer2D.body_set_collision_mask
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, mask)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_set_collision_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_set_collision_mask, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		body RID.Any
+		mask int64
+	}{body, mask}))
 }
 
 /*
@@ -2158,12 +1975,8 @@ Returns the physics layer or layers the body can collide with, as a bitmask.
 */
 //go:nosplit
 func (self class) BodyGetCollisionMask(body RID.Any) int64 { //gd:PhysicsServer2D.body_get_collision_mask
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_get_collision_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_get_collision_mask, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2172,12 +1985,10 @@ Sets the body's collision priority. This is used in the depenetration phase of [
 */
 //go:nosplit
 func (self class) BodySetCollisionPriority(body RID.Any, priority float64) { //gd:PhysicsServer2D.body_set_collision_priority
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, priority)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_set_collision_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_set_collision_priority, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+		body     RID.Any
+		priority float64
+	}{body, priority}))
 }
 
 /*
@@ -2185,12 +1996,8 @@ Returns the body's collision priority. This is used in the depenetration phase o
 */
 //go:nosplit
 func (self class) BodyGetCollisionPriority(body RID.Any) float64 { //gd:PhysicsServer2D.body_get_collision_priority
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_get_collision_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_get_collision_priority, gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2199,13 +2006,11 @@ Sets the value of the given body parameter. See [enum BodyParameter] for the lis
 */
 //go:nosplit
 func (self class) BodySetParam(body RID.Any, param BodyParameter, value variant.Any) { //gd:PhysicsServer2D.body_set_param
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, param)
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_set_param, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
+		body  RID.Any
+		param BodyParameter
+		value gdextension.Variant
+	}{body, param, gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
 }
 
 /*
@@ -2213,13 +2018,11 @@ Returns the value of the given body parameter. See [enum BodyParameter] for the 
 */
 //go:nosplit
 func (self class) BodyGetParam(body RID.Any, param BodyParameter) variant.Any { //gd:PhysicsServer2D.body_get_param
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, param)
-	var r_ret = callframe.Ret[[3]uint64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_get_param, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[3]uint64](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_get_param, gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		body  RID.Any
+		param BodyParameter
+	}{body, param}))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
 
@@ -2228,11 +2031,7 @@ Restores the default inertia and center of mass of the body based on its shapes.
 */
 //go:nosplit
 func (self class) BodyResetMassProperties(body RID.Any) { //gd:PhysicsServer2D.body_reset_mass_properties
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_reset_mass_properties, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_reset_mass_properties, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
 }
 
 /*
@@ -2241,13 +2040,11 @@ Sets the value of a body's state. See [enum BodyState] for the list of available
 */
 //go:nosplit
 func (self class) BodySetState(body RID.Any, state BodyState, value variant.Any) { //gd:PhysicsServer2D.body_set_state
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, state)
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_set_state, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_set_state, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
+		body  RID.Any
+		state BodyState
+		value gdextension.Variant
+	}{body, state, gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
 }
 
 /*
@@ -2255,13 +2052,11 @@ Returns the value of the given state of the body. See [enum BodyState] for the l
 */
 //go:nosplit
 func (self class) BodyGetState(body RID.Any, state BodyState) variant.Any { //gd:PhysicsServer2D.body_get_state
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, state)
-	var r_ret = callframe.Ret[[3]uint64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_get_state, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[3]uint64](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_get_state, gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		body  RID.Any
+		state BodyState
+	}{body, state}))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
 
@@ -2272,12 +2067,10 @@ This is equivalent to using [method body_apply_impulse] at the body's center of 
 */
 //go:nosplit
 func (self class) BodyApplyCentralImpulse(body RID.Any, impulse Vector2.XY) { //gd:PhysicsServer2D.body_apply_central_impulse
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, impulse)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_apply_central_impulse, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_apply_central_impulse, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
+		body    RID.Any
+		impulse Vector2.XY
+	}{body, impulse}))
 }
 
 /*
@@ -2286,12 +2079,10 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 */
 //go:nosplit
 func (self class) BodyApplyTorqueImpulse(body RID.Any, impulse float64) { //gd:PhysicsServer2D.body_apply_torque_impulse
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, impulse)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_apply_torque_impulse, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_apply_torque_impulse, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+		body    RID.Any
+		impulse float64
+	}{body, impulse}))
 }
 
 /*
@@ -2301,13 +2092,11 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 */
 //go:nosplit
 func (self class) BodyApplyImpulse(body RID.Any, impulse Vector2.XY, position Vector2.XY) { //gd:PhysicsServer2D.body_apply_impulse
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, impulse)
-	callframe.Arg(frame, position)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_apply_impulse, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_apply_impulse, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeVector2<<12), unsafe.Pointer(&struct {
+		body     RID.Any
+		impulse  Vector2.XY
+		position Vector2.XY
+	}{body, impulse, position}))
 }
 
 /*
@@ -2316,12 +2105,10 @@ This is equivalent to using [method body_apply_force] at the body's center of ma
 */
 //go:nosplit
 func (self class) BodyApplyCentralForce(body RID.Any, force Vector2.XY) { //gd:PhysicsServer2D.body_apply_central_force
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, force)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_apply_central_force, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_apply_central_force, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
+		body  RID.Any
+		force Vector2.XY
+	}{body, force}))
 }
 
 /*
@@ -2330,13 +2117,11 @@ Applies a positioned force to the body. The force can affect rotation if [param 
 */
 //go:nosplit
 func (self class) BodyApplyForce(body RID.Any, force Vector2.XY, position Vector2.XY) { //gd:PhysicsServer2D.body_apply_force
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, force)
-	callframe.Arg(frame, position)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_apply_force, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_apply_force, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeVector2<<12), unsafe.Pointer(&struct {
+		body     RID.Any
+		force    Vector2.XY
+		position Vector2.XY
+	}{body, force, position}))
 }
 
 /*
@@ -2344,12 +2129,10 @@ Applies a rotational force to the body. The force does not affect position. A fo
 */
 //go:nosplit
 func (self class) BodyApplyTorque(body RID.Any, torque float64) { //gd:PhysicsServer2D.body_apply_torque
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, torque)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_apply_torque, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_apply_torque, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+		body   RID.Any
+		torque float64
+	}{body, torque}))
 }
 
 /*
@@ -2358,12 +2141,10 @@ This is equivalent to using [method body_add_constant_force] at the body's cente
 */
 //go:nosplit
 func (self class) BodyAddConstantCentralForce(body RID.Any, force Vector2.XY) { //gd:PhysicsServer2D.body_add_constant_central_force
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, force)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_add_constant_central_force, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_add_constant_central_force, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
+		body  RID.Any
+		force Vector2.XY
+	}{body, force}))
 }
 
 /*
@@ -2372,13 +2153,11 @@ Adds a constant positioned force to the body. The force can affect rotation if [
 */
 //go:nosplit
 func (self class) BodyAddConstantForce(body RID.Any, force Vector2.XY, position Vector2.XY) { //gd:PhysicsServer2D.body_add_constant_force
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, force)
-	callframe.Arg(frame, position)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_add_constant_force, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_add_constant_force, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeVector2<<12), unsafe.Pointer(&struct {
+		body     RID.Any
+		force    Vector2.XY
+		position Vector2.XY
+	}{body, force, position}))
 }
 
 /*
@@ -2386,12 +2165,10 @@ Adds a constant rotational force to the body. The force does not affect position
 */
 //go:nosplit
 func (self class) BodyAddConstantTorque(body RID.Any, torque float64) { //gd:PhysicsServer2D.body_add_constant_torque
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, torque)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_add_constant_torque, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_add_constant_torque, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+		body   RID.Any
+		torque float64
+	}{body, torque}))
 }
 
 /*
@@ -2400,12 +2177,10 @@ See [method body_add_constant_force] and [method body_add_constant_central_force
 */
 //go:nosplit
 func (self class) BodySetConstantForce(body RID.Any, force Vector2.XY) { //gd:PhysicsServer2D.body_set_constant_force
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, force)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_set_constant_force, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_set_constant_force, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
+		body  RID.Any
+		force Vector2.XY
+	}{body, force}))
 }
 
 /*
@@ -2414,12 +2189,8 @@ See [method body_add_constant_force] and [method body_add_constant_central_force
 */
 //go:nosplit
 func (self class) BodyGetConstantForce(body RID.Any) Vector2.XY { //gd:PhysicsServer2D.body_get_constant_force
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_get_constant_force, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_get_constant_force, gdextension.SizeVector2|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2429,12 +2200,10 @@ See [method body_add_constant_torque].
 */
 //go:nosplit
 func (self class) BodySetConstantTorque(body RID.Any, torque float64) { //gd:PhysicsServer2D.body_set_constant_torque
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, torque)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_set_constant_torque, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_set_constant_torque, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+		body   RID.Any
+		torque float64
+	}{body, torque}))
 }
 
 /*
@@ -2443,12 +2212,8 @@ See [method body_add_constant_torque].
 */
 //go:nosplit
 func (self class) BodyGetConstantTorque(body RID.Any) float64 { //gd:PhysicsServer2D.body_get_constant_torque
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_get_constant_torque, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_get_constant_torque, gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2457,12 +2222,10 @@ Modifies the body's linear velocity so that its projection to the axis [code]axi
 */
 //go:nosplit
 func (self class) BodySetAxisVelocity(body RID.Any, axis_velocity Vector2.XY) { //gd:PhysicsServer2D.body_set_axis_velocity
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, axis_velocity)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_set_axis_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_set_axis_velocity, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
+		body          RID.Any
+		axis_velocity Vector2.XY
+	}{body, axis_velocity}))
 }
 
 /*
@@ -2470,12 +2233,10 @@ Adds [param excepted_body] to the body's list of collision exceptions, so that c
 */
 //go:nosplit
 func (self class) BodyAddCollisionException(body RID.Any, excepted_body RID.Any) { //gd:PhysicsServer2D.body_add_collision_exception
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, excepted_body)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_add_collision_exception, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_add_collision_exception, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+		body          RID.Any
+		excepted_body RID.Any
+	}{body, excepted_body}))
 }
 
 /*
@@ -2483,12 +2244,10 @@ Removes [param excepted_body] from the body's list of collision exceptions, so t
 */
 //go:nosplit
 func (self class) BodyRemoveCollisionException(body RID.Any, excepted_body RID.Any) { //gd:PhysicsServer2D.body_remove_collision_exception
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, excepted_body)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_remove_collision_exception, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_remove_collision_exception, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+		body          RID.Any
+		excepted_body RID.Any
+	}{body, excepted_body}))
 }
 
 /*
@@ -2496,12 +2255,10 @@ Sets the maximum number of contacts that the body can report. If [param amount] 
 */
 //go:nosplit
 func (self class) BodySetMaxContactsReported(body RID.Any, amount int64) { //gd:PhysicsServer2D.body_set_max_contacts_reported
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, amount)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_set_max_contacts_reported, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_set_max_contacts_reported, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		body   RID.Any
+		amount int64
+	}{body, amount}))
 }
 
 /*
@@ -2509,12 +2266,8 @@ Returns the maximum number of contacts that the body can report. See [method bod
 */
 //go:nosplit
 func (self class) BodyGetMaxContactsReported(body RID.Any) int64 { //gd:PhysicsServer2D.body_get_max_contacts_reported
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_get_max_contacts_reported, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_get_max_contacts_reported, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2524,12 +2277,10 @@ This method is called when the property [member RigidBody2D.custom_integrator] i
 */
 //go:nosplit
 func (self class) BodySetOmitForceIntegration(body RID.Any, enable bool) { //gd:PhysicsServer2D.body_set_omit_force_integration
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_set_omit_force_integration, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_set_omit_force_integration, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		body   RID.Any
+		enable bool
+	}{body, enable}))
 }
 
 /*
@@ -2537,12 +2288,8 @@ Returns [code]true[/code] if the body is omitting the standard force integration
 */
 //go:nosplit
 func (self class) BodyIsOmittingForceIntegration(body RID.Any) bool { //gd:PhysicsServer2D.body_is_omitting_force_integration
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_is_omitting_force_integration, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_is_omitting_force_integration, gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2554,12 +2301,10 @@ The function [param callable] must take the following parameters:
 */
 //go:nosplit
 func (self class) BodySetStateSyncCallback(body RID.Any, callable Callable.Function) { //gd:PhysicsServer2D.body_set_state_sync_callback
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callable)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_set_state_sync_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_set_state_sync_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
+		body     RID.Any
+		callable gdextension.Callable
+	}{body, gdextension.Callable(pointers.Get(gd.InternalCallable(callable)))}))
 }
 
 /*
@@ -2572,13 +2317,11 @@ If [param userdata] is [code]null[/code], then [param callable] must take only t
 */
 //go:nosplit
 func (self class) BodySetForceIntegrationCallback(body RID.Any, callable Callable.Function, userdata variant.Any) { //gd:PhysicsServer2D.body_set_force_integration_callback
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callable)))
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(userdata)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_set_force_integration_callback, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_set_force_integration_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
+		body     RID.Any
+		callable gdextension.Callable
+		userdata gdextension.Variant
+	}{body, gdextension.Callable(pointers.Get(gd.InternalCallable(callable))), gdextension.Variant(pointers.Get(gd.InternalVariant(userdata)))}))
 }
 
 /*
@@ -2586,14 +2329,12 @@ Returns [code]true[/code] if a collision would result from moving the body along
 */
 //go:nosplit
 func (self class) BodyTestMotion(body RID.Any, parameters [1]gdclass.PhysicsTestMotionParameters2D, result [1]gdclass.PhysicsTestMotionResult2D) bool { //gd:PhysicsServer2D.body_test_motion
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	callframe.Arg(frame, pointers.Get(parameters[0])[0])
-	callframe.Arg(frame, pointers.Get(result[0])[0])
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_test_motion, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_test_motion, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
+		body       RID.Any
+		parameters gdextension.Object
+		result     gdextension.Object
+	}{body, gdextension.Object(pointers.Get(parameters[0])[0]), gdextension.Object(pointers.Get(result[0])[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2602,12 +2343,8 @@ Returns the [PhysicsDirectBodyState2D] of the body. Returns [code]null[/code] if
 */
 //go:nosplit
 func (self class) BodyGetDirectState(body RID.Any) [1]gdclass.PhysicsDirectBodyState2D { //gd:PhysicsServer2D.body_get_direct_state
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_body_get_direct_state, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.PhysicsDirectBodyState2D{gd.PointerMustAssertInstanceID[gdclass.PhysicsDirectBodyState2D](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_body_get_direct_state, gdextension.SizeObject|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var ret = [1]gdclass.PhysicsDirectBodyState2D{gd.PointerMustAssertInstanceID[gdclass.PhysicsDirectBodyState2D](r_ret)}
 	return ret
 }
 
@@ -2616,11 +2353,8 @@ Creates a 2D joint in the physics server, and returns the [RID] that identifies 
 */
 //go:nosplit
 func (self class) JointCreate() RID.Any { //gd:PhysicsServer2D.joint_create
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_joint_create, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_joint_create, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2629,11 +2363,7 @@ Destroys the joint with the given [RID], creates a new uninitialized joint, and 
 */
 //go:nosplit
 func (self class) JointClear(joint RID.Any) { //gd:PhysicsServer2D.joint_clear
-	var frame = callframe.New()
-	callframe.Arg(frame, joint)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_joint_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_joint_clear, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ joint RID.Any }{joint}))
 }
 
 /*
@@ -2641,13 +2371,11 @@ Sets the value of the given joint parameter. See [enum JointParam] for the list 
 */
 //go:nosplit
 func (self class) JointSetParam(joint RID.Any, param JointParam, value float64) { //gd:PhysicsServer2D.joint_set_param
-	var frame = callframe.New()
-	callframe.Arg(frame, joint)
-	callframe.Arg(frame, param)
-	callframe.Arg(frame, value)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_joint_set_param, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_joint_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+		joint RID.Any
+		param JointParam
+		value float64
+	}{joint, param, value}))
 }
 
 /*
@@ -2655,13 +2383,11 @@ Returns the value of the given joint parameter. See [enum JointParam] for the li
 */
 //go:nosplit
 func (self class) JointGetParam(joint RID.Any, param JointParam) float64 { //gd:PhysicsServer2D.joint_get_param
-	var frame = callframe.New()
-	callframe.Arg(frame, joint)
-	callframe.Arg(frame, param)
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_joint_get_param, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_joint_get_param, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		joint RID.Any
+		param JointParam
+	}{joint, param}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2670,12 +2396,10 @@ Sets whether the bodies attached to the [Joint2D] will collide with each other.
 */
 //go:nosplit
 func (self class) JointDisableCollisionsBetweenBodies(joint RID.Any, disable bool) { //gd:PhysicsServer2D.joint_disable_collisions_between_bodies
-	var frame = callframe.New()
-	callframe.Arg(frame, joint)
-	callframe.Arg(frame, disable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_joint_disable_collisions_between_bodies, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_joint_disable_collisions_between_bodies, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		joint   RID.Any
+		disable bool
+	}{joint, disable}))
 }
 
 /*
@@ -2683,12 +2407,8 @@ Returns whether the bodies attached to the [Joint2D] will collide with each othe
 */
 //go:nosplit
 func (self class) JointIsDisabledCollisionsBetweenBodies(joint RID.Any) bool { //gd:PhysicsServer2D.joint_is_disabled_collisions_between_bodies
-	var frame = callframe.New()
-	callframe.Arg(frame, joint)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_joint_is_disabled_collisions_between_bodies, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_joint_is_disabled_collisions_between_bodies, gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ joint RID.Any }{joint}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2697,14 +2417,12 @@ Makes the joint a pin joint. If [param body_b] is an empty [RID], then [param bo
 */
 //go:nosplit
 func (self class) JointMakePin(joint RID.Any, anchor Vector2.XY, body_a RID.Any, body_b RID.Any) { //gd:PhysicsServer2D.joint_make_pin
-	var frame = callframe.New()
-	callframe.Arg(frame, joint)
-	callframe.Arg(frame, anchor)
-	callframe.Arg(frame, body_a)
-	callframe.Arg(frame, body_b)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_joint_make_pin, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_joint_make_pin, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeRID<<12)|(gdextension.SizeRID<<16), unsafe.Pointer(&struct {
+		joint  RID.Any
+		anchor Vector2.XY
+		body_a RID.Any
+		body_b RID.Any
+	}{joint, anchor, body_a, body_b}))
 }
 
 /*
@@ -2712,16 +2430,14 @@ Makes the joint a groove joint.
 */
 //go:nosplit
 func (self class) JointMakeGroove(joint RID.Any, groove1_a Vector2.XY, groove2_a Vector2.XY, anchor_b Vector2.XY, body_a RID.Any, body_b RID.Any) { //gd:PhysicsServer2D.joint_make_groove
-	var frame = callframe.New()
-	callframe.Arg(frame, joint)
-	callframe.Arg(frame, groove1_a)
-	callframe.Arg(frame, groove2_a)
-	callframe.Arg(frame, anchor_b)
-	callframe.Arg(frame, body_a)
-	callframe.Arg(frame, body_b)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_joint_make_groove, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_joint_make_groove, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeVector2<<12)|(gdextension.SizeVector2<<16)|(gdextension.SizeRID<<20)|(gdextension.SizeRID<<24), unsafe.Pointer(&struct {
+		joint     RID.Any
+		groove1_a Vector2.XY
+		groove2_a Vector2.XY
+		anchor_b  Vector2.XY
+		body_a    RID.Any
+		body_b    RID.Any
+	}{joint, groove1_a, groove2_a, anchor_b, body_a, body_b}))
 }
 
 /*
@@ -2729,15 +2445,13 @@ Makes the joint a damped spring joint, attached at the point [param anchor_a] (g
 */
 //go:nosplit
 func (self class) JointMakeDampedSpring(joint RID.Any, anchor_a Vector2.XY, anchor_b Vector2.XY, body_a RID.Any, body_b RID.Any) { //gd:PhysicsServer2D.joint_make_damped_spring
-	var frame = callframe.New()
-	callframe.Arg(frame, joint)
-	callframe.Arg(frame, anchor_a)
-	callframe.Arg(frame, anchor_b)
-	callframe.Arg(frame, body_a)
-	callframe.Arg(frame, body_b)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_joint_make_damped_spring, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_joint_make_damped_spring, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeVector2<<12)|(gdextension.SizeRID<<16)|(gdextension.SizeRID<<20), unsafe.Pointer(&struct {
+		joint    RID.Any
+		anchor_a Vector2.XY
+		anchor_b Vector2.XY
+		body_a   RID.Any
+		body_b   RID.Any
+	}{joint, anchor_a, anchor_b, body_a, body_b}))
 }
 
 /*
@@ -2745,13 +2459,11 @@ Sets a pin joint flag (see [enum PinJointFlag] constants).
 */
 //go:nosplit
 func (self class) PinJointSetFlag(joint RID.Any, flag PinJointFlag, enabled bool) { //gd:PhysicsServer2D.pin_joint_set_flag
-	var frame = callframe.New()
-	callframe.Arg(frame, joint)
-	callframe.Arg(frame, flag)
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_pin_joint_set_flag, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_pin_joint_set_flag, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+		joint   RID.Any
+		flag    PinJointFlag
+		enabled bool
+	}{joint, flag, enabled}))
 }
 
 /*
@@ -2759,13 +2471,11 @@ Gets a pin joint flag (see [enum PinJointFlag] constants).
 */
 //go:nosplit
 func (self class) PinJointGetFlag(joint RID.Any, flag PinJointFlag) bool { //gd:PhysicsServer2D.pin_joint_get_flag
-	var frame = callframe.New()
-	callframe.Arg(frame, joint)
-	callframe.Arg(frame, flag)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_pin_joint_get_flag, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_pin_joint_get_flag, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		joint RID.Any
+		flag  PinJointFlag
+	}{joint, flag}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2774,13 +2484,11 @@ Sets a pin joint parameter. See [enum PinJointParam] for a list of available par
 */
 //go:nosplit
 func (self class) PinJointSetParam(joint RID.Any, param PinJointParam, value float64) { //gd:PhysicsServer2D.pin_joint_set_param
-	var frame = callframe.New()
-	callframe.Arg(frame, joint)
-	callframe.Arg(frame, param)
-	callframe.Arg(frame, value)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_pin_joint_set_param, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_pin_joint_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+		joint RID.Any
+		param PinJointParam
+		value float64
+	}{joint, param, value}))
 }
 
 /*
@@ -2788,13 +2496,11 @@ Returns the value of a pin joint parameter. See [enum PinJointParam] for a list 
 */
 //go:nosplit
 func (self class) PinJointGetParam(joint RID.Any, param PinJointParam) float64 { //gd:PhysicsServer2D.pin_joint_get_param
-	var frame = callframe.New()
-	callframe.Arg(frame, joint)
-	callframe.Arg(frame, param)
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_pin_joint_get_param, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_pin_joint_get_param, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		joint RID.Any
+		param PinJointParam
+	}{joint, param}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2803,13 +2509,11 @@ Sets the value of the given damped spring joint parameter. See [enum DampedSprin
 */
 //go:nosplit
 func (self class) DampedSpringJointSetParam(joint RID.Any, param DampedSpringParam, value float64) { //gd:PhysicsServer2D.damped_spring_joint_set_param
-	var frame = callframe.New()
-	callframe.Arg(frame, joint)
-	callframe.Arg(frame, param)
-	callframe.Arg(frame, value)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_damped_spring_joint_set_param, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_damped_spring_joint_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+		joint RID.Any
+		param DampedSpringParam
+		value float64
+	}{joint, param, value}))
 }
 
 /*
@@ -2817,13 +2521,11 @@ Returns the value of the given damped spring joint parameter. See [enum DampedSp
 */
 //go:nosplit
 func (self class) DampedSpringJointGetParam(joint RID.Any, param DampedSpringParam) float64 { //gd:PhysicsServer2D.damped_spring_joint_get_param
-	var frame = callframe.New()
-	callframe.Arg(frame, joint)
-	callframe.Arg(frame, param)
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_damped_spring_joint_get_param, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_damped_spring_joint_get_param, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		joint RID.Any
+		param DampedSpringParam
+	}{joint, param}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2832,12 +2534,8 @@ Returns the joint's type (see [enum JointType]).
 */
 //go:nosplit
 func (self class) JointGetType(joint RID.Any) JointType { //gd:PhysicsServer2D.joint_get_type
-	var frame = callframe.New()
-	callframe.Arg(frame, joint)
-	var r_ret = callframe.Ret[JointType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_joint_get_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[JointType](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_joint_get_type, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ joint RID.Any }{joint}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2846,11 +2544,7 @@ Destroys any of the objects created by PhysicsServer2D. If the [RID] passed is n
 */
 //go:nosplit
 func (self class) FreeRid(rid RID.Any) { //gd:PhysicsServer2D.free_rid
-	var frame = callframe.New()
-	callframe.Arg(frame, rid)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_free_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_free_rid, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
 }
 
 /*
@@ -2858,11 +2552,7 @@ Activates or deactivates the 2D physics server. If [param active] is [code]false
 */
 //go:nosplit
 func (self class) SetActive(active bool) { //gd:PhysicsServer2D.set_active
-	var frame = callframe.New()
-	callframe.Arg(frame, active)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_set_active, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_set_active, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ active bool }{active}))
 }
 
 /*
@@ -2870,12 +2560,8 @@ Returns information about the current state of the 2D physics engine. See [enum 
 */
 //go:nosplit
 func (self class) GetProcessInfo(process_info ProcessInfo) int64 { //gd:PhysicsServer2D.get_process_info
-	var frame = callframe.New()
-	callframe.Arg(frame, process_info)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_get_process_info, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.PhysicsServer2D.Bind_get_process_info, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ process_info ProcessInfo }{process_info}))
+	var ret = r_ret
 	return ret
 }
 func (self class) Virtual(name string) reflect.Value {

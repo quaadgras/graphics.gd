@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -54,6 +56,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -509,12 +513,8 @@ Adds a new bone with the given name. Returns the new bone's index, or [code]-1[/
 */
 //go:nosplit
 func (self class) AddBone(name String.Readable) int64 { //gd:Skeleton3D.add_bone
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_add_bone, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_add_bone, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -523,12 +523,8 @@ Returns the bone index that matches [param name] as its name. Returns [code]-1[/
 */
 //go:nosplit
 func (self class) FindBone(name String.Readable) int64 { //gd:Skeleton3D.find_bone
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_find_bone, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_find_bone, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -537,12 +533,8 @@ Returns the name of the bone at index [param bone_idx].
 */
 //go:nosplit
 func (self class) GetBoneName(bone_idx int64) String.Readable { //gd:Skeleton3D.get_bone_name
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_get_bone_name, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_idx int64 }{bone_idx}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -551,12 +543,10 @@ Sets the bone name, [param name], for the bone at [param bone_idx].
 */
 //go:nosplit
 func (self class) SetBoneName(bone_idx int64, name String.Readable) { //gd:Skeleton3D.set_bone_name
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_bone_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_set_bone_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+		bone_idx int64
+		name     gdextension.String
+	}{bone_idx, gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
 }
 
 /*
@@ -564,13 +554,11 @@ Returns bone metadata for [param bone_idx] with [param key].
 */
 //go:nosplit
 func (self class) GetBoneMeta(bone_idx int64, key String.Name) variant.Any { //gd:Skeleton3D.get_bone_meta
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(key)))
-	var r_ret = callframe.Ret[[3]uint64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_meta, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[3]uint64](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_get_bone_meta, gdextension.SizeVariant|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+		bone_idx int64
+		key      gdextension.StringName
+	}{bone_idx, gdextension.StringName(pointers.Get(gd.InternalStringName(key))[0])}))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
 
@@ -579,12 +567,8 @@ Returns a list of all metadata keys for [param bone_idx].
 */
 //go:nosplit
 func (self class) GetBoneMetaList(bone_idx int64) Array.Contains[String.Name] { //gd:Skeleton3D.get_bone_meta_list
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_meta_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_get_bone_meta_list, gdextension.SizeArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_idx int64 }{bone_idx}))
+	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -593,13 +577,11 @@ Returns whether there exists any bone metadata for [param bone_idx] with key [pa
 */
 //go:nosplit
 func (self class) HasBoneMeta(bone_idx int64, key String.Name) bool { //gd:Skeleton3D.has_bone_meta
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(key)))
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_has_bone_meta, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_has_bone_meta, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+		bone_idx int64
+		key      gdextension.StringName
+	}{bone_idx, gdextension.StringName(pointers.Get(gd.InternalStringName(key))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -608,13 +590,11 @@ Sets bone metadata for [param bone_idx], will set the [param key] meta to [param
 */
 //go:nosplit
 func (self class) SetBoneMeta(bone_idx int64, key String.Name, value variant.Any) { //gd:Skeleton3D.set_bone_meta
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(key)))
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_bone_meta, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_set_bone_meta, 0|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
+		bone_idx int64
+		key      gdextension.StringName
+		value    gdextension.Variant
+	}{bone_idx, gdextension.StringName(pointers.Get(gd.InternalStringName(key))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
 }
 
 /*
@@ -623,11 +603,8 @@ It is useful to set it as a hint for the enum property.
 */
 //go:nosplit
 func (self class) GetConcatenatedBoneNames() String.Name { //gd:Skeleton3D.get_concatenated_bone_names
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_concatenated_bone_names, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_get_concatenated_bone_names, gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
@@ -637,12 +614,8 @@ Returns the bone index which is the parent of the bone at [param bone_idx]. If -
 */
 //go:nosplit
 func (self class) GetBoneParent(bone_idx int64) int64 { //gd:Skeleton3D.get_bone_parent
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_parent, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_get_bone_parent, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_idx int64 }{bone_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -652,12 +625,10 @@ Sets the bone index [param parent_idx] as the parent of the bone at [param bone_
 */
 //go:nosplit
 func (self class) SetBoneParent(bone_idx int64, parent_idx int64) { //gd:Skeleton3D.set_bone_parent
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	callframe.Arg(frame, parent_idx)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_bone_parent, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_set_bone_parent, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		bone_idx   int64
+		parent_idx int64
+	}{bone_idx, parent_idx}))
 }
 
 /*
@@ -665,11 +636,8 @@ Returns the number of bones in the skeleton.
 */
 //go:nosplit
 func (self class) GetBoneCount() int64 { //gd:Skeleton3D.get_bone_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_get_bone_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -680,11 +648,8 @@ Use for invalidating caches in IK solvers and other nodes which process bones.
 */
 //go:nosplit
 func (self class) GetVersion() int64 { //gd:Skeleton3D.get_version
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_version, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_get_version, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -693,11 +658,7 @@ Unparents the bone at [param bone_idx] and sets its rest position to that of its
 */
 //go:nosplit
 func (self class) UnparentBoneAndRest(bone_idx int64) { //gd:Skeleton3D.unparent_bone_and_rest
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_unparent_bone_and_rest, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_unparent_bone_and_rest, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_idx int64 }{bone_idx}))
 }
 
 /*
@@ -705,12 +666,8 @@ Returns an array containing the bone indexes of all the child node of the passed
 */
 //go:nosplit
 func (self class) GetBoneChildren(bone_idx int64) Packed.Array[int32] { //gd:Skeleton3D.get_bone_children
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_children, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_get_bone_children, gdextension.SizePackedArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_idx int64 }{bone_idx}))
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -719,11 +676,8 @@ Returns an array with all of the bones that are parentless. Another way to look 
 */
 //go:nosplit
 func (self class) GetParentlessBones() Packed.Array[int32] { //gd:Skeleton3D.get_parentless_bones
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_parentless_bones, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_get_parentless_bones, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -732,12 +686,8 @@ Returns the rest transform for a bone [param bone_idx].
 */
 //go:nosplit
 func (self class) GetBoneRest(bone_idx int64) Transform3D.BasisOrigin { //gd:Skeleton3D.get_bone_rest
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_rest, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = gd.Transposed(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[Transform3D.BasisOrigin](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_get_bone_rest, gdextension.SizeTransform3D|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_idx int64 }{bone_idx}))
+	var ret = gd.Transposed(r_ret)
 	return ret
 }
 
@@ -746,12 +696,10 @@ Sets the rest transform for bone [param bone_idx].
 */
 //go:nosplit
 func (self class) SetBoneRest(bone_idx int64, rest Transform3D.BasisOrigin) { //gd:Skeleton3D.set_bone_rest
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	callframe.Arg(frame, gd.Transposed(rest))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_bone_rest, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_set_bone_rest, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
+		bone_idx int64
+		rest     Transform3D.BasisOrigin
+	}{bone_idx, gd.Transposed(rest)}))
 }
 
 /*
@@ -759,22 +707,15 @@ Returns the global rest transform for [param bone_idx].
 */
 //go:nosplit
 func (self class) GetBoneGlobalRest(bone_idx int64) Transform3D.BasisOrigin { //gd:Skeleton3D.get_bone_global_rest
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_global_rest, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = gd.Transposed(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[Transform3D.BasisOrigin](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_get_bone_global_rest, gdextension.SizeTransform3D|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_idx int64 }{bone_idx}))
+	var ret = gd.Transposed(r_ret)
 	return ret
 }
 
 //go:nosplit
 func (self class) CreateSkinFromRestTransforms() [1]gdclass.Skin { //gd:Skeleton3D.create_skin_from_rest_transforms
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_create_skin_from_rest_transforms, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Skin{gd.PointerWithOwnershipTransferredToGo[gdclass.Skin](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_create_skin_from_rest_transforms, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.Skin{gd.PointerWithOwnershipTransferredToGo[gdclass.Skin](r_ret)}
 	return ret
 }
 
@@ -783,12 +724,8 @@ Binds the given Skin to the Skeleton.
 */
 //go:nosplit
 func (self class) RegisterSkin(skin [1]gdclass.Skin) [1]gdclass.SkinReference { //gd:Skeleton3D.register_skin
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(skin[0])[0])
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_register_skin, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.SkinReference{gd.PointerWithOwnershipTransferredToGo[gdclass.SkinReference](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_register_skin, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ skin gdextension.Object }{gdextension.Object(pointers.Get(skin[0])[0])}))
+	var ret = [1]gdclass.SkinReference{gd.PointerWithOwnershipTransferredToGo[gdclass.SkinReference](r_ret)}
 	return ret
 }
 
@@ -797,10 +734,7 @@ Returns all bones in the skeleton to their rest poses.
 */
 //go:nosplit
 func (self class) LocalizeRests() { //gd:Skeleton3D.localize_rests
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_localize_rests, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_localize_rests, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -808,10 +742,7 @@ Clear all the bones in this skeleton.
 */
 //go:nosplit
 func (self class) ClearBones() { //gd:Skeleton3D.clear_bones
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_clear_bones, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_clear_bones, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -820,12 +751,8 @@ Returns the pose transform of the specified bone.
 */
 //go:nosplit
 func (self class) GetBonePose(bone_idx int64) Transform3D.BasisOrigin { //gd:Skeleton3D.get_bone_pose
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = gd.Transposed(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[Transform3D.BasisOrigin](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_get_bone_pose, gdextension.SizeTransform3D|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_idx int64 }{bone_idx}))
+	var ret = gd.Transposed(r_ret)
 	return ret
 }
 
@@ -834,12 +761,10 @@ Sets the pose transform, [param pose], for the bone at [param bone_idx].
 */
 //go:nosplit
 func (self class) SetBonePose(bone_idx int64, pose Transform3D.BasisOrigin) { //gd:Skeleton3D.set_bone_pose
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	callframe.Arg(frame, gd.Transposed(pose))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_bone_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_set_bone_pose, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
+		bone_idx int64
+		pose     Transform3D.BasisOrigin
+	}{bone_idx, gd.Transposed(pose)}))
 }
 
 /*
@@ -847,12 +772,10 @@ Sets the pose position of the bone at [param bone_idx] to [param position]. [par
 */
 //go:nosplit
 func (self class) SetBonePosePosition(bone_idx int64, position Vector3.XYZ) { //gd:Skeleton3D.set_bone_pose_position
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	callframe.Arg(frame, position)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_bone_pose_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_set_bone_pose_position, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+		bone_idx int64
+		position Vector3.XYZ
+	}{bone_idx, position}))
 }
 
 /*
@@ -860,12 +783,10 @@ Sets the pose rotation of the bone at [param bone_idx] to [param rotation]. [par
 */
 //go:nosplit
 func (self class) SetBonePoseRotation(bone_idx int64, rotation Quaternion.IJKX) { //gd:Skeleton3D.set_bone_pose_rotation
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	callframe.Arg(frame, rotation)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_bone_pose_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_set_bone_pose_rotation, 0|(gdextension.SizeInt<<4)|(gdextension.SizeQuaternion<<8), unsafe.Pointer(&struct {
+		bone_idx int64
+		rotation Quaternion.IJKX
+	}{bone_idx, rotation}))
 }
 
 /*
@@ -873,12 +794,10 @@ Sets the pose scale of the bone at [param bone_idx] to [param scale].
 */
 //go:nosplit
 func (self class) SetBonePoseScale(bone_idx int64, scale Vector3.XYZ) { //gd:Skeleton3D.set_bone_pose_scale
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	callframe.Arg(frame, scale)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_bone_pose_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_set_bone_pose_scale, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+		bone_idx int64
+		scale    Vector3.XYZ
+	}{bone_idx, scale}))
 }
 
 /*
@@ -886,12 +805,8 @@ Returns the pose position of the bone at [param bone_idx]. The returned [Vector3
 */
 //go:nosplit
 func (self class) GetBonePosePosition(bone_idx int64) Vector3.XYZ { //gd:Skeleton3D.get_bone_pose_position
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_pose_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_get_bone_pose_position, gdextension.SizeVector3|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_idx int64 }{bone_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -900,12 +815,8 @@ Returns the pose rotation of the bone at [param bone_idx]. The returned [Quatern
 */
 //go:nosplit
 func (self class) GetBonePoseRotation(bone_idx int64) Quaternion.IJKX { //gd:Skeleton3D.get_bone_pose_rotation
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Ret[Quaternion.IJKX](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_pose_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Quaternion.IJKX](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_get_bone_pose_rotation, gdextension.SizeQuaternion|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_idx int64 }{bone_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -914,12 +825,8 @@ Returns the pose scale of the bone at [param bone_idx].
 */
 //go:nosplit
 func (self class) GetBonePoseScale(bone_idx int64) Vector3.XYZ { //gd:Skeleton3D.get_bone_pose_scale
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_pose_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_get_bone_pose_scale, gdextension.SizeVector3|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_idx int64 }{bone_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -928,11 +835,7 @@ Sets the bone pose to rest for [param bone_idx].
 */
 //go:nosplit
 func (self class) ResetBonePose(bone_idx int64) { //gd:Skeleton3D.reset_bone_pose
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_reset_bone_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_reset_bone_pose, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_idx int64 }{bone_idx}))
 }
 
 /*
@@ -940,10 +843,7 @@ Sets all bone poses to rests.
 */
 //go:nosplit
 func (self class) ResetBonePoses() { //gd:Skeleton3D.reset_bone_poses
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_reset_bone_poses, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_reset_bone_poses, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -951,12 +851,8 @@ Returns whether the bone pose for the bone at [param bone_idx] is enabled.
 */
 //go:nosplit
 func (self class) IsBoneEnabled(bone_idx int64) bool { //gd:Skeleton3D.is_bone_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_is_bone_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_is_bone_enabled, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_idx int64 }{bone_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -965,12 +861,10 @@ Disables the pose for the bone at [param bone_idx] if [code]false[/code], enable
 */
 //go:nosplit
 func (self class) SetBoneEnabled(bone_idx int64, enabled bool) { //gd:Skeleton3D.set_bone_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_bone_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_set_bone_enabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		bone_idx int64
+		enabled  bool
+	}{bone_idx, enabled}))
 }
 
 /*
@@ -979,12 +873,8 @@ Returns the overall transform of the specified bone, with respect to the skeleto
 */
 //go:nosplit
 func (self class) GetBoneGlobalPose(bone_idx int64) Transform3D.BasisOrigin { //gd:Skeleton3D.get_bone_global_pose
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_global_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = gd.Transposed(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[Transform3D.BasisOrigin](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_get_bone_global_pose, gdextension.SizeTransform3D|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_idx int64 }{bone_idx}))
+	var ret = gd.Transposed(r_ret)
 	return ret
 }
 
@@ -994,12 +884,10 @@ Sets the global pose transform, [param pose], for the bone at [param bone_idx].
 */
 //go:nosplit
 func (self class) SetBoneGlobalPose(bone_idx int64, pose Transform3D.BasisOrigin) { //gd:Skeleton3D.set_bone_global_pose
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	callframe.Arg(frame, gd.Transposed(pose))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_bone_global_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_set_bone_global_pose, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
+		bone_idx int64
+		pose     Transform3D.BasisOrigin
+	}{bone_idx, gd.Transposed(pose)}))
 }
 
 /*
@@ -1007,10 +895,7 @@ Force updates the bone transforms/poses for all bones in the skeleton.
 */
 //go:nosplit
 func (self class) ForceUpdateAllBoneTransforms() { //gd:Skeleton3D.force_update_all_bone_transforms
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_force_update_all_bone_transforms, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_force_update_all_bone_transforms, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1018,67 +903,42 @@ Force updates the bone transform for the bone at [param bone_idx] and all of its
 */
 //go:nosplit
 func (self class) ForceUpdateBoneChildTransform(bone_idx int64) { //gd:Skeleton3D.force_update_bone_child_transform
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_force_update_bone_child_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_force_update_bone_child_transform, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_idx int64 }{bone_idx}))
 }
 
 //go:nosplit
 func (self class) SetMotionScale(motion_scale float64) { //gd:Skeleton3D.set_motion_scale
-	var frame = callframe.New()
-	callframe.Arg(frame, motion_scale)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_motion_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_set_motion_scale, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ motion_scale float64 }{motion_scale}))
 }
 
 //go:nosplit
 func (self class) GetMotionScale() float64 { //gd:Skeleton3D.get_motion_scale
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_motion_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_get_motion_scale, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShowRestOnly(enabled bool) { //gd:Skeleton3D.set_show_rest_only
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_show_rest_only, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_set_show_rest_only, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsShowRestOnly() bool { //gd:Skeleton3D.is_show_rest_only
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_is_show_rest_only, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_is_show_rest_only, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetModifierCallbackModeProcess(mode ModifierCallbackModeProcess) { //gd:Skeleton3D.set_modifier_callback_mode_process
-	var frame = callframe.New()
-	callframe.Arg(frame, mode)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_modifier_callback_mode_process, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_set_modifier_callback_mode_process, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode ModifierCallbackModeProcess }{mode}))
 }
 
 //go:nosplit
 func (self class) GetModifierCallbackModeProcess() ModifierCallbackModeProcess { //gd:Skeleton3D.get_modifier_callback_mode_process
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[ModifierCallbackModeProcess](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_modifier_callback_mode_process, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[ModifierCallbackModeProcess](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_get_modifier_callback_mode_process, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1087,10 +947,7 @@ Removes the global pose override on all bones in the skeleton.
 */
 //go:nosplit
 func (self class) ClearBonesGlobalPoseOverride() { //gd:Skeleton3D.clear_bones_global_pose_override
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_clear_bones_global_pose_override, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_clear_bones_global_pose_override, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1100,14 +957,12 @@ Sets the global pose transform, [param pose], for the bone at [param bone_idx].
 */
 //go:nosplit
 func (self class) SetBoneGlobalPoseOverride(bone_idx int64, pose Transform3D.BasisOrigin, amount float64, persistent bool) { //gd:Skeleton3D.set_bone_global_pose_override
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	callframe.Arg(frame, gd.Transposed(pose))
-	callframe.Arg(frame, amount)
-	callframe.Arg(frame, persistent)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_bone_global_pose_override, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_set_bone_global_pose_override, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+		bone_idx   int64
+		pose       Transform3D.BasisOrigin
+		amount     float64
+		persistent bool
+	}{bone_idx, gd.Transposed(pose), amount, persistent}))
 }
 
 /*
@@ -1115,12 +970,8 @@ Returns the global pose override transform for [param bone_idx].
 */
 //go:nosplit
 func (self class) GetBoneGlobalPoseOverride(bone_idx int64) Transform3D.BasisOrigin { //gd:Skeleton3D.get_bone_global_pose_override
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_global_pose_override, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = gd.Transposed(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[Transform3D.BasisOrigin](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_get_bone_global_pose_override, gdextension.SizeTransform3D|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_idx int64 }{bone_idx}))
+	var ret = gd.Transposed(r_ret)
 	return ret
 }
 
@@ -1129,31 +980,20 @@ Returns the overall transform of the specified bone, with respect to the skeleto
 */
 //go:nosplit
 func (self class) GetBoneGlobalPoseNoOverride(bone_idx int64) Transform3D.BasisOrigin { //gd:Skeleton3D.get_bone_global_pose_no_override
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_bone_global_pose_no_override, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = gd.Transposed(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[Transform3D.BasisOrigin](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_get_bone_global_pose_no_override, gdextension.SizeTransform3D|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_idx int64 }{bone_idx}))
+	var ret = gd.Transposed(r_ret)
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAnimatePhysicalBones(enabled bool) { //gd:Skeleton3D.set_animate_physical_bones
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_set_animate_physical_bones, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_set_animate_physical_bones, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) GetAnimatePhysicalBones() bool { //gd:Skeleton3D.get_animate_physical_bones
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_get_animate_physical_bones, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_get_animate_physical_bones, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1162,10 +1002,7 @@ Tells the [PhysicalBone3D] nodes in the Skeleton to stop simulating.
 */
 //go:nosplit
 func (self class) PhysicalBonesStopSimulation() { //gd:Skeleton3D.physical_bones_stop_simulation
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_physical_bones_stop_simulation, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_physical_bones_stop_simulation, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1174,11 +1011,7 @@ Optionally, a list of bone names can be passed-in, allowing only the passed-in b
 */
 //go:nosplit
 func (self class) PhysicalBonesStartSimulation(bones Array.Contains[String.Name]) { //gd:Skeleton3D.physical_bones_start_simulation
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(bones)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_physical_bones_start_simulation, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_physical_bones_start_simulation, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ bones gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(bones))[0])}))
 }
 
 /*
@@ -1187,11 +1020,7 @@ Works just like the [RigidBody3D] node.
 */
 //go:nosplit
 func (self class) PhysicalBonesAddCollisionException(exception RID.Any) { //gd:Skeleton3D.physical_bones_add_collision_exception
-	var frame = callframe.New()
-	callframe.Arg(frame, exception)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_physical_bones_add_collision_exception, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_physical_bones_add_collision_exception, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ exception RID.Any }{exception}))
 }
 
 /*
@@ -1200,11 +1029,7 @@ Works just like the [RigidBody3D] node.
 */
 //go:nosplit
 func (self class) PhysicalBonesRemoveCollisionException(exception RID.Any) { //gd:Skeleton3D.physical_bones_remove_collision_exception
-	var frame = callframe.New()
-	callframe.Arg(frame, exception)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Skeleton3D.Bind_physical_bones_remove_collision_exception, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_physical_bones_remove_collision_exception, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ exception RID.Any }{exception}))
 }
 func (self Instance) OnRestUpdated(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("rest_updated"), gd.NewCallable(cb), 0)

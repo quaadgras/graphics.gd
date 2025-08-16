@@ -9,6 +9,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +51,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -117,12 +121,10 @@ Register a [PhysicsServer2D] implementation by passing a [param name] and a [Cal
 */
 //go:nosplit
 func (self class) RegisterServer(name String.Readable, create_callback Callable.Function) { //gd:PhysicsServer2DManager.register_server
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	callframe.Arg(frame, pointers.Get(gd.InternalCallable(create_callback)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2DManager.Bind_register_server, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2DManager.Bind_register_server, 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
+		name            gdextension.String
+		create_callback gdextension.Callable
+	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(create_callback)))}))
 }
 
 /*
@@ -130,12 +132,10 @@ Set the default [PhysicsServer2D] implementation to the one identified by [param
 */
 //go:nosplit
 func (self class) SetDefaultServer(name String.Readable, priority int64) { //gd:PhysicsServer2DManager.set_default_server
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	callframe.Arg(frame, priority)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2DManager.Bind_set_default_server, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer2DManager.Bind_set_default_server, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		name     gdextension.String
+		priority int64
+	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), priority}))
 }
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

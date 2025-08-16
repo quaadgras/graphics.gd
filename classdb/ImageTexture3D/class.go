@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +53,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -122,17 +126,15 @@ Creates the [ImageTexture3D] with specified [param width], [param height], and [
 */
 //go:nosplit
 func (self class) Create(format Image.Format, width int64, height int64, depth int64, use_mipmaps bool, data Array.Contains[[1]gdclass.Image]) Error.Code { //gd:ImageTexture3D.create
-	var frame = callframe.New()
-	callframe.Arg(frame, format)
-	callframe.Arg(frame, width)
-	callframe.Arg(frame, height)
-	callframe.Arg(frame, depth)
-	callframe.Arg(frame, use_mipmaps)
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(data)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTexture3D.Bind_create, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ImageTexture3D.Bind_create, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeArray<<24), unsafe.Pointer(&struct {
+		format      Image.Format
+		width       int64
+		height      int64
+		depth       int64
+		use_mipmaps bool
+		data        gdextension.Array
+	}{format, width, height, depth, use_mipmaps, gdextension.Array(pointers.Get(gd.InternalArray(data))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -141,11 +143,7 @@ Replaces the texture's existing data with the layers specified in [param data]. 
 */
 //go:nosplit
 func (self class) Update(data Array.Contains[[1]gdclass.Image]) { //gd:ImageTexture3D.update
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(data)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ImageTexture3D.Bind_update, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ImageTexture3D.Bind_update, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ data gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(data))[0])}))
 }
 func (self class) AsImageTexture3D() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsImageTexture3D() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

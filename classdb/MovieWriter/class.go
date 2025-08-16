@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -50,6 +52,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -348,11 +352,7 @@ Adds a writer to be usable by the engine. The supported file extensions can be s
 */
 //go:nosplit
 func (self class) AddWriter(writer [1]gdclass.MovieWriter) { //gd:MovieWriter.add_writer
-	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(writer[0].AsObject()[0]))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.MovieWriter.Bind_add_writer, frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.CallStatic[struct{}](gd.Global.Methods.MovieWriter.Bind_add_writer, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ writer gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(writer[0].AsObject()[0]))}))
 }
 func (self class) AsMovieWriter() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsMovieWriter() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

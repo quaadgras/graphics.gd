@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -50,6 +52,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -109,11 +113,7 @@ func (self Instance) SetAabb(value AABB.PositionSize) {
 
 //go:nosplit
 func (self class) SetAabb(aabb AABB.PositionSize) { //gd:PlaceholderMesh.set_aabb
-	var frame = callframe.New()
-	callframe.Arg(frame, aabb)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PlaceholderMesh.Bind_set_aabb, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PlaceholderMesh.Bind_set_aabb, 0|(gdextension.SizeAABB<<4), unsafe.Pointer(&struct{ aabb AABB.PositionSize }{aabb}))
 }
 func (self class) AsPlaceholderMesh() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsPlaceholderMesh() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

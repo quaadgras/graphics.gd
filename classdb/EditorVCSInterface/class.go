@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -47,6 +49,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -895,15 +899,13 @@ Helper function to create a [Dictionary] for storing a line diff. [param new_lin
 */
 //go:nosplit
 func (self class) CreateDiffLine(new_line_no int64, old_line_no int64, content String.Readable, status String.Readable) Dictionary.Any { //gd:EditorVCSInterface.create_diff_line
-	var frame = callframe.New()
-	callframe.Arg(frame, new_line_no)
-	callframe.Arg(frame, old_line_no)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(content)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(status)))
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorVCSInterface.Bind_create_diff_line, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorVCSInterface.Bind_create_diff_line, gdextension.SizeDictionary|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16), unsafe.Pointer(&struct {
+		new_line_no int64
+		old_line_no int64
+		content     gdextension.String
+		status      gdextension.String
+	}{new_line_no, old_line_no, gdextension.String(pointers.Get(gd.InternalString(content))[0]), gdextension.String(pointers.Get(gd.InternalString(status))[0])}))
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 
@@ -912,15 +914,13 @@ Helper function to create a [Dictionary] for storing diff hunk data. [param old_
 */
 //go:nosplit
 func (self class) CreateDiffHunk(old_start int64, new_start int64, old_lines int64, new_lines int64) Dictionary.Any { //gd:EditorVCSInterface.create_diff_hunk
-	var frame = callframe.New()
-	callframe.Arg(frame, old_start)
-	callframe.Arg(frame, new_start)
-	callframe.Arg(frame, old_lines)
-	callframe.Arg(frame, new_lines)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorVCSInterface.Bind_create_diff_hunk, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorVCSInterface.Bind_create_diff_hunk, gdextension.SizeDictionary|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
+		old_start int64
+		new_start int64
+		old_lines int64
+		new_lines int64
+	}{old_start, new_start, old_lines, new_lines}))
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 
@@ -929,13 +929,11 @@ Helper function to create a [Dictionary] for storing old and new diff file paths
 */
 //go:nosplit
 func (self class) CreateDiffFile(new_file String.Readable, old_file String.Readable) Dictionary.Any { //gd:EditorVCSInterface.create_diff_file
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(new_file)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(old_file)))
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorVCSInterface.Bind_create_diff_file, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorVCSInterface.Bind_create_diff_file, gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+		new_file gdextension.String
+		old_file gdextension.String
+	}{gdextension.String(pointers.Get(gd.InternalString(new_file))[0]), gdextension.String(pointers.Get(gd.InternalString(old_file))[0])}))
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 
@@ -944,16 +942,14 @@ Helper function to create a commit [Dictionary] item. [param msg] is the commit 
 */
 //go:nosplit
 func (self class) CreateCommit(msg String.Readable, author String.Readable, id String.Readable, unix_timestamp int64, offset_minutes int64) Dictionary.Any { //gd:EditorVCSInterface.create_commit
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(msg)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(author)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(id)))
-	callframe.Arg(frame, unix_timestamp)
-	callframe.Arg(frame, offset_minutes)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorVCSInterface.Bind_create_commit, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorVCSInterface.Bind_create_commit, gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
+		msg            gdextension.String
+		author         gdextension.String
+		id             gdextension.String
+		unix_timestamp int64
+		offset_minutes int64
+	}{gdextension.String(pointers.Get(gd.InternalString(msg))[0]), gdextension.String(pointers.Get(gd.InternalString(author))[0]), gdextension.String(pointers.Get(gd.InternalString(id))[0]), unix_timestamp, offset_minutes}))
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 
@@ -962,14 +958,12 @@ Helper function to create a [Dictionary] used by editor to read the status of a 
 */
 //go:nosplit
 func (self class) CreateStatusFile(file_path String.Readable, change_type ChangeType, area TreeArea) Dictionary.Any { //gd:EditorVCSInterface.create_status_file
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(file_path)))
-	callframe.Arg(frame, change_type)
-	callframe.Arg(frame, area)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorVCSInterface.Bind_create_status_file, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorVCSInterface.Bind_create_status_file, gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+		file_path   gdextension.String
+		change_type ChangeType
+		area        TreeArea
+	}{gdextension.String(pointers.Get(gd.InternalString(file_path))[0]), change_type, area}))
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 
@@ -978,13 +972,11 @@ Helper function to add an array of [param diff_hunks] into a [param diff_file].
 */
 //go:nosplit
 func (self class) AddDiffHunksIntoDiffFile(diff_file Dictionary.Any, diff_hunks Array.Contains[Dictionary.Any]) Dictionary.Any { //gd:EditorVCSInterface.add_diff_hunks_into_diff_file
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(diff_file)))
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(diff_hunks)))
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorVCSInterface.Bind_add_diff_hunks_into_diff_file, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorVCSInterface.Bind_add_diff_hunks_into_diff_file, gdextension.SizeDictionary|(gdextension.SizeDictionary<<4)|(gdextension.SizeArray<<8), unsafe.Pointer(&struct {
+		diff_file  gdextension.Dictionary
+		diff_hunks gdextension.Array
+	}{gdextension.Dictionary(pointers.Get(gd.InternalDictionary(diff_file))[0]), gdextension.Array(pointers.Get(gd.InternalArray(diff_hunks))[0])}))
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 
@@ -993,13 +985,11 @@ Helper function to add an array of [param line_diffs] into a [param diff_hunk].
 */
 //go:nosplit
 func (self class) AddLineDiffsIntoDiffHunk(diff_hunk Dictionary.Any, line_diffs Array.Contains[Dictionary.Any]) Dictionary.Any { //gd:EditorVCSInterface.add_line_diffs_into_diff_hunk
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(diff_hunk)))
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(line_diffs)))
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorVCSInterface.Bind_add_line_diffs_into_diff_hunk, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorVCSInterface.Bind_add_line_diffs_into_diff_hunk, gdextension.SizeDictionary|(gdextension.SizeDictionary<<4)|(gdextension.SizeArray<<8), unsafe.Pointer(&struct {
+		diff_hunk  gdextension.Dictionary
+		line_diffs gdextension.Array
+	}{gdextension.Dictionary(pointers.Get(gd.InternalDictionary(diff_hunk))[0]), gdextension.Array(pointers.Get(gd.InternalArray(line_diffs))[0])}))
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 
@@ -1008,11 +998,7 @@ Pops up an error message in the editor which is shown as coming from the underly
 */
 //go:nosplit
 func (self class) PopupError(msg String.Readable) { //gd:EditorVCSInterface.popup_error
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(msg)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorVCSInterface.Bind_popup_error, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorVCSInterface.Bind_popup_error, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ msg gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(msg))[0])}))
 }
 func (self class) AsEditorVCSInterface() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsEditorVCSInterface() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

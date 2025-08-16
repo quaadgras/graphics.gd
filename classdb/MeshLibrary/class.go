@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -53,6 +55,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -282,11 +286,7 @@ You can get an unused ID from [method get_last_unused_item_id].
 */
 //go:nosplit
 func (self class) CreateItem(id int64) { //gd:MeshLibrary.create_item
-	var frame = callframe.New()
-	callframe.Arg(frame, id)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_create_item, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MeshLibrary.Bind_create_item, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
 }
 
 /*
@@ -295,12 +295,10 @@ This name is shown in the editor. It can also be used to look up the item later 
 */
 //go:nosplit
 func (self class) SetItemName(id int64, name String.Readable) { //gd:MeshLibrary.set_item_name
-	var frame = callframe.New()
-	callframe.Arg(frame, id)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_set_item_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MeshLibrary.Bind_set_item_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+		id   int64
+		name gdextension.String
+	}{id, gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
 }
 
 /*
@@ -308,12 +306,10 @@ Sets the item's mesh.
 */
 //go:nosplit
 func (self class) SetItemMesh(id int64, mesh [1]gdclass.Mesh) { //gd:MeshLibrary.set_item_mesh
-	var frame = callframe.New()
-	callframe.Arg(frame, id)
-	callframe.Arg(frame, pointers.Get(mesh[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_set_item_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MeshLibrary.Bind_set_item_mesh, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+		id   int64
+		mesh gdextension.Object
+	}{id, gdextension.Object(pointers.Get(mesh[0])[0])}))
 }
 
 /*
@@ -321,12 +317,10 @@ Sets the transform to apply to the item's mesh.
 */
 //go:nosplit
 func (self class) SetItemMeshTransform(id int64, mesh_transform Transform3D.BasisOrigin) { //gd:MeshLibrary.set_item_mesh_transform
-	var frame = callframe.New()
-	callframe.Arg(frame, id)
-	callframe.Arg(frame, gd.Transposed(mesh_transform))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_set_item_mesh_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MeshLibrary.Bind_set_item_mesh_transform, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
+		id             int64
+		mesh_transform Transform3D.BasisOrigin
+	}{id, gd.Transposed(mesh_transform)}))
 }
 
 /*
@@ -334,12 +328,10 @@ Sets the item's shadow casting mode. See [enum RenderingServer.ShadowCastingSett
 */
 //go:nosplit
 func (self class) SetItemMeshCastShadow(id int64, shadow_casting_setting RenderingServer.ShadowCastingSetting) { //gd:MeshLibrary.set_item_mesh_cast_shadow
-	var frame = callframe.New()
-	callframe.Arg(frame, id)
-	callframe.Arg(frame, shadow_casting_setting)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_set_item_mesh_cast_shadow, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MeshLibrary.Bind_set_item_mesh_cast_shadow, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		id                     int64
+		shadow_casting_setting RenderingServer.ShadowCastingSetting
+	}{id, shadow_casting_setting}))
 }
 
 /*
@@ -347,12 +339,10 @@ Sets the item's navigation mesh.
 */
 //go:nosplit
 func (self class) SetItemNavigationMesh(id int64, navigation_mesh [1]gdclass.NavigationMesh) { //gd:MeshLibrary.set_item_navigation_mesh
-	var frame = callframe.New()
-	callframe.Arg(frame, id)
-	callframe.Arg(frame, pointers.Get(navigation_mesh[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_set_item_navigation_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MeshLibrary.Bind_set_item_navigation_mesh, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+		id              int64
+		navigation_mesh gdextension.Object
+	}{id, gdextension.Object(pointers.Get(navigation_mesh[0])[0])}))
 }
 
 /*
@@ -360,12 +350,10 @@ Sets the transform to apply to the item's navigation mesh.
 */
 //go:nosplit
 func (self class) SetItemNavigationMeshTransform(id int64, navigation_mesh Transform3D.BasisOrigin) { //gd:MeshLibrary.set_item_navigation_mesh_transform
-	var frame = callframe.New()
-	callframe.Arg(frame, id)
-	callframe.Arg(frame, gd.Transposed(navigation_mesh))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_set_item_navigation_mesh_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MeshLibrary.Bind_set_item_navigation_mesh_transform, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
+		id              int64
+		navigation_mesh Transform3D.BasisOrigin
+	}{id, gd.Transposed(navigation_mesh)}))
 }
 
 /*
@@ -373,12 +361,10 @@ Sets the item's navigation layers bitmask.
 */
 //go:nosplit
 func (self class) SetItemNavigationLayers(id int64, navigation_layers int64) { //gd:MeshLibrary.set_item_navigation_layers
-	var frame = callframe.New()
-	callframe.Arg(frame, id)
-	callframe.Arg(frame, navigation_layers)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_set_item_navigation_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MeshLibrary.Bind_set_item_navigation_layers, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		id                int64
+		navigation_layers int64
+	}{id, navigation_layers}))
 }
 
 /*
@@ -387,12 +373,10 @@ The array should consist of [Shape3D] objects, each followed by a [Transform3D] 
 */
 //go:nosplit
 func (self class) SetItemShapes(id int64, shapes Array.Any) { //gd:MeshLibrary.set_item_shapes
-	var frame = callframe.New()
-	callframe.Arg(frame, id)
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(shapes)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_set_item_shapes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MeshLibrary.Bind_set_item_shapes, 0|(gdextension.SizeInt<<4)|(gdextension.SizeArray<<8), unsafe.Pointer(&struct {
+		id     int64
+		shapes gdextension.Array
+	}{id, gdextension.Array(pointers.Get(gd.InternalArray(shapes))[0])}))
 }
 
 /*
@@ -400,12 +384,10 @@ Sets a texture to use as the item's preview icon in the editor.
 */
 //go:nosplit
 func (self class) SetItemPreview(id int64, texture [1]gdclass.Texture2D) { //gd:MeshLibrary.set_item_preview
-	var frame = callframe.New()
-	callframe.Arg(frame, id)
-	callframe.Arg(frame, pointers.Get(texture[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_set_item_preview, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MeshLibrary.Bind_set_item_preview, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+		id      int64
+		texture gdextension.Object
+	}{id, gdextension.Object(pointers.Get(texture[0])[0])}))
 }
 
 /*
@@ -413,12 +395,8 @@ Returns the item's name.
 */
 //go:nosplit
 func (self class) GetItemName(id int64) String.Readable { //gd:MeshLibrary.get_item_name
-	var frame = callframe.New()
-	callframe.Arg(frame, id)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_get_item_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.MeshLibrary.Bind_get_item_name, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -427,12 +405,8 @@ Returns the item's mesh.
 */
 //go:nosplit
 func (self class) GetItemMesh(id int64) [1]gdclass.Mesh { //gd:MeshLibrary.get_item_mesh
-	var frame = callframe.New()
-	callframe.Arg(frame, id)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_get_item_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Mesh{gd.PointerWithOwnershipTransferredToGo[gdclass.Mesh](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.MeshLibrary.Bind_get_item_mesh, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var ret = [1]gdclass.Mesh{gd.PointerWithOwnershipTransferredToGo[gdclass.Mesh](r_ret)}
 	return ret
 }
 
@@ -441,12 +415,8 @@ Returns the transform applied to the item's mesh.
 */
 //go:nosplit
 func (self class) GetItemMeshTransform(id int64) Transform3D.BasisOrigin { //gd:MeshLibrary.get_item_mesh_transform
-	var frame = callframe.New()
-	callframe.Arg(frame, id)
-	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_get_item_mesh_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = gd.Transposed(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[Transform3D.BasisOrigin](self.AsObject(), gd.Global.Methods.MeshLibrary.Bind_get_item_mesh_transform, gdextension.SizeTransform3D|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var ret = gd.Transposed(r_ret)
 	return ret
 }
 
@@ -455,12 +425,8 @@ Returns the item's shadow casting mode. See [enum RenderingServer.ShadowCastingS
 */
 //go:nosplit
 func (self class) GetItemMeshCastShadow(id int64) RenderingServer.ShadowCastingSetting { //gd:MeshLibrary.get_item_mesh_cast_shadow
-	var frame = callframe.New()
-	callframe.Arg(frame, id)
-	var r_ret = callframe.Ret[RenderingServer.ShadowCastingSetting](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_get_item_mesh_cast_shadow, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RenderingServer.ShadowCastingSetting](self.AsObject(), gd.Global.Methods.MeshLibrary.Bind_get_item_mesh_cast_shadow, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var ret = r_ret
 	return ret
 }
 
@@ -469,12 +435,8 @@ Returns the item's navigation mesh.
 */
 //go:nosplit
 func (self class) GetItemNavigationMesh(id int64) [1]gdclass.NavigationMesh { //gd:MeshLibrary.get_item_navigation_mesh
-	var frame = callframe.New()
-	callframe.Arg(frame, id)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_get_item_navigation_mesh, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.NavigationMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.NavigationMesh](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.MeshLibrary.Bind_get_item_navigation_mesh, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var ret = [1]gdclass.NavigationMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.NavigationMesh](r_ret)}
 	return ret
 }
 
@@ -483,12 +445,8 @@ Returns the transform applied to the item's navigation mesh.
 */
 //go:nosplit
 func (self class) GetItemNavigationMeshTransform(id int64) Transform3D.BasisOrigin { //gd:MeshLibrary.get_item_navigation_mesh_transform
-	var frame = callframe.New()
-	callframe.Arg(frame, id)
-	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_get_item_navigation_mesh_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = gd.Transposed(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[Transform3D.BasisOrigin](self.AsObject(), gd.Global.Methods.MeshLibrary.Bind_get_item_navigation_mesh_transform, gdextension.SizeTransform3D|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var ret = gd.Transposed(r_ret)
 	return ret
 }
 
@@ -497,12 +455,8 @@ Returns the item's navigation layers bitmask.
 */
 //go:nosplit
 func (self class) GetItemNavigationLayers(id int64) int64 { //gd:MeshLibrary.get_item_navigation_layers
-	var frame = callframe.New()
-	callframe.Arg(frame, id)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_get_item_navigation_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.MeshLibrary.Bind_get_item_navigation_layers, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var ret = r_ret
 	return ret
 }
 
@@ -512,12 +466,8 @@ The array consists of each [Shape3D] followed by its [Transform3D].
 */
 //go:nosplit
 func (self class) GetItemShapes(id int64) Array.Any { //gd:MeshLibrary.get_item_shapes
-	var frame = callframe.New()
-	callframe.Arg(frame, id)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_get_item_shapes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.MeshLibrary.Bind_get_item_shapes, gdextension.SizeArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -526,12 +476,8 @@ When running in the editor, returns a generated item preview (a 3D rendering in 
 */
 //go:nosplit
 func (self class) GetItemPreview(id int64) [1]gdclass.Texture2D { //gd:MeshLibrary.get_item_preview
-	var frame = callframe.New()
-	callframe.Arg(frame, id)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_get_item_preview, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.MeshLibrary.Bind_get_item_preview, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
 
@@ -540,11 +486,7 @@ Removes the item.
 */
 //go:nosplit
 func (self class) RemoveItem(id int64) { //gd:MeshLibrary.remove_item
-	var frame = callframe.New()
-	callframe.Arg(frame, id)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_remove_item, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MeshLibrary.Bind_remove_item, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
 }
 
 /*
@@ -552,12 +494,8 @@ Returns the first item with the given name, or [code]-1[/code] if no item is fou
 */
 //go:nosplit
 func (self class) FindItemByName(name String.Readable) int64 { //gd:MeshLibrary.find_item_by_name
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_find_item_by_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.MeshLibrary.Bind_find_item_by_name, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -566,10 +504,7 @@ Clears the library.
 */
 //go:nosplit
 func (self class) Clear() { //gd:MeshLibrary.clear
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MeshLibrary.Bind_clear, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -577,11 +512,8 @@ Returns the list of item IDs in use.
 */
 //go:nosplit
 func (self class) GetItemList() Packed.Array[int32] { //gd:MeshLibrary.get_item_list
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_get_item_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.MeshLibrary.Bind_get_item_list, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -590,11 +522,8 @@ Gets an unused ID for a new item.
 */
 //go:nosplit
 func (self class) GetLastUnusedItemId() int64 { //gd:MeshLibrary.get_last_unused_item_id
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MeshLibrary.Bind_get_last_unused_item_id, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.MeshLibrary.Bind_get_last_unused_item_id, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsMeshLibrary() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

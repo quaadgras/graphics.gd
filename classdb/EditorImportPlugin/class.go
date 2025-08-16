@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +50,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -812,15 +816,13 @@ This function can only be called during the [method _import] callback and it all
 */
 //go:nosplit
 func (self class) AppendImportExternalResource(path String.Readable, custom_options Dictionary.Any, custom_importer String.Readable, generator_parameters variant.Any) Error.Code { //gd:EditorImportPlugin.append_import_external_resource
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(custom_options)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(custom_importer)))
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(generator_parameters)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorImportPlugin.Bind_append_import_external_resource, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.EditorImportPlugin.Bind_append_import_external_resource, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeDictionary<<8)|(gdextension.SizeString<<12)|(gdextension.SizeVariant<<16), unsafe.Pointer(&struct {
+		path                 gdextension.String
+		custom_options       gdextension.Dictionary
+		custom_importer      gdextension.String
+		generator_parameters gdextension.Variant
+	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), gdextension.Dictionary(pointers.Get(gd.InternalDictionary(custom_options))[0]), gdextension.String(pointers.Get(gd.InternalString(custom_importer))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(generator_parameters)))}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 func (self class) AsEditorImportPlugin() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

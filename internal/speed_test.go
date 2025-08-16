@@ -5,12 +5,13 @@ package gd_test
 import (
 	"testing"
 
+	"graphics.gd/classdb/Engine"
 	"graphics.gd/classdb/GDScript"
 	gd "graphics.gd/internal"
 	"graphics.gd/variant/Object"
 )
 
-func BenchmarkMethodBindPointerCall(B *testing.B) {
+func BenchmarkBuiltinPointerCall(B *testing.B) {
 	B.ReportAllocs()
 	s := gd.NewString("Hello, World!")
 	var sum int64
@@ -19,6 +20,13 @@ func BenchmarkMethodBindPointerCall(B *testing.B) {
 	}
 	if sum != int64(B.N)*int64(len("Hello, World!")) {
 		B.Fail()
+	}
+}
+
+func BenchmarkMethodBindCall(B *testing.B) {
+	B.ReportAllocs()
+	for i := 0; i < B.N; i++ {
+		Engine.GetFramesPerSecond()
 	}
 }
 

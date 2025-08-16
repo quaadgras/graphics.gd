@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -50,6 +52,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -271,12 +275,8 @@ Setup the DTLS server to use the given [param server_options]. See [method TLSOp
 */
 //go:nosplit
 func (self class) Setup(server_options [1]gdclass.TLSOptions) Error.Code { //gd:DTLSServer.setup
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(server_options[0])[0])
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DTLSServer.Bind_setup, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.DTLSServer.Bind_setup, gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ server_options gdextension.Object }{gdextension.Object(pointers.Get(server_options[0])[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -286,12 +286,8 @@ Try to initiate the DTLS handshake with the given [param udp_peer] which must be
 */
 //go:nosplit
 func (self class) TakeConnection(udp_peer [1]gdclass.PacketPeerUDP) [1]gdclass.PacketPeerDTLS { //gd:DTLSServer.take_connection
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(udp_peer[0])[0])
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DTLSServer.Bind_take_connection, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.PacketPeerDTLS{gd.PointerWithOwnershipTransferredToGo[gdclass.PacketPeerDTLS](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.DTLSServer.Bind_take_connection, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ udp_peer gdextension.Object }{gdextension.Object(pointers.Get(udp_peer[0])[0])}))
+	var ret = [1]gdclass.PacketPeerDTLS{gd.PointerWithOwnershipTransferredToGo[gdclass.PacketPeerDTLS](r_ret)}
 	return ret
 }
 func (self class) AsDTLSServer() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

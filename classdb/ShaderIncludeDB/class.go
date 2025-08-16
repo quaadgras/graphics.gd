@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -47,6 +49,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -126,11 +130,8 @@ Returns a list of built-in include files that are currently registered.
 */
 //go:nosplit
 func (self class) ListBuiltInIncludeFiles() Packed.Strings { //gd:ShaderIncludeDB.list_built_in_include_files
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.ShaderIncludeDB.Bind_list_built_in_include_files, frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.CallStatic[gd.PackedPointers](gd.Global.Methods.ShaderIncludeDB.Bind_list_built_in_include_files, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -139,12 +140,8 @@ Returns [code]true[/code] if an include file with this name exists.
 */
 //go:nosplit
 func (self class) HasBuiltInIncludeFile(filename String.Readable) bool { //gd:ShaderIncludeDB.has_built_in_include_file
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(filename)))
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.ShaderIncludeDB.Bind_has_built_in_include_file, frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.CallStatic[bool](gd.Global.Methods.ShaderIncludeDB.Bind_has_built_in_include_file, gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ filename gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(filename))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -153,12 +150,8 @@ Returns the code for the built-in shader fragment. You can also access this in y
 */
 //go:nosplit
 func (self class) GetBuiltInIncludeFile(filename String.Readable) String.Readable { //gd:ShaderIncludeDB.get_built_in_include_file
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(filename)))
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.ShaderIncludeDB.Bind_get_built_in_include_file, frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.CallStatic[[1]gd.EnginePointer](gd.Global.Methods.ShaderIncludeDB.Bind_get_built_in_include_file, gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ filename gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(filename))[0])}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) AsShaderIncludeDB() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

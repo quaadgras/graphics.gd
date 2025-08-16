@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -57,6 +59,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -408,20 +412,13 @@ func (class) _draw_port(impl func(ptr unsafe.Pointer, slot_index int64, position
 
 //go:nosplit
 func (self class) SetTitle(title String.Readable) { //gd:GraphNode.set_title
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(title)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_set_title, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GraphNode.Bind_set_title, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ title gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(title))[0])}))
 }
 
 //go:nosplit
 func (self class) GetTitle() String.Readable { //gd:GraphNode.get_title
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_title, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.GraphNode.Bind_get_title, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -430,11 +427,8 @@ Returns the [HBoxContainer] used for the title bar, only containing a [Label] fo
 */
 //go:nosplit
 func (self class) GetTitlebarHbox() [1]gdclass.HBoxContainer { //gd:GraphNode.get_titlebar_hbox
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_titlebar_hbox, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.HBoxContainer{gd.PointerLifetimeBoundTo[gdclass.HBoxContainer](self.AsObject(), r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.GraphNode.Bind_get_titlebar_hbox, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.HBoxContainer{gd.PointerLifetimeBoundTo[gdclass.HBoxContainer](self.AsObject(), r_ret)}
 	return ret
 }
 
@@ -449,20 +443,18 @@ Individual properties can also be set using one of the [code]set_slot_*[/code] m
 */
 //go:nosplit
 func (self class) SetSlot(slot_index int64, enable_left_port bool, type_left int64, color_left Color.RGBA, enable_right_port bool, type_right int64, color_right Color.RGBA, custom_icon_left [1]gdclass.Texture2D, custom_icon_right [1]gdclass.Texture2D, draw_stylebox bool) { //gd:GraphNode.set_slot
-	var frame = callframe.New()
-	callframe.Arg(frame, slot_index)
-	callframe.Arg(frame, enable_left_port)
-	callframe.Arg(frame, type_left)
-	callframe.Arg(frame, color_left)
-	callframe.Arg(frame, enable_right_port)
-	callframe.Arg(frame, type_right)
-	callframe.Arg(frame, color_right)
-	callframe.Arg(frame, pointers.Get(custom_icon_left[0])[0])
-	callframe.Arg(frame, pointers.Get(custom_icon_right[0])[0])
-	callframe.Arg(frame, draw_stylebox)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_set_slot, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GraphNode.Bind_set_slot, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeColor<<28)|(gdextension.SizeObject<<32)|(gdextension.SizeObject<<36)|(gdextension.SizeBool<<40), unsafe.Pointer(&struct {
+		slot_index        int64
+		enable_left_port  bool
+		type_left         int64
+		color_left        Color.RGBA
+		enable_right_port bool
+		type_right        int64
+		color_right       Color.RGBA
+		custom_icon_left  gdextension.Object
+		custom_icon_right gdextension.Object
+		draw_stylebox     bool
+	}{slot_index, enable_left_port, type_left, color_left, enable_right_port, type_right, color_right, gdextension.Object(pointers.Get(custom_icon_left[0])[0]), gdextension.Object(pointers.Get(custom_icon_right[0])[0]), draw_stylebox}))
 }
 
 /*
@@ -470,11 +462,7 @@ Disables the slot with the given [param slot_index]. This will remove the corres
 */
 //go:nosplit
 func (self class) ClearSlot(slot_index int64) { //gd:GraphNode.clear_slot
-	var frame = callframe.New()
-	callframe.Arg(frame, slot_index)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_clear_slot, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GraphNode.Bind_clear_slot, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ slot_index int64 }{slot_index}))
 }
 
 /*
@@ -482,10 +470,7 @@ Disables all slots of the GraphNode. This will remove all input/output ports fro
 */
 //go:nosplit
 func (self class) ClearAllSlots() { //gd:GraphNode.clear_all_slots
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_clear_all_slots, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GraphNode.Bind_clear_all_slots, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -493,12 +478,8 @@ Returns [code]true[/code] if left (input) side of the slot with the given [param
 */
 //go:nosplit
 func (self class) IsSlotEnabledLeft(slot_index int64) bool { //gd:GraphNode.is_slot_enabled_left
-	var frame = callframe.New()
-	callframe.Arg(frame, slot_index)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_is_slot_enabled_left, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.GraphNode.Bind_is_slot_enabled_left, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ slot_index int64 }{slot_index}))
+	var ret = r_ret
 	return ret
 }
 
@@ -507,12 +488,10 @@ Toggles the left (input) side of the slot with the given [param slot_index]. If 
 */
 //go:nosplit
 func (self class) SetSlotEnabledLeft(slot_index int64, enable bool) { //gd:GraphNode.set_slot_enabled_left
-	var frame = callframe.New()
-	callframe.Arg(frame, slot_index)
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_set_slot_enabled_left, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GraphNode.Bind_set_slot_enabled_left, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		slot_index int64
+		enable     bool
+	}{slot_index, enable}))
 }
 
 /*
@@ -520,12 +499,10 @@ Sets the left (input) type of the slot with the given [param slot_index] to [par
 */
 //go:nosplit
 func (self class) SetSlotTypeLeft(slot_index int64, atype int64) { //gd:GraphNode.set_slot_type_left
-	var frame = callframe.New()
-	callframe.Arg(frame, slot_index)
-	callframe.Arg(frame, atype)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_set_slot_type_left, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GraphNode.Bind_set_slot_type_left, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		slot_index int64
+		atype      int64
+	}{slot_index, atype}))
 }
 
 /*
@@ -533,12 +510,8 @@ Returns the left (input) type of the slot with the given [param slot_index].
 */
 //go:nosplit
 func (self class) GetSlotTypeLeft(slot_index int64) int64 { //gd:GraphNode.get_slot_type_left
-	var frame = callframe.New()
-	callframe.Arg(frame, slot_index)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_slot_type_left, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.GraphNode.Bind_get_slot_type_left, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ slot_index int64 }{slot_index}))
+	var ret = r_ret
 	return ret
 }
 
@@ -547,12 +520,10 @@ Sets the [Color] of the left (input) side of the slot with the given [param slot
 */
 //go:nosplit
 func (self class) SetSlotColorLeft(slot_index int64, color Color.RGBA) { //gd:GraphNode.set_slot_color_left
-	var frame = callframe.New()
-	callframe.Arg(frame, slot_index)
-	callframe.Arg(frame, color)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_set_slot_color_left, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GraphNode.Bind_set_slot_color_left, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
+		slot_index int64
+		color      Color.RGBA
+	}{slot_index, color}))
 }
 
 /*
@@ -560,12 +531,8 @@ Returns the left (input) [Color] of the slot with the given [param slot_index].
 */
 //go:nosplit
 func (self class) GetSlotColorLeft(slot_index int64) Color.RGBA { //gd:GraphNode.get_slot_color_left
-	var frame = callframe.New()
-	callframe.Arg(frame, slot_index)
-	var r_ret = callframe.Ret[Color.RGBA](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_slot_color_left, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Color.RGBA](self.AsObject(), gd.Global.Methods.GraphNode.Bind_get_slot_color_left, gdextension.SizeColor|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ slot_index int64 }{slot_index}))
+	var ret = r_ret
 	return ret
 }
 
@@ -574,12 +541,10 @@ Sets the custom [Texture2D] of the left (input) side of the slot with the given 
 */
 //go:nosplit
 func (self class) SetSlotCustomIconLeft(slot_index int64, custom_icon [1]gdclass.Texture2D) { //gd:GraphNode.set_slot_custom_icon_left
-	var frame = callframe.New()
-	callframe.Arg(frame, slot_index)
-	callframe.Arg(frame, pointers.Get(custom_icon[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_set_slot_custom_icon_left, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GraphNode.Bind_set_slot_custom_icon_left, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+		slot_index  int64
+		custom_icon gdextension.Object
+	}{slot_index, gdextension.Object(pointers.Get(custom_icon[0])[0])}))
 }
 
 /*
@@ -587,12 +552,8 @@ Returns the left (input) custom [Texture2D] of the slot with the given [param sl
 */
 //go:nosplit
 func (self class) GetSlotCustomIconLeft(slot_index int64) [1]gdclass.Texture2D { //gd:GraphNode.get_slot_custom_icon_left
-	var frame = callframe.New()
-	callframe.Arg(frame, slot_index)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_slot_custom_icon_left, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.GraphNode.Bind_get_slot_custom_icon_left, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ slot_index int64 }{slot_index}))
+	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
 
@@ -601,12 +562,8 @@ Returns [code]true[/code] if right (output) side of the slot with the given [par
 */
 //go:nosplit
 func (self class) IsSlotEnabledRight(slot_index int64) bool { //gd:GraphNode.is_slot_enabled_right
-	var frame = callframe.New()
-	callframe.Arg(frame, slot_index)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_is_slot_enabled_right, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.GraphNode.Bind_is_slot_enabled_right, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ slot_index int64 }{slot_index}))
+	var ret = r_ret
 	return ret
 }
 
@@ -615,12 +572,10 @@ Toggles the right (output) side of the slot with the given [param slot_index]. I
 */
 //go:nosplit
 func (self class) SetSlotEnabledRight(slot_index int64, enable bool) { //gd:GraphNode.set_slot_enabled_right
-	var frame = callframe.New()
-	callframe.Arg(frame, slot_index)
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_set_slot_enabled_right, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GraphNode.Bind_set_slot_enabled_right, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		slot_index int64
+		enable     bool
+	}{slot_index, enable}))
 }
 
 /*
@@ -628,12 +583,10 @@ Sets the right (output) type of the slot with the given [param slot_index] to [p
 */
 //go:nosplit
 func (self class) SetSlotTypeRight(slot_index int64, atype int64) { //gd:GraphNode.set_slot_type_right
-	var frame = callframe.New()
-	callframe.Arg(frame, slot_index)
-	callframe.Arg(frame, atype)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_set_slot_type_right, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GraphNode.Bind_set_slot_type_right, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		slot_index int64
+		atype      int64
+	}{slot_index, atype}))
 }
 
 /*
@@ -641,12 +594,8 @@ Returns the right (output) type of the slot with the given [param slot_index].
 */
 //go:nosplit
 func (self class) GetSlotTypeRight(slot_index int64) int64 { //gd:GraphNode.get_slot_type_right
-	var frame = callframe.New()
-	callframe.Arg(frame, slot_index)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_slot_type_right, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.GraphNode.Bind_get_slot_type_right, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ slot_index int64 }{slot_index}))
+	var ret = r_ret
 	return ret
 }
 
@@ -655,12 +604,10 @@ Sets the [Color] of the right (output) side of the slot with the given [param sl
 */
 //go:nosplit
 func (self class) SetSlotColorRight(slot_index int64, color Color.RGBA) { //gd:GraphNode.set_slot_color_right
-	var frame = callframe.New()
-	callframe.Arg(frame, slot_index)
-	callframe.Arg(frame, color)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_set_slot_color_right, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GraphNode.Bind_set_slot_color_right, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
+		slot_index int64
+		color      Color.RGBA
+	}{slot_index, color}))
 }
 
 /*
@@ -668,12 +615,8 @@ Returns the right (output) [Color] of the slot with the given [param slot_index]
 */
 //go:nosplit
 func (self class) GetSlotColorRight(slot_index int64) Color.RGBA { //gd:GraphNode.get_slot_color_right
-	var frame = callframe.New()
-	callframe.Arg(frame, slot_index)
-	var r_ret = callframe.Ret[Color.RGBA](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_slot_color_right, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Color.RGBA](self.AsObject(), gd.Global.Methods.GraphNode.Bind_get_slot_color_right, gdextension.SizeColor|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ slot_index int64 }{slot_index}))
+	var ret = r_ret
 	return ret
 }
 
@@ -682,12 +625,10 @@ Sets the custom [Texture2D] of the right (output) side of the slot with the give
 */
 //go:nosplit
 func (self class) SetSlotCustomIconRight(slot_index int64, custom_icon [1]gdclass.Texture2D) { //gd:GraphNode.set_slot_custom_icon_right
-	var frame = callframe.New()
-	callframe.Arg(frame, slot_index)
-	callframe.Arg(frame, pointers.Get(custom_icon[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_set_slot_custom_icon_right, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GraphNode.Bind_set_slot_custom_icon_right, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+		slot_index  int64
+		custom_icon gdextension.Object
+	}{slot_index, gdextension.Object(pointers.Get(custom_icon[0])[0])}))
 }
 
 /*
@@ -695,12 +636,8 @@ Returns the right (output) custom [Texture2D] of the slot with the given [param 
 */
 //go:nosplit
 func (self class) GetSlotCustomIconRight(slot_index int64) [1]gdclass.Texture2D { //gd:GraphNode.get_slot_custom_icon_right
-	var frame = callframe.New()
-	callframe.Arg(frame, slot_index)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_slot_custom_icon_right, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.GraphNode.Bind_get_slot_custom_icon_right, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ slot_index int64 }{slot_index}))
+	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
 
@@ -709,12 +646,8 @@ Returns [code]true[/code] if the background [StyleBox] of the slot with the give
 */
 //go:nosplit
 func (self class) IsSlotDrawStylebox(slot_index int64) bool { //gd:GraphNode.is_slot_draw_stylebox
-	var frame = callframe.New()
-	callframe.Arg(frame, slot_index)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_is_slot_draw_stylebox, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.GraphNode.Bind_is_slot_draw_stylebox, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ slot_index int64 }{slot_index}))
+	var ret = r_ret
 	return ret
 }
 
@@ -723,30 +656,21 @@ Toggles the background [StyleBox] of the slot with the given [param slot_index].
 */
 //go:nosplit
 func (self class) SetSlotDrawStylebox(slot_index int64, enable bool) { //gd:GraphNode.set_slot_draw_stylebox
-	var frame = callframe.New()
-	callframe.Arg(frame, slot_index)
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_set_slot_draw_stylebox, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GraphNode.Bind_set_slot_draw_stylebox, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		slot_index int64
+		enable     bool
+	}{slot_index, enable}))
 }
 
 //go:nosplit
 func (self class) SetIgnoreInvalidConnectionType(ignore bool) { //gd:GraphNode.set_ignore_invalid_connection_type
-	var frame = callframe.New()
-	callframe.Arg(frame, ignore)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_set_ignore_invalid_connection_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GraphNode.Bind_set_ignore_invalid_connection_type, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ ignore bool }{ignore}))
 }
 
 //go:nosplit
 func (self class) IsIgnoringValidConnectionType() bool { //gd:GraphNode.is_ignoring_valid_connection_type
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_is_ignoring_valid_connection_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.GraphNode.Bind_is_ignoring_valid_connection_type, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -755,11 +679,8 @@ Returns the number of slots with an enabled input port.
 */
 //go:nosplit
 func (self class) GetInputPortCount() int64 { //gd:GraphNode.get_input_port_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_input_port_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.GraphNode.Bind_get_input_port_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -768,12 +689,8 @@ Returns the position of the input port with the given [param port_idx].
 */
 //go:nosplit
 func (self class) GetInputPortPosition(port_idx int64) Vector2.XY { //gd:GraphNode.get_input_port_position
-	var frame = callframe.New()
-	callframe.Arg(frame, port_idx)
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_input_port_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.GraphNode.Bind_get_input_port_position, gdextension.SizeVector2|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ port_idx int64 }{port_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -782,12 +699,8 @@ Returns the type of the input port with the given [param port_idx].
 */
 //go:nosplit
 func (self class) GetInputPortType(port_idx int64) int64 { //gd:GraphNode.get_input_port_type
-	var frame = callframe.New()
-	callframe.Arg(frame, port_idx)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_input_port_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.GraphNode.Bind_get_input_port_type, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ port_idx int64 }{port_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -796,12 +709,8 @@ Returns the [Color] of the input port with the given [param port_idx].
 */
 //go:nosplit
 func (self class) GetInputPortColor(port_idx int64) Color.RGBA { //gd:GraphNode.get_input_port_color
-	var frame = callframe.New()
-	callframe.Arg(frame, port_idx)
-	var r_ret = callframe.Ret[Color.RGBA](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_input_port_color, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Color.RGBA](self.AsObject(), gd.Global.Methods.GraphNode.Bind_get_input_port_color, gdextension.SizeColor|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ port_idx int64 }{port_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -810,12 +719,8 @@ Returns the corresponding slot index of the input port with the given [param por
 */
 //go:nosplit
 func (self class) GetInputPortSlot(port_idx int64) int64 { //gd:GraphNode.get_input_port_slot
-	var frame = callframe.New()
-	callframe.Arg(frame, port_idx)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_input_port_slot, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.GraphNode.Bind_get_input_port_slot, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ port_idx int64 }{port_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -824,11 +729,8 @@ Returns the number of slots with an enabled output port.
 */
 //go:nosplit
 func (self class) GetOutputPortCount() int64 { //gd:GraphNode.get_output_port_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_output_port_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.GraphNode.Bind_get_output_port_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -837,12 +739,8 @@ Returns the position of the output port with the given [param port_idx].
 */
 //go:nosplit
 func (self class) GetOutputPortPosition(port_idx int64) Vector2.XY { //gd:GraphNode.get_output_port_position
-	var frame = callframe.New()
-	callframe.Arg(frame, port_idx)
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_output_port_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.GraphNode.Bind_get_output_port_position, gdextension.SizeVector2|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ port_idx int64 }{port_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -851,12 +749,8 @@ Returns the type of the output port with the given [param port_idx].
 */
 //go:nosplit
 func (self class) GetOutputPortType(port_idx int64) int64 { //gd:GraphNode.get_output_port_type
-	var frame = callframe.New()
-	callframe.Arg(frame, port_idx)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_output_port_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.GraphNode.Bind_get_output_port_type, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ port_idx int64 }{port_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -865,12 +759,8 @@ Returns the [Color] of the output port with the given [param port_idx].
 */
 //go:nosplit
 func (self class) GetOutputPortColor(port_idx int64) Color.RGBA { //gd:GraphNode.get_output_port_color
-	var frame = callframe.New()
-	callframe.Arg(frame, port_idx)
-	var r_ret = callframe.Ret[Color.RGBA](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_output_port_color, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Color.RGBA](self.AsObject(), gd.Global.Methods.GraphNode.Bind_get_output_port_color, gdextension.SizeColor|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ port_idx int64 }{port_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -879,12 +769,8 @@ Returns the corresponding slot index of the output port with the given [param po
 */
 //go:nosplit
 func (self class) GetOutputPortSlot(port_idx int64) int64 { //gd:GraphNode.get_output_port_slot
-	var frame = callframe.New()
-	callframe.Arg(frame, port_idx)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphNode.Bind_get_output_port_slot, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.GraphNode.Bind_get_output_port_slot, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ port_idx int64 }{port_idx}))
+	var ret = r_ret
 	return ret
 }
 func (self Instance) OnSlotUpdated(cb func(slot_index int)) {

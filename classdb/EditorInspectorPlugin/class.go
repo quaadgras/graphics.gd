@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +51,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -347,11 +351,7 @@ Adds a custom control, which is not necessarily a property editor.
 */
 //go:nosplit
 func (self class) AddCustomControl(control [1]gdclass.Control) { //gd:EditorInspectorPlugin.add_custom_control
-	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0]))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInspectorPlugin.Bind_add_custom_control, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInspectorPlugin.Bind_add_custom_control, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ control gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0]))}))
 }
 
 /*
@@ -361,14 +361,12 @@ There can be multiple property editors for a property. If [param add_to_end] is 
 */
 //go:nosplit
 func (self class) AddPropertyEditor(property String.Readable, editor [1]gdclass.Control, add_to_end bool, label String.Readable) { //gd:EditorInspectorPlugin.add_property_editor
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(property)))
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(editor[0].AsObject()[0]))
-	callframe.Arg(frame, add_to_end)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInspectorPlugin.Bind_add_property_editor, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInspectorPlugin.Bind_add_property_editor, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeString<<16), unsafe.Pointer(&struct {
+		property   gdextension.String
+		editor     gdextension.Object
+		add_to_end bool
+		label      gdextension.String
+	}{gdextension.String(pointers.Get(gd.InternalString(property))[0]), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(editor[0].AsObject()[0])), add_to_end, gdextension.String(pointers.Get(gd.InternalString(label))[0])}))
 }
 
 /*
@@ -376,13 +374,11 @@ Adds an editor that allows modifying multiple properties. The [param editor] con
 */
 //go:nosplit
 func (self class) AddPropertyEditorForMultipleProperties(label String.Readable, properties Packed.Strings, editor [1]gdclass.Control) { //gd:EditorInspectorPlugin.add_property_editor_for_multiple_properties
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
-	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(properties)))
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(editor[0].AsObject()[0]))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorInspectorPlugin.Bind_add_property_editor_for_multiple_properties, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInspectorPlugin.Bind_add_property_editor_for_multiple_properties, 0|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
+		label      gdextension.String
+		properties gdextension.PackedArray
+		editor     gdextension.Object
+	}{gdextension.String(pointers.Get(gd.InternalString(label))[0]), gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(properties))), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(editor[0].AsObject()[0]))}))
 }
 func (self class) AsEditorInspectorPlugin() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsEditorInspectorPlugin() Instance { return *((*Instance)(unsafe.Pointer(&self))) }

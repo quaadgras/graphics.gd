@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +50,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -285,11 +289,7 @@ Sets the [param extension_class] as the default [WebRTCPeerConnectionExtension] 
 */
 //go:nosplit
 func (self class) SetDefaultExtension(extension_class String.Name) { //gd:WebRTCPeerConnection.set_default_extension
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(extension_class)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.WebRTCPeerConnection.Bind_set_default_extension, frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.CallStatic[struct{}](gd.Global.Methods.WebRTCPeerConnection.Bind_set_default_extension, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ extension_class gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(extension_class))[0])}))
 }
 
 /*
@@ -312,12 +312,8 @@ Valid [param configuration] options are:
 */
 //go:nosplit
 func (self class) Initialize(configuration Dictionary.Any) Error.Code { //gd:WebRTCPeerConnection.initialize
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(configuration)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_initialize, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.WebRTCPeerConnection.Bind_initialize, gdextension.SizeInt|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ configuration gdextension.Dictionary }{gdextension.Dictionary(pointers.Get(gd.InternalDictionary(configuration))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -342,13 +338,11 @@ Valid [param options] are:
 */
 //go:nosplit
 func (self class) CreateDataChannel(label String.Readable, options Dictionary.Any) [1]gdclass.WebRTCDataChannel { //gd:WebRTCPeerConnection.create_data_channel
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
-	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(options)))
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_create_data_channel, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.WebRTCDataChannel{gd.PointerWithOwnershipTransferredToGo[gdclass.WebRTCDataChannel](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.WebRTCPeerConnection.Bind_create_data_channel, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeDictionary<<8), unsafe.Pointer(&struct {
+		label   gdextension.String
+		options gdextension.Dictionary
+	}{gdextension.String(pointers.Get(gd.InternalString(label))[0]), gdextension.Dictionary(pointers.Get(gd.InternalDictionary(options))[0])}))
+	var ret = [1]gdclass.WebRTCDataChannel{gd.PointerWithOwnershipTransferredToGo[gdclass.WebRTCDataChannel](r_ret)}
 	return ret
 }
 
@@ -358,11 +352,8 @@ If this functions returns [constant OK], [signal session_description_created] wi
 */
 //go:nosplit
 func (self class) CreateOffer() Error.Code { //gd:WebRTCPeerConnection.create_offer
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_create_offer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.WebRTCPeerConnection.Bind_create_offer, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -372,13 +363,11 @@ After calling this function the peer will start emitting [signal ice_candidate_c
 */
 //go:nosplit
 func (self class) SetLocalDescription(atype String.Readable, sdp String.Readable) Error.Code { //gd:WebRTCPeerConnection.set_local_description
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(atype)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(sdp)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_set_local_description, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.WebRTCPeerConnection.Bind_set_local_description, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+		atype gdextension.String
+		sdp   gdextension.String
+	}{gdextension.String(pointers.Get(gd.InternalString(atype))[0]), gdextension.String(pointers.Get(gd.InternalString(sdp))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -389,13 +378,11 @@ If [param type] is [code]"answer"[/code] the peer will start emitting [signal ic
 */
 //go:nosplit
 func (self class) SetRemoteDescription(atype String.Readable, sdp String.Readable) Error.Code { //gd:WebRTCPeerConnection.set_remote_description
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(atype)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(sdp)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_set_remote_description, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.WebRTCPeerConnection.Bind_set_remote_description, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+		atype gdextension.String
+		sdp   gdextension.String
+	}{gdextension.String(pointers.Get(gd.InternalString(atype))[0]), gdextension.String(pointers.Get(gd.InternalString(sdp))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -404,14 +391,12 @@ Add an ice candidate generated by a remote peer (and received over the signaling
 */
 //go:nosplit
 func (self class) AddIceCandidate(media String.Readable, index int64, name String.Readable) Error.Code { //gd:WebRTCPeerConnection.add_ice_candidate
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(media)))
-	callframe.Arg(frame, index)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_add_ice_candidate, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.WebRTCPeerConnection.Bind_add_ice_candidate, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
+		media gdextension.String
+		index int64
+		name  gdextension.String
+	}{gdextension.String(pointers.Get(gd.InternalString(media))[0]), index, gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -420,11 +405,8 @@ Call this method frequently (e.g. in [method Node._process] or [method Node._phy
 */
 //go:nosplit
 func (self class) Poll() Error.Code { //gd:WebRTCPeerConnection.poll
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_poll, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.WebRTCPeerConnection.Bind_poll, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -434,10 +416,7 @@ Close the peer connection and all data channels associated with it.
 */
 //go:nosplit
 func (self class) Close() { //gd:WebRTCPeerConnection.close
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_close, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.WebRTCPeerConnection.Bind_close, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -445,11 +424,8 @@ Returns the connection state. See [enum ConnectionState].
 */
 //go:nosplit
 func (self class) GetConnectionState() ConnectionState { //gd:WebRTCPeerConnection.get_connection_state
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[ConnectionState](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_get_connection_state, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[ConnectionState](self.AsObject(), gd.Global.Methods.WebRTCPeerConnection.Bind_get_connection_state, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -458,11 +434,8 @@ Returns the ICE [enum GatheringState] of the connection. This lets you detect, f
 */
 //go:nosplit
 func (self class) GetGatheringState() GatheringState { //gd:WebRTCPeerConnection.get_gathering_state
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[GatheringState](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_get_gathering_state, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[GatheringState](self.AsObject(), gd.Global.Methods.WebRTCPeerConnection.Bind_get_gathering_state, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -471,11 +444,8 @@ Returns the signaling state on the local end of the connection while connecting 
 */
 //go:nosplit
 func (self class) GetSignalingState() SignalingState { //gd:WebRTCPeerConnection.get_signaling_state
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[SignalingState](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.WebRTCPeerConnection.Bind_get_signaling_state, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[SignalingState](self.AsObject(), gd.Global.Methods.WebRTCPeerConnection.Bind_get_signaling_state, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self Instance) OnSessionDescriptionCreated(cb func(atype string, sdp string)) {

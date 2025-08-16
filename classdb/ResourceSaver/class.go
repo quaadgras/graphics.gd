@@ -9,6 +9,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -50,6 +52,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -177,14 +181,12 @@ Returns [constant OK] on success.
 */
 //go:nosplit
 func (self class) Save(resource [1]gdclass.Resource, path String.Readable, flags SaverFlags) Error.Code { //gd:ResourceSaver.save
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(resource[0])[0])
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	callframe.Arg(frame, flags)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceSaver.Bind_save, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ResourceSaver.Bind_save, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+		resource gdextension.Object
+		path     gdextension.String
+		flags    SaverFlags
+	}{gdextension.Object(pointers.Get(resource[0])[0]), gdextension.String(pointers.Get(gd.InternalString(path))[0]), flags}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -193,12 +195,8 @@ Returns the list of extensions available for saving a resource of a given type.
 */
 //go:nosplit
 func (self class) GetRecognizedExtensions(atype [1]gdclass.Resource) Packed.Strings { //gd:ResourceSaver.get_recognized_extensions
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(atype[0])[0])
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceSaver.Bind_get_recognized_extensions, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.ResourceSaver.Bind_get_recognized_extensions, gdextension.SizePackedArray|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ atype gdextension.Object }{gdextension.Object(pointers.Get(atype[0])[0])}))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -208,12 +206,10 @@ This method is performed implicitly for ResourceFormatSavers written in GDScript
 */
 //go:nosplit
 func (self class) AddResourceFormatSaver(format_saver [1]gdclass.ResourceFormatSaver, at_front bool) { //gd:ResourceSaver.add_resource_format_saver
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(format_saver[0])[0])
-	callframe.Arg(frame, at_front)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceSaver.Bind_add_resource_format_saver, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ResourceSaver.Bind_add_resource_format_saver, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		format_saver gdextension.Object
+		at_front     bool
+	}{gdextension.Object(pointers.Get(format_saver[0])[0]), at_front}))
 }
 
 /*
@@ -221,11 +217,7 @@ Unregisters the given [ResourceFormatSaver].
 */
 //go:nosplit
 func (self class) RemoveResourceFormatSaver(format_saver [1]gdclass.ResourceFormatSaver) { //gd:ResourceSaver.remove_resource_format_saver
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(format_saver[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceSaver.Bind_remove_resource_format_saver, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ResourceSaver.Bind_remove_resource_format_saver, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ format_saver gdextension.Object }{gdextension.Object(pointers.Get(format_saver[0])[0])}))
 }
 
 /*
@@ -233,13 +225,11 @@ Returns the resource ID for the given path. If [param generate] is [code]true[/c
 */
 //go:nosplit
 func (self class) GetResourceIdForPath(path String.Readable, generate bool) int64 { //gd:ResourceSaver.get_resource_id_for_path
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	callframe.Arg(frame, generate)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceSaver.Bind_get_resource_id_for_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ResourceSaver.Bind_get_resource_id_for_path, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		path     gdextension.String
+		generate bool
+	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), generate}))
+	var ret = r_ret
 	return ret
 }
 func (self class) Virtual(name string) reflect.Value {

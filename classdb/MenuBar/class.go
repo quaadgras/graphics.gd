@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +53,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -235,20 +239,13 @@ func (self Instance) SetLanguage(value string) {
 
 //go:nosplit
 func (self class) SetSwitchOnHover(enable bool) { //gd:MenuBar.set_switch_on_hover
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_set_switch_on_hover, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MenuBar.Bind_set_switch_on_hover, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsSwitchOnHover() bool { //gd:MenuBar.is_switch_on_hover
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_is_switch_on_hover, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.MenuBar.Bind_is_switch_on_hover, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -257,29 +254,18 @@ If [code]true[/code], shortcuts are disabled and cannot be used to trigger the b
 */
 //go:nosplit
 func (self class) SetDisableShortcuts(disabled bool) { //gd:MenuBar.set_disable_shortcuts
-	var frame = callframe.New()
-	callframe.Arg(frame, disabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_set_disable_shortcuts, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MenuBar.Bind_set_disable_shortcuts, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ disabled bool }{disabled}))
 }
 
 //go:nosplit
 func (self class) SetPreferGlobalMenu(enabled bool) { //gd:MenuBar.set_prefer_global_menu
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_set_prefer_global_menu, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MenuBar.Bind_set_prefer_global_menu, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsPreferGlobalMenu() bool { //gd:MenuBar.is_prefer_global_menu
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_is_prefer_global_menu, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.MenuBar.Bind_is_prefer_global_menu, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -288,11 +274,8 @@ Returns [code]true[/code], if system global menu is supported and used by this [
 */
 //go:nosplit
 func (self class) IsNativeMenu() bool { //gd:MenuBar.is_native_menu
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_is_native_menu, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.MenuBar.Bind_is_native_menu, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -301,87 +284,56 @@ Returns number of menu items.
 */
 //go:nosplit
 func (self class) GetMenuCount() int64 { //gd:MenuBar.get_menu_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_get_menu_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.MenuBar.Bind_get_menu_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextDirection(direction Control.TextDirection) { //gd:MenuBar.set_text_direction
-	var frame = callframe.New()
-	callframe.Arg(frame, direction)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_set_text_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MenuBar.Bind_set_text_direction, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ direction Control.TextDirection }{direction}))
 }
 
 //go:nosplit
 func (self class) GetTextDirection() Control.TextDirection { //gd:MenuBar.get_text_direction
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Control.TextDirection](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_get_text_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Control.TextDirection](self.AsObject(), gd.Global.Methods.MenuBar.Bind_get_text_direction, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLanguage(language String.Readable) { //gd:MenuBar.set_language
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_set_language, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MenuBar.Bind_set_language, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ language gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
 }
 
 //go:nosplit
 func (self class) GetLanguage() String.Readable { //gd:MenuBar.get_language
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_get_language, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.MenuBar.Bind_get_language, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFlat(enabled bool) { //gd:MenuBar.set_flat
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_set_flat, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MenuBar.Bind_set_flat, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsFlat() bool { //gd:MenuBar.is_flat
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_is_flat, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.MenuBar.Bind_is_flat, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStartIndex(enabled int64) { //gd:MenuBar.set_start_index
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_set_start_index, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MenuBar.Bind_set_start_index, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ enabled int64 }{enabled}))
 }
 
 //go:nosplit
 func (self class) GetStartIndex() int64 { //gd:MenuBar.get_start_index
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_get_start_index, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.MenuBar.Bind_get_start_index, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -390,12 +342,10 @@ Sets menu item title.
 */
 //go:nosplit
 func (self class) SetMenuTitle(menu int64, title String.Readable) { //gd:MenuBar.set_menu_title
-	var frame = callframe.New()
-	callframe.Arg(frame, menu)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(title)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_set_menu_title, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MenuBar.Bind_set_menu_title, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+		menu  int64
+		title gdextension.String
+	}{menu, gdextension.String(pointers.Get(gd.InternalString(title))[0])}))
 }
 
 /*
@@ -403,12 +353,8 @@ Returns menu item title.
 */
 //go:nosplit
 func (self class) GetMenuTitle(menu int64) String.Readable { //gd:MenuBar.get_menu_title
-	var frame = callframe.New()
-	callframe.Arg(frame, menu)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_get_menu_title, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.MenuBar.Bind_get_menu_title, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ menu int64 }{menu}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -417,12 +363,10 @@ Sets menu item tooltip.
 */
 //go:nosplit
 func (self class) SetMenuTooltip(menu int64, tooltip String.Readable) { //gd:MenuBar.set_menu_tooltip
-	var frame = callframe.New()
-	callframe.Arg(frame, menu)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(tooltip)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_set_menu_tooltip, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MenuBar.Bind_set_menu_tooltip, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+		menu    int64
+		tooltip gdextension.String
+	}{menu, gdextension.String(pointers.Get(gd.InternalString(tooltip))[0])}))
 }
 
 /*
@@ -430,12 +374,8 @@ Returns menu item tooltip.
 */
 //go:nosplit
 func (self class) GetMenuTooltip(menu int64) String.Readable { //gd:MenuBar.get_menu_tooltip
-	var frame = callframe.New()
-	callframe.Arg(frame, menu)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_get_menu_tooltip, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.MenuBar.Bind_get_menu_tooltip, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ menu int64 }{menu}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -444,12 +384,10 @@ If [code]true[/code], menu item is disabled.
 */
 //go:nosplit
 func (self class) SetMenuDisabled(menu int64, disabled bool) { //gd:MenuBar.set_menu_disabled
-	var frame = callframe.New()
-	callframe.Arg(frame, menu)
-	callframe.Arg(frame, disabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_set_menu_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MenuBar.Bind_set_menu_disabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		menu     int64
+		disabled bool
+	}{menu, disabled}))
 }
 
 /*
@@ -457,12 +395,8 @@ Returns [code]true[/code], if menu item is disabled.
 */
 //go:nosplit
 func (self class) IsMenuDisabled(menu int64) bool { //gd:MenuBar.is_menu_disabled
-	var frame = callframe.New()
-	callframe.Arg(frame, menu)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_is_menu_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.MenuBar.Bind_is_menu_disabled, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ menu int64 }{menu}))
+	var ret = r_ret
 	return ret
 }
 
@@ -471,12 +405,10 @@ If [code]true[/code], menu item is hidden.
 */
 //go:nosplit
 func (self class) SetMenuHidden(menu int64, hidden bool) { //gd:MenuBar.set_menu_hidden
-	var frame = callframe.New()
-	callframe.Arg(frame, menu)
-	callframe.Arg(frame, hidden)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_set_menu_hidden, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MenuBar.Bind_set_menu_hidden, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		menu   int64
+		hidden bool
+	}{menu, hidden}))
 }
 
 /*
@@ -484,12 +416,8 @@ Returns [code]true[/code], if menu item is hidden.
 */
 //go:nosplit
 func (self class) IsMenuHidden(menu int64) bool { //gd:MenuBar.is_menu_hidden
-	var frame = callframe.New()
-	callframe.Arg(frame, menu)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_is_menu_hidden, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.MenuBar.Bind_is_menu_hidden, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ menu int64 }{menu}))
+	var ret = r_ret
 	return ret
 }
 
@@ -498,12 +426,8 @@ Returns [PopupMenu] associated with menu item.
 */
 //go:nosplit
 func (self class) GetMenuPopup(menu int64) [1]gdclass.PopupMenu { //gd:MenuBar.get_menu_popup
-	var frame = callframe.New()
-	callframe.Arg(frame, menu)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.MenuBar.Bind_get_menu_popup, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.PopupMenu{gd.PointerLifetimeBoundTo[gdclass.PopupMenu](self.AsObject(), r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.MenuBar.Bind_get_menu_popup, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ menu int64 }{menu}))
+	var ret = [1]gdclass.PopupMenu{gd.PointerLifetimeBoundTo[gdclass.PopupMenu](self.AsObject(), r_ret)}
 	return ret
 }
 func (self class) AsMenuBar() Advanced                 { return *((*Advanced)(unsafe.Pointer(&self))) }

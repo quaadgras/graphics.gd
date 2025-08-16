@@ -14,14 +14,12 @@ import (
 // goRuntime is injected into the scene tree so that the process function can process
 // the frame-based garbage collection routine.
 type goRuntime struct {
-	classdb.Extension[goRuntime, NodeClass.Instance] `gd:"GoRuntime"`
+	NodeClass.Extension[goRuntime] `gd:"GoRuntime"`
 }
 
 func (goRuntime) Ready() {
 	Callable.Cycle()
 }
-
-func (gr goRuntime) AsNode() NodeClass.Instance { return gr.Super().AsNode() }
 
 func (gr goRuntime) ExitTree() {
 	gd.NewCallable(func() {

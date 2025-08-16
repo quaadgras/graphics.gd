@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +50,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -119,11 +123,8 @@ Returns [code]true[/code] if this extension's library has been opened.
 */
 //go:nosplit
 func (self class) IsLibraryOpen() bool { //gd:GDExtension.is_library_open
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GDExtension.Bind_is_library_open, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.GDExtension.Bind_is_library_open, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -132,11 +133,8 @@ Returns the lowest level required for this extension to be properly initialized 
 */
 //go:nosplit
 func (self class) GetMinimumLibraryInitializationLevel() gd.GDExtensionInitializationLevel { //gd:GDExtension.get_minimum_library_initialization_level
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.GDExtensionInitializationLevel](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GDExtension.Bind_get_minimum_library_initialization_level, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.GDExtensionInitializationLevel](self.AsObject(), gd.Global.Methods.GDExtension.Bind_get_minimum_library_initialization_level, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsGDExtension() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +50,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -210,12 +214,10 @@ If [param reset_on_teleport] is [code]true[/code], the animation is played from 
 */
 //go:nosplit
 func (self class) Travel(to_node String.Name, reset_on_teleport bool) { //gd:AnimationNodeStateMachinePlayback.travel
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(to_node)))
-	callframe.Arg(frame, reset_on_teleport)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_travel, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_travel, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		to_node           gdextension.StringName
+		reset_on_teleport bool
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(to_node))[0]), reset_on_teleport}))
 }
 
 /*
@@ -224,12 +226,10 @@ If [param reset] is [code]true[/code], the animation is played from the beginnin
 */
 //go:nosplit
 func (self class) Start(node String.Name, reset bool) { //gd:AnimationNodeStateMachinePlayback.start
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(node)))
-	callframe.Arg(frame, reset)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_start, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_start, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		node  gdextension.StringName
+		reset bool
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(node))[0]), reset}))
 }
 
 /*
@@ -237,10 +237,7 @@ If there is a next path by travel or auto advance, immediately transitions from 
 */
 //go:nosplit
 func (self class) Next() { //gd:AnimationNodeStateMachinePlayback.next
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_next, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_next, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -248,10 +245,7 @@ Stops the currently playing animation.
 */
 //go:nosplit
 func (self class) Stop() { //gd:AnimationNodeStateMachinePlayback.stop
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_stop, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_stop, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -259,11 +253,8 @@ Returns [code]true[/code] if an animation is playing.
 */
 //go:nosplit
 func (self class) IsPlaying() bool { //gd:AnimationNodeStateMachinePlayback.is_playing
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_is_playing, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_is_playing, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -273,11 +264,8 @@ Returns the currently playing animation state.
 */
 //go:nosplit
 func (self class) GetCurrentNode() String.Name { //gd:AnimationNodeStateMachinePlayback.get_current_node
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_get_current_node, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_get_current_node, gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
@@ -286,11 +274,8 @@ Returns the playback position within the current animation state.
 */
 //go:nosplit
 func (self class) GetCurrentPlayPosition() float64 { //gd:AnimationNodeStateMachinePlayback.get_current_play_position
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_get_current_play_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_get_current_play_position, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -300,11 +285,8 @@ Returns the current state length.
 */
 //go:nosplit
 func (self class) GetCurrentLength() float64 { //gd:AnimationNodeStateMachinePlayback.get_current_length
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_get_current_length, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_get_current_length, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -313,11 +295,8 @@ Returns the starting state of currently fading animation.
 */
 //go:nosplit
 func (self class) GetFadingFromNode() String.Name { //gd:AnimationNodeStateMachinePlayback.get_fading_from_node
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_get_fading_from_node, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_get_fading_from_node, gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
@@ -326,11 +305,8 @@ Returns the current travel path as computed internally by the A* algorithm.
 */
 //go:nosplit
 func (self class) GetTravelPath() Array.Contains[String.Name] { //gd:AnimationNodeStateMachinePlayback.get_travel_path
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_get_travel_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_get_travel_path, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 func (self class) AsAnimationNodeStateMachinePlayback() Advanced {

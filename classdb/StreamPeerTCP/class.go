@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +50,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -181,13 +185,11 @@ This method is generally not needed, and only used to force the subsequent call 
 */
 //go:nosplit
 func (self class) Bind(port int64, host String.Readable) Error.Code { //gd:StreamPeerTCP.bind
-	var frame = callframe.New()
-	callframe.Arg(frame, port)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(host)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerTCP.Bind_bind, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.StreamPeerTCP.Bind_bind, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+		port int64
+		host gdextension.String
+	}{port, gdextension.String(pointers.Get(gd.InternalString(host))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -196,13 +198,11 @@ Connects to the specified [code]host:port[/code] pair. A hostname will be resolv
 */
 //go:nosplit
 func (self class) ConnectToHost(host String.Readable, port int64) Error.Code { //gd:StreamPeerTCP.connect_to_host
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(host)))
-	callframe.Arg(frame, port)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerTCP.Bind_connect_to_host, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.StreamPeerTCP.Bind_connect_to_host, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		host gdextension.String
+		port int64
+	}{gdextension.String(pointers.Get(gd.InternalString(host))[0]), port}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -211,11 +211,8 @@ Poll the socket, updating its state. See [method get_status].
 */
 //go:nosplit
 func (self class) Poll() Error.Code { //gd:StreamPeerTCP.poll
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerTCP.Bind_poll, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.StreamPeerTCP.Bind_poll, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -224,11 +221,8 @@ Returns the status of the connection, see [enum Status].
 */
 //go:nosplit
 func (self class) GetStatus() Status { //gd:StreamPeerTCP.get_status
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Status](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerTCP.Bind_get_status, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Status](self.AsObject(), gd.Global.Methods.StreamPeerTCP.Bind_get_status, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -237,11 +231,8 @@ Returns the IP of this peer.
 */
 //go:nosplit
 func (self class) GetConnectedHost() String.Readable { //gd:StreamPeerTCP.get_connected_host
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerTCP.Bind_get_connected_host, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.StreamPeerTCP.Bind_get_connected_host, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -250,11 +241,8 @@ Returns the port of this peer.
 */
 //go:nosplit
 func (self class) GetConnectedPort() int64 { //gd:StreamPeerTCP.get_connected_port
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerTCP.Bind_get_connected_port, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.StreamPeerTCP.Bind_get_connected_port, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -263,11 +251,8 @@ Returns the local port to which this peer is bound.
 */
 //go:nosplit
 func (self class) GetLocalPort() int64 { //gd:StreamPeerTCP.get_local_port
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerTCP.Bind_get_local_port, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.StreamPeerTCP.Bind_get_local_port, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -276,10 +261,7 @@ Disconnects from host.
 */
 //go:nosplit
 func (self class) DisconnectFromHost() { //gd:StreamPeerTCP.disconnect_from_host
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerTCP.Bind_disconnect_from_host, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.StreamPeerTCP.Bind_disconnect_from_host, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -288,11 +270,7 @@ If [param enabled] is [code]true[/code], packets will be sent immediately. If [p
 */
 //go:nosplit
 func (self class) SetNoDelay(enabled bool) { //gd:StreamPeerTCP.set_no_delay
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.StreamPeerTCP.Bind_set_no_delay, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.StreamPeerTCP.Bind_set_no_delay, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 func (self class) AsStreamPeerTCP() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsStreamPeerTCP() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

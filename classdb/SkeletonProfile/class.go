@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +53,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -290,58 +294,37 @@ func (self Instance) SetBoneSize(value int) {
 
 //go:nosplit
 func (self class) SetRootBone(bone_name String.Name) { //gd:SkeletonProfile.set_root_bone
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(bone_name)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonProfile.Bind_set_root_bone, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonProfile.Bind_set_root_bone, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ bone_name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(bone_name))[0])}))
 }
 
 //go:nosplit
 func (self class) GetRootBone() String.Name { //gd:SkeletonProfile.get_root_bone
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonProfile.Bind_get_root_bone, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.SkeletonProfile.Bind_get_root_bone, gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScaleBaseBone(bone_name String.Name) { //gd:SkeletonProfile.set_scale_base_bone
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(bone_name)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonProfile.Bind_set_scale_base_bone, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonProfile.Bind_set_scale_base_bone, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ bone_name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(bone_name))[0])}))
 }
 
 //go:nosplit
 func (self class) GetScaleBaseBone() String.Name { //gd:SkeletonProfile.get_scale_base_bone
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonProfile.Bind_get_scale_base_bone, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.SkeletonProfile.Bind_get_scale_base_bone, gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGroupSize(size int64) { //gd:SkeletonProfile.set_group_size
-	var frame = callframe.New()
-	callframe.Arg(frame, size)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonProfile.Bind_set_group_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonProfile.Bind_set_group_size, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ size int64 }{size}))
 }
 
 //go:nosplit
 func (self class) GetGroupSize() int64 { //gd:SkeletonProfile.get_group_size
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonProfile.Bind_get_group_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.SkeletonProfile.Bind_get_group_size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -350,12 +333,8 @@ Returns the name of the group at [param group_idx] that will be the drawing grou
 */
 //go:nosplit
 func (self class) GetGroupName(group_idx int64) String.Name { //gd:SkeletonProfile.get_group_name
-	var frame = callframe.New()
-	callframe.Arg(frame, group_idx)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonProfile.Bind_get_group_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.SkeletonProfile.Bind_get_group_name, gdextension.SizeStringName|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ group_idx int64 }{group_idx}))
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
@@ -364,12 +343,10 @@ Sets the name of the group at [param group_idx] that will be the drawing group i
 */
 //go:nosplit
 func (self class) SetGroupName(group_idx int64, group_name String.Name) { //gd:SkeletonProfile.set_group_name
-	var frame = callframe.New()
-	callframe.Arg(frame, group_idx)
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(group_name)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonProfile.Bind_set_group_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonProfile.Bind_set_group_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+		group_idx  int64
+		group_name gdextension.StringName
+	}{group_idx, gdextension.StringName(pointers.Get(gd.InternalStringName(group_name))[0])}))
 }
 
 /*
@@ -377,12 +354,8 @@ Returns the texture of the group at [param group_idx] that will be the drawing g
 */
 //go:nosplit
 func (self class) GetTexture(group_idx int64) [1]gdclass.Texture2D { //gd:SkeletonProfile.get_texture
-	var frame = callframe.New()
-	callframe.Arg(frame, group_idx)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonProfile.Bind_get_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.SkeletonProfile.Bind_get_texture, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ group_idx int64 }{group_idx}))
+	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
 
@@ -391,30 +364,21 @@ Sets the texture of the group at [param group_idx] that will be the drawing grou
 */
 //go:nosplit
 func (self class) SetTexture(group_idx int64, texture [1]gdclass.Texture2D) { //gd:SkeletonProfile.set_texture
-	var frame = callframe.New()
-	callframe.Arg(frame, group_idx)
-	callframe.Arg(frame, pointers.Get(texture[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonProfile.Bind_set_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonProfile.Bind_set_texture, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+		group_idx int64
+		texture   gdextension.Object
+	}{group_idx, gdextension.Object(pointers.Get(texture[0])[0])}))
 }
 
 //go:nosplit
 func (self class) SetBoneSize(size int64) { //gd:SkeletonProfile.set_bone_size
-	var frame = callframe.New()
-	callframe.Arg(frame, size)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonProfile.Bind_set_bone_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonProfile.Bind_set_bone_size, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ size int64 }{size}))
 }
 
 //go:nosplit
 func (self class) GetBoneSize() int64 { //gd:SkeletonProfile.get_bone_size
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonProfile.Bind_get_bone_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.SkeletonProfile.Bind_get_bone_size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -423,12 +387,8 @@ Returns the bone index that matches [param bone_name] as its name.
 */
 //go:nosplit
 func (self class) FindBone(bone_name String.Name) int64 { //gd:SkeletonProfile.find_bone
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(bone_name)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonProfile.Bind_find_bone, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.SkeletonProfile.Bind_find_bone, gdextension.SizeInt|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ bone_name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(bone_name))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -438,12 +398,8 @@ In the retargeting process, the returned bone name is the bone name of the targe
 */
 //go:nosplit
 func (self class) GetBoneName(bone_idx int64) String.Name { //gd:SkeletonProfile.get_bone_name
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonProfile.Bind_get_bone_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.SkeletonProfile.Bind_get_bone_name, gdextension.SizeStringName|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_idx int64 }{bone_idx}))
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
@@ -453,12 +409,10 @@ In the retargeting process, the setting bone name is the bone name of the target
 */
 //go:nosplit
 func (self class) SetBoneName(bone_idx int64, bone_name String.Name) { //gd:SkeletonProfile.set_bone_name
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(bone_name)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonProfile.Bind_set_bone_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonProfile.Bind_set_bone_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+		bone_idx  int64
+		bone_name gdextension.StringName
+	}{bone_idx, gdextension.StringName(pointers.Get(gd.InternalStringName(bone_name))[0])}))
 }
 
 /*
@@ -466,12 +420,8 @@ Returns the name of the bone which is the parent to the bone at [param bone_idx]
 */
 //go:nosplit
 func (self class) GetBoneParent(bone_idx int64) String.Name { //gd:SkeletonProfile.get_bone_parent
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonProfile.Bind_get_bone_parent, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.SkeletonProfile.Bind_get_bone_parent, gdextension.SizeStringName|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_idx int64 }{bone_idx}))
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
@@ -480,12 +430,10 @@ Sets the bone with name [param bone_parent] as the parent of the bone at [param 
 */
 //go:nosplit
 func (self class) SetBoneParent(bone_idx int64, bone_parent String.Name) { //gd:SkeletonProfile.set_bone_parent
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(bone_parent)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonProfile.Bind_set_bone_parent, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonProfile.Bind_set_bone_parent, 0|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+		bone_idx    int64
+		bone_parent gdextension.StringName
+	}{bone_idx, gdextension.StringName(pointers.Get(gd.InternalStringName(bone_parent))[0])}))
 }
 
 /*
@@ -493,12 +441,8 @@ Returns the tail direction of the bone at [param bone_idx].
 */
 //go:nosplit
 func (self class) GetTailDirection(bone_idx int64) TailDirection { //gd:SkeletonProfile.get_tail_direction
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Ret[TailDirection](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonProfile.Bind_get_tail_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[TailDirection](self.AsObject(), gd.Global.Methods.SkeletonProfile.Bind_get_tail_direction, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_idx int64 }{bone_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -508,12 +452,10 @@ Sets the tail direction of the bone at [param bone_idx].
 */
 //go:nosplit
 func (self class) SetTailDirection(bone_idx int64, tail_direction TailDirection) { //gd:SkeletonProfile.set_tail_direction
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	callframe.Arg(frame, tail_direction)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonProfile.Bind_set_tail_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonProfile.Bind_set_tail_direction, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		bone_idx       int64
+		tail_direction TailDirection
+	}{bone_idx, tail_direction}))
 }
 
 /*
@@ -521,12 +463,8 @@ Returns the name of the bone which is the tail of the bone at [param bone_idx].
 */
 //go:nosplit
 func (self class) GetBoneTail(bone_idx int64) String.Name { //gd:SkeletonProfile.get_bone_tail
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonProfile.Bind_get_bone_tail, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.SkeletonProfile.Bind_get_bone_tail, gdextension.SizeStringName|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_idx int64 }{bone_idx}))
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
@@ -535,12 +473,10 @@ Sets the bone with name [param bone_tail] as the tail of the bone at [param bone
 */
 //go:nosplit
 func (self class) SetBoneTail(bone_idx int64, bone_tail String.Name) { //gd:SkeletonProfile.set_bone_tail
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(bone_tail)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonProfile.Bind_set_bone_tail, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonProfile.Bind_set_bone_tail, 0|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+		bone_idx  int64
+		bone_tail gdextension.StringName
+	}{bone_idx, gdextension.StringName(pointers.Get(gd.InternalStringName(bone_tail))[0])}))
 }
 
 /*
@@ -548,12 +484,8 @@ Returns the reference pose transform for bone [param bone_idx].
 */
 //go:nosplit
 func (self class) GetReferencePose(bone_idx int64) Transform3D.BasisOrigin { //gd:SkeletonProfile.get_reference_pose
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonProfile.Bind_get_reference_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = gd.Transposed(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[Transform3D.BasisOrigin](self.AsObject(), gd.Global.Methods.SkeletonProfile.Bind_get_reference_pose, gdextension.SizeTransform3D|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_idx int64 }{bone_idx}))
+	var ret = gd.Transposed(r_ret)
 	return ret
 }
 
@@ -562,12 +494,10 @@ Sets the reference pose transform for bone [param bone_idx].
 */
 //go:nosplit
 func (self class) SetReferencePose(bone_idx int64, bone_name Transform3D.BasisOrigin) { //gd:SkeletonProfile.set_reference_pose
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	callframe.Arg(frame, gd.Transposed(bone_name))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonProfile.Bind_set_reference_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonProfile.Bind_set_reference_pose, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
+		bone_idx  int64
+		bone_name Transform3D.BasisOrigin
+	}{bone_idx, gd.Transposed(bone_name)}))
 }
 
 /*
@@ -576,12 +506,8 @@ This is the offset with origin at the top left corner of the square.
 */
 //go:nosplit
 func (self class) GetHandleOffset(bone_idx int64) Vector2.XY { //gd:SkeletonProfile.get_handle_offset
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonProfile.Bind_get_handle_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.SkeletonProfile.Bind_get_handle_offset, gdextension.SizeVector2|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_idx int64 }{bone_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -591,12 +517,10 @@ This is the offset with origin at the top left corner of the square.
 */
 //go:nosplit
 func (self class) SetHandleOffset(bone_idx int64, handle_offset Vector2.XY) { //gd:SkeletonProfile.set_handle_offset
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	callframe.Arg(frame, handle_offset)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonProfile.Bind_set_handle_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonProfile.Bind_set_handle_offset, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
+		bone_idx      int64
+		handle_offset Vector2.XY
+	}{bone_idx, handle_offset}))
 }
 
 /*
@@ -604,12 +528,8 @@ Returns the group of the bone at [param bone_idx].
 */
 //go:nosplit
 func (self class) GetGroup(bone_idx int64) String.Name { //gd:SkeletonProfile.get_group
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonProfile.Bind_get_group, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.SkeletonProfile.Bind_get_group, gdextension.SizeStringName|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_idx int64 }{bone_idx}))
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
@@ -618,12 +538,10 @@ Sets the group of the bone at [param bone_idx].
 */
 //go:nosplit
 func (self class) SetGroup(bone_idx int64, group String.Name) { //gd:SkeletonProfile.set_group
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(group)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonProfile.Bind_set_group, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonProfile.Bind_set_group, 0|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+		bone_idx int64
+		group    gdextension.StringName
+	}{bone_idx, gdextension.StringName(pointers.Get(gd.InternalStringName(group))[0])}))
 }
 
 /*
@@ -632,12 +550,8 @@ This value is used by the bone map editor. If this method returns [code]true[/co
 */
 //go:nosplit
 func (self class) IsRequired(bone_idx int64) bool { //gd:SkeletonProfile.is_required
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonProfile.Bind_is_required, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.SkeletonProfile.Bind_is_required, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_idx int64 }{bone_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -646,12 +560,10 @@ Sets the required status for bone [param bone_idx] to [param required].
 */
 //go:nosplit
 func (self class) SetRequired(bone_idx int64, required bool) { //gd:SkeletonProfile.set_required
-	var frame = callframe.New()
-	callframe.Arg(frame, bone_idx)
-	callframe.Arg(frame, required)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonProfile.Bind_set_required, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonProfile.Bind_set_required, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		bone_idx int64
+		required bool
+	}{bone_idx, required}))
 }
 func (self Instance) OnProfileUpdated(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("profile_updated"), gd.NewCallable(cb), 0)

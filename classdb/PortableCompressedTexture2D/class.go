@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -52,6 +54,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -180,14 +184,12 @@ If lossy compression is requested, the quality setting can optionally be provide
 */
 //go:nosplit
 func (self class) CreateFromImage(image [1]gdclass.Image, compression_mode CompressionMode, normal_map bool, lossy_quality float64) { //gd:PortableCompressedTexture2D.create_from_image
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(image[0])[0])
-	callframe.Arg(frame, compression_mode)
-	callframe.Arg(frame, normal_map)
-	callframe.Arg(frame, lossy_quality)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PortableCompressedTexture2D.Bind_create_from_image, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PortableCompressedTexture2D.Bind_create_from_image, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeFloat<<16), unsafe.Pointer(&struct {
+		image            gdextension.Object
+		compression_mode CompressionMode
+		normal_map       bool
+		lossy_quality    float64
+	}{gdextension.Object(pointers.Get(image[0])[0]), compression_mode, normal_map, lossy_quality}))
 }
 
 /*
@@ -195,11 +197,8 @@ Return the image format used (valid after initialized).
 */
 //go:nosplit
 func (self class) GetFormat() Image.Format { //gd:PortableCompressedTexture2D.get_format
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Image.Format](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PortableCompressedTexture2D.Bind_get_format, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Image.Format](self.AsObject(), gd.Global.Methods.PortableCompressedTexture2D.Bind_get_format, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -208,49 +207,32 @@ Return the compression mode used (valid after initialized).
 */
 //go:nosplit
 func (self class) GetCompressionMode() CompressionMode { //gd:PortableCompressedTexture2D.get_compression_mode
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[CompressionMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PortableCompressedTexture2D.Bind_get_compression_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[CompressionMode](self.AsObject(), gd.Global.Methods.PortableCompressedTexture2D.Bind_get_compression_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSizeOverride(size Vector2.XY) { //gd:PortableCompressedTexture2D.set_size_override
-	var frame = callframe.New()
-	callframe.Arg(frame, size)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PortableCompressedTexture2D.Bind_set_size_override, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PortableCompressedTexture2D.Bind_set_size_override, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ size Vector2.XY }{size}))
 }
 
 //go:nosplit
 func (self class) GetSizeOverride() Vector2.XY { //gd:PortableCompressedTexture2D.get_size_override
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PortableCompressedTexture2D.Bind_get_size_override, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.PortableCompressedTexture2D.Bind_get_size_override, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetKeepCompressedBuffer(keep bool) { //gd:PortableCompressedTexture2D.set_keep_compressed_buffer
-	var frame = callframe.New()
-	callframe.Arg(frame, keep)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PortableCompressedTexture2D.Bind_set_keep_compressed_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PortableCompressedTexture2D.Bind_set_keep_compressed_buffer, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ keep bool }{keep}))
 }
 
 //go:nosplit
 func (self class) IsKeepingCompressedBuffer() bool { //gd:PortableCompressedTexture2D.is_keeping_compressed_buffer
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PortableCompressedTexture2D.Bind_is_keeping_compressed_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.PortableCompressedTexture2D.Bind_is_keeping_compressed_buffer, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -259,11 +241,7 @@ Overrides the flag globally for all textures of this type. This is used primaril
 */
 //go:nosplit
 func (self class) SetKeepAllCompressedBuffers(keep bool) { //gd:PortableCompressedTexture2D.set_keep_all_compressed_buffers
-	var frame = callframe.New()
-	callframe.Arg(frame, keep)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.PortableCompressedTexture2D.Bind_set_keep_all_compressed_buffers, frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.CallStatic[struct{}](gd.Global.Methods.PortableCompressedTexture2D.Bind_set_keep_all_compressed_buffers, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ keep bool }{keep}))
 }
 
 /*
@@ -271,11 +249,8 @@ Return whether the flag is overridden for all textures of this type.
 */
 //go:nosplit
 func (self class) IsKeepingAllCompressedBuffers() bool { //gd:PortableCompressedTexture2D.is_keeping_all_compressed_buffers
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.PortableCompressedTexture2D.Bind_is_keeping_all_compressed_buffers, frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.CallStatic[bool](gd.Global.Methods.PortableCompressedTexture2D.Bind_is_keeping_all_compressed_buffers, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsPortableCompressedTexture2D() Advanced {

@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +51,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -111,20 +115,13 @@ func (self Instance) SetPolyphony(value int) {
 
 //go:nosplit
 func (self class) SetPolyphony(voices int64) { //gd:AudioStreamPolyphonic.set_polyphony
-	var frame = callframe.New()
-	callframe.Arg(frame, voices)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPolyphonic.Bind_set_polyphony, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioStreamPolyphonic.Bind_set_polyphony, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ voices int64 }{voices}))
 }
 
 //go:nosplit
 func (self class) GetPolyphony() int64 { //gd:AudioStreamPolyphonic.get_polyphony
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPolyphonic.Bind_get_polyphony, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.AudioStreamPolyphonic.Bind_get_polyphony, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsAudioStreamPolyphonic() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

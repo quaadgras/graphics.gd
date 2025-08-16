@@ -9,6 +9,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -50,6 +52,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -294,15 +298,13 @@ The [param cache_mode] property defines whether and how the cache should be used
 */
 //go:nosplit
 func (self class) LoadThreadedRequest(path String.Readable, type_hint String.Readable, use_sub_threads bool, cache_mode CacheMode) Error.Code { //gd:ResourceLoader.load_threaded_request
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(type_hint)))
-	callframe.Arg(frame, use_sub_threads)
-	callframe.Arg(frame, cache_mode)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_load_threaded_request, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ResourceLoader.Bind_load_threaded_request, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
+		path            gdextension.String
+		type_hint       gdextension.String
+		use_sub_threads bool
+		cache_mode      CacheMode
+	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), gdextension.String(pointers.Get(gd.InternalString(type_hint))[0]), use_sub_threads, cache_mode}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -313,13 +315,11 @@ An array variable can optionally be passed via [param progress], and will return
 */
 //go:nosplit
 func (self class) LoadThreadedGetStatus(path String.Readable, progress Array.Any) ThreadLoadStatus { //gd:ResourceLoader.load_threaded_get_status
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(progress)))
-	var r_ret = callframe.Ret[ThreadLoadStatus](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_load_threaded_get_status, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[ThreadLoadStatus](self.AsObject(), gd.Global.Methods.ResourceLoader.Bind_load_threaded_get_status, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeArray<<8), unsafe.Pointer(&struct {
+		path     gdextension.String
+		progress gdextension.Array
+	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), gdextension.Array(pointers.Get(gd.InternalArray(progress))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -329,12 +329,8 @@ If this is called before the loading thread is done (i.e. [method load_threaded_
 */
 //go:nosplit
 func (self class) LoadThreadedGet(path String.Readable) [1]gdclass.Resource { //gd:ResourceLoader.load_threaded_get
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_load_threaded_get, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.ResourceLoader.Bind_load_threaded_get, gdextension.SizeObject|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret)}
 	return ret
 }
 
@@ -350,14 +346,12 @@ GDScript has a simplified [method @GDScript.load] built-in method which can be u
 */
 //go:nosplit
 func (self class) Load(path String.Readable, type_hint String.Readable, cache_mode CacheMode) [1]gdclass.Resource { //gd:ResourceLoader.load
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(type_hint)))
-	callframe.Arg(frame, cache_mode)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_load, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.ResourceLoader.Bind_load, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+		path       gdextension.String
+		type_hint  gdextension.String
+		cache_mode CacheMode
+	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), gdextension.String(pointers.Get(gd.InternalString(type_hint))[0]), cache_mode}))
+	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret)}
 	return ret
 }
 
@@ -366,12 +360,8 @@ Returns the list of recognized extensions for a resource type.
 */
 //go:nosplit
 func (self class) GetRecognizedExtensionsForType(atype String.Readable) Packed.Strings { //gd:ResourceLoader.get_recognized_extensions_for_type
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(atype)))
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_get_recognized_extensions_for_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.ResourceLoader.Bind_get_recognized_extensions_for_type, gdextension.SizePackedArray|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ atype gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(atype))[0])}))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -381,12 +371,10 @@ This method is performed implicitly for ResourceFormatLoaders written in GDScrip
 */
 //go:nosplit
 func (self class) AddResourceFormatLoader(format_loader [1]gdclass.ResourceFormatLoader, at_front bool) { //gd:ResourceLoader.add_resource_format_loader
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(format_loader[0])[0])
-	callframe.Arg(frame, at_front)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_add_resource_format_loader, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ResourceLoader.Bind_add_resource_format_loader, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		format_loader gdextension.Object
+		at_front      bool
+	}{gdextension.Object(pointers.Get(format_loader[0])[0]), at_front}))
 }
 
 /*
@@ -394,11 +382,7 @@ Unregisters the given [ResourceFormatLoader].
 */
 //go:nosplit
 func (self class) RemoveResourceFormatLoader(format_loader [1]gdclass.ResourceFormatLoader) { //gd:ResourceLoader.remove_resource_format_loader
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(format_loader[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_remove_resource_format_loader, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ResourceLoader.Bind_remove_resource_format_loader, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ format_loader gdextension.Object }{gdextension.Object(pointers.Get(format_loader[0])[0])}))
 }
 
 /*
@@ -406,11 +390,7 @@ Changes the behavior on missing sub-resources. The default behavior is to abort 
 */
 //go:nosplit
 func (self class) SetAbortOnMissingResources(abort bool) { //gd:ResourceLoader.set_abort_on_missing_resources
-	var frame = callframe.New()
-	callframe.Arg(frame, abort)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_set_abort_on_missing_resources, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ResourceLoader.Bind_set_abort_on_missing_resources, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ abort bool }{abort}))
 }
 
 /*
@@ -424,12 +404,8 @@ for dependency in ResourceLoader.get_dependencies(path):
 */
 //go:nosplit
 func (self class) GetDependencies(path String.Readable) Packed.Strings { //gd:ResourceLoader.get_dependencies
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_get_dependencies, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.ResourceLoader.Bind_get_dependencies, gdextension.SizePackedArray|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -439,12 +415,8 @@ Once a resource has been loaded by the engine, it is cached in memory for faster
 */
 //go:nosplit
 func (self class) HasCached(path String.Readable) bool { //gd:ResourceLoader.has_cached
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_has_cached, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.ResourceLoader.Bind_has_cached, gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -454,12 +426,8 @@ Returns the cached resource reference for the given [param path].
 */
 //go:nosplit
 func (self class) GetCachedRef(path String.Readable) [1]gdclass.Resource { //gd:ResourceLoader.get_cached_ref
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_get_cached_ref, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.ResourceLoader.Bind_get_cached_ref, gdextension.SizeObject|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret)}
 	return ret
 }
 
@@ -470,13 +438,11 @@ An optional [param type_hint] can be used to further specify the [Resource] type
 */
 //go:nosplit
 func (self class) Exists(path String.Readable, type_hint String.Readable) bool { //gd:ResourceLoader.exists
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(type_hint)))
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_exists, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.ResourceLoader.Bind_exists, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+		path      gdextension.String
+		type_hint gdextension.String
+	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), gdextension.String(pointers.Get(gd.InternalString(type_hint))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -485,12 +451,8 @@ Returns the ID associated with a given resource path, or [code]-1[/code] when no
 */
 //go:nosplit
 func (self class) GetResourceUid(path String.Readable) int64 { //gd:ResourceLoader.get_resource_uid
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_get_resource_uid, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ResourceLoader.Bind_get_resource_uid, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -499,12 +461,8 @@ Lists a directory (as example: "res://assets/enemies"), returning all resources 
 */
 //go:nosplit
 func (self class) ListDirectory(directory_path String.Readable) Packed.Strings { //gd:ResourceLoader.list_directory
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(directory_path)))
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_list_directory, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.ResourceLoader.Bind_list_directory, gdextension.SizePackedArray|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ directory_path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(directory_path))[0])}))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 func (self class) Virtual(name string) reflect.Value {

@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -47,6 +49,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -281,12 +285,8 @@ Returns [code]true[/code] if preset has specified property.
 */
 //go:nosplit
 func (self class) Has(property String.Name) bool { //gd:EditorExportPreset.has
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(property)))
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_has, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.EditorExportPreset.Bind_has, gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ property gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(property))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -295,11 +295,8 @@ Returns array of files to export.
 */
 //go:nosplit
 func (self class) GetFilesToExport() Packed.Strings { //gd:EditorExportPreset.get_files_to_export
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_files_to_export, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.EditorExportPreset.Bind_get_files_to_export, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -308,11 +305,8 @@ Returns [Dictionary] of files selected in the "Resources" tab of the export dial
 */
 //go:nosplit
 func (self class) GetCustomizedFiles() Dictionary.Any { //gd:EditorExportPreset.get_customized_files
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_customized_files, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorExportPreset.Bind_get_customized_files, gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 
@@ -321,11 +315,8 @@ Returns number of files selected in the "Resources" tab of the export dialog.
 */
 //go:nosplit
 func (self class) GetCustomizedFilesCount() int64 { //gd:EditorExportPreset.get_customized_files_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_customized_files_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.EditorExportPreset.Bind_get_customized_files_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -334,12 +325,8 @@ Returns [code]true[/code] if specified file is exported.
 */
 //go:nosplit
 func (self class) HasExportFile(path String.Readable) bool { //gd:EditorExportPreset.has_export_file
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_has_export_file, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.EditorExportPreset.Bind_has_export_file, gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -348,13 +335,11 @@ Returns file export mode for the specified file.
 */
 //go:nosplit
 func (self class) GetFileExportMode(path String.Readable, def FileExportMode) FileExportMode { //gd:EditorExportPreset.get_file_export_mode
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	callframe.Arg(frame, def)
-	var r_ret = callframe.Ret[FileExportMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_file_export_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[FileExportMode](self.AsObject(), gd.Global.Methods.EditorExportPreset.Bind_get_file_export_mode, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		path gdextension.String
+		def  FileExportMode
+	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), def}))
+	var ret = r_ret
 	return ret
 }
 
@@ -363,11 +348,8 @@ Returns export preset name.
 */
 //go:nosplit
 func (self class) GetPresetName() String.Readable { //gd:EditorExportPreset.get_preset_name
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_preset_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorExportPreset.Bind_get_preset_name, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -376,11 +358,8 @@ Returns [code]true[/code] if "Runnable" toggle is enabled in the export dialog.
 */
 //go:nosplit
 func (self class) IsRunnable() bool { //gd:EditorExportPreset.is_runnable
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_is_runnable, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.EditorExportPreset.Bind_is_runnable, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -389,11 +368,8 @@ Returns [code]true[/code] if "Advanced" toggle is enabled in the export dialog.
 */
 //go:nosplit
 func (self class) AreAdvancedOptionsEnabled() bool { //gd:EditorExportPreset.are_advanced_options_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_are_advanced_options_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.EditorExportPreset.Bind_are_advanced_options_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -402,11 +378,8 @@ Returns [code]true[/code] if dedicated server export mode is selected in the exp
 */
 //go:nosplit
 func (self class) IsDedicatedServer() bool { //gd:EditorExportPreset.is_dedicated_server
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_is_dedicated_server, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.EditorExportPreset.Bind_is_dedicated_server, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -415,11 +388,8 @@ Returns export file filter mode selected in the "Resources" tab of the export di
 */
 //go:nosplit
 func (self class) GetExportFilter() ExportFilter { //gd:EditorExportPreset.get_export_filter
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[ExportFilter](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_export_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[ExportFilter](self.AsObject(), gd.Global.Methods.EditorExportPreset.Bind_get_export_filter, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -428,11 +398,8 @@ Returns file filters to include during export.
 */
 //go:nosplit
 func (self class) GetIncludeFilter() String.Readable { //gd:EditorExportPreset.get_include_filter
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_include_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorExportPreset.Bind_get_include_filter, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -441,11 +408,8 @@ Returns file filters to exclude during export.
 */
 //go:nosplit
 func (self class) GetExcludeFilter() String.Readable { //gd:EditorExportPreset.get_exclude_filter
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_exclude_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorExportPreset.Bind_get_exclude_filter, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -454,11 +418,8 @@ Returns string with a comma separated list of custom features.
 */
 //go:nosplit
 func (self class) GetCustomFeatures() String.Readable { //gd:EditorExportPreset.get_custom_features
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_custom_features, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorExportPreset.Bind_get_custom_features, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -467,11 +428,8 @@ Returns the list of packs on which to base a patch export on.
 */
 //go:nosplit
 func (self class) GetPatches() Packed.Strings { //gd:EditorExportPreset.get_patches
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_patches, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.EditorExportPreset.Bind_get_patches, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -480,11 +438,8 @@ Returns export target path.
 */
 //go:nosplit
 func (self class) GetExportPath() String.Readable { //gd:EditorExportPreset.get_export_path
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_export_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorExportPreset.Bind_get_export_path, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -493,11 +448,8 @@ Returns file filters to include during PCK encryption.
 */
 //go:nosplit
 func (self class) GetEncryptionInFilter() String.Readable { //gd:EditorExportPreset.get_encryption_in_filter
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_encryption_in_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorExportPreset.Bind_get_encryption_in_filter, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -506,11 +458,8 @@ Returns file filters to exclude during PCK encryption.
 */
 //go:nosplit
 func (self class) GetEncryptionExFilter() String.Readable { //gd:EditorExportPreset.get_encryption_ex_filter
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_encryption_ex_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorExportPreset.Bind_get_encryption_ex_filter, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -519,11 +468,8 @@ Returns [code]true[/code], PCK encryption is enabled in the export dialog.
 */
 //go:nosplit
 func (self class) GetEncryptPck() bool { //gd:EditorExportPreset.get_encrypt_pck
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_encrypt_pck, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.EditorExportPreset.Bind_get_encrypt_pck, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -532,11 +478,8 @@ Returns [code]true[/code], PCK directory encryption is enabled in the export dia
 */
 //go:nosplit
 func (self class) GetEncryptDirectory() bool { //gd:EditorExportPreset.get_encrypt_directory
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_encrypt_directory, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.EditorExportPreset.Bind_get_encrypt_directory, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -545,11 +488,8 @@ Returns PCK encryption key.
 */
 //go:nosplit
 func (self class) GetEncryptionKey() String.Readable { //gd:EditorExportPreset.get_encryption_key
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_encryption_key, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorExportPreset.Bind_get_encryption_key, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -558,11 +498,8 @@ Returns script export mode.
 */
 //go:nosplit
 func (self class) GetScriptExportMode() int64 { //gd:EditorExportPreset.get_script_export_mode
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_script_export_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.EditorExportPreset.Bind_get_script_export_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -571,13 +508,11 @@ Returns export option value or value of environment variable if it is set.
 */
 //go:nosplit
 func (self class) GetOrEnv(name String.Name, env_var String.Readable) variant.Any { //gd:EditorExportPreset.get_or_env
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(env_var)))
-	var r_ret = callframe.Ret[[3]uint64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_or_env, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[3]uint64](self.AsObject(), gd.Global.Methods.EditorExportPreset.Bind_get_or_env, gdextension.SizeVariant|(gdextension.SizeStringName<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+		name    gdextension.StringName
+		env_var gdextension.String
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.String(pointers.Get(gd.InternalString(env_var))[0])}))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
 
@@ -587,13 +522,11 @@ If [param windows_version] is [code]true[/code], formats the returned version nu
 */
 //go:nosplit
 func (self class) GetVersion(name String.Name, windows_version bool) String.Readable { //gd:EditorExportPreset.get_version
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
-	callframe.Arg(frame, windows_version)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorExportPreset.Bind_get_version, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorExportPreset.Bind_get_version, gdextension.SizeString|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		name            gdextension.StringName
+		windows_version bool
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), windows_version}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) AsEditorExportPreset() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

@@ -9,6 +9,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +51,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -225,12 +229,8 @@ Returns [code]true[/code] if the [InputMap] has a registered action with the giv
 */
 //go:nosplit
 func (self class) HasAction(action String.Name) bool { //gd:InputMap.has_action
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(action)))
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_has_action, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.InputMap.Bind_has_action, gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ action gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -239,11 +239,8 @@ Returns an array of all actions in the [InputMap].
 */
 //go:nosplit
 func (self class) GetActions() Array.Contains[String.Name] { //gd:InputMap.get_actions
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_get_actions, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.InputMap.Bind_get_actions, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -253,12 +250,10 @@ An [InputEvent] can then be added to this action with [method action_add_event].
 */
 //go:nosplit
 func (self class) AddAction(action String.Name, deadzone float64) { //gd:InputMap.add_action
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(action)))
-	callframe.Arg(frame, deadzone)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_add_action, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputMap.Bind_add_action, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+		action   gdextension.StringName
+		deadzone float64
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0]), deadzone}))
 }
 
 /*
@@ -266,11 +261,7 @@ Removes an action from the [InputMap].
 */
 //go:nosplit
 func (self class) EraseAction(action String.Name) { //gd:InputMap.erase_action
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(action)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_erase_action, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputMap.Bind_erase_action, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ action gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0])}))
 }
 
 /*
@@ -278,12 +269,10 @@ Sets a deadzone value for the action.
 */
 //go:nosplit
 func (self class) ActionSetDeadzone(action String.Name, deadzone float64) { //gd:InputMap.action_set_deadzone
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(action)))
-	callframe.Arg(frame, deadzone)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_action_set_deadzone, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputMap.Bind_action_set_deadzone, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+		action   gdextension.StringName
+		deadzone float64
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0]), deadzone}))
 }
 
 /*
@@ -291,12 +280,8 @@ Returns a deadzone value for the action.
 */
 //go:nosplit
 func (self class) ActionGetDeadzone(action String.Name) float64 { //gd:InputMap.action_get_deadzone
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(action)))
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_action_get_deadzone, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.InputMap.Bind_action_get_deadzone, gdextension.SizeFloat|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ action gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -305,12 +290,10 @@ Adds an [InputEvent] to an action. This [InputEvent] will trigger the action.
 */
 //go:nosplit
 func (self class) ActionAddEvent(action String.Name, event [1]gdclass.InputEvent) { //gd:InputMap.action_add_event
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(action)))
-	callframe.Arg(frame, pointers.Get(event[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_action_add_event, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputMap.Bind_action_add_event, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+		action gdextension.StringName
+		event  gdextension.Object
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0]), gdextension.Object(pointers.Get(event[0])[0])}))
 }
 
 /*
@@ -318,13 +301,11 @@ Returns [code]true[/code] if the action has the given [InputEvent] associated wi
 */
 //go:nosplit
 func (self class) ActionHasEvent(action String.Name, event [1]gdclass.InputEvent) bool { //gd:InputMap.action_has_event
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(action)))
-	callframe.Arg(frame, pointers.Get(event[0])[0])
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_action_has_event, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.InputMap.Bind_action_has_event, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+		action gdextension.StringName
+		event  gdextension.Object
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0]), gdextension.Object(pointers.Get(event[0])[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -333,12 +314,10 @@ Removes an [InputEvent] from an action.
 */
 //go:nosplit
 func (self class) ActionEraseEvent(action String.Name, event [1]gdclass.InputEvent) { //gd:InputMap.action_erase_event
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(action)))
-	callframe.Arg(frame, pointers.Get(event[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_action_erase_event, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputMap.Bind_action_erase_event, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+		action gdextension.StringName
+		event  gdextension.Object
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0]), gdextension.Object(pointers.Get(event[0])[0])}))
 }
 
 /*
@@ -346,11 +325,7 @@ Removes all events from an action.
 */
 //go:nosplit
 func (self class) ActionEraseEvents(action String.Name) { //gd:InputMap.action_erase_events
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(action)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_action_erase_events, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputMap.Bind_action_erase_events, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ action gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0])}))
 }
 
 /*
@@ -359,12 +334,8 @@ Returns an array of [InputEvent]s associated with a given action.
 */
 //go:nosplit
 func (self class) ActionGetEvents(action String.Name) Array.Contains[[1]gdclass.InputEvent] { //gd:InputMap.action_get_events
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(action)))
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_action_get_events, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.InputEvent]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.InputMap.Bind_action_get_events, gdextension.SizeArray|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ action gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0])}))
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.InputEvent]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -374,14 +345,12 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 */
 //go:nosplit
 func (self class) EventIsAction(event [1]gdclass.InputEvent, action String.Name, exact_match bool) bool { //gd:InputMap.event_is_action
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(event[0])[0])
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(action)))
-	callframe.Arg(frame, exact_match)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_event_is_action, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.InputMap.Bind_event_is_action, gdextension.SizeBool|(gdextension.SizeObject<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+		event       gdextension.Object
+		action      gdextension.StringName
+		exact_match bool
+	}{gdextension.Object(pointers.Get(event[0])[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0]), exact_match}))
+	var ret = r_ret
 	return ret
 }
 
@@ -390,10 +359,7 @@ Clears all [InputEventAction] in the [InputMap] and load it anew from [ProjectSe
 */
 //go:nosplit
 func (self class) LoadFromProjectSettings() { //gd:InputMap.load_from_project_settings
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputMap.Bind_load_from_project_settings, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputMap.Bind_load_from_project_settings, 0, unsafe.Pointer(&struct{}{}))
 }
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

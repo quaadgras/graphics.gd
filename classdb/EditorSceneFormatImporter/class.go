@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +50,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -300,12 +304,10 @@ Add a specific import option (name and default value only). This function can on
 */
 //go:nosplit
 func (self class) AddImportOption(name String.Readable, value variant.Any) { //gd:EditorSceneFormatImporter.add_import_option
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSceneFormatImporter.Bind_add_import_option, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorSceneFormatImporter.Bind_add_import_option, 0|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
+		name  gdextension.String
+		value gdextension.Variant
+	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
 }
 
 /*
@@ -313,16 +315,14 @@ Add a specific import option. This function can only be called from [method _get
 */
 //go:nosplit
 func (self class) AddImportOptionAdvanced(atype variant.Type, name String.Readable, default_value variant.Any, hint ClassDB.PropertyHint, hint_string String.Readable, usage_flags int64) { //gd:EditorSceneFormatImporter.add_import_option_advanced
-	var frame = callframe.New()
-	callframe.Arg(frame, atype)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(default_value)))
-	callframe.Arg(frame, hint)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(hint_string)))
-	callframe.Arg(frame, usage_flags)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSceneFormatImporter.Bind_add_import_option_advanced, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorSceneFormatImporter.Bind_add_import_option_advanced, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8)|(gdextension.SizeVariant<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeString<<20)|(gdextension.SizeInt<<24), unsafe.Pointer(&struct {
+		atype         variant.Type
+		name          gdextension.String
+		default_value gdextension.Variant
+		hint          ClassDB.PropertyHint
+		hint_string   gdextension.String
+		usage_flags   int64
+	}{atype, gdextension.String(pointers.Get(gd.InternalString(name))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(default_value))), hint, gdextension.String(pointers.Get(gd.InternalString(hint_string))[0]), usage_flags}))
 }
 func (self class) AsEditorSceneFormatImporter() Advanced {
 	return *((*Advanced)(unsafe.Pointer(&self)))

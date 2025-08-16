@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +53,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -115,20 +119,13 @@ func (self Instance) SetSize(value Vector3i.XYZ) {
 
 //go:nosplit
 func (self class) SetSize(size Vector3i.XYZ) { //gd:PlaceholderTexture3D.set_size
-	var frame = callframe.New()
-	callframe.Arg(frame, size)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PlaceholderTexture3D.Bind_set_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PlaceholderTexture3D.Bind_set_size, 0|(gdextension.SizeVector3i<<4), unsafe.Pointer(&struct{ size Vector3i.XYZ }{size}))
 }
 
 //go:nosplit
 func (self class) GetSize() Vector3i.XYZ { //gd:PlaceholderTexture3D.get_size
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector3i.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PlaceholderTexture3D.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3i.XYZ](self.AsObject(), gd.Global.Methods.PlaceholderTexture3D.Bind_get_size, gdextension.SizeVector3i, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsPlaceholderTexture3D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

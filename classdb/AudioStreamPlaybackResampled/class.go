@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +50,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -146,10 +150,7 @@ func (class) _get_stream_sampling_rate(impl func(ptr unsafe.Pointer) float64) (c
 
 //go:nosplit
 func (self class) BeginResample() { //gd:AudioStreamPlaybackResampled.begin_resample
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlaybackResampled.Bind_begin_resample, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioStreamPlaybackResampled.Bind_begin_resample, 0, unsafe.Pointer(&struct{}{}))
 }
 func (self class) AsAudioStreamPlaybackResampled() Advanced {
 	return *((*Advanced)(unsafe.Pointer(&self)))

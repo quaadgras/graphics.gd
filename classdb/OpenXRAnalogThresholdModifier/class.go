@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +53,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -137,77 +141,49 @@ func (self Instance) SetOffHaptic(value OpenXRHapticBase.Instance) {
 
 //go:nosplit
 func (self class) SetOnThreshold(on_threshold float64) { //gd:OpenXRAnalogThresholdModifier.set_on_threshold
-	var frame = callframe.New()
-	callframe.Arg(frame, on_threshold)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAnalogThresholdModifier.Bind_set_on_threshold, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRAnalogThresholdModifier.Bind_set_on_threshold, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ on_threshold float64 }{on_threshold}))
 }
 
 //go:nosplit
 func (self class) GetOnThreshold() float64 { //gd:OpenXRAnalogThresholdModifier.get_on_threshold
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAnalogThresholdModifier.Bind_get_on_threshold, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.OpenXRAnalogThresholdModifier.Bind_get_on_threshold, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOffThreshold(off_threshold float64) { //gd:OpenXRAnalogThresholdModifier.set_off_threshold
-	var frame = callframe.New()
-	callframe.Arg(frame, off_threshold)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAnalogThresholdModifier.Bind_set_off_threshold, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRAnalogThresholdModifier.Bind_set_off_threshold, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ off_threshold float64 }{off_threshold}))
 }
 
 //go:nosplit
 func (self class) GetOffThreshold() float64 { //gd:OpenXRAnalogThresholdModifier.get_off_threshold
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAnalogThresholdModifier.Bind_get_off_threshold, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.OpenXRAnalogThresholdModifier.Bind_get_off_threshold, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOnHaptic(haptic [1]gdclass.OpenXRHapticBase) { //gd:OpenXRAnalogThresholdModifier.set_on_haptic
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(haptic[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAnalogThresholdModifier.Bind_set_on_haptic, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRAnalogThresholdModifier.Bind_set_on_haptic, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ haptic gdextension.Object }{gdextension.Object(pointers.Get(haptic[0])[0])}))
 }
 
 //go:nosplit
 func (self class) GetOnHaptic() [1]gdclass.OpenXRHapticBase { //gd:OpenXRAnalogThresholdModifier.get_on_haptic
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAnalogThresholdModifier.Bind_get_on_haptic, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.OpenXRHapticBase{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRHapticBase](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.OpenXRAnalogThresholdModifier.Bind_get_on_haptic, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.OpenXRHapticBase{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRHapticBase](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOffHaptic(haptic [1]gdclass.OpenXRHapticBase) { //gd:OpenXRAnalogThresholdModifier.set_off_haptic
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(haptic[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAnalogThresholdModifier.Bind_set_off_haptic, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRAnalogThresholdModifier.Bind_set_off_haptic, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ haptic gdextension.Object }{gdextension.Object(pointers.Get(haptic[0])[0])}))
 }
 
 //go:nosplit
 func (self class) GetOffHaptic() [1]gdclass.OpenXRHapticBase { //gd:OpenXRAnalogThresholdModifier.get_off_haptic
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAnalogThresholdModifier.Bind_get_off_haptic, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.OpenXRHapticBase{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRHapticBase](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.OpenXRAnalogThresholdModifier.Bind_get_off_haptic, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.OpenXRHapticBase{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRHapticBase](r_ret)}
 	return ret
 }
 func (self class) AsOpenXRAnalogThresholdModifier() Advanced {

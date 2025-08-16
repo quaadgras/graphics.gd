@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -54,6 +56,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -328,10 +332,7 @@ Clear all the added filters in the dialog.
 */
 //go:nosplit
 func (self class) ClearFilters() { //gd:FileDialog.clear_filters
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_clear_filters, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FileDialog.Bind_clear_filters, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -341,30 +342,21 @@ For example, a [param filter] of [code]"*.png, *.jpg"[/code] and a [param descri
 */
 //go:nosplit
 func (self class) AddFilter(filter String.Readable, description String.Readable) { //gd:FileDialog.add_filter
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(filter)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(description)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_add_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FileDialog.Bind_add_filter, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+		filter      gdextension.String
+		description gdextension.String
+	}{gdextension.String(pointers.Get(gd.InternalString(filter))[0]), gdextension.String(pointers.Get(gd.InternalString(description))[0])}))
 }
 
 //go:nosplit
 func (self class) SetFilters(filters Packed.Strings) { //gd:FileDialog.set_filters
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(filters)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_filters, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FileDialog.Bind_set_filters, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ filters gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(filters)))}))
 }
 
 //go:nosplit
 func (self class) GetFilters() Packed.Strings { //gd:FileDialog.get_filters
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_filters, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.FileDialog.Bind_get_filters, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -373,28 +365,18 @@ Clear the filter for file names.
 */
 //go:nosplit
 func (self class) ClearFilenameFilter() { //gd:FileDialog.clear_filename_filter
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_clear_filename_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FileDialog.Bind_clear_filename_filter, 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) SetFilenameFilter(filter String.Readable) { //gd:FileDialog.set_filename_filter
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(filter)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_filename_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FileDialog.Bind_set_filename_filter, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ filter gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(filter))[0])}))
 }
 
 //go:nosplit
 func (self class) GetFilenameFilter() String.Readable { //gd:FileDialog.get_filename_filter
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_filename_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.FileDialog.Bind_get_filename_filter, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -403,12 +385,8 @@ Returns the name of the [OptionButton] or [CheckBox] with index [param option].
 */
 //go:nosplit
 func (self class) GetOptionName(option int64) String.Readable { //gd:FileDialog.get_option_name
-	var frame = callframe.New()
-	callframe.Arg(frame, option)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_option_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.FileDialog.Bind_get_option_name, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ option int64 }{option}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -417,12 +395,8 @@ Returns an array of values of the [OptionButton] with index [param option].
 */
 //go:nosplit
 func (self class) GetOptionValues(option int64) Packed.Strings { //gd:FileDialog.get_option_values
-	var frame = callframe.New()
-	callframe.Arg(frame, option)
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_option_values, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.FileDialog.Bind_get_option_values, gdextension.SizePackedArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ option int64 }{option}))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -431,12 +405,8 @@ Returns the default value index of the [OptionButton] or [CheckBox] with index [
 */
 //go:nosplit
 func (self class) GetOptionDefault(option int64) int64 { //gd:FileDialog.get_option_default
-	var frame = callframe.New()
-	callframe.Arg(frame, option)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_option_default, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.FileDialog.Bind_get_option_default, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ option int64 }{option}))
+	var ret = r_ret
 	return ret
 }
 
@@ -445,12 +415,10 @@ Sets the name of the [OptionButton] or [CheckBox] with index [param option].
 */
 //go:nosplit
 func (self class) SetOptionName(option int64, name String.Readable) { //gd:FileDialog.set_option_name
-	var frame = callframe.New()
-	callframe.Arg(frame, option)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_option_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FileDialog.Bind_set_option_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+		option int64
+		name   gdextension.String
+	}{option, gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
 }
 
 /*
@@ -458,12 +426,10 @@ Sets the option values of the [OptionButton] with index [param option].
 */
 //go:nosplit
 func (self class) SetOptionValues(option int64, values Packed.Strings) { //gd:FileDialog.set_option_values
-	var frame = callframe.New()
-	callframe.Arg(frame, option)
-	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(values)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_option_values, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FileDialog.Bind_set_option_values, 0|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
+		option int64
+		values gdextension.PackedArray
+	}{option, gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(values)))}))
 }
 
 /*
@@ -471,30 +437,21 @@ Sets the default value index of the [OptionButton] or [CheckBox] with index [par
 */
 //go:nosplit
 func (self class) SetOptionDefault(option int64, default_value_index int64) { //gd:FileDialog.set_option_default
-	var frame = callframe.New()
-	callframe.Arg(frame, option)
-	callframe.Arg(frame, default_value_index)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_option_default, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FileDialog.Bind_set_option_default, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		option              int64
+		default_value_index int64
+	}{option, default_value_index}))
 }
 
 //go:nosplit
 func (self class) SetOptionCount(count int64) { //gd:FileDialog.set_option_count
-	var frame = callframe.New()
-	callframe.Arg(frame, count)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_option_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FileDialog.Bind_set_option_count, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ count int64 }{count}))
 }
 
 //go:nosplit
 func (self class) GetOptionCount() int64 { //gd:FileDialog.get_option_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_option_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.FileDialog.Bind_get_option_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -504,13 +461,11 @@ Adds an additional [OptionButton] to the file dialog. If [param values] is empty
 */
 //go:nosplit
 func (self class) AddOption(name String.Readable, values Packed.Strings, default_value_index int64) { //gd:FileDialog.add_option
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(values)))
-	callframe.Arg(frame, default_value_index)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_add_option, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FileDialog.Bind_add_option, 0|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+		name                gdextension.String
+		values              gdextension.PackedArray
+		default_value_index int64
+	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(values))), default_value_index}))
 }
 
 /*
@@ -518,106 +473,68 @@ Returns a [Dictionary] with the selected values of the additional [OptionButton]
 */
 //go:nosplit
 func (self class) GetSelectedOptions() Dictionary.Any { //gd:FileDialog.get_selected_options
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_selected_options, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.FileDialog.Bind_get_selected_options, gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) GetCurrentDir() String.Readable { //gd:FileDialog.get_current_dir
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_current_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.FileDialog.Bind_get_current_dir, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) GetCurrentFile() String.Readable { //gd:FileDialog.get_current_file
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_current_file, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.FileDialog.Bind_get_current_file, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) GetCurrentPath() String.Readable { //gd:FileDialog.get_current_path
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_current_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.FileDialog.Bind_get_current_path, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCurrentDir(dir String.Readable) { //gd:FileDialog.set_current_dir
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(dir)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_current_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FileDialog.Bind_set_current_dir, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ dir gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(dir))[0])}))
 }
 
 //go:nosplit
 func (self class) SetCurrentFile(file String.Readable) { //gd:FileDialog.set_current_file
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(file)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_current_file, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FileDialog.Bind_set_current_file, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ file gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(file))[0])}))
 }
 
 //go:nosplit
 func (self class) SetCurrentPath(path String.Readable) { //gd:FileDialog.set_current_path
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_current_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FileDialog.Bind_set_current_path, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
 }
 
 //go:nosplit
 func (self class) SetModeOverridesTitle(override bool) { //gd:FileDialog.set_mode_overrides_title
-	var frame = callframe.New()
-	callframe.Arg(frame, override)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_mode_overrides_title, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FileDialog.Bind_set_mode_overrides_title, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ override bool }{override}))
 }
 
 //go:nosplit
 func (self class) IsModeOverridingTitle() bool { //gd:FileDialog.is_mode_overriding_title
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_is_mode_overriding_title, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.FileDialog.Bind_is_mode_overriding_title, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFileMode(mode FileMode) { //gd:FileDialog.set_file_mode
-	var frame = callframe.New()
-	callframe.Arg(frame, mode)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_file_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FileDialog.Bind_set_file_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode FileMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetFileMode() FileMode { //gd:FileDialog.get_file_mode
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[FileMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_file_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[FileMode](self.AsObject(), gd.Global.Methods.FileDialog.Bind_get_file_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -628,11 +545,8 @@ Returns the vertical box container of the dialog, custom controls can be added t
 */
 //go:nosplit
 func (self class) GetVbox() [1]gdclass.VBoxContainer { //gd:FileDialog.get_vbox
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_vbox, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.VBoxContainer{gd.PointerLifetimeBoundTo[gdclass.VBoxContainer](self.AsObject(), r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.FileDialog.Bind_get_vbox, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.VBoxContainer{gd.PointerLifetimeBoundTo[gdclass.VBoxContainer](self.AsObject(), r_ret)}
 	return ret
 }
 
@@ -642,87 +556,56 @@ Returns the LineEdit for the selected file.
 */
 //go:nosplit
 func (self class) GetLineEdit() [1]gdclass.LineEdit { //gd:FileDialog.get_line_edit
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_line_edit, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.LineEdit{gd.PointerLifetimeBoundTo[gdclass.LineEdit](self.AsObject(), r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.FileDialog.Bind_get_line_edit, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.LineEdit{gd.PointerLifetimeBoundTo[gdclass.LineEdit](self.AsObject(), r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAccess(access Access) { //gd:FileDialog.set_access
-	var frame = callframe.New()
-	callframe.Arg(frame, access)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_access, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FileDialog.Bind_set_access, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ access Access }{access}))
 }
 
 //go:nosplit
 func (self class) GetAccess() Access { //gd:FileDialog.get_access
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Access](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_access, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Access](self.AsObject(), gd.Global.Methods.FileDialog.Bind_get_access, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRootSubfolder(dir String.Readable) { //gd:FileDialog.set_root_subfolder
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(dir)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_root_subfolder, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FileDialog.Bind_set_root_subfolder, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ dir gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(dir))[0])}))
 }
 
 //go:nosplit
 func (self class) GetRootSubfolder() String.Readable { //gd:FileDialog.get_root_subfolder
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_root_subfolder, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.FileDialog.Bind_get_root_subfolder, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShowHiddenFiles(show bool) { //gd:FileDialog.set_show_hidden_files
-	var frame = callframe.New()
-	callframe.Arg(frame, show)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_show_hidden_files, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FileDialog.Bind_set_show_hidden_files, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ show bool }{show}))
 }
 
 //go:nosplit
 func (self class) IsShowingHiddenFiles() bool { //gd:FileDialog.is_showing_hidden_files
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_is_showing_hidden_files, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.FileDialog.Bind_is_showing_hidden_files, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseNativeDialog(native bool) { //gd:FileDialog.set_use_native_dialog
-	var frame = callframe.New()
-	callframe.Arg(frame, native)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_set_use_native_dialog, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FileDialog.Bind_set_use_native_dialog, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ native bool }{native}))
 }
 
 //go:nosplit
 func (self class) GetUseNativeDialog() bool { //gd:FileDialog.get_use_native_dialog
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_get_use_native_dialog, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.FileDialog.Bind_get_use_native_dialog, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -731,10 +614,7 @@ Clear all currently selected items in the dialog.
 */
 //go:nosplit
 func (self class) DeselectAll() { //gd:FileDialog.deselect_all
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_deselect_all, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FileDialog.Bind_deselect_all, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -743,10 +623,7 @@ Invalidate and update the current dialog content list.
 */
 //go:nosplit
 func (self class) Invalidate() { //gd:FileDialog.invalidate
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileDialog.Bind_invalidate, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FileDialog.Bind_invalidate, 0, unsafe.Pointer(&struct{}{}))
 }
 func (self Instance) OnFileSelected(cb func(path string)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("file_selected"), gd.NewCallable(cb), 0)

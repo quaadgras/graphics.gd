@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +53,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -153,115 +157,73 @@ func (self Instance) SetDensityTexture(value Texture3D.Instance) {
 
 //go:nosplit
 func (self class) SetDensity(density float64) { //gd:FogMaterial.set_density
-	var frame = callframe.New()
-	callframe.Arg(frame, density)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_set_density, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FogMaterial.Bind_set_density, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ density float64 }{density}))
 }
 
 //go:nosplit
 func (self class) GetDensity() float64 { //gd:FogMaterial.get_density
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_get_density, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.FogMaterial.Bind_get_density, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAlbedo(albedo Color.RGBA) { //gd:FogMaterial.set_albedo
-	var frame = callframe.New()
-	callframe.Arg(frame, albedo)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_set_albedo, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FogMaterial.Bind_set_albedo, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ albedo Color.RGBA }{albedo}))
 }
 
 //go:nosplit
 func (self class) GetAlbedo() Color.RGBA { //gd:FogMaterial.get_albedo
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Color.RGBA](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_get_albedo, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Color.RGBA](self.AsObject(), gd.Global.Methods.FogMaterial.Bind_get_albedo, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEmission(emission Color.RGBA) { //gd:FogMaterial.set_emission
-	var frame = callframe.New()
-	callframe.Arg(frame, emission)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_set_emission, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FogMaterial.Bind_set_emission, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ emission Color.RGBA }{emission}))
 }
 
 //go:nosplit
 func (self class) GetEmission() Color.RGBA { //gd:FogMaterial.get_emission
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Color.RGBA](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_get_emission, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Color.RGBA](self.AsObject(), gd.Global.Methods.FogMaterial.Bind_get_emission, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHeightFalloff(height_falloff float64) { //gd:FogMaterial.set_height_falloff
-	var frame = callframe.New()
-	callframe.Arg(frame, height_falloff)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_set_height_falloff, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FogMaterial.Bind_set_height_falloff, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ height_falloff float64 }{height_falloff}))
 }
 
 //go:nosplit
 func (self class) GetHeightFalloff() float64 { //gd:FogMaterial.get_height_falloff
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_get_height_falloff, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.FogMaterial.Bind_get_height_falloff, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEdgeFade(edge_fade float64) { //gd:FogMaterial.set_edge_fade
-	var frame = callframe.New()
-	callframe.Arg(frame, edge_fade)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_set_edge_fade, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FogMaterial.Bind_set_edge_fade, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ edge_fade float64 }{edge_fade}))
 }
 
 //go:nosplit
 func (self class) GetEdgeFade() float64 { //gd:FogMaterial.get_edge_fade
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_get_edge_fade, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.FogMaterial.Bind_get_edge_fade, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDensityTexture(density_texture [1]gdclass.Texture3D) { //gd:FogMaterial.set_density_texture
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(density_texture[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_set_density_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FogMaterial.Bind_set_density_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ density_texture gdextension.Object }{gdextension.Object(pointers.Get(density_texture[0])[0])}))
 }
 
 //go:nosplit
 func (self class) GetDensityTexture() [1]gdclass.Texture3D { //gd:FogMaterial.get_density_texture
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FogMaterial.Bind_get_density_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Texture3D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture3D](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.FogMaterial.Bind_get_density_texture, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.Texture3D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture3D](r_ret)}
 	return ret
 }
 func (self class) AsFogMaterial() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -53,6 +55,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -435,39 +439,25 @@ func (self Instance) SetTabCount(value int) {
 
 //go:nosplit
 func (self class) SetTabCount(count int64) { //gd:TabBar.set_tab_count
-	var frame = callframe.New()
-	callframe.Arg(frame, count)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_set_tab_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TabBar.Bind_set_tab_count, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ count int64 }{count}))
 }
 
 //go:nosplit
 func (self class) GetTabCount() int64 { //gd:TabBar.get_tab_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_tab_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TabBar.Bind_get_tab_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCurrentTab(tab_idx int64) { //gd:TabBar.set_current_tab
-	var frame = callframe.New()
-	callframe.Arg(frame, tab_idx)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_set_current_tab, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TabBar.Bind_set_current_tab, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ tab_idx int64 }{tab_idx}))
 }
 
 //go:nosplit
 func (self class) GetCurrentTab() int64 { //gd:TabBar.get_current_tab
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_current_tab, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TabBar.Bind_get_current_tab, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -476,11 +466,8 @@ Returns the previously active tab index.
 */
 //go:nosplit
 func (self class) GetPreviousTab() int64 { //gd:TabBar.get_previous_tab
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_previous_tab, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TabBar.Bind_get_previous_tab, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -489,11 +476,8 @@ Selects the first available tab with lower index than the currently selected. Re
 */
 //go:nosplit
 func (self class) SelectPreviousAvailable() bool { //gd:TabBar.select_previous_available
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_select_previous_available, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TabBar.Bind_select_previous_available, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -502,11 +486,8 @@ Selects the first available tab with greater index than the currently selected. 
 */
 //go:nosplit
 func (self class) SelectNextAvailable() bool { //gd:TabBar.select_next_available
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_select_next_available, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TabBar.Bind_select_next_available, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -515,12 +496,10 @@ Sets a [param title] for the tab at index [param tab_idx].
 */
 //go:nosplit
 func (self class) SetTabTitle(tab_idx int64, title String.Readable) { //gd:TabBar.set_tab_title
-	var frame = callframe.New()
-	callframe.Arg(frame, tab_idx)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(title)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_set_tab_title, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TabBar.Bind_set_tab_title, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+		tab_idx int64
+		title   gdextension.String
+	}{tab_idx, gdextension.String(pointers.Get(gd.InternalString(title))[0])}))
 }
 
 /*
@@ -528,12 +507,8 @@ Returns the title of the tab at index [param tab_idx].
 */
 //go:nosplit
 func (self class) GetTabTitle(tab_idx int64) String.Readable { //gd:TabBar.get_tab_title
-	var frame = callframe.New()
-	callframe.Arg(frame, tab_idx)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_tab_title, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.TabBar.Bind_get_tab_title, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ tab_idx int64 }{tab_idx}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -543,12 +518,10 @@ Sets a [param tooltip] for tab at index [param tab_idx].
 */
 //go:nosplit
 func (self class) SetTabTooltip(tab_idx int64, tooltip String.Readable) { //gd:TabBar.set_tab_tooltip
-	var frame = callframe.New()
-	callframe.Arg(frame, tab_idx)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(tooltip)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_set_tab_tooltip, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TabBar.Bind_set_tab_tooltip, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+		tab_idx int64
+		tooltip gdextension.String
+	}{tab_idx, gdextension.String(pointers.Get(gd.InternalString(tooltip))[0])}))
 }
 
 /*
@@ -556,12 +529,8 @@ Returns the tooltip text of the tab at index [param tab_idx].
 */
 //go:nosplit
 func (self class) GetTabTooltip(tab_idx int64) String.Readable { //gd:TabBar.get_tab_tooltip
-	var frame = callframe.New()
-	callframe.Arg(frame, tab_idx)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_tab_tooltip, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.TabBar.Bind_get_tab_tooltip, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ tab_idx int64 }{tab_idx}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -570,12 +539,10 @@ Sets tab title base writing direction.
 */
 //go:nosplit
 func (self class) SetTabTextDirection(tab_idx int64, direction Control.TextDirection) { //gd:TabBar.set_tab_text_direction
-	var frame = callframe.New()
-	callframe.Arg(frame, tab_idx)
-	callframe.Arg(frame, direction)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_set_tab_text_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TabBar.Bind_set_tab_text_direction, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		tab_idx   int64
+		direction Control.TextDirection
+	}{tab_idx, direction}))
 }
 
 /*
@@ -583,12 +550,8 @@ Returns tab title text base writing direction.
 */
 //go:nosplit
 func (self class) GetTabTextDirection(tab_idx int64) Control.TextDirection { //gd:TabBar.get_tab_text_direction
-	var frame = callframe.New()
-	callframe.Arg(frame, tab_idx)
-	var r_ret = callframe.Ret[Control.TextDirection](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_tab_text_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Control.TextDirection](self.AsObject(), gd.Global.Methods.TabBar.Bind_get_tab_text_direction, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ tab_idx int64 }{tab_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -597,12 +560,10 @@ Sets language code of tab title used for line-breaking and text shaping algorith
 */
 //go:nosplit
 func (self class) SetTabLanguage(tab_idx int64, language String.Readable) { //gd:TabBar.set_tab_language
-	var frame = callframe.New()
-	callframe.Arg(frame, tab_idx)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_set_tab_language, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TabBar.Bind_set_tab_language, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+		tab_idx  int64
+		language gdextension.String
+	}{tab_idx, gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
 }
 
 /*
@@ -610,12 +571,8 @@ Returns tab title language code.
 */
 //go:nosplit
 func (self class) GetTabLanguage(tab_idx int64) String.Readable { //gd:TabBar.get_tab_language
-	var frame = callframe.New()
-	callframe.Arg(frame, tab_idx)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_tab_language, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.TabBar.Bind_get_tab_language, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ tab_idx int64 }{tab_idx}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -624,12 +581,10 @@ Sets an [param icon] for the tab at index [param tab_idx].
 */
 //go:nosplit
 func (self class) SetTabIcon(tab_idx int64, icon [1]gdclass.Texture2D) { //gd:TabBar.set_tab_icon
-	var frame = callframe.New()
-	callframe.Arg(frame, tab_idx)
-	callframe.Arg(frame, pointers.Get(icon[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_set_tab_icon, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TabBar.Bind_set_tab_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+		tab_idx int64
+		icon    gdextension.Object
+	}{tab_idx, gdextension.Object(pointers.Get(icon[0])[0])}))
 }
 
 /*
@@ -637,12 +592,8 @@ Returns the icon for the tab at index [param tab_idx] or [code]null[/code] if th
 */
 //go:nosplit
 func (self class) GetTabIcon(tab_idx int64) [1]gdclass.Texture2D { //gd:TabBar.get_tab_icon
-	var frame = callframe.New()
-	callframe.Arg(frame, tab_idx)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_tab_icon, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.TabBar.Bind_get_tab_icon, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ tab_idx int64 }{tab_idx}))
+	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
 
@@ -651,12 +602,10 @@ Sets the maximum allowed width of the icon for the tab at index [param tab_idx].
 */
 //go:nosplit
 func (self class) SetTabIconMaxWidth(tab_idx int64, width int64) { //gd:TabBar.set_tab_icon_max_width
-	var frame = callframe.New()
-	callframe.Arg(frame, tab_idx)
-	callframe.Arg(frame, width)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_set_tab_icon_max_width, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TabBar.Bind_set_tab_icon_max_width, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		tab_idx int64
+		width   int64
+	}{tab_idx, width}))
 }
 
 /*
@@ -664,12 +613,8 @@ Returns the maximum allowed width of the icon for the tab at index [param tab_id
 */
 //go:nosplit
 func (self class) GetTabIconMaxWidth(tab_idx int64) int64 { //gd:TabBar.get_tab_icon_max_width
-	var frame = callframe.New()
-	callframe.Arg(frame, tab_idx)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_tab_icon_max_width, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TabBar.Bind_get_tab_icon_max_width, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ tab_idx int64 }{tab_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -678,12 +623,10 @@ Sets an [param icon] for the button of the tab at index [param tab_idx] (located
 */
 //go:nosplit
 func (self class) SetTabButtonIcon(tab_idx int64, icon [1]gdclass.Texture2D) { //gd:TabBar.set_tab_button_icon
-	var frame = callframe.New()
-	callframe.Arg(frame, tab_idx)
-	callframe.Arg(frame, pointers.Get(icon[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_set_tab_button_icon, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TabBar.Bind_set_tab_button_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+		tab_idx int64
+		icon    gdextension.Object
+	}{tab_idx, gdextension.Object(pointers.Get(icon[0])[0])}))
 }
 
 /*
@@ -691,12 +634,8 @@ Returns the icon for the right button of the tab at index [param tab_idx] or [co
 */
 //go:nosplit
 func (self class) GetTabButtonIcon(tab_idx int64) [1]gdclass.Texture2D { //gd:TabBar.get_tab_button_icon
-	var frame = callframe.New()
-	callframe.Arg(frame, tab_idx)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_tab_button_icon, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.TabBar.Bind_get_tab_button_icon, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ tab_idx int64 }{tab_idx}))
+	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
 
@@ -705,12 +644,10 @@ If [param disabled] is [code]true[/code], disables the tab at index [param tab_i
 */
 //go:nosplit
 func (self class) SetTabDisabled(tab_idx int64, disabled bool) { //gd:TabBar.set_tab_disabled
-	var frame = callframe.New()
-	callframe.Arg(frame, tab_idx)
-	callframe.Arg(frame, disabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_set_tab_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TabBar.Bind_set_tab_disabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		tab_idx  int64
+		disabled bool
+	}{tab_idx, disabled}))
 }
 
 /*
@@ -718,12 +655,8 @@ Returns [code]true[/code] if the tab at index [param tab_idx] is disabled.
 */
 //go:nosplit
 func (self class) IsTabDisabled(tab_idx int64) bool { //gd:TabBar.is_tab_disabled
-	var frame = callframe.New()
-	callframe.Arg(frame, tab_idx)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_is_tab_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TabBar.Bind_is_tab_disabled, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ tab_idx int64 }{tab_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -732,12 +665,10 @@ If [param hidden] is [code]true[/code], hides the tab at index [param tab_idx], 
 */
 //go:nosplit
 func (self class) SetTabHidden(tab_idx int64, hidden bool) { //gd:TabBar.set_tab_hidden
-	var frame = callframe.New()
-	callframe.Arg(frame, tab_idx)
-	callframe.Arg(frame, hidden)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_set_tab_hidden, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TabBar.Bind_set_tab_hidden, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		tab_idx int64
+		hidden  bool
+	}{tab_idx, hidden}))
 }
 
 /*
@@ -745,12 +676,8 @@ Returns [code]true[/code] if the tab at index [param tab_idx] is hidden.
 */
 //go:nosplit
 func (self class) IsTabHidden(tab_idx int64) bool { //gd:TabBar.is_tab_hidden
-	var frame = callframe.New()
-	callframe.Arg(frame, tab_idx)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_is_tab_hidden, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TabBar.Bind_is_tab_hidden, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ tab_idx int64 }{tab_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -759,12 +686,10 @@ Sets the metadata value for the tab at index [param tab_idx], which can be retri
 */
 //go:nosplit
 func (self class) SetTabMetadata(tab_idx int64, metadata variant.Any) { //gd:TabBar.set_tab_metadata
-	var frame = callframe.New()
-	callframe.Arg(frame, tab_idx)
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(metadata)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_set_tab_metadata, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TabBar.Bind_set_tab_metadata, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
+		tab_idx  int64
+		metadata gdextension.Variant
+	}{tab_idx, gdextension.Variant(pointers.Get(gd.InternalVariant(metadata)))}))
 }
 
 /*
@@ -772,12 +697,8 @@ Returns the metadata value set to the tab at index [param tab_idx] using [method
 */
 //go:nosplit
 func (self class) GetTabMetadata(tab_idx int64) variant.Any { //gd:TabBar.get_tab_metadata
-	var frame = callframe.New()
-	callframe.Arg(frame, tab_idx)
-	var r_ret = callframe.Ret[[3]uint64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_tab_metadata, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[3]uint64](self.AsObject(), gd.Global.Methods.TabBar.Bind_get_tab_metadata, gdextension.SizeVariant|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ tab_idx int64 }{tab_idx}))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
 
@@ -786,11 +707,7 @@ Removes the tab at index [param tab_idx].
 */
 //go:nosplit
 func (self class) RemoveTab(tab_idx int64) { //gd:TabBar.remove_tab
-	var frame = callframe.New()
-	callframe.Arg(frame, tab_idx)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_remove_tab, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TabBar.Bind_remove_tab, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ tab_idx int64 }{tab_idx}))
 }
 
 /*
@@ -798,12 +715,10 @@ Adds a new tab.
 */
 //go:nosplit
 func (self class) AddTab(title String.Readable, icon [1]gdclass.Texture2D) { //gd:TabBar.add_tab
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(title)))
-	callframe.Arg(frame, pointers.Get(icon[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_add_tab, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TabBar.Bind_add_tab, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+		title gdextension.String
+		icon  gdextension.Object
+	}{gdextension.String(pointers.Get(gd.InternalString(title))[0]), gdextension.Object(pointers.Get(icon[0])[0])}))
 }
 
 /*
@@ -811,50 +726,32 @@ Returns the index of the tab at local coordinates [param point]. Returns [code]-
 */
 //go:nosplit
 func (self class) GetTabIdxAtPoint(point Vector2.XY) int64 { //gd:TabBar.get_tab_idx_at_point
-	var frame = callframe.New()
-	callframe.Arg(frame, point)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_tab_idx_at_point, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TabBar.Bind_get_tab_idx_at_point, gdextension.SizeInt|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ point Vector2.XY }{point}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTabAlignment(alignment AlignmentMode) { //gd:TabBar.set_tab_alignment
-	var frame = callframe.New()
-	callframe.Arg(frame, alignment)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_set_tab_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TabBar.Bind_set_tab_alignment, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment AlignmentMode }{alignment}))
 }
 
 //go:nosplit
 func (self class) GetTabAlignment() AlignmentMode { //gd:TabBar.get_tab_alignment
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[AlignmentMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_tab_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[AlignmentMode](self.AsObject(), gd.Global.Methods.TabBar.Bind_get_tab_alignment, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetClipTabs(clip_tabs bool) { //gd:TabBar.set_clip_tabs
-	var frame = callframe.New()
-	callframe.Arg(frame, clip_tabs)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_set_clip_tabs, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TabBar.Bind_set_clip_tabs, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ clip_tabs bool }{clip_tabs}))
 }
 
 //go:nosplit
 func (self class) GetClipTabs() bool { //gd:TabBar.get_clip_tabs
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_clip_tabs, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TabBar.Bind_get_clip_tabs, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -863,11 +760,8 @@ Returns the number of hidden tabs offsetted to the left.
 */
 //go:nosplit
 func (self class) GetTabOffset() int64 { //gd:TabBar.get_tab_offset
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_tab_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TabBar.Bind_get_tab_offset, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -876,11 +770,8 @@ Returns [code]true[/code] if the offset buttons (the ones that appear when there
 */
 //go:nosplit
 func (self class) GetOffsetButtonsVisible() bool { //gd:TabBar.get_offset_buttons_visible
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_offset_buttons_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TabBar.Bind_get_offset_buttons_visible, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -889,11 +780,7 @@ Moves the scroll view to make the tab visible.
 */
 //go:nosplit
 func (self class) EnsureTabVisible(idx int64) { //gd:TabBar.ensure_tab_visible
-	var frame = callframe.New()
-	callframe.Arg(frame, idx)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_ensure_tab_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TabBar.Bind_ensure_tab_visible, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 }
 
 /*
@@ -901,12 +788,8 @@ Returns tab [Rect2] with local position and size.
 */
 //go:nosplit
 func (self class) GetTabRect(tab_idx int64) Rect2.PositionSize { //gd:TabBar.get_tab_rect
-	var frame = callframe.New()
-	callframe.Arg(frame, tab_idx)
-	var r_ret = callframe.Ret[Rect2.PositionSize](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_tab_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Rect2.PositionSize](self.AsObject(), gd.Global.Methods.TabBar.Bind_get_tab_rect, gdextension.SizeRect2|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ tab_idx int64 }{tab_idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -915,163 +798,105 @@ Moves a tab from [param from] to [param to].
 */
 //go:nosplit
 func (self class) MoveTab(from int64, to int64) { //gd:TabBar.move_tab
-	var frame = callframe.New()
-	callframe.Arg(frame, from)
-	callframe.Arg(frame, to)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_move_tab, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TabBar.Bind_move_tab, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		from int64
+		to   int64
+	}{from, to}))
 }
 
 //go:nosplit
 func (self class) SetTabCloseDisplayPolicy(policy CloseButtonDisplayPolicy) { //gd:TabBar.set_tab_close_display_policy
-	var frame = callframe.New()
-	callframe.Arg(frame, policy)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_set_tab_close_display_policy, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TabBar.Bind_set_tab_close_display_policy, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ policy CloseButtonDisplayPolicy }{policy}))
 }
 
 //go:nosplit
 func (self class) GetTabCloseDisplayPolicy() CloseButtonDisplayPolicy { //gd:TabBar.get_tab_close_display_policy
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[CloseButtonDisplayPolicy](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_tab_close_display_policy, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[CloseButtonDisplayPolicy](self.AsObject(), gd.Global.Methods.TabBar.Bind_get_tab_close_display_policy, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaxTabWidth(width int64) { //gd:TabBar.set_max_tab_width
-	var frame = callframe.New()
-	callframe.Arg(frame, width)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_set_max_tab_width, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TabBar.Bind_set_max_tab_width, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ width int64 }{width}))
 }
 
 //go:nosplit
 func (self class) GetMaxTabWidth() int64 { //gd:TabBar.get_max_tab_width
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_max_tab_width, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TabBar.Bind_get_max_tab_width, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScrollingEnabled(enabled bool) { //gd:TabBar.set_scrolling_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_set_scrolling_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TabBar.Bind_set_scrolling_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) GetScrollingEnabled() bool { //gd:TabBar.get_scrolling_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_scrolling_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TabBar.Bind_get_scrolling_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDragToRearrangeEnabled(enabled bool) { //gd:TabBar.set_drag_to_rearrange_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_set_drag_to_rearrange_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TabBar.Bind_set_drag_to_rearrange_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) GetDragToRearrangeEnabled() bool { //gd:TabBar.get_drag_to_rearrange_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_drag_to_rearrange_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TabBar.Bind_get_drag_to_rearrange_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTabsRearrangeGroup(group_id int64) { //gd:TabBar.set_tabs_rearrange_group
-	var frame = callframe.New()
-	callframe.Arg(frame, group_id)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_set_tabs_rearrange_group, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TabBar.Bind_set_tabs_rearrange_group, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ group_id int64 }{group_id}))
 }
 
 //go:nosplit
 func (self class) GetTabsRearrangeGroup() int64 { //gd:TabBar.get_tabs_rearrange_group
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_tabs_rearrange_group, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TabBar.Bind_get_tabs_rearrange_group, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScrollToSelected(enabled bool) { //gd:TabBar.set_scroll_to_selected
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_set_scroll_to_selected, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TabBar.Bind_set_scroll_to_selected, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) GetScrollToSelected() bool { //gd:TabBar.get_scroll_to_selected
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_scroll_to_selected, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TabBar.Bind_get_scroll_to_selected, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSelectWithRmb(enabled bool) { //gd:TabBar.set_select_with_rmb
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_set_select_with_rmb, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TabBar.Bind_set_select_with_rmb, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) GetSelectWithRmb() bool { //gd:TabBar.get_select_with_rmb
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_select_with_rmb, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TabBar.Bind_get_select_with_rmb, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDeselectEnabled(enabled bool) { //gd:TabBar.set_deselect_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_set_deselect_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TabBar.Bind_set_deselect_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) GetDeselectEnabled() bool { //gd:TabBar.get_deselect_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_get_deselect_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TabBar.Bind_get_deselect_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1080,10 +905,7 @@ Clears all tabs.
 */
 //go:nosplit
 func (self class) ClearTabs() { //gd:TabBar.clear_tabs
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TabBar.Bind_clear_tabs, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TabBar.Bind_clear_tabs, 0, unsafe.Pointer(&struct{}{}))
 }
 func (self Instance) OnTabSelected(cb func(tab int)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("tab_selected"), gd.NewCallable(cb), 0)

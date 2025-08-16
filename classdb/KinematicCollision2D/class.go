@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +50,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -205,11 +209,8 @@ Returns the point of collision in global coordinates.
 */
 //go:nosplit
 func (self class) GetPosition() Vector2.XY { //gd:KinematicCollision2D.get_position
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.KinematicCollision2D.Bind_get_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.KinematicCollision2D.Bind_get_position, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -218,11 +219,8 @@ Returns the colliding body's shape's normal at the point of collision.
 */
 //go:nosplit
 func (self class) GetNormal() Vector2.XY { //gd:KinematicCollision2D.get_normal
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.KinematicCollision2D.Bind_get_normal, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.KinematicCollision2D.Bind_get_normal, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -231,11 +229,8 @@ Returns the moving object's travel before collision.
 */
 //go:nosplit
 func (self class) GetTravel() Vector2.XY { //gd:KinematicCollision2D.get_travel
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.KinematicCollision2D.Bind_get_travel, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.KinematicCollision2D.Bind_get_travel, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -244,11 +239,8 @@ Returns the moving object's remaining movement vector.
 */
 //go:nosplit
 func (self class) GetRemainder() Vector2.XY { //gd:KinematicCollision2D.get_remainder
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.KinematicCollision2D.Bind_get_remainder, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.KinematicCollision2D.Bind_get_remainder, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -257,12 +249,8 @@ Returns the collision angle according to [param up_direction], which is [constan
 */
 //go:nosplit
 func (self class) GetAngle(up_direction Vector2.XY) float64 { //gd:KinematicCollision2D.get_angle
-	var frame = callframe.New()
-	callframe.Arg(frame, up_direction)
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.KinematicCollision2D.Bind_get_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.KinematicCollision2D.Bind_get_angle, gdextension.SizeFloat|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ up_direction Vector2.XY }{up_direction}))
+	var ret = r_ret
 	return ret
 }
 
@@ -271,11 +259,8 @@ Returns the colliding body's length of overlap along the collision normal.
 */
 //go:nosplit
 func (self class) GetDepth() float64 { //gd:KinematicCollision2D.get_depth
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.KinematicCollision2D.Bind_get_depth, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.KinematicCollision2D.Bind_get_depth, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -284,11 +269,8 @@ Returns the moving object's colliding shape.
 */
 //go:nosplit
 func (self class) GetLocalShape() [1]gd.Object { //gd:KinematicCollision2D.get_local_shape
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.KinematicCollision2D.Bind_get_local_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.KinematicCollision2D.Bind_get_local_shape, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret)}
 	return ret
 }
 
@@ -297,11 +279,8 @@ Returns the colliding body's attached [Object].
 */
 //go:nosplit
 func (self class) GetCollider() [1]gd.Object { //gd:KinematicCollision2D.get_collider
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.KinematicCollision2D.Bind_get_collider, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.KinematicCollision2D.Bind_get_collider, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret)}
 	return ret
 }
 
@@ -310,11 +289,8 @@ Returns the unique instance ID of the colliding body's attached [Object]. See [m
 */
 //go:nosplit
 func (self class) GetColliderId() int64 { //gd:KinematicCollision2D.get_collider_id
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.KinematicCollision2D.Bind_get_collider_id, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.KinematicCollision2D.Bind_get_collider_id, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -323,11 +299,8 @@ Returns the colliding body's [RID] used by the [PhysicsServer2D].
 */
 //go:nosplit
 func (self class) GetColliderRid() RID.Any { //gd:KinematicCollision2D.get_collider_rid
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.KinematicCollision2D.Bind_get_collider_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.KinematicCollision2D.Bind_get_collider_rid, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -336,11 +309,8 @@ Returns the colliding body's shape.
 */
 //go:nosplit
 func (self class) GetColliderShape() [1]gd.Object { //gd:KinematicCollision2D.get_collider_shape
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.KinematicCollision2D.Bind_get_collider_shape, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.KinematicCollision2D.Bind_get_collider_shape, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret)}
 	return ret
 }
 
@@ -349,11 +319,8 @@ Returns the colliding body's shape index. See [CollisionObject2D].
 */
 //go:nosplit
 func (self class) GetColliderShapeIndex() int64 { //gd:KinematicCollision2D.get_collider_shape_index
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.KinematicCollision2D.Bind_get_collider_shape_index, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.KinematicCollision2D.Bind_get_collider_shape_index, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -362,11 +329,8 @@ Returns the colliding body's velocity.
 */
 //go:nosplit
 func (self class) GetColliderVelocity() Vector2.XY { //gd:KinematicCollision2D.get_collider_velocity
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.KinematicCollision2D.Bind_get_collider_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.KinematicCollision2D.Bind_get_collider_velocity, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsKinematicCollision2D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

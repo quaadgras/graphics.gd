@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +50,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -196,167 +200,109 @@ var collision = get_world_3d().direct_space_state.intersect_ray(query)
 */
 //go:nosplit
 func (self class) Create(from Vector3.XYZ, to Vector3.XYZ, collision_mask int64, exclude Array.Contains[RID.Any]) [1]gdclass.PhysicsRayQueryParameters3D { //gd:PhysicsRayQueryParameters3D.create
-	var frame = callframe.New()
-	callframe.Arg(frame, from)
-	callframe.Arg(frame, to)
-	callframe.Arg(frame, collision_mask)
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(exclude)))
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_create, frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.PhysicsRayQueryParameters3D{gd.PointerWithOwnershipTransferredToGo[gdclass.PhysicsRayQueryParameters3D](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.CallStatic[gd.EnginePointer](gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_create, gdextension.SizeObject|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeArray<<16), unsafe.Pointer(&struct {
+		from           Vector3.XYZ
+		to             Vector3.XYZ
+		collision_mask int64
+		exclude        gdextension.Array
+	}{from, to, collision_mask, gdextension.Array(pointers.Get(gd.InternalArray(exclude))[0])}))
+	var ret = [1]gdclass.PhysicsRayQueryParameters3D{gd.PointerWithOwnershipTransferredToGo[gdclass.PhysicsRayQueryParameters3D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFrom(from Vector3.XYZ) { //gd:PhysicsRayQueryParameters3D.set_from
-	var frame = callframe.New()
-	callframe.Arg(frame, from)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_set_from, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_set_from, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ from Vector3.XYZ }{from}))
 }
 
 //go:nosplit
 func (self class) GetFrom() Vector3.XYZ { //gd:PhysicsRayQueryParameters3D.get_from
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_get_from, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_get_from, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTo(to Vector3.XYZ) { //gd:PhysicsRayQueryParameters3D.set_to
-	var frame = callframe.New()
-	callframe.Arg(frame, to)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_set_to, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_set_to, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ to Vector3.XYZ }{to}))
 }
 
 //go:nosplit
 func (self class) GetTo() Vector3.XYZ { //gd:PhysicsRayQueryParameters3D.get_to
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_get_to, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_get_to, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollisionMask(collision_mask int64) { //gd:PhysicsRayQueryParameters3D.set_collision_mask
-	var frame = callframe.New()
-	callframe.Arg(frame, collision_mask)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_set_collision_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_set_collision_mask, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ collision_mask int64 }{collision_mask}))
 }
 
 //go:nosplit
 func (self class) GetCollisionMask() int64 { //gd:PhysicsRayQueryParameters3D.get_collision_mask
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_get_collision_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_get_collision_mask, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetExclude(exclude Array.Contains[RID.Any]) { //gd:PhysicsRayQueryParameters3D.set_exclude
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(exclude)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_set_exclude, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_set_exclude, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ exclude gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(exclude))[0])}))
 }
 
 //go:nosplit
 func (self class) GetExclude() Array.Contains[RID.Any] { //gd:PhysicsRayQueryParameters3D.get_exclude
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_get_exclude, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_get_exclude, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollideWithBodies(enable bool) { //gd:PhysicsRayQueryParameters3D.set_collide_with_bodies
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_set_collide_with_bodies, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_set_collide_with_bodies, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsCollideWithBodiesEnabled() bool { //gd:PhysicsRayQueryParameters3D.is_collide_with_bodies_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_is_collide_with_bodies_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_is_collide_with_bodies_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollideWithAreas(enable bool) { //gd:PhysicsRayQueryParameters3D.set_collide_with_areas
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_set_collide_with_areas, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_set_collide_with_areas, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsCollideWithAreasEnabled() bool { //gd:PhysicsRayQueryParameters3D.is_collide_with_areas_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_is_collide_with_areas_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_is_collide_with_areas_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHitFromInside(enable bool) { //gd:PhysicsRayQueryParameters3D.set_hit_from_inside
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_set_hit_from_inside, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_set_hit_from_inside, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsHitFromInsideEnabled() bool { //gd:PhysicsRayQueryParameters3D.is_hit_from_inside_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_is_hit_from_inside_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_is_hit_from_inside_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHitBackFaces(enable bool) { //gd:PhysicsRayQueryParameters3D.set_hit_back_faces
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_set_hit_back_faces, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_set_hit_back_faces, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsHitBackFacesEnabled() bool { //gd:PhysicsRayQueryParameters3D.is_hit_back_faces_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_is_hit_back_faces_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_is_hit_back_faces_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsPhysicsRayQueryParameters3D() Advanced {

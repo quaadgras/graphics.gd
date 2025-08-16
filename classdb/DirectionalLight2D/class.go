@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +53,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -112,20 +116,13 @@ func (self Instance) SetMaxDistance(value Float.X) {
 
 //go:nosplit
 func (self class) SetMaxDistance(pixels float64) { //gd:DirectionalLight2D.set_max_distance
-	var frame = callframe.New()
-	callframe.Arg(frame, pixels)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirectionalLight2D.Bind_set_max_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.DirectionalLight2D.Bind_set_max_distance, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ pixels float64 }{pixels}))
 }
 
 //go:nosplit
 func (self class) GetMaxDistance() float64 { //gd:DirectionalLight2D.get_max_distance
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.DirectionalLight2D.Bind_get_max_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.DirectionalLight2D.Bind_get_max_distance, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsDirectionalLight2D() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

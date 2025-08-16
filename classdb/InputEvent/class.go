@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -50,6 +52,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -263,20 +267,13 @@ func (self Instance) SetDevice(value int) {
 
 //go:nosplit
 func (self class) SetDevice(device int64) { //gd:InputEvent.set_device
-	var frame = callframe.New()
-	callframe.Arg(frame, device)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEvent.Bind_set_device, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputEvent.Bind_set_device, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ device int64 }{device}))
 }
 
 //go:nosplit
 func (self class) GetDevice() int64 { //gd:InputEvent.get_device
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEvent.Bind_get_device, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.InputEvent.Bind_get_device, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -286,13 +283,11 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 */
 //go:nosplit
 func (self class) IsAction(action String.Name, exact_match bool) bool { //gd:InputEvent.is_action
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(action)))
-	callframe.Arg(frame, exact_match)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEvent.Bind_is_action, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.InputEvent.Bind_is_action, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		action      gdextension.StringName
+		exact_match bool
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0]), exact_match}))
+	var ret = r_ret
 	return ret
 }
 
@@ -303,14 +298,12 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 */
 //go:nosplit
 func (self class) IsActionPressed(action String.Name, allow_echo bool, exact_match bool) bool { //gd:InputEvent.is_action_pressed
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(action)))
-	callframe.Arg(frame, allow_echo)
-	callframe.Arg(frame, exact_match)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEvent.Bind_is_action_pressed, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.InputEvent.Bind_is_action_pressed, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+		action      gdextension.StringName
+		allow_echo  bool
+		exact_match bool
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0]), allow_echo, exact_match}))
+	var ret = r_ret
 	return ret
 }
 
@@ -320,13 +313,11 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 */
 //go:nosplit
 func (self class) IsActionReleased(action String.Name, exact_match bool) bool { //gd:InputEvent.is_action_released
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(action)))
-	callframe.Arg(frame, exact_match)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEvent.Bind_is_action_released, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.InputEvent.Bind_is_action_released, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		action      gdextension.StringName
+		exact_match bool
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0]), exact_match}))
+	var ret = r_ret
 	return ret
 }
 
@@ -336,13 +327,11 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 */
 //go:nosplit
 func (self class) GetActionStrength(action String.Name, exact_match bool) float64 { //gd:InputEvent.get_action_strength
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(action)))
-	callframe.Arg(frame, exact_match)
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEvent.Bind_get_action_strength, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.InputEvent.Bind_get_action_strength, gdextension.SizeFloat|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		action      gdextension.StringName
+		exact_match bool
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0]), exact_match}))
+	var ret = r_ret
 	return ret
 }
 
@@ -351,11 +340,8 @@ Returns [code]true[/code] if this input event has been canceled.
 */
 //go:nosplit
 func (self class) IsCanceled() bool { //gd:InputEvent.is_canceled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEvent.Bind_is_canceled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.InputEvent.Bind_is_canceled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -365,11 +351,8 @@ Returns [code]true[/code] if this input event is pressed. Not relevant for event
 */
 //go:nosplit
 func (self class) IsPressed() bool { //gd:InputEvent.is_pressed
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEvent.Bind_is_pressed, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.InputEvent.Bind_is_pressed, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -378,11 +361,8 @@ Returns [code]true[/code] if this input event is released. Not relevant for even
 */
 //go:nosplit
 func (self class) IsReleased() bool { //gd:InputEvent.is_released
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEvent.Bind_is_released, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.InputEvent.Bind_is_released, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -392,11 +372,8 @@ Returns [code]true[/code] if this input event is an echo event (only for events 
 */
 //go:nosplit
 func (self class) IsEcho() bool { //gd:InputEvent.is_echo
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEvent.Bind_is_echo, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.InputEvent.Bind_is_echo, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -405,11 +382,8 @@ Returns a [String] representation of the event.
 */
 //go:nosplit
 func (self class) AsText() String.Readable { //gd:InputEvent.as_text
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEvent.Bind_as_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.InputEvent.Bind_as_text, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -420,13 +394,11 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 */
 //go:nosplit
 func (self class) IsMatch(event [1]gdclass.InputEvent, exact_match bool) bool { //gd:InputEvent.is_match
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(event[0])[0])
-	callframe.Arg(frame, exact_match)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEvent.Bind_is_match, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.InputEvent.Bind_is_match, gdextension.SizeBool|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		event       gdextension.Object
+		exact_match bool
+	}{gdextension.Object(pointers.Get(event[0])[0]), exact_match}))
+	var ret = r_ret
 	return ret
 }
 
@@ -435,11 +407,8 @@ Returns [code]true[/code] if this input event's type is one that can be assigned
 */
 //go:nosplit
 func (self class) IsActionType() bool { //gd:InputEvent.is_action_type
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEvent.Bind_is_action_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.InputEvent.Bind_is_action_type, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -449,12 +418,8 @@ The given input event's position, global position and speed will be copied. The 
 */
 //go:nosplit
 func (self class) Accumulate(with_event [1]gdclass.InputEvent) bool { //gd:InputEvent.accumulate
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(with_event[0])[0])
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEvent.Bind_accumulate, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.InputEvent.Bind_accumulate, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ with_event gdextension.Object }{gdextension.Object(pointers.Get(with_event[0])[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -463,13 +428,11 @@ Returns a copy of the given input event which has been offset by [param local_of
 */
 //go:nosplit
 func (self class) XformedBy(xform Transform2D.OriginXY, local_ofs Vector2.XY) [1]gdclass.InputEvent { //gd:InputEvent.xformed_by
-	var frame = callframe.New()
-	callframe.Arg(frame, xform)
-	callframe.Arg(frame, local_ofs)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEvent.Bind_xformed_by, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.InputEvent{gd.PointerWithOwnershipTransferredToGo[gdclass.InputEvent](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.InputEvent.Bind_xformed_by, gdextension.SizeObject|(gdextension.SizeTransform2D<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
+		xform     Transform2D.OriginXY
+		local_ofs Vector2.XY
+	}{xform, local_ofs}))
+	var ret = [1]gdclass.InputEvent{gd.PointerWithOwnershipTransferredToGo[gdclass.InputEvent](r_ret)}
 	return ret
 }
 func (self class) AsInputEvent() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

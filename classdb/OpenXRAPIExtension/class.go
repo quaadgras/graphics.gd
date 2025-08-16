@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +53,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -414,11 +418,8 @@ Returns the [url=https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrInstan
 */
 //go:nosplit
 func (self class) GetInstance() int64 { //gd:OpenXRAPIExtension.get_instance
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_get_instance, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_get_instance, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -427,11 +428,8 @@ Returns the id of the system, which is a [url=https://registry.khronos.org/OpenX
 */
 //go:nosplit
 func (self class) GetSystemId() int64 { //gd:OpenXRAPIExtension.get_system_id
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_get_system_id, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_get_system_id, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -440,11 +438,8 @@ Returns the OpenXR session, which is an [url=https://registry.khronos.org/OpenXR
 */
 //go:nosplit
 func (self class) GetSession() int64 { //gd:OpenXRAPIExtension.get_session
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_get_session, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_get_session, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -453,12 +448,8 @@ Creates a [Transform3D] from an [url=https://registry.khronos.org/OpenXR/specs/1
 */
 //go:nosplit
 func (self class) TransformFromPose(pose unsafe.Pointer) Transform3D.BasisOrigin { //gd:OpenXRAPIExtension.transform_from_pose
-	var frame = callframe.New()
-	callframe.Arg(frame, pose)
-	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_transform_from_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = gd.Transposed(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[Transform3D.BasisOrigin](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_transform_from_pose, gdextension.SizeTransform3D|(gdextension.Pointer<<4), unsafe.Pointer(&struct{ pose unsafe.Pointer }{pose}))
+	var ret = gd.Transposed(r_ret)
 	return ret
 }
 
@@ -467,14 +458,12 @@ Returns [code]true[/code] if the provided [url=https://registry.khronos.org/Open
 */
 //go:nosplit
 func (self class) XrResult(result int64, format String.Readable, args Array.Any) bool { //gd:OpenXRAPIExtension.xr_result
-	var frame = callframe.New()
-	callframe.Arg(frame, result)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(format)))
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(args)))
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_xr_result, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_xr_result, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8)|(gdextension.SizeArray<<12), unsafe.Pointer(&struct {
+		result int64
+		format gdextension.String
+		args   gdextension.Array
+	}{result, gdextension.String(pointers.Get(gd.InternalString(format))[0]), gdextension.Array(pointers.Get(gd.InternalArray(args))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -483,12 +472,8 @@ Returns [code]true[/code] if OpenXR is enabled.
 */
 //go:nosplit
 func (self class) OpenxrIsEnabled(check_run_in_editor bool) bool { //gd:OpenXRAPIExtension.openxr_is_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, check_run_in_editor)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.OpenXRAPIExtension.Bind_openxr_is_enabled, frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.CallStatic[bool](gd.Global.Methods.OpenXRAPIExtension.Bind_openxr_is_enabled, gdextension.SizeBool|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ check_run_in_editor bool }{check_run_in_editor}))
+	var ret = r_ret
 	return ret
 }
 
@@ -498,12 +483,8 @@ Returns the function pointer of the OpenXR function with the specified name, cas
 */
 //go:nosplit
 func (self class) GetInstanceProcAddr(name String.Readable) int64 { //gd:OpenXRAPIExtension.get_instance_proc_addr
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_get_instance_proc_addr, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_get_instance_proc_addr, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -512,12 +493,8 @@ Returns an error string for the given [url=https://registry.khronos.org/OpenXR/s
 */
 //go:nosplit
 func (self class) GetErrorString(result int64) String.Readable { //gd:OpenXRAPIExtension.get_error_string
-	var frame = callframe.New()
-	callframe.Arg(frame, result)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_get_error_string, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_get_error_string, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ result int64 }{result}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -526,12 +503,8 @@ Returns the name of the specified swapchain format.
 */
 //go:nosplit
 func (self class) GetSwapchainFormatName(swapchain_format int64) String.Readable { //gd:OpenXRAPIExtension.get_swapchain_format_name
-	var frame = callframe.New()
-	callframe.Arg(frame, swapchain_format)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_get_swapchain_format_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_get_swapchain_format_name, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ swapchain_format int64 }{swapchain_format}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -540,13 +513,11 @@ Set the object name of an OpenXR object, used for debug output. [param object_ty
 */
 //go:nosplit
 func (self class) SetObjectName(object_type int64, object_handle int64, object_name String.Readable) { //gd:OpenXRAPIExtension.set_object_name
-	var frame = callframe.New()
-	callframe.Arg(frame, object_type)
-	callframe.Arg(frame, object_handle)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(object_name)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_set_object_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_set_object_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
+		object_type   int64
+		object_handle int64
+		object_name   gdextension.String
+	}{object_type, object_handle, gdextension.String(pointers.Get(gd.InternalString(object_name))[0])}))
 }
 
 /*
@@ -554,11 +525,7 @@ Begins a new debug label region, this label will be reported in debug messages f
 */
 //go:nosplit
 func (self class) BeginDebugLabelRegion(label_name String.Readable) { //gd:OpenXRAPIExtension.begin_debug_label_region
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(label_name)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_begin_debug_label_region, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_begin_debug_label_region, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ label_name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(label_name))[0])}))
 }
 
 /*
@@ -566,10 +533,7 @@ Marks the end of a debug label region. Removes the latest debug label region add
 */
 //go:nosplit
 func (self class) EndDebugLabelRegion() { //gd:OpenXRAPIExtension.end_debug_label_region
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_end_debug_label_region, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_end_debug_label_region, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -577,11 +541,7 @@ Inserts a debug label, this label is reported in any debug message resulting fro
 */
 //go:nosplit
 func (self class) InsertDebugLabel(label_name String.Readable) { //gd:OpenXRAPIExtension.insert_debug_label
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(label_name)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_insert_debug_label, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_insert_debug_label, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ label_name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(label_name))[0])}))
 }
 
 /*
@@ -589,11 +549,8 @@ Returns [code]true[/code] if OpenXR is initialized.
 */
 //go:nosplit
 func (self class) IsInitialized() bool { //gd:OpenXRAPIExtension.is_initialized
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_is_initialized, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_is_initialized, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -602,11 +559,8 @@ Returns [code]true[/code] if OpenXR is running ([url=https://registry.khronos.or
 */
 //go:nosplit
 func (self class) IsRunning() bool { //gd:OpenXRAPIExtension.is_running
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_is_running, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_is_running, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -615,11 +569,8 @@ Returns the play space, which is an [url=https://registry.khronos.org/OpenXR/spe
 */
 //go:nosplit
 func (self class) GetPlaySpace() int64 { //gd:OpenXRAPIExtension.get_play_space
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_get_play_space, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_get_play_space, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -628,11 +579,8 @@ Returns the predicted display timing for the current frame.
 */
 //go:nosplit
 func (self class) GetPredictedDisplayTime() int64 { //gd:OpenXRAPIExtension.get_predicted_display_time
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_get_predicted_display_time, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_get_predicted_display_time, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -641,11 +589,8 @@ Returns the predicted display timing for the next frame.
 */
 //go:nosplit
 func (self class) GetNextFrameTime() int64 { //gd:OpenXRAPIExtension.get_next_frame_time
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_get_next_frame_time, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_get_next_frame_time, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -654,11 +599,8 @@ Returns [code]true[/code] if OpenXR is initialized for rendering with an XR view
 */
 //go:nosplit
 func (self class) CanRender() bool { //gd:OpenXRAPIExtension.can_render
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_can_render, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_can_render, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -667,13 +609,11 @@ Returns the [RID] corresponding to an [code]Action[/code] of a matching name, op
 */
 //go:nosplit
 func (self class) FindAction(name String.Readable, action_set RID.Any) RID.Any { //gd:OpenXRAPIExtension.find_action
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	callframe.Arg(frame, action_set)
-	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_find_action, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_find_action, gdextension.SizeRID|(gdextension.SizeString<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+		name       gdextension.String
+		action_set RID.Any
+	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), action_set}))
+	var ret = r_ret
 	return ret
 }
 
@@ -682,12 +622,8 @@ Returns the corresponding [code]XrAction[/code] OpenXR handle for the given acti
 */
 //go:nosplit
 func (self class) ActionGetHandle(action RID.Any) int64 { //gd:OpenXRAPIExtension.action_get_handle
-	var frame = callframe.New()
-	callframe.Arg(frame, action)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_action_get_handle, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_action_get_handle, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ action RID.Any }{action}))
+	var ret = r_ret
 	return ret
 }
 
@@ -696,12 +632,8 @@ Returns the corresponding [code]XRHandTrackerEXT[/code] handle for the given han
 */
 //go:nosplit
 func (self class) GetHandTracker(hand_index int64) int64 { //gd:OpenXRAPIExtension.get_hand_tracker
-	var frame = callframe.New()
-	callframe.Arg(frame, hand_index)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_get_hand_tracker, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_get_hand_tracker, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ hand_index int64 }{hand_index}))
+	var ret = r_ret
 	return ret
 }
 
@@ -710,11 +642,7 @@ Registers the given extension as a composition layer provider.
 */
 //go:nosplit
 func (self class) RegisterCompositionLayerProvider(extension [1]gdclass.OpenXRExtensionWrapperExtension) { //gd:OpenXRAPIExtension.register_composition_layer_provider
-	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(extension[0].AsObject()[0]))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_register_composition_layer_provider, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_register_composition_layer_provider, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ extension gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(extension[0].AsObject()[0]))}))
 }
 
 /*
@@ -722,11 +650,7 @@ Unregisters the given extension as a composition layer provider.
 */
 //go:nosplit
 func (self class) UnregisterCompositionLayerProvider(extension [1]gdclass.OpenXRExtensionWrapperExtension) { //gd:OpenXRAPIExtension.unregister_composition_layer_provider
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(extension[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_unregister_composition_layer_provider, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_unregister_composition_layer_provider, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ extension gdextension.Object }{gdextension.Object(pointers.Get(extension[0])[0])}))
 }
 
 /*
@@ -734,11 +658,7 @@ Registers the given extension as a provider of additional data structures to pro
 */
 //go:nosplit
 func (self class) RegisterProjectionViewsExtension(extension [1]gdclass.OpenXRExtensionWrapperExtension) { //gd:OpenXRAPIExtension.register_projection_views_extension
-	var frame = callframe.New()
-	callframe.Arg(frame, gd.PointerWithOwnershipTransferredToGodot(extension[0].AsObject()[0]))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_register_projection_views_extension, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_register_projection_views_extension, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ extension gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(extension[0].AsObject()[0]))}))
 }
 
 /*
@@ -746,11 +666,7 @@ Unregisters the given extension as a provider of additional data structures to p
 */
 //go:nosplit
 func (self class) UnregisterProjectionViewsExtension(extension [1]gdclass.OpenXRExtensionWrapperExtension) { //gd:OpenXRAPIExtension.unregister_projection_views_extension
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(extension[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_unregister_projection_views_extension, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_unregister_projection_views_extension, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ extension gdextension.Object }{gdextension.Object(pointers.Get(extension[0])[0])}))
 }
 
 /*
@@ -759,11 +675,8 @@ Returns the near boundary value of the camera frustum.
 */
 //go:nosplit
 func (self class) GetRenderStateZNear() float64 { //gd:OpenXRAPIExtension.get_render_state_z_near
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_get_render_state_z_near, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_get_render_state_z_near, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -773,11 +686,8 @@ Returns the far boundary value of the camera frustum.
 */
 //go:nosplit
 func (self class) GetRenderStateZFar() float64 { //gd:OpenXRAPIExtension.get_render_state_z_far
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_get_render_state_z_far, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_get_render_state_z_far, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -786,11 +696,7 @@ Sets the render target of the velocity texture.
 */
 //go:nosplit
 func (self class) SetVelocityTexture(render_target RID.Any) { //gd:OpenXRAPIExtension.set_velocity_texture
-	var frame = callframe.New()
-	callframe.Arg(frame, render_target)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_set_velocity_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_set_velocity_texture, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ render_target RID.Any }{render_target}))
 }
 
 /*
@@ -798,11 +704,7 @@ Sets the render target of the velocity depth texture.
 */
 //go:nosplit
 func (self class) SetVelocityDepthTexture(render_target RID.Any) { //gd:OpenXRAPIExtension.set_velocity_depth_texture
-	var frame = callframe.New()
-	callframe.Arg(frame, render_target)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_set_velocity_depth_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_set_velocity_depth_texture, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ render_target RID.Any }{render_target}))
 }
 
 /*
@@ -810,11 +712,7 @@ Sets the target size of the velocity and velocity depth textures.
 */
 //go:nosplit
 func (self class) SetVelocityTargetSize(target_size Vector2i.XY) { //gd:OpenXRAPIExtension.set_velocity_target_size
-	var frame = callframe.New()
-	callframe.Arg(frame, target_size)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_set_velocity_target_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_set_velocity_target_size, 0|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ target_size Vector2i.XY }{target_size}))
 }
 
 /*
@@ -822,11 +720,8 @@ Returns an array of supported swapchain formats.
 */
 //go:nosplit
 func (self class) GetSupportedSwapchainFormats() Packed.Array[int64] { //gd:OpenXRAPIExtension.get_supported_swapchain_formats
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_get_supported_swapchain_formats, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Array[int64](Array.Through(gd.PackedProxy[gd.PackedInt64Array, int64]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_get_supported_swapchain_formats, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Array[int64](Array.Through(gd.PackedProxy[gd.PackedInt64Array, int64]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -835,18 +730,16 @@ Returns a pointer to a new swapchain created using the provided parameters.
 */
 //go:nosplit
 func (self class) OpenxrSwapchainCreate(create_flags int64, usage_flags int64, swapchain_format int64, width int64, height int64, sample_count int64, array_size int64) int64 { //gd:OpenXRAPIExtension.openxr_swapchain_create
-	var frame = callframe.New()
-	callframe.Arg(frame, create_flags)
-	callframe.Arg(frame, usage_flags)
-	callframe.Arg(frame, swapchain_format)
-	callframe.Arg(frame, width)
-	callframe.Arg(frame, height)
-	callframe.Arg(frame, sample_count)
-	callframe.Arg(frame, array_size)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_openxr_swapchain_create, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_openxr_swapchain_create, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), unsafe.Pointer(&struct {
+		create_flags     int64
+		usage_flags      int64
+		swapchain_format int64
+		width            int64
+		height           int64
+		sample_count     int64
+		array_size       int64
+	}{create_flags, usage_flags, swapchain_format, width, height, sample_count, array_size}))
+	var ret = r_ret
 	return ret
 }
 
@@ -855,11 +748,7 @@ Destroys the provided swapchain and frees it from memory.
 */
 //go:nosplit
 func (self class) OpenxrSwapchainFree(swapchain int64) { //gd:OpenXRAPIExtension.openxr_swapchain_free
-	var frame = callframe.New()
-	callframe.Arg(frame, swapchain)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_openxr_swapchain_free, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_openxr_swapchain_free, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ swapchain int64 }{swapchain}))
 }
 
 /*
@@ -867,12 +756,8 @@ Returns the [code]XrSwapchain[/code] handle of the provided swapchain.
 */
 //go:nosplit
 func (self class) OpenxrSwapchainGetSwapchain(swapchain int64) int64 { //gd:OpenXRAPIExtension.openxr_swapchain_get_swapchain
-	var frame = callframe.New()
-	callframe.Arg(frame, swapchain)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_openxr_swapchain_get_swapchain, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_openxr_swapchain_get_swapchain, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ swapchain int64 }{swapchain}))
+	var ret = r_ret
 	return ret
 }
 
@@ -881,11 +766,7 @@ Acquires the image of the provided swapchain.
 */
 //go:nosplit
 func (self class) OpenxrSwapchainAcquire(swapchain int64) { //gd:OpenXRAPIExtension.openxr_swapchain_acquire
-	var frame = callframe.New()
-	callframe.Arg(frame, swapchain)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_openxr_swapchain_acquire, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_openxr_swapchain_acquire, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ swapchain int64 }{swapchain}))
 }
 
 /*
@@ -893,12 +774,8 @@ Returns the RID of the provided swapchain's image.
 */
 //go:nosplit
 func (self class) OpenxrSwapchainGetImage(swapchain int64) RID.Any { //gd:OpenXRAPIExtension.openxr_swapchain_get_image
-	var frame = callframe.New()
-	callframe.Arg(frame, swapchain)
-	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_openxr_swapchain_get_image, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_openxr_swapchain_get_image, gdextension.SizeRID|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ swapchain int64 }{swapchain}))
+	var ret = r_ret
 	return ret
 }
 
@@ -907,11 +784,7 @@ Releases the image of the provided swapchain.
 */
 //go:nosplit
 func (self class) OpenxrSwapchainRelease(swapchain int64) { //gd:OpenXRAPIExtension.openxr_swapchain_release
-	var frame = callframe.New()
-	callframe.Arg(frame, swapchain)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_openxr_swapchain_release, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_openxr_swapchain_release, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ swapchain int64 }{swapchain}))
 }
 
 /*
@@ -920,11 +793,8 @@ Returns a pointer to the render state's [code]XrCompositionLayerProjection[/code
 */
 //go:nosplit
 func (self class) GetProjectionLayer() int64 { //gd:OpenXRAPIExtension.get_projection_layer
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_get_projection_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_get_projection_layer, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -933,11 +803,7 @@ Sets the render region to [param render_region], overriding the normal render ta
 */
 //go:nosplit
 func (self class) SetRenderRegion(render_region Rect2i.PositionSize) { //gd:OpenXRAPIExtension.set_render_region
-	var frame = callframe.New()
-	callframe.Arg(frame, render_region)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_set_render_region, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_set_render_region, 0|(gdextension.SizeRect2i<<4), unsafe.Pointer(&struct{ render_region Rect2i.PositionSize }{render_region}))
 }
 
 /*
@@ -945,11 +811,7 @@ If set to [code]true[/code], an OpenXR extension is loaded which is capable of e
 */
 //go:nosplit
 func (self class) SetEmulateEnvironmentBlendModeAlphaBlend(enabled bool) { //gd:OpenXRAPIExtension.set_emulate_environment_blend_mode_alpha_blend
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_set_emulate_environment_blend_mode_alpha_blend, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_set_emulate_environment_blend_mode_alpha_blend, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 /*
@@ -957,11 +819,8 @@ Returns [enum OpenXRAPIExtension.OpenXRAlphaBlendModeSupport] denoting if [const
 */
 //go:nosplit
 func (self class) IsEnvironmentBlendModeAlphaSupported() OpenXRAlphaBlendModeSupport { //gd:OpenXRAPIExtension.is_environment_blend_mode_alpha_supported
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[OpenXRAlphaBlendModeSupport](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_is_environment_blend_mode_alpha_supported, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[OpenXRAlphaBlendModeSupport](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_is_environment_blend_mode_alpha_supported, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsOpenXRAPIExtension() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

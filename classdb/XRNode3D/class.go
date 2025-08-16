@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -50,6 +52,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -159,58 +163,37 @@ func (self Instance) SetShowWhenTracked(value bool) {
 
 //go:nosplit
 func (self class) SetTracker(tracker_name String.Name) { //gd:XRNode3D.set_tracker
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(tracker_name)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_set_tracker, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.XRNode3D.Bind_set_tracker, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ tracker_name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(tracker_name))[0])}))
 }
 
 //go:nosplit
 func (self class) GetTracker() String.Name { //gd:XRNode3D.get_tracker
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_get_tracker, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.XRNode3D.Bind_get_tracker, gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPoseName(pose String.Name) { //gd:XRNode3D.set_pose_name
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(pose)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_set_pose_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.XRNode3D.Bind_set_pose_name, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ pose gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(pose))[0])}))
 }
 
 //go:nosplit
 func (self class) GetPoseName() String.Name { //gd:XRNode3D.get_pose_name
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_get_pose_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.XRNode3D.Bind_get_pose_name, gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShowWhenTracked(show bool) { //gd:XRNode3D.set_show_when_tracked
-	var frame = callframe.New()
-	callframe.Arg(frame, show)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_set_show_when_tracked, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.XRNode3D.Bind_set_show_when_tracked, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ show bool }{show}))
 }
 
 //go:nosplit
 func (self class) GetShowWhenTracked() bool { //gd:XRNode3D.get_show_when_tracked
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_get_show_when_tracked, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.XRNode3D.Bind_get_show_when_tracked, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -219,11 +202,8 @@ Returns [code]true[/code] if the [member tracker] has been registered and the [m
 */
 //go:nosplit
 func (self class) GetIsActive() bool { //gd:XRNode3D.get_is_active
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_get_is_active, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.XRNode3D.Bind_get_is_active, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -232,11 +212,8 @@ Returns [code]true[/code] if the [member tracker] has current tracking data for 
 */
 //go:nosplit
 func (self class) GetHasTrackingData() bool { //gd:XRNode3D.get_has_tracking_data
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_get_has_tracking_data, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.XRNode3D.Bind_get_has_tracking_data, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -245,11 +222,8 @@ Returns the [XRPose] containing the current state of the pose being tracked. Thi
 */
 //go:nosplit
 func (self class) GetPose() [1]gdclass.XRPose { //gd:XRNode3D.get_pose
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_get_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.XRPose{gd.PointerWithOwnershipTransferredToGo[gdclass.XRPose](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.XRNode3D.Bind_get_pose, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.XRPose{gd.PointerWithOwnershipTransferredToGo[gdclass.XRPose](r_ret)}
 	return ret
 }
 
@@ -263,15 +237,13 @@ Triggers a haptic pulse on a device associated with this interface.
 */
 //go:nosplit
 func (self class) TriggerHapticPulse(action_name String.Readable, frequency float64, amplitude float64, duration_sec float64, delay_sec float64) { //gd:XRNode3D.trigger_haptic_pulse
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(action_name)))
-	callframe.Arg(frame, frequency)
-	callframe.Arg(frame, amplitude)
-	callframe.Arg(frame, duration_sec)
-	callframe.Arg(frame, delay_sec)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRNode3D.Bind_trigger_haptic_pulse, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.XRNode3D.Bind_trigger_haptic_pulse, 0|(gdextension.SizeString<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20), unsafe.Pointer(&struct {
+		action_name  gdextension.String
+		frequency    float64
+		amplitude    float64
+		duration_sec float64
+		delay_sec    float64
+	}{gdextension.String(pointers.Get(gd.InternalString(action_name))[0]), frequency, amplitude, duration_sec, delay_sec}))
 }
 func (self Instance) OnTrackingChanged(cb func(tracking bool)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("tracking_changed"), gd.NewCallable(cb), 0)

@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -52,6 +54,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -165,40 +169,26 @@ func (self Instance) SetHand(value TrackerHand) {
 
 //go:nosplit
 func (self class) GetTrackerProfile() String.Readable { //gd:XRPositionalTracker.get_tracker_profile
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_get_tracker_profile, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.XRPositionalTracker.Bind_get_tracker_profile, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTrackerProfile(profile String.Readable) { //gd:XRPositionalTracker.set_tracker_profile
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(profile)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_set_tracker_profile, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.XRPositionalTracker.Bind_set_tracker_profile, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ profile gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(profile))[0])}))
 }
 
 //go:nosplit
 func (self class) GetTrackerHand() TrackerHand { //gd:XRPositionalTracker.get_tracker_hand
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[TrackerHand](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_get_tracker_hand, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[TrackerHand](self.AsObject(), gd.Global.Methods.XRPositionalTracker.Bind_get_tracker_hand, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTrackerHand(hand TrackerHand) { //gd:XRPositionalTracker.set_tracker_hand
-	var frame = callframe.New()
-	callframe.Arg(frame, hand)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_set_tracker_hand, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.XRPositionalTracker.Bind_set_tracker_hand, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ hand TrackerHand }{hand}))
 }
 
 /*
@@ -206,12 +196,8 @@ Returns [code]true[/code] if the tracker is available and is currently tracking 
 */
 //go:nosplit
 func (self class) HasPose(name String.Name) bool { //gd:XRPositionalTracker.has_pose
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_has_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.XRPositionalTracker.Bind_has_pose, gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -220,12 +206,8 @@ Returns the current [XRPose] state object for the bound [param name] pose.
 */
 //go:nosplit
 func (self class) GetPose(name String.Name) [1]gdclass.XRPose { //gd:XRPositionalTracker.get_pose
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_get_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.XRPose{gd.PointerWithOwnershipTransferredToGo[gdclass.XRPose](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.XRPositionalTracker.Bind_get_pose, gdextension.SizeObject|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var ret = [1]gdclass.XRPose{gd.PointerWithOwnershipTransferredToGo[gdclass.XRPose](r_ret)}
 	return ret
 }
 
@@ -234,11 +216,7 @@ Marks this pose as invalid, we don't clear the last reported state but it allows
 */
 //go:nosplit
 func (self class) InvalidatePose(name String.Name) { //gd:XRPositionalTracker.invalidate_pose
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_invalidate_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.XRPositionalTracker.Bind_invalidate_pose, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
 }
 
 /*
@@ -246,15 +224,13 @@ Sets the transform, linear velocity, angular velocity and tracking confidence fo
 */
 //go:nosplit
 func (self class) SetPose(name String.Name, transform Transform3D.BasisOrigin, linear_velocity Vector3.XYZ, angular_velocity Vector3.XYZ, tracking_confidence XRPose.TrackingConfidence) { //gd:XRPositionalTracker.set_pose
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
-	callframe.Arg(frame, gd.Transposed(transform))
-	callframe.Arg(frame, linear_velocity)
-	callframe.Arg(frame, angular_velocity)
-	callframe.Arg(frame, tracking_confidence)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_set_pose, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.XRPositionalTracker.Bind_set_pose, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeTransform3D<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizeVector3<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
+		name                gdextension.StringName
+		transform           Transform3D.BasisOrigin
+		linear_velocity     Vector3.XYZ
+		angular_velocity    Vector3.XYZ
+		tracking_confidence XRPose.TrackingConfidence
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gd.Transposed(transform), linear_velocity, angular_velocity, tracking_confidence}))
 }
 
 /*
@@ -262,12 +238,8 @@ Returns an input for this tracker. It can return a boolean, float or [Vector2] v
 */
 //go:nosplit
 func (self class) GetInput(name String.Name) variant.Any { //gd:XRPositionalTracker.get_input
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
-	var r_ret = callframe.Ret[[3]uint64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_get_input, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[3]uint64](self.AsObject(), gd.Global.Methods.XRPositionalTracker.Bind_get_input, gdextension.SizeVariant|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
 
@@ -276,12 +248,10 @@ Changes the value for the given input. This method is called by a [XRInterface] 
 */
 //go:nosplit
 func (self class) SetInput(name String.Name, value variant.Any) { //gd:XRPositionalTracker.set_input
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRPositionalTracker.Bind_set_input, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.XRPositionalTracker.Bind_set_input, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
+		name  gdextension.StringName
+		value gdextension.Variant
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
 }
 func (self Instance) OnPoseChanged(cb func(pose XRPose.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("pose_changed"), gd.NewCallable(cb), 0)

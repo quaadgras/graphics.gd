@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -60,6 +62,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -2156,11 +2160,8 @@ Returns [code]true[/code] if the user has text in the [url=https://en.wikipedia.
 */
 //go:nosplit
 func (self class) HasImeText() bool { //gd:TextEdit.has_ime_text
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_has_ime_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_has_ime_text, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2169,10 +2170,7 @@ Closes the [url=https://en.wikipedia.org/wiki/Input_method]Input Method Editor[/
 */
 //go:nosplit
 func (self class) CancelIme() { //gd:TextEdit.cancel_ime
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_cancel_ime, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_cancel_ime, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -2180,104 +2178,68 @@ Applies text from the [url=https://en.wikipedia.org/wiki/Input_method]Input Meth
 */
 //go:nosplit
 func (self class) ApplyIme() { //gd:TextEdit.apply_ime
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_apply_ime, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_apply_ime, 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) SetEditable(enabled bool) { //gd:TextEdit.set_editable
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_editable, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_editable, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsEditable() bool { //gd:TextEdit.is_editable
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_editable, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_editable, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextDirection(direction Control.TextDirection) { //gd:TextEdit.set_text_direction
-	var frame = callframe.New()
-	callframe.Arg(frame, direction)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_text_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_text_direction, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ direction Control.TextDirection }{direction}))
 }
 
 //go:nosplit
 func (self class) GetTextDirection() Control.TextDirection { //gd:TextEdit.get_text_direction
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Control.TextDirection](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_text_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Control.TextDirection](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_text_direction, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLanguage(language String.Readable) { //gd:TextEdit.set_language
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_language, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_language, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ language gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
 }
 
 //go:nosplit
 func (self class) GetLanguage() String.Readable { //gd:TextEdit.get_language
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_language, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_language, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStructuredTextBidiOverride(parser TextServer.StructuredTextParser) { //gd:TextEdit.set_structured_text_bidi_override
-	var frame = callframe.New()
-	callframe.Arg(frame, parser)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_structured_text_bidi_override, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_structured_text_bidi_override, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
+		parser TextServer.StructuredTextParser
+	}{parser}))
 }
 
 //go:nosplit
 func (self class) GetStructuredTextBidiOverride() TextServer.StructuredTextParser { //gd:TextEdit.get_structured_text_bidi_override
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[TextServer.StructuredTextParser](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_structured_text_bidi_override, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[TextServer.StructuredTextParser](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_structured_text_bidi_override, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStructuredTextBidiOverrideOptions(args Array.Any) { //gd:TextEdit.set_structured_text_bidi_override_options
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(args)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_structured_text_bidi_override_options, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_structured_text_bidi_override_options, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ args gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(args))[0])}))
 }
 
 //go:nosplit
 func (self class) GetStructuredTextBidiOverrideOptions() Array.Any { //gd:TextEdit.get_structured_text_bidi_override_options
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_structured_text_bidi_override_options, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_structured_text_bidi_override_options, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -2286,11 +2248,7 @@ Sets the tab size for the [TextEdit] to use.
 */
 //go:nosplit
 func (self class) SetTabSize(size int64) { //gd:TextEdit.set_tab_size
-	var frame = callframe.New()
-	callframe.Arg(frame, size)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_tab_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_tab_size, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ size int64 }{size}))
 }
 
 /*
@@ -2298,30 +2256,20 @@ Returns the [TextEdit]'s' tab size.
 */
 //go:nosplit
 func (self class) GetTabSize() int64 { //gd:TextEdit.get_tab_size
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_tab_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_tab_size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIndentWrappedLines(enabled bool) { //gd:TextEdit.set_indent_wrapped_lines
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_indent_wrapped_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_indent_wrapped_lines, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsIndentWrappedLines() bool { //gd:TextEdit.is_indent_wrapped_lines
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_indent_wrapped_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_indent_wrapped_lines, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2330,11 +2278,7 @@ If [code]true[/code], enables overtype mode. In this mode, typing overrides exis
 */
 //go:nosplit
 func (self class) SetOvertypeModeEnabled(enabled bool) { //gd:TextEdit.set_overtype_mode_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_overtype_mode_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_overtype_mode_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 /*
@@ -2342,125 +2286,80 @@ Returns [code]true[/code] if overtype mode is enabled. See [method set_overtype_
 */
 //go:nosplit
 func (self class) IsOvertypeModeEnabled() bool { //gd:TextEdit.is_overtype_mode_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_overtype_mode_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_overtype_mode_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetContextMenuEnabled(enabled bool) { //gd:TextEdit.set_context_menu_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_context_menu_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_context_menu_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsContextMenuEnabled() bool { //gd:TextEdit.is_context_menu_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_context_menu_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_context_menu_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEmojiMenuEnabled(enable bool) { //gd:TextEdit.set_emoji_menu_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_emoji_menu_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_emoji_menu_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsEmojiMenuEnabled() bool { //gd:TextEdit.is_emoji_menu_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_emoji_menu_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_emoji_menu_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShortcutKeysEnabled(enabled bool) { //gd:TextEdit.set_shortcut_keys_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_shortcut_keys_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_shortcut_keys_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsShortcutKeysEnabled() bool { //gd:TextEdit.is_shortcut_keys_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_shortcut_keys_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_shortcut_keys_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVirtualKeyboardEnabled(enabled bool) { //gd:TextEdit.set_virtual_keyboard_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_virtual_keyboard_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_virtual_keyboard_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsVirtualKeyboardEnabled() bool { //gd:TextEdit.is_virtual_keyboard_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_virtual_keyboard_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_virtual_keyboard_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMiddleMousePasteEnabled(enabled bool) { //gd:TextEdit.set_middle_mouse_paste_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_middle_mouse_paste_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_middle_mouse_paste_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsMiddleMousePasteEnabled() bool { //gd:TextEdit.is_middle_mouse_paste_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_middle_mouse_paste_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_middle_mouse_paste_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEmptySelectionClipboardEnabled(enabled bool) { //gd:TextEdit.set_empty_selection_clipboard_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_empty_selection_clipboard_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_empty_selection_clipboard_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsEmptySelectionClipboardEnabled() bool { //gd:TextEdit.is_empty_selection_clipboard_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_empty_selection_clipboard_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_empty_selection_clipboard_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2469,28 +2368,18 @@ Performs a full reset of [TextEdit], including undo history.
 */
 //go:nosplit
 func (self class) Clear() { //gd:TextEdit.clear
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_clear, 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) SetText(text String.Readable) { //gd:TextEdit.set_text
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_text, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(text))[0])}))
 }
 
 //go:nosplit
 func (self class) GetText() String.Readable { //gd:TextEdit.get_text
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_text, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -2499,30 +2388,20 @@ Returns the number of lines in the text.
 */
 //go:nosplit
 func (self class) GetLineCount() int64 { //gd:TextEdit.get_line_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_line_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPlaceholder(text String.Readable) { //gd:TextEdit.set_placeholder
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_placeholder, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_placeholder, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(text))[0])}))
 }
 
 //go:nosplit
 func (self class) GetPlaceholder() String.Readable { //gd:TextEdit.get_placeholder
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_placeholder, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_placeholder, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -2532,12 +2411,10 @@ Carets on the line will attempt to keep their visual x position.
 */
 //go:nosplit
 func (self class) SetLine(line int64, new_text String.Readable) { //gd:TextEdit.set_line
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(new_text)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_line, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_line, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+		line     int64
+		new_text gdextension.String
+	}{line, gdextension.String(pointers.Get(gd.InternalString(new_text))[0])}))
 }
 
 /*
@@ -2545,12 +2422,8 @@ Returns the text of a specific line.
 */
 //go:nosplit
 func (self class) GetLine(line int64) String.Readable { //gd:TextEdit.get_line
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_line, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -2559,12 +2432,8 @@ Returns line text as it is currently displayed, including IME composition string
 */
 //go:nosplit
 func (self class) GetLineWithIme(line int64) String.Readable { //gd:TextEdit.get_line_with_ime
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_with_ime, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_line_with_ime, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -2573,13 +2442,11 @@ Returns the width in pixels of the [param wrap_index] on [param line].
 */
 //go:nosplit
 func (self class) GetLineWidth(line int64, wrap_index int64) int64 { //gd:TextEdit.get_line_width
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	callframe.Arg(frame, wrap_index)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_width, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_line_width, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		line       int64
+		wrap_index int64
+	}{line, wrap_index}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2589,11 +2456,8 @@ Returns the maximum value of the line height among all lines.
 */
 //go:nosplit
 func (self class) GetLineHeight() int64 { //gd:TextEdit.get_line_height
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_height, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_line_height, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2602,12 +2466,8 @@ Returns the indent level of the given line. This is the number of spaces and tab
 */
 //go:nosplit
 func (self class) GetIndentLevel(line int64) int64 { //gd:TextEdit.get_indent_level
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_indent_level, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_indent_level, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2616,12 +2476,8 @@ Returns the first column containing a non-whitespace character on the given line
 */
 //go:nosplit
 func (self class) GetFirstNonWhitespaceColumn(line int64) int64 { //gd:TextEdit.get_first_non_whitespace_column
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_first_non_whitespace_column, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_first_non_whitespace_column, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2630,12 +2486,10 @@ Swaps the two lines. Carets will be swapped with the lines.
 */
 //go:nosplit
 func (self class) SwapLines(from_line int64, to_line int64) { //gd:TextEdit.swap_lines
-	var frame = callframe.New()
-	callframe.Arg(frame, from_line)
-	callframe.Arg(frame, to_line)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_swap_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_swap_lines, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		from_line int64
+		to_line   int64
+	}{from_line, to_line}))
 }
 
 /*
@@ -2643,12 +2497,10 @@ Inserts a new line with [param text] at [param line].
 */
 //go:nosplit
 func (self class) InsertLineAt(line int64, text String.Readable) { //gd:TextEdit.insert_line_at
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_insert_line_at, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_insert_line_at, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+		line int64
+		text gdextension.String
+	}{line, gdextension.String(pointers.Get(gd.InternalString(text))[0])}))
 }
 
 /*
@@ -2657,12 +2509,10 @@ If [param move_carets_down] is [code]true[/code] carets will move to the next li
 */
 //go:nosplit
 func (self class) RemoveLineAt(line int64, move_carets_down bool) { //gd:TextEdit.remove_line_at
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	callframe.Arg(frame, move_carets_down)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_remove_line_at, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_remove_line_at, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		line             int64
+		move_carets_down bool
+	}{line, move_carets_down}))
 }
 
 /*
@@ -2670,12 +2520,10 @@ Insert the specified text at the caret position.
 */
 //go:nosplit
 func (self class) InsertTextAtCaret(text String.Readable, caret_index int64) { //gd:TextEdit.insert_text_at_caret
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
-	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_insert_text_at_caret, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_insert_text_at_caret, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		text        gdextension.String
+		caret_index int64
+	}{gdextension.String(pointers.Get(gd.InternalString(text))[0]), caret_index}))
 }
 
 /*
@@ -2685,15 +2533,13 @@ If [param before_selection_end] is [code]true[/code], selections that end at [pa
 */
 //go:nosplit
 func (self class) InsertText(text String.Readable, line int64, column int64, before_selection_begin bool, before_selection_end bool) { //gd:TextEdit.insert_text
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
-	callframe.Arg(frame, line)
-	callframe.Arg(frame, column)
-	callframe.Arg(frame, before_selection_begin)
-	callframe.Arg(frame, before_selection_end)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_insert_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_insert_text, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20), unsafe.Pointer(&struct {
+		text                   gdextension.String
+		line                   int64
+		column                 int64
+		before_selection_begin bool
+		before_selection_end   bool
+	}{gdextension.String(pointers.Get(gd.InternalString(text))[0]), line, column, before_selection_begin, before_selection_end}))
 }
 
 /*
@@ -2701,14 +2547,12 @@ Removes text between the given positions.
 */
 //go:nosplit
 func (self class) RemoveText(from_line int64, from_column int64, to_line int64, to_column int64) { //gd:TextEdit.remove_text
-	var frame = callframe.New()
-	callframe.Arg(frame, from_line)
-	callframe.Arg(frame, from_column)
-	callframe.Arg(frame, to_line)
-	callframe.Arg(frame, to_column)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_remove_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_remove_text, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
+		from_line   int64
+		from_column int64
+		to_line     int64
+		to_column   int64
+	}{from_line, from_column, to_line, to_column}))
 }
 
 /*
@@ -2716,11 +2560,8 @@ Returns the last unhidden line in the entire [TextEdit].
 */
 //go:nosplit
 func (self class) GetLastUnhiddenLine() int64 { //gd:TextEdit.get_last_unhidden_line
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_last_unhidden_line, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_last_unhidden_line, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2729,13 +2570,11 @@ Returns the count to the next visible line from [param line] to [code]line + vis
 */
 //go:nosplit
 func (self class) GetNextVisibleLineOffsetFrom(line int64, visible_amount int64) int64 { //gd:TextEdit.get_next_visible_line_offset_from
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	callframe.Arg(frame, visible_amount)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_next_visible_line_offset_from, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_next_visible_line_offset_from, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		line           int64
+		visible_amount int64
+	}{line, visible_amount}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2744,14 +2583,12 @@ Similar to [method get_next_visible_line_offset_from], but takes into account th
 */
 //go:nosplit
 func (self class) GetNextVisibleLineIndexOffsetFrom(line int64, wrap_index int64, visible_amount int64) Vector2i.XY { //gd:TextEdit.get_next_visible_line_index_offset_from
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	callframe.Arg(frame, wrap_index)
-	callframe.Arg(frame, visible_amount)
-	var r_ret = callframe.Ret[Vector2i.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_next_visible_line_index_offset_from, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2i.XY](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_next_visible_line_index_offset_from, gdextension.SizeVector2i|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+		line           int64
+		wrap_index     int64
+		visible_amount int64
+	}{line, wrap_index, visible_amount}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2760,11 +2597,7 @@ Called when the user presses the backspace key. Can be overridden with [method _
 */
 //go:nosplit
 func (self class) Backspace(caret_index int64) { //gd:TextEdit.backspace
-	var frame = callframe.New()
-	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_backspace, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_backspace, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ caret_index int64 }{caret_index}))
 }
 
 /*
@@ -2772,11 +2605,7 @@ Cut's the current selection. Can be overridden with [method _cut].
 */
 //go:nosplit
 func (self class) Cut(caret_index int64) { //gd:TextEdit.cut
-	var frame = callframe.New()
-	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_cut, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_cut, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ caret_index int64 }{caret_index}))
 }
 
 /*
@@ -2784,11 +2613,7 @@ Copies the current text selection. Can be overridden with [method _copy].
 */
 //go:nosplit
 func (self class) Copy(caret_index int64) { //gd:TextEdit.copy
-	var frame = callframe.New()
-	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_copy, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_copy, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ caret_index int64 }{caret_index}))
 }
 
 /*
@@ -2796,11 +2621,7 @@ Paste at the current location. Can be overridden with [method _paste].
 */
 //go:nosplit
 func (self class) Paste(caret_index int64) { //gd:TextEdit.paste
-	var frame = callframe.New()
-	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_paste, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_paste, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ caret_index int64 }{caret_index}))
 }
 
 /*
@@ -2808,11 +2629,7 @@ Pastes the primary clipboard.
 */
 //go:nosplit
 func (self class) PastePrimaryClipboard(caret_index int64) { //gd:TextEdit.paste_primary_clipboard
-	var frame = callframe.New()
-	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_paste_primary_clipboard, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_paste_primary_clipboard, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ caret_index int64 }{caret_index}))
 }
 
 /*
@@ -2821,11 +2638,7 @@ An action will also end after a call to [method end_action], after [member Proje
 */
 //go:nosplit
 func (self class) StartAction(action EditAction) { //gd:TextEdit.start_action
-	var frame = callframe.New()
-	callframe.Arg(frame, action)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_start_action, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_start_action, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ action EditAction }{action}))
 }
 
 /*
@@ -2833,10 +2646,7 @@ Marks the end of steps in the current action started with [method start_action].
 */
 //go:nosplit
 func (self class) EndAction() { //gd:TextEdit.end_action
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_end_action, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_end_action, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -2844,10 +2654,7 @@ Starts a multipart edit. All edits will be treated as one action until [method e
 */
 //go:nosplit
 func (self class) BeginComplexOperation() { //gd:TextEdit.begin_complex_operation
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_begin_complex_operation, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_begin_complex_operation, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -2855,10 +2662,7 @@ Ends a multipart edit, started with [method begin_complex_operation]. If called 
 */
 //go:nosplit
 func (self class) EndComplexOperation() { //gd:TextEdit.end_complex_operation
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_end_complex_operation, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_end_complex_operation, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -2866,11 +2670,8 @@ Returns [code]true[/code] if an "undo" action is available.
 */
 //go:nosplit
 func (self class) HasUndo() bool { //gd:TextEdit.has_undo
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_has_undo, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_has_undo, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2879,11 +2680,8 @@ Returns [code]true[/code] if a "redo" action is available.
 */
 //go:nosplit
 func (self class) HasRedo() bool { //gd:TextEdit.has_redo
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_has_redo, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_has_redo, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2892,10 +2690,7 @@ Perform undo operation.
 */
 //go:nosplit
 func (self class) Undo() { //gd:TextEdit.undo
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_undo, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_undo, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -2903,10 +2698,7 @@ Perform redo operation.
 */
 //go:nosplit
 func (self class) Redo() { //gd:TextEdit.redo
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_redo, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_redo, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -2914,10 +2706,7 @@ Clears the undo history.
 */
 //go:nosplit
 func (self class) ClearUndoHistory() { //gd:TextEdit.clear_undo_history
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_clear_undo_history, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_clear_undo_history, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -2925,10 +2714,7 @@ Tag the current version as saved.
 */
 //go:nosplit
 func (self class) TagSavedVersion() { //gd:TextEdit.tag_saved_version
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_tag_saved_version, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_tag_saved_version, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -2936,11 +2722,8 @@ Returns the current version of the [TextEdit]. The version is a count of recorde
 */
 //go:nosplit
 func (self class) GetVersion() int64 { //gd:TextEdit.get_version
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_version, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_version, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2949,11 +2732,8 @@ Returns the last tagged saved version from [method tag_saved_version].
 */
 //go:nosplit
 func (self class) GetSavedVersion() int64 { //gd:TextEdit.get_saved_version
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_saved_version, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_saved_version, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2962,11 +2742,7 @@ Sets the search text. See [method set_search_flags].
 */
 //go:nosplit
 func (self class) SetSearchText(search_text String.Readable) { //gd:TextEdit.set_search_text
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(search_text)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_search_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_search_text, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ search_text gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(search_text))[0])}))
 }
 
 /*
@@ -2974,11 +2750,7 @@ Sets the search [param flags]. This is used with [method set_search_text] to hig
 */
 //go:nosplit
 func (self class) SetSearchFlags(flags int64) { //gd:TextEdit.set_search_flags
-	var frame = callframe.New()
-	callframe.Arg(frame, flags)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_search_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_search_flags, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flags int64 }{flags}))
 }
 
 /*
@@ -3005,15 +2777,13 @@ if (result.X != -1)
 */
 //go:nosplit
 func (self class) Search(text String.Readable, flags int64, from_line int64, from_column int64) Vector2i.XY { //gd:TextEdit.search
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
-	callframe.Arg(frame, flags)
-	callframe.Arg(frame, from_line)
-	callframe.Arg(frame, from_column)
-	var r_ret = callframe.Ret[Vector2i.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_search, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2i.XY](self.AsObject(), gd.Global.Methods.TextEdit.Bind_search, gdextension.SizeVector2i|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
+		text        gdextension.String
+		flags       int64
+		from_line   int64
+		from_column int64
+	}{gdextension.String(pointers.Get(gd.InternalString(text))[0]), flags, from_line, from_column}))
+	var ret = r_ret
 	return ret
 }
 
@@ -3022,11 +2792,7 @@ Provide custom tooltip text. The callback method must take the following args: [
 */
 //go:nosplit
 func (self class) SetTooltipRequestFunc(callback Callable.Function) { //gd:TextEdit.set_tooltip_request_func
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_tooltip_request_func, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_tooltip_request_func, 0|(gdextension.SizeCallable<<4), unsafe.Pointer(&struct{ callback gdextension.Callable }{gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
 }
 
 /*
@@ -3034,11 +2800,8 @@ Returns the local mouse position adjusted for the text direction.
 */
 //go:nosplit
 func (self class) GetLocalMousePos() Vector2.XY { //gd:TextEdit.get_local_mouse_pos
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_local_mouse_pos, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_local_mouse_pos, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -3047,12 +2810,8 @@ Returns the word at [param position].
 */
 //go:nosplit
 func (self class) GetWordAtPos(position Vector2.XY) String.Readable { //gd:TextEdit.get_word_at_pos
-	var frame = callframe.New()
-	callframe.Arg(frame, position)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_word_at_pos, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_word_at_pos, gdextension.SizeString|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -3063,14 +2822,12 @@ If [param clamp_column] is [code]false[/code] and [param position] is outside th
 */
 //go:nosplit
 func (self class) GetLineColumnAtPos(position Vector2i.XY, clamp_line bool, clamp_column bool) Vector2i.XY { //gd:TextEdit.get_line_column_at_pos
-	var frame = callframe.New()
-	callframe.Arg(frame, position)
-	callframe.Arg(frame, clamp_line)
-	callframe.Arg(frame, clamp_column)
-	var r_ret = callframe.Ret[Vector2i.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_column_at_pos, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2i.XY](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_line_column_at_pos, gdextension.SizeVector2i|(gdextension.SizeVector2i<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+		position     Vector2i.XY
+		clamp_line   bool
+		clamp_column bool
+	}{position, clamp_line, clamp_column}))
+	var ret = r_ret
 	return ret
 }
 
@@ -3080,13 +2837,11 @@ Returns the local position for the given [param line] and [param column]. If [co
 */
 //go:nosplit
 func (self class) GetPosAtLineColumn(line int64, column int64) Vector2i.XY { //gd:TextEdit.get_pos_at_line_column
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	callframe.Arg(frame, column)
-	var r_ret = callframe.Ret[Vector2i.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_pos_at_line_column, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2i.XY](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_pos_at_line_column, gdextension.SizeVector2i|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		line   int64
+		column int64
+	}{line, column}))
+	var ret = r_ret
 	return ret
 }
 
@@ -3096,13 +2851,11 @@ Returns the local position and size for the grapheme at the given [param line] a
 */
 //go:nosplit
 func (self class) GetRectAtLineColumn(line int64, column int64) Rect2i.PositionSize { //gd:TextEdit.get_rect_at_line_column
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	callframe.Arg(frame, column)
-	var r_ret = callframe.Ret[Rect2i.PositionSize](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_rect_at_line_column, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Rect2i.PositionSize](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_rect_at_line_column, gdextension.SizeRect2i|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		line   int64
+		column int64
+	}{line, column}))
+	var ret = r_ret
 	return ret
 }
 
@@ -3111,12 +2864,8 @@ Returns the equivalent minimap line at [param position].
 */
 //go:nosplit
 func (self class) GetMinimapLineAtPos(position Vector2i.XY) int64 { //gd:TextEdit.get_minimap_line_at_pos
-	var frame = callframe.New()
-	callframe.Arg(frame, position)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_minimap_line_at_pos, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_minimap_line_at_pos, gdextension.SizeInt|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ position Vector2i.XY }{position}))
+	var ret = r_ret
 	return ret
 }
 
@@ -3125,11 +2874,8 @@ Returns [code]true[/code] if the user is dragging their mouse for scrolling, sel
 */
 //go:nosplit
 func (self class) IsDraggingCursor() bool { //gd:TextEdit.is_dragging_cursor
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_dragging_cursor, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_dragging_cursor, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -3138,146 +2884,95 @@ Returns [code]true[/code] if the mouse is over a selection. If [param edges] is 
 */
 //go:nosplit
 func (self class) IsMouseOverSelection(edges bool, caret_index int64) bool { //gd:TextEdit.is_mouse_over_selection
-	var frame = callframe.New()
-	callframe.Arg(frame, edges)
-	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_mouse_over_selection, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_mouse_over_selection, gdextension.SizeBool|(gdextension.SizeBool<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		edges       bool
+		caret_index int64
+	}{edges, caret_index}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCaretType(atype CaretType) { //gd:TextEdit.set_caret_type
-	var frame = callframe.New()
-	callframe.Arg(frame, atype)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_caret_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_caret_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype CaretType }{atype}))
 }
 
 //go:nosplit
 func (self class) GetCaretType() CaretType { //gd:TextEdit.get_caret_type
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[CaretType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_caret_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[CaretType](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_caret_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCaretBlinkEnabled(enable bool) { //gd:TextEdit.set_caret_blink_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_caret_blink_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_caret_blink_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsCaretBlinkEnabled() bool { //gd:TextEdit.is_caret_blink_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_caret_blink_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_caret_blink_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCaretBlinkInterval(interval float64) { //gd:TextEdit.set_caret_blink_interval
-	var frame = callframe.New()
-	callframe.Arg(frame, interval)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_caret_blink_interval, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_caret_blink_interval, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ interval float64 }{interval}))
 }
 
 //go:nosplit
 func (self class) GetCaretBlinkInterval() float64 { //gd:TextEdit.get_caret_blink_interval
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_caret_blink_interval, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_caret_blink_interval, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDrawCaretWhenEditableDisabled(enable bool) { //gd:TextEdit.set_draw_caret_when_editable_disabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_draw_caret_when_editable_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_draw_caret_when_editable_disabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsDrawingCaretWhenEditableDisabled() bool { //gd:TextEdit.is_drawing_caret_when_editable_disabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_drawing_caret_when_editable_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_drawing_caret_when_editable_disabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMoveCaretOnRightClickEnabled(enable bool) { //gd:TextEdit.set_move_caret_on_right_click_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_move_caret_on_right_click_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_move_caret_on_right_click_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsMoveCaretOnRightClickEnabled() bool { //gd:TextEdit.is_move_caret_on_right_click_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_move_caret_on_right_click_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_move_caret_on_right_click_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCaretMidGraphemeEnabled(enabled bool) { //gd:TextEdit.set_caret_mid_grapheme_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_caret_mid_grapheme_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_caret_mid_grapheme_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsCaretMidGraphemeEnabled() bool { //gd:TextEdit.is_caret_mid_grapheme_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_caret_mid_grapheme_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_caret_mid_grapheme_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMultipleCaretsEnabled(enabled bool) { //gd:TextEdit.set_multiple_carets_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_multiple_carets_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_multiple_carets_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsMultipleCaretsEnabled() bool { //gd:TextEdit.is_multiple_carets_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_multiple_carets_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_multiple_carets_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -3286,13 +2981,11 @@ Adds a new caret at the given location. Returns the index of the new caret, or [
 */
 //go:nosplit
 func (self class) AddCaret(line int64, column int64) int64 { //gd:TextEdit.add_caret
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	callframe.Arg(frame, column)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_add_caret, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_add_caret, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		line   int64
+		column int64
+	}{line, column}))
+	var ret = r_ret
 	return ret
 }
 
@@ -3302,11 +2995,7 @@ Removes the given caret index.
 */
 //go:nosplit
 func (self class) RemoveCaret(caret int64) { //gd:TextEdit.remove_caret
-	var frame = callframe.New()
-	callframe.Arg(frame, caret)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_remove_caret, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_remove_caret, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ caret int64 }{caret}))
 }
 
 /*
@@ -3314,10 +3003,7 @@ Removes all additional carets.
 */
 //go:nosplit
 func (self class) RemoveSecondaryCarets() { //gd:TextEdit.remove_secondary_carets
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_remove_secondary_carets, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_remove_secondary_carets, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -3325,11 +3011,8 @@ Returns the number of carets in this [TextEdit].
 */
 //go:nosplit
 func (self class) GetCaretCount() int64 { //gd:TextEdit.get_caret_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_caret_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_caret_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -3338,11 +3021,7 @@ Adds an additional caret above or below every caret. If [param below] is [code]t
 */
 //go:nosplit
 func (self class) AddCaretAtCarets(below bool) { //gd:TextEdit.add_caret_at_carets
-	var frame = callframe.New()
-	callframe.Arg(frame, below)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_add_caret_at_carets, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_add_caret_at_carets, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ below bool }{below}))
 }
 
 /*
@@ -3351,12 +3030,8 @@ If [param include_ignored_carets] is [code]false[/code], carets from [method mul
 */
 //go:nosplit
 func (self class) GetSortedCarets(include_ignored_carets bool) Packed.Array[int32] { //gd:TextEdit.get_sorted_carets
-	var frame = callframe.New()
-	callframe.Arg(frame, include_ignored_carets)
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_sorted_carets, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_sorted_carets, gdextension.SizePackedArray|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ include_ignored_carets bool }{include_ignored_carets}))
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -3368,15 +3043,13 @@ If [method is_in_mulitcaret_edit] is [code]true[/code], carets that are collapse
 */
 //go:nosplit
 func (self class) CollapseCarets(from_line int64, from_column int64, to_line int64, to_column int64, inclusive bool) { //gd:TextEdit.collapse_carets
-	var frame = callframe.New()
-	callframe.Arg(frame, from_line)
-	callframe.Arg(frame, from_column)
-	callframe.Arg(frame, to_line)
-	callframe.Arg(frame, to_column)
-	callframe.Arg(frame, inclusive)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_collapse_carets, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_collapse_carets, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeBool<<20), unsafe.Pointer(&struct {
+		from_line   int64
+		from_column int64
+		to_line     int64
+		to_column   int64
+		inclusive   bool
+	}{from_line, from_column, to_line, to_column, inclusive}))
 }
 
 /*
@@ -3386,10 +3059,7 @@ If [method is_in_mulitcaret_edit] is [code]true[/code], the merge will be queued
 */
 //go:nosplit
 func (self class) MergeOverlappingCarets() { //gd:TextEdit.merge_overlapping_carets
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_merge_overlapping_carets, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_merge_overlapping_carets, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -3407,10 +3077,7 @@ end_complex_operation()
 */
 //go:nosplit
 func (self class) BeginMulticaretEdit() { //gd:TextEdit.begin_multicaret_edit
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_begin_multicaret_edit, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_begin_multicaret_edit, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -3418,10 +3085,7 @@ Ends an edit for multiple carets, that was started with [method begin_multicaret
 */
 //go:nosplit
 func (self class) EndMulticaretEdit() { //gd:TextEdit.end_multicaret_edit
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_end_multicaret_edit, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_end_multicaret_edit, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -3429,11 +3093,8 @@ Returns [code]true[/code] if a [method begin_multicaret_edit] has been called an
 */
 //go:nosplit
 func (self class) IsInMulitcaretEdit() bool { //gd:TextEdit.is_in_mulitcaret_edit
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_in_mulitcaret_edit, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_in_mulitcaret_edit, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -3443,12 +3104,8 @@ It is recommended to [code]continue[/code] within a loop iterating on multiple c
 */
 //go:nosplit
 func (self class) MulticaretEditIgnoreCaret(caret_index int64) bool { //gd:TextEdit.multicaret_edit_ignore_caret
-	var frame = callframe.New()
-	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_multicaret_edit_ignore_caret, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_multicaret_edit_ignore_caret, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ caret_index int64 }{caret_index}))
+	var ret = r_ret
 	return ret
 }
 
@@ -3458,12 +3115,8 @@ Returns [code]true[/code] if the caret is visible, [code]false[/code] otherwise.
 */
 //go:nosplit
 func (self class) IsCaretVisible(caret_index int64) bool { //gd:TextEdit.is_caret_visible
-	var frame = callframe.New()
-	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_caret_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_caret_visible, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ caret_index int64 }{caret_index}))
+	var ret = r_ret
 	return ret
 }
 
@@ -3472,12 +3125,8 @@ Returns the caret pixel draw position.
 */
 //go:nosplit
 func (self class) GetCaretDrawPos(caret_index int64) Vector2.XY { //gd:TextEdit.get_caret_draw_pos
-	var frame = callframe.New()
-	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_caret_draw_pos, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_caret_draw_pos, gdextension.SizeVector2|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ caret_index int64 }{caret_index}))
+	var ret = r_ret
 	return ret
 }
 
@@ -3490,15 +3139,13 @@ If [param wrap_index] is [code]-1[/code], the caret column will be clamped to th
 */
 //go:nosplit
 func (self class) SetCaretLine(line int64, adjust_viewport bool, can_be_hidden bool, wrap_index int64, caret_index int64) { //gd:TextEdit.set_caret_line
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	callframe.Arg(frame, adjust_viewport)
-	callframe.Arg(frame, can_be_hidden)
-	callframe.Arg(frame, wrap_index)
-	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_caret_line, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_caret_line, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
+		line            int64
+		adjust_viewport bool
+		can_be_hidden   bool
+		wrap_index      int64
+		caret_index     int64
+	}{line, adjust_viewport, can_be_hidden, wrap_index, caret_index}))
 }
 
 /*
@@ -3506,12 +3153,8 @@ Returns the line the editing caret is on.
 */
 //go:nosplit
 func (self class) GetCaretLine(caret_index int64) int64 { //gd:TextEdit.get_caret_line
-	var frame = callframe.New()
-	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_caret_line, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_caret_line, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ caret_index int64 }{caret_index}))
+	var ret = r_ret
 	return ret
 }
 
@@ -3522,13 +3165,11 @@ If [param adjust_viewport] is [code]true[/code], the viewport will center at the
 */
 //go:nosplit
 func (self class) SetCaretColumn(column int64, adjust_viewport bool, caret_index int64) { //gd:TextEdit.set_caret_column
-	var frame = callframe.New()
-	callframe.Arg(frame, column)
-	callframe.Arg(frame, adjust_viewport)
-	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_caret_column, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_caret_column, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+		column          int64
+		adjust_viewport bool
+		caret_index     int64
+	}{column, adjust_viewport, caret_index}))
 }
 
 /*
@@ -3536,12 +3177,8 @@ Returns the column the editing caret is at.
 */
 //go:nosplit
 func (self class) GetCaretColumn(caret_index int64) int64 { //gd:TextEdit.get_caret_column
-	var frame = callframe.New()
-	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_caret_column, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_caret_column, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ caret_index int64 }{caret_index}))
+	var ret = r_ret
 	return ret
 }
 
@@ -3550,12 +3187,8 @@ Returns the wrap index the editing caret is on.
 */
 //go:nosplit
 func (self class) GetCaretWrapIndex(caret_index int64) int64 { //gd:TextEdit.get_caret_wrap_index
-	var frame = callframe.New()
-	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_caret_wrap_index, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_caret_wrap_index, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ caret_index int64 }{caret_index}))
+	var ret = r_ret
 	return ret
 }
 
@@ -3564,126 +3197,80 @@ Returns a [String] text with the word under the caret's location.
 */
 //go:nosplit
 func (self class) GetWordUnderCaret(caret_index int64) String.Readable { //gd:TextEdit.get_word_under_caret
-	var frame = callframe.New()
-	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_word_under_caret, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_word_under_caret, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ caret_index int64 }{caret_index}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseDefaultWordSeparators(enabled bool) { //gd:TextEdit.set_use_default_word_separators
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_use_default_word_separators, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_use_default_word_separators, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsDefaultWordSeparatorsEnabled() bool { //gd:TextEdit.is_default_word_separators_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_default_word_separators_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_default_word_separators_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseCustomWordSeparators(enabled bool) { //gd:TextEdit.set_use_custom_word_separators
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_use_custom_word_separators, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_use_custom_word_separators, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsCustomWordSeparatorsEnabled() bool { //gd:TextEdit.is_custom_word_separators_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_custom_word_separators_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_custom_word_separators_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCustomWordSeparators(custom_word_separators String.Readable) { //gd:TextEdit.set_custom_word_separators
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(custom_word_separators)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_custom_word_separators, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_custom_word_separators, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ custom_word_separators gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(custom_word_separators))[0])}))
 }
 
 //go:nosplit
 func (self class) GetCustomWordSeparators() String.Readable { //gd:TextEdit.get_custom_word_separators
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_custom_word_separators, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_custom_word_separators, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSelectingEnabled(enable bool) { //gd:TextEdit.set_selecting_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_selecting_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_selecting_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsSelectingEnabled() bool { //gd:TextEdit.is_selecting_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_selecting_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_selecting_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDeselectOnFocusLossEnabled(enable bool) { //gd:TextEdit.set_deselect_on_focus_loss_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_deselect_on_focus_loss_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_deselect_on_focus_loss_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsDeselectOnFocusLossEnabled() bool { //gd:TextEdit.is_deselect_on_focus_loss_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_deselect_on_focus_loss_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_deselect_on_focus_loss_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDragAndDropSelectionEnabled(enable bool) { //gd:TextEdit.set_drag_and_drop_selection_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_drag_and_drop_selection_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_drag_and_drop_selection_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsDragAndDropSelectionEnabled() bool { //gd:TextEdit.is_drag_and_drop_selection_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_drag_and_drop_selection_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_drag_and_drop_selection_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -3692,11 +3279,7 @@ Sets the current selection mode.
 */
 //go:nosplit
 func (self class) SetSelectionMode(mode SelectionMode) { //gd:TextEdit.set_selection_mode
-	var frame = callframe.New()
-	callframe.Arg(frame, mode)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_selection_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_selection_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode SelectionMode }{mode}))
 }
 
 /*
@@ -3704,11 +3287,8 @@ Returns the current selection mode.
 */
 //go:nosplit
 func (self class) GetSelectionMode() SelectionMode { //gd:TextEdit.get_selection_mode
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[SelectionMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[SelectionMode](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_selection_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -3718,10 +3298,7 @@ If [member selecting_enabled] is [code]false[/code], no selection will occur.
 */
 //go:nosplit
 func (self class) SelectAll() { //gd:TextEdit.select_all
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_select_all, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_select_all, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -3729,11 +3306,7 @@ Selects the word under the caret.
 */
 //go:nosplit
 func (self class) SelectWordUnderCaret(caret_index int64) { //gd:TextEdit.select_word_under_caret
-	var frame = callframe.New()
-	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_select_word_under_caret, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_select_word_under_caret, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ caret_index int64 }{caret_index}))
 }
 
 /*
@@ -3741,10 +3314,7 @@ Adds a selection and a caret for the next occurrence of the current selection. I
 */
 //go:nosplit
 func (self class) AddSelectionForNextOccurrence() { //gd:TextEdit.add_selection_for_next_occurrence
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_add_selection_for_next_occurrence, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_add_selection_for_next_occurrence, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -3752,10 +3322,7 @@ Moves a selection and a caret for the next occurrence of the current selection. 
 */
 //go:nosplit
 func (self class) SkipSelectionForNextOccurrence() { //gd:TextEdit.skip_selection_for_next_occurrence
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_skip_selection_for_next_occurrence, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_skip_selection_for_next_occurrence, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -3765,15 +3332,13 @@ If [member selecting_enabled] is [code]false[/code], no selection will occur.
 */
 //go:nosplit
 func (self class) Select(origin_line int64, origin_column int64, caret_line int64, caret_column int64, caret_index int64) { //gd:TextEdit.select_
-	var frame = callframe.New()
-	callframe.Arg(frame, origin_line)
-	callframe.Arg(frame, origin_column)
-	callframe.Arg(frame, caret_line)
-	callframe.Arg(frame, caret_column)
-	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_select_, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_select_, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
+		origin_line   int64
+		origin_column int64
+		caret_line    int64
+		caret_column  int64
+		caret_index   int64
+	}{origin_line, origin_column, caret_line, caret_column, caret_index}))
 }
 
 /*
@@ -3781,12 +3346,8 @@ Returns [code]true[/code] if the user has selected text.
 */
 //go:nosplit
 func (self class) HasSelection(caret_index int64) bool { //gd:TextEdit.has_selection
-	var frame = callframe.New()
-	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_has_selection, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_has_selection, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ caret_index int64 }{caret_index}))
+	var ret = r_ret
 	return ret
 }
 
@@ -3795,12 +3356,8 @@ Returns the text inside the selection of a caret, or all the carets if [param ca
 */
 //go:nosplit
 func (self class) GetSelectedText(caret_index int64) String.Readable { //gd:TextEdit.get_selected_text
-	var frame = callframe.New()
-	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selected_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_selected_text, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ caret_index int64 }{caret_index}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -3810,15 +3367,13 @@ If [param include_edges] is [code]false[/code], the position must be inside the 
 */
 //go:nosplit
 func (self class) GetSelectionAtLineColumn(line int64, column int64, include_edges bool, only_selections bool) int64 { //gd:TextEdit.get_selection_at_line_column
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	callframe.Arg(frame, column)
-	callframe.Arg(frame, include_edges)
-	callframe.Arg(frame, only_selections)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_at_line_column, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_selection_at_line_column, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+		line            int64
+		column          int64
+		include_edges   bool
+		only_selections bool
+	}{line, column, include_edges, only_selections}))
+	var ret = r_ret
 	return ret
 }
 
@@ -3828,13 +3383,11 @@ If a selection's end column ([method get_selection_to_column]) is at column [cod
 */
 //go:nosplit
 func (self class) GetLineRangesFromCarets(only_selections bool, merge_adjacent bool) Array.Contains[Vector2i.XY] { //gd:TextEdit.get_line_ranges_from_carets
-	var frame = callframe.New()
-	callframe.Arg(frame, only_selections)
-	callframe.Arg(frame, merge_adjacent)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_ranges_from_carets, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[Vector2i.XY]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_line_ranges_from_carets, gdextension.SizeArray|(gdextension.SizeBool<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		only_selections bool
+		merge_adjacent  bool
+	}{only_selections, merge_adjacent}))
+	var ret = Array.Through(gd.ArrayProxy[Vector2i.XY]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -3843,12 +3396,8 @@ Returns the origin line of the selection. This is the opposite end from the care
 */
 //go:nosplit
 func (self class) GetSelectionOriginLine(caret_index int64) int64 { //gd:TextEdit.get_selection_origin_line
-	var frame = callframe.New()
-	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_origin_line, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_selection_origin_line, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ caret_index int64 }{caret_index}))
+	var ret = r_ret
 	return ret
 }
 
@@ -3857,12 +3406,8 @@ Returns the origin column of the selection. This is the opposite end from the ca
 */
 //go:nosplit
 func (self class) GetSelectionOriginColumn(caret_index int64) int64 { //gd:TextEdit.get_selection_origin_column
-	var frame = callframe.New()
-	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_origin_column, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_selection_origin_column, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ caret_index int64 }{caret_index}))
+	var ret = r_ret
 	return ret
 }
 
@@ -3873,14 +3418,12 @@ If [param wrap_index] is [code]-1[/code], the selection origin column will be cl
 */
 //go:nosplit
 func (self class) SetSelectionOriginLine(line int64, can_be_hidden bool, wrap_index int64, caret_index int64) { //gd:TextEdit.set_selection_origin_line
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	callframe.Arg(frame, can_be_hidden)
-	callframe.Arg(frame, wrap_index)
-	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_selection_origin_line, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_selection_origin_line, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
+		line          int64
+		can_be_hidden bool
+		wrap_index    int64
+		caret_index   int64
+	}{line, can_be_hidden, wrap_index, caret_index}))
 }
 
 /*
@@ -3888,12 +3431,10 @@ Sets the selection origin column to the [param column] for the given [param care
 */
 //go:nosplit
 func (self class) SetSelectionOriginColumn(column int64, caret_index int64) { //gd:TextEdit.set_selection_origin_column
-	var frame = callframe.New()
-	callframe.Arg(frame, column)
-	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_selection_origin_column, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_selection_origin_column, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		column      int64
+		caret_index int64
+	}{column, caret_index}))
 }
 
 /*
@@ -3901,12 +3442,8 @@ Returns the selection begin line. Returns the caret line if there is no selectio
 */
 //go:nosplit
 func (self class) GetSelectionFromLine(caret_index int64) int64 { //gd:TextEdit.get_selection_from_line
-	var frame = callframe.New()
-	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_from_line, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_selection_from_line, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ caret_index int64 }{caret_index}))
+	var ret = r_ret
 	return ret
 }
 
@@ -3915,12 +3452,8 @@ Returns the selection begin column. Returns the caret column if there is no sele
 */
 //go:nosplit
 func (self class) GetSelectionFromColumn(caret_index int64) int64 { //gd:TextEdit.get_selection_from_column
-	var frame = callframe.New()
-	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_from_column, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_selection_from_column, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ caret_index int64 }{caret_index}))
+	var ret = r_ret
 	return ret
 }
 
@@ -3929,12 +3462,8 @@ Returns the selection end line. Returns the caret line if there is no selection.
 */
 //go:nosplit
 func (self class) GetSelectionToLine(caret_index int64) int64 { //gd:TextEdit.get_selection_to_line
-	var frame = callframe.New()
-	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_to_line, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_selection_to_line, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ caret_index int64 }{caret_index}))
+	var ret = r_ret
 	return ret
 }
 
@@ -3943,12 +3472,8 @@ Returns the selection end column. Returns the caret column if there is no select
 */
 //go:nosplit
 func (self class) GetSelectionToColumn(caret_index int64) int64 { //gd:TextEdit.get_selection_to_column
-	var frame = callframe.New()
-	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_to_column, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_selection_to_column, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ caret_index int64 }{caret_index}))
+	var ret = r_ret
 	return ret
 }
 
@@ -3957,12 +3482,8 @@ Returns [code]true[/code] if the caret of the selection is after the selection o
 */
 //go:nosplit
 func (self class) IsCaretAfterSelectionOrigin(caret_index int64) bool { //gd:TextEdit.is_caret_after_selection_origin
-	var frame = callframe.New()
-	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_caret_after_selection_origin, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_caret_after_selection_origin, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ caret_index int64 }{caret_index}))
+	var ret = r_ret
 	return ret
 }
 
@@ -3971,11 +3492,7 @@ Deselects the current selection.
 */
 //go:nosplit
 func (self class) Deselect(caret_index int64) { //gd:TextEdit.deselect
-	var frame = callframe.New()
-	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_deselect, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_deselect, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ caret_index int64 }{caret_index}))
 }
 
 /*
@@ -3983,48 +3500,30 @@ Deletes the selected text.
 */
 //go:nosplit
 func (self class) DeleteSelection(caret_index int64) { //gd:TextEdit.delete_selection
-	var frame = callframe.New()
-	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_delete_selection, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_delete_selection, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ caret_index int64 }{caret_index}))
 }
 
 //go:nosplit
 func (self class) SetLineWrappingMode(mode LineWrappingMode) { //gd:TextEdit.set_line_wrapping_mode
-	var frame = callframe.New()
-	callframe.Arg(frame, mode)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_line_wrapping_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_line_wrapping_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode LineWrappingMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetLineWrappingMode() LineWrappingMode { //gd:TextEdit.get_line_wrapping_mode
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[LineWrappingMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_wrapping_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[LineWrappingMode](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_line_wrapping_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutowrapMode(autowrap_mode TextServer.AutowrapMode) { //gd:TextEdit.set_autowrap_mode
-	var frame = callframe.New()
-	callframe.Arg(frame, autowrap_mode)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_autowrap_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_autowrap_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ autowrap_mode TextServer.AutowrapMode }{autowrap_mode}))
 }
 
 //go:nosplit
 func (self class) GetAutowrapMode() TextServer.AutowrapMode { //gd:TextEdit.get_autowrap_mode
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[TextServer.AutowrapMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_autowrap_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[TextServer.AutowrapMode](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_autowrap_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -4033,12 +3532,8 @@ Returns if the given line is wrapped.
 */
 //go:nosplit
 func (self class) IsLineWrapped(line int64) bool { //gd:TextEdit.is_line_wrapped
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_line_wrapped, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_line_wrapped, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
+	var ret = r_ret
 	return ret
 }
 
@@ -4047,12 +3542,8 @@ Returns the number of times the given line is wrapped.
 */
 //go:nosplit
 func (self class) GetLineWrapCount(line int64) int64 { //gd:TextEdit.get_line_wrap_count
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_wrap_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_line_wrap_count, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
+	var ret = r_ret
 	return ret
 }
 
@@ -4061,13 +3552,11 @@ Returns the wrap index of the given column on the given line. This ranges from [
 */
 //go:nosplit
 func (self class) GetLineWrapIndexAtColumn(line int64, column int64) int64 { //gd:TextEdit.get_line_wrap_index_at_column
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	callframe.Arg(frame, column)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_wrap_index_at_column, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_line_wrap_index_at_column, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		line   int64
+		column int64
+	}{line, column}))
+	var ret = r_ret
 	return ret
 }
 
@@ -4076,31 +3565,20 @@ Returns an array of [String]s representing each wrapped index.
 */
 //go:nosplit
 func (self class) GetLineWrappedText(line int64) Packed.Strings { //gd:TextEdit.get_line_wrapped_text
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_wrapped_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_line_wrapped_text, gdextension.SizePackedArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSmoothScrollEnabled(enable bool) { //gd:TextEdit.set_smooth_scroll_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_smooth_scroll_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_smooth_scroll_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsSmoothScrollEnabled() bool { //gd:TextEdit.is_smooth_scroll_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_smooth_scroll_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_smooth_scroll_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -4109,11 +3587,8 @@ Returns the [VScrollBar] of the [TextEdit].
 */
 //go:nosplit
 func (self class) GetVScrollBar() [1]gdclass.VScrollBar { //gd:TextEdit.get_v_scroll_bar
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_v_scroll_bar, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.VScrollBar{gd.PointerLifetimeBoundTo[gdclass.VScrollBar](self.AsObject(), r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_v_scroll_bar, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.VScrollBar{gd.PointerLifetimeBoundTo[gdclass.VScrollBar](self.AsObject(), r_ret)}
 	return ret
 }
 
@@ -4122,125 +3597,80 @@ Returns the [HScrollBar] used by [TextEdit].
 */
 //go:nosplit
 func (self class) GetHScrollBar() [1]gdclass.HScrollBar { //gd:TextEdit.get_h_scroll_bar
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_h_scroll_bar, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.HScrollBar{gd.PointerLifetimeBoundTo[gdclass.HScrollBar](self.AsObject(), r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_h_scroll_bar, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.HScrollBar{gd.PointerLifetimeBoundTo[gdclass.HScrollBar](self.AsObject(), r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVScroll(value float64) { //gd:TextEdit.set_v_scroll
-	var frame = callframe.New()
-	callframe.Arg(frame, value)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_v_scroll, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_v_scroll, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ value float64 }{value}))
 }
 
 //go:nosplit
 func (self class) GetVScroll() float64 { //gd:TextEdit.get_v_scroll
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_v_scroll, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_v_scroll, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHScroll(value int64) { //gd:TextEdit.set_h_scroll
-	var frame = callframe.New()
-	callframe.Arg(frame, value)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_h_scroll, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_h_scroll, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ value int64 }{value}))
 }
 
 //go:nosplit
 func (self class) GetHScroll() int64 { //gd:TextEdit.get_h_scroll
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_h_scroll, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_h_scroll, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScrollPastEndOfFileEnabled(enable bool) { //gd:TextEdit.set_scroll_past_end_of_file_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_scroll_past_end_of_file_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_scroll_past_end_of_file_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsScrollPastEndOfFileEnabled() bool { //gd:TextEdit.is_scroll_past_end_of_file_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_scroll_past_end_of_file_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_scroll_past_end_of_file_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVScrollSpeed(speed float64) { //gd:TextEdit.set_v_scroll_speed
-	var frame = callframe.New()
-	callframe.Arg(frame, speed)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_v_scroll_speed, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_v_scroll_speed, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ speed float64 }{speed}))
 }
 
 //go:nosplit
 func (self class) GetVScrollSpeed() float64 { //gd:TextEdit.get_v_scroll_speed
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_v_scroll_speed, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_v_scroll_speed, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFitContentHeightEnabled(enabled bool) { //gd:TextEdit.set_fit_content_height_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_fit_content_height_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_fit_content_height_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsFitContentHeightEnabled() bool { //gd:TextEdit.is_fit_content_height_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_fit_content_height_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_fit_content_height_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFitContentWidthEnabled(enabled bool) { //gd:TextEdit.set_fit_content_width_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_fit_content_width_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_fit_content_width_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsFitContentWidthEnabled() bool { //gd:TextEdit.is_fit_content_width_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_fit_content_width_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_fit_content_width_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -4249,13 +3679,11 @@ Returns the scroll position for [param wrap_index] of [param line].
 */
 //go:nosplit
 func (self class) GetScrollPosForLine(line int64, wrap_index int64) float64 { //gd:TextEdit.get_scroll_pos_for_line
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	callframe.Arg(frame, wrap_index)
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_scroll_pos_for_line, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_scroll_pos_for_line, gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		line       int64
+		wrap_index int64
+	}{line, wrap_index}))
+	var ret = r_ret
 	return ret
 }
 
@@ -4264,12 +3692,10 @@ Positions the [param wrap_index] of [param line] at the top of the viewport.
 */
 //go:nosplit
 func (self class) SetLineAsFirstVisible(line int64, wrap_index int64) { //gd:TextEdit.set_line_as_first_visible
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	callframe.Arg(frame, wrap_index)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_line_as_first_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_line_as_first_visible, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		line       int64
+		wrap_index int64
+	}{line, wrap_index}))
 }
 
 /*
@@ -4277,11 +3703,8 @@ Returns the first visible line.
 */
 //go:nosplit
 func (self class) GetFirstVisibleLine() int64 { //gd:TextEdit.get_first_visible_line
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_first_visible_line, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_first_visible_line, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -4290,12 +3713,10 @@ Positions the [param wrap_index] of [param line] at the center of the viewport.
 */
 //go:nosplit
 func (self class) SetLineAsCenterVisible(line int64, wrap_index int64) { //gd:TextEdit.set_line_as_center_visible
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	callframe.Arg(frame, wrap_index)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_line_as_center_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_line_as_center_visible, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		line       int64
+		wrap_index int64
+	}{line, wrap_index}))
 }
 
 /*
@@ -4303,12 +3724,10 @@ Positions the [param wrap_index] of [param line] at the bottom of the viewport.
 */
 //go:nosplit
 func (self class) SetLineAsLastVisible(line int64, wrap_index int64) { //gd:TextEdit.set_line_as_last_visible
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	callframe.Arg(frame, wrap_index)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_line_as_last_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_line_as_last_visible, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		line       int64
+		wrap_index int64
+	}{line, wrap_index}))
 }
 
 /*
@@ -4316,11 +3735,8 @@ Returns the last visible line. Use [method get_last_full_visible_line_wrap_index
 */
 //go:nosplit
 func (self class) GetLastFullVisibleLine() int64 { //gd:TextEdit.get_last_full_visible_line
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_last_full_visible_line, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_last_full_visible_line, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -4329,11 +3745,8 @@ Returns the last visible wrap index of the last visible line.
 */
 //go:nosplit
 func (self class) GetLastFullVisibleLineWrapIndex() int64 { //gd:TextEdit.get_last_full_visible_line_wrap_index
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_last_full_visible_line_wrap_index, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_last_full_visible_line_wrap_index, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -4342,11 +3755,8 @@ Returns the number of lines that can visually fit, rounded down, based on this c
 */
 //go:nosplit
 func (self class) GetVisibleLineCount() int64 { //gd:TextEdit.get_visible_line_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_visible_line_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_visible_line_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -4355,13 +3765,11 @@ Returns the total number of lines between [param from_line] and [param to_line] 
 */
 //go:nosplit
 func (self class) GetVisibleLineCountInRange(from_line int64, to_line int64) int64 { //gd:TextEdit.get_visible_line_count_in_range
-	var frame = callframe.New()
-	callframe.Arg(frame, from_line)
-	callframe.Arg(frame, to_line)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_visible_line_count_in_range, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_visible_line_count_in_range, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		from_line int64
+		to_line   int64
+	}{from_line, to_line}))
+	var ret = r_ret
 	return ret
 }
 
@@ -4370,11 +3778,8 @@ Returns the total number of lines in the text. This includes wrapped lines and e
 */
 //go:nosplit
 func (self class) GetTotalVisibleLineCount() int64 { //gd:TextEdit.get_total_visible_line_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_total_visible_line_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_total_visible_line_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -4383,11 +3788,7 @@ Adjust the viewport so the caret is visible.
 */
 //go:nosplit
 func (self class) AdjustViewportToCaret(caret_index int64) { //gd:TextEdit.adjust_viewport_to_caret
-	var frame = callframe.New()
-	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_adjust_viewport_to_caret, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_adjust_viewport_to_caret, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ caret_index int64 }{caret_index}))
 }
 
 /*
@@ -4395,48 +3796,30 @@ Centers the viewport on the line the editing caret is at. This also resets the [
 */
 //go:nosplit
 func (self class) CenterViewportToCaret(caret_index int64) { //gd:TextEdit.center_viewport_to_caret
-	var frame = callframe.New()
-	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_center_viewport_to_caret, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_center_viewport_to_caret, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ caret_index int64 }{caret_index}))
 }
 
 //go:nosplit
 func (self class) SetDrawMinimap(enabled bool) { //gd:TextEdit.set_draw_minimap
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_draw_minimap, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_draw_minimap, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsDrawingMinimap() bool { //gd:TextEdit.is_drawing_minimap
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_drawing_minimap, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_drawing_minimap, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMinimapWidth(width int64) { //gd:TextEdit.set_minimap_width
-	var frame = callframe.New()
-	callframe.Arg(frame, width)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_minimap_width, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_minimap_width, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ width int64 }{width}))
 }
 
 //go:nosplit
 func (self class) GetMinimapWidth() int64 { //gd:TextEdit.get_minimap_width
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_minimap_width, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_minimap_width, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -4445,11 +3828,8 @@ Returns the number of lines that may be drawn on the minimap.
 */
 //go:nosplit
 func (self class) GetMinimapVisibleLines() int64 { //gd:TextEdit.get_minimap_visible_lines
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_minimap_visible_lines, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_minimap_visible_lines, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -4458,11 +3838,7 @@ Register a new gutter to this [TextEdit]. Use [param at] to have a specific gutt
 */
 //go:nosplit
 func (self class) AddGutter(at int64) { //gd:TextEdit.add_gutter
-	var frame = callframe.New()
-	callframe.Arg(frame, at)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_add_gutter, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_add_gutter, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ at int64 }{at}))
 }
 
 /*
@@ -4470,11 +3846,7 @@ Removes the gutter at the given index.
 */
 //go:nosplit
 func (self class) RemoveGutter(gutter int64) { //gd:TextEdit.remove_gutter
-	var frame = callframe.New()
-	callframe.Arg(frame, gutter)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_remove_gutter, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_remove_gutter, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ gutter int64 }{gutter}))
 }
 
 /*
@@ -4482,11 +3854,8 @@ Returns the number of gutters registered.
 */
 //go:nosplit
 func (self class) GetGutterCount() int64 { //gd:TextEdit.get_gutter_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_gutter_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_gutter_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -4495,12 +3864,10 @@ Sets the name of the gutter at the given index.
 */
 //go:nosplit
 func (self class) SetGutterName(gutter int64, name String.Readable) { //gd:TextEdit.set_gutter_name
-	var frame = callframe.New()
-	callframe.Arg(frame, gutter)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_gutter_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_gutter_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+		gutter int64
+		name   gdextension.String
+	}{gutter, gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
 }
 
 /*
@@ -4508,12 +3875,8 @@ Returns the name of the gutter at the given index.
 */
 //go:nosplit
 func (self class) GetGutterName(gutter int64) String.Readable { //gd:TextEdit.get_gutter_name
-	var frame = callframe.New()
-	callframe.Arg(frame, gutter)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_gutter_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_gutter_name, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ gutter int64 }{gutter}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -4522,12 +3885,10 @@ Sets the type of gutter at the given index. Gutters can contain icons, text, or 
 */
 //go:nosplit
 func (self class) SetGutterType(gutter int64, atype GutterType) { //gd:TextEdit.set_gutter_type
-	var frame = callframe.New()
-	callframe.Arg(frame, gutter)
-	callframe.Arg(frame, atype)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_gutter_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_gutter_type, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		gutter int64
+		atype  GutterType
+	}{gutter, atype}))
 }
 
 /*
@@ -4535,12 +3896,8 @@ Returns the type of the gutter at the given index. Gutters can contain icons, te
 */
 //go:nosplit
 func (self class) GetGutterType(gutter int64) GutterType { //gd:TextEdit.get_gutter_type
-	var frame = callframe.New()
-	callframe.Arg(frame, gutter)
-	var r_ret = callframe.Ret[GutterType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_gutter_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[GutterType](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_gutter_type, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ gutter int64 }{gutter}))
+	var ret = r_ret
 	return ret
 }
 
@@ -4549,12 +3906,10 @@ Set the width of the gutter at the given index.
 */
 //go:nosplit
 func (self class) SetGutterWidth(gutter int64, width int64) { //gd:TextEdit.set_gutter_width
-	var frame = callframe.New()
-	callframe.Arg(frame, gutter)
-	callframe.Arg(frame, width)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_gutter_width, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_gutter_width, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		gutter int64
+		width  int64
+	}{gutter, width}))
 }
 
 /*
@@ -4562,12 +3917,8 @@ Returns the width of the gutter at the given index.
 */
 //go:nosplit
 func (self class) GetGutterWidth(gutter int64) int64 { //gd:TextEdit.get_gutter_width
-	var frame = callframe.New()
-	callframe.Arg(frame, gutter)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_gutter_width, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_gutter_width, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ gutter int64 }{gutter}))
+	var ret = r_ret
 	return ret
 }
 
@@ -4576,12 +3927,10 @@ If [code]true[/code], the gutter at the given index is drawn. The gutter type ([
 */
 //go:nosplit
 func (self class) SetGutterDraw(gutter int64, draw bool) { //gd:TextEdit.set_gutter_draw
-	var frame = callframe.New()
-	callframe.Arg(frame, gutter)
-	callframe.Arg(frame, draw)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_gutter_draw, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_gutter_draw, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		gutter int64
+		draw   bool
+	}{gutter, draw}))
 }
 
 /*
@@ -4589,12 +3938,8 @@ Returns [code]true[/code] if the gutter at the given index is currently drawn. S
 */
 //go:nosplit
 func (self class) IsGutterDrawn(gutter int64) bool { //gd:TextEdit.is_gutter_drawn
-	var frame = callframe.New()
-	callframe.Arg(frame, gutter)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_gutter_drawn, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_gutter_drawn, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ gutter int64 }{gutter}))
+	var ret = r_ret
 	return ret
 }
 
@@ -4603,12 +3948,10 @@ If [code]true[/code], the mouse cursor will change to a pointing hand ([constant
 */
 //go:nosplit
 func (self class) SetGutterClickable(gutter int64, clickable bool) { //gd:TextEdit.set_gutter_clickable
-	var frame = callframe.New()
-	callframe.Arg(frame, gutter)
-	callframe.Arg(frame, clickable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_gutter_clickable, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_gutter_clickable, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		gutter    int64
+		clickable bool
+	}{gutter, clickable}))
 }
 
 /*
@@ -4616,12 +3959,8 @@ Returns [code]true[/code] if the gutter at the given index is clickable. See [me
 */
 //go:nosplit
 func (self class) IsGutterClickable(gutter int64) bool { //gd:TextEdit.is_gutter_clickable
-	var frame = callframe.New()
-	callframe.Arg(frame, gutter)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_gutter_clickable, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_gutter_clickable, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ gutter int64 }{gutter}))
+	var ret = r_ret
 	return ret
 }
 
@@ -4630,12 +3969,10 @@ If [code]true[/code], the line data of the gutter at the given index can be over
 */
 //go:nosplit
 func (self class) SetGutterOverwritable(gutter int64, overwritable bool) { //gd:TextEdit.set_gutter_overwritable
-	var frame = callframe.New()
-	callframe.Arg(frame, gutter)
-	callframe.Arg(frame, overwritable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_gutter_overwritable, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_gutter_overwritable, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		gutter       int64
+		overwritable bool
+	}{gutter, overwritable}))
 }
 
 /*
@@ -4643,12 +3980,8 @@ Returns [code]true[/code] if the gutter at the given index is overwritable. See 
 */
 //go:nosplit
 func (self class) IsGutterOverwritable(gutter int64) bool { //gd:TextEdit.is_gutter_overwritable
-	var frame = callframe.New()
-	callframe.Arg(frame, gutter)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_gutter_overwritable, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_gutter_overwritable, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ gutter int64 }{gutter}))
+	var ret = r_ret
 	return ret
 }
 
@@ -4657,12 +3990,10 @@ Merge the gutters from [param from_line] into [param to_line]. Only overwritable
 */
 //go:nosplit
 func (self class) MergeGutters(from_line int64, to_line int64) { //gd:TextEdit.merge_gutters
-	var frame = callframe.New()
-	callframe.Arg(frame, from_line)
-	callframe.Arg(frame, to_line)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_merge_gutters, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_merge_gutters, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		from_line int64
+		to_line   int64
+	}{from_line, to_line}))
 }
 
 /*
@@ -4670,12 +4001,10 @@ Set a custom draw callback for the gutter at the given index. [param draw_callba
 */
 //go:nosplit
 func (self class) SetGutterCustomDraw(column int64, draw_callback Callable.Function) { //gd:TextEdit.set_gutter_custom_draw
-	var frame = callframe.New()
-	callframe.Arg(frame, column)
-	callframe.Arg(frame, pointers.Get(gd.InternalCallable(draw_callback)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_gutter_custom_draw, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_gutter_custom_draw, 0|(gdextension.SizeInt<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
+		column        int64
+		draw_callback gdextension.Callable
+	}{column, gdextension.Callable(pointers.Get(gd.InternalCallable(draw_callback)))}))
 }
 
 /*
@@ -4683,11 +4012,8 @@ Returns the total width of all gutters and internal padding.
 */
 //go:nosplit
 func (self class) GetTotalGutterWidth() int64 { //gd:TextEdit.get_total_gutter_width
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_total_gutter_width, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_total_gutter_width, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -4696,13 +4022,11 @@ Sets the metadata for [param gutter] on [param line] to [param metadata].
 */
 //go:nosplit
 func (self class) SetLineGutterMetadata(line int64, gutter int64, metadata variant.Any) { //gd:TextEdit.set_line_gutter_metadata
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	callframe.Arg(frame, gutter)
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(metadata)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_line_gutter_metadata, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_line_gutter_metadata, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
+		line     int64
+		gutter   int64
+		metadata gdextension.Variant
+	}{line, gutter, gdextension.Variant(pointers.Get(gd.InternalVariant(metadata)))}))
 }
 
 /*
@@ -4710,13 +4034,11 @@ Returns the metadata currently in [param gutter] at [param line].
 */
 //go:nosplit
 func (self class) GetLineGutterMetadata(line int64, gutter int64) variant.Any { //gd:TextEdit.get_line_gutter_metadata
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	callframe.Arg(frame, gutter)
-	var r_ret = callframe.Ret[[3]uint64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_gutter_metadata, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[3]uint64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_line_gutter_metadata, gdextension.SizeVariant|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		line   int64
+		gutter int64
+	}{line, gutter}))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
 
@@ -4725,13 +4047,11 @@ Sets the text for [param gutter] on [param line] to [param text]. This only work
 */
 //go:nosplit
 func (self class) SetLineGutterText(line int64, gutter int64, text String.Readable) { //gd:TextEdit.set_line_gutter_text
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	callframe.Arg(frame, gutter)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_line_gutter_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_line_gutter_text, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
+		line   int64
+		gutter int64
+		text   gdextension.String
+	}{line, gutter, gdextension.String(pointers.Get(gd.InternalString(text))[0])}))
 }
 
 /*
@@ -4739,13 +4059,11 @@ Returns the text currently in [param gutter] at [param line]. This only works wh
 */
 //go:nosplit
 func (self class) GetLineGutterText(line int64, gutter int64) String.Readable { //gd:TextEdit.get_line_gutter_text
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	callframe.Arg(frame, gutter)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_gutter_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_line_gutter_text, gdextension.SizeString|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		line   int64
+		gutter int64
+	}{line, gutter}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -4754,13 +4072,11 @@ Sets the icon for [param gutter] on [param line] to [param icon]. This only work
 */
 //go:nosplit
 func (self class) SetLineGutterIcon(line int64, gutter int64, icon [1]gdclass.Texture2D) { //gd:TextEdit.set_line_gutter_icon
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	callframe.Arg(frame, gutter)
-	callframe.Arg(frame, pointers.Get(icon[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_line_gutter_icon, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_line_gutter_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
+		line   int64
+		gutter int64
+		icon   gdextension.Object
+	}{line, gutter, gdextension.Object(pointers.Get(icon[0])[0])}))
 }
 
 /*
@@ -4768,13 +4084,11 @@ Returns the icon currently in [param gutter] at [param line]. This only works wh
 */
 //go:nosplit
 func (self class) GetLineGutterIcon(line int64, gutter int64) [1]gdclass.Texture2D { //gd:TextEdit.get_line_gutter_icon
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	callframe.Arg(frame, gutter)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_gutter_icon, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_line_gutter_icon, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		line   int64
+		gutter int64
+	}{line, gutter}))
+	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
 
@@ -4783,13 +4097,11 @@ Sets the color for [param gutter] on [param line] to [param color].
 */
 //go:nosplit
 func (self class) SetLineGutterItemColor(line int64, gutter int64, color Color.RGBA) { //gd:TextEdit.set_line_gutter_item_color
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	callframe.Arg(frame, gutter)
-	callframe.Arg(frame, color)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_line_gutter_item_color, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_line_gutter_item_color, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeColor<<12), unsafe.Pointer(&struct {
+		line   int64
+		gutter int64
+		color  Color.RGBA
+	}{line, gutter, color}))
 }
 
 /*
@@ -4797,13 +4109,11 @@ Returns the color currently in [param gutter] at [param line].
 */
 //go:nosplit
 func (self class) GetLineGutterItemColor(line int64, gutter int64) Color.RGBA { //gd:TextEdit.get_line_gutter_item_color
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	callframe.Arg(frame, gutter)
-	var r_ret = callframe.Ret[Color.RGBA](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_gutter_item_color, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Color.RGBA](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_line_gutter_item_color, gdextension.SizeColor|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		line   int64
+		gutter int64
+	}{line, gutter}))
+	var ret = r_ret
 	return ret
 }
 
@@ -4812,13 +4122,11 @@ If [param clickable] is [code]true[/code], makes the [param gutter] on the given
 */
 //go:nosplit
 func (self class) SetLineGutterClickable(line int64, gutter int64, clickable bool) { //gd:TextEdit.set_line_gutter_clickable
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	callframe.Arg(frame, gutter)
-	callframe.Arg(frame, clickable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_line_gutter_clickable, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_line_gutter_clickable, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+		line      int64
+		gutter    int64
+		clickable bool
+	}{line, gutter, clickable}))
 }
 
 /*
@@ -4826,13 +4134,11 @@ Returns [code]true[/code] if the gutter at the given index on the given line is 
 */
 //go:nosplit
 func (self class) IsLineGutterClickable(line int64, gutter int64) bool { //gd:TextEdit.is_line_gutter_clickable
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	callframe.Arg(frame, gutter)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_line_gutter_clickable, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_line_gutter_clickable, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		line   int64
+		gutter int64
+	}{line, gutter}))
+	var ret = r_ret
 	return ret
 }
 
@@ -4841,12 +4147,10 @@ Sets the custom background color of the given line. If transparent, this color i
 */
 //go:nosplit
 func (self class) SetLineBackgroundColor(line int64, color Color.RGBA) { //gd:TextEdit.set_line_background_color
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	callframe.Arg(frame, color)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_line_background_color, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_line_background_color, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
+		line  int64
+		color Color.RGBA
+	}{line, color}))
 }
 
 /*
@@ -4854,126 +4158,80 @@ Returns the custom background color of the given line. If no color is set, retur
 */
 //go:nosplit
 func (self class) GetLineBackgroundColor(line int64) Color.RGBA { //gd:TextEdit.get_line_background_color
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	var r_ret = callframe.Ret[Color.RGBA](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_background_color, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Color.RGBA](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_line_background_color, gdextension.SizeColor|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSyntaxHighlighter(syntax_highlighter [1]gdclass.SyntaxHighlighter) { //gd:TextEdit.set_syntax_highlighter
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(syntax_highlighter[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_syntax_highlighter, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_syntax_highlighter, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ syntax_highlighter gdextension.Object }{gdextension.Object(pointers.Get(syntax_highlighter[0])[0])}))
 }
 
 //go:nosplit
 func (self class) GetSyntaxHighlighter() [1]gdclass.SyntaxHighlighter { //gd:TextEdit.get_syntax_highlighter
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_syntax_highlighter, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.SyntaxHighlighter{gd.PointerWithOwnershipTransferredToGo[gdclass.SyntaxHighlighter](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_syntax_highlighter, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.SyntaxHighlighter{gd.PointerWithOwnershipTransferredToGo[gdclass.SyntaxHighlighter](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHighlightCurrentLine(enabled bool) { //gd:TextEdit.set_highlight_current_line
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_highlight_current_line, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_highlight_current_line, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsHighlightCurrentLineEnabled() bool { //gd:TextEdit.is_highlight_current_line_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_highlight_current_line_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_highlight_current_line_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHighlightAllOccurrences(enabled bool) { //gd:TextEdit.set_highlight_all_occurrences
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_highlight_all_occurrences, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_highlight_all_occurrences, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsHighlightAllOccurrencesEnabled() bool { //gd:TextEdit.is_highlight_all_occurrences_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_highlight_all_occurrences_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_highlight_all_occurrences_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetDrawControlChars() bool { //gd:TextEdit.get_draw_control_chars
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_draw_control_chars, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_draw_control_chars, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDrawControlChars(enabled bool) { //gd:TextEdit.set_draw_control_chars
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_draw_control_chars, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_draw_control_chars, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) SetDrawTabs(enabled bool) { //gd:TextEdit.set_draw_tabs
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_draw_tabs, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_draw_tabs, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsDrawingTabs() bool { //gd:TextEdit.is_drawing_tabs
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_drawing_tabs, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_drawing_tabs, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDrawSpaces(enabled bool) { //gd:TextEdit.set_draw_spaces
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_set_draw_spaces, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_set_draw_spaces, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsDrawingSpaces() bool { //gd:TextEdit.is_drawing_spaces
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_drawing_spaces, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_drawing_spaces, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -5022,11 +4280,8 @@ public void OnItemPressed(int id)
 */
 //go:nosplit
 func (self class) GetMenu() [1]gdclass.PopupMenu { //gd:TextEdit.get_menu
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_menu, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.PopupMenu{gd.PointerLifetimeBoundTo[gdclass.PopupMenu](self.AsObject(), r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_menu, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.PopupMenu{gd.PointerLifetimeBoundTo[gdclass.PopupMenu](self.AsObject(), r_ret)}
 	return ret
 }
 
@@ -5035,11 +4290,8 @@ Returns [code]true[/code] if the menu is visible. Use this instead of [code]get_
 */
 //go:nosplit
 func (self class) IsMenuVisible() bool { //gd:TextEdit.is_menu_visible
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_is_menu_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextEdit.Bind_is_menu_visible, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -5048,11 +4300,7 @@ Executes a given action as defined in the [enum MenuItems] enum.
 */
 //go:nosplit
 func (self class) MenuOption(option int64) { //gd:TextEdit.menu_option
-	var frame = callframe.New()
-	callframe.Arg(frame, option)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_menu_option, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_menu_option, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ option int64 }{option}))
 }
 
 /*
@@ -5060,15 +4308,13 @@ This method does nothing.
 */
 //go:nosplit
 func (self class) AdjustCaretsAfterEdit(caret int64, from_line int64, from_col int64, to_line int64, to_col int64) { //gd:TextEdit.adjust_carets_after_edit
-	var frame = callframe.New()
-	callframe.Arg(frame, caret)
-	callframe.Arg(frame, from_line)
-	callframe.Arg(frame, from_col)
-	callframe.Arg(frame, to_line)
-	callframe.Arg(frame, to_col)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_adjust_carets_after_edit, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextEdit.Bind_adjust_carets_after_edit, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
+		caret     int64
+		from_line int64
+		from_col  int64
+		to_line   int64
+		to_col    int64
+	}{caret, from_line, from_col, to_line, to_col}))
 }
 
 /*
@@ -5076,11 +4322,8 @@ Returns a list of caret indexes in their edit order, this done from bottom to to
 */
 //go:nosplit
 func (self class) GetCaretIndexEditOrder() Packed.Array[int32] { //gd:TextEdit.get_caret_index_edit_order
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_caret_index_edit_order, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_caret_index_edit_order, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -5089,12 +4332,8 @@ Returns the original start line of the selection.
 */
 //go:nosplit
 func (self class) GetSelectionLine(caret_index int64) int64 { //gd:TextEdit.get_selection_line
-	var frame = callframe.New()
-	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_line, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_selection_line, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ caret_index int64 }{caret_index}))
+	var ret = r_ret
 	return ret
 }
 
@@ -5103,12 +4342,8 @@ Returns the original start column of the selection.
 */
 //go:nosplit
 func (self class) GetSelectionColumn(caret_index int64) int64 { //gd:TextEdit.get_selection_column
-	var frame = callframe.New()
-	callframe.Arg(frame, caret_index)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_selection_column, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextEdit.Bind_get_selection_column, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ caret_index int64 }{caret_index}))
+	var ret = r_ret
 	return ret
 }
 func (self Instance) OnTextSet(cb func()) {

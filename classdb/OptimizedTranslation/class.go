@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +51,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -114,11 +118,7 @@ Generates and sets an optimized translation from the given [Translation] resourc
 */
 //go:nosplit
 func (self class) Generate(from [1]gdclass.Translation) { //gd:OptimizedTranslation.generate
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(from[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OptimizedTranslation.Bind_generate, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OptimizedTranslation.Bind_generate, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ from gdextension.Object }{gdextension.Object(pointers.Get(from[0])[0])}))
 }
 func (self class) AsOptimizedTranslation() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsOptimizedTranslation() Instance { return *((*Instance)(unsafe.Pointer(&self))) }

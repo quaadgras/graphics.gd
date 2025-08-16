@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -50,6 +52,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -419,11 +423,8 @@ Returns the length of the audio stream in seconds.
 */
 //go:nosplit
 func (self class) GetLength() float64 { //gd:AudioStream.get_length
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStream.Bind_get_length, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.AudioStream.Bind_get_length, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -432,11 +433,8 @@ Returns [code]true[/code] if this audio stream only supports one channel ([i]mon
 */
 //go:nosplit
 func (self class) IsMonophonic() bool { //gd:AudioStream.is_monophonic
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStream.Bind_is_monophonic, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.AudioStream.Bind_is_monophonic, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -445,11 +443,8 @@ Returns a newly created [AudioStreamPlayback] intended to play this audio stream
 */
 //go:nosplit
 func (self class) InstantiatePlayback() [1]gdclass.AudioStreamPlayback { //gd:AudioStream.instantiate_playback
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStream.Bind_instantiate_playback, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.AudioStreamPlayback{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamPlayback](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.AudioStream.Bind_instantiate_playback, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.AudioStreamPlayback{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamPlayback](r_ret)}
 	return ret
 }
 
@@ -458,11 +453,8 @@ Returns if the current [AudioStream] can be used as a sample. Only static stream
 */
 //go:nosplit
 func (self class) CanBeSampled() bool { //gd:AudioStream.can_be_sampled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStream.Bind_can_be_sampled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.AudioStream.Bind_can_be_sampled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -471,11 +463,8 @@ Generates an [AudioSample] based on the current stream.
 */
 //go:nosplit
 func (self class) GenerateSample() [1]gdclass.AudioSample { //gd:AudioStream.generate_sample
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStream.Bind_generate_sample, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.AudioSample{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioSample](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.AudioStream.Bind_generate_sample, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.AudioSample{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioSample](r_ret)}
 	return ret
 }
 
@@ -484,11 +473,8 @@ Returns [code]true[/code] if the stream is a collection of other streams, [code]
 */
 //go:nosplit
 func (self class) IsMetaStream() bool { //gd:AudioStream.is_meta_stream
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStream.Bind_is_meta_stream, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.AudioStream.Bind_is_meta_stream, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self Instance) OnParameterListChanged(cb func()) {

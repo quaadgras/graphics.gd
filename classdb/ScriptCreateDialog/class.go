@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -53,6 +55,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -146,14 +150,12 @@ Prefills required fields to configure the ScriptCreateDialog for use.
 */
 //go:nosplit
 func (self class) Config(inherits String.Readable, path String.Readable, built_in_enabled bool, load_enabled bool) { //gd:ScriptCreateDialog.config
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(inherits)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	callframe.Arg(frame, built_in_enabled)
-	callframe.Arg(frame, load_enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptCreateDialog.Bind_config, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ScriptCreateDialog.Bind_config, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+		inherits         gdextension.String
+		path             gdextension.String
+		built_in_enabled bool
+		load_enabled     bool
+	}{gdextension.String(pointers.Get(gd.InternalString(inherits))[0]), gdextension.String(pointers.Get(gd.InternalString(path))[0]), built_in_enabled, load_enabled}))
 }
 func (self Instance) OnScriptCreated(cb func(script Script.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("script_created"), gd.NewCallable(cb), 0)

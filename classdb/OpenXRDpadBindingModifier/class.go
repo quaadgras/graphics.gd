@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -52,6 +54,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -179,172 +183,109 @@ func (self Instance) SetOffHaptic(value OpenXRHapticBase.Instance) {
 
 //go:nosplit
 func (self class) SetActionSet(action_set [1]gdclass.OpenXRActionSet) { //gd:OpenXRDpadBindingModifier.set_action_set
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(action_set[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRDpadBindingModifier.Bind_set_action_set, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRDpadBindingModifier.Bind_set_action_set, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ action_set gdextension.Object }{gdextension.Object(pointers.Get(action_set[0])[0])}))
 }
 
 //go:nosplit
 func (self class) GetActionSet() [1]gdclass.OpenXRActionSet { //gd:OpenXRDpadBindingModifier.get_action_set
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRDpadBindingModifier.Bind_get_action_set, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.OpenXRActionSet{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRActionSet](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.OpenXRDpadBindingModifier.Bind_get_action_set, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.OpenXRActionSet{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRActionSet](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInputPath(input_path String.Readable) { //gd:OpenXRDpadBindingModifier.set_input_path
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(input_path)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRDpadBindingModifier.Bind_set_input_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRDpadBindingModifier.Bind_set_input_path, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ input_path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(input_path))[0])}))
 }
 
 //go:nosplit
 func (self class) GetInputPath() String.Readable { //gd:OpenXRDpadBindingModifier.get_input_path
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRDpadBindingModifier.Bind_get_input_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.OpenXRDpadBindingModifier.Bind_get_input_path, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetThreshold(threshold float64) { //gd:OpenXRDpadBindingModifier.set_threshold
-	var frame = callframe.New()
-	callframe.Arg(frame, threshold)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRDpadBindingModifier.Bind_set_threshold, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRDpadBindingModifier.Bind_set_threshold, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ threshold float64 }{threshold}))
 }
 
 //go:nosplit
 func (self class) GetThreshold() float64 { //gd:OpenXRDpadBindingModifier.get_threshold
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRDpadBindingModifier.Bind_get_threshold, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.OpenXRDpadBindingModifier.Bind_get_threshold, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetThresholdReleased(threshold_released float64) { //gd:OpenXRDpadBindingModifier.set_threshold_released
-	var frame = callframe.New()
-	callframe.Arg(frame, threshold_released)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRDpadBindingModifier.Bind_set_threshold_released, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRDpadBindingModifier.Bind_set_threshold_released, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ threshold_released float64 }{threshold_released}))
 }
 
 //go:nosplit
 func (self class) GetThresholdReleased() float64 { //gd:OpenXRDpadBindingModifier.get_threshold_released
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRDpadBindingModifier.Bind_get_threshold_released, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.OpenXRDpadBindingModifier.Bind_get_threshold_released, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCenterRegion(center_region float64) { //gd:OpenXRDpadBindingModifier.set_center_region
-	var frame = callframe.New()
-	callframe.Arg(frame, center_region)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRDpadBindingModifier.Bind_set_center_region, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRDpadBindingModifier.Bind_set_center_region, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ center_region float64 }{center_region}))
 }
 
 //go:nosplit
 func (self class) GetCenterRegion() float64 { //gd:OpenXRDpadBindingModifier.get_center_region
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRDpadBindingModifier.Bind_get_center_region, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.OpenXRDpadBindingModifier.Bind_get_center_region, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetWedgeAngle(wedge_angle float64) { //gd:OpenXRDpadBindingModifier.set_wedge_angle
-	var frame = callframe.New()
-	callframe.Arg(frame, wedge_angle)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRDpadBindingModifier.Bind_set_wedge_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRDpadBindingModifier.Bind_set_wedge_angle, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ wedge_angle float64 }{wedge_angle}))
 }
 
 //go:nosplit
 func (self class) GetWedgeAngle() float64 { //gd:OpenXRDpadBindingModifier.get_wedge_angle
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRDpadBindingModifier.Bind_get_wedge_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.OpenXRDpadBindingModifier.Bind_get_wedge_angle, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIsSticky(is_sticky bool) { //gd:OpenXRDpadBindingModifier.set_is_sticky
-	var frame = callframe.New()
-	callframe.Arg(frame, is_sticky)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRDpadBindingModifier.Bind_set_is_sticky, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRDpadBindingModifier.Bind_set_is_sticky, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ is_sticky bool }{is_sticky}))
 }
 
 //go:nosplit
 func (self class) GetIsSticky() bool { //gd:OpenXRDpadBindingModifier.get_is_sticky
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRDpadBindingModifier.Bind_get_is_sticky, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.OpenXRDpadBindingModifier.Bind_get_is_sticky, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOnHaptic(haptic [1]gdclass.OpenXRHapticBase) { //gd:OpenXRDpadBindingModifier.set_on_haptic
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(haptic[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRDpadBindingModifier.Bind_set_on_haptic, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRDpadBindingModifier.Bind_set_on_haptic, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ haptic gdextension.Object }{gdextension.Object(pointers.Get(haptic[0])[0])}))
 }
 
 //go:nosplit
 func (self class) GetOnHaptic() [1]gdclass.OpenXRHapticBase { //gd:OpenXRDpadBindingModifier.get_on_haptic
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRDpadBindingModifier.Bind_get_on_haptic, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.OpenXRHapticBase{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRHapticBase](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.OpenXRDpadBindingModifier.Bind_get_on_haptic, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.OpenXRHapticBase{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRHapticBase](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOffHaptic(haptic [1]gdclass.OpenXRHapticBase) { //gd:OpenXRDpadBindingModifier.set_off_haptic
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(haptic[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRDpadBindingModifier.Bind_set_off_haptic, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRDpadBindingModifier.Bind_set_off_haptic, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ haptic gdextension.Object }{gdextension.Object(pointers.Get(haptic[0])[0])}))
 }
 
 //go:nosplit
 func (self class) GetOffHaptic() [1]gdclass.OpenXRHapticBase { //gd:OpenXRDpadBindingModifier.get_off_haptic
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRDpadBindingModifier.Bind_get_off_haptic, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.OpenXRHapticBase{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRHapticBase](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.OpenXRDpadBindingModifier.Bind_get_off_haptic, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.OpenXRHapticBase{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRHapticBase](r_ret)}
 	return ret
 }
 func (self class) AsOpenXRDpadBindingModifier() Advanced {

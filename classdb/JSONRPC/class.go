@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -47,6 +49,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -174,12 +178,10 @@ func New() Instance {
 
 //go:nosplit
 func (self class) SetScope(scope String.Readable, target [1]gd.Object) { //gd:JSONRPC.set_scope
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(scope)))
-	callframe.Arg(frame, pointers.Get(target[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_set_scope, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.JSONRPC.Bind_set_scope, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+		scope  gdextension.String
+		target gdextension.Object
+	}{gdextension.String(pointers.Get(gd.InternalString(scope))[0]), gdextension.Object(pointers.Get(target[0])[0])}))
 }
 
 /*
@@ -189,24 +191,18 @@ To add new supported methods extend the JSONRPC class and call [method process_a
 */
 //go:nosplit
 func (self class) ProcessAction(action variant.Any, recurse bool) variant.Any { //gd:JSONRPC.process_action
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(action)))
-	callframe.Arg(frame, recurse)
-	var r_ret = callframe.Ret[[3]uint64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_process_action, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[3]uint64](self.AsObject(), gd.Global.Methods.JSONRPC.Bind_process_action, gdextension.SizeVariant|(gdextension.SizeVariant<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		action  gdextension.Variant
+		recurse bool
+	}{gdextension.Variant(pointers.Get(gd.InternalVariant(action))), recurse}))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) ProcessString(action String.Readable) String.Readable { //gd:JSONRPC.process_string
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(action)))
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_process_string, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.JSONRPC.Bind_process_string, gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ action gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(action))[0])}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -218,14 +214,12 @@ Returns a dictionary in the form of a JSON-RPC request. Requests are sent to a s
 */
 //go:nosplit
 func (self class) MakeRequest(method String.Readable, params variant.Any, id variant.Any) Dictionary.Any { //gd:JSONRPC.make_request
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(method)))
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(params)))
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(id)))
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_make_request, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.JSONRPC.Bind_make_request, gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
+		method gdextension.String
+		params gdextension.Variant
+		id     gdextension.Variant
+	}{gdextension.String(pointers.Get(gd.InternalString(method))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(params))), gdextension.Variant(pointers.Get(gd.InternalVariant(id)))}))
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 
@@ -236,13 +230,11 @@ When a server has received and processed a request, it is expected to send a res
 */
 //go:nosplit
 func (self class) MakeResponse(result variant.Any, id variant.Any) Dictionary.Any { //gd:JSONRPC.make_response
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(result)))
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(id)))
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_make_response, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.JSONRPC.Bind_make_response, gdextension.SizeDictionary|(gdextension.SizeVariant<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
+		result gdextension.Variant
+		id     gdextension.Variant
+	}{gdextension.Variant(pointers.Get(gd.InternalVariant(result))), gdextension.Variant(pointers.Get(gd.InternalVariant(id)))}))
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 
@@ -253,13 +245,11 @@ Returns a dictionary in the form of a JSON-RPC notification. Notifications are o
 */
 //go:nosplit
 func (self class) MakeNotification(method String.Readable, params variant.Any) Dictionary.Any { //gd:JSONRPC.make_notification
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(method)))
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(params)))
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_make_notification, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.JSONRPC.Bind_make_notification, gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
+		method gdextension.String
+		params gdextension.Variant
+	}{gdextension.String(pointers.Get(gd.InternalString(method))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(params)))}))
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 
@@ -271,14 +261,12 @@ Creates a response which indicates a previous reply has failed in some way.
 */
 //go:nosplit
 func (self class) MakeResponseError(code int64, message String.Readable, id variant.Any) Dictionary.Any { //gd:JSONRPC.make_response_error
-	var frame = callframe.New()
-	callframe.Arg(frame, code)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(message)))
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(id)))
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.JSONRPC.Bind_make_response_error, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.JSONRPC.Bind_make_response_error, gdextension.SizeDictionary|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
+		code    int64
+		message gdextension.String
+		id      gdextension.Variant
+	}{code, gdextension.String(pointers.Get(gd.InternalString(message))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(id)))}))
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 func (self class) AsJSONRPC() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

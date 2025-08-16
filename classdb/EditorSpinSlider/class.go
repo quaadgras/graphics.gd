@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +53,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -152,115 +156,73 @@ func (self Instance) SetEditingInteger(value bool) {
 
 //go:nosplit
 func (self class) SetLabel(label String.Readable) { //gd:EditorSpinSlider.set_label
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(label)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSpinSlider.Bind_set_label, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorSpinSlider.Bind_set_label, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ label gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(label))[0])}))
 }
 
 //go:nosplit
 func (self class) GetLabel() String.Readable { //gd:EditorSpinSlider.get_label
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSpinSlider.Bind_get_label, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorSpinSlider.Bind_get_label, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSuffix(suffix String.Readable) { //gd:EditorSpinSlider.set_suffix
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(suffix)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSpinSlider.Bind_set_suffix, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorSpinSlider.Bind_set_suffix, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ suffix gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(suffix))[0])}))
 }
 
 //go:nosplit
 func (self class) GetSuffix() String.Readable { //gd:EditorSpinSlider.get_suffix
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSpinSlider.Bind_get_suffix, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorSpinSlider.Bind_get_suffix, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetReadOnly(read_only bool) { //gd:EditorSpinSlider.set_read_only
-	var frame = callframe.New()
-	callframe.Arg(frame, read_only)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSpinSlider.Bind_set_read_only, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorSpinSlider.Bind_set_read_only, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ read_only bool }{read_only}))
 }
 
 //go:nosplit
 func (self class) IsReadOnly() bool { //gd:EditorSpinSlider.is_read_only
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSpinSlider.Bind_is_read_only, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.EditorSpinSlider.Bind_is_read_only, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFlat(flat bool) { //gd:EditorSpinSlider.set_flat
-	var frame = callframe.New()
-	callframe.Arg(frame, flat)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSpinSlider.Bind_set_flat, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorSpinSlider.Bind_set_flat, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ flat bool }{flat}))
 }
 
 //go:nosplit
 func (self class) IsFlat() bool { //gd:EditorSpinSlider.is_flat
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSpinSlider.Bind_is_flat, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.EditorSpinSlider.Bind_is_flat, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHideSlider(hide_slider bool) { //gd:EditorSpinSlider.set_hide_slider
-	var frame = callframe.New()
-	callframe.Arg(frame, hide_slider)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSpinSlider.Bind_set_hide_slider, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorSpinSlider.Bind_set_hide_slider, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ hide_slider bool }{hide_slider}))
 }
 
 //go:nosplit
 func (self class) IsHidingSlider() bool { //gd:EditorSpinSlider.is_hiding_slider
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSpinSlider.Bind_is_hiding_slider, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.EditorSpinSlider.Bind_is_hiding_slider, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEditingInteger(editing_integer bool) { //gd:EditorSpinSlider.set_editing_integer
-	var frame = callframe.New()
-	callframe.Arg(frame, editing_integer)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSpinSlider.Bind_set_editing_integer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorSpinSlider.Bind_set_editing_integer, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ editing_integer bool }{editing_integer}))
 }
 
 //go:nosplit
 func (self class) IsEditingInteger() bool { //gd:EditorSpinSlider.is_editing_integer
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorSpinSlider.Bind_is_editing_integer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.EditorSpinSlider.Bind_is_editing_integer, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self Instance) OnGrabbed(cb func()) {

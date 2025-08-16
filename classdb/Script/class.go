@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +50,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -251,11 +255,8 @@ Returns [code]true[/code] if the script can be instantiated.
 */
 //go:nosplit
 func (self class) CanInstantiate() bool { //gd:Script.can_instantiate
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_can_instantiate, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Script.Bind_can_instantiate, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -264,12 +265,8 @@ Returns [code]true[/code] if [param base_object] is an instance of this script.
 */
 //go:nosplit
 func (self class) InstanceHas(base_object [1]gd.Object) bool { //gd:Script.instance_has
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(base_object[0])[0])
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_instance_has, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Script.Bind_instance_has, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ base_object gdextension.Object }{gdextension.Object(pointers.Get(base_object[0])[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -279,31 +276,21 @@ Returns [code]true[/code] if the script contains non-empty source code.
 */
 //go:nosplit
 func (self class) HasSourceCode() bool { //gd:Script.has_source_code
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_has_source_code, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Script.Bind_has_source_code, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetSourceCode() String.Readable { //gd:Script.get_source_code
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_get_source_code, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Script.Bind_get_source_code, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSourceCode(source String.Readable) { //gd:Script.set_source_code
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(source)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_set_source_code, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Script.Bind_set_source_code, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ source gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(source))[0])}))
 }
 
 /*
@@ -311,12 +298,8 @@ Reloads the script's class implementation. Returns an error code.
 */
 //go:nosplit
 func (self class) Reload(keep_state bool) Error.Code { //gd:Script.reload
-	var frame = callframe.New()
-	callframe.Arg(frame, keep_state)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_reload, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Script.Bind_reload, gdextension.SizeInt|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ keep_state bool }{keep_state}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -325,11 +308,8 @@ Returns the script directly inherited by this script.
 */
 //go:nosplit
 func (self class) GetBaseScript() [1]gdclass.Script { //gd:Script.get_base_script
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_get_base_script, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Script{gd.PointerWithOwnershipTransferredToGo[gdclass.Script](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Script.Bind_get_base_script, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.Script{gd.PointerWithOwnershipTransferredToGo[gdclass.Script](r_ret)}
 	return ret
 }
 
@@ -338,11 +318,8 @@ Returns the script's base type.
 */
 //go:nosplit
 func (self class) GetInstanceBaseType() String.Name { //gd:Script.get_instance_base_type
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_get_instance_base_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Script.Bind_get_instance_base_type, gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
@@ -366,11 +343,8 @@ public partial class MyNode : Node
 */
 //go:nosplit
 func (self class) GetGlobalName() String.Name { //gd:Script.get_global_name
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_get_global_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Script.Bind_get_global_name, gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
@@ -379,12 +353,8 @@ Returns [code]true[/code] if the script, or a base class, defines a signal with 
 */
 //go:nosplit
 func (self class) HasScriptSignal(signal_name String.Name) bool { //gd:Script.has_script_signal
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(signal_name)))
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_has_script_signal, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Script.Bind_has_script_signal, gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ signal_name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(signal_name))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -393,11 +363,8 @@ Returns the list of properties in this [Script].
 */
 //go:nosplit
 func (self class) GetScriptPropertyList() Array.Contains[Dictionary.Any] { //gd:Script.get_script_property_list
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_get_script_property_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Script.Bind_get_script_property_list, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -406,11 +373,8 @@ Returns the list of methods in this [Script].
 */
 //go:nosplit
 func (self class) GetScriptMethodList() Array.Contains[Dictionary.Any] { //gd:Script.get_script_method_list
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_get_script_method_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Script.Bind_get_script_method_list, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -419,11 +383,8 @@ Returns the list of user signals defined in this [Script].
 */
 //go:nosplit
 func (self class) GetScriptSignalList() Array.Contains[Dictionary.Any] { //gd:Script.get_script_signal_list
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_get_script_signal_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Script.Bind_get_script_signal_list, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -432,11 +393,8 @@ Returns a dictionary containing constant names and their values.
 */
 //go:nosplit
 func (self class) GetScriptConstantMap() Dictionary.Any { //gd:Script.get_script_constant_map
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_get_script_constant_map, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Script.Bind_get_script_constant_map, gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 
@@ -445,12 +403,8 @@ Returns the default value of the specified property.
 */
 //go:nosplit
 func (self class) GetPropertyDefaultValue(property String.Name) variant.Any { //gd:Script.get_property_default_value
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(property)))
-	var r_ret = callframe.Ret[[3]uint64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_get_property_default_value, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[3]uint64](self.AsObject(), gd.Global.Methods.Script.Bind_get_property_default_value, gdextension.SizeVariant|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ property gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(property))[0])}))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
 
@@ -459,11 +413,8 @@ Returns [code]true[/code] if the script is a tool script. A tool script can run 
 */
 //go:nosplit
 func (self class) IsTool() bool { //gd:Script.is_tool
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_is_tool, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Script.Bind_is_tool, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -472,11 +423,8 @@ Returns [code]true[/code] if the script is an abstract script. An abstract scrip
 */
 //go:nosplit
 func (self class) IsAbstract() bool { //gd:Script.is_abstract
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_is_abstract, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Script.Bind_is_abstract, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -485,11 +433,8 @@ Returns a [Dictionary] mapping method names to their RPC configuration defined b
 */
 //go:nosplit
 func (self class) GetRpcConfig() variant.Any { //gd:Script.get_rpc_config
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[3]uint64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Script.Bind_get_rpc_config, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[3]uint64](self.AsObject(), gd.Global.Methods.Script.Bind_get_rpc_config, gdextension.SizeVariant, unsafe.Pointer(&struct{}{}))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
 func (self class) AsScript() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

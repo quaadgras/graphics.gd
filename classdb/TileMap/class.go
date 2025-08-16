@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -57,6 +59,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -794,12 +798,10 @@ Assigns [param map] as a [NavigationServer2D] navigation map for the specified T
 */
 //go:nosplit
 func (self class) SetNavigationMap(layer int64, mapping RID.Any) { //gd:TileMap.set_navigation_map
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	callframe.Arg(frame, mapping)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_navigation_map, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileMap.Bind_set_navigation_map, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+		layer   int64
+		mapping RID.Any
+	}{layer, mapping}))
 }
 
 /*
@@ -807,12 +809,8 @@ Returns the [RID] of the [NavigationServer2D] navigation map assigned to the spe
 */
 //go:nosplit
 func (self class) GetNavigationMap(layer int64) RID.Any { //gd:TileMap.get_navigation_map
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_navigation_map, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.TileMap.Bind_get_navigation_map, gdextension.SizeRID|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer int64 }{layer}))
+	var ret = r_ret
 	return ret
 }
 
@@ -821,48 +819,30 @@ Forces the TileMap and the layer [param layer] to update.
 */
 //go:nosplit
 func (self class) ForceUpdate(layer int64) { //gd:TileMap.force_update
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_force_update, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileMap.Bind_force_update, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer int64 }{layer}))
 }
 
 //go:nosplit
 func (self class) SetTileset(tileset [1]gdclass.TileSet) { //gd:TileMap.set_tileset
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(tileset[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_tileset, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileMap.Bind_set_tileset, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ tileset gdextension.Object }{gdextension.Object(pointers.Get(tileset[0])[0])}))
 }
 
 //go:nosplit
 func (self class) GetTileset() [1]gdclass.TileSet { //gd:TileMap.get_tileset
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_tileset, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.TileSet{gd.PointerWithOwnershipTransferredToGo[gdclass.TileSet](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.TileMap.Bind_get_tileset, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.TileSet{gd.PointerWithOwnershipTransferredToGo[gdclass.TileSet](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRenderingQuadrantSize(size int64) { //gd:TileMap.set_rendering_quadrant_size
-	var frame = callframe.New()
-	callframe.Arg(frame, size)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_rendering_quadrant_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileMap.Bind_set_rendering_quadrant_size, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ size int64 }{size}))
 }
 
 //go:nosplit
 func (self class) GetRenderingQuadrantSize() int64 { //gd:TileMap.get_rendering_quadrant_size
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_rendering_quadrant_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TileMap.Bind_get_rendering_quadrant_size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -871,11 +851,8 @@ Returns the number of layers in the TileMap.
 */
 //go:nosplit
 func (self class) GetLayersCount() int64 { //gd:TileMap.get_layers_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_layers_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TileMap.Bind_get_layers_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -884,11 +861,7 @@ Adds a layer at the given position [param to_position] in the array. If [param t
 */
 //go:nosplit
 func (self class) AddLayer(to_position int64) { //gd:TileMap.add_layer
-	var frame = callframe.New()
-	callframe.Arg(frame, to_position)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_add_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileMap.Bind_add_layer, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ to_position int64 }{to_position}))
 }
 
 /*
@@ -896,12 +869,10 @@ Moves the layer at index [param layer] to the given position [param to_position]
 */
 //go:nosplit
 func (self class) MoveLayer(layer int64, to_position int64) { //gd:TileMap.move_layer
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	callframe.Arg(frame, to_position)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_move_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileMap.Bind_move_layer, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		layer       int64
+		to_position int64
+	}{layer, to_position}))
 }
 
 /*
@@ -909,11 +880,7 @@ Removes the layer at index [param layer].
 */
 //go:nosplit
 func (self class) RemoveLayer(layer int64) { //gd:TileMap.remove_layer
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_remove_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileMap.Bind_remove_layer, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer int64 }{layer}))
 }
 
 /*
@@ -922,12 +889,10 @@ If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) SetLayerName(layer int64, name String.Readable) { //gd:TileMap.set_layer_name
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_layer_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileMap.Bind_set_layer_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+		layer int64
+		name  gdextension.String
+	}{layer, gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
 }
 
 /*
@@ -936,12 +901,8 @@ If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) GetLayerName(layer int64) String.Readable { //gd:TileMap.get_layer_name
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_layer_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.TileMap.Bind_get_layer_name, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer int64 }{layer}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -951,12 +912,10 @@ If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) SetLayerEnabled(layer int64, enabled bool) { //gd:TileMap.set_layer_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_layer_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileMap.Bind_set_layer_enabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		layer   int64
+		enabled bool
+	}{layer, enabled}))
 }
 
 /*
@@ -965,12 +924,8 @@ If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) IsLayerEnabled(layer int64) bool { //gd:TileMap.is_layer_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_is_layer_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TileMap.Bind_is_layer_enabled, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer int64 }{layer}))
+	var ret = r_ret
 	return ret
 }
 
@@ -980,12 +935,10 @@ If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) SetLayerModulate(layer int64, modulate Color.RGBA) { //gd:TileMap.set_layer_modulate
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	callframe.Arg(frame, modulate)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_layer_modulate, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileMap.Bind_set_layer_modulate, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
+		layer    int64
+		modulate Color.RGBA
+	}{layer, modulate}))
 }
 
 /*
@@ -994,12 +947,8 @@ If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) GetLayerModulate(layer int64) Color.RGBA { //gd:TileMap.get_layer_modulate
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	var r_ret = callframe.Ret[Color.RGBA](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_layer_modulate, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Color.RGBA](self.AsObject(), gd.Global.Methods.TileMap.Bind_get_layer_modulate, gdextension.SizeColor|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer int64 }{layer}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1010,12 +959,10 @@ If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) SetLayerYSortEnabled(layer int64, y_sort_enabled bool) { //gd:TileMap.set_layer_y_sort_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	callframe.Arg(frame, y_sort_enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_layer_y_sort_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileMap.Bind_set_layer_y_sort_enabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		layer          int64
+		y_sort_enabled bool
+	}{layer, y_sort_enabled}))
 }
 
 /*
@@ -1024,12 +971,8 @@ If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) IsLayerYSortEnabled(layer int64) bool { //gd:TileMap.is_layer_y_sort_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_is_layer_y_sort_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TileMap.Bind_is_layer_y_sort_enabled, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer int64 }{layer}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1040,12 +983,10 @@ If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) SetLayerYSortOrigin(layer int64, y_sort_origin int64) { //gd:TileMap.set_layer_y_sort_origin
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	callframe.Arg(frame, y_sort_origin)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_layer_y_sort_origin, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileMap.Bind_set_layer_y_sort_origin, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		layer         int64
+		y_sort_origin int64
+	}{layer, y_sort_origin}))
 }
 
 /*
@@ -1054,12 +995,8 @@ If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) GetLayerYSortOrigin(layer int64) int64 { //gd:TileMap.get_layer_y_sort_origin
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_layer_y_sort_origin, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TileMap.Bind_get_layer_y_sort_origin, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer int64 }{layer}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1069,12 +1006,10 @@ If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) SetLayerZIndex(layer int64, z_index int64) { //gd:TileMap.set_layer_z_index
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	callframe.Arg(frame, z_index)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_layer_z_index, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileMap.Bind_set_layer_z_index, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		layer   int64
+		z_index int64
+	}{layer, z_index}))
 }
 
 /*
@@ -1083,12 +1018,8 @@ If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) GetLayerZIndex(layer int64) int64 { //gd:TileMap.get_layer_z_index
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_layer_z_index, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TileMap.Bind_get_layer_z_index, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer int64 }{layer}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1097,12 +1028,10 @@ Enables or disables a layer's built-in navigation regions generation. Disable th
 */
 //go:nosplit
 func (self class) SetLayerNavigationEnabled(layer int64, enabled bool) { //gd:TileMap.set_layer_navigation_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_layer_navigation_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileMap.Bind_set_layer_navigation_enabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		layer   int64
+		enabled bool
+	}{layer, enabled}))
 }
 
 /*
@@ -1110,12 +1039,8 @@ Returns if a layer's built-in navigation regions generation is enabled.
 */
 //go:nosplit
 func (self class) IsLayerNavigationEnabled(layer int64) bool { //gd:TileMap.is_layer_navigation_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_is_layer_navigation_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TileMap.Bind_is_layer_navigation_enabled, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer int64 }{layer}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1127,12 +1052,10 @@ If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) SetLayerNavigationMap(layer int64, mapping RID.Any) { //gd:TileMap.set_layer_navigation_map
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	callframe.Arg(frame, mapping)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_layer_navigation_map, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileMap.Bind_set_layer_navigation_map, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+		layer   int64
+		mapping RID.Any
+	}{layer, mapping}))
 }
 
 /*
@@ -1143,69 +1066,44 @@ If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) GetLayerNavigationMap(layer int64) RID.Any { //gd:TileMap.get_layer_navigation_map
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_layer_navigation_map, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.TileMap.Bind_get_layer_navigation_map, gdextension.SizeRID|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer int64 }{layer}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollisionAnimatable(enabled bool) { //gd:TileMap.set_collision_animatable
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_collision_animatable, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileMap.Bind_set_collision_animatable, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsCollisionAnimatable() bool { //gd:TileMap.is_collision_animatable
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_is_collision_animatable, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TileMap.Bind_is_collision_animatable, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollisionVisibilityMode(collision_visibility_mode VisibilityMode) { //gd:TileMap.set_collision_visibility_mode
-	var frame = callframe.New()
-	callframe.Arg(frame, collision_visibility_mode)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_collision_visibility_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileMap.Bind_set_collision_visibility_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ collision_visibility_mode VisibilityMode }{collision_visibility_mode}))
 }
 
 //go:nosplit
 func (self class) GetCollisionVisibilityMode() VisibilityMode { //gd:TileMap.get_collision_visibility_mode
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[VisibilityMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_collision_visibility_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[VisibilityMode](self.AsObject(), gd.Global.Methods.TileMap.Bind_get_collision_visibility_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNavigationVisibilityMode(navigation_visibility_mode VisibilityMode) { //gd:TileMap.set_navigation_visibility_mode
-	var frame = callframe.New()
-	callframe.Arg(frame, navigation_visibility_mode)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_navigation_visibility_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileMap.Bind_set_navigation_visibility_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ navigation_visibility_mode VisibilityMode }{navigation_visibility_mode}))
 }
 
 //go:nosplit
 func (self class) GetNavigationVisibilityMode() VisibilityMode { //gd:TileMap.get_navigation_visibility_mode
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[VisibilityMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_navigation_visibility_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[VisibilityMode](self.AsObject(), gd.Global.Methods.TileMap.Bind_get_navigation_visibility_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1219,15 +1117,13 @@ If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) SetCell(layer int64, coords Vector2i.XY, source_id int64, atlas_coords Vector2i.XY, alternative_tile int64) { //gd:TileMap.set_cell
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	callframe.Arg(frame, coords)
-	callframe.Arg(frame, source_id)
-	callframe.Arg(frame, atlas_coords)
-	callframe.Arg(frame, alternative_tile)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_cell, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileMap.Bind_set_cell, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeVector2i<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
+		layer            int64
+		coords           Vector2i.XY
+		source_id        int64
+		atlas_coords     Vector2i.XY
+		alternative_tile int64
+	}{layer, coords, source_id, atlas_coords, alternative_tile}))
 }
 
 /*
@@ -1236,12 +1132,10 @@ If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) EraseCell(layer int64, coords Vector2i.XY) { //gd:TileMap.erase_cell
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	callframe.Arg(frame, coords)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_erase_cell, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileMap.Bind_erase_cell, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8), unsafe.Pointer(&struct {
+		layer  int64
+		coords Vector2i.XY
+	}{layer, coords}))
 }
 
 /*
@@ -1251,14 +1145,12 @@ If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) GetCellSourceId(layer int64, coords Vector2i.XY, use_proxies bool) int64 { //gd:TileMap.get_cell_source_id
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	callframe.Arg(frame, coords)
-	callframe.Arg(frame, use_proxies)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_cell_source_id, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TileMap.Bind_get_cell_source_id, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+		layer       int64
+		coords      Vector2i.XY
+		use_proxies bool
+	}{layer, coords, use_proxies}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1269,14 +1161,12 @@ If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) GetCellAtlasCoords(layer int64, coords Vector2i.XY, use_proxies bool) Vector2i.XY { //gd:TileMap.get_cell_atlas_coords
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	callframe.Arg(frame, coords)
-	callframe.Arg(frame, use_proxies)
-	var r_ret = callframe.Ret[Vector2i.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_cell_atlas_coords, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2i.XY](self.AsObject(), gd.Global.Methods.TileMap.Bind_get_cell_atlas_coords, gdextension.SizeVector2i|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+		layer       int64
+		coords      Vector2i.XY
+		use_proxies bool
+	}{layer, coords, use_proxies}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1287,14 +1177,12 @@ If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) GetCellAlternativeTile(layer int64, coords Vector2i.XY, use_proxies bool) int64 { //gd:TileMap.get_cell_alternative_tile
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	callframe.Arg(frame, coords)
-	callframe.Arg(frame, use_proxies)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_cell_alternative_tile, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TileMap.Bind_get_cell_alternative_tile, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+		layer       int64
+		coords      Vector2i.XY
+		use_proxies bool
+	}{layer, coords, use_proxies}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1314,14 +1202,12 @@ If [param use_proxies] is [code]false[/code], ignores the [TileSet]'s tile proxi
 */
 //go:nosplit
 func (self class) GetCellTileData(layer int64, coords Vector2i.XY, use_proxies bool) [1]gdclass.TileData { //gd:TileMap.get_cell_tile_data
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	callframe.Arg(frame, coords)
-	callframe.Arg(frame, use_proxies)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_cell_tile_data, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.TileData{gd.PointerMustAssertInstanceID[gdclass.TileData](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.TileMap.Bind_get_cell_tile_data, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+		layer       int64
+		coords      Vector2i.XY
+		use_proxies bool
+	}{layer, coords, use_proxies}))
+	var ret = [1]gdclass.TileData{gd.PointerMustAssertInstanceID[gdclass.TileData](r_ret)}
 	return ret
 }
 
@@ -1330,14 +1216,12 @@ Returns [code]true[/code] if the cell on layer [param layer] at coordinates [par
 */
 //go:nosplit
 func (self class) IsCellFlippedH(layer int64, coords Vector2i.XY, use_proxies bool) bool { //gd:TileMap.is_cell_flipped_h
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	callframe.Arg(frame, coords)
-	callframe.Arg(frame, use_proxies)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_is_cell_flipped_h, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TileMap.Bind_is_cell_flipped_h, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+		layer       int64
+		coords      Vector2i.XY
+		use_proxies bool
+	}{layer, coords, use_proxies}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1346,14 +1230,12 @@ Returns [code]true[/code] if the cell on layer [param layer] at coordinates [par
 */
 //go:nosplit
 func (self class) IsCellFlippedV(layer int64, coords Vector2i.XY, use_proxies bool) bool { //gd:TileMap.is_cell_flipped_v
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	callframe.Arg(frame, coords)
-	callframe.Arg(frame, use_proxies)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_is_cell_flipped_v, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TileMap.Bind_is_cell_flipped_v, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+		layer       int64
+		coords      Vector2i.XY
+		use_proxies bool
+	}{layer, coords, use_proxies}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1362,14 +1244,12 @@ Returns [code]true[/code] if the cell on layer [param layer] at coordinates [par
 */
 //go:nosplit
 func (self class) IsCellTransposed(layer int64, coords Vector2i.XY, use_proxies bool) bool { //gd:TileMap.is_cell_transposed
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	callframe.Arg(frame, coords)
-	callframe.Arg(frame, use_proxies)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_is_cell_transposed, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TileMap.Bind_is_cell_transposed, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+		layer       int64
+		coords      Vector2i.XY
+		use_proxies bool
+	}{layer, coords, use_proxies}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1378,12 +1258,8 @@ Returns the coordinates of the tile for given physics body RID. Such RID can be 
 */
 //go:nosplit
 func (self class) GetCoordsForBodyRid(body RID.Any) Vector2i.XY { //gd:TileMap.get_coords_for_body_rid
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	var r_ret = callframe.Ret[Vector2i.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_coords_for_body_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2i.XY](self.AsObject(), gd.Global.Methods.TileMap.Bind_get_coords_for_body_rid, gdextension.SizeVector2i|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1392,12 +1268,8 @@ Returns the tilemap layer of the tile for given physics body RID. Such RID can b
 */
 //go:nosplit
 func (self class) GetLayerForBodyRid(body RID.Any) int64 { //gd:TileMap.get_layer_for_body_rid
-	var frame = callframe.New()
-	callframe.Arg(frame, body)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_layer_for_body_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TileMap.Bind_get_layer_for_body_rid, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1407,13 +1279,11 @@ If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) GetPattern(layer int64, coords_array Array.Contains[Vector2i.XY]) [1]gdclass.TileMapPattern { //gd:TileMap.get_pattern
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(coords_array)))
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_pattern, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.TileMapPattern{gd.PointerWithOwnershipTransferredToGo[gdclass.TileMapPattern](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.TileMap.Bind_get_pattern, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeArray<<8), unsafe.Pointer(&struct {
+		layer        int64
+		coords_array gdextension.Array
+	}{layer, gdextension.Array(pointers.Get(gd.InternalArray(coords_array))[0])}))
+	var ret = [1]gdclass.TileMapPattern{gd.PointerWithOwnershipTransferredToGo[gdclass.TileMapPattern](r_ret)}
 	return ret
 }
 
@@ -1422,14 +1292,12 @@ Returns for the given coordinate [param coords_in_pattern] in a [TileMapPattern]
 */
 //go:nosplit
 func (self class) MapPattern(position_in_tilemap Vector2i.XY, coords_in_pattern Vector2i.XY, pattern [1]gdclass.TileMapPattern) Vector2i.XY { //gd:TileMap.map_pattern
-	var frame = callframe.New()
-	callframe.Arg(frame, position_in_tilemap)
-	callframe.Arg(frame, coords_in_pattern)
-	callframe.Arg(frame, pointers.Get(pattern[0])[0])
-	var r_ret = callframe.Ret[Vector2i.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_map_pattern, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2i.XY](self.AsObject(), gd.Global.Methods.TileMap.Bind_map_pattern, gdextension.SizeVector2i|(gdextension.SizeVector2i<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
+		position_in_tilemap Vector2i.XY
+		coords_in_pattern   Vector2i.XY
+		pattern             gdextension.Object
+	}{position_in_tilemap, coords_in_pattern, gdextension.Object(pointers.Get(pattern[0])[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1439,13 +1307,11 @@ If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) SetPattern(layer int64, position Vector2i.XY, pattern [1]gdclass.TileMapPattern) { //gd:TileMap.set_pattern
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	callframe.Arg(frame, position)
-	callframe.Arg(frame, pointers.Get(pattern[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_pattern, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileMap.Bind_set_pattern, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
+		layer    int64
+		position Vector2i.XY
+		pattern  gdextension.Object
+	}{layer, position, gdextension.Object(pointers.Get(pattern[0])[0])}))
 }
 
 /*
@@ -1456,15 +1322,13 @@ If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) SetCellsTerrainConnect(layer int64, cells Array.Contains[Vector2i.XY], terrain_set int64, terrain int64, ignore_empty_terrains bool) { //gd:TileMap.set_cells_terrain_connect
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(cells)))
-	callframe.Arg(frame, terrain_set)
-	callframe.Arg(frame, terrain)
-	callframe.Arg(frame, ignore_empty_terrains)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_cells_terrain_connect, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileMap.Bind_set_cells_terrain_connect, 0|(gdextension.SizeInt<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeBool<<20), unsafe.Pointer(&struct {
+		layer                 int64
+		cells                 gdextension.Array
+		terrain_set           int64
+		terrain               int64
+		ignore_empty_terrains bool
+	}{layer, gdextension.Array(pointers.Get(gd.InternalArray(cells))[0]), terrain_set, terrain, ignore_empty_terrains}))
 }
 
 /*
@@ -1475,15 +1339,13 @@ If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) SetCellsTerrainPath(layer int64, path Array.Contains[Vector2i.XY], terrain_set int64, terrain int64, ignore_empty_terrains bool) { //gd:TileMap.set_cells_terrain_path
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(path)))
-	callframe.Arg(frame, terrain_set)
-	callframe.Arg(frame, terrain)
-	callframe.Arg(frame, ignore_empty_terrains)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_set_cells_terrain_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileMap.Bind_set_cells_terrain_path, 0|(gdextension.SizeInt<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeBool<<20), unsafe.Pointer(&struct {
+		layer                 int64
+		path                  gdextension.Array
+		terrain_set           int64
+		terrain               int64
+		ignore_empty_terrains bool
+	}{layer, gdextension.Array(pointers.Get(gd.InternalArray(path))[0]), terrain_set, terrain, ignore_empty_terrains}))
 }
 
 /*
@@ -1491,10 +1353,7 @@ Clears cells that do not exist in the tileset.
 */
 //go:nosplit
 func (self class) FixInvalidTiles() { //gd:TileMap.fix_invalid_tiles
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_fix_invalid_tiles, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileMap.Bind_fix_invalid_tiles, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1503,11 +1362,7 @@ If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) ClearLayer(layer int64) { //gd:TileMap.clear_layer
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_clear_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileMap.Bind_clear_layer, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer int64 }{layer}))
 }
 
 /*
@@ -1515,10 +1370,7 @@ Clears all cells.
 */
 //go:nosplit
 func (self class) Clear() { //gd:TileMap.clear
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileMap.Bind_clear, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1528,10 +1380,7 @@ However, for performance reasons, those updates are batched and delayed to the e
 */
 //go:nosplit
 func (self class) UpdateInternals() { //gd:TileMap.update_internals
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_update_internals, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileMap.Bind_update_internals, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1542,11 +1391,7 @@ If [param layer] is provided, only notifies changes for the given layer. Providi
 */
 //go:nosplit
 func (self class) NotifyRuntimeTileDataUpdate(layer int64) { //gd:TileMap.notify_runtime_tile_data_update
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_notify_runtime_tile_data_update, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileMap.Bind_notify_runtime_tile_data_update, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer int64 }{layer}))
 }
 
 /*
@@ -1554,12 +1399,8 @@ Returns the list of all neighbourings cells to the one at [param coords].
 */
 //go:nosplit
 func (self class) GetSurroundingCells(coords Vector2i.XY) Array.Contains[Vector2i.XY] { //gd:TileMap.get_surrounding_cells
-	var frame = callframe.New()
-	callframe.Arg(frame, coords)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_surrounding_cells, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[Vector2i.XY]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.TileMap.Bind_get_surrounding_cells, gdextension.SizeArray|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ coords Vector2i.XY }{coords}))
+	var ret = Array.Through(gd.ArrayProxy[Vector2i.XY]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -1569,12 +1410,8 @@ If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) GetUsedCells(layer int64) Array.Contains[Vector2i.XY] { //gd:TileMap.get_used_cells
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_used_cells, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[Vector2i.XY]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.TileMap.Bind_get_used_cells, gdextension.SizeArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer int64 }{layer}))
+	var ret = Array.Through(gd.ArrayProxy[Vector2i.XY]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -1586,15 +1423,13 @@ If [param layer] is negative, the layers are accessed from the last one.
 */
 //go:nosplit
 func (self class) GetUsedCellsById(layer int64, source_id int64, atlas_coords Vector2i.XY, alternative_tile int64) Array.Contains[Vector2i.XY] { //gd:TileMap.get_used_cells_by_id
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	callframe.Arg(frame, source_id)
-	callframe.Arg(frame, atlas_coords)
-	callframe.Arg(frame, alternative_tile)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_used_cells_by_id, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[Vector2i.XY]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.TileMap.Bind_get_used_cells_by_id, gdextension.SizeArray|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVector2i<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
+		layer            int64
+		source_id        int64
+		atlas_coords     Vector2i.XY
+		alternative_tile int64
+	}{layer, source_id, atlas_coords, alternative_tile}))
+	var ret = Array.Through(gd.ArrayProxy[Vector2i.XY]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -1603,11 +1438,8 @@ Returns a rectangle enclosing the used (non-empty) tiles of the map, including a
 */
 //go:nosplit
 func (self class) GetUsedRect() Rect2i.PositionSize { //gd:TileMap.get_used_rect
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Rect2i.PositionSize](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_used_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Rect2i.PositionSize](self.AsObject(), gd.Global.Methods.TileMap.Bind_get_used_rect, gdextension.SizeRect2i, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1617,12 +1449,8 @@ Returns the centered position of a cell in the TileMap's local coordinate space.
 */
 //go:nosplit
 func (self class) MapToLocal(map_position Vector2i.XY) Vector2.XY { //gd:TileMap.map_to_local
-	var frame = callframe.New()
-	callframe.Arg(frame, map_position)
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_map_to_local, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.TileMap.Bind_map_to_local, gdextension.SizeVector2|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ map_position Vector2i.XY }{map_position}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1631,12 +1459,8 @@ Returns the map coordinates of the cell containing the given [param local_positi
 */
 //go:nosplit
 func (self class) LocalToMap(local_position Vector2.XY) Vector2i.XY { //gd:TileMap.local_to_map
-	var frame = callframe.New()
-	callframe.Arg(frame, local_position)
-	var r_ret = callframe.Ret[Vector2i.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_local_to_map, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2i.XY](self.AsObject(), gd.Global.Methods.TileMap.Bind_local_to_map, gdextension.SizeVector2i|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ local_position Vector2.XY }{local_position}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1645,13 +1469,11 @@ Returns the neighboring cell to the one at coordinates [param coords], identifie
 */
 //go:nosplit
 func (self class) GetNeighborCell(coords Vector2i.XY, neighbor TileSet.CellNeighbor) Vector2i.XY { //gd:TileMap.get_neighbor_cell
-	var frame = callframe.New()
-	callframe.Arg(frame, coords)
-	callframe.Arg(frame, neighbor)
-	var r_ret = callframe.Ret[Vector2i.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_neighbor_cell, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2i.XY](self.AsObject(), gd.Global.Methods.TileMap.Bind_get_neighbor_cell, gdextension.SizeVector2i|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		coords   Vector2i.XY
+		neighbor TileSet.CellNeighbor
+	}{coords, neighbor}))
+	var ret = r_ret
 	return ret
 }
 func (self Instance) OnChanged(cb func()) {

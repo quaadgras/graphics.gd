@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -47,6 +49,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -179,12 +183,8 @@ Starts a new hash computation of the given [param type] (e.g. [constant HASH_SHA
 */
 //go:nosplit
 func (self class) Start(atype HashType) Error.Code { //gd:HashingContext.start
-	var frame = callframe.New()
-	callframe.Arg(frame, atype)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HashingContext.Bind_start, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.HashingContext.Bind_start, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype HashType }{atype}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -193,12 +193,8 @@ Updates the computation with the given [param chunk] of data.
 */
 //go:nosplit
 func (self class) Update(chunk Packed.Bytes) Error.Code { //gd:HashingContext.update
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](chunk))))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HashingContext.Bind_update, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.HashingContext.Bind_update, gdextension.SizeInt|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ chunk gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](chunk))))}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -207,11 +203,8 @@ Closes the current context, and return the computed hash.
 */
 //go:nosplit
 func (self class) Finish() Packed.Bytes { //gd:HashingContext.finish
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.HashingContext.Bind_finish, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.HashingContext.Bind_finish, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
 func (self class) AsHashingContext() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

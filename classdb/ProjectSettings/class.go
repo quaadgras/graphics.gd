@@ -9,6 +9,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +50,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -365,12 +369,8 @@ Returns [code]true[/code] if a configuration value is present.
 */
 //go:nosplit
 func (self class) HasSetting(name String.Readable) bool { //gd:ProjectSettings.has_setting
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_has_setting, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.ProjectSettings.Bind_has_setting, gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -388,12 +388,10 @@ This can also be used to erase custom project settings. To do this change the se
 */
 //go:nosplit
 func (self class) SetSetting(name String.Readable, value variant.Any) { //gd:ProjectSettings.set_setting
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_set_setting, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ProjectSettings.Bind_set_setting, 0|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
+		name  gdextension.String
+		value gdextension.Variant
+	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
 }
 
 /*
@@ -412,13 +410,11 @@ GD.Print(ProjectSettings.GetSetting("application/config/custom_description", "No
 */
 //go:nosplit
 func (self class) GetSetting(name String.Readable, default_value variant.Any) variant.Any { //gd:ProjectSettings.get_setting
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(default_value)))
-	var r_ret = callframe.Ret[[3]uint64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_get_setting, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[3]uint64](self.AsObject(), gd.Global.Methods.ProjectSettings.Bind_get_setting, gdextension.SizeVariant|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
+		name          gdextension.String
+		default_value gdextension.Variant
+	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(default_value)))}))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
 
@@ -436,12 +432,8 @@ GD.Print(ProjectSettings.GetSettingWithOverride("application/config/name"));
 */
 //go:nosplit
 func (self class) GetSettingWithOverride(name String.Name) variant.Any { //gd:ProjectSettings.get_setting_with_override
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
-	var r_ret = callframe.Ret[[3]uint64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_get_setting_with_override, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[3]uint64](self.AsObject(), gd.Global.Methods.ProjectSettings.Bind_get_setting_with_override, gdextension.SizeVariant|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
 
@@ -456,11 +448,8 @@ Returns an [Array] of registered global classes. Each global class is represente
 */
 //go:nosplit
 func (self class) GetGlobalClassList() Array.Contains[Dictionary.Any] { //gd:ProjectSettings.get_global_class_list
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_get_global_class_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.ProjectSettings.Bind_get_global_class_list, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -469,12 +458,10 @@ Sets the order of a configuration value (influences when saved to the config fil
 */
 //go:nosplit
 func (self class) SetOrder(name String.Readable, position int64) { //gd:ProjectSettings.set_order
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	callframe.Arg(frame, position)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_set_order, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ProjectSettings.Bind_set_order, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		name     gdextension.String
+		position int64
+	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), position}))
 }
 
 /*
@@ -482,12 +469,8 @@ Returns the order of a configuration value (influences when saved to the config 
 */
 //go:nosplit
 func (self class) GetOrder(name String.Readable) int64 { //gd:ProjectSettings.get_order
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_get_order, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ProjectSettings.Bind_get_order, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -496,12 +479,10 @@ Sets the specified setting's initial value. This is the value the setting revert
 */
 //go:nosplit
 func (self class) SetInitialValue(name String.Readable, value variant.Any) { //gd:ProjectSettings.set_initial_value
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_set_initial_value, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ProjectSettings.Bind_set_initial_value, 0|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
+		name  gdextension.String
+		value gdextension.Variant
+	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
 }
 
 /*
@@ -509,12 +490,10 @@ Defines if the specified setting is considered basic or advanced. Basic settings
 */
 //go:nosplit
 func (self class) SetAsBasic(name String.Readable, basic bool) { //gd:ProjectSettings.set_as_basic
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	callframe.Arg(frame, basic)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_set_as_basic, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ProjectSettings.Bind_set_as_basic, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		name  gdextension.String
+		basic bool
+	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), basic}))
 }
 
 /*
@@ -522,12 +501,10 @@ Defines if the specified setting is considered internal. An internal setting won
 */
 //go:nosplit
 func (self class) SetAsInternal(name String.Readable, internal_ bool) { //gd:ProjectSettings.set_as_internal
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	callframe.Arg(frame, internal_)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_set_as_internal, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ProjectSettings.Bind_set_as_internal, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		name      gdextension.String
+		internal_ bool
+	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), internal_}))
 }
 
 /*
@@ -565,11 +542,7 @@ ProjectSettings.AddPropertyInfo(propertyInfo);
 */
 //go:nosplit
 func (self class) AddPropertyInfo(hint Dictionary.Any) { //gd:ProjectSettings.add_property_info
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(hint)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_add_property_info, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ProjectSettings.Bind_add_property_info, 0|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ hint gdextension.Dictionary }{gdextension.Dictionary(pointers.Get(gd.InternalDictionary(hint))[0])}))
 }
 
 /*
@@ -578,12 +551,10 @@ Sets whether a setting requires restarting the editor to properly take effect.
 */
 //go:nosplit
 func (self class) SetRestartIfChanged(name String.Readable, restart bool) { //gd:ProjectSettings.set_restart_if_changed
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	callframe.Arg(frame, restart)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_set_restart_if_changed, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ProjectSettings.Bind_set_restart_if_changed, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		name    gdextension.String
+		restart bool
+	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), restart}))
 }
 
 /*
@@ -591,11 +562,7 @@ Clears the whole configuration (not recommended, may break things).
 */
 //go:nosplit
 func (self class) Clear(name String.Readable) { //gd:ProjectSettings.clear
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ProjectSettings.Bind_clear, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
 }
 
 /*
@@ -603,12 +570,8 @@ Returns the localized path (starting with [code]res://[/code]) corresponding to 
 */
 //go:nosplit
 func (self class) LocalizePath(path String.Readable) String.Readable { //gd:ProjectSettings.localize_path
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_localize_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.ProjectSettings.Bind_localize_path, gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -631,12 +594,8 @@ else:
 */
 //go:nosplit
 func (self class) GlobalizePath(path String.Readable) String.Readable { //gd:ProjectSettings.globalize_path
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_globalize_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.ProjectSettings.Bind_globalize_path, gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -646,11 +605,8 @@ Saves the configuration to the [code]project.godot[/code] file.
 */
 //go:nosplit
 func (self class) Save() Error.Code { //gd:ProjectSettings.save
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_save, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ProjectSettings.Bind_save, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -662,14 +618,12 @@ Loads the contents of the .pck or .zip file specified by [param pack] into the r
 */
 //go:nosplit
 func (self class) LoadResourcePack(pack String.Readable, replace_files bool, offset int64) bool { //gd:ProjectSettings.load_resource_pack
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(pack)))
-	callframe.Arg(frame, replace_files)
-	callframe.Arg(frame, offset)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_load_resource_pack, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.ProjectSettings.Bind_load_resource_pack, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+		pack          gdextension.String
+		replace_files bool
+		offset        int64
+	}{gdextension.String(pointers.Get(gd.InternalString(pack))[0]), replace_files, offset}))
+	var ret = r_ret
 	return ret
 }
 
@@ -678,12 +632,8 @@ Saves the configuration to a custom file. The file extension must be [code].godo
 */
 //go:nosplit
 func (self class) SaveCustom(file String.Readable) Error.Code { //gd:ProjectSettings.save_custom
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(file)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ProjectSettings.Bind_save_custom, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ProjectSettings.Bind_save_custom, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ file gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(file))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 func OnSettingsChanged(cb func()) {

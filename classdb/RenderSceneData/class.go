@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -50,6 +52,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -152,11 +156,8 @@ Returns the camera transform used to render this frame.
 */
 //go:nosplit
 func (self class) GetCamTransform() Transform3D.BasisOrigin { //gd:RenderSceneData.get_cam_transform
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneData.Bind_get_cam_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = gd.Transposed(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[Transform3D.BasisOrigin](self.AsObject(), gd.Global.Methods.RenderSceneData.Bind_get_cam_transform, gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
+	var ret = gd.Transposed(r_ret)
 	return ret
 }
 
@@ -166,11 +167,8 @@ Returns the camera projection used to render this frame.
 */
 //go:nosplit
 func (self class) GetCamProjection() Projection.XYZW { //gd:RenderSceneData.get_cam_projection
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Projection.XYZW](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneData.Bind_get_cam_projection, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Projection.XYZW](self.AsObject(), gd.Global.Methods.RenderSceneData.Bind_get_cam_projection, gdextension.SizeProjection, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -179,11 +177,8 @@ Returns the number of views being rendered.
 */
 //go:nosplit
 func (self class) GetViewCount() int64 { //gd:RenderSceneData.get_view_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneData.Bind_get_view_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RenderSceneData.Bind_get_view_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -192,12 +187,8 @@ Returns the eye offset per view used to render this frame. This is the offset be
 */
 //go:nosplit
 func (self class) GetViewEyeOffset(view int64) Vector3.XYZ { //gd:RenderSceneData.get_view_eye_offset
-	var frame = callframe.New()
-	callframe.Arg(frame, view)
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneData.Bind_get_view_eye_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.RenderSceneData.Bind_get_view_eye_offset, gdextension.SizeVector3|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ view int64 }{view}))
+	var ret = r_ret
 	return ret
 }
 
@@ -207,12 +198,8 @@ Returns the view projection per view used to render this frame.
 */
 //go:nosplit
 func (self class) GetViewProjection(view int64) Projection.XYZW { //gd:RenderSceneData.get_view_projection
-	var frame = callframe.New()
-	callframe.Arg(frame, view)
-	var r_ret = callframe.Ret[Projection.XYZW](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneData.Bind_get_view_projection, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Projection.XYZW](self.AsObject(), gd.Global.Methods.RenderSceneData.Bind_get_view_projection, gdextension.SizeProjection|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ view int64 }{view}))
+	var ret = r_ret
 	return ret
 }
 
@@ -221,11 +208,8 @@ Return the [RID] of the uniform buffer containing the scene data as a UBO.
 */
 //go:nosplit
 func (self class) GetUniformBuffer() RID.Any { //gd:RenderSceneData.get_uniform_buffer
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneData.Bind_get_uniform_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.RenderSceneData.Bind_get_uniform_buffer, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsRenderSceneData() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

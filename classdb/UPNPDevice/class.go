@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -47,6 +49,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -195,11 +199,8 @@ Returns [code]true[/code] if this is a valid IGD (InternetGatewayDevice) which p
 */
 //go:nosplit
 func (self class) IsValidGateway() bool { //gd:UPNPDevice.is_valid_gateway
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_is_valid_gateway, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.UPNPDevice.Bind_is_valid_gateway, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -208,11 +209,8 @@ Returns the external IP address of this [UPNPDevice] or an empty string.
 */
 //go:nosplit
 func (self class) QueryExternalAddress() String.Readable { //gd:UPNPDevice.query_external_address
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_query_external_address, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.UPNPDevice.Bind_query_external_address, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -221,16 +219,14 @@ Adds a port mapping to forward the given external port on this [UPNPDevice] for 
 */
 //go:nosplit
 func (self class) AddPortMapping(port int64, port_internal int64, desc String.Readable, proto String.Readable, duration int64) int64 { //gd:UPNPDevice.add_port_mapping
-	var frame = callframe.New()
-	callframe.Arg(frame, port)
-	callframe.Arg(frame, port_internal)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(desc)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(proto)))
-	callframe.Arg(frame, duration)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_add_port_mapping, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.UPNPDevice.Bind_add_port_mapping, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
+		port          int64
+		port_internal int64
+		desc          gdextension.String
+		proto         gdextension.String
+		duration      int64
+	}{port, port_internal, gdextension.String(pointers.Get(gd.InternalString(desc))[0]), gdextension.String(pointers.Get(gd.InternalString(proto))[0]), duration}))
+	var ret = r_ret
 	return ret
 }
 
@@ -239,127 +235,83 @@ Deletes the port mapping identified by the given port and protocol combination o
 */
 //go:nosplit
 func (self class) DeletePortMapping(port int64, proto String.Readable) int64 { //gd:UPNPDevice.delete_port_mapping
-	var frame = callframe.New()
-	callframe.Arg(frame, port)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(proto)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_delete_port_mapping, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.UPNPDevice.Bind_delete_port_mapping, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+		port  int64
+		proto gdextension.String
+	}{port, gdextension.String(pointers.Get(gd.InternalString(proto))[0])}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDescriptionUrl(url String.Readable) { //gd:UPNPDevice.set_description_url
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(url)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_set_description_url, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.UPNPDevice.Bind_set_description_url, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ url gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(url))[0])}))
 }
 
 //go:nosplit
 func (self class) GetDescriptionUrl() String.Readable { //gd:UPNPDevice.get_description_url
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_get_description_url, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.UPNPDevice.Bind_get_description_url, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetServiceType(atype String.Readable) { //gd:UPNPDevice.set_service_type
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(atype)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_set_service_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.UPNPDevice.Bind_set_service_type, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ atype gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(atype))[0])}))
 }
 
 //go:nosplit
 func (self class) GetServiceType() String.Readable { //gd:UPNPDevice.get_service_type
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_get_service_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.UPNPDevice.Bind_get_service_type, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIgdControlUrl(url String.Readable) { //gd:UPNPDevice.set_igd_control_url
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(url)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_set_igd_control_url, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.UPNPDevice.Bind_set_igd_control_url, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ url gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(url))[0])}))
 }
 
 //go:nosplit
 func (self class) GetIgdControlUrl() String.Readable { //gd:UPNPDevice.get_igd_control_url
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_get_igd_control_url, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.UPNPDevice.Bind_get_igd_control_url, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIgdServiceType(atype String.Readable) { //gd:UPNPDevice.set_igd_service_type
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(atype)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_set_igd_service_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.UPNPDevice.Bind_set_igd_service_type, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ atype gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(atype))[0])}))
 }
 
 //go:nosplit
 func (self class) GetIgdServiceType() String.Readable { //gd:UPNPDevice.get_igd_service_type
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_get_igd_service_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.UPNPDevice.Bind_get_igd_service_type, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIgdOurAddr(addr String.Readable) { //gd:UPNPDevice.set_igd_our_addr
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(addr)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_set_igd_our_addr, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.UPNPDevice.Bind_set_igd_our_addr, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ addr gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(addr))[0])}))
 }
 
 //go:nosplit
 func (self class) GetIgdOurAddr() String.Readable { //gd:UPNPDevice.get_igd_our_addr
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_get_igd_our_addr, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.UPNPDevice.Bind_get_igd_our_addr, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIgdStatus(status IGDStatus) { //gd:UPNPDevice.set_igd_status
-	var frame = callframe.New()
-	callframe.Arg(frame, status)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_set_igd_status, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.UPNPDevice.Bind_set_igd_status, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ status IGDStatus }{status}))
 }
 
 //go:nosplit
 func (self class) GetIgdStatus() IGDStatus { //gd:UPNPDevice.get_igd_status
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[IGDStatus](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.UPNPDevice.Bind_get_igd_status, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[IGDStatus](self.AsObject(), gd.Global.Methods.UPNPDevice.Bind_get_igd_status, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsUPNPDevice() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

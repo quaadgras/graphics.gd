@@ -9,6 +9,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +51,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -1203,12 +1207,8 @@ Generates a [PackedByteArray] of cryptographically secure random bytes with give
 */
 //go:nosplit
 func (self class) GetEntropy(size int64) Packed.Bytes { //gd:OS.get_entropy
-	var frame = callframe.New()
-	callframe.Arg(frame, size)
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_entropy, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.OS.Bind_get_entropy, gdextension.SizePackedArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ size int64 }{size}))
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
 
@@ -1217,11 +1217,8 @@ Returns the list of certification authorities trusted by the operating system as
 */
 //go:nosplit
 func (self class) GetSystemCaCertificates() String.Readable { //gd:OS.get_system_ca_certificates
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_system_ca_certificates, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.OS.Bind_get_system_ca_certificates, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -1233,11 +1230,8 @@ Returns an array of connected MIDI device names, if they exist. Returns an empty
 */
 //go:nosplit
 func (self class) GetConnectedMidiInputs() Packed.Strings { //gd:OS.get_connected_midi_inputs
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_connected_midi_inputs, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.OS.Bind_get_connected_midi_inputs, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -1249,10 +1243,7 @@ Initializes the singleton for the system MIDI driver, allowing Godot to receive 
 */
 //go:nosplit
 func (self class) OpenMidiInputs() { //gd:OS.open_midi_inputs
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_open_midi_inputs, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OS.Bind_open_midi_inputs, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1261,10 +1252,7 @@ Shuts down the system MIDI driver. Godot will no longer receive [InputEventMIDI]
 */
 //go:nosplit
 func (self class) CloseMidiInputs() { //gd:OS.close_midi_inputs
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_close_midi_inputs, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OS.Bind_close_midi_inputs, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1272,12 +1260,10 @@ Displays a modal dialog box using the host platform's implementation. The engine
 */
 //go:nosplit
 func (self class) Alert(text String.Readable, title String.Readable) { //gd:OS.alert
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(title)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_alert, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OS.Bind_alert, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+		text  gdextension.String
+		title gdextension.String
+	}{gdextension.String(pointers.Get(gd.InternalString(text))[0]), gdextension.String(pointers.Get(gd.InternalString(title))[0])}))
 }
 
 /*
@@ -1286,67 +1272,42 @@ Crashes the engine (or the editor if called within a [code]@tool[/code] script).
 */
 //go:nosplit
 func (self class) Crash(message String.Readable) { //gd:OS.crash
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(message)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_crash, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OS.Bind_crash, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ message gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(message))[0])}))
 }
 
 //go:nosplit
 func (self class) SetLowProcessorUsageMode(enable bool) { //gd:OS.set_low_processor_usage_mode
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_set_low_processor_usage_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OS.Bind_set_low_processor_usage_mode, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsInLowProcessorUsageMode() bool { //gd:OS.is_in_low_processor_usage_mode
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_is_in_low_processor_usage_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.OS.Bind_is_in_low_processor_usage_mode, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLowProcessorUsageModeSleepUsec(usec int64) { //gd:OS.set_low_processor_usage_mode_sleep_usec
-	var frame = callframe.New()
-	callframe.Arg(frame, usec)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_set_low_processor_usage_mode_sleep_usec, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OS.Bind_set_low_processor_usage_mode_sleep_usec, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ usec int64 }{usec}))
 }
 
 //go:nosplit
 func (self class) GetLowProcessorUsageModeSleepUsec() int64 { //gd:OS.get_low_processor_usage_mode_sleep_usec
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_low_processor_usage_mode_sleep_usec, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OS.Bind_get_low_processor_usage_mode_sleep_usec, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDeltaSmoothing(delta_smoothing_enabled bool) { //gd:OS.set_delta_smoothing
-	var frame = callframe.New()
-	callframe.Arg(frame, delta_smoothing_enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_set_delta_smoothing, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OS.Bind_set_delta_smoothing, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ delta_smoothing_enabled bool }{delta_smoothing_enabled}))
 }
 
 //go:nosplit
 func (self class) IsDeltaSmoothingEnabled() bool { //gd:OS.is_delta_smoothing_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_is_delta_smoothing_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.OS.Bind_is_delta_smoothing_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1355,11 +1316,8 @@ Returns the number of [i]logical[/i] CPU cores available on the host machine. On
 */
 //go:nosplit
 func (self class) GetProcessorCount() int64 { //gd:OS.get_processor_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_processor_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OS.Bind_get_processor_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1369,11 +1327,8 @@ Returns the full name of the CPU model on the host machine (e.g. [code]"Intel(R)
 */
 //go:nosplit
 func (self class) GetProcessorName() String.Readable { //gd:OS.get_processor_name
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_processor_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.OS.Bind_get_processor_name, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -1383,11 +1338,8 @@ Returns the list of font family names available.
 */
 //go:nosplit
 func (self class) GetSystemFonts() Packed.Strings { //gd:OS.get_system_fonts
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_system_fonts, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.OS.Bind_get_system_fonts, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -1399,15 +1351,13 @@ The following aliases can be used to request default fonts: "sans-serif", "serif
 */
 //go:nosplit
 func (self class) GetSystemFontPath(font_name String.Readable, weight int64, stretch int64, italic bool) String.Readable { //gd:OS.get_system_font_path
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(font_name)))
-	callframe.Arg(frame, weight)
-	callframe.Arg(frame, stretch)
-	callframe.Arg(frame, italic)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_system_font_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.OS.Bind_get_system_font_path, gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+		font_name gdextension.String
+		weight    int64
+		stretch   int64
+		italic    bool
+	}{gdextension.String(pointers.Get(gd.InternalString(font_name))[0]), weight, stretch, italic}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -1420,18 +1370,16 @@ The following aliases can be used to request default fonts: "sans-serif", "serif
 */
 //go:nosplit
 func (self class) GetSystemFontPathForText(font_name String.Readable, text String.Readable, locale String.Readable, script String.Readable, weight int64, stretch int64, italic bool) Packed.Strings { //gd:OS.get_system_font_path_for_text
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(font_name)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(locale)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(script)))
-	callframe.Arg(frame, weight)
-	callframe.Arg(frame, stretch)
-	callframe.Arg(frame, italic)
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_system_font_path_for_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.OS.Bind_get_system_font_path_for_text, gdextension.SizePackedArray|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeBool<<28), unsafe.Pointer(&struct {
+		font_name gdextension.String
+		text      gdextension.String
+		locale    gdextension.String
+		script    gdextension.String
+		weight    int64
+		stretch   int64
+		italic    bool
+	}{gdextension.String(pointers.Get(gd.InternalString(font_name))[0]), gdextension.String(pointers.Get(gd.InternalString(text))[0]), gdextension.String(pointers.Get(gd.InternalString(locale))[0]), gdextension.String(pointers.Get(gd.InternalString(script))[0]), weight, stretch, italic}))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -1441,11 +1389,8 @@ Returns the file path to the current engine executable.
 */
 //go:nosplit
 func (self class) GetExecutablePath() String.Readable { //gd:OS.get_executable_path
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_executable_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.OS.Bind_get_executable_path, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -1460,12 +1405,8 @@ Reads a user input as a UTF-8 encoded string from the standard input. This opera
 */
 //go:nosplit
 func (self class) ReadStringFromStdin(buffer_size int64) String.Readable { //gd:OS.read_string_from_stdin
-	var frame = callframe.New()
-	callframe.Arg(frame, buffer_size)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_read_string_from_stdin, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.OS.Bind_read_string_from_stdin, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ buffer_size int64 }{buffer_size}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -1479,12 +1420,8 @@ Reads a user input as raw data from the standard input. This operation can be [i
 */
 //go:nosplit
 func (self class) ReadBufferFromStdin(buffer_size int64) Packed.Bytes { //gd:OS.read_buffer_from_stdin
-	var frame = callframe.New()
-	callframe.Arg(frame, buffer_size)
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_read_buffer_from_stdin, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.OS.Bind_read_buffer_from_stdin, gdextension.SizePackedArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ buffer_size int64 }{buffer_size}))
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
 
@@ -1493,11 +1430,8 @@ Returns type of the standard input device.
 */
 //go:nosplit
 func (self class) GetStdinType() StdHandleType { //gd:OS.get_stdin_type
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[StdHandleType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_stdin_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[StdHandleType](self.AsObject(), gd.Global.Methods.OS.Bind_get_stdin_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1506,11 +1440,8 @@ Returns type of the standard output device.
 */
 //go:nosplit
 func (self class) GetStdoutType() StdHandleType { //gd:OS.get_stdout_type
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[StdHandleType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_stdout_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[StdHandleType](self.AsObject(), gd.Global.Methods.OS.Bind_get_stdout_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1519,11 +1450,8 @@ Returns type of the standard error device.
 */
 //go:nosplit
 func (self class) GetStderrType() StdHandleType { //gd:OS.get_stderr_type
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[StdHandleType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_stderr_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[StdHandleType](self.AsObject(), gd.Global.Methods.OS.Bind_get_stderr_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1564,16 +1492,14 @@ OS.Execute("CMD.exe", ["/C", "cd %TEMP% && dir"], output);
 */
 //go:nosplit
 func (self class) Execute(path String.Readable, arguments Packed.Strings, output Array.Any, read_stderr bool, open_console bool) int64 { //gd:OS.execute
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(arguments)))
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(output)))
-	callframe.Arg(frame, read_stderr)
-	callframe.Arg(frame, open_console)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_execute, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OS.Bind_execute, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeArray<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20), unsafe.Pointer(&struct {
+		path         gdextension.String
+		arguments    gdextension.PackedArray
+		output       gdextension.Array
+		read_stderr  bool
+		open_console bool
+	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(arguments))), gdextension.Array(pointers.Get(gd.InternalArray(output))[0]), read_stderr, open_console}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1592,14 +1518,12 @@ If the process cannot be created, this method returns an empty [Dictionary]. Oth
 */
 //go:nosplit
 func (self class) ExecuteWithPipe(path String.Readable, arguments Packed.Strings, blocking bool) Dictionary.Any { //gd:OS.execute_with_pipe
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(arguments)))
-	callframe.Arg(frame, blocking)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_execute_with_pipe, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.OS.Bind_execute_with_pipe, gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+		path      gdextension.String
+		arguments gdextension.PackedArray
+		blocking  bool
+	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(arguments))), blocking}))
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 
@@ -1622,14 +1546,12 @@ See [method execute] if you wish to run an external command and retrieve the res
 */
 //go:nosplit
 func (self class) CreateProcess(path String.Readable, arguments Packed.Strings, open_console bool) int64 { //gd:OS.create_process
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(arguments)))
-	callframe.Arg(frame, open_console)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_create_process, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OS.Bind_create_process, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+		path         gdextension.String
+		arguments    gdextension.PackedArray
+		open_console bool
+	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(arguments))), open_console}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1641,12 +1563,8 @@ See [method create_process] if you wish to run a different process.
 */
 //go:nosplit
 func (self class) CreateInstance(arguments Packed.Strings) int64 { //gd:OS.create_instance
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(arguments)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_create_instance, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OS.Bind_create_instance, gdextension.SizeInt|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ arguments gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(arguments)))}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1657,12 +1575,8 @@ Kill (terminate) the process identified by the given process ID ([param pid]), s
 */
 //go:nosplit
 func (self class) Kill(pid int64) Error.Code { //gd:OS.kill
-	var frame = callframe.New()
-	callframe.Arg(frame, pid)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_kill, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OS.Bind_kill, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ pid int64 }{pid}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -1678,12 +1592,8 @@ Use [method ProjectSettings.globalize_path] to convert a [code]res://[/code] or 
 */
 //go:nosplit
 func (self class) ShellOpen(uri String.Readable) Error.Code { //gd:OS.shell_open
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(uri)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_shell_open, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OS.Bind_shell_open, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ uri gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(uri))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -1695,13 +1605,11 @@ Use [method ProjectSettings.globalize_path] to convert a [code]res://[/code] or 
 */
 //go:nosplit
 func (self class) ShellShowInFileManager(file_or_dir_path String.Readable, open_folder bool) Error.Code { //gd:OS.shell_show_in_file_manager
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(file_or_dir_path)))
-	callframe.Arg(frame, open_folder)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_shell_show_in_file_manager, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OS.Bind_shell_show_in_file_manager, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		file_or_dir_path gdextension.String
+		open_folder      bool
+	}{gdextension.String(pointers.Get(gd.InternalString(file_or_dir_path))[0]), open_folder}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -1711,12 +1619,8 @@ Returns [code]true[/code] if the child process ID ([param pid]) is still running
 */
 //go:nosplit
 func (self class) IsProcessRunning(pid int64) bool { //gd:OS.is_process_running
-	var frame = callframe.New()
-	callframe.Arg(frame, pid)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_is_process_running, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.OS.Bind_is_process_running, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ pid int64 }{pid}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1728,12 +1632,8 @@ Returns [code]-1[/code] if the [param pid] is not a PID of a spawned child proce
 */
 //go:nosplit
 func (self class) GetProcessExitCode(pid int64) int64 { //gd:OS.get_process_exit_code
-	var frame = callframe.New()
-	callframe.Arg(frame, pid)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_process_exit_code, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OS.Bind_get_process_exit_code, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ pid int64 }{pid}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1743,11 +1643,8 @@ Returns the number used by the host machine to uniquely identify this applicatio
 */
 //go:nosplit
 func (self class) GetProcessId() int64 { //gd:OS.get_process_id
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_process_id, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OS.Bind_get_process_id, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1757,12 +1654,8 @@ Returns [code]true[/code] if the environment variable with the name [param varia
 */
 //go:nosplit
 func (self class) HasEnvironment(variable String.Readable) bool { //gd:OS.has_environment
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(variable)))
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_has_environment, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.OS.Bind_has_environment, gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ variable gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(variable))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1773,12 +1666,8 @@ Returns the value of the given environment variable, or an empty string if [para
 */
 //go:nosplit
 func (self class) GetEnvironment(variable String.Readable) String.Readable { //gd:OS.get_environment
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(variable)))
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_environment, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.OS.Bind_get_environment, gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ variable gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(variable))[0])}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -1788,12 +1677,10 @@ Sets the value of the environment variable [param variable] to [param value]. Th
 */
 //go:nosplit
 func (self class) SetEnvironment(variable String.Readable, value String.Readable) { //gd:OS.set_environment
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(variable)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(value)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_set_environment, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OS.Bind_set_environment, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+		variable gdextension.String
+		value    gdextension.String
+	}{gdextension.String(pointers.Get(gd.InternalString(variable))[0]), gdextension.String(pointers.Get(gd.InternalString(value))[0])}))
 }
 
 /*
@@ -1802,11 +1689,7 @@ Removes the given environment variable from the current environment, if it exist
 */
 //go:nosplit
 func (self class) UnsetEnvironment(variable String.Readable) { //gd:OS.unset_environment
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(variable)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_unset_environment, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OS.Bind_unset_environment, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ variable gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(variable))[0])}))
 }
 
 /*
@@ -1867,11 +1750,8 @@ switch (OS.GetName())
 */
 //go:nosplit
 func (self class) GetName() String.Readable { //gd:OS.get_name
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.OS.Bind_get_name, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -1883,11 +1763,8 @@ Returns the same value as [method get_name] for other platforms.
 */
 //go:nosplit
 func (self class) GetDistributionName() String.Readable { //gd:OS.get_distribution_name
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_distribution_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.OS.Bind_get_distribution_name, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -1901,11 +1778,8 @@ Returns the exact production and build version of the operating system. This is 
 */
 //go:nosplit
 func (self class) GetVersion() String.Readable { //gd:OS.get_version
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_version, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.OS.Bind_get_version, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -1915,11 +1789,8 @@ Returns the branded version used in marketing, followed by the build number (on 
 */
 //go:nosplit
 func (self class) GetVersionAlias() String.Readable { //gd:OS.get_version_alias
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_version_alias, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.OS.Bind_get_version_alias, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -1963,11 +1834,8 @@ foreach (var argument in OS.GetCmdlineArgs())
 */
 //go:nosplit
 func (self class) GetCmdlineArgs() Packed.Strings { //gd:OS.get_cmdline_args
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_cmdline_args, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.OS.Bind_get_cmdline_args, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -1984,11 +1852,8 @@ To get all passed arguments, use [method get_cmdline_args].
 */
 //go:nosplit
 func (self class) GetCmdlineUserArgs() Packed.Strings { //gd:OS.get_cmdline_user_args
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_cmdline_user_args, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.OS.Bind_get_cmdline_user_args, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -2000,11 +1865,8 @@ The second element holds the driver version. For example, on the [code]nvidia[/c
 */
 //go:nosplit
 func (self class) GetVideoAdapterDriverInfo() Packed.Strings { //gd:OS.get_video_adapter_driver_info
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_video_adapter_driver_info, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.OS.Bind_get_video_adapter_driver_info, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -2016,12 +1878,10 @@ This method can be used to apply setting changes that require a restart. See als
 */
 //go:nosplit
 func (self class) SetRestartOnExit(restart bool, arguments Packed.Strings) { //gd:OS.set_restart_on_exit
-	var frame = callframe.New()
-	callframe.Arg(frame, restart)
-	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(arguments)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_set_restart_on_exit, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OS.Bind_set_restart_on_exit, 0|(gdextension.SizeBool<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
+		restart   bool
+		arguments gdextension.PackedArray
+	}{restart, gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(arguments)))}))
 }
 
 /*
@@ -2029,11 +1889,8 @@ Returns [code]true[/code] if the project will automatically restart when it exit
 */
 //go:nosplit
 func (self class) IsRestartOnExitSet() bool { //gd:OS.is_restart_on_exit_set
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_is_restart_on_exit_set, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.OS.Bind_is_restart_on_exit_set, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2042,11 +1899,8 @@ Returns the list of command line arguments that will be used when the project au
 */
 //go:nosplit
 func (self class) GetRestartOnExitArguments() Packed.Strings { //gd:OS.get_restart_on_exit_arguments
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_restart_on_exit_arguments, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.OS.Bind_get_restart_on_exit_arguments, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -2057,11 +1911,7 @@ Delays execution of the current thread by [param usec] microseconds. [param usec
 */
 //go:nosplit
 func (self class) DelayUsec(usec int64) { //gd:OS.delay_usec
-	var frame = callframe.New()
-	callframe.Arg(frame, usec)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_delay_usec, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OS.Bind_delay_usec, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ usec int64 }{usec}))
 }
 
 /*
@@ -2071,11 +1921,7 @@ Delays execution of the current thread by [param msec] milliseconds. [param msec
 */
 //go:nosplit
 func (self class) DelayMsec(msec int64) { //gd:OS.delay_msec
-	var frame = callframe.New()
-	callframe.Arg(frame, msec)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_delay_msec, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OS.Bind_delay_msec, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ msec int64 }{msec}))
 }
 
 /*
@@ -2089,11 +1935,8 @@ If you want only the language code and not the fully specified locale from the O
 */
 //go:nosplit
 func (self class) GetLocale() String.Readable { //gd:OS.get_locale
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_locale, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.OS.Bind_get_locale, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -2103,11 +1946,8 @@ This can be used to narrow down fully specified locale strings to only the "comm
 */
 //go:nosplit
 func (self class) GetLocaleLanguage() String.Readable { //gd:OS.get_locale_language
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_locale_language, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.OS.Bind_get_locale_language, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -2117,11 +1957,8 @@ Returns the model name of the current device.
 */
 //go:nosplit
 func (self class) GetModelName() String.Readable { //gd:OS.get_model_name
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_model_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.OS.Bind_get_model_name, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -2130,11 +1967,8 @@ Returns [code]true[/code] if the [code]user://[/code] file system is persistent,
 */
 //go:nosplit
 func (self class) IsUserfsPersistent() bool { //gd:OS.is_userfs_persistent
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_is_userfs_persistent, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.OS.Bind_is_userfs_persistent, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2143,11 +1977,8 @@ Returns [code]true[/code] if the engine was executed with the [code]--verbose[/c
 */
 //go:nosplit
 func (self class) IsStdoutVerbose() bool { //gd:OS.is_stdout_verbose
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_is_stdout_verbose, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.OS.Bind_is_stdout_verbose, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2158,11 +1989,8 @@ Returns [code]false[/code] if the Godot binary used to run the project is a [i]r
 */
 //go:nosplit
 func (self class) IsDebugBuild() bool { //gd:OS.is_debug_build
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_is_debug_build, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.OS.Bind_is_debug_build, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2171,11 +1999,8 @@ Returns the amount of static memory being used by the program in bytes. Only wor
 */
 //go:nosplit
 func (self class) GetStaticMemoryUsage() int64 { //gd:OS.get_static_memory_usage
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_static_memory_usage, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OS.Bind_get_static_memory_usage, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2184,11 +2009,8 @@ Returns the maximum amount of static memory used. Only works in debug builds.
 */
 //go:nosplit
 func (self class) GetStaticMemoryPeakUsage() int64 { //gd:OS.get_static_memory_peak_usage
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_static_memory_peak_usage, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OS.Bind_get_static_memory_peak_usage, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2202,11 +2024,8 @@ Returns a [Dictionary] containing information about the current memory with the 
 */
 //go:nosplit
 func (self class) GetMemoryInfo() Dictionary.Any { //gd:OS.get_memory_info
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_memory_info, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.OS.Bind_get_memory_info, gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 
@@ -2229,12 +2048,8 @@ OS.MoveToTrash(ProjectSettings.GlobalizePath(fileToRemove));
 */
 //go:nosplit
 func (self class) MoveToTrash(path String.Readable) Error.Code { //gd:OS.move_to_trash
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_move_to_trash, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OS.Bind_move_to_trash, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -2250,11 +2065,8 @@ Not to be confused with [method get_data_dir], which returns the [i]global[/i] (
 */
 //go:nosplit
 func (self class) GetUserDataDir() String.Readable { //gd:OS.get_user_data_dir
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_user_data_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.OS.Bind_get_user_data_dir, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -2265,13 +2077,11 @@ Returns the path to commonly used folders across different platforms, as defined
 */
 //go:nosplit
 func (self class) GetSystemDir(dir SystemDir, shared_storage bool) String.Readable { //gd:OS.get_system_dir
-	var frame = callframe.New()
-	callframe.Arg(frame, dir)
-	callframe.Arg(frame, shared_storage)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_system_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.OS.Bind_get_system_dir, gdextension.SizeString|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		dir            SystemDir
+		shared_storage bool
+	}{dir, shared_storage}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -2282,11 +2092,8 @@ Not to be confused with [method get_user_data_dir], which returns the [i]project
 */
 //go:nosplit
 func (self class) GetConfigDir() String.Readable { //gd:OS.get_config_dir
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_config_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.OS.Bind_get_config_dir, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -2297,11 +2104,8 @@ Not to be confused with [method get_user_data_dir], which returns the [i]project
 */
 //go:nosplit
 func (self class) GetDataDir() String.Readable { //gd:OS.get_data_dir
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_data_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.OS.Bind_get_data_dir, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -2312,11 +2116,8 @@ Not to be confused with [method get_user_data_dir], which returns the [i]project
 */
 //go:nosplit
 func (self class) GetCacheDir() String.Readable { //gd:OS.get_cache_dir
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_cache_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.OS.Bind_get_cache_dir, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -2325,11 +2126,8 @@ Returns the [i]global[/i] temporary data directory according to the operating sy
 */
 //go:nosplit
 func (self class) GetTempDir() String.Readable { //gd:OS.get_temp_dir
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_temp_dir, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.OS.Bind_get_temp_dir, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -2340,11 +2138,8 @@ Returns a string that is unique to the device.
 */
 //go:nosplit
 func (self class) GetUniqueId() String.Readable { //gd:OS.get_unique_id
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_unique_id, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.OS.Bind_get_unique_id, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -2366,12 +2161,8 @@ See also [method find_keycode_from_string], [member InputEventKey.keycode], and 
 */
 //go:nosplit
 func (self class) GetKeycodeString(code Input.Key) String.Readable { //gd:OS.get_keycode_string
-	var frame = callframe.New()
-	callframe.Arg(frame, code)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_keycode_string, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.OS.Bind_get_keycode_string, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ code Input.Key }{code}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -2394,12 +2185,8 @@ GD.Print(OS.IsKeycodeUnicode((long)Key.Escape)); // Prints False
 */
 //go:nosplit
 func (self class) IsKeycodeUnicode(code int64) bool { //gd:OS.is_keycode_unicode
-	var frame = callframe.New()
-	callframe.Arg(frame, code)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_is_keycode_unicode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.OS.Bind_is_keycode_unicode, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ code int64 }{code}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2423,12 +2210,8 @@ See also [method get_keycode_string].
 */
 //go:nosplit
 func (self class) FindKeycodeFromString(s String.Readable) Input.Key { //gd:OS.find_keycode_from_string
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(s)))
-	var r_ret = callframe.Ret[Input.Key](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_find_keycode_from_string, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Input.Key](self.AsObject(), gd.Global.Methods.OS.Bind_find_keycode_from_string, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ s gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(s))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2438,11 +2221,7 @@ This can useful when files may be opened by other applications, such as antiviru
 */
 //go:nosplit
 func (self class) SetUseFileAccessSaveAndSwap(enabled bool) { //gd:OS.set_use_file_access_save_and_swap
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_set_use_file_access_save_and_swap, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OS.Bind_set_use_file_access_save_and_swap, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 /*
@@ -2450,12 +2229,8 @@ Assigns the given name to the current thread. Returns [constant ERR_UNAVAILABLE]
 */
 //go:nosplit
 func (self class) SetThreadName(name String.Readable) Error.Code { //gd:OS.set_thread_name
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_set_thread_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OS.Bind_set_thread_name, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -2465,11 +2240,8 @@ Returns the ID of the current thread. This can be used in logs to ease debugging
 */
 //go:nosplit
 func (self class) GetThreadCallerId() int64 { //gd:OS.get_thread_caller_id
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_thread_caller_id, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OS.Bind_get_thread_caller_id, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2479,11 +2251,8 @@ Returns the ID of the main thread. See [method get_thread_caller_id].
 */
 //go:nosplit
 func (self class) GetMainThreadId() int64 { //gd:OS.get_main_thread_id
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_main_thread_id, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OS.Bind_get_main_thread_id, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2494,12 +2263,8 @@ Returns [code]true[/code] if the feature for the given feature tag is supported 
 */
 //go:nosplit
 func (self class) HasFeature(tag_name String.Readable) bool { //gd:OS.has_feature
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(tag_name)))
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_has_feature, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.OS.Bind_has_feature, gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ tag_name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(tag_name))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2509,11 +2274,8 @@ Returns [code]true[/code] if the application is running in the sandbox.
 */
 //go:nosplit
 func (self class) IsSandboxed() bool { //gd:OS.is_sandboxed
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_is_sandboxed, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.OS.Bind_is_sandboxed, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2527,12 +2289,8 @@ The [param name] must be the full permission name. For example:
 */
 //go:nosplit
 func (self class) RequestPermission(name String.Readable) bool { //gd:OS.request_permission
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_request_permission, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.OS.Bind_request_permission, gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2543,11 +2301,8 @@ Requests [i]dangerous[/i] permissions from the OS. Returns [code]true[/code] if 
 */
 //go:nosplit
 func (self class) RequestPermissions() bool { //gd:OS.request_permissions
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_request_permissions, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.OS.Bind_request_permissions, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2557,11 +2312,8 @@ On macOS: Returns the list of user selected folders accessible to the applicatio
 */
 //go:nosplit
 func (self class) GetGrantedPermissions() Packed.Strings { //gd:OS.get_granted_permissions
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_get_granted_permissions, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.OS.Bind_get_granted_permissions, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -2570,10 +2322,7 @@ On macOS (sandboxed applications only), this function clears list of user select
 */
 //go:nosplit
 func (self class) RevokeGrantedPermissions() { //gd:OS.revoke_granted_permissions
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_revoke_granted_permissions, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OS.Bind_revoke_granted_permissions, 0, unsafe.Pointer(&struct{}{}))
 }
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

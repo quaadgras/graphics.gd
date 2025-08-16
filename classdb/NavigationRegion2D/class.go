@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -52,6 +54,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -233,49 +237,32 @@ Returns the [RID] of this region on the [NavigationServer2D]. Combined with [met
 */
 //go:nosplit
 func (self class) GetRid() RID.Any { //gd:NavigationRegion2D.get_rid
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion2D.Bind_get_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.NavigationRegion2D.Bind_get_rid, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNavigationPolygon(navigation_polygon [1]gdclass.NavigationPolygon) { //gd:NavigationRegion2D.set_navigation_polygon
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(navigation_polygon[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion2D.Bind_set_navigation_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationRegion2D.Bind_set_navigation_polygon, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ navigation_polygon gdextension.Object }{gdextension.Object(pointers.Get(navigation_polygon[0])[0])}))
 }
 
 //go:nosplit
 func (self class) GetNavigationPolygon() [1]gdclass.NavigationPolygon { //gd:NavigationRegion2D.get_navigation_polygon
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion2D.Bind_get_navigation_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.NavigationPolygon{gd.PointerWithOwnershipTransferredToGo[gdclass.NavigationPolygon](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.NavigationRegion2D.Bind_get_navigation_polygon, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.NavigationPolygon{gd.PointerWithOwnershipTransferredToGo[gdclass.NavigationPolygon](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnabled(enabled bool) { //gd:NavigationRegion2D.set_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion2D.Bind_set_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationRegion2D.Bind_set_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsEnabled() bool { //gd:NavigationRegion2D.is_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion2D.Bind_is_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.NavigationRegion2D.Bind_is_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -284,11 +271,7 @@ Sets the [RID] of the navigation map this region should use. By default the regi
 */
 //go:nosplit
 func (self class) SetNavigationMap(navigation_map RID.Any) { //gd:NavigationRegion2D.set_navigation_map
-	var frame = callframe.New()
-	callframe.Arg(frame, navigation_map)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion2D.Bind_set_navigation_map, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationRegion2D.Bind_set_navigation_map, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ navigation_map RID.Any }{navigation_map}))
 }
 
 /*
@@ -296,49 +279,32 @@ Returns the current navigation map [RID] used by this region.
 */
 //go:nosplit
 func (self class) GetNavigationMap() RID.Any { //gd:NavigationRegion2D.get_navigation_map
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion2D.Bind_get_navigation_map, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.NavigationRegion2D.Bind_get_navigation_map, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseEdgeConnections(enabled bool) { //gd:NavigationRegion2D.set_use_edge_connections
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion2D.Bind_set_use_edge_connections, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationRegion2D.Bind_set_use_edge_connections, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) GetUseEdgeConnections() bool { //gd:NavigationRegion2D.get_use_edge_connections
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion2D.Bind_get_use_edge_connections, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.NavigationRegion2D.Bind_get_use_edge_connections, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNavigationLayers(navigation_layers int64) { //gd:NavigationRegion2D.set_navigation_layers
-	var frame = callframe.New()
-	callframe.Arg(frame, navigation_layers)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion2D.Bind_set_navigation_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationRegion2D.Bind_set_navigation_layers, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ navigation_layers int64 }{navigation_layers}))
 }
 
 //go:nosplit
 func (self class) GetNavigationLayers() int64 { //gd:NavigationRegion2D.get_navigation_layers
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion2D.Bind_get_navigation_layers, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.NavigationRegion2D.Bind_get_navigation_layers, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -347,12 +313,10 @@ Based on [param value], enables or disables the specified layer in the [member n
 */
 //go:nosplit
 func (self class) SetNavigationLayerValue(layer_number int64, value bool) { //gd:NavigationRegion2D.set_navigation_layer_value
-	var frame = callframe.New()
-	callframe.Arg(frame, layer_number)
-	callframe.Arg(frame, value)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion2D.Bind_set_navigation_layer_value, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationRegion2D.Bind_set_navigation_layer_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		layer_number int64
+		value        bool
+	}{layer_number, value}))
 }
 
 /*
@@ -360,12 +324,8 @@ Returns whether or not the specified layer of the [member navigation_layers] bit
 */
 //go:nosplit
 func (self class) GetNavigationLayerValue(layer_number int64) bool { //gd:NavigationRegion2D.get_navigation_layer_value
-	var frame = callframe.New()
-	callframe.Arg(frame, layer_number)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion2D.Bind_get_navigation_layer_value, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.NavigationRegion2D.Bind_get_navigation_layer_value, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_number int64 }{layer_number}))
+	var ret = r_ret
 	return ret
 }
 
@@ -374,49 +334,32 @@ Returns the [RID] of this region on the [NavigationServer2D].
 */
 //go:nosplit
 func (self class) GetRegionRid() RID.Any { //gd:NavigationRegion2D.get_region_rid
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion2D.Bind_get_region_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.NavigationRegion2D.Bind_get_region_rid, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnterCost(enter_cost float64) { //gd:NavigationRegion2D.set_enter_cost
-	var frame = callframe.New()
-	callframe.Arg(frame, enter_cost)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion2D.Bind_set_enter_cost, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationRegion2D.Bind_set_enter_cost, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ enter_cost float64 }{enter_cost}))
 }
 
 //go:nosplit
 func (self class) GetEnterCost() float64 { //gd:NavigationRegion2D.get_enter_cost
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion2D.Bind_get_enter_cost, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.NavigationRegion2D.Bind_get_enter_cost, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTravelCost(travel_cost float64) { //gd:NavigationRegion2D.set_travel_cost
-	var frame = callframe.New()
-	callframe.Arg(frame, travel_cost)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion2D.Bind_set_travel_cost, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationRegion2D.Bind_set_travel_cost, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ travel_cost float64 }{travel_cost}))
 }
 
 //go:nosplit
 func (self class) GetTravelCost() float64 { //gd:NavigationRegion2D.get_travel_cost
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion2D.Bind_get_travel_cost, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.NavigationRegion2D.Bind_get_travel_cost, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -425,11 +368,7 @@ Bakes the [NavigationPolygon]. If [param on_thread] is set to [code]true[/code] 
 */
 //go:nosplit
 func (self class) BakeNavigationPolygon(on_thread bool) { //gd:NavigationRegion2D.bake_navigation_polygon
-	var frame = callframe.New()
-	callframe.Arg(frame, on_thread)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion2D.Bind_bake_navigation_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationRegion2D.Bind_bake_navigation_polygon, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ on_thread bool }{on_thread}))
 }
 
 /*
@@ -437,11 +376,8 @@ Returns [code]true[/code] when the [NavigationPolygon] is being baked on a backg
 */
 //go:nosplit
 func (self class) IsBaking() bool { //gd:NavigationRegion2D.is_baking
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion2D.Bind_is_baking, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.NavigationRegion2D.Bind_is_baking, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -450,11 +386,8 @@ Returns the axis-aligned rectangle for the region's transformed navigation mesh.
 */
 //go:nosplit
 func (self class) GetBounds() Rect2.PositionSize { //gd:NavigationRegion2D.get_bounds
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Rect2.PositionSize](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationRegion2D.Bind_get_bounds, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Rect2.PositionSize](self.AsObject(), gd.Global.Methods.NavigationRegion2D.Bind_get_bounds, gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self Instance) OnNavigationPolygonChanged(cb func()) {

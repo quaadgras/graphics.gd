@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -54,6 +56,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -538,191 +542,121 @@ func (self Instance) SetVisibilityParent(value string) {
 
 //go:nosplit
 func (self class) SetTransform(local Transform3D.BasisOrigin) { //gd:Node3D.set_transform
-	var frame = callframe.New()
-	callframe.Arg(frame, gd.Transposed(local))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_set_transform, 0|(gdextension.SizeTransform3D<<4), unsafe.Pointer(&struct{ local Transform3D.BasisOrigin }{gd.Transposed(local)}))
 }
 
 //go:nosplit
 func (self class) GetTransform() Transform3D.BasisOrigin { //gd:Node3D.get_transform
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = gd.Transposed(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[Transform3D.BasisOrigin](self.AsObject(), gd.Global.Methods.Node3D.Bind_get_transform, gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
+	var ret = gd.Transposed(r_ret)
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPosition(position Vector3.XYZ) { //gd:Node3D.set_position
-	var frame = callframe.New()
-	callframe.Arg(frame, position)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_set_position, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ position Vector3.XYZ }{position}))
 }
 
 //go:nosplit
 func (self class) GetPosition() Vector3.XYZ { //gd:Node3D.get_position
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.Node3D.Bind_get_position, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRotation(euler_radians Vector3.XYZ) { //gd:Node3D.set_rotation
-	var frame = callframe.New()
-	callframe.Arg(frame, euler_radians)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_set_rotation, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ euler_radians Vector3.XYZ }{euler_radians}))
 }
 
 //go:nosplit
 func (self class) GetRotation() Vector3.XYZ { //gd:Node3D.get_rotation
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.Node3D.Bind_get_rotation, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRotationDegrees(euler_degrees Vector3.XYZ) { //gd:Node3D.set_rotation_degrees
-	var frame = callframe.New()
-	callframe.Arg(frame, euler_degrees)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_rotation_degrees, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_set_rotation_degrees, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ euler_degrees Vector3.XYZ }{euler_degrees}))
 }
 
 //go:nosplit
 func (self class) GetRotationDegrees() Vector3.XYZ { //gd:Node3D.get_rotation_degrees
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_rotation_degrees, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.Node3D.Bind_get_rotation_degrees, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRotationOrder(order Angle.Order) { //gd:Node3D.set_rotation_order
-	var frame = callframe.New()
-	callframe.Arg(frame, order)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_rotation_order, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_set_rotation_order, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ order Angle.Order }{order}))
 }
 
 //go:nosplit
 func (self class) GetRotationOrder() Angle.Order { //gd:Node3D.get_rotation_order
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Angle.Order](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_rotation_order, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Angle.Order](self.AsObject(), gd.Global.Methods.Node3D.Bind_get_rotation_order, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRotationEditMode(edit_mode RotationEditMode) { //gd:Node3D.set_rotation_edit_mode
-	var frame = callframe.New()
-	callframe.Arg(frame, edit_mode)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_rotation_edit_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_set_rotation_edit_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ edit_mode RotationEditMode }{edit_mode}))
 }
 
 //go:nosplit
 func (self class) GetRotationEditMode() RotationEditMode { //gd:Node3D.get_rotation_edit_mode
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[RotationEditMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_rotation_edit_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RotationEditMode](self.AsObject(), gd.Global.Methods.Node3D.Bind_get_rotation_edit_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScale(scale Vector3.XYZ) { //gd:Node3D.set_scale
-	var frame = callframe.New()
-	callframe.Arg(frame, scale)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_set_scale, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ scale Vector3.XYZ }{scale}))
 }
 
 //go:nosplit
 func (self class) GetScale() Vector3.XYZ { //gd:Node3D.get_scale
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.Node3D.Bind_get_scale, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetQuaternion(quaternion Quaternion.IJKX) { //gd:Node3D.set_quaternion
-	var frame = callframe.New()
-	callframe.Arg(frame, quaternion)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_quaternion, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_set_quaternion, 0|(gdextension.SizeQuaternion<<4), unsafe.Pointer(&struct{ quaternion Quaternion.IJKX }{quaternion}))
 }
 
 //go:nosplit
 func (self class) GetQuaternion() Quaternion.IJKX { //gd:Node3D.get_quaternion
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Quaternion.IJKX](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_quaternion, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Quaternion.IJKX](self.AsObject(), gd.Global.Methods.Node3D.Bind_get_quaternion, gdextension.SizeQuaternion, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBasis(basis Basis.XYZ) { //gd:Node3D.set_basis
-	var frame = callframe.New()
-	callframe.Arg(frame, Basis.Transposed(basis))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_basis, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_set_basis, 0|(gdextension.SizeBasis<<4), unsafe.Pointer(&struct{ basis Basis.XYZ }{Basis.Transposed(basis)}))
 }
 
 //go:nosplit
 func (self class) GetBasis() Basis.XYZ { //gd:Node3D.get_basis
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Basis.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_basis, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Basis.Transposed(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[Basis.XYZ](self.AsObject(), gd.Global.Methods.Node3D.Bind_get_basis, gdextension.SizeBasis, unsafe.Pointer(&struct{}{}))
+	var ret = Basis.Transposed(r_ret)
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGlobalTransform(global Transform3D.BasisOrigin) { //gd:Node3D.set_global_transform
-	var frame = callframe.New()
-	callframe.Arg(frame, gd.Transposed(global))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_global_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_set_global_transform, 0|(gdextension.SizeTransform3D<<4), unsafe.Pointer(&struct{ global Transform3D.BasisOrigin }{gd.Transposed(global)}))
 }
 
 //go:nosplit
 func (self class) GetGlobalTransform() Transform3D.BasisOrigin { //gd:Node3D.get_global_transform
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_global_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = gd.Transposed(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[Transform3D.BasisOrigin](self.AsObject(), gd.Global.Methods.Node3D.Bind_get_global_transform, gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
+	var ret = gd.Transposed(r_ret)
 	return ret
 }
 
@@ -733,87 +667,56 @@ This is particularly important for frame-based operations that take place in [me
 */
 //go:nosplit
 func (self class) GetGlobalTransformInterpolated() Transform3D.BasisOrigin { //gd:Node3D.get_global_transform_interpolated
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_global_transform_interpolated, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = gd.Transposed(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[Transform3D.BasisOrigin](self.AsObject(), gd.Global.Methods.Node3D.Bind_get_global_transform_interpolated, gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
+	var ret = gd.Transposed(r_ret)
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGlobalPosition(position Vector3.XYZ) { //gd:Node3D.set_global_position
-	var frame = callframe.New()
-	callframe.Arg(frame, position)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_global_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_set_global_position, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ position Vector3.XYZ }{position}))
 }
 
 //go:nosplit
 func (self class) GetGlobalPosition() Vector3.XYZ { //gd:Node3D.get_global_position
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_global_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.Node3D.Bind_get_global_position, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGlobalBasis(basis Basis.XYZ) { //gd:Node3D.set_global_basis
-	var frame = callframe.New()
-	callframe.Arg(frame, Basis.Transposed(basis))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_global_basis, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_set_global_basis, 0|(gdextension.SizeBasis<<4), unsafe.Pointer(&struct{ basis Basis.XYZ }{Basis.Transposed(basis)}))
 }
 
 //go:nosplit
 func (self class) GetGlobalBasis() Basis.XYZ { //gd:Node3D.get_global_basis
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Basis.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_global_basis, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Basis.Transposed(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[Basis.XYZ](self.AsObject(), gd.Global.Methods.Node3D.Bind_get_global_basis, gdextension.SizeBasis, unsafe.Pointer(&struct{}{}))
+	var ret = Basis.Transposed(r_ret)
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGlobalRotation(euler_radians Vector3.XYZ) { //gd:Node3D.set_global_rotation
-	var frame = callframe.New()
-	callframe.Arg(frame, euler_radians)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_global_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_set_global_rotation, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ euler_radians Vector3.XYZ }{euler_radians}))
 }
 
 //go:nosplit
 func (self class) GetGlobalRotation() Vector3.XYZ { //gd:Node3D.get_global_rotation
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_global_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.Node3D.Bind_get_global_rotation, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGlobalRotationDegrees(euler_degrees Vector3.XYZ) { //gd:Node3D.set_global_rotation_degrees
-	var frame = callframe.New()
-	callframe.Arg(frame, euler_degrees)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_global_rotation_degrees, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_set_global_rotation_degrees, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ euler_degrees Vector3.XYZ }{euler_degrees}))
 }
 
 //go:nosplit
 func (self class) GetGlobalRotationDegrees() Vector3.XYZ { //gd:Node3D.get_global_rotation_degrees
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_global_rotation_degrees, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.Node3D.Bind_get_global_rotation_degrees, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -823,11 +726,8 @@ Returns the parent [Node3D], or [code]null[/code] if no parent exists, the paren
 */
 //go:nosplit
 func (self class) GetParentNode3d() [1]gdclass.Node3D { //gd:Node3D.get_parent_node_3d
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_parent_node_3d, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Node3D{gd.PointerMustAssertInstanceID[gdclass.Node3D](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Node3D.Bind_get_parent_node_3d, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.Node3D{gd.PointerMustAssertInstanceID[gdclass.Node3D](r_ret)}
 	return ret
 }
 
@@ -836,29 +736,18 @@ Sets whether the node ignores notification that its transformation (global or lo
 */
 //go:nosplit
 func (self class) SetIgnoreTransformNotification(enabled bool) { //gd:Node3D.set_ignore_transform_notification
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_ignore_transform_notification, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_set_ignore_transform_notification, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) SetAsTopLevel(enable bool) { //gd:Node3D.set_as_top_level
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_as_top_level, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_set_as_top_level, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsSetAsTopLevel() bool { //gd:Node3D.is_set_as_top_level
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_is_set_as_top_level, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Node3D.Bind_is_set_as_top_level, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -867,11 +756,7 @@ Sets whether the node uses a scale of [code](1, 1, 1)[/code] or its local transf
 */
 //go:nosplit
 func (self class) SetDisableScale(disable bool) { //gd:Node3D.set_disable_scale
-	var frame = callframe.New()
-	callframe.Arg(frame, disable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_disable_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_set_disable_scale, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ disable bool }{disable}))
 }
 
 /*
@@ -879,11 +764,8 @@ Returns whether this node uses a scale of [code](1, 1, 1)[/code] or its local tr
 */
 //go:nosplit
 func (self class) IsScaleDisabled() bool { //gd:Node3D.is_scale_disabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_is_scale_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Node3D.Bind_is_scale_disabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -892,11 +774,8 @@ Returns the current [World3D] resource this [Node3D] node is registered to.
 */
 //go:nosplit
 func (self class) GetWorld3d() [1]gdclass.World3D { //gd:Node3D.get_world_3d
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_world_3d, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.World3D{gd.PointerWithOwnershipTransferredToGo[gdclass.World3D](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Node3D.Bind_get_world_3d, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.World3D{gd.PointerWithOwnershipTransferredToGo[gdclass.World3D](r_ret)}
 	return ret
 }
 
@@ -905,28 +784,18 @@ Forces the transform to update. Transform changes in physics are not instant for
 */
 //go:nosplit
 func (self class) ForceUpdateTransform() { //gd:Node3D.force_update_transform
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_force_update_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_force_update_transform, 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) SetVisibilityParent(path Path.ToNode) { //gd:Node3D.set_visibility_parent
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(path)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_visibility_parent, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_set_visibility_parent, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0])}))
 }
 
 //go:nosplit
 func (self class) GetVisibilityParent() Path.ToNode { //gd:Node3D.get_visibility_parent
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_visibility_parent, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Node3D.Bind_get_visibility_parent, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
@@ -935,10 +804,7 @@ Updates all the [Node3D] gizmos attached to this node.
 */
 //go:nosplit
 func (self class) UpdateGizmos() { //gd:Node3D.update_gizmos
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_update_gizmos, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_update_gizmos, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -947,11 +813,7 @@ Attach an editor gizmo to this [Node3D].
 */
 //go:nosplit
 func (self class) AddGizmo(gizmo [1]gdclass.Node3DGizmo) { //gd:Node3D.add_gizmo
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gizmo[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_add_gizmo, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_add_gizmo, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ gizmo gdextension.Object }{gdextension.Object(pointers.Get(gizmo[0])[0])}))
 }
 
 /*
@@ -959,11 +821,8 @@ Returns all the gizmos attached to this [Node3D].
 */
 //go:nosplit
 func (self class) GetGizmos() Array.Contains[[1]gdclass.Node3DGizmo] { //gd:Node3D.get_gizmos
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_get_gizmos, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Node3DGizmo]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Node3D.Bind_get_gizmos, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Node3DGizmo]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -972,10 +831,7 @@ Clear all gizmos attached to this [Node3D].
 */
 //go:nosplit
 func (self class) ClearGizmos() { //gd:Node3D.clear_gizmos
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_clear_gizmos, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_clear_gizmos, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -984,13 +840,11 @@ Set subgizmo selection for this node in the editor.
 */
 //go:nosplit
 func (self class) SetSubgizmoSelection(gizmo [1]gdclass.Node3DGizmo, id int64, transform Transform3D.BasisOrigin) { //gd:Node3D.set_subgizmo_selection
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gizmo[0])[0])
-	callframe.Arg(frame, id)
-	callframe.Arg(frame, gd.Transposed(transform))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_subgizmo_selection, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_set_subgizmo_selection, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeTransform3D<<12), unsafe.Pointer(&struct {
+		gizmo     gdextension.Object
+		id        int64
+		transform Transform3D.BasisOrigin
+	}{gdextension.Object(pointers.Get(gizmo[0])[0]), id, gd.Transposed(transform)}))
 }
 
 /*
@@ -998,28 +852,18 @@ Clears subgizmo selection for this node in the editor. Useful when subgizmo IDs 
 */
 //go:nosplit
 func (self class) ClearSubgizmoSelection() { //gd:Node3D.clear_subgizmo_selection
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_clear_subgizmo_selection, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_clear_subgizmo_selection, 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) SetVisible(visible bool) { //gd:Node3D.set_visible
-	var frame = callframe.New()
-	callframe.Arg(frame, visible)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_set_visible, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ visible bool }{visible}))
 }
 
 //go:nosplit
 func (self class) IsVisible() bool { //gd:Node3D.is_visible
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_is_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Node3D.Bind_is_visible, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1030,11 +874,8 @@ Visibility is checked only in parent nodes that inherit from [Node3D]. If the pa
 */
 //go:nosplit
 func (self class) IsVisibleInTree() bool { //gd:Node3D.is_visible_in_tree
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_is_visible_in_tree, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Node3D.Bind_is_visible_in_tree, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1043,10 +884,7 @@ Enables rendering of this node. Changes [member visible] to [code]true[/code].
 */
 //go:nosplit
 func (self class) Show() { //gd:Node3D.show
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_show, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_show, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1054,10 +892,7 @@ Disables rendering of this node. Changes [member visible] to [code]false[/code].
 */
 //go:nosplit
 func (self class) Hide() { //gd:Node3D.hide
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_hide, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_hide, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1065,11 +900,7 @@ Sets whether the node notifies about its local transformation changes. [Node3D] 
 */
 //go:nosplit
 func (self class) SetNotifyLocalTransform(enable bool) { //gd:Node3D.set_notify_local_transform
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_notify_local_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_set_notify_local_transform, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 /*
@@ -1077,11 +908,8 @@ Returns whether node notifies about its local transformation changes. [Node3D] w
 */
 //go:nosplit
 func (self class) IsLocalTransformNotificationEnabled() bool { //gd:Node3D.is_local_transform_notification_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_is_local_transform_notification_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Node3D.Bind_is_local_transform_notification_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1090,11 +918,7 @@ Sets whether the node notifies about its global and local transformation changes
 */
 //go:nosplit
 func (self class) SetNotifyTransform(enable bool) { //gd:Node3D.set_notify_transform
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_notify_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_set_notify_transform, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 /*
@@ -1102,11 +926,8 @@ Returns whether the node notifies about its global and local transformation chan
 */
 //go:nosplit
 func (self class) IsTransformNotificationEnabled() bool { //gd:Node3D.is_transform_notification_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_is_transform_notification_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Node3D.Bind_is_transform_notification_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1115,12 +936,10 @@ Rotates the local transformation around axis, a unit [Vector3], by specified ang
 */
 //go:nosplit
 func (self class) Rotate(axis Vector3.XYZ, angle float64) { //gd:Node3D.rotate
-	var frame = callframe.New()
-	callframe.Arg(frame, axis)
-	callframe.Arg(frame, angle)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_rotate, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_rotate, 0|(gdextension.SizeVector3<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+		axis  Vector3.XYZ
+		angle float64
+	}{axis, angle}))
 }
 
 /*
@@ -1128,12 +947,10 @@ Rotates the global (world) transformation around axis, a unit [Vector3], by spec
 */
 //go:nosplit
 func (self class) GlobalRotate(axis Vector3.XYZ, angle float64) { //gd:Node3D.global_rotate
-	var frame = callframe.New()
-	callframe.Arg(frame, axis)
-	callframe.Arg(frame, angle)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_global_rotate, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_global_rotate, 0|(gdextension.SizeVector3<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+		axis  Vector3.XYZ
+		angle float64
+	}{axis, angle}))
 }
 
 /*
@@ -1141,11 +958,7 @@ Scales the global (world) transformation by the given [Vector3] scale factors.
 */
 //go:nosplit
 func (self class) GlobalScale(scale Vector3.XYZ) { //gd:Node3D.global_scale
-	var frame = callframe.New()
-	callframe.Arg(frame, scale)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_global_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_global_scale, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ scale Vector3.XYZ }{scale}))
 }
 
 /*
@@ -1153,11 +966,7 @@ Moves the global (world) transformation by [Vector3] offset. The offset is in gl
 */
 //go:nosplit
 func (self class) GlobalTranslate(offset Vector3.XYZ) { //gd:Node3D.global_translate
-	var frame = callframe.New()
-	callframe.Arg(frame, offset)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_global_translate, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_global_translate, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ offset Vector3.XYZ }{offset}))
 }
 
 /*
@@ -1165,12 +974,10 @@ Rotates the local transformation around axis, a unit [Vector3], by specified ang
 */
 //go:nosplit
 func (self class) RotateObjectLocal(axis Vector3.XYZ, angle float64) { //gd:Node3D.rotate_object_local
-	var frame = callframe.New()
-	callframe.Arg(frame, axis)
-	callframe.Arg(frame, angle)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_rotate_object_local, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_rotate_object_local, 0|(gdextension.SizeVector3<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+		axis  Vector3.XYZ
+		angle float64
+	}{axis, angle}))
 }
 
 /*
@@ -1178,11 +985,7 @@ Scales the local transformation by given 3D scale factors in object-local coordi
 */
 //go:nosplit
 func (self class) ScaleObjectLocal(scale Vector3.XYZ) { //gd:Node3D.scale_object_local
-	var frame = callframe.New()
-	callframe.Arg(frame, scale)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_scale_object_local, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_scale_object_local, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ scale Vector3.XYZ }{scale}))
 }
 
 /*
@@ -1190,11 +993,7 @@ Changes the node's position by the given offset [Vector3] in local space.
 */
 //go:nosplit
 func (self class) TranslateObjectLocal(offset Vector3.XYZ) { //gd:Node3D.translate_object_local
-	var frame = callframe.New()
-	callframe.Arg(frame, offset)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_translate_object_local, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_translate_object_local, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ offset Vector3.XYZ }{offset}))
 }
 
 /*
@@ -1202,11 +1001,7 @@ Rotates the local transformation around the X axis by angle in radians.
 */
 //go:nosplit
 func (self class) RotateX(angle float64) { //gd:Node3D.rotate_x
-	var frame = callframe.New()
-	callframe.Arg(frame, angle)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_rotate_x, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_rotate_x, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ angle float64 }{angle}))
 }
 
 /*
@@ -1214,11 +1009,7 @@ Rotates the local transformation around the Y axis by angle in radians.
 */
 //go:nosplit
 func (self class) RotateY(angle float64) { //gd:Node3D.rotate_y
-	var frame = callframe.New()
-	callframe.Arg(frame, angle)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_rotate_y, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_rotate_y, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ angle float64 }{angle}))
 }
 
 /*
@@ -1226,11 +1017,7 @@ Rotates the local transformation around the Z axis by angle in radians.
 */
 //go:nosplit
 func (self class) RotateZ(angle float64) { //gd:Node3D.rotate_z
-	var frame = callframe.New()
-	callframe.Arg(frame, angle)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_rotate_z, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_rotate_z, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ angle float64 }{angle}))
 }
 
 /*
@@ -1239,11 +1026,7 @@ Note that the translation [param offset] is affected by the node's scale, so if 
 */
 //go:nosplit
 func (self class) Translate(offset Vector3.XYZ) { //gd:Node3D.translate
-	var frame = callframe.New()
-	callframe.Arg(frame, offset)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_translate, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_translate, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ offset Vector3.XYZ }{offset}))
 }
 
 /*
@@ -1251,10 +1034,7 @@ Resets this node's transformations (like scale, skew and taper) preserving its r
 */
 //go:nosplit
 func (self class) Orthonormalize() { //gd:Node3D.orthonormalize
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_orthonormalize, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_orthonormalize, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1262,10 +1042,7 @@ Reset all transformations for this node (sets its [Transform3D] to the identity 
 */
 //go:nosplit
 func (self class) SetIdentity() { //gd:Node3D.set_identity
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_set_identity, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_set_identity, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1278,13 +1055,11 @@ If [param use_model_front] is [code]true[/code], the +Z axis (asset front) is tr
 */
 //go:nosplit
 func (self class) LookAt(target Vector3.XYZ, up Vector3.XYZ, use_model_front bool) { //gd:Node3D.look_at
-	var frame = callframe.New()
-	callframe.Arg(frame, target)
-	callframe.Arg(frame, up)
-	callframe.Arg(frame, use_model_front)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_look_at, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_look_at, 0|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+		target          Vector3.XYZ
+		up              Vector3.XYZ
+		use_model_front bool
+	}{target, up, use_model_front}))
 }
 
 /*
@@ -1292,14 +1067,12 @@ Moves the node to the specified [param position], and then rotates the node to p
 */
 //go:nosplit
 func (self class) LookAtFromPosition(position Vector3.XYZ, target Vector3.XYZ, up Vector3.XYZ, use_model_front bool) { //gd:Node3D.look_at_from_position
-	var frame = callframe.New()
-	callframe.Arg(frame, position)
-	callframe.Arg(frame, target)
-	callframe.Arg(frame, up)
-	callframe.Arg(frame, use_model_front)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_look_at_from_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node3D.Bind_look_at_from_position, 0|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+		position        Vector3.XYZ
+		target          Vector3.XYZ
+		up              Vector3.XYZ
+		use_model_front bool
+	}{position, target, up, use_model_front}))
 }
 
 /*
@@ -1307,12 +1080,8 @@ Transforms [param global_point] from world space to this node's local space.
 */
 //go:nosplit
 func (self class) ToLocal(global_point Vector3.XYZ) Vector3.XYZ { //gd:Node3D.to_local
-	var frame = callframe.New()
-	callframe.Arg(frame, global_point)
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_to_local, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.Node3D.Bind_to_local, gdextension.SizeVector3|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ global_point Vector3.XYZ }{global_point}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1321,12 +1090,8 @@ Transforms [param local_point] from this node's local space to world space.
 */
 //go:nosplit
 func (self class) ToGlobal(local_point Vector3.XYZ) Vector3.XYZ { //gd:Node3D.to_global
-	var frame = callframe.New()
-	callframe.Arg(frame, local_point)
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Node3D.Bind_to_global, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.Node3D.Bind_to_global, gdextension.SizeVector3|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ local_point Vector3.XYZ }{local_point}))
+	var ret = r_ret
 	return ret
 }
 func (self Instance) OnVisibilityChanged(cb func()) {

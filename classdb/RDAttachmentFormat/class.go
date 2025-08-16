@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +50,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -125,58 +129,37 @@ func (self Instance) SetUsageFlags(value int) {
 
 //go:nosplit
 func (self class) SetFormat(p_member Rendering.DataFormat) { //gd:RDAttachmentFormat.set_format
-	var frame = callframe.New()
-	callframe.Arg(frame, p_member)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDAttachmentFormat.Bind_set_format, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RDAttachmentFormat.Bind_set_format, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.DataFormat }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetFormat() Rendering.DataFormat { //gd:RDAttachmentFormat.get_format
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Rendering.DataFormat](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDAttachmentFormat.Bind_get_format, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Rendering.DataFormat](self.AsObject(), gd.Global.Methods.RDAttachmentFormat.Bind_get_format, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSamples(p_member Rendering.TextureSamples) { //gd:RDAttachmentFormat.set_samples
-	var frame = callframe.New()
-	callframe.Arg(frame, p_member)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDAttachmentFormat.Bind_set_samples, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RDAttachmentFormat.Bind_set_samples, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.TextureSamples }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetSamples() Rendering.TextureSamples { //gd:RDAttachmentFormat.get_samples
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Rendering.TextureSamples](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDAttachmentFormat.Bind_get_samples, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Rendering.TextureSamples](self.AsObject(), gd.Global.Methods.RDAttachmentFormat.Bind_get_samples, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUsageFlags(p_member int64) { //gd:RDAttachmentFormat.set_usage_flags
-	var frame = callframe.New()
-	callframe.Arg(frame, p_member)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDAttachmentFormat.Bind_set_usage_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RDAttachmentFormat.Bind_set_usage_flags, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member int64 }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetUsageFlags() int64 { //gd:RDAttachmentFormat.get_usage_flags
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDAttachmentFormat.Bind_get_usage_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RDAttachmentFormat.Bind_get_usage_flags, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsRDAttachmentFormat() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

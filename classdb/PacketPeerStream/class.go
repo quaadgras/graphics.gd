@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +51,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -127,58 +131,37 @@ func (self Instance) SetStreamPeer(value StreamPeer.Instance) {
 
 //go:nosplit
 func (self class) SetStreamPeer(peer [1]gdclass.StreamPeer) { //gd:PacketPeerStream.set_stream_peer
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(peer[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeerStream.Bind_set_stream_peer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PacketPeerStream.Bind_set_stream_peer, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ peer gdextension.Object }{gdextension.Object(pointers.Get(peer[0])[0])}))
 }
 
 //go:nosplit
 func (self class) GetStreamPeer() [1]gdclass.StreamPeer { //gd:PacketPeerStream.get_stream_peer
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeerStream.Bind_get_stream_peer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.StreamPeer{gd.PointerWithOwnershipTransferredToGo[gdclass.StreamPeer](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.PacketPeerStream.Bind_get_stream_peer, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.StreamPeer{gd.PointerWithOwnershipTransferredToGo[gdclass.StreamPeer](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInputBufferMaxSize(max_size_bytes int64) { //gd:PacketPeerStream.set_input_buffer_max_size
-	var frame = callframe.New()
-	callframe.Arg(frame, max_size_bytes)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeerStream.Bind_set_input_buffer_max_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PacketPeerStream.Bind_set_input_buffer_max_size, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ max_size_bytes int64 }{max_size_bytes}))
 }
 
 //go:nosplit
 func (self class) SetOutputBufferMaxSize(max_size_bytes int64) { //gd:PacketPeerStream.set_output_buffer_max_size
-	var frame = callframe.New()
-	callframe.Arg(frame, max_size_bytes)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeerStream.Bind_set_output_buffer_max_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PacketPeerStream.Bind_set_output_buffer_max_size, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ max_size_bytes int64 }{max_size_bytes}))
 }
 
 //go:nosplit
 func (self class) GetInputBufferMaxSize() int64 { //gd:PacketPeerStream.get_input_buffer_max_size
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeerStream.Bind_get_input_buffer_max_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.PacketPeerStream.Bind_get_input_buffer_max_size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetOutputBufferMaxSize() int64 { //gd:PacketPeerStream.get_output_buffer_max_size
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PacketPeerStream.Bind_get_output_buffer_max_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.PacketPeerStream.Bind_get_output_buffer_max_size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsPacketPeerStream() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

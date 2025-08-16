@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +51,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -132,20 +136,13 @@ func (self Instance) SetEvents(value []any) {
 
 //go:nosplit
 func (self class) SetEvents(events Array.Any) { //gd:Shortcut.set_events
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(events)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shortcut.Bind_set_events, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Shortcut.Bind_set_events, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ events gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(events))[0])}))
 }
 
 //go:nosplit
 func (self class) GetEvents() Array.Any { //gd:Shortcut.get_events
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shortcut.Bind_get_events, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Shortcut.Bind_get_events, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -154,11 +151,8 @@ Returns whether [member events] contains an [InputEvent] which is valid.
 */
 //go:nosplit
 func (self class) HasValidEvent() bool { //gd:Shortcut.has_valid_event
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shortcut.Bind_has_valid_event, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Shortcut.Bind_has_valid_event, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -167,12 +161,8 @@ Returns whether any [InputEvent] in [member events] equals [param event]. This u
 */
 //go:nosplit
 func (self class) MatchesEvent(event [1]gdclass.InputEvent) bool { //gd:Shortcut.matches_event
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(event[0])[0])
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shortcut.Bind_matches_event, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Shortcut.Bind_matches_event, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ event gdextension.Object }{gdextension.Object(pointers.Get(event[0])[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -181,11 +171,8 @@ Returns the shortcut's first valid [InputEvent] as a [String].
 */
 //go:nosplit
 func (self class) GetAsText() String.Readable { //gd:Shortcut.get_as_text
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shortcut.Bind_get_as_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Shortcut.Bind_get_as_text, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 func (self class) AsShortcut() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

@@ -9,6 +9,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +53,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -256,40 +260,26 @@ func SetPrimaryInterface(value XRInterface.Instance) {
 
 //go:nosplit
 func (self class) GetWorldScale() float64 { //gd:XRServer.get_world_scale
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_world_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.XRServer.Bind_get_world_scale, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetWorldScale(scale float64) { //gd:XRServer.set_world_scale
-	var frame = callframe.New()
-	callframe.Arg(frame, scale)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_set_world_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.XRServer.Bind_set_world_scale, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ scale float64 }{scale}))
 }
 
 //go:nosplit
 func (self class) GetWorldOrigin() Transform3D.BasisOrigin { //gd:XRServer.get_world_origin
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_world_origin, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = gd.Transposed(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[Transform3D.BasisOrigin](self.AsObject(), gd.Global.Methods.XRServer.Bind_get_world_origin, gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
+	var ret = gd.Transposed(r_ret)
 	return ret
 }
 
 //go:nosplit
 func (self class) SetWorldOrigin(world_origin Transform3D.BasisOrigin) { //gd:XRServer.set_world_origin
-	var frame = callframe.New()
-	callframe.Arg(frame, gd.Transposed(world_origin))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_set_world_origin, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.XRServer.Bind_set_world_origin, 0|(gdextension.SizeTransform3D<<4), unsafe.Pointer(&struct{ world_origin Transform3D.BasisOrigin }{gd.Transposed(world_origin)}))
 }
 
 /*
@@ -297,11 +287,8 @@ Returns the reference frame transform. Mostly used internally and exposed for GD
 */
 //go:nosplit
 func (self class) GetReferenceFrame() Transform3D.BasisOrigin { //gd:XRServer.get_reference_frame
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_reference_frame, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = gd.Transposed(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[Transform3D.BasisOrigin](self.AsObject(), gd.Global.Methods.XRServer.Bind_get_reference_frame, gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
+	var ret = gd.Transposed(r_ret)
 	return ret
 }
 
@@ -310,10 +297,7 @@ Clears the reference frame that was set by previous calls to [method center_on_h
 */
 //go:nosplit
 func (self class) ClearReferenceFrame() { //gd:XRServer.clear_reference_frame
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_clear_reference_frame, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.XRServer.Bind_clear_reference_frame, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -326,12 +310,10 @@ You should call this method after a few seconds have passed. For example, when t
 */
 //go:nosplit
 func (self class) CenterOnHmd(rotation_mode RotationMode, keep_height bool) { //gd:XRServer.center_on_hmd
-	var frame = callframe.New()
-	callframe.Arg(frame, rotation_mode)
-	callframe.Arg(frame, keep_height)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_center_on_hmd, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.XRServer.Bind_center_on_hmd, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		rotation_mode RotationMode
+		keep_height   bool
+	}{rotation_mode, keep_height}))
 }
 
 /*
@@ -339,30 +321,20 @@ Returns the primary interface's transformation.
 */
 //go:nosplit
 func (self class) GetHmdTransform() Transform3D.BasisOrigin { //gd:XRServer.get_hmd_transform
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_hmd_transform, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = gd.Transposed(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[Transform3D.BasisOrigin](self.AsObject(), gd.Global.Methods.XRServer.Bind_get_hmd_transform, gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
+	var ret = gd.Transposed(r_ret)
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCameraLockedToOrigin(enabled bool) { //gd:XRServer.set_camera_locked_to_origin
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_set_camera_locked_to_origin, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.XRServer.Bind_set_camera_locked_to_origin, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsCameraLockedToOrigin() bool { //gd:XRServer.is_camera_locked_to_origin
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_is_camera_locked_to_origin, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.XRServer.Bind_is_camera_locked_to_origin, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -371,11 +343,7 @@ Registers an [XRInterface] object.
 */
 //go:nosplit
 func (self class) AddInterface(intf [1]gdclass.XRInterface) { //gd:XRServer.add_interface
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(intf[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_add_interface, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.XRServer.Bind_add_interface, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ intf gdextension.Object }{gdextension.Object(pointers.Get(intf[0])[0])}))
 }
 
 /*
@@ -383,11 +351,8 @@ Returns the number of interfaces currently registered with the AR/VR server. If 
 */
 //go:nosplit
 func (self class) GetInterfaceCount() int64 { //gd:XRServer.get_interface_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_interface_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.XRServer.Bind_get_interface_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -396,11 +361,7 @@ Removes this [param interface].
 */
 //go:nosplit
 func (self class) RemoveInterface(intf [1]gdclass.XRInterface) { //gd:XRServer.remove_interface
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(intf[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_remove_interface, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.XRServer.Bind_remove_interface, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ intf gdextension.Object }{gdextension.Object(pointers.Get(intf[0])[0])}))
 }
 
 /*
@@ -408,12 +369,8 @@ Returns the interface registered at the given [param idx] index in the list of i
 */
 //go:nosplit
 func (self class) GetInterface(idx int64) [1]gdclass.XRInterface { //gd:XRServer.get_interface
-	var frame = callframe.New()
-	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_interface, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.XRInterface{gd.PointerWithOwnershipTransferredToGo[gdclass.XRInterface](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.XRServer.Bind_get_interface, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var ret = [1]gdclass.XRInterface{gd.PointerWithOwnershipTransferredToGo[gdclass.XRInterface](r_ret)}
 	return ret
 }
 
@@ -422,11 +379,8 @@ Returns a list of available interfaces the ID and name of each interface.
 */
 //go:nosplit
 func (self class) GetInterfaces() Array.Contains[Dictionary.Any] { //gd:XRServer.get_interfaces
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_interfaces, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.XRServer.Bind_get_interfaces, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -435,12 +389,8 @@ Finds an interface by its [param name]. For example, if your project uses capabi
 */
 //go:nosplit
 func (self class) FindInterface(name String.Readable) [1]gdclass.XRInterface { //gd:XRServer.find_interface
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_find_interface, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.XRInterface{gd.PointerWithOwnershipTransferredToGo[gdclass.XRInterface](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.XRServer.Bind_find_interface, gdextension.SizeObject|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	var ret = [1]gdclass.XRInterface{gd.PointerWithOwnershipTransferredToGo[gdclass.XRInterface](r_ret)}
 	return ret
 }
 
@@ -449,11 +399,7 @@ Registers a new [XRTracker] that tracks a physical object.
 */
 //go:nosplit
 func (self class) AddTracker(tracker [1]gdclass.XRTracker) { //gd:XRServer.add_tracker
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(tracker[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_add_tracker, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.XRServer.Bind_add_tracker, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ tracker gdextension.Object }{gdextension.Object(pointers.Get(tracker[0])[0])}))
 }
 
 /*
@@ -461,11 +407,7 @@ Removes this [param tracker].
 */
 //go:nosplit
 func (self class) RemoveTracker(tracker [1]gdclass.XRTracker) { //gd:XRServer.remove_tracker
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(tracker[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_remove_tracker, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.XRServer.Bind_remove_tracker, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ tracker gdextension.Object }{gdextension.Object(pointers.Get(tracker[0])[0])}))
 }
 
 /*
@@ -473,12 +415,8 @@ Returns a dictionary of trackers for [param tracker_types].
 */
 //go:nosplit
 func (self class) GetTrackers(tracker_types int64) Dictionary.Any { //gd:XRServer.get_trackers
-	var frame = callframe.New()
-	callframe.Arg(frame, tracker_types)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_trackers, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.XRServer.Bind_get_trackers, gdextension.SizeDictionary|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ tracker_types int64 }{tracker_types}))
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 
@@ -487,32 +425,21 @@ Returns the positional tracker with the given [param tracker_name].
 */
 //go:nosplit
 func (self class) GetTracker(tracker_name String.Name) [1]gdclass.XRTracker { //gd:XRServer.get_tracker
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(tracker_name)))
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_tracker, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.XRTracker{gd.PointerWithOwnershipTransferredToGo[gdclass.XRTracker](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.XRServer.Bind_get_tracker, gdextension.SizeObject|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ tracker_name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(tracker_name))[0])}))
+	var ret = [1]gdclass.XRTracker{gd.PointerWithOwnershipTransferredToGo[gdclass.XRTracker](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) GetPrimaryInterface() [1]gdclass.XRInterface { //gd:XRServer.get_primary_interface
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_get_primary_interface, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.XRInterface{gd.PointerWithOwnershipTransferredToGo[gdclass.XRInterface](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.XRServer.Bind_get_primary_interface, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.XRInterface{gd.PointerWithOwnershipTransferredToGo[gdclass.XRInterface](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPrimaryInterface(intf [1]gdclass.XRInterface) { //gd:XRServer.set_primary_interface
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(intf[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.XRServer.Bind_set_primary_interface, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.XRServer.Bind_set_primary_interface, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ intf gdextension.Object }{gdextension.Object(pointers.Get(intf[0])[0])}))
 }
 func OnReferenceFrameChanged(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("reference_frame_changed"), gd.NewCallable(cb), 0)

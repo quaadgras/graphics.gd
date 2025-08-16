@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +50,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -138,39 +142,25 @@ func (self Instance) SetBinding(value int) {
 
 //go:nosplit
 func (self class) SetUniformType(p_member Rendering.UniformType) { //gd:RDUniform.set_uniform_type
-	var frame = callframe.New()
-	callframe.Arg(frame, p_member)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDUniform.Bind_set_uniform_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RDUniform.Bind_set_uniform_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.UniformType }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetUniformType() Rendering.UniformType { //gd:RDUniform.get_uniform_type
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Rendering.UniformType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDUniform.Bind_get_uniform_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Rendering.UniformType](self.AsObject(), gd.Global.Methods.RDUniform.Bind_get_uniform_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBinding(p_member int64) { //gd:RDUniform.set_binding
-	var frame = callframe.New()
-	callframe.Arg(frame, p_member)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDUniform.Bind_set_binding, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RDUniform.Bind_set_binding, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member int64 }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetBinding() int64 { //gd:RDUniform.get_binding
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDUniform.Bind_get_binding, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RDUniform.Bind_get_binding, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -179,11 +169,7 @@ Binds the given id to the uniform. The data associated with the id is then used 
 */
 //go:nosplit
 func (self class) AddId(id RID.Any) { //gd:RDUniform.add_id
-	var frame = callframe.New()
-	callframe.Arg(frame, id)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDUniform.Bind_add_id, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RDUniform.Bind_add_id, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ id RID.Any }{id}))
 }
 
 /*
@@ -191,10 +177,7 @@ Unbinds all ids currently bound to the uniform.
 */
 //go:nosplit
 func (self class) ClearIds() { //gd:RDUniform.clear_ids
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDUniform.Bind_clear_ids, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RDUniform.Bind_clear_ids, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -202,11 +185,8 @@ Returns an array of all ids currently bound to the uniform.
 */
 //go:nosplit
 func (self class) GetIds() Array.Contains[RID.Any] { //gd:RDUniform.get_ids
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDUniform.Bind_get_ids, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.RDUniform.Bind_get_ids, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 func (self class) AsRDUniform() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

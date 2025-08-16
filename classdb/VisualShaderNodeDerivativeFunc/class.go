@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +51,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -126,58 +130,37 @@ func (self Instance) SetPrecision(value Precision) {
 
 //go:nosplit
 func (self class) SetOpType(atype OpType) { //gd:VisualShaderNodeDerivativeFunc.set_op_type
-	var frame = callframe.New()
-	callframe.Arg(frame, atype)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_set_op_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_set_op_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype OpType }{atype}))
 }
 
 //go:nosplit
 func (self class) GetOpType() OpType { //gd:VisualShaderNodeDerivativeFunc.get_op_type
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[OpType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_get_op_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[OpType](self.AsObject(), gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_get_op_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFunction(fn Function) { //gd:VisualShaderNodeDerivativeFunc.set_function
-	var frame = callframe.New()
-	callframe.Arg(frame, fn)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_set_function, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_set_function, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ fn Function }{fn}))
 }
 
 //go:nosplit
 func (self class) GetFunction() Function { //gd:VisualShaderNodeDerivativeFunc.get_function
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Function](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_get_function, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Function](self.AsObject(), gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_get_function, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPrecision(precision Precision) { //gd:VisualShaderNodeDerivativeFunc.set_precision
-	var frame = callframe.New()
-	callframe.Arg(frame, precision)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_set_precision, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_set_precision, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ precision Precision }{precision}))
 }
 
 //go:nosplit
 func (self class) GetPrecision() Precision { //gd:VisualShaderNodeDerivativeFunc.get_precision
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Precision](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_get_precision, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Precision](self.AsObject(), gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_get_precision, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsVisualShaderNodeDerivativeFunc() Advanced {

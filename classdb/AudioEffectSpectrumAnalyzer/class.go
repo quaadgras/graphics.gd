@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +51,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -128,58 +132,37 @@ func (self Instance) SetFftSize(value FFTSize) {
 
 //go:nosplit
 func (self class) SetBufferLength(seconds float64) { //gd:AudioEffectSpectrumAnalyzer.set_buffer_length
-	var frame = callframe.New()
-	callframe.Arg(frame, seconds)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_set_buffer_length, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_set_buffer_length, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ seconds float64 }{seconds}))
 }
 
 //go:nosplit
 func (self class) GetBufferLength() float64 { //gd:AudioEffectSpectrumAnalyzer.get_buffer_length
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_get_buffer_length, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_get_buffer_length, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTapBackPos(seconds float64) { //gd:AudioEffectSpectrumAnalyzer.set_tap_back_pos
-	var frame = callframe.New()
-	callframe.Arg(frame, seconds)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_set_tap_back_pos, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_set_tap_back_pos, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ seconds float64 }{seconds}))
 }
 
 //go:nosplit
 func (self class) GetTapBackPos() float64 { //gd:AudioEffectSpectrumAnalyzer.get_tap_back_pos
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_get_tap_back_pos, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_get_tap_back_pos, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFftSize(size FFTSize) { //gd:AudioEffectSpectrumAnalyzer.set_fft_size
-	var frame = callframe.New()
-	callframe.Arg(frame, size)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_set_fft_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_set_fft_size, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ size FFTSize }{size}))
 }
 
 //go:nosplit
 func (self class) GetFftSize() FFTSize { //gd:AudioEffectSpectrumAnalyzer.get_fft_size
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[FFTSize](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_get_fft_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[FFTSize](self.AsObject(), gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_get_fft_size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsAudioEffectSpectrumAnalyzer() Advanced {

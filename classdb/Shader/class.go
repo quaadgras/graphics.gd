@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +51,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -182,30 +186,20 @@ Returns the shader mode for the shader.
 */
 //go:nosplit
 func (self class) GetMode() Mode { //gd:Shader.get_mode
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Mode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shader.Bind_get_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Mode](self.AsObject(), gd.Global.Methods.Shader.Bind_get_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCode(code String.Readable) { //gd:Shader.set_code
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(code)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shader.Bind_set_code, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Shader.Bind_set_code, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ code gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(code))[0])}))
 }
 
 //go:nosplit
 func (self class) GetCode() String.Readable { //gd:Shader.get_code
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shader.Bind_get_code, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Shader.Bind_get_code, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -216,13 +210,11 @@ Sets the default texture to be used with a texture uniform. The default is used 
 */
 //go:nosplit
 func (self class) SetDefaultTextureParameter(name String.Name, texture [1]gdclass.Texture, index int64) { //gd:Shader.set_default_texture_parameter
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
-	callframe.Arg(frame, pointers.Get(texture[0])[0])
-	callframe.Arg(frame, index)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shader.Bind_set_default_texture_parameter, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Shader.Bind_set_default_texture_parameter, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+		name    gdextension.StringName
+		texture gdextension.Object
+		index   int64
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Object(pointers.Get(texture[0])[0]), index}))
 }
 
 /*
@@ -232,13 +224,11 @@ Returns the texture that is set as default for the specified parameter.
 */
 //go:nosplit
 func (self class) GetDefaultTextureParameter(name String.Name, index int64) [1]gdclass.Texture { //gd:Shader.get_default_texture_parameter
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
-	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shader.Bind_get_default_texture_parameter, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Texture{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Shader.Bind_get_default_texture_parameter, gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		name  gdextension.StringName
+		index int64
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), index}))
+	var ret = [1]gdclass.Texture{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture](r_ret)}
 	return ret
 }
 
@@ -248,12 +238,8 @@ If argument [param get_groups] is [code]true[/code], parameter grouping hints ar
 */
 //go:nosplit
 func (self class) GetShaderUniformList(get_groups bool) Array.Any { //gd:Shader.get_shader_uniform_list
-	var frame = callframe.New()
-	callframe.Arg(frame, get_groups)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shader.Bind_get_shader_uniform_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Shader.Bind_get_shader_uniform_list, gdextension.SizeArray|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ get_groups bool }{get_groups}))
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -262,10 +248,7 @@ Only available when running in the editor. Opens a popup that visualizes the gen
 */
 //go:nosplit
 func (self class) InspectNativeShaderCode() { //gd:Shader.inspect_native_shader_code
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shader.Bind_inspect_native_shader_code, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Shader.Bind_inspect_native_shader_code, 0, unsafe.Pointer(&struct{}{}))
 }
 func (self class) AsShader() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsShader() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

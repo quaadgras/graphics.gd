@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +50,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -123,12 +127,8 @@ tween.tween_callback(queue_free).set_delay(2)
 */
 //go:nosplit
 func (self class) SetDelay(delay float64) [1]gdclass.CallbackTweener { //gd:CallbackTweener.set_delay
-	var frame = callframe.New()
-	callframe.Arg(frame, delay)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CallbackTweener.Bind_set_delay, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.CallbackTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.CallbackTweener](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.CallbackTweener.Bind_set_delay, gdextension.SizeObject|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ delay float64 }{delay}))
+	var ret = [1]gdclass.CallbackTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.CallbackTweener](r_ret)}
 	return ret
 }
 func (self class) AsCallbackTweener() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

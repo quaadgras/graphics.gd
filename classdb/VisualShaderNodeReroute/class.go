@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +51,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -109,11 +113,8 @@ Returns the port type of the reroute node.
 */
 //go:nosplit
 func (self class) GetPortType() VisualShaderNode.PortType { //gd:VisualShaderNodeReroute.get_port_type
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[VisualShaderNode.PortType](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeReroute.Bind_get_port_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[VisualShaderNode.PortType](self.AsObject(), gd.Global.Methods.VisualShaderNodeReroute.Bind_get_port_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsVisualShaderNodeReroute() Advanced { return *((*Advanced)(unsafe.Pointer(&self))) }

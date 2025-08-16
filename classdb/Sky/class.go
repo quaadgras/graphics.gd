@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +51,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -126,58 +130,37 @@ func (self Instance) SetRadianceSize(value RadianceSize) {
 
 //go:nosplit
 func (self class) SetRadianceSize(size RadianceSize) { //gd:Sky.set_radiance_size
-	var frame = callframe.New()
-	callframe.Arg(frame, size)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sky.Bind_set_radiance_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Sky.Bind_set_radiance_size, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ size RadianceSize }{size}))
 }
 
 //go:nosplit
 func (self class) GetRadianceSize() RadianceSize { //gd:Sky.get_radiance_size
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[RadianceSize](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sky.Bind_get_radiance_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RadianceSize](self.AsObject(), gd.Global.Methods.Sky.Bind_get_radiance_size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetProcessMode(mode ProcessMode) { //gd:Sky.set_process_mode
-	var frame = callframe.New()
-	callframe.Arg(frame, mode)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sky.Bind_set_process_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Sky.Bind_set_process_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode ProcessMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetProcessMode() ProcessMode { //gd:Sky.get_process_mode
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[ProcessMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sky.Bind_get_process_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[ProcessMode](self.AsObject(), gd.Global.Methods.Sky.Bind_get_process_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaterial(material [1]gdclass.Material) { //gd:Sky.set_material
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(material[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sky.Bind_set_material, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Sky.Bind_set_material, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(pointers.Get(material[0])[0])}))
 }
 
 //go:nosplit
 func (self class) GetMaterial() [1]gdclass.Material { //gd:Sky.get_material
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Sky.Bind_get_material, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Sky.Bind_get_material, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret)}
 	return ret
 }
 func (self class) AsSky() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

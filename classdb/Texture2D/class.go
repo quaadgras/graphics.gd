@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -53,6 +55,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -428,11 +432,8 @@ Returns the texture width in pixels.
 */
 //go:nosplit
 func (self class) GetWidth() int64 { //gd:Texture2D.get_width
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture2D.Bind_get_width, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Texture2D.Bind_get_width, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -441,11 +442,8 @@ Returns the texture height in pixels.
 */
 //go:nosplit
 func (self class) GetHeight() int64 { //gd:Texture2D.get_height
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture2D.Bind_get_height, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Texture2D.Bind_get_height, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -454,11 +452,8 @@ Returns the texture size in pixels.
 */
 //go:nosplit
 func (self class) GetSize() Vector2.XY { //gd:Texture2D.get_size
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture2D.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.Texture2D.Bind_get_size, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -467,11 +462,8 @@ Returns [code]true[/code] if this [Texture2D] has an alpha channel.
 */
 //go:nosplit
 func (self class) HasAlpha() bool { //gd:Texture2D.has_alpha
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture2D.Bind_has_alpha, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Texture2D.Bind_has_alpha, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -480,14 +472,12 @@ Draws the texture using a [CanvasItem] with the [RenderingServer] API at the spe
 */
 //go:nosplit
 func (self class) Draw(canvas_item RID.Any, position Vector2.XY, modulate Color.RGBA, transpose bool) { //gd:Texture2D.draw
-	var frame = callframe.New()
-	callframe.Arg(frame, canvas_item)
-	callframe.Arg(frame, position)
-	callframe.Arg(frame, modulate)
-	callframe.Arg(frame, transpose)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture2D.Bind_draw, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Texture2D.Bind_draw, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeColor<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+		canvas_item RID.Any
+		position    Vector2.XY
+		modulate    Color.RGBA
+		transpose   bool
+	}{canvas_item, position, modulate, transpose}))
 }
 
 /*
@@ -495,15 +485,13 @@ Draws the texture using a [CanvasItem] with the [RenderingServer] API.
 */
 //go:nosplit
 func (self class) DrawRect(canvas_item RID.Any, rect Rect2.PositionSize, tile bool, modulate Color.RGBA, transpose bool) { //gd:Texture2D.draw_rect
-	var frame = callframe.New()
-	callframe.Arg(frame, canvas_item)
-	callframe.Arg(frame, rect)
-	callframe.Arg(frame, tile)
-	callframe.Arg(frame, modulate)
-	callframe.Arg(frame, transpose)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture2D.Bind_draw_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Texture2D.Bind_draw_rect, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeBool<<20), unsafe.Pointer(&struct {
+		canvas_item RID.Any
+		rect        Rect2.PositionSize
+		tile        bool
+		modulate    Color.RGBA
+		transpose   bool
+	}{canvas_item, rect, tile, modulate, transpose}))
 }
 
 /*
@@ -511,16 +499,14 @@ Draws a part of the texture using a [CanvasItem] with the [RenderingServer] API.
 */
 //go:nosplit
 func (self class) DrawRectRegion(canvas_item RID.Any, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool) { //gd:Texture2D.draw_rect_region
-	var frame = callframe.New()
-	callframe.Arg(frame, canvas_item)
-	callframe.Arg(frame, rect)
-	callframe.Arg(frame, src_rect)
-	callframe.Arg(frame, modulate)
-	callframe.Arg(frame, transpose)
-	callframe.Arg(frame, clip_uv)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture2D.Bind_draw_rect_region, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Texture2D.Bind_draw_rect_region, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRect2<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeBool<<24), unsafe.Pointer(&struct {
+		canvas_item RID.Any
+		rect        Rect2.PositionSize
+		src_rect    Rect2.PositionSize
+		modulate    Color.RGBA
+		transpose   bool
+		clip_uv     bool
+	}{canvas_item, rect, src_rect, modulate, transpose, clip_uv}))
 }
 
 /*
@@ -530,11 +516,8 @@ Returns an [Image] that is a copy of data from this [Texture2D] (a new [Image] i
 */
 //go:nosplit
 func (self class) GetImage() [1]gdclass.Image { //gd:Texture2D.get_image
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture2D.Bind_get_image, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Texture2D.Bind_get_image, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
 	return ret
 }
 
@@ -543,11 +526,8 @@ Creates a placeholder version of this resource ([PlaceholderTexture2D]).
 */
 //go:nosplit
 func (self class) CreatePlaceholder() [1]gdclass.Resource { //gd:Texture2D.create_placeholder
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Texture2D.Bind_create_placeholder, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Texture2D.Bind_create_placeholder, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret)}
 	return ret
 }
 func (self class) AsTexture2D() Advanced               { return *((*Advanced)(unsafe.Pointer(&self))) }

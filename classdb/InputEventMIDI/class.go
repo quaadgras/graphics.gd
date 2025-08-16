@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +51,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -228,153 +232,97 @@ func (self Instance) SetControllerValue(value int) {
 
 //go:nosplit
 func (self class) SetChannel(channel int64) { //gd:InputEventMIDI.set_channel
-	var frame = callframe.New()
-	callframe.Arg(frame, channel)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMIDI.Bind_set_channel, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputEventMIDI.Bind_set_channel, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ channel int64 }{channel}))
 }
 
 //go:nosplit
 func (self class) GetChannel() int64 { //gd:InputEventMIDI.get_channel
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMIDI.Bind_get_channel, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.InputEventMIDI.Bind_get_channel, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMessage(message Message) { //gd:InputEventMIDI.set_message
-	var frame = callframe.New()
-	callframe.Arg(frame, message)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMIDI.Bind_set_message, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputEventMIDI.Bind_set_message, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ message Message }{message}))
 }
 
 //go:nosplit
 func (self class) GetMessage() Message { //gd:InputEventMIDI.get_message
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Message](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMIDI.Bind_get_message, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Message](self.AsObject(), gd.Global.Methods.InputEventMIDI.Bind_get_message, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPitch(pitch int64) { //gd:InputEventMIDI.set_pitch
-	var frame = callframe.New()
-	callframe.Arg(frame, pitch)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMIDI.Bind_set_pitch, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputEventMIDI.Bind_set_pitch, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ pitch int64 }{pitch}))
 }
 
 //go:nosplit
 func (self class) GetPitch() int64 { //gd:InputEventMIDI.get_pitch
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMIDI.Bind_get_pitch, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.InputEventMIDI.Bind_get_pitch, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVelocity(velocity int64) { //gd:InputEventMIDI.set_velocity
-	var frame = callframe.New()
-	callframe.Arg(frame, velocity)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMIDI.Bind_set_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputEventMIDI.Bind_set_velocity, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ velocity int64 }{velocity}))
 }
 
 //go:nosplit
 func (self class) GetVelocity() int64 { //gd:InputEventMIDI.get_velocity
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMIDI.Bind_get_velocity, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.InputEventMIDI.Bind_get_velocity, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInstrument(instrument int64) { //gd:InputEventMIDI.set_instrument
-	var frame = callframe.New()
-	callframe.Arg(frame, instrument)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMIDI.Bind_set_instrument, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputEventMIDI.Bind_set_instrument, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ instrument int64 }{instrument}))
 }
 
 //go:nosplit
 func (self class) GetInstrument() int64 { //gd:InputEventMIDI.get_instrument
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMIDI.Bind_get_instrument, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.InputEventMIDI.Bind_get_instrument, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPressure(pressure int64) { //gd:InputEventMIDI.set_pressure
-	var frame = callframe.New()
-	callframe.Arg(frame, pressure)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMIDI.Bind_set_pressure, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputEventMIDI.Bind_set_pressure, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ pressure int64 }{pressure}))
 }
 
 //go:nosplit
 func (self class) GetPressure() int64 { //gd:InputEventMIDI.get_pressure
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMIDI.Bind_get_pressure, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.InputEventMIDI.Bind_get_pressure, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetControllerNumber(controller_number int64) { //gd:InputEventMIDI.set_controller_number
-	var frame = callframe.New()
-	callframe.Arg(frame, controller_number)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMIDI.Bind_set_controller_number, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputEventMIDI.Bind_set_controller_number, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ controller_number int64 }{controller_number}))
 }
 
 //go:nosplit
 func (self class) GetControllerNumber() int64 { //gd:InputEventMIDI.get_controller_number
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMIDI.Bind_get_controller_number, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.InputEventMIDI.Bind_get_controller_number, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetControllerValue(controller_value int64) { //gd:InputEventMIDI.set_controller_value
-	var frame = callframe.New()
-	callframe.Arg(frame, controller_value)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMIDI.Bind_set_controller_value, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputEventMIDI.Bind_set_controller_value, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ controller_value int64 }{controller_value}))
 }
 
 //go:nosplit
 func (self class) GetControllerValue() int64 { //gd:InputEventMIDI.get_controller_value
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.InputEventMIDI.Bind_get_controller_value, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.InputEventMIDI.Bind_get_controller_value, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsInputEventMIDI() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

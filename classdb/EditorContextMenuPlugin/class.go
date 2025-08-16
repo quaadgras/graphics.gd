@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -50,6 +52,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -261,12 +265,10 @@ func _init():
 */
 //go:nosplit
 func (self class) AddMenuShortcut(shortcut [1]gdclass.Shortcut, callback Callable.Function) { //gd:EditorContextMenuPlugin.add_menu_shortcut
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(shortcut[0])[0])
-	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorContextMenuPlugin.Bind_add_menu_shortcut, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorContextMenuPlugin.Bind_add_menu_shortcut, 0|(gdextension.SizeObject<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
+		shortcut gdextension.Object
+		callback gdextension.Callable
+	}{gdextension.Object(pointers.Get(shortcut[0])[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
 }
 
 /*
@@ -279,13 +281,11 @@ If you want to assign shortcut to the menu item, use [method add_context_menu_it
 */
 //go:nosplit
 func (self class) AddContextMenuItem(name String.Readable, callback Callable.Function, icon [1]gdclass.Texture2D) { //gd:EditorContextMenuPlugin.add_context_menu_item
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
-	callframe.Arg(frame, pointers.Get(icon[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorContextMenuPlugin.Bind_add_context_menu_item, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorContextMenuPlugin.Bind_add_context_menu_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
+		name     gdextension.String
+		callback gdextension.Callable
+		icon     gdextension.Object
+	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(callback))), gdextension.Object(pointers.Get(icon[0])[0])}))
 }
 
 /*
@@ -300,13 +300,11 @@ func _popup_menu(paths):
 */
 //go:nosplit
 func (self class) AddContextMenuItemFromShortcut(name String.Readable, shortcut [1]gdclass.Shortcut, icon [1]gdclass.Texture2D) { //gd:EditorContextMenuPlugin.add_context_menu_item_from_shortcut
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	callframe.Arg(frame, pointers.Get(shortcut[0])[0])
-	callframe.Arg(frame, pointers.Get(icon[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorContextMenuPlugin.Bind_add_context_menu_item_from_shortcut, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorContextMenuPlugin.Bind_add_context_menu_item_from_shortcut, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
+		name     gdextension.String
+		shortcut gdextension.Object
+		icon     gdextension.Object
+	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), gdextension.Object(pointers.Get(shortcut[0])[0]), gdextension.Object(pointers.Get(icon[0])[0])}))
 }
 
 /*
@@ -323,13 +321,11 @@ func _popup_menu(paths):
 */
 //go:nosplit
 func (self class) AddContextSubmenuItem(name String.Readable, menu [1]gdclass.PopupMenu, icon [1]gdclass.Texture2D) { //gd:EditorContextMenuPlugin.add_context_submenu_item
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(name)))
-	callframe.Arg(frame, pointers.Get(menu[0])[0])
-	callframe.Arg(frame, pointers.Get(icon[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorContextMenuPlugin.Bind_add_context_submenu_item, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorContextMenuPlugin.Bind_add_context_submenu_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
+		name gdextension.String
+		menu gdextension.Object
+		icon gdextension.Object
+	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), gdextension.Object(pointers.Get(menu[0])[0]), gdextension.Object(pointers.Get(icon[0])[0])}))
 }
 func (self class) AsEditorContextMenuPlugin() Advanced { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsEditorContextMenuPlugin() Instance {

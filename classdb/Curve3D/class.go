@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -50,6 +52,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -367,21 +371,14 @@ func (self Instance) SetUpVectorEnabled(value bool) {
 
 //go:nosplit
 func (self class) GetPointCount() int64 { //gd:Curve3D.get_point_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_point_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Curve3D.Bind_get_point_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPointCount(count int64) { //gd:Curve3D.set_point_count
-	var frame = callframe.New()
-	callframe.Arg(frame, count)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_set_point_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Curve3D.Bind_set_point_count, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ count int64 }{count}))
 }
 
 /*
@@ -390,14 +387,12 @@ If [param index] is given, the new point is inserted before the existing point i
 */
 //go:nosplit
 func (self class) AddPoint(position Vector3.XYZ, in Vector3.XYZ, out Vector3.XYZ, index int64) { //gd:Curve3D.add_point
-	var frame = callframe.New()
-	callframe.Arg(frame, position)
-	callframe.Arg(frame, in)
-	callframe.Arg(frame, out)
-	callframe.Arg(frame, index)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_add_point, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Curve3D.Bind_add_point, 0|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
+		position Vector3.XYZ
+		in       Vector3.XYZ
+		out      Vector3.XYZ
+		index    int64
+	}{position, in, out, index}))
 }
 
 /*
@@ -405,12 +400,10 @@ Sets the position for the vertex [param idx]. If the index is out of bounds, the
 */
 //go:nosplit
 func (self class) SetPointPosition(idx int64, position Vector3.XYZ) { //gd:Curve3D.set_point_position
-	var frame = callframe.New()
-	callframe.Arg(frame, idx)
-	callframe.Arg(frame, position)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_set_point_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Curve3D.Bind_set_point_position, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+		idx      int64
+		position Vector3.XYZ
+	}{idx, position}))
 }
 
 /*
@@ -418,12 +411,8 @@ Returns the position of the vertex [param idx]. If the index is out of bounds, t
 */
 //go:nosplit
 func (self class) GetPointPosition(idx int64) Vector3.XYZ { //gd:Curve3D.get_point_position
-	var frame = callframe.New()
-	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_point_position, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.Curve3D.Bind_get_point_position, gdextension.SizeVector3|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -433,12 +422,10 @@ The tilt controls the rotation along the look-at axis an object traveling the pa
 */
 //go:nosplit
 func (self class) SetPointTilt(idx int64, tilt float64) { //gd:Curve3D.set_point_tilt
-	var frame = callframe.New()
-	callframe.Arg(frame, idx)
-	callframe.Arg(frame, tilt)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_set_point_tilt, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Curve3D.Bind_set_point_tilt, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+		idx  int64
+		tilt float64
+	}{idx, tilt}))
 }
 
 /*
@@ -446,12 +433,8 @@ Returns the tilt angle in radians for the point [param idx]. If the index is out
 */
 //go:nosplit
 func (self class) GetPointTilt(idx int64) float64 { //gd:Curve3D.get_point_tilt
-	var frame = callframe.New()
-	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_point_tilt, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Curve3D.Bind_get_point_tilt, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -460,12 +443,10 @@ Sets the position of the control point leading to the vertex [param idx]. If the
 */
 //go:nosplit
 func (self class) SetPointIn(idx int64, position Vector3.XYZ) { //gd:Curve3D.set_point_in
-	var frame = callframe.New()
-	callframe.Arg(frame, idx)
-	callframe.Arg(frame, position)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_set_point_in, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Curve3D.Bind_set_point_in, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+		idx      int64
+		position Vector3.XYZ
+	}{idx, position}))
 }
 
 /*
@@ -473,12 +454,8 @@ Returns the position of the control point leading to the vertex [param idx]. The
 */
 //go:nosplit
 func (self class) GetPointIn(idx int64) Vector3.XYZ { //gd:Curve3D.get_point_in
-	var frame = callframe.New()
-	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_point_in, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.Curve3D.Bind_get_point_in, gdextension.SizeVector3|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -487,12 +464,10 @@ Sets the position of the control point leading out of the vertex [param idx]. If
 */
 //go:nosplit
 func (self class) SetPointOut(idx int64, position Vector3.XYZ) { //gd:Curve3D.set_point_out
-	var frame = callframe.New()
-	callframe.Arg(frame, idx)
-	callframe.Arg(frame, position)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_set_point_out, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Curve3D.Bind_set_point_out, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+		idx      int64
+		position Vector3.XYZ
+	}{idx, position}))
 }
 
 /*
@@ -500,12 +475,8 @@ Returns the position of the control point leading out of the vertex [param idx].
 */
 //go:nosplit
 func (self class) GetPointOut(idx int64) Vector3.XYZ { //gd:Curve3D.get_point_out
-	var frame = callframe.New()
-	callframe.Arg(frame, idx)
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_point_out, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.Curve3D.Bind_get_point_out, gdextension.SizeVector3|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var ret = r_ret
 	return ret
 }
 
@@ -514,11 +485,7 @@ Deletes the point [param idx] from the curve. Sends an error to the console if [
 */
 //go:nosplit
 func (self class) RemovePoint(idx int64) { //gd:Curve3D.remove_point
-	var frame = callframe.New()
-	callframe.Arg(frame, idx)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_remove_point, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Curve3D.Bind_remove_point, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 }
 
 /*
@@ -526,10 +493,7 @@ Removes all points from the curve.
 */
 //go:nosplit
 func (self class) ClearPoints() { //gd:Curve3D.clear_points
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_clear_points, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Curve3D.Bind_clear_points, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -538,13 +502,11 @@ If [param idx] is out of bounds it is truncated to the first or last vertex, and
 */
 //go:nosplit
 func (self class) Sample(idx int64, t float64) Vector3.XYZ { //gd:Curve3D.sample
-	var frame = callframe.New()
-	callframe.Arg(frame, idx)
-	callframe.Arg(frame, t)
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_sample, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.Curve3D.Bind_sample, gdextension.SizeVector3|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+		idx int64
+		t   float64
+	}{idx, t}))
+	var ret = r_ret
 	return ret
 }
 
@@ -553,69 +515,44 @@ Returns the position at the vertex [param fofs]. It calls [method sample] using 
 */
 //go:nosplit
 func (self class) Samplef(fofs float64) Vector3.XYZ { //gd:Curve3D.samplef
-	var frame = callframe.New()
-	callframe.Arg(frame, fofs)
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_samplef, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.Curve3D.Bind_samplef, gdextension.SizeVector3|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ fofs float64 }{fofs}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetClosed(closed bool) { //gd:Curve3D.set_closed
-	var frame = callframe.New()
-	callframe.Arg(frame, closed)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_set_closed, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Curve3D.Bind_set_closed, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ closed bool }{closed}))
 }
 
 //go:nosplit
 func (self class) IsClosed() bool { //gd:Curve3D.is_closed
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_is_closed, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Curve3D.Bind_is_closed, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBakeInterval(distance float64) { //gd:Curve3D.set_bake_interval
-	var frame = callframe.New()
-	callframe.Arg(frame, distance)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_set_bake_interval, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Curve3D.Bind_set_bake_interval, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ distance float64 }{distance}))
 }
 
 //go:nosplit
 func (self class) GetBakeInterval() float64 { //gd:Curve3D.get_bake_interval
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_bake_interval, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Curve3D.Bind_get_bake_interval, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUpVectorEnabled(enable bool) { //gd:Curve3D.set_up_vector_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_set_up_vector_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Curve3D.Bind_set_up_vector_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsUpVectorEnabled() bool { //gd:Curve3D.is_up_vector_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_is_up_vector_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Curve3D.Bind_is_up_vector_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -624,11 +561,8 @@ Returns the total length of the curve, based on the cached points. Given enough 
 */
 //go:nosplit
 func (self class) GetBakedLength() float64 { //gd:Curve3D.get_baked_length
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_baked_length, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Curve3D.Bind_get_baked_length, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -638,13 +572,11 @@ Cubic interpolation tends to follow the curves better, but linear is faster (and
 */
 //go:nosplit
 func (self class) SampleBaked(offset float64, cubic bool) Vector3.XYZ { //gd:Curve3D.sample_baked
-	var frame = callframe.New()
-	callframe.Arg(frame, offset)
-	callframe.Arg(frame, cubic)
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_sample_baked, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.Curve3D.Bind_sample_baked, gdextension.SizeVector3|(gdextension.SizeFloat<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		offset float64
+		cubic  bool
+	}{offset, cubic}))
+	var ret = r_ret
 	return ret
 }
 
@@ -653,14 +585,12 @@ Returns a [Transform3D] with [code]origin[/code] as point position, [code]basis.
 */
 //go:nosplit
 func (self class) SampleBakedWithRotation(offset float64, cubic bool, apply_tilt bool) Transform3D.BasisOrigin { //gd:Curve3D.sample_baked_with_rotation
-	var frame = callframe.New()
-	callframe.Arg(frame, offset)
-	callframe.Arg(frame, cubic)
-	callframe.Arg(frame, apply_tilt)
-	var r_ret = callframe.Ret[Transform3D.BasisOrigin](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_sample_baked_with_rotation, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = gd.Transposed(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[Transform3D.BasisOrigin](self.AsObject(), gd.Global.Methods.Curve3D.Bind_sample_baked_with_rotation, gdextension.SizeTransform3D|(gdextension.SizeFloat<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+		offset     float64
+		cubic      bool
+		apply_tilt bool
+	}{offset, cubic, apply_tilt}))
+	var ret = gd.Transposed(r_ret)
 	return ret
 }
 
@@ -670,13 +600,11 @@ If the curve has no up vectors, the function sends an error to the console, and 
 */
 //go:nosplit
 func (self class) SampleBakedUpVector(offset float64, apply_tilt bool) Vector3.XYZ { //gd:Curve3D.sample_baked_up_vector
-	var frame = callframe.New()
-	callframe.Arg(frame, offset)
-	callframe.Arg(frame, apply_tilt)
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_sample_baked_up_vector, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.Curve3D.Bind_sample_baked_up_vector, gdextension.SizeVector3|(gdextension.SizeFloat<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		offset     float64
+		apply_tilt bool
+	}{offset, apply_tilt}))
+	var ret = r_ret
 	return ret
 }
 
@@ -685,11 +613,8 @@ Returns the cache of points as a [PackedVector3Array].
 */
 //go:nosplit
 func (self class) GetBakedPoints() Packed.Array[Vector3.XYZ] { //gd:Curve3D.get_baked_points
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_baked_points, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.Curve3D.Bind_get_baked_points, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -698,11 +623,8 @@ Returns the cache of tilts as a [PackedFloat32Array].
 */
 //go:nosplit
 func (self class) GetBakedTilts() Packed.Array[float32] { //gd:Curve3D.get_baked_tilts
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_baked_tilts, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.Curve3D.Bind_get_baked_tilts, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -712,11 +634,8 @@ If [member up_vector_enabled] is [code]false[/code], the cache will be empty.
 */
 //go:nosplit
 func (self class) GetBakedUpVectors() Packed.Array[Vector3.XYZ] { //gd:Curve3D.get_baked_up_vectors
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_baked_up_vectors, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.Curve3D.Bind_get_baked_up_vectors, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -726,12 +645,8 @@ Returns the closest point on baked segments (in curve's local space) to [param t
 */
 //go:nosplit
 func (self class) GetClosestPoint(to_point Vector3.XYZ) Vector3.XYZ { //gd:Curve3D.get_closest_point
-	var frame = callframe.New()
-	callframe.Arg(frame, to_point)
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_closest_point, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.Curve3D.Bind_get_closest_point, gdextension.SizeVector3|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ to_point Vector3.XYZ }{to_point}))
+	var ret = r_ret
 	return ret
 }
 
@@ -741,12 +656,8 @@ Returns the closest offset to [param to_point]. This offset is meant to be used 
 */
 //go:nosplit
 func (self class) GetClosestOffset(to_point Vector3.XYZ) float64 { //gd:Curve3D.get_closest_offset
-	var frame = callframe.New()
-	callframe.Arg(frame, to_point)
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_get_closest_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Curve3D.Bind_get_closest_offset, gdextension.SizeFloat|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ to_point Vector3.XYZ }{to_point}))
+	var ret = r_ret
 	return ret
 }
 
@@ -758,13 +669,11 @@ This approximation makes straight segments between each point, then subdivides t
 */
 //go:nosplit
 func (self class) Tessellate(max_stages int64, tolerance_degrees float64) Packed.Array[Vector3.XYZ] { //gd:Curve3D.tessellate
-	var frame = callframe.New()
-	callframe.Arg(frame, max_stages)
-	callframe.Arg(frame, tolerance_degrees)
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_tessellate, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.Curve3D.Bind_tessellate, gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+		max_stages        int64
+		tolerance_degrees float64
+	}{max_stages, tolerance_degrees}))
+	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -774,13 +683,11 @@ Returns a list of points along the curve, with almost uniform density. [param ma
 */
 //go:nosplit
 func (self class) TessellateEvenLength(max_stages int64, tolerance_length float64) Packed.Array[Vector3.XYZ] { //gd:Curve3D.tessellate_even_length
-	var frame = callframe.New()
-	callframe.Arg(frame, max_stages)
-	callframe.Arg(frame, tolerance_length)
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Curve3D.Bind_tessellate_even_length, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.Curve3D.Bind_tessellate_even_length, gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+		max_stages       int64
+		tolerance_length float64
+	}{max_stages, tolerance_length}))
+	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 func (self class) AsCurve3D() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

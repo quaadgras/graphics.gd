@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -52,6 +54,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -225,11 +229,7 @@ Creates a bitmap with the specified size, filled with [code]false[/code].
 */
 //go:nosplit
 func (self class) Create(size Vector2i.XY) { //gd:BitMap.create
-	var frame = callframe.New()
-	callframe.Arg(frame, size)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BitMap.Bind_create, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BitMap.Bind_create, 0|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ size Vector2i.XY }{size}))
 }
 
 /*
@@ -237,12 +237,10 @@ Creates a bitmap that matches the given image dimensions, every element of the b
 */
 //go:nosplit
 func (self class) CreateFromImageAlpha(image [1]gdclass.Image, threshold float64) { //gd:BitMap.create_from_image_alpha
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(image[0])[0])
-	callframe.Arg(frame, threshold)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BitMap.Bind_create_from_image_alpha, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BitMap.Bind_create_from_image_alpha, 0|(gdextension.SizeObject<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+		image     gdextension.Object
+		threshold float64
+	}{gdextension.Object(pointers.Get(image[0])[0]), threshold}))
 }
 
 /*
@@ -250,12 +248,10 @@ Sets the bitmap's element at the specified position, to the specified value.
 */
 //go:nosplit
 func (self class) SetBitv(position Vector2i.XY, bit bool) { //gd:BitMap.set_bitv
-	var frame = callframe.New()
-	callframe.Arg(frame, position)
-	callframe.Arg(frame, bit)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BitMap.Bind_set_bitv, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BitMap.Bind_set_bitv, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		position Vector2i.XY
+		bit      bool
+	}{position, bit}))
 }
 
 /*
@@ -263,13 +259,11 @@ Sets the bitmap's element at the specified position, to the specified value.
 */
 //go:nosplit
 func (self class) SetBit(x int64, y int64, bit bool) { //gd:BitMap.set_bit
-	var frame = callframe.New()
-	callframe.Arg(frame, x)
-	callframe.Arg(frame, y)
-	callframe.Arg(frame, bit)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BitMap.Bind_set_bit, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BitMap.Bind_set_bit, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+		x   int64
+		y   int64
+		bit bool
+	}{x, y, bit}))
 }
 
 /*
@@ -277,12 +271,8 @@ Returns bitmap's value at the specified position.
 */
 //go:nosplit
 func (self class) GetBitv(position Vector2i.XY) bool { //gd:BitMap.get_bitv
-	var frame = callframe.New()
-	callframe.Arg(frame, position)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BitMap.Bind_get_bitv, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.BitMap.Bind_get_bitv, gdextension.SizeBool|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ position Vector2i.XY }{position}))
+	var ret = r_ret
 	return ret
 }
 
@@ -291,13 +281,11 @@ Returns bitmap's value at the specified position.
 */
 //go:nosplit
 func (self class) GetBit(x int64, y int64) bool { //gd:BitMap.get_bit
-	var frame = callframe.New()
-	callframe.Arg(frame, x)
-	callframe.Arg(frame, y)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BitMap.Bind_get_bit, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.BitMap.Bind_get_bit, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		x int64
+		y int64
+	}{x, y}))
+	var ret = r_ret
 	return ret
 }
 
@@ -306,12 +294,10 @@ Sets a rectangular portion of the bitmap to the specified value.
 */
 //go:nosplit
 func (self class) SetBitRect(rect Rect2i.PositionSize, bit bool) { //gd:BitMap.set_bit_rect
-	var frame = callframe.New()
-	callframe.Arg(frame, rect)
-	callframe.Arg(frame, bit)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BitMap.Bind_set_bit_rect, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BitMap.Bind_set_bit_rect, 0|(gdextension.SizeRect2i<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		rect Rect2i.PositionSize
+		bit  bool
+	}{rect, bit}))
 }
 
 /*
@@ -319,11 +305,8 @@ Returns the number of bitmap elements that are set to [code]true[/code].
 */
 //go:nosplit
 func (self class) GetTrueBitCount() int64 { //gd:BitMap.get_true_bit_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BitMap.Bind_get_true_bit_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.BitMap.Bind_get_true_bit_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -332,11 +315,8 @@ Returns bitmap's dimensions.
 */
 //go:nosplit
 func (self class) GetSize() Vector2i.XY { //gd:BitMap.get_size
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2i.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BitMap.Bind_get_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2i.XY](self.AsObject(), gd.Global.Methods.BitMap.Bind_get_size, gdextension.SizeVector2i, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -345,11 +325,7 @@ Resizes the image to [param new_size].
 */
 //go:nosplit
 func (self class) Resize(new_size Vector2i.XY) { //gd:BitMap.resize
-	var frame = callframe.New()
-	callframe.Arg(frame, new_size)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BitMap.Bind_resize, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BitMap.Bind_resize, 0|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ new_size Vector2i.XY }{new_size}))
 }
 
 /*
@@ -357,12 +333,10 @@ Applies morphological dilation or erosion to the bitmap. If [param pixels] is po
 */
 //go:nosplit
 func (self class) GrowMask(pixels int64, rect Rect2i.PositionSize) { //gd:BitMap.grow_mask
-	var frame = callframe.New()
-	callframe.Arg(frame, pixels)
-	callframe.Arg(frame, rect)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BitMap.Bind_grow_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BitMap.Bind_grow_mask, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRect2i<<8), unsafe.Pointer(&struct {
+		pixels int64
+		rect   Rect2i.PositionSize
+	}{pixels, rect}))
 }
 
 /*
@@ -370,11 +344,8 @@ Returns an image of the same size as the bitmap and with a [enum Image.Format] o
 */
 //go:nosplit
 func (self class) ConvertToImage() [1]gdclass.Image { //gd:BitMap.convert_to_image
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BitMap.Bind_convert_to_image, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.BitMap.Bind_convert_to_image, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
 	return ret
 }
 
@@ -388,13 +359,11 @@ Rect2(Vector2(), get_size())
 */
 //go:nosplit
 func (self class) OpaqueToPolygons(rect Rect2i.PositionSize, epsilon float64) Array.Contains[Packed.Array[Vector2.XY]] { //gd:BitMap.opaque_to_polygons
-	var frame = callframe.New()
-	callframe.Arg(frame, rect)
-	callframe.Arg(frame, epsilon)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BitMap.Bind_opaque_to_polygons, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[Packed.Array[Vector2.XY]]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.BitMap.Bind_opaque_to_polygons, gdextension.SizeArray|(gdextension.SizeRect2i<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+		rect    Rect2i.PositionSize
+		epsilon float64
+	}{rect, epsilon}))
+	var ret = Array.Through(gd.ArrayProxy[Packed.Array[Vector2.XY]]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 func (self class) AsBitMap() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

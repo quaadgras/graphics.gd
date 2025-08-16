@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -50,6 +52,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -142,96 +146,61 @@ func (self Instance) SetFallbackSegments(value int) {
 
 //go:nosplit
 func (self class) SetRadius(radius float64) { //gd:OpenXRCompositionLayerEquirect.set_radius
-	var frame = callframe.New()
-	callframe.Arg(frame, radius)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_set_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_set_radius, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radius float64 }{radius}))
 }
 
 //go:nosplit
 func (self class) GetRadius() float64 { //gd:OpenXRCompositionLayerEquirect.get_radius
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_get_radius, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_get_radius, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCentralHorizontalAngle(angle float64) { //gd:OpenXRCompositionLayerEquirect.set_central_horizontal_angle
-	var frame = callframe.New()
-	callframe.Arg(frame, angle)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_set_central_horizontal_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_set_central_horizontal_angle, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ angle float64 }{angle}))
 }
 
 //go:nosplit
 func (self class) GetCentralHorizontalAngle() float64 { //gd:OpenXRCompositionLayerEquirect.get_central_horizontal_angle
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_get_central_horizontal_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_get_central_horizontal_angle, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUpperVerticalAngle(angle float64) { //gd:OpenXRCompositionLayerEquirect.set_upper_vertical_angle
-	var frame = callframe.New()
-	callframe.Arg(frame, angle)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_set_upper_vertical_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_set_upper_vertical_angle, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ angle float64 }{angle}))
 }
 
 //go:nosplit
 func (self class) GetUpperVerticalAngle() float64 { //gd:OpenXRCompositionLayerEquirect.get_upper_vertical_angle
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_get_upper_vertical_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_get_upper_vertical_angle, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLowerVerticalAngle(angle float64) { //gd:OpenXRCompositionLayerEquirect.set_lower_vertical_angle
-	var frame = callframe.New()
-	callframe.Arg(frame, angle)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_set_lower_vertical_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_set_lower_vertical_angle, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ angle float64 }{angle}))
 }
 
 //go:nosplit
 func (self class) GetLowerVerticalAngle() float64 { //gd:OpenXRCompositionLayerEquirect.get_lower_vertical_angle
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_get_lower_vertical_angle, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_get_lower_vertical_angle, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFallbackSegments(segments int64) { //gd:OpenXRCompositionLayerEquirect.set_fallback_segments
-	var frame = callframe.New()
-	callframe.Arg(frame, segments)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_set_fallback_segments, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_set_fallback_segments, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ segments int64 }{segments}))
 }
 
 //go:nosplit
 func (self class) GetFallbackSegments() int64 { //gd:OpenXRCompositionLayerEquirect.get_fallback_segments
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_get_fallback_segments, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OpenXRCompositionLayerEquirect.Bind_get_fallback_segments, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsOpenXRCompositionLayerEquirect() Advanced {

@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -54,6 +56,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -123,11 +127,8 @@ Returns the [OpenXRBindingModifier] currently being edited.
 */
 //go:nosplit
 func (self class) GetBindingModifier() [1]gdclass.OpenXRBindingModifier { //gd:OpenXRBindingModifierEditor.get_binding_modifier
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRBindingModifierEditor.Bind_get_binding_modifier, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.OpenXRBindingModifier{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRBindingModifier](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.OpenXRBindingModifierEditor.Bind_get_binding_modifier, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.OpenXRBindingModifier{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRBindingModifier](r_ret)}
 	return ret
 }
 
@@ -136,12 +137,10 @@ Setup this editor for the provided [param action_map] and [param binding_modifie
 */
 //go:nosplit
 func (self class) Setup(action_map [1]gdclass.OpenXRActionMap, binding_modifier [1]gdclass.OpenXRBindingModifier) { //gd:OpenXRBindingModifierEditor.setup
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(action_map[0])[0])
-	callframe.Arg(frame, pointers.Get(binding_modifier[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRBindingModifierEditor.Bind_setup, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRBindingModifierEditor.Bind_setup, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+		action_map       gdextension.Object
+		binding_modifier gdextension.Object
+	}{gdextension.Object(pointers.Get(action_map[0])[0]), gdextension.Object(pointers.Get(binding_modifier[0])[0])}))
 }
 func (self Instance) OnBindingModifierRemoved(cb func(binding_modifier_editor Object.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("binding_modifier_removed"), gd.NewCallable(cb), 0)

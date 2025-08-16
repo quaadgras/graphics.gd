@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -50,6 +52,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -282,12 +286,8 @@ Generates a [PackedByteArray] of cryptographically secure random bytes with give
 */
 //go:nosplit
 func (self class) GenerateRandomBytes(size int64) Packed.Bytes { //gd:Crypto.generate_random_bytes
-	var frame = callframe.New()
-	callframe.Arg(frame, size)
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_generate_random_bytes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.Crypto.Bind_generate_random_bytes, gdextension.SizePackedArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ size int64 }{size}))
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
 
@@ -296,12 +296,8 @@ Generates an RSA [CryptoKey] that can be used for creating self-signed certifica
 */
 //go:nosplit
 func (self class) GenerateRsa(size int64) [1]gdclass.CryptoKey { //gd:Crypto.generate_rsa
-	var frame = callframe.New()
-	callframe.Arg(frame, size)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_generate_rsa, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.CryptoKey{gd.PointerWithOwnershipTransferredToGo[gdclass.CryptoKey](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Crypto.Bind_generate_rsa, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ size int64 }{size}))
+	var ret = [1]gdclass.CryptoKey{gd.PointerWithOwnershipTransferredToGo[gdclass.CryptoKey](r_ret)}
 	return ret
 }
 
@@ -327,15 +323,13 @@ X509Certificate cert = crypto.GenerateSelfSignedCertificate(key, "CN=mydomain.co
 */
 //go:nosplit
 func (self class) GenerateSelfSignedCertificate(key [1]gdclass.CryptoKey, issuer_name String.Readable, not_before String.Readable, not_after String.Readable) [1]gdclass.X509Certificate { //gd:Crypto.generate_self_signed_certificate
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(key[0])[0])
-	callframe.Arg(frame, pointers.Get(gd.InternalString(issuer_name)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(not_before)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(not_after)))
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_generate_self_signed_certificate, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.X509Certificate{gd.PointerWithOwnershipTransferredToGo[gdclass.X509Certificate](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Crypto.Bind_generate_self_signed_certificate, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16), unsafe.Pointer(&struct {
+		key         gdextension.Object
+		issuer_name gdextension.String
+		not_before  gdextension.String
+		not_after   gdextension.String
+	}{gdextension.Object(pointers.Get(key[0])[0]), gdextension.String(pointers.Get(gd.InternalString(issuer_name))[0]), gdextension.String(pointers.Get(gd.InternalString(not_before))[0]), gdextension.String(pointers.Get(gd.InternalString(not_after))[0])}))
+	var ret = [1]gdclass.X509Certificate{gd.PointerWithOwnershipTransferredToGo[gdclass.X509Certificate](r_ret)}
 	return ret
 }
 
@@ -344,14 +338,12 @@ Sign a given [param hash] of type [param hash_type] with the provided private [p
 */
 //go:nosplit
 func (self class) Sign(hash_type HashingContext.HashType, hash Packed.Bytes, key [1]gdclass.CryptoKey) Packed.Bytes { //gd:Crypto.sign
-	var frame = callframe.New()
-	callframe.Arg(frame, hash_type)
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](hash))))
-	callframe.Arg(frame, pointers.Get(key[0])[0])
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_sign, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.Crypto.Bind_sign, gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
+		hash_type HashingContext.HashType
+		hash      gdextension.PackedArray
+		key       gdextension.Object
+	}{hash_type, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](hash)))), gdextension.Object(pointers.Get(key[0])[0])}))
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
 
@@ -360,15 +352,13 @@ Verify that a given [param signature] for [param hash] of type [param hash_type]
 */
 //go:nosplit
 func (self class) Verify(hash_type HashingContext.HashType, hash Packed.Bytes, signature Packed.Bytes, key [1]gdclass.CryptoKey) bool { //gd:Crypto.verify
-	var frame = callframe.New()
-	callframe.Arg(frame, hash_type)
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](hash))))
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](signature))))
-	callframe.Arg(frame, pointers.Get(key[0])[0])
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_verify, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Crypto.Bind_verify, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeObject<<16), unsafe.Pointer(&struct {
+		hash_type HashingContext.HashType
+		hash      gdextension.PackedArray
+		signature gdextension.PackedArray
+		key       gdextension.Object
+	}{hash_type, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](hash)))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](signature)))), gdextension.Object(pointers.Get(key[0])[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -378,13 +368,11 @@ Encrypt the given [param plaintext] with the provided public [param key].
 */
 //go:nosplit
 func (self class) Encrypt(key [1]gdclass.CryptoKey, plaintext Packed.Bytes) Packed.Bytes { //gd:Crypto.encrypt
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(key[0])[0])
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](plaintext))))
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_encrypt, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.Crypto.Bind_encrypt, gdextension.SizePackedArray|(gdextension.SizeObject<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
+		key       gdextension.Object
+		plaintext gdextension.PackedArray
+	}{gdextension.Object(pointers.Get(key[0])[0]), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](plaintext))))}))
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
 
@@ -394,13 +382,11 @@ Decrypt the given [param ciphertext] with the provided private [param key].
 */
 //go:nosplit
 func (self class) Decrypt(key [1]gdclass.CryptoKey, ciphertext Packed.Bytes) Packed.Bytes { //gd:Crypto.decrypt
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(key[0])[0])
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](ciphertext))))
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_decrypt, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.Crypto.Bind_decrypt, gdextension.SizePackedArray|(gdextension.SizeObject<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
+		key        gdextension.Object
+		ciphertext gdextension.PackedArray
+	}{gdextension.Object(pointers.Get(key[0])[0]), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](ciphertext))))}))
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
 
@@ -410,14 +396,12 @@ Currently, only [constant HashingContext.HASH_SHA256] and [constant HashingConte
 */
 //go:nosplit
 func (self class) HmacDigest(hash_type HashingContext.HashType, key Packed.Bytes, msg Packed.Bytes) Packed.Bytes { //gd:Crypto.hmac_digest
-	var frame = callframe.New()
-	callframe.Arg(frame, hash_type)
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key))))
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](msg))))
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_hmac_digest, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.Crypto.Bind_hmac_digest, gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12), unsafe.Pointer(&struct {
+		hash_type HashingContext.HashType
+		key       gdextension.PackedArray
+		msg       gdextension.PackedArray
+	}{hash_type, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key)))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](msg))))}))
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
 
@@ -427,13 +411,11 @@ See [url=https://paragonie.com/blog/2015/11/preventing-timing-attacks-on-string-
 */
 //go:nosplit
 func (self class) ConstantTimeCompare(trusted Packed.Bytes, received Packed.Bytes) bool { //gd:Crypto.constant_time_compare
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](trusted))))
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](received))))
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Crypto.Bind_constant_time_compare, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Crypto.Bind_constant_time_compare, gdextension.SizeBool|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
+		trusted  gdextension.PackedArray
+		received gdextension.PackedArray
+	}{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](trusted)))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](received))))}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsCrypto() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

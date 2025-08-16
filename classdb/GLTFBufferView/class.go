@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +50,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -153,127 +157,81 @@ Loads the buffer view data from the buffer referenced by this buffer view in the
 */
 //go:nosplit
 func (self class) LoadBufferViewData(state [1]gdclass.GLTFState) Packed.Bytes { //gd:GLTFBufferView.load_buffer_view_data
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(state[0])[0])
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFBufferView.Bind_load_buffer_view_data, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.GLTFBufferView.Bind_load_buffer_view_data, gdextension.SizePackedArray|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ state gdextension.Object }{gdextension.Object(pointers.Get(state[0])[0])}))
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) GetBuffer() int64 { //gd:GLTFBufferView.get_buffer
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFBufferView.Bind_get_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.GLTFBufferView.Bind_get_buffer, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBuffer(buffer int64) { //gd:GLTFBufferView.set_buffer
-	var frame = callframe.New()
-	callframe.Arg(frame, buffer)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFBufferView.Bind_set_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFBufferView.Bind_set_buffer, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ buffer int64 }{buffer}))
 }
 
 //go:nosplit
 func (self class) GetByteOffset() int64 { //gd:GLTFBufferView.get_byte_offset
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFBufferView.Bind_get_byte_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.GLTFBufferView.Bind_get_byte_offset, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetByteOffset(byte_offset int64) { //gd:GLTFBufferView.set_byte_offset
-	var frame = callframe.New()
-	callframe.Arg(frame, byte_offset)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFBufferView.Bind_set_byte_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFBufferView.Bind_set_byte_offset, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ byte_offset int64 }{byte_offset}))
 }
 
 //go:nosplit
 func (self class) GetByteLength() int64 { //gd:GLTFBufferView.get_byte_length
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFBufferView.Bind_get_byte_length, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.GLTFBufferView.Bind_get_byte_length, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetByteLength(byte_length int64) { //gd:GLTFBufferView.set_byte_length
-	var frame = callframe.New()
-	callframe.Arg(frame, byte_length)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFBufferView.Bind_set_byte_length, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFBufferView.Bind_set_byte_length, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ byte_length int64 }{byte_length}))
 }
 
 //go:nosplit
 func (self class) GetByteStride() int64 { //gd:GLTFBufferView.get_byte_stride
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFBufferView.Bind_get_byte_stride, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.GLTFBufferView.Bind_get_byte_stride, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetByteStride(byte_stride int64) { //gd:GLTFBufferView.set_byte_stride
-	var frame = callframe.New()
-	callframe.Arg(frame, byte_stride)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFBufferView.Bind_set_byte_stride, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFBufferView.Bind_set_byte_stride, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ byte_stride int64 }{byte_stride}))
 }
 
 //go:nosplit
 func (self class) GetIndices() bool { //gd:GLTFBufferView.get_indices
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFBufferView.Bind_get_indices, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.GLTFBufferView.Bind_get_indices, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIndices(indices bool) { //gd:GLTFBufferView.set_indices
-	var frame = callframe.New()
-	callframe.Arg(frame, indices)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFBufferView.Bind_set_indices, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFBufferView.Bind_set_indices, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ indices bool }{indices}))
 }
 
 //go:nosplit
 func (self class) GetVertexAttributes() bool { //gd:GLTFBufferView.get_vertex_attributes
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFBufferView.Bind_get_vertex_attributes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.GLTFBufferView.Bind_get_vertex_attributes, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVertexAttributes(is_attributes bool) { //gd:GLTFBufferView.set_vertex_attributes
-	var frame = callframe.New()
-	callframe.Arg(frame, is_attributes)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFBufferView.Bind_set_vertex_attributes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFBufferView.Bind_set_vertex_attributes, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ is_attributes bool }{is_attributes}))
 }
 func (self class) AsGLTFBufferView() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsGLTFBufferView() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

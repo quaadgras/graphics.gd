@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -47,6 +49,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -183,12 +187,10 @@ If [param disable] is [code]true[/code], disables the class specified by [param 
 */
 //go:nosplit
 func (self class) SetDisableClass(class_name String.Name, disable bool) { //gd:EditorFeatureProfile.set_disable_class
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(class_name)))
-	callframe.Arg(frame, disable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFeatureProfile.Bind_set_disable_class, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorFeatureProfile.Bind_set_disable_class, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		class_name gdextension.StringName
+		disable    bool
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(class_name))[0]), disable}))
 }
 
 /*
@@ -196,12 +198,8 @@ Returns [code]true[/code] if the class specified by [param class_name] is disabl
 */
 //go:nosplit
 func (self class) IsClassDisabled(class_name String.Name) bool { //gd:EditorFeatureProfile.is_class_disabled
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(class_name)))
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFeatureProfile.Bind_is_class_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.EditorFeatureProfile.Bind_is_class_disabled, gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ class_name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(class_name))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -210,12 +208,10 @@ If [param disable] is [code]true[/code], disables editing for the class specifie
 */
 //go:nosplit
 func (self class) SetDisableClassEditor(class_name String.Name, disable bool) { //gd:EditorFeatureProfile.set_disable_class_editor
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(class_name)))
-	callframe.Arg(frame, disable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFeatureProfile.Bind_set_disable_class_editor, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorFeatureProfile.Bind_set_disable_class_editor, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		class_name gdextension.StringName
+		disable    bool
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(class_name))[0]), disable}))
 }
 
 /*
@@ -223,12 +219,8 @@ Returns [code]true[/code] if editing for the class specified by [param class_nam
 */
 //go:nosplit
 func (self class) IsClassEditorDisabled(class_name String.Name) bool { //gd:EditorFeatureProfile.is_class_editor_disabled
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(class_name)))
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFeatureProfile.Bind_is_class_editor_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.EditorFeatureProfile.Bind_is_class_editor_disabled, gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ class_name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(class_name))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -237,13 +229,11 @@ If [param disable] is [code]true[/code], disables editing for [param property] i
 */
 //go:nosplit
 func (self class) SetDisableClassProperty(class_name String.Name, property String.Name, disable bool) { //gd:EditorFeatureProfile.set_disable_class_property
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(class_name)))
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(property)))
-	callframe.Arg(frame, disable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFeatureProfile.Bind_set_disable_class_property, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorFeatureProfile.Bind_set_disable_class_property, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+		class_name gdextension.StringName
+		property   gdextension.StringName
+		disable    bool
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(class_name))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(property))[0]), disable}))
 }
 
 /*
@@ -251,13 +241,11 @@ Returns [code]true[/code] if [param property] is disabled in the class specified
 */
 //go:nosplit
 func (self class) IsClassPropertyDisabled(class_name String.Name, property String.Name) bool { //gd:EditorFeatureProfile.is_class_property_disabled
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(class_name)))
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(property)))
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFeatureProfile.Bind_is_class_property_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.EditorFeatureProfile.Bind_is_class_property_disabled, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+		class_name gdextension.StringName
+		property   gdextension.StringName
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(class_name))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(property))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -266,12 +254,10 @@ If [param disable] is [code]true[/code], disables the editor feature specified i
 */
 //go:nosplit
 func (self class) SetDisableFeature(feature Feature, disable bool) { //gd:EditorFeatureProfile.set_disable_feature
-	var frame = callframe.New()
-	callframe.Arg(frame, feature)
-	callframe.Arg(frame, disable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFeatureProfile.Bind_set_disable_feature, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorFeatureProfile.Bind_set_disable_feature, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		feature Feature
+		disable bool
+	}{feature, disable}))
 }
 
 /*
@@ -279,12 +265,8 @@ Returns [code]true[/code] if the [param feature] is disabled. When a feature is 
 */
 //go:nosplit
 func (self class) IsFeatureDisabled(feature Feature) bool { //gd:EditorFeatureProfile.is_feature_disabled
-	var frame = callframe.New()
-	callframe.Arg(frame, feature)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFeatureProfile.Bind_is_feature_disabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.EditorFeatureProfile.Bind_is_feature_disabled, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ feature Feature }{feature}))
+	var ret = r_ret
 	return ret
 }
 
@@ -293,12 +275,8 @@ Returns the specified [param feature]'s human-readable name.
 */
 //go:nosplit
 func (self class) GetFeatureName(feature Feature) String.Readable { //gd:EditorFeatureProfile.get_feature_name
-	var frame = callframe.New()
-	callframe.Arg(frame, feature)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFeatureProfile.Bind_get_feature_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorFeatureProfile.Bind_get_feature_name, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ feature Feature }{feature}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -308,12 +286,8 @@ Saves the editor feature profile to a file in JSON format. It can then be import
 */
 //go:nosplit
 func (self class) SaveToFile(path String.Readable) Error.Code { //gd:EditorFeatureProfile.save_to_file
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFeatureProfile.Bind_save_to_file, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.EditorFeatureProfile.Bind_save_to_file, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -323,12 +297,8 @@ Loads an editor feature profile from a file. The file must follow the JSON forma
 */
 //go:nosplit
 func (self class) LoadFromFile(path String.Readable) Error.Code { //gd:EditorFeatureProfile.load_from_file
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorFeatureProfile.Bind_load_from_file, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.EditorFeatureProfile.Bind_load_from_file, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 func (self class) AsEditorFeatureProfile() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

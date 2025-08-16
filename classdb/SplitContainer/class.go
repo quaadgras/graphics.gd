@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +53,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -194,20 +198,13 @@ func (self Instance) SetDragAreaHighlightInEditor(value bool) {
 
 //go:nosplit
 func (self class) SetSplitOffset(offset int64) { //gd:SplitContainer.set_split_offset
-	var frame = callframe.New()
-	callframe.Arg(frame, offset)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_set_split_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SplitContainer.Bind_set_split_offset, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ offset int64 }{offset}))
 }
 
 //go:nosplit
 func (self class) GetSplitOffset() int64 { //gd:SplitContainer.get_split_offset
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_get_split_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.SplitContainer.Bind_get_split_offset, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -216,161 +213,102 @@ Clamps the [member split_offset] value to not go outside the currently possible 
 */
 //go:nosplit
 func (self class) ClampSplitOffset() { //gd:SplitContainer.clamp_split_offset
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_clamp_split_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SplitContainer.Bind_clamp_split_offset, 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) SetCollapsed(collapsed bool) { //gd:SplitContainer.set_collapsed
-	var frame = callframe.New()
-	callframe.Arg(frame, collapsed)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_set_collapsed, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SplitContainer.Bind_set_collapsed, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ collapsed bool }{collapsed}))
 }
 
 //go:nosplit
 func (self class) IsCollapsed() bool { //gd:SplitContainer.is_collapsed
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_is_collapsed, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.SplitContainer.Bind_is_collapsed, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDraggerVisibility(mode DraggerVisibility) { //gd:SplitContainer.set_dragger_visibility
-	var frame = callframe.New()
-	callframe.Arg(frame, mode)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_set_dragger_visibility, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SplitContainer.Bind_set_dragger_visibility, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode DraggerVisibility }{mode}))
 }
 
 //go:nosplit
 func (self class) GetDraggerVisibility() DraggerVisibility { //gd:SplitContainer.get_dragger_visibility
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[DraggerVisibility](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_get_dragger_visibility, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[DraggerVisibility](self.AsObject(), gd.Global.Methods.SplitContainer.Bind_get_dragger_visibility, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVertical(vertical bool) { //gd:SplitContainer.set_vertical
-	var frame = callframe.New()
-	callframe.Arg(frame, vertical)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_set_vertical, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SplitContainer.Bind_set_vertical, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ vertical bool }{vertical}))
 }
 
 //go:nosplit
 func (self class) IsVertical() bool { //gd:SplitContainer.is_vertical
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_is_vertical, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.SplitContainer.Bind_is_vertical, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDraggingEnabled(dragging_enabled bool) { //gd:SplitContainer.set_dragging_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, dragging_enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_set_dragging_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SplitContainer.Bind_set_dragging_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ dragging_enabled bool }{dragging_enabled}))
 }
 
 //go:nosplit
 func (self class) IsDraggingEnabled() bool { //gd:SplitContainer.is_dragging_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_is_dragging_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.SplitContainer.Bind_is_dragging_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDragAreaMarginBegin(margin int64) { //gd:SplitContainer.set_drag_area_margin_begin
-	var frame = callframe.New()
-	callframe.Arg(frame, margin)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_set_drag_area_margin_begin, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SplitContainer.Bind_set_drag_area_margin_begin, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ margin int64 }{margin}))
 }
 
 //go:nosplit
 func (self class) GetDragAreaMarginBegin() int64 { //gd:SplitContainer.get_drag_area_margin_begin
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_get_drag_area_margin_begin, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.SplitContainer.Bind_get_drag_area_margin_begin, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDragAreaMarginEnd(margin int64) { //gd:SplitContainer.set_drag_area_margin_end
-	var frame = callframe.New()
-	callframe.Arg(frame, margin)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_set_drag_area_margin_end, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SplitContainer.Bind_set_drag_area_margin_end, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ margin int64 }{margin}))
 }
 
 //go:nosplit
 func (self class) GetDragAreaMarginEnd() int64 { //gd:SplitContainer.get_drag_area_margin_end
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_get_drag_area_margin_end, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.SplitContainer.Bind_get_drag_area_margin_end, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDragAreaOffset(offset int64) { //gd:SplitContainer.set_drag_area_offset
-	var frame = callframe.New()
-	callframe.Arg(frame, offset)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_set_drag_area_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SplitContainer.Bind_set_drag_area_offset, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ offset int64 }{offset}))
 }
 
 //go:nosplit
 func (self class) GetDragAreaOffset() int64 { //gd:SplitContainer.get_drag_area_offset
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_get_drag_area_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.SplitContainer.Bind_get_drag_area_offset, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDragAreaHighlightInEditor(drag_area_highlight_in_editor bool) { //gd:SplitContainer.set_drag_area_highlight_in_editor
-	var frame = callframe.New()
-	callframe.Arg(frame, drag_area_highlight_in_editor)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_set_drag_area_highlight_in_editor, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SplitContainer.Bind_set_drag_area_highlight_in_editor, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ drag_area_highlight_in_editor bool }{drag_area_highlight_in_editor}))
 }
 
 //go:nosplit
 func (self class) IsDragAreaHighlightInEditorEnabled() bool { //gd:SplitContainer.is_drag_area_highlight_in_editor_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_is_drag_area_highlight_in_editor_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.SplitContainer.Bind_is_drag_area_highlight_in_editor_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -384,11 +322,8 @@ $BarnacleButton.reparent($SplitContainer.get_drag_area_control())
 */
 //go:nosplit
 func (self class) GetDragAreaControl() [1]gdclass.Control { //gd:SplitContainer.get_drag_area_control
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_get_drag_area_control, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Control{gd.PointerLifetimeBoundTo[gdclass.Control](self.AsObject(), r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.SplitContainer.Bind_get_drag_area_control, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.Control{gd.PointerLifetimeBoundTo[gdclass.Control](self.AsObject(), r_ret)}
 	return ret
 }
 func (self Instance) OnDragged(cb func(offset int)) {

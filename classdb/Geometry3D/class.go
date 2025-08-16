@@ -9,6 +9,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -50,6 +52,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -238,12 +242,8 @@ Calculates and returns all the vertex points of a convex shape defined by an arr
 */
 //go:nosplit
 func (self class) ComputeConvexMeshPoints(planes Array.Contains[Plane.NormalD]) Packed.Array[Vector3.XYZ] { //gd:Geometry3D.compute_convex_mesh_points
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(planes)))
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry3D.Bind_compute_convex_mesh_points, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.Geometry3D.Bind_compute_convex_mesh_points, gdextension.SizePackedArray|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ planes gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(planes))[0])}))
+	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -252,12 +252,8 @@ Returns an array with 6 [Plane]s that describe the sides of a box centered at th
 */
 //go:nosplit
 func (self class) BuildBoxPlanes(extents Vector3.XYZ) Array.Contains[Plane.NormalD] { //gd:Geometry3D.build_box_planes
-	var frame = callframe.New()
-	callframe.Arg(frame, extents)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry3D.Bind_build_box_planes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[Plane.NormalD]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Geometry3D.Bind_build_box_planes, gdextension.SizeArray|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ extents Vector3.XYZ }{extents}))
+	var ret = Array.Through(gd.ArrayProxy[Plane.NormalD]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -266,15 +262,13 @@ Returns an array of [Plane]s closely bounding a faceted cylinder centered at the
 */
 //go:nosplit
 func (self class) BuildCylinderPlanes(radius float64, height float64, sides int64, axis Vector3.Axis) Array.Contains[Plane.NormalD] { //gd:Geometry3D.build_cylinder_planes
-	var frame = callframe.New()
-	callframe.Arg(frame, radius)
-	callframe.Arg(frame, height)
-	callframe.Arg(frame, sides)
-	callframe.Arg(frame, axis)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry3D.Bind_build_cylinder_planes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[Plane.NormalD]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Geometry3D.Bind_build_cylinder_planes, gdextension.SizeArray|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
+		radius float64
+		height float64
+		sides  int64
+		axis   Vector3.Axis
+	}{radius, height, sides, axis}))
+	var ret = Array.Through(gd.ArrayProxy[Plane.NormalD]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -283,16 +277,14 @@ Returns an array of [Plane]s closely bounding a faceted capsule centered at the 
 */
 //go:nosplit
 func (self class) BuildCapsulePlanes(radius float64, height float64, sides int64, lats int64, axis Vector3.Axis) Array.Contains[Plane.NormalD] { //gd:Geometry3D.build_capsule_planes
-	var frame = callframe.New()
-	callframe.Arg(frame, radius)
-	callframe.Arg(frame, height)
-	callframe.Arg(frame, sides)
-	callframe.Arg(frame, lats)
-	callframe.Arg(frame, axis)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry3D.Bind_build_capsule_planes, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[Plane.NormalD]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Geometry3D.Bind_build_capsule_planes, gdextension.SizeArray|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
+		radius float64
+		height float64
+		sides  int64
+		lats   int64
+		axis   Vector3.Axis
+	}{radius, height, sides, lats, axis}))
+	var ret = Array.Through(gd.ArrayProxy[Plane.NormalD]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -301,15 +293,13 @@ Given the two 3D segments ([param p1], [param p2]) and ([param q1], [param q2]),
 */
 //go:nosplit
 func (self class) GetClosestPointsBetweenSegments(p1 Vector3.XYZ, p2 Vector3.XYZ, q1 Vector3.XYZ, q2 Vector3.XYZ) Packed.Array[Vector3.XYZ] { //gd:Geometry3D.get_closest_points_between_segments
-	var frame = callframe.New()
-	callframe.Arg(frame, p1)
-	callframe.Arg(frame, p2)
-	callframe.Arg(frame, q1)
-	callframe.Arg(frame, q2)
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry3D.Bind_get_closest_points_between_segments, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.Geometry3D.Bind_get_closest_points_between_segments, gdextension.SizePackedArray|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizeVector3<<16), unsafe.Pointer(&struct {
+		p1 Vector3.XYZ
+		p2 Vector3.XYZ
+		q1 Vector3.XYZ
+		q2 Vector3.XYZ
+	}{p1, p2, q1, q2}))
+	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -318,14 +308,12 @@ Returns the 3D point on the 3D segment ([param s1], [param s2]) that is closest 
 */
 //go:nosplit
 func (self class) GetClosestPointToSegment(point Vector3.XYZ, s1 Vector3.XYZ, s2 Vector3.XYZ) Vector3.XYZ { //gd:Geometry3D.get_closest_point_to_segment
-	var frame = callframe.New()
-	callframe.Arg(frame, point)
-	callframe.Arg(frame, s1)
-	callframe.Arg(frame, s2)
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry3D.Bind_get_closest_point_to_segment, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.Geometry3D.Bind_get_closest_point_to_segment, gdextension.SizeVector3|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12), unsafe.Pointer(&struct {
+		point Vector3.XYZ
+		s1    Vector3.XYZ
+		s2    Vector3.XYZ
+	}{point, s1, s2}))
+	var ret = r_ret
 	return ret
 }
 
@@ -334,14 +322,12 @@ Returns the 3D point on the 3D line defined by ([param s1], [param s2]) that is 
 */
 //go:nosplit
 func (self class) GetClosestPointToSegmentUncapped(point Vector3.XYZ, s1 Vector3.XYZ, s2 Vector3.XYZ) Vector3.XYZ { //gd:Geometry3D.get_closest_point_to_segment_uncapped
-	var frame = callframe.New()
-	callframe.Arg(frame, point)
-	callframe.Arg(frame, s1)
-	callframe.Arg(frame, s2)
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry3D.Bind_get_closest_point_to_segment_uncapped, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.Geometry3D.Bind_get_closest_point_to_segment_uncapped, gdextension.SizeVector3|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12), unsafe.Pointer(&struct {
+		point Vector3.XYZ
+		s1    Vector3.XYZ
+		s2    Vector3.XYZ
+	}{point, s1, s2}))
+	var ret = r_ret
 	return ret
 }
 
@@ -351,15 +337,13 @@ Returns a [Vector3] containing weights based on how close a 3D position ([param 
 */
 //go:nosplit
 func (self class) GetTriangleBarycentricCoords(point Vector3.XYZ, a Vector3.XYZ, b Vector3.XYZ, c Vector3.XYZ) Vector3.XYZ { //gd:Geometry3D.get_triangle_barycentric_coords
-	var frame = callframe.New()
-	callframe.Arg(frame, point)
-	callframe.Arg(frame, a)
-	callframe.Arg(frame, b)
-	callframe.Arg(frame, c)
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry3D.Bind_get_triangle_barycentric_coords, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.Geometry3D.Bind_get_triangle_barycentric_coords, gdextension.SizeVector3|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizeVector3<<16), unsafe.Pointer(&struct {
+		point Vector3.XYZ
+		a     Vector3.XYZ
+		b     Vector3.XYZ
+		c     Vector3.XYZ
+	}{point, a, b, c}))
+	var ret = r_ret
 	return ret
 }
 
@@ -368,16 +352,14 @@ Tests if the 3D ray starting at [param from] with the direction of [param dir] i
 */
 //go:nosplit
 func (self class) RayIntersectsTriangle(from Vector3.XYZ, dir Vector3.XYZ, a Vector3.XYZ, b Vector3.XYZ, c Vector3.XYZ) variant.Any { //gd:Geometry3D.ray_intersects_triangle
-	var frame = callframe.New()
-	callframe.Arg(frame, from)
-	callframe.Arg(frame, dir)
-	callframe.Arg(frame, a)
-	callframe.Arg(frame, b)
-	callframe.Arg(frame, c)
-	var r_ret = callframe.Ret[[3]uint64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry3D.Bind_ray_intersects_triangle, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[3]uint64](self.AsObject(), gd.Global.Methods.Geometry3D.Bind_ray_intersects_triangle, gdextension.SizeVariant|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizeVector3<<16)|(gdextension.SizeVector3<<20), unsafe.Pointer(&struct {
+		from Vector3.XYZ
+		dir  Vector3.XYZ
+		a    Vector3.XYZ
+		b    Vector3.XYZ
+		c    Vector3.XYZ
+	}{from, dir, a, b, c}))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
 
@@ -386,16 +368,14 @@ Tests if the segment ([param from], [param to]) intersects the triangle [param a
 */
 //go:nosplit
 func (self class) SegmentIntersectsTriangle(from Vector3.XYZ, to Vector3.XYZ, a Vector3.XYZ, b Vector3.XYZ, c Vector3.XYZ) variant.Any { //gd:Geometry3D.segment_intersects_triangle
-	var frame = callframe.New()
-	callframe.Arg(frame, from)
-	callframe.Arg(frame, to)
-	callframe.Arg(frame, a)
-	callframe.Arg(frame, b)
-	callframe.Arg(frame, c)
-	var r_ret = callframe.Ret[[3]uint64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry3D.Bind_segment_intersects_triangle, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[3]uint64](self.AsObject(), gd.Global.Methods.Geometry3D.Bind_segment_intersects_triangle, gdextension.SizeVariant|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizeVector3<<16)|(gdextension.SizeVector3<<20), unsafe.Pointer(&struct {
+		from Vector3.XYZ
+		to   Vector3.XYZ
+		a    Vector3.XYZ
+		b    Vector3.XYZ
+		c    Vector3.XYZ
+	}{from, to, a, b, c}))
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
 
@@ -404,15 +384,13 @@ Checks if the segment ([param from], [param to]) intersects the sphere that is l
 */
 //go:nosplit
 func (self class) SegmentIntersectsSphere(from Vector3.XYZ, to Vector3.XYZ, sphere_position Vector3.XYZ, sphere_radius float64) Packed.Array[Vector3.XYZ] { //gd:Geometry3D.segment_intersects_sphere
-	var frame = callframe.New()
-	callframe.Arg(frame, from)
-	callframe.Arg(frame, to)
-	callframe.Arg(frame, sphere_position)
-	callframe.Arg(frame, sphere_radius)
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry3D.Bind_segment_intersects_sphere, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.Geometry3D.Bind_segment_intersects_sphere, gdextension.SizePackedArray|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizeFloat<<16), unsafe.Pointer(&struct {
+		from            Vector3.XYZ
+		to              Vector3.XYZ
+		sphere_position Vector3.XYZ
+		sphere_radius   float64
+	}{from, to, sphere_position, sphere_radius}))
+	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -421,15 +399,13 @@ Checks if the segment ([param from], [param to]) intersects the cylinder with he
 */
 //go:nosplit
 func (self class) SegmentIntersectsCylinder(from Vector3.XYZ, to Vector3.XYZ, height float64, radius float64) Packed.Array[Vector3.XYZ] { //gd:Geometry3D.segment_intersects_cylinder
-	var frame = callframe.New()
-	callframe.Arg(frame, from)
-	callframe.Arg(frame, to)
-	callframe.Arg(frame, height)
-	callframe.Arg(frame, radius)
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry3D.Bind_segment_intersects_cylinder, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.Geometry3D.Bind_segment_intersects_cylinder, gdextension.SizePackedArray|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16), unsafe.Pointer(&struct {
+		from   Vector3.XYZ
+		to     Vector3.XYZ
+		height float64
+		radius float64
+	}{from, to, height, radius}))
+	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -438,14 +414,12 @@ Given a convex hull defined though the [Plane]s in the array [param planes], tes
 */
 //go:nosplit
 func (self class) SegmentIntersectsConvex(from Vector3.XYZ, to Vector3.XYZ, planes Array.Contains[Plane.NormalD]) Packed.Array[Vector3.XYZ] { //gd:Geometry3D.segment_intersects_convex
-	var frame = callframe.New()
-	callframe.Arg(frame, from)
-	callframe.Arg(frame, to)
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(planes)))
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry3D.Bind_segment_intersects_convex, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.Geometry3D.Bind_segment_intersects_convex, gdextension.SizePackedArray|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeArray<<12), unsafe.Pointer(&struct {
+		from   Vector3.XYZ
+		to     Vector3.XYZ
+		planes gdextension.Array
+	}{from, to, gdextension.Array(pointers.Get(gd.InternalArray(planes))[0])}))
+	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -454,13 +428,11 @@ Clips the polygon defined by the points in [param points] against the [param pla
 */
 //go:nosplit
 func (self class) ClipPolygon(points Packed.Array[Vector3.XYZ], plane Plane.NormalD) Packed.Array[Vector3.XYZ] { //gd:Geometry3D.clip_polygon
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](points)))
-	callframe.Arg(frame, plane)
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry3D.Bind_clip_polygon, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.Geometry3D.Bind_clip_polygon, gdextension.SizePackedArray|(gdextension.SizePackedArray<<4)|(gdextension.SizePlane<<8), unsafe.Pointer(&struct {
+		points gdextension.PackedArray
+		plane  Plane.NormalD
+	}{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](points))), plane}))
+	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -469,12 +441,8 @@ Tetrahedralizes the volume specified by a discrete set of [param points] in 3D s
 */
 //go:nosplit
 func (self class) TetrahedralizeDelaunay(points Packed.Array[Vector3.XYZ]) Packed.Array[int32] { //gd:Geometry3D.tetrahedralize_delaunay
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](points)))
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Geometry3D.Bind_tetrahedralize_delaunay, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.Geometry3D.Bind_tetrahedralize_delaunay, gdextension.SizePackedArray|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ points gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](points)))}))
+	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 func (self class) Virtual(name string) reflect.Value {

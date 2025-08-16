@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +51,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -142,96 +146,61 @@ func (self Instance) SetDepth(value Float.X) {
 
 //go:nosplit
 func (self class) SetRangeMinHz(hz float64) { //gd:AudioEffectPhaser.set_range_min_hz
-	var frame = callframe.New()
-	callframe.Arg(frame, hz)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectPhaser.Bind_set_range_min_hz, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioEffectPhaser.Bind_set_range_min_hz, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ hz float64 }{hz}))
 }
 
 //go:nosplit
 func (self class) GetRangeMinHz() float64 { //gd:AudioEffectPhaser.get_range_min_hz
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectPhaser.Bind_get_range_min_hz, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.AudioEffectPhaser.Bind_get_range_min_hz, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRangeMaxHz(hz float64) { //gd:AudioEffectPhaser.set_range_max_hz
-	var frame = callframe.New()
-	callframe.Arg(frame, hz)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectPhaser.Bind_set_range_max_hz, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioEffectPhaser.Bind_set_range_max_hz, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ hz float64 }{hz}))
 }
 
 //go:nosplit
 func (self class) GetRangeMaxHz() float64 { //gd:AudioEffectPhaser.get_range_max_hz
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectPhaser.Bind_get_range_max_hz, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.AudioEffectPhaser.Bind_get_range_max_hz, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRateHz(hz float64) { //gd:AudioEffectPhaser.set_rate_hz
-	var frame = callframe.New()
-	callframe.Arg(frame, hz)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectPhaser.Bind_set_rate_hz, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioEffectPhaser.Bind_set_rate_hz, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ hz float64 }{hz}))
 }
 
 //go:nosplit
 func (self class) GetRateHz() float64 { //gd:AudioEffectPhaser.get_rate_hz
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectPhaser.Bind_get_rate_hz, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.AudioEffectPhaser.Bind_get_rate_hz, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFeedback(fbk float64) { //gd:AudioEffectPhaser.set_feedback
-	var frame = callframe.New()
-	callframe.Arg(frame, fbk)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectPhaser.Bind_set_feedback, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioEffectPhaser.Bind_set_feedback, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ fbk float64 }{fbk}))
 }
 
 //go:nosplit
 func (self class) GetFeedback() float64 { //gd:AudioEffectPhaser.get_feedback
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectPhaser.Bind_get_feedback, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.AudioEffectPhaser.Bind_get_feedback, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDepth(depth float64) { //gd:AudioEffectPhaser.set_depth
-	var frame = callframe.New()
-	callframe.Arg(frame, depth)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectPhaser.Bind_set_depth, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioEffectPhaser.Bind_set_depth, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ depth float64 }{depth}))
 }
 
 //go:nosplit
 func (self class) GetDepth() float64 { //gd:AudioEffectPhaser.get_depth
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioEffectPhaser.Bind_get_depth, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.AudioEffectPhaser.Bind_get_depth, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsAudioEffectPhaser() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

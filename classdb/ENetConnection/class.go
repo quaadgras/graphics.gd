@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +51,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -294,17 +298,15 @@ Creates an ENetHost bound to the given [param bind_address] and [param bind_port
 */
 //go:nosplit
 func (self class) CreateHostBound(bind_address String.Readable, bind_port int64, max_peers int64, max_channels int64, in_bandwidth int64, out_bandwidth int64) Error.Code { //gd:ENetConnection.create_host_bound
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(bind_address)))
-	callframe.Arg(frame, bind_port)
-	callframe.Arg(frame, max_peers)
-	callframe.Arg(frame, max_channels)
-	callframe.Arg(frame, in_bandwidth)
-	callframe.Arg(frame, out_bandwidth)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_create_host_bound, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ENetConnection.Bind_create_host_bound, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24), unsafe.Pointer(&struct {
+		bind_address  gdextension.String
+		bind_port     int64
+		max_peers     int64
+		max_channels  int64
+		in_bandwidth  int64
+		out_bandwidth int64
+	}{gdextension.String(pointers.Get(gd.InternalString(bind_address))[0]), bind_port, max_peers, max_channels, in_bandwidth, out_bandwidth}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -315,15 +317,13 @@ This method binds a random available dynamic UDP port on the host machine at the
 */
 //go:nosplit
 func (self class) CreateHost(max_peers int64, max_channels int64, in_bandwidth int64, out_bandwidth int64) Error.Code { //gd:ENetConnection.create_host
-	var frame = callframe.New()
-	callframe.Arg(frame, max_peers)
-	callframe.Arg(frame, max_channels)
-	callframe.Arg(frame, in_bandwidth)
-	callframe.Arg(frame, out_bandwidth)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_create_host, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ENetConnection.Bind_create_host, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
+		max_peers     int64
+		max_channels  int64
+		in_bandwidth  int64
+		out_bandwidth int64
+	}{max_peers, max_channels, in_bandwidth, out_bandwidth}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -332,10 +332,7 @@ Destroys the host and all resources associated with it.
 */
 //go:nosplit
 func (self class) Destroy() { //gd:ENetConnection.destroy
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_destroy, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ENetConnection.Bind_destroy, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -344,15 +341,13 @@ Initiates a connection to a foreign [param address] using the specified [param p
 */
 //go:nosplit
 func (self class) ConnectToHost(address String.Readable, port int64, channels int64, data int64) [1]gdclass.ENetPacketPeer { //gd:ENetConnection.connect_to_host
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(address)))
-	callframe.Arg(frame, port)
-	callframe.Arg(frame, channels)
-	callframe.Arg(frame, data)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_connect_to_host, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.ENetPacketPeer{gd.PointerWithOwnershipTransferredToGo[gdclass.ENetPacketPeer](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.ENetConnection.Bind_connect_to_host, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
+		address  gdextension.String
+		port     int64
+		channels int64
+		data     int64
+	}{gdextension.String(pointers.Get(gd.InternalString(address))[0]), port, channels, data}))
+	var ret = [1]gdclass.ENetPacketPeer{gd.PointerWithOwnershipTransferredToGo[gdclass.ENetPacketPeer](r_ret)}
 	return ret
 }
 
@@ -363,12 +358,8 @@ Call this function regularly to handle connections, disconnections, and to recei
 */
 //go:nosplit
 func (self class) Service(timeout int64) Array.Any { //gd:ENetConnection.service
-	var frame = callframe.New()
-	callframe.Arg(frame, timeout)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_service, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.ENetConnection.Bind_service, gdextension.SizeArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ timeout int64 }{timeout}))
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -377,10 +368,7 @@ Sends any queued packets on the host specified to its designated peers.
 */
 //go:nosplit
 func (self class) Flush() { //gd:ENetConnection.flush
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_flush, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ENetConnection.Bind_flush, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -388,12 +376,10 @@ Adjusts the bandwidth limits of a host.
 */
 //go:nosplit
 func (self class) BandwidthLimit(in_bandwidth int64, out_bandwidth int64) { //gd:ENetConnection.bandwidth_limit
-	var frame = callframe.New()
-	callframe.Arg(frame, in_bandwidth)
-	callframe.Arg(frame, out_bandwidth)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_bandwidth_limit, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ENetConnection.Bind_bandwidth_limit, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		in_bandwidth  int64
+		out_bandwidth int64
+	}{in_bandwidth, out_bandwidth}))
 }
 
 /*
@@ -401,11 +387,7 @@ Limits the maximum allowed channels of future incoming connections.
 */
 //go:nosplit
 func (self class) ChannelLimit(limit int64) { //gd:ENetConnection.channel_limit
-	var frame = callframe.New()
-	callframe.Arg(frame, limit)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_channel_limit, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ENetConnection.Bind_channel_limit, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ limit int64 }{limit}))
 }
 
 /*
@@ -413,13 +395,11 @@ Queues a [param packet] to be sent to all peers associated with the host over th
 */
 //go:nosplit
 func (self class) Broadcast(channel int64, packet Packed.Bytes, flags int64) { //gd:ENetConnection.broadcast
-	var frame = callframe.New()
-	callframe.Arg(frame, channel)
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](packet))))
-	callframe.Arg(frame, flags)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_broadcast, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ENetConnection.Bind_broadcast, 0|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+		channel int64
+		packet  gdextension.PackedArray
+		flags   int64
+	}{channel, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](packet)))), flags}))
 }
 
 /*
@@ -429,11 +409,7 @@ Sets the compression method used for network packets. These have different trade
 */
 //go:nosplit
 func (self class) Compress(mode CompressionMode) { //gd:ENetConnection.compress
-	var frame = callframe.New()
-	callframe.Arg(frame, mode)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_compress, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ENetConnection.Bind_compress, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode CompressionMode }{mode}))
 }
 
 /*
@@ -441,12 +417,8 @@ Configure this ENetHost to use the custom Godot extension allowing DTLS encrypti
 */
 //go:nosplit
 func (self class) DtlsServerSetup(server_options [1]gdclass.TLSOptions) Error.Code { //gd:ENetConnection.dtls_server_setup
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(server_options[0])[0])
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_dtls_server_setup, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ENetConnection.Bind_dtls_server_setup, gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ server_options gdextension.Object }{gdextension.Object(pointers.Get(server_options[0])[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -455,13 +427,11 @@ Configure this ENetHost to use the custom Godot extension allowing DTLS encrypti
 */
 //go:nosplit
 func (self class) DtlsClientSetup(hostname String.Readable, client_options [1]gdclass.TLSOptions) Error.Code { //gd:ENetConnection.dtls_client_setup
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(hostname)))
-	callframe.Arg(frame, pointers.Get(client_options[0])[0])
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_dtls_client_setup, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ENetConnection.Bind_dtls_client_setup, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+		hostname       gdextension.String
+		client_options gdextension.Object
+	}{gdextension.String(pointers.Get(gd.InternalString(hostname))[0]), gdextension.Object(pointers.Get(client_options[0])[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -471,11 +441,7 @@ Configures the DTLS server to automatically drop new connections.
 */
 //go:nosplit
 func (self class) RefuseNewConnections(refuse bool) { //gd:ENetConnection.refuse_new_connections
-	var frame = callframe.New()
-	callframe.Arg(frame, refuse)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_refuse_new_connections, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ENetConnection.Bind_refuse_new_connections, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ refuse bool }{refuse}))
 }
 
 /*
@@ -483,12 +449,8 @@ Returns and resets host statistics. See [enum HostStatistic] for more info.
 */
 //go:nosplit
 func (self class) PopStatistic(statistic HostStatistic) float64 { //gd:ENetConnection.pop_statistic
-	var frame = callframe.New()
-	callframe.Arg(frame, statistic)
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_pop_statistic, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.ENetConnection.Bind_pop_statistic, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ statistic HostStatistic }{statistic}))
+	var ret = r_ret
 	return ret
 }
 
@@ -497,11 +459,8 @@ Returns the maximum number of channels allowed for connected peers.
 */
 //go:nosplit
 func (self class) GetMaxChannels() int64 { //gd:ENetConnection.get_max_channels
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_get_max_channels, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ENetConnection.Bind_get_max_channels, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -510,11 +469,8 @@ Returns the local port to which this peer is bound.
 */
 //go:nosplit
 func (self class) GetLocalPort() int64 { //gd:ENetConnection.get_local_port
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_get_local_port, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ENetConnection.Bind_get_local_port, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -524,11 +480,8 @@ Returns the list of peers associated with this host.
 */
 //go:nosplit
 func (self class) GetPeers() Array.Contains[[1]gdclass.ENetPacketPeer] { //gd:ENetConnection.get_peers
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_get_peers, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.ENetPacketPeer]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.ENetConnection.Bind_get_peers, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.ENetPacketPeer]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -539,13 +492,11 @@ This requires forward knowledge of a prospective client's address and communicat
 */
 //go:nosplit
 func (self class) SocketSend(destination_address String.Readable, destination_port int64, packet Packed.Bytes) { //gd:ENetConnection.socket_send
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(destination_address)))
-	callframe.Arg(frame, destination_port)
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](packet))))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetConnection.Bind_socket_send, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ENetConnection.Bind_socket_send, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizePackedArray<<12), unsafe.Pointer(&struct {
+		destination_address gdextension.String
+		destination_port    int64
+		packet              gdextension.PackedArray
+	}{gdextension.String(pointers.Get(gd.InternalString(destination_address))[0]), destination_port, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](packet))))}))
 }
 func (self class) AsENetConnection() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsENetConnection() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

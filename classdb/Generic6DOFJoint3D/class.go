@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -50,6 +52,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -140,127 +144,91 @@ func New() Instance {
 
 //go:nosplit
 func (self class) SetParamX(param Param, value float64) { //gd:Generic6DOFJoint3D.set_param_x
-	var frame = callframe.New()
-	callframe.Arg(frame, param)
-	callframe.Arg(frame, value)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_set_param_x, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Generic6DOFJoint3D.Bind_set_param_x, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+		param Param
+		value float64
+	}{param, value}))
 }
 
 //go:nosplit
 func (self class) GetParamX(param Param) float64 { //gd:Generic6DOFJoint3D.get_param_x
-	var frame = callframe.New()
-	callframe.Arg(frame, param)
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_get_param_x, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Generic6DOFJoint3D.Bind_get_param_x, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ param Param }{param}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetParamY(param Param, value float64) { //gd:Generic6DOFJoint3D.set_param_y
-	var frame = callframe.New()
-	callframe.Arg(frame, param)
-	callframe.Arg(frame, value)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_set_param_y, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Generic6DOFJoint3D.Bind_set_param_y, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+		param Param
+		value float64
+	}{param, value}))
 }
 
 //go:nosplit
 func (self class) GetParamY(param Param) float64 { //gd:Generic6DOFJoint3D.get_param_y
-	var frame = callframe.New()
-	callframe.Arg(frame, param)
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_get_param_y, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Generic6DOFJoint3D.Bind_get_param_y, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ param Param }{param}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetParamZ(param Param, value float64) { //gd:Generic6DOFJoint3D.set_param_z
-	var frame = callframe.New()
-	callframe.Arg(frame, param)
-	callframe.Arg(frame, value)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_set_param_z, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Generic6DOFJoint3D.Bind_set_param_z, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+		param Param
+		value float64
+	}{param, value}))
 }
 
 //go:nosplit
 func (self class) GetParamZ(param Param) float64 { //gd:Generic6DOFJoint3D.get_param_z
-	var frame = callframe.New()
-	callframe.Arg(frame, param)
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_get_param_z, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Generic6DOFJoint3D.Bind_get_param_z, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ param Param }{param}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFlagX(flag Flag, value bool) { //gd:Generic6DOFJoint3D.set_flag_x
-	var frame = callframe.New()
-	callframe.Arg(frame, flag)
-	callframe.Arg(frame, value)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_set_flag_x, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Generic6DOFJoint3D.Bind_set_flag_x, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		flag  Flag
+		value bool
+	}{flag, value}))
 }
 
 //go:nosplit
 func (self class) GetFlagX(flag Flag) bool { //gd:Generic6DOFJoint3D.get_flag_x
-	var frame = callframe.New()
-	callframe.Arg(frame, flag)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_get_flag_x, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Generic6DOFJoint3D.Bind_get_flag_x, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flag Flag }{flag}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFlagY(flag Flag, value bool) { //gd:Generic6DOFJoint3D.set_flag_y
-	var frame = callframe.New()
-	callframe.Arg(frame, flag)
-	callframe.Arg(frame, value)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_set_flag_y, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Generic6DOFJoint3D.Bind_set_flag_y, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		flag  Flag
+		value bool
+	}{flag, value}))
 }
 
 //go:nosplit
 func (self class) GetFlagY(flag Flag) bool { //gd:Generic6DOFJoint3D.get_flag_y
-	var frame = callframe.New()
-	callframe.Arg(frame, flag)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_get_flag_y, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Generic6DOFJoint3D.Bind_get_flag_y, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flag Flag }{flag}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFlagZ(flag Flag, value bool) { //gd:Generic6DOFJoint3D.set_flag_z
-	var frame = callframe.New()
-	callframe.Arg(frame, flag)
-	callframe.Arg(frame, value)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_set_flag_z, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Generic6DOFJoint3D.Bind_set_flag_z, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		flag  Flag
+		value bool
+	}{flag, value}))
 }
 
 //go:nosplit
 func (self class) GetFlagZ(flag Flag) bool { //gd:Generic6DOFJoint3D.get_flag_z
-	var frame = callframe.New()
-	callframe.Arg(frame, flag)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Generic6DOFJoint3D.Bind_get_flag_z, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Generic6DOFJoint3D.Bind_get_flag_z, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flag Flag }{flag}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsGeneric6DOFJoint3D() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

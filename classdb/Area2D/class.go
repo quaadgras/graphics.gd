@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -52,6 +54,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -275,248 +279,157 @@ func (self Instance) SetAudioBusName(value string) {
 
 //go:nosplit
 func (self class) SetGravitySpaceOverrideMode(space_override_mode SpaceOverride) { //gd:Area2D.set_gravity_space_override_mode
-	var frame = callframe.New()
-	callframe.Arg(frame, space_override_mode)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_set_gravity_space_override_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Area2D.Bind_set_gravity_space_override_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ space_override_mode SpaceOverride }{space_override_mode}))
 }
 
 //go:nosplit
 func (self class) GetGravitySpaceOverrideMode() SpaceOverride { //gd:Area2D.get_gravity_space_override_mode
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[SpaceOverride](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_get_gravity_space_override_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[SpaceOverride](self.AsObject(), gd.Global.Methods.Area2D.Bind_get_gravity_space_override_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGravityIsPoint(enable bool) { //gd:Area2D.set_gravity_is_point
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_set_gravity_is_point, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Area2D.Bind_set_gravity_is_point, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsGravityAPoint() bool { //gd:Area2D.is_gravity_a_point
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_is_gravity_a_point, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Area2D.Bind_is_gravity_a_point, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGravityPointUnitDistance(distance_scale float64) { //gd:Area2D.set_gravity_point_unit_distance
-	var frame = callframe.New()
-	callframe.Arg(frame, distance_scale)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_set_gravity_point_unit_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Area2D.Bind_set_gravity_point_unit_distance, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ distance_scale float64 }{distance_scale}))
 }
 
 //go:nosplit
 func (self class) GetGravityPointUnitDistance() float64 { //gd:Area2D.get_gravity_point_unit_distance
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_get_gravity_point_unit_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Area2D.Bind_get_gravity_point_unit_distance, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGravityPointCenter(center Vector2.XY) { //gd:Area2D.set_gravity_point_center
-	var frame = callframe.New()
-	callframe.Arg(frame, center)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_set_gravity_point_center, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Area2D.Bind_set_gravity_point_center, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ center Vector2.XY }{center}))
 }
 
 //go:nosplit
 func (self class) GetGravityPointCenter() Vector2.XY { //gd:Area2D.get_gravity_point_center
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_get_gravity_point_center, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.Area2D.Bind_get_gravity_point_center, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGravityDirection(direction Vector2.XY) { //gd:Area2D.set_gravity_direction
-	var frame = callframe.New()
-	callframe.Arg(frame, direction)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_set_gravity_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Area2D.Bind_set_gravity_direction, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ direction Vector2.XY }{direction}))
 }
 
 //go:nosplit
 func (self class) GetGravityDirection() Vector2.XY { //gd:Area2D.get_gravity_direction
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector2.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_get_gravity_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.Area2D.Bind_get_gravity_direction, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGravity(gravity float64) { //gd:Area2D.set_gravity
-	var frame = callframe.New()
-	callframe.Arg(frame, gravity)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_set_gravity, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Area2D.Bind_set_gravity, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ gravity float64 }{gravity}))
 }
 
 //go:nosplit
 func (self class) GetGravity() float64 { //gd:Area2D.get_gravity
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_get_gravity, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Area2D.Bind_get_gravity, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLinearDampSpaceOverrideMode(space_override_mode SpaceOverride) { //gd:Area2D.set_linear_damp_space_override_mode
-	var frame = callframe.New()
-	callframe.Arg(frame, space_override_mode)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_set_linear_damp_space_override_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Area2D.Bind_set_linear_damp_space_override_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ space_override_mode SpaceOverride }{space_override_mode}))
 }
 
 //go:nosplit
 func (self class) GetLinearDampSpaceOverrideMode() SpaceOverride { //gd:Area2D.get_linear_damp_space_override_mode
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[SpaceOverride](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_get_linear_damp_space_override_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[SpaceOverride](self.AsObject(), gd.Global.Methods.Area2D.Bind_get_linear_damp_space_override_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAngularDampSpaceOverrideMode(space_override_mode SpaceOverride) { //gd:Area2D.set_angular_damp_space_override_mode
-	var frame = callframe.New()
-	callframe.Arg(frame, space_override_mode)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_set_angular_damp_space_override_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Area2D.Bind_set_angular_damp_space_override_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ space_override_mode SpaceOverride }{space_override_mode}))
 }
 
 //go:nosplit
 func (self class) GetAngularDampSpaceOverrideMode() SpaceOverride { //gd:Area2D.get_angular_damp_space_override_mode
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[SpaceOverride](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_get_angular_damp_space_override_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[SpaceOverride](self.AsObject(), gd.Global.Methods.Area2D.Bind_get_angular_damp_space_override_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLinearDamp(linear_damp float64) { //gd:Area2D.set_linear_damp
-	var frame = callframe.New()
-	callframe.Arg(frame, linear_damp)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_set_linear_damp, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Area2D.Bind_set_linear_damp, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ linear_damp float64 }{linear_damp}))
 }
 
 //go:nosplit
 func (self class) GetLinearDamp() float64 { //gd:Area2D.get_linear_damp
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_get_linear_damp, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Area2D.Bind_get_linear_damp, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAngularDamp(angular_damp float64) { //gd:Area2D.set_angular_damp
-	var frame = callframe.New()
-	callframe.Arg(frame, angular_damp)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_set_angular_damp, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Area2D.Bind_set_angular_damp, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ angular_damp float64 }{angular_damp}))
 }
 
 //go:nosplit
 func (self class) GetAngularDamp() float64 { //gd:Area2D.get_angular_damp
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_get_angular_damp, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Area2D.Bind_get_angular_damp, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPriority(priority int64) { //gd:Area2D.set_priority
-	var frame = callframe.New()
-	callframe.Arg(frame, priority)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_set_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Area2D.Bind_set_priority, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ priority int64 }{priority}))
 }
 
 //go:nosplit
 func (self class) GetPriority() int64 { //gd:Area2D.get_priority
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_get_priority, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Area2D.Bind_get_priority, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMonitoring(enable bool) { //gd:Area2D.set_monitoring
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_set_monitoring, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Area2D.Bind_set_monitoring, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsMonitoring() bool { //gd:Area2D.is_monitoring
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_is_monitoring, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Area2D.Bind_is_monitoring, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMonitorable(enable bool) { //gd:Area2D.set_monitorable
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_set_monitorable, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Area2D.Bind_set_monitorable, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsMonitorable() bool { //gd:Area2D.is_monitorable
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_is_monitorable, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Area2D.Bind_is_monitorable, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -526,11 +439,8 @@ For performance reasons (collisions are all processed at the same time) this lis
 */
 //go:nosplit
 func (self class) GetOverlappingBodies() Array.Contains[[1]gdclass.Node2D] { //gd:Area2D.get_overlapping_bodies
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_get_overlapping_bodies, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Node2D]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Area2D.Bind_get_overlapping_bodies, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Node2D]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -540,11 +450,8 @@ For performance reasons (collisions are all processed at the same time) this lis
 */
 //go:nosplit
 func (self class) GetOverlappingAreas() Array.Contains[[1]gdclass.Area2D] { //gd:Area2D.get_overlapping_areas
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_get_overlapping_areas, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Area2D]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Area2D.Bind_get_overlapping_areas, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Area2D]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -554,11 +461,8 @@ For performance reasons (collisions are all processed at the same time) the list
 */
 //go:nosplit
 func (self class) HasOverlappingBodies() bool { //gd:Area2D.has_overlapping_bodies
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_has_overlapping_bodies, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Area2D.Bind_has_overlapping_bodies, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -568,11 +472,8 @@ For performance reasons (collisions are all processed at the same time) the list
 */
 //go:nosplit
 func (self class) HasOverlappingAreas() bool { //gd:Area2D.has_overlapping_areas
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_has_overlapping_areas, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Area2D.Bind_has_overlapping_areas, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -583,12 +484,8 @@ The [param body] argument can either be a [PhysicsBody2D] or a [TileMap] instanc
 */
 //go:nosplit
 func (self class) OverlapsBody(body [1]gdclass.Node) bool { //gd:Area2D.overlaps_body
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(body[0])[0])
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_overlaps_body, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Area2D.Bind_overlaps_body, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ body gdextension.Object }{gdextension.Object(pointers.Get(body[0])[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -598,50 +495,32 @@ Returns [code]true[/code] if the given [Area2D] intersects or overlaps this [Are
 */
 //go:nosplit
 func (self class) OverlapsArea(area [1]gdclass.Node) bool { //gd:Area2D.overlaps_area
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(area[0])[0])
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_overlaps_area, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Area2D.Bind_overlaps_area, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ area gdextension.Object }{gdextension.Object(pointers.Get(area[0])[0])}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAudioBusName(name String.Name) { //gd:Area2D.set_audio_bus_name
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_set_audio_bus_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Area2D.Bind_set_audio_bus_name, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
 }
 
 //go:nosplit
 func (self class) GetAudioBusName() String.Name { //gd:Area2D.get_audio_bus_name
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_get_audio_bus_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Area2D.Bind_get_audio_bus_name, gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAudioBusOverride(enable bool) { //gd:Area2D.set_audio_bus_override
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_set_audio_bus_override, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Area2D.Bind_set_audio_bus_override, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsOverridingAudioBus() bool { //gd:Area2D.is_overriding_audio_bus
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Area2D.Bind_is_overriding_audio_bus, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Area2D.Bind_is_overriding_audio_bus, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self Instance) OnBodyShapeEntered(cb func(body_rid RID.Any, body Node2D.Instance, body_shape_index int, local_shape_index int)) {

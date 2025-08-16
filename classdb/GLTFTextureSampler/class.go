@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +50,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -133,78 +137,50 @@ func (self Instance) SetWrapT(value int) {
 
 //go:nosplit
 func (self class) GetMagFilter() int64 { //gd:GLTFTextureSampler.get_mag_filter
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFTextureSampler.Bind_get_mag_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.GLTFTextureSampler.Bind_get_mag_filter, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMagFilter(filter_mode int64) { //gd:GLTFTextureSampler.set_mag_filter
-	var frame = callframe.New()
-	callframe.Arg(frame, filter_mode)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFTextureSampler.Bind_set_mag_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFTextureSampler.Bind_set_mag_filter, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ filter_mode int64 }{filter_mode}))
 }
 
 //go:nosplit
 func (self class) GetMinFilter() int64 { //gd:GLTFTextureSampler.get_min_filter
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFTextureSampler.Bind_get_min_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.GLTFTextureSampler.Bind_get_min_filter, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMinFilter(filter_mode int64) { //gd:GLTFTextureSampler.set_min_filter
-	var frame = callframe.New()
-	callframe.Arg(frame, filter_mode)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFTextureSampler.Bind_set_min_filter, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFTextureSampler.Bind_set_min_filter, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ filter_mode int64 }{filter_mode}))
 }
 
 //go:nosplit
 func (self class) GetWrapS() int64 { //gd:GLTFTextureSampler.get_wrap_s
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFTextureSampler.Bind_get_wrap_s, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.GLTFTextureSampler.Bind_get_wrap_s, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetWrapS(wrap_mode int64) { //gd:GLTFTextureSampler.set_wrap_s
-	var frame = callframe.New()
-	callframe.Arg(frame, wrap_mode)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFTextureSampler.Bind_set_wrap_s, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFTextureSampler.Bind_set_wrap_s, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ wrap_mode int64 }{wrap_mode}))
 }
 
 //go:nosplit
 func (self class) GetWrapT() int64 { //gd:GLTFTextureSampler.get_wrap_t
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFTextureSampler.Bind_get_wrap_t, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.GLTFTextureSampler.Bind_get_wrap_t, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetWrapT(wrap_mode int64) { //gd:GLTFTextureSampler.set_wrap_t
-	var frame = callframe.New()
-	callframe.Arg(frame, wrap_mode)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFTextureSampler.Bind_set_wrap_t, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFTextureSampler.Bind_set_wrap_t, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ wrap_mode int64 }{wrap_mode}))
 }
 func (self class) AsGLTFTextureSampler() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsGLTFTextureSampler() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

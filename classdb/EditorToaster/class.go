@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -53,6 +55,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -125,13 +129,11 @@ Pushes a toast notification to the editor for display.
 */
 //go:nosplit
 func (self class) PushToast(message String.Readable, severity Severity, tooltip String.Readable) { //gd:EditorToaster.push_toast
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(message)))
-	callframe.Arg(frame, severity)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(tooltip)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorToaster.Bind_push_toast, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorToaster.Bind_push_toast, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
+		message  gdextension.String
+		severity Severity
+		tooltip  gdextension.String
+	}{gdextension.String(pointers.Get(gd.InternalString(message))[0]), severity, gdextension.String(pointers.Get(gd.InternalString(tooltip))[0])}))
 }
 func (self class) AsEditorToaster() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsEditorToaster() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

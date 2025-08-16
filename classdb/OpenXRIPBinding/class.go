@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -50,6 +52,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -177,39 +181,25 @@ func (self Instance) SetPaths(value []string) {
 
 //go:nosplit
 func (self class) SetAction(action [1]gdclass.OpenXRAction) { //gd:OpenXRIPBinding.set_action
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(action[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRIPBinding.Bind_set_action, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRIPBinding.Bind_set_action, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ action gdextension.Object }{gdextension.Object(pointers.Get(action[0])[0])}))
 }
 
 //go:nosplit
 func (self class) GetAction() [1]gdclass.OpenXRAction { //gd:OpenXRIPBinding.get_action
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRIPBinding.Bind_get_action, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.OpenXRAction{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRAction](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.OpenXRIPBinding.Bind_get_action, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.OpenXRAction{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRAction](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBindingPath(binding_path String.Readable) { //gd:OpenXRIPBinding.set_binding_path
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(binding_path)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRIPBinding.Bind_set_binding_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRIPBinding.Bind_set_binding_path, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ binding_path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(binding_path))[0])}))
 }
 
 //go:nosplit
 func (self class) GetBindingPath() String.Readable { //gd:OpenXRIPBinding.get_binding_path
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRIPBinding.Bind_get_binding_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.OpenXRIPBinding.Bind_get_binding_path, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -218,11 +208,8 @@ Get the number of binding modifiers for this binding.
 */
 //go:nosplit
 func (self class) GetBindingModifierCount() int64 { //gd:OpenXRIPBinding.get_binding_modifier_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRIPBinding.Bind_get_binding_modifier_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OpenXRIPBinding.Bind_get_binding_modifier_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -231,50 +218,32 @@ Get the [OpenXRBindingModifier] at this index.
 */
 //go:nosplit
 func (self class) GetBindingModifier(index int64) [1]gdclass.OpenXRActionBindingModifier { //gd:OpenXRIPBinding.get_binding_modifier
-	var frame = callframe.New()
-	callframe.Arg(frame, index)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRIPBinding.Bind_get_binding_modifier, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.OpenXRActionBindingModifier{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRActionBindingModifier](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.OpenXRIPBinding.Bind_get_binding_modifier, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var ret = [1]gdclass.OpenXRActionBindingModifier{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRActionBindingModifier](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBindingModifiers(binding_modifiers Array.Any) { //gd:OpenXRIPBinding.set_binding_modifiers
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(binding_modifiers)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRIPBinding.Bind_set_binding_modifiers, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRIPBinding.Bind_set_binding_modifiers, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ binding_modifiers gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(binding_modifiers))[0])}))
 }
 
 //go:nosplit
 func (self class) GetBindingModifiers() Array.Any { //gd:OpenXRIPBinding.get_binding_modifiers
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRIPBinding.Bind_get_binding_modifiers, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.OpenXRIPBinding.Bind_get_binding_modifiers, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPaths(paths Packed.Strings) { //gd:OpenXRIPBinding.set_paths
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(paths)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRIPBinding.Bind_set_paths, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRIPBinding.Bind_set_paths, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ paths gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(paths)))}))
 }
 
 //go:nosplit
 func (self class) GetPaths() Packed.Strings { //gd:OpenXRIPBinding.get_paths
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRIPBinding.Bind_get_paths, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.OpenXRIPBinding.Bind_get_paths, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -283,11 +252,8 @@ Get the number of input/output paths in this binding.
 */
 //go:nosplit
 func (self class) GetPathCount() int64 { //gd:OpenXRIPBinding.get_path_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRIPBinding.Bind_get_path_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OpenXRIPBinding.Bind_get_path_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -296,12 +262,8 @@ Returns [code]true[/code] if this input/output path is part of this binding.
 */
 //go:nosplit
 func (self class) HasPath(path String.Readable) bool { //gd:OpenXRIPBinding.has_path
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRIPBinding.Bind_has_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.OpenXRIPBinding.Bind_has_path, gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var ret = r_ret
 	return ret
 }
 
@@ -310,11 +272,7 @@ Add an input/output path to this binding.
 */
 //go:nosplit
 func (self class) AddPath(path String.Readable) { //gd:OpenXRIPBinding.add_path
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRIPBinding.Bind_add_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRIPBinding.Bind_add_path, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
 }
 
 /*
@@ -322,11 +280,7 @@ Removes this input/output path from this binding.
 */
 //go:nosplit
 func (self class) RemovePath(path String.Readable) { //gd:OpenXRIPBinding.remove_path
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRIPBinding.Bind_remove_path, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRIPBinding.Bind_remove_path, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
 }
 func (self class) AsOpenXRIPBinding() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsOpenXRIPBinding() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

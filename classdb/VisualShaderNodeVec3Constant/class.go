@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +53,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -112,20 +116,13 @@ func (self Instance) SetConstant(value Vector3.XYZ) {
 
 //go:nosplit
 func (self class) SetConstant(constant Vector3.XYZ) { //gd:VisualShaderNodeVec3Constant.set_constant
-	var frame = callframe.New()
-	callframe.Arg(frame, constant)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeVec3Constant.Bind_set_constant, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeVec3Constant.Bind_set_constant, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ constant Vector3.XYZ }{constant}))
 }
 
 //go:nosplit
 func (self class) GetConstant() Vector3.XYZ { //gd:VisualShaderNodeVec3Constant.get_constant
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Vector3.XYZ](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeVec3Constant.Bind_get_constant, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.VisualShaderNodeVec3Constant.Bind_get_constant, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsVisualShaderNodeVec3Constant() Advanced {

@@ -9,6 +9,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +51,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -223,13 +227,11 @@ Returns a given hostname's IPv4 or IPv6 address when resolved (blocking-type met
 */
 //go:nosplit
 func (self class) ResolveHostname(host String.Readable, ip_type Type) String.Readable { //gd:IP.resolve_hostname
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(host)))
-	callframe.Arg(frame, ip_type)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_resolve_hostname, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.IP.Bind_resolve_hostname, gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		host    gdextension.String
+		ip_type Type
+	}{gdextension.String(pointers.Get(gd.InternalString(host))[0]), ip_type}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -238,13 +240,11 @@ Resolves a given hostname in a blocking way. Addresses are returned as an [Array
 */
 //go:nosplit
 func (self class) ResolveHostnameAddresses(host String.Readable, ip_type Type) Packed.Strings { //gd:IP.resolve_hostname_addresses
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(host)))
-	callframe.Arg(frame, ip_type)
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_resolve_hostname_addresses, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.IP.Bind_resolve_hostname_addresses, gdextension.SizePackedArray|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		host    gdextension.String
+		ip_type Type
+	}{gdextension.String(pointers.Get(gd.InternalString(host))[0]), ip_type}))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -253,13 +253,11 @@ Creates a queue item to resolve a hostname to an IPv4 or IPv6 address depending 
 */
 //go:nosplit
 func (self class) ResolveHostnameQueueItem(host String.Readable, ip_type Type) int64 { //gd:IP.resolve_hostname_queue_item
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(host)))
-	callframe.Arg(frame, ip_type)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_resolve_hostname_queue_item, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.IP.Bind_resolve_hostname_queue_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		host    gdextension.String
+		ip_type Type
+	}{gdextension.String(pointers.Get(gd.InternalString(host))[0]), ip_type}))
+	var ret = r_ret
 	return ret
 }
 
@@ -268,12 +266,8 @@ Returns a queued hostname's status as a [enum ResolverStatus] constant, given it
 */
 //go:nosplit
 func (self class) GetResolveItemStatus(id int64) ResolverStatus { //gd:IP.get_resolve_item_status
-	var frame = callframe.New()
-	callframe.Arg(frame, id)
-	var r_ret = callframe.Ret[ResolverStatus](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_get_resolve_item_status, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[ResolverStatus](self.AsObject(), gd.Global.Methods.IP.Bind_get_resolve_item_status, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var ret = r_ret
 	return ret
 }
 
@@ -282,12 +276,8 @@ Returns a queued hostname's IP address, given its queue [param id]. Returns an e
 */
 //go:nosplit
 func (self class) GetResolveItemAddress(id int64) String.Readable { //gd:IP.get_resolve_item_address
-	var frame = callframe.New()
-	callframe.Arg(frame, id)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_get_resolve_item_address, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.IP.Bind_get_resolve_item_address, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -296,12 +286,8 @@ Returns resolved addresses, or an empty array if an error happened or resolution
 */
 //go:nosplit
 func (self class) GetResolveItemAddresses(id int64) Array.Any { //gd:IP.get_resolve_item_addresses
-	var frame = callframe.New()
-	callframe.Arg(frame, id)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_get_resolve_item_addresses, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.IP.Bind_get_resolve_item_addresses, gdextension.SizeArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -310,11 +296,7 @@ Removes a given item [param id] from the queue. This should be used to free a qu
 */
 //go:nosplit
 func (self class) EraseResolveItem(id int64) { //gd:IP.erase_resolve_item
-	var frame = callframe.New()
-	callframe.Arg(frame, id)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_erase_resolve_item, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.IP.Bind_erase_resolve_item, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
 }
 
 /*
@@ -322,11 +304,8 @@ Returns all the user's current IPv4 and IPv6 addresses as an array.
 */
 //go:nosplit
 func (self class) GetLocalAddresses() Packed.Strings { //gd:IP.get_local_addresses
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_get_local_addresses, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.IP.Bind_get_local_addresses, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
@@ -344,11 +323,8 @@ Each adapter is a dictionary of the form:
 */
 //go:nosplit
 func (self class) GetLocalInterfaces() Array.Contains[Dictionary.Any] { //gd:IP.get_local_interfaces
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_get_local_interfaces, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.IP.Bind_get_local_interfaces, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -357,11 +333,7 @@ Removes all of a [param hostname]'s cached references. If no [param hostname] is
 */
 //go:nosplit
 func (self class) ClearCache(hostname String.Readable) { //gd:IP.clear_cache
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(hostname)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.IP.Bind_clear_cache, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.IP.Bind_clear_cache, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ hostname gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(hostname))[0])}))
 }
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

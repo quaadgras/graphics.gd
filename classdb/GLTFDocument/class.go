@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -52,6 +54,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -261,58 +265,37 @@ func (self Instance) SetRootNodeMode(value RootNodeMode) {
 
 //go:nosplit
 func (self class) SetImageFormat(image_format String.Readable) { //gd:GLTFDocument.set_image_format
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(image_format)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFDocument.Bind_set_image_format, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFDocument.Bind_set_image_format, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ image_format gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(image_format))[0])}))
 }
 
 //go:nosplit
 func (self class) GetImageFormat() String.Readable { //gd:GLTFDocument.get_image_format
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFDocument.Bind_get_image_format, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.GLTFDocument.Bind_get_image_format, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLossyQuality(lossy_quality float64) { //gd:GLTFDocument.set_lossy_quality
-	var frame = callframe.New()
-	callframe.Arg(frame, lossy_quality)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFDocument.Bind_set_lossy_quality, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFDocument.Bind_set_lossy_quality, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ lossy_quality float64 }{lossy_quality}))
 }
 
 //go:nosplit
 func (self class) GetLossyQuality() float64 { //gd:GLTFDocument.get_lossy_quality
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFDocument.Bind_get_lossy_quality, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.GLTFDocument.Bind_get_lossy_quality, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRootNodeMode(root_node_mode RootNodeMode) { //gd:GLTFDocument.set_root_node_mode
-	var frame = callframe.New()
-	callframe.Arg(frame, root_node_mode)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFDocument.Bind_set_root_node_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFDocument.Bind_set_root_node_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ root_node_mode RootNodeMode }{root_node_mode}))
 }
 
 //go:nosplit
 func (self class) GetRootNodeMode() RootNodeMode { //gd:GLTFDocument.get_root_node_mode
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[RootNodeMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFDocument.Bind_get_root_node_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[RootNodeMode](self.AsObject(), gd.Global.Methods.GLTFDocument.Bind_get_root_node_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -322,15 +305,13 @@ Takes a path to a glTF file and imports the data at that file path to the given 
 */
 //go:nosplit
 func (self class) AppendFromFile(path String.Readable, state [1]gdclass.GLTFState, flags int64, base_path String.Readable) Error.Code { //gd:GLTFDocument.append_from_file
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	callframe.Arg(frame, pointers.Get(state[0])[0])
-	callframe.Arg(frame, flags)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(base_path)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFDocument.Bind_append_from_file, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.GLTFDocument.Bind_append_from_file, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeString<<16), unsafe.Pointer(&struct {
+		path      gdextension.String
+		state     gdextension.Object
+		flags     int64
+		base_path gdextension.String
+	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), gdextension.Object(pointers.Get(state[0])[0]), flags, gdextension.String(pointers.Get(gd.InternalString(base_path))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -340,15 +321,13 @@ Takes a [PackedByteArray] defining a glTF and imports the data to the given [GLT
 */
 //go:nosplit
 func (self class) AppendFromBuffer(bytes Packed.Bytes, base_path String.Readable, state [1]gdclass.GLTFState, flags int64) Error.Code { //gd:GLTFDocument.append_from_buffer
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](bytes))))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(base_path)))
-	callframe.Arg(frame, pointers.Get(state[0])[0])
-	callframe.Arg(frame, flags)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFDocument.Bind_append_from_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.GLTFDocument.Bind_append_from_buffer, gdextension.SizeInt|(gdextension.SizePackedArray<<4)|(gdextension.SizeString<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
+		bytes     gdextension.PackedArray
+		base_path gdextension.String
+		state     gdextension.Object
+		flags     int64
+	}{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](bytes)))), gdextension.String(pointers.Get(gd.InternalString(base_path))[0]), gdextension.Object(pointers.Get(state[0])[0]), flags}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -357,14 +336,12 @@ Takes a Godot Engine scene node and exports it and its descendants to the given 
 */
 //go:nosplit
 func (self class) AppendFromScene(node [1]gdclass.Node, state [1]gdclass.GLTFState, flags int64) Error.Code { //gd:GLTFDocument.append_from_scene
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(node[0])[0])
-	callframe.Arg(frame, pointers.Get(state[0])[0])
-	callframe.Arg(frame, flags)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFDocument.Bind_append_from_scene, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.GLTFDocument.Bind_append_from_scene, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+		node  gdextension.Object
+		state gdextension.Object
+		flags int64
+	}{gdextension.Object(pointers.Get(node[0])[0]), gdextension.Object(pointers.Get(state[0])[0]), flags}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -374,15 +351,13 @@ The [param bake_fps] parameter overrides the bake_fps in [param state].
 */
 //go:nosplit
 func (self class) GenerateScene(state [1]gdclass.GLTFState, bake_fps float64, trimming bool, remove_immutable_tracks bool) [1]gdclass.Node { //gd:GLTFDocument.generate_scene
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(state[0])[0])
-	callframe.Arg(frame, bake_fps)
-	callframe.Arg(frame, trimming)
-	callframe.Arg(frame, remove_immutable_tracks)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFDocument.Bind_generate_scene, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Node{gd.PointerWithOwnershipTransferredToGo[gdclass.Node](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.GLTFDocument.Bind_generate_scene, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+		state                   gdextension.Object
+		bake_fps                float64
+		trimming                bool
+		remove_immutable_tracks bool
+	}{gdextension.Object(pointers.Get(state[0])[0]), bake_fps, trimming, remove_immutable_tracks}))
+	var ret = [1]gdclass.Node{gd.PointerWithOwnershipTransferredToGo[gdclass.Node](r_ret)}
 	return ret
 }
 
@@ -391,12 +366,8 @@ Takes a [GLTFState] object through the [param state] parameter and returns a glT
 */
 //go:nosplit
 func (self class) GenerateBuffer(state [1]gdclass.GLTFState) Packed.Bytes { //gd:GLTFDocument.generate_buffer
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(state[0])[0])
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFDocument.Bind_generate_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.GLTFDocument.Bind_generate_buffer, gdextension.SizePackedArray|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ state gdextension.Object }{gdextension.Object(pointers.Get(state[0])[0])}))
+	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
 
@@ -406,13 +377,11 @@ Takes a [GLTFState] object through the [param state] parameter and writes a glTF
 */
 //go:nosplit
 func (self class) WriteToFilesystem(state [1]gdclass.GLTFState, path String.Readable) Error.Code { //gd:GLTFDocument.write_to_filesystem
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(state[0])[0])
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GLTFDocument.Bind_write_to_filesystem, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.GLTFDocument.Bind_write_to_filesystem, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+		state gdextension.Object
+		path  gdextension.String
+	}{gdextension.Object(pointers.Get(state[0])[0]), gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -421,13 +390,11 @@ Determines a mapping between the given glTF Object Model [param json_pointer] an
 */
 //go:nosplit
 func (self class) ImportObjectModelProperty(state [1]gdclass.GLTFState, json_pointer String.Readable) [1]gdclass.GLTFObjectModelProperty { //gd:GLTFDocument.import_object_model_property
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(state[0])[0])
-	callframe.Arg(frame, pointers.Get(gd.InternalString(json_pointer)))
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.GLTFDocument.Bind_import_object_model_property, frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.GLTFObjectModelProperty{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFObjectModelProperty](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.CallStatic[gd.EnginePointer](gd.Global.Methods.GLTFDocument.Bind_import_object_model_property, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+		state        gdextension.Object
+		json_pointer gdextension.String
+	}{gdextension.Object(pointers.Get(state[0])[0]), gdextension.String(pointers.Get(gd.InternalString(json_pointer))[0])}))
+	var ret = [1]gdclass.GLTFObjectModelProperty{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFObjectModelProperty](r_ret)}
 	return ret
 }
 
@@ -436,15 +403,13 @@ Determines a mapping between the given Godot [param node_path] and the correspon
 */
 //go:nosplit
 func (self class) ExportObjectModelProperty(state [1]gdclass.GLTFState, node_path Path.ToNode, godot_node [1]gdclass.Node, gltf_node_index int64) [1]gdclass.GLTFObjectModelProperty { //gd:GLTFDocument.export_object_model_property
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(state[0])[0])
-	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(node_path)))
-	callframe.Arg(frame, pointers.Get(godot_node[0])[0])
-	callframe.Arg(frame, gltf_node_index)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.GLTFDocument.Bind_export_object_model_property, frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.GLTFObjectModelProperty{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFObjectModelProperty](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.CallStatic[gd.EnginePointer](gd.Global.Methods.GLTFDocument.Bind_export_object_model_property, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeNodePath<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
+		state           gdextension.Object
+		node_path       gdextension.NodePath
+		godot_node      gdextension.Object
+		gltf_node_index int64
+	}{gdextension.Object(pointers.Get(state[0])[0]), gdextension.NodePath(pointers.Get(gd.InternalNodePath(node_path))[0]), gdextension.Object(pointers.Get(godot_node[0])[0]), gltf_node_index}))
+	var ret = [1]gdclass.GLTFObjectModelProperty{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFObjectModelProperty](r_ret)}
 	return ret
 }
 
@@ -454,12 +419,10 @@ Registers the given [GLTFDocumentExtension] instance with GLTFDocument. If [para
 */
 //go:nosplit
 func (self class) RegisterGltfDocumentExtension(extension [1]gdclass.GLTFDocumentExtension, first_priority bool) { //gd:GLTFDocument.register_gltf_document_extension
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(extension[0])[0])
-	callframe.Arg(frame, first_priority)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.GLTFDocument.Bind_register_gltf_document_extension, frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.CallStatic[struct{}](gd.Global.Methods.GLTFDocument.Bind_register_gltf_document_extension, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		extension      gdextension.Object
+		first_priority bool
+	}{gdextension.Object(pointers.Get(extension[0])[0]), first_priority}))
 }
 
 /*
@@ -467,11 +430,7 @@ Unregisters the given [GLTFDocumentExtension] instance.
 */
 //go:nosplit
 func (self class) UnregisterGltfDocumentExtension(extension [1]gdclass.GLTFDocumentExtension) { //gd:GLTFDocument.unregister_gltf_document_extension
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(extension[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.GLTFDocument.Bind_unregister_gltf_document_extension, frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.CallStatic[struct{}](gd.Global.Methods.GLTFDocument.Bind_unregister_gltf_document_extension, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ extension gdextension.Object }{gdextension.Object(pointers.Get(extension[0])[0])}))
 }
 
 /*
@@ -480,11 +439,8 @@ Returns a list of all support glTF extensions, including extensions supported di
 */
 //go:nosplit
 func (self class) GetSupportedGltfExtensions() Packed.Strings { //gd:GLTFDocument.get_supported_gltf_extensions
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.GLTFDocument.Bind_get_supported_gltf_extensions, frame.Array(0), r_ret.Addr())
-	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.CallStatic[gd.PackedPointers](gd.Global.Methods.GLTFDocument.Bind_get_supported_gltf_extensions, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 func (self class) AsGLTFDocument() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

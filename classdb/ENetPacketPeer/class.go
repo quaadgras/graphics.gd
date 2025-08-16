@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +50,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -246,11 +250,7 @@ Request a disconnection from a peer. An [constant ENetConnection.EVENT_DISCONNEC
 */
 //go:nosplit
 func (self class) PeerDisconnect(data int64) { //gd:ENetPacketPeer.peer_disconnect
-	var frame = callframe.New()
-	callframe.Arg(frame, data)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_peer_disconnect, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ENetPacketPeer.Bind_peer_disconnect, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ data int64 }{data}))
 }
 
 /*
@@ -258,11 +258,7 @@ Request a disconnection from a peer, but only after all queued outgoing packets 
 */
 //go:nosplit
 func (self class) PeerDisconnectLater(data int64) { //gd:ENetPacketPeer.peer_disconnect_later
-	var frame = callframe.New()
-	callframe.Arg(frame, data)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_peer_disconnect_later, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ENetPacketPeer.Bind_peer_disconnect_later, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ data int64 }{data}))
 }
 
 /*
@@ -270,11 +266,7 @@ Force an immediate disconnection from a peer. No [constant ENetConnection.EVENT_
 */
 //go:nosplit
 func (self class) PeerDisconnectNow(data int64) { //gd:ENetPacketPeer.peer_disconnect_now
-	var frame = callframe.New()
-	callframe.Arg(frame, data)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_peer_disconnect_now, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ENetPacketPeer.Bind_peer_disconnect_now, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ data int64 }{data}))
 }
 
 /*
@@ -282,10 +274,7 @@ Sends a ping request to a peer. ENet automatically pings all connected peers at 
 */
 //go:nosplit
 func (self class) Ping() { //gd:ENetPacketPeer.ping
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_ping, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ENetPacketPeer.Bind_ping, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -293,11 +282,7 @@ Sets the [param ping_interval] in milliseconds at which pings will be sent to a 
 */
 //go:nosplit
 func (self class) PingInterval(ping_interval int64) { //gd:ENetPacketPeer.ping_interval
-	var frame = callframe.New()
-	callframe.Arg(frame, ping_interval)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_ping_interval, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ENetPacketPeer.Bind_ping_interval, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ ping_interval int64 }{ping_interval}))
 }
 
 /*
@@ -305,10 +290,7 @@ Forcefully disconnects a peer. The foreign host represented by the peer is not n
 */
 //go:nosplit
 func (self class) Reset() { //gd:ENetPacketPeer.reset
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_reset, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ENetPacketPeer.Bind_reset, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -316,14 +298,12 @@ Queues a [param packet] to be sent over the specified [param channel]. See [code
 */
 //go:nosplit
 func (self class) Send(channel int64, packet Packed.Bytes, flags int64) Error.Code { //gd:ENetPacketPeer.send
-	var frame = callframe.New()
-	callframe.Arg(frame, channel)
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](packet))))
-	callframe.Arg(frame, flags)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_send, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ENetPacketPeer.Bind_send, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+		channel int64
+		packet  gdextension.PackedArray
+		flags   int64
+	}{channel, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](packet)))), flags}))
+	var ret = Error.Code(r_ret)
 	return ret
 }
 
@@ -336,13 +316,11 @@ Intermediate values for the throttle represent intermediate probabilities betwee
 */
 //go:nosplit
 func (self class) ThrottleConfigure(interval int64, acceleration int64, deceleration int64) { //gd:ENetPacketPeer.throttle_configure
-	var frame = callframe.New()
-	callframe.Arg(frame, interval)
-	callframe.Arg(frame, acceleration)
-	callframe.Arg(frame, deceleration)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_throttle_configure, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ENetPacketPeer.Bind_throttle_configure, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+		interval     int64
+		acceleration int64
+		deceleration int64
+	}{interval, acceleration, deceleration}))
 }
 
 /*
@@ -351,13 +329,11 @@ The [param timeout] is a factor that, multiplied by a value based on the average
 */
 //go:nosplit
 func (self class) SetTimeout(timeout int64, timeout_min int64, timeout_max int64) { //gd:ENetPacketPeer.set_timeout
-	var frame = callframe.New()
-	callframe.Arg(frame, timeout)
-	callframe.Arg(frame, timeout_min)
-	callframe.Arg(frame, timeout_max)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_set_timeout, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ENetPacketPeer.Bind_set_timeout, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+		timeout     int64
+		timeout_min int64
+		timeout_max int64
+	}{timeout, timeout_min, timeout_max}))
 }
 
 /*
@@ -365,11 +341,8 @@ Returns the ENet flags of the next packet in the received queue. See [code]FLAG_
 */
 //go:nosplit
 func (self class) GetPacketFlags() int64 { //gd:ENetPacketPeer.get_packet_flags
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_get_packet_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ENetPacketPeer.Bind_get_packet_flags, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -378,11 +351,8 @@ Returns the IP address of this peer.
 */
 //go:nosplit
 func (self class) GetRemoteAddress() String.Readable { //gd:ENetPacketPeer.get_remote_address
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_get_remote_address, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.ENetPacketPeer.Bind_get_remote_address, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -391,11 +361,8 @@ Returns the remote port of this peer.
 */
 //go:nosplit
 func (self class) GetRemotePort() int64 { //gd:ENetPacketPeer.get_remote_port
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_get_remote_port, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ENetPacketPeer.Bind_get_remote_port, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -404,12 +371,8 @@ Returns the requested [param statistic] for this peer. See [enum PeerStatistic].
 */
 //go:nosplit
 func (self class) GetStatistic(statistic PeerStatistic) float64 { //gd:ENetPacketPeer.get_statistic
-	var frame = callframe.New()
-	callframe.Arg(frame, statistic)
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_get_statistic, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.ENetPacketPeer.Bind_get_statistic, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ statistic PeerStatistic }{statistic}))
+	var ret = r_ret
 	return ret
 }
 
@@ -418,11 +381,8 @@ Returns the current peer state. See [enum PeerState].
 */
 //go:nosplit
 func (self class) GetState() PeerState { //gd:ENetPacketPeer.get_state
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[PeerState](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_get_state, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[PeerState](self.AsObject(), gd.Global.Methods.ENetPacketPeer.Bind_get_state, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -431,11 +391,8 @@ Returns the number of channels allocated for communication with peer.
 */
 //go:nosplit
 func (self class) GetChannels() int64 { //gd:ENetPacketPeer.get_channels
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_get_channels, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ENetPacketPeer.Bind_get_channels, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -444,11 +401,8 @@ Returns [code]true[/code] if the peer is currently active (i.e. the associated [
 */
 //go:nosplit
 func (self class) IsActive() bool { //gd:ENetPacketPeer.is_active
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ENetPacketPeer.Bind_is_active, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.ENetPacketPeer.Bind_is_active, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 func (self class) AsENetPacketPeer() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

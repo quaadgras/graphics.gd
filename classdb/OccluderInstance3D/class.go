@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +53,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -146,20 +150,13 @@ func (self Instance) SetBakeSimplificationDistance(value Float.X) {
 
 //go:nosplit
 func (self class) SetBakeMask(mask int64) { //gd:OccluderInstance3D.set_bake_mask
-	var frame = callframe.New()
-	callframe.Arg(frame, mask)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OccluderInstance3D.Bind_set_bake_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OccluderInstance3D.Bind_set_bake_mask, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mask int64 }{mask}))
 }
 
 //go:nosplit
 func (self class) GetBakeMask() int64 { //gd:OccluderInstance3D.get_bake_mask
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OccluderInstance3D.Bind_get_bake_mask, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OccluderInstance3D.Bind_get_bake_mask, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -168,12 +165,10 @@ Based on [param value], enables or disables the specified layer in the [member b
 */
 //go:nosplit
 func (self class) SetBakeMaskValue(layer_number int64, value bool) { //gd:OccluderInstance3D.set_bake_mask_value
-	var frame = callframe.New()
-	callframe.Arg(frame, layer_number)
-	callframe.Arg(frame, value)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OccluderInstance3D.Bind_set_bake_mask_value, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OccluderInstance3D.Bind_set_bake_mask_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		layer_number int64
+		value        bool
+	}{layer_number, value}))
 }
 
 /*
@@ -181,50 +176,32 @@ Returns whether or not the specified layer of the [member bake_mask] is enabled,
 */
 //go:nosplit
 func (self class) GetBakeMaskValue(layer_number int64) bool { //gd:OccluderInstance3D.get_bake_mask_value
-	var frame = callframe.New()
-	callframe.Arg(frame, layer_number)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OccluderInstance3D.Bind_get_bake_mask_value, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.OccluderInstance3D.Bind_get_bake_mask_value, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_number int64 }{layer_number}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBakeSimplificationDistance(simplification_distance float64) { //gd:OccluderInstance3D.set_bake_simplification_distance
-	var frame = callframe.New()
-	callframe.Arg(frame, simplification_distance)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OccluderInstance3D.Bind_set_bake_simplification_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OccluderInstance3D.Bind_set_bake_simplification_distance, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ simplification_distance float64 }{simplification_distance}))
 }
 
 //go:nosplit
 func (self class) GetBakeSimplificationDistance() float64 { //gd:OccluderInstance3D.get_bake_simplification_distance
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OccluderInstance3D.Bind_get_bake_simplification_distance, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.OccluderInstance3D.Bind_get_bake_simplification_distance, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOccluder(occluder [1]gdclass.Occluder3D) { //gd:OccluderInstance3D.set_occluder
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(occluder[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OccluderInstance3D.Bind_set_occluder, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OccluderInstance3D.Bind_set_occluder, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ occluder gdextension.Object }{gdextension.Object(pointers.Get(occluder[0])[0])}))
 }
 
 //go:nosplit
 func (self class) GetOccluder() [1]gdclass.Occluder3D { //gd:OccluderInstance3D.get_occluder
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OccluderInstance3D.Bind_get_occluder, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Occluder3D{gd.PointerWithOwnershipTransferredToGo[gdclass.Occluder3D](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.OccluderInstance3D.Bind_get_occluder, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.Occluder3D{gd.PointerWithOwnershipTransferredToGo[gdclass.Occluder3D](r_ret)}
 	return ret
 }
 func (self class) AsOccluderInstance3D() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

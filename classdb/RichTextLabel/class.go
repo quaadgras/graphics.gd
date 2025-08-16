@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -61,6 +63,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -1030,11 +1034,8 @@ Returns the text without BBCode mark-up.
 */
 //go:nosplit
 func (self class) GetParsedText() String.Readable { //gd:RichTextLabel.get_parsed_text
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_parsed_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_parsed_text, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -1043,20 +1044,12 @@ Adds raw non-BBCode-parsed text to the tag stack.
 */
 //go:nosplit
 func (self class) AddText(text String.Readable) { //gd:RichTextLabel.add_text
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_add_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_add_text, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(text))[0])}))
 }
 
 //go:nosplit
 func (self class) SetText(text String.Readable) { //gd:RichTextLabel.set_text
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(text)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_text, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(text))[0])}))
 }
 
 /*
@@ -1069,20 +1062,18 @@ If [param size_in_percent] is set, [param width] and [param height] values are p
 */
 //go:nosplit
 func (self class) AddImage(image [1]gdclass.Texture2D, width int64, height int64, color Color.RGBA, inline_align GUI.InlineAlignment, region Rect2.PositionSize, key variant.Any, pad bool, tooltip String.Readable, size_in_percent bool) { //gd:RichTextLabel.add_image
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(image[0])[0])
-	callframe.Arg(frame, width)
-	callframe.Arg(frame, height)
-	callframe.Arg(frame, color)
-	callframe.Arg(frame, inline_align)
-	callframe.Arg(frame, region)
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(key)))
-	callframe.Arg(frame, pad)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(tooltip)))
-	callframe.Arg(frame, size_in_percent)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_add_image, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_add_image, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeRect2<<24)|(gdextension.SizeVariant<<28)|(gdextension.SizeBool<<32)|(gdextension.SizeString<<36)|(gdextension.SizeBool<<40), unsafe.Pointer(&struct {
+		image           gdextension.Object
+		width           int64
+		height          int64
+		color           Color.RGBA
+		inline_align    GUI.InlineAlignment
+		region          Rect2.PositionSize
+		key             gdextension.Variant
+		pad             bool
+		tooltip         gdextension.String
+		size_in_percent bool
+	}{gdextension.Object(pointers.Get(image[0])[0]), width, height, color, inline_align, region, gdextension.Variant(pointers.Get(gd.InternalVariant(key))), pad, gdextension.String(pointers.Get(gd.InternalString(tooltip))[0]), size_in_percent}))
 }
 
 /*
@@ -1090,21 +1081,19 @@ Updates the existing images with the key [param key]. Only properties specified 
 */
 //go:nosplit
 func (self class) UpdateImage(key variant.Any, mask ImageUpdateMask, image [1]gdclass.Texture2D, width int64, height int64, color Color.RGBA, inline_align GUI.InlineAlignment, region Rect2.PositionSize, pad bool, tooltip String.Readable, size_in_percent bool) { //gd:RichTextLabel.update_image
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(key)))
-	callframe.Arg(frame, mask)
-	callframe.Arg(frame, pointers.Get(image[0])[0])
-	callframe.Arg(frame, width)
-	callframe.Arg(frame, height)
-	callframe.Arg(frame, color)
-	callframe.Arg(frame, inline_align)
-	callframe.Arg(frame, region)
-	callframe.Arg(frame, pad)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(tooltip)))
-	callframe.Arg(frame, size_in_percent)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_update_image, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_update_image, 0|(gdextension.SizeVariant<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeColor<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeRect2<<32)|(gdextension.SizeBool<<36)|(gdextension.SizeString<<40)|(gdextension.SizeBool<<44), unsafe.Pointer(&struct {
+		key             gdextension.Variant
+		mask            ImageUpdateMask
+		image           gdextension.Object
+		width           int64
+		height          int64
+		color           Color.RGBA
+		inline_align    GUI.InlineAlignment
+		region          Rect2.PositionSize
+		pad             bool
+		tooltip         gdextension.String
+		size_in_percent bool
+	}{gdextension.Variant(pointers.Get(gd.InternalVariant(key))), mask, gdextension.Object(pointers.Get(image[0])[0]), width, height, color, inline_align, region, pad, gdextension.String(pointers.Get(gd.InternalString(tooltip))[0]), size_in_percent}))
 }
 
 /*
@@ -1112,10 +1101,7 @@ Adds a newline tag to the tag stack.
 */
 //go:nosplit
 func (self class) Newline() { //gd:RichTextLabel.newline
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_newline, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_newline, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1125,13 +1111,11 @@ If [param no_invalidate] is set to [code]true[/code], cache for the subsequent p
 */
 //go:nosplit
 func (self class) RemoveParagraph(paragraph int64, no_invalidate bool) bool { //gd:RichTextLabel.remove_paragraph
-	var frame = callframe.New()
-	callframe.Arg(frame, paragraph)
-	callframe.Arg(frame, no_invalidate)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_remove_paragraph, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_remove_paragraph, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+		paragraph     int64
+		no_invalidate bool
+	}{paragraph, no_invalidate}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1140,12 +1124,8 @@ Invalidates [param paragraph] and all subsequent paragraphs cache.
 */
 //go:nosplit
 func (self class) InvalidateParagraph(paragraph int64) bool { //gd:RichTextLabel.invalidate_paragraph
-	var frame = callframe.New()
-	callframe.Arg(frame, paragraph)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_invalidate_paragraph, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_invalidate_paragraph, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ paragraph int64 }{paragraph}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1155,12 +1135,10 @@ Passing [code]0[/code] to [param font_size] will use the existing default font s
 */
 //go:nosplit
 func (self class) PushFont(font [1]gdclass.Font, font_size int64) { //gd:RichTextLabel.push_font
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(font[0])[0])
-	callframe.Arg(frame, font_size)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_push_font, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_font, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+		font      gdextension.Object
+		font_size int64
+	}{gdextension.Object(pointers.Get(font[0])[0]), font_size}))
 }
 
 /*
@@ -1168,11 +1146,7 @@ Adds a [code skip-lint][font_size][/code] tag to the tag stack. Overrides defaul
 */
 //go:nosplit
 func (self class) PushFontSize(font_size int64) { //gd:RichTextLabel.push_font_size
-	var frame = callframe.New()
-	callframe.Arg(frame, font_size)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_push_font_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_font_size, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ font_size int64 }{font_size}))
 }
 
 /*
@@ -1180,10 +1154,7 @@ Adds a [code skip-lint][font][/code] tag with a normal font to the tag stack.
 */
 //go:nosplit
 func (self class) PushNormal() { //gd:RichTextLabel.push_normal
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_push_normal, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_normal, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1191,10 +1162,7 @@ Adds a [code skip-lint][font][/code] tag with a bold font to the tag stack. This
 */
 //go:nosplit
 func (self class) PushBold() { //gd:RichTextLabel.push_bold
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_push_bold, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_bold, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1202,10 +1170,7 @@ Adds a [code skip-lint][font][/code] tag with a bold italics font to the tag sta
 */
 //go:nosplit
 func (self class) PushBoldItalics() { //gd:RichTextLabel.push_bold_italics
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_push_bold_italics, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_bold_italics, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1213,10 +1178,7 @@ Adds a [code skip-lint][font][/code] tag with an italics font to the tag stack. 
 */
 //go:nosplit
 func (self class) PushItalics() { //gd:RichTextLabel.push_italics
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_push_italics, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_italics, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1224,10 +1186,7 @@ Adds a [code skip-lint][font][/code] tag with a monospace font to the tag stack.
 */
 //go:nosplit
 func (self class) PushMono() { //gd:RichTextLabel.push_mono
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_push_mono, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_mono, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1235,11 +1194,7 @@ Adds a [code skip-lint][color][/code] tag to the tag stack.
 */
 //go:nosplit
 func (self class) PushColor(color Color.RGBA) { //gd:RichTextLabel.push_color
-	var frame = callframe.New()
-	callframe.Arg(frame, color)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_push_color, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_color, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 /*
@@ -1247,11 +1202,7 @@ Adds a [code skip-lint][outline_size][/code] tag to the tag stack. Overrides def
 */
 //go:nosplit
 func (self class) PushOutlineSize(outline_size int64) { //gd:RichTextLabel.push_outline_size
-	var frame = callframe.New()
-	callframe.Arg(frame, outline_size)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_push_outline_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_outline_size, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ outline_size int64 }{outline_size}))
 }
 
 /*
@@ -1259,11 +1210,7 @@ Adds a [code skip-lint][outline_color][/code] tag to the tag stack. Adds text ou
 */
 //go:nosplit
 func (self class) PushOutlineColor(color Color.RGBA) { //gd:RichTextLabel.push_outline_color
-	var frame = callframe.New()
-	callframe.Arg(frame, color)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_push_outline_color, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_outline_color, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 /*
@@ -1271,16 +1218,14 @@ Adds a [code skip-lint][p][/code] tag to the tag stack.
 */
 //go:nosplit
 func (self class) PushParagraph(alignment GUI.HorizontalAlignment, base_direction Control.TextDirection, language String.Readable, st_parser TextServer.StructuredTextParser, justification_flags TextServer.JustificationFlag, tab_stops Packed.Array[float32]) { //gd:RichTextLabel.push_paragraph
-	var frame = callframe.New()
-	callframe.Arg(frame, alignment)
-	callframe.Arg(frame, base_direction)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
-	callframe.Arg(frame, st_parser)
-	callframe.Arg(frame, justification_flags)
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](tab_stops)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_push_paragraph, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_paragraph, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizePackedArray<<24), unsafe.Pointer(&struct {
+		alignment           GUI.HorizontalAlignment
+		base_direction      Control.TextDirection
+		language            gdextension.String
+		st_parser           TextServer.StructuredTextParser
+		justification_flags TextServer.JustificationFlag
+		tab_stops           gdextension.PackedArray
+	}{alignment, base_direction, gdextension.String(pointers.Get(gd.InternalString(language))[0]), st_parser, justification_flags, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](tab_stops)))}))
 }
 
 /*
@@ -1288,11 +1233,7 @@ Adds an [code skip-lint][indent][/code] tag to the tag stack. Multiplies [param 
 */
 //go:nosplit
 func (self class) PushIndent(level int64) { //gd:RichTextLabel.push_indent
-	var frame = callframe.New()
-	callframe.Arg(frame, level)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_push_indent, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_indent, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ level int64 }{level}))
 }
 
 /*
@@ -1300,14 +1241,12 @@ Adds [code skip-lint][ol][/code] or [code skip-lint][ul][/code] tag to the tag s
 */
 //go:nosplit
 func (self class) PushList(level int64, atype ListType, capitalize bool, bullet String.Readable) { //gd:RichTextLabel.push_list
-	var frame = callframe.New()
-	callframe.Arg(frame, level)
-	callframe.Arg(frame, atype)
-	callframe.Arg(frame, capitalize)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(bullet)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_push_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_list, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeString<<16), unsafe.Pointer(&struct {
+		level      int64
+		atype      ListType
+		capitalize bool
+		bullet     gdextension.String
+	}{level, atype, capitalize, gdextension.String(pointers.Get(gd.InternalString(bullet))[0])}))
 }
 
 /*
@@ -1317,13 +1256,11 @@ If [member meta_underlined] is [code]true[/code], meta tags display an underline
 */
 //go:nosplit
 func (self class) PushMeta(data variant.Any, underline_mode MetaUnderline, tooltip String.Readable) { //gd:RichTextLabel.push_meta
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(data)))
-	callframe.Arg(frame, underline_mode)
-	callframe.Arg(frame, pointers.Get(gd.InternalString(tooltip)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_push_meta, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_meta, 0|(gdextension.SizeVariant<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
+		data           gdextension.Variant
+		underline_mode MetaUnderline
+		tooltip        gdextension.String
+	}{gdextension.Variant(pointers.Get(gd.InternalVariant(data))), underline_mode, gdextension.String(pointers.Get(gd.InternalString(tooltip))[0])}))
 }
 
 /*
@@ -1331,11 +1268,7 @@ Adds a [code skip-lint][hint][/code] tag to the tag stack. Same as BBCode [code 
 */
 //go:nosplit
 func (self class) PushHint(description String.Readable) { //gd:RichTextLabel.push_hint
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(description)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_push_hint, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_hint, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ description gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(description))[0])}))
 }
 
 /*
@@ -1343,11 +1276,7 @@ Adds language code used for text shaping algorithm and Open-Type font features.
 */
 //go:nosplit
 func (self class) PushLanguage(language String.Readable) { //gd:RichTextLabel.push_language
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_push_language, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_language, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ language gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
 }
 
 /*
@@ -1355,10 +1284,7 @@ Adds a [code skip-lint][u][/code] tag to the tag stack.
 */
 //go:nosplit
 func (self class) PushUnderline() { //gd:RichTextLabel.push_underline
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_push_underline, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_underline, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1366,10 +1292,7 @@ Adds a [code skip-lint][s][/code] tag to the tag stack.
 */
 //go:nosplit
 func (self class) PushStrikethrough() { //gd:RichTextLabel.push_strikethrough
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_push_strikethrough, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_strikethrough, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1377,13 +1300,11 @@ Adds a [code skip-lint][table=columns,inline_align][/code] tag to the tag stack.
 */
 //go:nosplit
 func (self class) PushTable(columns int64, inline_align GUI.InlineAlignment, align_to_row int64) { //gd:RichTextLabel.push_table
-	var frame = callframe.New()
-	callframe.Arg(frame, columns)
-	callframe.Arg(frame, inline_align)
-	callframe.Arg(frame, align_to_row)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_push_table, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_table, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+		columns      int64
+		inline_align GUI.InlineAlignment
+		align_to_row int64
+	}{columns, inline_align, align_to_row}))
 }
 
 /*
@@ -1391,17 +1312,15 @@ Adds a [code skip-lint][dropcap][/code] tag to the tag stack. Drop cap (dropped 
 */
 //go:nosplit
 func (self class) PushDropcap(s String.Readable, font [1]gdclass.Font, size int64, dropcap_margins Rect2.PositionSize, color Color.RGBA, outline_size int64, outline_color Color.RGBA) { //gd:RichTextLabel.push_dropcap
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(s)))
-	callframe.Arg(frame, pointers.Get(font[0])[0])
-	callframe.Arg(frame, size)
-	callframe.Arg(frame, dropcap_margins)
-	callframe.Arg(frame, color)
-	callframe.Arg(frame, outline_size)
-	callframe.Arg(frame, outline_color)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_push_dropcap, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_dropcap, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeRect2<<16)|(gdextension.SizeColor<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeColor<<28), unsafe.Pointer(&struct {
+		s               gdextension.String
+		font            gdextension.Object
+		size            int64
+		dropcap_margins Rect2.PositionSize
+		color           Color.RGBA
+		outline_size    int64
+		outline_color   Color.RGBA
+	}{gdextension.String(pointers.Get(gd.InternalString(s))[0]), gdextension.Object(pointers.Get(font[0])[0]), size, dropcap_margins, color, outline_size, outline_color}))
 }
 
 /*
@@ -1411,14 +1330,12 @@ If [param expand] is [code]false[/code], the column will not contribute to the t
 */
 //go:nosplit
 func (self class) SetTableColumnExpand(column int64, expand bool, ratio int64, shrink bool) { //gd:RichTextLabel.set_table_column_expand
-	var frame = callframe.New()
-	callframe.Arg(frame, column)
-	callframe.Arg(frame, expand)
-	callframe.Arg(frame, ratio)
-	callframe.Arg(frame, shrink)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_table_column_expand, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_table_column_expand, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+		column int64
+		expand bool
+		ratio  int64
+		shrink bool
+	}{column, expand, ratio, shrink}))
 }
 
 /*
@@ -1426,12 +1343,10 @@ Sets color of a table cell. Separate colors for alternating rows can be specifie
 */
 //go:nosplit
 func (self class) SetCellRowBackgroundColor(odd_row_bg Color.RGBA, even_row_bg Color.RGBA) { //gd:RichTextLabel.set_cell_row_background_color
-	var frame = callframe.New()
-	callframe.Arg(frame, odd_row_bg)
-	callframe.Arg(frame, even_row_bg)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_cell_row_background_color, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_cell_row_background_color, 0|(gdextension.SizeColor<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
+		odd_row_bg  Color.RGBA
+		even_row_bg Color.RGBA
+	}{odd_row_bg, even_row_bg}))
 }
 
 /*
@@ -1439,11 +1354,7 @@ Sets color of a table cell border.
 */
 //go:nosplit
 func (self class) SetCellBorderColor(color Color.RGBA) { //gd:RichTextLabel.set_cell_border_color
-	var frame = callframe.New()
-	callframe.Arg(frame, color)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_cell_border_color, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_cell_border_color, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 /*
@@ -1451,12 +1362,10 @@ Sets minimum and maximum size overrides for a table cell.
 */
 //go:nosplit
 func (self class) SetCellSizeOverride(min_size Vector2.XY, max_size Vector2.XY) { //gd:RichTextLabel.set_cell_size_override
-	var frame = callframe.New()
-	callframe.Arg(frame, min_size)
-	callframe.Arg(frame, max_size)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_cell_size_override, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_cell_size_override, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
+		min_size Vector2.XY
+		max_size Vector2.XY
+	}{min_size, max_size}))
 }
 
 /*
@@ -1464,11 +1373,7 @@ Sets inner padding of a table cell.
 */
 //go:nosplit
 func (self class) SetCellPadding(padding Rect2.PositionSize) { //gd:RichTextLabel.set_cell_padding
-	var frame = callframe.New()
-	callframe.Arg(frame, padding)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_cell_padding, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_cell_padding, 0|(gdextension.SizeRect2<<4), unsafe.Pointer(&struct{ padding Rect2.PositionSize }{padding}))
 }
 
 /*
@@ -1476,10 +1381,7 @@ Adds a [code skip-lint][cell][/code] tag to the tag stack. Must be inside a [cod
 */
 //go:nosplit
 func (self class) PushCell() { //gd:RichTextLabel.push_cell
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_push_cell, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_cell, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1487,11 +1389,7 @@ Adds a [code skip-lint][fgcolor][/code] tag to the tag stack.
 */
 //go:nosplit
 func (self class) PushFgcolor(fgcolor Color.RGBA) { //gd:RichTextLabel.push_fgcolor
-	var frame = callframe.New()
-	callframe.Arg(frame, fgcolor)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_push_fgcolor, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_fgcolor, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ fgcolor Color.RGBA }{fgcolor}))
 }
 
 /*
@@ -1499,11 +1397,7 @@ Adds a [code skip-lint][bgcolor][/code] tag to the tag stack.
 */
 //go:nosplit
 func (self class) PushBgcolor(bgcolor Color.RGBA) { //gd:RichTextLabel.push_bgcolor
-	var frame = callframe.New()
-	callframe.Arg(frame, bgcolor)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_push_bgcolor, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_bgcolor, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ bgcolor Color.RGBA }{bgcolor}))
 }
 
 /*
@@ -1511,12 +1405,10 @@ Adds a custom effect tag to the tag stack. The effect does not need to be in [me
 */
 //go:nosplit
 func (self class) PushCustomfx(effect [1]gdclass.RichTextEffect, env Dictionary.Any) { //gd:RichTextLabel.push_customfx
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(effect[0])[0])
-	callframe.Arg(frame, pointers.Get(gd.InternalDictionary(env)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_push_customfx, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_customfx, 0|(gdextension.SizeObject<<4)|(gdextension.SizeDictionary<<8), unsafe.Pointer(&struct {
+		effect gdextension.Object
+		env    gdextension.Dictionary
+	}{gdextension.Object(pointers.Get(effect[0])[0]), gdextension.Dictionary(pointers.Get(gd.InternalDictionary(env))[0])}))
 }
 
 /*
@@ -1524,10 +1416,7 @@ Adds a context marker to the tag stack. See [method pop_context].
 */
 //go:nosplit
 func (self class) PushContext() { //gd:RichTextLabel.push_context
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_push_context, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_context, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1535,10 +1424,7 @@ Terminates tags opened after the last [method push_context] call (including cont
 */
 //go:nosplit
 func (self class) PopContext() { //gd:RichTextLabel.pop_context
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_pop_context, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_pop_context, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1546,10 +1432,7 @@ Terminates the current tag. Use after [code]push_*[/code] methods to close BBCod
 */
 //go:nosplit
 func (self class) Pop() { //gd:RichTextLabel.pop
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_pop, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_pop, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1557,10 +1440,7 @@ Terminates all tags opened by [code]push_*[/code] methods.
 */
 //go:nosplit
 func (self class) PopAll() { //gd:RichTextLabel.pop_all
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_pop_all, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_pop_all, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1569,256 +1449,164 @@ Clears the tag stack, causing the label to display nothing.
 */
 //go:nosplit
 func (self class) Clear() { //gd:RichTextLabel.clear
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_clear, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_clear, 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) SetStructuredTextBidiOverride(parser TextServer.StructuredTextParser) { //gd:RichTextLabel.set_structured_text_bidi_override
-	var frame = callframe.New()
-	callframe.Arg(frame, parser)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_structured_text_bidi_override, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_structured_text_bidi_override, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
+		parser TextServer.StructuredTextParser
+	}{parser}))
 }
 
 //go:nosplit
 func (self class) GetStructuredTextBidiOverride() TextServer.StructuredTextParser { //gd:RichTextLabel.get_structured_text_bidi_override
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[TextServer.StructuredTextParser](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_structured_text_bidi_override, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[TextServer.StructuredTextParser](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_structured_text_bidi_override, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStructuredTextBidiOverrideOptions(args Array.Any) { //gd:RichTextLabel.set_structured_text_bidi_override_options
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(args)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_structured_text_bidi_override_options, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_structured_text_bidi_override_options, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ args gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(args))[0])}))
 }
 
 //go:nosplit
 func (self class) GetStructuredTextBidiOverrideOptions() Array.Any { //gd:RichTextLabel.get_structured_text_bidi_override_options
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_structured_text_bidi_override_options, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_structured_text_bidi_override_options, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextDirection(direction Control.TextDirection) { //gd:RichTextLabel.set_text_direction
-	var frame = callframe.New()
-	callframe.Arg(frame, direction)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_text_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_text_direction, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ direction Control.TextDirection }{direction}))
 }
 
 //go:nosplit
 func (self class) GetTextDirection() Control.TextDirection { //gd:RichTextLabel.get_text_direction
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Control.TextDirection](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_text_direction, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Control.TextDirection](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_text_direction, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLanguage(language String.Readable) { //gd:RichTextLabel.set_language
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(language)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_language, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_language, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ language gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
 }
 
 //go:nosplit
 func (self class) GetLanguage() String.Readable { //gd:RichTextLabel.get_language
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_language, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_language, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHorizontalAlignment(alignment GUI.HorizontalAlignment) { //gd:RichTextLabel.set_horizontal_alignment
-	var frame = callframe.New()
-	callframe.Arg(frame, alignment)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_horizontal_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_horizontal_alignment, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment GUI.HorizontalAlignment }{alignment}))
 }
 
 //go:nosplit
 func (self class) GetHorizontalAlignment() GUI.HorizontalAlignment { //gd:RichTextLabel.get_horizontal_alignment
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[GUI.HorizontalAlignment](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_horizontal_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[GUI.HorizontalAlignment](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_horizontal_alignment, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVerticalAlignment(alignment GUI.VerticalAlignment) { //gd:RichTextLabel.set_vertical_alignment
-	var frame = callframe.New()
-	callframe.Arg(frame, alignment)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_vertical_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_vertical_alignment, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment GUI.VerticalAlignment }{alignment}))
 }
 
 //go:nosplit
 func (self class) GetVerticalAlignment() GUI.VerticalAlignment { //gd:RichTextLabel.get_vertical_alignment
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[GUI.VerticalAlignment](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_vertical_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[GUI.VerticalAlignment](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_vertical_alignment, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetJustificationFlags(justification_flags TextServer.JustificationFlag) { //gd:RichTextLabel.set_justification_flags
-	var frame = callframe.New()
-	callframe.Arg(frame, justification_flags)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_justification_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_justification_flags, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ justification_flags TextServer.JustificationFlag }{justification_flags}))
 }
 
 //go:nosplit
 func (self class) GetJustificationFlags() TextServer.JustificationFlag { //gd:RichTextLabel.get_justification_flags
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[TextServer.JustificationFlag](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_justification_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[TextServer.JustificationFlag](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_justification_flags, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTabStops(tab_stops Packed.Array[float32]) { //gd:RichTextLabel.set_tab_stops
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](tab_stops)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_tab_stops, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_tab_stops, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ tab_stops gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](tab_stops)))}))
 }
 
 //go:nosplit
 func (self class) GetTabStops() Packed.Array[float32] { //gd:RichTextLabel.get_tab_stops
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.PackedPointers](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_tab_stops, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_tab_stops, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutowrapMode(autowrap_mode TextServer.AutowrapMode) { //gd:RichTextLabel.set_autowrap_mode
-	var frame = callframe.New()
-	callframe.Arg(frame, autowrap_mode)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_autowrap_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_autowrap_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ autowrap_mode TextServer.AutowrapMode }{autowrap_mode}))
 }
 
 //go:nosplit
 func (self class) GetAutowrapMode() TextServer.AutowrapMode { //gd:RichTextLabel.get_autowrap_mode
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[TextServer.AutowrapMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_autowrap_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[TextServer.AutowrapMode](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_autowrap_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMetaUnderline(enable bool) { //gd:RichTextLabel.set_meta_underline
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_meta_underline, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_meta_underline, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsMetaUnderlined() bool { //gd:RichTextLabel.is_meta_underlined
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_is_meta_underlined, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_is_meta_underlined, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHintUnderline(enable bool) { //gd:RichTextLabel.set_hint_underline
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_hint_underline, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_hint_underline, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsHintUnderlined() bool { //gd:RichTextLabel.is_hint_underlined
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_is_hint_underlined, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_is_hint_underlined, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScrollActive(active bool) { //gd:RichTextLabel.set_scroll_active
-	var frame = callframe.New()
-	callframe.Arg(frame, active)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_scroll_active, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_scroll_active, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ active bool }{active}))
 }
 
 //go:nosplit
 func (self class) IsScrollActive() bool { //gd:RichTextLabel.is_scroll_active
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_is_scroll_active, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_is_scroll_active, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScrollFollow(follow bool) { //gd:RichTextLabel.set_scroll_follow
-	var frame = callframe.New()
-	callframe.Arg(frame, follow)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_scroll_follow, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_scroll_follow, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ follow bool }{follow}))
 }
 
 //go:nosplit
 func (self class) IsScrollFollowing() bool { //gd:RichTextLabel.is_scroll_following
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_is_scroll_following, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_is_scroll_following, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -1828,11 +1616,8 @@ Returns the vertical scrollbar.
 */
 //go:nosplit
 func (self class) GetVScrollBar() [1]gdclass.VScrollBar { //gd:RichTextLabel.get_v_scroll_bar
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_v_scroll_bar, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.VScrollBar{gd.PointerLifetimeBoundTo[gdclass.VScrollBar](self.AsObject(), r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_v_scroll_bar, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.VScrollBar{gd.PointerLifetimeBoundTo[gdclass.VScrollBar](self.AsObject(), r_ret)}
 	return ret
 }
 
@@ -1841,11 +1626,7 @@ Scrolls the window's top line to match [param line].
 */
 //go:nosplit
 func (self class) ScrollToLine(line int64) { //gd:RichTextLabel.scroll_to_line
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_scroll_to_line, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_scroll_to_line, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
 }
 
 /*
@@ -1853,11 +1634,7 @@ Scrolls the window's top line to match first line of the [param paragraph].
 */
 //go:nosplit
 func (self class) ScrollToParagraph(paragraph int64) { //gd:RichTextLabel.scroll_to_paragraph
-	var frame = callframe.New()
-	callframe.Arg(frame, paragraph)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_scroll_to_paragraph, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_scroll_to_paragraph, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ paragraph int64 }{paragraph}))
 }
 
 /*
@@ -1865,142 +1642,90 @@ Scrolls to the beginning of the current selection.
 */
 //go:nosplit
 func (self class) ScrollToSelection() { //gd:RichTextLabel.scroll_to_selection
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_scroll_to_selection, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_scroll_to_selection, 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) SetTabSize(spaces int64) { //gd:RichTextLabel.set_tab_size
-	var frame = callframe.New()
-	callframe.Arg(frame, spaces)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_tab_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_tab_size, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ spaces int64 }{spaces}))
 }
 
 //go:nosplit
 func (self class) GetTabSize() int64 { //gd:RichTextLabel.get_tab_size
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_tab_size, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_tab_size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFitContent(enabled bool) { //gd:RichTextLabel.set_fit_content
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_fit_content, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_fit_content, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsFitContentEnabled() bool { //gd:RichTextLabel.is_fit_content_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_is_fit_content_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_is_fit_content_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSelectionEnabled(enabled bool) { //gd:RichTextLabel.set_selection_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_selection_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_selection_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsSelectionEnabled() bool { //gd:RichTextLabel.is_selection_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_is_selection_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_is_selection_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetContextMenuEnabled(enabled bool) { //gd:RichTextLabel.set_context_menu_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_context_menu_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_context_menu_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsContextMenuEnabled() bool { //gd:RichTextLabel.is_context_menu_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_is_context_menu_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_is_context_menu_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShortcutKeysEnabled(enabled bool) { //gd:RichTextLabel.set_shortcut_keys_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_shortcut_keys_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_shortcut_keys_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsShortcutKeysEnabled() bool { //gd:RichTextLabel.is_shortcut_keys_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_is_shortcut_keys_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_is_shortcut_keys_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDeselectOnFocusLossEnabled(enable bool) { //gd:RichTextLabel.set_deselect_on_focus_loss_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_deselect_on_focus_loss_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_deselect_on_focus_loss_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsDeselectOnFocusLossEnabled() bool { //gd:RichTextLabel.is_deselect_on_focus_loss_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_is_deselect_on_focus_loss_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_is_deselect_on_focus_loss_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDragAndDropSelectionEnabled(enable bool) { //gd:RichTextLabel.set_drag_and_drop_selection_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_drag_and_drop_selection_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_drag_and_drop_selection_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsDragAndDropSelectionEnabled() bool { //gd:RichTextLabel.is_drag_and_drop_selection_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_is_drag_and_drop_selection_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_is_drag_and_drop_selection_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2009,11 +1734,8 @@ Returns the current selection first character index if a selection is active, [c
 */
 //go:nosplit
 func (self class) GetSelectionFrom() int64 { //gd:RichTextLabel.get_selection_from
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_selection_from, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_selection_from, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2022,11 +1744,8 @@ Returns the current selection last character index if a selection is active, [co
 */
 //go:nosplit
 func (self class) GetSelectionTo() int64 { //gd:RichTextLabel.get_selection_to
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_selection_to, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_selection_to, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2035,11 +1754,8 @@ Returns the current selection vertical line offset if a selection is active, [co
 */
 //go:nosplit
 func (self class) GetSelectionLineOffset() float64 { //gd:RichTextLabel.get_selection_line_offset
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_selection_line_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_selection_line_offset, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2049,10 +1765,7 @@ If [member selection_enabled] is [code]false[/code], no selection will occur.
 */
 //go:nosplit
 func (self class) SelectAll() { //gd:RichTextLabel.select_all
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_select_all, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_select_all, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -2060,11 +1773,8 @@ Returns the current selection text. Does not include BBCodes.
 */
 //go:nosplit
 func (self class) GetSelectedText() String.Readable { //gd:RichTextLabel.get_selected_text
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_selected_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_selected_text, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -2073,10 +1783,7 @@ Clears the current selection.
 */
 //go:nosplit
 func (self class) Deselect() { //gd:RichTextLabel.deselect
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_deselect, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_deselect, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -2084,11 +1791,7 @@ The assignment version of [method append_text]. Clears the tag stack and inserts
 */
 //go:nosplit
 func (self class) ParseBbcode(bbcode String.Readable) { //gd:RichTextLabel.parse_bbcode
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(bbcode)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_parse_bbcode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_parse_bbcode, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ bbcode gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(bbcode))[0])}))
 }
 
 /*
@@ -2097,20 +1800,13 @@ Parses [param bbcode] and adds tags to the tag stack as needed.
 */
 //go:nosplit
 func (self class) AppendText(bbcode String.Readable) { //gd:RichTextLabel.append_text
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(bbcode)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_append_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_append_text, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ bbcode gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(bbcode))[0])}))
 }
 
 //go:nosplit
 func (self class) GetText() String.Readable { //gd:RichTextLabel.get_text
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_text, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_text, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
@@ -2119,11 +1815,8 @@ If [member threaded] is enabled, returns [code]true[/code] if the background thr
 */
 //go:nosplit
 func (self class) IsReady() bool { //gd:RichTextLabel.is_ready
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_is_ready, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_is_ready, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2132,106 +1825,70 @@ If [member threaded] is enabled, returns [code]true[/code] if the background thr
 */
 //go:nosplit
 func (self class) IsFinished() bool { //gd:RichTextLabel.is_finished
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_is_finished, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_is_finished, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetThreaded(threaded bool) { //gd:RichTextLabel.set_threaded
-	var frame = callframe.New()
-	callframe.Arg(frame, threaded)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_threaded, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_threaded, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ threaded bool }{threaded}))
 }
 
 //go:nosplit
 func (self class) IsThreaded() bool { //gd:RichTextLabel.is_threaded
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_is_threaded, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_is_threaded, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetProgressBarDelay(delay_ms int64) { //gd:RichTextLabel.set_progress_bar_delay
-	var frame = callframe.New()
-	callframe.Arg(frame, delay_ms)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_progress_bar_delay, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_progress_bar_delay, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ delay_ms int64 }{delay_ms}))
 }
 
 //go:nosplit
 func (self class) GetProgressBarDelay() int64 { //gd:RichTextLabel.get_progress_bar_delay
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_progress_bar_delay, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_progress_bar_delay, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVisibleCharacters(amount int64) { //gd:RichTextLabel.set_visible_characters
-	var frame = callframe.New()
-	callframe.Arg(frame, amount)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_visible_characters, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_visible_characters, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ amount int64 }{amount}))
 }
 
 //go:nosplit
 func (self class) GetVisibleCharacters() int64 { //gd:RichTextLabel.get_visible_characters
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_visible_characters, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_visible_characters, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetVisibleCharactersBehavior() TextServer.VisibleCharactersBehavior { //gd:RichTextLabel.get_visible_characters_behavior
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[TextServer.VisibleCharactersBehavior](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_visible_characters_behavior, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[TextServer.VisibleCharactersBehavior](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_visible_characters_behavior, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVisibleCharactersBehavior(behavior TextServer.VisibleCharactersBehavior) { //gd:RichTextLabel.set_visible_characters_behavior
-	var frame = callframe.New()
-	callframe.Arg(frame, behavior)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_visible_characters_behavior, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_visible_characters_behavior, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
+		behavior TextServer.VisibleCharactersBehavior
+	}{behavior}))
 }
 
 //go:nosplit
 func (self class) SetVisibleRatio(ratio float64) { //gd:RichTextLabel.set_visible_ratio
-	var frame = callframe.New()
-	callframe.Arg(frame, ratio)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_visible_ratio, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_visible_ratio, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ ratio float64 }{ratio}))
 }
 
 //go:nosplit
 func (self class) GetVisibleRatio() float64 { //gd:RichTextLabel.get_visible_ratio
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_visible_ratio, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_visible_ratio, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2241,12 +1898,8 @@ Returns the line number of the character position provided. Line and character n
 */
 //go:nosplit
 func (self class) GetCharacterLine(character int64) int64 { //gd:RichTextLabel.get_character_line
-	var frame = callframe.New()
-	callframe.Arg(frame, character)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_character_line, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_character_line, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ character int64 }{character}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2256,12 +1909,8 @@ Returns the paragraph number of the character position provided. Paragraph and c
 */
 //go:nosplit
 func (self class) GetCharacterParagraph(character int64) int64 { //gd:RichTextLabel.get_character_paragraph
-	var frame = callframe.New()
-	callframe.Arg(frame, character)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_character_paragraph, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_character_paragraph, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ character int64 }{character}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2270,30 +1919,20 @@ Returns the total number of characters from text tags. Does not include BBCodes.
 */
 //go:nosplit
 func (self class) GetTotalCharacterCount() int64 { //gd:RichTextLabel.get_total_character_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_total_character_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_total_character_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseBbcode(enable bool) { //gd:RichTextLabel.set_use_bbcode
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_use_bbcode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_use_bbcode, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsUsingBbcode() bool { //gd:RichTextLabel.is_using_bbcode
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_is_using_bbcode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_is_using_bbcode, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2304,11 +1943,8 @@ Returns the total number of lines in the text. Wrapped text is counted as multip
 */
 //go:nosplit
 func (self class) GetLineCount() int64 { //gd:RichTextLabel.get_line_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_line_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_line_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2319,12 +1955,8 @@ Returns the indexes of the first and last visible characters for the given [para
 */
 //go:nosplit
 func (self class) GetLineRange(line int64) Vector2i.XY { //gd:RichTextLabel.get_line_range
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	var r_ret = callframe.Ret[Vector2i.XY](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_line_range, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[Vector2i.XY](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_line_range, gdextension.SizeVector2i|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2334,11 +1966,8 @@ Returns the number of visible lines.
 */
 //go:nosplit
 func (self class) GetVisibleLineCount() int64 { //gd:RichTextLabel.get_visible_line_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_visible_line_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_visible_line_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2347,11 +1976,8 @@ Returns the total number of paragraphs (newlines or [code]p[/code] tags in the t
 */
 //go:nosplit
 func (self class) GetParagraphCount() int64 { //gd:RichTextLabel.get_paragraph_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_paragraph_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_paragraph_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2361,11 +1987,8 @@ Returns the number of visible paragraphs. A paragraph is considered visible if a
 */
 //go:nosplit
 func (self class) GetVisibleParagraphCount() int64 { //gd:RichTextLabel.get_visible_paragraph_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_visible_paragraph_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_visible_paragraph_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2375,11 +1998,8 @@ Returns the height of the content.
 */
 //go:nosplit
 func (self class) GetContentHeight() int64 { //gd:RichTextLabel.get_content_height
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_content_height, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_content_height, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2389,11 +2009,8 @@ Returns the width of the content.
 */
 //go:nosplit
 func (self class) GetContentWidth() int64 { //gd:RichTextLabel.get_content_width
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_content_width, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_content_width, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2403,12 +2020,8 @@ Returns the vertical offset of the line found at the provided index.
 */
 //go:nosplit
 func (self class) GetLineOffset(line int64) float64 { //gd:RichTextLabel.get_line_offset
-	var frame = callframe.New()
-	callframe.Arg(frame, line)
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_line_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_line_offset, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2418,12 +2031,8 @@ Returns the vertical offset of the paragraph found at the provided index.
 */
 //go:nosplit
 func (self class) GetParagraphOffset(paragraph int64) float64 { //gd:RichTextLabel.get_paragraph_offset
-	var frame = callframe.New()
-	callframe.Arg(frame, paragraph)
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_paragraph_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_paragraph_offset, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ paragraph int64 }{paragraph}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2432,31 +2041,20 @@ Parses BBCode parameter [param expressions] into a dictionary.
 */
 //go:nosplit
 func (self class) ParseExpressionsForValues(expressions Packed.Strings) Dictionary.Any { //gd:RichTextLabel.parse_expressions_for_values
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(expressions)))
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_parse_expressions_for_values, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_parse_expressions_for_values, gdextension.SizeDictionary|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ expressions gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(expressions)))}))
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEffects(effects Array.Any) { //gd:RichTextLabel.set_effects
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(effects)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_effects, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_effects, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ effects gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(effects))[0])}))
 }
 
 //go:nosplit
 func (self class) GetEffects() Array.Any { //gd:RichTextLabel.get_effects
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_effects, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_effects, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -2486,11 +2084,7 @@ func _ready():
 */
 //go:nosplit
 func (self class) InstallEffect(effect variant.Any) { //gd:RichTextLabel.install_effect
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(effect)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_install_effect, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_install_effect, 0|(gdextension.SizeVariant<<4), unsafe.Pointer(&struct{ effect gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(effect)))}))
 }
 
 /*
@@ -2538,11 +2132,8 @@ public void OnItemPressed(int id)
 */
 //go:nosplit
 func (self class) GetMenu() [1]gdclass.PopupMenu { //gd:RichTextLabel.get_menu
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_get_menu, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.PopupMenu{gd.PointerLifetimeBoundTo[gdclass.PopupMenu](self.AsObject(), r_ret.Get())}
-	frame.Free()
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_menu, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var ret = [1]gdclass.PopupMenu{gd.PointerLifetimeBoundTo[gdclass.PopupMenu](self.AsObject(), r_ret)}
 	return ret
 }
 
@@ -2551,11 +2142,8 @@ Returns whether the menu is visible. Use this instead of [code]get_menu().visibl
 */
 //go:nosplit
 func (self class) IsMenuVisible() bool { //gd:RichTextLabel.is_menu_visible
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_is_menu_visible, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_is_menu_visible, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -2564,11 +2152,7 @@ Executes a given action as defined in the [enum MenuItems] enum.
 */
 //go:nosplit
 func (self class) MenuOption(option int64) { //gd:RichTextLabel.menu_option
-	var frame = callframe.New()
-	callframe.Arg(frame, option)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_menu_option, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_menu_option, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ option int64 }{option}))
 }
 func (self Instance) OnMetaClicked(cb func(meta any)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("meta_clicked"), gd.NewCallable(cb), 0)

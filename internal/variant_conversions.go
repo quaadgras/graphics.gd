@@ -579,7 +579,6 @@ func LetVariantAsObject(variant Variant) Object {
 	Global.variant.IntoType[TypeObject](r_ret.Addr(), callframe.Arg(frame, pointers.Get(variant)))
 	var ret = r_ret.Get()
 	frame.Free()
-	fmt.Println(ret)
 	return pointers.Let[Object]([3]uint64{uint64(ret)})
 }
 

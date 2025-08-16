@@ -8,6 +8,8 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdunsafe"
+import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +51,8 @@ var _ Error.Code
 var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
+var _ gdextension.Object
+var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -166,20 +170,13 @@ func (self Instance) SetPhysicalBoneChainLength(value int) {
 
 //go:nosplit
 func (self class) SetPhysicalBoneChainLength(length int64) { //gd:SkeletonModification2DPhysicalBones.set_physical_bone_chain_length
-	var frame = callframe.New()
-	callframe.Arg(frame, length)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_set_physical_bone_chain_length, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_set_physical_bone_chain_length, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ length int64 }{length}))
 }
 
 //go:nosplit
 func (self class) GetPhysicalBoneChainLength() int64 { //gd:SkeletonModification2DPhysicalBones.get_physical_bone_chain_length
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_get_physical_bone_chain_length, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_get_physical_bone_chain_length, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var ret = r_ret
 	return ret
 }
 
@@ -189,12 +186,10 @@ Sets the [PhysicalBone2D] node at [param joint_idx].
 */
 //go:nosplit
 func (self class) SetPhysicalBoneNode(joint_idx int64, physicalbone2d_node Path.ToNode) { //gd:SkeletonModification2DPhysicalBones.set_physical_bone_node
-	var frame = callframe.New()
-	callframe.Arg(frame, joint_idx)
-	callframe.Arg(frame, pointers.Get(gd.InternalNodePath(physicalbone2d_node)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_set_physical_bone_node, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_set_physical_bone_node, 0|(gdextension.SizeInt<<4)|(gdextension.SizeNodePath<<8), unsafe.Pointer(&struct {
+		joint_idx           int64
+		physicalbone2d_node gdextension.NodePath
+	}{joint_idx, gdextension.NodePath(pointers.Get(gd.InternalNodePath(physicalbone2d_node))[0])}))
 }
 
 /*
@@ -202,12 +197,8 @@ Returns the [PhysicalBone2D] node at [param joint_idx].
 */
 //go:nosplit
 func (self class) GetPhysicalBoneNode(joint_idx int64) Path.ToNode { //gd:SkeletonModification2DPhysicalBones.get_physical_bone_node
-	var frame = callframe.New()
-	callframe.Arg(frame, joint_idx)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_get_physical_bone_node, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret.Get()))))
-	frame.Free()
+	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_get_physical_bone_node, gdextension.SizeNodePath|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_idx int64 }{joint_idx}))
+	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
@@ -216,10 +207,7 @@ Empties the list of [PhysicalBone2D] nodes and populates it with all [PhysicalBo
 */
 //go:nosplit
 func (self class) FetchPhysicalBones() { //gd:SkeletonModification2DPhysicalBones.fetch_physical_bones
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_fetch_physical_bones, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_fetch_physical_bones, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -228,11 +216,7 @@ Optionally, an array of bone names can be passed to this function, and that will
 */
 //go:nosplit
 func (self class) StartSimulation(bones Array.Contains[String.Name]) { //gd:SkeletonModification2DPhysicalBones.start_simulation
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(bones)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_start_simulation, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_start_simulation, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ bones gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(bones))[0])}))
 }
 
 /*
@@ -241,11 +225,7 @@ Optionally, an array of bone names can be passed to this function, and that will
 */
 //go:nosplit
 func (self class) StopSimulation(bones Array.Contains[String.Name]) { //gd:SkeletonModification2DPhysicalBones.stop_simulation
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(bones)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_stop_simulation, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_stop_simulation, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ bones gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(bones))[0])}))
 }
 func (self class) AsSkeletonModification2DPhysicalBones() Advanced {
 	return *((*Advanced)(unsafe.Pointer(&self)))
