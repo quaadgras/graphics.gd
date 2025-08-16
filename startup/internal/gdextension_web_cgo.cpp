@@ -1,47 +1,46 @@
 #ifdef __EMSCRIPTEN__
-#include "core/extension/gdextension_interface.h"
-#include "gdextension_web_cgo_callbacks.cpp"
-#include <emscripten/bind.h>
-#include <bit>
+    #include "core/extension/gdextension_interface.h"
+    #include "gdextension_web_cgo_callbacks.cpp"
+    #include <emscripten/bind.h>
+    #include <bit>
 #else
-#include "gdextension_interface.h"
-#include "_cgo_export.h"
+    #include "gdextension_interface.h"
+    #include "_cgo_export.h"
 #endif
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <stdio.h>
 
 // emscripten can only expose std::string to JS, not char *
-#ifdef __cplusplus
-#define STRING std::string
-#define STRING_POINTER(s) (s).c_str()
-#define BUFFER std::string
-#define BUFFER_POINTER(s) (s).data()
-#else
-#define STRING const char*
-#define STRING_POINTER(s) (s)
-#define BUFFER char*
-#define BUFFER_POINTER(s) (s)
-#endif
-
 // we want emscripten to be able to deal with 64bit values without resorting to slow big ints.
 #ifdef __EMSCRIPTEN__
-#define UINT64 double
-#define UINT64_MAKE(v) std::__bit_cast<double>(v)
-#define UINT64_FROM(v) std::__bit_cast<uint64_t>(v)
-#define INT64 double
-#define INT64_MAKE(v) std::__bit_cast<double>(v)
-#define INT64_FROM(v) std::__bit_cast<int64_t>(v)
-#define INT int32_t
+    #define UINT64 double
+    #define UINT64_MAKE(v) std::__bit_cast<double>(v)
+    #define UINT64_FROM(v) std::__bit_cast<uint64_t>(v)
+    #define INT64 double
+    #define INT64_MAKE(v) std::__bit_cast<double>(v)
+    #define INT64_FROM(v) std::__bit_cast<int64_t>(v)
+    #define INT int32_t
+    #define STRING std::string
+    #define STRING_POINTER(s) (s).c_str()
+    #define BUFFER std::string
+    #define BUFFER_POINTER(s) (s).data()
+    #define ANY uint32_t
 #else
-#define UINT64 uint64_t
-#define UINT64_MAKE(v) (v)
-#define UINT64_FROM(v) (v)
-#define INT64 int64_t
-#define INT64_MAKE(v) (v)
-#define INT64_FROM(v) (v)
-#define INT int64_t
+    #define UINT64 uint64_t
+    #define UINT64_MAKE(v) (v)
+    #define UINT64_FROM(v) (v)
+    #define INT64 int64_t
+    #define INT64_MAKE(v) (v)
+    #define INT64_FROM(v) (v)
+    #define INT int64_t
+    #define STRING const char*
+    #define STRING_POINTER(s) (s)
+    #define BUFFER char*
+    #define BUFFER_POINTER(s) (s)
+    #define ANY void*
 #endif
 
 #define LOAD_PROC_ADDRESS(m_name, m_type) gdextension_##m_name = (m_type)p_get_proc_address(#m_name);
@@ -64,8 +63,7 @@ typedef struct {
 void cgo_initialize(void *ignore, GDExtensionInitializationLevel level) { go_on_init(level); }
 void cgo_deinitialize(void *ignore, GDExtensionInitializationLevel level) { go_on_exit(level); }
 void cgo_callable_call_func(void *callable_userdata, const GDExtensionConstVariantPtr *p_args, GDExtensionInt p_argument_count, GDExtensionVariantPtr r_return, GDExtensionCallError *r_error) {
-    reverse_variant_frame frame = { .r_return = r_return, .r_error = r_error, .p_args = p_args, .p_argument_count = p_argument_count };
-    go_on_callable_call((uintptr_t)callable_userdata, p_argument_count, &frame);
+    go_on_callable_call((uintptr_t)callable_userdata, r_return, p_argument_count, (void *)p_args, r_error);
 }
 GDExtensionBool cgo_callable_is_valid_func(void *callable_userdata) {return go_on_callable_validation((uintptr_t)callable_userdata);}
 void cgo_callable_free_func(void *callable_userdata) { go_on_callable_free((uintptr_t)callable_userdata); }
@@ -87,12 +85,10 @@ GDExtensionInt cgo_callable_get_argument_count_func(void *callable_userdata, GDE
 }
 
 void cgo_method_call_func(void *method_userdata, GDExtensionClassInstancePtr p_instance, const GDExtensionConstVariantPtr *p_args, GDExtensionInt p_argument_count, GDExtensionVariantPtr r_return, GDExtensionCallError *r_error) {
-    reverse_variant_frame frame = { .r_return = r_return, .r_error = r_error, .p_args = p_args, .p_argument_count = p_argument_count };
-    go_on_extension_instance_call((uintptr_t)p_instance, (uintptr_t)method_userdata, p_argument_count, (void *)&frame);
+    go_on_extension_instance_call((uintptr_t)p_instance, (uintptr_t)method_userdata, r_return, p_argument_count, (void *)p_args, r_error);
 }
 void cgo_method_ptrcall_func(void *method_userdata, GDExtensionClassInstancePtr p_instance, const GDExtensionConstTypePtr *p_args, GDExtensionTypePtr r_ret) {
-    reverse_unsafe_frame frame = { .r_return = r_ret, .p_args = p_args };
-    go_on_extension_instance_unsafe_call((uintptr_t)p_instance, (uintptr_t)method_userdata, &frame);
+    go_on_extension_instance_unsafe_call((uintptr_t)p_instance, (uintptr_t)method_userdata, r_ret, (void *)p_args);
 }
 
 void *cgo_instance_binding_create_func(void *p_token, void *p_instance) {
@@ -468,26 +464,48 @@ GDExtensionBool cgo_extension_init(GDExtensionInterfaceGetProcAddress p_get_proc
     return true;
 }
 
-void prepare_pointers(int64_t argc, void *data, void **arg_ptrs) {
-    uint64_t mask = *((uint64_t *)data);
-    char *ptr = (char *)data + sizeof(uint64_t);
-    for (int i = 0; i < argc; i++) { // space for result
-        uint32_t code = (mask >> (i * 4)) & 0xF;
-        uint32_t size = (code + 1) * 8;
-        arg_ptrs[i] = (void *)ptr;
-        ptr += size;
+void prepare_variants(void **frame, uint32_t argc, ANY args) {
+    uint8_t *head = (uint8_t*)args;
+    for (int i = 0; i < argc; i++) {
+        frame[i] = head;
+        head += 24;
     }
 }
 
-void *prepare_pointer(void *data) {
-    char *ptr = (char *)data + sizeof(uint64_t);
-    return (void *)ptr;
+uint8_t prepare_callframe(void **frame, UINT64 shape, ANY args) {
+    uint8_t *head = (uint8_t*)args;
+    for (int i = 1; i < 16; i++) {
+        uint32_t code = (UINT64_FROM(shape) >> (i * 4)) & 0xF;
+        uint32_t size;
+        switch (code) {
+            case 0: size = 0; frame[i-1] = 0; return i;
+            case 1: size = 1; break;
+            case 2: size = 2; break;
+            case 3: size = 4; break;
+            case 4: size = 8; break;
+            case 5: size = 12; break;
+            case 6: size = 16; break;
+            case 7: size = 24; break;
+            case 8: size = 32; break;
+            case 9: size = 36; break;
+            case 10: size = 40; break;
+            case 11: size = 48; break;
+            case 12: size = 64; break;
+            case 13: size = 72; break;
+            case 14: size = 96; break;
+            case 15: size = 128; break;
+        }
+        frame[i-1] = head;
+        head += size;
+    }
+    return 15;
 }
 
+
 uintptr_t gd_builtin_name(uintptr_t name, INT64 hash) { return (uintptr_t)gdextension_variant_get_ptr_utility_function((GDExtensionConstStringNamePtr)name, INT64_FROM(hash));}
-void gd_builtin_call(uintptr_t fn, int32_t argc, void *call) {
-    void *points[16]; points[1] = 0; prepare_pointers(argc, call, &points[0]);
-    ((GDExtensionPtrUtilityFunction)fn)(points[0], (GDExtensionConstTypePtr*)&points[1], argc);
+void gd_builtin_call(uintptr_t fn, void *result, UINT64 shape, ANY args) {
+    void *points[16]; uint8_t argc = prepare_callframe(&points[0], shape, args);
+    ((GDExtensionPtrUtilityFunction)fn)(result, (GDExtensionConstTypePtr*)&points[0], argc);
 }
 
 void gd_callable_create(uintptr_t id, UINT64 object, void *result) {
@@ -546,7 +564,7 @@ uintptr_t gd_method_list_make(INT length) {
     return (uintptr_t)list;
 };
 
-void gd_method_list_push(uintptr_t list_p, uintptr_t name, uintptr_t method, uint32_t method_flags, bool has_return_value, uintptr_t return_value_info, uint32_t argument_count, uintptr_t arguments_info, uint32_t default_argument_count, void *default_arguments) {
+void gd_method_list_push(uintptr_t list_p, uintptr_t name, uintptr_t method, uint32_t method_flags, bool has_return_value, uintptr_t return_value_info, uint32_t argument_count, uintptr_t arguments_info, INT default_argument_count, void *default_arguments) {
     method_list *list = (method_list *)list_p;
     GDExtensionClassMethodInfo *info = &list->info[list->push++];
     property_list *return_value = (property_list *)return_value_info;
@@ -565,7 +583,7 @@ void gd_method_list_push(uintptr_t list_p, uintptr_t name, uintptr_t method, uin
     info->arguments_info = arguments->info;
     info->arguments_metadata = arguments->meta;
     info->default_argument_count = default_argument_count;
-    void *points[16]; prepare_pointers(default_argument_count, default_arguments, &points[0]);
+    void *points[16]; prepare_variants(&points[0], default_argument_count, (ANY)default_arguments);
     info->default_arguments = &points[0];
 };
 
@@ -705,11 +723,7 @@ void *cgo_class_get_virtual_call_data_func(void *user_data, GDExtensionConstStri
 }
 
 void cgo_class_call_virtual_with_data_func(GDExtensionClassInstancePtr p_instance, GDExtensionConstStringNamePtr p_name, void *p_virtual_call_userdata, const GDExtensionConstTypePtr *p_args, GDExtensionTypePtr r_ret) {
-    reverse_unsafe_frame frame = {
-        .r_return = r_ret,
-        .p_args = p_args,
-    };
-    go_on_extension_instance_unsafe_call((uintptr_t)p_instance, (uintptr_t)p_virtual_call_userdata, &frame);
+    go_on_extension_instance_unsafe_call((uintptr_t)p_instance, (uintptr_t)p_virtual_call_userdata, r_ret, (void *)p_args);
 }
 
 void cgo_class_free_instance_func(void *p_class_userdata, GDExtensionClassInstancePtr p_instance) {
@@ -794,10 +808,10 @@ INT64 gd_classdb_XMLParser_load(uintptr_t XMLParser, BUFFER buf, INT len) {
     return INT64_MAKE(gdextension_xml_parser_open_buffer((GDExtensionObjectPtr)XMLParser, (const uint8_t *)BUFFER_POINTER(buf), len));
 };
 
-void gd_packed_dictionary_access(uintptr_t dict, UINT64 k1, UINT64 k2, UINT64 k3, void *call) {
+void gd_packed_dictionary_access(uintptr_t dict, UINT64 k1, UINT64 k2, UINT64 k3, ANY args) {
     uint64_t key[3] = {UINT64_FROM(k1), UINT64_FROM(k2), UINT64_FROM(k3)};
     uint64_t *value = (uint64_t*)gdextension_dictionary_operator_index_const((GDExtensionTypePtr)dict, key);
-    uint64_t * result = (uint64_t*)prepare_pointer(call);
+    uint64_t * result = (uint64_t*)args;
     result[0] = value[0];
     result[1] = value[1];
     result[2] = value[2];
@@ -823,42 +837,37 @@ void gd_editor_end_plugin(uintptr_t class_name) {
     gdextension_editor_remove_plugin((GDExtensionConstStringNamePtr)&class_name);
 };
 
-bool gd_iterator_make(UINT64 v1, UINT64 v2, UINT64 v3, void *call) {
+void gd_iterator_make(UINT64 v1, UINT64 v2, UINT64 v3, ANY result, void *err) {
     uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
-    GDExtensionBool valid = false;
-    return gdextension_variant_iter_init(&self, prepare_pointer(call), &valid);
+    GDExtensionBool valid = true;
+    valid = valid && gdextension_variant_iter_init(&self, (void*)result, &valid);
+    if (valid) return;
+    ((GDExtensionCallError*)err)->error = GDEXTENSION_CALL_ERROR_INVALID_ARGUMENT;
 };
 
-bool gd_iterator_next(UINT64 v1, UINT64 v2, UINT64 v3, void *call, UINT64 i1, uint64_t i2, UINT64 i3) {
+bool gd_iterator_next(UINT64 v1, UINT64 v2, UINT64 v3, void *recv, UINT64 i1, uint64_t i2, UINT64 i3, void *err) {
     uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
     uint64_t iter[3] = {UINT64_FROM(i1), UINT64_FROM(i2), UINT64_FROM(i3)};
-    uint64_t *issue = (uint64_t *)call;
-    uint64_t *result = (uint64_t*)prepare_pointer(call);
     GDExtensionBool valid = false;
     GDExtensionBool ok = gdextension_variant_iter_next(&self, &iter, &valid);
-    *issue = valid;
     if (ok) {
-        result[0] = iter[0];
-        result[1] = iter[1];
-        result[2] = iter[2];
+        ((uint64_t *)recv)[0] = iter[0];
+        ((uint64_t *)recv)[1] = iter[1];
+        ((uint64_t *)recv)[2] = iter[2];
         return true;
     }
+    ((GDExtensionCallError*)err)->error = GDEXTENSION_CALL_ERROR_INVALID_ARGUMENT;
     return false;
 };
 
-bool gd_iterator_load(UINT64 v1, UINT64 v2, UINT64 v3, void *call, UINT64 i1, UINT64 i2, UINT64 i3) {
+void gd_iterator_load(UINT64 v1, UINT64 v2, UINT64 v3, ANY args, UINT64 i1, UINT64 i2, UINT64 i3, void *err) {
     uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
     uint64_t iter[3] = {UINT64_FROM(i1), UINT64_FROM(i2), UINT64_FROM(i3)};
-    uint64_t *result = (uint64_t*)prepare_pointer(call);
+    void *points[16]; prepare_variants(&points[0], 1, args);
     GDExtensionBool ok = false;
-    gdextension_variant_iter_get(&self, &iter, (GDExtensionUninitializedVariantPtr)result, &ok);
-    if (ok) {
-        result[0] = iter[0];
-        result[1] = iter[1];
-        result[2] = iter[2];
-        return true;
-    }
-    return false;
+    gdextension_variant_iter_get(&self, &iter, (GDExtensionUninitializedVariantPtr)points[0], &ok);
+    if (ok) return;
+    ((GDExtensionCallError*)err)->error = GDEXTENSION_CALL_ERROR_INVALID_ARGUMENT;
 };
 
 const char *fit_string(const char *str, uint64_t len, char *buf, size_t buf_size) {
@@ -948,10 +957,9 @@ uintptr_t gd_object_make(uintptr_t name) {
     return (uintptr_t)gdextension_classdb_construct_object2((GDExtensionConstStringNamePtr)&name);
 };
 
-void gd_object_call(uintptr_t obj, uintptr_t fn, INT argc, void *call) {
-    void *points[16]; points[1] = 0; prepare_pointers(argc, call, &points[0]); //FIXME
-    GDExtensionCallError err = {};
-    gdextension_object_method_bind_call((GDExtensionMethodBindPtr)fn, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[1], argc, (GDExtensionTypePtr)&points[0], &err);
+void gd_object_call(uintptr_t obj, uintptr_t fn, void *result, INT argc, ANY args, ANY err) {
+    void *points[16]; prepare_variants(&points[0], argc, args);
+    gdextension_object_method_bind_call((GDExtensionMethodBindPtr)fn, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], argc, (GDExtensionTypePtr)result, (GDExtensionCallError*)err);
 };
 
 void gd_object_unsafe_free(uintptr_t obj) {
@@ -1006,9 +1014,9 @@ uintptr_t gd_object_method_lookup(uintptr_t class_name, uintptr_t method, INT64 
     return (uintptr_t)gdextension_classdb_get_method_bind((GDExtensionConstStringNamePtr)&class_name, (GDExtensionConstStringNamePtr)&method, INT64_FROM(hash));
 };
 
-void gd_object_unsafe_call(uintptr_t obj, uintptr_t method, void *call) {
-    void *points[16]; points[1] = 0; prepare_pointers(0, call, &points[0]); //FIXME
-    gdextension_object_method_bind_ptrcall((GDExtensionMethodBindPtr)method, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[1], (GDExtensionTypePtr)&points[0]);
+void gd_object_unsafe_call(uintptr_t obj, uintptr_t method, ANY result, UINT64 shape, ANY args) {
+    void *points[16]; prepare_callframe(&points[0], shape, args);
+    gdextension_object_method_bind_ptrcall((GDExtensionMethodBindPtr)method, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)result);
 };
 
 GDExtensionBool cgo_class_get_category_func(GDExtensionScriptInstanceDataPtr instance, GDExtensionPropertyInfo *info) {
@@ -1078,11 +1086,9 @@ uintptr_t gd_object_script_make(uintptr_t instance) {
     return (uintptr_t)gdextension_script_instance_create3(&info, (GDExtensionScriptInstanceDataPtr)&instance);
 };
 
-void gd_object_script_call(uintptr_t obj, uintptr_t method, INT argc, void *call) {
-    void *points[16]; points[1] = 0; prepare_pointers(argc, call, &points[0]); //FIXME
-    GDExtensionCallError err = {};
-    gdextension_object_call_script_method((GDExtensionObjectPtr)obj, (GDExtensionConstStringNamePtr)method, (const GDExtensionConstTypePtr*)&points[1], argc, (GDExtensionTypePtr)&points[0], &err);
-    *((uintptr_t*)call) = err.error;
+void gd_object_script_call(uintptr_t obj, uintptr_t method, void *result, INT argc, ANY args, ANY err) {
+    void *points[16]; points[1] = 0; prepare_variants(&points[0], argc, args);
+    gdextension_object_call_script_method((GDExtensionObjectPtr)obj, (GDExtensionConstStringNamePtr)method, (const GDExtensionConstTypePtr*)&points[0], argc, (GDExtensionTypePtr)result, (GDExtensionCallError*)err);
 };
 
 void gd_object_script_setup(uintptr_t obj, uintptr_t instance) {
@@ -1120,12 +1126,10 @@ uintptr_t gd_packed_color_array_unsafe(uintptr_t a1, uintptr_t a2) {
     return (uintptr_t)gdextension_packed_color_array_operator_index(&packed_array[0], 0);
 };
 
-void gd_packed_color_array_access(uintptr_t a1, uintptr_t a2, INT i, void *call) {
+void gd_packed_color_array_access(uintptr_t a1, uintptr_t a2, INT i, ANY result) {
     uintptr_t packed_array[2] = {a1, a2};
-    uint64_t *result = (uint64_t*)prepare_pointer(call);
-    const uint8_t *color = (uint8_t *)gdextension_packed_color_array_operator_index_const(&packed_array[0], i);
-    uint64_t size = (*(uint64_t*)call)&0xF;
-    memcpy(result, color, size);
+    const float *color = (float *)gdextension_packed_color_array_operator_index_const(&packed_array[0], i);
+    memcpy((float*)result, color, sizeof(float)*4);
 };
 
 uintptr_t gd_packed_float32_array_unsafe(uintptr_t a1, uintptr_t a2) {
@@ -1183,13 +1187,10 @@ uintptr_t gd_packed_variant_array_unsafe(uintptr_t a1, uintptr_t a2) {
     return (uintptr_t)gdextension_array_operator_index(&packed_array[0], 0);
 };
 
-void gd_packed_variant_array_access(uintptr_t a1, uintptr_t a2, INT i, void *call) {
+void gd_packed_variant_array_access(uintptr_t a1, uintptr_t a2, INT i, ANY result) {
     uintptr_t packed_array[2] = {a1, a2};
-    uint64_t *result = (uint64_t*)prepare_pointer(call);
     uint64_t *packed = (uint64_t*)gdextension_array_operator_index_const(&packed_array[0], i);
-    result[0] = packed[0];
-    result[1] = packed[1];
-    result[2] = packed[2];
+    memcpy((uint64_t*)result, packed, sizeof(uint64_t)*3);
 };
 
 uintptr_t gd_packed_vector2_array_unsafe(uintptr_t a1, uintptr_t a2) {
@@ -1197,12 +1198,10 @@ uintptr_t gd_packed_vector2_array_unsafe(uintptr_t a1, uintptr_t a2) {
     return (uintptr_t)gdextension_packed_vector2_array_operator_index(&packed_array[0], 0);
 };
 
-void gd_packed_vector2_array_access(uintptr_t a1, uintptr_t a2, INT i, void *call) {
+void gd_packed_vector2_array_access(uintptr_t a1, uintptr_t a2, INT i, ANY result) {
     uintptr_t packed_array[2] = {a1, a2};
-    uint64_t *result = (uint64_t*)prepare_pointer(call);
     const float *vector = (const float *)gdextension_packed_vector2_array_operator_index_const(&packed_array[0], i);
-    uint64_t size = (*(uint64_t*)call)&0xF;
-    memcpy(result, vector, size);
+    memcpy((float*)result, vector, sizeof(float)*2);
 };
 
 uintptr_t gd_packed_vector3_array_unsafe(uintptr_t a1, uintptr_t a2) {
@@ -1210,12 +1209,10 @@ uintptr_t gd_packed_vector3_array_unsafe(uintptr_t a1, uintptr_t a2) {
     return (uintptr_t)gdextension_packed_vector3_array_operator_index(&packed_array[0], 0);
 };
 
-void gd_packed_vector3_array_access(uintptr_t a1, uintptr_t a2, INT i, void *call) {
+void gd_packed_vector3_array_access(uintptr_t a1, uintptr_t a2, INT i, ANY result) {
     uintptr_t packed_array[2] = {a1, a2};
-    uint64_t *result = (uint64_t*)prepare_pointer(call);
     const float *vector = (const float *)gdextension_packed_vector3_array_operator_index_const(&packed_array[0], i);
-    uint64_t size = (*(uint64_t*)call)&0xF;
-    memcpy(result, vector, size);
+    memcpy((float*)result, vector, sizeof(float)*3);
 };
 
 uintptr_t gd_packed_vector4_array_unsafe(uintptr_t a1, uintptr_t a2) {
@@ -1223,12 +1220,10 @@ uintptr_t gd_packed_vector4_array_unsafe(uintptr_t a1, uintptr_t a2) {
     return (uintptr_t)gdextension_packed_vector4_array_operator_index(&packed_array[0], 0);
 };
 
-void gd_packed_vector4_array_access(uintptr_t a1, uintptr_t a2, INT i, void *call) {
+void gd_packed_vector4_array_access(uintptr_t a1, uintptr_t a2, INT i, ANY result) {
     uintptr_t packed_array[2] = {a1, a2};
-    uint64_t *result = (uint64_t*)prepare_pointer(call);
     const float *vector = (const float *)gdextension_packed_vector4_array_operator_index_const(&packed_array[0], i);
-    uint64_t size = (*(uint64_t*)call)&0xF;
-    memcpy(result, vector, size);
+    memcpy((float *)result, vector, sizeof(float)*4);
 };
 
 uintptr_t gd_ref_get_object(uintptr_t ref) {
@@ -1335,22 +1330,20 @@ uintptr_t gd_variant_type_name(uint32_t vtype) {
     return name;
 };
 
-void gd_variant_unsafe_make_native(uint32_t vtype, UINT64 v1, UINT64 v2, UINT64 v3, void *call) {
+void gd_variant_unsafe_make_native(uint32_t vtype, UINT64 v1, UINT64 v2, UINT64 v3, UINT64 shape, ANY args) {
+    void *points[16]; prepare_callframe(&points[0], shape, args);
     uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
-    type_from_variant_constructors[vtype](prepare_pointer(call), &self[0]);
+    type_from_variant_constructors[vtype](points[0], &self[0]);
 };
 
-void gd_variant_unsafe_from_native(uint32_t vtype, void *call) {
-    uint64_t *result = (uint64_t*)prepare_pointer(call);
-    uint64_t *native = result + 3; // Assuming the first three are for v1, v2, v3
-    variant_from_type_constructors[vtype](result, native);
+void gd_variant_unsafe_from_native(uint32_t vtype, void *result, UINT64 shape, ANY args) {
+    void *points[16]; prepare_callframe(&points[0], shape, args);
+    variant_from_type_constructors[vtype](result, points[0]);
 };
 
-void gd_variant_type_call(uint32_t vtype, uintptr_t name, INT argc, void *call) {
-    void *points[16]; points[1] = 0; prepare_pointers(argc, call, &points[0]); //FIXME
-    GDExtensionCallError err = {};
-    gdextension_variant_call_static((GDExtensionVariantType)vtype, (GDExtensionConstStringNamePtr)&name, (const GDExtensionConstTypePtr*)&points[1], argc, (GDExtensionTypePtr)&points[0], &err);
-    *((uintptr_t*)call) = err.error;
+void gd_variant_type_call(uint32_t vtype, uintptr_t name, void *result, INT argc, ANY args, ANY err) {
+    void *points[16]; prepare_variants(&points[0], argc, args);
+    gdextension_variant_call_static((GDExtensionVariantType)vtype, (GDExtensionConstStringNamePtr)&name, (const GDExtensionConstTypePtr*)&points[0], argc, (GDExtensionTypePtr)result, (GDExtensionCallError*)err);
 };
 
 bool gd_variant_type_convertable(uint32_t a, uint32_t b, bool strict) {
@@ -1378,9 +1371,9 @@ void gd_variant_type_setup_dictionary(uintptr_t dict, uint32_t ktype, uintptr_t 
     gdextension_dictionary_set_typed(&dict, (GDExtensionVariantType)ktype, &kclass_name, k_script_ptr, (GDExtensionVariantType)vtype, &vclass_name, v_script_ptr);
 };
 
-void gd_variant_type_fetch_constant(uint32_t vtype, uintptr_t name, void *call) {
-    void *points[16]; points[1] = 0; prepare_pointers(0, call, &points[0]); //FIXME
-    gdextension_variant_get_constant_value((GDExtensionVariantType)vtype, (GDExtensionConstStringNamePtr)&name, (GDExtensionTypePtr)&points[0]);
+void gd_variant_type_fetch_constant(uint32_t vtype, uintptr_t name, ANY result) {
+    void *points[16]; prepare_variants(&points[0], 1, result);
+    gdextension_variant_get_constant_value((GDExtensionVariantType)vtype, (GDExtensionConstStringNamePtr)&name, (GDExtensionTypePtr)points[0]);
 };
 
 uintptr_t gd_variant_type_builtin_method(uint32_t vtype, uintptr_t name, INT64 hash) {
@@ -1391,43 +1384,31 @@ uintptr_t gd_variant_type_unsafe_constructor(uint32_t vtype, INT n) {
     return (uintptr_t)gdextension_variant_get_ptr_constructor((GDExtensionVariantType)vtype, n);
 };
 
-void gd_variant_type_unsafe_free(uint32_t vtype, void *call) {
-    void *points[16]; points[1] = 0; prepare_pointers(0, call, &points[0]); //FIXME
-    variant_ptr_destructors[vtype](&points[0]);
+void gd_variant_type_unsafe_free(uint32_t vtype, UINT64 shape, ANY args) {
+    void *points[16]; prepare_callframe(&points[0], shape, args);
+    variant_ptr_destructors[vtype](points[0]);
 };
 
-void gd_variant_zero(void *call) {
-    uint64_t *result = (uint64_t*)prepare_pointer(call);
-    gdextension_variant_new_nil(&result[0]);
-    result[0] = 0; // Assuming the first element is the type
-    result[1] = 0; // Assuming the second element is the first value
-    result[2] = 0; // Assuming the third element is the second value
+void gd_variant_zero(ANY result) {
+    gdextension_variant_new_nil((GDExtensionUninitializedVariantPtr)result);
 };
 
-void gd_variant_copy(UINT64 v1, UINT64 v2, UINT64 v3, void *call) {
-    uint64_t *result = (uint64_t*)prepare_pointer(call);
+void gd_variant_copy(UINT64 v1, UINT64 v2, UINT64 v3, ANY result) {
     uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
-    gdextension_variant_new_copy(&result[0], &self);
-    result[0] = v1; // Type
-    result[1] = v2; // First value
-    result[2] = v3; // Second value
+    gdextension_variant_new_copy((GDExtensionUninitializedVariantPtr)result, &self);
 };
 
-void gd_variant_call(UINT64 v1, UINT64 v2, UINT64 v3, uintptr_t name, INT argc, void *call) {
-    uint64_t *result = (uint64_t*)prepare_pointer(call);
+void gd_variant_call(UINT64 v1, UINT64 v2, UINT64 v3, uintptr_t name, void *result, INT argc, ANY args, void *err) {
     uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
-    void *points[16]; points[1] = 0; prepare_pointers(argc, call, &points[0]); //FIXME
-    GDExtensionCallError err = {};
-    gdextension_variant_call(&self, (GDExtensionConstStringNamePtr)&name, (const GDExtensionConstTypePtr*)&points[1], argc, (GDExtensionTypePtr)&points[0], &err);
-    result[0] = err.error;
+    void *points[16]; prepare_variants(&points[0], argc, args);
+    gdextension_variant_call(&self, (GDExtensionConstStringNamePtr)&name, (const GDExtensionConstTypePtr*)&points[0], argc, (GDExtensionTypePtr)result, (GDExtensionCallError*)err);
 };
 
-bool gd_variant_eval(uint32_t op, UINT64 a1, UINT64 a2, UINT64 a3, UINT64 b1, UINT64 b2, UINT64 b3, void *call) {
-    uint64_t *result = (uint64_t*)prepare_pointer(call);
+bool gd_variant_eval(uint32_t op, UINT64 a1, UINT64 a2, UINT64 a3, UINT64 b1, UINT64 b2, UINT64 b3, ANY result) {
     uint64_t a[3] = {UINT64_FROM(a1), UINT64_FROM(a2), UINT64_FROM(a3)};
     uint64_t b[3] = {UINT64_FROM(b1), UINT64_FROM(b2), UINT64_FROM(b3)};
     GDExtensionBool valid = false;
-    gdextension_variant_evaluate((GDExtensionVariantOperator)op, &a[0], &b[0], &result[0], &valid);
+    gdextension_variant_evaluate((GDExtensionVariantOperator)op, &a[0], &b[0], (GDExtensionUninitializedVariantPtr)result, &valid);
     return valid;
 };
 
@@ -1453,10 +1434,9 @@ uint32_t gd_variant_type(UINT64 v1, UINT64 v2, UINT64 v3) {
     return gdextension_variant_get_type(&self);
 };
 
-void gd_variant_deep_copy(UINT64 v1, UINT64 v2, UINT64 v3, void *call) {
-    uint64_t *result = (uint64_t*)prepare_pointer(call);
+void gd_variant_deep_copy(UINT64 v1, UINT64 v2, UINT64 v3, void *result) {
     uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
-    gdextension_variant_duplicate(&self, &result[0], true);
+    gdextension_variant_duplicate(&self, result, true);
 };
 
 int64_t gd_variant_deep_hash(UINT64 v1, UINT64 v2, UINT64 v3, INT recursion) {
@@ -1464,30 +1444,27 @@ int64_t gd_variant_deep_hash(UINT64 v1, UINT64 v2, UINT64 v3, INT recursion) {
     return gdextension_variant_recursive_hash(&self, recursion);
 };
 
-bool gd_variant_get_index(UINT64 v1, UINT64 v2, UINT64 v3, UINT64 i1, UINT64 i2, UINT64 i3, void *call) {
-    uint64_t *result = (uint64_t*)prepare_pointer(call);
+bool gd_variant_get_index(UINT64 v1, UINT64 v2, UINT64 v3, UINT64 i1, UINT64 i2, UINT64 i3, ANY result) {
     uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
     uint64_t index[3] = {UINT64_FROM(i1), UINT64_FROM(i2), UINT64_FROM(i3)};
     GDExtensionBool valid = false;
-    gdextension_variant_get_keyed(&self, &index[0], &result[0], &valid);
+    gdextension_variant_get_keyed(&self, &index[0], (GDExtensionUninitializedVariantPtr)result, &valid);
     return valid;
 };
 
-bool gd_variant_get_array(UINT64 v1, UINT64 v2, UINT64 v3, INT i, void *call) {
-    uint64_t *result = (uint64_t*)prepare_pointer(call);
+bool gd_variant_get_array(UINT64 v1, UINT64 v2, UINT64 v3, INT i, ANY result, ANY err) {
     uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
     GDExtensionBool valid = false;
     GDExtensionBool oob = false;
-    gdextension_variant_get_indexed(&self, i, &result[0], &valid, &oob);
-    *((uintptr_t*)call) = oob ? 1 : 0; // Set out-of-bounds flag
+    gdextension_variant_get_indexed(&self, i, (GDExtensionUninitializedVariantPtr)result, &valid, &oob);
+    if (oob) ((GDExtensionCallError*)err)->error = GDEXTENSION_CALL_ERROR_INVALID_ARGUMENT;
     return valid;
 };
 
-bool gd_variant_get_field(UINT64 v1, UINT64 v2, UINT64 v3, uintptr_t name, void *call) {
-    uint64_t *result = (uint64_t*)prepare_pointer(call);
+bool gd_variant_get_field(UINT64 v1, UINT64 v2, UINT64 v3, uintptr_t name, ANY result) {
     uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
     GDExtensionBool valid = false;
-    gdextension_variant_get_named(&self, (GDExtensionConstStringNamePtr)&name, &result[0], &valid);
+    gdextension_variant_get_named(&self, (GDExtensionConstStringNamePtr)&name, (GDExtensionUninitializedVariantPtr)result, &valid);
     return valid;
 };
 
@@ -1517,13 +1494,13 @@ bool gd_variant_set_index(UINT64 v1, UINT64 v2, UINT64 v3, UINT64 i1, UINT64 i2,
     return valid;
 };
 
-bool gd_variant_set_array(UINT64 v1, UINT64 v2, UINT64 v3, INT i, UINT64 v1_set, UINT64 v2_set, UINT64 v3_set, void *call) {
+bool gd_variant_set_array(UINT64 v1, UINT64 v2, UINT64 v3, INT i, UINT64 v1_set, UINT64 v2_set, UINT64 v3_set, ANY err) {
     uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
     uint64_t value[3] = {UINT64_FROM(v1_set), UINT64_FROM(v2_set), UINT64_FROM(v3_set)};
     GDExtensionBool valid = false;
     GDExtensionBool oob = false;
     gdextension_variant_set_indexed(&self, i, &value[0], &valid, &oob);
-    *((uintptr_t*)call) = oob ? 1 : 0; // Set out-of-bounds flag
+    if (oob) ((GDExtensionCallError*)err)->error = GDEXTENSION_CALL_ERROR_INVALID_ARGUMENT;
     return valid;
 };
 
@@ -1535,14 +1512,14 @@ bool gd_variant_set_field(UINT64 v1, UINT64 v2, UINT64 v3, uintptr_t name, UINT6
     return valid;
 };
 
-void gd_variant_unsafe_eval(uintptr_t fn, void *call) {
-    void *points[16]; points[1] = 0; prepare_pointers(3, call, &points[0]); //FIXME
-    ((GDExtensionPtrOperatorEvaluator)fn)(&points[1], &points[2], &points[0]);
+void gd_variant_unsafe_eval(uintptr_t fn, void *result, UINT64 shape, ANY args) {
+    void *points[16]; prepare_callframe(&points[0], shape, args);
+    ((GDExtensionPtrOperatorEvaluator)fn)(points[0], points[1], result);
 };
 
-void gd_variant_unsafe_call(uintptr_t fn, INT argc, void *args) {
-    void *points[16]; points[1] = 0; prepare_pointers(argc, args, &points[0]); //FIXME
-    ((GDExtensionPtrBuiltInMethod)fn)((GDExtensionTypePtr*)&points[1], (const GDExtensionConstTypePtr*)&points[2], (GDExtensionTypePtr)&points[0], argc);
+void gd_variant_unsafe_call(uintptr_t fn, void *result, UINT64 shape, ANY args) {
+    void *points[16]; uint8_t argc = prepare_callframe(&points[0], shape, args);
+    ((GDExtensionPtrBuiltInMethod)fn)((GDExtensionTypePtr*)points[0], (const GDExtensionConstTypePtr*)&points[1], (GDExtensionTypePtr)result, argc);
 };
 
 void gd_variant_unsafe_free(UINT64 v1, UINT64 v2, UINT64 v3) {
@@ -1555,34 +1532,35 @@ uintptr_t gd_variant_unsafe_internal_pointer(uint32_t vtype, UINT64 v1, UINT64 v
     return (uintptr_t)variant_internal_ptr_funcs[vtype](&self);
 };
 
-void gd_variant_unsafe_get_field(uintptr_t getter, void *call) {
-    void *points[16]; points[1] = 0; prepare_pointers(2, call, &points[0]); //FIXME
-    ((GDExtensionPtrGetter)getter)(&points[1], &points[0]);
+void gd_variant_unsafe_get_field(uintptr_t getter, void *result, UINT64 shape, ANY args) {
+    void *points[16]; prepare_callframe(&points[0], shape, args);
+    ((GDExtensionPtrGetter)getter)(points[0], &result);
+
 };
 
-void gd_variant_unsafe_get_array(uint32_t vtype, INT i, void *call) {
-    void *points[16]; points[1] = 0; prepare_pointers(2, call, &points[0]); //FIXME
-    variant_ptr_indexed_getters[vtype](&points[0], i, &points[1]);
+void gd_variant_unsafe_get_array(uint32_t vtype, INT i, void *result, UINT64 shape, ANY args) {
+    void *points[16]; prepare_callframe(&points[0], shape, args);
+    variant_ptr_indexed_getters[vtype](result, i, points[0]);
 };
 
-void gd_variant_unsafe_get_index(uint32_t vtype, void *call) {
-    void *points[16]; points[1] = 0; prepare_pointers(2, call, &points[0]); //FIXME
-    variant_ptr_keyed_getters[vtype](&points[1], &points[2], &points[0]);
+void gd_variant_unsafe_get_index(uint32_t vtype, void *result, UINT64 shape, ANY args) {
+    void *points[16]; prepare_callframe(&points[0], shape, args);
+    variant_ptr_keyed_getters[vtype](points[0], points[1], result);
 };
 
-void gd_variant_unsafe_set_field(uintptr_t setter, void *call) {
-    void *points[16]; points[1] = 0; prepare_pointers(2, call, &points[0]); //FIXME
-    ((GDExtensionPtrSetter)setter)(&points[1], &points[2]);
+void gd_variant_unsafe_set_field(uintptr_t setter, UINT64 shape, ANY args) {
+    void *points[16]; prepare_callframe(&points[0], shape, args);
+    ((GDExtensionPtrSetter)setter)(points[1], points[2]);
 };
 
-void gd_variant_unsafe_set_array(uint32_t vtype, INT i, void *call) {
-    void *points[16]; points[1] = 0; prepare_pointers(3, call, &points[0]); //FIXME
-    variant_ptr_indexed_setters[vtype](&points[0], i, &points[1]);
+void gd_variant_unsafe_set_array(uint32_t vtype, INT i, UINT64 shape, ANY args) {
+    void *points[16]; prepare_callframe(&points[0], shape, args);
+    variant_ptr_indexed_setters[vtype](points[0], i, points[1]);
 };
 
-void gd_variant_unsafe_set_index(uint32_t vtype, void *call) {
-    void *points[16]; points[1] = 0; prepare_pointers(3, call, &points[0]); //FIXME
-    variant_ptr_keyed_setters[vtype](&points[0], &points[1], &points[2]);
+void gd_variant_unsafe_set_index(uint32_t vtype, UINT64 shape, ANY args) {
+    void *points[16]; prepare_callframe(&points[0], shape, args);
+    variant_ptr_keyed_setters[vtype](points[0], points[1], points[2]);
 };
 
 uintptr_t gd_variant_type_setter(uint32_t vtype, uintptr_t name) {
@@ -1593,21 +1571,19 @@ uintptr_t gd_variant_type_getter(uint32_t vtype, uintptr_t name) {
     return (uintptr_t)gdextension_variant_get_ptr_getter((GDExtensionVariantType)vtype, (GDExtensionConstStringNamePtr)&name);
 }
 
-void gd_variant_type_unsafe_make(uintptr_t fn, void *call) {
-    void *points[16]; points[1] = 0; prepare_pointers(2, call, &points[0]); //FIXME
-    ((GDExtensionPtrConstructor)fn)(points[0], (const GDExtensionConstTypePtr *)&points[1]);
+void gd_variant_type_unsafe_make(uintptr_t fn, void* result, UINT64 shape, ANY args) {
+    void *points[16]; prepare_callframe(&points[0], shape, args);
+    ((GDExtensionPtrConstructor)fn)(result, (const GDExtensionConstTypePtr *)&points[0]);
 }
 
-void gd_variant_type_make(uint32_t vtype, INT argc, void *call) {
-    void *points[16]; points[1] = 0; prepare_pointers(argc, call, &points[0]); //FIXME
-    GDExtensionCallError err = {};
-    gdextension_variant_construct((GDExtensionVariantType)vtype, points[0], (const GDExtensionConstVariantPtr *)&points[1], argc, &err);
-    *((uintptr_t*)call) = err.error;
+void gd_variant_type_make(uint32_t vtype, void* result, INT argc, ANY args, ANY err) {
+    void *points[16]; prepare_variants(&points[0], argc, args);
+    gdextension_variant_construct((GDExtensionVariantType)vtype, result, (const GDExtensionConstVariantPtr *)&points[0], argc, (GDExtensionCallError*)err);
 }
 
-void gd_variant_type_unsafe_call(uintptr_t fn, INT argc, void *args) {
-    void *points[16]; points[1] = 0; prepare_pointers(argc, args, &points[0]); //FIXME
-    ((GDExtensionPtrBuiltInMethod)fn)((GDExtensionTypePtr*)&points[1], (const GDExtensionConstTypePtr*)&points[2], (GDExtensionTypePtr)&points[0], argc);
+void gd_variant_type_unsafe_call(uintptr_t fn, void* result, UINT64 shape, ANY args) {
+    void *points[16]; uint8_t argc = prepare_callframe(&points[0], shape, args);
+    ((GDExtensionPtrBuiltInMethod)fn)((GDExtensionTypePtr*)points[0], (const GDExtensionConstTypePtr*)&points[1], (GDExtensionTypePtr)result, argc);
 }
 
 uintptr_t gd_variant_type_evaluator(uint32_t op, uint32_t a, uint32_t b) {

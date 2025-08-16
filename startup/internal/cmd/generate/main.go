@@ -169,14 +169,14 @@ func generate_startup_cgo() error {
 					if j > 0 {
 						fmt.Fprint(f, ", ")
 					}
-					fmt.Fprintf(f, "%s(p%d[%d])", cgoTypeOf(arg.Elem()), i, j)
+					fmt.Fprintf(f, "%s(%s[%d])", cgoTypeOf(arg.Elem()), argName(arg, i), j)
 				}
 			case reflect.String:
 				fmt.Fprintf(f, "(%s)(unsafe.Pointer(unsafe.StringData(p%d))), C.int64_t(len(p%d))", cgoTypeOf(arg), i, i)
 			case reflect.Slice:
 				fmt.Fprintf(f, "(%s)(unsafe.Pointer(unsafe.SliceData(p%d))), C.int64_t(len(p%d))", cgoTypeOf(arg), i, i)
 			default:
-				fmt.Fprintf(f, "%s", toCValue(arg, fmt.Sprintf("p%d", i)))
+				fmt.Fprintf(f, "%s", toCValue(arg, argName(arg, i)))
 			}
 		}
 		if result := getReturn(fn.Type); result != nil {
@@ -191,6 +191,13 @@ func generate_startup_cgo() error {
 	return nil
 }
 
+func argName(rtype reflect.Type, i int) string {
+	if rtype == reflect.TypeFor[gdextension.Shape]() {
+		return "shape"
+	}
+	return fmt.Sprintf("p%d", i)
+}
+
 func writeGoFunctionArguments(w io.Writer, fn api.Function, flat bool, typeOf func(reflect.Type) string) {
 	name := fn.Name
 	fmt.Fprint(w, "(")
@@ -199,7 +206,7 @@ func writeGoFunctionArguments(w io.Writer, fn api.Function, flat bool, typeOf fu
 			fmt.Fprint(w, ", ")
 		}
 		if ctype := typeOf(arg); ctype != "" {
-			fmt.Fprintf(w, "%s%d %s", "p", i, ctype)
+			fmt.Fprintf(w, "%s %s", argName(arg, i), ctype)
 		} else {
 			panic(fmt.Sprintf("unsupported type %s for parameter %d in function %s", arg, i, name))
 		}
@@ -220,6 +227,9 @@ func goTypeOf(rtype reflect.Type) string {
 	if rtype.PkgPath() != "" {
 		return fmt.Sprintf("gdextension.%s", strings.ReplaceAll(rtype.Name(), "graphics.gd/internal/", ""))
 	}
+	if rtype.Kind() == reflect.Uintptr {
+		return "gdextension.Pointer"
+	}
 	if rtype.Kind() == reflect.Slice && rtype.Elem().Kind() == reflect.Uint8 {
 		return "[]byte"
 	}
@@ -234,6 +244,8 @@ func toGoValue(rtype reflect.Type) string {
 		return fmt.Sprintf("gdextension.%s", strings.ReplaceAll(rtype.Name(), "graphics.gd/internal/", ""))
 	}
 	switch rtype.Kind() {
+	case reflect.Uintptr:
+		return "gdextension.Pointer"
 	case reflect.String:
 		return "C.GoString"
 	case reflect.Slice:

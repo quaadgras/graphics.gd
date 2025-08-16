@@ -23,8 +23,8 @@ func go_on_exit(p0 C.uint32_t) {
 }
 
 //export go_on_callable_call
-func go_on_callable_call(p0 C.uintptr_t, p1 C.int64_t, p2 *C.void) {
-	gdextension.On.Callables.Call(gdextension.FunctionID(p0), int(p1), gdextension.CallAccepts[gdextension.Variant](p2))
+func go_on_callable_call(p0 C.uintptr_t, p1 *C.void, p2 C.int64_t, p3 *C.void, p4 *C.void) {
+	gdextension.On.Callables.Call(gdextension.FunctionID(p0), gdextension.Returns[gdextension.Variant](p1), int(p2), gdextension.Accepts[gdextension.Variant](p3), gdextension.Returns[gdextension.CallError](p4))
 }
 
 //export go_on_callable_validation
@@ -54,19 +54,17 @@ func go_on_callable_less_than(p0 C.uintptr_t, p1 C.uintptr_t) C.bool {
 
 //export go_on_callable_stringify
 func go_on_callable_stringify(p0 C.uintptr_t, p1 *C.void) C.uintptr_t {
-	result, _ := gdextension.On.Callables.Stringify(gdextension.FunctionID(p0), gdextension.Call(p1))
-	return C.uintptr_t(result)
+	return C.uintptr_t(gdextension.On.Callables.Stringify(gdextension.FunctionID(p0), gdextension.Returns[gdextension.CallError](p1)))
 }
 
 //export go_on_callable_get_argument_count
 func go_on_callable_get_argument_count(p0 C.uintptr_t, p1 *C.void) C.int64_t {
-	result, _ := gdextension.On.Callables.ArgumentCount(gdextension.FunctionID(p0), gdextension.Call(p1))
-	return C.int64_t(result)
+	return C.int64_t(gdextension.On.Callables.ArgumentCount(gdextension.FunctionID(p0), gdextension.Returns[gdextension.CallError](p1)))
 }
 
 //export go_on_editor_class_in_use_detection
 func go_on_editor_class_in_use_detection(p0 C.uintptr_t, p1 C.uintptr_t, p2 *C.void) {
-	gdextension.On.Editor.ClassInUseDetection(gdextension.PackedArray{gdextension.Pointer(p0), gdextension.Pointer(p1)}, gdextension.Call(p2))
+	gdextension.On.Editor.ClassInUseDetection(gdextension.PackedArray{gdextension.Pointer(p0), gdextension.Pointer(p1)}, gdextension.Returns[gdextension.PackedArray](p2))
 }
 
 //export go_on_extension_binding_created
@@ -101,8 +99,7 @@ func go_on_extension_instance_set(p0 C.uintptr_t, p1 C.uintptr_t, p2 C.uint64_t,
 
 //export go_on_extension_instance_get
 func go_on_extension_instance_get(p0 C.uintptr_t, p1 C.uintptr_t, p2 *C.void) C.bool {
-	_, result := gdextension.On.Extension.Instance.Get(gdextension.ExtensionInstanceID(p0), gdextension.StringName(p1), gdextension.Call(p2))
-	return C.bool(result)
+	return C.bool(gdextension.On.Extension.Instance.Get(gdextension.ExtensionInstanceID(p0), gdextension.StringName(p1), gdextension.Returns[gdextension.Variant](p2)))
 }
 
 //export go_on_extension_instance_property_list
@@ -117,8 +114,7 @@ func go_on_extension_instance_property_has_default(p0 C.uintptr_t, p1 C.uintptr_
 
 //export go_on_extension_instance_property_get_default
 func go_on_extension_instance_property_get_default(p0 C.uintptr_t, p1 C.uintptr_t, p2 *C.void) C.bool {
-	_, result := gdextension.On.Extension.Instance.PropertyGetDefault(gdextension.ExtensionInstanceID(p0), gdextension.StringName(p1), gdextension.Call(p2))
-	return C.bool(result)
+	return C.bool(gdextension.On.Extension.Instance.PropertyGetDefault(gdextension.ExtensionInstanceID(p0), gdextension.StringName(p1), gdextension.Returns[gdextension.Variant](p2)))
 }
 
 //export go_on_extension_instance_property_validation
@@ -147,13 +143,13 @@ func go_on_extension_instance_rid(p0 C.uintptr_t) C.uint64_t {
 }
 
 //export go_on_extension_instance_call
-func go_on_extension_instance_call(p0 C.uintptr_t, p1 C.uintptr_t, p2 C.int64_t, p3 *C.void) {
-	gdextension.On.Extension.Instance.Call(gdextension.ExtensionInstanceID(p0), gdextension.FunctionID(p1), int(p2), gdextension.CallAccepts[gdextension.Variant](p3))
+func go_on_extension_instance_call(p0 C.uintptr_t, p1 C.uintptr_t, p2 *C.void, p3 C.int64_t, p4 *C.void, p5 *C.void) {
+	gdextension.On.Extension.Instance.Call(gdextension.ExtensionInstanceID(p0), gdextension.FunctionID(p1), gdextension.Returns[gdextension.Variant](p2), int(p3), gdextension.Accepts[gdextension.Variant](p4), gdextension.Returns[gdextension.CallError](p5))
 }
 
 //export go_on_extension_instance_call_checked
-func go_on_extension_instance_call_checked(p0 C.uintptr_t, p1 C.uintptr_t, p2 *C.void) {
-	gdextension.On.Extension.Instance.CallChecked(gdextension.ExtensionInstanceID(p0), gdextension.FunctionID(p1), gdextension.CallAccepts[gdextension.Variant](p2))
+func go_on_extension_instance_call_checked(p0 C.uintptr_t, p1 C.uintptr_t, p2 *C.void, p3 *C.void) {
+	gdextension.On.Extension.Instance.CallChecked(gdextension.ExtensionInstanceID(p0), gdextension.FunctionID(p1), gdextension.Returns[gdextension.Variant](p2), gdextension.Accepts[gdextension.Variant](p3))
 }
 
 //export go_on_extension_instance_free
@@ -162,8 +158,8 @@ func go_on_extension_instance_free(p0 C.uintptr_t) {
 }
 
 //export go_on_extension_instance_unsafe_call
-func go_on_extension_instance_unsafe_call(p0 C.uintptr_t, p1 C.uintptr_t, p2 *C.void) {
-	gdextension.On.Extension.Instance.Unsafe.Call(gdextension.ExtensionInstanceID(p0), gdextension.FunctionID(p1), gdextension.CallAccepts[interface{}](p2))
+func go_on_extension_instance_unsafe_call(p0 C.uintptr_t, p1 C.uintptr_t, p2 *C.void, p3 *C.void) {
+	gdextension.On.Extension.Instance.Unsafe.Call(gdextension.ExtensionInstanceID(p0), gdextension.FunctionID(p1), gdextension.Returns[interface{}](p2), gdextension.Accepts[interface{}](p3))
 }
 
 //export go_on_extension_script_categorization
@@ -173,8 +169,7 @@ func go_on_extension_script_categorization(p0 C.uintptr_t, p1 C.uintptr_t) C.boo
 
 //export go_on_extension_script_get_property_type
 func go_on_extension_script_get_property_type(p0 C.uintptr_t, p1 *C.void) C.uint32_t {
-	result, _ := gdextension.On.Extension.Script.PropertyType(gdextension.StringName(p0), gdextension.Call(p1))
-	return C.uint32_t(result)
+	return C.uint32_t(gdextension.On.Extension.Script.PropertyType(gdextension.StringName(p0), gdextension.Returns[gdextension.CallError](p1)))
 }
 
 //export go_on_extension_script_get_owner
@@ -184,7 +179,7 @@ func go_on_extension_script_get_owner(p0 C.uintptr_t) C.uintptr_t {
 
 //export go_on_extension_script_get_property_state
 func go_on_extension_script_get_property_state(p0 C.uintptr_t, p1 C.uintptr_t, p2 C.uintptr_t) {
-	gdextension.On.Extension.Script.PropertyState(gdextension.ExtensionInstanceID(p0), gdextension.FunctionID(p1), uintptr(p2))
+	gdextension.On.Extension.Script.PropertyState(gdextension.ExtensionInstanceID(p0), gdextension.FunctionID(p1), gdextension.Pointer(p2))
 }
 
 //export go_on_extension_script_get_methods
@@ -247,11 +242,11 @@ func init() {
 		result = gdextension.FunctionID(C.gd_builtin_name(C.uintptr_t(p0), C.int64_t(p1)))
 		return
 	}
-	gdextension.Host.Builtins.Call = func(p0 gdextension.FunctionID, p1 int32, p2 gdextension.CallAccepts[interface{}]) (_ gdextension.CallReturns[gdextension.Variant], _ gdextension.MaybeError) {
-		C.gd_builtin_call(C.uintptr_t(p0), C.int32_t(p1), unsafe.Pointer(p2))
+	gdextension.Host.Builtins.Call = func(p0 gdextension.FunctionID, p1 gdextension.CallReturns[interface{}], shape gdextension.Shape, p3 gdextension.CallAccepts[interface{}]) {
+		C.gd_builtin_call(C.uintptr_t(p0), unsafe.Pointer(p1), C.uint64_t(shape), unsafe.Pointer(p3))
 		return
 	}
-	gdextension.Host.Callables.Create = func(p0 gdextension.CallableID, p1 gdextension.ObjectID, p2 gdextension.Call) (_ gdextension.CallReturns[gdextension.Callable]) {
+	gdextension.Host.Callables.Create = func(p0 gdextension.CallableID, p1 gdextension.ObjectID, p2 gdextension.CallReturns[gdextension.Callable]) {
 		C.gd_callable_create(C.uintptr_t(p0), C.uint64_t(p1), unsafe.Pointer(p2))
 		return
 	}
@@ -279,8 +274,8 @@ func init() {
 		result = gdextension.MethodList(C.gd_method_list_make(C.int64_t(p0)))
 		return
 	}
-	gdextension.Host.ClassDB.MethodList.Push = func(p0 gdextension.MethodList, p1 gdextension.StringName, p2 gdextension.FunctionID, p3 gdextension.MethodFlags, p4 bool, p5 gdextension.PropertyList, p6 uint32, p7 gdextension.PropertyList, p8 uint32, p9 gdextension.CallAccepts[gdextension.Variant]) {
-		C.gd_method_list_push(C.uintptr_t(p0), C.uintptr_t(p1), C.uintptr_t(p2), C.uint32_t(p3), C.bool(p4), C.uintptr_t(p5), C.uint32_t(p6), C.uintptr_t(p7), C.uint32_t(p8), unsafe.Pointer(p9))
+	gdextension.Host.ClassDB.MethodList.Push = func(p0 gdextension.MethodList, p1 gdextension.StringName, p2 gdextension.FunctionID, p3 gdextension.MethodFlags, p4 bool, p5 gdextension.PropertyList, p6 uint32, p7 gdextension.PropertyList, p8 int, p9 gdextension.CallAccepts[gdextension.Variant]) {
+		C.gd_method_list_push(C.uintptr_t(p0), C.uintptr_t(p1), C.uintptr_t(p2), C.uint32_t(p3), C.bool(p4), C.uintptr_t(p5), C.uint32_t(p6), C.uintptr_t(p7), C.int64_t(p8), unsafe.Pointer(p9))
 		return
 	}
 	gdextension.Host.ClassDB.MethodList.Free = func(p0 gdextension.MethodList) {
@@ -371,7 +366,7 @@ func init() {
 		result = int(C.gd_classdb_XMLParser_load(C.uintptr_t(p0), (*C.char)(unsafe.Pointer(unsafe.SliceData(p1))), C.int64_t(len(p1))))
 		return
 	}
-	gdextension.Host.Dictionaries.Access = func(p0 gdextension.Dictionary, p1 gdextension.Variant, p2 gdextension.Call) (_ gdextension.CallReturns[gdextension.Variant]) {
+	gdextension.Host.Dictionaries.Access = func(p0 gdextension.Dictionary, p1 gdextension.Variant, p2 gdextension.CallReturns[gdextension.Variant]) {
 		C.gd_packed_dictionary_access(C.uintptr_t(p0), C.uint64_t(p1[0]), C.uint64_t(p1[1]), C.uint64_t(p1[2]), unsafe.Pointer(p2))
 		return
 	}
@@ -391,16 +386,16 @@ func init() {
 		C.gd_editor_end_plugin(C.uintptr_t(p0))
 		return
 	}
-	gdextension.Host.Iterators.Make = func(p0 gdextension.Variant, p1 gdextension.Call) (_ gdextension.CallReturns[gdextension.Iterator], result bool, _ gdextension.MaybeError) {
-		result = bool(C.gd_iterator_make(C.uint64_t(p0[0]), C.uint64_t(p0[1]), C.uint64_t(p0[2]), unsafe.Pointer(p1)))
+	gdextension.Host.Iterators.Make = func(p0 gdextension.Variant, p1 gdextension.CallReturns[gdextension.Iterator], p2 gdextension.CallReturns[gdextension.CallError]) {
+		C.gd_iterator_make(C.uint64_t(p0[0]), C.uint64_t(p0[1]), C.uint64_t(p0[2]), unsafe.Pointer(p1), unsafe.Pointer(p2))
 		return
 	}
-	gdextension.Host.Iterators.Next = func(p0 gdextension.Variant, p1 gdextension.Call, p2 gdextension.Iterator) (_ gdextension.CallReturns[gdextension.Iterator], result bool, _ gdextension.MaybeError) {
-		result = bool(C.gd_iterator_next(C.uint64_t(p0[0]), C.uint64_t(p0[1]), C.uint64_t(p0[2]), unsafe.Pointer(p1), C.uint64_t(p2[0]), C.uint64_t(p2[1]), C.uint64_t(p2[2])))
+	gdextension.Host.Iterators.Next = func(p0 gdextension.Variant, p1 gdextension.CallReturns[gdextension.Iterator], p2 gdextension.Iterator, p3 gdextension.CallReturns[gdextension.CallError]) (result bool) {
+		result = bool(C.gd_iterator_next(C.uint64_t(p0[0]), C.uint64_t(p0[1]), C.uint64_t(p0[2]), unsafe.Pointer(p1), C.uint64_t(p2[0]), C.uint64_t(p2[1]), C.uint64_t(p2[2]), unsafe.Pointer(p3)))
 		return
 	}
-	gdextension.Host.Iterators.Load = func(p0 gdextension.Variant, p1 gdextension.Call, p2 gdextension.Iterator) (_ gdextension.CallReturns[gdextension.Variant], result bool, _ gdextension.MaybeError) {
-		result = bool(C.gd_iterator_load(C.uint64_t(p0[0]), C.uint64_t(p0[1]), C.uint64_t(p0[2]), unsafe.Pointer(p1), C.uint64_t(p2[0]), C.uint64_t(p2[1]), C.uint64_t(p2[2])))
+	gdextension.Host.Iterators.Load = func(p0 gdextension.Variant, p1 gdextension.CallReturns[gdextension.Variant], p2 gdextension.Iterator, p3 gdextension.CallReturns[gdextension.CallError]) {
+		C.gd_iterator_load(C.uint64_t(p0[0]), C.uint64_t(p0[1]), C.uint64_t(p0[2]), unsafe.Pointer(p1), C.uint64_t(p2[0]), C.uint64_t(p2[1]), C.uint64_t(p2[2]), unsafe.Pointer(p3))
 		return
 	}
 	gdextension.Host.Log.Error = func(p0 string, p1 string, p2 string, p3 string, p4 int32, p5 bool) {
@@ -443,6 +438,10 @@ func init() {
 		C.gd_memory_edit_u64(C.uintptr_t(p0), C.uint64_t(p1))
 		return
 	}
+	gdextension.Host.Memory.Edit.Bits128 = func(p0 gdextension.Pointer, p1 [2]uint64) {
+		C.gd_memory_edit_128(C.uintptr_t(p0), C.uint64_t(p1[0]), C.uint64_t(p1[1]))
+		return
+	}
 	gdextension.Host.Memory.Edit.Bits256 = func(p0 gdextension.Pointer, p1 [4]uint64) {
 		C.gd_memory_edit_256(C.uintptr_t(p0), C.uint64_t(p1[0]), C.uint64_t(p1[1]), C.uint64_t(p1[2]), C.uint64_t(p1[3]))
 		return
@@ -471,8 +470,8 @@ func init() {
 		result = gdextension.Object(C.gd_object_make(C.uintptr_t(p0)))
 		return
 	}
-	gdextension.Host.Objects.Call = func(p0 gdextension.Object, p1 gdextension.FunctionID, p2 int64, p3 gdextension.CallAccepts[gdextension.Variant]) (_ gdextension.CallReturns[gdextension.Variant], _ gdextension.MaybeError) {
-		C.gd_object_call(C.uintptr_t(p0), C.uintptr_t(p1), C.int64_t(p2), unsafe.Pointer(p3))
+	gdextension.Host.Objects.Call = func(p0 gdextension.Object, p1 gdextension.FunctionID, p2 gdextension.CallReturns[gdextension.Variant], p3 int, p4 gdextension.CallAccepts[gdextension.Variant], p5 gdextension.CallReturns[gdextension.CallError]) {
+		C.gd_object_call(C.uintptr_t(p0), C.uintptr_t(p1), unsafe.Pointer(p2), C.int64_t(p3), unsafe.Pointer(p4), unsafe.Pointer(p5))
 		return
 	}
 	gdextension.Host.Objects.Name = func(p0 gdextension.Object) (result gdextension.StringName) {
@@ -515,7 +514,7 @@ func init() {
 		result = gdextension.ObjectID(C.gd_object_id_inside_variant(C.uint64_t(p0[0]), C.uint64_t(p0[1]), C.uint64_t(p0[2])))
 		return
 	}
-	gdextension.Host.Objects.Method.Lookup = func(p0 gdextension.Object, p1 gdextension.StringName, p2 int64) (result gdextension.FunctionID) {
+	gdextension.Host.Objects.Method.Lookup = func(p0 gdextension.StringName, p1 gdextension.StringName, p2 int64) (result gdextension.FunctionID) {
 		result = gdextension.FunctionID(C.gd_object_method_lookup(C.uintptr_t(p0), C.uintptr_t(p1), C.int64_t(p2)))
 		return
 	}
@@ -523,8 +522,8 @@ func init() {
 		result = gdextension.ScriptInstance(C.gd_object_script_make(C.uintptr_t(p0)))
 		return
 	}
-	gdextension.Host.Objects.Script.Call = func(p0 gdextension.Object, p1 gdextension.StringName, p2 int64, p3 gdextension.CallAccepts[gdextension.Variant]) (_ gdextension.CallReturns[gdextension.Variant], _ gdextension.MaybeError) {
-		C.gd_object_script_call(C.uintptr_t(p0), C.uintptr_t(p1), C.int64_t(p2), unsafe.Pointer(p3))
+	gdextension.Host.Objects.Script.Call = func(p0 gdextension.Object, p1 gdextension.StringName, p2 gdextension.CallReturns[gdextension.Variant], p3 int, p4 gdextension.CallAccepts[gdextension.Variant], p5 gdextension.CallReturns[gdextension.CallError]) {
+		C.gd_object_script_call(C.uintptr_t(p0), C.uintptr_t(p1), unsafe.Pointer(p2), C.int64_t(p3), unsafe.Pointer(p4), unsafe.Pointer(p5))
 		return
 	}
 	gdextension.Host.Objects.Script.Setup = func(p0 gdextension.Object, p1 gdextension.ScriptInstance) {
@@ -539,7 +538,7 @@ func init() {
 		result = bool(C.gd_object_script_defines_method(C.uintptr_t(p0), C.uintptr_t(p1)))
 		return
 	}
-	gdextension.Host.Objects.Script.AddPropertyState = func(p0 gdextension.FunctionID, p1 uintptr, p2 gdextension.StringName, p3 gdextension.Variant) {
+	gdextension.Host.Objects.Script.AddPropertyState = func(p0 gdextension.FunctionID, p1 gdextension.Pointer, p2 gdextension.StringName, p3 gdextension.Variant) {
 		C.gd_object_script_property_state_add(C.uintptr_t(p0), C.uintptr_t(p1), C.uintptr_t(p2), C.uint64_t(p3[0]), C.uint64_t(p3[1]), C.uint64_t(p3[2]))
 		return
 	}
@@ -551,8 +550,8 @@ func init() {
 		C.gd_object_script_placeholder_update(C.uintptr_t(p0), C.uintptr_t(p1), C.uintptr_t(p2))
 		return
 	}
-	gdextension.Host.Objects.Unsafe.Call = func(p0 gdextension.Object, p1 gdextension.FunctionID, p2 gdextension.CallAccepts[interface{}]) (_ gdextension.CallReturns[interface{}]) {
-		C.gd_object_unsafe_call(C.uintptr_t(p0), C.uintptr_t(p1), unsafe.Pointer(p2))
+	gdextension.Host.Objects.Unsafe.Call = func(p0 gdextension.Object, p1 gdextension.FunctionID, p2 gdextension.CallReturns[interface{}], shape gdextension.Shape, p4 gdextension.CallAccepts[interface{}]) {
+		C.gd_object_unsafe_call(C.uintptr_t(p0), C.uintptr_t(p1), unsafe.Pointer(p2), C.uint64_t(shape), unsafe.Pointer(p4))
 		return
 	}
 	gdextension.Host.Objects.Unsafe.Free = func(p0 gdextension.Object) {
@@ -571,7 +570,7 @@ func init() {
 		result = gdextension.Pointer(C.gd_packed_color_array_unsafe(C.uintptr_t(p0[0]), C.uintptr_t(p0[1])))
 		return
 	}
-	gdextension.Host.Packed.Colors.Access = func(p0 gdextension.PackedArray, p1 int, p2 gdextension.Call) (_ gdextension.CallReturns[struct {
+	gdextension.Host.Packed.Colors.Access = func(p0 gdextension.PackedArray, p1 int, p2 gdextension.CallReturns[struct {
 		R float32
 		G float32
 		B float32
@@ -621,7 +620,7 @@ func init() {
 		result = gdextension.Pointer(C.gd_packed_variant_array_unsafe(C.uintptr_t(p0[0]), C.uintptr_t(p0[1])))
 		return
 	}
-	gdextension.Host.Packed.Variants.Access = func(p0 gdextension.PackedArray, p1 int, p2 gdextension.Call) (_ gdextension.CallReturns[gdextension.Variant]) {
+	gdextension.Host.Packed.Variants.Access = func(p0 gdextension.PackedArray, p1 int, p2 gdextension.CallReturns[gdextension.Variant]) {
 		C.gd_packed_variant_array_access(C.uintptr_t(p0[0]), C.uintptr_t(p0[1]), C.int64_t(p1), unsafe.Pointer(p2))
 		return
 	}
@@ -629,7 +628,7 @@ func init() {
 		result = gdextension.Pointer(C.gd_packed_vector2_array_unsafe(C.uintptr_t(p0[0]), C.uintptr_t(p0[1])))
 		return
 	}
-	gdextension.Host.Packed.Vector2s.Access = func(p0 gdextension.PackedArray, p1 int, p2 gdextension.Call) (_ gdextension.CallReturns[struct {
+	gdextension.Host.Packed.Vector2s.Access = func(p0 gdextension.PackedArray, p1 int, p2 gdextension.CallReturns[struct {
 		X float32
 		Y float32
 	}]) { C.gd_packed_vector2_array_access(C.uintptr_t(p0[0]), C.uintptr_t(p0[1]), C.int64_t(p1), unsafe.Pointer(p2)); return }
@@ -637,7 +636,7 @@ func init() {
 		result = gdextension.Pointer(C.gd_packed_vector3_array_unsafe(C.uintptr_t(p0[0]), C.uintptr_t(p0[1])))
 		return
 	}
-	gdextension.Host.Packed.Vector3s.Access = func(p0 gdextension.PackedArray, p1 int, p2 gdextension.Call) (_ gdextension.CallReturns[struct {
+	gdextension.Host.Packed.Vector3s.Access = func(p0 gdextension.PackedArray, p1 int, p2 gdextension.CallReturns[struct {
 		X float32
 		Y float32
 		Z float32
@@ -646,7 +645,7 @@ func init() {
 		result = gdextension.Pointer(C.gd_packed_vector4_array_unsafe(C.uintptr_t(p0[0]), C.uintptr_t(p0[1])))
 		return
 	}
-	gdextension.Host.Packed.Vector4s.Access = func(p0 gdextension.PackedArray, p1 int, p2 gdextension.Call) (_ gdextension.CallReturns[struct {
+	gdextension.Host.Packed.Vector4s.Access = func(p0 gdextension.PackedArray, p1 int, p2 gdextension.CallReturns[struct {
 		X float32
 		Y float32
 		Z float32
@@ -732,12 +731,12 @@ func init() {
 		result = gdextension.String(C.gd_variant_type_name(C.uint32_t(p0)))
 		return
 	}
-	gdextension.Host.VariantTypes.Make = func(p0 gdextension.VariantType, p1 int, p2 gdextension.CallAccepts[gdextension.Variant]) (_ gdextension.CallReturns[gdextension.Variant], _ gdextension.MaybeError) {
-		C.gd_variant_type_make(C.uint32_t(p0), C.int64_t(p1), unsafe.Pointer(p2))
+	gdextension.Host.VariantTypes.Make = func(p0 gdextension.VariantType, p1 gdextension.CallReturns[gdextension.Variant], p2 int, p3 gdextension.CallAccepts[gdextension.Variant], p4 gdextension.CallReturns[gdextension.CallError]) {
+		C.gd_variant_type_make(C.uint32_t(p0), unsafe.Pointer(p1), C.int64_t(p2), unsafe.Pointer(p3), unsafe.Pointer(p4))
 		return
 	}
-	gdextension.Host.VariantTypes.Call = func(p0 gdextension.VariantType, p1 gdextension.StringName, p2 int64, p3 gdextension.CallAccepts[gdextension.Variant]) (_ gdextension.CallReturns[gdextension.Variant], _ gdextension.MaybeError) {
-		C.gd_variant_type_call(C.uint32_t(p0), C.uintptr_t(p1), C.int64_t(p2), unsafe.Pointer(p3))
+	gdextension.Host.VariantTypes.Call = func(p0 gdextension.VariantType, p1 gdextension.StringName, p2 gdextension.CallReturns[gdextension.Variant], p3 int, p4 gdextension.CallAccepts[gdextension.Variant], p5 gdextension.CallReturns[gdextension.CallError]) {
+		C.gd_variant_type_call(C.uint32_t(p0), C.uintptr_t(p1), unsafe.Pointer(p2), C.int64_t(p3), unsafe.Pointer(p4), unsafe.Pointer(p5))
 		return
 	}
 	gdextension.Host.VariantTypes.Convertable = func(p0 gdextension.VariantType, p1 gdextension.VariantType, p2 bool) (result bool) {
@@ -752,7 +751,7 @@ func init() {
 		C.gd_variant_type_setup_dictionary(C.uintptr_t(p0), C.uint32_t(p1), C.uintptr_t(p2), C.uint64_t(p3[0]), C.uint64_t(p3[1]), C.uint64_t(p3[2]), C.uint32_t(p4), C.uintptr_t(p5), C.uint64_t(p6[0]), C.uint64_t(p6[1]), C.uint64_t(p6[2]))
 		return
 	}
-	gdextension.Host.VariantTypes.FetchConstant = func(p0 gdextension.VariantType, p1 gdextension.StringName, p2 gdextension.Call) (_ gdextension.CallReturns[gdextension.Variant]) {
+	gdextension.Host.VariantTypes.FetchConstant = func(p0 gdextension.VariantType, p1 gdextension.StringName, p2 gdextension.CallReturns[gdextension.Variant]) {
 		C.gd_variant_type_fetch_constant(C.uint32_t(p0), C.uintptr_t(p1), unsafe.Pointer(p2))
 		return
 	}
@@ -780,31 +779,31 @@ func init() {
 		result = bool(C.gd_variant_type_has_property(C.uint32_t(p0), C.uintptr_t(p1)))
 		return
 	}
-	gdextension.Host.VariantTypes.Unsafe.Call = func(p0 gdextension.FunctionID, p1 int, p2 gdextension.CallAccepts[interface{}]) (_ gdextension.CallReturns[interface{}]) {
-		C.gd_variant_type_unsafe_call(C.uintptr_t(p0), C.int64_t(p1), unsafe.Pointer(p2))
+	gdextension.Host.VariantTypes.Unsafe.Call = func(p0 gdextension.FunctionID, p1 gdextension.CallReturns[interface{}], shape gdextension.Shape, p3 gdextension.CallAccepts[interface{}]) {
+		C.gd_variant_type_unsafe_call(C.uintptr_t(p0), unsafe.Pointer(p1), C.uint64_t(shape), unsafe.Pointer(p3))
 		return
 	}
-	gdextension.Host.VariantTypes.Unsafe.Make = func(p0 gdextension.FunctionID, p1 gdextension.CallAccepts[interface{}]) (_ gdextension.CallReturns[interface{}]) {
-		C.gd_variant_type_unsafe_make(C.uintptr_t(p0), unsafe.Pointer(p1))
+	gdextension.Host.VariantTypes.Unsafe.Make = func(p0 gdextension.FunctionID, p1 gdextension.CallReturns[interface{}], shape gdextension.Shape, p3 gdextension.CallAccepts[interface{}]) {
+		C.gd_variant_type_unsafe_make(C.uintptr_t(p0), unsafe.Pointer(p1), C.uint64_t(shape), unsafe.Pointer(p3))
 		return
 	}
-	gdextension.Host.VariantTypes.Unsafe.Free = func(p0 gdextension.VariantType, p1 gdextension.CallAccepts[interface{}]) (_ gdextension.CallReturns[interface{}]) {
-		C.gd_variant_type_unsafe_free(C.uint32_t(p0), unsafe.Pointer(p1))
+	gdextension.Host.VariantTypes.Unsafe.Free = func(p0 gdextension.VariantType, shape gdextension.Shape, p2 gdextension.CallAccepts[interface{}]) {
+		C.gd_variant_type_unsafe_free(C.uint32_t(p0), C.uint64_t(shape), unsafe.Pointer(p2))
 		return
 	}
-	gdextension.Host.Variants.Zero = func(p0 gdextension.Call) (_ gdextension.CallReturns[gdextension.Variant]) {
+	gdextension.Host.Variants.Zero = func(p0 gdextension.CallReturns[gdextension.Variant]) {
 		C.gd_variant_zero(unsafe.Pointer(p0))
 		return
 	}
-	gdextension.Host.Variants.Copy = func(p0 gdextension.Variant, p1 gdextension.Call) (_ gdextension.CallReturns[gdextension.Variant]) {
+	gdextension.Host.Variants.Copy = func(p0 gdextension.Variant, p1 gdextension.CallReturns[gdextension.Variant]) {
 		C.gd_variant_copy(C.uint64_t(p0[0]), C.uint64_t(p0[1]), C.uint64_t(p0[2]), unsafe.Pointer(p1))
 		return
 	}
-	gdextension.Host.Variants.Call = func(p0 gdextension.Variant, p1 gdextension.StringName, p2 int, p3 gdextension.CallAccepts[gdextension.Variant]) (_ gdextension.CallReturns[gdextension.Variant], _ gdextension.MaybeError) {
-		C.gd_variant_call(C.uint64_t(p0[0]), C.uint64_t(p0[1]), C.uint64_t(p0[2]), C.uintptr_t(p1), C.int64_t(p2), unsafe.Pointer(p3))
+	gdextension.Host.Variants.Call = func(p0 gdextension.Variant, p1 gdextension.StringName, p2 gdextension.CallReturns[gdextension.Variant], p3 int, p4 gdextension.CallAccepts[gdextension.Variant], p5 gdextension.CallReturns[gdextension.CallError]) {
+		C.gd_variant_call(C.uint64_t(p0[0]), C.uint64_t(p0[1]), C.uint64_t(p0[2]), C.uintptr_t(p1), unsafe.Pointer(p2), C.int64_t(p3), unsafe.Pointer(p4), unsafe.Pointer(p5))
 		return
 	}
-	gdextension.Host.Variants.Eval = func(p0 gdextension.VariantOperator, p1 gdextension.Variant, p2 gdextension.Variant, p3 gdextension.Call) (_ gdextension.CallReturns[gdextension.Variant], result bool) {
+	gdextension.Host.Variants.Eval = func(p0 gdextension.VariantOperator, p1 gdextension.Variant, p2 gdextension.Variant, p3 gdextension.CallReturns[gdextension.Variant]) (result bool) {
 		result = bool(C.gd_variant_eval(C.uint32_t(p0), C.uint64_t(p1[0]), C.uint64_t(p1[1]), C.uint64_t(p1[2]), C.uint64_t(p2[0]), C.uint64_t(p2[1]), C.uint64_t(p2[2]), unsafe.Pointer(p3)))
 		return
 	}
@@ -824,7 +823,7 @@ func init() {
 		result = gdextension.VariantType(C.gd_variant_type(C.uint64_t(p0[0]), C.uint64_t(p0[1]), C.uint64_t(p0[2])))
 		return
 	}
-	gdextension.Host.Variants.Deep.Copy = func(p0 gdextension.Variant, p1 gdextension.Call) (_ gdextension.CallReturns[gdextension.Variant]) {
+	gdextension.Host.Variants.Deep.Copy = func(p0 gdextension.Variant, p1 gdextension.CallReturns[gdextension.Variant]) {
 		C.gd_variant_deep_copy(C.uint64_t(p0[0]), C.uint64_t(p0[1]), C.uint64_t(p0[2]), unsafe.Pointer(p1))
 		return
 	}
@@ -832,15 +831,15 @@ func init() {
 		result = int64(C.gd_variant_deep_hash(C.uint64_t(p0[0]), C.uint64_t(p0[1]), C.uint64_t(p0[2]), C.int64_t(p1)))
 		return
 	}
-	gdextension.Host.Variants.Get.Index = func(p0 gdextension.Variant, p1 gdextension.Variant, p2 gdextension.Call) (_ gdextension.CallReturns[gdextension.Variant], result bool) {
+	gdextension.Host.Variants.Get.Index = func(p0 gdextension.Variant, p1 gdextension.Variant, p2 gdextension.CallReturns[gdextension.Variant]) (result bool) {
 		result = bool(C.gd_variant_get_index(C.uint64_t(p0[0]), C.uint64_t(p0[1]), C.uint64_t(p0[2]), C.uint64_t(p1[0]), C.uint64_t(p1[1]), C.uint64_t(p1[2]), unsafe.Pointer(p2)))
 		return
 	}
-	gdextension.Host.Variants.Get.Array = func(p0 gdextension.Variant, p1 int, p2 gdextension.Call) (_ gdextension.CallReturns[gdextension.Variant], result bool, _ gdextension.MaybeError) {
-		result = bool(C.gd_variant_get_array(C.uint64_t(p0[0]), C.uint64_t(p0[1]), C.uint64_t(p0[2]), C.int64_t(p1), unsafe.Pointer(p2)))
+	gdextension.Host.Variants.Get.Array = func(p0 gdextension.Variant, p1 int, p2 gdextension.CallReturns[gdextension.Variant], p3 gdextension.CallReturns[gdextension.CallError]) (result bool) {
+		result = bool(C.gd_variant_get_array(C.uint64_t(p0[0]), C.uint64_t(p0[1]), C.uint64_t(p0[2]), C.int64_t(p1), unsafe.Pointer(p2), unsafe.Pointer(p3)))
 		return
 	}
-	gdextension.Host.Variants.Get.Field = func(p0 gdextension.Variant, p1 gdextension.StringName, p2 gdextension.Call) (_ gdextension.CallReturns[gdextension.Variant], result bool) {
+	gdextension.Host.Variants.Get.Field = func(p0 gdextension.Variant, p1 gdextension.StringName, p2 gdextension.CallReturns[gdextension.Variant]) (result bool) {
 		result = bool(C.gd_variant_get_field(C.uint64_t(p0[0]), C.uint64_t(p0[1]), C.uint64_t(p0[2]), C.uintptr_t(p1), unsafe.Pointer(p2)))
 		return
 	}
@@ -856,7 +855,7 @@ func init() {
 		result = bool(C.gd_variant_set_index(C.uint64_t(p0[0]), C.uint64_t(p0[1]), C.uint64_t(p0[2]), C.uint64_t(p1[0]), C.uint64_t(p1[1]), C.uint64_t(p1[2]), C.uint64_t(p2[0]), C.uint64_t(p2[1]), C.uint64_t(p2[2])))
 		return
 	}
-	gdextension.Host.Variants.Set.Array = func(p0 gdextension.Variant, p1 int, p2 gdextension.Variant, p3 gdextension.Call) (result bool, _ gdextension.MaybeError) {
+	gdextension.Host.Variants.Set.Array = func(p0 gdextension.Variant, p1 int, p2 gdextension.Variant, p3 gdextension.CallReturns[gdextension.CallError]) (result bool) {
 		result = bool(C.gd_variant_set_array(C.uint64_t(p0[0]), C.uint64_t(p0[1]), C.uint64_t(p0[2]), C.int64_t(p1), C.uint64_t(p2[0]), C.uint64_t(p2[1]), C.uint64_t(p2[2]), unsafe.Pointer(p3)))
 		return
 	}
@@ -864,52 +863,52 @@ func init() {
 		result = bool(C.gd_variant_set_field(C.uint64_t(p0[0]), C.uint64_t(p0[1]), C.uint64_t(p0[2]), C.uintptr_t(p1), C.uint64_t(p2[0]), C.uint64_t(p2[1]), C.uint64_t(p2[2])))
 		return
 	}
-	gdextension.Host.Variants.Unsafe.Call = func(p0 gdextension.FunctionID, p1 int, p2 gdextension.CallAccepts[interface{}]) (_ gdextension.CallReturns[interface{}]) {
-		C.gd_variant_unsafe_call(C.uintptr_t(p0), C.int64_t(p1), unsafe.Pointer(p2))
+	gdextension.Host.Variants.Unsafe.Call = func(p0 gdextension.FunctionID, p1 gdextension.CallReturns[interface{}], shape gdextension.Shape, p3 gdextension.CallAccepts[interface{}]) {
+		C.gd_variant_unsafe_call(C.uintptr_t(p0), unsafe.Pointer(p1), C.uint64_t(shape), unsafe.Pointer(p3))
 		return
 	}
-	gdextension.Host.Variants.Unsafe.Eval = func(p0 gdextension.FunctionID, p1 gdextension.CallAccepts[interface{}]) (_ gdextension.CallReturns[interface{}]) {
-		C.gd_variant_unsafe_eval(C.uintptr_t(p0), unsafe.Pointer(p1))
+	gdextension.Host.Variants.Unsafe.Eval = func(p0 gdextension.FunctionID, p1 gdextension.CallReturns[interface{}], shape gdextension.Shape, p3 gdextension.CallAccepts[interface{}]) {
+		C.gd_variant_unsafe_eval(C.uintptr_t(p0), unsafe.Pointer(p1), C.uint64_t(shape), unsafe.Pointer(p3))
 		return
 	}
 	gdextension.Host.Variants.Unsafe.Free = func(p0 gdextension.Variant) {
 		C.gd_variant_unsafe_free(C.uint64_t(p0[0]), C.uint64_t(p0[1]), C.uint64_t(p0[2]))
 		return
 	}
-	gdextension.Host.Variants.Unsafe.MakeNative = func(p0 gdextension.VariantType, p1 gdextension.Variant, p2 gdextension.Call) (_ gdextension.CallReturns[interface{}]) {
-		C.gd_variant_unsafe_make_native(C.uint32_t(p0), C.uint64_t(p1[0]), C.uint64_t(p1[1]), C.uint64_t(p1[2]), unsafe.Pointer(p2))
+	gdextension.Host.Variants.Unsafe.MakeNative = func(p0 gdextension.VariantType, p1 gdextension.Variant, shape gdextension.Shape, p3 gdextension.CallReturns[interface{}]) {
+		C.gd_variant_unsafe_make_native(C.uint32_t(p0), C.uint64_t(p1[0]), C.uint64_t(p1[1]), C.uint64_t(p1[2]), C.uint64_t(shape), unsafe.Pointer(p3))
 		return
 	}
-	gdextension.Host.Variants.Unsafe.FromNative = func(p0 gdextension.VariantType, p1 gdextension.CallAccepts[interface{}]) (_ gdextension.CallReturns[gdextension.Variant]) {
-		C.gd_variant_unsafe_from_native(C.uint32_t(p0), unsafe.Pointer(p1))
+	gdextension.Host.Variants.Unsafe.FromNative = func(p0 gdextension.VariantType, p1 gdextension.CallReturns[gdextension.Variant], shape gdextension.Shape, p3 gdextension.CallAccepts[interface{}]) {
+		C.gd_variant_unsafe_from_native(C.uint32_t(p0), unsafe.Pointer(p1), C.uint64_t(shape), unsafe.Pointer(p3))
 		return
 	}
 	gdextension.Host.Variants.Unsafe.InternalPointer = func(p0 gdextension.VariantType, p1 gdextension.Variant) (result gdextension.Pointer) {
 		result = gdextension.Pointer(C.gd_variant_unsafe_internal_pointer(C.uint32_t(p0), C.uint64_t(p1[0]), C.uint64_t(p1[1]), C.uint64_t(p1[2])))
 		return
 	}
-	gdextension.Host.Variants.Unsafe.Get.Field = func(p0 gdextension.FunctionID, p1 gdextension.CallAccepts[interface{}]) (_ gdextension.CallReturns[interface{}]) {
-		C.gd_variant_unsafe_get_field(C.uintptr_t(p0), unsafe.Pointer(p1))
+	gdextension.Host.Variants.Unsafe.Get.Field = func(p0 gdextension.FunctionID, p1 gdextension.CallReturns[interface{}], shape gdextension.Shape, p3 gdextension.CallAccepts[interface{}]) {
+		C.gd_variant_unsafe_get_field(C.uintptr_t(p0), unsafe.Pointer(p1), C.uint64_t(shape), unsafe.Pointer(p3))
 		return
 	}
-	gdextension.Host.Variants.Unsafe.Get.Array = func(p0 gdextension.VariantType, p1 int, p2 gdextension.CallAccepts[interface{}]) (_ gdextension.CallReturns[interface{}]) {
-		C.gd_variant_unsafe_get_array(C.uint32_t(p0), C.int64_t(p1), unsafe.Pointer(p2))
+	gdextension.Host.Variants.Unsafe.Get.Array = func(p0 gdextension.VariantType, p1 int, p2 gdextension.CallReturns[interface{}], shape gdextension.Shape, p4 gdextension.CallAccepts[interface{}]) {
+		C.gd_variant_unsafe_get_array(C.uint32_t(p0), C.int64_t(p1), unsafe.Pointer(p2), C.uint64_t(shape), unsafe.Pointer(p4))
 		return
 	}
-	gdextension.Host.Variants.Unsafe.Get.Index = func(p0 gdextension.VariantType, p1 gdextension.CallAccepts[interface{}]) (_ gdextension.CallReturns[interface{}]) {
-		C.gd_variant_unsafe_get_index(C.uint32_t(p0), unsafe.Pointer(p1))
+	gdextension.Host.Variants.Unsafe.Get.Index = func(p0 gdextension.VariantType, p1 gdextension.CallReturns[interface{}], shape gdextension.Shape, p3 gdextension.CallAccepts[interface{}]) {
+		C.gd_variant_unsafe_get_index(C.uint32_t(p0), unsafe.Pointer(p1), C.uint64_t(shape), unsafe.Pointer(p3))
 		return
 	}
-	gdextension.Host.Variants.Unsafe.Set.Field = func(p0 gdextension.FunctionID, p1 gdextension.CallAccepts[interface{}]) {
-		C.gd_variant_unsafe_set_field(C.uintptr_t(p0), unsafe.Pointer(p1))
+	gdextension.Host.Variants.Unsafe.Set.Field = func(p0 gdextension.FunctionID, shape gdextension.Shape, p2 gdextension.CallAccepts[interface{}]) {
+		C.gd_variant_unsafe_set_field(C.uintptr_t(p0), C.uint64_t(shape), unsafe.Pointer(p2))
 		return
 	}
-	gdextension.Host.Variants.Unsafe.Set.Array = func(p0 gdextension.VariantType, p1 int, p2 gdextension.CallAccepts[interface{}]) {
-		C.gd_variant_unsafe_set_array(C.uint32_t(p0), C.int64_t(p1), unsafe.Pointer(p2))
+	gdextension.Host.Variants.Unsafe.Set.Array = func(p0 gdextension.VariantType, p1 int, shape gdextension.Shape, p3 gdextension.CallAccepts[interface{}]) {
+		C.gd_variant_unsafe_set_array(C.uint32_t(p0), C.int64_t(p1), C.uint64_t(shape), unsafe.Pointer(p3))
 		return
 	}
-	gdextension.Host.Variants.Unsafe.Set.Index = func(p0 gdextension.VariantType, p1 gdextension.CallAccepts[interface{}]) {
-		C.gd_variant_unsafe_set_index(C.uint32_t(p0), unsafe.Pointer(p1))
+	gdextension.Host.Variants.Unsafe.Set.Index = func(p0 gdextension.VariantType, shape gdextension.Shape, p2 gdextension.CallAccepts[interface{}]) {
+		C.gd_variant_unsafe_set_index(C.uint32_t(p0), C.uint64_t(shape), unsafe.Pointer(p2))
 		return
 	}
 	gdextension.Host.Version.Major = func() (result uint32) {

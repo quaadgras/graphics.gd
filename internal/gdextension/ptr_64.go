@@ -4,5 +4,6 @@ package gdextension
 
 import "unsafe"
 
-type Pointer uintptr
-type Call unsafe.Pointer
+type Pointer = uintptr
+type Returns[T any] unsafe.Pointer
+type Accepts[T any] unsafe.Pointer

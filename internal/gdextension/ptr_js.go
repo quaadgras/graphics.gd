@@ -2,5 +2,6 @@
 
 package gdextension
 
-type Pointer uint32
-type Call uint32
+type Pointer = uint32
+type Returns[T any] uint32
+type Accepts[T any] uint32

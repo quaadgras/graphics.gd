@@ -13,8 +13,8 @@ void go_on_init(uint32_t level) {
 void go_on_exit(uint32_t p0) {
 	Go.call<void>("on_exit",p0);
 }
-void go_on_callable_call(uintptr_t p0, double p1, void* p2) {
-	Go.call<void>("on_callable_call",p0,p1, uintptr_t(p2));
+void go_on_callable_call(uintptr_t p0, void* p1, double p2, void* p3, void* p4) {
+	Go.call<void>("on_callable_call",p0, uintptr_t(p1),p2, uintptr_t(p3), uintptr_t(p4));
 }
 bool go_on_callable_validation(uintptr_t p0) {
 	return Go.call<bool>("on_callable_validation",p0);
@@ -85,17 +85,17 @@ bool go_on_extension_instance_reference(uintptr_t p0, bool p1) {
 uint64_t go_on_extension_instance_rid(uintptr_t p0) {
 	return Go.call<uint64_t>("on_extension_instance_rid",p0);
 }
-void go_on_extension_instance_call(uintptr_t p0, uintptr_t p1, double p2, void* p3) {
-	Go.call<void>("on_extension_instance_call",p0,p1,p2, uintptr_t(p3));
+void go_on_extension_instance_call(uintptr_t p0, uintptr_t p1, void* p2, double p3, void* p4, void* p5) {
+	Go.call<void>("on_extension_instance_call",p0,p1, uintptr_t(p2),p3, uintptr_t(p4), uintptr_t(p5));
 }
-void go_on_extension_instance_call_checked(uintptr_t p0, uintptr_t p1, void* p2) {
-	Go.call<void>("on_extension_instance_call_checked",p0,p1, uintptr_t(p2));
+void go_on_extension_instance_call_checked(uintptr_t p0, uintptr_t p1, void* p2, void* p3) {
+	Go.call<void>("on_extension_instance_call_checked",p0,p1, uintptr_t(p2), uintptr_t(p3));
 }
 void go_on_extension_instance_free(uintptr_t p0) {
 	Go.call<void>("on_extension_instance_free",p0);
 }
-void go_on_extension_instance_unsafe_call(uintptr_t p0, uintptr_t p1, void* p2) {
-	Go.call<void>("on_extension_instance_unsafe_call",p0,p1, uintptr_t(p2));
+void go_on_extension_instance_unsafe_call(uintptr_t p0, uintptr_t p1, void* p2, void* p3) {
+	Go.call<void>("on_extension_instance_unsafe_call",p0,p1, uintptr_t(p2), uintptr_t(p3));
 }
 bool go_on_extension_script_categorization(uintptr_t p0, uintptr_t p1) {
 	return Go.call<bool>("on_extension_script_categorization",p0,p1);
