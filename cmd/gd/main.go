@@ -239,10 +239,6 @@ func wrap() error {
 		if err != nil {
 			return xray.New(err)
 		}
-		err = docgen.Process(wd)
-		if err != nil {
-			return xray.New(err)
-		}
 		if GOOS == "js" {
 			if err := os.MkdirAll(graphics+"/.godot/public", 0o755); err != nil {
 				return xray.New(err)
@@ -324,6 +320,10 @@ func wrap() error {
 			return xray.New(engine.Run())
 		}
 		if err := setupFile(false, graphics+"/.godot/extension_list.cfg", extension_list_cfg); err != nil {
+			return xray.New(err)
+		}
+		err = docgen.Process(wd)
+		if err != nil {
 			return xray.New(err)
 		}
 		return nil
