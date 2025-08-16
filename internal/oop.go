@@ -14,6 +14,15 @@ import (
 
 var ExtensionInstances sync.Map
 
+func init() {
+	RegisterCleanup(func() {
+		ExtensionInstances.Range(func(key, value any) bool {
+			pointers.Raw[Object]([3]uint64{key.(uint64)}).Free()
+			return true
+		})
+	})
+}
+
 type NotificationType int32
 
 func PointerWithOwnershipTransferredToGo[T pointers.Generic[T, [3]uint64]](ptr EnginePointer) T {
