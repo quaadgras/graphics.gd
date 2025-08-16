@@ -528,7 +528,7 @@ Creates a new shape owner for the given object. Returns [code]owner_id[/code] of
 */
 //go:nosplit
 func (self class) CreateShapeOwner(owner [1]gd.Object) int64 { //gd:CollisionObject3D.create_shape_owner
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.CollisionObject3D.Bind_create_shape_owner, gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ owner gdextension.Object }{gdextension.Object(pointers.Get(owner[0])[0])}))
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.CollisionObject3D.Bind_create_shape_owner, gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ owner gdextension.Object }{gdextension.Object(gd.ObjectChecked(owner[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }
@@ -611,7 +611,7 @@ func (self class) ShapeOwnerAddShape(owner_id int64, shape [1]gdclass.Shape3D) {
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CollisionObject3D.Bind_shape_owner_add_shape, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		owner_id int64
 		shape    gdextension.Object
-	}{owner_id, gdextension.Object(pointers.Get(shape[0])[0])}))
+	}{owner_id, gdextension.Object(gd.ObjectChecked(shape[0].AsObject()))}))
 }
 
 /*

@@ -644,7 +644,7 @@ func (self class) AddItem(text String.Readable, icon [1]gdclass.Texture2D, selec
 		text       gdextension.String
 		icon       gdextension.Object
 		selectable bool
-	}{gdextension.String(pointers.Get(gd.InternalString(text))[0]), gdextension.Object(pointers.Get(icon[0])[0]), selectable}))
+	}{gdextension.String(pointers.Get(gd.InternalString(text))[0]), gdextension.Object(gd.ObjectChecked(icon[0].AsObject())), selectable}))
 	var ret = r_ret
 	return ret
 }
@@ -657,7 +657,7 @@ func (self class) AddIconItem(icon [1]gdclass.Texture2D, selectable bool) int64 
 	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ItemList.Bind_add_icon_item, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		icon       gdextension.Object
 		selectable bool
-	}{gdextension.Object(pointers.Get(icon[0])[0]), selectable}))
+	}{gdextension.Object(gd.ObjectChecked(icon[0].AsObject())), selectable}))
 	var ret = r_ret
 	return ret
 }
@@ -691,7 +691,7 @@ func (self class) SetItemIcon(idx int64, icon [1]gdclass.Texture2D) { //gd:ItemL
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ItemList.Bind_set_item_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		idx  int64
 		icon gdextension.Object
-	}{idx, gdextension.Object(pointers.Get(icon[0])[0])}))
+	}{idx, gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))}))
 }
 
 /*

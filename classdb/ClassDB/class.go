@@ -601,7 +601,7 @@ func (self class) ClassGetProperty(obj [1]gd.Object, property String.Name) varia
 	var r_ret = gdunsafe.Call[[3]uint64](self.AsObject(), gd.Global.Methods.ClassDB.Bind_class_get_property, gdextension.SizeVariant|(gdextension.SizeObject<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		obj      gdextension.Object
 		property gdextension.StringName
-	}{gdextension.Object(pointers.Get(obj[0])[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(property))[0])}))
+	}{gdextension.Object(gd.ObjectChecked(obj[0].AsObject())), gdextension.StringName(pointers.Get(gd.InternalStringName(property))[0])}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -615,7 +615,7 @@ func (self class) ClassSetProperty(obj [1]gd.Object, property String.Name, value
 		obj      gdextension.Object
 		property gdextension.StringName
 		value    gdextension.Variant
-	}{gdextension.Object(pointers.Get(obj[0])[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(property))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
+	}{gdextension.Object(gd.ObjectChecked(obj[0].AsObject())), gdextension.StringName(pointers.Get(gd.InternalStringName(property))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }

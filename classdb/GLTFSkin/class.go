@@ -298,7 +298,7 @@ func (self class) GetGodotSkin() [1]gdclass.Skin { //gd:GLTFSkin.get_godot_skin
 
 //go:nosplit
 func (self class) SetGodotSkin(godot_skin [1]gdclass.Skin) { //gd:GLTFSkin.set_godot_skin
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFSkin.Bind_set_godot_skin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ godot_skin gdextension.Object }{gdextension.Object(pointers.Get(godot_skin[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFSkin.Bind_set_godot_skin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ godot_skin gdextension.Object }{gdextension.Object(gd.ObjectChecked(godot_skin[0].AsObject()))}))
 }
 func (self class) AsGLTFSkin() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsGLTFSkin() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

@@ -247,7 +247,7 @@ Add an action set.
 */
 //go:nosplit
 func (self class) AddActionSet(action_set [1]gdclass.OpenXRActionSet) { //gd:OpenXRActionMap.add_action_set
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRActionMap.Bind_add_action_set, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ action_set gdextension.Object }{gdextension.Object(pointers.Get(action_set[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRActionMap.Bind_add_action_set, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ action_set gdextension.Object }{gdextension.Object(gd.ObjectChecked(action_set[0].AsObject()))}))
 }
 
 /*
@@ -255,7 +255,7 @@ Remove an action set.
 */
 //go:nosplit
 func (self class) RemoveActionSet(action_set [1]gdclass.OpenXRActionSet) { //gd:OpenXRActionMap.remove_action_set
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRActionMap.Bind_remove_action_set, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ action_set gdextension.Object }{gdextension.Object(pointers.Get(action_set[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRActionMap.Bind_remove_action_set, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ action_set gdextension.Object }{gdextension.Object(gd.ObjectChecked(action_set[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -305,7 +305,7 @@ Add an interaction profile.
 */
 //go:nosplit
 func (self class) AddInteractionProfile(interaction_profile [1]gdclass.OpenXRInteractionProfile) { //gd:OpenXRActionMap.add_interaction_profile
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRActionMap.Bind_add_interaction_profile, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ interaction_profile gdextension.Object }{gdextension.Object(pointers.Get(interaction_profile[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRActionMap.Bind_add_interaction_profile, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ interaction_profile gdextension.Object }{gdextension.Object(gd.ObjectChecked(interaction_profile[0].AsObject()))}))
 }
 
 /*
@@ -313,7 +313,7 @@ Remove an interaction profile.
 */
 //go:nosplit
 func (self class) RemoveInteractionProfile(interaction_profile [1]gdclass.OpenXRInteractionProfile) { //gd:OpenXRActionMap.remove_interaction_profile
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRActionMap.Bind_remove_interaction_profile, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ interaction_profile gdextension.Object }{gdextension.Object(pointers.Get(interaction_profile[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRActionMap.Bind_remove_interaction_profile, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ interaction_profile gdextension.Object }{gdextension.Object(gd.ObjectChecked(interaction_profile[0].AsObject()))}))
 }
 
 /*

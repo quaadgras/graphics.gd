@@ -2859,7 +2859,7 @@ func (self class) FontSetTextureImage(font_rid RID.Any, size Vector2i.XY, textur
 		size          Vector2i.XY
 		texture_index int64
 		image         gdextension.Object
-	}{font_rid, size, texture_index, gdextension.Object(pointers.Get(image[0])[0])}))
+	}{font_rid, size, texture_index, gdextension.Object(gd.ObjectChecked(image[0].AsObject()))}))
 }
 
 /*

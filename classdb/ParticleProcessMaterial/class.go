@@ -1133,7 +1133,7 @@ func (self class) SetParamTexture(param Parameter, texture [1]gdclass.Texture2D)
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ParticleProcessMaterial.Bind_set_param_texture, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		param   Parameter
 		texture gdextension.Object
-	}{param, gdextension.Object(pointers.Get(texture[0])[0])}))
+	}{param, gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 /*
@@ -1160,7 +1160,7 @@ func (self class) GetColor() Color.RGBA { //gd:ParticleProcessMaterial.get_color
 
 //go:nosplit
 func (self class) SetColorRamp(ramp [1]gdclass.Texture2D) { //gd:ParticleProcessMaterial.set_color_ramp
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ParticleProcessMaterial.Bind_set_color_ramp, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ ramp gdextension.Object }{gdextension.Object(pointers.Get(ramp[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ParticleProcessMaterial.Bind_set_color_ramp, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ ramp gdextension.Object }{gdextension.Object(gd.ObjectChecked(ramp[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -1172,7 +1172,7 @@ func (self class) GetColorRamp() [1]gdclass.Texture2D { //gd:ParticleProcessMate
 
 //go:nosplit
 func (self class) SetAlphaCurve(curve [1]gdclass.Texture2D) { //gd:ParticleProcessMaterial.set_alpha_curve
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ParticleProcessMaterial.Bind_set_alpha_curve, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(pointers.Get(curve[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ParticleProcessMaterial.Bind_set_alpha_curve, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -1184,7 +1184,7 @@ func (self class) GetAlphaCurve() [1]gdclass.Texture2D { //gd:ParticleProcessMat
 
 //go:nosplit
 func (self class) SetEmissionCurve(curve [1]gdclass.Texture2D) { //gd:ParticleProcessMaterial.set_emission_curve
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ParticleProcessMaterial.Bind_set_emission_curve, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(pointers.Get(curve[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ParticleProcessMaterial.Bind_set_emission_curve, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -1196,7 +1196,7 @@ func (self class) GetEmissionCurve() [1]gdclass.Texture2D { //gd:ParticleProcess
 
 //go:nosplit
 func (self class) SetColorInitialRamp(ramp [1]gdclass.Texture2D) { //gd:ParticleProcessMaterial.set_color_initial_ramp
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ParticleProcessMaterial.Bind_set_color_initial_ramp, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ ramp gdextension.Object }{gdextension.Object(pointers.Get(ramp[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ParticleProcessMaterial.Bind_set_color_initial_ramp, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ ramp gdextension.Object }{gdextension.Object(gd.ObjectChecked(ramp[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -1208,7 +1208,7 @@ func (self class) GetColorInitialRamp() [1]gdclass.Texture2D { //gd:ParticleProc
 
 //go:nosplit
 func (self class) SetVelocityLimitCurve(curve [1]gdclass.Texture2D) { //gd:ParticleProcessMaterial.set_velocity_limit_curve
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ParticleProcessMaterial.Bind_set_velocity_limit_curve, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(pointers.Get(curve[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ParticleProcessMaterial.Bind_set_velocity_limit_curve, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -1289,7 +1289,7 @@ func (self class) GetEmissionBoxExtents() Vector3.XYZ { //gd:ParticleProcessMate
 
 //go:nosplit
 func (self class) SetEmissionPointTexture(texture [1]gdclass.Texture2D) { //gd:ParticleProcessMaterial.set_emission_point_texture
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ParticleProcessMaterial.Bind_set_emission_point_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(pointers.Get(texture[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ParticleProcessMaterial.Bind_set_emission_point_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -1301,7 +1301,7 @@ func (self class) GetEmissionPointTexture() [1]gdclass.Texture2D { //gd:Particle
 
 //go:nosplit
 func (self class) SetEmissionNormalTexture(texture [1]gdclass.Texture2D) { //gd:ParticleProcessMaterial.set_emission_normal_texture
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ParticleProcessMaterial.Bind_set_emission_normal_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(pointers.Get(texture[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ParticleProcessMaterial.Bind_set_emission_normal_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -1313,7 +1313,7 @@ func (self class) GetEmissionNormalTexture() [1]gdclass.Texture2D { //gd:Particl
 
 //go:nosplit
 func (self class) SetEmissionColorTexture(texture [1]gdclass.Texture2D) { //gd:ParticleProcessMaterial.set_emission_color_texture
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ParticleProcessMaterial.Bind_set_emission_color_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(pointers.Get(texture[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ParticleProcessMaterial.Bind_set_emission_color_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit

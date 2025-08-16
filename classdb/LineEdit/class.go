@@ -1257,7 +1257,7 @@ func (self class) IsDragAndDropSelectionEnabled() bool { //gd:LineEdit.is_drag_a
 
 //go:nosplit
 func (self class) SetRightIcon(icon [1]gdclass.Texture2D) { //gd:LineEdit.set_right_icon
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.LineEdit.Bind_set_right_icon, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ icon gdextension.Object }{gdextension.Object(pointers.Get(icon[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.LineEdit.Bind_set_right_icon, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ icon gdextension.Object }{gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))}))
 }
 
 //go:nosplit

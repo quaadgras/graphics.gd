@@ -664,7 +664,7 @@ func (self class) AddLines(lines Packed.Array[Vector3.XYZ], material [1]gdclass.
 		material  gdextension.Object
 		billboard bool
 		modulate  Color.RGBA
-	}{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](lines))), gdextension.Object(pointers.Get(material[0])[0]), billboard, modulate}))
+	}{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](lines))), gdextension.Object(gd.ObjectChecked(material[0].AsObject())), billboard, modulate}))
 }
 
 /*
@@ -677,7 +677,7 @@ func (self class) AddMesh(mesh [1]gdclass.Mesh, material [1]gdclass.Material, tr
 		material  gdextension.Object
 		transform Transform3D.BasisOrigin
 		skeleton  gdextension.Object
-	}{gdextension.Object(pointers.Get(mesh[0])[0]), gdextension.Object(pointers.Get(material[0])[0]), gd.Transposed(transform), gdextension.Object(pointers.Get(skeleton[0])[0])}))
+	}{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject())), gdextension.Object(gd.ObjectChecked(material[0].AsObject())), gd.Transposed(transform), gdextension.Object(gd.ObjectChecked(skeleton[0].AsObject()))}))
 }
 
 /*
@@ -693,7 +693,7 @@ Adds collision triangles to the gizmo for picking. A [TriangleMesh] can be gener
 */
 //go:nosplit
 func (self class) AddCollisionTriangles(triangles [1]gdclass.TriangleMesh) { //gd:EditorNode3DGizmo.add_collision_triangles
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorNode3DGizmo.Bind_add_collision_triangles, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ triangles gdextension.Object }{gdextension.Object(pointers.Get(triangles[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorNode3DGizmo.Bind_add_collision_triangles, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ triangles gdextension.Object }{gdextension.Object(gd.ObjectChecked(triangles[0].AsObject()))}))
 }
 
 /*
@@ -705,7 +705,7 @@ func (self class) AddUnscaledBillboard(material [1]gdclass.Material, default_sca
 		material      gdextension.Object
 		default_scale float64
 		modulate      Color.RGBA
-	}{gdextension.Object(pointers.Get(material[0])[0]), default_scale, modulate}))
+	}{gdextension.Object(gd.ObjectChecked(material[0].AsObject())), default_scale, modulate}))
 }
 
 /*
@@ -721,7 +721,7 @@ func (self class) AddHandles(handles Packed.Array[Vector3.XYZ], material [1]gdcl
 		ids       gdextension.PackedArray
 		billboard bool
 		secondary bool
-	}{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](handles))), gdextension.Object(pointers.Get(material[0])[0]), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](ids))), billboard, secondary}))
+	}{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](handles))), gdextension.Object(gd.ObjectChecked(material[0].AsObject())), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](ids))), billboard, secondary}))
 }
 
 /*

@@ -374,7 +374,7 @@ func (self class) AddResourceFormatLoader(format_loader [1]gdclass.ResourceForma
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ResourceLoader.Bind_add_resource_format_loader, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		format_loader gdextension.Object
 		at_front      bool
-	}{gdextension.Object(pointers.Get(format_loader[0])[0]), at_front}))
+	}{gdextension.Object(gd.ObjectChecked(format_loader[0].AsObject())), at_front}))
 }
 
 /*
@@ -382,7 +382,7 @@ Unregisters the given [ResourceFormatLoader].
 */
 //go:nosplit
 func (self class) RemoveResourceFormatLoader(format_loader [1]gdclass.ResourceFormatLoader) { //gd:ResourceLoader.remove_resource_format_loader
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ResourceLoader.Bind_remove_resource_format_loader, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ format_loader gdextension.Object }{gdextension.Object(pointers.Get(format_loader[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ResourceLoader.Bind_remove_resource_format_loader, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ format_loader gdextension.Object }{gdextension.Object(gd.ObjectChecked(format_loader[0].AsObject()))}))
 }
 
 /*

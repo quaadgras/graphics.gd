@@ -167,7 +167,7 @@ func (self class) QueueEditedResourcePreview(resource [1]gdclass.Resource, recei
 		receiver      gdextension.Object
 		receiver_func gdextension.StringName
 		userdata      gdextension.Variant
-	}{gdextension.Object(pointers.Get(resource[0])[0]), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(receiver[0].AsObject()[0])), gdextension.StringName(pointers.Get(gd.InternalStringName(receiver_func))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(userdata)))}))
+	}{gdextension.Object(gd.ObjectChecked(resource[0].AsObject())), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(receiver[0].AsObject()[0])), gdextension.StringName(pointers.Get(gd.InternalStringName(receiver_func))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(userdata)))}))
 }
 
 /*
@@ -175,7 +175,7 @@ Create an own, custom preview generator.
 */
 //go:nosplit
 func (self class) AddPreviewGenerator(generator [1]gdclass.EditorResourcePreviewGenerator) { //gd:EditorResourcePreview.add_preview_generator
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorResourcePreview.Bind_add_preview_generator, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ generator gdextension.Object }{gdextension.Object(pointers.Get(generator[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorResourcePreview.Bind_add_preview_generator, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ generator gdextension.Object }{gdextension.Object(gd.ObjectChecked(generator[0].AsObject()))}))
 }
 
 /*
@@ -183,7 +183,7 @@ Removes a custom preview generator.
 */
 //go:nosplit
 func (self class) RemovePreviewGenerator(generator [1]gdclass.EditorResourcePreviewGenerator) { //gd:EditorResourcePreview.remove_preview_generator
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorResourcePreview.Bind_remove_preview_generator, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ generator gdextension.Object }{gdextension.Object(pointers.Get(generator[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorResourcePreview.Bind_remove_preview_generator, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ generator gdextension.Object }{gdextension.Object(gd.ObjectChecked(generator[0].AsObject()))}))
 }
 
 /*

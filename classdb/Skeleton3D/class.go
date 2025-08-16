@@ -724,7 +724,7 @@ Binds the given Skin to the Skeleton.
 */
 //go:nosplit
 func (self class) RegisterSkin(skin [1]gdclass.Skin) [1]gdclass.SkinReference { //gd:Skeleton3D.register_skin
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_register_skin, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ skin gdextension.Object }{gdextension.Object(pointers.Get(skin[0])[0])}))
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Skeleton3D.Bind_register_skin, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ skin gdextension.Object }{gdextension.Object(gd.ObjectChecked(skin[0].AsObject()))}))
 	var ret = [1]gdclass.SkinReference{gd.PointerWithOwnershipTransferredToGo[gdclass.SkinReference](r_ret)}
 	return ret
 }

@@ -68,6 +68,14 @@ func PointerLifetimeBoundTo[T pointers.Generic[T, [3]uint64]](obj [1]Object, ptr
 	return pointers.Let[T]([3]uint64{uint64(ptr), 0})
 }
 
+func ObjectChecked(obj [1]Object) EnginePointer {
+	raw := pointers.Get(obj[0])
+	if !obj[0].IsAlive(raw) {
+		panic("use after free")
+	}
+	return EnginePointer(raw[0])
+}
+
 func (self Object) AsObject() [1]Object {
 	return [1]Object{self}
 }

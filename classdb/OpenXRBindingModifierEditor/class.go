@@ -140,7 +140,7 @@ func (self class) Setup(action_map [1]gdclass.OpenXRActionMap, binding_modifier 
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRBindingModifierEditor.Bind_setup, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		action_map       gdextension.Object
 		binding_modifier gdextension.Object
-	}{gdextension.Object(pointers.Get(action_map[0])[0]), gdextension.Object(pointers.Get(binding_modifier[0])[0])}))
+	}{gdextension.Object(gd.ObjectChecked(action_map[0].AsObject())), gdextension.Object(gd.ObjectChecked(binding_modifier[0].AsObject()))}))
 }
 func (self Instance) OnBindingModifierRemoved(cb func(binding_modifier_editor Object.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("binding_modifier_removed"), gd.NewCallable(cb), 0)

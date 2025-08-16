@@ -1676,7 +1676,7 @@ func (self class) AddCodeCompletionOption(atype CodeCompletionKind, display_text
 		icon         gdextension.Object
 		value        gdextension.Variant
 		location     int64
-	}{atype, gdextension.String(pointers.Get(gd.InternalString(display_text))[0]), gdextension.String(pointers.Get(gd.InternalString(insert_text))[0]), text_color, gdextension.Object(pointers.Get(icon[0])[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(value))), location}))
+	}{atype, gdextension.String(pointers.Get(gd.InternalString(display_text))[0]), gdextension.String(pointers.Get(gd.InternalString(insert_text))[0]), text_color, gdextension.Object(gd.ObjectChecked(icon[0].AsObject())), gdextension.Variant(pointers.Get(gd.InternalVariant(value))), location}))
 }
 
 /*

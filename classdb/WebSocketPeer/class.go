@@ -341,7 +341,7 @@ func (self class) ConnectToUrl(url String.Readable, tls_client_options [1]gdclas
 	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.WebSocketPeer.Bind_connect_to_url, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		url                gdextension.String
 		tls_client_options gdextension.Object
-	}{gdextension.String(pointers.Get(gd.InternalString(url))[0]), gdextension.Object(pointers.Get(tls_client_options[0])[0])}))
+	}{gdextension.String(pointers.Get(gd.InternalString(url))[0]), gdextension.Object(gd.ObjectChecked(tls_client_options[0].AsObject()))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -352,7 +352,7 @@ Accepts a peer connection performing the HTTP handshake as a WebSocket server. T
 */
 //go:nosplit
 func (self class) AcceptStream(stream [1]gdclass.StreamPeer) Error.Code { //gd:WebSocketPeer.accept_stream
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.WebSocketPeer.Bind_accept_stream, gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ stream gdextension.Object }{gdextension.Object(pointers.Get(stream[0])[0])}))
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.WebSocketPeer.Bind_accept_stream, gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ stream gdextension.Object }{gdextension.Object(gd.ObjectChecked(stream[0].AsObject()))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }

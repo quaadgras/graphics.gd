@@ -179,7 +179,7 @@ func (self Instance) SetCollideWithAreas(value bool) {
 
 //go:nosplit
 func (self class) SetShape(shape [1]gdclass.Resource) { //gd:PhysicsShapeQueryParameters3D.set_shape
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_set_shape, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ shape gdextension.Object }{gdextension.Object(pointers.Get(shape[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_set_shape, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ shape gdextension.Object }{gdextension.Object(gd.ObjectChecked(shape[0].AsObject()))}))
 }
 
 //go:nosplit

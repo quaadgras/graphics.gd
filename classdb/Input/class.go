@@ -1254,7 +1254,7 @@ func (self class) SetCustomMouseCursor(image [1]gdclass.Resource, shape CursorSh
 		image   gdextension.Object
 		shape   CursorShape
 		hotspot Vector2.XY
-	}{gdextension.Object(pointers.Get(image[0])[0]), shape, hotspot}))
+	}{gdextension.Object(gd.ObjectChecked(image[0].AsObject())), shape, hotspot}))
 }
 
 /*
@@ -1277,7 +1277,7 @@ Input.ParseInputEvent(cancelEvent);
 */
 //go:nosplit
 func (self class) ParseInputEvent(event [1]gdclass.InputEvent) { //gd:Input.parse_input_event
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Input.Bind_parse_input_event, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ event gdextension.Object }{gdextension.Object(pointers.Get(event[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Input.Bind_parse_input_event, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ event gdextension.Object }{gdextension.Object(gd.ObjectChecked(event[0].AsObject()))}))
 }
 
 //go:nosplit

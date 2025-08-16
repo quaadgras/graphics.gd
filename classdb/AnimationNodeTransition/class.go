@@ -288,7 +288,7 @@ func (self class) GetXfadeTime() float64 { //gd:AnimationNodeTransition.get_xfad
 
 //go:nosplit
 func (self class) SetXfadeCurve(curve [1]gdclass.Curve) { //gd:AnimationNodeTransition.set_xfade_curve
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationNodeTransition.Bind_set_xfade_curve, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(pointers.Get(curve[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationNodeTransition.Bind_set_xfade_curve, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
 }
 
 //go:nosplit

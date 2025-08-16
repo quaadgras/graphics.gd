@@ -222,7 +222,7 @@ func (self class) AddMeshPeer(peer_id int64, host [1]gdclass.ENetConnection) Err
 	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ENetMultiplayerPeer.Bind_add_mesh_peer, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		peer_id int64
 		host    gdextension.Object
-	}{peer_id, gdextension.Object(pointers.Get(host[0])[0])}))
+	}{peer_id, gdextension.Object(gd.ObjectChecked(host[0].AsObject()))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }

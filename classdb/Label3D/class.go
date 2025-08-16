@@ -523,7 +523,7 @@ func (self class) GetOutlineRenderPriority() int64 { //gd:Label3D.get_outline_re
 
 //go:nosplit
 func (self class) SetFont(font [1]gdclass.Font) { //gd:Label3D.set_font
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Label3D.Bind_set_font, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ font gdextension.Object }{gdextension.Object(pointers.Get(font[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Label3D.Bind_set_font, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ font gdextension.Object }{gdextension.Object(gd.ObjectChecked(font[0].AsObject()))}))
 }
 
 //go:nosplit

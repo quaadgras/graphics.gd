@@ -1343,7 +1343,7 @@ func (self class) SetTextureImage(cache_index int64, size Vector2i.XY, texture_i
 		size          Vector2i.XY
 		texture_index int64
 		image         gdextension.Object
-	}{cache_index, size, texture_index, gdextension.Object(pointers.Get(image[0])[0])}))
+	}{cache_index, size, texture_index, gdextension.Object(gd.ObjectChecked(image[0].AsObject()))}))
 }
 
 /*

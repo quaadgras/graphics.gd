@@ -584,7 +584,7 @@ func (self class) SetTabIcon(tab_idx int64, icon [1]gdclass.Texture2D) { //gd:Ta
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TabContainer.Bind_set_tab_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		tab_idx int64
 		icon    gdextension.Object
-	}{tab_idx, gdextension.Object(pointers.Get(icon[0])[0])}))
+	}{tab_idx, gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))}))
 }
 
 /*
@@ -689,7 +689,7 @@ func (self class) SetTabButtonIcon(tab_idx int64, icon [1]gdclass.Texture2D) { /
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TabContainer.Bind_set_tab_button_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		tab_idx int64
 		icon    gdextension.Object
-	}{tab_idx, gdextension.Object(pointers.Get(icon[0])[0])}))
+	}{tab_idx, gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))}))
 }
 
 /*
@@ -717,7 +717,7 @@ Returns the index of the tab tied to the given [param control]. The control must
 */
 //go:nosplit
 func (self class) GetTabIdxFromControl(control [1]gdclass.Control) int64 { //gd:TabContainer.get_tab_idx_from_control
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TabContainer.Bind_get_tab_idx_from_control, gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ control gdextension.Object }{gdextension.Object(pointers.Get(control[0])[0])}))
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TabContainer.Bind_get_tab_idx_from_control, gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(control[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }

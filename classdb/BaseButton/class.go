@@ -385,7 +385,7 @@ func (self class) IsShortcutFeedback() bool { //gd:BaseButton.is_shortcut_feedba
 
 //go:nosplit
 func (self class) SetShortcut(shortcut [1]gdclass.Shortcut) { //gd:BaseButton.set_shortcut
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseButton.Bind_set_shortcut, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ shortcut gdextension.Object }{gdextension.Object(pointers.Get(shortcut[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseButton.Bind_set_shortcut, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ shortcut gdextension.Object }{gdextension.Object(gd.ObjectChecked(shortcut[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -397,7 +397,7 @@ func (self class) GetShortcut() [1]gdclass.Shortcut { //gd:BaseButton.get_shortc
 
 //go:nosplit
 func (self class) SetButtonGroup(button_group [1]gdclass.ButtonGroup) { //gd:BaseButton.set_button_group
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseButton.Bind_set_button_group, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ button_group gdextension.Object }{gdextension.Object(pointers.Get(button_group[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseButton.Bind_set_button_group, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ button_group gdextension.Object }{gdextension.Object(gd.ObjectChecked(button_group[0].AsObject()))}))
 }
 
 //go:nosplit

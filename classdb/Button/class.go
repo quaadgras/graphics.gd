@@ -301,7 +301,7 @@ func (self class) GetLanguage() String.Readable { //gd:Button.get_language
 
 //go:nosplit
 func (self class) SetButtonIcon(texture [1]gdclass.Texture2D) { //gd:Button.set_button_icon
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Button.Bind_set_button_icon, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(pointers.Get(texture[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Button.Bind_set_button_icon, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit

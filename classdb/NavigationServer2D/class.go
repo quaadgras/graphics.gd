@@ -1480,7 +1480,7 @@ func (self class) QueryPath(parameters [1]gdclass.NavigationPathQueryParameters2
 		parameters gdextension.Object
 		result     gdextension.Object
 		callback   gdextension.Callable
-	}{gdextension.Object(pointers.Get(parameters[0])[0]), gdextension.Object(pointers.Get(result[0])[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
+	}{gdextension.Object(gd.ObjectChecked(parameters[0].AsObject())), gdextension.Object(gd.ObjectChecked(result[0].AsObject())), gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
 }
 
 /*
@@ -1684,7 +1684,7 @@ func (self class) RegionSetNavigationPolygon(region RID.Any, navigation_polygon 
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationServer2D.Bind_region_set_navigation_polygon, 0|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		region             RID.Any
 		navigation_polygon gdextension.Object
-	}{region, gdextension.Object(pointers.Get(navigation_polygon[0])[0])}))
+	}{region, gdextension.Object(gd.ObjectChecked(navigation_polygon[0].AsObject()))}))
 }
 
 /*
@@ -2499,7 +2499,7 @@ func (self class) ParseSourceGeometryData(navigation_polygon [1]gdclass.Navigati
 		source_geometry_data gdextension.Object
 		root_node            gdextension.Object
 		callback             gdextension.Callable
-	}{gdextension.Object(pointers.Get(navigation_polygon[0])[0]), gdextension.Object(pointers.Get(source_geometry_data[0])[0]), gdextension.Object(pointers.Get(root_node[0])[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
+	}{gdextension.Object(gd.ObjectChecked(navigation_polygon[0].AsObject())), gdextension.Object(gd.ObjectChecked(source_geometry_data[0].AsObject())), gdextension.Object(gd.ObjectChecked(root_node[0].AsObject())), gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
 }
 
 /*
@@ -2511,7 +2511,7 @@ func (self class) BakeFromSourceGeometryData(navigation_polygon [1]gdclass.Navig
 		navigation_polygon   gdextension.Object
 		source_geometry_data gdextension.Object
 		callback             gdextension.Callable
-	}{gdextension.Object(pointers.Get(navigation_polygon[0])[0]), gdextension.Object(pointers.Get(source_geometry_data[0])[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
+	}{gdextension.Object(gd.ObjectChecked(navigation_polygon[0].AsObject())), gdextension.Object(gd.ObjectChecked(source_geometry_data[0].AsObject())), gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
 }
 
 /*
@@ -2523,7 +2523,7 @@ func (self class) BakeFromSourceGeometryDataAsync(navigation_polygon [1]gdclass.
 		navigation_polygon   gdextension.Object
 		source_geometry_data gdextension.Object
 		callback             gdextension.Callable
-	}{gdextension.Object(pointers.Get(navigation_polygon[0])[0]), gdextension.Object(pointers.Get(source_geometry_data[0])[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
+	}{gdextension.Object(gd.ObjectChecked(navigation_polygon[0].AsObject())), gdextension.Object(gd.ObjectChecked(source_geometry_data[0].AsObject())), gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
 }
 
 /*
@@ -2531,7 +2531,7 @@ Returns [code]true[/code] when the provided navigation polygon is being baked on
 */
 //go:nosplit
 func (self class) IsBakingNavigationPolygon(navigation_polygon [1]gdclass.NavigationPolygon) bool { //gd:NavigationServer2D.is_baking_navigation_polygon
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.NavigationServer2D.Bind_is_baking_navigation_polygon, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ navigation_polygon gdextension.Object }{gdextension.Object(pointers.Get(navigation_polygon[0])[0])}))
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.NavigationServer2D.Bind_is_baking_navigation_polygon, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ navigation_polygon gdextension.Object }{gdextension.Object(gd.ObjectChecked(navigation_polygon[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }

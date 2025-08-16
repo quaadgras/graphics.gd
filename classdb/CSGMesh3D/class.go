@@ -128,7 +128,7 @@ func (self Instance) SetMaterial(value Material.Instance) {
 
 //go:nosplit
 func (self class) SetMesh(mesh [1]gdclass.Mesh) { //gd:CSGMesh3D.set_mesh
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CSGMesh3D.Bind_set_mesh, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mesh gdextension.Object }{gdextension.Object(pointers.Get(mesh[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CSGMesh3D.Bind_set_mesh, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -140,7 +140,7 @@ func (self class) GetMesh() [1]gdclass.Mesh { //gd:CSGMesh3D.get_mesh
 
 //go:nosplit
 func (self class) SetMaterial(material [1]gdclass.Material) { //gd:CSGMesh3D.set_material
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CSGMesh3D.Bind_set_material, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(pointers.Get(material[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CSGMesh3D.Bind_set_material, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(material[0].AsObject()))}))
 }
 
 //go:nosplit

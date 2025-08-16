@@ -17,6 +17,7 @@ const (
 	SizeDictionary  Shape = SizeBytes8
 	SizeStringName  Shape = SizeBytes8
 	SizeNodePath    Shape = SizeBytes8
+	SizePointer     Shape = SizeBytes8
 )
 
 func ToPackedArray(p [2]uint64) PackedArray {

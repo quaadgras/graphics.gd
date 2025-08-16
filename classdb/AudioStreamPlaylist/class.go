@@ -681,7 +681,7 @@ func (self class) SetListStream(stream_index int64, audio_stream [1]gdclass.Audi
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioStreamPlaylist.Bind_set_list_stream, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		stream_index int64
 		audio_stream gdextension.Object
-	}{stream_index, gdextension.Object(pointers.Get(audio_stream[0])[0])}))
+	}{stream_index, gdextension.Object(gd.ObjectChecked(audio_stream[0].AsObject()))}))
 }
 
 /*

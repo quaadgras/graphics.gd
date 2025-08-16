@@ -239,7 +239,7 @@ func (self class) IsNormalized() bool { //gd:NoiseTexture3D.is_normalized
 
 //go:nosplit
 func (self class) SetColorRamp(gradient [1]gdclass.Gradient) { //gd:NoiseTexture3D.set_color_ramp
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NoiseTexture3D.Bind_set_color_ramp, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ gradient gdextension.Object }{gdextension.Object(pointers.Get(gradient[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NoiseTexture3D.Bind_set_color_ramp, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ gradient gdextension.Object }{gdextension.Object(gd.ObjectChecked(gradient[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -251,7 +251,7 @@ func (self class) GetColorRamp() [1]gdclass.Gradient { //gd:NoiseTexture3D.get_c
 
 //go:nosplit
 func (self class) SetNoise(noise [1]gdclass.Noise) { //gd:NoiseTexture3D.set_noise
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NoiseTexture3D.Bind_set_noise, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ noise gdextension.Object }{gdextension.Object(pointers.Get(noise[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NoiseTexture3D.Bind_set_noise, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ noise gdextension.Object }{gdextension.Object(gd.ObjectChecked(noise[0].AsObject()))}))
 }
 
 //go:nosplit

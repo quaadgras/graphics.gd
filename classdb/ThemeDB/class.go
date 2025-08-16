@@ -205,7 +205,7 @@ func (self class) GetFallbackBaseScale() float64 { //gd:ThemeDB.get_fallback_bas
 
 //go:nosplit
 func (self class) SetFallbackFont(font [1]gdclass.Font) { //gd:ThemeDB.set_fallback_font
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ThemeDB.Bind_set_fallback_font, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ font gdextension.Object }{gdextension.Object(pointers.Get(font[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ThemeDB.Bind_set_fallback_font, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ font gdextension.Object }{gdextension.Object(gd.ObjectChecked(font[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -229,7 +229,7 @@ func (self class) GetFallbackFontSize() int64 { //gd:ThemeDB.get_fallback_font_s
 
 //go:nosplit
 func (self class) SetFallbackIcon(icon [1]gdclass.Texture2D) { //gd:ThemeDB.set_fallback_icon
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ThemeDB.Bind_set_fallback_icon, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ icon gdextension.Object }{gdextension.Object(pointers.Get(icon[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ThemeDB.Bind_set_fallback_icon, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ icon gdextension.Object }{gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -241,7 +241,7 @@ func (self class) GetFallbackIcon() [1]gdclass.Texture2D { //gd:ThemeDB.get_fall
 
 //go:nosplit
 func (self class) SetFallbackStylebox(stylebox [1]gdclass.StyleBox) { //gd:ThemeDB.set_fallback_stylebox
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ThemeDB.Bind_set_fallback_stylebox, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ stylebox gdextension.Object }{gdextension.Object(pointers.Get(stylebox[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ThemeDB.Bind_set_fallback_stylebox, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ stylebox gdextension.Object }{gdextension.Object(gd.ObjectChecked(stylebox[0].AsObject()))}))
 }
 
 //go:nosplit

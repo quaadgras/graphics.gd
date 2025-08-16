@@ -244,7 +244,7 @@ func (self class) GetRid() RID.Any { //gd:NavigationRegion2D.get_rid
 
 //go:nosplit
 func (self class) SetNavigationPolygon(navigation_polygon [1]gdclass.NavigationPolygon) { //gd:NavigationRegion2D.set_navigation_polygon
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationRegion2D.Bind_set_navigation_polygon, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ navigation_polygon gdextension.Object }{gdextension.Object(pointers.Get(navigation_polygon[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationRegion2D.Bind_set_navigation_polygon, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ navigation_polygon gdextension.Object }{gdextension.Object(gd.ObjectChecked(navigation_polygon[0].AsObject()))}))
 }
 
 //go:nosplit

@@ -167,7 +167,7 @@ func (self Instance) SetRegionRect(value Rect2.PositionSize) {
 
 //go:nosplit
 func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:Sprite3D.set_texture
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Sprite3D.Bind_set_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(pointers.Get(texture[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Sprite3D.Bind_set_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit

@@ -205,7 +205,7 @@ func (self class) GetSectionSegments() int64 { //gd:RibbonTrailMesh.get_section_
 
 //go:nosplit
 func (self class) SetCurve(curve [1]gdclass.Curve) { //gd:RibbonTrailMesh.set_curve
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RibbonTrailMesh.Bind_set_curve, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(pointers.Get(curve[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RibbonTrailMesh.Bind_set_curve, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
 }
 
 //go:nosplit

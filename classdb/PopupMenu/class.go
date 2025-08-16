@@ -919,7 +919,7 @@ func (self class) ActivateItemByEvent(event [1]gdclass.InputEvent, for_global_on
 	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.PopupMenu.Bind_activate_item_by_event, gdextension.SizeBool|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		event           gdextension.Object
 		for_global_only bool
-	}{gdextension.Object(pointers.Get(event[0])[0]), for_global_only}))
+	}{gdextension.Object(gd.ObjectChecked(event[0].AsObject())), for_global_only}))
 	var ret = r_ret
 	return ret
 }
@@ -971,7 +971,7 @@ func (self class) AddIconItem(texture [1]gdclass.Texture2D, label String.Readabl
 		label   gdextension.String
 		id      int64
 		accel   Input.Key
-	}{gdextension.Object(pointers.Get(texture[0])[0]), gdextension.String(pointers.Get(gd.InternalString(label))[0]), id, accel}))
+	}{gdextension.Object(gd.ObjectChecked(texture[0].AsObject())), gdextension.String(pointers.Get(gd.InternalString(label))[0]), id, accel}))
 }
 
 /*
@@ -1000,7 +1000,7 @@ func (self class) AddIconCheckItem(texture [1]gdclass.Texture2D, label String.Re
 		label   gdextension.String
 		id      int64
 		accel   Input.Key
-	}{gdextension.Object(pointers.Get(texture[0])[0]), gdextension.String(pointers.Get(gd.InternalString(label))[0]), id, accel}))
+	}{gdextension.Object(gd.ObjectChecked(texture[0].AsObject())), gdextension.String(pointers.Get(gd.InternalString(label))[0]), id, accel}))
 }
 
 /*
@@ -1027,7 +1027,7 @@ func (self class) AddIconRadioCheckItem(texture [1]gdclass.Texture2D, label Stri
 		label   gdextension.String
 		id      int64
 		accel   Input.Key
-	}{gdextension.Object(pointers.Get(texture[0])[0]), gdextension.String(pointers.Get(gd.InternalString(label))[0]), id, accel}))
+	}{gdextension.Object(gd.ObjectChecked(texture[0].AsObject())), gdextension.String(pointers.Get(gd.InternalString(label))[0]), id, accel}))
 }
 
 /*
@@ -1074,7 +1074,7 @@ func (self class) AddShortcut(shortcut [1]gdclass.Shortcut, id int64, global boo
 		id         int64
 		global     bool
 		allow_echo bool
-	}{gdextension.Object(pointers.Get(shortcut[0])[0]), id, global, allow_echo}))
+	}{gdextension.Object(gd.ObjectChecked(shortcut[0].AsObject())), id, global, allow_echo}))
 }
 
 /*
@@ -1090,7 +1090,7 @@ func (self class) AddIconShortcut(texture [1]gdclass.Texture2D, shortcut [1]gdcl
 		id         int64
 		global     bool
 		allow_echo bool
-	}{gdextension.Object(pointers.Get(texture[0])[0]), gdextension.Object(pointers.Get(shortcut[0])[0]), id, global, allow_echo}))
+	}{gdextension.Object(gd.ObjectChecked(texture[0].AsObject())), gdextension.Object(gd.ObjectChecked(shortcut[0].AsObject())), id, global, allow_echo}))
 }
 
 /*
@@ -1104,7 +1104,7 @@ func (self class) AddCheckShortcut(shortcut [1]gdclass.Shortcut, id int64, globa
 		shortcut gdextension.Object
 		id       int64
 		global   bool
-	}{gdextension.Object(pointers.Get(shortcut[0])[0]), id, global}))
+	}{gdextension.Object(gd.ObjectChecked(shortcut[0].AsObject())), id, global}))
 }
 
 /*
@@ -1119,7 +1119,7 @@ func (self class) AddIconCheckShortcut(texture [1]gdclass.Texture2D, shortcut [1
 		shortcut gdextension.Object
 		id       int64
 		global   bool
-	}{gdextension.Object(pointers.Get(texture[0])[0]), gdextension.Object(pointers.Get(shortcut[0])[0]), id, global}))
+	}{gdextension.Object(gd.ObjectChecked(texture[0].AsObject())), gdextension.Object(gd.ObjectChecked(shortcut[0].AsObject())), id, global}))
 }
 
 /*
@@ -1133,7 +1133,7 @@ func (self class) AddRadioCheckShortcut(shortcut [1]gdclass.Shortcut, id int64, 
 		shortcut gdextension.Object
 		id       int64
 		global   bool
-	}{gdextension.Object(pointers.Get(shortcut[0])[0]), id, global}))
+	}{gdextension.Object(gd.ObjectChecked(shortcut[0].AsObject())), id, global}))
 }
 
 /*
@@ -1146,7 +1146,7 @@ func (self class) AddIconRadioCheckShortcut(texture [1]gdclass.Texture2D, shortc
 		shortcut gdextension.Object
 		id       int64
 		global   bool
-	}{gdextension.Object(pointers.Get(texture[0])[0]), gdextension.Object(pointers.Get(shortcut[0])[0]), id, global}))
+	}{gdextension.Object(gd.ObjectChecked(texture[0].AsObject())), gdextension.Object(gd.ObjectChecked(shortcut[0].AsObject())), id, global}))
 }
 
 /*
@@ -1217,7 +1217,7 @@ func (self class) SetItemIcon(index int64, icon [1]gdclass.Texture2D) { //gd:Pop
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PopupMenu.Bind_set_item_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		index int64
 		icon  gdextension.Object
-	}{index, gdextension.Object(pointers.Get(icon[0])[0])}))
+	}{index, gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))}))
 }
 
 /*
@@ -1374,7 +1374,7 @@ func (self class) SetItemShortcut(index int64, shortcut [1]gdclass.Shortcut, glo
 		index    int64
 		shortcut gdextension.Object
 		global   bool
-	}{index, gdextension.Object(pointers.Get(shortcut[0])[0]), global}))
+	}{index, gdextension.Object(gd.ObjectChecked(shortcut[0].AsObject())), global}))
 }
 
 /*

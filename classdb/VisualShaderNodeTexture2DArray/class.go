@@ -116,7 +116,7 @@ func (self Instance) SetTextureArray(value TextureLayered.Instance) {
 
 //go:nosplit
 func (self class) SetTextureArray(value [1]gdclass.TextureLayered) { //gd:VisualShaderNodeTexture2DArray.set_texture_array
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeTexture2DArray.Bind_set_texture_array, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ value gdextension.Object }{gdextension.Object(pointers.Get(value[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeTexture2DArray.Bind_set_texture_array, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ value gdextension.Object }{gdextension.Object(gd.ObjectChecked(value[0].AsObject()))}))
 }
 
 //go:nosplit

@@ -165,7 +165,7 @@ func (self Instance) SetRepeat(value Repeat) {
 
 //go:nosplit
 func (self class) SetGradient(gradient [1]gdclass.Gradient) { //gd:GradientTexture2D.set_gradient
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GradientTexture2D.Bind_set_gradient, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ gradient gdextension.Object }{gdextension.Object(pointers.Get(gradient[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GradientTexture2D.Bind_set_gradient, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ gradient gdextension.Object }{gdextension.Object(gd.ObjectChecked(gradient[0].AsObject()))}))
 }
 
 //go:nosplit

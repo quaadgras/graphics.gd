@@ -248,7 +248,7 @@ func (self class) AddPeer(peer [1]gdclass.WebRTCPeerConnection, peer_id int64, u
 		peer                gdextension.Object
 		peer_id             int64
 		unreliable_lifetime int64
-	}{gdextension.Object(pointers.Get(peer[0])[0]), peer_id, unreliable_lifetime}))
+	}{gdextension.Object(gd.ObjectChecked(peer[0].AsObject())), peer_id, unreliable_lifetime}))
 	var ret = Error.Code(r_ret)
 	return ret
 }

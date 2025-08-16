@@ -466,7 +466,7 @@ func (self class) SetInterpolate(enable bool) { //gd:GPUParticles3D.set_interpol
 
 //go:nosplit
 func (self class) SetProcessMaterial(material [1]gdclass.Material) { //gd:GPUParticles3D.set_process_material
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GPUParticles3D.Bind_set_process_material, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(pointers.Get(material[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GPUParticles3D.Bind_set_process_material, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(material[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -645,7 +645,7 @@ func (self class) SetDrawPassMesh(pass int64, mesh [1]gdclass.Mesh) { //gd:GPUPa
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GPUParticles3D.Bind_set_draw_pass_mesh, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		pass int64
 		mesh gdextension.Object
-	}{pass, gdextension.Object(pointers.Get(mesh[0])[0])}))
+	}{pass, gdextension.Object(gd.ObjectChecked(mesh[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -667,7 +667,7 @@ func (self class) GetDrawPassMesh(pass int64) [1]gdclass.Mesh { //gd:GPUParticle
 
 //go:nosplit
 func (self class) SetSkin(skin [1]gdclass.Skin) { //gd:GPUParticles3D.set_skin
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GPUParticles3D.Bind_set_skin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ skin gdextension.Object }{gdextension.Object(pointers.Get(skin[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GPUParticles3D.Bind_set_skin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ skin gdextension.Object }{gdextension.Object(gd.ObjectChecked(skin[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -766,7 +766,7 @@ Sets this node's properties to match a given [CPUParticles3D] node.
 */
 //go:nosplit
 func (self class) ConvertFromParticles(particles [1]gdclass.Node) { //gd:GPUParticles3D.convert_from_particles
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GPUParticles3D.Bind_convert_from_particles, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ particles gdextension.Object }{gdextension.Object(pointers.Get(particles[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GPUParticles3D.Bind_convert_from_particles, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ particles gdextension.Object }{gdextension.Object(gd.ObjectChecked(particles[0].AsObject()))}))
 }
 
 //go:nosplit

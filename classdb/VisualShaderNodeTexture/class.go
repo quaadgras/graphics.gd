@@ -143,7 +143,7 @@ func (self class) GetSource() Source { //gd:VisualShaderNodeTexture.get_source
 
 //go:nosplit
 func (self class) SetTexture(value [1]gdclass.Texture2D) { //gd:VisualShaderNodeTexture.set_texture
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeTexture.Bind_set_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ value gdextension.Object }{gdextension.Object(pointers.Get(value[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeTexture.Bind_set_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ value gdextension.Object }{gdextension.Object(gd.ObjectChecked(value[0].AsObject()))}))
 }
 
 //go:nosplit

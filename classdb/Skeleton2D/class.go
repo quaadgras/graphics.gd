@@ -208,7 +208,7 @@ Sets the [SkeletonModificationStack2D] attached to this skeleton.
 */
 //go:nosplit
 func (self class) SetModificationStack(modification_stack [1]gdclass.SkeletonModificationStack2D) { //gd:Skeleton2D.set_modification_stack
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Skeleton2D.Bind_set_modification_stack, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ modification_stack gdextension.Object }{gdextension.Object(pointers.Get(modification_stack[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Skeleton2D.Bind_set_modification_stack, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ modification_stack gdextension.Object }{gdextension.Object(gd.ObjectChecked(modification_stack[0].AsObject()))}))
 }
 
 /*

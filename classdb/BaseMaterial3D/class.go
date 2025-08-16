@@ -1477,7 +1477,7 @@ func (self class) SetTexture(param TextureParam, texture [1]gdclass.Texture2D) {
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_texture, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		param   TextureParam
 		texture gdextension.Object
-	}{param, gdextension.Object(pointers.Get(texture[0])[0])}))
+	}{param, gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 /*

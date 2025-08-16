@@ -169,7 +169,7 @@ Registers a [TextServer] interface.
 */
 //go:nosplit
 func (self class) AddInterface(intf [1]gdclass.TextServer) { //gd:TextServerManager.add_interface
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextServerManager.Bind_add_interface, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ intf gdextension.Object }{gdextension.Object(pointers.Get(intf[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextServerManager.Bind_add_interface, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ intf gdextension.Object }{gdextension.Object(gd.ObjectChecked(intf[0].AsObject()))}))
 }
 
 /*
@@ -187,7 +187,7 @@ Removes an interface. All fonts and shaped text caches should be freed before re
 */
 //go:nosplit
 func (self class) RemoveInterface(intf [1]gdclass.TextServer) { //gd:TextServerManager.remove_interface
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextServerManager.Bind_remove_interface, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ intf gdextension.Object }{gdextension.Object(pointers.Get(intf[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextServerManager.Bind_remove_interface, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ intf gdextension.Object }{gdextension.Object(gd.ObjectChecked(intf[0].AsObject()))}))
 }
 
 /*
@@ -225,7 +225,7 @@ Sets the primary [TextServer] interface.
 */
 //go:nosplit
 func (self class) SetPrimaryInterface(index [1]gdclass.TextServer) { //gd:TextServerManager.set_primary_interface
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextServerManager.Bind_set_primary_interface, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ index gdextension.Object }{gdextension.Object(pointers.Get(index[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextServerManager.Bind_set_primary_interface, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ index gdextension.Object }{gdextension.Object(gd.ObjectChecked(index[0].AsObject()))}))
 }
 
 /*

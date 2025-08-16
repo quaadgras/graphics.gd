@@ -242,7 +242,7 @@ Removes the given [param control] from the debug session UI in the debugger bott
 */
 //go:nosplit
 func (self class) RemoveSessionTab(control [1]gdclass.Control) { //gd:EditorDebuggerSession.remove_session_tab
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorDebuggerSession.Bind_remove_session_tab, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ control gdextension.Object }{gdextension.Object(pointers.Get(control[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorDebuggerSession.Bind_remove_session_tab, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(control[0].AsObject()))}))
 }
 
 /*

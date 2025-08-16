@@ -471,7 +471,7 @@ func (self class) GetCollisionPriority() float64 { //gd:GridMap.get_collision_pr
 
 //go:nosplit
 func (self class) SetPhysicsMaterial(material [1]gdclass.PhysicsMaterial) { //gd:GridMap.set_physics_material
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GridMap.Bind_set_physics_material, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(pointers.Get(material[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GridMap.Bind_set_physics_material, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(material[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -514,7 +514,7 @@ func (self class) GetNavigationMap() RID.Any { //gd:GridMap.get_navigation_map
 
 //go:nosplit
 func (self class) SetMeshLibrary(mesh_library [1]gdclass.MeshLibrary) { //gd:GridMap.set_mesh_library
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GridMap.Bind_set_mesh_library, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mesh_library gdextension.Object }{gdextension.Object(pointers.Get(mesh_library[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GridMap.Bind_set_mesh_library, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mesh_library gdextension.Object }{gdextension.Object(gd.ObjectChecked(mesh_library[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -649,7 +649,7 @@ This method does nothing.
 */
 //go:nosplit
 func (self class) ResourceChanged(resource [1]gdclass.Resource) { //gd:GridMap.resource_changed
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GridMap.Bind_resource_changed, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ resource gdextension.Object }{gdextension.Object(pointers.Get(resource[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GridMap.Bind_resource_changed, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ resource gdextension.Object }{gdextension.Object(gd.ObjectChecked(resource[0].AsObject()))}))
 }
 
 //go:nosplit

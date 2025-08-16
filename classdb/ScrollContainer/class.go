@@ -337,7 +337,7 @@ ensure_control_visible(child_node)
 */
 //go:nosplit
 func (self class) EnsureControlVisible(control [1]gdclass.Control) { //gd:ScrollContainer.ensure_control_visible
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ScrollContainer.Bind_ensure_control_visible, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ control gdextension.Object }{gdextension.Object(pointers.Get(control[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ScrollContainer.Bind_ensure_control_visible, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(control[0].AsObject()))}))
 }
 
 //go:nosplit

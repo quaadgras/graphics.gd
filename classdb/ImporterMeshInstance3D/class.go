@@ -184,7 +184,7 @@ func (self Instance) SetVisibilityRangeFadeMode(value GeometryInstance3D.Visibil
 
 //go:nosplit
 func (self class) SetMesh(mesh [1]gdclass.ImporterMesh) { //gd:ImporterMeshInstance3D.set_mesh
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ImporterMeshInstance3D.Bind_set_mesh, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mesh gdextension.Object }{gdextension.Object(pointers.Get(mesh[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ImporterMeshInstance3D.Bind_set_mesh, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -196,7 +196,7 @@ func (self class) GetMesh() [1]gdclass.ImporterMesh { //gd:ImporterMeshInstance3
 
 //go:nosplit
 func (self class) SetSkin(skin [1]gdclass.Skin) { //gd:ImporterMeshInstance3D.set_skin
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ImporterMeshInstance3D.Bind_set_skin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ skin gdextension.Object }{gdextension.Object(pointers.Get(skin[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ImporterMeshInstance3D.Bind_set_skin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ skin gdextension.Object }{gdextension.Object(gd.ObjectChecked(skin[0].AsObject()))}))
 }
 
 //go:nosplit

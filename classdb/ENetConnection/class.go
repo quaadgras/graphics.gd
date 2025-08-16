@@ -417,7 +417,7 @@ Configure this ENetHost to use the custom Godot extension allowing DTLS encrypti
 */
 //go:nosplit
 func (self class) DtlsServerSetup(server_options [1]gdclass.TLSOptions) Error.Code { //gd:ENetConnection.dtls_server_setup
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ENetConnection.Bind_dtls_server_setup, gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ server_options gdextension.Object }{gdextension.Object(pointers.Get(server_options[0])[0])}))
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ENetConnection.Bind_dtls_server_setup, gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ server_options gdextension.Object }{gdextension.Object(gd.ObjectChecked(server_options[0].AsObject()))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -430,7 +430,7 @@ func (self class) DtlsClientSetup(hostname String.Readable, client_options [1]gd
 	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ENetConnection.Bind_dtls_client_setup, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		hostname       gdextension.String
 		client_options gdextension.Object
-	}{gdextension.String(pointers.Get(gd.InternalString(hostname))[0]), gdextension.Object(pointers.Get(client_options[0])[0])}))
+	}{gdextension.String(pointers.Get(gd.InternalString(hostname))[0]), gdextension.Object(gd.ObjectChecked(client_options[0].AsObject()))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }

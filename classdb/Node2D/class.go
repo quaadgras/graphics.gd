@@ -518,7 +518,7 @@ Returns the [Transform2D] relative to this node's parent.
 */
 //go:nosplit
 func (self class) GetRelativeTransformToParent(parent [1]gdclass.Node) Transform2D.OriginXY { //gd:Node2D.get_relative_transform_to_parent
-	var r_ret = gdunsafe.Call[Transform2D.OriginXY](self.AsObject(), gd.Global.Methods.Node2D.Bind_get_relative_transform_to_parent, gdextension.SizeTransform2D|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ parent gdextension.Object }{gdextension.Object(pointers.Get(parent[0])[0])}))
+	var r_ret = gdunsafe.Call[Transform2D.OriginXY](self.AsObject(), gd.Global.Methods.Node2D.Bind_get_relative_transform_to_parent, gdextension.SizeTransform2D|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ parent gdextension.Object }{gdextension.Object(gd.ObjectChecked(parent[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }

@@ -174,7 +174,7 @@ func (self class) GetMesh() [1]gdclass.ImporterMesh { //gd:GLTFMesh.get_mesh
 
 //go:nosplit
 func (self class) SetMesh(mesh [1]gdclass.ImporterMesh) { //gd:GLTFMesh.set_mesh
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFMesh.Bind_set_mesh, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mesh gdextension.Object }{gdextension.Object(pointers.Get(mesh[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFMesh.Bind_set_mesh, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject()))}))
 }
 
 //go:nosplit

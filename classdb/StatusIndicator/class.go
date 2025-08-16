@@ -154,7 +154,7 @@ func (self class) GetTooltip() String.Readable { //gd:StatusIndicator.get_toolti
 
 //go:nosplit
 func (self class) SetIcon(texture [1]gdclass.Texture2D) { //gd:StatusIndicator.set_icon
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.StatusIndicator.Bind_set_icon, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(pointers.Get(texture[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.StatusIndicator.Bind_set_icon, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit

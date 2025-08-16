@@ -209,7 +209,7 @@ Packs the [param path] node, and all owned sub-nodes, into this [PackedScene]. A
 */
 //go:nosplit
 func (self class) Pack(path [1]gdclass.Node) Error.Code { //gd:PackedScene.pack
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.PackedScene.Bind_pack, gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ path gdextension.Object }{gdextension.Object(pointers.Get(path[0])[0])}))
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.PackedScene.Bind_pack, gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ path gdextension.Object }{gdextension.Object(gd.ObjectChecked(path[0].AsObject()))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }

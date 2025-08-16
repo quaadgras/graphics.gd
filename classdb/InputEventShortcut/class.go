@@ -115,7 +115,7 @@ func (self Instance) SetShortcut(value Shortcut.Instance) {
 
 //go:nosplit
 func (self class) SetShortcut(shortcut [1]gdclass.Shortcut) { //gd:InputEventShortcut.set_shortcut
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputEventShortcut.Bind_set_shortcut, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ shortcut gdextension.Object }{gdextension.Object(pointers.Get(shortcut[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputEventShortcut.Bind_set_shortcut, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ shortcut gdextension.Object }{gdextension.Object(gd.ObjectChecked(shortcut[0].AsObject()))}))
 }
 
 //go:nosplit

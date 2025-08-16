@@ -257,7 +257,7 @@ func (self class) IsCapBottom() bool { //gd:TubeTrailMesh.is_cap_bottom
 
 //go:nosplit
 func (self class) SetCurve(curve [1]gdclass.Curve) { //gd:TubeTrailMesh.set_curve
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TubeTrailMesh.Bind_set_curve, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(pointers.Get(curve[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TubeTrailMesh.Bind_set_curve, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
 }
 
 //go:nosplit

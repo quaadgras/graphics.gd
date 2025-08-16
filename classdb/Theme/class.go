@@ -622,7 +622,7 @@ func (self class) SetIcon(name String.Name, theme_type String.Name, texture [1]g
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 		texture    gdextension.Object
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(theme_type))[0]), gdextension.Object(pointers.Get(texture[0])[0])}))
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(theme_type))[0]), gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 /*
@@ -707,7 +707,7 @@ func (self class) SetStylebox(name String.Name, theme_type String.Name, texture 
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 		texture    gdextension.Object
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(theme_type))[0]), gdextension.Object(pointers.Get(texture[0])[0])}))
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(theme_type))[0]), gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 /*
@@ -792,7 +792,7 @@ func (self class) SetFont(name String.Name, theme_type String.Name, font [1]gdcl
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 		font       gdextension.Object
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(theme_type))[0]), gdextension.Object(pointers.Get(font[0])[0])}))
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(theme_type))[0]), gdextension.Object(gd.ObjectChecked(font[0].AsObject()))}))
 }
 
 /*
@@ -1150,7 +1150,7 @@ func (self class) HasDefaultBaseScale() bool { //gd:Theme.has_default_base_scale
 
 //go:nosplit
 func (self class) SetDefaultFont(font [1]gdclass.Font) { //gd:Theme.set_default_font
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Theme.Bind_set_default_font, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ font gdextension.Object }{gdextension.Object(pointers.Get(font[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Theme.Bind_set_default_font, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ font gdextension.Object }{gdextension.Object(gd.ObjectChecked(font[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -1383,7 +1383,7 @@ Adds missing and overrides existing definitions with values from the [param othe
 */
 //go:nosplit
 func (self class) MergeWith(other [1]gdclass.Theme) { //gd:Theme.merge_with
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Theme.Bind_merge_with, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ other gdextension.Object }{gdextension.Object(pointers.Get(other[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Theme.Bind_merge_with, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ other gdextension.Object }{gdextension.Object(gd.ObjectChecked(other[0].AsObject()))}))
 }
 
 /*

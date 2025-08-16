@@ -158,7 +158,7 @@ Shows the properties of the given [param object] in this inspector for editing. 
 */
 //go:nosplit
 func (self class) Edit(obj [1]gd.Object) { //gd:EditorInspector.edit
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInspector.Bind_edit, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ obj gdextension.Object }{gdextension.Object(pointers.Get(obj[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInspector.Bind_edit, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ obj gdextension.Object }{gdextension.Object(gd.ObjectChecked(obj[0].AsObject()))}))
 }
 
 /*
@@ -194,7 +194,7 @@ func (self class) InstantiatePropertyEditor(obj [1]gd.Object, atype variant.Type
 		hint_text gdextension.String
 		usage     int64
 		wide      bool
-	}{gdextension.Object(pointers.Get(obj[0])[0]), atype, gdextension.String(pointers.Get(gd.InternalString(path))[0]), hint, gdextension.String(pointers.Get(gd.InternalString(hint_text))[0]), usage, wide}))
+	}{gdextension.Object(gd.ObjectChecked(obj[0].AsObject())), atype, gdextension.String(pointers.Get(gd.InternalString(path))[0]), hint, gdextension.String(pointers.Get(gd.InternalString(hint_text))[0]), usage, wide}))
 	var ret = [1]gdclass.EditorProperty{gd.PointerMustAssertInstanceID[gdclass.EditorProperty](r_ret)}
 	return ret
 }

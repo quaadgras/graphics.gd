@@ -206,7 +206,7 @@ Creates a new GLTFPhysicsBody instance from the given Godot [CollisionObject3D] 
 */
 //go:nosplit
 func (self class) FromNode(body_node [1]gdclass.CollisionObject3D) [1]gdclass.GLTFPhysicsBody { //gd:GLTFPhysicsBody.from_node
-	var r_ret = gdunsafe.CallStatic[gd.EnginePointer](gd.Global.Methods.GLTFPhysicsBody.Bind_from_node, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ body_node gdextension.Object }{gdextension.Object(pointers.Get(body_node[0])[0])}))
+	var r_ret = gdunsafe.CallStatic[gd.EnginePointer](gd.Global.Methods.GLTFPhysicsBody.Bind_from_node, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ body_node gdextension.Object }{gdextension.Object(gd.ObjectChecked(body_node[0].AsObject()))}))
 	var ret = [1]gdclass.GLTFPhysicsBody{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFPhysicsBody](r_ret)}
 	return ret
 }

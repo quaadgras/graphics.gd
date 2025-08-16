@@ -600,7 +600,7 @@ func (self class) CreateItem(parent [1]gdclass.TreeItem, index int64) [1]gdclass
 	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Tree.Bind_create_item, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		parent gdextension.Object
 		index  int64
-	}{gdextension.Object(pointers.Get(parent[0])[0]), index}))
+	}{gdextension.Object(gd.ObjectChecked(parent[0].AsObject())), index}))
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret)}
 	return ret
 }
@@ -717,7 +717,7 @@ If [param from] is [code]null[/code], this returns the first selected item.
 */
 //go:nosplit
 func (self class) GetNextSelected(from [1]gdclass.TreeItem) [1]gdclass.TreeItem { //gd:Tree.get_next_selected
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Tree.Bind_get_next_selected, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ from gdextension.Object }{gdextension.Object(pointers.Get(from[0])[0])}))
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Tree.Bind_get_next_selected, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ from gdextension.Object }{gdextension.Object(gd.ObjectChecked(from[0].AsObject()))}))
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret)}
 	return ret
 }
@@ -742,7 +742,7 @@ func (self class) SetSelected(item [1]gdclass.TreeItem, column int64) { //gd:Tre
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Tree.Bind_set_selected, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		item   gdextension.Object
 		column int64
-	}{gdextension.Object(pointers.Get(item[0])[0]), column}))
+	}{gdextension.Object(gd.ObjectChecked(item[0].AsObject())), column}))
 }
 
 /*
@@ -870,7 +870,7 @@ func (self class) GetItemAreaRect(item [1]gdclass.TreeItem, column int64, button
 		item         gdextension.Object
 		column       int64
 		button_index int64
-	}{gdextension.Object(pointers.Get(item[0])[0]), column, button_index}))
+	}{gdextension.Object(gd.ObjectChecked(item[0].AsObject())), column, button_index}))
 	var ret = r_ret
 	return ret
 }
@@ -1041,7 +1041,7 @@ func (self class) ScrollToItem(item [1]gdclass.TreeItem, center_on_item bool) { 
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Tree.Bind_scroll_to_item, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		item           gdextension.Object
 		center_on_item bool
-	}{gdextension.Object(pointers.Get(item[0])[0]), center_on_item}))
+	}{gdextension.Object(gd.ObjectChecked(item[0].AsObject())), center_on_item}))
 }
 
 //go:nosplit

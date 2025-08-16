@@ -258,7 +258,7 @@ Adds a translation.
 */
 //go:nosplit
 func (self class) AddTranslation(translation [1]gdclass.Translation) { //gd:TranslationDomain.add_translation
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TranslationDomain.Bind_add_translation, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ translation gdextension.Object }{gdextension.Object(pointers.Get(translation[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TranslationDomain.Bind_add_translation, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ translation gdextension.Object }{gdextension.Object(gd.ObjectChecked(translation[0].AsObject()))}))
 }
 
 /*
@@ -266,7 +266,7 @@ Removes the given translation.
 */
 //go:nosplit
 func (self class) RemoveTranslation(translation [1]gdclass.Translation) { //gd:TranslationDomain.remove_translation
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TranslationDomain.Bind_remove_translation, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ translation gdextension.Object }{gdextension.Object(pointers.Get(translation[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TranslationDomain.Bind_remove_translation, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ translation gdextension.Object }{gdextension.Object(gd.ObjectChecked(translation[0].AsObject()))}))
 }
 
 /*

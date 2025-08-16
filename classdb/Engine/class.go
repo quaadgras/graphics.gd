@@ -908,7 +908,7 @@ Returns:
 */
 //go:nosplit
 func (self class) UnregisterScriptLanguage(language [1]gdclass.ScriptLanguage) Error.Code { //gd:Engine.unregister_script_language
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Engine.Bind_unregister_script_language, gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ language gdextension.Object }{gdextension.Object(pointers.Get(language[0])[0])}))
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Engine.Bind_unregister_script_language, gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ language gdextension.Object }{gdextension.Object(gd.ObjectChecked(language[0].AsObject()))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }

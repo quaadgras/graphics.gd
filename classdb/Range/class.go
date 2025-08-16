@@ -373,7 +373,7 @@ Binds two [Range]s together along with any ranges previously grouped with either
 */
 //go:nosplit
 func (self class) Share(with [1]gdclass.Node) { //gd:Range.share
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Range.Bind_share, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ with gdextension.Object }{gdextension.Object(pointers.Get(with[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Range.Bind_share, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ with gdextension.Object }{gdextension.Object(gd.ObjectChecked(with[0].AsObject()))}))
 }
 
 /*

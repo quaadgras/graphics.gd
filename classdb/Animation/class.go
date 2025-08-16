@@ -1464,7 +1464,7 @@ func (self class) AudioTrackInsertKey(track_idx int64, time float64, stream [1]g
 		stream       gdextension.Object
 		start_offset float64
 		end_offset   float64
-	}{track_idx, time, gdextension.Object(pointers.Get(stream[0])[0]), start_offset, end_offset}))
+	}{track_idx, time, gdextension.Object(gd.ObjectChecked(stream[0].AsObject())), start_offset, end_offset}))
 	var ret = r_ret
 	return ret
 }
@@ -1478,7 +1478,7 @@ func (self class) AudioTrackSetKeyStream(track_idx int64, key_idx int64, stream 
 		track_idx int64
 		key_idx   int64
 		stream    gdextension.Object
-	}{track_idx, key_idx, gdextension.Object(pointers.Get(stream[0])[0])}))
+	}{track_idx, key_idx, gdextension.Object(gd.ObjectChecked(stream[0].AsObject()))}))
 }
 
 /*
@@ -1758,7 +1758,7 @@ func (self class) CopyTrack(track_idx int64, to_animation [1]gdclass.Animation) 
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Animation.Bind_copy_track, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		track_idx    int64
 		to_animation gdextension.Object
-	}{track_idx, gdextension.Object(pointers.Get(to_animation[0])[0])}))
+	}{track_idx, gdextension.Object(gd.ObjectChecked(to_animation[0].AsObject()))}))
 }
 
 /*

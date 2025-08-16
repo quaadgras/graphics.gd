@@ -839,7 +839,7 @@ This ensures that both scenes aren't running at the same time, while still freei
 */
 //go:nosplit
 func (self class) ChangeSceneToPacked(packed_scene [1]gdclass.PackedScene) Error.Code { //gd:SceneTree.change_scene_to_packed
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.SceneTree.Bind_change_scene_to_packed, gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ packed_scene gdextension.Object }{gdextension.Object(pointers.Get(packed_scene[0])[0])}))
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.SceneTree.Bind_change_scene_to_packed, gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ packed_scene gdextension.Object }{gdextension.Object(gd.ObjectChecked(packed_scene[0].AsObject()))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -872,7 +872,7 @@ func (self class) SetMultiplayer(multiplayer [1]gdclass.MultiplayerAPI, root_pat
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SceneTree.Bind_set_multiplayer, 0|(gdextension.SizeObject<<4)|(gdextension.SizeNodePath<<8), unsafe.Pointer(&struct {
 		multiplayer gdextension.Object
 		root_path   gdextension.NodePath
-	}{gdextension.Object(pointers.Get(multiplayer[0])[0]), gdextension.NodePath(pointers.Get(gd.InternalNodePath(root_path))[0])}))
+	}{gdextension.Object(gd.ObjectChecked(multiplayer[0].AsObject())), gdextension.NodePath(pointers.Get(gd.InternalNodePath(root_path))[0])}))
 }
 
 /*

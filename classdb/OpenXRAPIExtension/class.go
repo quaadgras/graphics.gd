@@ -448,7 +448,7 @@ Creates a [Transform3D] from an [url=https://registry.khronos.org/OpenXR/specs/1
 */
 //go:nosplit
 func (self class) TransformFromPose(pose unsafe.Pointer) Transform3D.BasisOrigin { //gd:OpenXRAPIExtension.transform_from_pose
-	var r_ret = gdunsafe.Call[Transform3D.BasisOrigin](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_transform_from_pose, gdextension.SizeTransform3D|(gdextension.Pointer<<4), unsafe.Pointer(&struct{ pose unsafe.Pointer }{pose}))
+	var r_ret = gdunsafe.Call[Transform3D.BasisOrigin](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_transform_from_pose, gdextension.SizeTransform3D|(gdextension.SizePointer<<4), unsafe.Pointer(&struct{ pose unsafe.Pointer }{pose}))
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
@@ -650,7 +650,7 @@ Unregisters the given extension as a composition layer provider.
 */
 //go:nosplit
 func (self class) UnregisterCompositionLayerProvider(extension [1]gdclass.OpenXRExtensionWrapperExtension) { //gd:OpenXRAPIExtension.unregister_composition_layer_provider
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_unregister_composition_layer_provider, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ extension gdextension.Object }{gdextension.Object(pointers.Get(extension[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_unregister_composition_layer_provider, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ extension gdextension.Object }{gdextension.Object(gd.ObjectChecked(extension[0].AsObject()))}))
 }
 
 /*
@@ -666,7 +666,7 @@ Unregisters the given extension as a provider of additional data structures to p
 */
 //go:nosplit
 func (self class) UnregisterProjectionViewsExtension(extension [1]gdclass.OpenXRExtensionWrapperExtension) { //gd:OpenXRAPIExtension.unregister_projection_views_extension
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_unregister_projection_views_extension, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ extension gdextension.Object }{gdextension.Object(pointers.Get(extension[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRAPIExtension.Bind_unregister_projection_views_extension, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ extension gdextension.Object }{gdextension.Object(gd.ObjectChecked(extension[0].AsObject()))}))
 }
 
 /*

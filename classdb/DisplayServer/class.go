@@ -2893,7 +2893,7 @@ func (self class) GlobalMenuAddIconItem(menu_root String.Readable, icon [1]gdcla
 		tag          gdextension.Variant
 		accelerator  Input.Key
 		index        int64
-	}{gdextension.String(pointers.Get(gd.InternalString(menu_root))[0]), gdextension.Object(pointers.Get(icon[0])[0]), gdextension.String(pointers.Get(gd.InternalString(label))[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(callback))), gdextension.Callable(pointers.Get(gd.InternalCallable(key_callback))), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index}))
+	}{gdextension.String(pointers.Get(gd.InternalString(menu_root))[0]), gdextension.Object(gd.ObjectChecked(icon[0].AsObject())), gdextension.String(pointers.Get(gd.InternalString(label))[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(callback))), gdextension.Callable(pointers.Get(gd.InternalCallable(key_callback))), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index}))
 	var ret = r_ret
 	return ret
 }
@@ -2924,7 +2924,7 @@ func (self class) GlobalMenuAddIconCheckItem(menu_root String.Readable, icon [1]
 		tag          gdextension.Variant
 		accelerator  Input.Key
 		index        int64
-	}{gdextension.String(pointers.Get(gd.InternalString(menu_root))[0]), gdextension.Object(pointers.Get(icon[0])[0]), gdextension.String(pointers.Get(gd.InternalString(label))[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(callback))), gdextension.Callable(pointers.Get(gd.InternalCallable(key_callback))), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index}))
+	}{gdextension.String(pointers.Get(gd.InternalString(menu_root))[0]), gdextension.Object(gd.ObjectChecked(icon[0].AsObject())), gdextension.String(pointers.Get(gd.InternalString(label))[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(callback))), gdextension.Callable(pointers.Get(gd.InternalCallable(key_callback))), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index}))
 	var ret = r_ret
 	return ret
 }
@@ -2987,7 +2987,7 @@ func (self class) GlobalMenuAddIconRadioCheckItem(menu_root String.Readable, ico
 		tag          gdextension.Variant
 		accelerator  Input.Key
 		index        int64
-	}{gdextension.String(pointers.Get(gd.InternalString(menu_root))[0]), gdextension.Object(pointers.Get(icon[0])[0]), gdextension.String(pointers.Get(gd.InternalString(label))[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(callback))), gdextension.Callable(pointers.Get(gd.InternalCallable(key_callback))), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index}))
+	}{gdextension.String(pointers.Get(gd.InternalString(menu_root))[0]), gdextension.Object(gd.ObjectChecked(icon[0].AsObject())), gdextension.String(pointers.Get(gd.InternalString(label))[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(callback))), gdextension.Callable(pointers.Get(gd.InternalCallable(key_callback))), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index}))
 	var ret = r_ret
 	return ret
 }
@@ -3514,7 +3514,7 @@ func (self class) GlobalMenuSetItemIcon(menu_root String.Readable, idx int64, ic
 		menu_root gdextension.String
 		idx       int64
 		icon      gdextension.Object
-	}{gdextension.String(pointers.Get(gd.InternalString(menu_root))[0]), idx, gdextension.Object(pointers.Get(icon[0])[0])}))
+	}{gdextension.String(pointers.Get(gd.InternalString(menu_root))[0]), idx, gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))}))
 }
 
 /*
@@ -4809,7 +4809,7 @@ func (self class) CursorSetCustomImage(cursor [1]gdclass.Resource, shape CursorS
 		cursor  gdextension.Object
 		shape   CursorShape
 		hotspot Vector2.XY
-	}{gdextension.Object(pointers.Get(cursor[0])[0]), shape, hotspot}))
+	}{gdextension.Object(gd.ObjectChecked(cursor[0].AsObject())), shape, hotspot}))
 }
 
 /*
@@ -5047,7 +5047,7 @@ Sets the window icon (usually displayed in the top-left corner) with an [Image].
 */
 //go:nosplit
 func (self class) SetIcon(image [1]gdclass.Image) { //gd:DisplayServer.set_icon
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.DisplayServer.Bind_set_icon, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ image gdextension.Object }{gdextension.Object(pointers.Get(image[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.DisplayServer.Bind_set_icon, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(image[0].AsObject()))}))
 }
 
 /*
@@ -5060,7 +5060,7 @@ func (self class) CreateStatusIndicator(icon [1]gdclass.Texture2D, tooltip Strin
 		icon     gdextension.Object
 		tooltip  gdextension.String
 		callback gdextension.Callable
-	}{gdextension.Object(pointers.Get(icon[0])[0]), gdextension.String(pointers.Get(gd.InternalString(tooltip))[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
+	}{gdextension.Object(gd.ObjectChecked(icon[0].AsObject())), gdextension.String(pointers.Get(gd.InternalString(tooltip))[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
 	var ret = r_ret
 	return ret
 }
@@ -5074,7 +5074,7 @@ func (self class) StatusIndicatorSetIcon(id int64, icon [1]gdclass.Texture2D) { 
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.DisplayServer.Bind_status_indicator_set_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		id   int64
 		icon gdextension.Object
-	}{id, gdextension.Object(pointers.Get(icon[0])[0])}))
+	}{id, gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))}))
 }
 
 /*
@@ -5204,7 +5204,7 @@ Unregisters an [Object] representing an additional output, that was registered v
 */
 //go:nosplit
 func (self class) UnregisterAdditionalOutput(obj [1]gd.Object) { //gd:DisplayServer.unregister_additional_output
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.DisplayServer.Bind_unregister_additional_output, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ obj gdextension.Object }{gdextension.Object(pointers.Get(obj[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.DisplayServer.Bind_unregister_additional_output, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ obj gdextension.Object }{gdextension.Object(gd.ObjectChecked(obj[0].AsObject()))}))
 }
 
 /*

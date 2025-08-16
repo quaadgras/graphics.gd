@@ -276,7 +276,7 @@ func (self class) AddMesh(mesh [1]gdclass.Mesh, xform Transform3D.BasisOrigin) {
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMeshSourceGeometryData3D.Bind_add_mesh, 0|(gdextension.SizeObject<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
 		mesh  gdextension.Object
 		xform Transform3D.BasisOrigin
-	}{gdextension.Object(pointers.Get(mesh[0])[0]), gd.Transposed(xform)}))
+	}{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject())), gd.Transposed(xform)}))
 }
 
 /*
@@ -306,7 +306,7 @@ Adds the geometry data of another [NavigationMeshSourceGeometryData3D] to the na
 */
 //go:nosplit
 func (self class) Merge(other_geometry [1]gdclass.NavigationMeshSourceGeometryData3D) { //gd:NavigationMeshSourceGeometryData3D.merge
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMeshSourceGeometryData3D.Bind_merge, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ other_geometry gdextension.Object }{gdextension.Object(pointers.Get(other_geometry[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMeshSourceGeometryData3D.Bind_merge, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ other_geometry gdextension.Object }{gdextension.Object(gd.ObjectChecked(other_geometry[0].AsObject()))}))
 }
 
 /*

@@ -179,7 +179,7 @@ Create a new GLTFCamera instance from the given Godot [Camera3D] node.
 */
 //go:nosplit
 func (self class) FromNode(camera_node [1]gdclass.Camera3D) [1]gdclass.GLTFCamera { //gd:GLTFCamera.from_node
-	var r_ret = gdunsafe.CallStatic[gd.EnginePointer](gd.Global.Methods.GLTFCamera.Bind_from_node, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ camera_node gdextension.Object }{gdextension.Object(pointers.Get(camera_node[0])[0])}))
+	var r_ret = gdunsafe.CallStatic[gd.EnginePointer](gd.Global.Methods.GLTFCamera.Bind_from_node, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ camera_node gdextension.Object }{gdextension.Object(gd.ObjectChecked(camera_node[0].AsObject()))}))
 	var ret = [1]gdclass.GLTFCamera{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFCamera](r_ret)}
 	return ret
 }

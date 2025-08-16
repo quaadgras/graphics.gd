@@ -293,7 +293,7 @@ func (self class) ActionAddEvent(action String.Name, event [1]gdclass.InputEvent
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputMap.Bind_action_add_event, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		action gdextension.StringName
 		event  gdextension.Object
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0]), gdextension.Object(pointers.Get(event[0])[0])}))
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0]), gdextension.Object(gd.ObjectChecked(event[0].AsObject()))}))
 }
 
 /*
@@ -304,7 +304,7 @@ func (self class) ActionHasEvent(action String.Name, event [1]gdclass.InputEvent
 	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.InputMap.Bind_action_has_event, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		action gdextension.StringName
 		event  gdextension.Object
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0]), gdextension.Object(pointers.Get(event[0])[0])}))
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0]), gdextension.Object(gd.ObjectChecked(event[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }
@@ -317,7 +317,7 @@ func (self class) ActionEraseEvent(action String.Name, event [1]gdclass.InputEve
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputMap.Bind_action_erase_event, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		action gdextension.StringName
 		event  gdextension.Object
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0]), gdextension.Object(pointers.Get(event[0])[0])}))
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0]), gdextension.Object(gd.ObjectChecked(event[0].AsObject()))}))
 }
 
 /*
@@ -349,7 +349,7 @@ func (self class) EventIsAction(event [1]gdclass.InputEvent, action String.Name,
 		event       gdextension.Object
 		action      gdextension.StringName
 		exact_match bool
-	}{gdextension.Object(pointers.Get(event[0])[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0]), exact_match}))
+	}{gdextension.Object(gd.ObjectChecked(event[0].AsObject())), gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0]), exact_match}))
 	var ret = r_ret
 	return ret
 }

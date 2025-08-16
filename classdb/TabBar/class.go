@@ -584,7 +584,7 @@ func (self class) SetTabIcon(tab_idx int64, icon [1]gdclass.Texture2D) { //gd:Ta
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TabBar.Bind_set_tab_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		tab_idx int64
 		icon    gdextension.Object
-	}{tab_idx, gdextension.Object(pointers.Get(icon[0])[0])}))
+	}{tab_idx, gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))}))
 }
 
 /*
@@ -626,7 +626,7 @@ func (self class) SetTabButtonIcon(tab_idx int64, icon [1]gdclass.Texture2D) { /
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TabBar.Bind_set_tab_button_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		tab_idx int64
 		icon    gdextension.Object
-	}{tab_idx, gdextension.Object(pointers.Get(icon[0])[0])}))
+	}{tab_idx, gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))}))
 }
 
 /*
@@ -718,7 +718,7 @@ func (self class) AddTab(title String.Readable, icon [1]gdclass.Texture2D) { //g
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TabBar.Bind_add_tab, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		title gdextension.String
 		icon  gdextension.Object
-	}{gdextension.String(pointers.Get(gd.InternalString(title))[0]), gdextension.Object(pointers.Get(icon[0])[0])}))
+	}{gdextension.String(pointers.Get(gd.InternalString(title))[0]), gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))}))
 }
 
 /*

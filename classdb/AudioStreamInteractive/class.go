@@ -330,7 +330,7 @@ func (self class) SetClipStream(clip_index int64, stream [1]gdclass.AudioStream)
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioStreamInteractive.Bind_set_clip_stream, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		clip_index int64
 		stream     gdextension.Object
-	}{clip_index, gdextension.Object(pointers.Get(stream[0])[0])}))
+	}{clip_index, gdextension.Object(gd.ObjectChecked(stream[0].AsObject()))}))
 }
 
 /*

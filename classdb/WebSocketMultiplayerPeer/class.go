@@ -217,7 +217,7 @@ func (self class) CreateClient(url String.Readable, tls_client_options [1]gdclas
 	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.WebSocketMultiplayerPeer.Bind_create_client, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		url                gdextension.String
 		tls_client_options gdextension.Object
-	}{gdextension.String(pointers.Get(gd.InternalString(url))[0]), gdextension.Object(pointers.Get(tls_client_options[0])[0])}))
+	}{gdextension.String(pointers.Get(gd.InternalString(url))[0]), gdextension.Object(gd.ObjectChecked(tls_client_options[0].AsObject()))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -231,7 +231,7 @@ func (self class) CreateServer(port int64, bind_address String.Readable, tls_ser
 		port               int64
 		bind_address       gdextension.String
 		tls_server_options gdextension.Object
-	}{port, gdextension.String(pointers.Get(gd.InternalString(bind_address))[0]), gdextension.Object(pointers.Get(tls_server_options[0])[0])}))
+	}{port, gdextension.String(pointers.Get(gd.InternalString(bind_address))[0]), gdextension.Object(gd.ObjectChecked(tls_server_options[0].AsObject()))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }

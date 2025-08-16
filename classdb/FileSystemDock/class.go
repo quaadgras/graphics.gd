@@ -144,7 +144,7 @@ Registers a new [EditorResourceTooltipPlugin].
 */
 //go:nosplit
 func (self class) AddResourceTooltipPlugin(plugin [1]gdclass.EditorResourceTooltipPlugin) { //gd:FileSystemDock.add_resource_tooltip_plugin
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FileSystemDock.Bind_add_resource_tooltip_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(pointers.Get(plugin[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FileSystemDock.Bind_add_resource_tooltip_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
 }
 
 /*
@@ -152,7 +152,7 @@ Removes an [EditorResourceTooltipPlugin]. Fails if the plugin wasn't previously 
 */
 //go:nosplit
 func (self class) RemoveResourceTooltipPlugin(plugin [1]gdclass.EditorResourceTooltipPlugin) { //gd:FileSystemDock.remove_resource_tooltip_plugin
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FileSystemDock.Bind_remove_resource_tooltip_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(pointers.Get(plugin[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FileSystemDock.Bind_remove_resource_tooltip_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
 }
 func (self Instance) OnInherit(cb func(file string)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("inherit"), gd.NewCallable(cb), 0)

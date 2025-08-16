@@ -263,7 +263,7 @@ func (self class) CreateSceneTile(packed_scene [1]gdclass.PackedScene, id_overri
 	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TileSetScenesCollectionSource.Bind_create_scene_tile, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		packed_scene gdextension.Object
 		id_override  int64
-	}{gdextension.Object(pointers.Get(packed_scene[0])[0]), id_override}))
+	}{gdextension.Object(gd.ObjectChecked(packed_scene[0].AsObject())), id_override}))
 	var ret = r_ret
 	return ret
 }
@@ -287,7 +287,7 @@ func (self class) SetSceneTileScene(id int64, packed_scene [1]gdclass.PackedScen
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileSetScenesCollectionSource.Bind_set_scene_tile_scene, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		id           int64
 		packed_scene gdextension.Object
-	}{id, gdextension.Object(pointers.Get(packed_scene[0])[0])}))
+	}{id, gdextension.Object(gd.ObjectChecked(packed_scene[0].AsObject()))}))
 }
 
 /*

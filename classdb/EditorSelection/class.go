@@ -161,7 +161,7 @@ Removes a node from the selection.
 */
 //go:nosplit
 func (self class) RemoveNode(node [1]gdclass.Node) { //gd:EditorSelection.remove_node
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorSelection.Bind_remove_node, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(pointers.Get(node[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorSelection.Bind_remove_node, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))}))
 }
 
 /*

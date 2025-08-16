@@ -1391,7 +1391,7 @@ Sets the specified [param node] as the one selected.
 */
 //go:nosplit
 func (self class) SetSelected(node [1]gdclass.Node) { //gd:GraphEdit.set_selected
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GraphEdit.Bind_set_selected, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(pointers.Get(node[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GraphEdit.Bind_set_selected, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))}))
 }
 func (self Instance) OnConnectionRequest(cb func(from_node string, from_port int, to_node string, to_port int)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("connection_request"), gd.NewCallable(cb), 0)

@@ -328,7 +328,7 @@ This method does nothing.
 */
 //go:nosplit
 func (self class) ResourceChanged(resource [1]gdclass.Resource) { //gd:ShapeCast3D.resource_changed
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_resource_changed, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ resource gdextension.Object }{gdextension.Object(pointers.Get(resource[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_resource_changed, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ resource gdextension.Object }{gdextension.Object(gd.ObjectChecked(resource[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -345,7 +345,7 @@ func (self class) IsEnabled() bool { //gd:ShapeCast3D.is_enabled
 
 //go:nosplit
 func (self class) SetShape(shape [1]gdclass.Shape3D) { //gd:ShapeCast3D.set_shape
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_set_shape, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ shape gdextension.Object }{gdextension.Object(pointers.Get(shape[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_set_shape, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ shape gdextension.Object }{gdextension.Object(gd.ObjectChecked(shape[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -521,7 +521,7 @@ Removes a collision exception so the shape does report collisions with the speci
 */
 //go:nosplit
 func (self class) RemoveException(node [1]gdclass.CollisionObject3D) { //gd:ShapeCast3D.remove_exception
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_remove_exception, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(pointers.Get(node[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ShapeCast3D.Bind_remove_exception, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))}))
 }
 
 /*

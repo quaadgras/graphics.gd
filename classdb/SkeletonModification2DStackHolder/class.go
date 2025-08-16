@@ -125,7 +125,7 @@ Sets the [SkeletonModificationStack2D] that this modification is holding. This m
 */
 //go:nosplit
 func (self class) SetHeldModificationStack(held_modification_stack [1]gdclass.SkeletonModificationStack2D) { //gd:SkeletonModification2DStackHolder.set_held_modification_stack
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonModification2DStackHolder.Bind_set_held_modification_stack, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ held_modification_stack gdextension.Object }{gdextension.Object(pointers.Get(held_modification_stack[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonModification2DStackHolder.Bind_set_held_modification_stack, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ held_modification_stack gdextension.Object }{gdextension.Object(gd.ObjectChecked(held_modification_stack[0].AsObject()))}))
 }
 
 /*

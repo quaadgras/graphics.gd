@@ -181,7 +181,7 @@ func (self class) SetScope(scope String.Readable, target [1]gd.Object) { //gd:JS
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.JSONRPC.Bind_set_scope, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		scope  gdextension.String
 		target gdextension.Object
-	}{gdextension.String(pointers.Get(gd.InternalString(scope))[0]), gdextension.Object(pointers.Get(target[0])[0])}))
+	}{gdextension.String(pointers.Get(gd.InternalString(scope))[0]), gdextension.Object(gd.ObjectChecked(target[0].AsObject()))}))
 }
 
 /*

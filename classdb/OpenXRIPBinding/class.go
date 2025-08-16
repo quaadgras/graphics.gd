@@ -181,7 +181,7 @@ func (self Instance) SetPaths(value []string) {
 
 //go:nosplit
 func (self class) SetAction(action [1]gdclass.OpenXRAction) { //gd:OpenXRIPBinding.set_action
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRIPBinding.Bind_set_action, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ action gdextension.Object }{gdextension.Object(pointers.Get(action[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRIPBinding.Bind_set_action, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ action gdextension.Object }{gdextension.Object(gd.ObjectChecked(action[0].AsObject()))}))
 }
 
 //go:nosplit

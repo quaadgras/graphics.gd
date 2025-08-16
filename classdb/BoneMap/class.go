@@ -146,7 +146,7 @@ func (self class) GetProfile() [1]gdclass.SkeletonProfile { //gd:BoneMap.get_pro
 
 //go:nosplit
 func (self class) SetProfile(profile [1]gdclass.SkeletonProfile) { //gd:BoneMap.set_profile
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BoneMap.Bind_set_profile, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ profile gdextension.Object }{gdextension.Object(pointers.Get(profile[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BoneMap.Bind_set_profile, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ profile gdextension.Object }{gdextension.Object(gd.ObjectChecked(profile[0].AsObject()))}))
 }
 
 /*

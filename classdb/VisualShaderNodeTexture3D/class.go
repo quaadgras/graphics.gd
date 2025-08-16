@@ -116,7 +116,7 @@ func (self Instance) SetTexture(value Texture3D.Instance) {
 
 //go:nosplit
 func (self class) SetTexture(value [1]gdclass.Texture3D) { //gd:VisualShaderNodeTexture3D.set_texture
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeTexture3D.Bind_set_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ value gdextension.Object }{gdextension.Object(pointers.Get(value[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeTexture3D.Bind_set_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ value gdextension.Object }{gdextension.Object(gd.ObjectChecked(value[0].AsObject()))}))
 }
 
 //go:nosplit

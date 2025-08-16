@@ -399,7 +399,7 @@ func (self class) CreateTextureFromFormat(context String.Name, name String.Name,
 		format  gdextension.Object
 		view    gdextension.Object
 		unique  bool
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(context))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Object(pointers.Get(format[0])[0]), gdextension.Object(pointers.Get(view[0])[0]), unique}))
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(context))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Object(gd.ObjectChecked(format[0].AsObject())), gdextension.Object(gd.ObjectChecked(view[0].AsObject())), unique}))
 	var ret = r_ret
 	return ret
 }
@@ -414,7 +414,7 @@ func (self class) CreateTextureView(context String.Name, name String.Name, view_
 		name      gdextension.StringName
 		view_name gdextension.StringName
 		view      gdextension.Object
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(context))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(view_name))[0]), gdextension.Object(pointers.Get(view[0])[0])}))
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(context))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(view_name))[0]), gdextension.Object(gd.ObjectChecked(view[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }
@@ -475,7 +475,7 @@ func (self class) GetTextureSliceView(context String.Name, name String.Name, lay
 		layers  int64
 		mipmaps int64
 		view    gdextension.Object
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(context))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), layer, mipmap, layers, mipmaps, gdextension.Object(pointers.Get(view[0])[0])}))
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(context))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), layer, mipmap, layers, mipmaps, gdextension.Object(gd.ObjectChecked(view[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }

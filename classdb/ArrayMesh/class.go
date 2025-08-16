@@ -559,7 +559,7 @@ func (self class) GetCustomAabb() AABB.PositionSize { //gd:ArrayMesh.get_custom_
 
 //go:nosplit
 func (self class) SetShadowMesh(mesh [1]gdclass.ArrayMesh) { //gd:ArrayMesh.set_shadow_mesh
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ArrayMesh.Bind_set_shadow_mesh, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mesh gdextension.Object }{gdextension.Object(pointers.Get(mesh[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ArrayMesh.Bind_set_shadow_mesh, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject()))}))
 }
 
 //go:nosplit

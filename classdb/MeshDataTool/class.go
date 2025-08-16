@@ -462,7 +462,7 @@ func (self class) CreateFromSurface(mesh [1]gdclass.ArrayMesh, surface int64) Er
 	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.MeshDataTool.Bind_create_from_surface, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		mesh    gdextension.Object
 		surface int64
-	}{gdextension.Object(pointers.Get(mesh[0])[0]), surface}))
+	}{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject())), surface}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -475,7 +475,7 @@ func (self class) CommitToSurface(mesh [1]gdclass.ArrayMesh, compression_flags i
 	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.MeshDataTool.Bind_commit_to_surface, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		mesh              gdextension.Object
 		compression_flags int64
-	}{gdextension.Object(pointers.Get(mesh[0])[0]), compression_flags}))
+	}{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject())), compression_flags}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -850,7 +850,7 @@ Sets the material to be used by newly-constructed [Mesh].
 */
 //go:nosplit
 func (self class) SetMaterial(material [1]gdclass.Material) { //gd:MeshDataTool.set_material
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MeshDataTool.Bind_set_material, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(pointers.Get(material[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MeshDataTool.Bind_set_material, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(material[0].AsObject()))}))
 }
 
 /*

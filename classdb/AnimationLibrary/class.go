@@ -161,7 +161,7 @@ func (self class) AddAnimation(name String.Name, animation [1]gdclass.Animation)
 	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.AnimationLibrary.Bind_add_animation, gdextension.SizeInt|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		name      gdextension.StringName
 		animation gdextension.Object
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Object(pointers.Get(animation[0])[0])}))
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Object(gd.ObjectChecked(animation[0].AsObject()))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }

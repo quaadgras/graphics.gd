@@ -247,7 +247,7 @@ Registers the [EditorSyntaxHighlighter] to the editor, the [EditorSyntaxHighligh
 */
 //go:nosplit
 func (self class) RegisterSyntaxHighlighter(syntax_highlighter [1]gdclass.EditorSyntaxHighlighter) { //gd:ScriptEditor.register_syntax_highlighter
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ScriptEditor.Bind_register_syntax_highlighter, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ syntax_highlighter gdextension.Object }{gdextension.Object(pointers.Get(syntax_highlighter[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ScriptEditor.Bind_register_syntax_highlighter, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ syntax_highlighter gdextension.Object }{gdextension.Object(gd.ObjectChecked(syntax_highlighter[0].AsObject()))}))
 }
 
 /*
@@ -256,7 +256,7 @@ Unregisters the [EditorSyntaxHighlighter] from the editor.
 */
 //go:nosplit
 func (self class) UnregisterSyntaxHighlighter(syntax_highlighter [1]gdclass.EditorSyntaxHighlighter) { //gd:ScriptEditor.unregister_syntax_highlighter
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ScriptEditor.Bind_unregister_syntax_highlighter, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ syntax_highlighter gdextension.Object }{gdextension.Object(pointers.Get(syntax_highlighter[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ScriptEditor.Bind_unregister_syntax_highlighter, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ syntax_highlighter gdextension.Object }{gdextension.Object(gd.ObjectChecked(syntax_highlighter[0].AsObject()))}))
 }
 
 /*
@@ -333,7 +333,7 @@ Updates the documentation for the given [param script] if the script's documenta
 */
 //go:nosplit
 func (self class) UpdateDocsFromScript(script [1]gdclass.Script) { //gd:ScriptEditor.update_docs_from_script
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ScriptEditor.Bind_update_docs_from_script, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ script gdextension.Object }{gdextension.Object(pointers.Get(script[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ScriptEditor.Bind_update_docs_from_script, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ script gdextension.Object }{gdextension.Object(gd.ObjectChecked(script[0].AsObject()))}))
 }
 func (self Instance) OnEditorScriptChanged(cb func(script Script.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("editor_script_changed"), gd.NewCallable(cb), 0)

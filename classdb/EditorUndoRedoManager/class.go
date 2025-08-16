@@ -376,7 +376,7 @@ Returns the history ID deduced from the given [param object]. It can be used wit
 */
 //go:nosplit
 func (self class) GetObjectHistoryId(obj [1]gd.Object) int64 { //gd:EditorUndoRedoManager.get_object_history_id
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.EditorUndoRedoManager.Bind_get_object_history_id, gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ obj gdextension.Object }{gdextension.Object(pointers.Get(obj[0])[0])}))
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.EditorUndoRedoManager.Bind_get_object_history_id, gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ obj gdextension.Object }{gdextension.Object(gd.ObjectChecked(obj[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }

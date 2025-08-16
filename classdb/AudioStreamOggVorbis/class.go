@@ -191,7 +191,7 @@ func (self class) LoadFromFile(path String.Readable) [1]gdclass.AudioStreamOggVo
 
 //go:nosplit
 func (self class) SetPacketSequence(packet_sequence [1]gdclass.OggPacketSequence) { //gd:AudioStreamOggVorbis.set_packet_sequence
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioStreamOggVorbis.Bind_set_packet_sequence, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ packet_sequence gdextension.Object }{gdextension.Object(pointers.Get(packet_sequence[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioStreamOggVorbis.Bind_set_packet_sequence, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ packet_sequence gdextension.Object }{gdextension.Object(gd.ObjectChecked(packet_sequence[0].AsObject()))}))
 }
 
 //go:nosplit

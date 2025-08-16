@@ -27,6 +27,7 @@ import (
 
 	"graphics.gd/variant/Object"
 	"graphics.gd/variant/Path"
+	"graphics.gd/variant/RefCounted"
 	"graphics.gd/variant/Signal"
 	"graphics.gd/variant/String"
 
@@ -133,11 +134,18 @@ func Register[T Class](exports ...any) {
 		var className = pointers.Pin(gd.NewStringName(rename))
 		var superName = pointers.Pin(gd.NewStringName(nameOf(superType)))
 
+		var refCounted bool
+		switch super.(type) {
+		case interface{ AsRefCounted() [1]gd.RefCounted }:
+			refCounted = true // FIXME I think this can be unsafely overridden by the user, so we should check if the type is actually a RefCounted type.
+		}
+
 		var impl = &classImplementation{
 			Name:           className,
 			Super:          superName,
 			Type:           classType,
 			Tool:           tool,
+			RefCounted:     refCounted,
 			VirtualMethods: reference.Virtual,
 			Constructor: func() reflect.Value {
 				return reflect.New(classType)
@@ -424,7 +432,8 @@ type classImplementation struct {
 	Name  gd.StringName
 	Super gd.StringName
 
-	Tool bool
+	Tool       bool
+	RefCounted bool
 
 	Type reflect.Type
 
@@ -452,7 +461,10 @@ func (class classImplementation) CreateInstance() [1]gd.Object {
 
 func (class classImplementation) CreateInstanceFrom(value reflect.Value) [1]gd.Object {
 	var super = gd.Global.ClassDB.ConstructObject(class.Super)
-	super = [1]gd.Object{pointers.Pin(pointers.Lay(super[0]))}
+	if class.RefCounted {
+		Object.To[RefCounted.Instance](super[0])[0].Reference()
+	}
+	super = [1]gd.Object{pointers.Pin(super[0])}
 	instance := class.reloadInstance(value, super)
 	gd.Global.Object.SetInstance(super, class.Name, instance)
 	gd.Global.Object.SetInstanceBinding(super, gd.Global.ExtensionToken, nil, nil)
@@ -603,8 +615,12 @@ func (instance *instanceImplementation) ToString() (gd.String, bool) {
 	return gd.String{}, false
 }
 
-func (instance *instanceImplementation) Reference()   {}
-func (instance *instanceImplementation) Unreference() {}
+func (instance *instanceImplementation) Reference() {
+
+}
+func (instance *instanceImplementation) Unreference() {
+
+}
 
 func (instance *instanceImplementation) CallVirtual(name gd.StringName, virtual any, args gd.Address, back gd.Address) {
 	virtual.(gd.ExtensionClassCallVirtualFunc)(instance.Value, args, back)

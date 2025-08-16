@@ -154,7 +154,7 @@ func (self class) AddResource(name String.Name, resource [1]gdclass.Resource) { 
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ResourcePreloader.Bind_add_resource, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		name     gdextension.StringName
 		resource gdextension.Object
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Object(pointers.Get(resource[0])[0])}))
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Object(gd.ObjectChecked(resource[0].AsObject()))}))
 }
 
 /*

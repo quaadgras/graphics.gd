@@ -200,7 +200,7 @@ func (self Instance) SetBaselineOffset(value Float.X) {
 
 //go:nosplit
 func (self class) SetBaseFont(font [1]gdclass.Font) { //gd:FontVariation.set_base_font
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontVariation.Bind_set_base_font, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ font gdextension.Object }{gdextension.Object(pointers.Get(font[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FontVariation.Bind_set_base_font, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ font gdextension.Object }{gdextension.Object(gd.ObjectChecked(font[0].AsObject()))}))
 }
 
 //go:nosplit

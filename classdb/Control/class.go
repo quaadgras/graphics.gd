@@ -2475,7 +2475,7 @@ func (self class) GetVSizeFlags() SizeFlags { //gd:Control.get_v_size_flags
 
 //go:nosplit
 func (self class) SetTheme(theme [1]gdclass.Theme) { //gd:Control.set_theme
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Control.Bind_set_theme, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ theme gdextension.Object }{gdextension.Object(pointers.Get(theme[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Control.Bind_set_theme, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ theme gdextension.Object }{gdextension.Object(gd.ObjectChecked(theme[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -2522,7 +2522,7 @@ func (self class) AddThemeIconOverride(name String.Name, texture [1]gdclass.Text
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Control.Bind_add_theme_icon_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		name    gdextension.StringName
 		texture gdextension.Object
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Object(pointers.Get(texture[0])[0])}))
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 /*
@@ -2559,7 +2559,7 @@ func (self class) AddThemeStyleboxOverride(name String.Name, stylebox [1]gdclass
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Control.Bind_add_theme_stylebox_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		name     gdextension.StringName
 		stylebox gdextension.Object
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Object(pointers.Get(stylebox[0])[0])}))
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Object(gd.ObjectChecked(stylebox[0].AsObject()))}))
 }
 
 /*
@@ -2571,7 +2571,7 @@ func (self class) AddThemeFontOverride(name String.Name, font [1]gdclass.Font) {
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Control.Bind_add_theme_font_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		name gdextension.StringName
 		font gdextension.Object
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Object(pointers.Get(font[0])[0])}))
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Object(gd.ObjectChecked(font[0].AsObject()))}))
 }
 
 /*
@@ -3241,7 +3241,7 @@ func (self class) WarpMouse(position Vector2.XY) { //gd:Control.warp_mouse
 
 //go:nosplit
 func (self class) SetShortcutContext(node [1]gdclass.Node) { //gd:Control.set_shortcut_context
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Control.Bind_set_shortcut_context, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(pointers.Get(node[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Control.Bind_set_shortcut_context, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))}))
 }
 
 //go:nosplit

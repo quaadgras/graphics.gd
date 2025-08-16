@@ -266,7 +266,7 @@ func (self class) SetTexture(atype DecalTexture, texture [1]gdclass.Texture2D) {
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Decal.Bind_set_texture, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		atype   DecalTexture
 		texture gdextension.Object
-	}{atype, gdextension.Object(pointers.Get(texture[0])[0])}))
+	}{atype, gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 /*

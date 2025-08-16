@@ -142,7 +142,7 @@ func (self Instance) SetFilterClip(value bool) {
 
 //go:nosplit
 func (self class) SetAtlas(atlas [1]gdclass.Texture2D) { //gd:AtlasTexture.set_atlas
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AtlasTexture.Bind_set_atlas, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ atlas gdextension.Object }{gdextension.Object(pointers.Get(atlas[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AtlasTexture.Bind_set_atlas, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ atlas gdextension.Object }{gdextension.Object(gd.ObjectChecked(atlas[0].AsObject()))}))
 }
 
 //go:nosplit

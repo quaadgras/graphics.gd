@@ -434,7 +434,7 @@ func (self class) SetInterpolate(enable bool) { //gd:GPUParticles2D.set_interpol
 
 //go:nosplit
 func (self class) SetProcessMaterial(material [1]gdclass.Material) { //gd:GPUParticles2D.set_process_material
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GPUParticles2D.Bind_set_process_material, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(pointers.Get(material[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GPUParticles2D.Bind_set_process_material, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(material[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -587,7 +587,7 @@ func (self class) GetDrawOrder() DrawOrder { //gd:GPUParticles2D.get_draw_order
 
 //go:nosplit
 func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:GPUParticles2D.set_texture
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GPUParticles2D.Bind_set_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(pointers.Get(texture[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GPUParticles2D.Bind_set_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -699,7 +699,7 @@ Sets this node's properties to match a given [CPUParticles2D] node.
 */
 //go:nosplit
 func (self class) ConvertFromParticles(particles [1]gdclass.Node) { //gd:GPUParticles2D.convert_from_particles
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GPUParticles2D.Bind_convert_from_particles, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ particles gdextension.Object }{gdextension.Object(pointers.Get(particles[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GPUParticles2D.Bind_convert_from_particles, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ particles gdextension.Object }{gdextension.Object(gd.ObjectChecked(particles[0].AsObject()))}))
 }
 
 //go:nosplit

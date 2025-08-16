@@ -292,7 +292,7 @@ func (self Instance) SetLightData(value LightmapGIData.Instance) {
 
 //go:nosplit
 func (self class) SetLightData(data [1]gdclass.LightmapGIData) { //gd:LightmapGI.set_light_data
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.LightmapGI.Bind_set_light_data, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ data gdextension.Object }{gdextension.Object(pointers.Get(data[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.LightmapGI.Bind_set_light_data, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ data gdextension.Object }{gdextension.Object(gd.ObjectChecked(data[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -376,7 +376,7 @@ func (self class) GetEnvironmentMode() EnvironmentMode { //gd:LightmapGI.get_env
 
 //go:nosplit
 func (self class) SetEnvironmentCustomSky(sky [1]gdclass.Sky) { //gd:LightmapGI.set_environment_custom_sky
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.LightmapGI.Bind_set_environment_custom_sky, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ sky gdextension.Object }{gdextension.Object(pointers.Get(sky[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.LightmapGI.Bind_set_environment_custom_sky, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ sky gdextension.Object }{gdextension.Object(gd.ObjectChecked(sky[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -544,7 +544,7 @@ func (self class) IsUsingTextureForBounces() bool { //gd:LightmapGI.is_using_tex
 
 //go:nosplit
 func (self class) SetCameraAttributes(camera_attributes [1]gdclass.CameraAttributes) { //gd:LightmapGI.set_camera_attributes
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.LightmapGI.Bind_set_camera_attributes, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ camera_attributes gdextension.Object }{gdextension.Object(pointers.Get(camera_attributes[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.LightmapGI.Bind_set_camera_attributes, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ camera_attributes gdextension.Object }{gdextension.Object(gd.ObjectChecked(camera_attributes[0].AsObject()))}))
 }
 
 //go:nosplit

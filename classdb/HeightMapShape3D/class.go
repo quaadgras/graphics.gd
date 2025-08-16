@@ -233,7 +233,7 @@ func (self class) UpdateMapDataFromImage(image [1]gdclass.Image, height_min floa
 		image      gdextension.Object
 		height_min float64
 		height_max float64
-	}{gdextension.Object(pointers.Get(image[0])[0]), height_min, height_max}))
+	}{gdextension.Object(gd.ObjectChecked(image[0].AsObject())), height_min, height_max}))
 }
 func (self class) AsHeightMapShape3D() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsHeightMapShape3D() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

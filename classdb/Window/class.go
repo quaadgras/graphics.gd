@@ -1629,7 +1629,7 @@ func (self class) ChildControlsChanged() { //gd:Window.child_controls_changed
 
 //go:nosplit
 func (self class) SetTheme(theme [1]gdclass.Theme) { //gd:Window.set_theme
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Window.Bind_set_theme, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ theme gdextension.Object }{gdextension.Object(pointers.Get(theme[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Window.Bind_set_theme, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ theme gdextension.Object }{gdextension.Object(gd.ObjectChecked(theme[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -1676,7 +1676,7 @@ func (self class) AddThemeIconOverride(name String.Name, texture [1]gdclass.Text
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Window.Bind_add_theme_icon_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		name    gdextension.StringName
 		texture gdextension.Object
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Object(pointers.Get(texture[0])[0])}))
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 /*
@@ -1688,7 +1688,7 @@ func (self class) AddThemeStyleboxOverride(name String.Name, stylebox [1]gdclass
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Window.Bind_add_theme_stylebox_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		name     gdextension.StringName
 		stylebox gdextension.Object
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Object(pointers.Get(stylebox[0])[0])}))
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Object(gd.ObjectChecked(stylebox[0].AsObject()))}))
 }
 
 /*
@@ -1700,7 +1700,7 @@ func (self class) AddThemeFontOverride(name String.Name, font [1]gdclass.Font) {
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Window.Bind_add_theme_font_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		name gdextension.StringName
 		font gdextension.Object
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Object(pointers.Get(font[0])[0])}))
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Object(gd.ObjectChecked(font[0].AsObject()))}))
 }
 
 /*
@@ -2152,7 +2152,7 @@ func (self class) PopupExclusive(from_node [1]gdclass.Node, rect Rect2i.Position
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Window.Bind_popup_exclusive, 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2i<<8), unsafe.Pointer(&struct {
 		from_node gdextension.Object
 		rect      Rect2i.PositionSize
-	}{gdextension.Object(pointers.Get(from_node[0])[0]), rect}))
+	}{gdextension.Object(gd.ObjectChecked(from_node[0].AsObject())), rect}))
 }
 
 /*
@@ -2164,7 +2164,7 @@ func (self class) PopupExclusiveOnParent(from_node [1]gdclass.Node, parent_rect 
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Window.Bind_popup_exclusive_on_parent, 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2i<<8), unsafe.Pointer(&struct {
 		from_node   gdextension.Object
 		parent_rect Rect2i.PositionSize
-	}{gdextension.Object(pointers.Get(from_node[0])[0]), parent_rect}))
+	}{gdextension.Object(gd.ObjectChecked(from_node[0].AsObject())), parent_rect}))
 }
 
 /*
@@ -2176,7 +2176,7 @@ func (self class) PopupExclusiveCentered(from_node [1]gdclass.Node, minsize Vect
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Window.Bind_popup_exclusive_centered, 0|(gdextension.SizeObject<<4)|(gdextension.SizeVector2i<<8), unsafe.Pointer(&struct {
 		from_node gdextension.Object
 		minsize   Vector2i.XY
-	}{gdextension.Object(pointers.Get(from_node[0])[0]), minsize}))
+	}{gdextension.Object(gd.ObjectChecked(from_node[0].AsObject())), minsize}))
 }
 
 /*
@@ -2188,7 +2188,7 @@ func (self class) PopupExclusiveCenteredRatio(from_node [1]gdclass.Node, ratio f
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Window.Bind_popup_exclusive_centered_ratio, 0|(gdextension.SizeObject<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		from_node gdextension.Object
 		ratio     float64
-	}{gdextension.Object(pointers.Get(from_node[0])[0]), ratio}))
+	}{gdextension.Object(gd.ObjectChecked(from_node[0].AsObject())), ratio}))
 }
 
 /*
@@ -2201,7 +2201,7 @@ func (self class) PopupExclusiveCenteredClamped(from_node [1]gdclass.Node, minsi
 		from_node      gdextension.Object
 		minsize        Vector2i.XY
 		fallback_ratio float64
-	}{gdextension.Object(pointers.Get(from_node[0])[0]), minsize, fallback_ratio}))
+	}{gdextension.Object(gd.ObjectChecked(from_node[0].AsObject())), minsize, fallback_ratio}))
 }
 func (self Instance) OnWindowInput(cb func(event InputEvent.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("window_input"), gd.NewCallable(cb), 0)

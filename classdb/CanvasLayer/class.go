@@ -331,7 +331,7 @@ func (self class) GetFollowViewportScale() float64 { //gd:CanvasLayer.get_follow
 
 //go:nosplit
 func (self class) SetCustomViewport(viewport [1]gdclass.Node) { //gd:CanvasLayer.set_custom_viewport
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasLayer.Bind_set_custom_viewport, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ viewport gdextension.Object }{gdextension.Object(pointers.Get(viewport[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasLayer.Bind_set_custom_viewport, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ viewport gdextension.Object }{gdextension.Object(gd.ObjectChecked(viewport[0].AsObject()))}))
 }
 
 //go:nosplit

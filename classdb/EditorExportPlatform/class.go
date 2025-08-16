@@ -422,7 +422,7 @@ func (self class) SavePack(preset [1]gdclass.EditorExportPreset, debug bool, pat
 		debug  bool
 		path   gdextension.String
 		embed  bool
-	}{gdextension.Object(pointers.Get(preset[0])[0]), debug, gdextension.String(pointers.Get(gd.InternalString(path))[0]), embed}))
+	}{gdextension.Object(gd.ObjectChecked(preset[0].AsObject())), debug, gdextension.String(pointers.Get(gd.InternalString(path))[0]), embed}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -436,7 +436,7 @@ func (self class) SaveZip(preset [1]gdclass.EditorExportPreset, debug bool, path
 		preset gdextension.Object
 		debug  bool
 		path   gdextension.String
-	}{gdextension.Object(pointers.Get(preset[0])[0]), debug, gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	}{gdextension.Object(gd.ObjectChecked(preset[0].AsObject())), debug, gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -450,7 +450,7 @@ func (self class) SavePackPatch(preset [1]gdclass.EditorExportPreset, debug bool
 		preset gdextension.Object
 		debug  bool
 		path   gdextension.String
-	}{gdextension.Object(pointers.Get(preset[0])[0]), debug, gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	}{gdextension.Object(gd.ObjectChecked(preset[0].AsObject())), debug, gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -464,7 +464,7 @@ func (self class) SaveZipPatch(preset [1]gdclass.EditorExportPreset, debug bool,
 		preset gdextension.Object
 		debug  bool
 		path   gdextension.String
-	}{gdextension.Object(pointers.Get(preset[0])[0]), debug, gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	}{gdextension.Object(gd.ObjectChecked(preset[0].AsObject())), debug, gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -492,7 +492,7 @@ func (self class) ExportProjectFiles(preset [1]gdclass.EditorExportPreset, debug
 		debug     bool
 		save_cb   gdextension.Callable
 		shared_cb gdextension.Callable
-	}{gdextension.Object(pointers.Get(preset[0])[0]), debug, gdextension.Callable(pointers.Get(gd.InternalCallable(save_cb))), gdextension.Callable(pointers.Get(gd.InternalCallable(shared_cb)))}))
+	}{gdextension.Object(gd.ObjectChecked(preset[0].AsObject())), debug, gdextension.Callable(pointers.Get(gd.InternalCallable(save_cb))), gdextension.Callable(pointers.Get(gd.InternalCallable(shared_cb)))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -507,7 +507,7 @@ func (self class) ExportProject(preset [1]gdclass.EditorExportPreset, debug bool
 		debug  bool
 		path   gdextension.String
 		flags  DebugFlags
-	}{gdextension.Object(pointers.Get(preset[0])[0]), debug, gdextension.String(pointers.Get(gd.InternalString(path))[0]), flags}))
+	}{gdextension.Object(gd.ObjectChecked(preset[0].AsObject())), debug, gdextension.String(pointers.Get(gd.InternalString(path))[0]), flags}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -522,7 +522,7 @@ func (self class) ExportPack(preset [1]gdclass.EditorExportPreset, debug bool, p
 		debug  bool
 		path   gdextension.String
 		flags  DebugFlags
-	}{gdextension.Object(pointers.Get(preset[0])[0]), debug, gdextension.String(pointers.Get(gd.InternalString(path))[0]), flags}))
+	}{gdextension.Object(gd.ObjectChecked(preset[0].AsObject())), debug, gdextension.String(pointers.Get(gd.InternalString(path))[0]), flags}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -537,7 +537,7 @@ func (self class) ExportZip(preset [1]gdclass.EditorExportPreset, debug bool, pa
 		debug  bool
 		path   gdextension.String
 		flags  DebugFlags
-	}{gdextension.Object(pointers.Get(preset[0])[0]), debug, gdextension.String(pointers.Get(gd.InternalString(path))[0]), flags}))
+	}{gdextension.Object(gd.ObjectChecked(preset[0].AsObject())), debug, gdextension.String(pointers.Get(gd.InternalString(path))[0]), flags}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -554,7 +554,7 @@ func (self class) ExportPackPatch(preset [1]gdclass.EditorExportPreset, debug bo
 		path    gdextension.String
 		patches gdextension.PackedArray
 		flags   DebugFlags
-	}{gdextension.Object(pointers.Get(preset[0])[0]), debug, gdextension.String(pointers.Get(gd.InternalString(path))[0]), gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(patches))), flags}))
+	}{gdextension.Object(gd.ObjectChecked(preset[0].AsObject())), debug, gdextension.String(pointers.Get(gd.InternalString(path))[0]), gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(patches))), flags}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -571,7 +571,7 @@ func (self class) ExportZipPatch(preset [1]gdclass.EditorExportPreset, debug boo
 		path    gdextension.String
 		patches gdextension.PackedArray
 		flags   DebugFlags
-	}{gdextension.Object(pointers.Get(preset[0])[0]), debug, gdextension.String(pointers.Get(gd.InternalString(path))[0]), gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(patches))), flags}))
+	}{gdextension.Object(gd.ObjectChecked(preset[0].AsObject())), debug, gdextension.String(pointers.Get(gd.InternalString(path))[0]), gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(patches))), flags}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -703,7 +703,7 @@ func (self class) GetInternalExportFiles(preset [1]gdclass.EditorExportPreset, d
 	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorExportPlatform.Bind_get_internal_export_files, gdextension.SizeDictionary|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		preset gdextension.Object
 		debug  bool
-	}{gdextension.Object(pointers.Get(preset[0])[0]), debug}))
+	}{gdextension.Object(gd.ObjectChecked(preset[0].AsObject())), debug}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }

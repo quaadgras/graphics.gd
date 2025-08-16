@@ -161,7 +161,7 @@ Returns whether any [InputEvent] in [member events] equals [param event]. This u
 */
 //go:nosplit
 func (self class) MatchesEvent(event [1]gdclass.InputEvent) bool { //gd:Shortcut.matches_event
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Shortcut.Bind_matches_event, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ event gdextension.Object }{gdextension.Object(pointers.Get(event[0])[0])}))
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Shortcut.Bind_matches_event, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ event gdextension.Object }{gdextension.Object(gd.ObjectChecked(event[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }

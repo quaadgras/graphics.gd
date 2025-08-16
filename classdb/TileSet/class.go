@@ -814,7 +814,7 @@ func (self class) AddSource(source [1]gdclass.TileSetSource, atlas_source_id_ove
 	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TileSet.Bind_add_source, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		source                   gdextension.Object
 		atlas_source_id_override int64
-	}{gdextension.Object(pointers.Get(source[0])[0]), atlas_source_id_override}))
+	}{gdextension.Object(gd.ObjectChecked(source[0].AsObject())), atlas_source_id_override}))
 	var ret = r_ret
 	return ret
 }
@@ -1127,7 +1127,7 @@ func (self class) SetPhysicsLayerPhysicsMaterial(layer_index int64, physics_mate
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileSet.Bind_set_physics_layer_physics_material, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		layer_index      int64
 		physics_material gdextension.Object
-	}{layer_index, gdextension.Object(pointers.Get(physics_material[0])[0])}))
+	}{layer_index, gdextension.Object(gd.ObjectChecked(physics_material[0].AsObject()))}))
 }
 
 /*
@@ -1669,7 +1669,7 @@ func (self class) AddPattern(pattern [1]gdclass.TileMapPattern, index int64) int
 	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TileSet.Bind_add_pattern, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		pattern gdextension.Object
 		index   int64
-	}{gdextension.Object(pointers.Get(pattern[0])[0]), index}))
+	}{gdextension.Object(gd.ObjectChecked(pattern[0].AsObject())), index}))
 	var ret = r_ret
 	return ret
 }

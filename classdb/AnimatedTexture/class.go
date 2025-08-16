@@ -247,7 +247,7 @@ func (self class) SetFrameTexture(frame_ int64, texture [1]gdclass.Texture2D) { 
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimatedTexture.Bind_set_frame_texture, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		frame_  int64
 		texture gdextension.Object
-	}{frame_, gdextension.Object(pointers.Get(texture[0])[0])}))
+	}{frame_, gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 /*

@@ -463,7 +463,7 @@ func (name Name) CallframeValue(val string) string {
 	}
 	_, argIsPtr := name.IsPointer()
 	if argIsPtr {
-		return fmt.Sprintf("gdextension.Object(frame, pointers.Get(%v))", val)
+		return fmt.Sprintf("gdextension.Object(gd.ObjectChecked(%v))", val)
 	} else {
 		if entry, ok := ClassDB[string(name)]; ok && entry.IsEnum {
 			return fmt.Sprintf("int64(%v)", val)

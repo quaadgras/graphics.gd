@@ -159,7 +159,7 @@ func (self class) GetConstantAngularVelocity() Vector3.XYZ { //gd:StaticBody3D.g
 
 //go:nosplit
 func (self class) SetPhysicsMaterialOverride(physics_material_override [1]gdclass.PhysicsMaterial) { //gd:StaticBody3D.set_physics_material_override
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.StaticBody3D.Bind_set_physics_material_override, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ physics_material_override gdextension.Object }{gdextension.Object(pointers.Get(physics_material_override[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.StaticBody3D.Bind_set_physics_material_override, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ physics_material_override gdextension.Object }{gdextension.Object(gd.ObjectChecked(physics_material_override[0].AsObject()))}))
 }
 
 //go:nosplit

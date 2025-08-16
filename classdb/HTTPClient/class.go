@@ -360,14 +360,14 @@ func (self class) ConnectToHost(host String.Readable, port int64, tls_options [1
 		host        gdextension.String
 		port        int64
 		tls_options gdextension.Object
-	}{gdextension.String(pointers.Get(gd.InternalString(host))[0]), port, gdextension.Object(pointers.Get(tls_options[0])[0])}))
+	}{gdextension.String(pointers.Get(gd.InternalString(host))[0]), port, gdextension.Object(gd.ObjectChecked(tls_options[0].AsObject()))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
 
 //go:nosplit
 func (self class) SetConnection(connection [1]gdclass.StreamPeer) { //gd:HTTPClient.set_connection
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.HTTPClient.Bind_set_connection, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ connection gdextension.Object }{gdextension.Object(pointers.Get(connection[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.HTTPClient.Bind_set_connection, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ connection gdextension.Object }{gdextension.Object(gd.ObjectChecked(connection[0].AsObject()))}))
 }
 
 //go:nosplit

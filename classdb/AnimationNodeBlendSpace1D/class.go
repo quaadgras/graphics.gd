@@ -222,7 +222,7 @@ func (self class) AddBlendPoint(node [1]gdclass.AnimationRootNode, pos float64, 
 		node     gdextension.Object
 		pos      float64
 		at_index int64
-	}{gdextension.Object(pointers.Get(node[0])[0]), pos, at_index}))
+	}{gdextension.Object(gd.ObjectChecked(node[0].AsObject())), pos, at_index}))
 }
 
 /*
@@ -254,7 +254,7 @@ func (self class) SetBlendPointNode(point int64, node [1]gdclass.AnimationRootNo
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationNodeBlendSpace1D.Bind_set_blend_point_node, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		point int64
 		node  gdextension.Object
-	}{point, gdextension.Object(pointers.Get(node[0])[0])}))
+	}{point, gdextension.Object(gd.ObjectChecked(node[0].AsObject()))}))
 }
 
 /*

@@ -321,7 +321,7 @@ func (self class) IsEnabled() bool { //gd:ShapeCast2D.is_enabled
 
 //go:nosplit
 func (self class) SetShape(shape [1]gdclass.Shape2D) { //gd:ShapeCast2D.set_shape
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ShapeCast2D.Bind_set_shape, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ shape gdextension.Object }{gdextension.Object(pointers.Get(shape[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ShapeCast2D.Bind_set_shape, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ shape gdextension.Object }{gdextension.Object(gd.ObjectChecked(shape[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -497,7 +497,7 @@ Removes a collision exception so the shape does report collisions with the speci
 */
 //go:nosplit
 func (self class) RemoveException(node [1]gdclass.CollisionObject2D) { //gd:ShapeCast2D.remove_exception
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ShapeCast2D.Bind_remove_exception, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(pointers.Get(node[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ShapeCast2D.Bind_remove_exception, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))}))
 }
 
 /*

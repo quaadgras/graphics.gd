@@ -194,7 +194,7 @@ Create a new GLTFLight instance from the given Godot [Light3D] node.
 */
 //go:nosplit
 func (self class) FromNode(light_node [1]gdclass.Light3D) [1]gdclass.GLTFLight { //gd:GLTFLight.from_node
-	var r_ret = gdunsafe.CallStatic[gd.EnginePointer](gd.Global.Methods.GLTFLight.Bind_from_node, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ light_node gdextension.Object }{gdextension.Object(pointers.Get(light_node[0])[0])}))
+	var r_ret = gdunsafe.CallStatic[gd.EnginePointer](gd.Global.Methods.GLTFLight.Bind_from_node, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ light_node gdextension.Object }{gdextension.Object(gd.ObjectChecked(light_node[0].AsObject()))}))
 	var ret = [1]gdclass.GLTFLight{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFLight](r_ret)}
 	return ret
 }

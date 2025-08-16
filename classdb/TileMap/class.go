@@ -824,7 +824,7 @@ func (self class) ForceUpdate(layer int64) { //gd:TileMap.force_update
 
 //go:nosplit
 func (self class) SetTileset(tileset [1]gdclass.TileSet) { //gd:TileMap.set_tileset
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileMap.Bind_set_tileset, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ tileset gdextension.Object }{gdextension.Object(pointers.Get(tileset[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileMap.Bind_set_tileset, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ tileset gdextension.Object }{gdextension.Object(gd.ObjectChecked(tileset[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -1296,7 +1296,7 @@ func (self class) MapPattern(position_in_tilemap Vector2i.XY, coords_in_pattern 
 		position_in_tilemap Vector2i.XY
 		coords_in_pattern   Vector2i.XY
 		pattern             gdextension.Object
-	}{position_in_tilemap, coords_in_pattern, gdextension.Object(pointers.Get(pattern[0])[0])}))
+	}{position_in_tilemap, coords_in_pattern, gdextension.Object(gd.ObjectChecked(pattern[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }
@@ -1311,7 +1311,7 @@ func (self class) SetPattern(layer int64, position Vector2i.XY, pattern [1]gdcla
 		layer    int64
 		position Vector2i.XY
 		pattern  gdextension.Object
-	}{layer, position, gdextension.Object(pointers.Get(pattern[0])[0])}))
+	}{layer, position, gdextension.Object(gd.ObjectChecked(pattern[0].AsObject()))}))
 }
 
 /*

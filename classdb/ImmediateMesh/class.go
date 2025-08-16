@@ -216,7 +216,7 @@ func (self class) SurfaceBegin(primitive Mesh.PrimitiveType, material [1]gdclass
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ImmediateMesh.Bind_surface_begin, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		primitive Mesh.PrimitiveType
 		material  gdextension.Object
-	}{primitive, gdextension.Object(pointers.Get(material[0])[0])}))
+	}{primitive, gdextension.Object(gd.ObjectChecked(material[0].AsObject()))}))
 }
 
 /*

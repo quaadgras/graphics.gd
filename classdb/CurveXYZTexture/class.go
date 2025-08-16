@@ -142,7 +142,7 @@ func (self class) SetWidth(width int64) { //gd:CurveXYZTexture.set_width
 
 //go:nosplit
 func (self class) SetCurveX(curve [1]gdclass.Curve) { //gd:CurveXYZTexture.set_curve_x
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CurveXYZTexture.Bind_set_curve_x, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(pointers.Get(curve[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CurveXYZTexture.Bind_set_curve_x, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -154,7 +154,7 @@ func (self class) GetCurveX() [1]gdclass.Curve { //gd:CurveXYZTexture.get_curve_
 
 //go:nosplit
 func (self class) SetCurveY(curve [1]gdclass.Curve) { //gd:CurveXYZTexture.set_curve_y
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CurveXYZTexture.Bind_set_curve_y, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(pointers.Get(curve[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CurveXYZTexture.Bind_set_curve_y, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -166,7 +166,7 @@ func (self class) GetCurveY() [1]gdclass.Curve { //gd:CurveXYZTexture.get_curve_
 
 //go:nosplit
 func (self class) SetCurveZ(curve [1]gdclass.Curve) { //gd:CurveXYZTexture.set_curve_z
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CurveXYZTexture.Bind_set_curve_z, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(pointers.Get(curve[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CurveXYZTexture.Bind_set_curve_z, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
 }
 
 //go:nosplit

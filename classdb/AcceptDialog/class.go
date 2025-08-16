@@ -283,7 +283,7 @@ Removes the [param button] from the dialog. Does NOT free the [param button]. Th
 */
 //go:nosplit
 func (self class) RemoveButton(button [1]gdclass.Button) { //gd:AcceptDialog.remove_button
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AcceptDialog.Bind_remove_button, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ button gdextension.Object }{gdextension.Object(pointers.Get(button[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AcceptDialog.Bind_remove_button, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ button gdextension.Object }{gdextension.Object(gd.ObjectChecked(button[0].AsObject()))}))
 }
 
 /*
@@ -291,7 +291,7 @@ Registers a [LineEdit] in the dialog. When the enter key is pressed, the dialog 
 */
 //go:nosplit
 func (self class) RegisterTextEnter(line_edit [1]gdclass.LineEdit) { //gd:AcceptDialog.register_text_enter
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AcceptDialog.Bind_register_text_enter, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ line_edit gdextension.Object }{gdextension.Object(pointers.Get(line_edit[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AcceptDialog.Bind_register_text_enter, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ line_edit gdextension.Object }{gdextension.Object(gd.ObjectChecked(line_edit[0].AsObject()))}))
 }
 
 //go:nosplit

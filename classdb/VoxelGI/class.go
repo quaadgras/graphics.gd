@@ -172,7 +172,7 @@ func (self Instance) SetData(value VoxelGIData.Instance) {
 
 //go:nosplit
 func (self class) SetProbeData(data [1]gdclass.VoxelGIData) { //gd:VoxelGI.set_probe_data
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VoxelGI.Bind_set_probe_data, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ data gdextension.Object }{gdextension.Object(pointers.Get(data[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VoxelGI.Bind_set_probe_data, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ data gdextension.Object }{gdextension.Object(gd.ObjectChecked(data[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -208,7 +208,7 @@ func (self class) GetSize() Vector3.XYZ { //gd:VoxelGI.get_size
 
 //go:nosplit
 func (self class) SetCameraAttributes(camera_attributes [1]gdclass.CameraAttributes) { //gd:VoxelGI.set_camera_attributes
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VoxelGI.Bind_set_camera_attributes, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ camera_attributes gdextension.Object }{gdextension.Object(pointers.Get(camera_attributes[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VoxelGI.Bind_set_camera_attributes, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ camera_attributes gdextension.Object }{gdextension.Object(gd.ObjectChecked(camera_attributes[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -228,7 +228,7 @@ func (self class) Bake(from_node [1]gdclass.Node, create_visual_debug bool) { //
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VoxelGI.Bind_bake, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		from_node           gdextension.Object
 		create_visual_debug bool
-	}{gdextension.Object(pointers.Get(from_node[0])[0]), create_visual_debug}))
+	}{gdextension.Object(gd.ObjectChecked(from_node[0].AsObject())), create_visual_debug}))
 }
 
 /*

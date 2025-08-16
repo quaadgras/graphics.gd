@@ -214,7 +214,7 @@ func (self class) SetDefaultTextureParameter(name String.Name, texture [1]gdclas
 		name    gdextension.StringName
 		texture gdextension.Object
 		index   int64
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Object(pointers.Get(texture[0])[0]), index}))
+	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Object(gd.ObjectChecked(texture[0].AsObject())), index}))
 }
 
 /*

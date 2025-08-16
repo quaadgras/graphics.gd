@@ -185,7 +185,7 @@ func (self class) Save(resource [1]gdclass.Resource, path String.Readable, flags
 		resource gdextension.Object
 		path     gdextension.String
 		flags    SaverFlags
-	}{gdextension.Object(pointers.Get(resource[0])[0]), gdextension.String(pointers.Get(gd.InternalString(path))[0]), flags}))
+	}{gdextension.Object(gd.ObjectChecked(resource[0].AsObject())), gdextension.String(pointers.Get(gd.InternalString(path))[0]), flags}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -195,7 +195,7 @@ Returns the list of extensions available for saving a resource of a given type.
 */
 //go:nosplit
 func (self class) GetRecognizedExtensions(atype [1]gdclass.Resource) Packed.Strings { //gd:ResourceSaver.get_recognized_extensions
-	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.ResourceSaver.Bind_get_recognized_extensions, gdextension.SizePackedArray|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ atype gdextension.Object }{gdextension.Object(pointers.Get(atype[0])[0])}))
+	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.ResourceSaver.Bind_get_recognized_extensions, gdextension.SizePackedArray|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ atype gdextension.Object }{gdextension.Object(gd.ObjectChecked(atype[0].AsObject()))}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -209,7 +209,7 @@ func (self class) AddResourceFormatSaver(format_saver [1]gdclass.ResourceFormatS
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ResourceSaver.Bind_add_resource_format_saver, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		format_saver gdextension.Object
 		at_front     bool
-	}{gdextension.Object(pointers.Get(format_saver[0])[0]), at_front}))
+	}{gdextension.Object(gd.ObjectChecked(format_saver[0].AsObject())), at_front}))
 }
 
 /*
@@ -217,7 +217,7 @@ Unregisters the given [ResourceFormatSaver].
 */
 //go:nosplit
 func (self class) RemoveResourceFormatSaver(format_saver [1]gdclass.ResourceFormatSaver) { //gd:ResourceSaver.remove_resource_format_saver
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ResourceSaver.Bind_remove_resource_format_saver, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ format_saver gdextension.Object }{gdextension.Object(pointers.Get(format_saver[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ResourceSaver.Bind_remove_resource_format_saver, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ format_saver gdextension.Object }{gdextension.Object(gd.ObjectChecked(format_saver[0].AsObject()))}))
 }
 
 /*

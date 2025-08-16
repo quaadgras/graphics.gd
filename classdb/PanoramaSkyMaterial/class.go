@@ -133,7 +133,7 @@ func (self Instance) SetEnergyMultiplier(value Float.X) {
 
 //go:nosplit
 func (self class) SetPanorama(texture [1]gdclass.Texture2D) { //gd:PanoramaSkyMaterial.set_panorama
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PanoramaSkyMaterial.Bind_set_panorama, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(pointers.Get(texture[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PanoramaSkyMaterial.Bind_set_panorama, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit

@@ -238,7 +238,7 @@ func (self class) GetDeltaInterval() float64 { //gd:MultiplayerSynchronizer.get_
 
 //go:nosplit
 func (self class) SetReplicationConfig(config [1]gdclass.SceneReplicationConfig) { //gd:MultiplayerSynchronizer.set_replication_config
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MultiplayerSynchronizer.Bind_set_replication_config, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ config gdextension.Object }{gdextension.Object(pointers.Get(config[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MultiplayerSynchronizer.Bind_set_replication_config, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ config gdextension.Object }{gdextension.Object(gd.ObjectChecked(config[0].AsObject()))}))
 }
 
 //go:nosplit

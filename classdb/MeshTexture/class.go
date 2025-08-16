@@ -133,7 +133,7 @@ func (self Instance) SetImageSize(value Vector2.XY) {
 
 //go:nosplit
 func (self class) SetMesh(mesh [1]gdclass.Mesh) { //gd:MeshTexture.set_mesh
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MeshTexture.Bind_set_mesh, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mesh gdextension.Object }{gdextension.Object(pointers.Get(mesh[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MeshTexture.Bind_set_mesh, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -157,7 +157,7 @@ func (self class) GetImageSize() Vector2.XY { //gd:MeshTexture.get_image_size
 
 //go:nosplit
 func (self class) SetBaseTexture(texture [1]gdclass.Texture2D) { //gd:MeshTexture.set_base_texture
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MeshTexture.Bind_set_base_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(pointers.Get(texture[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MeshTexture.Bind_set_base_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit

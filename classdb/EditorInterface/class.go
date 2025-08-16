@@ -1054,7 +1054,7 @@ func (self class) PopupDialog(dialog [1]gdclass.Window, rect Rect2i.PositionSize
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_popup_dialog, 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2i<<8), unsafe.Pointer(&struct {
 		dialog gdextension.Object
 		rect   Rect2i.PositionSize
-	}{gdextension.Object(pointers.Get(dialog[0])[0]), rect}))
+	}{gdextension.Object(gd.ObjectChecked(dialog[0].AsObject())), rect}))
 }
 
 /*
@@ -1066,7 +1066,7 @@ func (self class) PopupDialogCentered(dialog [1]gdclass.Window, minsize Vector2i
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_popup_dialog_centered, 0|(gdextension.SizeObject<<4)|(gdextension.SizeVector2i<<8), unsafe.Pointer(&struct {
 		dialog  gdextension.Object
 		minsize Vector2i.XY
-	}{gdextension.Object(pointers.Get(dialog[0])[0]), minsize}))
+	}{gdextension.Object(gd.ObjectChecked(dialog[0].AsObject())), minsize}))
 }
 
 /*
@@ -1078,7 +1078,7 @@ func (self class) PopupDialogCenteredRatio(dialog [1]gdclass.Window, ratio float
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_popup_dialog_centered_ratio, 0|(gdextension.SizeObject<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		dialog gdextension.Object
 		ratio  float64
-	}{gdextension.Object(pointers.Get(dialog[0])[0]), ratio}))
+	}{gdextension.Object(gd.ObjectChecked(dialog[0].AsObject())), ratio}))
 }
 
 /*
@@ -1091,7 +1091,7 @@ func (self class) PopupDialogCenteredClamped(dialog [1]gdclass.Window, minsize V
 		dialog         gdextension.Object
 		minsize        Vector2i.XY
 		fallback_ratio float64
-	}{gdextension.Object(pointers.Get(dialog[0])[0]), minsize, fallback_ratio}))
+	}{gdextension.Object(gd.ObjectChecked(dialog[0].AsObject())), minsize, fallback_ratio}))
 }
 
 /*
@@ -1137,7 +1137,7 @@ func (self class) PopupNodeSelector(callback Callable.Function, valid_types Arra
 		callback      gdextension.Callable
 		valid_types   gdextension.Array
 		current_value gdextension.Object
-	}{gdextension.Callable(pointers.Get(gd.InternalCallable(callback))), gdextension.Array(pointers.Get(gd.InternalArray(valid_types))[0]), gdextension.Object(pointers.Get(current_value[0])[0])}))
+	}{gdextension.Callable(pointers.Get(gd.InternalCallable(callback))), gdextension.Array(pointers.Get(gd.InternalArray(valid_types))[0]), gdextension.Object(gd.ObjectChecked(current_value[0].AsObject()))}))
 }
 
 /*
@@ -1161,7 +1161,7 @@ func (self class) PopupPropertySelector(obj [1]gd.Object, callback Callable.Func
 		callback      gdextension.Callable
 		type_filter   gdextension.PackedArray
 		current_value gdextension.String
-	}{gdextension.Object(pointers.Get(obj[0])[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(callback))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](type_filter))), gdextension.String(pointers.Get(gd.InternalString(current_value))[0])}))
+	}{gdextension.Object(gd.ObjectChecked(obj[0].AsObject())), gdextension.Callable(pointers.Get(gd.InternalCallable(callback))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](type_filter))), gdextension.String(pointers.Get(gd.InternalString(current_value))[0])}))
 }
 
 /*
@@ -1173,7 +1173,7 @@ func (self class) PopupMethodSelector(obj [1]gd.Object, callback Callable.Functi
 		obj           gdextension.Object
 		callback      gdextension.Callable
 		current_value gdextension.String
-	}{gdextension.Object(pointers.Get(obj[0])[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(callback))), gdextension.String(pointers.Get(gd.InternalString(current_value))[0])}))
+	}{gdextension.Object(gd.ObjectChecked(obj[0].AsObject())), gdextension.Callable(pointers.Get(gd.InternalCallable(callback))), gdextension.String(pointers.Get(gd.InternalString(current_value))[0])}))
 }
 
 /*
@@ -1276,7 +1276,7 @@ func (self class) InspectObject(obj [1]gd.Object, for_property String.Readable, 
 		obj            gdextension.Object
 		for_property   gdextension.String
 		inspector_only bool
-	}{gdextension.Object(pointers.Get(obj[0])[0]), gdextension.String(pointers.Get(gd.InternalString(for_property))[0]), inspector_only}))
+	}{gdextension.Object(gd.ObjectChecked(obj[0].AsObject())), gdextension.String(pointers.Get(gd.InternalString(for_property))[0]), inspector_only}))
 }
 
 /*
@@ -1284,7 +1284,7 @@ Edits the given [Resource]. If the resource is a [Script] you can also edit it w
 */
 //go:nosplit
 func (self class) EditResource(resource [1]gdclass.Resource) { //gd:EditorInterface.edit_resource
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_edit_resource, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ resource gdextension.Object }{gdextension.Object(pointers.Get(resource[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_edit_resource, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ resource gdextension.Object }{gdextension.Object(gd.ObjectChecked(resource[0].AsObject()))}))
 }
 
 /*
@@ -1292,7 +1292,7 @@ Edits the given [Node]. The node will be also selected if it's inside the scene 
 */
 //go:nosplit
 func (self class) EditNode(node [1]gdclass.Node) { //gd:EditorInterface.edit_node
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_edit_node, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(pointers.Get(node[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorInterface.Bind_edit_node, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))}))
 }
 
 /*
@@ -1305,7 +1305,7 @@ func (self class) EditScript(script [1]gdclass.Script, line int64, column int64,
 		line       int64
 		column     int64
 		grab_focus bool
-	}{gdextension.Object(pointers.Get(script[0])[0]), line, column, grab_focus}))
+	}{gdextension.Object(gd.ObjectChecked(script[0].AsObject())), line, column, grab_focus}))
 }
 
 /*

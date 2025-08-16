@@ -320,7 +320,7 @@ Adds the given [UPNPDevice] to the list of discovered devices.
 */
 //go:nosplit
 func (self class) AddDevice(device [1]gdclass.UPNPDevice) { //gd:UPNP.add_device
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.UPNP.Bind_add_device, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ device gdextension.Object }{gdextension.Object(pointers.Get(device[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.UPNP.Bind_add_device, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ device gdextension.Object }{gdextension.Object(gd.ObjectChecked(device[0].AsObject()))}))
 }
 
 /*
@@ -331,7 +331,7 @@ func (self class) SetDevice(index int64, device [1]gdclass.UPNPDevice) { //gd:UP
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.UPNP.Bind_set_device, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		index  int64
 		device gdextension.Object
-	}{index, gdextension.Object(pointers.Get(device[0])[0])}))
+	}{index, gdextension.Object(gd.ObjectChecked(device[0].AsObject()))}))
 }
 
 /*

@@ -647,7 +647,7 @@ func (self class) GetCullMask() int64 { //gd:Camera3D.get_cull_mask
 
 //go:nosplit
 func (self class) SetEnvironment(env [1]gdclass.Environment) { //gd:Camera3D.set_environment
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Camera3D.Bind_set_environment, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ env gdextension.Object }{gdextension.Object(pointers.Get(env[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Camera3D.Bind_set_environment, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ env gdextension.Object }{gdextension.Object(gd.ObjectChecked(env[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -659,7 +659,7 @@ func (self class) GetEnvironment() [1]gdclass.Environment { //gd:Camera3D.get_en
 
 //go:nosplit
 func (self class) SetAttributes(env [1]gdclass.CameraAttributes) { //gd:Camera3D.set_attributes
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Camera3D.Bind_set_attributes, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ env gdextension.Object }{gdextension.Object(pointers.Get(env[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Camera3D.Bind_set_attributes, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ env gdextension.Object }{gdextension.Object(gd.ObjectChecked(env[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -671,7 +671,7 @@ func (self class) GetAttributes() [1]gdclass.CameraAttributes { //gd:Camera3D.ge
 
 //go:nosplit
 func (self class) SetCompositor(compositor [1]gdclass.Compositor) { //gd:Camera3D.set_compositor
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Camera3D.Bind_set_compositor, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ compositor gdextension.Object }{gdextension.Object(pointers.Get(compositor[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Camera3D.Bind_set_compositor, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ compositor gdextension.Object }{gdextension.Object(gd.ObjectChecked(compositor[0].AsObject()))}))
 }
 
 //go:nosplit

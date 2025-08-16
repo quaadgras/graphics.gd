@@ -247,7 +247,7 @@ func (class) _can_use_render_priority(impl func(ptr unsafe.Pointer) bool) (cb gd
 
 //go:nosplit
 func (self class) SetNextPass(next_pass [1]gdclass.Material) { //gd:Material.set_next_pass
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Material.Bind_set_next_pass, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ next_pass gdextension.Object }{gdextension.Object(pointers.Get(next_pass[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Material.Bind_set_next_pass, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ next_pass gdextension.Object }{gdextension.Object(gd.ObjectChecked(next_pass[0].AsObject()))}))
 }
 
 //go:nosplit

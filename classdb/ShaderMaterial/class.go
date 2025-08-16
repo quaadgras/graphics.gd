@@ -133,7 +133,7 @@ func (self Instance) SetShader(value Shader.Instance) {
 
 //go:nosplit
 func (self class) SetShader(shader [1]gdclass.Shader) { //gd:ShaderMaterial.set_shader
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ShaderMaterial.Bind_set_shader, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ shader gdextension.Object }{gdextension.Object(pointers.Get(shader[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ShaderMaterial.Bind_set_shader, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ shader gdextension.Object }{gdextension.Object(gd.ObjectChecked(shader[0].AsObject()))}))
 }
 
 //go:nosplit

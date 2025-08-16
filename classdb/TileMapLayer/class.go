@@ -788,7 +788,7 @@ func (self class) SetPattern(position Vector2i.XY, pattern [1]gdclass.TileMapPat
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileMapLayer.Bind_set_pattern, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		position Vector2i.XY
 		pattern  gdextension.Object
-	}{position, gdextension.Object(pointers.Get(pattern[0])[0])}))
+	}{position, gdextension.Object(gd.ObjectChecked(pattern[0].AsObject()))}))
 }
 
 /*
@@ -870,7 +870,7 @@ func (self class) MapPattern(position_in_tilemap Vector2i.XY, coords_in_pattern 
 		position_in_tilemap Vector2i.XY
 		coords_in_pattern   Vector2i.XY
 		pattern             gdextension.Object
-	}{position_in_tilemap, coords_in_pattern, gdextension.Object(pointers.Get(pattern[0])[0])}))
+	}{position_in_tilemap, coords_in_pattern, gdextension.Object(gd.ObjectChecked(pattern[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }
@@ -945,7 +945,7 @@ func (self class) IsEnabled() bool { //gd:TileMapLayer.is_enabled
 
 //go:nosplit
 func (self class) SetTileSet(tile_set [1]gdclass.TileSet) { //gd:TileMapLayer.set_tile_set
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileMapLayer.Bind_set_tile_set, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ tile_set gdextension.Object }{gdextension.Object(pointers.Get(tile_set[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileMapLayer.Bind_set_tile_set, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ tile_set gdextension.Object }{gdextension.Object(gd.ObjectChecked(tile_set[0].AsObject()))}))
 }
 
 //go:nosplit

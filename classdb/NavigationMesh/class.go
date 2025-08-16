@@ -732,7 +732,7 @@ Initializes the navigation mesh by setting the vertices and indices according to
 */
 //go:nosplit
 func (self class) CreateFromMesh(mesh [1]gdclass.Mesh) { //gd:NavigationMesh.create_from_mesh
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_create_from_mesh, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mesh gdextension.Object }{gdextension.Object(pointers.Get(mesh[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_create_from_mesh, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject()))}))
 }
 
 /*

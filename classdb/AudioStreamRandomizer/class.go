@@ -203,7 +203,7 @@ func (self class) AddStream(index int64, stream [1]gdclass.AudioStream, weight f
 		index  int64
 		stream gdextension.Object
 		weight float64
-	}{index, gdextension.Object(pointers.Get(stream[0])[0]), weight}))
+	}{index, gdextension.Object(gd.ObjectChecked(stream[0].AsObject())), weight}))
 }
 
 /*
@@ -233,7 +233,7 @@ func (self class) SetStream(index int64, stream [1]gdclass.AudioStream) { //gd:A
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioStreamRandomizer.Bind_set_stream, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		index  int64
 		stream gdextension.Object
-	}{index, gdextension.Object(pointers.Get(stream[0])[0])}))
+	}{index, gdextension.Object(gd.ObjectChecked(stream[0].AsObject()))}))
 }
 
 /*

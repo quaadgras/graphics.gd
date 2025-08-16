@@ -158,12 +158,12 @@ This method does nothing.
 */
 //go:nosplit
 func (self class) ResourceChanged(resource [1]gdclass.Resource) { //gd:CollisionShape3D.resource_changed
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CollisionShape3D.Bind_resource_changed, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ resource gdextension.Object }{gdextension.Object(pointers.Get(resource[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CollisionShape3D.Bind_resource_changed, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ resource gdextension.Object }{gdextension.Object(gd.ObjectChecked(resource[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) SetShape(shape [1]gdclass.Shape3D) { //gd:CollisionShape3D.set_shape
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CollisionShape3D.Bind_set_shape, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ shape gdextension.Object }{gdextension.Object(pointers.Get(shape[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CollisionShape3D.Bind_set_shape, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ shape gdextension.Object }{gdextension.Object(gd.ObjectChecked(shape[0].AsObject()))}))
 }
 
 //go:nosplit

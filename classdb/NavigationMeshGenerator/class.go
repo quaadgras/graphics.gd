@@ -165,7 +165,7 @@ func (self class) Bake(navigation_mesh [1]gdclass.NavigationMesh, root_node [1]g
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMeshGenerator.Bind_bake, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		navigation_mesh gdextension.Object
 		root_node       gdextension.Object
-	}{gdextension.Object(pointers.Get(navigation_mesh[0])[0]), gdextension.Object(pointers.Get(root_node[0])[0])}))
+	}{gdextension.Object(gd.ObjectChecked(navigation_mesh[0].AsObject())), gdextension.Object(gd.ObjectChecked(root_node[0].AsObject()))}))
 }
 
 /*
@@ -173,7 +173,7 @@ Removes all polygons and vertices from the provided [param navigation_mesh] reso
 */
 //go:nosplit
 func (self class) Clear(navigation_mesh [1]gdclass.NavigationMesh) { //gd:NavigationMeshGenerator.clear
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMeshGenerator.Bind_clear, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ navigation_mesh gdextension.Object }{gdextension.Object(pointers.Get(navigation_mesh[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMeshGenerator.Bind_clear, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ navigation_mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(navigation_mesh[0].AsObject()))}))
 }
 
 /*
@@ -188,7 +188,7 @@ func (self class) ParseSourceGeometryData(navigation_mesh [1]gdclass.NavigationM
 		source_geometry_data gdextension.Object
 		root_node            gdextension.Object
 		callback             gdextension.Callable
-	}{gdextension.Object(pointers.Get(navigation_mesh[0])[0]), gdextension.Object(pointers.Get(source_geometry_data[0])[0]), gdextension.Object(pointers.Get(root_node[0])[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
+	}{gdextension.Object(gd.ObjectChecked(navigation_mesh[0].AsObject())), gdextension.Object(gd.ObjectChecked(source_geometry_data[0].AsObject())), gdextension.Object(gd.ObjectChecked(root_node[0].AsObject())), gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
 }
 
 /*
@@ -200,7 +200,7 @@ func (self class) BakeFromSourceGeometryData(navigation_mesh [1]gdclass.Navigati
 		navigation_mesh      gdextension.Object
 		source_geometry_data gdextension.Object
 		callback             gdextension.Callable
-	}{gdextension.Object(pointers.Get(navigation_mesh[0])[0]), gdextension.Object(pointers.Get(source_geometry_data[0])[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
+	}{gdextension.Object(gd.ObjectChecked(navigation_mesh[0].AsObject())), gdextension.Object(gd.ObjectChecked(source_geometry_data[0].AsObject())), gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
 }
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

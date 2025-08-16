@@ -367,7 +367,7 @@ func (self class) SetTexture(group_idx int64, texture [1]gdclass.Texture2D) { //
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonProfile.Bind_set_texture, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		group_idx int64
 		texture   gdextension.Object
-	}{group_idx, gdextension.Object(pointers.Get(texture[0])[0])}))
+	}{group_idx, gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit

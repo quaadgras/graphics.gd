@@ -237,7 +237,7 @@ func (self Instance) SetSpeedScale(value Float.X) {
 
 //go:nosplit
 func (self class) SetSpriteFrames(sprite_frames [1]gdclass.SpriteFrames) { //gd:AnimatedSprite3D.set_sprite_frames
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimatedSprite3D.Bind_set_sprite_frames, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ sprite_frames gdextension.Object }{gdextension.Object(pointers.Get(sprite_frames[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimatedSprite3D.Bind_set_sprite_frames, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ sprite_frames gdextension.Object }{gdextension.Object(gd.ObjectChecked(sprite_frames[0].AsObject()))}))
 }
 
 //go:nosplit

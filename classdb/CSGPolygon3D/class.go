@@ -428,7 +428,7 @@ func (self class) IsPathJoined() bool { //gd:CSGPolygon3D.is_path_joined
 
 //go:nosplit
 func (self class) SetMaterial(material [1]gdclass.Material) { //gd:CSGPolygon3D.set_material
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CSGPolygon3D.Bind_set_material, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(pointers.Get(material[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CSGPolygon3D.Bind_set_material, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(material[0].AsObject()))}))
 }
 
 //go:nosplit

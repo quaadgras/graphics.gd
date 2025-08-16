@@ -309,7 +309,7 @@ func (self class) SetItemMesh(id int64, mesh [1]gdclass.Mesh) { //gd:MeshLibrary
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MeshLibrary.Bind_set_item_mesh, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		id   int64
 		mesh gdextension.Object
-	}{id, gdextension.Object(pointers.Get(mesh[0])[0])}))
+	}{id, gdextension.Object(gd.ObjectChecked(mesh[0].AsObject()))}))
 }
 
 /*
@@ -342,7 +342,7 @@ func (self class) SetItemNavigationMesh(id int64, navigation_mesh [1]gdclass.Nav
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MeshLibrary.Bind_set_item_navigation_mesh, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		id              int64
 		navigation_mesh gdextension.Object
-	}{id, gdextension.Object(pointers.Get(navigation_mesh[0])[0])}))
+	}{id, gdextension.Object(gd.ObjectChecked(navigation_mesh[0].AsObject()))}))
 }
 
 /*
@@ -387,7 +387,7 @@ func (self class) SetItemPreview(id int64, texture [1]gdclass.Texture2D) { //gd:
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MeshLibrary.Bind_set_item_preview, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		id      int64
 		texture gdextension.Object
-	}{id, gdextension.Object(pointers.Get(texture[0])[0])}))
+	}{id, gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 /*

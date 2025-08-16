@@ -487,7 +487,7 @@ func (self class) GetTranspose() bool { //gd:TileData.get_transpose
 
 //go:nosplit
 func (self class) SetMaterial(material [1]gdclass.Material) { //gd:TileData.set_material
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileData.Bind_set_material, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(pointers.Get(material[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileData.Bind_set_material, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(material[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -594,7 +594,7 @@ func (self class) SetOccluderPolygon(layer_id int64, polygon_index int64, polygo
 		layer_id      int64
 		polygon_index int64
 		polygon       gdextension.Object
-	}{layer_id, polygon_index, gdextension.Object(pointers.Get(polygon[0])[0])}))
+	}{layer_id, polygon_index, gdextension.Object(gd.ObjectChecked(polygon[0].AsObject()))}))
 }
 
 /*
@@ -622,7 +622,7 @@ func (self class) SetOccluder(layer_id int64, occluder_polygon [1]gdclass.Occlud
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileData.Bind_set_occluder, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		layer_id         int64
 		occluder_polygon gdextension.Object
-	}{layer_id, gdextension.Object(pointers.Get(occluder_polygon[0])[0])}))
+	}{layer_id, gdextension.Object(gd.ObjectChecked(occluder_polygon[0].AsObject()))}))
 }
 
 /*
@@ -861,7 +861,7 @@ func (self class) SetNavigationPolygon(layer_id int64, navigation_polygon [1]gdc
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TileData.Bind_set_navigation_polygon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		layer_id           int64
 		navigation_polygon gdextension.Object
-	}{layer_id, gdextension.Object(pointers.Get(navigation_polygon[0])[0])}))
+	}{layer_id, gdextension.Object(gd.ObjectChecked(navigation_polygon[0].AsObject()))}))
 }
 
 /*

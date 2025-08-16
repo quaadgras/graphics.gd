@@ -2597,7 +2597,7 @@ func (self class) BodyTestMotion(body RID.Any, parameters [1]gdclass.PhysicsTest
 		body       RID.Any
 		parameters gdextension.Object
 		result     gdextension.Object
-	}{body, gdextension.Object(pointers.Get(parameters[0])[0]), gdextension.Object(pointers.Get(result[0])[0])}))
+	}{body, gdextension.Object(gd.ObjectChecked(parameters[0].AsObject())), gdextension.Object(gd.ObjectChecked(result[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }
@@ -2630,7 +2630,7 @@ func (self class) SoftBodyUpdateRenderingServer(body RID.Any, rendering_server_h
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer3D.Bind_soft_body_update_rendering_server, 0|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		body                     RID.Any
 		rendering_server_handler gdextension.Object
-	}{body, gdextension.Object(pointers.Get(rendering_server_handler[0])[0])}))
+	}{body, gdextension.Object(gd.ObjectChecked(rendering_server_handler[0].AsObject()))}))
 }
 
 /*

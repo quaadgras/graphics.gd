@@ -268,7 +268,7 @@ func (self class) AddMenuShortcut(shortcut [1]gdclass.Shortcut, callback Callabl
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorContextMenuPlugin.Bind_add_menu_shortcut, 0|(gdextension.SizeObject<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
 		shortcut gdextension.Object
 		callback gdextension.Callable
-	}{gdextension.Object(pointers.Get(shortcut[0])[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
+	}{gdextension.Object(gd.ObjectChecked(shortcut[0].AsObject())), gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
 }
 
 /*
@@ -285,7 +285,7 @@ func (self class) AddContextMenuItem(name String.Readable, callback Callable.Fun
 		name     gdextension.String
 		callback gdextension.Callable
 		icon     gdextension.Object
-	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(callback))), gdextension.Object(pointers.Get(icon[0])[0])}))
+	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(callback))), gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))}))
 }
 
 /*
@@ -304,7 +304,7 @@ func (self class) AddContextMenuItemFromShortcut(name String.Readable, shortcut 
 		name     gdextension.String
 		shortcut gdextension.Object
 		icon     gdextension.Object
-	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), gdextension.Object(pointers.Get(shortcut[0])[0]), gdextension.Object(pointers.Get(icon[0])[0])}))
+	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), gdextension.Object(gd.ObjectChecked(shortcut[0].AsObject())), gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))}))
 }
 
 /*
@@ -325,7 +325,7 @@ func (self class) AddContextSubmenuItem(name String.Readable, menu [1]gdclass.Po
 		name gdextension.String
 		menu gdextension.Object
 		icon gdextension.Object
-	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), gdextension.Object(pointers.Get(menu[0])[0]), gdextension.Object(pointers.Get(icon[0])[0])}))
+	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), gdextension.Object(gd.ObjectChecked(menu[0].AsObject())), gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))}))
 }
 func (self class) AsEditorContextMenuPlugin() Advanced { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsEditorContextMenuPlugin() Instance {

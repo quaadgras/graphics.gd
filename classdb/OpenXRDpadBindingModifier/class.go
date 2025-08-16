@@ -183,7 +183,7 @@ func (self Instance) SetOffHaptic(value OpenXRHapticBase.Instance) {
 
 //go:nosplit
 func (self class) SetActionSet(action_set [1]gdclass.OpenXRActionSet) { //gd:OpenXRDpadBindingModifier.set_action_set
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRDpadBindingModifier.Bind_set_action_set, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ action_set gdextension.Object }{gdextension.Object(pointers.Get(action_set[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRDpadBindingModifier.Bind_set_action_set, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ action_set gdextension.Object }{gdextension.Object(gd.ObjectChecked(action_set[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -267,7 +267,7 @@ func (self class) GetIsSticky() bool { //gd:OpenXRDpadBindingModifier.get_is_sti
 
 //go:nosplit
 func (self class) SetOnHaptic(haptic [1]gdclass.OpenXRHapticBase) { //gd:OpenXRDpadBindingModifier.set_on_haptic
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRDpadBindingModifier.Bind_set_on_haptic, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ haptic gdextension.Object }{gdextension.Object(pointers.Get(haptic[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRDpadBindingModifier.Bind_set_on_haptic, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ haptic gdextension.Object }{gdextension.Object(gd.ObjectChecked(haptic[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -279,7 +279,7 @@ func (self class) GetOnHaptic() [1]gdclass.OpenXRHapticBase { //gd:OpenXRDpadBin
 
 //go:nosplit
 func (self class) SetOffHaptic(haptic [1]gdclass.OpenXRHapticBase) { //gd:OpenXRDpadBindingModifier.set_off_haptic
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRDpadBindingModifier.Bind_set_off_haptic, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ haptic gdextension.Object }{gdextension.Object(pointers.Get(haptic[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRDpadBindingModifier.Bind_set_off_haptic, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ haptic gdextension.Object }{gdextension.Object(gd.ObjectChecked(haptic[0].AsObject()))}))
 }
 
 //go:nosplit

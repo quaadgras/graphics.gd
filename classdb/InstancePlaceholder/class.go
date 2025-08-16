@@ -165,7 +165,7 @@ func (self class) CreateInstance(replace bool, custom_scene [1]gdclass.PackedSce
 	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.InstancePlaceholder.Bind_create_instance, gdextension.SizeObject|(gdextension.SizeBool<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		replace      bool
 		custom_scene gdextension.Object
-	}{replace, gdextension.Object(pointers.Get(custom_scene[0])[0])}))
+	}{replace, gdextension.Object(gd.ObjectChecked(custom_scene[0].AsObject()))}))
 	var ret = [1]gdclass.Node{gd.PointerWithOwnershipTransferredToGo[gdclass.Node](r_ret)}
 	return ret
 }

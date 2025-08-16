@@ -1286,7 +1286,7 @@ func (self class) SetIcon(column int64, texture [1]gdclass.Texture2D) { //gd:Tre
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TreeItem.Bind_set_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		column  int64
 		texture gdextension.Object
-	}{column, gdextension.Object(pointers.Get(texture[0])[0])}))
+	}{column, gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 /*
@@ -1307,7 +1307,7 @@ func (self class) SetIconOverlay(column int64, texture [1]gdclass.Texture2D) { /
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TreeItem.Bind_set_icon_overlay, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		column  int64
 		texture gdextension.Object
-	}{column, gdextension.Object(pointers.Get(texture[0])[0])}))
+	}{column, gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 /*
@@ -1460,7 +1460,7 @@ func (self class) SetCustomDraw(column int64, obj [1]gd.Object, callback String.
 		column   int64
 		obj      gdextension.Object
 		callback gdextension.StringName
-	}{column, gdextension.Object(pointers.Get(obj[0])[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(callback))[0])}))
+	}{column, gdextension.Object(gd.ObjectChecked(obj[0].AsObject())), gdextension.StringName(pointers.Get(gd.InternalStringName(callback))[0])}))
 }
 
 /*
@@ -1663,7 +1663,7 @@ func (self class) SetCustomFont(column int64, font [1]gdclass.Font) { //gd:TreeI
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TreeItem.Bind_set_custom_font, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		column int64
 		font   gdextension.Object
-	}{column, gdextension.Object(pointers.Get(font[0])[0])}))
+	}{column, gdextension.Object(gd.ObjectChecked(font[0].AsObject()))}))
 }
 
 /*
@@ -1767,7 +1767,7 @@ func (self class) AddButton(column int64, button [1]gdclass.Texture2D, id int64,
 		id           int64
 		disabled     bool
 		tooltip_text gdextension.String
-	}{column, gdextension.Object(pointers.Get(button[0])[0]), id, disabled, gdextension.String(pointers.Get(gd.InternalString(tooltip_text))[0])}))
+	}{column, gdextension.Object(gd.ObjectChecked(button[0].AsObject())), id, disabled, gdextension.String(pointers.Get(gd.InternalString(tooltip_text))[0])}))
 }
 
 /*
@@ -1866,7 +1866,7 @@ func (self class) SetButton(column int64, button_index int64, button [1]gdclass.
 		column       int64
 		button_index int64
 		button       gdextension.Object
-	}{column, button_index, gdextension.Object(pointers.Get(button[0])[0])}))
+	}{column, button_index, gdextension.Object(gd.ObjectChecked(button[0].AsObject()))}))
 }
 
 /*
@@ -2017,7 +2017,7 @@ Removes the given child [TreeItem] and all its children from the [Tree]. Note th
 */
 //go:nosplit
 func (self class) RemoveChild(child [1]gdclass.TreeItem) { //gd:TreeItem.remove_child
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TreeItem.Bind_remove_child, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ child gdextension.Object }{gdextension.Object(pointers.Get(child[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TreeItem.Bind_remove_child, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ child gdextension.Object }{gdextension.Object(gd.ObjectChecked(child[0].AsObject()))}))
 }
 
 /*
@@ -2161,7 +2161,7 @@ Moves this TreeItem right before the given [param item].
 */
 //go:nosplit
 func (self class) MoveBefore(item [1]gdclass.TreeItem) { //gd:TreeItem.move_before
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TreeItem.Bind_move_before, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ item gdextension.Object }{gdextension.Object(pointers.Get(item[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TreeItem.Bind_move_before, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ item gdextension.Object }{gdextension.Object(gd.ObjectChecked(item[0].AsObject()))}))
 }
 
 /*
@@ -2170,7 +2170,7 @@ Moves this TreeItem right after the given [param item].
 */
 //go:nosplit
 func (self class) MoveAfter(item [1]gdclass.TreeItem) { //gd:TreeItem.move_after
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TreeItem.Bind_move_after, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ item gdextension.Object }{gdextension.Object(pointers.Get(item[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TreeItem.Bind_move_after, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ item gdextension.Object }{gdextension.Object(gd.ObjectChecked(item[0].AsObject()))}))
 }
 
 /*

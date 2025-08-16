@@ -131,7 +131,7 @@ func (self Instance) SetStreamPeer(value StreamPeer.Instance) {
 
 //go:nosplit
 func (self class) SetStreamPeer(peer [1]gdclass.StreamPeer) { //gd:PacketPeerStream.set_stream_peer
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PacketPeerStream.Bind_set_stream_peer, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ peer gdextension.Object }{gdextension.Object(pointers.Get(peer[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PacketPeerStream.Bind_set_stream_peer, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ peer gdextension.Object }{gdextension.Object(gd.ObjectChecked(peer[0].AsObject()))}))
 }
 
 //go:nosplit

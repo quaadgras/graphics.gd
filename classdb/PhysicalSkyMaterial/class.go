@@ -317,7 +317,7 @@ func (self class) GetUseDebanding() bool { //gd:PhysicalSkyMaterial.get_use_deba
 
 //go:nosplit
 func (self class) SetNightSky(night_sky [1]gdclass.Texture2D) { //gd:PhysicalSkyMaterial.set_night_sky
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicalSkyMaterial.Bind_set_night_sky, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ night_sky gdextension.Object }{gdextension.Object(pointers.Get(night_sky[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicalSkyMaterial.Bind_set_night_sky, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ night_sky gdextension.Object }{gdextension.Object(gd.ObjectChecked(night_sky[0].AsObject()))}))
 }
 
 //go:nosplit

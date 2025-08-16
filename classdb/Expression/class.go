@@ -223,7 +223,7 @@ func (self class) Execute(inputs Array.Any, base_instance [1]gd.Object, show_err
 		base_instance    gdextension.Object
 		show_error       bool
 		const_calls_only bool
-	}{gdextension.Array(pointers.Get(gd.InternalArray(inputs))[0]), gdextension.Object(pointers.Get(base_instance[0])[0]), show_error, const_calls_only}))
+	}{gdextension.Array(pointers.Get(gd.InternalArray(inputs))[0]), gdextension.Object(gd.ObjectChecked(base_instance[0].AsObject())), show_error, const_calls_only}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }

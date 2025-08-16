@@ -140,7 +140,7 @@ func (self class) GetSize() Vector3.XYZ { //gd:CSGBox3D.get_size
 
 //go:nosplit
 func (self class) SetMaterial(material [1]gdclass.Material) { //gd:CSGBox3D.set_material
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CSGBox3D.Bind_set_material, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(pointers.Get(material[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CSGBox3D.Bind_set_material, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(material[0].AsObject()))}))
 }
 
 //go:nosplit

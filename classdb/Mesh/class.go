@@ -729,7 +729,7 @@ func (self class) SurfaceSetMaterial(surf_idx int64, material [1]gdclass.Materia
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Mesh.Bind_surface_set_material, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		surf_idx int64
 		material gdextension.Object
-	}{surf_idx, gdextension.Object(pointers.Get(material[0])[0])}))
+	}{surf_idx, gdextension.Object(gd.ObjectChecked(material[0].AsObject()))}))
 }
 
 /*

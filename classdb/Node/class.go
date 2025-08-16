@@ -1803,7 +1803,7 @@ Removes a child [param node]. The [param node], along with its children, are [b]
 */
 //go:nosplit
 func (self class) RemoveChild(node [1]gdclass.Node) { //gd:Node.remove_child
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node.Bind_remove_child, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(pointers.Get(node[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node.Bind_remove_child, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))}))
 }
 
 /*
@@ -1815,7 +1815,7 @@ func (self class) Reparent(new_parent [1]gdclass.Node, keep_global_transform boo
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node.Bind_reparent, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		new_parent            gdextension.Object
 		keep_global_transform bool
-	}{gdextension.Object(pointers.Get(new_parent[0])[0]), keep_global_transform}))
+	}{gdextension.Object(gd.ObjectChecked(new_parent[0].AsObject())), keep_global_transform}))
 }
 
 /*
@@ -2065,7 +2065,7 @@ Returns [code]true[/code] if the given [param node] is a direct or indirect chil
 */
 //go:nosplit
 func (self class) IsAncestorOf(node [1]gdclass.Node) bool { //gd:Node.is_ancestor_of
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Node.Bind_is_ancestor_of, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(pointers.Get(node[0])[0])}))
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Node.Bind_is_ancestor_of, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }
@@ -2075,7 +2075,7 @@ Returns [code]true[/code] if the given [param node] occurs later in the scene hi
 */
 //go:nosplit
 func (self class) IsGreaterThan(node [1]gdclass.Node) bool { //gd:Node.is_greater_than
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Node.Bind_is_greater_than, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(pointers.Get(node[0])[0])}))
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Node.Bind_is_greater_than, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }
@@ -2100,7 +2100,7 @@ func (self class) GetPathTo(node [1]gdclass.Node, use_unique_path bool) Path.ToN
 	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Node.Bind_get_path_to, gdextension.SizeNodePath|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		node            gdextension.Object
 		use_unique_path bool
-	}{gdextension.Object(pointers.Get(node[0])[0]), use_unique_path}))
+	}{gdextension.Object(gd.ObjectChecked(node[0].AsObject())), use_unique_path}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -2146,7 +2146,7 @@ func (self class) MoveChild(child_node [1]gdclass.Node, to_index int64) { //gd:N
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node.Bind_move_child, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		child_node gdextension.Object
 		to_index   int64
-	}{gdextension.Object(pointers.Get(child_node[0])[0]), to_index}))
+	}{gdextension.Object(gd.ObjectChecked(child_node[0].AsObject())), to_index}))
 }
 
 /*
@@ -2181,7 +2181,7 @@ func (self class) GetGroups() Array.Contains[String.Name] { //gd:Node.get_groups
 
 //go:nosplit
 func (self class) SetOwner(owner [1]gdclass.Node) { //gd:Node.set_owner
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node.Bind_set_owner, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ owner gdextension.Object }{gdextension.Object(pointers.Get(owner[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node.Bind_set_owner, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ owner gdextension.Object }{gdextension.Object(gd.ObjectChecked(owner[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -2756,7 +2756,7 @@ func (self class) SetEditableInstance(node [1]gdclass.Node, is_editable bool) { 
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Node.Bind_set_editable_instance, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		node        gdextension.Object
 		is_editable bool
-	}{gdextension.Object(pointers.Get(node[0])[0]), is_editable}))
+	}{gdextension.Object(gd.ObjectChecked(node[0].AsObject())), is_editable}))
 }
 
 /*
@@ -2764,7 +2764,7 @@ Returns [code]true[/code] if [param node] has editable children enabled relative
 */
 //go:nosplit
 func (self class) IsEditableInstance(node [1]gdclass.Node) bool { //gd:Node.is_editable_instance
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Node.Bind_is_editable_instance, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(pointers.Get(node[0])[0])}))
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Node.Bind_is_editable_instance, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }

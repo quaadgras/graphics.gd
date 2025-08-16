@@ -265,7 +265,7 @@ Returns [code]true[/code] if [param base_object] is an instance of this script.
 */
 //go:nosplit
 func (self class) InstanceHas(base_object [1]gd.Object) bool { //gd:Script.instance_has
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Script.Bind_instance_has, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ base_object gdextension.Object }{gdextension.Object(pointers.Get(base_object[0])[0])}))
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Script.Bind_instance_has, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ base_object gdextension.Object }{gdextension.Object(gd.ObjectChecked(base_object[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }

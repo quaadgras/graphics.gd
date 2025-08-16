@@ -251,7 +251,7 @@ func (self class) ClearUsers() { //gd:LightmapGIData.clear_users
 
 //go:nosplit
 func (self class) SetLightTexture(light_texture [1]gdclass.TextureLayered) { //gd:LightmapGIData.set_light_texture
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.LightmapGIData.Bind_set_light_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ light_texture gdextension.Object }{gdextension.Object(pointers.Get(light_texture[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.LightmapGIData.Bind_set_light_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ light_texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(light_texture[0].AsObject()))}))
 }
 
 //go:nosplit

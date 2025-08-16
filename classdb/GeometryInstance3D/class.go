@@ -253,7 +253,7 @@ func (self Instance) SetVisibilityRangeFadeMode(value VisibilityRangeFadeMode) {
 
 //go:nosplit
 func (self class) SetMaterialOverride(material [1]gdclass.Material) { //gd:GeometryInstance3D.set_material_override
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GeometryInstance3D.Bind_set_material_override, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(pointers.Get(material[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GeometryInstance3D.Bind_set_material_override, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(material[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -265,7 +265,7 @@ func (self class) GetMaterialOverride() [1]gdclass.Material { //gd:GeometryInsta
 
 //go:nosplit
 func (self class) SetMaterialOverlay(material [1]gdclass.Material) { //gd:GeometryInstance3D.set_material_overlay
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GeometryInstance3D.Bind_set_material_overlay, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(pointers.Get(material[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GeometryInstance3D.Bind_set_material_overlay, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(material[0].AsObject()))}))
 }
 
 //go:nosplit

@@ -217,7 +217,7 @@ func (self class) GetEdgeFade() float64 { //gd:FogMaterial.get_edge_fade
 
 //go:nosplit
 func (self class) SetDensityTexture(density_texture [1]gdclass.Texture3D) { //gd:FogMaterial.set_density_texture
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FogMaterial.Bind_set_density_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ density_texture gdextension.Object }{gdextension.Object(pointers.Get(density_texture[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FogMaterial.Bind_set_density_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ density_texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(density_texture[0].AsObject()))}))
 }
 
 //go:nosplit

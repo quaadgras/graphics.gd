@@ -1329,7 +1329,7 @@ func (self class) ComputeImageMetrics(compared_image [1]gdclass.Image, use_luma 
 	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Image.Bind_compute_image_metrics, gdextension.SizeDictionary|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		compared_image gdextension.Object
 		use_luma       bool
-	}{gdextension.Object(pointers.Get(compared_image[0])[0]), use_luma}))
+	}{gdextension.Object(gd.ObjectChecked(compared_image[0].AsObject())), use_luma}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -1344,7 +1344,7 @@ func (self class) BlitRect(src [1]gdclass.Image, src_rect Rect2i.PositionSize, d
 		src      gdextension.Object
 		src_rect Rect2i.PositionSize
 		dst      Vector2i.XY
-	}{gdextension.Object(pointers.Get(src[0])[0]), src_rect, dst}))
+	}{gdextension.Object(gd.ObjectChecked(src[0].AsObject())), src_rect, dst}))
 }
 
 /*
@@ -1357,7 +1357,7 @@ func (self class) BlitRectMask(src [1]gdclass.Image, mask [1]gdclass.Image, src_
 		mask     gdextension.Object
 		src_rect Rect2i.PositionSize
 		dst      Vector2i.XY
-	}{gdextension.Object(pointers.Get(src[0])[0]), gdextension.Object(pointers.Get(mask[0])[0]), src_rect, dst}))
+	}{gdextension.Object(gd.ObjectChecked(src[0].AsObject())), gdextension.Object(gd.ObjectChecked(mask[0].AsObject())), src_rect, dst}))
 }
 
 /*
@@ -1369,7 +1369,7 @@ func (self class) BlendRect(src [1]gdclass.Image, src_rect Rect2i.PositionSize, 
 		src      gdextension.Object
 		src_rect Rect2i.PositionSize
 		dst      Vector2i.XY
-	}{gdextension.Object(pointers.Get(src[0])[0]), src_rect, dst}))
+	}{gdextension.Object(gd.ObjectChecked(src[0].AsObject())), src_rect, dst}))
 }
 
 /*
@@ -1382,7 +1382,7 @@ func (self class) BlendRectMask(src [1]gdclass.Image, mask [1]gdclass.Image, src
 		mask     gdextension.Object
 		src_rect Rect2i.PositionSize
 		dst      Vector2i.XY
-	}{gdextension.Object(pointers.Get(src[0])[0]), gdextension.Object(pointers.Get(mask[0])[0]), src_rect, dst}))
+	}{gdextension.Object(gd.ObjectChecked(src[0].AsObject())), gdextension.Object(gd.ObjectChecked(mask[0].AsObject())), src_rect, dst}))
 }
 
 /*
@@ -1429,7 +1429,7 @@ Copies [param src] image to this image.
 */
 //go:nosplit
 func (self class) CopyFrom(src [1]gdclass.Image) { //gd:Image.copy_from
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Image.Bind_copy_from, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ src gdextension.Object }{gdextension.Object(pointers.Get(src[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Image.Bind_copy_from, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ src gdextension.Object }{gdextension.Object(gd.ObjectChecked(src[0].AsObject()))}))
 }
 
 /*

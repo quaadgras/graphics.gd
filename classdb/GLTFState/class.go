@@ -488,7 +488,7 @@ func (self class) AppendGltfNode(gltf_node [1]gdclass.GLTFNode, godot_scene_node
 		gltf_node         gdextension.Object
 		godot_scene_node  gdextension.Object
 		parent_node_index int64
-	}{gdextension.Object(pointers.Get(gltf_node[0])[0]), gdextension.Object(pointers.Get(godot_scene_node[0])[0]), parent_node_index}))
+	}{gdextension.Object(gd.ObjectChecked(gltf_node[0].AsObject())), gdextension.Object(gd.ObjectChecked(godot_scene_node[0].AsObject())), parent_node_index}))
 	var ret = r_ret
 	return ret
 }
@@ -932,7 +932,7 @@ Returns the index of the [GLTFNode] corresponding to this Godot scene node. This
 */
 //go:nosplit
 func (self class) GetNodeIndex(scene_node [1]gdclass.Node) int64 { //gd:GLTFState.get_node_index
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.GLTFState.Bind_get_node_index, gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ scene_node gdextension.Object }{gdextension.Object(pointers.Get(scene_node[0])[0])}))
+	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.GLTFState.Bind_get_node_index, gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ scene_node gdextension.Object }{gdextension.Object(gd.ObjectChecked(scene_node[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }

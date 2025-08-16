@@ -273,7 +273,7 @@ func (self class) TestMove(from Transform3D.BasisOrigin, motion Vector3.XYZ, col
 		safe_margin           float64
 		recovery_as_collision bool
 		max_collisions        int64
-	}{gd.Transposed(from), motion, gdextension.Object(pointers.Get(collision[0])[0]), safe_margin, recovery_as_collision, max_collisions}))
+	}{gd.Transposed(from), motion, gdextension.Object(gd.ObjectChecked(collision[0].AsObject())), safe_margin, recovery_as_collision, max_collisions}))
 	var ret = r_ret
 	return ret
 }
@@ -324,7 +324,7 @@ Adds a body to the list of bodies that this body can't collide with.
 */
 //go:nosplit
 func (self class) AddCollisionExceptionWith(body [1]gdclass.Node) { //gd:PhysicsBody3D.add_collision_exception_with
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsBody3D.Bind_add_collision_exception_with, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ body gdextension.Object }{gdextension.Object(pointers.Get(body[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsBody3D.Bind_add_collision_exception_with, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ body gdextension.Object }{gdextension.Object(gd.ObjectChecked(body[0].AsObject()))}))
 }
 
 /*
@@ -332,7 +332,7 @@ Removes a body from the list of bodies that this body can't collide with.
 */
 //go:nosplit
 func (self class) RemoveCollisionExceptionWith(body [1]gdclass.Node) { //gd:PhysicsBody3D.remove_collision_exception_with
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsBody3D.Bind_remove_collision_exception_with, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ body gdextension.Object }{gdextension.Object(pointers.Get(body[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsBody3D.Bind_remove_collision_exception_with, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ body gdextension.Object }{gdextension.Object(gd.ObjectChecked(body[0].AsObject()))}))
 }
 func (self class) AsPhysicsBody3D() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsPhysicsBody3D() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

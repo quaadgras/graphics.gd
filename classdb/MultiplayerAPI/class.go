@@ -235,7 +235,7 @@ func (self class) GetMultiplayerPeer() [1]gdclass.MultiplayerPeer { //gd:Multipl
 
 //go:nosplit
 func (self class) SetMultiplayerPeer(peer [1]gdclass.MultiplayerPeer) { //gd:MultiplayerAPI.set_multiplayer_peer
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MultiplayerAPI.Bind_set_multiplayer_peer, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ peer gdextension.Object }{gdextension.Object(pointers.Get(peer[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MultiplayerAPI.Bind_set_multiplayer_peer, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ peer gdextension.Object }{gdextension.Object(gd.ObjectChecked(peer[0].AsObject()))}))
 }
 
 /*
@@ -291,7 +291,7 @@ func (self class) Rpc(peer int64, obj [1]gd.Object, method String.Name, argument
 		obj       gdextension.Object
 		method    gdextension.StringName
 		arguments gdextension.Array
-	}{peer, gdextension.Object(pointers.Get(obj[0])[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(method))[0]), gdextension.Array(pointers.Get(gd.InternalArray(arguments))[0])}))
+	}{peer, gdextension.Object(gd.ObjectChecked(obj[0].AsObject())), gdextension.StringName(pointers.Get(gd.InternalStringName(method))[0]), gdextension.Array(pointers.Get(gd.InternalArray(arguments))[0])}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -319,7 +319,7 @@ func (self class) ObjectConfigurationRemove(obj [1]gd.Object, configuration vari
 	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.MultiplayerAPI.Bind_object_configuration_remove, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
 		obj           gdextension.Object
 		configuration gdextension.Variant
-	}{gdextension.Object(pointers.Get(obj[0])[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(configuration)))}))
+	}{gdextension.Object(gd.ObjectChecked(obj[0].AsObject())), gdextension.Variant(pointers.Get(gd.InternalVariant(configuration)))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }

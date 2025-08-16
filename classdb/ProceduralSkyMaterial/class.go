@@ -270,7 +270,7 @@ func (self class) GetSkyEnergyMultiplier() float64 { //gd:ProceduralSkyMaterial.
 
 //go:nosplit
 func (self class) SetSkyCover(sky_cover [1]gdclass.Texture2D) { //gd:ProceduralSkyMaterial.set_sky_cover
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ProceduralSkyMaterial.Bind_set_sky_cover, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ sky_cover gdextension.Object }{gdextension.Object(pointers.Get(sky_cover[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ProceduralSkyMaterial.Bind_set_sky_cover, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ sky_cover gdextension.Object }{gdextension.Object(gd.ObjectChecked(sky_cover[0].AsObject()))}))
 }
 
 //go:nosplit

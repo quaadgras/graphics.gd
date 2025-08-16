@@ -234,7 +234,7 @@ func (self class) GetGltfToGodotExpression() [1]gdclass.Expression { //gd:GLTFOb
 
 //go:nosplit
 func (self class) SetGltfToGodotExpression(gltf_to_godot_expr [1]gdclass.Expression) { //gd:GLTFObjectModelProperty.set_gltf_to_godot_expression
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFObjectModelProperty.Bind_set_gltf_to_godot_expression, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ gltf_to_godot_expr gdextension.Object }{gdextension.Object(pointers.Get(gltf_to_godot_expr[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFObjectModelProperty.Bind_set_gltf_to_godot_expression, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ gltf_to_godot_expr gdextension.Object }{gdextension.Object(gd.ObjectChecked(gltf_to_godot_expr[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -246,7 +246,7 @@ func (self class) GetGodotToGltfExpression() [1]gdclass.Expression { //gd:GLTFOb
 
 //go:nosplit
 func (self class) SetGodotToGltfExpression(godot_to_gltf_expr [1]gdclass.Expression) { //gd:GLTFObjectModelProperty.set_godot_to_gltf_expression
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFObjectModelProperty.Bind_set_godot_to_gltf_expression, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ godot_to_gltf_expr gdextension.Object }{gdextension.Object(pointers.Get(godot_to_gltf_expr[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFObjectModelProperty.Bind_set_godot_to_gltf_expression, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ godot_to_gltf_expr gdextension.Object }{gdextension.Object(gd.ObjectChecked(godot_to_gltf_expr[0].AsObject()))}))
 }
 
 //go:nosplit

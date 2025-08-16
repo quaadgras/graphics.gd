@@ -247,7 +247,7 @@ func (self class) RequestThumbnail(path String.Readable, control [1]gdclass.Text
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorResourceTooltipPlugin.Bind_request_thumbnail, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		path    gdextension.String
 		control gdextension.Object
-	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), gdextension.Object(pointers.Get(control[0])[0])}))
+	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), gdextension.Object(gd.ObjectChecked(control[0].AsObject()))}))
 }
 func (self class) AsEditorResourceTooltipPlugin() Advanced {
 	return *((*Advanced)(unsafe.Pointer(&self)))

@@ -420,7 +420,7 @@ Removes a collision exception so the ray does report collisions with the specifi
 */
 //go:nosplit
 func (self class) RemoveException(node [1]gdclass.CollisionObject2D) { //gd:RayCast2D.remove_exception
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RayCast2D.Bind_remove_exception, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(pointers.Get(node[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RayCast2D.Bind_remove_exception, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))}))
 }
 
 /*

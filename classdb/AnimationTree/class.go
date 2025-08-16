@@ -145,7 +145,7 @@ func (self Instance) SetAnimPlayer(value string) {
 
 //go:nosplit
 func (self class) SetTreeRoot(animation_node [1]gdclass.AnimationRootNode) { //gd:AnimationTree.set_tree_root
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationTree.Bind_set_tree_root, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ animation_node gdextension.Object }{gdextension.Object(pointers.Get(animation_node[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationTree.Bind_set_tree_root, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ animation_node gdextension.Object }{gdextension.Object(gd.ObjectChecked(animation_node[0].AsObject()))}))
 }
 
 //go:nosplit

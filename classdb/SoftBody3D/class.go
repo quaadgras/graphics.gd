@@ -399,7 +399,7 @@ Adds a body to the list of bodies that this body can't collide with.
 */
 //go:nosplit
 func (self class) AddCollisionExceptionWith(body [1]gdclass.Node) { //gd:SoftBody3D.add_collision_exception_with
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SoftBody3D.Bind_add_collision_exception_with, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ body gdextension.Object }{gdextension.Object(pointers.Get(body[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SoftBody3D.Bind_add_collision_exception_with, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ body gdextension.Object }{gdextension.Object(gd.ObjectChecked(body[0].AsObject()))}))
 }
 
 /*
@@ -407,7 +407,7 @@ Removes a body from the list of bodies that this body can't collide with.
 */
 //go:nosplit
 func (self class) RemoveCollisionExceptionWith(body [1]gdclass.Node) { //gd:SoftBody3D.remove_collision_exception_with
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SoftBody3D.Bind_remove_collision_exception_with, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ body gdextension.Object }{gdextension.Object(pointers.Get(body[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SoftBody3D.Bind_remove_collision_exception_with, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ body gdextension.Object }{gdextension.Object(gd.ObjectChecked(body[0].AsObject()))}))
 }
 
 //go:nosplit

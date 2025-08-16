@@ -938,7 +938,7 @@ func (self class) SetRadiusDampingCurve(index int64, curve [1]gdclass.Curve) { /
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SpringBoneSimulator3D.Bind_set_radius_damping_curve, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		index int64
 		curve gdextension.Object
-	}{index, gdextension.Object(pointers.Get(curve[0])[0])}))
+	}{index, gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
 }
 
 /*
@@ -982,7 +982,7 @@ func (self class) SetStiffnessDampingCurve(index int64, curve [1]gdclass.Curve) 
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SpringBoneSimulator3D.Bind_set_stiffness_damping_curve, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		index int64
 		curve gdextension.Object
-	}{index, gdextension.Object(pointers.Get(curve[0])[0])}))
+	}{index, gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
 }
 
 /*
@@ -1025,7 +1025,7 @@ func (self class) SetDragDampingCurve(index int64, curve [1]gdclass.Curve) { //g
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SpringBoneSimulator3D.Bind_set_drag_damping_curve, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		index int64
 		curve gdextension.Object
-	}{index, gdextension.Object(pointers.Get(curve[0])[0])}))
+	}{index, gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
 }
 
 /*
@@ -1069,7 +1069,7 @@ func (self class) SetGravityDampingCurve(index int64, curve [1]gdclass.Curve) { 
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SpringBoneSimulator3D.Bind_set_gravity_damping_curve, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		index int64
 		curve gdextension.Object
-	}{index, gdextension.Object(pointers.Get(curve[0])[0])}))
+	}{index, gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
 }
 
 /*

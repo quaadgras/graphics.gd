@@ -576,7 +576,7 @@ The [param body] argument can either be a [PhysicsBody3D] or a [GridMap] instanc
 */
 //go:nosplit
 func (self class) OverlapsBody(body [1]gdclass.Node) bool { //gd:Area3D.overlaps_body
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Area3D.Bind_overlaps_body, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ body gdextension.Object }{gdextension.Object(pointers.Get(body[0])[0])}))
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Area3D.Bind_overlaps_body, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ body gdextension.Object }{gdextension.Object(gd.ObjectChecked(body[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }
@@ -587,7 +587,7 @@ Returns [code]true[/code] if the given [Area3D] intersects or overlaps this [Are
 */
 //go:nosplit
 func (self class) OverlapsArea(area [1]gdclass.Node) bool { //gd:Area3D.overlaps_area
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Area3D.Bind_overlaps_area, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ area gdextension.Object }{gdextension.Object(pointers.Get(area[0])[0])}))
+	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Area3D.Bind_overlaps_area, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ area gdextension.Object }{gdextension.Object(gd.ObjectChecked(area[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }

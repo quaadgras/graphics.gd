@@ -581,7 +581,7 @@ func (self class) TweenProperty(obj [1]gd.Object, property Path.ToNode, final_va
 		property  gdextension.NodePath
 		final_val gdextension.Variant
 		duration  float64
-	}{gdextension.Object(pointers.Get(obj[0])[0]), gdextension.NodePath(pointers.Get(gd.InternalNodePath(property))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(final_val))), duration}))
+	}{gdextension.Object(gd.ObjectChecked(obj[0].AsObject())), gdextension.NodePath(pointers.Get(gd.InternalNodePath(property))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(final_val))), duration}))
 	var ret = [1]gdclass.PropertyTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.PropertyTweener](r_ret)}
 	return ret
 }
@@ -735,7 +735,7 @@ tween.tween_property(self, "position:x", 300, 2.0)
 */
 //go:nosplit
 func (self class) TweenSubtween(subtween [1]gdclass.Tween) [1]gdclass.SubtweenTweener { //gd:Tween.tween_subtween
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Tween.Bind_tween_subtween, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ subtween gdextension.Object }{gdextension.Object(pointers.Get(subtween[0])[0])}))
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Tween.Bind_tween_subtween, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ subtween gdextension.Object }{gdextension.Object(gd.ObjectChecked(subtween[0].AsObject()))}))
 	var ret = [1]gdclass.SubtweenTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.SubtweenTweener](r_ret)}
 	return ret
 }
@@ -838,7 +838,7 @@ For a shorter way to create and bind a [Tween], you can use [method Node.create_
 */
 //go:nosplit
 func (self class) BindNode(node [1]gdclass.Node) [1]gdclass.Tween { //gd:Tween.bind_node
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Tween.Bind_bind_node, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(pointers.Get(node[0])[0])}))
+	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Tween.Bind_bind_node, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))}))
 	var ret = [1]gdclass.Tween{gd.PointerWithOwnershipTransferredToGo[gdclass.Tween](r_ret)}
 	return ret
 }

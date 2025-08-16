@@ -2060,7 +2060,7 @@ func (self class) AddControlToBottomPanel(control [1]gdclass.Control, title Stri
 		control  gdextension.Object
 		title    gdextension.String
 		shortcut gdextension.Object
-	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0])), gdextension.String(pointers.Get(gd.InternalString(title))[0]), gdextension.Object(pointers.Get(shortcut[0])[0])}))
+	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0])), gdextension.String(pointers.Get(gd.InternalString(title))[0]), gdextension.Object(gd.ObjectChecked(shortcut[0].AsObject()))}))
 	var ret = [1]gdclass.Button{gd.PointerMustAssertInstanceID[gdclass.Button](r_ret)}
 	return ret
 }
@@ -2077,7 +2077,7 @@ func (self class) AddControlToDock(slot DockSlot, control [1]gdclass.Control, sh
 		slot     DockSlot
 		control  gdextension.Object
 		shortcut gdextension.Object
-	}{slot, gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0])), gdextension.Object(pointers.Get(shortcut[0])[0])}))
+	}{slot, gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0])), gdextension.Object(gd.ObjectChecked(shortcut[0].AsObject()))}))
 }
 
 /*
@@ -2085,7 +2085,7 @@ Removes the control from the dock. You have to manually [method Node.queue_free]
 */
 //go:nosplit
 func (self class) RemoveControlFromDocks(control [1]gdclass.Control) { //gd:EditorPlugin.remove_control_from_docks
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_remove_control_from_docks, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ control gdextension.Object }{gdextension.Object(pointers.Get(control[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_remove_control_from_docks, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(control[0].AsObject()))}))
 }
 
 /*
@@ -2093,7 +2093,7 @@ Removes the control from the bottom panel. You have to manually [method Node.que
 */
 //go:nosplit
 func (self class) RemoveControlFromBottomPanel(control [1]gdclass.Control) { //gd:EditorPlugin.remove_control_from_bottom_panel
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_remove_control_from_bottom_panel, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ control gdextension.Object }{gdextension.Object(pointers.Get(control[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_remove_control_from_bottom_panel, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(control[0].AsObject()))}))
 }
 
 /*
@@ -2104,7 +2104,7 @@ func (self class) RemoveControlFromContainer(container CustomControlContainer, c
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_remove_control_from_container, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		container CustomControlContainer
 		control   gdextension.Object
-	}{container, gdextension.Object(pointers.Get(control[0])[0])}))
+	}{container, gdextension.Object(gd.ObjectChecked(control[0].AsObject()))}))
 }
 
 /*
@@ -2115,7 +2115,7 @@ func (self class) SetDockTabIcon(control [1]gdclass.Control, icon [1]gdclass.Tex
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_set_dock_tab_icon, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		control gdextension.Object
 		icon    gdextension.Object
-	}{gdextension.Object(pointers.Get(control[0])[0]), gdextension.Object(pointers.Get(icon[0])[0])}))
+	}{gdextension.Object(gd.ObjectChecked(control[0].AsObject())), gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))}))
 }
 
 /*
@@ -2173,7 +2173,7 @@ func (self class) AddCustomType(atype String.Readable, base String.Readable, scr
 		base   gdextension.String
 		script gdextension.Object
 		icon   gdextension.Object
-	}{gdextension.String(pointers.Get(gd.InternalString(atype))[0]), gdextension.String(pointers.Get(gd.InternalString(base))[0]), gdextension.Object(pointers.Get(script[0])[0]), gdextension.Object(pointers.Get(icon[0])[0])}))
+	}{gdextension.String(pointers.Get(gd.InternalString(atype))[0]), gdextension.String(pointers.Get(gd.InternalString(base))[0]), gdextension.Object(gd.ObjectChecked(script[0].AsObject())), gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))}))
 }
 
 /*
@@ -2218,7 +2218,7 @@ Makes a specific item in the bottom panel visible.
 */
 //go:nosplit
 func (self class) MakeBottomPanelItemVisible(item [1]gdclass.Control) { //gd:EditorPlugin.make_bottom_panel_item_visible
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_make_bottom_panel_item_visible, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ item gdextension.Object }{gdextension.Object(pointers.Get(item[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_make_bottom_panel_item_visible, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ item gdextension.Object }{gdextension.Object(gd.ObjectChecked(item[0].AsObject()))}))
 }
 
 /*
@@ -2269,7 +2269,7 @@ Registers a custom translation parser plugin for extracting translatable strings
 */
 //go:nosplit
 func (self class) AddTranslationParserPlugin(parser [1]gdclass.EditorTranslationParserPlugin) { //gd:EditorPlugin.add_translation_parser_plugin
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_add_translation_parser_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ parser gdextension.Object }{gdextension.Object(pointers.Get(parser[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_add_translation_parser_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ parser gdextension.Object }{gdextension.Object(gd.ObjectChecked(parser[0].AsObject()))}))
 }
 
 /*
@@ -2277,7 +2277,7 @@ Removes a custom translation parser plugin registered by [method add_translation
 */
 //go:nosplit
 func (self class) RemoveTranslationParserPlugin(parser [1]gdclass.EditorTranslationParserPlugin) { //gd:EditorPlugin.remove_translation_parser_plugin
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_remove_translation_parser_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ parser gdextension.Object }{gdextension.Object(pointers.Get(parser[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_remove_translation_parser_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ parser gdextension.Object }{gdextension.Object(gd.ObjectChecked(parser[0].AsObject()))}))
 }
 
 /*
@@ -2291,7 +2291,7 @@ func (self class) AddImportPlugin(importer [1]gdclass.EditorImportPlugin, first_
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_add_import_plugin, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		importer       gdextension.Object
 		first_priority bool
-	}{gdextension.Object(pointers.Get(importer[0])[0]), first_priority}))
+	}{gdextension.Object(gd.ObjectChecked(importer[0].AsObject())), first_priority}))
 }
 
 /*
@@ -2299,7 +2299,7 @@ Removes an import plugin registered by [method add_import_plugin].
 */
 //go:nosplit
 func (self class) RemoveImportPlugin(importer [1]gdclass.EditorImportPlugin) { //gd:EditorPlugin.remove_import_plugin
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_remove_import_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ importer gdextension.Object }{gdextension.Object(pointers.Get(importer[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_remove_import_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ importer gdextension.Object }{gdextension.Object(gd.ObjectChecked(importer[0].AsObject()))}))
 }
 
 /*
@@ -2311,7 +2311,7 @@ func (self class) AddSceneFormatImporterPlugin(scene_format_importer [1]gdclass.
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_add_scene_format_importer_plugin, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		scene_format_importer gdextension.Object
 		first_priority        bool
-	}{gdextension.Object(pointers.Get(scene_format_importer[0])[0]), first_priority}))
+	}{gdextension.Object(gd.ObjectChecked(scene_format_importer[0].AsObject())), first_priority}))
 }
 
 /*
@@ -2319,7 +2319,7 @@ Removes a scene format importer registered by [method add_scene_format_importer_
 */
 //go:nosplit
 func (self class) RemoveSceneFormatImporterPlugin(scene_format_importer [1]gdclass.EditorSceneFormatImporter) { //gd:EditorPlugin.remove_scene_format_importer_plugin
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_remove_scene_format_importer_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ scene_format_importer gdextension.Object }{gdextension.Object(pointers.Get(scene_format_importer[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_remove_scene_format_importer_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ scene_format_importer gdextension.Object }{gdextension.Object(gd.ObjectChecked(scene_format_importer[0].AsObject()))}))
 }
 
 /*
@@ -2331,7 +2331,7 @@ func (self class) AddScenePostImportPlugin(scene_import_plugin [1]gdclass.Editor
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_add_scene_post_import_plugin, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		scene_import_plugin gdextension.Object
 		first_priority      bool
-	}{gdextension.Object(pointers.Get(scene_import_plugin[0])[0]), first_priority}))
+	}{gdextension.Object(gd.ObjectChecked(scene_import_plugin[0].AsObject())), first_priority}))
 }
 
 /*
@@ -2339,7 +2339,7 @@ Remove the [EditorScenePostImportPlugin], added with [method add_scene_post_impo
 */
 //go:nosplit
 func (self class) RemoveScenePostImportPlugin(scene_import_plugin [1]gdclass.EditorScenePostImportPlugin) { //gd:EditorPlugin.remove_scene_post_import_plugin
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_remove_scene_post_import_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ scene_import_plugin gdextension.Object }{gdextension.Object(pointers.Get(scene_import_plugin[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_remove_scene_post_import_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ scene_import_plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(scene_import_plugin[0].AsObject()))}))
 }
 
 /*
@@ -2348,7 +2348,7 @@ See [method add_inspector_plugin] for an example of how to register a plugin.
 */
 //go:nosplit
 func (self class) AddExportPlugin(plugin [1]gdclass.EditorExportPlugin) { //gd:EditorPlugin.add_export_plugin
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_add_export_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(pointers.Get(plugin[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_add_export_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
 }
 
 /*
@@ -2356,7 +2356,7 @@ Removes an export plugin registered by [method add_export_plugin].
 */
 //go:nosplit
 func (self class) RemoveExportPlugin(plugin [1]gdclass.EditorExportPlugin) { //gd:EditorPlugin.remove_export_plugin
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_remove_export_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(pointers.Get(plugin[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_remove_export_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
 }
 
 /*
@@ -2364,7 +2364,7 @@ Registers a new [EditorExportPlatform]. Export platforms provides functionality 
 */
 //go:nosplit
 func (self class) AddExportPlatform(platform [1]gdclass.EditorExportPlatform) { //gd:EditorPlugin.add_export_platform
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_add_export_platform, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ platform gdextension.Object }{gdextension.Object(pointers.Get(platform[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_add_export_platform, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ platform gdextension.Object }{gdextension.Object(gd.ObjectChecked(platform[0].AsObject()))}))
 }
 
 /*
@@ -2372,7 +2372,7 @@ Removes an export platform registered by [method add_export_platform].
 */
 //go:nosplit
 func (self class) RemoveExportPlatform(platform [1]gdclass.EditorExportPlatform) { //gd:EditorPlugin.remove_export_platform
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_remove_export_platform, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ platform gdextension.Object }{gdextension.Object(pointers.Get(platform[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_remove_export_platform, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ platform gdextension.Object }{gdextension.Object(gd.ObjectChecked(platform[0].AsObject()))}))
 }
 
 /*
@@ -2381,7 +2381,7 @@ See [method add_inspector_plugin] for an example of how to register a plugin.
 */
 //go:nosplit
 func (self class) AddNode3dGizmoPlugin(plugin [1]gdclass.EditorNode3DGizmoPlugin) { //gd:EditorPlugin.add_node_3d_gizmo_plugin
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_add_node_3d_gizmo_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(pointers.Get(plugin[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_add_node_3d_gizmo_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
 }
 
 /*
@@ -2389,7 +2389,7 @@ Removes a gizmo plugin registered by [method add_node_3d_gizmo_plugin].
 */
 //go:nosplit
 func (self class) RemoveNode3dGizmoPlugin(plugin [1]gdclass.EditorNode3DGizmoPlugin) { //gd:EditorPlugin.remove_node_3d_gizmo_plugin
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_remove_node_3d_gizmo_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(pointers.Get(plugin[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_remove_node_3d_gizmo_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
 }
 
 /*
@@ -2410,7 +2410,7 @@ func _exit_tree():
 */
 //go:nosplit
 func (self class) AddInspectorPlugin(plugin [1]gdclass.EditorInspectorPlugin) { //gd:EditorPlugin.add_inspector_plugin
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_add_inspector_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(pointers.Get(plugin[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_add_inspector_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
 }
 
 /*
@@ -2418,7 +2418,7 @@ Removes an inspector plugin registered by [method add_inspector_plugin].
 */
 //go:nosplit
 func (self class) RemoveInspectorPlugin(plugin [1]gdclass.EditorInspectorPlugin) { //gd:EditorPlugin.remove_inspector_plugin
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_remove_inspector_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(pointers.Get(plugin[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_remove_inspector_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
 }
 
 /*
@@ -2427,7 +2427,7 @@ See [EditorResourceConversionPlugin] for an example of how to create a resource 
 */
 //go:nosplit
 func (self class) AddResourceConversionPlugin(plugin [1]gdclass.EditorResourceConversionPlugin) { //gd:EditorPlugin.add_resource_conversion_plugin
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_add_resource_conversion_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(pointers.Get(plugin[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_add_resource_conversion_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
 }
 
 /*
@@ -2435,7 +2435,7 @@ Removes a resource conversion plugin registered by [method add_resource_conversi
 */
 //go:nosplit
 func (self class) RemoveResourceConversionPlugin(plugin [1]gdclass.EditorResourceConversionPlugin) { //gd:EditorPlugin.remove_resource_conversion_plugin
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_remove_resource_conversion_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(pointers.Get(plugin[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_remove_resource_conversion_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
 }
 
 /*
@@ -2463,7 +2463,7 @@ func (self class) AddContextMenuPlugin(slot EditorContextMenuPlugin.ContextMenuS
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_add_context_menu_plugin, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		slot   EditorContextMenuPlugin.ContextMenuSlot
 		plugin gdextension.Object
-	}{slot, gdextension.Object(pointers.Get(plugin[0])[0])}))
+	}{slot, gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
 }
 
 /*
@@ -2471,7 +2471,7 @@ Removes the specified context menu plugin.
 */
 //go:nosplit
 func (self class) RemoveContextMenuPlugin(plugin [1]gdclass.EditorContextMenuPlugin) { //gd:EditorPlugin.remove_context_menu_plugin
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_remove_context_menu_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(pointers.Get(plugin[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_remove_context_menu_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
 }
 
 /*
@@ -2501,7 +2501,7 @@ Adds a [Script] as debugger plugin to the Debugger. The script must extend [Edit
 */
 //go:nosplit
 func (self class) AddDebuggerPlugin(script [1]gdclass.EditorDebuggerPlugin) { //gd:EditorPlugin.add_debugger_plugin
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_add_debugger_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ script gdextension.Object }{gdextension.Object(pointers.Get(script[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_add_debugger_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ script gdextension.Object }{gdextension.Object(gd.ObjectChecked(script[0].AsObject()))}))
 }
 
 /*
@@ -2509,7 +2509,7 @@ Removes the debugger plugin with given script from the Debugger.
 */
 //go:nosplit
 func (self class) RemoveDebuggerPlugin(script [1]gdclass.EditorDebuggerPlugin) { //gd:EditorPlugin.remove_debugger_plugin
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_remove_debugger_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ script gdextension.Object }{gdextension.Object(pointers.Get(script[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorPlugin.Bind_remove_debugger_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ script gdextension.Object }{gdextension.Object(gd.ObjectChecked(script[0].AsObject()))}))
 }
 
 /*

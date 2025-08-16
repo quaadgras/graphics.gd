@@ -190,7 +190,7 @@ func (self Instance) SetVisibilityMode(value VisibilityMode) {
 
 //go:nosplit
 func (self class) SetTextureNormal(texture [1]gdclass.Texture2D) { //gd:TouchScreenButton.set_texture_normal
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TouchScreenButton.Bind_set_texture_normal, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(pointers.Get(texture[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TouchScreenButton.Bind_set_texture_normal, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -202,7 +202,7 @@ func (self class) GetTextureNormal() [1]gdclass.Texture2D { //gd:TouchScreenButt
 
 //go:nosplit
 func (self class) SetTexturePressed(texture [1]gdclass.Texture2D) { //gd:TouchScreenButton.set_texture_pressed
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TouchScreenButton.Bind_set_texture_pressed, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(pointers.Get(texture[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TouchScreenButton.Bind_set_texture_pressed, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -214,7 +214,7 @@ func (self class) GetTexturePressed() [1]gdclass.Texture2D { //gd:TouchScreenBut
 
 //go:nosplit
 func (self class) SetBitmask(bitmask [1]gdclass.BitMap) { //gd:TouchScreenButton.set_bitmask
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TouchScreenButton.Bind_set_bitmask, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ bitmask gdextension.Object }{gdextension.Object(pointers.Get(bitmask[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TouchScreenButton.Bind_set_bitmask, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ bitmask gdextension.Object }{gdextension.Object(gd.ObjectChecked(bitmask[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -226,7 +226,7 @@ func (self class) GetBitmask() [1]gdclass.BitMap { //gd:TouchScreenButton.get_bi
 
 //go:nosplit
 func (self class) SetShape(shape [1]gdclass.Shape2D) { //gd:TouchScreenButton.set_shape
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TouchScreenButton.Bind_set_shape, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ shape gdextension.Object }{gdextension.Object(pointers.Get(shape[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TouchScreenButton.Bind_set_shape, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ shape gdextension.Object }{gdextension.Object(gd.ObjectChecked(shape[0].AsObject()))}))
 }
 
 //go:nosplit

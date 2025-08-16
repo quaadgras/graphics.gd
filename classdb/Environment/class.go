@@ -867,7 +867,7 @@ func (self class) GetBackground() BGMode { //gd:Environment.get_background
 
 //go:nosplit
 func (self class) SetSky(sky [1]gdclass.Sky) { //gd:Environment.set_sky
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Environment.Bind_set_sky, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ sky gdextension.Object }{gdextension.Object(pointers.Get(sky[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Environment.Bind_set_sky, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ sky gdextension.Object }{gdextension.Object(gd.ObjectChecked(sky[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -1584,7 +1584,7 @@ func (self class) GetGlowMapStrength() float64 { //gd:Environment.get_glow_map_s
 
 //go:nosplit
 func (self class) SetGlowMap(mode [1]gdclass.Texture) { //gd:Environment.set_glow_map
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Environment.Bind_set_glow_map, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mode gdextension.Object }{gdextension.Object(pointers.Get(mode[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Environment.Bind_set_glow_map, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mode gdextension.Object }{gdextension.Object(gd.ObjectChecked(mode[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -1956,7 +1956,7 @@ func (self class) GetAdjustmentSaturation() float64 { //gd:Environment.get_adjus
 
 //go:nosplit
 func (self class) SetAdjustmentColorCorrection(color_correction [1]gdclass.Texture) { //gd:Environment.set_adjustment_color_correction
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Environment.Bind_set_adjustment_color_correction, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ color_correction gdextension.Object }{gdextension.Object(pointers.Get(color_correction[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Environment.Bind_set_adjustment_color_correction, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ color_correction gdextension.Object }{gdextension.Object(gd.ObjectChecked(color_correction[0].AsObject()))}))
 }
 
 //go:nosplit

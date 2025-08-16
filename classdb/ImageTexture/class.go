@@ -170,7 +170,7 @@ Creates a new [ImageTexture] and initializes it by allocating and setting the da
 */
 //go:nosplit
 func (self class) CreateFromImage(image [1]gdclass.Image) [1]gdclass.ImageTexture { //gd:ImageTexture.create_from_image
-	var r_ret = gdunsafe.CallStatic[gd.EnginePointer](gd.Global.Methods.ImageTexture.Bind_create_from_image, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ image gdextension.Object }{gdextension.Object(pointers.Get(image[0])[0])}))
+	var r_ret = gdunsafe.CallStatic[gd.EnginePointer](gd.Global.Methods.ImageTexture.Bind_create_from_image, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(image[0].AsObject()))}))
 	var ret = [1]gdclass.ImageTexture{gd.PointerWithOwnershipTransferredToGo[gdclass.ImageTexture](r_ret)}
 	return ret
 }
@@ -191,7 +191,7 @@ If you want to update the image, but don't need to change its parameters (format
 */
 //go:nosplit
 func (self class) SetImage(image [1]gdclass.Image) { //gd:ImageTexture.set_image
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ImageTexture.Bind_set_image, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ image gdextension.Object }{gdextension.Object(pointers.Get(image[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ImageTexture.Bind_set_image, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(image[0].AsObject()))}))
 }
 
 /*
@@ -201,7 +201,7 @@ Use this method over [method set_image] if you need to update the texture freque
 */
 //go:nosplit
 func (self class) Update(image [1]gdclass.Image) { //gd:ImageTexture.update
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ImageTexture.Bind_update, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ image gdextension.Object }{gdextension.Object(pointers.Get(image[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ImageTexture.Bind_update, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(image[0].AsObject()))}))
 }
 
 /*

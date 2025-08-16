@@ -116,7 +116,7 @@ This method is called by the rendering server when the associated viewports conf
 */
 //go:nosplit
 func (self class) Configure(config [1]gdclass.RenderSceneBuffersConfiguration) { //gd:RenderSceneBuffers.configure
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RenderSceneBuffers.Bind_configure, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ config gdextension.Object }{gdextension.Object(pointers.Get(config[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RenderSceneBuffers.Bind_configure, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ config gdextension.Object }{gdextension.Object(gd.ObjectChecked(config[0].AsObject()))}))
 }
 func (self class) AsRenderSceneBuffers() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsRenderSceneBuffers() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

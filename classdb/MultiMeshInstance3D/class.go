@@ -117,7 +117,7 @@ func (self Instance) SetMultimesh(value MultiMesh.Instance) {
 
 //go:nosplit
 func (self class) SetMultimesh(multimesh [1]gdclass.MultiMesh) { //gd:MultiMeshInstance3D.set_multimesh
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MultiMeshInstance3D.Bind_set_multimesh, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ multimesh gdextension.Object }{gdextension.Object(pointers.Get(multimesh[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MultiMeshInstance3D.Bind_set_multimesh, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ multimesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(multimesh[0].AsObject()))}))
 }
 
 //go:nosplit

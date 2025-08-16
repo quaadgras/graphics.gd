@@ -158,7 +158,7 @@ func (self class) SetBytecode(bytecode [1]gdclass.RDShaderSPIRV, version String.
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RDShaderFile.Bind_set_bytecode, 0|(gdextension.SizeObject<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		bytecode gdextension.Object
 		version  gdextension.StringName
-	}{gdextension.Object(pointers.Get(bytecode[0])[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(version))[0])}))
+	}{gdextension.Object(gd.ObjectChecked(bytecode[0].AsObject())), gdextension.StringName(pointers.Get(gd.InternalStringName(version))[0])}))
 }
 
 /*

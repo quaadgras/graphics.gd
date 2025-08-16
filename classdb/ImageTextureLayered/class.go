@@ -213,7 +213,7 @@ func (self class) UpdateLayer(image [1]gdclass.Image, layer int64) { //gd:ImageT
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ImageTextureLayered.Bind_update_layer, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		image gdextension.Object
 		layer int64
-	}{gdextension.Object(pointers.Get(image[0])[0]), layer}))
+	}{gdextension.Object(gd.ObjectChecked(image[0].AsObject())), layer}))
 }
 func (self class) AsImageTextureLayered() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsImageTextureLayered() Instance { return *((*Instance)(unsafe.Pointer(&self))) }

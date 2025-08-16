@@ -221,7 +221,7 @@ func (self class) FitChildInRect(child [1]gdclass.Control, rect Rect2.PositionSi
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Container.Bind_fit_child_in_rect, 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2<<8), unsafe.Pointer(&struct {
 		child gdextension.Object
 		rect  Rect2.PositionSize
-	}{gdextension.Object(pointers.Get(child[0])[0]), rect}))
+	}{gdextension.Object(gd.ObjectChecked(child[0].AsObject())), rect}))
 }
 func (self Instance) OnPreSortChildren(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("pre_sort_children"), gd.NewCallable(cb), 0)

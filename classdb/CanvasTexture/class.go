@@ -166,7 +166,7 @@ func (self Instance) SetTextureRepeat(value CanvasItem.TextureRepeat) {
 
 //go:nosplit
 func (self class) SetDiffuseTexture(texture [1]gdclass.Texture2D) { //gd:CanvasTexture.set_diffuse_texture
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasTexture.Bind_set_diffuse_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(pointers.Get(texture[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasTexture.Bind_set_diffuse_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -178,7 +178,7 @@ func (self class) GetDiffuseTexture() [1]gdclass.Texture2D { //gd:CanvasTexture.
 
 //go:nosplit
 func (self class) SetNormalTexture(texture [1]gdclass.Texture2D) { //gd:CanvasTexture.set_normal_texture
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasTexture.Bind_set_normal_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(pointers.Get(texture[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasTexture.Bind_set_normal_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -190,7 +190,7 @@ func (self class) GetNormalTexture() [1]gdclass.Texture2D { //gd:CanvasTexture.g
 
 //go:nosplit
 func (self class) SetSpecularTexture(texture [1]gdclass.Texture2D) { //gd:CanvasTexture.set_specular_texture
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasTexture.Bind_set_specular_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(pointers.Get(texture[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CanvasTexture.Bind_set_specular_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit

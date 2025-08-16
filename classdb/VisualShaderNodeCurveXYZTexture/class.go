@@ -116,7 +116,7 @@ func (self Instance) SetTexture(value CurveXYZTexture.Instance) {
 
 //go:nosplit
 func (self class) SetTexture(texture [1]gdclass.CurveXYZTexture) { //gd:VisualShaderNodeCurveXYZTexture.set_texture
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeCurveXYZTexture.Bind_set_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(pointers.Get(texture[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeCurveXYZTexture.Bind_set_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit

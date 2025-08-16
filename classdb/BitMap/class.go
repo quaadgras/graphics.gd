@@ -240,7 +240,7 @@ func (self class) CreateFromImageAlpha(image [1]gdclass.Image, threshold float64
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BitMap.Bind_create_from_image_alpha, 0|(gdextension.SizeObject<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		image     gdextension.Object
 		threshold float64
-	}{gdextension.Object(pointers.Get(image[0])[0]), threshold}))
+	}{gdextension.Object(gd.ObjectChecked(image[0].AsObject())), threshold}))
 }
 
 /*

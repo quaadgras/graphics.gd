@@ -507,7 +507,7 @@ func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, m
 			case gdjson.OwnershipTransferred, gdjson.LifetimeBoundToClass:
 				fmt.Fprintf(w, "\tgdextension.Object(gd.PointerWithOwnershipTransferredToGodot(%v[0].AsObject()[0]))", fixReserved(arg.Name))
 			case gdjson.RefCountedManagement, gdjson.IsTemporaryReference, gdjson.MustAssertInstanceID, gdjson.ReversesTheOwnership:
-				fmt.Fprintf(w, "\tgdextension.Object(pointers.Get(%v[0])[0])", fixReserved(arg.Name))
+				fmt.Fprintf(w, "\tgdextension.Object(gd.ObjectChecked(%v[0].AsObject()))", fixReserved(arg.Name))
 			default:
 				panic("unknown ownership: " + fmt.Sprint(semantics))
 			}
@@ -608,7 +608,7 @@ func sizeOf(name, meta, gdType string) string {
 		return "gdextension.SizePackedArray"
 	// strange C++ cases
 	case "const uint8_t **", "const void*", "const uint8_t*", "const uint8_t *", "float*", "int32_t*", "void*", "uint8_t*":
-		return "gdextension.Pointer"
+		return "gdextension.SizePointer"
 	default:
 		if strings.HasPrefix(gdType, "enum::") || strings.HasPrefix(gdType, "bitfield::") {
 			return "gdextension.SizeInt"

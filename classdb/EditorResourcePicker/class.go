@@ -246,7 +246,7 @@ func (self class) GetAllowedTypes() Packed.Strings { //gd:EditorResourcePicker.g
 
 //go:nosplit
 func (self class) SetEditedResource(resource [1]gdclass.Resource) { //gd:EditorResourcePicker.set_edited_resource
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorResourcePicker.Bind_set_edited_resource, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ resource gdextension.Object }{gdextension.Object(pointers.Get(resource[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorResourcePicker.Bind_set_edited_resource, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ resource gdextension.Object }{gdextension.Object(gd.ObjectChecked(resource[0].AsObject()))}))
 }
 
 //go:nosplit

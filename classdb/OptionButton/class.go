@@ -383,7 +383,7 @@ func (self class) AddIconItem(texture [1]gdclass.Texture2D, label String.Readabl
 		texture gdextension.Object
 		label   gdextension.String
 		id      int64
-	}{gdextension.Object(pointers.Get(texture[0])[0]), gdextension.String(pointers.Get(gd.InternalString(label))[0]), id}))
+	}{gdextension.Object(gd.ObjectChecked(texture[0].AsObject())), gdextension.String(pointers.Get(gd.InternalString(label))[0]), id}))
 }
 
 /*
@@ -405,7 +405,7 @@ func (self class) SetItemIcon(idx int64, texture [1]gdclass.Texture2D) { //gd:Op
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OptionButton.Bind_set_item_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		idx     int64
 		texture gdextension.Object
-	}{idx, gdextension.Object(pointers.Get(texture[0])[0])}))
+	}{idx, gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 /*

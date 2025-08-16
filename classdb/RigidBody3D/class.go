@@ -517,7 +517,7 @@ func (self class) GetCenterOfMass() Vector3.XYZ { //gd:RigidBody3D.get_center_of
 
 //go:nosplit
 func (self class) SetPhysicsMaterialOverride(physics_material_override [1]gdclass.PhysicsMaterial) { //gd:RigidBody3D.set_physics_material_override
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RigidBody3D.Bind_set_physics_material_override, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ physics_material_override gdextension.Object }{gdextension.Object(pointers.Get(physics_material_override[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RigidBody3D.Bind_set_physics_material_override, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ physics_material_override gdextension.Object }{gdextension.Object(gd.ObjectChecked(physics_material_override[0].AsObject()))}))
 }
 
 //go:nosplit

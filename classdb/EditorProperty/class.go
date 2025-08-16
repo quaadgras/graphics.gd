@@ -571,7 +571,7 @@ func (self class) SetObjectAndProperty(obj [1]gd.Object, property String.Name) {
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorProperty.Bind_set_object_and_property, 0|(gdextension.SizeObject<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		obj      gdextension.Object
 		property gdextension.StringName
-	}{gdextension.Object(pointers.Get(obj[0])[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(property))[0])}))
+	}{gdextension.Object(gd.ObjectChecked(obj[0].AsObject())), gdextension.StringName(pointers.Get(gd.InternalStringName(property))[0])}))
 }
 
 /*
@@ -579,7 +579,7 @@ Used by the inspector, set to a control that will be used as a reference to calc
 */
 //go:nosplit
 func (self class) SetLabelReference(control [1]gdclass.Control) { //gd:EditorProperty.set_label_reference
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorProperty.Bind_set_label_reference, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ control gdextension.Object }{gdextension.Object(pointers.Get(control[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorProperty.Bind_set_label_reference, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(control[0].AsObject()))}))
 }
 
 /*

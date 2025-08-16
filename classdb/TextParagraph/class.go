@@ -598,7 +598,7 @@ func (self class) SetDropcap(text String.Readable, font [1]gdclass.Font, font_si
 		font_size       int64
 		dropcap_margins Rect2.PositionSize
 		language        gdextension.String
-	}{gdextension.String(pointers.Get(gd.InternalString(text))[0]), gdextension.Object(pointers.Get(font[0])[0]), font_size, dropcap_margins, gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
+	}{gdextension.String(pointers.Get(gd.InternalString(text))[0]), gdextension.Object(gd.ObjectChecked(font[0].AsObject())), font_size, dropcap_margins, gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
 	var ret = r_ret
 	return ret
 }
@@ -622,7 +622,7 @@ func (self class) AddString(text String.Readable, font [1]gdclass.Font, font_siz
 		font_size int64
 		language  gdextension.String
 		meta      gdextension.Variant
-	}{gdextension.String(pointers.Get(gd.InternalString(text))[0]), gdextension.Object(pointers.Get(font[0])[0]), font_size, gdextension.String(pointers.Get(gd.InternalString(language))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(meta)))}))
+	}{gdextension.String(pointers.Get(gd.InternalString(text))[0]), gdextension.Object(gd.ObjectChecked(font[0].AsObject())), font_size, gdextension.String(pointers.Get(gd.InternalString(language))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(meta)))}))
 	var ret = r_ret
 	return ret
 }

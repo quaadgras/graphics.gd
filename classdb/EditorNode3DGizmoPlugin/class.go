@@ -908,7 +908,7 @@ func (self class) CreateIconMaterial(name String.Readable, texture [1]gdclass.Te
 		texture gdextension.Object
 		on_top  bool
 		color   Color.RGBA
-	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), gdextension.Object(pointers.Get(texture[0])[0]), on_top, color}))
+	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), gdextension.Object(gd.ObjectChecked(texture[0].AsObject())), on_top, color}))
 }
 
 /*
@@ -921,7 +921,7 @@ func (self class) CreateHandleMaterial(name String.Readable, billboard bool, tex
 		name      gdextension.String
 		billboard bool
 		texture   gdextension.Object
-	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), billboard, gdextension.Object(pointers.Get(texture[0])[0])}))
+	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), billboard, gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 /*
@@ -932,7 +932,7 @@ func (self class) AddMaterial(name String.Readable, material [1]gdclass.Standard
 	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorNode3DGizmoPlugin.Bind_add_material, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		name     gdextension.String
 		material gdextension.Object
-	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), gdextension.Object(pointers.Get(material[0])[0])}))
+	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), gdextension.Object(gd.ObjectChecked(material[0].AsObject()))}))
 }
 
 /*
@@ -943,7 +943,7 @@ func (self class) GetMaterial(name String.Readable, gizmo [1]gdclass.EditorNode3
 	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorNode3DGizmoPlugin.Bind_get_material, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		name  gdextension.String
 		gizmo gdextension.Object
-	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), gdextension.Object(pointers.Get(gizmo[0])[0])}))
+	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), gdextension.Object(gd.ObjectChecked(gizmo[0].AsObject()))}))
 	var ret = [1]gdclass.StandardMaterial3D{gd.PointerWithOwnershipTransferredToGo[gdclass.StandardMaterial3D](r_ret)}
 	return ret
 }

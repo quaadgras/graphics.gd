@@ -137,7 +137,7 @@ Adds a [EditorSyntaxHighlighter] to the open script.
 */
 //go:nosplit
 func (self class) AddSyntaxHighlighter(highlighter [1]gdclass.EditorSyntaxHighlighter) { //gd:ScriptEditorBase.add_syntax_highlighter
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ScriptEditorBase.Bind_add_syntax_highlighter, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ highlighter gdextension.Object }{gdextension.Object(pointers.Get(highlighter[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ScriptEditorBase.Bind_add_syntax_highlighter, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ highlighter gdextension.Object }{gdextension.Object(gd.ObjectChecked(highlighter[0].AsObject()))}))
 }
 func (self Instance) OnNameChanged(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("name_changed"), gd.NewCallable(cb), 0)

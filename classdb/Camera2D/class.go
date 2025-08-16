@@ -593,7 +593,7 @@ func (self class) GetZoom() Vector2.XY { //gd:Camera2D.get_zoom
 
 //go:nosplit
 func (self class) SetCustomViewport(viewport [1]gdclass.Node) { //gd:Camera2D.set_custom_viewport
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Camera2D.Bind_set_custom_viewport, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ viewport gdextension.Object }{gdextension.Object(pointers.Get(viewport[0])[0])}))
+	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Camera2D.Bind_set_custom_viewport, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ viewport gdextension.Object }{gdextension.Object(gd.ObjectChecked(viewport[0].AsObject()))}))
 }
 
 //go:nosplit
