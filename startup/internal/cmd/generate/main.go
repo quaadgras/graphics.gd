@@ -172,9 +172,9 @@ func generate_startup_cgo() error {
 					fmt.Fprintf(f, "%s(p%d[%d])", cgoTypeOf(arg.Elem()), i, j)
 				}
 			case reflect.String:
-				fmt.Fprintf(f, "(%s)(unsafe.Pointer(unsafe.StringData(p%d))), C.uint64_t(len(p%d))", cgoTypeOf(arg), i, i)
+				fmt.Fprintf(f, "(%s)(unsafe.Pointer(unsafe.StringData(p%d))), C.int64_t(len(p%d))", cgoTypeOf(arg), i, i)
 			case reflect.Slice:
-				fmt.Fprintf(f, "(%s)(unsafe.Pointer(unsafe.SliceData(p%d))), C.uint64_t(len(p%d))", cgoTypeOf(arg), i, i)
+				fmt.Fprintf(f, "(%s)(unsafe.Pointer(unsafe.SliceData(p%d))), C.int64_t(len(p%d))", cgoTypeOf(arg), i, i)
 			default:
 				fmt.Fprintf(f, "%s", toCValue(arg, fmt.Sprintf("p%d", i)))
 			}
@@ -278,7 +278,7 @@ func args_flat(rtype reflect.Type) iter.Seq2[int, reflect.Type] {
 				if !yield(n, arg) {
 					return
 				}
-				if !yield(n+1, reflect.TypeOf(uint64(0))) {
+				if !yield(n+1, reflect.TypeOf(int(0))) {
 					return
 				}
 				n += 2
@@ -286,7 +286,7 @@ func args_flat(rtype reflect.Type) iter.Seq2[int, reflect.Type] {
 				if !yield(n, reflect.TypeOf("")) {
 					return
 				}
-				if !yield(n+1, reflect.TypeOf(uint64(0))) {
+				if !yield(n+1, reflect.TypeOf(int(0))) {
 					return
 				}
 				n += 2
@@ -349,6 +349,8 @@ func ctypeOf(rtype reflect.Type) string {
 	case reflect.Uint16:
 		return "uint16_t"
 	case reflect.Int64:
+		return "int64_t"
+	case reflect.Int:
 		return "int64_t"
 	case reflect.Int32:
 		return "int32_t"

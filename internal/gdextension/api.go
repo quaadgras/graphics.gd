@@ -31,18 +31,18 @@ type Callbacks struct {
 			Reference func(instance ExtensionInstanceID, increment bool) bool        `gd:"on_extension_binding_reference"`
 		}
 		Instance struct {
-			Set                func(instance ExtensionInstanceID, field StringName, value Variant) bool                                                         `gd:"on_extension_instance_set"`
-			Get                func(instance ExtensionInstanceID, field StringName, result Call) (CallReturns[Variant], bool)                                   `gd:"on_extension_instance_get"`
-			PropertyList       func(instance ExtensionInstanceID) PropertyList                                                                                  `gd:"on_extension_instance_property_list"`
-			PropertyHasDefault func(instance ExtensionInstanceID, field StringName) bool                                                                        `gd:"on_extension_instance_property_has_default"`
-			PropertyGetDefault func(instance ExtensionInstanceID, field StringName, result Call) (CallReturns[Variant], bool)                                   `gd:"on_extension_instance_property_get_default"`
-			PropertyValidation func(instance ExtensionInstanceID, field PropertyList) bool                                                                      `gd:"on_extension_instance_property_validation"`
-			Notification       func(instance ExtensionInstanceID, reverse bool)                                                                                 `gd:"on_extension_instance_notification"`
-			Stringify          func(instance ExtensionInstanceID) String                                                                                        `gd:"on_extension_instance_stringify"`
-			Reference          func(instance ExtensionInstanceID, increment bool) bool                                                                          `gd:"on_extension_instance_reference"`
-			RID                func(instance ExtensionInstanceID) uint64                                                                                        `gd:"on_extension_instance_rid"`
-			Call               func(instance ExtensionInstanceID, fn FunctionID, arg_count int64, args CallAccepts[Variant]) (CallReturns[Variant], MaybeError) `gd:"on_extension_instance_call"`
-			CallChecked        func(instance ExtensionInstanceID, fn FunctionID, args CallAccepts[Variant]) CallReturns[Variant]                                `gd:"on_extension_instance_call_checked"`
+			Set                func(instance ExtensionInstanceID, field StringName, value Variant) bool                                                       `gd:"on_extension_instance_set"`
+			Get                func(instance ExtensionInstanceID, field StringName, result Call) (CallReturns[Variant], bool)                                 `gd:"on_extension_instance_get"`
+			PropertyList       func(instance ExtensionInstanceID) PropertyList                                                                                `gd:"on_extension_instance_property_list"`
+			PropertyHasDefault func(instance ExtensionInstanceID, field StringName) bool                                                                      `gd:"on_extension_instance_property_has_default"`
+			PropertyGetDefault func(instance ExtensionInstanceID, field StringName, result Call) (CallReturns[Variant], bool)                                 `gd:"on_extension_instance_property_get_default"`
+			PropertyValidation func(instance ExtensionInstanceID, field PropertyList) bool                                                                    `gd:"on_extension_instance_property_validation"`
+			Notification       func(instance ExtensionInstanceID, reverse bool)                                                                               `gd:"on_extension_instance_notification"`
+			Stringify          func(instance ExtensionInstanceID) String                                                                                      `gd:"on_extension_instance_stringify"`
+			Reference          func(instance ExtensionInstanceID, increment bool) bool                                                                        `gd:"on_extension_instance_reference"`
+			RID                func(instance ExtensionInstanceID) uint64                                                                                      `gd:"on_extension_instance_rid"`
+			Call               func(instance ExtensionInstanceID, fn FunctionID, arg_count int, args CallAccepts[Variant]) (CallReturns[Variant], MaybeError) `gd:"on_extension_instance_call"`
+			CallChecked        func(instance ExtensionInstanceID, fn FunctionID, args CallAccepts[Variant]) CallReturns[Variant]                              `gd:"on_extension_instance_call_checked"`
 			Unsafe             struct {
 				Call func(instance ExtensionInstanceID, fn FunctionID, args CallAccepts[any]) CallReturns[any] `gd:"on_extension_instance_unsafe_call"`
 			}
@@ -59,21 +59,21 @@ type Callbacks struct {
 			PropertyState       func(instance ExtensionInstanceID, add FunctionID, arg uintptr) `gd:"on_extension_script_get_property_state"`
 			Methods             func(instance ExtensionInstanceID) MethodList                   `gd:"on_extension_script_get_methods"`
 			HasMethod           func(instance ExtensionInstanceID, method StringName) bool      `gd:"on_extension_script_has_method"`
-			MethodArgumentCount func(instance ExtensionInstanceID, method StringName) int64     `gd:"on_extension_script_get_method_argument_count"`
+			MethodArgumentCount func(instance ExtensionInstanceID, method StringName) int       `gd:"on_extension_script_get_method_argument_count"`
 			Get                 func(instance ExtensionInstanceID) Object                       `gd:"on_extension_script_get"`
 			IsPlaceholder       func(instance ExtensionInstanceID) bool                         `gd:"on_extension_script_is_placeholder"`
 			Language            func(instance ExtensionInstanceID) Object                       `gd:"on_extension_script_get_language"`
 		}
 	}
 	Callables struct {
-		Call          func(fn FunctionID, arg_count int64, args CallAccepts[Variant]) (CallReturns[Variant], MaybeError) `gd:"on_callable_call"`
-		Validation    func(fn FunctionID) bool                                                                           `gd:"on_callable_validation"`
-		Free          func(fn FunctionID)                                                                                `gd:"on_callable_free"`
-		Hash          func(fn FunctionID) int64                                                                          `gd:"on_callable_hash"`
-		Compare       func(fn FunctionID, other FunctionID) bool                                                         `gd:"on_callable_compare"`
-		LessThan      func(fn FunctionID, other FunctionID) bool                                                         `gd:"on_callable_less_than"`
-		Stringify     func(fn FunctionID, call Call) (String, MaybeError)                                                `gd:"on_callable_stringify"`
-		ArgumentCount func(fn FunctionID, result Call) (int64, MaybeError)                                               `gd:"on_callable_get_argument_count"`
+		Call          func(fn FunctionID, arg_count int, args CallAccepts[Variant]) (CallReturns[Variant], MaybeError) `gd:"on_callable_call"`
+		Validation    func(fn FunctionID) bool                                                                         `gd:"on_callable_validation"`
+		Free          func(fn FunctionID)                                                                              `gd:"on_callable_free"`
+		Hash          func(fn FunctionID) int64                                                                        `gd:"on_callable_hash"`
+		Compare       func(fn FunctionID, other FunctionID) bool                                                       `gd:"on_callable_compare"`
+		LessThan      func(fn FunctionID, other FunctionID) bool                                                       `gd:"on_callable_less_than"`
+		Stringify     func(fn FunctionID, call Call) (String, MaybeError)                                              `gd:"on_callable_stringify"`
+		ArgumentCount func(fn FunctionID, result Call) (int, MaybeError)                                               `gd:"on_callable_get_argument_count"`
 	}
 	Editor struct {
 		ClassInUseDetection func(classes PackedArray, call Call) CallReturns[PackedArray] `gd:"on_editor_class_in_use_detection"`
@@ -97,9 +97,9 @@ type API struct {
 		String    func() String `gd:"version_string"`
 	}
 	Memory struct {
-		Malloc func(size uintptr) Pointer               `gd:"memory_malloc"`
-		Sizeof func(name StringName) uint64             `gd:"memory_sizeof"`
-		Resize func(addr Pointer, size uintptr) Pointer `gd:"memory_resize"`
+		Malloc func(size int) Pointer               `gd:"memory_malloc"`
+		Sizeof func(name StringName) int            `gd:"memory_sizeof"`
+		Resize func(addr Pointer, size int) Pointer `gd:"memory_resize"`
 
 		Load struct {
 			Byte   func(addr Pointer) byte   `gd:"memory_load_byte"`
@@ -127,72 +127,72 @@ type API struct {
 		Call func(fn FunctionID, arg_count int32, args CallAccepts[any]) (CallReturns[Variant], MaybeError) `gd:"builtin_call"`
 	}
 	Variants struct {
-		Zero func(result Call) CallReturns[Variant]                                                                            `gd:"variant_zero"`
-		Copy func(v Variant, result Call) CallReturns[Variant]                                                                 `gd:"variant_copy"`
-		Call func(v Variant, method StringName, arg_count int64, args CallAccepts[Variant]) (CallReturns[Variant], MaybeError) `gd:"variant_call"`
-		Eval func(op VariantOperator, a, b Variant, call Call) (CallReturns[Variant], bool)                                    `gd:"variant_eval"`
-		Hash func(v Variant) int64                                                                                             `gd:"variant_hash"`
-		Bool func(v Variant) bool                                                                                              `gd:"variant_bool"`
-		Text func(v Variant) String                                                                                            `gd:"variant_text"`
-		Type func(v Variant) VariantType                                                                                       `gd:"variant_type"`
+		Zero func(result Call) CallReturns[Variant]                                                                          `gd:"variant_zero"`
+		Copy func(v Variant, result Call) CallReturns[Variant]                                                               `gd:"variant_copy"`
+		Call func(v Variant, method StringName, arg_count int, args CallAccepts[Variant]) (CallReturns[Variant], MaybeError) `gd:"variant_call"`
+		Eval func(op VariantOperator, a, b Variant, call Call) (CallReturns[Variant], bool)                                  `gd:"variant_eval"`
+		Hash func(v Variant) int64                                                                                           `gd:"variant_hash"`
+		Bool func(v Variant) bool                                                                                            `gd:"variant_bool"`
+		Text func(v Variant) String                                                                                          `gd:"variant_text"`
+		Type func(v Variant) VariantType                                                                                     `gd:"variant_type"`
 		Deep struct {
 			Copy func(v Variant, result Call) CallReturns[Variant] `gd:"variant_deep_copy"`
 			Hash func(v Variant, recursion_count int64) int64      `gd:"variant_deep_hash"`
 		}
 		Set struct {
-			Index func(v Variant, key, val Variant) bool                                `gd:"variant_set_index"`
-			Array func(v Variant, idx int64, val Variant, call Call) (bool, MaybeError) `gd:"variant_set_array"`
-			Field func(v Variant, field StringName, value Variant) bool                 `gd:"variant_set_field"`
+			Index func(v Variant, key, val Variant) bool                              `gd:"variant_set_index"`
+			Array func(v Variant, idx int, val Variant, call Call) (bool, MaybeError) `gd:"variant_set_array"`
+			Field func(v Variant, field StringName, value Variant) bool               `gd:"variant_set_field"`
 		}
 		Get struct {
-			Index func(v Variant, key Variant, result Call) (CallReturns[Variant], bool)           `gd:"variant_get_index"`
-			Array func(v Variant, idx int64, result Call) (CallReturns[Variant], bool, MaybeError) `gd:"variant_get_array"`
-			Field func(v Variant, field StringName, result Call) (CallReturns[Variant], bool)      `gd:"variant_get_field"`
+			Index func(v Variant, key Variant, result Call) (CallReturns[Variant], bool)         `gd:"variant_get_index"`
+			Array func(v Variant, idx int, result Call) (CallReturns[Variant], bool, MaybeError) `gd:"variant_get_array"`
+			Field func(v Variant, field StringName, result Call) (CallReturns[Variant], bool)    `gd:"variant_get_field"`
 		}
 		Has struct {
 			Index  func(v Variant, index Variant) bool     `gd:"variant_has_index"`
 			Method func(v Variant, method StringName) bool `gd:"variant_has_method"`
 		}
 		Unsafe struct {
-			Call func(fn FunctionID, arg_count int32, args CallAccepts[any]) CallReturns[any] `gd:"variant_unsafe_call"`
-			Eval func(fn FunctionID, args CallAccepts[any]) CallReturns[any]                  `gd:"variant_unsafe_eval"`
-			Free func(v Variant)                                                              `gd:"variant_unsafe_free"`
+			Call func(fn FunctionID, arg_count int, args CallAccepts[any]) CallReturns[any] `gd:"variant_unsafe_call"`
+			Eval func(fn FunctionID, args CallAccepts[any]) CallReturns[any]                `gd:"variant_unsafe_eval"`
+			Free func(v Variant)                                                            `gd:"variant_unsafe_free"`
 
 			MakeNative func(vtype VariantType, v Variant, result Call) CallReturns[any]    `gd:"variant_unsafe_make_native"`
 			FromNative func(vtype VariantType, args CallAccepts[any]) CallReturns[Variant] `gd:"variant_unsafe_from_native"`
 
 			Set struct {
-				Field func(setter FunctionID, args CallAccepts[any])            `gd:"variant_unsafe_set_field"`
-				Array func(vtype VariantType, idx int64, args CallAccepts[any]) `gd:"variant_unsafe_set_array"`
-				Index func(vtype VariantType, args CallAccepts[any])            `gd:"variant_unsafe_set_index"`
+				Field func(setter FunctionID, args CallAccepts[any])          `gd:"variant_unsafe_set_field"`
+				Array func(vtype VariantType, idx int, args CallAccepts[any]) `gd:"variant_unsafe_set_array"`
+				Index func(vtype VariantType, args CallAccepts[any])          `gd:"variant_unsafe_set_index"`
 			}
 			Get struct {
-				Field func(getter FunctionID, args CallAccepts[any]) CallReturns[any]            `gd:"variant_unsafe_get_field"`
-				Array func(vtype VariantType, idx int64, args CallAccepts[any]) CallReturns[any] `gd:"variant_unsafe_get_array"`
-				Index func(vtype VariantType, args CallAccepts[any]) CallReturns[any]            `gd:"variant_unsafe_get_index"`
+				Field func(getter FunctionID, args CallAccepts[any]) CallReturns[any]          `gd:"variant_unsafe_get_field"`
+				Array func(vtype VariantType, idx int, args CallAccepts[any]) CallReturns[any] `gd:"variant_unsafe_get_array"`
+				Index func(vtype VariantType, args CallAccepts[any]) CallReturns[any]          `gd:"variant_unsafe_get_index"`
 			}
 			InternalPointer func(vtype VariantType, v Variant) Pointer `gd:"variant_unsafe_internal_pointer"`
 		}
 	}
 	VariantTypes struct {
 		Name            func(vtype VariantType) String                                                                                                                                  `gd:"variant_type_name"`
-		Make            func(vtype VariantType, arg_count int32, args CallAccepts[Variant]) (CallReturns[Variant], MaybeError)                                                          `gd:"variant_type_make"`
+		Make            func(vtype VariantType, arg_count int, args CallAccepts[Variant]) (CallReturns[Variant], MaybeError)                                                            `gd:"variant_type_make"`
 		Call            func(vtype VariantType, static StringName, arg_count int64, args CallAccepts[Variant]) (CallReturns[Variant], MaybeError)                                       `gd:"variant_type_call"`
 		Convertable     func(vtype VariantType, to VariantType, strict bool) bool                                                                                                       `gd:"variant_type_convertable"`
 		SetupArray      func(array Array, vtype VariantType, class_name StringName, script Variant)                                                                                     `gd:"variant_type_setup_array"`
 		SetupDictionary func(dict Dictionary, key_type VariantType, key_class_name StringName, key_script Variant, val_type VariantType, val_class_name StringName, val_script Variant) `gd:"variant_type_setup_dictionary"`
 		FetchConstant   func(vtype VariantType, constant StringName, result Call) CallReturns[Variant]                                                                                  `gd:"variant_type_fetch_constant"`
 		BuiltinMethod   func(vtype VariantType, builtin StringName, hash int64) FunctionID                                                                                              `gd:"variant_type_builtin_method"`
-		Constructor     func(vtype VariantType, n int32) FunctionID                                                                                                                     `gd:"variant_type_unsafe_constructor"`
+		Constructor     func(vtype VariantType, n int) FunctionID                                                                                                                       `gd:"variant_type_unsafe_constructor"`
 		Evaluator       func(op VariantOperator, a, b VariantType) FunctionID                                                                                                           `gd:"variant_type_evaluator"`
 		Setter          func(vtype VariantType, field StringName) FunctionID                                                                                                            `gd:"variant_type_setter"`
 		Getter          func(vtype VariantType, field StringName) FunctionID                                                                                                            `gd:"variant_type_getter"`
 		HasProperty     func(vtype VariantType, field StringName) bool                                                                                                                  `gd:"variant_type_has_property"`
 
 		Unsafe struct {
-			Call func(fn FunctionID, arg_count int64, args CallAccepts[any]) CallReturns[any] `gd:"variant_type_unsafe_call"`
-			Make func(constructor FunctionID, args CallAccepts[any]) CallReturns[any]         `gd:"variant_type_unsafe_make"`
-			Free func(vtype VariantType, args CallAccepts[any]) CallReturns[any]              `gd:"variant_type_unsafe_free"`
+			Call func(fn FunctionID, arg_count int, args CallAccepts[any]) CallReturns[any] `gd:"variant_type_unsafe_call"`
+			Make func(constructor FunctionID, args CallAccepts[any]) CallReturns[any]       `gd:"variant_type_unsafe_make"`
+			Free func(vtype VariantType, args CallAccepts[any]) CallReturns[any]            `gd:"variant_type_unsafe_free"`
 		}
 	}
 	Iterators struct {
@@ -201,9 +201,9 @@ type API struct {
 		Load func(v Variant, result Call, iter Iterator) (CallReturns[Variant], bool, MaybeError)  `gd:"iterator_load"`
 	}
 	Strings struct {
-		Access func(s String, idx int64) rune    `gd:"string_access"`
-		Resize func(s String, size int64) String `gd:"string_resize"`
-		Unsafe func(s String) Pointer            `gd:"string_unsafe"`
+		Access func(s String, idx int) rune    `gd:"string_access"`
+		Resize func(s String, size int) String `gd:"string_resize"`
+		Unsafe func(s String) Pointer          `gd:"string_unsafe"`
 
 		Decode struct {
 			Latin1 func(s string) String                     `gd:"string_decode_latin1"`
@@ -230,48 +230,48 @@ type API struct {
 	}
 	Packed struct {
 		Bytes struct {
-			Unsafe func(p PackedArray) Pointer         `gd:"packed_byte_array_unsafe"`
-			Access func(p PackedArray, idx int64) byte `gd:"packed_byte_array_access"`
+			Unsafe func(p PackedArray) Pointer       `gd:"packed_byte_array_unsafe"`
+			Access func(p PackedArray, idx int) byte `gd:"packed_byte_array_access"`
 		}
 		Float32s struct {
-			Unsafe func(p PackedArray) Pointer            `gd:"packed_float32_array_unsafe"`
-			Access func(p PackedArray, idx int64) float32 `gd:"packed_float32_array_access"`
+			Unsafe func(p PackedArray) Pointer          `gd:"packed_float32_array_unsafe"`
+			Access func(p PackedArray, idx int) float32 `gd:"packed_float32_array_access"`
 		}
 		Float64s struct {
-			Unsafe func(p PackedArray) Pointer            `gd:"packed_float64_array_unsafe"`
-			Access func(p PackedArray, idx int64) float64 `gd:"packed_float64_array_access"`
+			Unsafe func(p PackedArray) Pointer          `gd:"packed_float64_array_unsafe"`
+			Access func(p PackedArray, idx int) float64 `gd:"packed_float64_array_access"`
 		}
 		Int32s struct {
-			Unsafe func(p PackedArray) Pointer          `gd:"packed_int32_array_unsafe"`
-			Access func(p PackedArray, idx int64) int32 `gd:"packed_int32_array_access"`
+			Unsafe func(p PackedArray) Pointer        `gd:"packed_int32_array_unsafe"`
+			Access func(p PackedArray, idx int) int32 `gd:"packed_int32_array_access"`
 		}
 		Int64s struct {
-			Unsafe func(p PackedArray) Pointer          `gd:"packed_int64_array_unsafe"`
-			Access func(p PackedArray, idx int64) int64 `gd:"packed_int64_array_access"`
+			Unsafe func(p PackedArray) Pointer        `gd:"packed_int64_array_unsafe"`
+			Access func(p PackedArray, idx int) int64 `gd:"packed_int64_array_access"`
 		}
 		Strings struct {
-			Unsafe func(p PackedArray) Pointer           `gd:"packed_string_array_unsafe"`
-			Access func(p PackedArray, idx int64) String `gd:"packed_string_array_access"`
+			Unsafe func(p PackedArray) Pointer         `gd:"packed_string_array_unsafe"`
+			Access func(p PackedArray, idx int) String `gd:"packed_string_array_access"`
 		}
 		Vector2s struct {
-			Unsafe func(p PackedArray) Pointer                                         `gd:"packed_vector2_array_unsafe"`
-			Access func(p PackedArray, idx int64, result Call) CallReturns[Vector2.XY] `gd:"packed_vector2_array_access"`
+			Unsafe func(p PackedArray) Pointer                                       `gd:"packed_vector2_array_unsafe"`
+			Access func(p PackedArray, idx int, result Call) CallReturns[Vector2.XY] `gd:"packed_vector2_array_access"`
 		}
 		Vector3s struct {
-			Unsafe func(p PackedArray) Pointer                                          `gd:"packed_vector3_array_unsafe"`
-			Access func(p PackedArray, idx int64, result Call) CallReturns[Vector3.XYZ] `gd:"packed_vector3_array_access"`
+			Unsafe func(p PackedArray) Pointer                                        `gd:"packed_vector3_array_unsafe"`
+			Access func(p PackedArray, idx int, result Call) CallReturns[Vector3.XYZ] `gd:"packed_vector3_array_access"`
 		}
 		Vector4s struct {
-			Unsafe func(p PackedArray) Pointer                                           `gd:"packed_vector4_array_unsafe"`
-			Access func(p PackedArray, idx int64, result Call) CallReturns[Vector4.XYZW] `gd:"packed_vector4_array_access"`
+			Unsafe func(p PackedArray) Pointer                                         `gd:"packed_vector4_array_unsafe"`
+			Access func(p PackedArray, idx int, result Call) CallReturns[Vector4.XYZW] `gd:"packed_vector4_array_access"`
 		}
 		Colors struct {
-			Unsafe func(p PackedArray) Pointer                                         `gd:"packed_color_array_unsafe"`
-			Access func(p PackedArray, idx int64, result Call) CallReturns[Color.RGBA] `gd:"packed_color_array_access"`
+			Unsafe func(p PackedArray) Pointer                                       `gd:"packed_color_array_unsafe"`
+			Access func(p PackedArray, idx int, result Call) CallReturns[Color.RGBA] `gd:"packed_color_array_access"`
 		}
 		Variants struct {
-			Unsafe func(p PackedArray) Pointer                                      `gd:"packed_variant_array_unsafe"`
-			Access func(p PackedArray, idx int64, result Call) CallReturns[Variant] `gd:"packed_variant_array_access"`
+			Unsafe func(p PackedArray) Pointer                                    `gd:"packed_variant_array_unsafe"`
+			Access func(p PackedArray, idx int, result Call) CallReturns[Variant] `gd:"packed_variant_array_access"`
 		}
 	}
 	Dictionaries struct {
@@ -335,7 +335,7 @@ type API struct {
 	}
 	ClassDB struct {
 		PropertyList struct {
-			Make func(length int32) PropertyList `gd:"property_list_make"`
+			Make func(length int) PropertyList `gd:"property_list_make"`
 			Push func(info PropertyList,
 				vtype VariantType,
 				name StringName,
@@ -356,7 +356,7 @@ type API struct {
 			Free func(info PropertyList) `gd:"property_list_free"`
 		}
 		MethodList struct {
-			Make func(length int32) MethodList `gd:"method_list_make"`
+			Make func(length int) MethodList `gd:"method_list_make"`
 			Push func(info MethodList,
 				name StringName,
 				call FunctionID,
@@ -375,22 +375,22 @@ type API struct {
 			Methods          func(class StringName, methods MethodList)                                                                            `gd:"classdb_register_methods"`
 			Constant         func(class, enum, name StringName, value int64, bitfield bool)                                                        `gd:"classdb_register_constant"`
 			Property         func(class StringName, property PropertyList, setter, getter StringName)                                              `gd:"classdb_register_property"`
-			PropertyIndexed  func(class StringName, property PropertyList, setter, getter StringName, index int64)                                 `gd:"classdb_register_property_indexed"`
+			PropertyIndexed  func(class StringName, property PropertyList, setter, getter StringName, index int)                                   `gd:"classdb_register_property_indexed"`
 			PropertyGroup    func(class StringName, group, prefix String)                                                                          `gd:"classdb_register_property_group"`
 			PropertySubgroup func(class StringName, subgroup, prefix String)                                                                       `gd:"classdb_register_property_sub_group"`
 			Signal           func(class, signal StringName, args PropertyList)                                                                     `gd:"classdb_register_signal"`
 			Removal          func(class StringName)                                                                                                `gd:"classdb_register_removal"`
 		}
 		Image struct {
-			Unsafe func(img Object) Pointer         `gd:"classdb_Image_unsafe"`
-			Access func(img Object, idx int64) byte `gd:"classdb_Image_access"`
+			Unsafe func(img Object) Pointer       `gd:"classdb_Image_unsafe"`
+			Access func(img Object, idx int) byte `gd:"classdb_Image_access"`
 		}
 		XMLParser struct {
-			Load func(parser Object, buf []byte) int64 `gd:"classdb_XMLParser_load"`
+			Load func(parser Object, buf []byte) int `gd:"classdb_XMLParser_load"`
 		}
 		FileAccess struct {
-			Write func(file Object, buf []byte)       `gd:"classdb_FileAccess_write"`
-			Read  func(file Object, buf []byte) int64 `gd:"classdb_FileAccess_read"`
+			Write func(file Object, buf []byte)     `gd:"classdb_FileAccess_write"`
+			Read  func(file Object, buf []byte) int `gd:"classdb_FileAccess_read"`
 		}
 		WorkerThreadPool struct {
 			AddTask      func(pool Object, fn TaskID, priority bool, description String)                             `gd:"classdb_WorkerThreadPool_add_task"`
