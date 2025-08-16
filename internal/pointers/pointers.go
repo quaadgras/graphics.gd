@@ -282,21 +282,22 @@ func end(rev revision, s int, p uint64) bool {
 	}
 	page, addr := uint64(p/pageSize), uint64(p%pageSize)
 	arr := tables[s].Index(page)
-	existing := revision(arr[addr+offsetRevision].Load())
-	if !rev.matches(existing) {
-		return false
-	}
-	if arr[addr+offsetRevision].CompareAndSwap(uint64(existing), revisionLocked) {
-		arr[addr+offsetRevision].Store(uint64(existing.close())) // next free.
-		for {
-			end := writes[s].Load()
-			arr[addr+offsetPointers].Store(end)
-			if writes[s].CompareAndSwap(end, p) {
-				return true
+	for {
+		existing := revision(arr[addr+offsetRevision].Load())
+		if !rev.matches(existing) {
+			return false
+		}
+		if existing != revisionLocked && arr[addr+offsetRevision].CompareAndSwap(uint64(existing), revisionLocked) {
+			for {
+				end := writes[s].Load()
+				arr[addr+offsetPointers].Store(end)
+				if writes[s].CompareAndSwap(end, p) {
+					arr[addr+offsetRevision].Store(uint64(existing.close())) // next free.
+					return true
+				}
 			}
 		}
 	}
-	return false
 }
 
 // Cut either gets the pointer, or ends it, depending on the parameter passed.
@@ -337,18 +338,23 @@ func Get[T Generic[T, P], P Size](ptr T) P {
 	for i := 0; i < len(p.checksum); i++ {
 		ptrs[i] = arr[addr+offsetPointers+uint64(i)].Load()
 	}
-	rev := revision(arr[addr+offsetRevision].Load())
-	if !rev.matches(p.revision) {
-		fmt.Printf("%b != %b\b", rev&0b00111111111111111111111111111111111111111111111111111111111111, p.revision&0b00111111111111111111111111111111111111111111111111111111111111)
-		panic("expired pointer")
-	}
-	if !rev.isActive() {
-		if live, ok := any(T(p)).(Liveness[P]); ok && !live.IsAlive(*(*P)(unsafe.Pointer(&ptrs))) {
-			panic("dead pointer")
+	for {
+		rev := revision(arr[addr+offsetRevision].Load())
+		if rev == revisionLocked {
+			continue
 		}
-		arr[addr+offsetRevision].CompareAndSwap(uint64(rev), uint64(rev.active()))
+		if !rev.matches(p.revision) {
+			fmt.Printf("%b != %b\b", rev&0b00111111111111111111111111111111111111111111111111111111111111, p.revision&0b00111111111111111111111111111111111111111111111111111111111111)
+			panic("expired pointer")
+		}
+		if !rev.isActive() {
+			if live, ok := any(T(p)).(Liveness[P]); ok && !live.IsAlive(*(*P)(unsafe.Pointer(&ptrs))) {
+				panic("dead pointer")
+			}
+			arr[addr+offsetRevision].CompareAndSwap(uint64(rev), uint64(rev.active()))
+		}
+		return *(*P)(unsafe.Pointer(&ptrs))
 	}
-	return *(*P)(unsafe.Pointer(&ptrs))
 }
 
 // Bad returns true if the pointer is nil, or freed.
@@ -422,19 +428,21 @@ func Set[T Generic[T, P], P Size](ptr T, val P) {
 	}
 	page, addr := uint64(p.sentinal/pageSize), uint64(p.sentinal%pageSize)
 	arr := tables[len(p.checksum)].Index(page)
-	rev := revision(arr[addr+offsetRevision].Load())
-	if !rev.matches(p.revision) {
-		panic("expired pointer")
-	}
-	if arr[addr+offsetRevision].CompareAndSwap(uint64(rev), revisionLocked) {
-		var local [3]uint64
-		*(*P)(unsafe.Pointer(&local)) = val
-		for i := 0; i < len(val); i++ {
-			arr[addr+offsetPointers+uint64(i)].Store(uint64(local[i]))
+	for {
+		rev := revision(arr[addr+offsetRevision].Load())
+		if !rev.matches(p.revision) {
+			panic("expired pointer")
 		}
-		arr[addr+offsetRevision].Store(uint64(rev.active()))
+		if rev != revisionLocked && arr[addr+offsetRevision].CompareAndSwap(uint64(rev), revisionLocked) {
+			var local [3]uint64
+			*(*P)(unsafe.Pointer(&local)) = val
+			for i := 0; i < len(val); i++ {
+				arr[addr+offsetPointers+uint64(i)].Store(uint64(local[i]))
+			}
+			arr[addr+offsetRevision].Store(uint64(rev.active()))
+			return
+		}
 	}
-	return
 }
 
 type atomicSlice[T any] struct {
@@ -543,15 +551,17 @@ func Lay[T Generic[T, P], P Size](ptr T) T {
 	}
 	page, addr := uint64(p.sentinal/pageSize), uint64(p.sentinal%pageSize)
 	arr := tables[len(p.checksum)].Index(page)
-	rev := revision(arr[addr+offsetRevision].Load())
-	if !rev.matches(p.revision) {
-		panic("expired pointer")
+	for {
+		rev := revision(arr[addr+offsetRevision].Load())
+		if !rev.matches(p.revision) {
+			panic("expired pointer")
+		}
+		if rev != revisionLocked && arr[addr+offsetRevision].CompareAndSwap(uint64(rev), revisionLocked) {
+			arr[addr+offsetFreeFunc].Store(0)
+			arr[addr+offsetRevision].Store(uint64(rev.active()))
+			return ptr
+		}
 	}
-	if arr[addr+offsetRevision].CompareAndSwap(uint64(rev), revisionLocked) {
-		arr[addr+offsetFreeFunc].Store(0)
-		arr[addr+offsetRevision].Store(uint64(rev.active()))
-	}
-	return ptr
 }
 
 func Pack[T Generic[T, P], P Size](ptr T) complex128 {
