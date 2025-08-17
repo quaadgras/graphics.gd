@@ -599,25 +599,6 @@ func linkJS(API *gd.API) {
 		}
 		return pointers.Raw[gd.Variant](*(*[3]uint64)(unsafe.Pointer(&buf))).Copy()
 	}
-	array_set_typed := dlsym("array_set_typed")
-	API.Array.SetTyped = func(self gd.Array, t gd.VariantType, className gd.StringName, script gd.Object) {
-		array_set_typed.Invoke(pointers.Get(self)[0], uint32(t), pointers.Get(className)[0], pointers.Get(script)[0])
-	}
-	array_operator_index_set := dlsym("array_operator_index_set")
-	API.Array.SetIndex = func(self gd.Array, index gd.Int, value gd.Variant) {
-		raw := pointers.Get(value)
-		val := *(*[6]uint32)(unsafe.Pointer(&raw))
-		array_operator_index_set.Invoke(pointers.Get(self)[0], uint32(index), val[0], val[1], val[2], val[3], val[4], val[5])
-	}
-	array_operator_index := dlsym("array_operator_index")
-	API.Array.Index = func(self gd.Array, index gd.Int) gd.Variant {
-		array_operator_index.Invoke(pointers.Get(self)[0], uint32(index))
-		var buf [6]uint32
-		for i := range buf {
-			buf[i] = uint32(read_result_buffer.Invoke(0, 0, i).Int())
-		}
-		return pointers.Raw[gd.Variant](*(*[3]uint64)(unsafe.Pointer(&buf))).Copy()
-	}
 }
 
 func makePackedFunctions[T gd.Packed[T, V], V Packed.Type](prefix string) gd.PackedFunctionsFor[T, V] {
