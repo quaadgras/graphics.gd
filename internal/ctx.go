@@ -8,6 +8,8 @@ import (
 	"runtime"
 	"runtime/debug"
 	"strings"
+
+	"graphics.gd/internal/gdextension"
 )
 
 // Version returns the version of the Godot API that we are linked in to.
@@ -44,7 +46,7 @@ func Recover() {
 
 func recovery(err any) {
 	if traceALL || traceSystem {
-		Global.PrintErrorMessage("", fmt.Sprint(err, "\n", string(debug.Stack())), "gdextension.recovery", "err.go", 18, true)
+		gdextension.Host.Log.Error(fmt.Sprint(err, "\n", string(debug.Stack())), "", "gdextension.recovery", "err.go", 18, true)
 	} else {
 		name, file, line := "", "", 0
 		var buf [10]uintptr
@@ -61,6 +63,6 @@ func recovery(err any) {
 			file, line = fn.FileLine(pc)
 			break
 		}
-		Global.PrintErrorMessage("", fmt.Sprint(err), name, file, int32(line), true)
+		gdextension.Host.Log.Error(fmt.Sprint(err), "", name, file, int32(line), true)
 	}
 }

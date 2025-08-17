@@ -8,17 +8,14 @@ import (
 	"unsafe"
 
 	"graphics.gd/internal/callframe"
+	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 	PackedType "graphics.gd/variant/Packed"
 
 	"runtime.link/api"
 )
 
-type VariantType int32
-
-func (t VariantType) String() string {
-	return Global.Variants.GetTypeName(t).String()
-}
+type VariantType = gdextension.VariantType
 
 type Address uintptr
 
@@ -26,56 +23,9 @@ type Address uintptr
 type API struct {
 	api.Specification
 
-	GetGodotVersion     func() Version
-	GetNativeStructSize func(StringName) uintptr
-
-	Memory struct {
-		Allocate   func(uintptr) Address
-		Reallocate func(Address, uintptr) Address
-		Free       func(Address)
-
-		Index func(addr Address, n int, size uintptr) unsafe.Pointer
-		Write func(dst Address, src unsafe.Pointer, size uintptr)
-	}
-
-	PrintError              func(code, function, file string, line int32, notifyEditor bool)
-	PrintErrorMessage       func(code, message, function, file string, line int32, notifyEditor bool)
-	PrintWarning            func(code, function, file string, line int32, notifyEditor bool)
-	PrintWarningMessage     func(code, message, function, file string, line int32, notifyEditor bool)
-	PrintScriptError        func(code, function, file string, line int32, notifyEditor bool)
-	PrintScriptErrorMessage func(code, message, function, file string, line int32, notifyEditor bool)
+	GetGodotVersion func() Version
 
 	Variants struct {
-		NewCopy                   func(src Variant) Variant
-		NewNil                    func() Variant
-		Destroy                   func(self Variant)
-		Call                      func(self Variant, method StringName, args ...Variant) (Variant, error)
-		CallStatic                func(vtype VariantType, method StringName, args ...Variant) (Variant, error)
-		Evaluate                  func(operator Operator, a, b Variant) (ret Variant, ok bool)
-		Set                       func(self, key, val Variant) bool
-		SetNamed                  func(self Variant, key StringName, val Variant) bool
-		SetKeyed                  func(self, key, val Variant) bool
-		SetIndexed                func(self Variant, index Int, val Variant) (ok, oob bool)
-		Get                       func(self, key Variant) (Variant, bool)
-		GetNamed                  func(self Variant, key StringName) (Variant, bool)
-		GetKeyed                  func(self, key Variant) (Variant, bool)
-		GetIndexed                func(self Variant, index Int) (val Variant, ok, oob bool)
-		IteratorInitialize        func(self Variant) (Variant, bool)
-		IteratorNext              func(self Variant, iterator Variant) bool
-		IteratorGet               func(self Variant, iterator Variant) (Variant, bool)
-		Hash                      func(self Variant) Int
-		RecursiveHash             func(self Variant, count Int) Int
-		HashCompare               func(self, variant Variant) bool
-		Booleanize                func(self Variant) bool
-		Duplicate                 func(self Variant, deep bool) Variant
-		Stringify                 func(self Variant) String
-		GetType                   func(self Variant) VariantType
-		HasMethod                 func(self Variant, method StringName) bool
-		HasMember                 func(self VariantType, member StringName) bool
-		HasKey                    func(self Variant, key Variant) (hasKey, valid bool)
-		GetTypeName               func(self VariantType) String
-		CanConvert                func(from VariantType, to VariantType) bool
-		CanConvertStrict          func(from VariantType, to VariantType) bool
 		FromTypeConstructor       func(VariantType) func(ret callframe.Ptr[VariantPointers], arg callframe.Addr)
 		ToTypeConstructor         func(VariantType) func(ret callframe.Addr, arg callframe.Ptr[VariantPointers])
 		PointerOperatorEvaluator  func(op Operator, a, b VariantType) func(a, b, ret callframe.Addr)
@@ -285,7 +235,7 @@ type ExtensionToken uintptr
 
 type InstanceID uint64
 
-type Operator int32
+type Operator = gdextension.VariantOperator
 
 const (
 	Equal Operator = iota

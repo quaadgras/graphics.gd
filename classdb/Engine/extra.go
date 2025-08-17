@@ -5,6 +5,7 @@ import (
 	"runtime"
 
 	gd "graphics.gd/internal"
+	"graphics.gd/internal/gdextension"
 )
 
 // Version returns the version of the Engine.
@@ -60,7 +61,7 @@ func Raise(err error) { //gd:push_error
 	pc, file, line, ok := runtime.Caller(1)
 	if ok {
 		name := runtime.FuncForPC(pc).Name()
-		gd.Global.PrintErrorMessage("", err.Error(), name, file, int32(line), false)
+		gdextension.Host.Log.Error(err.Error(), "", name, file, int32(line), false)
 	} else {
 		gd.PushError(gd.NewVariant(err.Error()))
 	}

@@ -5,6 +5,7 @@ import (
 	"reflect"
 
 	"graphics.gd/internal/callframe"
+	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 	VariantPkg "graphics.gd/variant"
 	AABBType "graphics.gd/variant/AABB"
@@ -308,10 +309,10 @@ func (VariantProxy) Duplicate(raw complex128) VariantPkg.Any {
 	panic("not implemented")
 }
 func (VariantProxy) Type(raw complex128) VariantPkg.Type {
-	return VariantPkg.Type(Global.Variants.GetType(pointers.Load[Variant](raw)))
+	return VariantPkg.Type(pointers.Load[Variant](raw).Type())
 }
 func (VariantProxy) String(raw complex128) string {
-	return Global.Variants.Stringify(pointers.Load[Variant](raw)).String()
+	return pointers.New[String]([1]EnginePointer{EnginePointer(gdextension.Host.Variants.Text(pointers.Get(pointers.Load[Variant](raw))))}).String()
 }
 
 func (VariantProxy) KeepAlive(val complex128) bool {

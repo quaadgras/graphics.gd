@@ -6,6 +6,7 @@ import (
 	"reflect"
 
 	"graphics.gd/internal/callframe"
+	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 
 	float "graphics.gd/variant/Float"
@@ -66,7 +67,11 @@ func (c Callable) Free() {
 }
 
 func (s Variant) Free() {
-	Global.Variants.Destroy(s)
+	ptr, ok := pointers.End(s)
+	if !ok {
+		return
+	}
+	gdextension.Host.Variants.Unsafe.Free(ptr)
 }
 
 type Iterator struct {
@@ -75,15 +80,21 @@ type Iterator struct {
 }
 
 func (iter Iterator) Next() bool {
-	return Global.Variants.IteratorNext(iter.self, iter.iter)
+	var err gdextension.CallError
+	var raw = pointers.Get(iter.iter)
+	next := gdextension.Host.Iterators.Next(pointers.Get(iter.self), gdextension.CallReturns[gdextension.Iterator](&raw), pointers.Get(iter.iter), gdextension.CallReturns[gdextension.CallError](&err))
+	pointers.Set(iter.iter, raw)
+	return next
 }
 
 func (iter Iterator) Value() Variant {
-	val, ok := Global.Variants.IteratorGet(iter.self, iter.iter)
-	if !ok {
+	var err gdextension.CallError
+	var raw gdextension.Variant
+	gdextension.Host.Iterators.Load(pointers.Get(iter.self), gdextension.CallReturns[gdextension.Variant](&raw), pointers.Get(iter.iter), gdextension.CallReturns[gdextension.CallError](&err))
+	if err.Type != 0 {
 		panic("failed to get iterator value")
 	}
-	return val
+	return pointers.New[Variant]([3]uint64(raw))
 }
 
 func variantTypeFromName(s string) (VariantType, reflect.Type) {
@@ -174,7 +185,7 @@ func variantTypeFromName(s string) (VariantType, reflect.Type) {
 func operatoTypeFromName(name string) Operator {
 	switch name {
 	case "Equals":
-		return Equal
+		return gdextension.Equal
 	case "NotEqual":
 		return NotEqual
 	case "Less":

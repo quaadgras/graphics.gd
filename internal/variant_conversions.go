@@ -34,7 +34,7 @@ func NewVariant(v any) Variant {
 // used to fix cases of https://github.com/quaadgras/graphics.gd/issues/147
 func CutVariant(v any, cut bool) Variant {
 	if v == nil {
-		return Global.Variants.NewNil()
+		return Variant{}
 	}
 	var frame = callframe.New()
 	var ret = callframe.Ret[VariantPointers](frame)
@@ -57,11 +57,11 @@ func CutVariant(v any, cut bool) Variant {
 		if instance := value.MethodByName("Instance"); instance.IsValid() && instance.Type().NumOut() == 2 && instance.Type().NumIn() == 0 {
 			result := instance.Call(nil)
 			if !result[1].Bool() {
-				return Global.Variants.NewNil()
+				return Variant{}
 			}
 			obj := result[0].Interface().(IsClass).AsObject()
 			if pointers.Get(obj[0]) == ([3]uint64{}) {
-				return Global.Variants.NewNil()
+				return Variant{}
 			}
 			var arg = callframe.Arg(frame, pointers.Cut(obj[0], cut))
 			Global.variant.FromType[TypeObject](ret, arg.Addr())
@@ -80,12 +80,12 @@ func CutVariant(v any, cut bool) Variant {
 		Global.variant.FromType[TypeVector2](ret, arg.Addr())
 	case reflect.Pointer:
 		if value.IsNil() {
-			return Global.Variants.NewNil()
+			return Variant{}
 		}
 		if rtype.Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
 			obj := value.Interface().(IsClass).AsObject()
 			if pointers.Get(obj[0]) == ([3]uint64{}) {
-				return Global.Variants.NewNil()
+				return Variant{}
 			}
 			var arg = callframe.Arg(frame, pointers.Get(obj[0]))
 			Global.variant.FromType[TypeObject](ret, arg.Addr())
@@ -96,7 +96,7 @@ func CutVariant(v any, cut bool) Variant {
 		if rtype.Elem().Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
 			obj := value.Index(0).Interface().(IsClass).AsObject()
 			if pointers.Get(obj[0]) == ([3]uint64{}) {
-				return Global.Variants.NewNil()
+				return Variant{}
 			}
 			var arg = callframe.Arg(frame, pointers.Cut(obj[0], cut))
 			Global.variant.FromType[TypeObject](ret, arg.Addr())
@@ -145,13 +145,13 @@ func CutVariant(v any, cut bool) Variant {
 		}
 	case reflect.Func:
 		if value.IsNil() {
-			return Global.Variants.NewNil()
+			return Variant{}
 		}
 		var arg = callframe.Arg(frame, NewCallable(value))
 		Global.variant.FromType[TypeCallable](ret, arg.Addr())
 	case reflect.Map:
 		if value.IsNil() {
-			return Global.Variants.NewNil()
+			return Variant{}
 		}
 		var arg = callframe.Arg(frame, pointers.Cut(newDictionary(value), cut))
 		Global.variant.FromType[TypeDictionary](ret, arg.Addr())
@@ -309,85 +309,85 @@ func CutVariant(v any, cut bool) Variant {
 			Global.variant.FromType[TypeObject](ret, arg.Addr())
 		case Callable:
 			if pointers.Get(val) == ([2]uint64{}) {
-				return Global.Variants.NewNil()
+				return Variant{}
 			}
 			var arg = callframe.Arg(frame, pointers.Cut(val, cut))
 			Global.variant.FromType[TypeCallable](ret, arg.Addr())
 		case Signal:
 			if pointers.Get(val) == ([2]uint64{}) {
-				return Global.Variants.NewNil()
+				return Variant{}
 			}
 			var arg = callframe.Arg(frame, pointers.Cut(val, cut))
 			Global.variant.FromType[TypeSignal](ret, arg.Addr())
 		case Dictionary:
 			if pointers.Get(val) == ([1]EnginePointer{}) {
-				return Global.Variants.NewNil()
+				return Variant{}
 			}
 			var arg = callframe.Arg(frame, pointers.Cut(val, cut))
 			Global.variant.FromType[TypeDictionary](ret, arg.Addr())
 		case Array:
 			if pointers.Get(val) == ([1]EnginePointer{}) {
-				return Global.Variants.NewNil()
+				return Variant{}
 			}
 			var arg = callframe.Arg(frame, pointers.Cut(val, cut))
 			Global.variant.FromType[TypeArray](ret, arg.Addr())
 		case PackedByteArray:
 			if pointers.Get(val) == (PackedPointers{}) {
-				return Global.Variants.NewNil()
+				return Variant{}
 			}
 			var arg = callframe.Arg(frame, pointers.Cut(val, cut))
 			Global.variant.FromType[TypePackedByteArray](ret, arg.Addr())
 		case PackedInt32Array:
 			if pointers.Get(val) == (PackedPointers{}) {
-				return Global.Variants.NewNil()
+				return Variant{}
 			}
 			var arg = callframe.Arg(frame, pointers.Cut(val, cut))
 			Global.variant.FromType[TypePackedInt32Array](ret, arg.Addr())
 		case PackedInt64Array:
 			if pointers.Get(val) == (PackedPointers{}) {
-				return Global.Variants.NewNil()
+				return Variant{}
 			}
 			var arg = callframe.Arg(frame, pointers.Cut(val, cut))
 			Global.variant.FromType[TypePackedInt64Array](ret, arg.Addr())
 		case PackedFloat32Array:
 			if pointers.Get(val) == (PackedPointers{}) {
-				return Global.Variants.NewNil()
+				return Variant{}
 			}
 			var arg = callframe.Arg(frame, pointers.Cut(val, cut))
 			Global.variant.FromType[TypePackedFloat32Array](ret, arg.Addr())
 		case PackedFloat64Array:
 			if pointers.Get(val) == (PackedPointers{}) {
-				return Global.Variants.NewNil()
+				return Variant{}
 			}
 			var arg = callframe.Arg(frame, pointers.Cut(val, cut))
 			Global.variant.FromType[TypePackedFloat64Array](ret, arg.Addr())
 		case PackedStringArray:
 			if pointers.Get(val) == (PackedPointers{}) {
-				return Global.Variants.NewNil()
+				return Variant{}
 			}
 			var arg = callframe.Arg(frame, pointers.Cut(val, cut))
 			Global.variant.FromType[TypePackedStringArray](ret, arg.Addr())
 		case PackedVector2Array:
 			if pointers.Get(val) == (PackedPointers{}) {
-				return Global.Variants.NewNil()
+				return Variant{}
 			}
 			var arg = callframe.Arg(frame, pointers.Cut(val, cut))
 			Global.variant.FromType[TypePackedVector2Array](ret, arg.Addr())
 		case PackedVector3Array:
 			if pointers.Get(val) == (PackedPointers{}) {
-				return Global.Variants.NewNil()
+				return Variant{}
 			}
 			var arg = callframe.Arg(frame, pointers.Cut(val, cut))
 			Global.variant.FromType[TypePackedVector3Array](ret, arg.Addr())
 		case PackedVector4Array:
 			if pointers.Get(val) == (PackedPointers{}) {
-				return Global.Variants.NewNil()
+				return Variant{}
 			}
 			var arg = callframe.Arg(frame, pointers.Cut(val, cut))
 			Global.variant.FromType[TypePackedVector4Array](ret, arg.Addr())
 		case PackedColorArray:
 			if pointers.Get(val) == (PackedPointers{}) {
-				return Global.Variants.NewNil()
+				return Variant{}
 			}
 			var arg = callframe.Arg(frame, pointers.Cut(val, cut))
 			Global.variant.FromType[TypePackedColorArray](ret, arg.Addr())

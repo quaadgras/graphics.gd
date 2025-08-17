@@ -899,11 +899,11 @@ void gd_log_error(
     char code_buf[100]; const char *code_ptr = fit_string(STRING_POINTER(code), code_len, &code_buf[0], 100);
     char func_buf[100]; const char *func_ptr = fit_string(STRING_POINTER(func), func_len, &func_buf[0], 100);
     char file_buf[100]; const char *file_ptr = fit_string(STRING_POINTER(file), file_len, &file_buf[0], 100);
-    gdextension_print_error_with_message(text_ptr, code_ptr, func_ptr, file_ptr, line, notify_editor);
-    if (text_ptr != text_buf) gdextension_mem_free((void *)text_ptr);
-    if (code_ptr != code_buf) gdextension_mem_free((void *)code_ptr);
-    if (func_ptr != func_buf) gdextension_mem_free((void *)func_ptr);
-    if (file_ptr != file_buf) gdextension_mem_free((void *)file_ptr);
+    gdextension_print_error_with_message(code_ptr, text_ptr, func_ptr, file_ptr, line, notify_editor);
+    if (text_ptr && text_ptr != text_buf) gdextension_mem_free((void *)text_ptr);
+    if (code_ptr && code_ptr != code_buf) gdextension_mem_free((void *)code_ptr);
+    if (func_ptr && func_ptr != func_buf) gdextension_mem_free((void *)func_ptr);
+    if (file_ptr && file_ptr != file_buf) gdextension_mem_free((void *)file_ptr);
 };
 
 void gd_log_warning(
@@ -917,11 +917,11 @@ void gd_log_warning(
     char code_buf[100]; const char *code_ptr = fit_string(STRING_POINTER(code), code_len, &code_buf[0], 100);
     char func_buf[100]; const char *func_ptr = fit_string(STRING_POINTER(func), func_len, &func_buf[0], 100);
     char file_buf[100]; const char *file_ptr = fit_string(STRING_POINTER(file), file_len, &file_buf[0], 100);
-    gdextension_print_warning_with_message(text_ptr, code_ptr, func_ptr, file_ptr, line, notify_editor);
-    if (text_ptr != text_buf) gdextension_mem_free((void *)text_ptr);
-    if (code_ptr != code_buf) gdextension_mem_free((void *)code_ptr);
-    if (func_ptr != func_buf) gdextension_mem_free((void *)func_ptr);
-    if (file_ptr != file_buf) gdextension_mem_free((void *)file_ptr);
+    gdextension_print_warning_with_message(code_ptr, text_ptr, func_ptr, file_ptr, line, notify_editor);
+    if (text_ptr && text_ptr != text_buf) gdextension_mem_free((void *)text_ptr);
+    if (code_ptr && code_ptr != code_buf) gdextension_mem_free((void *)code_ptr);
+    if (func_ptr && func_ptr != func_buf) gdextension_mem_free((void *)func_ptr);
+    if (file_ptr && file_ptr != file_buf) gdextension_mem_free((void *)file_ptr);
 };
 
 uintptr_t gd_memory_malloc(INT size) {

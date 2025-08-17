@@ -3,6 +3,7 @@ package gd
 import (
 	"unsafe"
 
+	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 )
 
@@ -33,11 +34,63 @@ type EnginePointer = uint32
 type PackedPointers = [1]uint64
 
 func UnsafeGet[T any](frame Address, index int) T {
-	return *(*T)(Global.Memory.Index(frame, index, unsafe.Sizeof([1]T{})))
+	var addr = gdextension.Pointer(frame)
+	var zero T
+	var done = 0
+	var size = unsafe.Sizeof([1]T{})
+	for size > 0 {
+		switch {
+		case size >= 8:
+			*(*uint64)(unsafe.Add(unsafe.Pointer(&zero), done)) = gdextension.Host.Memory.Load.Uint64(addr)
+			addr += 8
+			done += 8
+			size -= 8
+		case size >= 4:
+			*(*uint32)(unsafe.Add(unsafe.Pointer(&zero), done)) = gdextension.Host.Memory.Load.Uint32(addr)
+			addr += 4
+			done += 4
+			size -= 4
+		case size >= 2:
+			*(*uint16)(unsafe.Add(unsafe.Pointer(&zero), done)) = gdextension.Host.Memory.Load.Uint16(addr)
+			addr += 2
+			done += 2
+			size -= 2
+		case size >= 1:
+			*(*uint8)(unsafe.Add(unsafe.Pointer(&zero), done)) = gdextension.Host.Memory.Load.Byte(addr)
+			addr += 1
+			done += 1
+			size -= 1
+		}
+	}
+	return zero
 }
 
 func UnsafeSet[T any](frame Address, value T) {
-	ptr := Global.Memory.Index(frame, -1, unsafe.Sizeof([1]T{}))
-	*(*T)(ptr) = value
-	Global.Memory.Write(frame, ptr, unsafe.Sizeof([1]T{}))
+	var addr = gdextension.Pointer(frame)
+	var size = unsafe.Sizeof([1]T{})
+	var done = 0
+	for size > 0 {
+		switch {
+		case size >= 8:
+			gdextension.Host.Memory.Edit.Uint64(addr, *(*uint64)(unsafe.Add(unsafe.Pointer(&value), done)))
+			addr += 8
+			done += 8
+			size -= 8
+		case size >= 4:
+			gdextension.Host.Memory.Edit.Uint32(addr, *(*uint32)(unsafe.Add(unsafe.Pointer(&value), done)))
+			addr += 4
+			done += 4
+			size -= 4
+		case size >= 2:
+			gdextension.Host.Memory.Edit.Uint16(addr, *(*uint16)(unsafe.Add(unsafe.Pointer(&value), done)))
+			addr += 2
+			done += 2
+			size -= 2
+		case size >= 1:
+			gdextension.Host.Memory.Edit.Byte(addr, *(*uint8)(unsafe.Add(unsafe.Pointer(&value), done)))
+			addr += 1
+			done += 1
+			size -= 1
+		}
+	}
 }

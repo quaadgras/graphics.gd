@@ -154,7 +154,13 @@ func LoadResult[T any](shape gdextension.Shape, result gdextension.CallReturns[T
 
 func CopyVariants[T any](args gdextension.CallAccepts[T], n int) gdextension.Pointer {
 	setup()
-	return 0
+	var offset int
+	var data = unsafe.Pointer(args)
+	for i := range n {
+		gdextension.Host.Memory.Edit.Bits128(arguments+gdextension.Pointer(offset), *(*[2]uint64)(unsafe.Add(data, uintptr(i*24))))
+		gdextension.Host.Memory.Edit.Uint64(arguments+gdextension.Pointer(offset+16), *(*uint64)(unsafe.Add(data, uintptr(i*24+16))))
+	}
+	return arguments
 }
 
 func Int64frombits(bits uint64) int64 {

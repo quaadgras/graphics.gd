@@ -118,14 +118,6 @@ func linkJS(API *gd.API) {
 			Value: version.Get("string").String(),
 		}
 	}
-	print_error_message := dlsym("print_error_with_message")
-	API.PrintErrorMessage = func(code string, message string, function string, file string, line int32, notifyEditor bool) {
-		print_error_message.Invoke(code, message, function, file, line, notifyEditor)
-	}
-	get_native_struct_size := dlsym("get_native_struct_size")
-	API.GetNativeStructSize = func(name gd.StringName) uintptr {
-		return uintptr(get_native_struct_size.Invoke(pointers.Get(name)[0]).Int())
-	}
 	get_library_path := dlsym("get_library_path")
 	API.GetLibraryPath = func(token gd.ExtensionToken) gd.String {
 		return pointers.Let[gd.String]([1]gd.EnginePointer{gd.EnginePointer(get_library_path.Invoke(uint32(token)).Int())})
@@ -164,44 +156,6 @@ func linkJS(API *gd.API) {
 			raw[i] = uint32(read_result_buffer.Invoke(0, 0, i).Int())
 		}
 		return pointers.New[gd.Callable](*(*[2]uint64)(unsafe.Pointer(&raw)))
-	}
-	variant_copy := dlsym("variant_new_copy")
-	API.Variants.NewCopy = func(src gd.Variant) gd.Variant {
-		var raw = pointers.Get(src)
-		var vnt = *(*[6]uint32)(unsafe.Pointer(&raw))
-		variant_copy.Invoke(
-			vnt[0], vnt[1], vnt[2], vnt[3], vnt[4], vnt[5],
-		)
-		var result [6]uint32
-		for j := range result {
-			result[j] = uint32(read_result_buffer.Invoke(0, 0, j).Int())
-		}
-		return pointers.New[gd.Variant](*(*[3]uint64)(unsafe.Pointer(&raw)))
-	}
-	variant_get_type := dlsym("variant_get_type")
-	API.Variants.GetType = func(v gd.Variant) gd.VariantType {
-		var raw = pointers.Get(v)
-		var vnt = *(*[6]uint32)(unsafe.Pointer(&raw))
-		return gd.VariantType(variant_get_type.Invoke(
-			vnt[0], vnt[1], vnt[2], vnt[3], vnt[4], vnt[5],
-		).Int())
-	}
-	variant_destroy := dlsym("variant_destroy")
-	API.Variants.Destroy = func(v gd.Variant) {
-		var raw = pointers.Get(v)
-		var vnt = *(*[6]uint32)(unsafe.Pointer(&raw))
-		variant_destroy.Invoke(
-			vnt[0], vnt[1], vnt[2], vnt[3], vnt[4], vnt[5],
-		)
-	}
-	variant_stringify := dlsym("variant_stringify")
-	API.Variants.Stringify = func(v gd.Variant) gd.String {
-		var raw = pointers.Get(v)
-		var vnt = *(*[6]uint32)(unsafe.Pointer(&raw))
-		result := variant_stringify.Invoke(
-			vnt[0], vnt[1], vnt[2], vnt[3], vnt[4], vnt[5],
-		).Int()
-		return pointers.Let[gd.String]([1]gd.EnginePointer{gd.EnginePointer(result)})
 	}
 	variant_get_ptr_constructor := dlsym("variant_get_ptr_constructor")
 	call_variant_get_ptr_constructor := dlsym("call_variant_get_ptr_constructor")
@@ -262,10 +216,6 @@ func linkJS(API *gd.API) {
 			call_variant_get_ptr_utility_function.Invoke(fn, c)
 			readCallFrameResult(0, ret)
 		}
-	}
-	variant_get_type_name := dlsym("variant_get_type_name")
-	API.Variants.GetTypeName = func(vt gd.VariantType) gd.String {
-		return pointers.Let[gd.String]([1]gd.EnginePointer{gd.EnginePointer(variant_get_type_name.Invoke(uint32(vt)).Int())})
 	}
 	variant_get_ptr_builtin_method := dlsym("variant_get_ptr_builtin_method")
 	call_variant_get_ptr_builtin_method := dlsym("call_variant_get_ptr_builtin_method")
@@ -500,15 +450,6 @@ func linkJS(API *gd.API) {
 	API.Object.Destroy = func(o [1]gd.Object) {
 		object_destroy.Invoke(pointers.Get(o[0])[0])
 	}
-	variant_new_nil := dlsym("variant_new_nil")
-	API.Variants.NewNil = func() gd.Variant {
-		variant_new_nil.Invoke()
-		var variant [6]uint32
-		for i := 0; i < len(variant); i++ {
-			variant[i] = uint32(read_result_buffer.Invoke(0, 0, i).Int())
-		}
-		return pointers.New[gd.Variant](*(*[3]uint64)(unsafe.Pointer(&variant)))
-	}
 	API.PackedByteArray = makePackedFunctions[gd.PackedByteArray, byte]("byte_array")
 	API.PackedInt32Array = makePackedFunctions[gd.PackedInt32Array, int32]("int32_array")
 	API.PackedByteArray = makePackedFunctions[gd.PackedByteArray, byte]("byte_array")
@@ -637,25 +578,6 @@ func linkJS(API *gd.API) {
 			}
 		}
 		classdb_register_extension_class_method.Invoke(uint32(library), pointers.Get(class)[0], converted)
-	}
-	var scratch [16 * 16]uint32
-	memory_index := dlsym("mem_index")
-	API.Memory.Index = func(frame gd.Address, index int, size uintptr) unsafe.Pointer {
-		if index < 0 {
-			return unsafe.Pointer(&scratch)
-		}
-		memory_index.Invoke(uint32(frame), uint32(index), uint32(size))
-		for i := uintptr(0); i < size/4; i++ {
-			scratch[i] = uint32(read_result_buffer.Invoke(0, 0, i).Int())
-		}
-		return unsafe.Pointer(&scratch)
-	}
-	memory_write := dlsym("mem_write")
-	API.Memory.Write = func(frame gd.Address, ptr unsafe.Pointer, size uintptr) {
-		for i := uintptr(0); i < (size/4)+1; i++ {
-			write_params_buffer.Invoke(0, 0, i, scratch[i])
-		}
-		memory_write.Invoke(uint32(frame), uint32(size))
 	}
 
 	dictionary_operator_index_set := dlsym("dictionary_operator_index_set")

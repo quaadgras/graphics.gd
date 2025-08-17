@@ -986,13 +986,7 @@ func init() {
 		G float32
 		B float32
 		A float32
-	}]) {
-		setup()
-		mem2 := gdmemory.MakeResult(gdextension.SizeBytes16)
-		gd_packed_color_array_access.Invoke(uint32(p0[0]), uint32(p0[1]), p1, uint32(mem2))
-		gdmemory.LoadResult(gdextension.SizeBytes16, p2, mem2)
-		return
-	}
+	}]) { setup(); mem2 := gdmemory.MakeResult(gdextension.SizeBytes16); gd_packed_color_array_access.Invoke(uint32(p0[0]), uint32(p0[1]), p1, uint32(mem2)); gdmemory.LoadResult(gdextension.SizeBytes16, p2, mem2); return }
 	gdextension.Host.Packed.Float32s.Unsafe = func(p0 gdextension.PackedArray) (result gdextension.Pointer) {
 		setup()
 		result = gdextension.Pointer(gd_packed_float32_array_unsafe.Invoke(uint32(p0[0]), uint32(p0[1])).Int())
@@ -1063,13 +1057,7 @@ func init() {
 	gdextension.Host.Packed.Vector2s.Access = func(p0 gdextension.PackedArray, p1 int, p2 gdextension.CallReturns[struct {
 		X float32
 		Y float32
-	}]) {
-		setup()
-		mem2 := gdmemory.MakeResult(gdextension.SizeBytes8)
-		gd_packed_vector2_array_access.Invoke(uint32(p0[0]), uint32(p0[1]), p1, uint32(mem2))
-		gdmemory.LoadResult(gdextension.SizeBytes8, p2, mem2)
-		return
-	}
+	}]) { setup(); mem2 := gdmemory.MakeResult(gdextension.SizeBytes8); gd_packed_vector2_array_access.Invoke(uint32(p0[0]), uint32(p0[1]), p1, uint32(mem2)); gdmemory.LoadResult(gdextension.SizeBytes8, p2, mem2); return }
 	gdextension.Host.Packed.Vector3s.Unsafe = func(p0 gdextension.PackedArray) (result gdextension.Pointer) {
 		setup()
 		result = gdextension.Pointer(gd_packed_vector3_array_unsafe.Invoke(uint32(p0[0]), uint32(p0[1])).Int())
@@ -1079,13 +1067,7 @@ func init() {
 		X float32
 		Y float32
 		Z float32
-	}]) {
-		setup()
-		mem2 := gdmemory.MakeResult(gdextension.SizeBytes12)
-		gd_packed_vector3_array_access.Invoke(uint32(p0[0]), uint32(p0[1]), p1, uint32(mem2))
-		gdmemory.LoadResult(gdextension.SizeBytes12, p2, mem2)
-		return
-	}
+	}]) { setup(); mem2 := gdmemory.MakeResult(gdextension.SizeBytes12); gd_packed_vector3_array_access.Invoke(uint32(p0[0]), uint32(p0[1]), p1, uint32(mem2)); gdmemory.LoadResult(gdextension.SizeBytes12, p2, mem2); return }
 	gdextension.Host.Packed.Vector4s.Unsafe = func(p0 gdextension.PackedArray) (result gdextension.Pointer) {
 		setup()
 		result = gdextension.Pointer(gd_packed_vector4_array_unsafe.Invoke(uint32(p0[0]), uint32(p0[1])).Int())
@@ -1096,13 +1078,7 @@ func init() {
 		Y float32
 		Z float32
 		W float32
-	}]) {
-		setup()
-		mem2 := gdmemory.MakeResult(gdextension.SizeBytes16)
-		gd_packed_vector4_array_access.Invoke(uint32(p0[0]), uint32(p0[1]), p1, uint32(mem2))
-		gdmemory.LoadResult(gdextension.SizeBytes16, p2, mem2)
-		return
-	}
+	}]) { setup(); mem2 := gdmemory.MakeResult(gdextension.SizeBytes16); gd_packed_vector4_array_access.Invoke(uint32(p0[0]), uint32(p0[1]), p1, uint32(mem2)); gdmemory.LoadResult(gdextension.SizeBytes16, p2, mem2); return }
 	gdextension.Host.RefCounted.Get = func(p0 gdextension.RefCounted) (result gdextension.Object) {
 		setup()
 		result = gdextension.Object(gd_ref_get_object.Invoke(uint32(p0)).Int())
@@ -1163,43 +1139,43 @@ func init() {
 		result = gdextension.String(gd_string_decode_wide.Invoke(string(p0), len(p0)).Int())
 		return
 	}
-	gdextension.Host.Strings.Encode.Latin1 = func(p0 gdextension.String, p1 []byte) (result int64) {
+	gdextension.Host.Strings.Encode.Latin1 = func(p0 gdextension.String, p1 []byte) (result int) {
 		setup()
 		buf1 := js.Global().Get("Uint8Array").New(len(p1))
 		js.CopyBytesToJS(buf1, p1)
-		result = int64(gdmemory.Int64frombits(math.Float64bits(gd_string_encode_latin1.Invoke(uint32(p0), buf1, len(p1)).Float())))
+		result = int(gd_string_encode_latin1.Invoke(uint32(p0), buf1, len(p1)).Int())
 		js.CopyBytesToGo(p1, buf1)
 		return
 	}
-	gdextension.Host.Strings.Encode.UTF8 = func(p0 gdextension.String, p1 []byte) (result int64) {
+	gdextension.Host.Strings.Encode.UTF8 = func(p0 gdextension.String, p1 []byte) (result int) {
 		setup()
 		buf1 := js.Global().Get("Uint8Array").New(len(p1))
 		js.CopyBytesToJS(buf1, p1)
-		result = int64(gdmemory.Int64frombits(math.Float64bits(gd_string_encode_utf8.Invoke(uint32(p0), buf1, len(p1)).Float())))
+		result = int(gd_string_encode_utf8.Invoke(uint32(p0), buf1, len(p1)).Int())
 		js.CopyBytesToGo(p1, buf1)
 		return
 	}
-	gdextension.Host.Strings.Encode.UTF16 = func(p0 gdextension.String, p1 []byte) (result int64) {
+	gdextension.Host.Strings.Encode.UTF16 = func(p0 gdextension.String, p1 []byte) (result int) {
 		setup()
 		buf1 := js.Global().Get("Uint8Array").New(len(p1))
 		js.CopyBytesToJS(buf1, p1)
-		result = int64(gdmemory.Int64frombits(math.Float64bits(gd_string_encode_utf16.Invoke(uint32(p0), buf1, len(p1)).Float())))
+		result = int(gd_string_encode_utf16.Invoke(uint32(p0), buf1, len(p1)).Int())
 		js.CopyBytesToGo(p1, buf1)
 		return
 	}
-	gdextension.Host.Strings.Encode.UTF32 = func(p0 gdextension.String, p1 []byte) (result int64) {
+	gdextension.Host.Strings.Encode.UTF32 = func(p0 gdextension.String, p1 []byte) (result int) {
 		setup()
 		buf1 := js.Global().Get("Uint8Array").New(len(p1))
 		js.CopyBytesToJS(buf1, p1)
-		result = int64(gdmemory.Int64frombits(math.Float64bits(gd_string_encode_utf32.Invoke(uint32(p0), buf1, len(p1)).Float())))
+		result = int(gd_string_encode_utf32.Invoke(uint32(p0), buf1, len(p1)).Int())
 		js.CopyBytesToGo(p1, buf1)
 		return
 	}
-	gdextension.Host.Strings.Encode.Wide = func(p0 gdextension.String, p1 []byte) (result int64) {
+	gdextension.Host.Strings.Encode.Wide = func(p0 gdextension.String, p1 []byte) (result int) {
 		setup()
 		buf1 := js.Global().Get("Uint8Array").New(len(p1))
 		js.CopyBytesToJS(buf1, p1)
-		result = int64(gdmemory.Int64frombits(math.Float64bits(gd_string_encode_wide.Invoke(uint32(p0), buf1, len(p1)).Float())))
+		result = int(gd_string_encode_wide.Invoke(uint32(p0), buf1, len(p1)).Int())
 		js.CopyBytesToGo(p1, buf1)
 		return
 	}

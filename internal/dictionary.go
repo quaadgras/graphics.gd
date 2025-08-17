@@ -12,11 +12,11 @@ import (
 )
 
 func (d Dictionary) Index(key Variant) Variant {
-	return Global.Dictionary.Index(d, key)
+	return Global.Dictionary.Index(d, key).Copy()
 }
 
 func (d Dictionary) SetIndex(key Variant, value Variant) {
-	Global.Dictionary.SetIndex(d, key, value)
+	Global.Dictionary.SetIndex(d, key, value.Copy())
 }
 
 func (d Dictionary) Free() {

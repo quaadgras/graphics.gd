@@ -227,11 +227,11 @@ type API struct {
 			Wide   func(s string) String                     `gd:"string_decode_wide"`
 		}
 		Encode struct {
-			Latin1 func(s String, buf []byte) int64 `gd:"string_encode_latin1"`
-			UTF8   func(s String, buf []byte) int64 `gd:"string_encode_utf8"`
-			UTF16  func(s String, buf []byte) int64 `gd:"string_encode_utf16"`
-			UTF32  func(s String, buf []byte) int64 `gd:"string_encode_utf32"`
-			Wide   func(s String, buf []byte) int64 `gd:"string_encode_wide"`
+			Latin1 func(s String, buf []byte) int `gd:"string_encode_latin1"`
+			UTF8   func(s String, buf []byte) int `gd:"string_encode_utf8"`
+			UTF16  func(s String, buf []byte) int `gd:"string_encode_utf16"`
+			UTF32  func(s String, buf []byte) int `gd:"string_encode_utf32"`
+			Wide   func(s String, buf []byte) int `gd:"string_encode_wide"`
 		}
 		Append struct {
 			String func(s String, other String) String `gd:"string_append"`
@@ -436,7 +436,6 @@ type ObjectID uint64
 type RefCounted Pointer
 
 type Variant [3]uint64
-type VariantType uint32
 type VariantOperator uint32
 
 type Iterator [3]uint64
@@ -630,6 +629,15 @@ const (
 	SizeBytes128
 )
 
+type VariantType uint32
+
+func (vtype VariantType) String() string {
+	name := Host.VariantTypes.Name(vtype)
+	var buf = make([]byte, 32)
+	n := Host.Strings.Encode.UTF8(name, buf)
+	return unsafe.String(&buf[0], min(n, len(buf)))
+}
+
 const (
 	TypeNil                VariantType = 0
 	TypeBool               VariantType = 1
@@ -798,4 +806,30 @@ type CallError struct {
 	Type     CallErrorType
 	Argument int32
 	Expected int32
+}
+
+func (err CallError) Err() error {
+	if err.Type == CallOK {
+		return nil
+	}
+	return err
+}
+
+func (err CallError) Error() string {
+	switch err.Type {
+	case CallInvalidMethod:
+		return "Call Invalid Method"
+	case CallInvalidArguments:
+		return "Call Invalid Arguments"
+	case CallTooManyArguments:
+		return "Call Too Many Arguments"
+	case CallTooFewArguments:
+		return "Call Too Few Arguments"
+	case CallInstanceIsNull:
+		return "Call Instance Is Null"
+	case CallMethodNotConst:
+		return "Call Method Not Const"
+	default:
+		return "Unknown Call Error"
+	}
 }

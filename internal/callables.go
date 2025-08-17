@@ -58,7 +58,7 @@ func NewCallable(fn any) Callable {
 		}
 		results := rvalue.Call(vargs)
 		if len(results) == 0 {
-			return Global.Variants.NewNil(), nil
+			return Variant{}, nil
 		}
 		result := results[0].Interface()
 		return CutVariant(result, true), nil

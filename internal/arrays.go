@@ -20,11 +20,11 @@ func IntsCollectAs[T, S ~int | ~int64 | ~int32](seq iter.Seq[S]) []T {
 }
 
 func (a Array) Index(index int64) Variant {
-	return Global.Array.Index(a, index)
+	return Global.Array.Index(a, index).Copy()
 }
 
 func (a Array) SetIndex(index int64, value Variant) {
-	Global.Array.SetIndex(a, index, value)
+	Global.Array.SetIndex(a, index, value.Copy())
 	pointers.End(value)
 }
 

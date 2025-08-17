@@ -7,6 +7,7 @@ import (
 	"reflect"
 	"slices"
 
+	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 	VariantPkg "graphics.gd/variant"
 	ArrayType "graphics.gd/variant/Array"
@@ -30,7 +31,7 @@ func convertVariantToDesiredGoType(value Variant, rtype reflect.Type) (reflect.V
 	}
 	switch rtype.Kind() {
 	case reflect.Bool:
-		return reflect.ValueOf(Global.Variants.Booleanize(value)).Convert(rtype), nil
+		return reflect.ValueOf(gdextension.Host.Variants.Bool(pointers.Get(value))).Convert(rtype), nil
 	case reflect.Array:
 		if rtype.Elem().Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
 			if value.Type() != TypeObject {

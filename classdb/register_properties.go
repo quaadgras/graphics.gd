@@ -235,7 +235,7 @@ func (instance *instanceImplementation) Get(name gd.StringName) (gd.Variant, boo
 	}
 	if field.Type().Implements(reflect.TypeFor[interface{ superType() reflect.Type }]()) {
 		if field.IsZero() {
-			return gd.Global.Variants.NewNil(), false
+			return gd.Variant{}, false
 		}
 		obj := field.Addr().Interface().(interface{ AsObject() [1]gd.Object }).AsObject()[0]
 		vary := gd.NewVariant(obj)

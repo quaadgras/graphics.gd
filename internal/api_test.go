@@ -10,6 +10,8 @@ import (
 	"graphics.gd/classdb"
 	"graphics.gd/classdb/AudioEffectInstance"
 	gd "graphics.gd/internal"
+	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/pointers"
 	"graphics.gd/startup"
 )
 
@@ -53,8 +55,13 @@ func TestNativeStructSize(t *testing.T) {
 		"PhysicsServer3DExtensionMotionCollision": unsafe.Sizeof(gd.PhysicsServer3DExtensionMotionCollision{}),
 		"PhysicsServer3DExtensionMotionResult":    unsafe.Sizeof(gd.PhysicsServer3DExtensionMotionResult{}),
 	} {
-		if size := gd.Global.GetNativeStructSize(gd.NewStringName(name)); size != expectation {
+		if size := gdextension.Host.Memory.Sizeof(gdextension.StringName(pointers.Get(gd.NewStringName(name))[0])); uintptr(size) != expectation {
 			t.Fatalf("Our size of %v is %v, but Godot's is %v", name, expectation, size)
 		}
 	}
+}
+
+func TestLog(t *testing.T) {
+	gdextension.Host.Log.Error("This is a test error message", "go", "gd_test.TestLog", "gd_test.go", 42, true)
+	gdextension.Host.Log.Warning("This is a test warning message", "go", "gd_test.TestLog", "gd_test.go", 43, true)
 }
