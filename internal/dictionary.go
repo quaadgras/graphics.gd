@@ -6,17 +6,20 @@ import (
 	"reflect"
 
 	"graphics.gd/internal/callframe"
+	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 	VariantPkg "graphics.gd/variant"
 	DictionaryType "graphics.gd/variant/Dictionary"
 )
 
 func (d Dictionary) Index(key Variant) Variant {
-	return Global.Dictionary.Index(d, key).Copy()
+	var raw [3]uint64
+	gdextension.Host.Dictionaries.Get(gdextension.Dictionary(pointers.Get(d)[0]), pointers.Get(key), gdextension.CallReturns[gdextension.Variant](&raw))
+	return pointers.Raw[Variant](raw).Copy()
 }
 
 func (d Dictionary) SetIndex(key Variant, value Variant) {
-	Global.Dictionary.SetIndex(d, key, value.Copy())
+	gdextension.Host.Dictionaries.Set(gdextension.Dictionary(pointers.Get(d)[0]), pointers.Get(key), pointers.Get(value))
 }
 
 func (d Dictionary) Free() {

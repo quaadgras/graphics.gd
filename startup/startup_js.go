@@ -90,23 +90,6 @@ func linkJS(API *gd.API) {
 	write_params_buffer = dlsym("write_params_buffer")
 	write_params_buffer16 = dlsym("write_params_buffer16")
 
-	string_name_new := dlsym("string_name_new")
-	API.StringNames.New = func(s string) gd.StringName {
-		return pointers.New[gd.StringName]([1]gd.EnginePointer{gd.EnginePointer(string_name_new.Invoke(s).Int())})
-	}
-	string_new := dlsym("string_new")
-	API.Strings.New = func(s string) gd.String {
-		return pointers.New[gd.String]([1]gd.EnginePointer{gd.EnginePointer(string_new.Invoke(s).Int())})
-	}
-	string_get := dlsym("string_get")
-	API.Strings.Get = func(s gd.String) string {
-		return string_get.Invoke(pointers.Get(s)[0], s.Len()).String()
-	}
-	string_operator_plus_eq_string := dlsym("string_operator_plus_eq_string")
-	API.Strings.Append = func(s gd.String, other gd.String) {
-		result := uint32(string_operator_plus_eq_string.Invoke(pointers.Get(s)[0], pointers.Get(other)[0]).Int())
-		pointers.Set(s, [1]gd.EnginePointer{gd.EnginePointer(result)})
-	}
 	get_godot_version := dlsym("get_godot_version")
 	API.GetGodotVersion = func() gd.Version {
 		version := js.Global().Get("Object").New()
@@ -578,26 +561,6 @@ func linkJS(API *gd.API) {
 			}
 		}
 		classdb_register_extension_class_method.Invoke(uint32(library), pointers.Get(class)[0], converted)
-	}
-
-	dictionary_operator_index_set := dlsym("dictionary_operator_index_set")
-	API.Dictionary.SetIndex = func(dict gd.Dictionary, k, v gd.Variant) {
-		raw_key := pointers.Get(k)
-		key := *(*[6]uint32)(unsafe.Pointer(&raw_key))
-		raw_val := pointers.Get(v)
-		val := *(*[6]uint32)(unsafe.Pointer(&raw_val))
-		dictionary_operator_index_set.Invoke(pointers.Get(dict)[0], key[0], key[1], key[2], key[3], key[4], key[5], val[0], val[1], val[2], val[3], val[4], val[5])
-	}
-	dictionary_operator_index := dlsym("dictionary_operator_index")
-	API.Dictionary.Index = func(dict gd.Dictionary, k gd.Variant) gd.Variant {
-		raw_key := pointers.Get(k)
-		key := *(*[6]uint32)(unsafe.Pointer(&raw_key))
-		dictionary_operator_index.Invoke(pointers.Get(dict)[0], key[0], key[1], key[2], key[3], key[4], key[5])
-		var buf [6]uint32
-		for i := range buf {
-			buf[i] = uint32(read_result_buffer.Invoke(0, 0, i).Int())
-		}
-		return pointers.Raw[gd.Variant](*(*[3]uint64)(unsafe.Pointer(&buf))).Copy()
 	}
 }
 

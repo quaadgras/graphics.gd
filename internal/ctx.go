@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/pointers"
 )
 
 // Version returns the version of the Godot API that we are linked in to.
@@ -24,12 +25,12 @@ func GetLibraryPath() string {
 
 // String returns a [String] from a standard UTF8 Go string.
 func NewString(s string) String {
-	return Global.Strings.New(s)
+	return pointers.New[String]([1]EnginePointer{EnginePointer(gdextension.Host.Strings.Decode.UTF8(s))})
 }
 
 // StringName returns a [StringName] from a standard UTF8 Go string.
 func NewStringName(s string) StringName {
-	return Global.StringNames.New(s)
+	return pointers.New[StringName]([1]EnginePointer{EnginePointer(gdextension.Host.Strings.Intern.UTF8(s))})
 }
 
 var traceALL = os.Getenv("GOTRACEBACK") == "all" || os.Getenv("GOTRACEBACK") == "1"

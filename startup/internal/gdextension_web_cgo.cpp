@@ -1192,8 +1192,8 @@ uintptr_t gd_packed_string_array_access(uintptr_t a1, uintptr_t a2, INT i) {
     return *(uintptr_t*)gdextension_packed_string_array_operator_index_const(&packed_array[0], i);
 };
 
-uintptr_t gd_array_set(uintptr_t a, INT i, UINT64 v1, UINT64 v2, UINT64 v3) {
-    uint64_t *variant = (uint64_t*)gdextension_array_operator_index(&a, 0);
+void gd_array_set(uintptr_t a, INT i, UINT64 v1, UINT64 v2, UINT64 v3) {
+    uint64_t *variant = (uint64_t*)gdextension_array_operator_index(&a, i);
     variant[0] = UINT64_FROM(v1);
     variant[1] = UINT64_FROM(v2);
     variant[2] = UINT64_FROM(v3);
@@ -1366,20 +1366,14 @@ bool gd_variant_type_convertable(uint32_t a, uint32_t b, bool strict) {
 };
 
 void gd_variant_type_setup_array(uintptr_t array, uint32_t vtype, uintptr_t class_name, UINT64 s1, UINT64 s2, UINT64 s3) {
-    uint64_t *script_ptr = NULL;
     uint64_t script[3] = {UINT64_FROM(s1), UINT64_FROM(s2), UINT64_FROM(s3)};
-    if (s1 || s2 || s3) script_ptr = &script[0];
-    gdextension_array_set_typed(&array, (GDExtensionVariantType)vtype, &class_name, script_ptr);
+    gdextension_array_set_typed(&array, (GDExtensionVariantType)vtype, &class_name, &script[0]);
 };
 
 void gd_variant_type_setup_dictionary(uintptr_t dict, uint32_t ktype, uintptr_t kclass_name, UINT64 ks1, UINT64 ks2, UINT64 ks3, uint32_t vtype, uintptr_t vclass_name, UINT64 vs1, UINT64 vs2, UINT64 vs3) {
-    uint64_t *k_script_ptr = NULL;
     uint64_t k_script[3] = {UINT64_FROM(ks1), UINT64_FROM(ks2), UINT64_FROM(ks3)};
-    if (ks1 || ks2 || ks3) k_script_ptr = &k_script[0];
-    uint64_t *v_script_ptr = NULL;
     uint64_t v_script[3] = {UINT64_FROM(vs1), UINT64_FROM(vs2), UINT64_FROM(vs3)};
-    if (vs1 || vs2 || vs3) v_script_ptr = &v_script[0];
-    gdextension_dictionary_set_typed(&dict, (GDExtensionVariantType)ktype, &kclass_name, k_script_ptr, (GDExtensionVariantType)vtype, &vclass_name, v_script_ptr);
+    gdextension_dictionary_set_typed(&dict, (GDExtensionVariantType)ktype, &kclass_name, &k_script[0], (GDExtensionVariantType)vtype, &vclass_name, &v_script[0]);
 };
 
 void gd_variant_type_fetch_constant(uint32_t vtype, uintptr_t name, ANY result) {
@@ -1708,8 +1702,8 @@ EMSCRIPTEN_BINDINGS(my_module) {
 	function("gd_packed_int64_array_access", &gd_packed_int64_array_access, allow_raw_pointers());
 	function("gd_packed_string_array_unsafe", &gd_packed_string_array_unsafe, allow_raw_pointers());
 	function("gd_packed_string_array_access", &gd_packed_string_array_access, allow_raw_pointers());
-	function("gd_packed_variant_array_unsafe", &gd_packed_variant_array_unsafe, allow_raw_pointers());
-	function("gd_packed_variant_array_access", &gd_packed_variant_array_access, allow_raw_pointers());
+	function("gd_array_set", &gd_array_set, allow_raw_pointers());
+	function("gd_array_get", &gd_array_get, allow_raw_pointers());
 	function("gd_packed_vector2_array_unsafe", &gd_packed_vector2_array_unsafe, allow_raw_pointers());
 	function("gd_packed_vector2_array_access", &gd_packed_vector2_array_access, allow_raw_pointers());
 	function("gd_packed_vector3_array_unsafe", &gd_packed_vector3_array_unsafe, allow_raw_pointers());

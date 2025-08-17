@@ -289,8 +289,8 @@ type API struct {
 		Set func(p Array, idx int, value Variant)               `gd:"array_set"`
 	}
 	Dictionaries struct {
-		Access func(dict Dictionary, index Variant, result CallReturns[Variant]) `gd:"packed_dictionary_access"`
-		Modify func(dict Dictionary, index, value Variant)                       `gd:"packed_dictionary_modify"`
+		Get func(dict Dictionary, index Variant, result CallReturns[Variant]) `gd:"packed_dictionary_access"`
+		Set func(dict Dictionary, index, value Variant)                       `gd:"packed_dictionary_modify"`
 	}
 	Callables struct {
 		Create func(id CallableID, object ObjectID, result CallReturns[Callable]) `gd:"callable_create"`

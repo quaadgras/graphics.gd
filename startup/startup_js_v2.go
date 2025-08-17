@@ -711,14 +711,14 @@ func init() {
 		js.CopyBytesToGo(p1, buf1)
 		return
 	}
-	gdextension.Host.Dictionaries.Access = func(p0 gdextension.Dictionary, p1 gdextension.Variant, p2 gdextension.CallReturns[gdextension.Variant]) {
+	gdextension.Host.Dictionaries.Get = func(p0 gdextension.Dictionary, p1 gdextension.Variant, p2 gdextension.CallReturns[gdextension.Variant]) {
 		setup()
 		mem2 := gdmemory.MakeResult(gdextension.SizeBytes24)
 		gd_packed_dictionary_access.Invoke(uint32(p0), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p1[0]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p1[1]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p1[2]))), uint32(mem2))
 		gdmemory.LoadResult(gdextension.SizeBytes24, p2, mem2)
 		return
 	}
-	gdextension.Host.Dictionaries.Modify = func(p0 gdextension.Dictionary, p1 gdextension.Variant, p2 gdextension.Variant) {
+	gdextension.Host.Dictionaries.Set = func(p0 gdextension.Dictionary, p1 gdextension.Variant, p2 gdextension.Variant) {
 		setup()
 		gd_packed_dictionary_modify.Invoke(uint32(p0), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p1[0]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p1[1]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p1[2]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p2[0]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p2[1]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p2[2]))))
 		return

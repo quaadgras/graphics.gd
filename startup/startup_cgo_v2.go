@@ -374,11 +374,11 @@ func init() {
 		result = int(C.gd_classdb_XMLParser_load(C.uintptr_t(p0), (*C.char)(unsafe.Pointer(unsafe.SliceData(p1))), C.int64_t(len(p1))))
 		return
 	}
-	gdextension.Host.Dictionaries.Access = func(p0 gdextension.Dictionary, p1 gdextension.Variant, p2 gdextension.CallReturns[gdextension.Variant]) {
+	gdextension.Host.Dictionaries.Get = func(p0 gdextension.Dictionary, p1 gdextension.Variant, p2 gdextension.CallReturns[gdextension.Variant]) {
 		C.gd_packed_dictionary_access(C.uintptr_t(p0), C.uint64_t(p1[0]), C.uint64_t(p1[1]), C.uint64_t(p1[2]), unsafe.Pointer(p2))
 		return
 	}
-	gdextension.Host.Dictionaries.Modify = func(p0 gdextension.Dictionary, p1 gdextension.Variant, p2 gdextension.Variant) {
+	gdextension.Host.Dictionaries.Set = func(p0 gdextension.Dictionary, p1 gdextension.Variant, p2 gdextension.Variant) {
 		C.gd_packed_dictionary_modify(C.uintptr_t(p0), C.uint64_t(p1[0]), C.uint64_t(p1[1]), C.uint64_t(p1[2]), C.uint64_t(p2[0]), C.uint64_t(p2[1]), C.uint64_t(p2[2]))
 		return
 	}

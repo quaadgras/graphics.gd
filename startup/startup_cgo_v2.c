@@ -816,7 +816,8 @@ INT64 gd_classdb_XMLParser_load(uintptr_t XMLParser, BUFFER buf, INT len) {
 
 void gd_packed_dictionary_access(uintptr_t dict, UINT64 k1, UINT64 k2, UINT64 k3, ANY args) {
     uint64_t key[3] = {UINT64_FROM(k1), UINT64_FROM(k2), UINT64_FROM(k3)};
-    uint64_t *value = (uint64_t*)gdextension_dictionary_operator_index_const((GDExtensionTypePtr)dict, key);
+    uint64_t *value = (uint64_t*)gdextension_dictionary_operator_index_const((GDExtensionTypePtr)&dict, &key[0]);
+    if (!value) return;
     uint64_t * result = (uint64_t*)args;
     result[0] = value[0];
     result[1] = value[1];
@@ -825,7 +826,7 @@ void gd_packed_dictionary_access(uintptr_t dict, UINT64 k1, UINT64 k2, UINT64 k3
 
 void gd_packed_dictionary_modify(uintptr_t dict, UINT64 k1, UINT64 k2, UINT64 k3, UINT64 v1, UINT64 v2, UINT64 v3) {
     uint64_t key[3] = {UINT64_FROM(k1), UINT64_FROM(k2), UINT64_FROM(k3)};
-    uint64_t *value = (uint64_t*)gdextension_dictionary_operator_index((GDExtensionTypePtr)dict, (GDExtensionVariantPtr)&key);
+    uint64_t *value = (uint64_t*)gdextension_dictionary_operator_index((GDExtensionTypePtr)&dict, (GDExtensionVariantPtr)&key[0]);
     value[0] = UINT64_FROM(v1);
     value[1] = UINT64_FROM(v2);
     value[2] = UINT64_FROM(v3);

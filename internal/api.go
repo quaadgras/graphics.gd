@@ -44,25 +44,6 @@ type API struct {
 		GetPointerUtilityFunction func(name StringName, hash Int) func(ret callframe.Addr, args callframe.Args, c int32)
 		GetObjectInstanceID       func(self Variant) ObjectID
 	}
-	Strings struct {
-		New        func(string) String
-		Get        func(String) string
-		SetIndex   func(String, Int, rune)
-		Index      func(String, Int) rune
-		Append     func(String, String)
-		AppendRune func(String, rune)
-		Resize     func(String, Int)
-	}
-	StringNames struct {
-		New func(string) StringName
-	}
-	XMLParser struct {
-		OpenBuffer func(Object, []byte) error
-	}
-	FileAccess struct {
-		StoreBuffer func(Object, []byte)
-		GetBuffer   func(Object, []byte) int
-	}
 	PackedByteArray    PackedFunctionsFor[PackedByteArray, byte]
 	PackedColorArray   PackedFunctionsFor[PackedColorArray, Color]
 	PackedFloat32Array PackedFunctionsFor[PackedFloat32Array, float32]
@@ -78,11 +59,7 @@ type API struct {
 	PackedVector2Array PackedFunctionsFor[PackedVector2Array, Vector2]
 	PackedVector3Array PackedFunctionsFor[PackedVector3Array, Vector3]
 	PackedVector4Array PackedFunctionsFor[PackedVector4Array, Vector4]
-	Dictionary         struct {
-		Index    func(dict Dictionary, key Variant) Variant
-		SetIndex func(dict Dictionary, key, val Variant)
-	}
-	Object struct {
+	Object             struct {
 		MethodBindCall              func(method MethodBind, obj [1]Object, arg ...Variant) (Variant, error)
 		MethodBindPointerCall       func(method MethodBind, obj [1]Object, arg callframe.Args, ret callframe.Addr)
 		MethodBindPointerCallStatic func(method MethodBind, arg callframe.Args, ret callframe.Addr)
@@ -96,10 +73,6 @@ type API struct {
 		CastTo                      func([1]Object, ClassTag) [1]Object
 		GetInstanceID               func([1]Object) ObjectID
 		GetInstanceFromID           func(ObjectID) [1]Object
-	}
-	RefCounted struct {
-		GetObject func([1]Object) [1]Object
-		SetObject func([1]Object, [1]Object)
 	}
 	Callables struct {
 		Create func(fn func(...Variant) (Variant, error)) Callable

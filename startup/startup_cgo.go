@@ -88,7 +88,6 @@ func linkCGO(API *gd.API) {
 			Value: C.GoString(version.string),
 		}
 	}
-	variant_new_copy := dlsymGD("variant_new_copy")
 	get_variant_from_type_constructor := dlsymGD("get_variant_from_type_constructor")
 	API.Variants.FromTypeConstructor = func(vt gd.VariantType) func(ret callframe.Ptr[[3]uint64], arg callframe.Addr) {
 		fn := C.get_variant_from_type_constructor(
@@ -355,165 +354,6 @@ func linkCGO(API *gd.API) {
 			)
 		}
 	}
-	string_new_with_utf8_chars_and_len := dlsymGD("string_new_with_utf8_chars_and_len")
-	API.Strings.New = func(s string) gd.String {
-		var str = C.CString(s)
-		var frame = callframe.New()
-		var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-		C.string_new_with_utf8_chars_and_len(
-			C.uintptr_t(uintptr(string_new_with_utf8_chars_and_len)),
-			C.uintptr_t(r_ret.Uintptr()),
-			str,
-			C.GDExtensionInt(len(s)),
-		)
-		var ret = pointers.New[gd.String](r_ret.Get())
-		frame.Free()
-		C.free(unsafe.Pointer(str))
-		return ret
-	}
-	string_to_utf8_chars := dlsymGD("string_to_utf8_chars")
-	API.Strings.Get = func(s gd.String) string {
-		var length = s.Length()
-		if length == 0 {
-			return ""
-		}
-		var frame = callframe.New()
-		var p_self = callframe.Arg(frame, pointers.Get(s))
-		var r_ret = make([]byte, length)
-		C.string_to_utf8_chars(
-			C.uintptr_t(uintptr(string_to_utf8_chars)),
-			C.uintptr_t(p_self.Uintptr()),
-			(*C.char)(unsafe.Pointer(&r_ret[0])),
-			C.GDExtensionInt(length),
-		)
-		frame.Free()
-		return string(r_ret)
-	}
-	string_operator_index := dlsymGD("string_operator_index")
-	API.Strings.SetIndex = func(s gd.String, index gd.Int, val rune) {
-		var frame = callframe.New()
-		var p_self = callframe.Arg(frame, pointers.Get(s))
-		*C.string_operator_index(
-			C.uintptr_t(uintptr(string_operator_index)),
-			C.uintptr_t(p_self.Uintptr()),
-			C.GDExtensionInt(index),
-		) = C.rune(val)
-		frame.Free()
-	}
-	string_operator_index_const := dlsymGD("string_operator_index")
-	API.Strings.Index = func(s gd.String, index gd.Int) rune {
-		var frame = callframe.New()
-		var p_self = callframe.Arg(frame, pointers.Get(s))
-		var ret = C.string_operator_index_const(
-			C.uintptr_t(uintptr(string_operator_index_const)),
-			C.uintptr_t(p_self.Uintptr()),
-			C.GDExtensionInt(index),
-		)
-		frame.Free()
-		return rune(*ret)
-	}
-	string_operator_plus_eq_string := dlsymGD("string_operator_plus_eq_string")
-	API.Strings.Append = func(s gd.String, other gd.String) {
-		var frame = callframe.New()
-		var p_self = callframe.Arg(frame, pointers.Get(s))
-		var p_other = callframe.Arg(frame, pointers.Get(other))
-		C.string_operator_plus_eq_string(
-			C.uintptr_t(uintptr(string_operator_plus_eq_string)),
-			C.uintptr_t(p_self.Uintptr()),
-			C.uintptr_t(p_other.Uintptr()),
-		)
-		pointers.Set(s, p_self.Get())
-		frame.Free()
-	}
-	string_operator_plus_eq_char := dlsymGD("string_operator_plus_eq_char")
-	API.Strings.AppendRune = func(s gd.String, other rune) {
-		var frame = callframe.New()
-		var p_self = callframe.Arg(frame, pointers.Get(s))
-		C.string_operator_plus_eq_char(
-			C.uintptr_t(uintptr(string_operator_plus_eq_char)),
-			C.uintptr_t(p_self.Uintptr()),
-			C.rune(other),
-		)
-		pointers.Set(s, p_self.Get())
-		frame.Free()
-	}
-	string_resize := dlsymGD("string_resize")
-	API.Strings.Resize = func(s gd.String, size gd.Int) {
-		var frame = callframe.New()
-		var p_self = callframe.Arg(frame, pointers.Get(s))
-		var length = s.Length()
-		C.string_resize(
-			C.uintptr_t(uintptr(string_resize)),
-			C.uintptr_t(p_self.Uintptr()),
-			C.GDExtensionInt(size),
-		)
-		if size < length {
-			API.Strings.SetIndex(s, size, 0)
-		}
-		pointers.Set(s, p_self.Get())
-		frame.Free()
-	}
-	string_name_new_with_utf8_chars_and_len := dlsymGD("string_name_new_with_utf8_chars_and_len")
-	API.StringNames.New = func(s string) gd.StringName {
-		var str = C.CString(s)
-		var frame = callframe.New()
-		var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-		C.string_name_new_with_utf8_chars_and_len(
-			C.uintptr_t(uintptr(string_name_new_with_utf8_chars_and_len)),
-			C.uintptr_t(r_ret.Uintptr()),
-			str,
-			C.GDExtensionInt(len(s)),
-		)
-		var ret = pointers.New[gd.StringName](r_ret.Get())
-		frame.Free()
-		C.free(unsafe.Pointer(str))
-		return ret
-	}
-	xml_parser_open_buffer := dlsymGD("xml_parser_open_buffer")
-	API.XMLParser.OpenBuffer = func(x gd.Object, b []byte) error {
-		var pin runtime.Pinner
-		pin.Pin(&b[0])
-		//mmm.Pin[pinner](mmm.Life(x.AsPointer()), &pin, [0]uintptr{})
-
-		var frame = callframe.New()
-		var p_self = callframe.Arg(frame, pointers.Get(x))
-		var errCode = C.xml_parser_open_buffer(
-			C.uintptr_t(uintptr(xml_parser_open_buffer)),
-			C.uintptr_t(p_self.Uintptr()),
-			(C.bytes)(unsafe.Pointer(&b[0])),
-			C.size_t(len(b)),
-		)
-		frame.Free()
-		if errCode != 0 {
-			return errors.New("xml_parser_open_buffer failed") // TODO godot error code string?
-		}
-		return nil
-	}
-	file_access_store_buffer := dlsymGD("file_access_store_buffer")
-	API.FileAccess.StoreBuffer = func(f gd.Object, b []byte) {
-		var frame = callframe.New()
-		var p_self = callframe.Arg(frame, pointers.Get(f))
-		C.file_access_store_buffer(
-			C.uintptr_t(uintptr(file_access_store_buffer)),
-			C.uintptr_t(p_self.Uintptr()),
-			(C.bytes)(unsafe.Pointer(&b[0])),
-			C.uint64_t(len(b)),
-		)
-		frame.Free()
-	}
-	file_access_get_buffer := dlsymGD("file_access_get_buffer")
-	API.FileAccess.GetBuffer = func(f gd.Object, b []byte) int {
-		var frame = callframe.New()
-		var p_self = callframe.Arg(frame, pointers.Get(f))
-		var length = C.file_access_get_buffer(
-			C.uintptr_t(uintptr(file_access_get_buffer)),
-			C.uintptr_t(p_self.Uintptr()),
-			(C.bytes)(unsafe.Pointer(&b[0])),
-			C.uint64_t(len(b)),
-		)
-		frame.Free()
-		return int(length)
-	}
 	API.PackedByteArray = makePackedFunctions[gd.PackedByteArray, byte]("byte_array")
 	API.PackedColorArray = makePackedFunctions[gd.PackedColorArray, gd.Color]("color_array")
 	API.PackedFloat32Array = makePackedFunctions[gd.PackedFloat32Array, float32]("float32_array")
@@ -547,40 +387,6 @@ func linkCGO(API *gd.API) {
 	API.PackedVector2Array = makePackedFunctions[gd.PackedVector2Array, gd.Vector2]("vector2_array")
 	API.PackedVector3Array = makePackedFunctions[gd.PackedVector3Array, gd.Vector3]("vector3_array")
 	API.PackedVector4Array = makePackedFunctions[gd.PackedVector4Array, gd.Vector4]("vector4_array")
-	dictionary_operator_index := dlsymGD("dictionary_operator_index")
-	API.Dictionary.Index = func(d gd.Dictionary, key gd.Variant) gd.Variant {
-		var frame = callframe.New()
-		var p_self = callframe.Arg(frame, pointers.Get(d))
-		var p_key = callframe.Arg(frame, pointers.Get(key))
-		var ptr = C.dictionary_operator_index(
-			C.uintptr_t(uintptr(dictionary_operator_index)),
-			C.uintptr_t(p_self.Uintptr()),
-			C.uintptr_t(p_key.Uintptr()),
-		)
-		var r_ret = *(*[3]uint64)(ptr)
-		var ret = pointers.Raw[gd.Variant](r_ret)
-		frame.Free()
-		return ret
-	}
-	API.Dictionary.SetIndex = func(dict gd.Dictionary, key, val gd.Variant) {
-		var frame = callframe.New()
-		var p_self = callframe.Arg(frame, pointers.Get(dict))
-		var p_key = callframe.Arg(frame, pointers.Get(key))
-		var ptr = C.dictionary_operator_index(
-			C.uintptr_t(uintptr(dictionary_operator_index)),
-			C.uintptr_t(p_self.Uintptr()),
-			C.uintptr_t(p_key.Uintptr()),
-		)
-		var p_copy = callframe.Ret[[3]uint64](frame)
-		var p_value = callframe.Arg(frame, pointers.Get(val))
-		C.variant_new_copy(
-			C.uintptr_t(uintptr(variant_new_copy)),
-			C.uintptr_t(p_copy.Uintptr()),
-			C.uintptr_t(p_value.Uintptr()),
-		)
-		*(*[3]uint64)(ptr) = p_copy.Get()
-		frame.Free()
-	}
 	object_get_instance_from_id = dlsymGD("object_get_instance_from_id")
 	API.Object.GetInstanceFromID = func(id gd.ObjectID) [1]gd.Object {
 		var ret = C.object_get_instance_from_id(
@@ -850,35 +656,6 @@ func linkCGO(API *gd.API) {
 			C.uintptr_t(uintptr(object_get_instance_id)),
 			C.uintptr_t(self[0]),
 		))
-	}
-	ref_get_object := dlsymGD("ref_get_object")
-	API.RefCounted.GetObject = func(rc [1]gd.Object) [1]gd.Object {
-		var self = pointers.Get(rc[0])
-		if self[0] == 0 {
-			panic("nil gd.Object dereference")
-		}
-		if self[1] != 0 {
-			var ret = C.object_get_instance_from_id(
-				C.uintptr_t(uintptr(object_get_instance_from_id)),
-				C.uintptr_t(self[1]),
-			)
-			if ret == 0 {
-				panic("use after free")
-			}
-		}
-		var ret = C.ref_get_object(
-			C.uintptr_t(uintptr(ref_get_object)),
-			C.uintptr_t(self[0]),
-		)
-		return [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(ret)})}
-	}
-	ref_set_object := dlsymGD("ref_set_object")
-	API.RefCounted.SetObject = func(rc [1]gd.Object, o [1]gd.Object) {
-		C.ref_set_object(
-			C.uintptr_t(uintptr(ref_set_object)),
-			C.uintptr_t(pointers.Get(rc[0])[0]),
-			C.uintptr_t(pointers.Get(o[0])[0]),
-		)
 	}
 	classdb_construct_object := dlsymGD("classdb_construct_object")
 	API.ClassDB.ConstructObject = func(name gd.StringName) [1]gd.Object {
