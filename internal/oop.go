@@ -82,6 +82,9 @@ func ObjectChecked(obj [1]Object) EnginePointer {
 	if !obj[0].IsAlive(raw) {
 		panic("use after free")
 	}
+	if raw == [3]uint64{} {
+		panic("object pointer is nil")
+	}
 	return EnginePointer(raw[0])
 }
 
