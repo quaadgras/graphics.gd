@@ -7,6 +7,7 @@ import (
 	"reflect"
 
 	"graphics.gd/internal/callframe"
+	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 	VariantPkg "graphics.gd/variant"
 	ArrayType "graphics.gd/variant/Array"
@@ -433,7 +434,7 @@ func newArray(val reflect.Value) Array {
 		panic("gd.Variant: unsupported array element type " + val.Type().Elem().String())
 	}
 	var array = NewArray()
-	Global.Array.SetTyped(array, vtype, StringName{}, Object{})
+	gdextension.Host.VariantTypes.SetupArray(gdextension.Array(pointers.Get(array)[0]), vtype, 0, [3]uint64{})
 	array.Resize(Int(val.Len()))
 	for i := 0; i < val.Len(); i++ {
 		array.SetIndex(Int(i), NewVariant(val.Index(i).Interface()))

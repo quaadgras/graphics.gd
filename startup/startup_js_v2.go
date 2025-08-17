@@ -16,6 +16,8 @@ func init() {
 	js.Global().Set("Go", js.Global().Get("Object").New())
 	Go := js.Global().Get("Go")
 	var (
+		gd_array_get                               js.Value
+		gd_array_set                               js.Value
 		gd_builtin_name                            js.Value
 		gd_builtin_call                            js.Value
 		gd_callable_create                         js.Value
@@ -110,8 +112,6 @@ func init() {
 		gd_packed_int64_array_access               js.Value
 		gd_packed_string_array_unsafe              js.Value
 		gd_packed_string_array_access              js.Value
-		gd_packed_variant_array_unsafe             js.Value
-		gd_packed_variant_array_access             js.Value
 		gd_packed_vector2_array_unsafe             js.Value
 		gd_packed_vector2_array_access             js.Value
 		gd_packed_vector3_array_unsafe             js.Value
@@ -195,6 +195,8 @@ func init() {
 	)
 	setup := sync.OnceFunc(func() {
 		GD := js.Global().Get("GD")
+		gd_array_get = GD.Get("array_get")
+		gd_array_set = GD.Get("array_set")
 		gd_builtin_name = GD.Get("builtin_name")
 		gd_builtin_call = GD.Get("builtin_call")
 		gd_callable_create = GD.Get("callable_create")
@@ -289,8 +291,6 @@ func init() {
 		gd_packed_int64_array_access = GD.Get("packed_int64_array_access")
 		gd_packed_string_array_unsafe = GD.Get("packed_string_array_unsafe")
 		gd_packed_string_array_access = GD.Get("packed_string_array_access")
-		gd_packed_variant_array_unsafe = GD.Get("packed_variant_array_unsafe")
-		gd_packed_variant_array_access = GD.Get("packed_variant_array_access")
 		gd_packed_vector2_array_unsafe = GD.Get("packed_vector2_array_unsafe")
 		gd_packed_vector2_array_access = GD.Get("packed_vector2_array_access")
 		gd_packed_vector3_array_unsafe = GD.Get("packed_vector3_array_unsafe")
@@ -524,6 +524,18 @@ func init() {
 		gdextension.On.Tasks.RunInGroup(gdextension.TaskID(args[0].Int()), uint32(args[1].Int()))
 		return nil
 	}))
+	gdextension.Host.Array.Get = func(p0 gdextension.Array, p1 int, p2 gdextension.CallReturns[gdextension.Variant]) {
+		setup()
+		mem2 := gdmemory.MakeResult(gdextension.SizeBytes24)
+		gd_array_get.Invoke(uint32(p0), p1, uint32(mem2))
+		gdmemory.LoadResult(gdextension.SizeBytes24, p2, mem2)
+		return
+	}
+	gdextension.Host.Array.Set = func(p0 gdextension.Array, p1 int, p2 gdextension.Variant) {
+		setup()
+		gd_array_set.Invoke(uint32(p0), p1, math.Float64frombits(*(*uint64)(unsafe.Pointer(&p2[0]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p2[1]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p2[2]))))
+		return
+	}
 	gdextension.Host.Builtins.Name = func(p0 gdextension.StringName, p1 int64) (result gdextension.FunctionID) {
 		setup()
 		result = gdextension.FunctionID(gd_builtin_name.Invoke(uint32(p0), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p1)))).Int())
@@ -1035,18 +1047,6 @@ func init() {
 	gdextension.Host.Packed.Strings.Access = func(p0 gdextension.PackedArray, p1 int) (result gdextension.String) {
 		setup()
 		result = gdextension.String(gd_packed_string_array_access.Invoke(uint32(p0[0]), uint32(p0[1]), p1).Int())
-		return
-	}
-	gdextension.Host.Packed.Variants.Unsafe = func(p0 gdextension.PackedArray) (result gdextension.Pointer) {
-		setup()
-		result = gdextension.Pointer(gd_packed_variant_array_unsafe.Invoke(uint32(p0[0]), uint32(p0[1])).Int())
-		return
-	}
-	gdextension.Host.Packed.Variants.Access = func(p0 gdextension.PackedArray, p1 int, p2 gdextension.CallReturns[gdextension.Variant]) {
-		setup()
-		mem2 := gdmemory.MakeResult(gdextension.SizeBytes24)
-		gd_packed_variant_array_access.Invoke(uint32(p0[0]), uint32(p0[1]), p1, uint32(mem2))
-		gdmemory.LoadResult(gdextension.SizeBytes24, p2, mem2)
 		return
 	}
 	gdextension.Host.Packed.Vector2s.Unsafe = func(p0 gdextension.PackedArray) (result gdextension.Pointer) {

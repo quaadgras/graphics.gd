@@ -6,6 +6,7 @@ import (
 	"reflect"
 
 	"graphics.gd/internal/callframe"
+	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 	VariantPkg "graphics.gd/variant"
 	ArrayVariant "graphics.gd/variant/Array"
@@ -20,12 +21,14 @@ func IntsCollectAs[T, S ~int | ~int64 | ~int32](seq iter.Seq[S]) []T {
 }
 
 func (a Array) Index(index int64) Variant {
-	return Global.Array.Index(a, index).Copy()
+	var raw [3]uint64
+	gdextension.Host.Array.Get(gdextension.Array(pointers.Get(a)[0]), int(index), gdextension.CallReturns[gdextension.Variant](&raw[0]))
+	return pointers.Raw[Variant](raw).Copy()
 }
 
 func (a Array) SetIndex(index int64, value Variant) {
-	Global.Array.SetIndex(a, index, value.Copy())
-	pointers.End(value)
+	raw, _ := pointers.End(value.Copy())
+	gdextension.Host.Array.Set(gdextension.Array(pointers.Get(a)[0]), int(index), raw)
 }
 
 func (a Array) isArray() {}

@@ -1192,14 +1192,15 @@ uintptr_t gd_packed_string_array_access(uintptr_t a1, uintptr_t a2, INT i) {
     return *(uintptr_t*)gdextension_packed_string_array_operator_index_const(&packed_array[0], i);
 };
 
-uintptr_t gd_packed_variant_array_unsafe(uintptr_t a1, uintptr_t a2) {
-    uintptr_t packed_array[2] = {a1, a2};
-    return (uintptr_t)gdextension_array_operator_index(&packed_array[0], 0);
+uintptr_t gd_array_set(uintptr_t a, INT i, UINT64 v1, UINT64 v2, UINT64 v3) {
+    uint64_t *variant = (uint64_t*)gdextension_array_operator_index(&a, 0);
+    variant[0] = UINT64_FROM(v1);
+    variant[1] = UINT64_FROM(v2);
+    variant[2] = UINT64_FROM(v3);
 };
 
-void gd_packed_variant_array_access(uintptr_t a1, uintptr_t a2, INT i, ANY result) {
-    uintptr_t packed_array[2] = {a1, a2};
-    uint64_t *packed = (uint64_t*)gdextension_array_operator_index_const(&packed_array[0], i);
+void gd_array_get(uintptr_t a, INT i, ANY result) {
+    uint64_t *packed = (uint64_t*)gdextension_array_operator_index_const(&a, i);
     memcpy((uint64_t*)result, packed, sizeof(uint64_t)*3);
 };
 

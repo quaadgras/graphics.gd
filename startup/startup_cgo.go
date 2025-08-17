@@ -547,66 +547,6 @@ func linkCGO(API *gd.API) {
 	API.PackedVector2Array = makePackedFunctions[gd.PackedVector2Array, gd.Vector2]("vector2_array")
 	API.PackedVector3Array = makePackedFunctions[gd.PackedVector3Array, gd.Vector3]("vector3_array")
 	API.PackedVector4Array = makePackedFunctions[gd.PackedVector4Array, gd.Vector4]("vector4_array")
-	array_operator_index_const := dlsymGD("array_operator_index_const")
-	API.Array.Index = func(a gd.Array, i gd.Int) gd.Variant {
-		var frame = callframe.New()
-		var p_self = callframe.Arg(frame, pointers.Get(a))
-		var r_ret = C.array_operator_index_const(
-			C.uintptr_t(uintptr(array_operator_index_const)),
-			C.uintptr_t(p_self.Uintptr()),
-			C.GDExtensionInt(i),
-		)
-		var ptr = (*[3]uint64)(r_ret)
-		var ret = pointers.Raw[gd.Variant](*ptr)
-		frame.Free()
-		return ret.Copy()
-	}
-	array_operator_index := dlsymGD("array_operator_index")
-	API.Array.SetIndex = func(a gd.Array, i gd.Int, v gd.Variant) {
-		var frame = callframe.New()
-		var p_self = callframe.Arg(frame, pointers.Get(a))
-		var ptr = C.array_operator_index(
-			C.uintptr_t(uintptr(array_operator_index)),
-			C.uintptr_t(p_self.Uintptr()),
-			C.GDExtensionInt(i),
-		)
-		var p_copy = callframe.Ret[[3]uintptr](frame)
-		var p_value = callframe.Arg(frame, pointers.Get(v))
-		C.variant_new_copy(
-			C.uintptr_t(uintptr(variant_new_copy)),
-			C.uintptr_t(p_copy.Uintptr()),
-			C.uintptr_t(p_value.Uintptr()),
-		)
-		*(*[3]uintptr)(ptr) = p_copy.Get()
-		frame.Free()
-	}
-	array_ref := dlsymGD("array_ref")
-	API.Array.Set = func(self gd.Array, from gd.Array) {
-		var frame = callframe.New()
-		var p_self = callframe.Arg(frame, pointers.Get(self))
-		var p_from = callframe.Arg(frame, pointers.Get(from))
-		C.array_ref(
-			C.uintptr_t(uintptr(array_ref)),
-			C.uintptr_t(p_self.Uintptr()),
-			C.uintptr_t(p_from.Uintptr()),
-		)
-		frame.Free()
-	}
-	array_set_typed := dlsymGD("array_set_typed")
-	API.Array.SetTyped = func(self gd.Array, t gd.VariantType, className gd.StringName, script gd.Object) {
-		var frame = callframe.New()
-		var p_self = callframe.Arg(frame, pointers.Get(self))
-		var p_className = callframe.Arg(frame, pointers.Get(className))
-		var p_script = callframe.Arg(frame, pointers.Get(script))
-		C.array_set_typed(
-			C.uintptr_t(uintptr(array_set_typed)),
-			C.uintptr_t(p_self.Uintptr()),
-			C.GDExtensionVariantType(t),
-			C.uintptr_t(p_className.Uintptr()),
-			C.uintptr_t(p_script.Uintptr()), // FIXME should this be a variant?
-		)
-		frame.Free()
-	}
 	dictionary_operator_index := dlsymGD("dictionary_operator_index")
 	API.Dictionary.Index = func(d gd.Dictionary, key gd.Variant) gd.Variant {
 		var frame = callframe.New()
@@ -1251,27 +1191,6 @@ func linkCGO(API *gd.API) {
 		)
 		frame.Free()
 	}
-
-	editor_add_plugin := dlsymGD("editor_add_plugin")
-	API.EditorPlugins.Add = func(plugin gd.StringName) {
-		var frame = callframe.New()
-		var p_plugin = callframe.Arg(frame, pointers.Get(plugin))
-		C.editor_add_plugin(
-			C.uintptr_t(uintptr(editor_add_plugin)),
-			C.uintptr_t(p_plugin.Uintptr()),
-		)
-		frame.Free()
-	}
-	editor_remove_plugin := dlsymGD("editor_remove_plugin")
-	API.EditorPlugins.Remove = func(plugin gd.StringName) {
-		var frame = callframe.New()
-		var p_plugin = callframe.Arg(frame, pointers.Get(plugin))
-		C.editor_remove_plugin(
-			C.uintptr_t(uintptr(editor_remove_plugin)),
-			C.uintptr_t(p_plugin.Uintptr()),
-		)
-		frame.Free()
-	}
 	classdb_unregister_extension_class := dlsymGD("classdb_unregister_extension_class")
 	API.ClassDB.UnregisterClass = func(library gd.ExtensionToken, name gd.StringName) {
 		var frame = callframe.New()
@@ -1282,14 +1201,6 @@ func linkCGO(API *gd.API) {
 			C.uintptr_t(p_name.Uintptr()),
 		)
 		frame.Free()
-	}
-	editor_help_load_xml_from_utf8_chars_and_len := dlsymGD("editor_help_load_xml_from_utf8_chars_and_len")
-	API.EditorHelp.Load = func(data []byte) {
-		C.editor_help_load_xml_from_utf8_chars_and_len(
-			C.uintptr_t(uintptr(editor_help_load_xml_from_utf8_chars_and_len)),
-			(*C.char)(unsafe.Pointer(&data[0])),
-			C.GDExtensionInt(len(data)),
-		)
 	}
 }
 

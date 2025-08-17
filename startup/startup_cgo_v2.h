@@ -3,6 +3,8 @@
 #include <stdbool.h>
 
 GDExtensionBool cgo_extension_init(GDExtensionInterfaceGetProcAddress p_get_proc_address, GDExtensionClassLibraryPtr p_library, GDExtensionInitialization *r_initialization);
+void gd_array_get(uintptr_t, int64_t, void*);
+void gd_array_set(uintptr_t, int64_t, uint64_t, uint64_t, uint64_t);
 uintptr_t gd_builtin_name(uintptr_t, int64_t);
 void gd_builtin_call(uintptr_t, void*, uint64_t, void*);
 void gd_callable_create(uintptr_t, uint64_t, void*);
@@ -97,8 +99,6 @@ uintptr_t gd_packed_int64_array_unsafe(uintptr_t, uintptr_t);
 int64_t gd_packed_int64_array_access(uintptr_t, uintptr_t, int64_t);
 uintptr_t gd_packed_string_array_unsafe(uintptr_t, uintptr_t);
 uintptr_t gd_packed_string_array_access(uintptr_t, uintptr_t, int64_t);
-uintptr_t gd_packed_variant_array_unsafe(uintptr_t, uintptr_t);
-void gd_packed_variant_array_access(uintptr_t, uintptr_t, int64_t, void*);
 uintptr_t gd_packed_vector2_array_unsafe(uintptr_t, uintptr_t);
 void gd_packed_vector2_array_access(uintptr_t, uintptr_t, int64_t, void*);
 uintptr_t gd_packed_vector3_array_unsafe(uintptr_t, uintptr_t);

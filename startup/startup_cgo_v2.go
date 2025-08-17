@@ -238,6 +238,14 @@ func go_on_worker_thread_pool_group_task(p0 C.uintptr_t, p1 C.uint32_t) {
 }
 
 func init() {
+	gdextension.Host.Array.Get = func(p0 gdextension.Array, p1 int, p2 gdextension.CallReturns[gdextension.Variant]) {
+		C.gd_array_get(C.uintptr_t(p0), C.int64_t(p1), unsafe.Pointer(p2))
+		return
+	}
+	gdextension.Host.Array.Set = func(p0 gdextension.Array, p1 int, p2 gdextension.Variant) {
+		C.gd_array_set(C.uintptr_t(p0), C.int64_t(p1), C.uint64_t(p2[0]), C.uint64_t(p2[1]), C.uint64_t(p2[2]))
+		return
+	}
 	gdextension.Host.Builtins.Name = func(p0 gdextension.StringName, p1 int64) (result gdextension.FunctionID) {
 		result = gdextension.FunctionID(C.gd_builtin_name(C.uintptr_t(p0), C.int64_t(p1)))
 		return
@@ -614,14 +622,6 @@ func init() {
 	}
 	gdextension.Host.Packed.Strings.Access = func(p0 gdextension.PackedArray, p1 int) (result gdextension.String) {
 		result = gdextension.String(C.gd_packed_string_array_access(C.uintptr_t(p0[0]), C.uintptr_t(p0[1]), C.int64_t(p1)))
-		return
-	}
-	gdextension.Host.Packed.Variants.Unsafe = func(p0 gdextension.PackedArray) (result gdextension.Pointer) {
-		result = gdextension.Pointer(C.gd_packed_variant_array_unsafe(C.uintptr_t(p0[0]), C.uintptr_t(p0[1])))
-		return
-	}
-	gdextension.Host.Packed.Variants.Access = func(p0 gdextension.PackedArray, p1 int, p2 gdextension.CallReturns[gdextension.Variant]) {
-		C.gd_packed_variant_array_access(C.uintptr_t(p0[0]), C.uintptr_t(p0[1]), C.int64_t(p1), unsafe.Pointer(p2))
 		return
 	}
 	gdextension.Host.Packed.Vector2s.Unsafe = func(p0 gdextension.PackedArray) (result gdextension.Pointer) {

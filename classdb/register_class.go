@@ -34,6 +34,7 @@ import (
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/docgen"
 	"graphics.gd/internal/gdclass"
+	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 )
 
@@ -226,7 +227,7 @@ func Register[T Class](exports ...any) {
 		if EngineClass.IsEditorHint() {
 			switch super.(type) {
 			case EditorPluginClass.Any:
-				gd.Global.EditorPlugins.Add(className)
+				gdextension.Host.Editor.AddPlugin(gdextension.StringName(pointers.Get(className)[0]))
 			}
 		}
 	}
@@ -423,7 +424,7 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 	gd.NewCallable(func() {
 		if EngineClass.IsEditorHint() {
 			docs, _ := xml.Marshal(class)
-			gd.Global.EditorHelp.Load(docs)
+			gdextension.Host.Editor.AddDocumentation(string(docs))
 		}
 	}).CallDeferred()
 }

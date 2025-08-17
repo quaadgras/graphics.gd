@@ -4,10 +4,19 @@ import (
 	"testing"
 
 	gd "graphics.gd/internal"
+	"graphics.gd/internal/gdextension"
 	"graphics.gd/variant"
 	"graphics.gd/variant/Float"
 	"graphics.gd/variant/Vector3"
 )
+
+func TestZero(t *testing.T) {
+	var raw [3]uint64
+	gdextension.Host.Variants.Zero(gdextension.CallReturns[gdextension.Variant](&raw))
+	if raw[0] != 0 || raw[1] != 0 || raw[2] != 0 {
+		t.Fatal("Zero variant should be [0, 0, 0], got", raw)
+	}
+}
 
 func TestVariants(t *testing.T) {
 	var f = variant.New(Float.X(3.14))

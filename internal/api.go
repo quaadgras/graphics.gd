@@ -78,13 +78,7 @@ type API struct {
 	PackedVector2Array PackedFunctionsFor[PackedVector2Array, Vector2]
 	PackedVector3Array PackedFunctionsFor[PackedVector3Array, Vector3]
 	PackedVector4Array PackedFunctionsFor[PackedVector4Array, Vector4]
-	Array              struct {
-		Index    func(Array, Int) Variant
-		Set      func(self, from Array)
-		SetIndex func(Array, Int, Variant)
-		SetTyped func(self Array, t VariantType, className StringName, script Object)
-	}
-	Dictionary struct {
+	Dictionary         struct {
 		Index    func(dict Dictionary, key Variant) Variant
 		SetIndex func(dict Dictionary, key, val Variant)
 	}
@@ -125,13 +119,6 @@ type API struct {
 		RegisterClassPropertySubGroup func(library ExtensionToken, class StringName, subGroup, prefix String)
 		RegisterClassSignal           func(library ExtensionToken, class, signal StringName, args []PropertyInfo)
 		UnregisterClass               func(library ExtensionToken, class StringName)
-	}
-	EditorPlugins struct {
-		Add    func(plugin StringName)
-		Remove func(plugin StringName)
-	}
-	EditorHelp struct {
-		Load func([]byte)
 	}
 
 	GetLibraryPath func(ExtensionToken) String

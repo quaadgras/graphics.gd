@@ -283,10 +283,10 @@ type API struct {
 			Unsafe func(p PackedArray) Pointer                                  `gd:"packed_color_array_unsafe"`
 			Access func(p PackedArray, idx int, result CallReturns[Color.RGBA]) `gd:"packed_color_array_access"`
 		}
-		Variants struct {
-			Unsafe func(p PackedArray) Pointer                               `gd:"packed_variant_array_unsafe"`
-			Access func(p PackedArray, idx int, result CallReturns[Variant]) `gd:"packed_variant_array_access"`
-		}
+	}
+	Array struct {
+		Get func(p Array, idx int, result CallReturns[Variant]) `gd:"array_get"`
+		Set func(p Array, idx int, value Variant)               `gd:"array_set"`
 	}
 	Dictionaries struct {
 		Access func(dict Dictionary, index Variant, result CallReturns[Variant]) `gd:"packed_dictionary_access"`
